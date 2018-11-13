@@ -1,0 +1,32 @@
+.tableHead {
+    width : 100%;
+    margin : 0 auto;
+    background: #f2f2f2;
+    color: #6a6a6a;
+    text-align: center;
+}
+.tableHead tr td{
+    height: 35px;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px darkgrey solid;
+    border-bottom: none;
+}
+.tableDiv {
+    width : 100%;
+    height : 450px;
+    margin : 0 auto;
+    overflow-y: auto;
+}
+.tableTbody {
+    width : 100%;
+}
+.tableTbody tr td{
+    font-size: 14px;
+    font-weight: bold;
+    height: 30px;
+    text-align: center;
+    position: relative;
+    border: 1px darkgrey solid;
+}
