@@ -12,6 +12,7 @@ import Management from '../processManagement/processManagement'
 
 import Api from '../Api/Api';
 import Depart from '../departManagement/departManagement';
+import InterProduct from '../intermediateProductTest/intermediateProduct';
 
 class Home extends Component {
     render() {
@@ -48,6 +49,7 @@ class Home extends Component {
                     {/* <Route key='/dataEntry' path='/user' component={DataEntry}></Route> */}
                     <Route key='/data' path='/processInspection' component={ProcessInspection}></Route>
                     <Route key='/management' path='/management' component={Management}></Route>
+                    <Route key='/InterProduct' path='/InterProduct' component={InterProduct}></Route>
                 </Switch>
                 </div>
             </div>
