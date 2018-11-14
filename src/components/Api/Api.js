@@ -1,5 +1,8 @@
 import React from 'react';
 import {Button, Input, Icon, Popconfirm, Form, InputNumber, Divider, Modal} from 'antd';
+// import reqwest from 'reqwest'
+import axios from 'axios';
+
 import '../Home/page.css';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import BlockQuote from '../BlockQuote/blockquote';
@@ -78,6 +81,7 @@ class EditableCell extends React.Component {
     }
 }
 
+// const Authorization = 'JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX01FTlVfU0FWRSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX1JPTEVfUFJJTlQsIFJPTEVfQVVUSF9NRU5VX1FVRVJZLCBST0xFX0FVVEhfTUVOVV9BVURJVCwgUk9MRV9BVVRIX1JPTEVfVVBMT0FELCBST0xFX0FVVEhfUk9MRV9ET1dOTE9BRCwgUk9MRV9BVVRIX0FVVEhfU0FWRSwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfTUVOVV9VUExPQUQsIFJPTEVfQVVUSF9ST0xFX1FVRVJZLCBST0xFX0FVVEhfTUVOVV9VUERBVEUsIFJPTEVfQVVUSF9BVVRIX1VQTE9BRF0iLCJleHAiOjE1NDIwODUxNzB9.9mRieOuE9oBKrYp37IkG9LpvoJ9xCv2R9hrRBnvRuAZTYXx9-xv16X4xqCxK46B3MzoqW2wB9DvKnaZXpAAg7w'
 class Api extends React.Component {
     //  构造--进行初始化
     constructor(props) {    // 有constructor构造方法，则必须有super继承
@@ -88,7 +92,9 @@ class Api extends React.Component {
             visible : false,    //弹出框是否弹出
             apiName : '' ,       //弹出框中操作名称
             searchText : '',
-            selectedRowKeys: []
+            selectedRowKeys: [],
+            // pagination: {},
+            // loading: false,
         };
         // 给子组件调用方法，需要进行绑定
         this.handleApiNameChange = this.handleApiNameChange.bind(this);
@@ -101,14 +107,14 @@ class Api extends React.Component {
             key : 'key',
             sorter : (a, b) => a.key - b.key, //  列排序设置
             align : 'center',
-            width: '33%',
+            width: '15%',
         },{
             title : '操作名称',
             dataIndex : 'name',
             key : 'name',
             align : 'center',
             editable : 1, // ？？--弹出框？
-            width : '33%',
+            width : '40%',
             filterDropdown : ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
                 <div className = "custom-filter-dropdown">
                     <Input
@@ -147,7 +153,7 @@ class Api extends React.Component {
             title : '操作',
             key : 'operation',
             align :'center',
-            width : '33%',
+            width : '40%',
             render : (text, record) => {
                 const editable = this.isEditing(record);
                 return (
@@ -245,6 +251,8 @@ class Api extends React.Component {
             }
         });
     };
+
+
     /**实现全选 */
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
