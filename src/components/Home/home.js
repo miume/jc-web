@@ -12,6 +12,7 @@ import Management from '../processManagement/processManagement'
 
 import Api from '../Api/Api';
 import Depart from '../departManagement/departManagement';
+import DataEntry from '../dataEntry/dataEntry';
 
 class Home extends Component {
     render() {
@@ -45,10 +46,10 @@ class Home extends Component {
                     <Route key='/menu' path='/menu' component={Menu}></Route>
                     <Route key='/user' path='/user' component={User}></Route>
                     <Route key='/departManagement' path='/departManagement' component={Depart}></Route>
-                    {/* <Route key='/dataEntry' path='/user' component={DataEntry}></Route> */}
+                    <Route key='/dataEntry' path='/dataEntry' component={DataEntry}></Route>
                     <Route key='/data' path='/processInspection' component={ProcessInspection}></Route>
                     <Route key='/management' path='/management' component={Management}></Route>
-                </Switch>
+                 </Switch>
                 </div>
             </div>
         );

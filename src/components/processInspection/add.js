@@ -2,7 +2,7 @@ import React from 'react';
 import {Button,Modal,Select,Input,Table,Popconfirm} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import './editor.css';
-
+import Tr from './tr';
 const Option = Select.Option;
 const approvalProcess = [{
     id:1,
@@ -152,14 +152,14 @@ class Add extends React.Component{
         super(props);
         this.state = {
             visible : false,
-            count: 0,
-            data : []
+            count: 1,
+            data : [1]
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.addData = this.addData.bind(this);
-        // this.deleteRow = this.deleteRow.bind(this);
+        this.deleteRow = this.deleteRow.bind(this);
     }
     /**处理新增一条记录 */
     handleAdd = () => {
@@ -178,28 +178,22 @@ class Add extends React.Component{
         });
     }
     /**新增一条数据 */
-    addData(){
+ 
+    addData() {
         const {count,data} = this.state;
-        const newData = {
-            productLine:{},
-            procedureName:{},
-            samplePoint:{},
-            testItem:{},
-            sampler:{},
-            tester:{},
-            testFrequency:'',
-            status:0,
-            comment:''
-        }
         this.setState({
-            data : [...data,newData],
-            count : count+1,
-        });
+            count: count+1,
+            data: [...data, count+1],
+        })
+        console.log(this.state)
     }
     /**删除一条数据 */
-    handleDelete(key) {
-        const dataSource = this.state.dataSource;
-        this.setState({dataSource: dataSource.filter(item => item.key !== key)})
+    deleteRow(value){
+        const {count,data} = this.state;
+        this.setState({
+            count:count-1,
+            data:data.filter(d=>d.toString()!==value)
+        })
     }
     render() {
         return (
@@ -213,36 +207,25 @@ class Add extends React.Component{
                     ]}>
                     <div style={{height:'400px'}}>
                     <p className='fr'>已录入{this.state.count}条数据</p>
-                         {/* <table style={{width:'100%'}}>
+                         <table style={{width:'100%'}}>
                              <thead className='thead'>
                                  <tr>
                                      <td>产品线</td>
                                      <td>工序</td>
                                      <td>样品检测点</td>
-                                     <td>测试项目</td>
+                                     <td>测试项目</td><td>测试频率</td>
                                      <td>采样人</td><td>检测人</td>
-                                     <td>测试频率</td>
-                                     <td>状态</td><td>备注</td><td>操作</td>
+                                     <td>状态</td><td>备注</td><td>删除</td>
                                  </tr>
                              </thead>
-                             <tbody className='tbody' id='process'>
-                                 <tr>
-                                     <td><Select style={{width:'100%'}}>{children}</Select></td>
-                                     <td><Select style={{width:'100%'}}>{children}</Select></td>
-                                     <td><Select style={{width:'100%'}}>{children}</Select></td>
-                                     <td><Select style={{width:'100%'}}>{children}</Select></td>
-                                     <td><Select style={{width:'100%'}}>{children}</Select></td>
-                                     <td><Select style={{width:'100%'}}>{children}</Select></td>
-                                     <td><Input defaultValue='' placeholder='请输入测试频率' style={{border:'none',textAlign:'center'}} /></td>
-                                     <td><Input defaultValue='' placeholder='请输入状态' style={{border:'none',textAlign:'center'}}/></td>
-                                     <td><Input defaultValue='' placeholder='请输入备注' style={{border:'none',textAlign:'center'}}/></td>
-                                     <td><a href='#' onClick={this.deleteRow} >删除</a></td>
-                                 </tr>
+                             <tbody>
+                             {
+                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                             }
                              </tbody>
-                         </table> */}
-                         <Table rowKey={record=>record.id} dataSource={data} columns={columns1} size='small' pagination={false} bordered></Table>
+                         </table>
                          <WhiteSpace />
-                         <Button type="primary" shape="circle" icon="plus" size='large' style={{marginLeft:'50%'}} onClick={this.addData}/>
+                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                          
                     </div>
                 </Modal>
