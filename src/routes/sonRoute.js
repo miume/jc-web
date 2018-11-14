@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-
-import Role from '../Home/roleManagement';
-import Api from '../Home/Api'; 
+import history from '../components/history/history';
  
-class SonRoute extends Component {
+import ProcessInspection from '../components/processInspection/processInspection';
+import Role from '../components/roleManagement/roleManagement';
+ 
+class DataRoute extends Component {
   render() {
     return (
-      <Switch>
-          <Route path="/Api" component={Api}></Route>
-          <Route path="/role" component={Role}></Route>
-      </Switch>
+      // <Router history={history}>
+        <Switch>
+          <Route path="/processInspection" component={ProcessInspection}/>
+          <Route path="/role" component={Role}/>
+          {/* 这是home页面,其下有很多子路由 */}
+        </Switch>
+      // </Router>
     );
   }
 }
  
-export default SonRoute;
+export default DataRoute;

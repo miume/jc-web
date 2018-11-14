@@ -55,6 +55,7 @@ class ProcessInspection extends React.Component{
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.lastStep = this.lastStep.bind(this);
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
@@ -74,7 +75,10 @@ class ProcessInspection extends React.Component{
       const dataSource = this.state.dataSource;
       this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     }
-
+    /**返回数据录入的页面 */
+    lastStep(){
+      this.props.history.push({pathname:'dataEntry'})
+    }
     render() {
         const rowSelection = {
           onChange:this.onSelectChange,
@@ -87,11 +91,12 @@ class ProcessInspection extends React.Component{
             },
             onChange(current) {}
         };
+        var i = 1;
         const columns = [{
-          title: '编码',
+          title: '序号',
           dataIndex: 'id',
           key: 'id',
-          sorter: (a,b) => a.id - b.id,
+          render:id=>`${i++}`,
           width: '7%',
           align:'center',
         }, {
@@ -158,13 +163,13 @@ class ProcessInspection extends React.Component{
           width: '10%',
           align:'center',
         }, {
-          title: '紧急',
-          dataIndex: 'isUrgent',
-          key: 'isUrgent',
-          render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
-          width: '7%',
-          align:'center',
-        }, {
+        //   title: '紧急',
+        //   dataIndex: 'isUrgent',
+        //   key: 'isUrgent',
+        //   render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
+        //   width: '7%',
+        //   align:'center',
+        // }, {
           title: '操作',
           dataIndex: 'operate',
           key:'operate',
@@ -193,11 +198,14 @@ class ProcessInspection extends React.Component{
                     <Add />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell name='请输入角色名称'/>
+                        <SearchCell name='请输入批号'/>
                     </span>
                 </div>
                 {/* <WhiteSpace></WhiteSpace> */}
                 <Table rowKey={record => record.id} rowSelection={rowSelection} columns={columns} dataSource={this.state.dataSource}  pagination={pagination} size="small" bordered  scroll={{ y: 400 }}/>
+                <div style={{marginLeft:'90%', marginTop:'29%',marginRight:'80px',height:'50px',position:'absolute'}} >
+                <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
+                </div>  
             </div>
 
         );

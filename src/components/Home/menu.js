@@ -32,7 +32,7 @@ class Menu1List extends React.Component {
           name: '质量流程',
           menu2 : [
             {name: '数据录入',id:6,path: '/dataEntry'},
-            {name: '制程检验',id:7,path: '/processInspection'},
+            // {name: '制程检验',id:7,path: '/processInspection'},
             {name: '流程管理',id:8,path: '/management'},
             {name: '流程创建',id:9,path: '/process',},
             {name: '任务执行',id:10,path: '/role'},

@@ -1,91 +1,92 @@
 import React from 'react';
-import {Modal,Button,Select,Table} from 'antd';
-import WhiteSpace from '../BlockQuote/whiteSpace'
-const Option = Select.Option;
-// const approvalProcess = [{
-//     id:1,
-//     name:'流程1'
-// },{
-//     id:2,
-//     name:'流程2'
-// },{
-//     id:3,
-//     name:'流程3'
-// }]
+import {Modal,Button,Table} from 'antd';
+import WhiteSpace from '../BlockQuote/whiteSpace';
+import SmallButton from '../BlockQuote/smallbutton';
+const approvalProcess = [{
+    id:1,
+    name:'流程1'
+},{
+    id:2,
+    name:'流程2'
+},{
+    id:3,
+    name:'流程3'
+}]
 // const children = approvalProcess.map(p => 
 //     <Option key={p.id}>{p.name}</Option>
 // )
-const columns = [{
-    title: '批号',
-    dataIndex: 'batchNumber' ,
-    key: 'batchNumber',
-    width: '9%',
-    align:'center',
-  }, {
-    title: '创建人',
-    dataIndex: 'creatPerson',
-    key:  'creatPerson.id',
-    render:creatPerson => `${creatPerson.userName}`,
-    width: '8%',
-    align:'center',
-  }, {
-    title: '创建时间',
-    dataIndex: 'creatTime',
-    key: 'creatTime',
-    width: '19%',
-    align:'center',
-  }, {
-    title: '修改人',
-    dataIndex: 'updatePerson',
-    key: 'updatePerson.id',
-    render:updatePerson => `${updatePerson.userName}`,
-    width: '9%',
-    align:'center',
-  }, {
-    title: '修改时间',
-    dataIndex: 'updateTime',
-    key: 'updateTime',
-    width: '19%',
-    align:'center',
-  }, {
-    title: '类型',
-    dataIndex: 'type',
-    key: 'type',
-    render: type => {
-        switch(`${type}`) {
-          case '1': return '制成检测数据';
-          case '2': return '样品送检数据';
-          case '3': return '样品报告单数据';
-          default: return '';
-        }
-    },
-    width: '12%',
-    align:'center',
-  }, {
-    title: '状态',
-    dataIndex: 'state',
-    key:'state',
-    render: state => {
-      switch(`${state}`) {
-        case '-1': return '已保存未提交';
-        case '0': return '已提交未未审核';
-        case '1': return '审核中';
-        case '2': return '审核通过';
-        case '3': return '审核未通过';
-        case '4': return '合格';
-        case '5': return '不合格';
-      }
-    },
-    width: '10%',
-    align:'center',
-  }, {
-    title: '紧急',
-    dataIndex: 'isUrgent',
-    key: 'isUrgent',
-    render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
-    width: '7%',
-    align:'center',
-  }]
+//表头的假数据
+// const columns = [{
+//     title: '批号',
+//     dataIndex: 'batchNumber' ,
+//     key: 'batchNumber',
+//     width: '9%',
+//     align:'center',
+//   }, {
+//     title: '创建人',
+//     dataIndex: 'creatPerson',
+//     key:  'creatPerson.id',
+//     render:creatPerson => `${creatPerson.userName}`,
+//     width: '8%',
+//     align:'center',
+//   }, {
+//     title: '创建时间',
+//     dataIndex: 'creatTime',
+//     key: 'creatTime',
+//     width: '19%',
+//     align:'center',
+//   }, {
+//     title: '修改人',
+//     dataIndex: 'updatePerson',
+//     key: 'updatePerson.id',
+//     render:updatePerson => `${updatePerson.userName}`,
+//     width: '9%',
+//     align:'center',
+//   }, {
+//     title: '修改时间',
+//     dataIndex: 'updateTime',
+//     key: 'updateTime',
+//     width: '19%',
+//     align:'center',
+//   }, {
+//     title: '类型',
+//     dataIndex: 'type',
+//     key: 'type',
+//     render: type => {
+//         switch(`${type}`) {
+//           case '1': return '制成检测数据';
+//           case '2': return '样品送检数据';
+//           case '3': return '样品报告单数据';
+//           default: return '';
+//         }
+//     },
+//     width: '12%',
+//     align:'center',
+//   }, {
+//     title: '状态',
+//     dataIndex: 'state',
+//     key:'state',
+//     render: state => {
+//       switch(`${state}`) {
+//         case '-1': return '已保存未提交';
+//         case '0': return '已提交未未审核';
+//         case '1': return '审核中';
+//         case '2': return '审核通过';
+//         case '3': return '审核未通过';
+//         case '4': return '合格';
+//         case '5': return '不合格';
+//       }
+//     },
+//     width: '10%',
+//     align:'center',
+//   }, {
+//     title: '紧急',
+//     dataIndex: 'isUrgent',
+//     key: 'isUrgent',
+//     render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
+//     width: '7%',
+//     align:'center',
+//   }]
   const columns1 = [{
     title: '产品线',
     dataIndex: 'productLine' ,
@@ -146,16 +147,20 @@ const columns = [{
       productLine:'HHHH',
 
   }]
+/**存取 */
+
 class Detail extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             visible : false,
+            clickId : 'all'
         }
         this.handleDetail = this.handleDetail.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.click = this.click.bind(this);
     }
     /**处理新增一条记录 */
     handleDetail() {
@@ -178,6 +183,18 @@ class Detail extends React.Component{
     handleChange(value){
         console.log(`selected:${value}`)
     }
+    /**点击button进行删选 根据产品线进行删选数据 */
+    click(e){
+      const id = e.target.id;
+      console.log('this.state.clickId:'+this.state.clickId+'  id:'+id)
+      if(id!=this.state.clickId){
+        document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
+        e.target.style.backgroundColor='#00b4f0';
+      }
+      this.setState({
+        clickId:id
+      })
+    }
     render() {
         const data = [this.props.value];
         return (
@@ -190,10 +207,13 @@ class Detail extends React.Component{
                         <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
                     ]}>
                     <div style={{height:'400px'}}>
-                         {/* <div style={{marginBottom:'15px'}}>
-                             <Select placeholder='请选择审批流程' onChange={this.handleChange} style={{ width: 200 }}>{children}</Select>
-                         </div> */}
-                         <Table rowKey={record => record.id} columns={columns} dataSource={data} width='650px' pagination={false} size='small' bordered></Table>
+                         <div>
+                         <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>
+                         {/* <SmallButton name='全部' /> */}
+                           {
+                             approvalProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />)
+                           }
+                         </div>
                          <WhiteSpace />
                          <Table columns={columns1} size='small' pagination={false} bordered></Table>
                     </div>
