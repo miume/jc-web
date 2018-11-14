@@ -33,14 +33,14 @@ class UserAddModal extends React.Component{
                         )}
                </FormItem>
 
-               <FormItem label='密码' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               {/* <FormItem label='密码' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
                   {getFieldDecorator('password',{
                         initialValue: '',
                         rules: [{required: true, message: '密码不能为空'}],
                      })(    //2、getFieldDecorator 的使用方法，
                             <Input placeholder='请输入密码'></Input>
                         )}
-               </FormItem>
+               </FormItem> */}
                <FormItem label='手机号'labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                     {getFieldDecorator('phoneNumber',{
                         initialValue: '',
@@ -48,13 +48,7 @@ class UserAddModal extends React.Component{
                         <Input placeholder='请输入手机号' ></Input>
                     )}
                 </FormItem>
-                <FormItem label='备注'labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                    {getFieldDecorator('extraInfo',{
-                        initialValue: '',
-                    })( 
-                        <Input placeholder='备注' ></Input>
-                    )}
-                </FormItem>
+               
             </Form>
         );
     }
