@@ -2,13 +2,21 @@ import React from 'react';
 import AePopModal from './aePopModal';
 import { Modal } from 'antd';
 
+const data = [];
+for (let i = 0; i < 50; i++) {
+    data.push({
+        id: i,
+        a: `b`,
+        b: 'a',
+        c: `c`,
+    });
+}
+
 class EditSpan extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            ModalText: 'Content of the modal',
             visible: false,
-            confirmLoading: false,
         };
     }
     showModal = () => {
@@ -16,28 +24,22 @@ class EditSpan extends React.Component {
             visible: true,
         });
     };
-    handleOk = (e) => {
-        this.setState({
-            ModalText: 'The modal will be closed after two seconds',
-            confirmLoading: true,
-        });
+    handleOk = () => {
         setTimeout(() => {
             this.setState({
                 visible: false,
-                confirmLoading: false,
             });
-        }, 1000);
+        }, 500);
     };
     handleCancel = (e) => {
-        console.log('Clicked cancel button');
         setTimeout(() => {
             this.setState({
                 visible: false,
             });
-        }, 1000);
+        }, 500);
     };
     render() {
-        const { visible, confirmLoading, ModalText } = this.state;
+        const { visible } = this.state;
         return (
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }} >
                 <Modal
@@ -45,13 +47,11 @@ class EditSpan extends React.Component {
                     visible={visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
-                    confirmLoading={confirmLoading}
                     okText="确认"
                     cancelText="取消"
+                    width="650px"
                 >
-                    <p>Bla bla ...</p>
-                    <p>Bla bla ...</p>
-                    <p>Bla bla ...</p>
+                    <AePopModal data={data}/>
                 </Modal>
                 <a href="#">编辑</a>
             </span>
