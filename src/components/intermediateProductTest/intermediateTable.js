@@ -103,7 +103,16 @@ class InterTable extends React.Component{
             };
         });
         return (
-            <Table rowKey={record => record.id} dataSource={this.props.data} columns={columns} rowSelection={this.props.rowSelection} pagination={this.props.pagination} size="small" bordered  scroll={{ y: 400 }} />
+            <Table
+                rowKey={record => record.id}
+                dataSource={this.props.data}
+                columns={columns}
+                rowSelection={this.props.rowSelection}
+                pagination={this.props.pagination}
+                size="small"
+                bordered
+                scroll={{ y: 400 }}
+            />
         );
     }
 }
