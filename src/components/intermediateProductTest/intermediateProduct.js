@@ -2,6 +2,7 @@ import React from 'react';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import BlockQuote from '../BlockQuote/blockquote';
 import InterTable from '../intermediateProductTest/intermediateTable';
+import '../Home/page.css';
 import axios from "axios";
 
 const data = [{
@@ -16,6 +17,7 @@ const data = [{
     h: 'h',
     i: 'i'
 }];
+
 class InterProduct extends React.Component {
     constructor(props) {
         super(props);

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Table } from 'antd';
+import {Divider, Table} from 'antd';
+import DetailSpan from './detailSpan';
+import EditSpan from './editSpan';
+import DeletaSpan from './deleteSpan';
 
 class InterTable extends React.Component{
     columns = [{
@@ -71,10 +74,36 @@ class InterTable extends React.Component{
         key: 'operation',
         align:'center',
         width: '17%',
+        render: (text,record) => {
+            console.log("-----")
+            console.log(record);
+            return (
+                <span>
+                    <DetailSpan />
+                    <Divider type="vertical" />
+                    <EditSpan />
+                    <Divider type="vertical" />
+                    <DeletaSpan record={record}/>
+                </span>
+            )
+        }
     }];
     render() {
+        //  获取record的记录
+        const columns = this.columns.map((col) => {
+            return {
+                ...col,
+                onCell: record => ({
+                    record,
+                    // editable: col.editable,
+                    // dataIndex: col.dataIndex,
+                    // title: col.title,
+                    // handleSave: this.handleSave,
+                }),
+            };
+        });
         return (
-            <Table rowKey={record => record.id} dataSource={this.props.data} columns={this.columns} rowSelection={this.props.rowSelection} pagination={this.props.pagination} size="small" bordered  scroll={{ y: 400 }} />
+            <Table rowKey={record => record.id} dataSource={this.props.data} columns={columns} rowSelection={this.props.rowSelection} pagination={this.props.pagination} size="small" bordered  scroll={{ y: 400 }} />
         );
     }
 }
