@@ -107,10 +107,10 @@ class User extends React.Component{
         pagination:[],
         count:2,
         selectedRowKeys : [],//最开始一条记录也没选
-        //searchText:'',
+        
         searchContent:'',
         visible:false,
-        //visible1:false,
+        
         editingKey:'',
         username:'',
         phone:'',
@@ -131,11 +131,12 @@ class User extends React.Component{
       this.searchEvent=this.searchEvent.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
-        showSizeChanger: true,
-        onShowSizeChange(current, pageSize) {
+        showSizeChanger: true,//是否可以改变 pageSize
+        //改变每页条目数
+        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
           console.log('Current: ', current, '; PageSize: ', pageSize);
         },
-        onChange(current) {
+        onChange(current) {//跳转，页码改变
           console.log('Current: ', current);
         }
       };
@@ -157,13 +158,13 @@ class User extends React.Component{
     },
      {
          title:'所属部门',
-         dataIndex:'deparmentId',
-         key:'deparmentId',
+         dataIndex:'deparmentName',
+         key:'deparmentName',
         editable:1,
          //sorter:(a, b) => a.deparmentId.id-b.deparmentId.id,
          width: '20%',
          align:'center',
-         //render:deparmentId =>`${deparmentId.deparment_name}`
+         //render:deparmentId =>`${deparmentId.deparmentName}`
      },{
          title:'手机号',
          dataIndex:'phone',
@@ -272,13 +273,13 @@ class User extends React.Component{
     handlePhoneChange(e){//手机号
       this.setState({phone:e.target.value});
     }
-    //根据d处理单条记录删除
+    //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       console.log(id);
         const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-          url:`http://218.77.105.241:40080/jc/user/deleteById/${id}`,
+          url:`http://218.77.105.241:40080/jc/user/deleteById?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':Authorization
@@ -293,7 +294,7 @@ class User extends React.Component{
         .catch((error)=>{
           console.log(error);
           console.log(error.data);
-         // message.info(error.data.message);
+         message.info(error.data.message);
         });
       }
     //实现checkbox全选
@@ -311,8 +312,22 @@ class User extends React.Component{
       }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
-        const ids = this.state.selectedRowKeys.toString();
-        //console.log(ids)
+        const ids = this.state.selectedRowKeys;
+        console.log(ids)
+        axios({
+            url:`http://218.77.105.241:40080/jc/user/deleteByIds`,
+            method:'Delete',
+            headers:{
+                  'Authorization' :Authorization
+            }
+        })
+        .then((data)=>{
+          console.log(data);
+        })//处理成功
+        .catch((error)=>{
+          console.log(error);
+          message.info(error.data.message)
+        });//处理异常
      }
     cancel(){}
    
