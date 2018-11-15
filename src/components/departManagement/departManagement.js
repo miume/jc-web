@@ -50,6 +50,7 @@ class Depart extends React.Component {
                     data={this.state.dataSource}
                     pagination={this.pagination}
                     rowSelection={rowSelection}
+                    fetch={this.fetch}
                 />
             </div>
         )
@@ -61,6 +62,12 @@ class Depart extends React.Component {
     modifySelectedRowKeys = (data) => {
         this.setState({selectedRowKeys:data});
     };
+    modifyDeleteState = (data) => {
+        this.setState({
+            loading: false,
+            dataSource: data,
+        });
+    }
     /**---------------------- */
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {

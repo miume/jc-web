@@ -30,15 +30,9 @@ class DeletaSpan extends React.Component {
             console.log(error);
             message.info(error.data)
         });
-        this.fetch();
-        // ajax request after empty completing
         setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
+            this.props.getFetch();
         }, 1000);
-
     }
 }
 
