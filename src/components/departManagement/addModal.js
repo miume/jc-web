@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Input } from 'antd';
+import { Button, Modal, Form, Input,message } from 'antd';
 import axios from 'axios';
 
 const FormItem = Form.Item;
@@ -70,11 +70,11 @@ class AddModal extends React.Component {
                 type:'json'
             }).then((data) => {
                 console.log('data:',data.data.message);
-                // message.info(data.data.message);
+                message.info(data.data.message);
                 this.props.fetch(); // 重新调用分页函数
             }).catch(function (error) {
                 console.log(error)
-                // message.info(error.data.message);
+                message.info(error.data.message);
             });
             // 将value传给后台
             console.log('Received values of form: ', values);

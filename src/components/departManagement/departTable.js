@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';// import DetailSpan from './detailSpan';
+import { Table } from 'antd';// import DetailSpan from './detailSpan';
 // import EditSpan from './editSpan';
 import DeletaSpan from './deleteSpan';
 
