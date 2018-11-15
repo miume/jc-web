@@ -15,6 +15,13 @@ import Depart from '../departManagement/departManagement';
 import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
 
+
+import BaseInfo from '../Base/baseInfo';
+import DeliveryFactory from '../Base/devileryFactory';//送样工厂
+import  ProductLine from '../Base/productLine';//产品线
+import  ProductProcess from '../Base/productProcess';//产品工序
+import  SamplePoint from '../Base/samplePoint';//取样点
+import TestItem from '../Base/testItem';//检测项目
 class Home extends Component {
     render() {
         return (
@@ -51,6 +58,16 @@ class Home extends Component {
                     <Route key='/data' path='/processInspection' component={ProcessInspection}></Route>
                     <Route key='/management' path='/management' component={Management}></Route>
                     <Route key='/InterProduct' path='/InterProduct' component={InterProduct}></Route>
+                    {/* 基本信息以及其对应的5个表 */}
+                    <Route key='/baseInfo' path='/baseInfo' component={BaseInfo} ></Route>
+                    <Route key='/deliveryFactory' path='/deliveryFactory' component={DeliveryFactory} ></Route>
+                    <Route key='/productProcess' path='/productProcess' component={ProductProcess}></Route>
+                    <Route key='/testItem' path='/testItem' component={TestItem}></Route>
+                    <Route key='/samplePoint' path='/samplePoint' component={SamplePoint}></Route>
+                    <Route key='/productLine' path='/productLine' component={ProductLine}></Route>
+                    
+                    
+                   
                 </Switch>
                 </div>
             </div>

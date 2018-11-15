@@ -88,6 +88,7 @@ class ProductLine extends React.Component{
         this.onSelectChange=this.onSelectChange.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
+        this.lastStep=this.lastStep.bind(this);
         this.columns=[{
            title:'产品线序号',
            dataIndex:'key',
@@ -235,6 +236,10 @@ class ProductLine extends React.Component{
             }
         });
     };
+    //返回上一步
+    lastStep(){
+        this.props.history.push({pathname:'baseInfo'});
+      }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -301,6 +306,9 @@ class ProductLine extends React.Component{
                    <WhiteSpace></WhiteSpace>
                    <div className='clear' ></div>
                    <Table rowKey={record => record.key} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={pagination} components={components} size="small" bordered  scroll={{ y: 400 }}></Table>
+                   <div style={{marginLeft:'80%', marginTop:'200px',marginRight:'80px',height:'50px',position:'absolute'}} >
+                     <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
+                  </div>
                </div>
            );
        }
