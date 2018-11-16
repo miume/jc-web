@@ -15,6 +15,7 @@ import Depart from '../departManagement/departManagement';
 import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
 import RawTestReport from '../rawTestReport/rawTestReport';
+import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
 
 
 import BaseInfo from '../Base/baseInfo';
@@ -60,6 +61,7 @@ class Home extends Component {
                     <Route key='/rawTestReport' path='/rawTestReport' component={RawTestReport}></Route>
                     <Route key='/management' path='/management' component={Management}></Route>
                     <Route key='/InterProduct' path='/InterProduct' component={InterProduct}></Route>
+                    <Route key='/PurchaseCheckReport' path='/PurchaseCheckReport' component={PurchaseCheckReport}></Route>
                     {/* 基本信息以及其对应的5个表 */}
                     <Route key='/baseInfo' path='/baseInfo' component={BaseInfo} ></Route>
                     <Route key='/deliveryFactory' path='/deliveryFactory' component={DeliveryFactory} ></Route>

@@ -105,7 +105,8 @@ class InterProduct extends React.Component {
                 <InterTable
                     data={this.state.dataSource}
                     rowSelection={rowSelection}
-                    pagination={this.pagination} />
+                    pagination={this.pagination}
+                />
             </div>
         )
     }
@@ -120,10 +121,10 @@ class InterProduct extends React.Component {
     };
     /**---------------------- */
     /**实现全选功能 */
-    onSelectChange(selectedRowKeys) {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys:selectedRowKeys });
-    }
+    // onSelectChange(selectedRowKeys) {
+    //     console.log('selectedRowKeys changed: ', selectedRowKeys);
+    //     this.setState({ selectedRowKeys:selectedRowKeys });
+    // }
     /**---------------------- */
     /**实现批量删除功能 */
     start = () => {
