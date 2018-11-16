@@ -23,6 +23,13 @@
 }
 .ant-table td { white-space: nowrap; }
 
+input::-webkit-input-placeholder {
+    /* placeholder颜色  */
+    /* placeholder字体大小  */
+    font-size: 17px;
+    /* placeholder位置  */
+    text-align: center;
+}
 
 /*.theHead {*/
     /*background: #f2f2f2;*/
