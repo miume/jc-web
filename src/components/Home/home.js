@@ -10,7 +10,6 @@ import ProcessInspection from '../processInspection/processInspection'
 import User from '../userManage/userManage';
 import Management from '../processManagement/processManagement'
 
-import Api from '../Api/Api';
 import Depart from '../departManagement/departManagement';
 import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
@@ -23,7 +22,10 @@ import DeliveryFactory from '../Base/devileryFactory';//送样工厂
 import  ProductLine from '../Base/productLine';//产品线
 import  ProductProcess from '../Base/productProcess';//产品工序
 import  SamplePoint from '../Base/samplePoint';//取样点
-import TestItem from '../Base/testItem';//检测项目
+import TestItem from '../Base/testItem';
+import OperationManagement from "../operationManagement/operationManagement";
+
+//检测项目
 class Home extends Component {
     render() {
         return (
@@ -51,7 +53,7 @@ class Home extends Component {
                 </div>
                 <div className="rightDiv">
                 <Switch>
-                    <Route key='/api' path='/api' component={Api}></Route>
+                    <Route key='/OperationManagement' path='/OperationManagement' component={OperationManagement}></Route>
                     <Route key='/role' path='/role' component={Role}></Route>
                     <Route key='/menu' path='/menu' component={Menu}></Route>
                     <Route key='/user' path='/user' component={User}></Route>

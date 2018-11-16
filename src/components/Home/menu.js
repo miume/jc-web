@@ -18,7 +18,7 @@ class Menu1List extends React.Component {
           icon: 'boss',
           name: '用户权限',
           menu2: [
-            {name: '操作管理',id:1,path: '/api'},
+            {name: '操作管理',id:1,path: '/OperationManagement'},
             {name: '菜单管理',id:2,path: '/menu',},
             {name: '角色管理',id:3,path: '/role'},
             {name: '用户管理',id:4,path: '/user'},
