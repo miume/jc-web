@@ -14,6 +14,7 @@ import Api from '../Api/Api';
 import Depart from '../departManagement/departManagement';
 import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
+import RawTestReport from '../rawTestReport/rawTestReport';
 
 class Home extends Component {
     render() {
@@ -49,6 +50,7 @@ class Home extends Component {
                     <Route key='/departManagement' path='/departManagement' component={Depart}></Route>
                     <Route key='/dataEntry' path='/dataEntry' component={DataEntry}></Route>
                     <Route key='/data' path='/processInspection' component={ProcessInspection}></Route>
+                    <Route key='/rawTestReport' path='/rawTestReport' component={RawTestReport}></Route>
                     <Route key='/management' path='/management' component={Management}></Route>
                     <Route key='/InterProduct' path='/InterProduct' component={InterProduct}></Route>
                 </Switch>

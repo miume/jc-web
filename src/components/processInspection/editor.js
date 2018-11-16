@@ -213,9 +213,6 @@ class Editor extends React.Component{
         // console.log(this.state.data)
     }
     render() {
-        const data = [this.props.value];
-        const editorData = [{}];
-        const data1 = this.state.data;
         return (
             <span>
                 <a onClick={this.handleEditor} >编辑</a>
@@ -226,11 +223,12 @@ class Editor extends React.Component{
                         <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
                     ]}>
                     <div style={{height:'400px'}}>
-                         <div style={{marginBottom:'15px'}}>
+                         {/* <div style={{marginBottom:'15px'}}>
                              <Select placeholder='请选择审批流程' onChange={this.handleChange} style={{ width: 200 }}>{children}</Select>
                          </div>
                          <Table rowKey={record => record.id} columns={columns} dataSource={data} width='650px' pagination={false} size='small'></Table>
-                         <WhiteSpace />
+                         <WhiteSpace /> */}
+                         
                          <p className='fr'>已录入{this.state.count}条数据</p>
                          <table style={{width:'100%'}}>
                              <thead className='thead'>
@@ -240,17 +238,17 @@ class Editor extends React.Component{
                                      <td>样品检测点</td>
                                      <td>测试项目</td><td>测试频率</td>
                                      <td>采样人</td><td>检测人</td>
-                                     <td>状态</td><td>备注</td><td>删除</td>
+                                     <td>状态</td><td>备注</td><td>操作</td>
                                  </tr>
                              </thead>
                              <tbody>
                              {
-                                data1.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                               this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
                              }
                              </tbody>
                          </table>
                          <WhiteSpace />
-                         <Button type="primary" shape="circle" icon="plus" size='large' style={{marginLeft:'50%'}} onClick={this.addData}/>
+                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>
                 </Modal>
             </span>

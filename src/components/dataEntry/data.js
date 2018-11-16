@@ -7,7 +7,7 @@ class Data extends React.Component{
                 <div style={{float:'left',marginLeft:'15%'}}>
                 {
                     this.props.data.map(d=>
-                        <DataButton key={d.id} id={d.id} name={d.name} path={d.path} buttonstyle={this.props.buttonstyle} click={this.props.click}></DataButton>
+                        <DataButton key={d.id} id={d.id} name={d.name} path={d.path} buttonstyle={this.props.buttonstyle} click={this.props.click} buttonClass={this.props.buttonClass}></DataButton>
                     )
                 }
                </div>

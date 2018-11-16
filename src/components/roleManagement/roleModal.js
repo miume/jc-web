@@ -14,7 +14,7 @@ class RoleModal extends React.Component{
         return (
             <Form horizontal='true' onSubmit={() => this.handleSubmit()}>
                 <FormItem label='角色名称'labelCol={{ span: 5 }} wrapperCol={{ span: 14 }} required>
-                    {getFieldDecorator('role_name',{
+                    {getFieldDecorator('roleName',{
                         initialValue: '',
                         rules: [{required: true, message: '角色名称不能为空'}],
                     })(    //2、getFieldDecorator 的使用方法，

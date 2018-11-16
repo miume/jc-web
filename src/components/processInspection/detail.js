@@ -209,7 +209,6 @@ class Detail extends React.Component{
                     <div style={{height:'400px'}}>
                          <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>
-                         {/* <SmallButton name='全部' /> */}
                            {
                              approvalProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />)
                            }

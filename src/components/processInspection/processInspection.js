@@ -91,12 +91,10 @@ class ProcessInspection extends React.Component{
             },
             onChange(current) {}
         };
-        var i = 1;
         const columns = [{
           title: '序号',
           dataIndex: 'id',
           key: 'id',
-          render:id=>`${i++}`,
           width: '7%',
           align:'center',
         }, {
