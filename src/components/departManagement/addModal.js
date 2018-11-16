@@ -22,14 +22,14 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('departmentName', {
                                 rules: [{ required: true, message: '请输入部门名称' }],
                             })(
-                                <Input placeholder='请输入角色名称'/>
+                                <Input placeholder='请输入部门名称'/>
                             )}
                         </FormItem>
                         <FormItem label="描述" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('extraInfo', {
                                 initialValue: '',
                             })(
-                                <Input placeholder='请输入角色名称' />
+                                <Input placeholder='请输入部门描述' />
                             )}
                         </FormItem>
                     </Form>
@@ -39,7 +39,8 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-const Authorization = 'JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjI2NDc2Nn0.7UJlJrYa_C0T18q7WpQv90p9E2FAMi6GONUIeL6Rd63eIpOcwxwgzDH6R2EARaipHiPhrNImqKCrbR1o1MCnkA'
+/**这是个令牌，每次调用接口都将其放在header里 */
+const Authorization = localStorage.getItem('Authorization');
 
 class AddModal extends React.Component {
     state = {

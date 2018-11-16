@@ -8,6 +8,7 @@ import AddModal from "./addModal";
 // import DeleteModal from "./deleteModal";
 import {message} from "antd";
 import DeleteModal from "../operationManagement/deleteModal";
+import SearchCell from "./search";
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
@@ -18,14 +19,18 @@ class OperationManagement extends React.Component {
         this.state = {
             dataSource: [],
             selectedRowKeys: [],
-            editingKey: '',
             loading: false,
-            pagination:{},
+            searchContent:'',
+            searchText: '',
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
         this.start=this.start.bind(this);
         this.cancel=this.cancel.bind(this);
         this.fetch=this.fetch.bind(this);
+        this.modifyDataSource=this.modifyDataSource.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -46,7 +51,7 @@ class OperationManagement extends React.Component {
         return (
             <div>
                 <BlockQuote name="操作管理"></BlockQuote>
-                <div className="fl">
+                <div style={{paddingTop:'10px'}}>
                     <AddModal
                         fetch={this.fetch}
                     />
@@ -56,6 +61,9 @@ class OperationManagement extends React.Component {
                         loading={loading}
                         cancel={this.cancel}
                     />
+                    <span style={{float:'right'}}>
+                        <SearchCell name='请输入操作名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+                    </span>
                 </div>
                 <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
@@ -64,6 +72,7 @@ class OperationManagement extends React.Component {
                     pagination={this.pagination}
                     rowSelection={rowSelection}
                     fetch={this.fetch}
+                    modifyDataSource={this.modifyDataSource}
                 />
             </div>
         )
@@ -72,6 +81,9 @@ class OperationManagement extends React.Component {
     /**修改父组件的数据 */
     modifySelectedRowKeys = (data) => {
         this.setState({selectedRowKeys:data});
+    };
+    modifyDataSource = (data) => {
+        this.setState({dataSource:data});
     };
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
@@ -82,9 +94,8 @@ class OperationManagement extends React.Component {
             orderType: 'desc',
 
         });
-    }
+    };
     fetch = (params = {}) => {
-        console.log('params:', params);
         this.setState({ loading: true });
         axios({
             url: 'http://218.77.105.241:40080/jc/operation/getOperationsByPage',
@@ -95,7 +106,6 @@ class OperationManagement extends React.Component {
             params: params,
             // type: 'json',
         }).then((data) => {
-            console.log(data.data.data.list);
             const res = data.data.data;
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
@@ -114,7 +124,6 @@ class OperationManagement extends React.Component {
     /**实现批量删除功能 */
     start = () => {
         const ids = this.state.selectedRowKeys;
-        console.log(ids);
         axios({
             url:'http://218.77.105.241:40080/jc/operation/deleteByIds',
             method:'Delete',
@@ -124,24 +133,14 @@ class OperationManagement extends React.Component {
             data:ids,
             type:'json'
         }).then((data)=>{
-            console.log(data);
             message.info(data.data.message);
             this.fetch();
         }).catch((error)=>{
-            console.log(error);
             message.info(error.data.message)
         });
-        // this.setState({ loading: true });
-        // // ajax request after empty completing
-        // setTimeout(() => {
-        //     this.setState({
-        //         selectedRowKeys: [],
-        //         loading: false,
-        //     });
-        // }, 1000);
+
     };
     onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
     cancel() {
@@ -154,7 +153,41 @@ class OperationManagement extends React.Component {
     }
     /**---------------------- */
     /**实现单条数据功能 */
+    /** 根据角色名称分页查询*/
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        axios({
+            url:'http://218.77.105.241:40080/jc/operation/getRolesByNameLikeByPage',
+            method:'get',
+            headers:{
+                'Authorization':Authorization
+            },
+            params:{
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
+                operationName:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total=res.total;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.pages-1)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
+        }).catch((error)=>{
+                message.info(error.data.message)
+            })
 
+    };
+    /**获取查询时角色名称的实时变化 */
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    /**---------------------- */
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */

@@ -294,7 +294,7 @@ class Role extends React.Component {
               this.fetch();
             }).catch((error)=>{
               message.info(error.data.message);
-            })
+            });
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
             newData.push(row);
