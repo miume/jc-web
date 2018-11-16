@@ -5,8 +5,14 @@ class DeletaSpan extends React.Component {
     render() {
         return (
             <span>
-                <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
-                    <a href="#">删除</a>
+                <Popconfirm
+                    title="确认删除?"
+                    onConfirm={() => this.handleDelete(this.props.record.id)}
+                    okText="确定" cancelText="取消" >
+                    <a
+                        href="#"
+                        disabled={this.props.disabled}
+                    >删除</a>
                 </Popconfirm>
             </span>
         )

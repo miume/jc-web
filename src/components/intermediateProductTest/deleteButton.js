@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Button, Popconfirm } from 'antd';
 
 
-class DeleteModal extends React.Component {
+class DeleteButton extends React.Component {
     render() {
         return (
             <span>
@@ -13,4 +13,4 @@ class DeleteModal extends React.Component {
         );
     }
 }
-export default DeleteModal;
+export default DeleteButton;

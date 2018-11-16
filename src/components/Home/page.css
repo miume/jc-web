@@ -10,6 +10,7 @@
 }
 .fr{
     float: right;
+    padding: 10px;
 }
 .custom-filter-dropdown {
     padding: 8px;
