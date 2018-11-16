@@ -1,8 +1,13 @@
 import React from 'react';
-import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import { Table,Input,Icon,Button,InputNumber,Form,Popconfirm,Divider,Modal } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
+import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../roleManagement/deleteByIds';
+import Add from './processAdd';
+import Detail from './detail';
+import Editor from './editor';
+
 
 const data = [];
 const FormItem = Form.Item;
@@ -11,13 +16,10 @@ for (let i = 0; i < 46; i++) {
     data.push({
       key: i.toString(),
       name: `流程${i}`,
-      crafts:`工艺${i}`,
+      creater:`创建人${i}`,
+      createTime:`时间${i}`,
       type:`类型${i}`,
-      personOne:`负责人${i}`,
-      personTwo:`负责人${i}`,
-      personThree:`负责人${i}`,
-      personFour:`负责人${i}`,
-      personFive:`负责人${i}`,
+      status:`状态${i}`,
     });
 }
 
@@ -25,6 +27,8 @@ class Management extends React.Component{
     constructor(props){
         super(props)
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.deleteByIds = this.deleteByIds.bind(this);
+        this.cancle = this.cancle.bind(this);
         this.state = {
             dataSource : data,
             count : 2,
@@ -47,7 +51,7 @@ class Management extends React.Component{
             dataIndex: 'name',
             key: 'name',
             align:'center',
-            width: '10%',
+            width: '15%',
             filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
                 <div className="custom-filter-dropdown">
                   <Input
@@ -82,49 +86,57 @@ class Management extends React.Component{
                 ) : text;
               },
         },{
-            title: '所属工艺',
-            dataIndex: 'crafts',
-            key: 'crafts',
+            title: '创建人',
+            dataIndex: 'creater',
+            key: 'creater',
             align:'center',
-            width: '10%',
+            width: '15%',
         },{
-            title: '流程类型',
+            title: '创建时间',
+            dataIndex: 'createTime',
+            key: 'createTime',
+            align:'center',
+            width: '15%',
+        },{
+            title: '类型',
             dataIndex: 'type',
             key: 'type',
             align:'center',
-            width: '10%',
+            width: '15%',
         },{
-            title: '负责人1',
-            dataIndex: 'personOne',
-            key: 'personOne',
+            title: '状态',
+            dataIndex: 'status',
+            key: 'status',
             align:'center',
-            width: '10%',
+            width: '15%',
         },{
-            title: '负责人2',
-            dataIndex: 'personTwo',
-            key: 'personTwo',
+            title: '操作',
+            dataIndex: 'operate',
+            key: 'operate',
             align:'center',
-            width: '10%',
-        },{
-            title: '负责人3',
-            dataIndex: 'personThree',
-            key: 'personThree',
-            align:'center',
-            width: '10%',
-        },{
-            title: '负责人4',
-            dataIndex: 'personFour',
-            key: 'personFour',
-            align:'center',
-            width: '10%',
-        },{
-            title: '负责人5',
-            dataIndex: 'personFive',
-            key: 'personFive',
-            align:'center',
-            width: '10%',
+            width: '15%',
+            // render : (text,record) =>{
+            //     return (
+            //         <span>
+            //             <Detail value={record} />
+            //             <Divider type="vertical" />
+            //             <Editor value={record} />
+            //             <Divider type="vertical" />
+            //             <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.key)} okText="确定" cancelText="取消" >
+            //                 <a href="#">删除</a>
+            //             </Popconfirm>
+            //         </span>
+            //         );
+            // }
         }]
     }
+    cancle() {
+
+    }
+    deleteByIds() {
+        const ids = this.state.selectedRowKeys.toString();
+        console.log(ids)
+     }
     handleSearch = (selectedKeys, confirm) => () => {
         confirm();
         this.setState({ searchText: selectedKeys[0] });
@@ -147,12 +159,8 @@ class Management extends React.Component{
     render(){
         const rowSelection = {
             onChange: this.onSelectChange,
-            onSelect() {
-                // console.log(record, selected, selectedRows);
-            },
-            onSelectAll() {
-                // console.log(selected, selectedRows, changeRows);
-            },
+            onSelect() {},
+            onSelectAll() {},
           };
           const pagination = {
             total: data.length,
@@ -167,8 +175,13 @@ class Management extends React.Component{
             return(
                 <div>
                     <BlockQuote name="流程管理"></BlockQuote>
-                    <WhiteSpace></WhiteSpace>
-                <div className='clear' ></div>
+                    <div style={{paddingTop:'10px'}}>
+                    {/* <Add /> */}
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
+                    <span style={{float:'right',paddingBottom:'8px'}}>
+                        <SearchCell name='请输入流程名称'/>
+                    </span>
+                    </div>
                 <Table rowSelection={rowSelection} columns={this.columns} pagination={pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} size="small" bordered />
                 </div>
             );

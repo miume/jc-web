@@ -7,7 +7,7 @@ import DeletaSpan from './deleteSpan';
 class InterTable extends React.Component{
     columns = [{
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'index',
         key: 'id',
         sorter: (a, b) => a.key - b.key,
         align:'center',
@@ -62,7 +62,7 @@ class InterTable extends React.Component{
         editable: 1,
         width: '8%',
     },{
-        title: '状态',
+        title: '审核状态',
         dataIndex: 'i',
         key: 'i',
         align:'center',
@@ -75,15 +75,23 @@ class InterTable extends React.Component{
         align:'center',
         width: '17%',
         render: (text,record) => {
-            console.log("-----")
+            console.log("-----");
             console.log(record);
+            let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>
-                    <DetailSpan />
+                    <EditSpan
+                        disabled={operationFlag}
+                    />
                     <Divider type="vertical" />
-                    <EditSpan />
+                    <DetailSpan
+                        record={record}
+                    />
                     <Divider type="vertical" />
-                    <DeletaSpan record={record}/>
+                    <DeletaSpan
+                        record={record}
+                        disabled={operationFlag}
+                    />
                 </span>
             )
         }
@@ -115,6 +123,20 @@ class InterTable extends React.Component{
             />
         );
     }
+    /**判断编辑可否功能 */
+    judgeOperation = (record) => {
+        if(record==="不通过"){
+            return false;
+        }else{
+            return true;
+        }
+    };
+    /**---------------------- */
+    /**实现字段搜索功能 */
+    /**---------------------- */
+    /**实现字段搜索功能 */
+    /**---------------------- */
+
 }
 
 export default InterTable;
