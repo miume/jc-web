@@ -115,19 +115,19 @@ class Management extends React.Component{
             key: 'operate',
             align:'center',
             width: '15%',
-            // render : (text,record) =>{
-            //     return (
-            //         <span>
-            //             <Detail value={record} />
-            //             <Divider type="vertical" />
-            //             <Editor value={record} />
-            //             <Divider type="vertical" />
-            //             <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.key)} okText="确定" cancelText="取消" >
-            //                 <a href="#">删除</a>
-            //             </Popconfirm>
-            //         </span>
-            //         );
-            // }
+            render : (text,record) =>{
+                return (
+                    <span>
+                        <Detail value={record} />
+                        <Divider type="vertical" />
+                        <Editor value={record} />
+                        {/* <Divider type="vertical" />
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.key)} okText="确定" cancelText="取消" >
+                            <a href="#">删除</a>
+                        </Popconfirm> */}
+                    </span>
+                    );
+            }
         }]
     }
     cancle() {
@@ -176,7 +176,7 @@ class Management extends React.Component{
                 <div>
                     <BlockQuote name="流程管理"></BlockQuote>
                     <div style={{paddingTop:'10px'}}>
-                    {/* <Add /> */}
+                    <Add />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入流程名称'/>
