@@ -6,6 +6,7 @@ class PermissionManagement extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            allMenus:[],
             visible: false,
         }
         this.showModal = this.showModal.bind(this);
@@ -14,6 +15,7 @@ class PermissionManagement extends React.Component {
         this.change = this.change.bind(this);
         this.getAllAuth = this.getAllAuth.bind(this);
         this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
+        this.getAllMenus = this.getAllMenus.bind(this);
     }
     /**显示权限分配弹出框 */
     showModal() {
@@ -22,7 +24,25 @@ class PermissionManagement extends React.Component {
         });
         this.getAllAuth();
         this.getAuthByRoleId();
+        this.getAllMenus();
       }
+    /**获取所有菜单 */
+    getAllMenus(){
+        const url = 'http://218.77.105.241:40080/jc/menu/getAllRecursive';
+        axios({
+            url:url,
+            type:'get',
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then(data=>{
+            const menu = data.data.data
+            console.log(menu)
+            this.setState({
+                allMenus:menu
+            })
+        })
+    }
     /** 获取所有操作权限*/
     getAllAuth(){
         const url = 'http://218.77.105.241:40080/jc/role/getAllAuths';
@@ -33,7 +53,7 @@ class PermissionManagement extends React.Component {
                 'Authorization':this.props.Authorization
             }
         }).then(data=>{
-            console.log(data)
+            console.log(data.data)
         })
     }
     /** 通过角色id获取角色菜单权限*/
@@ -46,7 +66,7 @@ class PermissionManagement extends React.Component {
                 'Authorization':this.props.Authorization
             }
         }).then(data=>{
-            console.log(data)
+            console.log(data.data.data)
         })
     }
     handleOk() {
@@ -110,30 +130,52 @@ class PermissionManagement extends React.Component {
                             <colgroup style={{width:'63%'}}></colgroup>
                             <tbody>
                             {
-                                mennus.map(v => {
-                                    return v.parent === -1 ? (
-                                        <tr key={v.id}>
-                                            <td style={{textAlign:'left',paddingLeft:'40px'}} ><Icon type="caret-down" theme="filled" />{v.name}</td>
-                                            <td></td>
-                                        </tr>
-                                    ):(
-                                        <tr key={v.id+'menu'}>
-                                            <td><Icon type="caret-right" theme="filled" />{v.name}</td>
-                                            <td>
-                                                {
-                                                    api.map(v1 => {
-                                                        return (
-                                                            <span style={{paddingRight:'12px'}} key={v1.id} >  
-                                                            <Checkbox value={v1.id} id={v.id.toString()} onChange={this.change}>{v1.name}</Checkbox>
-                                                             {/* <span>{v1.name}</span> <input type='checkbox' value={v1.id} id={v.id} onChange={this.change} /> */}
-                                                            </span>             
-                                                        );
-                                                    })
-                                                }
-                                            </td>
-                                        </tr>
-                                    );
-                                })
+                            this.state.allMenus.map(m1 => 
+                                <tr key={m1.menuId}>
+                                    <td style={{textAlign:'left',paddingLeft:'40px'}} ><Icon type="caret-down" theme="filled" />{m1.menuName}</td>
+                                    <td></td>
+                                </tr>
+                                // {
+                                // m1.menuDTOList.map(m2=>{
+                                //     <tr key={m2.menuId}>
+                                //         <td><Icon type="caret-right" theme="filled" />{m2.menuName}</td>
+                                //         <td>
+                                //         {
+                                //             api.map(op=>{
+                                //                 <span style={{paddingRight:'12px'}} key={op.id}>
+                                //                 <Checkbox  value={op.name} id={m2.menuId.toString()} onChange={this.change}>{op.name}</Checkbox>
+                                //                 </span>
+                                //             })   
+                                //         }
+                                //         </td>
+                                //     </tr>  
+                                // })
+                                // }
+                            )
+                                // mennus.map(v => {
+                                //     return v.parent === -1 ? (
+                                //         <tr key={v.id}>
+                                //             <td style={{textAlign:'left',paddingLeft:'40px'}} ><Icon type="caret-down" theme="filled" />{v.name}</td>
+                                //             <td></td>
+                                //         </tr>
+                                //     ):(
+                                //         <tr key={v.id+'menu'}>
+                                //             <td><Icon type="caret-right" theme="filled" />{v.name}</td>
+                                //             <td>
+                                //                 {
+                                //                     api.map(v1 => {
+                                //                         return (
+                                //                             <span style={{paddingRight:'12px'}} key={v1.id} >  
+                                //                             <Checkbox value={v1.id} id={v.id.toString()} onChange={this.change}>{v1.name}</Checkbox>
+                                //                              {/* <span>{v1.name}</span> <input type='checkbox' value={v1.id} id={v.id} onChange={this.change} /> */}
+                                //                             </span>             
+                                //                         );
+                                //                     })
+                                //                 }
+                                //             </td>
+                                //         </tr>
+                                //     );
+                                // })
                             }
                             </tbody>
                         </table>
