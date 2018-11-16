@@ -54,11 +54,10 @@ class NormalLoginForm extends React.Component {
     
     axios.post(api,{username:this.state.user,password:this.state.password}).then(res => {
       console.log(res)
-      // console.log(res.status);
-      // console.log(res.headers);
-      // console.log('auth = ' + res.headers.authorization);
-      // console.log('token = ' + res.headers.token);
-      // console.log('data = ' + res.data.token);
+      
+      //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
+      localStorage.setItem('Authorization',res.headers.authorization);
+      // console.log(localStorage.getItem('Authorization'))
       history.push({pathname:'/home'});
       const action = {
         type: 'AUTH_SUCCESS',
