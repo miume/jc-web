@@ -19,7 +19,7 @@ import axios from 'axios';
 //     {id:11, name : '李二'},
 //     {id:12, name : '李三'},
 // ]
-const Authorization = 'JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX01FTlVfU0FWRSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX1JPTEVfUFJJTlQsIFJPTEVfQVVUSF9NRU5VX1FVRVJZLCBST0xFX0FVVEhfTUVOVV9BVURJVCwgUk9MRV9BVVRIX1JPTEVfVVBMT0FELCBST0xFX0FVVEhfUk9MRV9ET1dOTE9BRCwgUk9MRV9BVVRIX0FVVEhfU0FWRSwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfTUVOVV9VUExPQUQsIFJPTEVfQVVUSF9ST0xFX1FVRVJZLCBST0xFX0FVVEhfTUVOVV9VUERBVEUsIFJPTEVfQVVUSF9BVVRIX1VQTE9BRF0iLCJleHAiOjE1NDIxNzg4MTN9.6fkdP4E6RHIxZNQQn6VxkZ_haio_A7lEuVnOni013Rnho6GxrAqOeb2uONvPDxlcj5cJ_vrsehh_t9qJwkTvEA'
+const Authorization = 'JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjMzMTY4Mn0.S-Ywb7PdDGy11PZfz-WKpBYCgEvFN6aAMyKnxrkgO5RAsqqCgmRotOeKnDypwyNeHayaqt1R4iTj27QOIvjk7g'
 class UserManagement extends React.Component {
     constructor(props){
         super(props);
@@ -41,25 +41,27 @@ class UserManagement extends React.Component {
             unsignedRole:[],
         }
     }
+    /**通过角色id查询已分配和未分配的用户 */
     getAssignedUsersByRoleId(){
         // console.log(this.props.Authorization)
-        const url=`http://218.77.105.241:40080/jc/role/getUsersOfRole?id=${this.props.value}`
+        let url=`http://218.77.105.241:40080/jc/role/getUsersOfRole?id=${this.props.value}`
         const data = [];
         axios({
             url:url,
             method:'get',
-            header:{
-                'Authorization':Authorization
-            }, 
-            // data:{id:this.props.value}
-        }).catch((data)=>{
-            console.log(data)
-            data = data;
+            headers:{
+                'Authorization': Authorization
+            }
+        }).then((data)=>{
+            let res = data.data.data;
+            // console.log(res)
+            this.setState({
+                assignedRole : res.assigned,
+                unsignedRole : res.notAssigned
+            })
         }).catch((error)=>{
-            console.log(error)
-            data = error;
+            message.info(error.data.message)
         })
-        return data;
     }
     showModal() {
       this.setState({
@@ -79,6 +81,20 @@ class UserManagement extends React.Component {
       this.state.unsignedRole.forEach(e => unsignedIds.push(e.id) );
     //   console.log(assignedIds)
     //   console.log(unsignedIds)
+    //   const userIds = assignedIds;
+      const url = `http://218.77.105.241:40080/jc/role/assignRoleToUser?roleId=${this.props.value}`;
+      axios({
+          url:url,
+          type:'get',
+          params: {
+            userIds:assignedIds.toString()
+          },
+          headers:{
+            'Authorization': Authorization
+          }
+      }).then(data=>{
+          message.info(data.data.message)
+      })
     }
     handleCancel() {
       this.setState({
@@ -144,6 +160,7 @@ class UserManagement extends React.Component {
         // console.log(this.state.assignedCheckIds)
     }
     render() {
+    //   console.log(this.state)
       return (
         <span>
           <a onClick={this.showModal} value={this.state.value}>成员管理</a>
@@ -168,7 +185,7 @@ class UserManagement extends React.Component {
                     {
                         this.state.unsignedRole.map((unsigned) => {
                             return (
-                                <li key={unsigned.id}><span>{unsigned.name}</span><input type='checkbox' value={unsigned.id}
+                                <li key={unsigned.id}><label className='check-label'>{unsigned.username}</label><input type='checkbox' value={unsigned.id} style={{marginLeft:'10px'}}
                                 onChange={this.handleUnsignedInputChange} /></li>
                             )
                         })
@@ -187,7 +204,7 @@ class UserManagement extends React.Component {
                     {
                         this.state.assignedRole.map((assigned) => {
                             return (
-                                <li key={assigned.id}><span>{assigned.name}</span><input type='checkbox' value={assigned.id}
+                                <li key={assigned.id}><label className='check-label'>{assigned.username}</label><input type='checkbox' value={assigned.id}
                                 onChange={this.handleAssignedInputChange}/></li>
                             )
                         })

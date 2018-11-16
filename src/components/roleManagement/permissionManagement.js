@@ -1,25 +1,55 @@
 import React from 'react';
 import {Modal,Icon,Checkbox} from 'antd';
 import './permissionManagement.css';
+import axios from 'axios';
 class PermissionManagement extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             visible: false,
-            value: this.props.value
         }
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.change = this.change.bind(this);
+        this.getAllAuth = this.getAllAuth.bind(this);
+        this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
     }
+    /**显示权限分配弹出框 */
     showModal() {
         this.setState({
           visible: true
         });
-      //   console.log(this.state.value)
+        this.getAllAuth();
+        this.getAuthByRoleId();
       }
-      handleOk() {
+    /** 获取所有操作权限*/
+    getAllAuth(){
+        const url = 'http://218.77.105.241:40080/jc/role/getAllAuths';
+        axios({
+            url:url,
+            type:'get',
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then(data=>{
+            console.log(data)
+        })
+    }
+    /** 通过角色id获取角色菜单权限*/
+    getAuthByRoleId(){
+        const url = `http://218.77.105.241:40080/jc/role/getAuths?id=${this.props.value}`;
+        axios({
+            url:url,
+            type:'get',
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then(data=>{
+            console.log(data)
+        })
+    }
+    handleOk() {
         this.setState({
           visible: false
         });

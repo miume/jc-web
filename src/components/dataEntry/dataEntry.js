@@ -11,7 +11,7 @@ const data = [{
 },{
     id:3,
     name:'原材料检测报告发布',
-    path:'/process'
+    path:'/rawTestReport'
 },{
     id:4,
     name:'进货检验报告',
@@ -31,9 +31,12 @@ const active={
 const notActive ={
     backgroundColor:'#ebebeb'
 }
-var style={
-    width:'230px',height:'100px' ,backgroundColor:'#ebebeb', margin:'25px', 
-    border:'solid 1px black'}
+
+let styleObj={
+    width:'230px',height:'100px' , margin:'25px', 
+    border:'solid 1px black',
+    backgroundColor:'#ebebeb'
+}
 class DataEntry extends React.Component{
     constructor(props){
         super(props);
@@ -77,12 +80,13 @@ class DataEntry extends React.Component{
         })
     }
     render(){
+        console.log(this.state.clickId)
         return (
             <div>
             {/* {
                 (!this.state.flag)?<Data data={data} click={this.click} buttonstyle={style} nextStep={this.nextStep} />:<NextStep clickId={this.state.clickId} lastStep={this.lastStep} />
             } */}
-                <Data data={data} click={this.click} buttonstyle={style} nextStep={this.nextStep} />
+                <Data data={data} click={this.click} nextStep={this.nextStep} />
            </div>
         );
     }

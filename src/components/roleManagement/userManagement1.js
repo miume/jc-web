@@ -1,5 +1,5 @@
 import React from 'react';
-import { Transfer } from 'antd';
+import { Transfer,Modal } from 'antd';
 
 class UserManagement1 extends React.Component {
   state = {
