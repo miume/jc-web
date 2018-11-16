@@ -10,7 +10,6 @@ import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
-import store from '../store'
 // import reqwest from 'reqwest';
 // import EditableCell from '../Home/editableCell';
 const FormItem = Form.Item;

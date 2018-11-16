@@ -4,8 +4,7 @@ import axios from 'axios';
 // import reqwest from 'reqwest';
 import { Form, Icon, Input, Button, Checkbox,Row, Col,message } from 'antd/lib';
 import './NormalLoginForm';
-import '../store';
-import store from '../store';
+import store from '../redux/index'
 // var express = require('express')
 
 const FormItem = Form.Item;
@@ -55,18 +54,17 @@ class NormalLoginForm extends React.Component {
     
     axios.post(api,{username:this.state.user,password:this.state.password}).then(res => {
       console.log(res)
-      const action = {
-        type:'store_login_info',
-        value:res,
-      }
-      store.dispatch(action);
       // console.log(res.status);
       // console.log(res.headers);
       // console.log('auth = ' + res.headers.authorization);
       // console.log('token = ' + res.headers.token);
       // console.log('data = ' + res.data.token);
       history.push({pathname:'/home'});
-      
+      const action = {
+        type: 'AUTH_SUCCESS',
+        loginInfo: res
+      }
+      store.dispatch(action)
     })
     .catch(function (error) {
       message.info('账号或密码有误，请重新输入！');
