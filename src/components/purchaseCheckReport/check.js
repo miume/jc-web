@@ -2,7 +2,7 @@ import React from 'react';
 import {Divider, Table,Button,Input} from 'antd';
 import '../Home/page.css';
 import WhiteSpace from "../BlockQuote/whiteSpace";
-import PackTable from './packTable';
+import CheckTable from './checkTable';
 
 const data = [{
     index:'1',
@@ -15,7 +15,10 @@ const data = [{
     f: 'f',
     g: '无',
     h: '无',
-    i: '审核中'
+    i: '审核中',
+    j: 'j',
+    k: 'k',
+    l: 'l'
 },{
     index:'2',
     id: '33',
@@ -27,7 +30,10 @@ const data = [{
     f: 'f',
     g: '无',
     h: '无',
-    i: '不通过'
+    i: '不通过',
+    j: 'j',
+    k: 'k',
+    l: 'l'
 },{
     index:'3',
     id: '34',
@@ -39,10 +45,13 @@ const data = [{
     f: 'f',
     g: '无',
     h: '无',
-    i: '已通过'
+    i: '已通过',
+    j: 'j',
+    k: 'k',
+    l: 'l'
 }];
 
-class Pack extends React.Component {
+class Check extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,7 +61,7 @@ class Pack extends React.Component {
         };
     };
     render() {
-        const { loading, selectedRowKeys } = this.state;
+        const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -61,10 +70,9 @@ class Pack extends React.Component {
         return(
             <div>
                 <div className="fl">
-                    <Button>打包</Button>
                     <Button>删除</Button>
                 </div>
-                <div className="fr">
+                <div style={{float:'right'}}>
                     <Search
                         placeholder="请输入搜索内容"
                         onSearch={value => console.log(value)}
@@ -75,13 +83,13 @@ class Pack extends React.Component {
                 </div>
                 <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
-                <PackTable
+                <CheckTable
                     data={this.state.dataSource}
                     rowSelection={rowSelection}
                 />
             </div>
         )
-    };
+    }
     /**实现全选功能 */
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -90,4 +98,4 @@ class Pack extends React.Component {
     /**---------------------- */
 }
 
-export default Pack;
+export default Check;

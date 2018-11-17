@@ -73,7 +73,7 @@ class DetailSpan extends React.Component {
                     cancelText="取消"
                     width="650px"
                     footer={[
-                        <Button style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
+                        <Button key="back" style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
                         <Button key="publish" type="primary"  onClick={this.handleOk}>发布</Button>
                     ]}
                 >
