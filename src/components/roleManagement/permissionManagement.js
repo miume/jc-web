@@ -6,8 +6,10 @@ class PermissionManagement extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            allMenus:[],
+            allMenus:[],    //存取所有菜单
             visible: false,
+            operations:[],  //存取所有操作
+            roleAuth:[]     //存取该角色的所有权限
         }
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -16,6 +18,7 @@ class PermissionManagement extends React.Component {
         this.getAllAuth = this.getAllAuth.bind(this);
         this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
         this.getAllMenus = this.getAllMenus.bind(this);
+        // this.isChecked = this.isChecked.bind(this);
     }
     /**显示权限分配弹出框 */
     showModal() {
@@ -45,7 +48,7 @@ class PermissionManagement extends React.Component {
     }
     /** 获取所有操作权限*/
     getAllAuth(){
-        const url = 'http://218.77.105.241:40080/jc/role/getAllAuths';
+        const url = 'http://218.77.105.241:40080/jc/operation/getAll';
         axios({
             url:url,
             type:'get',
@@ -53,7 +56,10 @@ class PermissionManagement extends React.Component {
                 'Authorization':this.props.Authorization
             }
         }).then(data=>{
-            console.log(data.data)
+            const operations = data.data.data;
+            this.setState({
+                operations:operations
+            })
         })
     }
     /** 通过角色id获取角色菜单权限*/
@@ -66,7 +72,12 @@ class PermissionManagement extends React.Component {
                 'Authorization':this.props.Authorization
             }
         }).then(data=>{
-            console.log(data.data.data)
+            var res = data.data.data;
+            var roleAuth = res?data.data.data.menus:[];
+            this.setState({
+                roleAuth:roleAuth
+            })
+            //console.log(roleAuth)
         })
     }
     handleOk() {
@@ -90,6 +101,10 @@ class PermissionManagement extends React.Component {
         // else 
         //     实现删除权限的功能
     }
+    isChecked(value,id){
+        // console.log(value)
+        // console.log(menuId)
+    }
     render() {
         const api = [
             {id:1,name:'新增'},
@@ -106,162 +121,74 @@ class PermissionManagement extends React.Component {
             {id:5, name : '基础信息', prefix:'AUTH_', parent:-1},
             {id:6, name : '菜单管理', prefix:'AUTH_MENU_', parent:4},
         ]
-        const menu = [
-            {
-              "menuId": 4,
-              "menuName": "用户和权限",
-              "prefix": "AUTH",
-              "menuType": 1,
-              "parent": -1,
-              "menuDTOList": [
-                {
-                  "menuId": 1,
-                  "menuName": "权限管理",
-                  "prefix": "AUTH_AUTH",
-                  "menuType": 2,
-                  "parent": 4,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 2,
-                  "menuName": "菜单管理",
-                  "prefix": "AUTH_MENU",
-                  "menuType": 2,
-                  "parent": 4,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 3,
-                  "menuName": "角色管理",
-                  "prefix": "AUTH_ROLE",
-                  "menuType": 2,
-                  "parent": 4,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 5,
-                  "menuName": "用户管理",
-                  "prefix": "AUTH_USER",
-                  "menuType": 2,
-                  "parent": 4,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 6,
-                  "menuName": "部门管理",
-                  "prefix": "AUTH_DEPARTMENT",
-                  "menuType": 2,
-                  "parent": 4,
-                  "menuDTOList": []
-                }
-              ]
-            },
-            {
-              "menuId": 7,
-              "menuName": "质量和流程",
-              "prefix": "PROCESS",
-              "menuType": 1,
-              "parent": -1,
-              "menuDTOList": [
-                {
-                  "menuId": 8,
-                  "menuName": "数据录入",
-                  "prefix": "PROCESS_DATA_IN",
-                  "menuType": 2,
-                  "parent": 7,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 9,
-                  "menuName": "流程管理",
-                  "prefix": "PROCESS_PROCESS",
-                  "menuType": 2,
-                  "parent": 7,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 10,
-                  "menuName": "待办事项",
-                  "prefix": "PROCESS_TASK",
-                  "menuType": 2,
-                  "parent": 7,
-                  "menuDTOList": []
-                },
-                {
-                  "menuId": 11,
-                  "menuName": "基础数据",
-                  "prefix": "PROCESS_BASE_DATA",
-                  "menuType": 2,
-                  "parent": 7,
-                  "menuDTOList": []
-                }
-              ]
-            },
-            {
-              "menuId": 16,
-              "menuName": "dumin",
-              "prefix": "",
-              "menuType": 1,
-              "parent": -1,
-              "menuDTOList": []
-            }
-          ]
+    //    console.log(this.state.roleAuth)
         return (
             <span>
                 <a onClick={this.showModal} value={this.state.value}>权限管理</a>
                 <Modal title='编辑权限' visible={this.state.visible} 
                 onOk={this.handleOk} onCancel={this.handleCancel}
-                okText='确定' cancelText='取消' width='650px' destroyOnClose='true' >
-                <div style={{height:'500px'}}>
-                    <div className='tableHead'>
-                        <span>子模块选择</span>
-                        <span>操作</span>
+                okText='确定' cancelText='取消' width='780px' destroyOnClose='true' >
+                <div style={{height:'500px',overflowY:'auto'}}>
+                    <div style={{height:'600px'}}>
+                        <div className='tableHead'>
+                            <span>子模块选择</span>
+                            <span>操作</span>
+                        </div>
+                        <div>
+                        {
+                            this.state.allMenus.map(m1=>{
+                                return (
+                                    <div key={m1.menuId}>
+                                        <div className='divborder'><span className='rightBorder'><Icon type="caret-right" />{m1.menuName}</span><span></span></div>
+                                            <div>
+                                            {
+                                            m1.menuList.map(m2=>{
+                                                return (
+                                                    <div key={m2.menuId} className='divborder'><span className='rightBorder'><Icon type="caret-down"  />{m2.menuName}</span>
+                                                        <span style={{display:'inline'}}>
+                                                            {
+                                                            // this.state.operations.map(op=> {
+                                                            //         if(this.state.roleAuth){
+                                                            //             this.state.roleAuth.map(auth=>{
+                                                            //                 console.log(auth)
+                                                            //                 if(auth.id==m2.menuId) {
+                                                            //                     console.log(auth.menuName)
+                                                            //                     auth.operations.map(op1 =>{
+                                                            //                         return (
+                                                            //                             <span key={op1.id} style={{display:'inline'}}>
+                                                            //                                <input type='checkbox' key={op1.id} value={op1.id} id={op1.id.toString()} onChange={this.change} checked/> {op1.operationName}</span>);
+                                                            //                        })    
+                                                            //                 }
+                                                            //                       })
+                                                            //             }
+                                                            //             else{
+                                                            //                 return (
+                                                            //                     <span key={op.id} style={{display:'inline'}}>
+                                                            //                        <input type='checkbox' key={op.id} value={op.id} id={op.id.toString()} onChange={this.change} /> {op.operationName}</span>);
+         
+                                                            //             }
+                                                            //         })
+                                                            this.state.operations.map(op=> {                                                           
+                                                                return (
+                                                                    // this.state.roleAuth && this.state.roleAuth
+                                                                    <span key={op.id} style={{display:'inline'}}>
+                                                                    <input type='checkbox' key={op.id} value={op.id} id={m2.menuId.toString()} onChange={this.change} checked={()=>this.isChecked(op.id,m2.menuId)} /> {op.operationName}</span>
+                            
+                                                                    );
+                                                            } )
+                                                            }
+                                                            </span>
+                                                        </div>
+                                                );
+                                            })
+                                            }
+                                            </div>
+                                    </div>
+                                );
+                            })
+                        }
+                        </div>
                     </div>
-                    <div>
-                    {
-                        this.state.allMenus.map(m1=>{
-                            return (
-                                <div key={m1.menuId}>
-                                    <div className='divborder'><span>{m1.menuName}</span><span></span></div>
-                                        <div>
-                                        {
-                                        m1.menuList.map(m2=>{
-                                            return (
-                                                <div key={m2.menuId} className='divborder'><span>{m2.menuName}</span><span></span></div>
-                                            );
-                                        })
-                                        }
-                                        </div>
-                                </div>
-                            );
-                        })
-                    }
-                    </div>
-                    {/* <table className="tableHead">
-                        <colgroup style={{width:'29.5%'}}></colgroup>
-                        <colgroup style={{width:'63%'}}></colgroup>
-                        <thead>
-                            <tr>
-                                <td>子模块选择</td>
-                                <td>操作</td>
-                            </tr>
-                        </thead>
-                    </table>
-                    <div className="tableDiv">
-                        <table className="tableTbody">
-                            <colgroup style={{width:'29.5%'}}></colgroup>
-                            <colgroup style={{width:'63%'}}></colgroup>
-                            <tbody>
-                            {
-                            this.state.allMenus.map(m1 => 
-                                <tr key={m1.menuId}>
-                                    <td style={{textAlign:'left',paddingLeft:'40px'}} ><Icon type="caret-down" theme="filled" />{m1.menuName}</td>
-                                    <td></td><td></td>
-                                </tr>
-                            )
-                            }
-                            </tbody>
-                        </table> */}
                     </div>
                
                 </Modal>
