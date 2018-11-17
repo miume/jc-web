@@ -74,6 +74,7 @@ const EditableFormRow = Form.create()(EditableRow);
 //     description: `权限${i}`
 // })}
 /**这是个令牌，每次调用接口都将其放在header里 */
+
 const Authorization = localStorage.getItem('Authorization');
 class Role extends React.Component {
     constructor(props) {
@@ -354,7 +355,7 @@ class Role extends React.Component {
       /**批量删除弹出框确认函数 */
       deleteByIds() {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
+         console.log(ids)
         axios({
           url:'http://218.77.105.241:40080/jc/role/deleteByIds',
           method:'Delete',
