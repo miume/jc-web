@@ -9,7 +9,15 @@ import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
 //import store from '../store';
 
+/**这是个令牌，每次调用接口都将其放在header里 */
+const Authorization='JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjQyMjQzN30.2vWxeEQ2wwGXyp1F8aoI8TvErYZaiuEs-v5xCyGhKr4WBZ0YgK1Jo2iYBVGba4gfYoZtiO20-5-fvNnfTPuOwQ';
 
+
+const children = department.map(d=>{
+  return (
+    <Option key={d.id} value={d.id}>{d.name}</Option>
+  );
+})
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
 const FormItem = Form.Item;
@@ -19,42 +27,40 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-// const data=[
-//     {
-//       userId:1,
-//       userName:'张三',
-//       deparmentId:{//部门有id和名称2个属性,数组要渲染
-//           id:1,
-//           name:'生产部'
-//       },
-      
-//       password:'123456',
-//       phoneNumber:'13792749',
-//       extraInfo:'今天请假',
-      
-//     }, {
-//         userId:2,
-//         userName:'李四',
-//         deparmentId:{//部门有id和名称2个属性,数组要渲染
-//             id:2,
-//             name:'测试部'
-//         },
-        
-//         password:'090889',
-//         phoneNumber:'19877872387',
-//         extraInfo:'今天过生日',
-        
-//       } 
-// ]
+const ser =  'http://218.77.105.241:40080';
+//const ser = 'http://192.168.1.105:8081';
 
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization='JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjI1MTA5MH0.lR4oSk-0v8oabWqZ0r2fnZPAxO8zLoPGQE5hUJeHrbKepgPKdUv2A4M5jKq2yA3BNgHeMHGYSVnIN-PmkS-XRA';
+
 class EditableCell extends React.Component {
+  constructor(props){
+   super(props);
+   this.state={
+    department=[],
+   }
+  this.getAllDepartment=this.getAllDepartment.bind(this);
+}
+   getAllDepartment(){//写在类外面的函数要写function
+    axios({
+      url:'http://218.77.105.241:40080/jc/department/getAll',
+      method:'get',
+      headers:{
+        'Authorization': Authorization
+     },
+    }).then((data)=>{
+      // console.log(data.data); 
+      //return data.data 
+        const res=data.data.data;
+      this.setState=({
+        deparment=res,
+         });
+       })
+      }
     getInput = () => {
         if (this.props.inputType === 'select') {
-            return <Select  >
-            <Option value="1">生产部</Option>
-            <Option value="2">测试部</Option>
+            return <Select >
+            {/* <Option value="1">生产部</Option>
+            <Option value="2">测试部</Option> */}
+            
         </Select>;
         }
         return <Input />;
@@ -81,10 +87,10 @@ class EditableCell extends React.Component {
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [{
                                             required: true,
-                                            message: `Please Input ${title}!`,
+                                            message: `${title}不能为空`,
                                         }],
                                         
-                                        initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
+                                        initialValue:record[dataIndex].id?record[dataIndex].id.toString():record[dataIndex],
                                         //initialValue:record[dataIndex],
                                          
                                     })(this.getInput())
@@ -105,12 +111,11 @@ class User extends React.Component{
       this.state={
         dataSource : [],
         pagination:[],
-        count:2,
+        //count:2,
         selectedRowKeys : [],//最开始一条记录也没选
-        
         searchContent:'',
         visible:false,
-        
+
         editingKey:'',
         username:'',
         phone:'',
@@ -144,7 +149,8 @@ class User extends React.Component{
         title:'用户编码',
         dataIndex:'id',//dataIndex值与字段值要匹配
         key:'id',
-        sorter:true,//需要服务端排序
+       // sorter:true,//需要服务端排序
+       sorter:(a, b) => a.id-b.id,
         width: '15%',
         align:'center',
      },{
@@ -158,8 +164,8 @@ class User extends React.Component{
     },
      {
          title:'所属部门',
-         dataIndex:'deparmentName',
-         key:'deparmentName',
+         dataIndex:'departmentName',
+         key:'departmentName',
         editable:1,
          //sorter:(a, b) => a.deparmentId.id-b.deparmentId.id,
          width: '20%',
@@ -213,31 +219,41 @@ class User extends React.Component{
     }
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
-       this.fetch=({
-         size:pagination.size,//条目数
-         page:pagination.current,//页码
+         //const pager = { ...this.state.pagination };
+        //console.log( { ...this.state.pagination });
+        // pager.current = pagination.current;
+        // this.setState({
+        //   pagination: pager,
+        // });
+       this.fetch=({//前端需要传的参数
+         size:pagination.pageSize,//条目数
+         page:pagination.current,//当前页
          sortField:'id',//排序属性
          sortOrder:'desc'//排序方法（降序）
        });
     }
     fetch=(params = {})=>{
-     // console.log('params:', params);
+      //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url:'http://218.77.105.241:40080/jc/user/getAllByPage',
+        url: ser+'/jc/user/getAllByPage',
         method:'get',
         headers:{
           'Authorization':Authorization
         },
-        data:{
+        params:{
           ...params,
         },
-        type:'json',
+        //type:'json',
       }).then((data)=>{
-        const res=data.data.data.list;
+        const res=data.data.data;
+        this.pagination.total=res.total;//分页
+        for(var i = 1; i<=res.list.length; i++){
+          res.list[i-1]['index']=(res.pages-1)*10+i;
+        }
         this.setState({
           loading:false,
-          dataSource:res,
+          dataSource:res.list,
         });
       });
     }
@@ -252,10 +268,20 @@ class User extends React.Component{
       handleOk(){//处理新增一条记录
         console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
-       //  axios({
-       //    url:
-       //  })
-       //  .then();
+        axios({
+          url:ser+'/jc/user/signIn',
+          method:'post',
+          headers:{
+            'Authorization':Authorization
+          },
+          data:this.formRef.getItemsValue()
+        })
+        .then((data)=>{
+          message.info(data.data.message); 
+          this.fetch();
+        }).catch((error)=>{
+          message.info(error.data.message);
+        });
       }
       handleCancel(){
         this.setState({visible:false});
@@ -279,12 +305,13 @@ class User extends React.Component{
         const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-          url:`http://218.77.105.241:40080/jc/user/deleteById?id=${id}`,
+          url:ser+`/jc/user/deleteById?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':Authorization
           },
-        
+         data:id,
+         type:'json'
         })
         .then((data)=>{
           //console.log(data);
@@ -310,33 +337,39 @@ class User extends React.Component{
       showIds(event) {//?
         console.log(event.target.value)
       }
+      /**---------------------- */
     /**批量删除弹出框确认函数 */
     deleteByIds() {
-        const ids = this.state.selectedRowKeys;
-        console.log(ids)
+        const ids = this.state.selectedRowKeys;//删除的几行的id
+        console.log(ids);
         axios({
-            url:`http://218.77.105.241:40080/jc/user/deleteByIds`,
+            url:ser+'/jc/user/deleteByIds',
             method:'Delete',
             headers:{
                   'Authorization' :Authorization
-            }
+            },
+            data:ids,//前端要传的参数放在data里面，
+            type:'json'
         })
         .then((data)=>{
           console.log(data);
+          message.info(data.data.message);
+          this.fetch();
         })//处理成功
         .catch((error)=>{
           console.log(error);
           message.info(error.data.message)
         });//处理异常
+       
      }
-    cancel(){}
+    cancel(){
+      
+    }
    
-   
-  
     //编辑
     //判断单元格是否可编辑
     isEditing (record)  {
-        return record.key === this.state.editingKey;
+        return record.id === this.state.editingKey;
       };
     
       edit(id) {
@@ -361,7 +394,7 @@ class User extends React.Component{
             data['id']=id.toString();
             console.log(data);
             axios({
-              url:'http://218.77.105.241:40080/jc/user/update',
+              url:ser+'/jc/user/update',
               method:'post',
               headers:{
                 'Authorization':Authorization
@@ -370,8 +403,8 @@ class User extends React.Component{
               type:'json'
             })
             .then((data)=>{
-              console.log(data);
-              console.log(data.data);
+              // console.log(data);
+              // console.log(data.data);
               message.info(data.data.message);
               this.fetch();
             })
@@ -391,22 +424,25 @@ class User extends React.Component{
         this.setState({ editingKey: '' });
       };
   
-      //获取查询时用户名称的实时变化
-      searchContentChange(e){
-        const value=e.target.value;
-        this.setState({searchContent:value});
-      }
+    
+
+      /**---------------------- */
+        //获取查询时用户名称的实时变化
+        searchContentChange(e){
+          const value=e.target.value;
+          this.setState({searchContent:value});
+        }
       //根据用户名称分页查询
       searchEvent(){
            const username=this.state.searchContent;
-           console.log(username);
+           //console.log(username);
            axios({
-             url:'http://218.77.105.241:40080/jc/user/getUserByNameByPage',
+             url:ser+'/jc/user/getUserByNameByPage',
              method:'get',
              headers:{
                'Authorization':Authorization
              },
-             data:{
+             params:{
                size:this.pagination.pageSize,
                page:this.pagination.current,
                name:username
@@ -414,13 +450,22 @@ class User extends React.Component{
              type:'json'
            })
            .then((data)=>{
-             console.log(data);
-             console.log(data.data);
+             //console.log(data);
+            // console.log(this.pagination);
+            //  console.log(data.data);
             //  console.log(data.data.data);
-            //  const res=data.data.data.list;
-            //  this.setState({
-            //    dataSource:res
-            //  });
+             const res=data.data.data;
+             this.pagination.total=res.total;
+             for(var i=1;i<=res.list.length;i++){
+                res.list[i-1]['index']=(res.pages-1)*10+i;
+             }
+             this.setState({
+               dataSource:res.list//list取到的是所有符合要求的数据
+             });
+           })
+           .catch((error)=>{
+             console.log(error);
+            message.info(error.data.message)
            });
       }
    render(){
@@ -470,7 +515,7 @@ class User extends React.Component{
                           ]}>
                           <UserAddModal wrappedComponentRef={(form) => this.formRef = form}></UserAddModal>
                     </Modal>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入用户名称' 
                       searchEvent={this.searchEvent}
