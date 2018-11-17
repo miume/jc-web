@@ -10,14 +10,11 @@ import UserAddModal from './userAddModal';
 //import store from '../store';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization='JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjQyMjQzN30.2vWxeEQ2wwGXyp1F8aoI8TvErYZaiuEs-v5xCyGhKr4WBZ0YgK1Jo2iYBVGba4gfYoZtiO20-5-fvNnfTPuOwQ';
-
-
-const children = department.map(d=>{
-  return (
-    <Option key={d.id} value={d.id}>{d.name}</Option>
-  );
-})
+// const children = department.map(d=>{
+//   return (
+//     <Option key={d.id} value={d.id}>{d.name}</Option>
+//   );
+// })
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
 const FormItem = Form.Item;
@@ -29,18 +26,6 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 const ser =  'http://218.77.105.241:40080';
 //const ser = 'http://192.168.1.105:8081';
-
-
-
-class EditableCell extends React.Component {
-  constructor(props){
-   super(props);
-   this.state={
-    department=[],
-   }
-  this.getAllDepartment=this.getAllDepartment.bind(this);
-}
-   getAllDepartment(){//写在类外面的函数要写function
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization=localStorage.getItem('Authorization')
