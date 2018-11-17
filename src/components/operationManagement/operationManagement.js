@@ -1,26 +1,25 @@
 import React from 'react';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import BlockQuote from '../BlockQuote/blockquote';
-import DepartTable from './departTable';
+import OperationTable from './operationTable';
 import '../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
-import DeleteModal from "./deleteModal";
+// import DeleteModal from "./deleteModal";
 import {message} from "antd";
+import DeleteModal from "../operationManagement/deleteModal";
 import SearchCell from "./search";
 
-
+/**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
 
-class Depart extends React.Component {
+class OperationManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             dataSource: [],
             selectedRowKeys: [],
-            editingKey: '',
             loading: false,
-            pagination:{},
             searchContent:'',
             searchText: '',
         };
@@ -31,6 +30,7 @@ class Depart extends React.Component {
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -50,7 +50,7 @@ class Depart extends React.Component {
         };
         return (
             <div>
-                <BlockQuote name="部门管理"></BlockQuote>
+                <BlockQuote name="操作管理"></BlockQuote>
                 <div style={{paddingTop:'10px'}}>
                     <AddModal
                         fetch={this.fetch}
@@ -67,7 +67,7 @@ class Depart extends React.Component {
                 </div>
                 <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
-                <DepartTable
+                <OperationTable
                     data={this.state.dataSource}
                     pagination={this.pagination}
                     rowSelection={rowSelection}
@@ -77,14 +77,14 @@ class Depart extends React.Component {
             </div>
         )
     }
+
     /**修改父组件的数据 */
-    modifyDataSource = (data) => {
-        this.setState({dataSource:data});
-    };
     modifySelectedRowKeys = (data) => {
         this.setState({selectedRowKeys:data});
     };
-    /**---------------------- */
+    modifyDataSource = (data) => {
+        this.setState({dataSource:data});
+    };
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
         this.fetch({
@@ -98,7 +98,7 @@ class Depart extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: 'http://218.77.105.241:40080/jc/department/getDepartmentsByPage',
+            url: 'http://218.77.105.241:40080/jc/operation/getOperationsByPage',
             method: 'get',
             headers:{
                 'Authorization': Authorization
@@ -125,7 +125,7 @@ class Depart extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`http://218.77.105.241:40080/jc/department/deleteByIds`,
+            url:'http://218.77.105.241:40080/jc/operation/deleteByIds',
             method:'Delete',
             headers:{
                 'Authorization':Authorization
@@ -152,11 +152,12 @@ class Depart extends React.Component {
         }, 1000);
     }
     /**---------------------- */
+    /**实现单条数据功能 */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const dep_name = this.state.searchContent;
+        const ope_name = this.state.searchContent;
         axios({
-            url:'http://218.77.105.241:40080/jc/department/getDepartmentsByNameLikeByPage',
+            url:'http://218.77.105.241:40080/jc/operation/getRolesByNameLikeByPage',
             method:'get',
             headers:{
                 'Authorization':Authorization
@@ -164,8 +165,7 @@ class Depart extends React.Component {
             params:{
                 size: this.pagination.pageSize,
                 page: this.pagination.current,
-                departmentName:dep_name
-                // department_name:dep_name
+                operationName:ope_name
             },
             type:'json',
         }).then((data)=>{
@@ -178,8 +178,8 @@ class Depart extends React.Component {
                 dataSource: res.list,
             });
         }).catch((error)=>{
-            message.info(error.data.message)
-        })
+                message.info(error.data.message)
+            })
 
     };
     /**获取查询时角色名称的实时变化 */
@@ -188,8 +188,6 @@ class Depart extends React.Component {
         this.setState({searchContent:value});
     }
     /**---------------------- */
-    /**实现单条数据功能 */
-
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */
@@ -197,7 +195,6 @@ class Depart extends React.Component {
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */
-
 }
 
-export default Depart;
+export default OperationManagement;

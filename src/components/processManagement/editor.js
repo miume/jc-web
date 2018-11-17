@@ -1,30 +1,30 @@
 import React from 'react';
-import {Button,Modal,Select,Input,Table,Popconfirm} from 'antd';
+import {Modal,Button,Input,Table,Select} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import Tr from './tr';
+import Tr from './tr'
 
-const Option = Select.Option;
-
-class Add extends React.Component{
+class Editor extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             visible : false,
-            count: 1,
-            data : [1]
+            count : 1,
+            dataSource:[],
+            data:[1]
         }
-        this.handleAdd = this.handleAdd.bind(this);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+        this.handleDetail = this.handleDetail.bind(this)
+        this.handleOk = this.handleOk.bind(this)
+        this.handleCancel = this.handleCancel.bind(this)
         this.addData = this.addData.bind(this);
         this.deleteRow = this.deleteRow.bind(this);
     }
-    /**处理新增一条记录 */
-    handleAdd = () => {
+    /**处理一条编辑记录 */
+    handleDetail() {
+        console.log(this.props.value)
         this.setState({
           visible: true
         });
-      }
+    }
     handleOk() {
         this.setState({
         visible: false
@@ -35,8 +35,7 @@ class Add extends React.Component{
         visible: false
         });
     }
-    /**新增一条数据 */
- 
+    /**编辑中新增按钮 */
     addData() {
         const {count,data} = this.state;
         this.setState({
@@ -45,26 +44,37 @@ class Add extends React.Component{
         })
         console.log(this.state)
     }
-    /**删除一条数据 */
     deleteRow(value){
+        // const value = event.target.value;
+        // console.log(value)
         const {count,data} = this.state;
         this.setState({
-            count:count-1,
-            data:data.filter(d=>d.toString()!==value)
+            count: count-1,
+            data: data.filter(d => d.toString()!==value)
         })
+        // console.log(this.state.data)
     }
     render(){
         return(
             <span>
-                <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button>
-                <Modal title="新增" visible={this.state.visible}
-                    onCancel={this.handleCancel}  width='1200px'
+                <a onClick={this.handleDetail} >编辑</a>
+                <Modal title='编辑' visible={this.state.visible}
+                    onCancel={this.handleCancel} width='1000px'
                     footer={[
                         <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
                         <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
                     ]}>
                     <div style={{height:'400px'}}>
-                    <table style={{width:'100%'}}>
+                         <div>
+                             <Input value={this.props.value.name} style={{width:200}}/>
+                             <WhiteSpace />
+                             <Input value={"xxx的工艺"} style={{width:200}}/>
+                             <WhiteSpace />
+                             <Input value={this.props.value.type} style={{width:200}}/>
+                         </div>
+                         <WhiteSpace />
+                         <div>
+                             <table style={{width:'100%'}}>
                              <thead className='thead'>
                                  <tr>
                                      <td>负责人</td>
@@ -74,17 +84,20 @@ class Add extends React.Component{
                              </thead>
                              <tbody>
                              {
-                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                               this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
                              }
                              </tbody>
-                         </table>
+                             </table>
+                         </div>
                          <WhiteSpace />
                          <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>
+                >
+
                 </Modal>
             </span>
-        )
+        );
     }
 }
 
-export default Add
+export default Editor

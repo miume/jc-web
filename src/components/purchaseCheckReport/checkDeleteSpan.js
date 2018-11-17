@@ -11,7 +11,6 @@ class DeletaSpan extends React.Component {
                     okText="确定" cancelText="取消" >
                     <a
                         href="#"
-                        disabled={this.props.disabled}
                     >删除</a>
                 </Popconfirm>
             </span>

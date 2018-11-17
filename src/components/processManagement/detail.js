@@ -1,0 +1,75 @@
+import React from 'react';
+import {Modal,Button,Input,Table,Form} from 'antd';
+import WhiteSpace from '../BlockQuote/whiteSpace'
+
+const columns = [{
+        title: '负责人',
+        dataIndex: 'principal' ,
+        key: 'principal',
+        width: '45%',
+        align:'center',
+      },{
+        title: '职责',
+        dataIndex: 'duties' ,
+        key: 'duties',
+        width: '45%',
+        align:'center',
+}]
+
+class Detail extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            visible : false,
+        }
+        this.handleDetail = this.handleDetail.bind(this)
+        this.handleOk = this.handleOk.bind(this)
+        this.handleCancel = this.handleCancel.bind(this)
+    }
+    /**处理一条详情记录 */
+    handleDetail() {
+        console.log(this.props.value)
+        this.setState({
+          visible: true
+        });
+    }
+    handleOk() {
+        this.setState({
+        visible: false
+        });
+    }
+    handleCancel() {
+        this.setState({
+        visible: false
+        });
+    }
+    render(){
+        return(
+            <span>
+                <a onClick={this.handleDetail} >详情</a>
+                <Modal title='详情' visible={this.state.visible}
+                    onCancel={this.handleCancel} width='1000px'
+                    footer={[
+                        <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
+                        <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
+                    ]}>
+                    <div style={{height:'400px'}}>
+                         <div>
+                             <Input value={this.props.value.name} style={{width:200}} disabled={true}/>
+                             <WhiteSpace />
+                             <Input value={"xxx的工艺"} style={{width:200}} disabled={true}/>
+                             <WhiteSpace />
+                             <Input value={this.props.value.type} style={{width:200}} disabled={true}/>
+                         </div>
+                         <WhiteSpace />
+                         <Table columns={columns} size='small' pagination={false} bordered></Table>
+                    </div>
+                >
+
+                </Modal>
+            </span>
+        );
+    }
+}
+
+export default Detail

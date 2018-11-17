@@ -10,7 +10,6 @@ import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
-import store from '../store'
 // import reqwest from 'reqwest';
 // import EditableCell from '../Home/editableCell';
 const FormItem = Form.Item;
@@ -75,7 +74,8 @@ const EditableFormRow = Form.create()(EditableRow);
 //     description: `权限${i}`
 // })}
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = 'JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjQyMjQzN30.2vWxeEQ2wwGXyp1F8aoI8TvErYZaiuEs-v5xCyGhKr4WBZ0YgK1Jo2iYBVGba4gfYoZtiO20-5-fvNnfTPuOwQ'
+
+const Authorization = localStorage.getItem('Authorization');
 class Role extends React.Component {
     constructor(props) {
         super(props);
@@ -209,7 +209,7 @@ class Role extends React.Component {
         const res = data.data.data;
         this.pagination.total=res.total;
         for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=(res.pages-1)*10+i;
+          res.list[i-1]['index']=(res.prePage)*10+i;
         }
         // console.log(res.list)
         this.setState({
@@ -295,7 +295,7 @@ class Role extends React.Component {
               this.fetch();
             }).catch((error)=>{
               message.info(error.data.message);
-            })
+            });
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
             newData.push(row);

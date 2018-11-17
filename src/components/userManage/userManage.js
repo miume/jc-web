@@ -31,6 +31,7 @@ const ser =  'http://218.77.105.241:40080';
 //const ser = 'http://192.168.1.105:8081';
 
 
+
 class EditableCell extends React.Component {
   constructor(props){
    super(props);
@@ -40,22 +41,36 @@ class EditableCell extends React.Component {
   this.getAllDepartment=this.getAllDepartment.bind(this);
 }
    getAllDepartment(){//写在类外面的函数要写function
+
+/**这是个令牌，每次调用接口都将其放在header里 */
+const Authorization=localStorage.getItem('Authorization')
+class EditableCell extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        deparment:[]
+    }
+    this.getAllDepartment = this.getAllDepartment.bind(this);
+  }
+  getAllDepartment(){//写在类外面的函数要写function
+
     axios({
       url:'http://218.77.105.241:40080/jc/department/getAll',
       method:'get',
       headers:{
         'Authorization': Authorization
-     },
-    }).then((data)=>{
-      // console.log(data.data); 
-      //return data.data 
-        const res=data.data.data;
-      this.setState=({
-        deparment=res,
-         });
-       })
-      }
+    },
+    }).then((data)=>{ 
+      const res = data.data.data;
+      // console.log(data.data.data); 
+      this.setState({
+        deparment:res
+      })
+    })
+  }
     getInput = () => {
+        this.getAllDepartment();
+        
         if (this.props.inputType === 'select') {
             return <Select >
             {/* <Option value="1">生产部</Option>
@@ -89,9 +104,9 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `${title}不能为空`,
                                         }],
-                                        
-                                        initialValue:record[dataIndex].id?record[dataIndex].id.toString():record[dataIndex],
-                                        //initialValue:record[dataIndex],
+
+                                        // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
+                                        initialValue:record[dataIndex],
                                          
                                     })(this.getInput())
                                     }

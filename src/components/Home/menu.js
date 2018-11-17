@@ -18,7 +18,7 @@ class Menu1List extends React.Component {
           icon: 'boss',
           name: '用户权限',
           menu2: [
-            {name: '操作管理',id:1,path: '/api'},
+            {name: '操作管理',id:1,path: '/OperationManagement'},
             {name: '菜单管理',id:2,path: '/menu',},
             {name: '角色管理',id:3,path: '/role'},
             {name: '用户管理',id:4,path: '/user'},
@@ -37,7 +37,8 @@ class Menu1List extends React.Component {
             {name: '流程创建',id:9,path: '/process',},
             {name: '任务执行',id:10,path: '/role'},
             {name: '中间品检测',id:11,path: '/InterProduct'},
-            {name: '基本信息',id:12,path: '/baseInfo'}
+            {name: '进货检验报告',id:12,path: '/PurchaseCheckReport'},
+            {name: '基本信息',id:13,path: '/baseInfo'}
           ]
       }
     ];

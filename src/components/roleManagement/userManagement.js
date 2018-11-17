@@ -50,7 +50,7 @@ class UserManagement extends React.Component {
             url:url,
             method:'get',
             headers:{
-                'Authorization': Authorization
+                'Authorization': this.props.Authorization
             }
         }).then((data)=>{
             let res = data.data.data;
@@ -90,7 +90,7 @@ class UserManagement extends React.Component {
             userIds:assignedIds.toString()
           },
           headers:{
-            'Authorization': Authorization
+            'Authorization': this.props.Authorization
           }
       }).then(data=>{
           message.info(data.data.message)

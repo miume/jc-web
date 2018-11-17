@@ -19,7 +19,7 @@ class DeletaSpan extends React.Component {
         console.log("++++++")
         console.log(id);
         axios({
-            url:`http://218.77.105.241:40080/jc/department/`+parseInt(id),
+            url:'http://218.77.105.241:40080/jc/operation/'+parseInt(id),
             method:'Delete',
             headers:{
                 'Authorization':Authorization

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover } from 'antd';
-import DetailModal from './detailModal';
+import { Modal,Button } from 'antd';
+import DetailModal from './packDetailModal';
 
 const data = [];
 for (let i = 0; i < 50; i++) {
     data.push({
         id: i,
-        a: `b`,
-        b: 'a',
+        a: `a`,
+        b: 'b',
         c: `c`,
     });
 }
@@ -44,24 +44,8 @@ class DetailSpan extends React.Component {
         }, 500);
     };
     render() {
-        // return (
-        //     <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 } } >
-        //         <Modal
-        //             title="Modal"
-        //             visible={this.state.visible}
-        //             onOk={this.hideModal}
-        //             onCancel={this.hideModal}
-        //             okText="确认"
-        //             cancelText="取消"
-        //         >
-        //             <p>Bla bla ...</p>
-        //             <p>Bla bla ...</p>
-        //             <p>Bla bla ...</p>
-        //         </Modal>
-        //         <a href="#">详情</a>
-        //     </span>
-        // )
         const { visible } = this.state;
+        console.log('record:',this.props.record);
         return (
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
@@ -71,10 +55,11 @@ class DetailSpan extends React.Component {
                     onCancel={this.handleCancel}
                     okText="确认"
                     cancelText="取消"
-                    width="650px"
+                    width="500px"
+                    // 脚部footer中的每个按钮都要又一个key
                     footer={[
                         <Button key="back" style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
-                        <Button key="publish" type="primary"  onClick={this.handleOk}>发布</Button>
+                        <Button key="publish" type="primary"  onClick={this.handleOk}>选中</Button>
                     ]}
                 >
                     <div style={{height:450}}>

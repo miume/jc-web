@@ -4,8 +4,7 @@ import axios from 'axios';
 // import reqwest from 'reqwest';
 import { Form, Icon, Input, Button, Checkbox,Row, Col,message } from 'antd/lib';
 import './NormalLoginForm';
-import '../store';
-import store from '../store';
+import store from '../redux/index'
 // var express = require('express')
 
 const FormItem = Form.Item;
@@ -20,6 +19,12 @@ class NormalLoginForm extends React.Component {
     this.passwordChange = this.passwordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }  
+
+  
+  componentWillMount() {
+    localStorage.setItem("remote", "http://218.77.105.241:40080");
+  }
+
   userChange(e){
     this.setState({ user : e.target.value })
     } 
@@ -30,43 +35,24 @@ class NormalLoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        
       }
     });
     const history = this.props.history;
-  //   reqwest({
-  //     method:'post',
-  //     url:'http://218.77.105.241:40080/jc/login',
-  //     type:'json',
-  //     contentType:'application/json',
-  //     data:JSON.stringify({username:this.state.user,password:this.state.user})
-  //     ,crossOrigin: true
-  //    ,success : function (resp) {
-  //     console.log(resp);
-  //     // console.log(resp.getResponseHeader('authorization'))
-  //     history.push({pathname:'/home'});
-  //     console.log("success")
-  //   }
-  //   ,error : function (err) {
-  //     message.info('账号或密码有误，请重新输入！');
-  //   }
-  //  })
-  let api="http://218.77.105.241:40080/jc/login";
+    const server = localStorage.getItem("remote");  
     
-    axios.post(api,{username:this.state.user,password:this.state.password}).then(res => {
-      console.log(res)
-      const action = {
-        type:'store_login_info',
-        value:res,
-      }
-      store.dispatch(action);
-      // console.log(res.status);
-      // console.log(res.headers);
-      // console.log('auth = ' + res.headers.authorization);
-      // console.log('token = ' + res.headers.token);
-      // console.log('data = ' + res.data.token);
-      history.push({pathname:'/home'});
+    axios.post(`${server}/jc/login`,{username:this.state.user,password:this.state.password}).then(res => {
       
+      
+      //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
+      localStorage.setItem('Authorization',res.headers.authorization);
+      // console.log(localStorage.getItem('Authorization'))
+      history.push({pathname:'/home'});
+      const action = {
+        type: 'AUTH_SUCCESS',
+        loginInfo: res
+      }
+      store.dispatch(action)
     })
     .catch(function (error) {
       message.info('账号或密码有误，请重新输入！');

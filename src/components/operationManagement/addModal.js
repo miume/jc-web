@@ -18,18 +18,18 @@ const CollectionCreateForm = Form.create()(
                     onOk={onCreate}
                 >
                     <Form horizontal='true'>
-                        <FormItem label="部门名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('departmentName', {
-                                rules: [{ required: true, message: '请输入部门名称' }],
+                        <FormItem label="操作名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                            {getFieldDecorator('operationName', {
+                                rules: [{ required: true, message: '请输入操作名称' }],
                             })(
-                                <Input placeholder='请输入部门名称'/>
+                                <Input placeholder='请输入操作名称'/>
                             )}
                         </FormItem>
                         <FormItem label="描述" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('extraInfo', {
+                            {getFieldDecorator('operationCode', {
                                 initialValue: '',
                             })(
-                                <Input placeholder='请输入部门描述' />
+                                <Input placeholder='请输入操作描述' />
                             )}
                         </FormItem>
                     </Form>
@@ -41,7 +41,6 @@ const CollectionCreateForm = Form.create()(
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
-
 class AddModal extends React.Component {
     state = {
         visible: false,
@@ -62,7 +61,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : 'http://218.77.105.241:40080/jc/department/add',
+                url : 'http://218.77.105.241:40080/jc/operation/add',
                 method:'post',
                 headers:{
                     'Authorization': Authorization
@@ -74,7 +73,7 @@ class AddModal extends React.Component {
                 message.info(data.data.message);
                 this.props.fetch(); // 重新调用分页函数
             }).catch(function (error) {
-                console.log(error)
+                console.log(error);
                 message.info(error.data.message);
             });
             // 将value传给后台

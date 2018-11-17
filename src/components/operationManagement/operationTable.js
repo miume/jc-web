@@ -1,8 +1,9 @@
 import React from 'react';
 import {Table, Input, InputNumber, Popconfirm, Form, Divider, message} from 'antd';
+// import EditSpanCell from './editSpanCell';
 // import EditSpan from './editSpan';
-import DeletaSpan from './deleteSpan'
-import axios from "axios";;
+import DeletaSpan from './deleteSpan';
+import axios from "axios";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -59,7 +60,7 @@ class EditableCell extends React.Component {
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
 
-class DepartTable extends React.Component {
+class OperationTable extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -78,22 +79,21 @@ class DepartTable extends React.Component {
         align:'center',
         width: '20%',
     },{
-        title: '部门名称',
-        dataIndex: 'departmentName',
-        key: 'departmentName',
+        title: '操作名称',
+        dataIndex: 'operationName',
+        key: 'operationName',
         align:'center',
         editable: 1,
         width: '25%',
     },{
         title: '描述',
-        dataIndex: 'extraInfo',
-        key: 'extraInfo',
+        dataIndex: 'operationCode',
+        key: 'operationCode',
         align:'center',
         editable: 1,
         width: '25%',
     },{
         title: '操作',
-        dataIndex: 'operation',
         key: 'operation',
         align:'center',
         width: '25%',
@@ -132,6 +132,7 @@ class DepartTable extends React.Component {
                         record={record}
                         getFetch={this.getFetch.bind(this)}
                     />
+
                 </span>
             )
         }
@@ -153,6 +154,7 @@ class DepartTable extends React.Component {
                 }),
             };
         });
+        //  单行编辑
         const components = {
             body: {
                 row: EditableFormRow,
@@ -207,9 +209,10 @@ class DepartTable extends React.Component {
                     ...row,
                 });
                 const data = row;
-                data['id'] = id.toString();
+                data['id'] = id.toString()
+                console.log(data)
                 axios({
-                    url:'http://218.77.105.241:40080/jc/department/update',
+                    url:'http://218.77.105.241:40080/jc/operation/update',
                     method:'post',
                     headers:{
                         'Authorization':Authorization
@@ -238,12 +241,10 @@ class DepartTable extends React.Component {
     };
     /**---------------------- */
     /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
+
     /**实现字段搜索功能 */
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */
 }
-export default DepartTable;
+export default OperationTable;

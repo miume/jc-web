@@ -1,103 +1,111 @@
 import React from 'react';
 import {Divider, Table} from 'antd';
-import DetailSpan from './detailSpan';
-import EditSpan from './editSpan';
-import DeletaSpan from './deleteSpan';
+import './checkTable.css';
+import CheckEditSpan from './checkEditSpan';
+import CheckDetailSpan from './checkDetailSpan';
+import CheckDeleteSpan from './checkDeleteSpan';
+import DeletaSpan from "../intermediateProductTest/deleteSpan";
 
-class InterTable extends React.Component{
+class CheckTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
         key: 'id',
         sorter: (a, b) => a.key - b.key,
         align:'center',
-        width: '12%',
+        width: '6%',
     },{
-        title: '送检人',
+        title: '批号',
         dataIndex: 'a',
         key: 'a',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '送检工厂(原材料)',
+        title: '原材料',
         dataIndex: 'b',
         key: 'b',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '送检日期',
+        title: '生产厂家',
         dataIndex: 'c',
         key: 'c',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '批号',
+        title: '到货日期',
         dataIndex: 'd',
         key: 'd',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '检测项目',
+        title: '创建人',
         dataIndex: 'e',
         key: 'e',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '紧急备注',
+        title: '创建日期',
         dataIndex: 'f',
         key: 'f',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '接收反馈',
+        title: '修改人',
         dataIndex: 'h',
         key: 'h',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
     },{
-        title: '审核状态',
+        title: '修改日期',
         dataIndex: 'i',
         key: 'i',
         align:'center',
-        editable: 1,
-        width: '8%',
+        width: '6%',
+    },{
+        title: '类型',
+        dataIndex: 'j',
+        key: 'j',
+        align:'center',
+        width: '6%',
+    },{
+        title: '审核状态',
+        dataIndex: 'k',
+        key: 'k',
+        align:'center',
+        width: '6%',
+    },{
+        title: '紧急',
+        dataIndex: 'l',
+        key: 'l',
+        align:'center',
+        width: '6%',
     },{
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '17%',
+        width: '25%',
         render: (text,record) => {
             console.log("-----");
             console.log(record);
             let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>
-                    <EditSpan
+                    <CheckEditSpan
                         disabled={operationFlag}
                     />
                     <Divider type="vertical" />
-                    <DetailSpan
-                        record={record}
-                    />
+                    <CheckDetailSpan />
                     <Divider type="vertical" />
                     <DeletaSpan
                         record={record}
-                        disabled={operationFlag}
                     />
                 </span>
             )
         }
     }];
     render() {
-        //  获取record的记录
         const columns = this.columns.map((col) => {
             return {
                 ...col,
@@ -110,18 +118,17 @@ class InterTable extends React.Component{
                 }),
             };
         });
-        return (
+        return(
             <Table
                 rowKey={record => record.id}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}
-                pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
+                scroll={{ x: 1500}}
             />
-        );
+        )
     }
     /**判断编辑可否功能 */
     judgeOperation = (record) => {
@@ -132,11 +139,5 @@ class InterTable extends React.Component{
         }
     };
     /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
-
 }
-
-export default InterTable;
+export default CheckTable;
