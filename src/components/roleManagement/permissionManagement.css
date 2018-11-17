@@ -1,47 +1,27 @@
 .tableHead {
-    width : 100%;
+    width : 99%;
     margin : 0 auto;
     height: 35px;
-    padding: 5px;
     font-weight: 600;
     font-size: 15px;
+    background: #f2f2f2;
+    border: 1px darkgrey solid;
+    margin-left:5px;
 }
 .tableHead span{
-    border: 1px darkgrey solid;
-    background: #f2f2f2;
     /* color: #6a6a6a; */
-    padding:5px;
-    min-width:280px;
+    padding:7px;
+    min-width:200px;
     text-align: center;
     display: inline-table;
+    /* margin-top:0.5px; */
 }
-.tableHead tr td{
-    height: 35px;
-    padding: 5px;
-    font-weight: 600;
-    font-size: 15px;
-    border: 1px darkgrey solid;
-    border-bottom: none;
+.tableHead :first-child{
+    border-right: 1px darkgrey solid;
 }
-.tableDiv {
-    width : 100%;
-    height : 450px;
-    margin : 0 auto;
-    overflow-y: auto;
-}
-.tableTbody {
-    width : 100%;
-}
-.tableTbody tr td{
-    font-size: 14px;
-    font-weight: bold;
-    height: 30px;
-    text-align: center;
-    position: relative;
-    border: 1px darkgrey solid;
-}
+
 .divborder{
-    width : 93%;
+    width : 99%;
     margin-left:5px;
     height: 35px;
     
@@ -52,13 +32,17 @@
 }
 .divborder span{
     /* color: #6a6a6a; */
-    margin-top: 2px;
-    padding:5px;
-    min-width:280px;
+    margin-top: 1px;
+    padding:7px;
+    min-width:200px;
     text-align: center;
     display: inline-table;
     border-top: none;
 }
-.divborder :first-child{
+
+/* .divborder :first-child{
+    border-right: 1px darkgrey solid;
+} */
+.rightBorder{
     border-right: 1px darkgrey solid;
 }

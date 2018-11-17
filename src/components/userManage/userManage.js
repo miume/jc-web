@@ -48,9 +48,33 @@ const EditableFormRow = Form.create()(EditableRow);
 // ]
 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization='JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjI1MTA5MH0.lR4oSk-0v8oabWqZ0r2fnZPAxO8zLoPGQE5hUJeHrbKepgPKdUv2A4M5jKq2yA3BNgHeMHGYSVnIN-PmkS-XRA';
+const Authorization=localStorage.getItem('Authorization')
 class EditableCell extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        deparment:[]
+    }
+    this.getAllDepartment = this.getAllDepartment.bind(this);
+  }
+  getAllDepartment(){//写在类外面的函数要写function
+    axios({
+      url:'http://218.77.105.241:40080/jc/department/getAll',
+      method:'get',
+      headers:{
+        'Authorization': Authorization
+    },
+    }).then((data)=>{ 
+      const res = data.data.data;
+      // console.log(data.data.data); 
+      this.setState({
+        deparment:res
+      })
+    })
+  }
     getInput = () => {
+        this.getAllDepartment();
+        
         if (this.props.inputType === 'select') {
             return <Select  >
             <Option value="1">生产部</Option>
@@ -84,8 +108,8 @@ class EditableCell extends React.Component {
                                             message: `Please Input ${title}!`,
                                         }],
                                         
-                                        initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
-                                        //initialValue:record[dataIndex],
+                                        // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
+                                        initialValue:record[dataIndex],
                                          
                                     })(this.getInput())
                                     }
@@ -336,7 +360,7 @@ class User extends React.Component{
     //编辑
     //判断单元格是否可编辑
     isEditing (record)  {
-        return record.key === this.state.editingKey;
+        return record.id === this.state.editingKey;
       };
     
       edit(id) {

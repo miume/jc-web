@@ -208,7 +208,7 @@ class Role extends React.Component {
         const res = data.data.data;
         this.pagination.total=res.total;
         for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=(res.pages-1)*10+i;
+          res.list[i-1]['index']=(res.prePage)*10+i;
         }
         // console.log(res.list)
         this.setState({
