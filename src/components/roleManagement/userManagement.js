@@ -19,7 +19,6 @@ import axios from 'axios';
 //     {id:11, name : '李二'},
 //     {id:12, name : '李三'},
 // ]
-const Authorization = 'JCeyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbi1bUk9MRV9BVVRIX1JPTEVfREVMRVRFLCBST0xFX0FVVEhfQVVUSF9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1VQREFURSwgUk9MRV9BVVRIX1JPTEVfVVBEQVRFLCBST0xFX0FVVEhfQVVUSF9ET1dOTE9BRCwgUk9MRV9BVVRIX01FTlVfRE9XTkxPQUQsIFJPTEVfQVVUSF9NRU5VX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9BVURJVCwgUk9MRV9BVVRIX01FTlVfUVVFUlksIFJPTEVfVVNFUiwgUk9MRV9BVVRIX1JPTEVfRE9XTkxPQUQsIFJPTEVfQVVUSF9BVVRIX1NBVkUsIFJPTEVfQVVUSF9BVVRIX1BSSU5ULCBST0xFX0FVVEhfUk9MRV9RVUVSWSwgUk9MRV9BVVRIX0FVVEhfVVBMT0FELCBST0xFX0FVVEhfTUVOVV9TQVZFLCBST0xFX0FVVEhfUk9MRV9TQVZFLCBST0xFX0FVVEhfTUVOVV9ERUxFVEUsIFJPTEVfQVVUSF9BVVRIX1FVRVJZLCBST0xFX0FVVEhfUk9MRV9QUklOVCwgUk9MRV9BVVRIX01FTlVfQVVESVQsIFJPTEVfQVVUSF9ST0xFX1VQTE9BRCwgUk9MRV9BVVRIX0FVVEhfQVVESVQsIFJPTEVfQVVUSF9NRU5VX1VQTE9BRCwgUk9MRV9BRE1JTiwgUk9MRV9BVVRIX01FTlVfVVBEQVRFXSIsImV4cCI6MTU0MjMzMTY4Mn0.S-Ywb7PdDGy11PZfz-WKpBYCgEvFN6aAMyKnxrkgO5RAsqqCgmRotOeKnDypwyNeHayaqt1R4iTj27QOIvjk7g'
 class UserManagement extends React.Component {
     constructor(props){
         super(props);
@@ -44,7 +43,7 @@ class UserManagement extends React.Component {
     /**通过角色id查询已分配和未分配的用户 */
     getAssignedUsersByRoleId(){
         // console.log(this.props.Authorization)
-        let url=`http://218.77.105.241:40080/jc/role/getUsersOfRole?id=${this.props.value}`
+        let url=`${this.props.server}/jc/role/getUsersOfRole?id=${this.props.value}`
         const data = [];
         axios({
             url:url,
@@ -82,7 +81,7 @@ class UserManagement extends React.Component {
     //   console.log(assignedIds)
     //   console.log(unsignedIds)
     //   const userIds = assignedIds;
-      const url = `http://218.77.105.241:40080/jc/role/assignRoleToUser?roleId=${this.props.value}`;
+      const url = `${this.props.server}/jc/role/assignRoleToUser?roleId=${this.props.value}`;
       axios({
           url:url,
           type:'get',

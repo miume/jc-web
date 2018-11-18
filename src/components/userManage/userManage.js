@@ -32,32 +32,20 @@ const Authorization=localStorage.getItem('Authorization')
 class EditableCell extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-        deparment:[]
-    }
-    this.getAllDepartment = this.getAllDepartment.bind(this);
   }
-  getAllDepartment(){//写在类外面的函数要写function
-
-    axios({
-      url:'http://218.77.105.241:40080/jc/department/getAll',
-      method:'get',
-      headers:{
-        'Authorization': Authorization
-    },
-    }).then((data)=>{ 
-      const res = data.data.data;
-      // console.log(data.data.data); 
-      this.setState({
-        deparment:res
-      })
-    })
-  }
+  
     getInput = () => {
-        this.getAllDepartment();
-        
+        // this.getAllDepartment();
+        // console.log(this.props.departmentchildren);
         if (this.props.inputType === 'select') {
             return <Select >
+              {
+                this.props.departmentchildren.map(de=>{
+                  return (
+                    <Option key={de.id} value={de.departmentName}>{de.departmentName}</Option>
+                  );
+                })
+              }
             {/* <Option value="1">生产部</Option>
             <Option value="2">测试部</Option> */}
             
@@ -75,7 +63,6 @@ class EditableCell extends React.Component {
             index,
             ...restProps
         } = this.props;
-       // console.log(record);
         return (
             <EditableContext.Consumer>
                 {(form) => {
@@ -115,11 +102,11 @@ class User extends React.Component{
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
         visible:false,
-
+        departmentchildren:[],
         editingKey:'',
         username:'',
         phone:'',
-         department:'',
+        department:'',
         Authorization:Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
@@ -134,6 +121,7 @@ class User extends React.Component{
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
+      this.getAllDepartment = this.getAllDepartment.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -259,6 +247,7 @@ class User extends React.Component{
     }
     componentDidMount(){
       this.fetch();
+      this.getAllDepartment();
     }
     //新增
       //显示新增弹出框
@@ -391,7 +380,17 @@ class User extends React.Component{
               ...row,
             });
             const data=row;
+            /**将id变成字符串 */
             data['id']=id.toString();
+            /**根据部门名称删选得到部门id */
+            const department =  this.state.departmentchildren.filter(v=> v.departmentName===data.departmentName)
+            let departmentId = ''; 
+            for(var i in department){
+              departmentId = department[i].id.toString();
+            }
+            data['departmentId'] = departmentId;
+            // delete data.departmentName;  //从data中删除部门名称这个属性
+            // data['departmentId']=this.state.departmentchildren.map
             console.log(data);
             axios({
               url:ser+'/jc/user/update',
@@ -468,6 +467,22 @@ class User extends React.Component{
             message.info(error.data.message)
            });
       }
+      /**获取所有部门 */
+      getAllDepartment(){
+        axios({
+          url:'http://218.77.105.241:40080/jc/department/getAll',
+          method:'get',
+          headers:{
+            'Authorization': Authorization
+        },
+        }).then((data)=>{ 
+          const res = data.data.data;
+          this.setState({
+            departmentchildren:res
+          })
+          // console.log(res)
+        })
+      }
    render(){
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
@@ -494,11 +509,12 @@ class User extends React.Component{
               ...col,
               onCell: record => ({
                 record,
-                inputType: col.dataIndex === 'deparmentId' ? 'select' : 'text',
+                inputType: col.dataIndex === 'departmentName' ? 'select' : 'text',
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: this.isEditing(record),
+                departmentchildren:this.state.departmentchildren
               }),
             };
           });
