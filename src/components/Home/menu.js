@@ -38,7 +38,8 @@ class Menu1List extends React.Component {
             {name: '任务执行',id:10,path: '/role'},
             {name: '中间品检测',id:11,path: '/InterProduct'},
             {name: '进货检验报告',id:12,path: '/PurchaseCheckReport'},
-            {name: '基本信息',id:13,path: '/baseInfo'}
+            {name: '基本信息',id:13,path: '/baseInfo'},
+            // {name: '样品送检',id:14,path: '/sampleInspection'},
           ]
       }
     ];

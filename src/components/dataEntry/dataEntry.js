@@ -7,7 +7,7 @@ const data = [{
 },{
     id:2,
     name:'样品送检',
-    path:'/role'
+    path:'/sampleInspection'
 },{
     id:3,
     name:'原材料检测报告发布',
