@@ -15,11 +15,11 @@ const data = [{
 },{
     id:4,
     name:'进货检验报告',
-    path:'/process'
+    path:'/PurchaseCheckReport'
 },{
     id:5,
     name:'中间品检验',
-    path:'/process'
+    path:'/InterProduct'
 },{
     id:6,
     name:'成品检验',
