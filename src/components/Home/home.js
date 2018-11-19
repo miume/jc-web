@@ -29,6 +29,13 @@ import OperationManagement from "../operationManagement/operationManagement";
 //检测项目
 class Home extends Component {
     render() {
+        // const menuList = JSON.parse(localStorage.getItem('menuList'));
+        // const menu = menuList.menuList;
+        // console.log(menu)
+        // const data = [{
+        //     path:'/role',
+        //     component:Role
+        // }]
         return (
             <div className="parent" >
                 <div className="top">
@@ -37,13 +44,13 @@ class Home extends Component {
                             <img src={require("../logo/logo.png")} width={30} height={30} alt=""  />
                         </div>
                         <div className="top-left-text" >
-                            <span>金驰2+1</span>
+                            <span>金驰2+1信息管理系统</span>
                         </div>
                     </div>
-                    <div className="top-right" >
+                    <div >
                         <div className="fr" >
                             {/* <div><Icon type="login" theme="outlined" /></div> */}
-                            <Exit></Exit>
+                            <Exit name='退出'></Exit>
                         </div>
                     </div>
                 </div>
@@ -54,6 +61,16 @@ class Home extends Component {
                 </div>
                 <div className="rightDiv">
                 <Switch>
+                {/* {
+                    menu.map(m1=>(
+                        m1.menuList.map(m2=>{
+                            console.log(m2.component)
+                            return (
+                                <Route key={m2.path} path={m2.path} component={m2.component}></Route>
+                            );
+                        })
+                    ))
+                } */}
                     <Route key='/OperationManagement' path='/OperationManagement' component={OperationManagement}></Route>
                     <Route key='/role' path='/role' component={Role}></Route>
                     <Route key='/menu' path='/menu' component={Menu}></Route>

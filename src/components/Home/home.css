@@ -8,43 +8,33 @@ html, body, .parent {
     top: 0;
     left: 0;
     right: 0;
-    height: 50px;
-    background-color:  #333333;
-    color: #fff;
+    height: 55px;
+    border-bottom:1px solid darkgrey;
+    /* background-color:  #333333; */
+    
 }
 .left {
     position: absolute;
-    top: 50px;
+    top: 55px;
     left: 0;
-    width: 160px;
+    width: 130px;
     height: 100%;
     font-weight: 400;
-    background-color: #20232b;
+    /* background-color: #20232b; */
 }
 .menu1 {
-    width: 160px;
+    width: 130px;
     height: 100%;
     background: #20232b;
     color: #fff;
-    background-color: rgb(0,21,41);
-}
-
-.menu2 {
-    position: absolute;
-    left: 110px;
-    width: 110px;
-    height: 100%;
-    bottom: 0;
-    right: 0;
-    top: 0px;
-    background: #2b2e36;
+    background-color: #333333;
 }
 .rightDiv {
     position: absolute;
     overflow: auto;
-    left: 160px;
+    left: 140px;
     right: 0;
-    top: 50px;
+    top: 60px;
     height: 100%;
     background: #ffffff;
     padding: 15px;
@@ -60,15 +50,17 @@ html, body, .parent {
     position: relative;
     top: 12px;
     float: left;
+    margin-left: 20px;
 }
 .top-left-text {
     position: relative;
     top: 0px;
-    left: 10px;
+    left: 80px;
     bottom: 0px;
     line-height: 54px;
-    font-size: 15px;
-    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
     float: left;
 }
 .exit {

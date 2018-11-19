@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
-import {Icon} from 'antd/lib';
+import {Avatar} from 'antd/lib';
 
 class Exit extends Component {
     exitEvent() {
@@ -8,7 +8,7 @@ class Exit extends Component {
     }
     render() {
         return (
-            <div style={{padding:'5px'}} onClick={() => { this.exitEvent() }} > <Icon type="login" theme="outlined" style={{color:"white",fontSize:"22px"}} /></div>
+            <div onClick={() => { this.exitEvent() }} style={{marginBottom:'5px'}} ><Avatar style={{fontSize:'18px',color:'black'}} size={40}>{this.props.name}</Avatar></div>
            
         );
     }
