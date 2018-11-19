@@ -3,6 +3,7 @@ import {Divider, Table,Button,Input} from 'antd';
 import '../Home/page.css';
 import WhiteSpace from "../BlockQuote/whiteSpace";
 import CheckTable from './checkTable';
+import SearchCell from '../BlockQuote/search';
 
 const data = [{
     index:'1',
@@ -72,15 +73,9 @@ class Check extends React.Component {
                 <div className="fl">
                     <Button>删除</Button>
                 </div>
-                <div style={{float:'right'}}>
-                    <Search
-                        placeholder="请输入搜索内容"
-                        onSearch={value => console.log(value)}
-                        enterButton
-                        style={{ width: 200 }}
-                    />
-                    <Button  type="primary" style={{marginLeft:10}}>重置</Button>
-                </div>
+                <SearchCell
+                />
+
                 <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
                 <CheckTable

@@ -8,7 +8,8 @@ import AddModal from "./addModal";
 // import DeleteModal from "./deleteModal";
 import {message} from "antd";
 import DeleteModal from "../operationManagement/deleteModal";
-import SearchCell from "./search";
+// import SearchCell from "./search";
+import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
@@ -62,7 +63,12 @@ class OperationManagement extends React.Component {
                         cancel={this.cancel}
                     />
                     <span style={{float:'right'}}>
-                        <SearchCell name='请输入操作名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+                        <SearchCell
+                            placeholder='请输入操作名称'
+                            searchEvent={this.searchEvent}
+                            searchContentChange={this.searchContentChange}
+                            fetch={this.fetch}
+                        />
                     </span>
                 </div>
                 <WhiteSpace></WhiteSpace>

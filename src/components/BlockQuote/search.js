@@ -1,18 +1,27 @@
 import React from 'react';
-import {Input} from 'antd';
+import {Button, Input} from 'antd';
 const Search = Input.Search;
 class SearchCell extends React.Component{
     render(){
         return(
-            <span>
+            <span style={{float:'right'}}>
                 <Search
-                    style={{width:200}}
-                    placeholder={this.props.name}
-                    onChange={this.props.searchContentChange}
+                    placeholder={this.props.placeholder}
                     onSearch={this.props.searchEvent}
-                    enterButton/>
-                </span>
+                    onChange={this.props.searchContentChange}
+                    enterButton
+                    style={{ width: 200 }}
+                />
+                <Button
+                    type="primary"
+                    style={{marginLeft:10}}
+                    onClick={this.getFetch}
+                >重置</Button>
+            </span>
         );
+    }
+    getFetch = () => {
+        this.props.fetch();
     }
 }
 export default SearchCell;
