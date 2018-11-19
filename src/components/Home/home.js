@@ -7,6 +7,7 @@ import Exit from './exit';
 import Role from '../roleManagement/roleManagement';
 import Menu from '../menuMangement/menu';
 import ProcessInspection from '../processInspection/processInspection'
+import SampleInspection from '../sampleInspection/sampleInspection'
 import User from '../userManage/userManage';
 import Management from '../processManagement/processManagement'
 
@@ -71,6 +72,7 @@ class Home extends Component {
                     <Route key='/testItem' path='/testItem' component={TestItem}></Route>
                     <Route key='/samplePoint' path='/samplePoint' component={SamplePoint}></Route>
                     <Route key='/productLine' path='/productLine' component={ProductLine}></Route>
+                    {/* <Route key='/sampleInspection' path='/sampleInspection' component={SampleInspection}></Route> */}
                     
                     
                    
