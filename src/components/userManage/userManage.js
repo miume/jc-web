@@ -36,13 +36,13 @@ class EditableCell extends React.Component {
   
     getInput = () => {
         // this.getAllDepartment();
-        // console.log(this.props.departmentchildren);
+        console.log(this.props.departmentchildren);
         if (this.props.inputType === 'select') {
             return <Select >
               {
                 this.props.departmentchildren.map(de=>{
                   return (
-                    <Option key={de.id} value={de.departmentName}>{de.departmentName}</Option>
+                    <Option key={de.id} value={de.id}>{de.departmentName}</Option>
                   );
                 })
               }
@@ -152,13 +152,15 @@ class User extends React.Component{
     },
      {
          title:'所属部门',
-         dataIndex:'departmentName',
-         key:'departmentName',
+         dataIndex:'departmentId',
+         key:'departmentId',
         editable:1,
          //sorter:(a, b) => a.deparmentId.id-b.deparmentId.id,
          width: '20%',
          align:'center',
-         //render:deparmentId =>`${deparmentId.deparmentName}`
+         render:(text,department) => {
+           return `${department.departmentName}`
+          }
      },{
          title:'手机号',
          dataIndex:'phone',
@@ -383,12 +385,14 @@ class User extends React.Component{
             /**将id变成字符串 */
             data['id']=id.toString();
             /**根据部门名称删选得到部门id */
-            const department =  this.state.departmentchildren.filter(v=> v.departmentName===data.departmentName)
+            // const department =  this.state.departmentchildren.filter(v=> v.departmentName===data.departmentName)
             let departmentId = ''; 
-            for(var i in department){
-              departmentId = department[i].id.toString();
-            }
-            data['departmentId'] = departmentId;
+            // for(var i in department){
+            //   departmentId = department[i].id.toString();
+            // }
+            // console.log(data["departmentName"])
+            
+            // data['departmentId'] = data["departmentName"].split('-')[0];
             // delete data.departmentName;  //从data中删除部门名称这个属性
             // data['departmentId']=this.state.departmentchildren.map
             console.log(data);
@@ -509,7 +513,7 @@ class User extends React.Component{
               ...col,
               onCell: record => ({
                 record,
-                inputType: col.dataIndex === 'departmentName' ? 'select' : 'text',
+                inputType: col.dataIndex === 'departmentId' ? 'select' : 'text',
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
