@@ -2,22 +2,69 @@ import React from 'react';
 import { Input,Button,Table,Radio } from 'antd';
 import '../Home/page.css';
 
+const data = [{
+    index:'1',
+    id: '32',
+    a: 'a',
+    Ca: '启动',
+    Fe: 'c',
+    Na: 'd',
+    Si: 'e',
+    Li: 'f',
+    Al: '无',
+    Mg: '无',
+},{
+    index:'2',
+    id: '33',
+    a: 'a',
+    Ca: '启动',
+    Fe: 'c',
+    Na: 'd',
+    Si: 'e',
+    Li: 'f',
+    Al: '无',
+    Mg: '无',
+},{
+    index:'3',
+    id: '34',
+    a: 'a',
+    Ca: '启动',
+    Fe: 'c',
+    Na: 'd',
+    Si: 'e',
+    Li: 'f',
+    Al: '无',
+    Mg: '无',
+}];
+
 class CheckEditModal extends React.Component {
     state = {
-        topData : [],
+        columns: [],
+        dataSource: data,
     };
-    columns = [{
-        title: '序号',
-        dataIndex: 'index',
-        key: 'id',
-        align:'center',
-    },{
-        title: '批号',
-        dataIndex: 'a',
-        key: 'a',
-        align:'center',
-    }];
+    columns = [];
     render() {
+        /**动态表头数据获取与组装 */
+        const dynHeadData =this.assembleDynamicData(this.getDynamicHeadData());
+        const totalColumns = this.assembleTableHead(dynHeadData);
+        /**---------------------- */
+        this.columns = totalColumns;
+        // console.log('totalColumns:',totalColumns);
+        // console.log('this.colums:',this.columns);
+        // this.columns = this.assembleTableHead(dynHeadData);
+        const columns = this.columns.map((col) => {
+            return {
+                ...col,
+                onCell: record => ({
+                    record,
+                    // editable: col.editable,
+                    // dataIndex: col.dataIndex,
+                    // title: col.title,
+                    // handleSave: this.handleSave,
+                }),
+            };
+        });
+        console.log('colimns:',columns)
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
@@ -33,7 +80,6 @@ class CheckEditModal extends React.Component {
                         </thead>
                         <tbody>
                             <tr>
-                                {/*<td><Input size="small" placeholder="small size" style={{ width: 100,border:0 }} /></td>*/}
                                 <td><input placeholder="原材料名称" style={{ width: 130,border:0 }}></input></td>
                                 <td><input placeholder="请输入规格" style={{ width: 130,border:0 }}></input></td>
                                 <td><input placeholder="请输入数量" style={{ width: 130,border:0 }}></input></td>
@@ -52,14 +98,120 @@ class CheckEditModal extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div style={{paddingTop:'50px'}}>
+                <div style={{paddingTop:'80px'}}>
                     <Table
-
+                        rowKey={record => record.id}
+                        columns={columns}
+                        dataSource={this.state.dataSource}
+                        data
+                        size="small"
+                        bordered
+                        pagination={{hideOnSinglePage:true,pageSize:1000}}
+                        scroll={{ x: '130%', y: 240 }}
                     />
                 </div>
             </div>
         )
     }
+    /**动态表头数据获取与组装 */
+    getDynamicHeadData = () => {
+        const dyHead = [{
+            name: 'Ca',
+            symbol: '%',
+            area: '>=20.00'
+        },{
+            name: 'Fe',
+            symbol: '%',
+            area: '>=20.00'
+        },{
+            name: 'Na',
+            symbol: '%',
+            area: '>=20.00'
+        },{
+            name: 'Si',
+            symbol: '%',
+            area: '>=20.00'
+        },{
+            name: 'Li',
+            symbol: '%',
+            area: '>=20.00'
+        },{
+            name: 'Al',
+            symbol: '%',
+            area: '>=20.00'
+        },{
+            name: 'Mg',
+            symbol: '%',
+            area: '>=20.00'
+        }];
+        return dyHead;
+    };
+    assembleDynamicData = (dataArr) => {
+        const colums = [];
+        for(var v of dataArr){
+            console.log('v:',v);
+            const headData = {
+                title: '',
+                align:'center',
+                children: [{
+                    title: '',
+                    align:'center',
+                    children: [{
+                        title: '',
+                        dataIndex: '',
+                        key: '',
+                        align:'center',
+                    }]
+                }]
+            };
+            headData.title = v.name;
+            headData.children[0].title = v.symbol;
+            headData.children[0].children[0].title = v.area;
+            headData.children[0].children[0].dataIndex = v.name;
+            headData.children[0].children[0].key = v.name;
+            colums.push(headData);
+        }
+        // console.log('colums:',colums);
+        return colums;
+    };
+    assembleTableHead = (dynColums) => {
+        const firstColumns = [{
+            title: '序号',
+            dataIndex: 'index',
+            key: 'id',
+            align:'center',
+            width: 50,
+            fixed: 'left',
+        },{
+            title: '批号',
+            dataIndex: 'a',
+            key: 'a',
+            align:'center',
+            width: 50,
+            fixed: 'left',
+        }];
+        const endColumns = [{
+            title: '判定',
+            key: 'operation',
+            align:'center',
+            width: 100,
+            fixed: 'right',
+            render: (text,record) => {
+                return (
+                    <span>
+                        <Radio.Group buttonStyle="solid" size="small" >
+                            <Radio.Button value="pass" style={{border:0}}>合格</Radio.Button>
+                            <Radio.Button value="nopass" style={{border:0}}>不合格</Radio.Button>
+                        </Radio.Group>
+                    </span>
+                )
+            }
+        }];
+        const columns = [...firstColumns,...dynColums,...endColumns];
+        // console.log('table',columns);
+        return columns;
+    };
+    /**---------------------- */
 }
 
 export default CheckEditModal;
