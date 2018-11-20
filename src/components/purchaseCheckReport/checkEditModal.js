@@ -161,6 +161,7 @@ class CheckEditModal extends React.Component {
                         dataIndex: '',
                         key: '',
                         align:'center',
+                        width: 150,
                     }]
                 }]
             };
@@ -180,14 +181,14 @@ class CheckEditModal extends React.Component {
             dataIndex: 'index',
             key: 'id',
             align:'center',
-            width: 50,
+            width: 100,
             fixed: 'left',
         },{
             title: '批号',
             dataIndex: 'a',
             key: 'a',
             align:'center',
-            width: 50,
+            width: 100,
             fixed: 'left',
         }];
         const endColumns = [{
