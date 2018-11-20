@@ -1,328 +1,208 @@
 import React from 'react';
-import { Table,Input,Icon,Button,InputNumber,Form,Popconfirm,Divider,Modal } from 'antd';
 import '../Home/page.css';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import DeleteByIds from './deleteByIds';
 import BlockQuote from '../BlockQuote/blockquote';
-import RoleModal from './roleModal';
-import Selected from './select';
+import MenuTable from './menuTable';
+import AddModal from './addModal';
+import SearchCell from './searchCell';
+import axios from "axios";
+import {message} from "antd";
 
-const data = [];
-const FormItem = Form.Item;
-const EditableContext = React.createContext();
+/**这是个令牌，每次调用接口都将其放在header里 */
+const Authorization = localStorage.getItem('Authorization');
 
-class EditableCell extends React.Component {
-  getInput = () => {
-    if (this.props.inputType === 'type') {
-      return <Selected />;
-    }
-    return <Input />;
-  };
-  render() {
-    const {
-      editing,
-      dataIndex,
-      title,
-      inputType,
-      record,
-      index,
-      ...restProps
-    } = this.props;
-    return (
-      <EditableContext.Consumer>
-        {
-          (form) => {
-          this.form = form;
-          return (
-            <td {...restProps}>
-              {editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {
-                    form.getFieldDecorator(dataIndex, {
-                    rules: [{
-                      required: true,
-                      message: `Please Input ${title}!`,
-                    }],
-                    initialValue: record[dataIndex],
-                  })
-                  (this.getInput())
-                  }
-                </FormItem>
-              ) : restProps.children}
-            </td>
-          );
-        }
-        }
-      </EditableContext.Consumer>
-    );
-  }
-}
-
-const EditableRow = ({ form, index, ...props }) => (
-  <EditableContext.Provider value={form}>
-    <tr {...props} />
-  </EditableContext.Provider>
-);
-const EditableFormRow = Form.create()(EditableRow);
-for (let i = 0; i < 46; i++) {
-    data.push({
-      key: i.toString(),
-      sequence:i,
-      name: `管理员${i}`,
-      type:`Lucy`,
-      Fmenu:`New York No. ${i} Lake Park`
-    });
-}
-
-class Menu extends React.Component {
+class Menu extends React.Component{
   constructor(props){
-    super(props);
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.state = {
-            dataSource : data,
-            count : 2,
-            searchText: '',
-            editingKey: '',
-            visible: false,
-            roleDescription: '',
-            roleName: '',
-            selectedRowKeys: [],
-    }
-      this.columns = [{
-        title: '序号',
-        dataIndex: 'sequence',
-        sorter: (a, b) => a.key - b.key,
-        key: 'sequence',
-        align:'center',
-        width: '20%',
-      }, {
-        title: '名称',
-        dataIndex: 'name',
-        key: 'name',
-        align:'center',
-        editable: 1,
-        width: '20%',
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            <div className="custom-filter-dropdown">
-              <Input
-                ref={ele => this.searchInput = ele}
-                placeholder="角色名称"
-                value={selectedKeys[0]}
-                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                onPressEnter={this.handleSearch(selectedKeys, confirm)}
-              />
-              <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>搜索</Button>
-              <Button onClick={this.handleReset(clearFilters)}>重置</Button>
-            </div>
-          ),
-          filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa',fontSize:'18px' }} />,
-          onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-          onFilterDropdownVisibleChange: (visible) => {
-            if (visible) {
-              setTimeout(() => {
-                this.searchInput.focus();
-              });
-            }
-          },
-          render: (text) => {
-            const { searchText } = this.state;
-            return searchText ? (
-              <span>
-                {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-                  fragment.toLowerCase() === searchText.toLowerCase()
-                    ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-                ))}
-              </span>
-            ) : text;
-          },
-      },{
-        title: '类型',
-        dataIndex:'type',
-        key: 'type',
-        align:'center',
-        editable: 1,
-        width: '20%',
-      },{
-        title: '父菜单',
-        dataIndex: 'Fmenu',
-        key: 'Fmenu',
-        align:'center',
-        editable: 1,
-        width: '20%',
-      },{
-        title: '操作',
-        dataIndex: 'action',
-        key: 'action',
-        align:'center',
-        width: '20%',
-        render : (text, record) =>  {
-          const editable = this.isEditing(record);
-            return (
-                <span>
-                    <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.key)} okText="确定" cancelText="取消" >
-                    <a href="#">删除</a>
-                    </Popconfirm>
-                    <Divider type="vertical" />
-                    <span>
-                    {editable ? (
-                      <span>
-                        <EditableContext.Consumer>
-                          {form => (
-                            <a
-                              href="javascript:;"
-                              onClick={() => this.save(form, record.key)}
-                              style={{ marginRight: 8 }}>保存</a>
-                          )}
-                        </EditableContext.Consumer>
-                        <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.key)}  okText="确定" cancelText="取消" >
-                          <a>取消</a>
-                        </Popconfirm>
-                      </span>
-                    ) : (
-                      <a onClick={() => this.edit(record.key)}>编辑</a>
-                    )}
-                  </span>
-                </span>
-            );
-          }
-      },];
-  }
-  rowSelected(selectedRowKeys){
-    this.setState({
-      selectedIds: selectedRowKeys
-    });
-  }
-  /**实现全选 */
-  onSelectChange(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys:selectedRowKeys }); 
-}
-  /**处理删除 */
-  handleDelete = (key) => {
-    const dataSource = this.state.dataSource;
-    this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-  }
-  /**处理新增一条记录 */
-  handleAdd = () => {
-    this.setState({
-      visible: true
-    });
-  }
-  handleOk() {
-    console.log(this.formRef.getItemsValue());
-    this.setState({
-      visible: false
-    });
-  }
-  handleCancel() {
-    this.setState({
-      visible: false
-    });
-  }
-  isEditing = (record) => {
-    return record.key === this.state.editingKey;
-  };
-
-  edit(key) {
-    this.setState({ editingKey: key });
-  }
-
-  save(form, key) {
-    form.validateFields((error, row) => {
-      if (error) {
-        return;
-      }
-      const newData = this.state.dataSource;
-      const index = newData.findIndex(item => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({ dataSource: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.setState({ dataSource: newData, editingKey: '' });
-      }
-    });
-  }
-
-  cancel = () => {
-    this.setState({ editingKey: '' });
-  };
-       /**实现字段搜索功能 */
-        handleSearch = (selectedKeys, confirm) => () => {
-          confirm();
-          this.setState({ searchText: selectedKeys[0] });
-      }
-        handleReset = clearFilters => () => {
-          clearFilters();
-          this.setState({ searchText: '' });
-      }
-    render() {
-      const rowSelection = {
-        onChange: this.onSelectChange,
-        onSelect() {
-            // console.log(record, selected, selectedRows);
-        },
-        onSelectAll() {
-            // console.log(selected, selectedRows, changeRows);
-        },
+        super(props);
+        this.state = {
+          dataSource: [],
+          pagination:[],
+          selectedRowKeys: [],
+          loading: false,
+          searchContent:'',
+          searchText: '',
+          fatherMenu:[],
       };
-      const pagination = {
-        total: data.length,
+      this.handleTableChange=this.handleTableChange.bind(this);
+      this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
+      this.start=this.start.bind(this);
+      this.cancel=this.cancel.bind(this);
+      this.fetch=this.fetch.bind(this);
+      this.modifyDataSource=this.modifyDataSource.bind(this);
+      this.searchContentChange = this.searchContentChange.bind(this);
+      this.searchEvent = this.searchEvent.bind(this);
+      this.getAllFatherMenu = this.getAllFatherMenu.bind(this);
+
+      this.pagination = {
+        total: this.state.dataSource.length,
         showSizeChanger: true,
         onShowSizeChange(current, pageSize) {
-          console.log('Current: ', current, '; PageSize: ', pageSize);
+            // console.log('Current: ', current, '; PageSize: ', pageSize);
         },
         onChange(current) {
-          console.log('Current: ', current);
+            // console.log('Current: ', current);
         }
-      };
-      const components = {
-        body: {
-          row: EditableFormRow,
-          cell: EditableCell,
-        },
-      };
-      const tabs = this.columns.map((col) => {
-        if (!col.editable) {
-          return col;
-        }
-        return {
-          ...col,
-          onCell: record => ({
-            record,
-            inputType: col.dataIndex === 'type' ? 'type' : 'text',
-            dataIndex: col.dataIndex,
-            title: col.title,
-            editing: this.isEditing(record),
-          }),
-        };
-      });
-        return (
-            <div>
-              <BlockQuote name="菜单管理"></BlockQuote>
-                <div className="fl">
-                <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
-                    <Modal title="新增" visible={this.state.visible}
-                          onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
-                          footer={[
-                            <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
-                            <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
-                          ]}>
-                          <RoleModal wrappedComponentRef={(form) => this.formRef = form}></RoleModal>
-                    </Modal>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
-                </div>
-                <WhiteSpace></WhiteSpace>
-                
-                <Table rowSelection={rowSelection} columns={tabs} pagination={pagination} dataSource={this.state.dataSource} components={components} scroll={{ y: 400 }} size="small" bordered />
-            </div>
-
-        );
     }
-}
+  }
+  render(){
+      const { loading, selectedRowKeys } = this.state;
+      const rowSelection = {
+        selectedRowKeys,
+        onChange: this.onSelectChange,
+    };
+    return (
+      <div>
+        <BlockQuote name="菜单管理"></BlockQuote>
+        <div style={{paddingTop:'10px'}}>
+            <AddModal
+                fetch={this.fetch}
+            />
+            <DeleteByIds
+                selectedRowKeys={this.state.selectedRowKeys}
+                start={this.start}
+                loading={loading}
+                cancel={this.cancel}
+            />
+            <span style={{float:'right'}}>
+                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+            </span>
+        </div>
+        <WhiteSpace></WhiteSpace>
+        <div className='clear' ></div>
+        <MenuTable
+            data={this.state.dataSource}
+            pagination={this.pagination}
+            rowSelection={rowSelection}
+            fetch={this.fetch}
+            modifyDataSource={this.modifyDataSource}
+            handleTableChange={this.handleTableChange}
+            fatherMenu = {this.state.fatherMenu}
+        />
+      </div>
+    )
+  }
 
+    /**修改父组件的数据 */
+    modifySelectedRowKeys = (data) => {
+      this.setState({selectedRowKeys:data});
+  };
+    modifyDataSource = (data) => {
+      this.setState({dataSource:data});
+  };
+  /**获取所有数据 getAllByPage */
+    handleTableChange = (pagination) => {
+      this.fetch({
+          size: pagination.pageSize,
+          page: pagination.current,
+          orderField: 'id',
+          orderType: 'desc',
+
+      });
+  };
+    fetch = (params = {}) => {
+      this.setState({ loading: true });
+      axios({
+          url: 'http://218.77.105.241:40080/jc/menu/findAllByPage',
+          method: 'get',
+          headers:{
+              'Authorization': Authorization
+          },
+          params: params,
+          // type: 'json',
+      }).then((data) => {
+        console.log(data.data.data)
+          const res = data.data.data;
+          this.pagination.total=res.total;
+          for(var i = 1; i<=res.list.length; i++){
+              res.list[i-1]['index']=(res.prePage)*10+i;
+          }
+          this.setState({
+              loading: false,
+              dataSource: res.list,
+          });
+      });
+  };
+    componentDidMount() {
+      this.fetch();
+      this.getAllFatherMenu();
+  }
+  /**获取所有父菜单 */
+  getAllFatherMenu(){
+    axios({
+      url:'http://218.77.105.241:40080/jc/menu/findByMenuType',
+      method:'get',
+      headers:{
+        'Authorization': Authorization
+        },
+        params: {menuType:1},
+    }).then((data)=>{
+      const res = data.data.data;
+      this.setState({
+        fatherMenu:res
+      })
+    })
+  }
+    start = () => {
+      const ids = this.state.selectedRowKeys;
+      axios({
+          url:'http://218.77.105.241:40080/jc/menu/deleteByIds',
+          method:'Delete',
+          headers:{
+              'Authorization':Authorization
+          },
+          data:ids,
+          type:'json'
+      }).then((data)=>{
+          message.info(data.data.message);
+          this.fetch();
+      }).catch((error)=>{
+          message.info(error.data.message)
+      });
+
+  };
+    onSelectChange = (selectedRowKeys) => {
+      this.setState({ selectedRowKeys });
+  };
+    cancel() {
+      setTimeout(() => {
+          this.setState({
+              selectedRowKeys: [],
+              loading: false,
+          });
+      }, 1000);
+  }
+    searchEvent(){
+      const ope_name = this.state.searchContent;
+      axios({
+          url:'http://218.77.105.241:40080/jc/menu/findByNameLikeByPage',
+          method:'get',
+          headers:{
+              'Authorization':Authorization
+          },
+          params:{
+              size: this.pagination.pageSize,
+              page: this.pagination.current,
+              menuName:ope_name
+          },
+          type:'json',
+      }).then((data)=>{
+          const res = data.data.data;
+          this.pagination.total=res.total;
+          for(var i = 1; i<=res.list.length; i++){
+              res.list[i-1]['index']=(res.pages-1)*10+i;
+          }
+          this.setState({
+              dataSource: res.list,
+          });
+      }).catch((error)=>{
+              message.info(error.data.message)
+          })
+  };
+    /**获取查询时菜单名称的实时变化 */
+    searchContentChange(e){
+      const value = e.target.value;
+      this.setState({searchContent:value});
+  }
+}
 export default Menu;

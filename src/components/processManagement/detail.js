@@ -55,11 +55,11 @@ class Detail extends React.Component{
                     ]}>
                     <div style={{height:'400px'}}>
                          <div>
-                             <Input value={this.props.value.name} style={{width:200}} disabled={true}/>
+                             流程名称：<Input value={this.props.value.name} style={{width:300}} disabled={true}/>
                              <WhiteSpace />
-                             <Input value={"xxx的工艺"} style={{width:200}} disabled={true}/>
+                             所属工艺：<Input value={"xxx的工艺"} style={{width:300}} disabled={true}/>
                              <WhiteSpace />
-                             <Input value={this.props.value.type} style={{width:200}} disabled={true}/>
+                             流程类型：<Input value={this.props.value.type} style={{width:300}} disabled={true}/>
                          </div>
                          <WhiteSpace />
                          <Table columns={columns} size='small' pagination={false} bordered></Table>
