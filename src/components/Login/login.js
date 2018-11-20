@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import WrappedNormalLoginForm from './NormalLoginForm'
 import './login.css';
 import background from '../logo/login.jpg';
-
+import Auth from '../auth/Auth'
 // var http = require('http');
 // http.get('http://218.77.105.241:40080/fk/sectionUseElec/getAll',function(req,res){
 // 	var html='';
@@ -17,6 +17,7 @@ class Login extends Component {
     render() {
       return (
         <div className="Login-div">
+          <Auth/>
           <img className="Login-background" src={background} alt="login" />
           <div className="Login" >
             <h2 className="center">用户登录</h2>

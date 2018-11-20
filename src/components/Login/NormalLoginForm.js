@@ -21,6 +21,7 @@ class NormalLoginForm extends React.Component {
     this.keyPress = this.keyPress.bind(this);
   }  
   componentWillMount() {
+    //http://192.168.1.105:8080
     localStorage.setItem("remote", "http://218.77.105.241:40080");
   }
   userChange(e){
@@ -50,7 +51,7 @@ class NormalLoginForm extends React.Component {
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('Authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data))
-      // console.log(localStorage.getItem('Authorization'))
+      console.log(localStorage.getItem('Authorization'))
       history.push({pathname:'/home'});
       const action = {
         type: 'AUTH_SUCCESS',

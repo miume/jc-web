@@ -1,9 +1,9 @@
 import React from 'react';
 import '../Home/page.css';
 import WhiteSpace from "../BlockQuote/whiteSpace";
-import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
-import DeleteButton from './checkDeleteButton';
+import DeleteButton from "./checkDeleteButton";
+import ReleaseTable from "./releaseTable";
 
 const data = [{
     index:'1',
@@ -52,7 +52,7 @@ const data = [{
     l: 'l'
 }];
 
-class Check extends React.Component {
+class Release extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -62,7 +62,7 @@ class Check extends React.Component {
         };
         this.start=this.start.bind(this);
         this.cancel=this.cancel.bind(this);
-    };
+    }
     render() {
         const { loading,selectedRowKeys } = this.state;
         const rowSelection = {
@@ -84,7 +84,7 @@ class Check extends React.Component {
 
                 <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
-                <CheckTable
+                <ReleaseTable
                     data={this.state.dataSource}
                     rowSelection={rowSelection}
                 />
@@ -136,5 +136,4 @@ class Check extends React.Component {
     }
     /**---------------------- */
 }
-
-export default Check;
+export default Release

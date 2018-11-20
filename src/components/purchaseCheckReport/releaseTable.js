@@ -1,11 +1,10 @@
 import React from 'react';
 import {Divider, Table} from 'antd';
 import './checkTable.css';
-import CheckEditSpan from './checkEditSpan';
-import CheckDetailSpan from './checkDetailSpan';
+import ReleaseSpan from './releaseSpan';
 import DeletaSpan from './deleteSpan';
 
-class CheckTable extends React.Component {
+class ReleaseTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -88,14 +87,10 @@ class CheckTable extends React.Component {
         render: (text,record) => {
             console.log("-----");
             console.log(record);
-            let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>
-                    <CheckEditSpan
-                        disabled={operationFlag}
+                    <ReleaseSpan
                     />
-                    <Divider type="vertical" />
-                    <CheckDetailSpan />
                     <Divider type="vertical" />
                     <DeletaSpan
                         record={record}
@@ -130,15 +125,6 @@ class CheckTable extends React.Component {
             />
         )
     }
-    /**判断编辑可否功能 */
-    judgeOperation = (record) => {
-        if(record==="不通过"){
-            return false;
-        }else{
-            return true;
-        }
-    };
-    /**---------------------- */
     /**单条记录删除 */
     handleDelete = (key) => {
         console.log("++++++");
@@ -147,6 +133,5 @@ class CheckTable extends React.Component {
         // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     };
     /**---------------------- */
-
 }
-export default CheckTable;
+export default ReleaseTable;

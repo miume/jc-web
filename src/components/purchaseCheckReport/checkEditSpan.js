@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover } from 'antd';
-import CheckEditModal from './checkEditModal';
+import { Modal,Button,Popconfirm,Popover,Select,Switch } from 'antd';
+import PurchaseModal from './purchaseModal';
 
 
 
@@ -15,6 +15,7 @@ class CheckEditSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
+        const Option = Select.Option;
         return(
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
@@ -34,18 +35,39 @@ class CheckEditSpan extends React.Component {
                         // 如何设置弹出
                         <Popover
                             key="popover"
-                            content={<a onClick={this.hide}>Close</a>}
-                            title="Title"
+                            // content={<a onClick={this.hide}>Close</a>}
+                            content = {
+                                <div style={{width:200}}>
+                                    <div>
+                                        <Select defaultValue="a" style={{ width: 120 }}>
+                                            <Option value="a">a</Option>
+                                            <Option value="b">b</Option>
+                                            <Option value="c">c</Option>
+                                        </Select>
+                                    </div>
+                                    <div style={{paddingTop:10}}>
+                                        <span style={{marginRight:10}}>是否紧急</span><Switch onChange={this.urgentChange}/>
+                                    </div>
+                                    <div style={{paddingTop:10}}>
+                                        <Button>取消</Button>
+                                        <Button>确认</Button>
+                                    </div>
+
+
+                                </div>
+                            }
+                            title="设置审批细节"
                             trigger="click"
                             visible={this.state.pvisivle}
                             onVisibleChange={this.handleVisibleChange}
+                            placement="topRight"
                         >
                             <Button key="submit" type="primary" >提交</Button>
                         </Popover>
                     ]}
                 >
                     <div style={{height:450}}>
-                        <CheckEditModal
+                        <PurchaseModal
                             // data={data}
                             // topData={topData}
                         />
@@ -83,6 +105,10 @@ class CheckEditSpan extends React.Component {
     handleVisibleChange = (pvisivle) => {
         this.setState({ pvisivle });
     };
+    // 提交Modal中是否紧急
+    urgentChange(checked) {
+        console.log(`switch to ${checked}`);
+    }
 }
 
 export default CheckEditSpan;

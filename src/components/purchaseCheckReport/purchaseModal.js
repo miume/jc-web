@@ -37,7 +37,7 @@ const data = [{
     Mg: '无',
 }];
 
-class CheckEditModal extends React.Component {
+class PurchaseModal extends React.Component {
     state = {
         columns: [],
         dataSource: data,
@@ -46,12 +46,13 @@ class CheckEditModal extends React.Component {
     render() {
         /**动态表头数据获取与组装 */
         const dynHeadData =this.assembleDynamicData(this.getDynamicHeadData());
+        //获取滚动条的x轴大小
+        const arrColumnslength = parseInt(dynHeadData.length*150 + 300);
         const totalColumns = this.assembleTableHead(dynHeadData);
+
         /**---------------------- */
         this.columns = totalColumns;
-        // console.log('totalColumns:',totalColumns);
-        // console.log('this.colums:',this.columns);
-        // this.columns = this.assembleTableHead(dynHeadData);
+
         const columns = this.columns.map((col) => {
             return {
                 ...col,
@@ -64,7 +65,6 @@ class CheckEditModal extends React.Component {
                 }),
             };
         });
-        console.log('colimns:',columns)
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
@@ -107,7 +107,7 @@ class CheckEditModal extends React.Component {
                         size="small"
                         bordered
                         pagination={{hideOnSinglePage:true,pageSize:1000}}
-                        scroll={{ x: '130%', y: 240 }}
+                        scroll={{ x:arrColumnslength, y: 240 }}
                     />
                 </div>
             </div>
@@ -148,8 +148,8 @@ class CheckEditModal extends React.Component {
     };
     assembleDynamicData = (dataArr) => {
         const colums = [];
-        for(var v of dataArr){
-            console.log('v:',v);
+        const length = dataArr.length;
+        for(var i=0; i<length-1; i++) {
             const headData = {
                 title: '',
                 align:'center',
@@ -165,13 +165,54 @@ class CheckEditModal extends React.Component {
                     }]
                 }]
             };
-            headData.title = v.name;
-            headData.children[0].title = v.symbol;
-            headData.children[0].children[0].title = v.area;
-            headData.children[0].children[0].dataIndex = v.name;
-            headData.children[0].children[0].key = v.name;
+            headData.title = dataArr[i].name;
+            headData.children[0].title = dataArr[i].symbol;
+            headData.children[0].children[0].title = dataArr[i].area;
+            headData.children[0].children[0].dataIndex = dataArr[i].name;
+            headData.children[0].children[0].key = dataArr[i].name;
             colums.push(headData);
         }
+        // 动态列的时候 动态中的最后一列不能设置width
+        const endArrData = {
+            title: dataArr[length-1].name,
+            align:'center',
+            children: [{
+                title: dataArr[length-1].symbol,
+                align:'center',
+                children: [{
+                    title: dataArr[length-1].area,
+                    dataIndex: dataArr[length-1].name,
+                    key: dataArr[length-1].name,
+                    align:'center',
+                }]
+            }]
+        };
+        colums.push(endArrData);
+
+        // for(var v of dataArr){
+        //     console.log('v:',v);
+        //     const headData = {
+        //         title: '',
+        //         align:'center',
+        //         children: [{
+        //             title: '',
+        //             align:'center',
+        //             children: [{
+        //                 title: '',
+        //                 dataIndex: '',
+        //                 key: '',
+        //                 align:'center',
+        //                 width: '10%',
+        //             }]
+        //         }]
+        //     };
+        //     headData.title = v.name;
+        //     headData.children[0].title = v.symbol;
+        //     headData.children[0].children[0].title = v.area;
+        //     headData.children[0].children[0].dataIndex = v.name;
+        //     headData.children[0].children[0].key = v.name;
+        //     colums.push(headData);
+        // }
         // console.log('colums:',colums);
         return colums;
     };
@@ -215,4 +256,4 @@ class CheckEditModal extends React.Component {
     /**---------------------- */
 }
 
-export default CheckEditModal;
+export default PurchaseModal;
