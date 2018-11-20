@@ -31,6 +31,7 @@ class OperationManagement extends React.Component {
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
 
         this.pagination = {
             total: this.state.dataSource.length,
@@ -79,6 +80,7 @@ class OperationManagement extends React.Component {
                     rowSelection={rowSelection}
                     fetch={this.fetch}
                     modifyDataSource={this.modifyDataSource}
+                    handleTableChange={this.handleTableChange}
                 />
             </div>
         )
@@ -113,9 +115,10 @@ class OperationManagement extends React.Component {
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
+            console.log(res);
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 loading: false,
@@ -178,7 +181,7 @@ class OperationManagement extends React.Component {
             const res = data.data.data;
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 dataSource: res.list,
