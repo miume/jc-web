@@ -1,9 +1,9 @@
 import React from 'react';
 import { Menu} from 'antd';
 import {withRouter} from "react-router-dom";
+import Auth from '../auth/Auth';
 const SubMenu = Menu.SubMenu;
-const menuList = JSON.parse(localStorage.getItem('menuList'));
-const menu = menuList.menuList;
+
 class Menu1List extends React.Component {
   constructor(props){
     super(props);
@@ -72,12 +72,13 @@ class Menu1List extends React.Component {
     //  }
     // ];
     // console.log(this.state.openKeys)
+  
     return (
       //style={{paddingTop:'10px'}}
       <div>
         <Menu mode="inline" theme="dark" openKeys={this.state.openKeys} onOpenChange={this.onOpenChange} style={{width:130}}>
             {
-              menu.map(v=> (
+              localStorage.getItem('menuList') ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>
                 {
                     v.menuList.map(v1 => 
@@ -85,7 +86,7 @@ class Menu1List extends React.Component {
                   )
                 }
                 </SubMenu>
-              ))
+              )):<Auth/>
               // menu.map(v=> (
               //   <SubMenu key={v.menuId} title={<span className="submenu-title-wrapper"><Icon type='boss' />{v.menuName}</span>}>
               //   {

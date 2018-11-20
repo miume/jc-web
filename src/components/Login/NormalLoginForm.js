@@ -21,6 +21,7 @@ class NormalLoginForm extends React.Component {
     this.keyPress = this.keyPress.bind(this);
   }  
   componentWillMount() {
+    //http://192.168.1.105:8080
     localStorage.setItem("remote", "http://218.77.105.241:40080");
   }
   userChange(e){
