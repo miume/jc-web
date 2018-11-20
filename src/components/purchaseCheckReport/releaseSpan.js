@@ -1,8 +1,11 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover,Input } from 'antd';
-import PurchaseModal from "./purchaseModal";
+import {Modal, Button, Popconfirm, Popover, Input} from 'antd';
+import PurchaseModal from './purchaseModal';
 
-class CheckDetailSpan extends React.Component {
+
+
+
+class ReleaseSpan extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -13,9 +16,9 @@ class CheckDetailSpan extends React.Component {
     render() {
         const { visible } = this.state;
         return(
-            <span type="primary"  onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+            <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
-                    title="数据详情"
+                    title="编辑数据"
                     visible={visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
@@ -24,9 +27,10 @@ class CheckDetailSpan extends React.Component {
                     width="1000px"
                     // footer下的每个组件都要有唯一的key
                     footer={[
-                        <Button key="back"  style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
-                        <Input key="input" style={{width:200}} disabled placeholder="XXX需要根据判断"/>
-                        // 如何设置弹出
+                        <Button key="cancel" style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
+                        <Input key="input" style={{width:400}} disabled placeholder="该数据审核已通过，请发布"/>,
+                        <Button key="releaseNew" type="primary"  onClick={this.handleOk} style={{marginLeft:10}}>发布新材料</Button>,
+                        <Button key="release" type="primary" style={{float:'right'}} onClick={this.handleOk}>发布</Button>
                     ]}
                 >
                     <div style={{height:450}}>
@@ -37,7 +41,7 @@ class CheckDetailSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <a  href ="#" >详情</a>
+                <a  href ="#" >发布</a>
             </span>
         )
     }
@@ -69,4 +73,5 @@ class CheckDetailSpan extends React.Component {
         this.setState({ pvisivle });
     };
 }
-export default CheckDetailSpan;
+
+export default ReleaseSpan;

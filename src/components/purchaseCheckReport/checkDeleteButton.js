@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Popconfirm } from 'antd';
+import { Table, Button, Popconfirm } from 'antd';
 
 
-class DeleteByIds extends React.Component {
+class DeleteButton extends React.Component {
     render() {
         return (
             <span>
@@ -13,4 +13,4 @@ class DeleteByIds extends React.Component {
         );
     }
 }
-export default DeleteByIds;
+export default DeleteButton;

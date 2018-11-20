@@ -7,7 +7,7 @@ import Span from '../BlockQuote/span';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
-//import store from '../store';
+
 
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
@@ -29,7 +29,7 @@ class EditableCell extends React.Component {
   }
   
     getInput = () => {
-        console.log(this.props.departmentchildren);//获取部门的data（getAll）
+       // console.log(this.props.departmentchildren);//获取部门的data（getAll）
         if (this.props.inputType === 'select') {
             return <Select >
               {
@@ -121,18 +121,19 @@ class User extends React.Component{
         showSizeChanger: true,//是否可以改变 pageSize
         //改变每页条目数
         onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-          console.log('Current: ', current, '; PageSize: ', pageSize);
+          //console.log('Current: ', current, '; PageSize: ', pageSize);
         },
         onChange(current) {//跳转，页码改变
-          console.log('Current: ', current);
+          //console.log('Current: ', current);
         }
       };
       this.columns=[{//表头
+
         title:'序号',
         dataIndex:'id',//dataIndex值与字段值要匹配
         key:'id',
-       // sorter:true,//需要服务端排序
-       sorter:(a, b) => a.id-b.id,
+       sorter:true,//需要服务端排序
+       //sorter:(a, b) => a.id-b.id,
         width: '15%',
         align:'center',
      },{
@@ -164,9 +165,7 @@ class User extends React.Component{
          editable:1,
          width: '20%',
          align:'center',
-        //  render:(text, record)=>{
-        //   console.log(text);
-        //  }
+        
      },{
       title: '操作',
       //dataIndex: 'type',
@@ -257,7 +256,7 @@ class User extends React.Component{
         this.setState({visible:true});
       }
       handleOk(){//处理新增一条记录
-        console.log(this.formRef.getItemsValue());
+        //console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
         axios({
           url:`${server}/jc/user/signIn`,
@@ -284,15 +283,15 @@ class User extends React.Component{
     handleDepartmentChang(e){//下拉框
       this.setState({deparment:e.target.value});
     }
-    // handlePasswordChange(e){//密码
-    //   this.setState({password:e.target.value});
-    // }
+    handlePasswordChange(e){//密码
+      this.setState({password:e.target.value});
+    }
     handlePhoneChange(e){//手机号
       this.setState({phone:e.target.value});
     }
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
-      console.log(id);
+      //console.log(id);
         const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
@@ -311,14 +310,14 @@ class User extends React.Component{
         })
         
         .catch((error)=>{
-          console.log(error);
-          console.log(error.data);
+          //console.log(error);
+          //console.log(error.data);
          message.info(error.data.message);
         });
       }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys }); 
      } 
      rowSelected(selectedRowKeys){//？
@@ -327,13 +326,13 @@ class User extends React.Component{
         });
       }
       showIds(event) {//?
-        console.log(event.target.value)
+       // console.log(event.target.value)
       }
       /**---------------------- */
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
-        console.log(ids);
+       // console.log(ids);
         axios({
             url:`${server}/jc/user/deleteByIds`,
             method:'Delete',
@@ -344,12 +343,12 @@ class User extends React.Component{
             type:'json'
         })
         .then((data)=>{
-          console.log(data);
+         // console.log(data);
           message.info(data.data.message);
           this.fetch();
         })//处理成功
         .catch((error)=>{
-          console.log(error);
+         // console.log(error);
           message.info(error.data.message)
         });//处理异常
        
@@ -389,7 +388,7 @@ class User extends React.Component{
 
             let departmentId = ''; 
             
-            console.log(data);
+            //console.log(data);
             axios({
               url:`${server}/jc/user/update`,
               method:'post',
@@ -406,7 +405,7 @@ class User extends React.Component{
               this.fetch();
             })
             .catch((error)=>{
-              console.log(error.data);
+             // console.log(error.data);
               message.info(error.data.message);
             });
             this.setState({ dataSource: newData, editingKey: '' });
@@ -461,7 +460,7 @@ class User extends React.Component{
              });
            })
            .catch((error)=>{
-             console.log(error);
+            // console.log(error);
             message.info(error.data.message)
            });
       }
@@ -533,7 +532,8 @@ class User extends React.Component{
                     <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入用户名称' 
                       searchEvent={this.searchEvent}
-                      searchContentChange={this.searchContentChange} />
+                      searchContentChange={this.searchContentChange} 
+                      fetch={this.fetch}/>
                     </span>
                 </div>
                 <div className='clear'  ></div>

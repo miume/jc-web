@@ -3,6 +3,7 @@ import {Divider, Table,Button,Input} from 'antd';
 import '../Home/page.css';
 import WhiteSpace from "../BlockQuote/whiteSpace";
 import PackTable from './packTable';
+import SearchCell from '../BlockQuote/search';
 
 const data = [{
     index:'1',
@@ -57,7 +58,6 @@ class Pack extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
-        const Search = Input.Search;
         return(
             <div>
                 <div className="fl">
@@ -65,13 +65,9 @@ class Pack extends React.Component {
                     <Button>删除</Button>
                 </div>
                 <div className="fr">
-                    <Search
-                        placeholder="请输入搜索内容"
-                        onSearch={value => console.log(value)}
-                        enterButton
-                        style={{ width: 200 }}
+                    <SearchCell
+
                     />
-                    <Button  type="primary" style={{marginLeft:10}}>重置</Button>
                 </div>
                 <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
