@@ -41,6 +41,7 @@ const CollectionCreateForm = Form.create()(
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
 class AddModal extends React.Component {
     state = {
         visible: false,
@@ -61,7 +62,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : 'http://218.77.105.241:40080/jc/operation/add',
+                url : `${server}/jc/operation/add`,
                 method:'post',
                 headers:{
                     'Authorization': Authorization

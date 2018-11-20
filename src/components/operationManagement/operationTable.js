@@ -59,6 +59,7 @@ class EditableCell extends React.Component {
 }
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
 
 class OperationTable extends React.Component {
     constructor(props){
@@ -174,6 +175,7 @@ class OperationTable extends React.Component {
                 size="small"
                 bordered
                 scroll={{ y: 400 }}
+                onChange={this.props.handleTableChange}
             />
         );
         //useFixedHeader 用来固定表头（需要指定 column 的 width 属性，否则列头和内容可能不对齐）
@@ -212,7 +214,7 @@ class OperationTable extends React.Component {
                 data['id'] = id.toString()
                 console.log(data)
                 axios({
-                    url:'http://218.77.105.241:40080/jc/operation/update',
+                    url:`${server}/jc/operation/update`,
                     method:'post',
                     headers:{
                         'Authorization':Authorization

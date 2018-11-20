@@ -58,7 +58,7 @@ class EditableCell extends React.Component {
 }
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
-
+const server = localStorage.getItem('remote');
 class DepartTable extends React.Component {
     constructor(props){
         super(props);
@@ -169,6 +169,7 @@ class DepartTable extends React.Component {
                 rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
                 handleTableChange={this.props.handleTableChange}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{ y: 400 }}
@@ -209,7 +210,7 @@ class DepartTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString();
                 axios({
-                    url:'http://218.77.105.241:40080/jc/department/update',
+                    url:`${server}/jc/department/update`,
                     method:'post',
                     headers:{
                         'Authorization':Authorization

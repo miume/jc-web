@@ -11,6 +11,8 @@ import SearchCell from "./search";
 
 
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
+
 
 class Depart extends React.Component {
     constructor(props) {
@@ -31,6 +33,7 @@ class Depart extends React.Component {
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -73,6 +76,7 @@ class Depart extends React.Component {
                     rowSelection={rowSelection}
                     fetch={this.fetch}
                     modifyDataSource={this.modifyDataSource}
+                    handleTableChange={this.handleTableChange}
                 />
             </div>
         )
@@ -98,7 +102,7 @@ class Depart extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: 'http://218.77.105.241:40080/jc/department/getDepartmentsByPage',
+            url: `${server}/jc/department/getDepartmentsByPage`,
             method: 'get',
             headers:{
                 'Authorization': Authorization
@@ -109,7 +113,7 @@ class Depart extends React.Component {
             const res = data.data.data;
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 loading: false,
@@ -124,8 +128,9 @@ class Depart extends React.Component {
     /**实现批量删除功能 */
     start = () => {
         const ids = this.state.selectedRowKeys;
+        console.log(ids);
         axios({
-            url:`http://218.77.105.241:40080/jc/department/deleteByIds`,
+            url:`${server}/jc/department/deleteByIds`,
             method:'Delete',
             headers:{
                 'Authorization':Authorization
@@ -156,7 +161,7 @@ class Depart extends React.Component {
     searchEvent(){
         const dep_name = this.state.searchContent;
         axios({
-            url:'http://218.77.105.241:40080/jc/department/getDepartmentsByNameLikeByPage',
+            url:`${server}/jc/department/getDepartmentsByNameLikeByPage`,
             method:'get',
             headers:{
                 'Authorization':Authorization
@@ -172,7 +177,7 @@ class Depart extends React.Component {
             const res = data.data.data;
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 dataSource: res.list,

@@ -13,6 +13,7 @@ import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
 
 class OperationManagement extends React.Component {
     constructor(props) {
@@ -31,6 +32,7 @@ class OperationManagement extends React.Component {
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
 
         this.pagination = {
             total: this.state.dataSource.length,
@@ -79,6 +81,7 @@ class OperationManagement extends React.Component {
                     rowSelection={rowSelection}
                     fetch={this.fetch}
                     modifyDataSource={this.modifyDataSource}
+                    handleTableChange={this.handleTableChange}
                 />
             </div>
         )
@@ -104,7 +107,7 @@ class OperationManagement extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: 'http://218.77.105.241:40080/jc/operation/getOperationsByPage',
+            url: `${server}/jc/operation/getOperationsByPage`,
             method: 'get',
             headers:{
                 'Authorization': Authorization
@@ -113,9 +116,10 @@ class OperationManagement extends React.Component {
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
+            console.log(res);
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 loading: false,
@@ -131,7 +135,7 @@ class OperationManagement extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:'http://218.77.105.241:40080/jc/operation/deleteByIds',
+            url:`${server}/jc/operation/deleteByIds`,
             method:'Delete',
             headers:{
                 'Authorization':Authorization
@@ -163,7 +167,7 @@ class OperationManagement extends React.Component {
     searchEvent(){
         const ope_name = this.state.searchContent;
         axios({
-            url:'http://218.77.105.241:40080/jc/operation/getRolesByNameLikeByPage',
+            url:`${server}/jc/operation/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
                 'Authorization':Authorization
@@ -178,7 +182,7 @@ class OperationManagement extends React.Component {
             const res = data.data.data;
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 dataSource: res.list,

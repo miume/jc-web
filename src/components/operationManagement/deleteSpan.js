@@ -4,6 +4,7 @@ import axios from "axios";
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
 
 class DeletaSpan extends React.Component {
     render() {
@@ -18,17 +19,16 @@ class DeletaSpan extends React.Component {
     handleDelete = (id) => {
         console.log("++++++")
         console.log(id);
+        // parseInt(id)
         axios({
-            url:'http://218.77.105.241:40080/jc/operation/'+parseInt(id),
+            url:`${server}/jc/operation/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':Authorization
             },
         }).then((data)=>{
-            console.log(data);
             message.info(data.data.message);
         }).catch((error)=>{
-            console.log(error);
             message.info(error.data)
         });
         setTimeout(() => {
