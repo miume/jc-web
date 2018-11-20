@@ -65,7 +65,11 @@ class Depart extends React.Component {
                         cancel={this.cancel}
                     />
                     <span style={{float:'right'}}>
-                        <SearchCell name='请输入操作名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+                        <SearchCell
+                            name='请输入操作名称'
+                            searchEvent={this.searchEvent}
+                            searchContentChange={this.searchContentChange}
+                        />
                     </span>
                 </div>
                 <WhiteSpace></WhiteSpace>

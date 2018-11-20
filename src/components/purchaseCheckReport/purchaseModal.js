@@ -37,7 +37,7 @@ const data = [{
     Mg: '无',
 }];
 
-class CheckEditModal extends React.Component {
+class PurchaseModal extends React.Component {
     state = {
         columns: [],
         dataSource: data,
@@ -215,4 +215,4 @@ class CheckEditModal extends React.Component {
     /**---------------------- */
 }
 
-export default CheckEditModal;
+export default PurchaseModal;

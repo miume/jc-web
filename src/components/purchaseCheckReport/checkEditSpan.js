@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal,Button,Popconfirm,Popover } from 'antd';
-import CheckEditModal from './checkEditModal';
+import PurchaseModal from './purchaseModal';
 
 
 
@@ -45,7 +45,7 @@ class CheckEditSpan extends React.Component {
                     ]}
                 >
                     <div style={{height:450}}>
-                        <CheckEditModal
+                        <PurchaseModal
                             // data={data}
                             // topData={topData}
                         />
