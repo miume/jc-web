@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,Input,Icon,Table,Popconfirm,Form,Divider,InputNumber,Modal,Select,message} from 'antd';
+import { Button,Input,Icon,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../BlockQuote/blockquote';
@@ -9,12 +9,6 @@ import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
 //import store from '../store';
 
-/**这是个令牌，每次调用接口都将其放在header里 */
-// const children = department.map(d=>{
-//   return (
-//     <Option key={d.id} value={d.id}>{d.name}</Option>
-//   );
-// })
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
 const FormItem = Form.Item;
@@ -24,24 +18,23 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-const ser =  'http://218.77.105.241:40080';
-//const ser = 'http://192.168.1.105:8081';
-
+/** 通过localStorage可查到http://218.77.105.241:40080*/
+const server = localStorage.getItem("remote"); 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization=localStorage.getItem('Authorization')
+const Authorization=localStorage.getItem('Authorization');
+
 class EditableCell extends React.Component {
   constructor(props){
     super(props);
   }
   
     getInput = () => {
-        // this.getAllDepartment();
-        console.log(this.props.departmentchildren);
+        console.log(this.props.departmentchildren);//获取部门的data（getAll）
         if (this.props.inputType === 'select') {
             return <Select >
               {
                 this.props.departmentchildren.map(de=>{
-                  return (
+                  return (//这个.id是根据后端部门getAll传过来的字段名称决定的
                     <Option key={de.id} value={de.id}>{de.departmentName}</Option>
                   );
                 })
@@ -63,6 +56,7 @@ class EditableCell extends React.Component {
             index,
             ...restProps
         } = this.props;
+        //console.log(...restProps);
         return (
             <EditableContext.Consumer>
                 {(form) => {
@@ -121,7 +115,7 @@ class User extends React.Component{
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
-      this.getAllDepartment = this.getAllDepartment.bind(this);
+      this.getAllDepartment = this.getAllDepartment.bind(this);//获取所有部门
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -152,14 +146,16 @@ class User extends React.Component{
     },
      {
          title:'所属部门',
-         dataIndex:'departmentId',
+         dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
          key:'departmentId',
-        editable:1,
-         //sorter:(a, b) => a.deparmentId.id-b.deparmentId.id,
+         editable:1,
          width: '20%',
          align:'center',
-         render:(text,department) => {
-           return `${department.departmentName}`
+         render:(text,record) => {
+          //console.log(text);//text是dataIndex对应的字段值
+          // console.log(record);//record代表的是后端传过来的一条记录的值data
+           return `${record.departmentName}`  //渲染此条记录的部门名称
+           
           }
      },{
          title:'手机号',
@@ -168,6 +164,9 @@ class User extends React.Component{
          editable:1,
          width: '20%',
          align:'center',
+        //  render:(text, record)=>{
+        //   console.log(text);
+        //  }
      },{
       title: '操作',
       //dataIndex: 'type',
@@ -175,6 +174,7 @@ class User extends React.Component{
       width: '20%',
       align:'center',
       render : (text, record) =>  {
+        //console.log(text);
         //console.log(record);
         const editable = this.isEditing(record);
         return (
@@ -226,7 +226,7 @@ class User extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: ser+'/jc/user/getAllByPage',
+        url: `${server}/jc/user/getAllByPage`,
         method:'get',
         headers:{
           'Authorization':Authorization
@@ -260,7 +260,7 @@ class User extends React.Component{
         console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
         axios({
-          url:ser+'/jc/user/signIn',
+          url:`${server}/jc/user/signIn`,
           method:'post',
           headers:{
             'Authorization':Authorization
@@ -296,7 +296,7 @@ class User extends React.Component{
         const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-          url:ser+`/jc/user/deleteById?id=${id}`,
+          url:`${server}/jc/user/deleteById?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':Authorization
@@ -307,6 +307,7 @@ class User extends React.Component{
         .then((data)=>{
           //console.log(data);
           message.info(data.data.message);
+          this.fetch();
         })
         
         .catch((error)=>{
@@ -334,7 +335,7 @@ class User extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
         console.log(ids);
         axios({
-            url:ser+'/jc/user/deleteByIds',
+            url:`${server}/jc/user/deleteByIds`,
             method:'Delete',
             headers:{
                   'Authorization' :Authorization
@@ -385,19 +386,12 @@ class User extends React.Component{
             /**将id变成字符串 */
             data['id']=id.toString();
             /**根据部门名称删选得到部门id */
-            // const department =  this.state.departmentchildren.filter(v=> v.departmentName===data.departmentName)
+
             let departmentId = ''; 
-            // for(var i in department){
-            //   departmentId = department[i].id.toString();
-            // }
-            // console.log(data["departmentName"])
             
-            // data['departmentId'] = data["departmentName"].split('-')[0];
-            // delete data.departmentName;  //从data中删除部门名称这个属性
-            // data['departmentId']=this.state.departmentchildren.map
             console.log(data);
             axios({
-              url:ser+'/jc/user/update',
+              url:`${server}/jc/user/update`,
               method:'post',
               headers:{
                 'Authorization':Authorization
@@ -440,7 +434,7 @@ class User extends React.Component{
            const username=this.state.searchContent;
            //console.log(username);
            axios({
-             url:ser+'/jc/user/getUserByNameByPage',
+             url:`${server}/jc/user/getUserByNameByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':Authorization
@@ -474,7 +468,7 @@ class User extends React.Component{
       /**获取所有部门 */
       getAllDepartment(){
         axios({
-          url:'http://218.77.105.241:40080/jc/department/getAll',
+          url:`${server}/jc/department/getAll`,
           method:'get',
           headers:{
             'Authorization': Authorization
@@ -533,7 +527,7 @@ class User extends React.Component{
                             <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
                             <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
                           ]}>
-                          <UserAddModal wrappedComponentRef={(form) => this.formRef = form}></UserAddModal>
+                          <UserAddModal deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
