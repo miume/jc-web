@@ -28,14 +28,70 @@ import OperationManagement from "../operationManagement/operationManagement";
 
 //检测项目
 class Home extends Component {
+    something;
+    /**将二级菜单的path和component添加到data数组*/
+    getComponentArray() {
+        const data = [{
+            path:'/role',
+            component:Role
+        },{
+            path:'/menu',
+            component:Menu
+        },{
+            path:'/user',
+            component:User
+        },{
+            path:'/OperationManagement',
+            component:OperationManagement
+        },{
+            path:'/departManagement',
+            component:Depart
+        },{
+            path:'/dataEntry',
+            component:DataEntry
+        },{
+            path:'/processInspection',
+            component:ProcessInspection
+        },{
+            path:'/rawTestReport',
+            component:RawTestReport
+        },{
+            path:'/management',
+            component:Management
+        },{
+            path:'/InterProduct',
+            component:InterProduct
+        },{
+            path:'/PurchaseCheckReport',
+            component:PurchaseCheckReport
+        },{
+            path:'/baseInfo',
+            component:BaseInfo
+        },{
+            path:'/deliveryFactory',
+            component:DeliveryFactory
+        },{
+            path:'/productProcess',
+            component:ProductProcess
+        },{
+            path:'/testItem',
+            component:TestItem
+        },{
+            path:'/samplePoint',
+            component:SamplePoint
+        },{
+            path:'/productLine',
+            component:ProductLine
+        }]  
+        return data;
+    }
+    constructor(props) {
+        super(props);
+        this.getComponentArray = this.getComponentArray.bind(this);
+    }
+    
     render() {
-        // const menuList = JSON.parse(localStorage.getItem('menuList'));
-        // const menu = menuList.menuList;
-        // console.log(menu)
-        // const data = [{
-        //     path:'/role',
-        //     component:Role
-        // }]
+        const path2Component = this.getComponentArray();    
         return (
             <div className="parent" >
                 <div className="top">
@@ -61,17 +117,15 @@ class Home extends Component {
                 </div>
                 <div className="rightDiv">
                 <Switch>
-                {/* {
-                    menu.map(m1=>(
-                        m1.menuList.map(m2=>{
-                            console.log(m2.component)
-                            return (
-                                <Route key={m2.path} path={m2.path} component={m2.component}></Route>
-                            );
-                        })
-                    ))
-                } */}
-                    <Route key='/OperationManagement' path='/OperationManagement' component={OperationManagement}></Route>
+                {
+                    path2Component.map(e => {
+                        return (
+                            <Route key={e.path} path={e.path} component={e.component}></Route>
+                        ) 
+                    })
+                 
+                }
+                    {/* <Route key='/OperationManagement' path='/OperationManagement' component={OperationManagement}></Route>
                     <Route key='/role' path='/role' component={Role}></Route>
                     <Route key='/menu' path='/menu' component={Menu}></Route>
                     <Route key='/user' path='/user' component={User}></Route>
@@ -83,12 +137,12 @@ class Home extends Component {
                     <Route key='/InterProduct' path='/InterProduct' component={InterProduct}></Route>
                     <Route key='/PurchaseCheckReport' path='/PurchaseCheckReport' component={PurchaseCheckReport}></Route>
                     {/* 基本信息以及其对应的5个表 */}
-                    <Route key='/baseInfo' path='/baseInfo' component={BaseInfo} ></Route>
+                    {/* <Route key='/baseInfo' path='/baseInfo' component={BaseInfo} ></Route>
                     <Route key='/deliveryFactory' path='/deliveryFactory' component={DeliveryFactory} ></Route>
                     <Route key='/productProcess' path='/productProcess' component={ProductProcess}></Route>
                     <Route key='/testItem' path='/testItem' component={TestItem}></Route>
                     <Route key='/samplePoint' path='/samplePoint' component={SamplePoint}></Route>
-                    <Route key='/productLine' path='/productLine' component={ProductLine}></Route>
+                    <Route key='/productLine' path='/productLine' component={ProductLine}></Route>  */}
                     {/* <Route key='/sampleInspection' path='/sampleInspection' component={SampleInspection}></Route> */}
                     
                     

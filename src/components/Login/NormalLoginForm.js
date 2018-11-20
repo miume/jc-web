@@ -18,19 +18,23 @@ class NormalLoginForm extends React.Component {
     this.userChange = this.userChange.bind(this);
     this.passwordChange = this.passwordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.keyPress = this.keyPress.bind(this);
   }  
-
-  
   componentWillMount() {
     localStorage.setItem("remote", "http://218.77.105.241:40080");
   }
-
   userChange(e){
     this.setState({ user : e.target.value })
     } 
   passwordChange(e){
     this.setState({ password : e.target.value })
     }
+  /** */
+  keyPress(e){
+    if(e.keyCode == 13){
+      alert('1111')
+    }
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
@@ -61,7 +65,7 @@ class NormalLoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form" >
+      <Form onSubmit={this.handleSubmit} className="login-form" onKeyPress={this.keyPress}>
         <FormItem>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名' }],
@@ -90,7 +94,7 @@ class NormalLoginForm extends React.Component {
             <abbr className="login-form-forgot" title="请联系管理员重置密码">忘记密码？</abbr>
             </Col>
           </Row>
-          <Button type="primary" htmlType="submit" className="login-form-button" block>
+          <Button type="primary" htmlType="submit" className="login-form-button"  block  >
             登录
           </Button>
         </FormItem>

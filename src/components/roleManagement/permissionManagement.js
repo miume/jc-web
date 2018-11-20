@@ -41,7 +41,7 @@ class PermissionManagement extends React.Component {
             }
         }).then(data=>{
             const menu = data.data.data
-            console.log(menu)
+            //console.log(menu)
             this.setState({
                 allMenus:menu
             })
@@ -78,7 +78,7 @@ class PermissionManagement extends React.Component {
             this.setState({
                 roleAuth:roleAuth
             })
-            console.log(roleAuth)
+            //console.log(roleAuth)
         })
     }
     handleOk() {
@@ -102,45 +102,47 @@ class PermissionManagement extends React.Component {
         data["operationId"] = parseInt(operationId) ;
         console.log(data)
         //实现新增权限的功能
-        if(target.checked === true ){
-            axios({
-                url:`${this.props.server}/jc/role/addOneOperation`,
-                method:'post',
-                params:{
-                    roleId : this.props.value,
-                    menuId : parseInt(menuId),
-                    operationId : parseInt(operationId)
-                },
-                headers:{
-                    'Authorization':this.props.Authorization
-                }
-            }).then(data =>{
-                message.info(data.data.message)
-            })
-            .catch(error=>{
-                message.info(error.data.message)
-            })
-        }
+        // if(target.checked === true ){
+        //     target.checked = true;
+        //     axios({
+        //         url:`${this.props.server}/jc/role/addOneOperation`,
+        //         method:'post',
+        //         params:{
+        //             roleId : this.props.value,
+        //             menuId : parseInt(menuId),
+        //             operationId : parseInt(operationId)
+        //         },
+        //         headers:{
+        //             'Authorization':this.props.Authorization
+        //         }
+        //     }).then(data =>{
+        //         message.info(data.data.message)
+        //     })
+        //     .catch(error=>{
+        //         message.info(error.data.message)
+        //     })
+        // }
         //实现删除权限的功能
-        else {
-            axios({
-                url:`${this.props.server}/jc/role/deleteOneOperation`,
-                method:'post',
-                params:{
-                    roleId : this.props.value,
-                    menuId : parseInt(menuId),
-                    operationId : parseInt(operationId)
-                },
-                headers:{
-                    'Authorization':this.props.Authorization
-                }
-            }).then(data =>{
-                message.info(data.data.message)
-            })
-            .catch(error=>{
-                message.info(error.data.message)
-            })
-        }
+        // else {
+        //     target.checked = false;
+        //     axios({
+        //         url:`${this.props.server}/jc/role/deleteOneOperation`,
+        //         method:'post',
+        //         params:{
+        //             roleId : this.props.value,
+        //             menuId : parseInt(menuId),
+        //             operationId : parseInt(operationId)
+        //         },
+        //         headers:{
+        //             'Authorization':this.props.Authorization
+        //         }
+        //     }).then(data =>{
+        //         message.info(data.data.message)
+        //     })
+        //     .catch(error=>{
+        //         message.info(error.data.message)
+        //     })
+        // }
             
     }
     isChecked(){
@@ -189,6 +191,28 @@ class PermissionManagement extends React.Component {
                                             {
                                             /**遍历二级菜单 */
                                             m1.menuList.map(m2=>{
+                                                var auth = this.state.roleAuth;
+                                                var menu = auth.filter(au=>au.id==m2.menuId);
+                                                console.log(menu)
+                                                if(menu.length>0){
+                                                    
+                                                }
+                                                // if(menu.length>0){
+                                                //     auth.forEach(e=>{
+                                                //         if(e.id==m2.menuId){
+                                                //             return (
+                                                //                 <div key={m2.menuId} className='divborder'><span className='rightBorder'><Icon type="caret-down" />{m2.menuName}</span>
+                                                //                 <span style={{display:'inline'}}>
+                                                //                 {
+                                                //                     this.state.operations.map(op=> {
+                                                //                         if(e.)
+                                                //                     })
+                                                //                 }
+                                                //                 </span>
+                                                //             );
+                                                //         }
+                                                //     })
+                                                // }
                                                 return (
                                                     <div key={m2.menuId} className='divborder'><span className='rightBorder'><Icon type="caret-down"  />{m2.menuName}</span>
                                                         <span style={{display:'inline'}}>
@@ -200,7 +224,6 @@ class PermissionManagement extends React.Component {
                                                                 if(auth.length>0){
                                                                     for(var i in auth){
                                                                         if(auth[i].id==m2.menuId){
-                                                                            // console.log(auth[i].operations)
                                                                             var isChecked = auth[i].operations.find(a=>a.id===op.id) ;
                                                                             if(isChecked){
                                                                                 return (
@@ -211,22 +234,22 @@ class PermissionManagement extends React.Component {
                                                                             }  
                                                                             else{
                                                                                 return (
-                                                                                    <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName} />
+                                                                                    <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  />
                                                                                     );
                                                                             }  
                                                                         }
                                                                         else{
                                                                             return (
-                                                                                <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName} />
+                                                                                <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  />
                                                                                 );
                                                                         }
                                                                     }
                                                                 }   
-                                                                else{
-                                                                    return (
-                                                                        <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName} />
-                                                                        );
-                                                                }                                       
+                                                                // else{
+                                                                //     return (
+                                                                //         <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName} />
+                                                                //         );
+                                                                // }                                       
                                                             } )
                                                             }
                                                             </span>
