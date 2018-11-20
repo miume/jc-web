@@ -473,7 +473,7 @@ class Role extends React.Component {
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+                        <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
                     </span>
                 </div>
                 <div className='clear'  ></div>

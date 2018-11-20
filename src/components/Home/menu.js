@@ -1,23 +1,43 @@
 import React from 'react';
-import { Menu,Icon} from 'antd';
+import { Menu} from 'antd';
 import {withRouter} from "react-router-dom";
 const SubMenu = Menu.SubMenu;
+const menuList = JSON.parse(localStorage.getItem('menuList'));
+const menu = menuList.menuList;
 class Menu1List extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      openKeys : []
+      openKeys : [],
+      // rootSubmenuKeys : menu.map(element => element.menuId)
     }
     this.onOpenChange = this.onOpenChange.bind(this);
   }
   /**只展开当前父级菜单 */
   onOpenChange(openKeys){
+    // console.log('openKeys:'+openKeys)
+    /**找到当前展开的菜单id */
     const latestOpenKeys = openKeys.find(key=>this.state.openKeys.indexOf(key)===-1);
-
+    // console.log('latestOPenKeys:'+latestOpenKeys)
+    /**如果展开当前一级菜单和以前的不一样 */
+    if(this.state.openKeys != latestOpenKeys){
+        this.setState({
+          openKeys : [latestOpenKeys]
+        });
+    }
+    //  console.log(this.state.rootSubmenuKeys.indexOf(latestOpenKeys)===-1)
+    // if( this.state.rootSubmenuKeys.indexOf(latestOpenKeys)===-1){
+    //     this.setState({
+    //       openKeys : openKeys
+    //     });
+    // } else{
+    //   this.setState({
+    //       openKeys:latestOpenKeys
+    //       // openKeys:latestOpenKeys?[latestOpenKeys]:[]
+    //   })
+    // }
   }
   render() {
-    const menuList = JSON.parse(localStorage.getItem('menuList'));
-    const menu = menuList.menuList;
     //console.log(menu)
     // const menu = [
     //   {
@@ -50,10 +70,12 @@ class Menu1List extends React.Component {
     //         // {name: '样品送检',id:14,path: '/sampleInspection'},
     //       ]
     //  }
-    //];
+    // ];
+    // console.log(this.state.openKeys)
     return (
-      <div style={{paddingTop:'10px'}}>
-        <Menu mode="inline" theme="dark" onOpenChange={this.onOpenChange} style={{width:130}}>
+      //style={{paddingTop:'10px'}}
+      <div>
+        <Menu mode="inline" theme="dark" openKeys={this.state.openKeys} onOpenChange={this.onOpenChange} style={{width:130}}>
             {
               menu.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>

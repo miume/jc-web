@@ -6,7 +6,7 @@ class SearchCell extends React.Component{
         return(
             <span style={{float:'right'}}>
                 <Search
-                    placeholder={this.props.placeholder}
+                    placeholder={this.props.name}
                     onSearch={this.props.searchEvent}
                     onChange={this.props.searchContentChange}
                     enterButton

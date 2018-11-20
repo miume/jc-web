@@ -9,7 +9,7 @@ html, body, .parent {
     left: 0;
     right: 0;
     height: 55px;
-    border-bottom:1px solid darkgrey;
+    border-bottom:2px solid darkgrey;
     /* background-color:  #333333; */
     
 }
@@ -28,6 +28,10 @@ html, body, .parent {
     background: #20232b;
     color: #fff;
     background-color: #333333;
+}
+.menu1 ul li{
+    /* padding-left:20px !important; */
+    /* float: left !important; */
 }
 .rightDiv {
     position: absolute;

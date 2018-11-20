@@ -21,7 +21,7 @@ class Login extends Component {
           <div className="Login" >
             <h2 className="center">用户登录</h2>
             <div className="Login-form">
-               <WrappedNormalLoginForm />
+               <WrappedNormalLoginForm/>
             </div>
           </div>
         </div>
