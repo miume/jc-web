@@ -13,6 +13,7 @@ import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
 
 class OperationManagement extends React.Component {
     constructor(props) {
@@ -106,7 +107,7 @@ class OperationManagement extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: 'http://218.77.105.241:40080/jc/operation/getOperationsByPage',
+            url: `${server}/jc/operation/getOperationsByPage`,
             method: 'get',
             headers:{
                 'Authorization': Authorization
@@ -134,7 +135,7 @@ class OperationManagement extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:'http://218.77.105.241:40080/jc/operation/deleteByIds',
+            url:`${server}/jc/operation/deleteByIds`,
             method:'Delete',
             headers:{
                 'Authorization':Authorization
@@ -166,7 +167,7 @@ class OperationManagement extends React.Component {
     searchEvent(){
         const ope_name = this.state.searchContent;
         axios({
-            url:'http://218.77.105.241:40080/jc/operation/getRolesByNameLikeByPage',
+            url:`${server}/jc/operation/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
                 'Authorization':Authorization

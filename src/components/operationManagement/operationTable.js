@@ -59,6 +59,7 @@ class EditableCell extends React.Component {
 }
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
 
 class OperationTable extends React.Component {
     constructor(props){
@@ -213,7 +214,7 @@ class OperationTable extends React.Component {
                 data['id'] = id.toString()
                 console.log(data)
                 axios({
-                    url:'http://218.77.105.241:40080/jc/operation/update',
+                    url:`${server}/jc/operation/update`,
                     method:'post',
                     headers:{
                         'Authorization':Authorization
