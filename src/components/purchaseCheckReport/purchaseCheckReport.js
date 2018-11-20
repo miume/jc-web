@@ -17,7 +17,7 @@ class PurchaseCheckReport extends React.Component {
         return(
             <div>
                 <BlockQuote name="进货检测报告"></BlockQuote>
-                <Tabs defaultActiveKey="3" onChange={this.callback} size="large">
+                <Tabs defaultActiveKey="2" onChange={this.callback} size="large">
                     <TabPane tab="打包" key="1">
                         <Pack />
                     </TabPane>
