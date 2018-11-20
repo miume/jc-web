@@ -13,7 +13,7 @@ class Auth extends React.Component {
         if(auth && menus){ 
             console.log('is authed')
             console.log(this.props)
-            this.props.history.push({pathname : '/dada'})
+            this.props.history.push({pathname : '/home'})
         }else {
             localStorage.clear();
             localStorage.setItem("remote", "http://218.77.105.241:40080");
