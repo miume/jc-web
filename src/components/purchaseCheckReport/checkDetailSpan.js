@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover } from 'antd';
+import { Modal,Button,Popconfirm,Popover,Input } from 'antd';
 import CheckEditModal from "./checkEditModal";
 
 class CheckDetailSpan extends React.Component {
@@ -13,7 +13,7 @@ class CheckDetailSpan extends React.Component {
     render() {
         const { visible } = this.state;
         return(
-            <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+            <span type="primary"  onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
                     title="数据详情"
                     visible={visible}
@@ -25,6 +25,7 @@ class CheckDetailSpan extends React.Component {
                     // footer下的每个组件都要有唯一的key
                     footer={[
                         <Button key="back"  style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
+                        <Input style={{width:200}} disabled placeholder="XXX需要根据判断"/>
                         // 如何设置弹出
                     ]}
                 >
