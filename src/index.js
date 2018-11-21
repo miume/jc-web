@@ -13,6 +13,7 @@ ReactDOM.render(
         // <MRoute/>
         <BrowserRouter>
         <div>
+          {/**用于验证localStorage中的数据是否为空 */}
           <Auth/>
           {/* <Router history={history}> */}
             <Switch>

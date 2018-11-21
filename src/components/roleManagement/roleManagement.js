@@ -197,7 +197,7 @@ class Role extends React.Component {
       });
     }
     fetch = (params = {}) => {
-      console.log('params:', params);
+      //console.log('params:', params);
       this.setState({ loading: true });
       axios({
         url: `${server}/jc/role/getRolesByPage`,
@@ -242,7 +242,7 @@ class Role extends React.Component {
     // }
      /**根据id处理单条记录删除 */
      handleDelete(id){
-       console.log(id)
+       //console.log(id)
         const dataSource = this.state.dataSource;
         this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
@@ -283,7 +283,7 @@ class Role extends React.Component {
             });
             const data = row;
             data['id'] = id.toString()
-            console.log(data)
+            //console.log(data)
             axios({
               url:`${server}/jc/role/update`,
               method:'post',
@@ -296,7 +296,7 @@ class Role extends React.Component {
               message.info(data.data.message); 
               this.fetch();
             }).catch((error)=>{
-              message.info(error.data.message);
+              message.info(error);
             })
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
@@ -318,7 +318,7 @@ class Role extends React.Component {
       }
       /**新增一条记录 */
       handleOk() {
-        console.log(this.formRef.getItemsValue());
+        //console.log(this.formRef.getItemsValue());
         this.setState({
           visible: false
         });
@@ -334,10 +334,11 @@ class Role extends React.Component {
           // console.log(data)
           message.info(data.data.message); 
           this.fetch();
+          this.formRef.resetFields();
         })
         .catch(function (error) {
           // console.log(error)
-          message.info(error.data.message);
+          message.info(error);
         }); 
       }
       handleCancel() {
@@ -352,7 +353,7 @@ class Role extends React.Component {
         });
       }
       showIds(event) {
-        console.log(event.target.value)
+        //console.log(event.target.value)
       }
       /**批量删除弹出框确认函数 */
       deleteByIds() {
@@ -385,7 +386,7 @@ class Role extends React.Component {
       }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-          console.log('selectedRowKeys changed: ', selectedRowKeys);
+          //console.log('selectedRowKeys changed: ', selectedRowKeys);
           this.setState({ selectedRowKeys:selectedRowKeys }); 
       }
       /**获取查询时角色名称的实时变化 */
@@ -397,7 +398,7 @@ class Role extends React.Component {
       /** 根据角色名称分页查询*/
       searchEvent(){
         const role_name = this.state.searchContent;
-        console.log(role_name)
+        //console.log(role_name)
         axios({
           url:`${server}/jc/role/getRolesByNameLikeByPage`,
           method:'get',

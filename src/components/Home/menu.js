@@ -25,17 +25,6 @@ class Menu1List extends React.Component {
           openKeys : [latestOpenKeys]
         });
     }
-    //  console.log(this.state.rootSubmenuKeys.indexOf(latestOpenKeys)===-1)
-    // if( this.state.rootSubmenuKeys.indexOf(latestOpenKeys)===-1){
-    //     this.setState({
-    //       openKeys : openKeys
-    //     });
-    // } else{
-    //   this.setState({
-    //       openKeys:latestOpenKeys
-    //       // openKeys:latestOpenKeys?[latestOpenKeys]:[]
-    //   })
-    // }
   }
   render() {
     //console.log(menu)
@@ -74,7 +63,7 @@ class Menu1List extends React.Component {
     // console.log(this.state.openKeys)
   
     return (
-      //style={{paddingTop:'10px'}}
+      /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
       <div>
         <Menu mode="inline" theme="dark" openKeys={this.state.openKeys} onOpenChange={this.onOpenChange} style={{width:130}}>
             {
@@ -87,15 +76,6 @@ class Menu1List extends React.Component {
                 }
                 </SubMenu>
               )):<Auth/>
-              // menu.map(v=> (
-              //   <SubMenu key={v.menuId} title={<span className="submenu-title-wrapper"><Icon type='boss' />{v.menuName}</span>}>
-              //   {
-              //       v.menu2.map(v1 => 
-              //         <Menu.Item key={v1.menuId} onClick={() => { this.props.history.push(v1.path) }}>{v1.menuName}</Menu.Item>
-              //     )
-              //   }
-              //   </SubMenu>
-              // ))
             }
         </Menu>
       </div>
