@@ -6,6 +6,7 @@ class SearchCell extends React.Component{
         return(
             <span style={{float:'right'}}>
                 <Search
+                    id = 'search'
                     placeholder={this.props.name}
                     onSearch={this.props.searchEvent}
                     onChange={this.props.searchContentChange}
@@ -22,6 +23,8 @@ class SearchCell extends React.Component{
     }
     getFetch = () => {
         this.props.fetch();
+        /**重置时清除搜索框的值 */
+        document.getElementById('search').value = '';
     }
 }
 export default SearchCell;

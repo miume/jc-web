@@ -28,7 +28,6 @@ import OperationManagement from "../operationManagement/operationManagement";
 
 //检测项目
 class Home extends Component {
-    something;
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
         const data = [{
@@ -122,31 +121,8 @@ class Home extends Component {
                             return (
                                 <Route key={e.path} path={e.path} component={e.component}></Route>
                             ) 
-                        })
-                    
-                    }
-                        {/* <Route key='/OperationManagement' path='/OperationManagement' component={OperationManagement}></Route>
-                        <Route key='/role' path='/role' component={Role}></Route>
-                        <Route key='/menu' path='/menu' component={Menu}></Route>
-                        <Route key='/user' path='/user' component={User}></Route>
-                        <Route key='/departManagement' path='/departManagement' component={Depart}></Route>
-                        <Route key='/dataEntry' path='/dataEntry' component={DataEntry}></Route>
-                        <Route key='/data' path='/processInspection' component={ProcessInspection}></Route>
-                        <Route key='/rawTestReport' path='/rawTestReport' component={RawTestReport}></Route>
-                        <Route key='/management' path='/management' component={Management}></Route>
-                        <Route key='/InterProduct' path='/InterProduct' component={InterProduct}></Route>
-                        <Route key='/PurchaseCheckReport' path='/PurchaseCheckReport' component={PurchaseCheckReport}></Route>
-                        {/* 基本信息以及其对应的5个表 */}
-                        {/* <Route key='/baseInfo' path='/baseInfo' component={BaseInfo} ></Route>
-                        <Route key='/deliveryFactory' path='/deliveryFactory' component={DeliveryFactory} ></Route>
-                        <Route key='/productProcess' path='/productProcess' component={ProductProcess}></Route>
-                        <Route key='/testItem' path='/testItem' component={TestItem}></Route>
-                        <Route key='/samplePoint' path='/samplePoint' component={SamplePoint}></Route>
-                        <Route key='/productLine' path='/productLine' component={ProductLine}></Route>  */}
-                        {/* <Route key='/sampleInspection' path='/sampleInspection' component={SampleInspection}></Route> */}
-                        
-                        
-                    
+                        })              
+                    }   
                     </Switch>
                     </div>
                 </div>

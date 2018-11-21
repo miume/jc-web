@@ -3,7 +3,7 @@ import DataButton from '../BlockQuote/bigbutton'
 class Data extends React.Component{
     render(){
         return (
-            <div style={{marginTop:'80px'}}>
+            <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
                 <div style={{float:'left',marginLeft:'15%'}}>
                 {
                     this.props.data.map(d=>
@@ -12,7 +12,7 @@ class Data extends React.Component{
                 }
                </div>
                
-               <div style={{marginLeft:'88%', marginTop:'43%',marginRight:'80px',height:'50px',position:'absolute'}} >
+               <div  style={{float:'right',marginTop:'5%',position:'relative'}}>
                    <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.props.nextStep}>下一步</button>
                </div>
            </div>

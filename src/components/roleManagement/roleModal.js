@@ -3,9 +3,17 @@ import { Form, Input} from 'antd';
 const FormItem = Form.Item;
 
 class RoleModal extends React.Component{
+    constructor(props){
+        super(props);
+        // this.resetField = this.resetField.bind(this);
+    }
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
         const values= this.props.form.getFieldsValue();       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         return values;
+    }
+    /**重置组件的值 */
+    resetField=()=>{
+        this.props.form.resetFields();
     }
     render() {
         const { form } = this.props;
@@ -32,4 +40,8 @@ class RoleModal extends React.Component{
         );
     }
 }
-export default Form.create()(RoleModal);        //创建form实例
+export default Form.create()(RoleModal);        
+//创建form实例
+//经过 Form.create 包装的组件将会自带 this.props.form 属性
+//API getFieldsValue(获取一组输入控件的值，如不传入参数，则获取全部组件的值)
+//resetFields (重置一组输入控件的值与状态，如果不传入参数，则重置全部组件的值)

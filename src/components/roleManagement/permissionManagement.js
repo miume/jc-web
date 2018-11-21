@@ -10,7 +10,6 @@ class PermissionManagement extends React.Component {
             visible: false,
             operations:[],  //存取所有操作
             roleAuth:[],     //存取该角色的所有权限
-            isChecked:false
         }
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -96,22 +95,18 @@ class PermissionManagement extends React.Component {
         /**获取操作id 二级菜单id */
         const operationId =  target.value;
         const menuId = target.id;
-        const data = [];
-        data["roleId"] = this.props.value;
-        data["menuId"] = parseInt(menuId) ;
-        data["operationId"] = parseInt(operationId) ;
-        console.log(data)
+        const data = {
+            roleId:this.props.value,
+            menuId:parseInt(menuId),
+            operationId:parseInt(operationId)
+        }
+        //console.log(data)
         //实现新增权限的功能
         if(target.checked === true ){
-            // target.checked = false;
             axios({
                 url:`${this.props.server}/jc/role/addOneOperation`,
                 method:'post',
-                params:{
-                    roleId : this.props.value,
-                    menuId : parseInt(menuId),
-                    operationId : parseInt(operationId)
-                },
+                params:data,
                 headers:{
                     'Authorization':this.props.Authorization
                 }
@@ -124,15 +119,10 @@ class PermissionManagement extends React.Component {
         }
         //实现删除权限的功能
         else {
-            target.checked = false;
             axios({
                 url:`${this.props.server}/jc/role/deleteOneOperation`,
                 method:'post',
-                params:{
-                    roleId : this.props.value,
-                    menuId : parseInt(menuId),
-                    operationId : parseInt(operationId)
-                },
+                params:data,
                 headers:{
                     'Authorization':this.props.Authorization
                 }
@@ -203,12 +193,13 @@ class PermissionManagement extends React.Component {
                                                               this.state.operations.map(op=>{
                                                                   var isChecked = menu.operations.find(me=>me.id===op.id);
                                                                   if(isChecked){
-                                                                      //console.log('op.id='+op.id)
+                                                                      
                                                                       return (
-                                                                        <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName} checked={true} /> 
+                                                                        <span key={op.id} style={{display:'inline'}}>
+                                                                          <input type='checkbox' key={op.id} value={op.id} id={menu.id.toString()} onChange={this.change} defaultChecked={true}/> {op.operationName}</span>
+                                                                       // <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName} checked={true} /> 
                                                                       );
                                                                   }else{
-                                                                     //console.log('op.id='+op.id)
                                                                       return (
                                                                       <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName}  /> 
                                                                       )}
@@ -231,44 +222,6 @@ class PermissionManagement extends React.Component {
                                                         </span>
                                                     </div>
                                                     )}
-                                                
-                                                // return (
-                                                //     <div key={m2.menuId} className='divborder'><span className='rightBorder'><Icon type="caret-down"  />{m2.menuName}</span>
-                                                //         <span style={{display:'inline'}}>
-                                                //             {  
-                                                //             /**遍历所有操作 */                           
-                                                //             this.state.operations.map(op=> {
-                                                //                 /**根据当前角色来筛选显示input checked 或者 未选中 */
-                                                //                 var auth = this.state.roleAuth;
-                                                //                 if(auth.length>0){
-                                                //                     for(var i in auth){
-                                                //                         if(auth[i].id==m2.menuId){
-                                                //                             var isChecked = auth[i].operations.find(a=>a.id===op.id) ;
-                                                //                             if(isChecked){
-                                                //                                 return (
-                                                //                                     //<AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName} checked={true}/>
-                                                //                                     <span key={op.id} style={{display:'inline'}}>
-                                                //                                     <input type='checkbox' key={op.id} value={op.id} id={m2.menuId.toString()} onChange={this.change} checked /> {op.operationName}</span>
-                                                //                                     );
-                                                //                             }  
-                                                //                             else{
-                                                //                                 return (
-                                                //                                     <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  />
-                                                //                                     );
-                                                //                             }  
-                                                //                         }
-                                                //                         else{
-                                                //                             return (
-                                                //                                 <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  />
-                                                //                                 );
-                                                //                         }
-                                                //                     }
-                                                //                 }                                   
-                                                //             } )
-                                                //             }
-                                                //             </span>
-                                                //         </div>
-                                                // );
                                             })
                                             }
                                             </div>

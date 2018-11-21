@@ -85,8 +85,6 @@ class Role extends React.Component {
         // console.log(da)
         this.state = {
             dataSource : [],
-            pagination: [],
-            count : 2,
             searchText: '',
             editingKey: '',
             visible: false,
@@ -96,6 +94,7 @@ class Role extends React.Component {
             selectedRowKeys: [],
             searchContent:'',
             Authorization:Authorization,
+            reset:false
             
         };
         this.cancel = this.cancel.bind(this);
@@ -198,7 +197,7 @@ class Role extends React.Component {
     }
     fetch = (params = {}) => {
       //console.log('params:', params);
-      this.setState({ loading: true });
+      //this.setState({ loading: true });
       axios({
         url: `${server}/jc/role/getRolesByPage`,
         method: 'get',
@@ -215,7 +214,6 @@ class Role extends React.Component {
         }
         // console.log(res.list)
         this.setState({
-          loading: false,
           dataSource: res.list,
         });
       });
@@ -231,20 +229,9 @@ class Role extends React.Component {
     handleRoleDescriptionChange(e) {
       this.setState({roleDescription : e.target.value})
     }
-    // /**实现字段搜索功能 */
-    // handleSearch = (selectedKeys, confirm) => () => {
-    //     confirm();
-    //     this.setState({ searchText: selectedKeys[0] });
-    // }
-    // handleReset = clearFilters => () => {
-    //     clearFilters();
-    //     this.setState({ searchText: '' });
-    // }
      /**根据id处理单条记录删除 */
      handleDelete(id){
        //console.log(id)
-        const dataSource = this.state.dataSource;
-        this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
           url:`${server}/jc/role/${id}`,
           method:'Delete',
@@ -253,6 +240,7 @@ class Role extends React.Component {
           },
         }).then((data)=>{
           message.info(data.data.message);
+          this.fetch();
         }).catch((error)=>{
           message.info(error.data.message)
         })
@@ -320,7 +308,7 @@ class Role extends React.Component {
       handleOk() {
         //console.log(this.formRef.getItemsValue());
         this.setState({
-          visible: false
+          visible: false,
         });
         axios({
           url : `${server}/jc/role/add`,
@@ -334,17 +322,20 @@ class Role extends React.Component {
           // console.log(data)
           message.info(data.data.message); 
           this.fetch();
-          this.formRef.resetFields();
         })
         .catch(function (error) {
           // console.log(error)
           message.info(error);
         }); 
+        /**清空新增form组件的内容 */
+        this.formRef.resetField()
       }
       handleCancel() {
         this.setState({
           visible: false
         });
+        
+        this.formRef.resetField()
       }
       
       rowSelected(selectedRowKeys){
@@ -465,12 +456,11 @@ class Role extends React.Component {
                 <div style={{paddingTop:'10px'}}>
                 <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
                     <Modal title="新增" visible={this.state.visible}
-                          onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
                           footer={[
                             <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
                             <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
                           ]}>
-                          <RoleModal wrappedComponentRef={(form) => this.formRef = form}></RoleModal>
+                          <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
