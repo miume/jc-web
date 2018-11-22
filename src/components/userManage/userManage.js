@@ -29,7 +29,7 @@ class EditableCell extends React.Component {
   }
   
     getInput = () => {
-       // console.log(this.props.departmentchildren);//获取部门的data（getAll）
+      //  console.log(this.props.departmentchildren);//获取部门的data（getAll）
         if (this.props.inputType === 'select') {
             return <Select >
               {

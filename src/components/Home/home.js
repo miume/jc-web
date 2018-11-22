@@ -82,6 +82,9 @@ class Home extends Component {
         },{
             path:'/productLine',
             component:ProductLine
+        },{
+            path:'/sampleInspection',
+            component:SampleInspection
         }]  
         return data;
     }

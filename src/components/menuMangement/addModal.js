@@ -100,7 +100,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : 'http://218.77.105.241:40080/jc/menu/add',
+                url : 'http://192.168.1.105:8081/jc/menu/add',
                 method:'post',
                 headers:{
                     'Authorization': Authorization

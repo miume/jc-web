@@ -17,7 +17,7 @@ class DeletaSpan extends React.Component {
     }
     handleDelete = (id) => {
         axios({
-            url:'http://218.77.105.241:40080/jc/menu/'+parseInt(id),
+            url:'http://192.168.1.105:8081/jc/menu/'+parseInt(id),
             method:'Delete',
             headers:{
                 'Authorization':Authorization
