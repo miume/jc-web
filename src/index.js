@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './font-awesome/css/font-awesome.css';
 import * as serviceWorker from './serviceWorker';
 import {Router, Route, Switch,BrowserRouter} from 'react-router-dom'
 import MRoute from '../src/routes/router'

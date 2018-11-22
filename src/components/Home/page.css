@@ -34,3 +34,13 @@
   .clear{
     clear: both;
   }
+  .iconHover{
+    width : 35px;
+    height :35px;
+    cursor : pointer;
+    margin-right : 10px;
+    float : right;
+  }
+   div .iconHover:hover{
+    background-color: #0079FE;
+  }

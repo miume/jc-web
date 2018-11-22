@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../dataEntry/blockQuote'
 import {Table,Popconfirm,Divider } from 'antd';
 import '../Home/page.css';
 import DeleteByIds from '../roleManagement/deleteByIds';
@@ -191,19 +191,18 @@ class ProcessInspection extends React.Component{
         }];
         return (
             <div>
-                <BlockQuote name='制程检测' />
-                <div style={{paddingTop:'10px'}}>
+                <BlockQuote name='制程检测' menu='质量与流程' menu2='数据录入' />
+                <div style={{padding:'15px'}}>
                     <Add />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号'/>
                     </span>
-                </div>
-                {/* <WhiteSpace></WhiteSpace> */}
-                <Table rowKey={record => record.id} rowSelection={rowSelection} columns={columns} dataSource={this.state.dataSource}  pagination={pagination} size="small" bordered  scroll={{ y: 400 }}/>
-                <div style={{marginLeft:'90%', marginTop:'29%',marginRight:'80px',height:'50px',position:'absolute'}} >
-                <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
-                </div>  
+                  <Table rowKey={record => record.id} rowSelection={rowSelection} columns={columns} dataSource={this.state.dataSource}  pagination={pagination} size="small" bordered  scroll={{ y: 400 }}/>
+                  <div style={{marginLeft:'90%', marginTop:'29%',marginRight:'80px',height:'50px',position:'absolute'}} >
+                  <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
+                </div> 
+                </div> 
             </div>
 
         );

@@ -29,19 +29,15 @@ html, body, .parent {
     color: #fff;
     background-color: #333333;
 }
-.menu1 ul li{
-    /* padding-left:20px !important; */
-    /* float: left !important; */
-}
 .rightDiv {
     position: absolute;
     overflow: auto;
-    left: 140px;
+    left: 130px;
     right: 0;
     top: 60px;
     height: 100%;
     background: #ffffff;
-    padding: 15px;
+    /* padding: 10px; */
 }
 .top-left {
     padding-left: 10px;
