@@ -11,7 +11,17 @@ class CheckEditSpan extends React.Component {
         this.state = {
             visible: false,
             pvisivle: false,
+            checkSelectData:true,
+            checkSwitchData:false,
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.hide = this.hide.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        this.urgentChange = this.urgentChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -38,8 +48,8 @@ class CheckEditSpan extends React.Component {
                             // content={<a onClick={this.hide}>Close</a>}
                             content = {
                                 <div style={{width:200}}>
-                                    <div>
-                                        <Select defaultValue="a" style={{ width: 120 }}>
+                                    <div >
+                                        <Select placeholder="选择送审流程" style={{ width: 150 }} onChange={this.handleChange}>
                                             <Option value="a">a</Option>
                                             <Option value="b">b</Option>
                                             <Option value="c">c</Option>
@@ -49,11 +59,9 @@ class CheckEditSpan extends React.Component {
                                         <span style={{marginRight:10}}>是否紧急</span><Switch onChange={this.urgentChange}/>
                                     </div>
                                     <div style={{paddingTop:10}}>
-                                        <Button>取消</Button>
-                                        <Button>确认</Button>
+                                        <Button onClick={this.hide}>取消</Button>
+                                        <Button disabled={this.state.checkSelectData}>确认</Button>
                                     </div>
-
-
                                 </div>
                             }
                             title="设置审批细节"
@@ -62,12 +70,13 @@ class CheckEditSpan extends React.Component {
                             onVisibleChange={this.handleVisibleChange}
                             placement="topRight"
                         >
-                            <Button key="submit" type="primary" >提交</Button>
+                            <Button key="submit" type="primary" >送审</Button>
                         </Popover>
                     ]}
                 >
                     <div style={{height:450}}>
                         <PurchaseModal
+                            // purchaseStatus = '合格'
                             // data={data}
                             // topData={topData}
                         />
@@ -105,10 +114,24 @@ class CheckEditSpan extends React.Component {
     handleVisibleChange = (pvisivle) => {
         this.setState({ pvisivle });
     };
+    /**编辑-送审提交框所需要的函数 */
     // 提交Modal中是否紧急
     urgentChange(checked) {
         console.log(`switch to ${checked}`);
+        this.setState({
+            checkSwitchData:checked
+        })
     }
+    // 获取下拉框的内容
+    handleChange(value) {
+        console.log(value.length);
+        if(value.length>0){
+            this.setState({
+                checkSelectData:false
+            })
+        }
+    }
+    /**---------------------- */
 }
 
 export default CheckEditSpan;

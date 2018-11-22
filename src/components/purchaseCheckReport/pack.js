@@ -4,7 +4,8 @@ import '../Home/page.css';
 import WhiteSpace from "../BlockQuote/whiteSpace";
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
-
+import axios from "axios";
+//
 const data = [{
     index:'1',
     id: '32',
@@ -43,6 +44,10 @@ const data = [{
     i: '已通过'
 }];
 
+/**这是个令牌，每次调用接口都将其放在header里 */
+const Authorization = localStorage.getItem('Authorization');
+const server = localStorage.getItem('remote');
+
 class Pack extends React.Component {
     constructor(props) {
         super(props);
@@ -51,6 +56,17 @@ class Pack extends React.Component {
             selectedRowKeys: [],    //多选框key
             loading: false,
         };
+        this.fetch=this.fetch.bind(this);
+        this.pagination = {
+            total: this.state.dataSource.length,
+            showSizeChanger: true,
+            onShowSizeChange(current, pageSize) {
+                // console.log('Current: ', current, '; PageSize: ', pageSize);
+            },
+            onChange(current) {
+                // console.log('Current: ', current);
+            }
+        }
     };
     render() {
         const { loading, selectedRowKeys } = this.state;
@@ -61,7 +77,7 @@ class Pack extends React.Component {
         return(
             <div>
                 <div className="fl">
-                    <Button>打包</Button>
+                    <Button>生成</Button>
                     <Button>删除</Button>
                 </div>
                 <div className="fr">
@@ -74,6 +90,8 @@ class Pack extends React.Component {
                 <PackTable
                     data={this.state.dataSource}
                     rowSelection={rowSelection}
+                    pagination={this.pagination}
+                    // fetch={this.fetch}
                 />
             </div>
         )
@@ -83,6 +101,48 @@ class Pack extends React.Component {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
+    /**---------------------- */
+    /**获取所有数据 getAllByPage */
+    handleTableChange = (pagination) => {
+        this.fetch({
+            size: pagination.pageSize,
+            page: pagination.current,
+            orderField: 'id',
+            orderType: 'desc',
+
+        });
+    };
+    fetch = (params = {}) => {
+        this.setState({ loading: true });
+        axios({
+            // url: `${server}/jc/purchaseReportRecord/getAllByPage`,
+            url: `http://2p277534k9.iok.la:58718/jc/purchaseReportRecord/getAllByPage`,
+            method: 'get',
+            headers:{
+                'Authorization': Authorization
+            },
+            params: params,
+            // type: 'json',
+        }).then((data) => {
+            console.log('data',data.data)
+            const res = data.data.data;
+            console.log('res',res);
+            this.pagination.total=res.total;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                loading: false,
+                dataSource: res.list,
+            });
+        });
+    };
+    // componentDidMount() {
+    //     this.fetch();
+    // }
+    /**---------------------- */
+    /**实现全选功能 */
+
     /**---------------------- */
 }
 

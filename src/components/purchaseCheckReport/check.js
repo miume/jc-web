@@ -5,52 +5,26 @@ import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 import DeleteButton from './checkDeleteButton';
 
-const data = [{
-    index:'1',
-    id: '32',
-    a: '周小伟',
-    b: '启动',
-    c: 'c',
-    d: 'd',
-    e: 'e',
-    f: 'f',
-    g: '无',
-    h: '无',
-    i: '审核中',
-    j: 'j',
-    k: 'k',
-    l: 'l'
-},{
-    index:'2',
-    id: '33',
-    a: '周小伟',
-    b: '启动',
-    c: 'c',
-    d: 'd',
-    e: 'e',
-    f: 'f',
-    g: '无',
-    h: '无',
-    i: '不通过',
-    j: 'j',
-    k: 'k',
-    l: 'l'
-},{
-    index:'3',
-    id: '34',
-    a: '周小伟',
-    b: '启动',
-    c: 'c',
-    d: 'd',
-    e: 'e',
-    f: 'f',
-    g: '无',
-    h: '无',
-    i: '已通过',
-    j: 'j',
-    k: 'k',
-    l: 'l'
-}];
+const data =[];
+for (let i = 0; i < 20; i++) {
+    data.push({
+        index: i,
+        id:i,
+        a: '周小伟',
+        b: '启动',
+        c: 'c',
+        d: 'd',
+        e: 'e',
+        f: 'f',
+        g: '无',
+        h: '无',
+        i: '不通过',
+        j: 'j',
+        k: 'k',
+        l: 'l'
+    });
+}
+
 
 class Check extends React.Component {
     constructor(props) {
