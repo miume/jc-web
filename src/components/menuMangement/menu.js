@@ -57,6 +57,7 @@ class Menu extends React.Component{
         <div style={{paddingTop:'10px'}}>
             <AddModal
                 fetch={this.fetch}
+                fatherMenu = {this.state.fatherMenu}
             />
             <DeleteByIds
                 selectedRowKeys={this.state.selectedRowKeys}
@@ -101,6 +102,7 @@ class Menu extends React.Component{
       });
   };
     fetch = (params = {}) => {
+      this.getAllFatherMenu();
       this.setState({ loading: true });
       axios({
           url: 'http://218.77.105.241:40080/jc/menu/findAllByPage',
@@ -111,7 +113,6 @@ class Menu extends React.Component{
           params: params,
           // type: 'json',
       }).then((data) => {
-        console.log(data.data.data)
           const res = data.data.data;
           this.pagination.total=res.total;
           for(var i = 1; i<=res.list.length; i++){
@@ -121,11 +122,13 @@ class Menu extends React.Component{
               loading: false,
               dataSource: res.list,
           });
-      });
+      }).catch((error)=>{
+        message.info(error.data.message)
+    });
   };
     componentDidMount() {
       this.fetch();
-      this.getAllFatherMenu();
+     
   }
   /**获取所有父菜单 */
   getAllFatherMenu(){
@@ -145,9 +148,10 @@ class Menu extends React.Component{
   }
     start = () => {
       const ids = this.state.selectedRowKeys;
+      console.log(ids)
       axios({
           url:'http://218.77.105.241:40080/jc/menu/deleteByIds',
-          method:'Delete',
+          method:'post',
           headers:{
               'Authorization':Authorization
           },
@@ -190,7 +194,7 @@ class Menu extends React.Component{
           const res = data.data.data;
           this.pagination.total=res.total;
           for(var i = 1; i<=res.list.length; i++){
-              res.list[i-1]['index']=(res.pages-1)*10+i;
+              res.list[i-1]['index']=(res.prePage)*10+i;
           }
           this.setState({
               dataSource: res.list,

@@ -26,10 +26,12 @@ class EditableCell extends React.Component {
                 );
               })
             }
-          {/* <Option value="1">生产部</Option>
-          <Option value="2">测试部</Option> */}
-          
       </Select>;
+        } else if (this.props.inputType ==='select1'){
+            return <Select>
+                        <Option value={1}>父菜单</Option>
+                        <Option value={2}>子菜单</Option>
+                    </Select>
         }
         return <Input />;
     };
@@ -44,6 +46,7 @@ class EditableCell extends React.Component {
             index,
             ...restProps
         } = this.props;
+        console.log(this.props)
         return (
             <EditableContext.Consumer>
                 {(form) => {
@@ -57,7 +60,8 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `Please Input ${title}!`,
                                         }],
-                                        initialValue: record[dataIndex],
+                                        initialValue: record[dataIndex], 
+                                        // initialValue: (record[dataIndex]==1)? '父菜单':(record[dataIndex]==2 ? '子菜单' : record[dataIndex]),                                       
                                     })(this.getInput())}
                                 </FormItem>
                             ) : restProps.children}
@@ -97,12 +101,19 @@ class MenuTable extends React.Component{
         editable: 1,
         width: '20%',
     },{
-        title: '描述',
-        dataIndex: 'prefix',
-        key: 'prefix',
+        title: '类型',
+        dataIndex : 'menuType',
+        key: 'menuType',
         align:'center',
         editable: 1,
         width: '20%',
+        render:(text, record)=>{
+            if(record.menuType==1){
+                return '父菜单'
+            }else if(record.menuType==2){
+                return '子菜单'
+            }
+        }
     },{
         title: '父菜单',
         dataIndex: 'parent',
@@ -171,7 +182,7 @@ class MenuTable extends React.Component{
               ...col,
               onCell: record => ({
                 record,
-                inputType: col.dataIndex === 'parent' ? 'select' : 'text',
+                inputType: col.dataIndex === 'parent' ? 'select' : 'text' && col.key === 'menuType' ? 'select1' : 'text',
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
