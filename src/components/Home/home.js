@@ -4,6 +4,7 @@ import Menu1List from './menu';
 // import SonRoute from '../../routes/sonRoute';
 import './home.css';
 import Exit from './exit';
+import QuickAccess from '../quickAccess/quickAccess';
 import Role from '../roleManagement/roleManagement';
 import Menu from '../menuMangement/menu';
 import ProcessInspection from '../processInspection/processInspection'
@@ -116,7 +117,10 @@ class Home extends Component {
                     </div>
                     <div className="rightDiv">
                     <Switch>
+                        {/**默认选中快速访问界面 */}
+                        <Route exact path="/home" component={QuickAccess}/>
                     {
+                        
                         path2Component.map(e => {
                             return (
                                 <Route key={e.path} path={e.path} component={e.component}></Route>

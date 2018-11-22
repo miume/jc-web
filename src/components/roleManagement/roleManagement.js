@@ -452,23 +452,24 @@ class Role extends React.Component {
         });
         return (
             <div>
-                <BlockQuote name="角色管理"></BlockQuote>
-                <div style={{paddingTop:'10px'}}>
-                <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
-                    <Modal title="新增" visible={this.state.visible}
-                          footer={[
-                            <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
-                            <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
-                          ]}>
-                          <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
-                    </Modal>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
-                    </span>
+                <BlockQuote name="角色管理" menu='用户与权限'></BlockQuote>
+                <div style={{padding:'15px'}}>
+                  <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
+                      <Modal title="新增" visible={this.state.visible}
+                            footer={[
+                              <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
+                              <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
+                            ]}>
+                            <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
+                      </Modal>
+                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
+                      <span style={{float:'right',paddingBottom:'8px'}}>
+                          <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
+                      </span>
+                  
+                  <div className='clear'  ></div>
+                  <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small'></Table>
                 </div>
-                <div className='clear'  ></div>
-                <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small'></Table>
             </div>
 
         );

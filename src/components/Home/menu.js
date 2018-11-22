@@ -12,6 +12,7 @@ class Menu1List extends React.Component {
       // rootSubmenuKeys : menu.map(element => element.menuId)
     }
     this.onOpenChange = this.onOpenChange.bind(this);
+    this.menuClick = this.menuClick.bind(this);
   }
   /**只展开当前父级菜单 */
   onOpenChange(openKeys){
@@ -25,6 +26,43 @@ class Menu1List extends React.Component {
           openKeys : [latestOpenKeys]
         });
     }
+  }
+  /**点击二级菜单 存取6个访问的二级菜单*/
+  menuClick(event){
+    const path = event.key;
+    const menuName = event.item.props.children;
+    var menuClick = JSON.parse(localStorage.getItem('quickAccess'));
+    // const initMenuClick = [];
+    // if(menuClick)
+    if(menuClick){
+        var repeat = menuClick.find(m=>m.menuName==menuName);
+        //console.log(repeat);
+        if(!repeat && menuClick.length<6){
+          menuClick.push({
+            menuName:menuName,
+            path:path
+          })
+        }
+        /**如果之前没有访问过，且localStorage已经有6条访问记录 */
+        if(!repeat && menuClick.length === 6){
+            /**删除第一条，然后添加最新的访问记录 */
+            menuClick.splice(0,1);
+            menuClick.push({
+              menuName:menuName,
+              path:path
+            })
+        }
+    }
+    else{
+      menuClick = [];
+      menuClick.push({
+        menuName:menuName,
+        path:path
+      })
+    }
+    //console.log(localStorage.getItem('quickAccess'))
+    localStorage.setItem('quickAccess',JSON.stringify(menuClick))
+    this.props.history.push(path);
   }
   render() {
     //console.log(menu)
@@ -71,7 +109,7 @@ class Menu1List extends React.Component {
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>
                 {
                     v.menuList.map(v1 => 
-                      <Menu.Item key={v1.menuId} style={{color:'white',fontWeight:'bold'}}  onClick={() => { this.props.history.push(v1.path) }}>{v1.menuName}</Menu.Item>
+                      <Menu.Item key={v1.path} style={{color:'white',fontWeight:'bold'}} onClick={this.menuClick}>{v1.menuName}</Menu.Item>
                   )
                 }
                 </SubMenu>
