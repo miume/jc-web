@@ -3,7 +3,7 @@ import { Input,Button,Table,Radio } from 'antd';
 import '../Home/page.css';
 
 const data =[];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 5; i++) {
     data.push({
         index: i,
         id:i,
@@ -25,10 +25,13 @@ class PurchaseModal extends React.Component {
         this.state = {
             columns: [],
             dataSource: data,
-            radioDataArr: [],    //用来判定待定，合格，不合格
+            radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
+            radioTrueArr: [],   //合格的数组--
             purchaseStatus: '待定', //显示判定，合格，不合格
+            radioTrueNum: 0,
+            radioFalseNum: 0,
 
-        };
+    };
         // this.radioChange = this.radioChange.bind(this);
     }
 
@@ -226,15 +229,63 @@ class PurchaseModal extends React.Component {
     radioChange = (recordId,e) => {
         //获取下标，将下标进行排序或许与数据进行组合，传给数据库
         // 或者 单独将id和value构成一个新的数据传给后台
-        console.log('radio:',e);
-        console.log('recordId:',recordId);
         const radioState = e.target.value;
-        if(radioState==='nopass'){
-            this.setState({
-                purchaseStatus: '不合格'
-            });
+        const radioData = {
+            id: recordId,
+            purchaseStatus: radioState,
         };
-
+        var flag = false;
+        var radioDataArr = this.state.radioDataArr;
+        const radioArrLength = this.state.radioDataArr.length;
+        var radioTrueNum = this.state.radioTrueNum;
+        var radioFalseNum = this.state.radioFalseNum;
+        for(var i=0;i<radioDataArr.length;i++){
+            if(radioDataArr[i].id===recordId){
+                radioDataArr[i].purchaseStatus = radioState;
+                if(radioDataArr[i].purchaseStatus === 'pass'){
+                    radioTrueNum = radioTrueNum + 1;
+                    radioFalseNum = radioFalseNum - 1;
+                }
+                if(radioDataArr[i].purchaseStatus === 'nopass'){
+                    radioFalseNum = radioFalseNum + 1;
+                    radioTrueNum = radioTrueNum - 1;
+                }
+                flag = true;
+            }
+        }
+        if(flag === false){
+            // this.setState({
+            //     radioDataArr: [...this.state.radioDataArr,radioData]
+            // });
+            if(radioData.purchaseStatus === 'pass'){
+                radioTrueNum = radioTrueNum + 1;
+            }
+            if(radioData.purchaseStatus === 'nopass'){
+                radioFalseNum = radioFalseNum + 1;
+            }
+            radioDataArr.push(radioData);
+        }
+        this.setState({
+            radioTrueNum: radioTrueNum,
+            radioFalseNum: radioFalseNum,
+            radioDataArr: radioDataArr
+        },() => {
+            if(radioArrLength<this.state.dataSource.length){
+                this.setState({
+                    purchaseStatus: '待定'
+                })
+            }
+            if(radioFalseNum > 0){
+                this.setState({
+                    purchaseStatus: '不合格'
+                })
+            }
+            if(radioTrueNum === this.state.dataSource.length){
+                this.setState({
+                    purchaseStatus: '合格'
+                })
+            }
+        });
     };
 
     /**---------------------- */
