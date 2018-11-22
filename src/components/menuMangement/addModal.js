@@ -1,12 +1,30 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message } from 'antd';
+import { Button, Modal, Form, Input,message,Select } from 'antd';
 import axios from 'axios';
 
+const Option = Select.Option;
 const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
+        constructor(props){
+            super(props)
+            this.state={
+                visible1:false,
+            }
+        }
+        selectChange= (value) =>{
+            if(value=='1'){
+                this.setState({
+                    visible1:false
+                })
+            }else if(value=='2'){
+                this.setState({
+                    visible1:true
+                })
+            }
+        }
         render() {
-            const { visible, onCancel, onCreate, form } = this.props;
+            const { visible, onCancel, onCreate, form,fatherMenu } = this.props;
             const { getFieldDecorator } = form;
             return (
                 <Modal
@@ -25,13 +43,34 @@ const CollectionCreateForm = Form.create()(
                                 <Input placeholder='请输入菜单名称'/>
                             )}
                         </FormItem>
-                        <FormItem label="描述" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem label="菜单类型" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('menuType', {
-                                initialValue: '',
+                                rules: [{ required: true, message: '请选择菜单类型' }],
                             })(
-                                <Input placeholder='请输入菜单描述' />
+                                <Select onChange={this.selectChange}>
+                                    <Option value='1'>父菜单</Option>
+                                    <Option value='2'>子菜单</Option>
+                                </Select>
                             )}
                         </FormItem>
+                       {
+                           this.state.visible1 === true ?  <FormItem label='父菜单选择' labelCol={{span:5}} wrapperCol={{ span: 14 }} required >
+                           {getFieldDecorator('parent',{
+                               initialValue: '',
+                               rules: [{required: true, message: '请选择父菜单'}],
+                           })(    //2、getFieldDecorator 的使用方法，
+                               <Select>
+                               {
+                                   fatherMenu.map(de=>{
+                                       return(
+                                       <Option key={de.id} value={de.id}>{de.menuName}</Option>
+                                       );
+                                   })
+                               }
+                               </Select>
+                               )}
+                       </FormItem> :  null
+                       }
                     </Form>
                 </Modal>
             );
@@ -69,15 +108,12 @@ class AddModal extends React.Component {
                 data: values,
                 type:'json'
             }).then((data) => {
-                console.log('data:',data.data.message);
                 message.info(data.data.message);
                 this.props.fetch(); // 重新调用分页函数
             }).catch(function (error) {
-                console.log(error);
                 message.info(error.data.message);
             });
             // 将value传给后台
-            console.log('Received values of form: ', values);
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -96,6 +132,7 @@ class AddModal extends React.Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    fatherMenu = {this.props.fatherMenu}
                 />
             </span>
         );
