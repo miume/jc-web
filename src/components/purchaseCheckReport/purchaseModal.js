@@ -180,32 +180,6 @@ class PurchaseModal extends React.Component {
             }]
         };
         colums.push(endArrData);
-
-        // for(var v of dataArr){
-        //     console.log('v:',v);
-        //     const headData = {
-        //         title: '',
-        //         align:'center',
-        //         children: [{
-        //             title: '',
-        //             align:'center',
-        //             children: [{
-        //                 title: '',
-        //                 dataIndex: '',
-        //                 key: '',
-        //                 align:'center',
-        //                 width: '10%',
-        //             }]
-        //         }]
-        //     };
-        //     headData.title = v.name;
-        //     headData.children[0].title = v.symbol;
-        //     headData.children[0].children[0].title = v.area;
-        //     headData.children[0].children[0].dataIndex = v.name;
-        //     headData.children[0].children[0].key = v.name;
-        //     colums.push(headData);
-        // }
-        // console.log('colums:',colums);
         return colums;
     };
     assembleTableHead = (dynColums) => {

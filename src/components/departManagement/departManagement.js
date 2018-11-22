@@ -132,7 +132,6 @@ class Depart extends React.Component {
     /**实现批量删除功能 */
     start = () => {
         const ids = this.state.selectedRowKeys;
-        console.log(ids);
         axios({
             url:`${server}/jc/department/deleteByIds`,
             method:'Delete',

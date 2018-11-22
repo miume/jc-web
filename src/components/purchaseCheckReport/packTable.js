@@ -68,7 +68,6 @@ class PackTable extends React.Component {
         width: '17%',
         render: (text,record) => {
             console.log("-----");
-            console.log(record);
             // let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>

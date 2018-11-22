@@ -17,8 +17,6 @@ class DeletaSpan extends React.Component {
         )
     }
     handleDelete = (id) => {
-        console.log("++++++")
-        console.log(id);
         // parseInt(id)
         axios({
             url:`${server}/jc/operation/${id}`,

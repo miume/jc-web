@@ -188,8 +188,6 @@ class DepartTable extends React.Component {
     };
 
     edit(id) {
-        console.log(id);
-        console.log(this.state.editingKey)
         this.setState({ editingKey: id });
     }
 
@@ -221,7 +219,6 @@ class DepartTable extends React.Component {
                     message.info(data.data.message);
                     this.props.fetch();
                 }).catch((error)=>{
-                    console.log(error);
                     message.info(error.data.message);
                 });
                 this.props.modifyDataSource(newData);
