@@ -86,8 +86,6 @@ class CheckTable extends React.Component {
         align:'center',
         width: '25%',
         render: (text,record) => {
-            console.log("-----");
-            console.log(record);
             let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>
@@ -141,8 +139,6 @@ class CheckTable extends React.Component {
     /**---------------------- */
     /**单条记录删除 */
     handleDelete = (key) => {
-        console.log("++++++");
-        console.log(key);
         // const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     };

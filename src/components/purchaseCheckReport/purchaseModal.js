@@ -2,50 +2,40 @@ import React from 'react';
 import { Input,Button,Table,Radio } from 'antd';
 import '../Home/page.css';
 
-const data = [{
-    index:'1',
-    id: '32',
-    a: 'a',
-    Ca: '启动',
-    Fe: 'c',
-    Na: 'd',
-    Si: 'e',
-    Li: 'f',
-    Al: '无',
-    Mg: '无',
-},{
-    index:'2',
-    id: '33',
-    a: 'a',
-    Ca: '启动',
-    Fe: 'c',
-    Na: 'd',
-    Si: 'e',
-    Li: 'f',
-    Al: '无',
-    Mg: '无',
-},{
-    index:'3',
-    id: '34',
-    a: 'a',
-    Ca: '启动',
-    Fe: 'c',
-    Na: 'd',
-    Si: 'e',
-    Li: 'f',
-    Al: '无',
-    Mg: '无',
-}];
+const data =[];
+for (let i = 0; i < 20; i++) {
+    data.push({
+        index: i,
+        id:i,
+        a: 'a',
+        Ca: '启动',
+        Fe: 'c',
+        Na: 'd',
+        Si: 'e',
+        Li: 'f',
+        Al: '无',
+        Mg: '无',
+    });
+}
+
 
 class PurchaseModal extends React.Component {
-    state = {
-        columns: [],
-        dataSource: data,
-    };
+    constructor(props){
+        super(props);
+        this.state = {
+            columns: [],
+            dataSource: data,
+            radioDataArr: [],    //用来判定待定，合格，不合格
+            purchaseStatus: '待定', //显示判定，合格，不合格
+
+        };
+        // this.radioChange = this.radioChange.bind(this);
+    }
+
     columns = [];
     render() {
         /**动态表头数据获取与组装 */
-        const dynHeadData =this.assembleDynamicData(this.getDynamicHeadData());
+        const dynHeadData = this.assembleDynamicData(this.getDynamicHeadData());
         //获取滚动条的x轴大小
         const arrColumnslength = parseInt(dynHeadData.length*150 + 300);
         const totalColumns = this.assembleTableHead(dynHeadData);
@@ -88,7 +78,9 @@ class PurchaseModal extends React.Component {
                             </tr>
                         </tbody>
                     </table>
-                    <Button size="large" style={{float:'left',marginLeft:20}}>待定</Button>
+                    {/*<Button size="large" style={{float:'left',marginLeft:20}}>待定</Button>*/}
+                    {/*用来判断是否待定，不合格，合格*/}
+                    <span style={{float:'left',marginLeft:20}}>{this.state.purchaseStatus}</span>
                     <table style={{float:'right',marginTop:'20px'}} >
                         <tbody>
                             <tr>
@@ -239,10 +231,12 @@ class PurchaseModal extends React.Component {
             width: 100,
             fixed: 'right',
             render: (text,record) => {
+                // console.log('record:',record);
+                const recordId = record.id;
                 return (
                     <span>
-                        <Radio.Group buttonStyle="solid" size="small" >
-                            <Radio.Button value="pass" style={{border:0}}>合格</Radio.Button>
+                        <Radio.Group buttonStyle="solid" size="small"  onChange = {this.radioChange.bind(this,recordId)}>
+                            <Radio.Button value='pass'  style={{border:0}}>合格</Radio.Button>
                             <Radio.Button value="nopass" style={{border:0}}>不合格</Radio.Button>
                         </Radio.Group>
                     </span>
@@ -253,6 +247,26 @@ class PurchaseModal extends React.Component {
         // console.log('table',columns);
         return columns;
     };
+    /**---------------------- */
+    /**表格判定的结果获取 */
+    radioChange = (recordId,e) => {
+        //获取下标，将下标进行排序或许与数据进行组合，传给数据库
+        // 或者 单独将id和value构成一个新的数据传给后台
+        console.log('radio:',e);
+        console.log('recordId:',recordId);
+        const radioState = e.target.value;
+        if(radioState==='nopass'){
+            this.setState({
+                purchaseStatus: '不合格'
+            });
+        };
+
+    };
+
+    /**---------------------- */
+    /**div 待定0，不合格1，合格2--全部选合格才立即变为合格，当有一个不合格，则变为不合格，未全部选完，则待定 */
+
+
     /**---------------------- */
 }
 
