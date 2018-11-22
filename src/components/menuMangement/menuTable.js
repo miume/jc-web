@@ -22,7 +22,7 @@ class EditableCell extends React.Component {
             {
               this.props.fathermenu.map(de=>{
                 return (
-                  <Option key={de.id} value={de.menuName}>{de.menuName}</Option>
+                  <Option key={de.id} value={de.id}>{de.menuName}</Option>
                 );
               })
             }
@@ -46,7 +46,6 @@ class EditableCell extends React.Component {
             index,
             ...restProps
         } = this.props;
-        console.log(this.props)
         return (
             <EditableContext.Consumer>
                 {(form) => {
@@ -116,11 +115,14 @@ class MenuTable extends React.Component{
         }
     },{
         title: '父菜单',
-        dataIndex: 'parent',
-        key: 'parent',
+        dataIndex: 'parentId',
+        key: 'parentId',
         align:'center',
         editable: 1,
         width: '20%',
+        render:(text,record)=>{
+            return record.parentName
+        }
     },{
         title: '操作',
         key: 'operation',
@@ -182,7 +184,7 @@ class MenuTable extends React.Component{
               ...col,
               onCell: record => ({
                 record,
-                inputType: col.dataIndex === 'parent' ? 'select' : 'text' && col.key === 'menuType' ? 'select1' : 'text',
+                inputType: col.dataIndex === 'parentId' ? 'select' : 'text' && col.dataIndex === 'menuType' ? 'select1' : 'text',
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
@@ -242,7 +244,7 @@ class MenuTable extends React.Component{
                 data['id'] = id.toString()
                 console.log(data)
                 axios({
-                    url:'http://218.77.105.241:40080/jc/menu/update',
+                    url:'http://192.168.1.105:8081/jc/menu/update',
                     method:'post',
                     headers:{
                         'Authorization':Authorization

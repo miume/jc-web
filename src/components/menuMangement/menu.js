@@ -105,7 +105,7 @@ class Menu extends React.Component{
       this.getAllFatherMenu();
       this.setState({ loading: true });
       axios({
-          url: 'http://218.77.105.241:40080/jc/menu/findAllByPage',
+          url: 'http://192.168.1.105:8081/jc/menu/findAllByPage',
           method: 'get',
           headers:{
               'Authorization': Authorization
@@ -122,9 +122,7 @@ class Menu extends React.Component{
               loading: false,
               dataSource: res.list,
           });
-      }).catch((error)=>{
-        message.info(error.data.message)
-    });
+      })
   };
     componentDidMount() {
       this.fetch();
@@ -133,7 +131,7 @@ class Menu extends React.Component{
   /**获取所有父菜单 */
   getAllFatherMenu(){
     axios({
-      url:'http://218.77.105.241:40080/jc/menu/findByMenuType',
+      url:'http://192.168.1.105:8081/jc/menu/findByMenuType',
       method:'get',
       headers:{
         'Authorization': Authorization
@@ -150,7 +148,7 @@ class Menu extends React.Component{
       const ids = this.state.selectedRowKeys;
       console.log(ids)
       axios({
-          url:'http://218.77.105.241:40080/jc/menu/deleteByIds',
+          url:'http://192.168.1.105:8081/jc/menu/deleteByIds',
           method:'post',
           headers:{
               'Authorization':Authorization
@@ -179,7 +177,7 @@ class Menu extends React.Component{
     searchEvent(){
       const ope_name = this.state.searchContent;
       axios({
-          url:'http://218.77.105.241:40080/jc/menu/findByNameLikeByPage',
+          url:'http://192.168.1.105:8081/jc/menu/findByNameLikeByPage',
           method:'get',
           headers:{
               'Authorization':Authorization
