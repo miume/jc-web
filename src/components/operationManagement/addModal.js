@@ -52,9 +52,15 @@ class AddModal extends React.Component {
     };
 
     handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        /**清空新增form组件的内容 */
+        form.resetFields();
     };
-
+    // /**重置组件的值 */
+    // resetField=()=>{
+    //     this.form.resetFields();
+    // }
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
@@ -79,6 +85,8 @@ class AddModal extends React.Component {
             form.resetFields();
             this.setState({ visible: false });
         });
+        /**清空新增form组件的内容 */
+        // this.formRef.resetField()
     };
 
     saveFormRef = (formRef) => {
