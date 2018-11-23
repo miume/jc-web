@@ -16,6 +16,11 @@ const Authorization = localStorage.getItem('Authorization');
 const server = localStorage.getItem('remote');
 
 class OperationManagement extends React.Component {
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
     constructor(props) {
         super(props);
         this.state = {

@@ -160,6 +160,7 @@ class Detail extends React.Component{
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.getAllProductLine = this.getAllProductLine.bind(this);
         this.click = this.click.bind(this);
     }
     /**处理新增一条记录 */
@@ -194,6 +195,12 @@ class Detail extends React.Component{
       this.setState({
         clickId:id
       })
+    }
+    componentDidMount(){
+        this.getAllProductLine();
+    }
+    /**获取所有产品线 */
+    getAllProductLine(){
     }
     render() {
         const data = [this.props.value];

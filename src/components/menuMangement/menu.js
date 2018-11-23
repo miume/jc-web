@@ -13,6 +13,11 @@ import {message} from "antd";
 const Authorization = localStorage.getItem('Authorization');
 
 class Menu extends React.Component{
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
   constructor(props){
         super(props);
         this.state = {

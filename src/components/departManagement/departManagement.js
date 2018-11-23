@@ -15,6 +15,11 @@ const server = localStorage.getItem('remote');
 
 
 class Depart extends React.Component {
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
     constructor(props) {
         super(props);
         this.state = {

@@ -87,6 +87,11 @@ class EditableCell extends React.Component {
 }
 
 class User extends React.Component{
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return ;
+    }
+  }
     constructor(props){
       super(props);
       this.state={
