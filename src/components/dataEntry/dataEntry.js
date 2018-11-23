@@ -4,27 +4,33 @@ import Blockquote from '../BlockQuote/blockquote';
 const data = [{
     id:1,
     name:'制程检测',
-    path:'/processInspection'
+    path:'/processInspection',
+    className:'fa fa-tasks fa-5x'
 },{
     id:2,
     name:'样品送检',
-    path:'/sampleInspection'
+    path:'/sampleInspection',
+    className:'fa fa-flask fa-5x'
 },{
     id:3,
     name:'原材料检测',
-    path:'/rawTestReport'
+    path:'/rawTestReport',
+    className:'fa fa-envira fa-5x'
 },{
     id:4,
     name:'进货检验',
-    path:'/PurchaseCheckReport'
+    path:'/PurchaseCheckReport',
+    className:'fa fa-cube fa-5x'
 },{
     id:5,
     name:'中间品检验',
-    path:'/InterProduct'
+    path:'/InterProduct',
+    className:'fa fa-code-fork fa-5x'
 },{
     id:6,
     name:'成品检验',
-    path:'/process'
+    path:'/process',
+    className:'fa fa-codepen fa-5x'
 },]
 
 class DataEntry extends React.Component{
@@ -73,7 +79,7 @@ class DataEntry extends React.Component{
                     <div style={{marginLeft:'20px'}}>
                     {
                         data.map(d=>
-                            <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click}></DataPart>
+                            <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
                         )
                     }
                 </div>

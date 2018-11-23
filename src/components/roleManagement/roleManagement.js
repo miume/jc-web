@@ -10,6 +10,7 @@ import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
+import { stat } from 'fs';
 //import store from '../store';
 // import reqwest from 'reqwest';
 // import EditableCell from '../Home/editableCell';
@@ -79,6 +80,15 @@ const Authorization = localStorage.getItem('Authorization');
 /**这是服务器网址及端口 */
 const server = localStorage.getItem('remote');
 class Role extends React.Component {
+
+    componentDidMount() {
+      this.fetch();
+    }
+    componentWillUnmount() {
+      this.setState = (state, callback) => {
+        return ;
+      }
+    }
     constructor(props) {
         super(props);
         // const da = store.getState();
@@ -218,10 +228,7 @@ class Role extends React.Component {
         });
       });
     }
-  
-    componentDidMount() {
-      this.fetch();
-    }
+
     /**实时追踪新增弹出框 角色名称和角色描述的变化 */
     handleRoleNameChange(e) {
       this.setState({roleName : e.target.value})

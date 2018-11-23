@@ -9,6 +9,9 @@ import Auth from '../src/components/auth/Auth'
 
 import Home from '../src/components/Home/home'; 
 import Login from '../src/components/Login/login';
+
+// import {setup, draw} from './components/Login/sketch'
+
 // ReactDOM.render(<App />, document.getElementById('root'));
 ReactDOM.render(
         // <MRoute/>

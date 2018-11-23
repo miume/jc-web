@@ -7,6 +7,8 @@ import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
 import SearchCell from '../BlockQuote/search';
+import { loadavg } from 'os';
+import { lchmod } from 'fs';
 const data = [
   {
     id : 1,
@@ -45,6 +47,8 @@ const data = [
     isUrgent:0
   },
 ]
+const servers = localStorage.getItem('remote');
+const Authorization = localStorage.getItem('Authorization');
 class ProcessInspection extends React.Component{
     constructor(props){
         super(props);
@@ -95,13 +99,13 @@ class ProcessInspection extends React.Component{
           title: '序号',
           dataIndex: 'id',
           key: 'id',
-          width: '7%',
+          width: '5%',
           align:'center',
         }, {
           title: '批号',
           dataIndex: 'batchNumber' ,
           key: 'batchNumber',
-          width: '7%',
+          width: '8%',
           align:'center',
         }, {
           title: '创建人',

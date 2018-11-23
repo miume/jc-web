@@ -3,7 +3,6 @@ import QuickItem from './quickItem';
 class QuickAccess extends React.Component{
     constructor(props){
         super(props);
-
     }
     render(){
         const quickAccess = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):'' ;
