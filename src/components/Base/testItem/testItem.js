@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Input, Table,Icon, Popconfirm, Form, InputNumber, Divider, Modal} from 'antd';
-import Blockquote from '../BlockQuote/blockquote';
-import WhiteSpace from '../BlockQuote/whiteSpace';
-import ProductProcessAddModal from './productProcessAddModal';
+import Blockquote from '../../BlockQuote/blockquote';
+import WhiteSpace from '../../BlockQuote/whiteSpace';
+import TestItemAddModal from './testItemAddModal';
 import DeleteByIds from './deleteByIds';
 const EditableContext = React.createContext(); // ??这个是什么作用
 //创建一个Context对象，
@@ -22,15 +22,15 @@ const EditableFormRow = Form.create()(EditableRow); //??
 //表格中的数据
 const data = [{
     key: '1',
-    name: '产品工序1',
+    name: '检测项目1',
     
   }, {
     key: '2',
-    name: '产品工序2',
+    name: '检测项目2',
    
   }, {
     key: '3',
-    name: '产品工序3',
+    name: '检测项目3',
     
   }];
   //编辑
@@ -75,7 +75,7 @@ const data = [{
         );
     }
 }
-class ProductProcess extends React.Component{
+class TestItem extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -90,14 +90,14 @@ class ProductProcess extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.lastStep=this.lastStep.bind(this);
         this.columns=[{
-           title:'产品工序序号',
+           title:'检测项目序号',
            dataIndex:'key',
            key:'key',
            sorter:(a,b) => a.key-b.key,
            align:'center',
            width:'33%'
         },{
-            title:'产品工序名称',
+            title:'检测项目名称',
             dataIndex:'name',
             key:'name',
             editable:1,
@@ -236,10 +236,9 @@ class ProductProcess extends React.Component{
             }
         });
     };
-    //返回上一步
     lastStep(){
-        this.props.history.push({pathname:'baseInfo'});
-      }
+      this.props.history.push({pathname:'baseInfo'});
+    }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -290,7 +289,7 @@ class ProductProcess extends React.Component{
         
            return(
                <div>
-                   <Blockquote name='产品工序'></Blockquote>
+                   <Blockquote name='检测项目'></Blockquote>
                    <div className='fl'>
                     <Button type='primary' size='small' style={{marginRight:'15px'}} onClick={()=>this.handleAdd()}>新增</Button>
                        <Modal title='新增' visible={this.state.visible}
@@ -299,7 +298,7 @@ class ProductProcess extends React.Component{
                            <Button key='submit' type='primary' size='large' onClick={() => this.handleOk()}>确定</Button>,
                            <Button key='back' type='ghost' size='large' onClick={() => this.handleCancel()}>取消</Button>
                        ]}>
-                       <ProductProcessAddModal wrappedComponentRef={(form) => this.formRef = form}></ProductProcessAddModal>
+                       <TestItemAddModal wrappedComponentRef={(form) => this.formRef = form}></TestItemAddModal>
                        </Modal>
                        <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                    </div>
@@ -313,4 +312,4 @@ class ProductProcess extends React.Component{
            );
        }
  }
- export default ProductProcess;
+ export default TestItem;
