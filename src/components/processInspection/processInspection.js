@@ -1,4 +1,5 @@
 import React from 'react';
+import axio from 'axios';
 import BlockQuote from '../dataEntry/blockQuote'
 import {Table,Popconfirm,Divider } from 'antd';
 import '../Home/page.css';
@@ -7,8 +8,6 @@ import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
 import SearchCell from '../BlockQuote/search';
-import { loadavg } from 'os';
-import { lchmod } from 'fs';
 const data = [
   {
     id : 1,
@@ -47,19 +46,42 @@ const data = [
     isUrgent:0
   },
 ]
-const servers = localStorage.getItem('remote');
+const server = localStorage.getItem('remote1');
+const server1 = localStorage.getItem('remote');
 const Authorization = localStorage.getItem('Authorization');
 class ProcessInspection extends React.Component{
+    componentDidMount(){
+        this.getAllProductLine();
+        this.getAllProductionProcess();
+        this.getAllSamplePoint();
+        this.getAllTestItem();
+        // this.getAllUser();
+    }
+    componentWillMount(){
+        this.setState = (state,callback)=>{
+          return;
+        }
+    }
     constructor(props){
         super(props);
         this.state = {
             dataSource : data,
-            selectedRowKeys : []
+            selectedRowKeys : [],     //存取所选中checkbox的ids
+            allProductLine : [],      //存取所有产品线
+            allProductionProcess : [],//存取所有产品工序
+            allSamplePoint : [],      //存取所有取样点
+            allTestItem : [],         //存取所有检测项目
+            allUser : [],             //存取所有用户
         }
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.lastStep = this.lastStep.bind(this);
+        this.getAllProductLine = this.getAllProductLine.bind(this);
+        this.getAllSamplePoint = this.getAllSamplePoint.bind(this);
+        this.getAllTestItem = this.getAllTestItem.bind(this);
+        // this.getAllUser = this.getAllUser.bind(this);
+        this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
@@ -82,6 +104,81 @@ class ProcessInspection extends React.Component{
     /**返回数据录入的页面 */
     lastStep(){
       this.props.history.push({pathname:'dataEntry'})
+    }
+    /**获取所有产品线 */
+    getAllProductLine(){
+        axio({
+          url:`${server}/jc/productLine/getAll`,
+          method:'get',
+          headers:{
+            'Authorization':Authorization
+          }
+        }).then(data=>{
+          const res = data.data.data;
+          this.setState({
+              allProductLine : res
+          })
+      })
+    }
+    /**获取所有产品工序 */
+    getAllProductionProcess(){
+      axio({
+        url:`${server}/jc/productionProcess/getAll`,
+        method:'get',
+        headers:{
+          'Authorization':Authorization
+        }
+      }).then(data=>{
+        const res = data.data.data;
+        this.setState({
+          allProductionProcess : res
+      })
+    })   
+    }
+    /**获取所有取样点 */
+    getAllSamplePoint(){
+      axio({
+        url:`${server}/jc/samplePoint/getAll`,
+        method:'get',
+        headers:{
+          'Authorization':Authorization
+        }
+      }).then(data=>{
+        const res = data.data.data;
+        this.setState({
+          samplePoint : res
+      })
+    })   
+    }
+    /**获取所有检测项目 */
+    getAllTestItem(){
+      axio({
+        url:`${server}/jc/testItem/getAll`,
+        method:'get',
+        headers:{
+          'Authorization':Authorization
+        }
+      }).then(data=>{
+        const res = data.data.data;
+        this.setState({
+          allTestItem : res
+      })
+    })   
+    }
+    /**获取所有用户 */
+    getAllTestItem(){
+      axio({
+        url:`${server1}/jc/user/getAll`,
+        method:'get',
+        headers:{
+          'Authorization':Authorization
+        }
+      }).then(data=>{
+        const res = data.data.data;
+        this.setState({
+          allUser : res
+      })
+    })   
     }
     render() {
         const rowSelection = {
@@ -165,21 +262,12 @@ class ProcessInspection extends React.Component{
           width: '10%',
           align:'center',
         }, {
-        //   title: '紧急',
-        //   dataIndex: 'isUrgent',
-        //   key: 'isUrgent',
-        //   render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
-        //   width: '7%',
-        //   align:'center',
-        // }, {
           title: '操作',
           dataIndex: 'operate',
           key:'operate',
           width: '15%',
           align:'center',
           render: (text,record) => {
-            // console.log(text)
-            // console.log(record) 
               return (
                   <span>
                       <Detail value={record} />

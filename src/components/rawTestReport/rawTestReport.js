@@ -1,6 +1,6 @@
 import React from 'react';
-import {Button, Table, Popconfirm, Divider} from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
+import { Table, Popconfirm, Divider} from 'antd';
+import BlockQuote from '../dataEntry/blockQuote';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import Detail from './detail';
@@ -180,19 +180,18 @@ class RawTestReport extends React.Component{
           };
         return (
             <div>
-                <BlockQuote name='原料检测报告' menu=''></BlockQuote>
-                <div style={{paddingTop:'10px'}}>
+                <BlockQuote name='原料检测报告' menu='质量与流程' menu2='数据录入'></BlockQuote>
+                <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}} >
                         <SearchCell name='请输入什么什么' searchEvent={this.searchEvent} searchContent={this.searchContent}></SearchCell>
                     </span>
-                </div>
                 <Table rowKey={record=>record.id} columns={this.columns} dataSource={data} rowSelection={rowSelection} pagination={pagination} scroll={{y:400}} size='small' bordered/> 
                 <div style={{marginLeft:'90%', marginTop:'29%',marginRight:'80px',height:'50px',position:'absolute'}} >
                     <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
                 </div> 
-                
+                </div>
             </div>
         );
     }
