@@ -1,6 +1,5 @@
 import React from 'react';
 import {Divider, Table} from 'antd';
-import './checkTable.css';
 import ReleaseSpan from './releaseSpan';
 import DeletaSpan from './deleteSpan';
 

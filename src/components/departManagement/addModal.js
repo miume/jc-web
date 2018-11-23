@@ -52,7 +52,9 @@ class AddModal extends React.Component {
     };
 
     handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        form.resetFields();
     };
 
     handleCreate = () => {

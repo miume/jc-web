@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../dataEntry/blockQuote';
 import {Tabs} from 'antd';
 import Pack from './pack';
 import Check from './check';
@@ -15,7 +15,7 @@ class PurchaseCheckReport extends React.Component {
         const TabPane = Tabs.TabPane;
         return(
             <div>
-                <BlockQuote name="进货检测报告"></BlockQuote>
+                <BlockQuote name="进货检测报告" menu="质量与流程" menu2="数据录入"></BlockQuote>
                 <Tabs defaultActiveKey="2" onChange={this.callback} size="large">
                     <TabPane tab="生成" key="1">
                         <Pack />
