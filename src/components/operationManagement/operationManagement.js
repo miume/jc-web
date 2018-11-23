@@ -53,8 +53,8 @@ class OperationManagement extends React.Component {
         };
         return (
             <div>
-                <BlockQuote name="操作管理"></BlockQuote>
-                <div style={{paddingTop:'10px'}}>
+                <BlockQuote name="操作管理" menu='用户和权限'></BlockQuote>
+                <div style={{padding:'15px'}}>
                     <AddModal
                         fetch={this.fetch}
                     />
@@ -64,16 +64,14 @@ class OperationManagement extends React.Component {
                         loading={loading}
                         cancel={this.cancel}
                     />
-                    <span style={{float:'right'}}>
+                    <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
-                            placeholder='请输入操作名称'
+                            name='请输入操作名称'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
                         />
                     </span>
-                </div>
-                <WhiteSpace></WhiteSpace>
                 <div className='clear' ></div>
                 <OperationTable
                     data={this.state.dataSource}
@@ -83,6 +81,7 @@ class OperationManagement extends React.Component {
                     modifyDataSource={this.modifyDataSource}
                     handleTableChange={this.handleTableChange}
                 />
+                </div>
             </div>
         )
     }
