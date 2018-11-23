@@ -130,7 +130,7 @@ class User extends React.Component{
       this.columns=[{//表头
 
         title:'序号',
-        dataIndex:'id',//dataIndex值与字段值要匹配
+        dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
        sorter:true,//需要服务端排序
        //sorter:(a, b) => a.id-b.id,

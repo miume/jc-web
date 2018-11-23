@@ -46,11 +46,11 @@ class BaseInfo extends React.Component{
         this.lastStep=this.lastStep.bind(this);
     }
     click(e){  
-       console.log(e.target);
+       //console.log(e.target.value);
        e.target.style.backgroundColor='#00b4f0';//点击时button背景变为蓝色
        const ID=e.target.id;
        const path=e.target.value;
-       console.log('this.state.clickId:'+this.state.clickId+'ID:'+ID);
+       //console.log('this.state.clickId:'+this.state.clickId+'ID:'+ID);
        //如果已点击并且已点击的id不等于现在点击的按钮ID，则之前button变回灰色
        if(this.state.clickId && this.state.clickId!=ID){
          document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
@@ -66,7 +66,7 @@ class BaseInfo extends React.Component{
         this.setState({
             flag:1
         });
-        console.log(this.state.path);
+        //console.log(this.state.path);
         this.props.history.push({pathname:this.state.path});//react的路由跳转
     }
     lastStep(){
