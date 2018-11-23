@@ -39,7 +39,7 @@ class PurchaseModal extends React.Component {
         /**动态表头数据获取与组装 */
         const dynHeadData = this.assembleDynamicData(this.getDynamicHeadData());
         //获取滚动条的x轴大小
-        const arrColumnslength = parseInt(dynHeadData.length*150 + 300);
+        const arrColumnslength = parseInt(dynHeadData.length*100 + 280);
         const totalColumns = this.assembleTableHead(dynHeadData);
 
         /**---------------------- */
@@ -155,7 +155,7 @@ class PurchaseModal extends React.Component {
                         dataIndex: '',
                         key: '',
                         align:'center',
-                        width: 150,
+                        width: 100,
                     }]
                 }]
             };
@@ -190,7 +190,7 @@ class PurchaseModal extends React.Component {
             dataIndex: 'index',
             key: 'id',
             align:'center',
-            width: 100,
+            width: 80,
             fixed: 'left',
         },{
             title: '批号',
