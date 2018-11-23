@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Button,Table} from 'antd';
+import {Button,Table,Form,Input,Divider,Popconfirm} from 'antd';
 import axios from 'axios';
 import Blockquote from '../../BlockQuote/blockquote';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
