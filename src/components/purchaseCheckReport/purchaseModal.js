@@ -1,7 +1,8 @@
 import React from 'react';
 import { Input,Button,Table,Radio } from 'antd';
 import '../Home/page.css';
-
+import PurchaseModalColor from './purchaseModalColor';
+import './pack.css';
 const data =[];
 for (let i = 0; i < 5; i++) {
     data.push({
@@ -30,12 +31,10 @@ class PurchaseModal extends React.Component {
             purchaseStatus: '待定', //显示判定，合格，不合格
             radioTrueNum: 0,
             radioFalseNum: 0,
-
-    };
+        };
         // this.radioChange = this.radioChange.bind(this);
     }
 
-    columns = [];
     render() {
         /**动态表头数据获取与组装 */
         const dynHeadData = this.assembleDynamicData(this.getDynamicHeadData());
@@ -61,30 +60,30 @@ class PurchaseModal extends React.Component {
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
-                    <table style={{float:'left',align:'center'}} border="1">
+                    <table style={{float:'left',align:'center',border:"1px solid gray",borderCollapse:'collapse'}} >
                         <thead>
                             <tr>
-                                <th>原材料</th>
-                                <th>规格</th>
-                                <th>数量</th>
-                                <th>到货日期</th>
-                                <th>生产厂家</th>
+                                <th style={{background:'#0000FF', color:'white',fontSize:18 }}>原材料</th>
+                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>规格</th>
+                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>数量</th>
+                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>到货日期</th>
+                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>生产厂家</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input placeholder="原材料名称" style={{ width: 130,border:0 }}></input></td>
-                                <td><input placeholder="请输入规格" style={{ width: 130,border:0 }}></input></td>
-                                <td><input placeholder="请输入数量" style={{ width: 130,border:0 }}></input></td>
-                                <td><input placeholder="请输入到货日期" style={{ width: 130,border:0 }}></input></td>
-                                <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0 }}></input></td>
+                            <tr className="placeholder">
+                                <td><input placeholder="原材料名称" style={{ width: 130,border:0}}></input></td>
+                                <td><input placeholder="请输入规格" style={{ width: 130,border:0}}></input></td>
+                                <td><input placeholder="请输入数量" style={{ width: 130,border:0}}></input></td>
+                                <td><input placeholder="请输入到货日期" style={{ width: 130,border:0}}></input></td>
+                                <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0}}></input></td>
                             </tr>
                         </tbody>
                     </table>
-                    {/*<Button size="large" style={{float:'left',marginLeft:20}}>待定</Button>*/}
-                    {/*用来判断是否待定，不合格，合格*/}
-                    <span style={{float:'left',marginLeft:20}}>{this.state.purchaseStatus}</span>
-                    <table style={{float:'right',marginTop:'20px'}} >
+                    <PurchaseModalColor
+                        purchaseStatus={this.state.purchaseStatus}
+                    />
+                    <table style={{float:'right',marginTop:'40px'}} >
                         <tbody>
                             <tr>
                                 <td>检验人:</td>
@@ -287,10 +286,22 @@ class PurchaseModal extends React.Component {
             }
         });
     };
-
-    /**---------------------- */
-    /**div 待定0，不合格1，合格2--全部选合格才立即变为合格，当有一个不合格，则变为不合格，未全部选完，则待定 */
-
+    /**--------------------- */
+    /**根据判定结果返回div-style颜色*/
+    radioChangeColor = (purchaseStatus) => {
+        switch (purchaseStatus) {
+            case '待定': {
+                return "background:#000; color:#FFF";
+                break;
+            }
+            case '不合格': {
+                break;
+            }
+            case '合格': {
+                break;
+            }
+        }
+    };
 
     /**---------------------- */
 }
