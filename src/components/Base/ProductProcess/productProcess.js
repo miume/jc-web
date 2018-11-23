@@ -1,13 +1,9 @@
 import React from 'react';
 import {Button, Input, Table,Icon, Popconfirm, Form, InputNumber, Divider, Modal} from 'antd';
-import Blockquote from '../BlockQuote/blockquote';
-import SearchCell from '../BlockQuote/search';
-import DeliveryFactoryAddModal from './deliveryFactoryAddModal';
+import Blockquote from '../../BlockQuote/blockquote';
+import WhiteSpace from '../../BlockQuote/whiteSpace';
+import ProductProcessAddModal from './productProcessAddModal';
 import DeleteByIds from './deleteByIds';
-
-
-
-
 const EditableContext = React.createContext(); // ??这个是什么作用
 //创建一个Context对象，
 //假设我们有很多个组件，我们只需要在父组件使用Provider提供数据，
@@ -26,15 +22,15 @@ const EditableFormRow = Form.create()(EditableRow); //??
 //表格中的数据
 const data = [{
     key: '1',
-    name: '工厂1',
+    name: '产品工序1',
     
   }, {
     key: '2',
-    name: '工厂2',
+    name: '产品工序2',
    
   }, {
     key: '3',
-    name: '工厂3',
+    name: '产品工序3',
     
   }];
   //编辑
@@ -79,7 +75,7 @@ const data = [{
         );
     }
 }
-class DeliveryFactory extends React.Component{
+class ProductProcess extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -94,20 +90,53 @@ class DeliveryFactory extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.lastStep=this.lastStep.bind(this);
         this.columns=[{
-           title:'送样工厂序号',
+           title:'产品工序序号',
            dataIndex:'key',
            key:'key',
            sorter:(a,b) => a.key-b.key,
            align:'center',
            width:'33%'
         },{
-            title:'送样工厂名称',
+            title:'产品工序名称',
             dataIndex:'name',
             key:'name',
             editable:1,
             align:'center',
             width:'33%',
-         
+            filterDropdown : ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+                <div className = "custom-filter-dropdown">
+                    <Input
+                        ref={ ele => this.searchInput = ele }  // 表头添加一个搜索
+                        placeholder="产品线名称"
+                        value={ selectedKeys[0] }
+                        onChange={ e => setSelectedKeys(e.target.value ? [e.target.value] : []) }
+                        onPressEnter={ this.handleSearch(selectedKeys, confirm) }
+                    />
+                    <Button type = "primary" onClick={ this.handleSearch(selectedKeys, confirm)}>搜索</Button>
+                    <Button onClick={this.handleReset(clearFilters)}>重置</Button>
+                </div>
+            ),
+            filterIcon : filtered => <Icon type="search" style={{ color : filtered ? '#108ee9' : '#aaa',fontSize:'18px'}} />,
+            // onFilter 用于筛选当前数据
+            onFileter : (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+            onFilterDropdownVisibleChange: (visible) => {
+                if (visible) {
+                    setTimeout(() => {
+                        this.searchInput.focus();
+                    });
+                }
+            },
+            render : (text) => {
+                const { searchText } = this.state;
+                return searchText ? (
+                    <span>
+                    {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                        fragment.toLowerCase() === searchText.toLowerCase()
+                            ? <span key={i} className="highlight">{fragment}</span> : fragment
+                    ))}
+                  </span>
+                ) : text;
+            },
         },{
             title:'操作',
             key:'operation',
@@ -168,7 +197,15 @@ class DeliveryFactory extends React.Component{
         const ids=this.state.selectedRowKeys.toString();
     }
     cancel(){}
-  
+    //实现字段搜索
+    handleSearch=(selectedKeys,confirm) => ()=>{
+       confirm();
+       this.setState({searchText:selectedKeys[0]});
+    }
+    handleReset = clearFilters => () => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
      /**编辑功能 */
     isEditing = (record) => {
         return record.key === this.state.editingKey;
@@ -199,8 +236,8 @@ class DeliveryFactory extends React.Component{
             }
         });
     };
-      //返回上一步
-      lastStep(){
+    //返回上一步
+    lastStep(){
         this.props.history.push({pathname:'baseInfo'});
       }
     //实现checkbox全选
@@ -253,8 +290,8 @@ class DeliveryFactory extends React.Component{
         
            return(
                <div>
-                   <Blockquote name='送样工厂'></Blockquote>
-                   <div style={{marginTop:'10px'}}>
+                   <Blockquote name='产品工序'></Blockquote>
+                   <div className='fl'>
                     <Button type='primary' size='small' style={{marginRight:'15px'}} onClick={()=>this.handleAdd()}>新增</Button>
                        <Modal title='新增' visible={this.state.visible}
                        onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
@@ -262,16 +299,11 @@ class DeliveryFactory extends React.Component{
                            <Button key='submit' type='primary' size='large' onClick={() => this.handleOk()}>确定</Button>,
                            <Button key='back' type='ghost' size='large' onClick={() => this.handleCancel()}>取消</Button>
                        ]}>
-                       <DeliveryFactoryAddModal wrappedComponentRef={(form) => this.formRef = form}></DeliveryFactoryAddModal>
+                       <ProductProcessAddModal wrappedComponentRef={(form) => this.formRef = form}></ProductProcessAddModal>
                        </Modal>
                        <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
-                       <span style={{float:'right',paddingBottom:'8px'}}>
-                         <SearchCell name='请输入送样工厂名称' 
-                           searchEvent={this.searchEvent}
-                           searchContentChange={this.searchContentChange} />
-                       </span>
                    </div>
-                   
+                   <WhiteSpace></WhiteSpace>
                    <div className='clear' ></div>
                    <Table rowKey={record => record.key} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={pagination} components={components} size="small" bordered  scroll={{ y: 400 }}></Table>
                    <div style={{marginLeft:'80%', marginTop:'200px',marginRight:'80px',height:'50px',position:'absolute'}} >
@@ -281,4 +313,4 @@ class DeliveryFactory extends React.Component{
            );
        }
  }
- export default DeliveryFactory;
+ export default ProductProcess;

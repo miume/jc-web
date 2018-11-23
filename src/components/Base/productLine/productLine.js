@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Input, Table,Icon, Popconfirm, Form, InputNumber, Divider, Modal} from 'antd';
-import Blockquote from '../BlockQuote/blockquote';
-import WhiteSpace from '../BlockQuote/whiteSpace';
+import Blockquote from '../../BlockQuote/blockquote';
+import WhiteSpace from '../../BlockQuote/whiteSpace';
 import ProductLineAddModal from './productLineAddModal';
 import DeleteByIds from './deleteByIds';
 const EditableContext = React.createContext(); // ??这个是什么作用

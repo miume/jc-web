@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Input, Table,Icon, Popconfirm, Form, InputNumber, Divider, Modal} from 'antd';
-import Blockquote from '../BlockQuote/blockquote';
-import WhiteSpace from '../BlockQuote/whiteSpace';
-import TestItemAddModal from './testItemAddModal';
+import Blockquote from '../../BlockQuote/blockquote';
+import WhiteSpace from '../../BlockQuote/whiteSpace';
+import SamplePointAddModal from './samplePointAddModal';
 import DeleteByIds from './deleteByIds';
 const EditableContext = React.createContext(); // ??这个是什么作用
 //创建一个Context对象，
@@ -22,15 +22,15 @@ const EditableFormRow = Form.create()(EditableRow); //??
 //表格中的数据
 const data = [{
     key: '1',
-    name: '检测项目1',
+    name: '送样点1',
     
   }, {
     key: '2',
-    name: '检测项目2',
+    name: '送样点2',
    
   }, {
     key: '3',
-    name: '检测项目3',
+    name: '送样点3',
     
   }];
   //编辑
@@ -75,7 +75,7 @@ const data = [{
         );
     }
 }
-class TestItem extends React.Component{
+class SamplePoint extends React.Component{
     constructor(props){
         super(props);
         this.state={
@@ -90,14 +90,14 @@ class TestItem extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.lastStep=this.lastStep.bind(this);
         this.columns=[{
-           title:'检测项目序号',
+           title:'送样点序号',
            dataIndex:'key',
            key:'key',
            sorter:(a,b) => a.key-b.key,
            align:'center',
            width:'33%'
         },{
-            title:'检测项目名称',
+            title:'送样点名称',
             dataIndex:'name',
             key:'name',
             editable:1,
@@ -236,9 +236,10 @@ class TestItem extends React.Component{
             }
         });
     };
+    //上一步
     lastStep(){
-      this.props.history.push({pathname:'baseInfo'});
-    }
+        this.props.history.push({pathname:'baseInfo'});
+      }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
@@ -289,7 +290,7 @@ class TestItem extends React.Component{
         
            return(
                <div>
-                   <Blockquote name='检测项目'></Blockquote>
+                   <Blockquote name='取样点'></Blockquote>
                    <div className='fl'>
                     <Button type='primary' size='small' style={{marginRight:'15px'}} onClick={()=>this.handleAdd()}>新增</Button>
                        <Modal title='新增' visible={this.state.visible}
@@ -298,7 +299,7 @@ class TestItem extends React.Component{
                            <Button key='submit' type='primary' size='large' onClick={() => this.handleOk()}>确定</Button>,
                            <Button key='back' type='ghost' size='large' onClick={() => this.handleCancel()}>取消</Button>
                        ]}>
-                       <TestItemAddModal wrappedComponentRef={(form) => this.formRef = form}></TestItemAddModal>
+                       <SamplePointAddModal wrappedComponentRef={(form) => this.formRef = form}></SamplePointAddModal>
                        </Modal>
                        <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                    </div>
@@ -312,4 +313,4 @@ class TestItem extends React.Component{
            );
        }
  }
- export default TestItem;
+ export default SamplePoint;
