@@ -174,15 +174,15 @@ class Management extends React.Component{
           };
             return(
                 <div>
-                    <BlockQuote name="流程管理"></BlockQuote>
-                    <div style={{paddingTop:'10px'}}>
+                    <BlockQuote name="流程管理" menu='质量与流程'></BlockQuote>
+                    <div style={{padding:'15px'}}>
                     <Add />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入流程名称'/>
                     </span>
-                    </div>
                 <Table rowSelection={rowSelection} columns={this.columns} pagination={pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} size="small" bordered />
+                    </div>
                 </div>
             );
     }
