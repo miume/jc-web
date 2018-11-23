@@ -46,9 +46,11 @@ class DeliveryFactoryAddModal extends React.Component{
       showModal = () => {
         this.setState({ visible: true });
       }
-    
+     
       handleCancel = () => {
+        const form = this.formRef.props.form;
         this.setState({ visible: false });
+        form.resetFields();
       }
     
       handleCreate = () => {//新增一条记录

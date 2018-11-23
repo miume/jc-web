@@ -106,6 +106,7 @@ class User extends React.Component{
         username:'',
         phone:'',
         department:'',
+        reset:false,
         Authorization:Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
@@ -121,6 +122,7 @@ class User extends React.Component{
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.getAllDepartment = this.getAllDepartment.bind(this);//获取所有部门
+      
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -269,17 +271,22 @@ class User extends React.Component{
           headers:{
             'Authorization':Authorization
           },
-          data:this.formRef.getItemsValue()
+          data:this.formRef.getItemsValue(),
+          type:'json'
         })
         .then((data)=>{
           message.info(data.data.message); 
           this.fetch();
         }).catch((error)=>{
-          message.info(error.data.message);
+          message.info(error);
         });
+        /**清空新增form组件的内容*/
+        this.formRef.resetField();
       }
       handleCancel(){
         this.setState({visible:false});
+        /**清空新增form组件的内容*/
+        this.formRef.resetField();
       }
        //实时追踪新增弹出框，，用户名称，
     handleUserNameChange(e){//用户名称改变
@@ -385,7 +392,13 @@ class User extends React.Component{
             newData.splice(index, 1, {
               ...item,
               ...row,
-            });
+            });//splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。该方法会改变原始数组。
+              /**
+              * arrayObject.splice(index,howmany,item1,.....,itemX)
+              * index	必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
+               howmany	必需。要删除的项目数量。如果设置为 0，则不会删除项目。
+              item1, ..., itemX	可选。向数组添加的新项目。
+              */
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();
@@ -522,8 +535,8 @@ class User extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='用户管理' />
-               <div style={{marginTop:'10px'}}>
+               <BlockQuote name='用户管理' menu='用户和权限'/>
+               <div style={{padding:'15px'}}>
                <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
                     <Modal title="新增" visible={this.state.visible}
                           onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
@@ -531,7 +544,7 @@ class User extends React.Component{
                             <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
                             <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
                           ]}>
-                          <UserAddModal deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form}></UserAddModal>
+                          <UserAddModal deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
@@ -540,9 +553,10 @@ class User extends React.Component{
                       searchContentChange={this.searchContentChange} 
                       fetch={this.fetch}/>
                     </span>
-                </div>
+                
                 <div className='clear'  ></div>
                 <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
+                </div>
            </div>
        );
    }
