@@ -1,13 +1,12 @@
 import React from 'react';
 import '../Home/page.css';
-import WhiteSpace from '../BlockQuote/whiteSpace';
 import DeleteByIds from './deleteByIds';
 import BlockQuote from '../BlockQuote/blockquote';
 import MenuTable from './menuTable';
 import AddModal from './addModal';
-import SearchCell from './searchCell';
 import axios from "axios";
 import {message} from "antd";
+import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
@@ -58,8 +57,8 @@ class Menu extends React.Component{
     };
     return (
       <div>
-        <BlockQuote name="菜单管理"></BlockQuote>
-        <div style={{paddingTop:'10px'}}>
+        <BlockQuote name="菜单管理" menu='用户与权限'></BlockQuote>
+        <div style={{padding:'15px'}}>
             <AddModal
                 fetch={this.fetch}
                 fatherMenu = {this.state.fatherMenu}
@@ -70,11 +69,9 @@ class Menu extends React.Component{
                 loading={loading}
                 cancel={this.cancel}
             />
-            <span style={{float:'right'}}>
-                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+            <span style={{float:'right',paddingBottom:'8px'}}>
+                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
             </span>
-        </div>
-        <WhiteSpace></WhiteSpace>
         <div className='clear' ></div>
         <MenuTable
             data={this.state.dataSource}
@@ -85,6 +82,7 @@ class Menu extends React.Component{
             handleTableChange={this.handleTableChange}
             fatherMenu = {this.state.fatherMenu}
         />
+        </div>
       </div>
     )
   }

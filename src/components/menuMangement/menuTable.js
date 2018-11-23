@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Input, InputNumber, Popconfirm, Form, Divider, message,Select} from 'antd';
+import {Table, Input, InputNumber, Popconfirm, Form, Divider, message,Select,Button,Icon} from 'antd';
 import DeletaSpan from './deleteSpan';
 import axios from "axios";
 
@@ -16,23 +16,7 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
-    getInput = () => {
-        if (this.props.inputType === 'select') {
-            return <Select >
-            {
-              this.props.fathermenu.map(de=>{
-                return (
-                  <Option key={de.id} value={de.id}>{de.menuName}</Option>
-                );
-              })
-            }
-      </Select>;
-        } else if (this.props.inputType ==='select1'){
-            return <Select>
-                        <Option value={1}>父菜单</Option>
-                        <Option value={2}>子菜单</Option>
-                    </Select>
-        }
+    getInput = () => {      
         return <Input />;
     };
 
@@ -79,11 +63,21 @@ class MenuTable extends React.Component{
         super(props);
         this.state = {
             editingKey: '',
+            searchText: '',
         };
         this.isEditing = this.isEditing.bind(this);
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
+    }
+    handleSearch = (selectedKeys, confirm) => () => {
+        confirm();
+        this.setState({ searchText: selectedKeys[0] });
+      }
+    
+    handleReset = clearFilters => () => {
+    clearFilters();
+    this.setState({ searchText: '' });
     }
     columns = [{
         title: '序号',
@@ -104,7 +98,7 @@ class MenuTable extends React.Component{
         dataIndex : 'menuType',
         key: 'menuType',
         align:'center',
-        editable: 1,
+        // editable: 1,
         width: '20%',
         render:(text, record)=>{
             if(record.menuType==1){
@@ -118,17 +112,51 @@ class MenuTable extends React.Component{
         dataIndex: 'parentId',
         key: 'parentId',
         align:'center',
-        editable: 1,
+        // editable: 1,
         width: '20%',
         render:(text,record)=>{
             return record.parentName
-        }
+        },
+    //     filterDropdown:({ setSelectedKeys, selectedKeys, confirm, clearFilters }) =>(
+    //     <div className="custom-filter-dropdown">
+    //       <Input
+    //         ref={ele => this.searchInput = ele}
+    //         placeholder="Search name"
+    //         value={selectedKeys[0]}
+    //         onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+    //         onPressEnter={this.handleSearch(selectedKeys, confirm)}
+    //       />
+    //       <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+    //       <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+    //     </div>
+    //   ),
+    //   filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+    //   onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+    //   onFilterDropdownVisibleChange: (visible) => {
+    //     if (visible) {
+    //       setTimeout(() => {
+    //         this.searchInput.focus();
+    //       });
+    //     }
+    //   },
+    //   render: (text,record) => {
+    //     const { searchText } = this.state;
+    //     return (searchText ? (
+    //       <span>
+    //         {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+    //           fragment.toLowerCase() === searchText.toLowerCase()
+    //             ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+    //         ))}
+    //       </span>
+    //     ) : text,record.parentName);
+    //   },
     },{
         title: '操作',
         key: 'operation',
         align:'center',
         width: '20%',
         render: (text,record) => {
+            console.log(record)
             const editable = this.isEditing(record);
             return (
                 <span>
