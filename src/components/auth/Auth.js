@@ -14,8 +14,11 @@ class Auth extends React.Component {
             this.props.history.push({pathname : '/home'})
         /**如果localStorage为空，则跳回登陆页 */
         }else {
+            let quickAccess = localStorage.getItem('quickAccess');
+            let remote = localStorage.getItem('remote');
             localStorage.clear();
-            localStorage.setItem("remote", "http://192.168.1.105:8081");
+            localStorage.setItem("remote", remote);
+            localStorage.setItem("quickAccess", quickAccess);
             this.props.history.push({pathname: '/'})
         }
     }

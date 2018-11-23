@@ -31,15 +31,12 @@ class Menu1List extends React.Component {
   menuClick(event){
     const path = event.key;
     const menuName = event.item.props.children;
-    var menuClick = JSON.parse(localStorage.getItem('quickAccess'));
-    // const initMenuClick = [];
-    // if(menuClick)
+    var menuClick = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):[];
     if(menuClick){
         var repeat = menuClick.find(m=>m.menuName==menuName);
-        //console.log(repeat);
         if(!repeat && menuClick.length === 6){
           /**删除第一条，然后添加最新的访问记录 */
-          menuClick =  menuClick.splice(0,1);
+          menuClick.splice(0,1);
           menuClick.push({
             menuName:menuName,
             path:path
@@ -65,6 +62,7 @@ class Menu1List extends React.Component {
     localStorage.setItem('quickAccess',JSON.stringify(menuClick))
     this.props.history.push(path);
   }
+
   render() {
     //console.log(menu)
     // const menu = [
