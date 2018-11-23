@@ -18,6 +18,7 @@ class UserAddModal extends React.Component{
         const values= this.props.form.getFieldsValue(['username','password','departmentId','phone']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         return values;//用来得到新增框中填写的新值
     }
+    
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
@@ -38,7 +39,10 @@ class UserAddModal extends React.Component{
         }
         callback();
       }
- 
+     /**重置组件的值 */
+     resetField=()=>{
+      this.props.form.resetFields();
+  }
 
     render(){
         const { form } = this.props;
