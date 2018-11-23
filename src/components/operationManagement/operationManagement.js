@@ -12,10 +12,9 @@ import DeleteModal from "../operationManagement/deleteModal";
 import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
-const server = localStorage.getItem('remote');
-
 class OperationManagement extends React.Component {
+    Authorization;
+    server;
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -51,6 +50,9 @@ class OperationManagement extends React.Component {
         }
     }
     render() {
+        this.Authorization = localStorage.getItem('Authorization');
+        this.server = localStorage.getItem('remote');
+
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -112,10 +114,10 @@ class OperationManagement extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${server}/jc/operation/getOperationsByPage`,
+            url: `${this.server}/jc/operation/getOperationsByPage`,
             method: 'get',
             headers:{
-                'Authorization': Authorization
+                'Authorization': this.Authorization
             },
             params: params,
             // type: 'json',
@@ -139,10 +141,10 @@ class OperationManagement extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${server}/jc/operation/deleteByIds`,
+            url:`${this.server}/jc/operation/deleteByIds`,
             method:'Delete',
             headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
             },
             data:ids,
             type:'json'
@@ -171,10 +173,10 @@ class OperationManagement extends React.Component {
     searchEvent(){
         const ope_name = this.state.searchContent;
         axios({
-            url:`${server}/jc/operation/getRolesByNameLikeByPage`,
+            url:`${this.server}/jc/operation/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
             },
             params:{
                 size: this.pagination.pageSize,
