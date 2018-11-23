@@ -22,7 +22,7 @@ class NormalLoginForm extends React.Component {
   }  
   componentWillMount() {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718
-    localStorage.setItem("remote", "http://218.77.105.241:40080");
+    localStorage.setItem("remote", "http://192.168.1.105:8081");
     localStorage.setItem('quickAccess','');
   }
   userChange(e){

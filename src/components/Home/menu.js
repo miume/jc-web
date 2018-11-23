@@ -37,6 +37,14 @@ class Menu1List extends React.Component {
     if(menuClick){
         var repeat = menuClick.find(m=>m.menuName==menuName);
         //console.log(repeat);
+        if(!repeat && menuClick.length === 6){
+          /**删除第一条，然后添加最新的访问记录 */
+          menuClick =  menuClick.splice(0,1);
+          menuClick.push({
+            menuName:menuName,
+            path:path
+          })
+      }
         if(!repeat && menuClick.length<6){
           menuClick.push({
             menuName:menuName,
@@ -44,14 +52,7 @@ class Menu1List extends React.Component {
           })
         }
         /**如果之前没有访问过，且localStorage已经有6条访问记录 */
-        if(!repeat && menuClick.length === 6){
-            /**删除第一条，然后添加最新的访问记录 */
-            menuClick.splice(0,1);
-            menuClick.push({
-              menuName:menuName,
-              path:path
-            })
-        }
+        
     }
     else{
       menuClick = [];
