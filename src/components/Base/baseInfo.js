@@ -1,37 +1,43 @@
 import React from 'react';
-import BaseInfoData from './baseInfoData';
+import Blockquote from '../BlockQuote/blockquote';
+import BasePart from './basePart';
 const data=[{
     id:1,
     name:'送样工厂',
-    path:'/deliveryFactory'
+    path:'/deliveryFactory',
+    className:'fa fa-tasks fa-5x'
 },{
     id:2,
     name:'产品工序',
-    path:'/productProcess'
+    path:'/productProcess',
+    className:'fa fa-flask fa-5x'
 },{
     id:3,
     name:'检测项目',
-    path:'/testItem'
+    path:'/testItem',
+    className:'fa fa-envira fa-5x'
 },{
     id:4,
     name:'取样点',
-    path:'/samplePoint'
+    path:'/samplePoint',
+    className:'fa fa-cube fa-5x'
 },{
     id:5,
     name:'产品线',
-    path:'/productLine'
+    path:'/productLine',
+    className:'fa fa-codepen fa-5x'
 }]
-const active={
-    backgroundcolor:'#00b4f0',//点击的时候按钮变成蓝色
-}
-const noActive={
-    backgroundcolor:'#ebebeb',//未点击的时候是灰白色
-}
-var style={//按钮风格
-     width:'230px',height:'100px',
-     backgroundcolor:'#ebebeb',margin:'25px',
-     border:'solid 1px black'
-}
+// const active={
+//     backgroundcolor:'#00b4f0',//点击的时候按钮变成蓝色
+// }
+// const noActive={
+//     backgroundcolor:'#ebebeb',//未点击的时候是灰白色
+// }
+// var style={//按钮风格
+//      width:'230px',height:'100px',
+//      backgroundcolor:'#ebebeb',margin:'25px',
+//      border:'solid 1px black'
+// }
 class BaseInfo extends React.Component{
     constructor(props){
         super(props);
@@ -46,20 +52,11 @@ class BaseInfo extends React.Component{
         this.lastStep=this.lastStep.bind(this);
     }
     click(e){  
-       //console.log(e.target.value);
-       e.target.style.backgroundColor='#00b4f0';//点击时button背景变为蓝色
-       const ID=e.target.id;
-       const path=e.target.value;
-       //console.log('this.state.clickId:'+this.state.clickId+'ID:'+ID);
-       //如果已点击并且已点击的id不等于现在点击的按钮ID，则之前button变回灰色
-       if(this.state.clickId && this.state.clickId!=ID){
-         document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
-       }
-       this.setState({
-           clickId:ID,
-           path:path,
-           clickButton:e.target
-       });
+       console.log(e.target);
+  
+       const path=e.target.id;
+     
+    this.props.history.push({pathname:path})
     }
     nextStep(){
         
@@ -75,9 +72,17 @@ class BaseInfo extends React.Component{
     render(){
         return(
             <div>
-                <BaseInfoData data={data} click={this.click} 
-                buttonstyle={style} nextStep={this.nextStep} lastStep={this.lastStep}/>
-            </div>
+                <Blockquote menu='质量流程' name='基础数据'/>
+                <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
+                    <div style={{marginLeft:'20px'}}>
+                    {
+                        data.map(d=>
+                            <BasePart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></BasePart>
+                        )
+                    }
+                </div>
+           </div>
+           </div>
         );
     }
 }
