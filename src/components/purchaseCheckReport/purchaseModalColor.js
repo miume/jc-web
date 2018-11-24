@@ -5,7 +5,6 @@ class PurchaseModalColor extends React.Component {
         super(props);
     }
     render() {
-        console.log(this.props.purchaseStatus)
         switch (this.props.purchaseStatus) {
             case '待定':
                 return(
