@@ -12,6 +12,7 @@ class SearchCell extends React.Component{
                     onChange={this.props.searchContentChange}
                     enterButton
                     style={{ width: 200 }}
+                   
                 />
                 <Button
                     type="primary"

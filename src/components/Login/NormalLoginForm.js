@@ -21,9 +21,11 @@ class NormalLoginForm extends React.Component {
     this.keyPress = this.keyPress.bind(this);
   }  
   componentWillMount() {
-    //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718
-    localStorage.setItem("remote1", "http://192.168.1.105:8080");
-    localStorage.setItem("remote", "http://192.168.1.105:8081");
+    //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
+    localStorage.setItem("remote1", "http://192.168.1.105:8080");     //模块二的局域网
+    localStorage.setItem("remote", "http://192.168.1.105:8081");      //模块一的局域网
+    localStorage.setItem("remote2", "http://2p277534k9.iok.la:58718");//模块二的外网
+    localStorage.setItem("remote3", "http://218.77.105.241:40080");
     localStorage.setItem('quickAccess','');
   }
   userChange(e){
@@ -46,7 +48,7 @@ class NormalLoginForm extends React.Component {
       }
     });
     const history = this.props.history;
-    const server = localStorage.getItem("remote");  
+    const server = localStorage.getItem("remote3");  
     
     axios.post(`${server}/jc/login`,{username:this.state.user,password:this.state.password}).then(res => {
       //console.log(res.data)
