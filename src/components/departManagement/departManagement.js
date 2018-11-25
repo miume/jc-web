@@ -128,6 +128,8 @@ class Depart extends React.Component {
                 loading: false,
                 dataSource: res.list,
             });
+        }).catch((error)=>{
+            message.info(error.data.message)
         });
     };
     componentDidMount() {
