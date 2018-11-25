@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button,Table,Radio } from 'antd';
+import { Input,Button,Table,Radio,Form,Popconfirm } from 'antd';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
 import './pack.css';
@@ -18,8 +18,6 @@ for (let i = 0; i < 5; i++) {
         Mg: '无',
     });
 }
-
-
 class PurchaseModal extends React.Component {
     constructor(props){
         super(props);
@@ -31,6 +29,8 @@ class PurchaseModal extends React.Component {
             purchaseStatus: '待定', //显示判定，合格，不合格
             radioTrueNum: 0,
             radioFalseNum: 0,
+            colorStatueId: [], //用来存储已经变红的标签
+
         };
         // this.radioChange = this.radioChange.bind(this);
     }
@@ -44,16 +44,12 @@ class PurchaseModal extends React.Component {
 
         /**---------------------- */
         this.columns = totalColumns;
-
+        //就没有获取到动态数据里的内容
         const columns = this.columns.map((col) => {
             return {
-                ...col,
+                ...col, //展开的，无前两级Ca,%的表头title
                 onCell: record => ({
                     record,
-                    // editable: col.editable,
-                    // dataIndex: col.dataIndex,
-                    // title: col.title,
-                    // handleSave: this.handleSave,
                 }),
             };
         });
@@ -62,22 +58,22 @@ class PurchaseModal extends React.Component {
                 <div>
                     <table style={{float:'left',align:'center',border:"1px solid gray",borderCollapse:'collapse'}} >
                         <thead>
-                            <tr>
-                                <th style={{background:'#0000FF', color:'white',fontSize:18 }}>原材料</th>
-                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>规格</th>
-                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>数量</th>
-                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>到货日期</th>
-                                <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>生产厂家</th>
-                            </tr>
+                        <tr>
+                            <th style={{background:'#0000FF', color:'white',fontSize:18 }}>原材料</th>
+                            <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>规格</th>
+                            <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>数量</th>
+                            <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>到货日期</th>
+                            <th style={{background:'#0000FF', color:'white' ,fontSize:18 }}>生产厂家</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr className="placeholder">
-                                <td><input placeholder="原材料名称" style={{ width: 130,border:0}}></input></td>
-                                <td><input placeholder="请输入规格" style={{ width: 130,border:0}}></input></td>
-                                <td><input placeholder="请输入数量" style={{ width: 130,border:0}}></input></td>
-                                <td><input placeholder="请输入到货日期" style={{ width: 130,border:0}}></input></td>
-                                <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0}}></input></td>
-                            </tr>
+                        <tr className="placeholder">
+                            <td><input placeholder="原材料名称" style={{ width: 130,border:0}}></input></td>
+                            <td><input placeholder="请输入规格" style={{ width: 130,border:0}}></input></td>
+                            <td><input placeholder="请输入数量" style={{ width: 130,border:0}}></input></td>
+                            <td><input placeholder="请输入到货日期" style={{ width: 130,border:0}}></input></td>
+                            <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0}}></input></td>
+                        </tr>
                         </tbody>
                     </table>
                     <PurchaseModalColor
@@ -85,10 +81,10 @@ class PurchaseModal extends React.Component {
                     />
                     <table style={{float:'right',marginTop:'40px'}} >
                         <tbody>
-                            <tr>
-                                <td>检验人:</td>
-                                <td>周小伟</td>
-                            </tr>
+                        <tr>
+                            <td>检验人:</td>
+                            <td>周小伟</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -112,33 +108,59 @@ class PurchaseModal extends React.Component {
         const dyHead = [{
             name: 'Ca',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         },{
             name: 'Fe',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         },{
             name: 'Na',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         },{
             name: 'Si',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         },{
             name: 'Li',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         },{
             name: 'Al',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         },{
             name: 'Mg',
             symbol: '%',
-            area: '>=20.00'
+            area: '>=20.00',
         }];
         return dyHead;
+    };
+    cellChange = (e) => {
+        const id = e.target.id;
+        var flag = -1;
+        var idTd = document.getElementById(id);
+        var colorStatueId = this.state.colorStatueId;
+        for(var i=0; i<colorStatueId.length; i++){
+            if(id===colorStatueId[i]){
+                console.log('iii',i)
+                flag = i;
+            }
+        }
+        if(flag>=0){
+            idTd.style.background = 'white';
+            colorStatueId.splice(flag,1);
+            console.log('---',colorStatueId)
+            this.setState({
+                colorStatueId:colorStatueId
+            })
+        }else{
+            idTd.style.background = 'red';
+            colorStatueId.push(id);
+            this.setState({
+                colorStatueId:colorStatueId
+            })
+        }
     };
     assembleDynamicData = (dataArr) => {
         const colums = [];
@@ -147,23 +169,29 @@ class PurchaseModal extends React.Component {
             const headData = {
                 title: '',
                 align:'center',
+                key: '',
                 children: [{
                     title: '',
                     align:'center',
                     children: [{
                         title: '',
                         dataIndex: '',
-                        key: '',
                         align:'center',
                         width: 100,
-                    }]
-                }]
+                        render: (text,record,index) => {
+                            const idTd = index+text;
+                            return (
+                                <span id={idTd}  onClick={this.cellChange} style={{display:'block'}}>{text}</span>
+                            )
+                        },
+                    }],
+                }],
             };
             headData.title = dataArr[i].name;
+            headData.key = dataArr[i].name;
             headData.children[0].title = dataArr[i].symbol;
             headData.children[0].children[0].title = dataArr[i].area;
             headData.children[0].children[0].dataIndex = dataArr[i].name;
-            headData.children[0].children[0].key = dataArr[i].name;
             colums.push(headData);
         }
         // 动态列的时候 动态中的最后一列不能设置width
@@ -178,10 +206,12 @@ class PurchaseModal extends React.Component {
                     dataIndex: dataArr[length-1].name,
                     key: dataArr[length-1].name,
                     align:'center',
+                    // editable: true,
                 }]
-            }]
+            }],
         };
         colums.push(endArrData);
+        // console.log('columssss',colums)
         return colums;
     };
     assembleTableHead = (dynColums) => {
@@ -192,6 +222,7 @@ class PurchaseModal extends React.Component {
             align:'center',
             width: 80,
             fixed: 'left',
+            editable: true,
         },{
             title: '批号',
             dataIndex: 'a',
@@ -207,7 +238,6 @@ class PurchaseModal extends React.Component {
             width: 100,
             fixed: 'right',
             render: (text,record) => {
-                // console.log('record:',record);
                 const recordId = record.id;
                 return (
                     <span>
@@ -220,7 +250,6 @@ class PurchaseModal extends React.Component {
             }
         }];
         const columns = [...firstColumns,...dynColums,...endColumns];
-        // console.log('table',columns);
         return columns;
     };
     /**---------------------- */
@@ -288,20 +317,7 @@ class PurchaseModal extends React.Component {
     };
     /**--------------------- */
     /**根据判定结果返回div-style颜色*/
-    radioChangeColor = (purchaseStatus) => {
-        switch (purchaseStatus) {
-            case '待定': {
-                return "background:#000; color:#FFF";
-                break;
-            }
-            case '不合格': {
-                break;
-            }
-            case '合格': {
-                break;
-            }
-        }
-    };
+
 
     /**---------------------- */
 }

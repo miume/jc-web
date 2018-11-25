@@ -17,10 +17,14 @@ class Auth extends React.Component {
             let quickAccess = localStorage.getItem('quickAccess');
             let remote = localStorage.getItem('remote');
             let remote1 = localStorage.getItem('remote1');
+            let remote2 = localStorage.getItem('remote2');
+            let remote3 = localStorage.getItem('remote3');
             localStorage.clear();
             localStorage.setItem("remote", remote);
             localStorage.setItem("quickAccess", quickAccess);
             localStorage.setItem("remote1", remote1);
+            localStorage.setItem("remote2", remote2);
+            localStorage.setItem("remote3", remote3);
             this.props.history.push({pathname: '/'})
         }
     }

@@ -23,9 +23,9 @@ const CollectionCreateForm = Form.create()(//弹出层
                 <FormItem label='工厂名称' labelCol={{span:5}} wrapperCol={{span:14}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
-                    rules:[{required:true,message:'送货工厂名称不能为空'}]
+                    rules:[{required:true,message:'送样工厂名称不能为空'}]
                 })(
-                    <Input placeholder='请输入送货工厂名称'></Input>
+                    <Input placeholder='请输入送样工厂名称'></Input>
                 )}
                 </FormItem>
             </Form>
@@ -37,7 +37,7 @@ const CollectionCreateForm = Form.create()(//弹出层
   //这是个令牌，每次调接口将其放在header里面
 const Authorization=localStorage.getItem('Authorization');
 //通过这个获取接口地址
-const server=localStorage.getItem('remote');
+const server=localStorage.getItem('remote2');
 class DeliveryFactoryAddModal extends React.Component{
     state = {
         visible: false,
@@ -60,7 +60,7 @@ class DeliveryFactoryAddModal extends React.Component{
             return;
           }
           axios({
-            url:'http://2p277534k9.iok.la:58718/jc/deliveryFactory/add',
+            url:`${server}/jc/deliveryFactory/add`,
             method:'post',
             headers:{
               'Authorization':Authorization
@@ -89,7 +89,7 @@ class DeliveryFactoryAddModal extends React.Component{
     render(){
         
         return(
-          <div>
+          <span>
               <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.showModal} >新增</Button>
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
@@ -97,7 +97,7 @@ class DeliveryFactoryAddModal extends React.Component{
                 onCancel={this.handleCancel}
                 onCreate={this.handleCreate}
               />
-          </div>
+          </span>
         );
     }
 }

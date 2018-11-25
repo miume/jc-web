@@ -2,7 +2,7 @@ import React from 'react';
 import { Button,Input,Icon,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../dataEntry/blockQuote';
 import Span from '../BlockQuote/span';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
