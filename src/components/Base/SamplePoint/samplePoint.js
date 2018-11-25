@@ -1,10 +1,14 @@
 import React from 'react';
-import {Button, Input, Table,Icon, Popconfirm, Form, InputNumber, Divider, Modal} from 'antd';
-import Blockquote from '../../BlockQuote/blockquote';
-import WhiteSpace from '../../BlockQuote/whiteSpace';
+import { Button,Input,Table,Popconfirm,Form,Divider,message} from 'antd';
+import '../../Home/page.css';
+import axios from 'axios';
+import BlockQuote from '../../dataEntry/blockQuote';
+import DeleteByIds from '../../BlockQuote/deleteByIds';
+import SearchCell from '../../BlockQuote/search';
 import SamplePointAddModal from './samplePointAddModal';
-import DeleteByIds from './deleteByIds';
+
 const EditableContext = React.createContext(); // ??这个是什么作用
+
 //创建一个Context对象，
 //假设我们有很多个组件，我们只需要在父组件使用Provider提供数据，
 //然后我们就可以在子组件任何位置使用Consumer拿到数据，不存在跨组件的问题
@@ -17,28 +21,19 @@ const EditableRow = ({ form, index, ...props }) => (
         <tr {...props} />
     </EditableContext.Provider>
 );
-const EditableFormRow = Form.create()(EditableRow); //??
+const EditableFormRow = Form.create()(EditableRow);
+/** 通过localStorage可查到http://218.77.105.241:40080*/
+const server = localStorage.getItem("remote2"); 
+/**这是个令牌，每次调用接口都将其放在header里 */
+const Authorization=localStorage.getItem('Authorization');
 
-//表格中的数据
-const data = [{
-    key: '1',
-    name: '送样点1',
-    
-  }, {
-    key: '2',
-    name: '送样点2',
-   
-  }, {
-    key: '3',
-    name: '送样点3',
-    
-  }];
-  //编辑
-  class EditableCell extends React.Component {
+class EditableCell extends React.Component {
+  constructor(props){
+    super(props);
+  }
+  
     getInput = () => {
-        if (this.props.inputType === 'number') {
-            return <InputNumber />;
-        }
+    
         return <Input />;
     };
     render() {
@@ -51,6 +46,7 @@ const data = [{
             index,
             ...restProps
         } = this.props;
+        //console.log(...restProps);
         return (
             <EditableContext.Consumer>
                 {(form) => {
@@ -62,10 +58,14 @@ const data = [{
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [{
                                             required: true,
-                                            message: `Please Input ${title}!`,
+                                            message: `${title}不能为空`,
                                         }],
-                                        initialValue: record[dataIndex],
-                                    })(this.getInput())}
+
+                                        
+                                        initialValue:record[dataIndex],
+                                         
+                                    })(this.getInput())
+                                    }
                                 </FormItem>
                             ) : restProps.children}
                         </td>
@@ -75,242 +75,373 @@ const data = [{
         );
     }
 }
-class SamplePoint extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={
-            dataSource : data,
-           visible:false,
-           searchText:'',
-           editingKey:'',
-           selectedRowKeys:[]
-        }
-        this.onSelectChange=this.onSelectChange.bind(this);
-        this.deleteByIds=this.deleteByIds.bind(this);
-        this.cancel=this.cancel.bind(this);
-        this.lastStep=this.lastStep.bind(this);
-        this.columns=[{
-           title:'送样点序号',
-           dataIndex:'key',
-           key:'key',
-           sorter:(a,b) => a.key-b.key,
-           align:'center',
-           width:'33%'
-        },{
-            title:'送样点名称',
-            dataIndex:'name',
-            key:'name',
-            editable:1,
-            align:'center',
-            width:'33%',
-            filterDropdown : ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
-                <div className = "custom-filter-dropdown">
-                    <Input
-                        ref={ ele => this.searchInput = ele }  // 表头添加一个搜索
-                        placeholder="产品线名称"
-                        value={ selectedKeys[0] }
-                        onChange={ e => setSelectedKeys(e.target.value ? [e.target.value] : []) }
-                        onPressEnter={ this.handleSearch(selectedKeys, confirm) }
-                    />
-                    <Button type = "primary" onClick={ this.handleSearch(selectedKeys, confirm)}>搜索</Button>
-                    <Button onClick={this.handleReset(clearFilters)}>重置</Button>
-                </div>
-            ),
-            filterIcon : filtered => <Icon type="search" style={{ color : filtered ? '#108ee9' : '#aaa',fontSize:'18px'}} />,
-            // onFilter 用于筛选当前数据
-            onFileter : (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-            onFilterDropdownVisibleChange: (visible) => {
-                if (visible) {
-                    setTimeout(() => {
-                        this.searchInput.focus();
-                    });
-                }
-            },
-            render : (text) => {
-                const { searchText } = this.state;
-                return searchText ? (
-                    <span>
-                    {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-                        fragment.toLowerCase() === searchText.toLowerCase()
-                            ? <span key={i} className="highlight">{fragment}</span> : fragment
-                    ))}
-                  </span>
-                ) : text;
-            },
-        },{
-            title:'操作',
-            key:'operation',
-            align:'center',
-            width:'33%',
-            render : (text, record) => {
-                const editable = this.isEditing(record);
-                return (
-                    <span>
-                        <span>
-                        {editable ? (
-                            <span>
-                                <EditableContext.Consumer>
-                                    {form => (
-                                        <a
-                                            href="javascript:;"
-                                            onClick={() => this.save(form, record.key)}
-                                            style={{ marginRight : 8}}>保存</a>
-                                    )}
-                                </EditableContext.Consumer>
-                                <Popconfirm title="确认取消？" onConfirm={() => this.cancel(record.key)} okText="确定" cancelText="取消">
-                                    <a>取消</a>
-                                </Popconfirm>
-                            </span>
-                        ) : (
-                            <a onClick={() => this.edit(record.key)}>编辑</a>
-                        )}
-                    </span>
-                    <Divider type="vertical" />
-                        <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(record.key)} okText="确定" cancelText="取消" >
-                            <a href="#">删除</a>
-                        </Popconfirm>
-                    </span>
-                )
-            },
 
-        }]
-       
+class SamplePoint extends React.Component{
+  componentWillUnmount() {
+    this.setState = (state, callback) => {
+      return ;
     }
-    //处理新增一条记录
-    handleAdd = () => {
-       this.setState({visible:true});
+  }
+    constructor(props){
+      super(props);
+      this.state={
+        dataSource : [],
+        pagination:[],
+        selectedRowKeys : [],//最开始一条记录也没选
+        searchContent:'',
+        visible:false,
+        editingKey:'',
+        reset:false,
+        Authorization:Authorization,
+      }
+      this.handleDelete=this.handleDelete.bind(this);
+      this.onSelectChange=this.onSelectChange.bind(this);
+      this.deleteByIds=this.deleteByIds.bind(this);
+      this.cancel = this.cancel.bind(this);
+      this.showIds = this.showIds.bind(this);
+      this.isEditing=this.isEditing.bind(this);
+
+      this.handleTableChange=this.handleTableChange.bind(this);
+      this.searchContentChange=this.searchContentChange.bind(this);
+      this.searchEvent=this.searchEvent.bind(this);
+      
+      
+      this.pagination = {
+        total: this.state.dataSource.length,
+        showSizeChanger: true,//是否可以改变 pageSize
+        //改变每页条目数
+        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+          //console.log('Current: ', current, '; PageSize: ', pageSize);
+        },
+        onChange(current) {//跳转，页码改变
+          //console.log('Current: ', current);
+        }
+      };
+      this.columns=[{//表头
+
+        title:'序号',
+        dataIndex:'index',//dataIndex值与字段值要匹配
+        key:'id',
+       sorter:true,//需要服务端排序
+       //sorter:(a, b) => a.id-b.id,
+        width: '20%',
+        align:'center',
+     },{
+        title:'取样点名称',
+        dataIndex:'name',
+        key:'name',
+        editable:1,//?
+        width: '33%',
+        align:'center',
+    },{
+      title: '操作',
+      //dataIndex: 'type',
+      key:'operation',
+      width: '33%',
+      align:'center',
+      render : (text, record) =>  {
+        //console.log(text);
+        //console.log(record);
+        const editable = this.isEditing(record);
+        return (
+            <span>
+                <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+                <a href="#">删除</a>
+                </Popconfirm>
+                <Divider type="vertical" />
+                <span>
+                {editable ? (
+                  <span>
+                    <EditableContext.Consumer>
+                      {form => (
+                        <a
+                          href="javascript:;"
+                          onClick={() => this.save(form, record.id)}
+                          style={{ marginRight: 8 }}>保存</a>
+                      )}
+                    </EditableContext.Consumer>
+                    <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
+                      <a>取消</a>
+                    </Popconfirm>
+                  </span>
+                ) : (
+                  <a onClick={() => this.edit(record.id)}>编辑</a>
+                )}
+              </span>
+            </span>
+        );
+        }
+     },];
     }
-    handleOk() {
-        console.log(this.formRef.getItemsValue());//将新增框填写的值打印出来
-        this.setState({visible:false});
+    //获取所有数据getAllByPage
+    handleTableChange=(pagination)=>{
+       this.fetch=({//前端需要传的参数
+         size:pagination.pageSize,//条目数
+         page:pagination.current,//当前页
+         orderField:'id',//排序属性
+         orderType	:'desc'//排序方法（降序）
+       });
     }
-    handleCancel(){
-        this.setState({visible:false});
-    }
-    //处理单行记录删除
-    handleDelete =(key) =>{
-        const dataSource = this.state.dataSource;
-        this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-    }
-    //处理批量删除
-    deleteByIds(){
-        const ids=this.state.selectedRowKeys.toString();
-    }
-    cancel(){}
-    //实现字段搜索
-    handleSearch=(selectedKeys,confirm) => ()=>{
-       confirm();
-       this.setState({searchText:selectedKeys[0]});
-    }
-    handleReset = clearFilters => () => {
-        clearFilters();
-        this.setState({ searchText: '' });
-    };
-     /**编辑功能 */
-    isEditing = (record) => {
-        return record.key === this.state.editingKey;
-    };
-    cancel = () => {
-        this.setState({ editingKey: '' });
-    };
-    edit(key) {
-        this.setState({ editingKey: key });
-    };
-    save(form, key) {
-        form.validateFields((error, row) => {
-            if (error) {
-                return;
-            }
-            const newData = this.state.dataSource;
-            const index = newData.findIndex(item => key === item.key);
-            if (index > -1) {
-                const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
-                });
-                this.setState({ dataSource: newData, editingKey: '' });
-            } else {
-                newData.push(row);
-                this.setState({ dataSource: newData, editingKey: '' });
-            }
+    fetch=(params = {})=>{
+      //console.log('params:', params);
+      this.setState({loading:true});
+      axios({
+        url: `${server}/jc/samplePoint/getAllByPage`,
+        method:'get',
+        headers:{
+          'Authorization':Authorization
+        },
+        params:{
+          ...params,
+        },
+        //type:'json',
+      }).then((data)=>{
+        const res=data.data.data;
+        this.pagination.total=res.total;
+        for(var i = 1; i<=res.list.length; i++){
+          res.list[i-1]['index']=(res.pages-1)*10+i;
+        }//是序号从1开始
+        this.setState({
+          loading:false,
+          dataSource:res.list,
         });
-    };
-    //上一步
-    lastStep(){
-        this.props.history.push({pathname:'baseInfo'});
+      });
+    }
+    componentDidMount(){
+      this.fetch();
+      
+    }
+
+
+    //根据id处理单条记录删除
+    handleDelete(id){//id代表的是这条记录的id
+      //console.log(id);
+        const dataSource = this.state.dataSource;
+        axios({
+          url:`${server}/jc/samplePoint?id=${id}`,
+          method:'Delete',
+          headers:{
+            'Authorization':Authorization
+          },
+         data:id,
+         type:'json'
+        })
+        .then((data)=>{
+          //console.log(data);
+          message.info(data.data.message);
+          this.fetch();
+        })
+        
+        .catch((error)=>{
+         message.info(error.data.message);
+        });
       }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys:selectedRowKeys });
+        //console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys:selectedRowKeys }); 
+     } 
+     rowSelected(selectedRowKeys){//？
+        this.setState({
+          selectedIds: selectedRowKeys
+        });
+      }
+      showIds(event) {//?
+       // console.log(event.target.value)
+      }
+      /**---------------------- */
+    /**批量删除弹出框确认函数 */
+    deleteByIds() {
+        const ids = this.state.selectedRowKeys;//删除的几行的id
+       // console.log(ids);
+        axios({
+            url:`${server}/jc/samplePoint/deleteByIds`,
+            method:'Delete',
+            headers:{
+                  'Authorization' :Authorization
+            },
+            data:ids,//前端要传的参数放在data里面，
+            type:'json'
+        })
+        .then((data)=>{
+         // console.log(data);
+          message.info(data.data.message);
+          this.fetch();
+        })//处理成功
+        .catch((error)=>{
+         // console.log(error);
+          message.info(error.data.message)
+        });//处理异常
+       
+     }
+    cancel(){
+      
     }
-       render(){
+   
+    //编辑
+    //判断单元格是否可编辑
+    isEditing (record)  {
+        return record.id === this.state.editingKey;
+      };
+    
+      edit(id) {
+        this.setState({ editingKey: id });
+      }
+    //实现编辑操作
+      save(form, id) {
+      //row代表修改后的数据,item代表原始数据
+        form.validateFields((error, row) => {
+          if (error) {
+            return;
+          }
+          const newData = this.state.dataSource;
+          const index = newData.findIndex(item => id === item.id);
+          if (index > -1) {
+            const item = newData[index];
+            newData.splice(index, 1, {
+              ...item,
+              ...row,
+            });//splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。该方法会改变原始数组。
+              /**
+              * arrayObject.splice(index,howmany,item1,.....,itemX)
+              * index	必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
+               howmany	必需。要删除的项目数量。如果设置为 0，则不会删除项目。
+              item1, ..., itemX	可选。向数组添加的新项目。
+              */
+            const data=row;
+            /**将id变成字符串 */
+            data['id']=id.toString();           
+            //console.log(data);
+            axios({
+              url:`${server}/jc/samplePoint/update`,
+              method:'post',
+              headers:{
+                'Authorization':Authorization
+              },
+              data:data,
+              type:'json'
+            })
+            .then((data)=>{
+              // console.log(data);
+              message.info(data.data.message);
+              this.fetch();
+            })
+            .catch((error)=>{
+             // console.log(error.data);
+              message.info(error.data.message);
+            });
+            this.setState({ dataSource: newData, editingKey: '' });
+          } else {
+            newData.push(row);
+            this.setState({ dataSource: newData, editingKey: '' });
+          }
+        });
+      }
+    
+      cancel = () => {
+        this.setState({ editingKey: '' });
+      };
+  
+    
+
+      /**---------------------- */
+        //获取查询时用户名称的实时变化
+        searchContentChange(e){
+          const value=e.target.value;
+          this.setState({searchContent:value});
+        }
+      //根据用户名称分页查询
+      searchEvent(){
+           const samplePointName=this.state.searchContent;
+           //console.log(username);
+           axios({
+             url:`${server}/jc/samplePoint/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             method:'get',
+             headers:{
+               'Authorization':Authorization
+             },
+             params:{
+               size:this.pagination.pageSize,
+               page:this.pagination.current,
+               samplePointName:samplePointName
+             },
+             type:'json'
+           })
+           .then((data)=>{
+             const res=data.data.data;
+             this.pagination.total=res.total;
+             for(var i=1;i<=res.list.length;i++){
+                res.list[i-1]['index']=(res.pages-1)*10+i;
+             }
+             this.setState({
+               dataSource:res.list//list取到的是所有符合要求的数据
+             });
+           })
+           .catch((error)=>{
+
+            message.info(error.data.message)
+           });
+      }
+  
+   render(){
         const rowSelection = {//checkbox
-            onChange: this.onSelectChange,
+            onChange:this.onSelectChange,
             onSelect() {
-                //console.log(record, selected, selectedRows);
+              // console.log(record, selected, selectedRows);
             },
             onSelectAll() {
-                // console.log(selected, selectedRows, changeRows);
+              // console.log(selected, selectedRows, changeRows);
             },
         };
-           //  分页设置
-        const pagination = {
-            total: data.length,
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-                console.log('Current: ', current, '; PageSize: ', pageSize);
-            },
-            onChange(current) {
-                console.log('Current: ', current);
-            }
-        };
+       
         const components={
-           body:{
-             row:EditableFormRow,
-             cell:EditableCell
-           }
+            body:{
+                row:EditableFormRow,
+                cell:EditableCell,
+            },
         };
-        const columns = this.columns.map((col) => {
+       
+         const table_column =this. columns.map((col) => {
             if (!col.editable) {
-                return col;
+              return col;
             }
             return {
-                ...col,
-                onCell: record => ({
-                    record,
-                    editable: col.editable,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    editing: this.isEditing(record),
-                }),
+              ...col,
+              onCell: record => ({
+                record,
+                editable: col.editable,
+                dataIndex: col.dataIndex,
+                title: col.title,
+                editing: this.isEditing(record),
+                
+              }),
             };
-        });
-        
-           return(
-               <div>
-                   <Blockquote name='取样点'></Blockquote>
-                   <div className='fl'>
-                    <Button type='primary' size='small' style={{marginRight:'15px'}} onClick={()=>this.handleAdd()}>新增</Button>
-                       <Modal title='新增' visible={this.state.visible}
-                       onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
-                       footer={[
-                           <Button key='submit' type='primary' size='large' onClick={() => this.handleOk()}>确定</Button>,
-                           <Button key='back' type='ghost' size='large' onClick={() => this.handleCancel()}>取消</Button>
-                       ]}>
-                       <SamplePointAddModal wrappedComponentRef={(form) => this.formRef = form}></SamplePointAddModal>
-                       </Modal>
-                       <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
-                   </div>
-                   <WhiteSpace></WhiteSpace>
-                   <div className='clear' ></div>
-                   <Table rowKey={record => record.key} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={pagination} components={components} size="small" bordered  scroll={{ y: 400 }}></Table>
-                   <div style={{marginLeft:'80%', marginTop:'200px',marginRight:'80px',height:'50px',position:'absolute'}} >
-                     <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
-                  </div>
-               </div>
-           );
-       }
- }
- export default SamplePoint;
+          });
+       return(
+           <div>
+               <BlockQuote name='取样点' menu='数据录入'/>
+               <div style={{padding:'15px'}}>
+               
+               <SamplePointAddModal fetch={this.fetch}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
+                <span style={{float:'right',paddingBottom:'8px'}}>
+                      <SearchCell name='请输入取样点' 
+                      searchEvent={this.searchEvent}
+                      searchContentChange={this.searchContentChange} 
+                      fetch={this.fetch}/>
+               </span>
+               <div className='clear'  ></div>
+                <Table rowKey={record => record.id} 
+                    rowSelection={rowSelection} 
+                    columns={table_column} 
+                    dataSource={this.state.dataSource}
+                    components={components} 
+                    pagination={this.pagination} 
+                    onChange={this.handleTableChange} 
+                    size="small" bordered  scroll={{ y: 400 }}/>
+                </div>
+           </div>
+       );
+   }
+}
+export default SamplePoint;
