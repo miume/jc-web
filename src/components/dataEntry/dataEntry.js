@@ -1,4 +1,5 @@
 import React from 'react';
+import {Col,Row} from 'antd';
 import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
 const data = [{
