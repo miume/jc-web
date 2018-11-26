@@ -1,7 +1,7 @@
 import React from 'react';
 import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
-import EditSpan from './editSpan';
+import CheckSpan from './checkSpan';
 import DeletaSpan from './deleteSpan';
 
 class InterTable extends React.Component{
@@ -11,62 +11,60 @@ class InterTable extends React.Component{
         key: 'id',
         sorter: (a, b) => a.key - b.key,
         align:'center',
-        width: '12%',
+        width: '5%',
+    },{
+        title: '送样日期',
+        dataIndex: 'sampleDeliveringDate',
+        key: 'sampleDeliveringDate',
+        align:'center',
+        width: '15%',
     },{
         title: '送检人',
-        dataIndex: 'a',
-        key: 'a',
+        dataIndex: 'deliverer',
+        key: 'deliverer',
         align:'center',
-        editable: 1,
         width: '8%',
     },{
         title: '送检工厂(原材料)',
-        dataIndex: 'b',
-        key: 'b',
+        dataIndex: 'deliveryFactory',
+        key: 'deliveryFactory',
         align:'center',
-        editable: 1,
-        width: '8%',
-    },{
-        title: '送检日期',
-        dataIndex: 'c',
-        key: 'c',
-        align:'center',
-        editable: 1,
         width: '8%',
     },{
         title: '批号',
-        dataIndex: 'd',
-        key: 'd',
+        dataIndex: 'batchNumber',
+        key: 'batchNumber',
         align:'center',
-        editable: 1,
         width: '8%',
     },{
         title: '检测项目',
-        dataIndex: 'e',
-        key: 'e',
+        dataIndex: 'testItems',
+        key: 'testItems',
         align:'center',
-        editable: 1,
         width: '8%',
     },{
-        title: '紧急备注',
-        dataIndex: 'f',
-        key: 'f',
+        title: '异常备注',
+        dataIndex: 'urgentComment',
+        key: 'urgentComment',
         align:'center',
-        editable: 1,
         width: '8%',
     },{
-        title: '接收反馈',
+        title: '类型',
+        dataIndex: 'type',
+        key: 'type',
+        align:'center',
+        width: '8%',
+    },{
+        title: '发布状态',
         dataIndex: 'h',
         key: 'h',
         align:'center',
-        editable: 1,
         width: '8%',
     },{
         title: '审核状态',
-        dataIndex: 'i',
-        key: 'i',
+        dataIndex: 'status',
+        key: 'status',
         align:'center',
-        editable: 1,
         width: '8%',
     },{
         title: '操作',
@@ -75,23 +73,26 @@ class InterTable extends React.Component{
         align:'center',
         width: '17%',
         render: (text,record) => {
-            console.log("-----");
-            console.log(record);
-            let operationFlag = this.judgeOperation(record.i);
+            let detailSpanFlag = this.judgeDetailOperation(record.status);
+            let checkSpanFlag = this.judgeCheckOperation(record.status);
             return (
                 <span>
-                    <EditSpan
-                        disabled={operationFlag}
-                    />
-                    <Divider type="vertical" />
                     <DetailSpan
                         record={record}
+                        disabled={detailSpanFlag}
                     />
                     <Divider type="vertical" />
-                    <DeletaSpan
+                    <CheckSpan
                         record={record}
-                        disabled={operationFlag}
+                        disabled={checkSpanFlag}
                     />
+                    <Divider type="vertical" />
+                    {/*<Release*/}
+                    {/*/>*/}
+                    {/*<DeletaSpan*/}
+                        {/*record={record}*/}
+                        {/*disabled={operationFlag}*/}
+                    {/*/>*/}
                 </span>
             )
         }
@@ -123,9 +124,16 @@ class InterTable extends React.Component{
             />
         );
     }
-    /**判断编辑可否功能 */
-    judgeOperation = (record) => {
-        if(record==="不通过"){
+    /**判断详情可否功能 */
+    judgeDetailOperation = (status) => {
+        if(status==="未申请"){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    judgeCheckOperation = (status) => {
+        if(status==="未申请"||status==="不通过"){
             return false;
         }else{
             return true;
