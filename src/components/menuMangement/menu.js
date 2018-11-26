@@ -29,7 +29,6 @@ class Menu extends React.Component{
           fatherMenu:[],
       };
       this.handleTableChange=this.handleTableChange.bind(this);
-      this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
       this.start=this.start.bind(this);
       this.cancel=this.cancel.bind(this);
       this.fetch=this.fetch.bind(this);
@@ -149,7 +148,6 @@ class Menu extends React.Component{
   }
     start = () => {
       const ids = this.state.selectedRowKeys;
-      console.log(ids)
       axios({
           url:'http://192.168.1.105:8081/jc/menu/deleteByIds',
           method:'post',
@@ -164,7 +162,6 @@ class Menu extends React.Component{
       }).catch((error)=>{
           message.info(error.data.message)
       });
-
   };
     onSelectChange = (selectedRowKeys) => {
       this.setState({ selectedRowKeys });

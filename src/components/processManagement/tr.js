@@ -1,21 +1,8 @@
 import React from 'react';
 import {Select,Input,Popover,Button,Checkbox,Row,Col} from 'antd';
+import axios from 'axios';
 
 const Option = Select.Option;
-const approvalProcess = [{
-    id:1,
-    name:'流程1'
-},{
-    id:2,
-    name:'流程2'
-},{
-    id:3,
-    name:'流程3'
-}]
-
-const children = approvalProcess.map(p => 
-    <Option key={p.id}>{p.name}</Option>
-)
 
 class Tr extends React.Component{
     constructor(props){
@@ -23,9 +10,29 @@ class Tr extends React.Component{
         this.state = {
             clicked: false,
             hovered: false,
+            approvalProcess:[],
+            loading : false
         }
         this.hide = this.hide.bind(this);
         this.handleClickChange = this.handleClickChange.bind(this);
+    }
+    getAllUser = (params = {})=>{
+        this.setState({ loading: true });
+        axios({
+            url: 'http://2p277534k9.iok.la:58718/jc/authUser/getAll',
+            method:'get',
+            params: params,
+        }).then((data)=>{
+            const res = data.data.data;
+            console.log(res)
+            this.setState({
+                approvalProcess : res,
+                loading: false,
+            })
+        })
+    };
+    componentDidMount() {
+        this.getAllUser();
     }
     hide(){
         this.setState({
@@ -36,6 +43,9 @@ class Tr extends React.Component{
         this.setState({clicked:true})
     }
     render(){
+        const children = this.state.approvalProcess.map(p => 
+            <Option key={p.id}>{p.name}</Option>
+        )
         return(
             <tr className='tbody' id={this.props.value}>
                 <td><Select style={{width:'100%'}}>{children}</Select></td>

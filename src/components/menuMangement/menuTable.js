@@ -156,7 +156,6 @@ class MenuTable extends React.Component{
         align:'center',
         width: '20%',
         render: (text,record) => {
-            console.log(record)
             const editable = this.isEditing(record);
             return (
                 <span>
