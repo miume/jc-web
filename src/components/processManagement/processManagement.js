@@ -4,7 +4,7 @@ import { Table,Input,Icon,Button,InputNumber,Form,Popconfirm,Divider,Modal,messa
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';
-import Add from './processAdd';
+import Add from './addModal';
 import Detail from './detail';
 import Editor from './editor';
 import axios from "axios";
@@ -29,6 +29,7 @@ class Management extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.start=this.start.bind(this);
         this.cancel=this.cancel.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -182,7 +183,7 @@ class Management extends React.Component{
         this.fetch({
             size: pagination.pageSize,
             page: pagination.current,
-            orderField: 'id',
+            orderField: 'batchNumberId',
             orderType: 'desc',
   
         });
@@ -315,7 +316,7 @@ class Management extends React.Component{
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
                     </span>
-                <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.batchNumberId} size="small" bordered />
+                <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.batchNumberId} size="small" bordered onChange={this.handleTableChange}/>
                     </div>
                 </div>
             );

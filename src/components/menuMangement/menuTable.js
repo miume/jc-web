@@ -16,10 +16,21 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
-    getInput = () => {      
-        return <Input />;
+    getInput = () => {
+        console.log(this.props.inputType)
+        if (this.props.inputType === 'select' && this.props.record.parentId != -1) {
+            return <Select >
+              {
+                this.props.fathermenu.map(de=>{
+                  return (//这个.id是根据后端部门getAll传过来的字段名称决定的
+                    <Option key={de.id} value={de.id}>{de.menuName}</Option>
+                  );
+                })
+              }
+        </Select>;
+        } 
+        return <Input disabled= {this.props.inputType === 'select' && this.props.record.parentId===-1?true:false}/>;
     };
-
     render() {
         const {
             editing,
@@ -43,7 +54,7 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `Please Input ${title}!`,
                                         }],
-                                        initialValue: record[dataIndex], 
+                                        initialValue: record[dataIndex]==-1?"无父菜单":record[dataIndex], 
                                         // initialValue: (record[dataIndex]==1)? '父菜单':(record[dataIndex]==2 ? '子菜单' : record[dataIndex]),                                       
                                     })(this.getInput())}
                                 </FormItem>
@@ -112,7 +123,7 @@ class MenuTable extends React.Component{
         dataIndex: 'parentId',
         key: 'parentId',
         align:'center',
-        // editable: 1,
+        editable: 1,
         width: '20%',
         render:(text,record)=>{
             return record.parentName
@@ -211,7 +222,8 @@ class MenuTable extends React.Component{
               ...col,
               onCell: record => ({
                 record,
-                inputType: col.dataIndex === 'parentId' ? 'select' : 'text' && col.dataIndex === 'menuType' ? 'select1' : 'text',
+                inputType: col.dataIndex === 'parentId' ? 'select' : 'text',
+                record : record,
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
@@ -258,6 +270,9 @@ class MenuTable extends React.Component{
         form.validateFields((error, row) => {
             if (error) {
                 return;
+            }
+            if(row.parentId === '无父菜单'){
+                row.parentId = -1
             }
             const newData = [...this.props.data];
             const index = newData.findIndex(item => id === item.id);

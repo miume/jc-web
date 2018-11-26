@@ -6,13 +6,13 @@ const columns = [{
         title: '负责人',
         dataIndex: 'personName' ,
         key: 'personName',
-        width: '45%',
+        width: '30%',
         align:'center',
       },{
         title: '职责',
         dataIndex: 'responsibility' ,
         key: 'responsibility',
-        width: '45%',
+        width: '30%',
         align:'center',
 }]
 

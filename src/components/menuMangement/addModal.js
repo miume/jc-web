@@ -101,6 +101,7 @@ class AddModal extends React.Component {
             if (err) {
                 return;
             }
+            console.log(values)
             axios({
                 url : 'http://192.168.1.105:8081/jc/menu/add',
                 method:'post',

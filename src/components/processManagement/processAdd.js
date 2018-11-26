@@ -65,19 +65,19 @@ class Add extends React.Component{
                     ]}>
                     <div style={{height:'400px'}}>
                     <table style={{width:'100%'}}>
-                             <thead className='thead'>
-                                 <tr>
-                                     <td>负责人</td>
-                                     <td>职责</td>
-                                     <td>操作</td>
-                                 </tr>
-                             </thead>
-                             <tbody>
-                             {
-                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
-                             }
-                             </tbody>
-                         </table>
+                        <thead className='thead'>
+                            <tr>
+                                <td>负责人</td>
+                                <td>职责</td>
+                                <td>操作</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {
+                        this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                        }
+                        </tbody>
+                    </table>
                          <WhiteSpace />
                          <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>

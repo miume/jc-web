@@ -14,9 +14,13 @@ const CollectionCreateForm = Form.create()(
             this.state={
                 visible : false,
                 count: 1,
-                data : [1]
+                data : [1],
+                taskPersonList : [],
             }
+            this.addData = this.addData.bind(this)
+            this.deleteRow = this.deleteRow.bind(this)
         }
+        /**新增一条数据 */
         addData() {
             const {count,data} = this.state;
             this.setState({
@@ -55,7 +59,7 @@ const CollectionCreateForm = Form.create()(
                         </FormItem>
                         <FormItem label="是否紧急" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('isUrgent', {
-                                rules: [{ required: true, message: '请选择紧急类型类型' }],
+                                rules: [{ required: true, message: '请选择紧急类型' }],
                             })(
                                 <Select onChange={this.selectChange}>
                                     <Option value='-1'>不紧急</Option>
@@ -63,22 +67,37 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
+                        <FormItem label="审核状态" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                            {getFieldDecorator('status', {
+                                rules: [{ required: true, message: '请选择审核状态' }],
+                            })(
+                                <Select onChange={this.selectChange}>
+                                    <Option value='-1'>已保存未提交</Option>
+                                    <Option value='0'>已提交未审核</Option>
+                                    <Option value='1'>审核</Option>
+                                    <Option value='2'>审核通过</Option>
+                                    <Option value='3'>审核未通过</Option>
+                                    <Option value='4'>合格</Option>
+                                    <Option value='5'>不合格</Option>
+                                </Select>
+                            )}
+                        </FormItem>
                         <table style={{width:'100%'}}>
-                             <thead className='thead'>
-                                 <tr>
-                                     <td>负责人</td>
-                                     <td>职责</td>
-                                     <td>操作</td>
-                                 </tr>
-                             </thead>
-                             <tbody>
-                             {
-                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
-                             }
-                             </tbody>
-                         </table>
-                         <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+                            <thead className='thead'>
+                                <tr>
+                                    <td>负责人</td>
+                                    <td>职责</td>
+                                    <td>操作</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {
+                            this.state.data.map((m) => { return <Tr key={m.toString()} taskPersonList={this.state.taskPersonList} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                            }
+                            </tbody>
+                        </table>
+                        <WhiteSpace />
+                        <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </Form>
                 </Modal>
             );
@@ -86,8 +105,6 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
 class AddModal extends React.Component {
     state = {
         visible: false,
@@ -106,6 +123,7 @@ class AddModal extends React.Component {
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
+            console.log(values)
             if (err) {
                 return;
             }
