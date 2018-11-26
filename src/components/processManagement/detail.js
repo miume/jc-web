@@ -4,14 +4,14 @@ import WhiteSpace from '../BlockQuote/whiteSpace'
 
 const columns = [{
         title: '负责人',
-        dataIndex: 'principal' ,
-        key: 'principal',
+        dataIndex: 'personName' ,
+        key: 'personName',
         width: '45%',
         align:'center',
       },{
         title: '职责',
-        dataIndex: 'duties' ,
-        key: 'duties',
+        dataIndex: 'responsibility' ,
+        key: 'responsibility',
         width: '45%',
         align:'center',
 }]
@@ -58,14 +58,10 @@ class Detail extends React.Component{
                              流程名称：<Input value={this.props.value.name} style={{width:300}} disabled={true}/>
                              <WhiteSpace />
                              所属工艺：<Input value={"xxx的工艺"} style={{width:300}} disabled={true}/>
-                             <WhiteSpace />
-                             流程类型：<Input value={this.props.value.type} style={{width:300}} disabled={true}/>
                          </div>
                          <WhiteSpace />
-                         <Table columns={columns} size='small' pagination={false} bordered></Table>
+                         <Table columns={columns} size='small' pagination={false} bordered dataSource={this.props.value.taskPersonList}></Table>
                     </div>
-                >
-
                 </Modal>
             </span>
         );
