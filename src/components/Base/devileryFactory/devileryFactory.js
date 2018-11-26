@@ -284,9 +284,10 @@ class DeliveryFactory extends React.Component{
       cancel = () => {
         this.setState({ editingKey: '' });
       };
-  
-    
-
+       /**返回数据录入页面 */
+      returnDataEntry(){
+        this.props.history.push({pathname:'/baseInfo'});
+       }
       /**---------------------- */
         //获取查询时用户名称的实时变化
         searchContentChange(e){
@@ -359,9 +360,10 @@ class DeliveryFactory extends React.Component{
               }),
             };
           });
+      
        return(
            <div>
-               <BlockQuote name='送样工厂' menu='数据录入'/>
+               <BlockQuote name='送样工厂' menu='质量与流程' menu2='基础数据' onClick={this.returnDataEntry}/>
                <div style={{padding:'15px'}}>  
                <DeliveryFactoryAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} fetch={this.fetch}/>

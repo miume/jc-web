@@ -18,3 +18,17 @@ code {
 .ant-menu-item {
   padding-left: 30px !important;
 }
+#defaultCanvas0 {
+  position: absolute;
+  display: block;
+  top: 5%;
+  margin: 0px auto;
+  z-index: -1;
+  height: 95% !important;
+  width: 50% !important;
+  visibility: visible;
+}
+
+.show {
+  visibility: visible;
+}
