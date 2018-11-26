@@ -1,5 +1,6 @@
 import React from 'react';
 import {Col,Row} from 'antd';
+import './data.css';
 import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
 const data = [{
@@ -44,8 +45,7 @@ class DataEntry extends React.Component{
             clickButton:''
         }
         this.click = this.click.bind(this);
-        this.nextStep = this.nextStep.bind(this);
-        this.lastStep = this.lastStep.bind(this);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
     }
      click(e){
         const path = e.target.id;
@@ -54,35 +54,34 @@ class DataEntry extends React.Component{
         // if( this.state.clickId && this.state.clickId!=value){
         //     document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
         // }
-        // console.log(e.target.id)
+        console.log(e.target)
         this.props.history.push({pathname:path})
          
     }
-    nextStep(){
-        this.setState({
-            flag:1
-        })
-        //console.log(this.state.path)
-        this.props.history.push({pathname:this.state.path})
-        
-    }
-    lastStep(){
-        this.setState({
-            flag:0
-        })
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/dataEntry'});
     }
     render(){
-        //console.log(this.state.clickId)
         return (
             <div>
-                <Blockquote menu='质量流程' name='数据录入'/>
+                <Blockquote menu='质量流程' name='数据录入' onClick={this.returnDataEntry}/>
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
-                    <div style={{marginLeft:'20px'}}>
+                    <div style={{margin:'20px'}}>
+                    <Row gutter={32}>
                     {
+                        data.map(d=>
+                           <Col key={d.id} span={6} className='gutter-row'  onClick={this.click}>
+                               <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
+                           </Col> 
+                            )
+                    }
+                    </Row>
+                    {/* {
                         data.map(d=>
                             <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
                         )
-                    }
+                    } */}
                 </div>
            </div>
            </div>

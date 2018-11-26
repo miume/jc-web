@@ -16,7 +16,22 @@
     
   </body>
   
-  <!-- <script>
-      console.log(createCanvas(800,400));
-  </script> -->
+  <script type='text/javaScript' src='p5.min.js'></script>
+  <script type='text/javaScript' src='sketch.js'></script>
+  <script type='text/javascript'>
+
+   
+    window.onload = function() {
+      console.log('rendered')
+      // console.log(document.getElementById('defaultCanvas0'))
+      var url = window.location.href;
+      if(url.lastIndexOf("/")-url.length != -1) {
+        console.log('hidden')
+        document.getElementById('defaultCanvas0').style.visibility='hidden';
+      }
+     
+      
+    }
+    
+  </script>
 </html>
