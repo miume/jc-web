@@ -23,7 +23,6 @@ class Management extends React.Component{
             searchText: '',
         }
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -32,6 +31,9 @@ class Management extends React.Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
+            showTotal(total){
+                return `共${total}条记录`
+            },
             showSizeChanger: true,
             onShowSizeChange(current, pageSize) {
               console.log('Current: ', current, '; PageSize: ', pageSize);
@@ -214,10 +216,6 @@ class Management extends React.Component{
     componentDidMount() {
         this.fetch();
     }
-    deleteByIds() {
-        const ids = this.state.selectedRowKeys.toString();
-        console.log(ids)
-     }
     handleSearch = (selectedKeys, confirm) => () => {
         confirm();
         this.setState({ searchText: selectedKeys[0] });

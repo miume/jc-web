@@ -109,7 +109,6 @@ class MenuTable extends React.Component{
         dataIndex : 'menuType',
         key: 'menuType',
         align:'center',
-        // editable: 1,
         width: '20%',
         render:(text, record)=>{
             if(record.menuType==1){
@@ -128,39 +127,6 @@ class MenuTable extends React.Component{
         render:(text,record)=>{
             return record.parentName
         },
-    //     filterDropdown:({ setSelectedKeys, selectedKeys, confirm, clearFilters }) =>(
-    //     <div className="custom-filter-dropdown">
-    //       <Input
-    //         ref={ele => this.searchInput = ele}
-    //         placeholder="Search name"
-    //         value={selectedKeys[0]}
-    //         onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-    //         onPressEnter={this.handleSearch(selectedKeys, confirm)}
-    //       />
-    //       <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
-    //       <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-    //     </div>
-    //   ),
-    //   filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-    //   onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-    //   onFilterDropdownVisibleChange: (visible) => {
-    //     if (visible) {
-    //       setTimeout(() => {
-    //         this.searchInput.focus();
-    //       });
-    //     }
-    //   },
-    //   render: (text,record) => {
-    //     const { searchText } = this.state;
-    //     return (searchText ? (
-    //       <span>
-    //         {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-    //           fragment.toLowerCase() === searchText.toLowerCase()
-    //             ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-    //         ))}
-    //       </span>
-    //     ) : text,record.parentName);
-    //   },
     },{
         title: '操作',
         key: 'operation',
