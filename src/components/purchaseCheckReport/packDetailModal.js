@@ -1,56 +1,55 @@
 import React from 'react';
-import { Input,Button,Table,Radio } from 'antd';
-import WhiteSpace from '../BlockQuote/whiteSpace';
+import { Input,Button,Table,Radio,Divider } from 'antd';
+// import './aePopModal.css';
 import '../Home/page.css';
-import './pack.css';
+import IsQualified from "../BlockQuote/isQualified";
 
 
-
+const topData = {
+    batchNumber: 'EcT/139',
+    materialName: '镍矿石',
+    b: '2018年11月11日',
+};
+const testData = {
+    tester: '检测人',
+    testTime: '2018年11月12日',
+};
+const examineData = {
+    examiner: '检核人',
+}
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
-class DetailModal extends React.Component {
+class DrSpanModal extends React.Component {
     state = {
-        topData : [],
+        topData : topData,      //表头数据
+        testData: testData,   // 检验人数据
+        // spanStatus: 0, //进行判断，0详情，1录检，2发布
+        status : 1, //0不合格，1合格
+
     };
     columns = [{
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'index',
         key: 'id',
         align:'center',
         width: '12%',
     },{
         title: '检测项目',
-        dataIndex: 'a',
-        key: 'a',
+        dataIndex: 'testItem',
+        key: 'testItem',
         align:'center',
         width: '25%',
     },{
         title: '检测结果',
-        dataIndex: 'b',
-        key: 'b',
+        dataIndex: 'testResult',
+        key: 'testResult',
         align:'center',
     },{
         title: '计量单位',
-        dataIndex: 'c',
-        key: 'c',
+        dataIndex: 'itemUnit',
+        key: 'itemUnit',
         align:'center',
         width: '25%',
-    }];
-    topColumns = [{
-        title: '批号',
-        dataIndex: 'id',
-        key: 'id',
-        align:'center',
-    },{
-        title: '原材料',
-        dataIndex: 'a',
-        key: 'a',
-        align:'center',
-    },{
-        title: '送样日期',
-        dataIndex: 'b',
-        key: 'b',
-        align:'center',
     }];
     render() {
         const columns = this.columns.map((col) => {
@@ -58,62 +57,71 @@ class DetailModal extends React.Component {
                 ...col,
                 onCell: record => ({
                     record,
-                    // editable: col.editable,
-                    // dataIndex: col.dataIndex,
-                    // title: col.title,
-                    // handleSave: this.handleSave,
                 }),
             };
         });
         return(
-            <div style={{paddingTop:'10px'}}>
+            <div >
                 <div>
-                    <Table
-                        rowKey={record => record.id}
-                        columns={this.topColumns}
-                        dataSource={this.props.topData}
-                        size="small"
-                        pagination={{hideOnSinglePage:true,pageSize:100}}
-                    />
+                    <table style={{float:'left',align:'center',border:"1px solid gray"}} >
+                        <thead>
+                        <tr>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>批号</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>原材料</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>送样日期</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td style={{textAlign:'center'}}>{this.state.topData.batchNumber}</td>
+                            <td style={{textAlign:'center'}}>{this.state.topData.materialName}</td>
+                            <td style={{textAlign:'center'}}>{this.state.topData.b}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div style={{paddingTop:'20px'}}>
-                       <span style={{float:'left'}}>
-                           样品名称：<Input size="small" placeholder="small size" style={{ width: 100 }}/>
+                <div>
+                       <span style={{float:'left',paddingTop:'10px',paddingBottom:'10px'}}>
+                           样品名称：<span>{this.state.topData.materialName+'样品'}</span>
                        </span>
                 </div>
-                <div style={{paddingTop:'50px'}}>
+                <div>
                     <Table
                         rowKey={record => record.id}
                         columns={columns}
                         dataSource={this.props.data}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
-                        bordered
-                        size="small" scroll={{ y: 150 }}
+                        size="small"
+                        scroll={{ y: 250 }}
                     />
                 </div>
-                <div style={{paddingTop:'20px'}}>
-                    <Radio.Group size={'large'} defaultValue="pass" buttonStyle="solid" style={{float:'left'}}>
-                        <Radio.Button  value="pass" >合格</Radio.Button>
-                    </Radio.Group>
-                    <table style={{float:'right'}}>
+                <div style={{paddingTop:'20px',paddingBottom:'40px'}}>
+                    <table style={{float:'left'}}>
                         <tbody>
                         <tr>
                             <td>检验人：</td>
-                            <td><Input  size="small" placeholder="small size" style={{ width: 100 }} /></td>
+                            <td>{this.state.testData.tester}</td>
                         </tr>
                         <tr>
                             <td>检验时间：</td>
-                            <td><Input  size="small" placeholder="small size" style={{ width: 100 }} /></td>
+                            <td>{this.state.testData.testTime}</td>
                         </tr>
                         </tbody>
                     </table>
+                    <IsQualified
+                        status={this.state.status}
+                    />
                 </div>
-                <div style={{paddingTop:'70px'}}>
-                    <Input placeholder={'检核人：'+this.props.record.i} disabled />
+                <div style={{paddingTop:'40px',width:'450px'}}>
+                    {/*<Input*/}
+                        {/*style={{borderStyle:'dashed',disabled:'true'}}*/}
+                        {/*placeholder = {'检核人：'+examineData.examiner}*/}
+                    {/*/>*/}
+                    <span style={{display:'block',textAlign:'center',fontSize:'15px',border:'1px dashed #999999',color:'#999999'}}>{'检核人：'+examineData.examiner}</span>
                 </div>
             </div>
         )
     }
 }
 
-export default DetailModal;
+export default DrSpanModal;

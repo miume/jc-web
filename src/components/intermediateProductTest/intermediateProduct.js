@@ -21,7 +21,7 @@ for(let i=0; i<20; i++){
             testItems: '测试',
             urgentComment: '测试',
             type: '测试',
-            h: '测试',
+            h: '未发布',
             status: '不通过'
         });
         continue;
@@ -52,8 +52,8 @@ for(let i=0; i<20; i++){
         testItems: '测试',
         urgentComment: '测试',
         type: '测试',
-        h: '测试',
-        status: '审核中'
+        h: '未发布',
+        status: '已通过'
     })
 }
 
