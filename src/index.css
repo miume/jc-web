@@ -36,3 +36,12 @@ code {
 .ant-pagination.ant-table-pagination.mini {
   text-align: right !important; 
 }
+.ant-tabs-bar{
+  margin:0 0 10px 0 !important;
+}
+.button {
+  color:#ffffff !important;
+  font-size:14px !important;
+  font-weight:bolder !important;
+  font-family:'PingFangSC-Regular', 'PingFang SC' !important;
+}
