@@ -18,7 +18,7 @@ class Exit extends Component {
         this.setState(newState)
     }
     logout() {
-        console.log('logout = ' ,document.getElementById('defaultCanvas0'))   
+        /**登出时，使登陆背景动图显示 */
         document.getElementById('defaultCanvas0').style.visibility='visible'; 
     }
     render() {

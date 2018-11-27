@@ -1,8 +1,9 @@
 import React from 'react';
-import {Col,Row} from 'antd';
 import './data.css';
 import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
+// const menuList = JSON.parse(localStorage.getItem('menuList'));
+// console.log(menuList.userId)
 const data = [{
     id:1,
     name:'制程检测',
@@ -33,7 +34,17 @@ const data = [{
     name:'成品检验',
     path:'/process',
     className:'fa fa-codepen fa-5x'
-},]
+},{
+    id:7,
+    name:'不合格审评表',
+    path:'/InterProduct',
+    className:'fa fa-exclamation-triangle fa-5x'
+},{
+    id:8,
+    name:'不合格跟踪表',
+    path:'/process',
+    className:'fa fa-cog fa-5x'
+}]
 
 class DataEntry extends React.Component{
     constructor(props){
@@ -48,15 +59,9 @@ class DataEntry extends React.Component{
         this.returnDataEntry = this.returnDataEntry.bind(this);
     }
      click(e){
-        const path = e.target.id;
-        // console.log('this.state.clickId:'+this.state.clickId+'value:'+value)
-        //如果已点击并且已点击的id不等于现在点击的buttonID 则之前button变回灰色
-        // if( this.state.clickId && this.state.clickId!=value){
-        //     document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
-        // }
-        console.log(e.target)
-        this.props.history.push({pathname:path})
-         
+         //console.log(e.target)
+         const path = e.target.id;
+         this.props.history.push({pathname:path})
     }
     /**返回数据录入页面 */
     returnDataEntry(){
@@ -68,20 +73,10 @@ class DataEntry extends React.Component{
                 <Blockquote menu='质量流程' name='数据录入' onClick={this.returnDataEntry}/>
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
                     <div style={{margin:'20px'}}>
-                    <Row gutter={32}>
                     {
                         data.map(d=>
-                           <Col key={d.id} span={6} className='gutter-row'  onClick={this.click}>
-                               <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
-                           </Col> 
-                            )
-                    }
-                    </Row>
-                    {/* {
-                        data.map(d=>
-                            <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
-                        )
-                    } */}
+                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
+                        )}
                 </div>
            </div>
            </div>

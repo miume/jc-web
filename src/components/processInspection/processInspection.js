@@ -56,6 +56,7 @@ class ProcessInspection extends React.Component{
         this.getAllSamplePoint();
         this.getAllTestItem();
         // this.getAllUser();
+        document.getElementById('/processInspection').style.color = '#0079FE'
     }
     componentWillMount(){
         this.setState = (state,callback)=>{
@@ -283,7 +284,7 @@ class ProcessInspection extends React.Component{
         }];
         return (
             <div>
-                <BlockQuote name='制程检测' menu='质量与流程' menu2='数据录入' />
+                <BlockQuote name='制程检测' menu='质量与流程' menu2='数据录入' returnDataEntry={this.returnDataEntry}/>
                 <div style={{padding:'15px'}}>
                     <Add />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />

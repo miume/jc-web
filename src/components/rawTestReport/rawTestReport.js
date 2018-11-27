@@ -38,6 +38,9 @@ for(var i = 1; i <= 20;i++){
     })
 }
 class RawTestReport extends React.Component{
+    componentDidMount(){
+        document.getElementById('/rawTestReport').style.color = '#0079FE'
+    }
     constructor(props){
         super(props);
         this.state ={

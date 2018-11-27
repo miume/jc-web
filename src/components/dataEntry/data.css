@@ -1,34 +1,3 @@
-.active{
-    background-color:'#00b4f0'
+.hover:hover{
+  color:#0079FE;
 }
-.notActive {
-    background-color:'#ebebeb'
-}
-.gutter-example .ant-row > div {
-    background: transparent;
-    border: 0;
-  }
-  /* .gutter-box {
-    background: #00A0E9;
-    padding: 15px;
-    height:200px
-  } */
-  .ant-col-6{
-    margin:10px 0 !important;
-  }
-  #components-grid-demo-playground [class^="ant-col-"] {
-    background: transparent;
-    border: 0;
-  }
-  #components-grid-demo-playground [class^="ant-col-"] > div {
-    background: #00A0E9;
-    height: 120px;
-    line-height: 120px;
-    font-size: 13px;
-  }
-  #components-grid-demo-playground pre {
-    background: #f9f9f9;
-    border-radius: 6px;
-    font-size: 13px;
-    padding: 8px 16px;
-  }
