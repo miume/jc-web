@@ -79,15 +79,15 @@ class OperationManagement extends React.Component {
                             fetch={this.fetch}
                         />
                     </span>
-                <div className='clear' ></div>
-                <OperationTable
-                    data={this.state.dataSource}
-                    pagination={this.pagination}
-                    rowSelection={rowSelection}
-                    fetch={this.fetch}
-                    modifyDataSource={this.modifyDataSource}
-                    handleTableChange={this.handleTableChange}
-                />
+                    <div className='clear' ></div>
+                    <OperationTable
+                        data={this.state.dataSource}
+                        pagination={this.pagination}
+                        rowSelection={rowSelection}
+                        fetch={this.fetch}
+                        modifyDataSource={this.modifyDataSource}
+                        handleTableChange={this.handleTableChange}
+                    />
                 </div>
             </div>
         )
@@ -131,6 +131,7 @@ class OperationManagement extends React.Component {
                 dataSource: res.list,
             });
         }).catch((error)=>{
+            console.log(error)
             message.info(error.data.message)
         });
     };

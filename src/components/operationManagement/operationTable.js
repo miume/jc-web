@@ -57,11 +57,11 @@ class EditableCell extends React.Component {
         );
     }
 }
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
-const server = localStorage.getItem('remote');
+
 
 class OperationTable extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
@@ -139,6 +139,9 @@ class OperationTable extends React.Component {
         }
     }];
     render(){
+        this.Authorization = localStorage.getItem('Authorization');
+        this.server = localStorage.getItem('remote');
+
         //  获取record的记录
         const columns = this.columns.map((col) => {
             if (!col.editable) {
@@ -211,10 +214,10 @@ class OperationTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString()
                 axios({
-                    url:`${server}/jc/operation/update`,
+                    url:`${this.server}/jc/operation/update`,
                     method:'post',
                     headers:{
-                        'Authorization':Authorization
+                        'Authorization':this.Authorization
                     },
                     data:data,
                     type:'json'
@@ -238,11 +241,6 @@ class OperationTable extends React.Component {
         this.setState({ editingKey: '' });
     };
     /**---------------------- */
-    /**实现字段搜索功能 */
 
-    /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
 }
 export default OperationTable;
