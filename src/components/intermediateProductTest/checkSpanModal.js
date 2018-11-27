@@ -1,9 +1,8 @@
 import React from 'react';
-import { Input,Button,Table,Radio,Divider } from 'antd';
+import { Input,Button,Table } from 'antd';
 import './aePopModal.css';
 import '../Home/page.css';
-import IsQualified from "./isQualified";
-import CheckQualifiedModal from './checkQualifiedModal';
+import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 
 
 const topData = {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Input,Button,Table,Radio,Divider } from 'antd';
 import './aePopModal.css';
 import '../Home/page.css';
-import IsQualified from "./isQualified";
+import IsQualified from "../BlockQuote/isQualified";
 
 
 const topData = {
@@ -112,7 +112,6 @@ class DrSpanModal extends React.Component {
                         </tbody>
                     </table>
                     <IsQualified
-                        spanStatus={this.props.spanStatus}
                         status={this.state.status}
                     />
                 </div>

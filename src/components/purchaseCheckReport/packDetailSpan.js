@@ -1,21 +1,18 @@
 import React from 'react';
 import { Modal,Button } from 'antd';
-import DetailModal from './packDetailModal';
+import DrSpanModal from '../intermediateProductTest/drSpanModal';
+
 
 const data = [];
 for (let i = 0; i < 50; i++) {
     data.push({
+        index:i,
         id: i,
-        a: `a`,
-        b: 'b',
-        c: `c`,
+        testItem: `测试`,
+        testResult: '0.001',
+        itemUnit: `g/mL`,
     });
 }
-const topData = [{
-    id: 'EcT/139',
-    a: '镍矿石',
-    b: '2018年11月11日',
-}];
 
 class DetailSpan extends React.Component {
     constructor(props){
@@ -45,11 +42,11 @@ class DetailSpan extends React.Component {
     };
     render() {
         const { visible } = this.state;
-        console.log('record:',this.props.record);
         return (
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
                     title="数据详情"
+                    style={{ top: 20 }}
                     visible={visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
@@ -59,13 +56,12 @@ class DetailSpan extends React.Component {
                     // 脚部footer中的每个按钮都要又一个key
                     footer={[
                         <Button key="back" style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
-                        <Button key="publish" type="primary"  onClick={this.handleOk}>选中</Button>
+                        <Button key="publish" type="primary"  onClick={this.selectionOnDetail}>选中</Button>
                     ]}
                 >
-                    <div style={{height:450}}>
-                        <DetailModal
+                    <div style={{height:550}}>
+                        <DrSpanModal
                             data={data}
-                            topData={topData}
                             record={this.props.record}
                         />
                     </div>
@@ -74,6 +70,17 @@ class DetailSpan extends React.Component {
             </span>
         )
     }
+    /**实现detailSpan里的选中功能 */
+    selectionOnDetail = () => {
+        setTimeout(() => {
+            this.setState({
+                visible: false,
+            });
+        }, 500);
+        this.props.modifySelectedRowKeysData(this.props.record.id);
+
+    };
+    /**---------------------- */
 
 }
 

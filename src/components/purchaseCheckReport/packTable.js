@@ -4,19 +4,21 @@ import DetailSpan from './packDetailSpan';
 
 
 class PackTable extends React.Component {
+    Authorization;
+    server;
     columns = [{
         title: '序号',
         dataIndex: 'index',
         key: 'id',
         sorter: (a, b) => a.key - b.key,
         align:'center',
-        width: '12%',
+        width: '8%',
     },{
-        title: '送样日期',
+        title: '送检日期',
         dataIndex: 'a',
         key: 'a',
         align:'center',
-        width: '8%',
+        width: '15%',
     },{
         title: '送样人',
         dataIndex: 'b',
@@ -48,11 +50,10 @@ class PackTable extends React.Component {
         align:'center',
         width: '8%',
     },{
-        title: '审核状态',
+        title: '类型',
         dataIndex: 'h',
         key: 'h',
         align:'center',
-
         width: '8%',
     },{
         title: '接受反馈',
@@ -61,24 +62,33 @@ class PackTable extends React.Component {
         align:'center',
         width: '8%',
     },{
+        title: '审核状态',
+        dataIndex: 'j',
+        key: 'j',
+        align:'center',
+
+        width: '8%',
+    },{
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '17%',
+        width: '8%',
         render: (text,record) => {
-            console.log("-----");
             // let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>
                     <DetailSpan
                         record={record}
+                        modifySelectedRowKeysData={this.props.modifySelectedRowKeysData}
                     />
                 </span>
             )
         }
     }];
     render() {
+        this.Authorization = localStorage.getItem('Authorization');
+        this.server = localStorage.getItem('remote');
         const columns = this.columns.map((col) => {
             return {
                 ...col,
@@ -97,6 +107,7 @@ class PackTable extends React.Component {
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}
+                pagination={this.props.pagination}
                 size="small"
                 bordered
                 scroll={{ y: 400 }}
