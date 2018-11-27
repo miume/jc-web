@@ -35,7 +35,6 @@ class Tr extends React.Component{
     searchContentChange(e){
         const value = e.target.value;
         this.setState({searchContent:value});
-        console.log(this.state.searchContent)
     }
     render(){
         const children = this.state.approvalProcess.map(p => 
@@ -44,7 +43,7 @@ class Tr extends React.Component{
         return(
             <tr className='tbody' id={this.props.value}>
                 <td><Select style={{width:'100%'}}>{children}</Select></td>
-                <td><Input searchContentChange={this.searchContentChange}/></td>
+                <td><Input onChange={this.searchContentChange}/></td>
                 <td><a href='#' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</a></td>
             </tr>
         )

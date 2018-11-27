@@ -46,6 +46,7 @@ const CollectionCreateForm = Form.create()(
                         <FormItem label="菜单类型" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('menuType', {
                                 rules: [{ required: true, message: '请选择菜单类型' }],
+                                initialValue : '1'
                             })(
                                 <Select onChange={this.selectChange}>
                                     <Option value='1'>父菜单</Option>

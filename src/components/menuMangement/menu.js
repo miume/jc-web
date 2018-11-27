@@ -39,6 +39,9 @@ class Menu extends React.Component{
 
       this.pagination = {
         total: this.state.dataSource.length,
+        showTotal(total){
+            return `共${total}条记录`
+        },
         showSizeChanger: true,
         onShowSizeChange(current, pageSize) {
             // console.log('Current: ', current, '; PageSize: ', pageSize);
