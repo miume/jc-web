@@ -5,27 +5,22 @@ const data=[{
     id:1,
     name:'送样工厂',
     path:'/deliveryFactory',
-    className:'fa fa-tasks fa-5x'
+    className:'fa fa-industry fa-5x'
 },{
     id:2,
     name:'产品工序',
     path:'/productProcess',
-    className:'fa fa-flask fa-5x'
+    className:'fa fa-wrench fa-5x'
 },{
     id:3,
     name:'检测项目',
     path:'/testItem',
-    className:'fa fa-envira fa-5x'
+    className:'fa fa-tint fa-5x'
 },{
     id:4,
-    name:'取样点',
-    path:'/samplePoint',
-    className:'fa fa-cube fa-5x'
-},{
-    id:5,
     name:'产品线',
     path:'/productLine',
-    className:'fa fa-codepen fa-5x'
+    className:'fa fa-sitemap fa-5x'
 }]
 // const active={
 //     backgroundcolor:'#00b4f0',//点击的时候按钮变成蓝色
@@ -52,7 +47,7 @@ class BaseInfo extends React.Component{
         this.lastStep=this.lastStep.bind(this);
     }
     click(e){  
-       console.log(e.target);
+       //console.log(e.target);
   
        const path=e.target.id;
      
@@ -72,7 +67,7 @@ class BaseInfo extends React.Component{
     render(){
         return(
             <div>
-                <Blockquote menu='质量流程' name='基础数据'/>
+                <Blockquote menu='质量与流程' name='基础数据'/>
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
                     <div style={{marginLeft:'20px'}}>
                     {

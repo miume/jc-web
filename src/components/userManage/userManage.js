@@ -2,8 +2,8 @@ import React from 'react';
 import { Button,Input,Icon,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
-import BlockQuote from '../dataEntry/blockQuote';
-import Span from '../BlockQuote/span';
+import BlockQuote from '../BlockQuote/blockquote';
+//import Span from '../BlockQuote/span';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
@@ -126,6 +126,7 @@ class User extends React.Component{
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
+        showTotal:(total)=>`共${total}条记录`,//显示共几条记录
         //改变每页条目数
         onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
           //console.log('Current: ', current, '; PageSize: ', pageSize);
@@ -139,8 +140,8 @@ class User extends React.Component{
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
-       sorter:true,//需要服务端排序
-       //sorter:(a, b) => a.id-b.id,
+       //sorter:true,//需要服务端排序
+       sorter:(a, b) => a.id-b.id,
         width: '15%',
         align:'center',
      },{
