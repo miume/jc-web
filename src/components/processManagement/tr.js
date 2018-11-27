@@ -8,13 +8,11 @@ class Tr extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            clicked: false,
-            hovered: false,
             approvalProcess:[],
-            loading : false
+            loading : false,
+            searchContent : []
         }
-        this.hide = this.hide.bind(this);
-        this.handleClickChange = this.handleClickChange.bind(this);
+        this.searchContentChange=this.searchContentChange.bind(this)
     }
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
@@ -24,7 +22,6 @@ class Tr extends React.Component{
             params: params,
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res)
             this.setState({
                 approvalProcess : res,
                 loading: false,
@@ -34,22 +31,20 @@ class Tr extends React.Component{
     componentDidMount() {
         this.getAllUser();
     }
-    hide(){
-        this.setState({
-            clicked:false
-        })
-    }
-    handleClickChange(){
-        this.setState({clicked:true})
+    /**获取查询时菜单名称的实时变化 */
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+        console.log(this.state.searchContent)
     }
     render(){
         const children = this.state.approvalProcess.map(p => 
-            <Option key={p.id}>{p.name}</Option>
+            <Option key={p.id} value={p.id}>{p.name}</Option>
         )
         return(
             <tr className='tbody' id={this.props.value}>
                 <td><Select style={{width:'100%'}}>{children}</Select></td>
-                <td><Input /></td>
+                <td><Input searchContentChange={this.searchContentChange}/></td>
                 <td><a href='#' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</a></td>
             </tr>
         )

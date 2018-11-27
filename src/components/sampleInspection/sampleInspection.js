@@ -5,13 +5,13 @@ import {message,Table,Divider} from "antd";
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
-
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
+import AddModal from './addModal'
+// import Delete from './delete'
 
 const data = [{
     index : '1',
     id : '1',
+    key: '1',
     deliverTime:'2018年6月10日',
     deliver:'张小刚',
     deliveryFactory:'原料工厂',
@@ -22,8 +22,9 @@ const data = [{
     status:'待接受',
     handleComment:'无',
 },{
-    index : '1',
-    id : '1',
+    index : '2',
+    id : '2',
+    key: '2',
     deliverTime:'2018年6月10日',
     deliver:'张小刚',
     deliveryFactory:'原料工厂',
@@ -34,8 +35,9 @@ const data = [{
     status:'待接受',
     handleComment:'无',
 },{
-    index : '1',
-    id : '1',
+    index : '3',
+    id : '3',
+    key: '3',
     deliverTime:'2018年6月10日',
     deliver:'张小刚',
     deliveryFactory:'原料工厂',
@@ -46,8 +48,9 @@ const data = [{
     status:'待接受',
     handleComment:'无',
 },{
-    index : '1',
-    id : '1',
+    index : '4',
+    id : '4',
+    key: '4',
     deliverTime:'2018年6月10日',
     deliver:'张小刚',
     deliveryFactory:'原料工厂',
@@ -58,8 +61,9 @@ const data = [{
     status:'待接受',
     handleComment:'无',
 },{
-    index : '1',
-    id : '1',
+    index : '5',
+    id : '5',
+    key: '5',
     deliverTime:'2018年6月10日',
     deliver:'张小刚',
     deliveryFactory:'原料工厂',
@@ -70,8 +74,6 @@ const data = [{
     status:'待接受',
     handleComment:'无',
 },]
-
-
 
 
 class SampleInspection extends React.Component{
@@ -185,15 +187,17 @@ class SampleInspection extends React.Component{
         return(
             <div>
                 <BlockQuote name="样品送检"></BlockQuote>
-                <br />
-                <SearchCell />
-                <br />
-                <WhiteSpace></WhiteSpace>
-                <div className='clear' ></div>
-                <Table columns={this.columns} dataSource={data} rowSelection={rowSelection} size="small"
-                bordered
-                pagination={this.pagination}
-                scroll={{ x: 1500}}></Table>
+                <div style={{padding:'15px'}}>
+                    <AddModal />
+                    <span style={{float:'right',paddingBottom:'8px'}}>
+                        <SearchCell name='请输入搜索内容'/>
+                    </span>
+                    <div className='clear' ></div>
+                    <Table columns={this.columns} dataSource={data} rowSelection={rowSelection} size="small"
+                    bordered
+                    pagination={this.pagination}
+                    scroll={{ x: 1500}}></Table>
+                </div>
             </div>
         )
     }
