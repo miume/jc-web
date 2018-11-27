@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover } from 'antd';
+import {Modal, Button, Popconfirm, Popover, Select, Switch} from 'antd';
 import CheckSpanModal from './checkSpanModal';
 
 const data = [];
@@ -18,7 +18,18 @@ class CheckSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
+            subVisible: false,
+            checkSelectData:true,
+            checkSwitchData:false,
         };
+        this.handleChange = this.handleChange.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.hide = this.hide.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        this.urgentChange = this.urgentChange.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     showModal = () => {
         this.setState({
@@ -34,6 +45,7 @@ class CheckSpan extends React.Component {
     };
     render() {
         const { visible } = this.state;
+        const Option = Select.Option;
         return (
             <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
@@ -46,9 +58,37 @@ class CheckSpan extends React.Component {
                     cancelText="取消"
                     width="500px"
                     footer={[
-                        <Button key="back" style={{right:'400px'}}  onClick={this.handleCancel}>返回</Button>,
-                        <Button key="keep" style={{right:'400px'}}  onClick={this.handleKeep}>保存</Button>,
-                        <Button key="submit" style={{right:'400px'}}  onClick={this.handleSubmit}>送审</Button>
+                        <Button key="back" style={{right:'265px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <Button key="keep" style={{left:'10px',background:'#4BD863',color:'white'}}  onClick={this.handleKeep}>保存</Button>,
+                        <Popover
+                            key="popover"
+                            // content={<a onClick={this.hide}>Close</a>}
+                            content = {
+                                <div style={{width:300}}>
+                                    <div >
+                                        <Select placeholder="选择送审流程" style={{ width: 250 }} onChange={this.handleChange}>
+                                            <Option value="a">a</Option>
+                                            <Option value="b">b</Option>
+                                            <Option value="c">c</Option>
+                                        </Select>
+                                    </div>
+                                    <div style={{paddingTop:'15px'}}>
+                                        <span style={{marginRight:'10px'}}>是否紧急</span><Switch onChange={this.urgentChange} style={{width:'70px'}}/>
+                                    </div>
+                                    <div style={{paddingTop:'20px'}}>
+                                        <Button onClick={this.hide} size="small" style={{left:'200px'}}>取消</Button>
+                                        <Button disabled={this.state.checkSelectData} size="small" style={{left:'200px',marginLeft:'5px'}}>确认</Button>
+                                    </div>
+                                </div>
+                            }
+                            title="设置审批细节"
+                            trigger="click"
+                            visible={this.state.subVisible}
+                            onVisibleChange={this.handleVisibleChange}
+                            placement="topRight"
+                        >
+                            <Button key="submit" style={{left:'10px'}} >送审</Button>
+                        </Popover>
                     ]}
                 >
                     <div style={{height:550}}>
@@ -76,6 +116,32 @@ class CheckSpan extends React.Component {
             });
         }, 500);
     };
+    /**送审提交框所需要的函数 */
+    // 提交Modal中是否紧急
+    urgentChange(checked) {
+        console.log(`switch to ${checked}`);
+        this.setState({
+            checkSwitchData:checked
+        })
+    }
+    // 获取下拉框的内容
+    handleChange(value) {
+        console.log(value.length);
+        if(value.length>0){
+            this.setState({
+                checkSelectData:false
+            })
+        }
+    }
+    handleVisibleChange = (subVisible) => {
+        this.setState({ subVisible });
+    };
+    hide = () => {
+        this.setState({
+            subVisible: false,
+        });
+    };
+    /**---------------------- */
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */
