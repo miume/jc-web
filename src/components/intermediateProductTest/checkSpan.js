@@ -87,7 +87,7 @@ class CheckSpan extends React.Component {
                             onVisibleChange={this.handleVisibleChange}
                             placement="topRight"
                         >
-                            <Button key="submit" style={{left:'10px'}} >送审</Button>
+                            <Button key="submit" style={{left:'10px',background:'#0079FE',color:'white'}} >送审</Button>
                         </Popover>
                     ]}
                 >

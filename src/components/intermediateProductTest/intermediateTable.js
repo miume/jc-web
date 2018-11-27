@@ -2,7 +2,7 @@ import React from 'react';
 import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
-import DeletaSpan from './deleteSpan';
+import ReleaseSpan from './releaseSpan';
 
 class InterTable extends React.Component{
     columns = [{
@@ -75,6 +75,7 @@ class InterTable extends React.Component{
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
+            let releaseSpanFlag = this.judgeReleaseOperation(record.h,record.status);
             return (
                 <span>
                     <DetailSpan
@@ -87,12 +88,10 @@ class InterTable extends React.Component{
                         disabled={checkSpanFlag}
                     />
                     <Divider type="vertical" />
-                    {/*<Release*/}
-                    {/*/>*/}
-                    {/*<DeletaSpan*/}
-                        {/*record={record}*/}
-                        {/*disabled={operationFlag}*/}
-                    {/*/>*/}
+                    <ReleaseSpan
+                        record={record}
+                        disabled={releaseSpanFlag}
+                    />
                 </span>
             )
         }
@@ -124,7 +123,7 @@ class InterTable extends React.Component{
             />
         );
     }
-    /**判断详情可否功能 */
+    /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
         if(status==="未申请"){
             return true;
@@ -134,6 +133,13 @@ class InterTable extends React.Component{
     };
     judgeCheckOperation = (status) => {
         if(status==="未申请"||status==="不通过"){
+            return false;
+        }else{
+            return true;
+        }
+    };
+    judgeReleaseOperation = (h,status) => {
+        if(h==="未发布"&&status==="已通过"){
             return false;
         }else{
             return true;

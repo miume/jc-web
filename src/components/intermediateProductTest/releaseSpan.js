@@ -13,7 +13,7 @@ for (let i = 0; i < 50; i++) {
     });
 }
 
-class DetailSpan extends React.Component {
+class ReleaseSpan extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -44,7 +44,7 @@ class DetailSpan extends React.Component {
         return (
             <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
-                    title="数据详情"
+                    title="数据发布"
                     style={{ top: 20 }}
                     visible={visible}
                     onOk={this.handleOk}
@@ -53,21 +53,30 @@ class DetailSpan extends React.Component {
                     cancelText="取消"
                     width="500px"
                     footer={[
-                        <Button key="back" style={{right:'400px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <Button key="back" style={{right:'340px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <Button key="release" style={{left:'10px'}}  onClick={this.handleRelease}>发布</Button>
                     ]}
                 >
                     <div style={{height:550}}>
                         <DrSpanModal
                             data={data}
                             record={this.props.record}
+                            spanStatus={0}
                         />
                     </div>
                 </Modal>
-                <a  href ="#" disabled={this.props.disabled}>详情</a>
+                <a  href ="#" disabled={this.props.disabled}>发布</a>
             </span>
         )
+    }
+    handleRelease = () => {
+        setTimeout(() => {
+            this.setState({
+                visible: false,
+            });
+        }, 500);
     }
 
 }
 
-export default DetailSpan;
+export default ReleaseSpan;

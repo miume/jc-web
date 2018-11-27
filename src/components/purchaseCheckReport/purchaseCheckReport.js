@@ -16,14 +16,14 @@ class PurchaseCheckReport extends React.Component {
         return(
             <div>
                 <BlockQuote name="进货检测报告" menu="质量与流程" menu2="数据录入"></BlockQuote>
-                <Tabs defaultActiveKey="2" onChange={this.callback} size="large">
-                    <TabPane tab="生成" key="1">
+                <Tabs defaultActiveKey="1" type="card" onChange={this.callback}  style={{padding:'15px'}}>
+                    <TabPane tab="生成" key="1" >
                         <Pack />
                     </TabPane>
-                    <TabPane tab="审核" key="2">
+                    <TabPane tab="审核" key="2" >
                         <Check />
                     </TabPane>
-                    <TabPane tab="发布" key="3">
+                    <TabPane tab="发布" key="3" >
                         <Release />
                     </TabPane>
                 </Tabs>
