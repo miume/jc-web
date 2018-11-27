@@ -18,7 +18,7 @@ class SearchCell extends React.Component{
                     style={{marginLeft:10}}
                     onClick={this.getFetch}
                     className='button'
-                >重置</Button>
+                ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
             </span>
         );
     }
