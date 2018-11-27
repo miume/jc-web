@@ -100,27 +100,18 @@ class CheckSpanModal extends React.Component {
                     </span>
                     <Button style={{float:'right',width:'100px'}} size="large">清空</Button>
                 </div>
-                <div style={{paddingTop:'50px'}}>
+                <div style={{paddingTop:'50px',paddingBottom:'20px'}}>
                     <Table
                         rowKey={record => record.id}
                         columns={columns}
                         dataSource={this.props.data}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 250 }}
+                        scroll={{ y: 300 }}
                     />
                 </div>
                 <CheckQualifiedModal
                 />
-                {/*<div>*/}
-                    {/*/!*可不可以通过调用组件，通过状态来返回不同值*!/*/}
-                    {/*<div id='passDiv' style={{border:'3px solid #999999',width:'130px',float:'right'}}>*/}
-                        {/*<span id='passSpan' onClick={this.selectQualified(1)} style={{display:'block',textAlign:'center',height:'55px',border:'1px solid #999999',color:'#999999',margin:'2px',fontSize:'25px',paddingTop:'8px'}}>合格</span>*/}
-                    {/*</div>*/}
-                    {/*<div id='noPassDiv' style={{border:'3px solid #999999',width:'130px',float:'right'}}>*/}
-                        {/*<span id='noPassSpan' onClick={this.selectQualified(0)} style={{display:'block',textAlign:'center',height:'55px',border:'1px solid #999999',color:'#999999',margin:'2px',fontSize:'25px',paddingTop:'8px'}}>不合格</span>*/}
-                    {/*</div>*/}
-                {/*</div>*/}
             </div>
         )
     }
