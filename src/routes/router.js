@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Router, Route, Switch,BrowserRouter } from 'react-router-dom';
-import history from '../components/history/history';
  
-import Home from '../components/Home/home'; 
-import Login from '../components/Login/login';
-import Auth from '../components/auth/Auth'
+
+// import Login from '../components/Login/login';
+
 // import store from '../components/redux/index';
 // import { Provider } from 'react-redux';
  

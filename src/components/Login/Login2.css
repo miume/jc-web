@@ -1,3 +1,9 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .gutter-example .ant-row > div {
     background: transparent;
     border: 0;
