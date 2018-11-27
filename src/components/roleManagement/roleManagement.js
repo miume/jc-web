@@ -120,6 +120,9 @@ class Role extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.pagination = {
           total: this.state.dataSource.length,
+          showTotal(total) {
+            return `共${total}条记录`
+          } ,
           showSizeChanger: true,
           onShowSizeChange(current, pageSize) {
             // console.log('Current: ', current, '; PageSize: ', pageSize);
