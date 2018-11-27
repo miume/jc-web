@@ -17,7 +17,6 @@ import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
 import RawTestReport from '../rawTestReport/rawTestReport';
 import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
-import Auth from '../auth/Auth'
 
 import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
@@ -26,6 +25,7 @@ import  ProductProcess from '../Base/ProductProcess/productProcess';//产品工�
 import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
 import TestItem from '../Base/testItem/testItem';
 import OperationManagement from "../operationManagement/operationManagement";
+import StockOut from '../stockOut/stockOut';
 
 //检测项目
 class Home extends Component {
@@ -85,6 +85,9 @@ class Home extends Component {
         },{
             path:'/sampleInspection',
             component:SampleInspection
+        },{
+            path:'/stockOut',
+            component:StockOut
         }]  
         return data;
     }
