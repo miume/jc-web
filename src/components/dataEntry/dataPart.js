@@ -10,7 +10,7 @@ class DataPart extends React.Component{
                 <div style={{width:'100%',height:'80%',backgroundColor:'#0079FE',textAlign:'center'}}>
                     <p style={{padding:'40px'}} id={this.props.path} ><i className={this.props.className} style={{color:'white'}} id={this.props.path} ></i></p>
                 </div>
-                <div style={{textAlign:'center',fontSize:'18px',fontWeight:'bold',color:'black',marginTop:'10px'}}>
+                <div style={{textAlign:'center',fontSize:'14px',fontWeight:'500',color:'black',marginTop:'10px'}}>
                     <p id={this.props.path} className='hover'>{this.props.name}</p>
                 </div>
             </div>
