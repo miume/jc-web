@@ -67,6 +67,19 @@
         width: 5%;
     }
 }
+.quick-tag-icon {
+    background:#0079FE;
+     height:50px;
+     width:25%;
+      min-width:50px;
+    float:left; 
+    text-align:center;
+     line-height:60px;
+     border-radius: 3px;
+     position: relative;
+     left: -0.8px;
+     top: -1px;
+}
 @media screen and (max-width: 950px) {
     .quick-tag-parent {
         min-width: 415px;
