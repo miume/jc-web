@@ -2,7 +2,7 @@ import React from 'react';
 import { Button,Input,Table,Popconfirm,Form,Divider,message} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
-import BlockQuote from '../../dataEntry/blockQuote';
+import BlockQuote from '../blockquote';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import SearchCell from '../../BlockQuote/search';
 import ProductLineAddModal from './productLineAddModal';
@@ -70,6 +70,10 @@ class EditableCell extends React.Component {
 }
 
 class ProductLine extends React.Component{
+  componentDidMount(){
+    this.fetch();
+    document.getElementById('/productLine').style.color='#0079FE';
+  }
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return ;
@@ -102,6 +106,7 @@ class ProductLine extends React.Component{
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
+        showTotal:total=>`共${total}条记录`,
         //改变每页条目数
         onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
           //console.log('Current: ', current, '; PageSize: ', pageSize);
@@ -115,8 +120,8 @@ class ProductLine extends React.Component{
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
-       sorter:true,//需要服务端排序
-       //sorter:(a, b) => a.id-b.id,
+       //sorter:true,//需要服务端排序
+       sorter:(a, b) => a.id-b.id,
         width: '20%',
         align:'center',
      },{
@@ -198,11 +203,6 @@ class ProductLine extends React.Component{
         });
       });
     }
-    componentDidMount(){
-      this.fetch();
-      
-    }
- 
 
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
@@ -410,7 +410,7 @@ class ProductLine extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='产品线' menu='数据录入'/>
+               <BlockQuote name='产品线' menu='质量与流程' menu2='基础数据'/>
                <div style={{padding:'15px'}}>  
                <ProductLineAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

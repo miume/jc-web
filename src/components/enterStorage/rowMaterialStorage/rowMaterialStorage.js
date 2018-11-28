@@ -2,7 +2,7 @@
 import React,{Component} from 'react';
 import {Table} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-import { read } from 'fs';
+
 
 
 const data=[{
@@ -142,8 +142,14 @@ class RowMaterialStorage extends Component{
         }];
         this.pagination={
             total:this.state.dataSource.length,
-            showTotal:(total,range)=>`${range[0]}-${range[1]}`,
+            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
             showSizeChanger: true,
+            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+                //console.log('Current: ', current, '; PageSize: ', pageSize);
+              },
+              onChange(current) {//跳转，页码改变
+                //console.log('Current: ', current);
+              }
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -176,6 +182,7 @@ class RowMaterialStorage extends Component{
                 pagination={this.pagination}
                 bordered
                 size='small'
+                scroll={{y:600}}
                 ></Table>
             </div>
         );
