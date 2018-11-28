@@ -1,3 +1,45 @@
 .hover:hover{
   color:#0079FE;
 }
+
+
+@media screen and (min-width: 1000px) {
+  .nav-card {
+    width: 25%;
+    padding: 10px 10px 10px 10px;
+   
+    margin-bottom: 20px;
+  }
+  .card-parent {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+}
+@media screen and (max-width: 1300px) {
+  .nav-card {
+    width: 33.33%;
+    padding: 10px 10px 10px 10px;
+   
+    margin-bottom: 20px;
+  }
+  .card-parent {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .nav-card {
+    width: 50%;
+    padding: 10px 10px 10px 10px;
+   
+    margin-bottom: 20px;
+  }
+  .card-parent {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
