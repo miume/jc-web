@@ -27,7 +27,7 @@ body {
     top: 15%;
   }
   .login-box{
-    height: 400px; 
+    
     height: 430px;
     min-width: 300px;
     width: 30%;
@@ -59,14 +59,13 @@ body {
     }
   
     #defaultCanvas0 {
-      /* display: none; */
       visibility: hidden;
     }
   }
   
   @media only screen and (max-height: 500px) {
     .gutter-box {
-      top: 7%;
+      top: 6%;
     }
   }
   @media only screen and (max-width: 1150px) {
@@ -77,12 +76,7 @@ body {
   }
   @media only screen and (max-height: 470px) {
     .gutter-box {
-      top: 10%;
-      height: 330px;
-    }
-    .login-box {
-      height: 330px;
-      padding-top: 1%;
+      top: 6%;
     }
     
   }
