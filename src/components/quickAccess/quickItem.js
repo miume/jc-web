@@ -7,7 +7,7 @@ class QuickItem extends React.Component{
         this.click = this.click.bind(this);
     }
     click(){ 
-        console.log(this.props.path)
+        //console.log(this.props.path)
         // console.log(event)
         const path = this.props.path
         this.props.history.push({pathname:path})

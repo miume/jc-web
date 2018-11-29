@@ -1,9 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-import './rawAdd.css';
-import ApplyStockOut from './applyStockOut';
-// const Option = Select.Option;
 const data = [];
 for(var i = 1; i<=20; i++){
     data.push({
@@ -15,7 +12,7 @@ for(var i = 1; i<=20; i++){
         weight:'22' 
     })
 }
-class RawMaterialApplication extends React.Component{
+class RawMaterialOut extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -29,33 +26,51 @@ class RawMaterialApplication extends React.Component{
             align:'center',
             width:'14%'
         },{
-            title:'货物名称',
-            dataIndex:'materialName',
-            key:'materialName',
-            align:'center',
-            width:'14%'
-        },{
-            title:'货物类型',
-            dataIndex:'materialClass',
-            key:'materialClass',
-            align:'center',
-            width:'14%'
-        },{
             title:'批号',
             dataIndex:'batchNumberId',
             key:'batchNumberId',
             align:'center',
             width:'14%'
         },{
-            title:'数量',
+            title:'货物名称',
+            dataIndex:'materialName',
+            key:'materialName',
+            align:'center',
+            width:'14%'
+        },{
+            title:'货物数量',
             dataIndex:'quantity',
             key:'quantity',
             align:'center',
             width:'14%'
         },{
-            title:'重量',
+            title:'获取重量',
             dataIndex:'weight',
             key:'weight',
+            align:'center',
+            width:'14%'
+        },{
+            title:'申请人',
+            dataIndex:'applicant',
+            key:'applicant',
+            align:'center',
+            width:'14%'
+        },{
+            title:'申请日期',
+            dataIndex:'applyDate',
+            key:'applyDate',
+            align:'center',
+            width:'14%'
+        },{
+            title:'审核状态',
+            dataIndex:'applicant',
+            key:'applicant',
+            align:'center',
+            width:'14%'
+        },{
+            title:'紧急',
+            dataIndex:'applyDate',
+            key:'applyDate',
             align:'center',
             width:'14%'
         }]
@@ -70,17 +85,14 @@ class RawMaterialApplication extends React.Component{
             onChange(current) {
             }
           }
-    }   
+    }
     render(){
         return (
             <div style={{padding:'0 15px'}}>
-                <ApplyStockOut />
-                <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入货物名称'></SearchCell>
-                </span>
-                <Table rowKey={record=>record.id} dataSource={this.state.dataSource} columns={this.columns} pagination={this.pagination} scroll={{ y: 390 }} bordered size='small'></Table>
+                <SearchCell name='请输入货物名称'></SearchCell>
+                <Table rowkey={record=>record.id}></Table>
             </div>
         );
     }
 }
-export default RawMaterialApplication;
+export default RawMaterialOut;

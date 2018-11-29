@@ -51,4 +51,20 @@ code {
   font-size:14px !important;
   font-weight:bolder !important;
   font-family:'PingFangSC-Regular', 'PingFang SC' !important;
+  background-color: #0086ff !important;
+  margin-right: 10px !important;
+}
+.grey-button {
+  color:#ffffff !important;
+  font-size:14px !important;
+  font-weight:bolder !important;
+  font-family:'PingFangSC-Regular', 'PingFang SC' !important;
+  background-color: grey !important;
+  margin-right: 10px !important;
+}
+.ant-tabs-nav-wrap{
+  padding-left: 1.3% !important;
+}
+.ant-switch-checked{
+  background-color: red !important;
 }
