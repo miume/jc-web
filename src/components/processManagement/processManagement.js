@@ -145,6 +145,7 @@ class Management extends React.Component{
             align:'center',
             width: '13%',
             render : (text,record) =>{
+                console.log(record)
                 return (
                     <span>
                         <Detail value={record} />
@@ -216,6 +217,11 @@ class Management extends React.Component{
     componentDidMount() {
         this.fetch();
     }
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
     handleSearch = (selectedKeys, confirm) => () => {
         confirm();
         this.setState({ searchText: selectedKeys[0] });
@@ -304,7 +310,9 @@ class Management extends React.Component{
                 <div>
                     <BlockQuote name="流程管理" menu='质量与流程'></BlockQuote>
                     <div style={{padding:'15px'}}>
-                    <Add />
+                    <Add 
+                        fetch={this.fetch}
+                    />
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         start={this.start}
