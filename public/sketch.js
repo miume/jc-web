@@ -22,7 +22,9 @@ function setup() {
 }
 
  function draw() {
-  console.log('draw-parent')
+
+   console.log('run')
+
   noStroke();
   background(255);
   triangles = [];
