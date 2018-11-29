@@ -97,6 +97,29 @@ class Home extends Component {
         super(props);
         this.getComponentArray = this.getComponentArray.bind(this);
     }
+
+    componentWillMount() {
+        var canvas;
+        var showCanvas = setInterval(function() {
+            console.log('get canvas');
+            canvas = document.getElementById('defaultCanvas0');
+            if(canvas != null && canvas != undefined) {
+                canvas.style.visibility='hidden';
+                clearInterval(showCanvas);
+            }    
+        },100)
+    }
+
+    componentDidMount() {
+        var showFrame = setInterval(function() {
+            var frame = window.frame;
+            if(frame != undefined && frame != null) {
+                frame(0);   //消除帧
+                console.log('clear intervals')
+                clearInterval(showFrame);
+            }
+        },500)
+    }
     
     render() {
         const path2Component = this.getComponentArray();    
