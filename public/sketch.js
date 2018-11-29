@@ -9,7 +9,6 @@ var attractor;
 
 function setup() {
   // put setup code here
-  console.log('set up')
   createCanvas(800,400);
   DIST_MAX = width / 2;
   DIST_MIN = width/4;

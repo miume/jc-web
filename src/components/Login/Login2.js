@@ -54,7 +54,6 @@ class Login extends React.Component {
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('Authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));
-      document.getElementById('defaultCanvas0').style.visibility='hidden';
       history.push({pathname:'/home'});
     })
     .catch(function (error) {

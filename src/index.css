@@ -28,11 +28,11 @@ code {
 #defaultCanvas0 {
   position: absolute;
   display: block;
-  top: 5%;
+  top: 7%;
   margin: 0px auto;
   z-index: -1;
-  height: 95% !important;
-  width: 50% !important;
+  height: 92% !important;
+  width: 45% !important;
   visibility: visible;
 }
 .ant-menu-vertical .ant-menu-item, .ant-menu-vertical-left .ant-menu-item, .ant-menu-vertical-right .ant-menu-item, .ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-submenu-title, .ant-menu-vertical-left .ant-menu-submenu-title, .ant-menu-vertical-right .ant-menu-submenu-title, .ant-menu-inline .ant-menu-submenu-title{
