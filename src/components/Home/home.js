@@ -101,7 +101,7 @@ class Home extends Component {
     componentWillMount() {
         var canvas;
         var showCanvas = setInterval(function() {
-            console.log('get canvas');
+            //console.log('get canvas');
             canvas = document.getElementById('defaultCanvas0');
             if(canvas != null && canvas != undefined) {
                 canvas.style.visibility='hidden';
@@ -109,13 +109,13 @@ class Home extends Component {
             }    
         },100)
     }
-
+    /**控制登陆背景图 */
     componentDidMount() {
         var showFrame = setInterval(function() {
             var frame = window.frame;
             if(frame != undefined && frame != null) {
                 frame(0);   //消除帧
-                console.log('clear intervals')
+                //console.log('clear intervals')
                 clearInterval(showFrame);
             }
         },500)
