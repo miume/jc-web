@@ -133,7 +133,7 @@ class SampleInspection extends React.Component{
         align:'center',
         width: '10%',
     },{
-        title: '接受反馈',
+        title: '拒绝原因',
         dataIndex: 'handleComment',
         key: 'handleComment',
         align:'center',

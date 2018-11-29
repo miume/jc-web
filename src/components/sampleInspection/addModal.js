@@ -6,6 +6,45 @@ import moment from 'moment';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+
+var myDate = new Date();
+var hh = myDate.getHours();
+
+
+var time = ""
+if(hh<10){
+    time+="0"
+}
+time+=hh+":"
+var mm = myDate.getMinutes();
+if(mm<10){
+    time+="0"
+}
+time+=mm+":"
+var ss = myDate.getSeconds();
+if(ss<10){
+    time+="0"
+}
+time+=ss
+
+
+var year = myDate.getFullYear(); 
+var month = myDate.getMonth() + 1;
+var day = myDate.getDate(); 
+
+var clock=year+"-"
+
+if(month<10){
+    clock+="0"
+}
+clock+=month+"-"
+
+if(day<10){
+    clock+="0"
+}
+clock+=day
+const dateFormat = 'YYYY-MM-DD';
+
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
         constructor(props){
@@ -29,66 +68,39 @@ const CollectionCreateForm = Form.create()(
                     onCancel={onCancel}
                     onOk={onCreate}
                 >
-                    <Form horizontal='true'>
-                        <FormItem label="送样日期" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('date', {
-                                rules: [{ required: true, message: '请选择送样日期' }],
-                            })(
-                                <DatePicker onChange={this.onChange}/>
-                            )}
-                        </FormItem>
-                        <FormItem label="送样时间" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('time', {
-                                rules: [{ required: true, message: '请选择送样时间' }],
-                            })(
-                                <TimePicker />
-                            )}
-                        </FormItem>
-                        <FormItem label="送样人" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('person', {
-                                rules: [{ required: true, message: '请选择送样人' }],
-                            })(
-                                <Select>
-                                    <Option value='-1'>张三</Option>
-                                    <Option value='0'>李四</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                        <FormItem label="送样工厂" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('factory', {
-                                rules: [{ required: true, message: '请选择送样工厂' }],
-                            })(
-                                <Select>
-                                    <Option value='-1'>兵工厂</Option>
-                                    <Option value='0'>食品厂</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                        <FormItem label="检测项目" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('item', {
-                                rules: [{ required: true, message: '请选择检测项目' }],
-                            })(
-                                <Select>
-                                    <Option value='-1'>铅</Option>
-                                    <Option value='0'>硫</Option>
-                                </Select>
-                            )}
-                        </FormItem>
-                        <FormItem label="批号" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('number', {
-                                rules: [{ required: true, message: '请输入批号' }],
-                            })(
-                                <Input />
-                            )}
-                        </FormItem>
-                        <FormItem label="异常备注" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('remarks', {
-                                rules: [{ required: true, message: '请输入异常备注' }],
-                            })(
-                                <Input />
-                            )}
-                        </FormItem>
-                    </Form>
+                <div>
+                    请选择送样日期：<DatePicker onChange={this.onChange} defaultValue={moment('2015/01/01', dateFormat)} format={dateFormat}/>
+                </div><br />
+                <div>
+                    请选择送样时间：<TimePicker placeholder="请选择送样时间" defaultValue={moment(time,'HH:mm:ss')}/>
+                </div><br />
+                <div>
+                    请选择送样人员：
+                    <Select defaultValue="-1">
+                        <Option value='-1'>张三</Option>
+                        <Option value='0'>李四</Option>
+                    </Select>
+                </div><br />
+                <div>
+                    请选择送样工厂：
+                    <Select defaultValue="-1">
+                        <Option value='-1'>兵工厂</Option>
+                        <Option value='0'>食品厂</Option>
+                    </Select>
+                </div><br />
+                <div>
+                    请选择送样项目：
+                    <Select defaultValue="-1">
+                        <Option value='-1'>铅</Option>
+                        <Option value='0'>硫</Option>
+                    </Select>
+                </div><br />
+                <div>
+                    请输入送样批号：<Input />
+                </div><br />
+                <div>
+                    请输入异常备注：<Input />
+                </div>
                 </Modal>
             )
         }
