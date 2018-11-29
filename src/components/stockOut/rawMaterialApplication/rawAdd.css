@@ -21,4 +21,10 @@
   .tdStyle{
       padding : 0 !important;
   }
+  .normal{
+    color: black;
+  }
+  .urgent{
+    color:red;
+  }
   

@@ -2,18 +2,12 @@ import React from 'react';
 import {Table, Button,Input,message,Popconfirm,Form,Divider,InputNumber,Modal } from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
-// import WhiteSpace from '../BlockQuote/whiteSpace';
-// import RoleTable from './roleTable';
 import RoleModal from './roleModal';
 import BlockQuote from '../BlockQuote/blockquote';
 import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
-import { stat } from 'fs';
-//import store from '../store';
-// import reqwest from 'reqwest';
-// import EditableCell from '../Home/editableCell';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -416,15 +410,12 @@ class Role extends React.Component {
           const res = data.data.data;
           this.pagination.total=res.total;
           for(var i = 1; i<=res.list.length; i++){
-            res.list[i-1]['index']=(res.pages-1)*10+i;
+            res.list[i-1]['index']=res.prePage*10+i;
           }
           // console.log(res.list)
           this.setState({
             dataSource: res.list,
           });
-        })
-        .catch((error)=>{
-          message.info(error.data.message)
         })
         
       }
