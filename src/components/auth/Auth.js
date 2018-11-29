@@ -15,12 +15,12 @@ class Auth extends React.Component {
         /**如果localStorage为空，则跳回登陆页 */
         }else {
             let quickAccess = localStorage.getItem('quickAccess');
-            let remote = localStorage.getItem('remote');
+            let remote = localStorage.getItem('hxd');
             let remote1 = localStorage.getItem('remote1');
             let remote2 = localStorage.getItem('remote2');
             let remote3 = localStorage.getItem('remote3');
             localStorage.clear();
-            localStorage.setItem("remote", remote);
+            localStorage.setItem("hxd", remote);
             localStorage.setItem("quickAccess", quickAccess);
             localStorage.setItem("remote1", remote1);
             localStorage.setItem("remote2", remote2);

@@ -43,7 +43,7 @@ class UserManagement extends React.Component {
     /**通过角色id查询已分配和未分配的用户 */
     getAssignedUsersByRoleId(){
         // console.log(this.props.Authorization)
-        let url=`${this.props.server}/jc/role/getUsersOfRole?id=${this.props.value}`
+        let url=`${this.props.server}/jc/auth/role/getUsersOfRole?id=${this.props.value}`
         const data = [];
         axios({
             url:url,
@@ -81,7 +81,7 @@ class UserManagement extends React.Component {
     //   console.log(assignedIds)
     //   console.log(unsignedIds)
     //   const userIds = assignedIds;
-      const url = `${this.props.server}/jc/role/assignRoleToUser?roleId=${this.props.value}`;
+      const url = `${this.props.server}/jc/auth/role/assignRoleToUser?roleId=${this.props.value}`;
       axios({
           url:url,
           type:'get',

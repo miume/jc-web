@@ -20,16 +20,17 @@
   <script type='text/javaScript' src='sketch.js'></script>
   <script type='text/javascript'>
 
+    window.onchange = function() {
+      console.log('on change')
+    }
     /**在页面内容加载完成之后立即执行相应的函数*/
     window.onload = function() {
       var url = window.location.href;
       /**根据网址的最后一个是否为/来判断是否在登陆页，若不是，则隐藏登陆页动态背景*/
       if(url.lastIndexOf("/")-url.length != -1) {
-        document.getElementById('defaultCanvas0').style.visibility='hidden';
+        console.log('hello')
+        document.getElementById('defaultCanvas0').style.display='none';
       }
-     
-      
     }
-    
   </script>
 </html>

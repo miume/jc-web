@@ -64,7 +64,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${server}/jc/department/add`,
+                url : `${server}/jc/auth/department/add`,
                 method:'post',
                 headers:{
                     'Authorization': Authorization
