@@ -17,7 +17,6 @@ const CollectionCreateForm = Form.create()(
                 visible : false,
                 count: 1,
                 data : [1],
-                taskPersonList : [],
             }
             this.addData = this.addData.bind(this)
             this.deleteRow = this.deleteRow.bind(this)
@@ -63,7 +62,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('isUrgent', {
                                 rules: [{ required: true, message: '请选择紧急类型' }],
                             })(
-                                <Select onChange={this.selectChange}>
+                                <Select placeholder="请选择紧急类型">
                                     <Option value='-1'>不紧急</Option>
                                     <Option value='0'>紧急</Option>
                                 </Select>
@@ -73,7 +72,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('status', {
                                 rules: [{ required: true, message: '请选择审核状态' }],
                             })(
-                                <Select onChange={this.selectChange}>
+                                <Select placeholder="请选择审核状态">
                                     <Option value='-1'>已保存未提交</Option>
                                     <Option value='0'>已提交未审核</Option>
                                     <Option value='1'>审核</Option>
@@ -94,7 +93,7 @@ const CollectionCreateForm = Form.create()(
                             </thead>
                             <tbody id="data">
                             {
-                            this.state.data.map((m) => { return <Tr key={m.toString()} taskPersonList={this.state.taskPersonList} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                            this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
                             }
                             </tbody>
                         </table>
@@ -122,26 +121,54 @@ class AddModal extends React.Component {
         form.resetFields();
     };
 
+    /**获取table的数据 */
+    getData = () => {
+        let data = document.getElementsByName("select")
+        let selectValue = [];
+        for(let i=0;i<data.length;i++){
+            let index=data[i].selectedIndex;
+            let value=data[i].options[index].value;
+            selectValue.push(value)
+        }
+
+        let inputData = [];
+        let input=document.getElementsByName("input");
+        for(let i=0;i<input.length;i++){
+            inputData.push(input[i].value)
+        }
+        
+        let taskPersonList = [];
+        for(let i=0;i<inputData.length;i++){
+            taskPersonList.push({})
+        }
+
+        for(let i=0;i<inputData.length;i++){
+            taskPersonList[i]["userId"]=selectValue[i];
+            taskPersonList[i]['responsibility']=inputData[i];
+        }
+        return taskPersonList
+    };
+
     handleCreate = () => {
         const form = this.formRef.props.form;
+        const taskPersonList = this.getData();
         form.validateFields((err, values) => {
             let key = 'createPersonId'
-            values[key] = ob.userId
+            values[key] = parseInt(ob.userId)
+            values["taskPersonList"] = taskPersonList
             console.log(values)
             if (err) {
                 return;
             }
             axios({
-                url : 'http://192.168.1.105:8081/jc/batchAuditTask/add',
+                url : 'http://2p277534k9.iok.la:58718/jc/batchAuditTask/add',
                 method:'post',
                 data: values,
                 type:'json'
             }).then((data) => {
                 message.info(data.data.message);
                 this.props.fetch(); // 重新调用分页函数
-            }).catch(function (error) {
-                message.info(error.data.message);
-            });
+            })
             // 将value传给后台
             form.resetFields();
             this.setState({ visible: false });

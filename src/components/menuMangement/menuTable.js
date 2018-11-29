@@ -17,7 +17,6 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
     getInput = () => {
-        console.log(this.props.inputType)
         if (this.props.inputType === 'select' && this.props.record.parentId != -1) {
             return <Select >
               {
