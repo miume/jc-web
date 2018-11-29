@@ -1,8 +1,6 @@
 import React from 'react';
-import {Button,Table,Modal,Icon, Select} from 'antd';
+import {Button,Table,Modal} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-import RawAdd from './rawAdd'; 
-const Option = Select.Option;
 const data = [];
 for(var i = 1; i<=20; i++){
     data.push({
@@ -14,19 +12,6 @@ for(var i = 1; i<=20; i++){
         weight:'22' 
     })
 }
-const process = [{
-    id:1,
-    name:'流程1'
-},{
-    id:2,
-    name:'流程2'
-},{
-    id:3,
-    name:'流程3'
-},{
-    id:4,
-    name:'流程4'
-},]
 class RawMaterialApplication extends React.Component{
     constructor(props){
         super(props);
@@ -99,43 +84,24 @@ class RawMaterialApplication extends React.Component{
             visible:false
         })
     }
-    /**申请出库弹出框 点击送审按钮 */
+    /**申请出库弹出框 点击确定按钮 */
     handleOk(){
-        // this.setState({
-        //     visible:false
-        // })
+        this.setState({
+            visible:false
+        })
     }
     render(){
         return (
             <div style={{padding:'0 15px'}}>
                 <Button type='primary' size='default' className='button' onClick={this.apply}><i className="fa fa-plus-square" style={{color:'white'}}></i> 申请出库</Button>
                 <Modal title='申请' visible={this.state.visible}
-                    closable= {false} width='1100px'
+                    closable= {false} width='500px'
                     footer={[
-                        <Button key='back' type='ghost' onClick={this.handleCancel} style={{float:'left'}}><Icon type="close" />取消</Button>,
-                        <Button key='submit' type='primary' onClick={this.handleOk} className='button'><Icon type="check" />送审</Button>                       
+                        <Button key='submit' type='primary' size='large' onClick={this.handleOk}>确 定</Button>,
+                        <Button key='back' type='ghost' size='large' onClick={this.handleCancel}>返 回</Button>
                     ]}
                 >
-                    <RawAdd></RawAdd>
-                </Modal>
-                <Modal title='设置审批细节' visible={this.state.visible1}
-                    closable= {false} width='200px'
-                    footer={[
-                        <Button key='back' type='ghost' onClick={this.handleCancel} >取消</Button>,
-                        <Button key='submit' type='primary' onClick={this.handleOk} className='button'>送审</Button>                       
-                    ]}
-                >
-                <div>
-                    <Select placeholder='请选择审核流程'>
-                    {
-                        process.map(p=>{
-                            return (
-                                <Option key={p.id} value={p.id}>{p.name}</Option>
-                            );
-                        })
-                    }
-                    </Select>
-                </div>
+                    <div style={{height:'400px'}}></div>
                 </Modal>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货物名称'></SearchCell>

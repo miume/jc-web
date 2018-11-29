@@ -72,10 +72,10 @@ class DataEntry extends React.Component{
             <div>
                 <Blockquote menu='质量流程' name='数据录入' onClick={this.returnDataEntry}/>
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
-                    <div className='card-parent'>
+                    <div style={{margin:'20px'}}>
                     {
                         data.map(d=>
-                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
+                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></DataPart>
                         )}
                 </div>
            </div>
