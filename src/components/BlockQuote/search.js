@@ -4,7 +4,7 @@ const Search = Input.Search;
 class SearchCell extends React.Component{
     render(){
         return(
-            <span style={{float:'right'}}>
+            <span style={{float:'right',paddingBottom:'8px'}}>
                 <Search
                     id = 'search'
                     placeholder={this.props.name}
