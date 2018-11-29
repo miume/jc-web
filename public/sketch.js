@@ -21,6 +21,7 @@ function setup() {
 }
 
  function draw() {
+   console.log('run')
   noStroke();
   background(255);
   triangles = [];
