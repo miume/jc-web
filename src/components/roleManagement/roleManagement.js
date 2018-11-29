@@ -78,7 +78,7 @@ const EditableFormRow = Form.create()(EditableRow);
 /**这是个令牌，每次调用接口都将其放在header里 */
 const Authorization = localStorage.getItem('Authorization');
 /**这是服务器网址及端口 */
-const server = localStorage.getItem('remote');
+const server = localStorage.getItem('remote2');
 class Role extends React.Component {
 
     componentDidMount() {
@@ -212,7 +212,7 @@ class Role extends React.Component {
       //console.log('params:', params);
       //this.setState({ loading: true });
       axios({
-        url: `${server}/jc/role/getRolesByPage`,
+        url: `${server}/jc/auth/role/getRolesByPage`,
         method: 'get',
         headers:{
         'Authorization': Authorization
@@ -243,7 +243,7 @@ class Role extends React.Component {
      handleDelete(id){
        //console.log(id)
         axios({
-          url:`${server}/jc/role/${id}`,
+          url:`${server}/jc/auth/role/${id}`,
           method:'Delete',
           headers:{
             'Authorization':Authorization
@@ -283,7 +283,7 @@ class Role extends React.Component {
             data['id'] = id.toString()
             //console.log(data)
             axios({
-              url:`${server}/jc/role/update`,
+              url:`${server}/jc/auth/role/update`,
               method:'post',
               headers:{
                 'Authorization':Authorization
@@ -321,7 +321,7 @@ class Role extends React.Component {
           visible: false,
         });
         axios({
-          url : `${server}/jc/role/add`,
+          url : `${server}/jc/auth/role/add`,
           method:'post',
           headers:{
             'Authorization':Authorization
@@ -361,7 +361,7 @@ class Role extends React.Component {
         const ids = this.state.selectedRowKeys;
         // console.log(ids)
         axios({
-          url:`${server}/jc/role/deleteByIds`,
+          url:`${server}/jc/auth/role/deleteByIds`,
           method:'Delete',
           headers:{
             'Authorization':Authorization
@@ -401,7 +401,7 @@ class Role extends React.Component {
         const role_name = this.state.searchContent;
         //console.log(role_name)
         axios({
-          url:`${server}/jc/role/getRolesByNameLikeByPage`,
+          url:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
           method:'get',
           headers:{
             'Authorization':Authorization

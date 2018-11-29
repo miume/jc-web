@@ -214,7 +214,7 @@ class OperationTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString()
                 axios({
-                    url:`${this.server}/jc/operation/update`,
+                    url:`${this.server}/jc/auth/operation/update`,
                     method:'post',
                     headers:{
                         'Authorization':this.Authorization

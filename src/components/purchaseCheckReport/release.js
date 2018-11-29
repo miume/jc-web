@@ -102,7 +102,7 @@ class Release extends React.Component {
         const ids = this.state.selectedRowKeys.toString();
         console.log(ids);
         // axios({
-        //     url:`http://218.77.105.241:40080/jc/department/deleteByIds?ids=`+ids,
+        //     url:`http://218.77.105.241:40080/jc/auth/department/deleteByIds?ids=`+ids,
         //     method:'Delete',
         //     headers:{
         //         'Authorization':Authorization

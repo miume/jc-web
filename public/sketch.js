@@ -9,6 +9,7 @@ var attractor;
 
 function setup() {
   // put setup code here
+  console.log('set up')
   createCanvas(800,400);
   DIST_MAX = width / 2;
   DIST_MIN = width/4;
@@ -21,11 +22,11 @@ function setup() {
 }
 
  function draw() {
+  console.log('draw-parent')
   noStroke();
   background(255);
   triangles = [];
   for (var h = 0; h < NB_PARTS; h++) {
-
     parts[h].move();
   }
 

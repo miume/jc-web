@@ -250,8 +250,9 @@ class MenuTable extends React.Component{
                 const data = row;
                 data['id'] = id.toString()
                 console.log(data)
+                let server = localStorage.getItem("remote2")
                 axios({
-                    url:'http://192.168.1.105:8081/jc/menu/update',
+                    url:`${server}/jc/auth/menu/update`,
                     method:'post',
                     headers:{
                         'Authorization':Authorization

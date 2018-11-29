@@ -169,7 +169,7 @@ class ProcessInspection extends React.Component{
     /**获取所有用户 */
     getAllTestItem(){
       axio({
-        url:`${server1}/jc/user/getAll`,
+        url:`${server1}/jc/auth/user/getAll`,
         method:'get',
         headers:{
           'Authorization':Authorization
