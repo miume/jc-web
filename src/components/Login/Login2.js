@@ -47,14 +47,7 @@ class Login extends React.Component {
   }
   handleSubmit(){
     const history = this.props.history;
-<<<<<<< HEAD
-
     const server = localStorage.getItem("remote2");  
- 
-
-=======
-    const server = localStorage.getItem("remote3");  
->>>>>>> yangmei
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
     document.getElementById('defaultCanvas0').style.display='none';
