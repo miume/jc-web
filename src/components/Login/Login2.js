@@ -49,7 +49,7 @@ class Login extends React.Component {
     const server = localStorage.getItem("remote2");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    axios.post(`${server}/jc/login`,{username:username,password:password}).then(res => {
+    axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
       //console.log(res.data)
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('Authorization',res.headers.authorization);
