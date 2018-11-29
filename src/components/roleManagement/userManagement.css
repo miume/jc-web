@@ -1,0 +1,62 @@
+header{
+    text-align: center;
+    float: left;
+    border: rgb(112,118,139) solid 1px;
+    border-bottom: none;
+    position: relative;
+    font-size: 15px;
+}
+
+.theHead {
+    background: #f2f2f2;
+    color: #6a6a6a;
+    text-align: center;
+    list-style: none;
+    padding: 5px;
+    font-weight: 600;
+}
+.clear {
+    clear: both;
+}
+.contents {
+    float: left;
+    height: 345px;
+    border: rgb(112,118,139) solid 1px;
+    list-style: none;
+    overflow-y: scroll;
+}
+.middle {
+    float: left;
+    height: 345px;
+    list-style: none;
+    /* border-bottom: rgb(112,118,139) solid 1px;
+    border-top: rgb(112,118,139) solid 1px; */
+}
+.unsignedTable{
+    text-align: center;
+    float: left;
+    border: rgb(112,118,139) solid 1px;
+    position: relative;
+    font-size: 15px;
+}
+/* .contents li input {
+    margin-right: 30px;
+    margin-left: 25px;
+} */
+ul {
+    width: 100%;
+}
+.contents li{
+    padding: 8px 32px 8px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border-bottom: 1px rgb(112,118,139) solid;
+    overflow: hidden;
+}
+
+.check-label {
+    display: block;
+    width: 100px;
+    float: left;
+}

@@ -1,0 +1,15 @@
+/*input::-webkit-input-placeholder {*/
+    /*!* placeholder颜色  *!*/
+    /*!* placeholder字体大小  *!*/
+    /*font-size: 17px;*/
+    /*!* placeholder位置  *!*/
+    /*text-align: center;*/
+/*}*/
+.placeholder td input{
+    /* placeholder颜色  */
+    /* placeholder字体大小  */
+    font-size: 15px;
+    /* placeholder位置  */
+    text-align: center;
+}
+
