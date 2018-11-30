@@ -9,11 +9,12 @@ import {message} from "antd";
 import SearchCell from '../BlockQuote/search';
 
 
-const Authorization = localStorage.getItem('Authorization');
-const server = localStorage.getItem('remote');
+
 
 
 class Depart extends React.Component {
+    Authorization;
+    server;
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -50,6 +51,10 @@ class Depart extends React.Component {
         }
     }
     render() {
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -110,10 +115,10 @@ class Depart extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${server}/jc/auth/department/getDepartmentsByPage`,
+            url: `${this.server}/jc/auth/department/getDepartmentsByPage`,
             method: 'get',
             headers:{
-                'Authorization': Authorization
+                'Authorization': this.Authorization
             },
             params: params,
             // type: 'json',
@@ -127,8 +132,6 @@ class Depart extends React.Component {
                 loading: false,
                 dataSource: res.list,
             });
-        }).catch((error)=>{
-            message.info(error.data.message)
         });
     };
     componentDidMount() {
@@ -139,18 +142,18 @@ class Depart extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${server}/jc/auth/department/deleteByIds`,
+            url:`${this.server}/jc/auth/department/deleteByIds`,
             method:'Delete',
             headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
             },
             data:ids,
             type:'json'
         }).then((data)=>{
             message.info(data.data.message);
             this.fetch();
-        }).catch((error)=>{
-            message.info(error.data.message)
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！')
         });
 
     };
@@ -170,10 +173,10 @@ class Depart extends React.Component {
     searchEvent(){
         const dep_name = this.state.searchContent;
         axios({
-            url:`${server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
+            url:`${this.server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
             method:'get',
             headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
             },
             params:{
                 size: this.pagination.pageSize,
@@ -191,25 +194,13 @@ class Depart extends React.Component {
             this.setState({
                 dataSource: res.list,
             });
-        }).catch((error)=>{
-            message.info(error.data.message)
-        })
-
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){
         const value = e.target.value;
         this.setState({searchContent:value});
     }
-    /**---------------------- */
-    /**实现单条数据功能 */
-
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
     /**---------------------- */
 
 }

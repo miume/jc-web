@@ -1,7 +1,5 @@
 import React from 'react';
 import {Table, Input, InputNumber, Popconfirm, Form, Divider, message} from 'antd';
-// import EditSpanCell from './editSpanCell';
-// import EditSpan from './editSpan';
 import DeletaSpan from './deleteSpan';
 import axios from "axios";
 
@@ -223,8 +221,8 @@ class OperationTable extends React.Component {
                 }).then((data)=>{
                     message.info(data.data.message);
                     this.props.fetch();
-                }).catch((error)=>{
-                    message.info(error.data.message);
+                }).catch(()=>{
+                    message.info('保存失败，请联系管理员！');
                 });
                 this.props.modifyDataSource(newData);
                 this.setState({ editingKey: '' });
