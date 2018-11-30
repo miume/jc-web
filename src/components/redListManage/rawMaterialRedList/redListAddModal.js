@@ -1,28 +1,47 @@
 import React from 'react';
-import {Form,Input,Button,Modal,message,Popconfirm,Select,Popover,Switch} from 'antd';
+import {Form,Input,Button,Modal,message,Popconfirm,Select,Popover,Switch,InputNumber} from 'antd';
 
 //import axios from 'axios';
 const Option=Select.Option;
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
     class extends React.Component {
-      state={
-        checkSelectData:false,
+      constructor(props){
+        super(props);
+        this.state={
+          checkSelectData:-1,
+          popVisible:false,
+        }
+        this.hide=this.hide.bind(this);
+        this.selectChange=this.selectChange.bind(this);
       }
-      //下拉框
-      handleChange=(value)=>{
-           console.log(value.length);
+    
+      //监听下拉框变化
+      selectChange=(value)=>{
+          this.setState({checkSelectData:value});
       }
+      hide(){//送审气泡的取消
+        //console.log('hide')
+        //console.log(this.state.popVisible)
+        this.setState({popVisible:false});
+      }
+      handleVisibleChange=(visible)=>{
+       // console.log(this.props.data)
+        this.setState({
+          popVisible:visible
+        })
+    }
       render() {
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
         return (
           <Modal
             visible={visible}
+            maskClosable={false}
             title="添加红单"
             onOk={this.props.onCreate}
             onCancel={this.props.onCancel}
-            width='500px'
+            
              // footer下的每个组件都要有唯一的key
             footer={[
                 <Popconfirm key='popcon' placement='right' title='你确定是想取消这个任务吗？' onConfirm={this.props.onCancel} okText='确定' cancelText='再想想'>
@@ -30,11 +49,12 @@ const CollectionCreateForm = Form.create()(//弹出层
                 </Popconfirm>,
                 
                 <Button key='save' type='primary'  onClick={this.props.onCreate}>保存</Button>,
-                <Popover key='songshen' title='设置审批细节' width='500px'
+                <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
+                maskClosable={false}
                  content={
-                     <div style={{width:200}}>
+                     <div style={{width:250 ,height:150}}>
                         <div>
-                            <Select placeholder='选择送审流程' style={{width:150}} onChange={this.handleChange}>
+                            <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
                               <Option value='1'>送审流程1</Option>
                               <Option value='2'>送审流程2</Option>
                               <Option value='3'>送审流程3</Option>
@@ -44,26 +64,61 @@ const CollectionCreateForm = Form.create()(//弹出层
                           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
-                            <Button onClick={this.props.hide}>取消</Button>
-                            <Button style={{paddingLeft:'3px'}} disabled>确认</Button>
+                            <Button onClick={this.hide}>取消</Button>
+                            <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
                         </div>
                      </div>
                  }
                  trigger='click'
+                 visible={this.state.popVisible}
+                 onVisibleChange={this.handleVisibleChange}
                 >
                 <Button key='submit' type='primary'>送审</Button>
                 </Popover>
             ]}
           >
             <Form horizontal='true' >
-                <FormItem label='工厂名称' labelCol={{span:5}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('name',{
+                <FormItem  label='批号'labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('lotNumber',{
                     initialValue: '',
-                    rules:[{required:true,message:'送样工厂名称不能为空'}]
+                    rules:[{required:true,message:'批号不能为空'}]
                 })(
-                    <Input placeholder='请输入送样工厂名称'></Input>
+                    <Input placeholder='请输入批号'></Input>
                 )}
                 </FormItem>
+                <FormItem  label='货品名称' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('name',{
+                    initialValue: '',
+                    rules:[{required:true,message:'货品名称不能为空'}]
+                })(
+                    <Input placeholder='请输入货品名称'></Input>
+                )}
+                </FormItem>
+                <FormItem  label='货品型号' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('model',{
+                    initialValue: '',
+                    rules:[{required:true,message:'货品型号不能为空'}]
+                })(
+                    <Input placeholder='请输入货品型号'></Input>
+                )}
+                </FormItem>
+                <FormItem  label='损失货品数量' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('number',{
+                    initialValue: '',
+                    rules:[{required:true,message:'损失货品数量不能为空'}]
+                })(
+                    <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'275px'}}></InputNumber>
+                )}
+                </FormItem>
+                <FormItem  label='损失货品重量' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('number',{
+                    initialValue: '',
+                    rules:[{required:true,message:'损失货品重量不能为空'}]
+                })(
+                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'275px'}}></InputNumber>
+                )}
+                </FormItem>
+               
             </Form>
           </Modal>
         );
@@ -77,7 +132,7 @@ const CollectionCreateForm = Form.create()(//弹出层
 class RawMaterialRedListAddModal extends React.Component{
     state = {
         visible: false,//新增的弹出框
-        popVisible:false,//送审的气泡弹出
+      
       };
     
       showModal = () => {
@@ -129,10 +184,7 @@ class RawMaterialRedListAddModal extends React.Component{
       urgentChange=(checked)=>{//checked指定当前是否选中
         console.log(`switch to ${checked}`);
       }
-      //送审气泡的取消
-      hide=()=>{
-            this.setState({popVisible:false});
-      }
+     
     render(){
         
         return(
@@ -143,6 +195,7 @@ class RawMaterialRedListAddModal extends React.Component{
                 visible={this.state.visible}
                 onCancel={this.handleCancel}
                 onCreate={this.handleCreate}
+               
               />
           </span>
         );
