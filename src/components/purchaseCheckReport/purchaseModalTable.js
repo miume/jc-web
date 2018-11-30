@@ -2,7 +2,7 @@ import React from 'react';
 import './purchaseModalTable.css';
 
 const headData =[];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 20; i++) {
     headData.push({
         index: i,
         id:i,
@@ -27,6 +27,8 @@ for(let i=0; i<20; i++){
 }
 
 class PurchaseModalTable extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
@@ -37,9 +39,9 @@ class PurchaseModalTable extends React.Component {
             x: 0,
             y: 0,
             // 宽度
-            theadMiddleWidth: 0, //表头宽度
-            middleTheadIdWidth: 0, //表格宽度
-            removeDistance: 0, //移动的距离
+            theadMiddleWidth: 0, //表头动态宽度
+            middleTheadIdWidth: 0, //表头动态含滚动的宽度
+            leftDistance: 0, //移动的距离
             // 用来存储已经变红的标签id--转换成这一行
             radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
             radioTrueArr: [],   //合格的数组--
@@ -50,6 +52,10 @@ class PurchaseModalTable extends React.Component {
         }
     }
     render() {
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         var lineNum = -1;
         return(
             <div id="modalTable">
@@ -132,7 +138,10 @@ class PurchaseModalTable extends React.Component {
                                     </div>
                                     <div id="tbodyRight">
                                         <div className="rightTbody">
-                                            判定
+                                            合格
+                                        </div>
+                                        <div className="rightTbody">
+                                            不合格
                                         </div>
                                     </div>
                                 </div>
@@ -197,15 +206,44 @@ class PurchaseModalTable extends React.Component {
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
-    handleLeftOnclick = () => {
+    componentDidMount () {
         var theadMiddle = document.getElementById("theadMiddle");
         var middleTheadId = document.getElementById("middleTheadId");
         var theadMiddleWidth = theadMiddle.offsetWidth;
-        var middleTheadIdWidth = middleTheadId.offsetWidth;
+        var middleTheadIdWidth = middleTheadId.scrollWidth;
         this.setState({
             theadMiddleWidth: theadMiddleWidth,
             middleTheadIdWidth: middleTheadIdWidth
         });
+    }
+    handleLeftOnclick = () => {
+        var theadMiddle = document.getElementById("theadMiddle");
+        var middleTheadId = document.getElementById("middleTheadId");
+        const theadMiddleWidth = this.state.theadMiddleWidth;
+        const middleTheadIdWidth = this.state.middleTheadIdWidth;
+        var leftDistance = this.state.leftDistance;
+        var left = 0;
+        // var removeDistanceFlag = this.state.removeDistanceFlag - 1;
+        const endLength = middleTheadIdWidth - leftDistance - theadMiddleWidth;
+        if(endLength>0&&endLength<theadMiddleWidth){
+            leftDistance = middleTheadIdWidth - theadMiddleWidth;
+            left = -1 * leftDistance;
+            middleTheadId.style.left = left+'px';
+            // middleTheadId.style.right = 0;
+        }else{
+            console.log('xxx',middleTheadIdWidth - theadMiddleWidth)
+            leftDistance = leftDistance + theadMiddleWidth;
+            left = -1 * leftDistance;
+            console.log('aaa',leftDistance)
+            middleTheadId.style.left = left+'px';
+            // middleTheadId.style.right = 0;
+        }
+        this.setState({
+            leftDistance : leftDistance
+        });
+        // var removeDistance = -1 *(this.state.middleTheadIdWidth-this.state.theadMiddleWidth);
+        // middleTheadId.style.left = removeDistance+'px';
+
         console.log(this.state.theadMiddleWidth);
         console.log(this.state.middleTheadIdWidth);
 
@@ -218,7 +256,7 @@ class PurchaseModalTable extends React.Component {
         this.setState({
             theadMiddleWidth: theadMiddleWidth,
             middleTheadIdWidth: middleTheadIdWidth
-        })
+        });
         console.log(this.state.theadMiddleWidth);
         console.log(this.state.middleTheadIdWidth);
     };

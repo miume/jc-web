@@ -61,7 +61,7 @@
 #theadMiddle {
     background-color: #E4E4E4;
     width: 70%;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: hidden; /*才能让y滚动取消*/
     /*display: inline-block;*/
     float:left;
@@ -80,7 +80,7 @@
 .middleThead .middleTheadDiv{
     background-color: #E4E4E4;
     /*float:left;*/
-    min-width: 14%;
+    min-width: 14.3%;  /*14*/
     flex:1;
     /*width: 10%; !*需要设定，才能保证布满div*!*/
     border-right: 1px solid #CCCCCC;
@@ -139,7 +139,7 @@
     line-height: 30px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
-    font-size: 16px;
+    font-size: 12px;
 }
 #tbodyMiddle {
     background-color: white;
@@ -165,7 +165,7 @@
 .middleTbody .middleTbodyDiv{
     background-color: white;
     /*float:left;*/
-    min-width: 14%;
+    min-width: 14.3%;  /*14*/
     flex:1;
     /*width: 10%; !*需要设定，才能保证布满div*!*/
     border-right: 1px solid #CCCCCC;
@@ -185,7 +185,7 @@
 }
 #tbodyRight {
     width: 10%;
-    background-color: white;
+    background-color: #999999;
     /*border-right: 1px solid black;*/
     height: 30px;
     float:left;
@@ -194,12 +194,12 @@
     /*font-size: 0;*/
 }
 #tbodyRight .rightTbody {
-    width: 100%;
+    width: 50%;
     border-right: 1px solid #CCCCCC;
     height: 30px;
     line-height: 30px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
-    font-size: 16px;
+    font-size: 12px;
 }
 
