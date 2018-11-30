@@ -93,7 +93,7 @@ class PermissionManagement extends React.Component {
         const operationId =  target.value;
         const menuId = target.id;
         const data = {
-            roleId:this.props.value,
+            roleId:parseInt(this.props.value),
             menuId:parseInt(menuId),
             operationId:parseInt(operationId)
         }
@@ -118,7 +118,7 @@ class PermissionManagement extends React.Component {
         else {
             axios({
                 url:`${this.props.server}/jc/auth/role/deleteOneOperation`,
-                method:'post',
+                method:'Delete',
                 params:data,
                 headers:{
                     'Authorization':this.props.Authorization
@@ -155,9 +155,10 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} 
+                closable={false} maskClosable={false}
                 onOk={this.handleOk} onCancel={this.handleCancel}
                 okText='确定' cancelText='取消' width='780px' destroyOnClose='true' >
-                <div style={{height:'500px',overflowY:'auto'}}>
+                <div style={{height:'450px',overflowY:'auto'}}>
                 {/**实现用div布局，显示table */}
                     <div style={{height:'600px'}}>
                         <div className='tableHead'>

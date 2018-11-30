@@ -62,7 +62,6 @@ class EditableCell extends React.Component {
 const EditableFormRow = Form.create()(EditableRow);
 
 class Role extends React.Component {
-
    Authorization
    server
     componentDidMount() {
@@ -117,7 +116,7 @@ class Role extends React.Component {
             sorter: (a, b) => a.id - b.id,
             // render:id =>index },
             align:'center',
-            width: '20%',
+            width: '10%',
           }, {
             title: '角色名称',
             dataIndex: 'roleName',
@@ -136,7 +135,7 @@ class Role extends React.Component {
             title: '操作',
             key: 'operation',
             align:'center',
-            width: '25%',
+            width: '35%',
             render : (record) =>  {
               const editable = this.isEditing(record);
                 return (
@@ -451,7 +450,7 @@ class Role extends React.Component {
                           <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
                       </span>
                   
-                  <div className='clear'  ></div>
+                  <div className='clear'></div>
                   <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
                 </div>
             </div>

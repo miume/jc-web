@@ -22,10 +22,7 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-/** 通过localStorage可查到http://218.77.105.241:40080*/
-const server = localStorage.getItem("remote2"); 
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization=localStorage.getItem('Authorization');
+
 
 class EditableCell extends React.Component {
   constructor(props){
@@ -77,6 +74,8 @@ class EditableCell extends React.Component {
 }
 
 class SamplePoint extends React.Component{
+  server;
+  Authorization;
   componentDidMount(){
     this.fetch();
     document.getElementById('/testItem').style.color='#0079FE';
@@ -96,7 +95,7 @@ class SamplePoint extends React.Component{
         visible:false,
         editingKey:'',
         reset:false,
-        Authorization:Authorization,
+        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -151,7 +150,7 @@ class SamplePoint extends React.Component{
         return (
             <span>
                 <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                <a href="#">删除</a>
+                <span className='blue'>删除</span>
                 </Popconfirm>
                 <Divider type="vertical" />
                 <span>
@@ -159,18 +158,18 @@ class SamplePoint extends React.Component{
                   <span>
                     <EditableContext.Consumer>
                       {form => (
-                        <a
+                        <span className='blue'
                           href="javascript:;"
                           onClick={() => this.save(form, record.id)}
-                          style={{ marginRight: 8 }}>保存</a>
+                          style={{ marginRight: 8 }}>保存</span>
                       )}
                     </EditableContext.Consumer>
                     <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
-                      <a>取消</a>
+                      <span className='blue'>取消</span>
                     </Popconfirm>
                   </span>
                 ) : (
-                  <a onClick={() => this.edit(record.id)}>编辑</a>
+                  <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
             </span>
@@ -191,10 +190,10 @@ class SamplePoint extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${server}/jc/testItem/getAllByPage`,
+        url: `${this.server}/jc/common/testItem/getAllByPage`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         },
         params:{
           ...params,
@@ -220,10 +219,10 @@ class SamplePoint extends React.Component{
       //console.log(id);
         const dataSource = this.state.dataSource;
         axios({
-          url:`${server}/jc/testItem?id=${id}`,
+          url:`${this.server}/jc/common/testItem?id=${id}`,
           method:'Delete',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
          data:id,
          type:'json'
@@ -234,8 +233,8 @@ class SamplePoint extends React.Component{
           this.fetch();
         })
         
-        .catch((error)=>{
-         message.info(error.data.message);
+        .catch(()=>{
+         message.info('删除失败，请联系管理员！');
         });
       }
     //实现checkbox全选
@@ -257,10 +256,10 @@ class SamplePoint extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${server}/jc/testItem/deleteByIds`,
+            url:`${this.server}/jc/common/testItem/deleteByIds`,
             method:'Delete',
             headers:{
-                  'Authorization' :Authorization
+                  'Authorization' :this.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -270,9 +269,9 @@ class SamplePoint extends React.Component{
           message.info(data.data.message);
           this.fetch();
         })//处理成功
-        .catch((error)=>{
+        .catch(()=>{
          // console.log(error);
-          message.info(error.data.message)
+          message.info('删除失败，请联系管理员！')
         });//处理异常
        
      }
@@ -315,10 +314,10 @@ class SamplePoint extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${server}/jc/testItem/update`,
+              url:`${this.server}/jc/common/testItem/update`,
               method:'post',
               headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
               },
               data:data,
               type:'json'
@@ -328,9 +327,9 @@ class SamplePoint extends React.Component{
               message.info(data.data.message);
               this.fetch();
             })
-            .catch((error)=>{
+            .catch(()=>{
              // console.log(error.data);
-              message.info(error.data.message);
+              message.info('编辑失败，请联系管理员！');
             });
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
@@ -357,10 +356,10 @@ class SamplePoint extends React.Component{
            const testItemName=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${server}/jc/testItem/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/testItem/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':Authorization
+               'Authorization':this.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -379,13 +378,17 @@ class SamplePoint extends React.Component{
                dataSource:res.list//list取到的是所有符合要求的数据
              });
            })
-           .catch((error)=>{
+           .catch(()=>{
 
-            message.info(error.data.message)
+            message.info('搜索失败，请联系管理员！')
            });
       }
   
    render(){
+     /** 通过localStorage可查到http://218.77.105.241:40080*/
+        this.server = localStorage.getItem("remote"); 
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization=localStorage.getItem('Authorization');
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {

@@ -29,18 +29,20 @@
 /*}*/
 
 #modalTable {
+    /*border-radius:3px;*/
     /*min-width: 80%;*/
     /*max-width: 80%;*/
     width: 100%;
-    background-color: crimson;
+    /*background-color: crimson;*/
     height: 400px;
     /*margin: 0 auto;*/
     white-space: nowrap;
     font-size: 0;
 }
 #theadLeft {
+    border-radius:3px 0 0 0;
     width: 20%;
-    background-color: #CCCCCC;
+    background-color: #E4E4E4;
     /*border-right: 1px solid black;*/
     height: 66px;
     float:left;
@@ -49,7 +51,7 @@
 }
 .leftThead {
     width: 50%;
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 66px;
     line-height: 66px;
     text-align: center;
@@ -57,7 +59,7 @@
     font-size: 16px;
 }
 #theadMiddle {
-    background-color: #CCCCCC;
+    background-color: #E4E4E4;
     width: 70%;
     overflow-x: hidden;
     overflow-y: hidden; /*才能让y滚动取消*/
@@ -65,7 +67,7 @@
     float:left;
 }
 .middleThead {
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 66px;
     width: 100%;
     display: flex;
@@ -76,12 +78,12 @@
     /*font-size: 0;*/
 }
 .middleThead .middleTheadDiv{
-    background-color: #CCCCCC;
+    background-color: #E4E4E4;
     /*float:left;*/
     min-width: 14%;
     flex:1;
     /*width: 10%; !*需要设定，才能保证布满div*!*/
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 66px;
     line-height: 21px;
     text-align: center;
@@ -89,14 +91,15 @@
     font-size: 12px;
 }
 .middleThead .middleTheadDiv div {
-    border-bottom: 1px solid #F2F2F2;
+    border-bottom: 1px solid #CCCCCC;
 }
 .middleThead .firstMiddleDiv {
-    border-left: 1px solid #F2F2F2;
+    border-left: 1px solid #CCCCCC;
 }
 #theadRight {
+    border-radius:0 3px 0 0;
     width: 10%;
-    background-color: #CCCCCC;
+    background-color: #E4E4E4;
     /*border-right: 1px solid black;*/
     height: 66px;
     float:left;
@@ -105,7 +108,7 @@
 }
 #theadRight .rightThead {
     width: 100%;
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 66px;
     line-height: 66px;
     text-align: center;
@@ -116,21 +119,22 @@
 #tbody {
     height: 70%;
     overflow-y: auto; /*才能让y滚动取消*/
+    border-radius:0 0 3px 3px;
 
 }
-
 #tbodyLeft {
     width: 20%;
-    background-color: #CCCCCC;
+    background-color: white;
     /*border-right: 1px solid black;*/
     height: 30px;
     float:left;
     white-space: nowrap; /*强制内部原文不换行*/
+    border-bottom: 1px solid #CCCCCC;
     /*font-size: 0;*/
 }
 .leftTbody {
     width: 50%;
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 30px;
     line-height: 30px;
     text-align: center;
@@ -138,7 +142,7 @@
     font-size: 16px;
 }
 #tbodyMiddle {
-    background-color: #CCCCCC;
+    background-color: white;
     width: 70%;
     overflow-x: hidden;
     overflow-y: hidden; /*才能让y滚动取消*/
@@ -148,7 +152,7 @@
     float:left;
 }
 .middleTbody {
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 30px;
     width: 100%;
     display: flex;
@@ -159,36 +163,39 @@
     /*font-size: 0;*/
 }
 .middleTbody .middleTbodyDiv{
-    background-color: #CCCCCC;
+    background-color: white;
     /*float:left;*/
     min-width: 14%;
     flex:1;
     /*width: 10%; !*需要设定，才能保证布满div*!*/
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 30px;
     line-height: 30px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
     font-size: 12px;
+    border-bottom: 1px solid #CCCCCC;
 }
 .middleTbody .middleTbodyDiv div {
-    border-bottom: 1px solid #F2F2F2;
+    height: 29px;
+    /*border-bottom: 1px solid #CCCCCC;*/
 }
 .middleTbody .firstMiddleDiv {
-    border-left: 1px solid #F2F2F2;
+    border-left: 1px solid #CCCCCC;
 }
 #tbodyRight {
     width: 10%;
-    background-color: #CCCCCC;
+    background-color: white;
     /*border-right: 1px solid black;*/
     height: 30px;
     float:left;
     white-space: nowrap; /*强制内部原文不换行*/
+    border-bottom: 1px solid #CCCCCC;
     /*font-size: 0;*/
 }
 #tbodyRight .rightTbody {
     width: 100%;
-    border-right: 1px solid #F2F2F2;
+    border-right: 1px solid #CCCCCC;
     height: 30px;
     line-height: 30px;
     text-align: center;

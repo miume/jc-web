@@ -1,6 +1,8 @@
 import React from 'react';
-import IsQualified from '../BlockQuote/isQualified';
+import CancleButton from '../BlockQuote/cancleButton';
+import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import {Modal,Button,Table,Icon, Input} from 'antd';
+import Submit from '../stockOut/rawMaterialApplication/submit';
 const data = [];
 for(var i = 1; i <=10; i++){
     data.push({
@@ -41,7 +43,7 @@ class RecordChecking extends React.Component{
             align:'center',
             width:'30%',
             render:(record)=>{
-                return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'38px'}} onChange={this.save} />
+                return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'35px'}} onChange={this.save} />
             }
         },{
             title:'计量单位',
@@ -94,9 +96,9 @@ class RecordChecking extends React.Component{
                 <span className='blue' onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 footer={[
-                    <Button key='back' type='ghost' size='large' onClick={this.handleCancel} style={{float:'left'}}><Icon type="close" />取消</Button>,
-                    <Button key='save' type='primary' size='large' onClick={this.handleSave}><Icon type="appstore" />保存</Button>,
-                    <Button key='submit' type='primary' size='large' onClick={this.recordChecking}><Icon type="check" />送审</Button>
+                    <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                    <Button key='save' type='primary' size='default' onClick={this.handleSave}><Icon type="appstore" />保存</Button>,
+                    <Submit key='submit' data = {this.state.dataSource}/>                       
                 ]}>
                 <div style={{height:'550px'}}>
                     <table>
@@ -120,8 +122,7 @@ class RecordChecking extends React.Component{
                          <p className='span'>检验人：<span></span></p>
                              <p className='span'>检验时间：<span></span></p>
                          </div>
-                         <IsQualified status={1}></IsQualified>
-                         <IsQualified status={0}></IsQualified>
+                         <CheckQualifiedModal />
                      </div>
 
                 </div>

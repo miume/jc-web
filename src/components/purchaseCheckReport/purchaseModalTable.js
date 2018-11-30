@@ -37,8 +37,9 @@ class PurchaseModalTable extends React.Component {
             x: 0,
             y: 0,
             // 宽度
-            theadMiddleWidth: 0,
-            middleTheadIdWidth: 0,
+            theadMiddleWidth: 0, //表头宽度
+            middleTheadIdWidth: 0, //表格宽度
+            removeDistance: 0, //移动的距离
             // 用来存储已经变红的标签id--转换成这一行
             radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
             radioTrueArr: [],   //合格的数组--
@@ -145,7 +146,6 @@ class PurchaseModalTable extends React.Component {
     /**表格单元格按钮点击事件*/
     handleCellOnclick = (e) => {
         const id = e.target.id;
-        console.log(e.target.id)
         var flag = -1;
         var tdId = document.getElementById(id);
         var colorStatueId = this.state.colorStatueId;
@@ -156,15 +156,14 @@ class PurchaseModalTable extends React.Component {
         }
         if(flag>=0){
             tdId.style.background = 'white';
+            // tdId.style.border = '1px solid #CCCCCC';
             colorStatueId.splice(flag,1);
-            console.log('---',colorStatueId)
             this.setState({
                 colorStatueId:colorStatueId,
                 purchaseStatus: '待定'
             })
         }else{
             tdId.style.background = 'red';
-            console.log('++++',colorStatueId)
             colorStatueId.push(id);
             this.setState({
                 colorStatueId:colorStatueId,
@@ -206,9 +205,10 @@ class PurchaseModalTable extends React.Component {
         this.setState({
             theadMiddleWidth: theadMiddleWidth,
             middleTheadIdWidth: middleTheadIdWidth
-        })
+        });
         console.log(this.state.theadMiddleWidth);
         console.log(this.state.middleTheadIdWidth);
+
     };
     handleRightOnclick = () => {
         var theadMiddle = document.getElementById("theadMiddle");

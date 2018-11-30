@@ -57,7 +57,6 @@ class DataEntry extends React.Component{
         this.returnDataEntry = this.returnDataEntry.bind(this);
     }
      click(e){
-         //console.log(e.target)
          const path = e.target.id;
          this.props.history.push({pathname:path})
     }

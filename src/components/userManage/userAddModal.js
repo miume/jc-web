@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input,Select} from 'antd';
-import axios from 'axios';
 const FormItem = Form.Item;
 const Option = Select.Option;
 

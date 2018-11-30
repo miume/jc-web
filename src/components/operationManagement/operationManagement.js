@@ -4,10 +4,8 @@ import OperationTable from './operationTable';
 import '../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
-// import DeleteModal from "./deleteModal";
 import {message} from "antd";
 import DeleteModal from "../operationManagement/deleteModal";
-// import SearchCell from "./search";
 import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
@@ -149,8 +147,8 @@ class OperationManagement extends React.Component {
         }).then((data)=>{
             message.info(data.data.message);
             this.fetch();
-        }).catch((error)=>{
-            message.info(error.data.message)
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
         });
 
     };
@@ -191,10 +189,7 @@ class OperationManagement extends React.Component {
             this.setState({
                 dataSource: res.list,
             });
-        }).catch((error)=>{
-                message.info(error.data.message)
-            })
-
+        })
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){

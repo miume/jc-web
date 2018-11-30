@@ -84,7 +84,7 @@ class Detail extends React.Component{
                          </thead>
                          <tbody className='tbody'>
                              <tr>
-                                 <td>{value.factory}</td><td>{value.batchNumberId}</td><td>{value.date}</td>
+                                 <td></td><td>{value.batchNumberId}</td><td>{value.date}</td>
                              </tr>
                          </tbody>
                      </table>

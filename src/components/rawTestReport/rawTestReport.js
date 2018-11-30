@@ -136,7 +136,7 @@ class RawTestReport extends React.Component{
             dataIndex:'operation',
             key:'operation',
             align:'center',
-            render:(record)=>{
+            render:(text,record)=>{
                 return (
                     <span>
                         <Detail value={record} />
@@ -184,7 +184,7 @@ class RawTestReport extends React.Component{
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}} >
-                        <SearchCell name='请输入什么什么' searchEvent={this.searchEvent} searchContent={this.searchContent}></SearchCell>
+                        <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} searchContent={this.searchContent}></SearchCell>
                     </span>
                 <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} pagination={this.pagination} scroll={{y:400}} size='small' bordered/> 
                 </div>

@@ -18,10 +18,6 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-/** 通过localStorage可查到http://218.77.105.241:40080*/
-const server = localStorage.getItem("remote"); 
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization=localStorage.getItem('Authorization');
 
 class EditableCell extends React.Component {
   constructor(props){
@@ -87,11 +83,13 @@ class EditableCell extends React.Component {
 }
 
 class User extends React.Component{
+  server;
+  Authorization;
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return ;
     }
-  }
+  } 
     constructor(props){
       super(props);
       this.state={
@@ -107,7 +105,7 @@ class User extends React.Component{
         phone:'',
         department:'',
         reset:false,
-        Authorization:Authorization,
+        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -187,26 +185,26 @@ class User extends React.Component{
         return (
             <span>
                 <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                <a href="#">删除</a>
+                <span className='blue'>删除</span>
                 </Popconfirm>
                 <Divider type="vertical" />
-                <span>
+                <span className='blue'>
                 {editable ? (
                   <span>
                     <EditableContext.Consumer>
                       {form => (
-                        <a
+                        <span
                           href="javascript:;"
                           onClick={() => this.save(form, record.id)}
-                          style={{ marginRight: 8 }}>保存</a>
+                          style={{ marginRight: 8 }}>保存</span>
                       )}
                     </EditableContext.Consumer>
                     <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
-                      <a>取消</a>
+                      <span className='blue'>取消</span>
                     </Popconfirm>
                   </span>
                 ) : (
-                  <a onClick={() => this.edit(record.id)}>编辑</a>
+                  <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
             </span>
@@ -233,10 +231,10 @@ class User extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${server}/jc/auth/user/getAllByPage`,
+        url: `${this.server}/jc/auth/user/getAllByPage`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         },
         params:{
           ...params,
@@ -267,10 +265,10 @@ class User extends React.Component{
         //console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
         axios({
-          url:`${server}/jc/auth/user/signIn`,
+          url:`${this.server}/jc/auth/user/signIn`,
           method:'post',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
           data:this.formRef.getItemsValue(),
           type:'json'
@@ -278,8 +276,8 @@ class User extends React.Component{
         .then((data)=>{
           message.info(data.data.message); 
           this.fetch();
-        }).catch((error)=>{
-          message.info(error);
+        }).catch(()=>{
+          message.info('新增失败，请联系管理员！');
         });
         /**清空新增form组件的内容*/
         this.formRef.resetField();
@@ -308,10 +306,10 @@ class User extends React.Component{
         const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-          url:`${server}/jc/auth/user/deleteById?id=${id}`,
+          url:`${this.server}/jc/auth/user/deleteById?id=${id}`,
           method:'Delete',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
          data:id,
          type:'json'
@@ -322,10 +320,10 @@ class User extends React.Component{
           this.fetch();
         })
         
-        .catch((error)=>{
+        .catch(()=>{
           //console.log(error);
           //console.log(error.data);
-         message.info(error.data.message);
+         message.info('删除失败，请联系管理员！');
         });
       }
     //实现checkbox全选
@@ -347,10 +345,10 @@ class User extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${server}/jc/auth/user/deleteByIds`,
+            url:`${this.server}/jc/auth/user/deleteByIds`,
             method:'Delete',
             headers:{
-                  'Authorization' :Authorization
+                  'Authorization' :this.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -360,9 +358,9 @@ class User extends React.Component{
           message.info(data.data.message);
           this.fetch();
         })//处理成功
-        .catch((error)=>{
+        .catch(()=>{
          // console.log(error);
-          message.info(error.data.message)
+          message.info('删除失败，请联系管理员！');
         });//处理异常
        
      }
@@ -409,10 +407,10 @@ class User extends React.Component{
             
             //console.log(data);
             axios({
-              url:`${server}/jc/auth/user/update`,
+              url:`${this.server}/jc/auth/user/update`,
               method:'post',
               headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
               },
               data:data,
               type:'json'
@@ -423,9 +421,9 @@ class User extends React.Component{
               message.info(data.data.message);
               this.fetch();
             })
-            .catch((error)=>{
+            .catch(()=>{
              // console.log(error.data);
-              message.info(error.data.message);
+              message.info('编辑失败，请联系管理员！');
             });
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
@@ -452,10 +450,10 @@ class User extends React.Component{
            const username=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${server}/jc/auth/user/getUserByNameByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/auth/user/getUserByNameByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':Authorization
+               'Authorization':this.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -478,18 +476,18 @@ class User extends React.Component{
                dataSource:res.list//list取到的是所有符合要求的数据
              });
            })
-           .catch((error)=>{
+           .catch(()=>{
             // console.log(error);
-            message.info(error.data.message)
+            message.info('查询失败，请联系管理员！')
            });
       }
       /**获取所有部门 */
       getAllDepartment(){
         axios({
-          url:`${server}/jc/auth/department/getAll`,
+          url:`${this.server}/jc/auth/department/getAll`,
           method:'get',
           headers:{
-            'Authorization': Authorization
+            'Authorization':this.Authorization
         },
         }).then((data)=>{ 
           const res = data.data.data;
@@ -500,6 +498,10 @@ class User extends React.Component{
         })
       }
    render(){
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
