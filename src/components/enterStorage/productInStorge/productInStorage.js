@@ -96,7 +96,7 @@ const data=[{
     time:'2018年10月12日',
     person:'李大新'
 }];
-class RowMaterialStorage extends Component{
+class ProductInStorage extends Component{
     constructor(props){
          super(props);
          this.state={
@@ -188,4 +188,4 @@ class RowMaterialStorage extends Component{
         );
     }
 }
-export default  RowMaterialStorage;
+export default ProductInStorage;

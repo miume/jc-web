@@ -9,94 +9,94 @@ const data=[{
     key:'1',
     id:'1',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'陈林林'
+  
 },{
     key:'2',
     id:'2',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'林下'
+   
 },{
     key:'3',
     id:'3',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'周艺轩'
+   
 },{
     key:'4',
     id:'4',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'李大新'
+   
 },{
     key:'5',
     id:'5',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'王小红'
+  
 },{
     key:'6',
     id:'6',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'陈林林'
+   
 },{
     key:'7',
     id:'7',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'林下'
+   
 },{
     key:'8',
     id:'8',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'周艺轩'
+  
 },{
     key:'9',
     id:'9',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'李大新'
+    
 },{
     key:'10',
     id:'10',
     name:'钴锰矿',
+    model:'钴锰矿一号',
     lotNumber:'ECT/314314',
     number:'30袋',
     weight:'34kg',
-    time:'2018年10月12日',
-    person:'李大新'
+    
 }];
-class RowMaterialStorage extends Component{
+class RowMaterialInventor extends Component{
     constructor(props){
          super(props);
          this.state={
@@ -110,14 +110,19 @@ class RowMaterialStorage extends Component{
             width:'10%',
             align:'center'
         },{
-           title:'原材料名称',
+           title:'货物名称',
            dataIndex:'name',
-           width:'20%',
+           width:'18%',
            align:'center'
+        },{
+            title:'货物型号',
+            dataIndex:'model',
+            width:'18%',
+            align:'center'
         },{
            title:'批号',
            dataIndex:'lotNumber',
-           width:'10%',
+           width:'20%',
            align:'center'
         },{
            title:'数量',
@@ -129,17 +134,7 @@ class RowMaterialStorage extends Component{
            dataIndex:'weight',
            width:'10%',
            align:'center'
-        },{
-           title:'入库时间',
-           dataIndex:'time',
-           width:'20%',
-           align:'center'
-        },{
-           title:'入库人',
-           dataIndex:'person',
-           width:'10%',
-           align:'center'
-        }];
+        },];
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
@@ -188,4 +183,4 @@ class RowMaterialStorage extends Component{
         );
     }
 }
-export default  RowMaterialStorage;
+export default  RowMaterialInventor;
