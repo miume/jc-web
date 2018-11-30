@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message,Select,DatePicker,TimePicker  } from 'antd';
-import WhiteSpace from '../BlockQuote/whiteSpace';
-import moment from 'moment';
+import { Button, Modal, Form, Input,Select,DatePicker,TimePicker  } from 'antd';
+// import WhiteSpace from '../BlockQuote/whiteSpace';
+// import moment from 'moment';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
+// const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
         constructor(props){
