@@ -42,7 +42,7 @@ class Tr extends React.Component{
             <tr className='tbody'>
                 <td><select style={{width:'100%',border:"none"}} name="select" placeholder="请选择负责人">{children}</select></td>
                 <td><input name="input" style={{width:'100%',border:"none"}} placeholder="请输入职责"/></td>
-                <td><a href='#' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</a></td>
+                <td><span href='#' className="blue" onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
             </tr>
         )
     }

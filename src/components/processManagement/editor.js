@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Button,Input,Table,Select} from 'antd';
+import {Modal,Button,Input} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import Tr from './tr'
 
@@ -55,7 +55,7 @@ class Editor extends React.Component{
         console.log(this.props.value.batchNumberId)
         return(
             <span>
-                <a onClick={this.handleDetail} >编辑</a>
+                <span className='blue' onClick={this.handleDetail} >编辑</span>
                 <Modal title='编辑' visible={this.state.visible}
                     onCancel={this.handleCancel} width='1000px'
                     footer={[

@@ -7,11 +7,7 @@ const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         server
-        constructor(props){
-            super(props)
-        }
         render() {
-            console.log(this.props.visible1)
             this.server= localStorage.getItem("remote")
             const { visible, onCancel, onCreate, form,fatherMenu } = this.props;
             const { getFieldDecorator } = form;
@@ -89,11 +85,11 @@ class AddModal extends React.Component {
     };
 
     selectChange= (value) =>{
-        if(value=='1'){
+        if(value==='1'){
             this.setState({
                 visible1 : false
             })
-        }else if(value=='2'){
+        }else if(value==='2'){
             this.setState({
                 visible1 : true
             })
