@@ -66,14 +66,14 @@ class ApplyStockOut extends React.Component{
             key:'outQuantity',
             align:'center',
             width:'15%',
-            render:(text,record)=>{return <input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'38px'}} placeholder='请输入出库数量' onChange={this.save} />},
+            render:(record)=>{return <input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'38px'}} placeholder='请输入出库数量' onChange={this.save} />},
         },{
             title:'出库重量',
             dataIndex:'outWeight',
             key:'outWeight',
             align:'center',
             width:'15%',
-            render:(text,record)=>{return <input id={record.id} name='outWeight' style={{border:'none',width:'100%',height:'38px'}} placeholder='请输入出库重量' onChange={this.save} />},
+            render:(record)=>{return <input id={record.id} name='outWeight' style={{border:'none',width:'100%',height:'38px'}} placeholder='请输入出库重量' onChange={this.save} />},
 
         }]
         this.apply = this.apply.bind(this);

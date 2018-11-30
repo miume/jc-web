@@ -1,49 +1,6 @@
 import React from 'react';
-import {Modal,Button,Table,Icon} from 'antd';
-const columns = [{
-    title:'批号',
-    dataIndex:'batchNumber',
-    key:'batchNumber',
-    align:'center',
-    width:'33%'
-},{
-    title:'原材料',
-    dataIndex:'raw',
-    key:'raw',
-    align:'center',
-    width:'33%'
-},{
-    title:'送样日期',
-    dataIndex:'date',
-    key:'date',
-    align:'center',
-    width:'33%'
-},]
-const columns1 = [{
-    title:'序号',
-    dataIndex:'id',
-    key:'id',
-    align:'center',
-    width:'10%'
-},{
-    title:'检测项目',
-    dataIndex:'testItem',
-    key:'testItem',
-    align:'center',
-    width:'30%'
-},{
-    title:'检测结果',
-    dataIndex:'result',
-    key:'result',
-    align:'center',
-    width:'30%'
-},{
-    title:'计量单位',
-    dataIndex:'unit',
-    key:'unit',
-    align:'center',
-    width:'30%'
-},]
+import IsQualified from '../BlockQuote/isQualified';
+import {Modal,Button,Table,Icon, Input} from 'antd';
 const data = [];
 for(var i = 1; i <=10; i++){
     data.push({
@@ -57,12 +14,42 @@ class RecordChecking extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            visible:false
+            visible:false,
+            dataSource:data
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.recordChecking = this.recordChecking.bind(this);
+        this.save = this.save.bind(this);
+        this.columns = [{
+            title:'序号',
+            dataIndex:'id',
+            key:'id',
+            align:'center',
+            width:'10%'
+        },{
+            title:'检测项目',
+            dataIndex:'testItem',
+            key:'testItem',
+            align:'center',
+            width:'30%'
+        },{
+            title:'检测结果',
+            dataIndex:'result',
+            key:'result',
+            align:'center',
+            width:'30%',
+            render:(record)=>{
+                return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'38px'}} onChange={this.save} />
+            }
+        },{
+            title:'计量单位',
+            dataIndex:'unit',
+            key:'unit',
+            align:'center',
+            width:'30%'
+        },]
     }
     /**点击录检 弹出框显示 */
     handleClick(){
@@ -88,7 +75,20 @@ class RecordChecking extends React.Component{
             visible:false
         })
     }
+    /**input框内容变化，实现自动保存数据 */
+    save(e){
+        const value = e.target.value;
+        const name = e.target.name;
+        const id = e.target.id
+        const newData = [...this.state.dataSource];
+        const index = newData.findIndex(item=> id===item.id);
+        newData[index][name] = value;
+        this.setState({
+            dataSource:newData
+        })
+    }
     render(){
+        const value = this.props.value;
         return (
             <span>
                 <a onClick={this.handleClick}>录检</a>
@@ -98,21 +98,30 @@ class RecordChecking extends React.Component{
                     <Button key='save' type='primary' size='large' onClick={this.handleSave}><Icon type="appstore" />保存</Button>,
                     <Button key='submit' type='primary' size='large' onClick={this.recordChecking}><Icon type="check" />送审</Button>
                 ]}>
-                <div style={{height:'600px'}}>
-                     <Table rowKey={record=>record.id} columns={columns} dataSource={[this.props.value]} pagination={false} size='small' bordered></Table>
+                <div style={{height:'550px'}}>
+                    <table>
+                         <thead className='thead'>
+                             <tr>
+                                 <td>批号</td><td>原材料</td><td>送样日期</td>
+                             </tr>
+                         </thead>
+                         <tbody className='tbody'>
+                             <tr>
+                                 <td>{value.factory}</td><td>{value.batchNumberId}</td><td>{value.date}</td>
+                             </tr>
+                         </tbody>
+                     </table>
                      <div style={{padding:'10px'}}>
-                         <span>样品名称：镍矿石样品</span>
+                         <span className='span'>样品名称：镍矿石样品</span>
                      </div>
-                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:330}}></Table>
+                     <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} pagination={false} size='small' bordered scroll={{y:330}}></Table>
                      <div style={{padding:'20px',height:'80px',fontSize:'15px'}}>
                          <div style={{float:'left'}}>
-                             <span>检验人：</span><span></span><br/>
-                             <span>检验时间：</span><span></span>
+                         <p className='span'>检验人：<span></span></p>
+                             <p className='span'>检验时间：<span></span></p>
                          </div>
-                         <div style={{float:'right'}}>
-                             <div style={{float:'left'}}>合格</div>
-                             <div style={{float:'right'}}>不合格</div>
-                         </div>
+                         <IsQualified status={1}></IsQualified>
+                         <IsQualified status={0}></IsQualified>
                      </div>
 
                 </div>
