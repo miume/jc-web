@@ -14,8 +14,8 @@ class Login extends React.Component {
   componentWillMount() {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
     localStorage.setItem("remote1", "http://192.168.1.105:8080");     //模块二的局域网
-    localStorage.setItem("remote", "http://192.168.1.105:8081");      //模块一的局域网
-    localStorage.setItem("remote2", "http://2p277534k9.iok.la:58718");//模块二的外网
+    localStorage.setItem("remote2", "http://192.168.1.105:8081");      //模块一的局域网
+    localStorage.setItem("remote", "http://2p277534k9.iok.la:58718");//模块二的外网
     localStorage.setItem("remote3", "http://218.77.105.241:40080");
     const quickAccess = [{
       menuName:'菜单管理',
@@ -49,12 +49,11 @@ class Login extends React.Component {
     const server = localStorage.getItem("remote");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    axios.post(`${server}/jc/login`,{username:username,password:password}).then(res => {
+    axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
       //console.log(res.data)
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('Authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));
-      document.getElementById('defaultCanvas0').style.visibility='hidden';
       history.push({pathname:'/home'});
     })
     .catch(function (error) {

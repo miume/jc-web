@@ -6,7 +6,9 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
-const userId = localStorage.getItem('userId')
+const userId = localStorage.getItem('menuList')
+let ob = JSON.parse(userId)
+
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
@@ -90,7 +92,7 @@ const CollectionCreateForm = Form.create()(
                                     <td>操作</td>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="data">
                             {
                             this.state.data.map((m) => { return <Tr key={m.toString()} taskPersonList={this.state.taskPersonList} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
                             }
@@ -109,6 +111,7 @@ class AddModal extends React.Component {
     state = {
         visible: false,
     };
+    server = localStorage.getItem('remote2');
 
     showModal = () => {
         this.setState({ visible: true });
@@ -123,12 +126,14 @@ class AddModal extends React.Component {
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
+            let key = 'createPersonId'
+            values[key] = ob.userId
             console.log(values)
             if (err) {
                 return;
             }
             axios({
-                url : 'http://192.168.1.105:8081/jc/batchAuditTask/add',
+                url : `${this.server}/jc/common/batchAuditTask/add`,
                 method:'post',
                 data: values,
                 type:'json'

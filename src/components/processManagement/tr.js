@@ -12,12 +12,13 @@ class Tr extends React.Component{
             loading : false,
             searchContent : []
         }
-        this.searchContentChange=this.searchContentChange.bind(this)
+        this.server = localStorage.getItem('remote2');
+        // this.searchContentChange=this.searchContentChange.bind(this)
     }
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
         axios({
-            url: 'http://2p277534k9.iok.la:58718/jc/authUser/getAll',
+            url: `${this.server}/jc/common/authUser/getAll`,
             method:'get',
             params: params,
         }).then((data)=>{
@@ -35,7 +36,6 @@ class Tr extends React.Component{
     searchContentChange(e){
         const value = e.target.value;
         this.setState({searchContent:value});
-        console.log(this.state.searchContent)
     }
     render(){
         const children = this.state.approvalProcess.map(p => 
@@ -44,7 +44,7 @@ class Tr extends React.Component{
         return(
             <tr className='tbody' id={this.props.value}>
                 <td><Select style={{width:'100%'}}>{children}</Select></td>
-                <td><Input searchContentChange={this.searchContentChange}/></td>
+                <td><Input onChange={this.searchContentChange}/></td>
                 <td><a href='#' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</a></td>
             </tr>
         )

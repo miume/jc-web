@@ -53,7 +53,7 @@ class CheckSpanModal extends React.Component {
             return(
                 <Input
                     placeholder='输入检测结果'
-                    style={{border:'0'}}
+                    style={{border:'0'}} 
                 />
             )
         }

@@ -25,7 +25,6 @@ function setup() {
   background(255);
   triangles = [];
   for (var h = 0; h < NB_PARTS; h++) {
-
     parts[h].move();
   }
 

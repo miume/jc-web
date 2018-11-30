@@ -4,7 +4,7 @@ const Search = Input.Search;
 class SearchCell extends React.Component{
     render(){
         return(
-            <span style={{float:'right'}}>
+            <span style={{float:'right',paddingBottom:'8px'}}>
                 <Search
                     id = 'search'
                     placeholder={this.props.name}
@@ -12,13 +12,13 @@ class SearchCell extends React.Component{
                     onChange={this.props.searchContentChange}
                     enterButton
                     style={{ width: 200 }}
-                   
                 />
                 <Button
                     type="primary"
                     style={{marginLeft:10}}
                     onClick={this.getFetch}
-                >重置</Button>
+                    className='button'
+                ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
             </span>
         );
     }

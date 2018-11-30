@@ -1,26 +1,29 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
+import './quickAccess.css'
 class QuickItem extends React.Component{
     constructor(props){
         super(props);
         this.click = this.click.bind(this);
     }
     click(){ 
-        // console.log(this.props.path)
+        //console.log(this.props.path)
         // console.log(event)
         const path = this.props.path
         this.props.history.push({pathname:path})
     }
     render(){
         return (
-            <div style={{width:'200px',height:'50px',border:'1px solid #0079FE',cursor:'pointer',float:'left',margin:'0 25px 20px 0',}} onClick={this.click} >
-                <div style={{width:'50px',background:'#0079FE',height:'100%',float:'left'}}>
-                    <p style={{paddingTop:'10px'}}><i className="fa fa-camera-retro fa-2x" style={{color:'white'}}></i></p>
+            <div className='quick-tag-wrapper' onClick={this.click}>
+                <div className='quick-tag' style={{border:'1px solid #0079FE',cursor:'pointer',height:'50px'}}>
+                        <div className='quick-tag-icon'>
+                            <i className="fa fa-camera-retro fa-2x" style={{color:'white',background:'#0079FE'}}></i>
+                        </div> 
+                        <div className='quick-tag-text' style={{fontSize:'15px',color:'black',float:'left', fontWeight:'400',lineHeight:'50px',height:'50px',textAlign:'center'}}>
+                            <span style={{marginRight:'10px'}}>{this.props.name}</span><div className='text-gap'></div><i className="fa fa-angle-right fa-1x"></i>
+                        </div>
                 </div>
-                <div style={{float:'left',marginLeft:'30px',marginTop:'12px'}}>
-                    <p style={{fontSize:'15px',color:'black',fontWeight:'bold'}}><span style={{marginRight:'10px'}}>{this.props.name}</span><i className="fa fa-angle-right fa-1x" style={{marginLeft:'20px'}}></i></p>
-                </div>
-            </div>
+            </div>    
         );
     }
 }

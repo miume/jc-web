@@ -1,0 +1,30 @@
+.editable-cell {
+    position: relative;
+  }
+  
+  .editable-cell-value-wrap {
+    padding: 5px;
+    cursor: pointer;
+    border:none;
+    width:100%;
+    height:100%;
+  }
+  
+  .editable-row:hover .editable-cell-value-wrap {
+    /* border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 4px 11px; */
+    border:none;
+    width:100%;
+    height:100%;
+  }
+  .tdStyle{
+      padding : 0 !important;
+  }
+  .normal{
+    color: black;
+  }
+  .urgent{
+    color:red;
+  }
+  

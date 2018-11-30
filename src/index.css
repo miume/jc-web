@@ -1,13 +1,20 @@
+@font-face {
+  src: url("./fontFamily/NotoSansHans-Bold.otf");
+  font-weight: bold;
+  font-family: NotoSansHans-Bold;
+}
+@font-face {
+  src: url("./fontFamily/NotoSansHans-Regular.otf");
+  font-family: NotoSansHans-Regular;
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: NotoSansHans-Regular, NotoSansHans-Bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -21,14 +28,49 @@ code {
 #defaultCanvas0 {
   position: absolute;
   display: block;
-  top: 5%;
+  top: 7%;
   margin: 0px auto;
   z-index: -1;
-  height: 95% !important;
-  width: 50% !important;
+  height: 92% !important;
+  width: 45% !important;
   visibility: visible;
 }
+.ant-menu-vertical .ant-menu-item, .ant-menu-vertical-left .ant-menu-item, .ant-menu-vertical-right .ant-menu-item, .ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-submenu-title, .ant-menu-vertical-left .ant-menu-submenu-title, .ant-menu-vertical-right .ant-menu-submenu-title, .ant-menu-inline .ant-menu-submenu-title{
+  margin-top:0px !important;
+  margin-bottom :0px !important;
+}
+
 
 .show {
   visibility: visible;
 }
+
+.ant-pagination.ant-table-pagination.mini {
+  text-align: right !important; 
+}
+.ant-tabs-bar{
+  margin:0 0 10px 0 !important;
+}
+.button {
+  color:#ffffff !important;
+  font-size:14px !important;
+  font-weight:bolder !important;
+  font-family:'PingFangSC-Regular', 'PingFang SC' !important;
+  background-color: #0086ff !important;
+  margin-right: 10px !important;
+}
+.grey-button {
+  color:#ffffff !important;
+  font-size:14px !important;
+  font-weight:bolder !important;
+  font-family:'PingFangSC-Regular', 'PingFang SC' !important;
+  background-color: grey !important;
+  margin-right: 10px !important;
+}
+.ant-tabs-nav-wrap{
+  padding-left: 1.3% !important;
+}
+.ant-switch-checked{
+  background-color: red !important;
+}
+

@@ -9,7 +9,6 @@ import {message} from "antd";
 import SearchCell from '../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
 
 class Menu extends React.Component{
     componentWillUnmount() {
@@ -27,6 +26,7 @@ class Menu extends React.Component{
           searchContent:'',
           searchText: '',
           fatherMenu:[],
+          searchContent1:'',
       };
       this.handleTableChange=this.handleTableChange.bind(this);
       this.start=this.start.bind(this);
@@ -36,9 +36,15 @@ class Menu extends React.Component{
       this.searchContentChange = this.searchContentChange.bind(this);
       this.searchEvent = this.searchEvent.bind(this);
       this.getAllFatherMenu = this.getAllFatherMenu.bind(this);
+      this.Authorization = localStorage.getItem('Authorization');
+      this.searchContentChange1 = this.searchContentChange1.bind(this)
+      this.searchFatherEvent = this.searchFatherEvent.bind(this)
 
       this.pagination = {
         total: this.state.dataSource.length,
+        showTotal(total){
+            return `共${total}条记录`
+        },
         showSizeChanger: true,
         onShowSizeChange(current, pageSize) {
             // console.log('Current: ', current, '; PageSize: ', pageSize);
@@ -48,6 +54,38 @@ class Menu extends React.Component{
         }
     }
   }
+  /**获取查询时菜单名称的实时变化 */
+  searchContentChange1(e){
+    const value = e.target.value;
+    this.setState({searchContent1:value});
+}
+    searchFatherEvent(){
+        const ope_name = this.state.searchContent1;
+        axios({
+            url:`${this.server}/jc/auth/menu/findByParentNameLikeByPage`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
+                parentMenuName:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total=res.total;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
+        }).catch((error)=>{
+                message.info(error.data.message)
+            })
+    };
   render(){
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
@@ -80,6 +118,8 @@ class Menu extends React.Component{
             modifyDataSource={this.modifyDataSource}
             handleTableChange={this.handleTableChange}
             fatherMenu = {this.state.fatherMenu}
+            searchContentChange1 = {this.searchContentChange1}
+            searchFatherEvent = {this.searchFatherEvent}
         />
         </div>
       </div>
@@ -103,6 +143,7 @@ class Menu extends React.Component{
 
       });
   };
+  
     fetch = (params = {}) => {
       this.getAllFatherMenu();
       this.setState({ loading: true });
@@ -110,7 +151,7 @@ class Menu extends React.Component{
           url: 'http://192.168.1.105:8081/jc/menu/findAllByPage',
           method: 'get',
           headers:{
-              'Authorization': Authorization
+              'Authorization': this.Authorization
           },
           params: params,
           // type: 'json',
@@ -128,7 +169,6 @@ class Menu extends React.Component{
   };
     componentDidMount() {
       this.fetch();
-     
   }
   /**获取所有父菜单 */
   getAllFatherMenu(){
@@ -136,7 +176,7 @@ class Menu extends React.Component{
       url:'http://192.168.1.105:8081/jc/menu/findByMenuType',
       method:'get',
       headers:{
-        'Authorization': Authorization
+        'Authorization': this.Authorization
         },
         params: {menuType:1},
     }).then((data)=>{
@@ -152,7 +192,7 @@ class Menu extends React.Component{
           url:'http://192.168.1.105:8081/jc/menu/deleteByIds',
           method:'post',
           headers:{
-              'Authorization':Authorization
+              'Authorization':this.Authorization
           },
           data:ids,
           type:'json'
@@ -180,7 +220,7 @@ class Menu extends React.Component{
           url:'http://192.168.1.105:8081/jc/menu/findByNameLikeByPage',
           method:'get',
           headers:{
-              'Authorization':Authorization
+              'Authorization':this.Authorization
           },
           params:{
               size: this.pagination.pageSize,

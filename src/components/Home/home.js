@@ -17,7 +17,6 @@ import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
 import RawTestReport from '../rawTestReport/rawTestReport';
 import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
-import Auth from '../auth/Auth'
 
 import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
@@ -26,7 +25,11 @@ import  ProductProcess from '../Base/ProductProcess/productProcess';//产品工�
 //import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
 import TestItem from '../Base/testItem/testItem';
 import OperationManagement from "../operationManagement/operationManagement";
+import StockOut from '../stockOut/stockOut';
+
 import EnterStorage  from '../enterStorage/enterStorage';
+import InventorManage from '../inventoryManage/inventorManage';
+import RedListManage from '../redListManage/redListManage';
 //检测项目
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
@@ -84,14 +87,46 @@ class Home extends Component {
             path:'/sampleInspection',
             component:SampleInspection
         },{
+            path:'/stockOut',
+            component:StockOut
+        },{
             path:'/enterStorage',
             component:EnterStorage
+        },{
+            path:'/inventorManage',
+            component:InventorManage
+        },{
+            path:'/redListManage',
+            component:RedListManage
         }]  
         return data;
     }
     constructor(props) {
         super(props);
         this.getComponentArray = this.getComponentArray.bind(this);
+    }
+
+    componentWillMount() {
+        var canvas;
+        var showCanvas = setInterval(function() {
+            //console.log('get canvas');
+            canvas = document.getElementById('defaultCanvas0');
+            if(canvas != null && canvas != undefined) {
+                canvas.style.visibility='hidden';
+                clearInterval(showCanvas);
+            }    
+        },100)
+    }
+    /**控制登陆背景图 */
+    componentDidMount() {
+        var showFrame = setInterval(function() {
+            var frame = window.frame;
+            if(frame != undefined && frame != null) {
+                frame(0);   //消除帧
+                //console.log('clear intervals')
+                clearInterval(showFrame);
+            }
+        },500)
     }
     
     render() {

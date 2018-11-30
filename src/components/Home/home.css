@@ -85,4 +85,9 @@ html, body, .parent {
 .fr{
     float: right;
 }
-
+/**修改全局input placeholder里面字体的大小和颜色 */
+input::-webkit-input-placeholder{
+    color: #cccccc !important;
+    font-size: 15px !important;
+    text-align:left !important;
+  }

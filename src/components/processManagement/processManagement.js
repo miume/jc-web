@@ -22,8 +22,8 @@ class Management extends React.Component{
             searchContent:'',
             searchText: '',
         }
+        this.server = localStorage.getItem('remote2');
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -32,6 +32,9 @@ class Management extends React.Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
+            showTotal(total){
+                return `共${total}条记录`
+            },
             showSizeChanger: true,
             onShowSizeChange(current, pageSize) {
               console.log('Current: ', current, '; PageSize: ', pageSize);
@@ -162,7 +165,7 @@ class Management extends React.Component{
     }
     handleDelete = (id) => {
         axios({
-            url:'http://2p277534k9.iok.la:58718/jc/batchAuditTask/'+parseInt(id),
+            url:`${this.server}/jc/commom/batchAuditTask/`+parseInt(id),
             method:'Delete',
             // headers:{
             //     'Authorization':Authorization
@@ -191,7 +194,7 @@ class Management extends React.Component{
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: 'http://2p277534k9.iok.la:58718/jc/batchAuditTask/getAllByPage',
+            url: `${this.server}/jc/common/batchAuditTask/getAllByPage`,
             method: 'get',
             // headers:{
             //     'Authorization': Authorization
@@ -214,10 +217,6 @@ class Management extends React.Component{
     componentDidMount() {
         this.fetch();
     }
-    deleteByIds() {
-        const ids = this.state.selectedRowKeys.toString();
-        console.log(ids)
-     }
     handleSearch = (selectedKeys, confirm) => () => {
         confirm();
         this.setState({ searchText: selectedKeys[0] });
@@ -230,7 +229,7 @@ class Management extends React.Component{
     searchEvent(){
     const ope_name = this.state.searchContent;
     axios({
-        url:'http://2p277534k9.iok.la:58718/jc/batchAuditTask/getAllByPageByFactors',
+        url:`${this.server}/jc/common/batchAuditTask/getAllByPageByFactors`,
         method:'get',
         // headers:{
         //     'Authorization':Authorization
@@ -262,7 +261,7 @@ class Management extends React.Component{
         const ids = this.state.selectedRowKeys;
         console.log(ids)
         axios({
-            url:'http://2p277534k9.iok.la:58718/jc/batchAuditTask/deleteByIds',
+            url:`${this.server}/jc/commom/batchAuditTask/deleteByIds`,
             method:'delete',
             // headers:{
             //     'Authorization':Authorization
