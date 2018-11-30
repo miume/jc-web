@@ -9,7 +9,7 @@ class Tr extends React.Component{
             loading : false,
             // searchContent : []
         }
-        this.server = localStorage.getItem('remote2');
+        this.server = localStorage.getItem('remote');
         // this.searchContentChange=this.searchContentChange.bind(this)
     }
     getAllUser = (params = {})=>{
