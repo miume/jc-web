@@ -118,6 +118,7 @@ class RawMaterialRedList extends Component{
                 <RawMaterialRedListAddModal />
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
                 <Table
+                        rowKey={record => record.id}
                         dataSource={this.state.dataSource}
                         columns={this.columns}
                         rowSelection={rowSelection}
