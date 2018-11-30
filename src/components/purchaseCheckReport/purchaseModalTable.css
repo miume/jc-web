@@ -1,5 +1,5 @@
 #leftOnclick {
-    /*display: none;*/
+    display: none;
     font-size: 20px;
     background: no-repeat;
     position:absolute;
@@ -12,7 +12,7 @@
     z-index:100;
 }
 #rightOnclick {
-    /*display: none;*/
+    display: none;
     font-size: 20px;
     background: no-repeat;
     position:absolute;

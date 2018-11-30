@@ -36,9 +36,13 @@ class PurchaseModalTable extends React.Component {
             detailShow: 'none',
             x: 0,
             y: 0,
+            // 宽度
+            theadMiddleWidth: 0,
+            middleTheadIdWidth: 0,
         }
     }
     render() {
+        var lineNum = -1;
         return(
             <div id="modalTable">
                 <div>
@@ -46,8 +50,8 @@ class PurchaseModalTable extends React.Component {
                         <div className="leftThead">序号</div>
                         <div className="leftThead">批号</div>
                     </div>
-                    <div id="theadMiddle">
-                        <div id="leftOnclick">
+                    <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                        <div id="leftOnclick" onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
                         <div className="middleThead" id="middleTheadId">
@@ -74,7 +78,7 @@ class PurchaseModalTable extends React.Component {
                             }
                             <div style={{clear: 'both'}}></div>
                         </div>
-                        <div id="rightOnclick">
+                        <div id="rightOnclick" onClick={this.handleRightOnclick}>
                             <i className="fa fa-chevron-right fa-2x"></i>
                         </div>
                     </div>
@@ -88,9 +92,10 @@ class PurchaseModalTable extends React.Component {
                 <div id="tbody">
                     {
                         this.state.tbodyData.map((item,index) => {
-                            console.log('item',item.dynData);
+                            lineNum = lineNum + 1;
+                            // console.log(lineNum);
                             return(
-                                <div>
+                                <div key={'tbody'+index}>
                                     <div id="tbodyLeft">
                                         <div className="leftTbody" key={item.id}>{item.index}</div>
                                         <div className="leftTbody" key={'a'}>{item.a}</div>
@@ -98,19 +103,17 @@ class PurchaseModalTable extends React.Component {
                                     <div id="tbodyMiddle">
                                         <div className="middleTbody" id="middleTbodyId">
                                             {
-
                                                 item.dynData.map((item,index) => {
-                                                    console.log('dynData',item)
                                                     if(index===0){
                                                         return(
                                                             <div className="middleTbodyDiv firstMiddleDiv" key={index}>
-                                                                <div>{item}</div>
+                                                                <div onClick={this.handleCellOnclick} id={`${lineNum}${index}`}>{item}</div>
                                                             </div>
                                                         )
                                                     }else{
                                                         return (
                                                             <div className="middleTbodyDiv" key={index}>
-                                                                <div>{item}</div>
+                                                                <div onClick={this.handleCellOnclick} id={`${lineNum}${index}`}>{item}</div>
                                                             </div>
                                                         )
                                                     }
@@ -132,31 +135,64 @@ class PurchaseModalTable extends React.Component {
             </div>
         )
     }
-
+    /**表格单元格按钮点击事件*/
+    handleCellOnclick = (e) => {
+        const id = e.target.id;
+        console.log(e.target.id)
+    }
+    /**---------------------- */
     /**获取鼠标移进移出数据*/
     handleMouseOver = (e) => {
         this.setState({
             detailShow: 'block',
             x: e.pageX, //pageX是以html左上角为原点，相应的clientX是以浏览器左上角为原点
             y: e.pageY,
-        })
+        });
+        const leftOnclick = document.getElementById("leftOnclick");
+        const rightOnclick = document.getElementById("rightOnclick");
+        leftOnclick.style.display = "block";
+        rightOnclick.style.display = "block";
     };
     handleMouseOut = () =>{
         this.setState({
             detailShow: 'none',
             x: 0,
             y: 0
+        });
+        const leftOnclick = document.getElementById("leftOnclick");
+        const rightOnclick = document.getElementById("rightOnclick");
+        leftOnclick.style.display = "none";
+        rightOnclick.style.display = "none";
+    };
+    /**---------------------- */
+    /**获取表头左右图标点击效果*/
+    handleLeftOnclick = () => {
+        var theadMiddle = document.getElementById("theadMiddle");
+        var middleTheadId = document.getElementById("middleTheadId");
+        var theadMiddleWidth = theadMiddle.offsetWidth;
+        var middleTheadIdWidth = middleTheadId.offsetWidth;
+        this.setState({
+            theadMiddleWidth: theadMiddleWidth,
+            middleTheadIdWidth: middleTheadIdWidth
         })
-    }
+        console.log(this.state.theadMiddleWidth);
+        console.log(this.state.middleTheadIdWidth);
+    };
+    handleRightOnclick = () => {
+        var theadMiddle = document.getElementById("theadMiddle");
+        var middleTheadId = document.getElementById("middleTheadId");
+        var theadMiddleWidth = theadMiddle.offsetWidth;
+        var middleTheadIdWidth = middleTheadId.offsetWidth;
+        this.setState({
+            theadMiddleWidth: theadMiddleWidth,
+            middleTheadIdWidth: middleTheadIdWidth
+        })
+        console.log(this.state.theadMiddleWidth);
+        console.log(this.state.middleTheadIdWidth);
+    };
 
     /**---------------------- */
     /**获取表头数据*/
-
-
-    /**---------------------- */
-    /**获取表头数据*/
-
-
     /**---------------------- */
 }
 
