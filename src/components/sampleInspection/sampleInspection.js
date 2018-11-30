@@ -6,7 +6,7 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
-// import Delete from './delete'
+import Delete from './delete'
 
 const data = [{
     index : '1',
@@ -192,6 +192,7 @@ class SampleInspection extends React.Component{
                 <BlockQuote name="样品送检"></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal />
+                    <Delete />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入搜索内容'/>
                     </span>
