@@ -85,6 +85,6 @@ code {
 .blue{
   color: #0086ff;
 }
-table:hover{
+table .blue{
   cursor: pointer;
 }
