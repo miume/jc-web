@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Button,Modal,message,Popconfirm,Select,Popover,Switch,InputNumber} from 'antd';
+import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber} from 'antd';
 
 //import axios from 'axios';
 const Option=Select.Option;
@@ -14,6 +14,7 @@ const CollectionCreateForm = Form.create()(//弹出层
         }
         this.hide=this.hide.bind(this);
         this.selectChange=this.selectChange.bind(this);
+        
       }
     
       //监听下拉框变化
