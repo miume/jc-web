@@ -79,7 +79,7 @@ class UserManagement extends React.Component {
       const url = `${this.props.server}/jc/auth/role/assignRoleToUser?roleId=${this.props.value}`;
       axios({
           url:url,
-          type:'get',
+          method:'post',
           params: {
             userIds:assignedIds.toString()
           },
@@ -159,6 +159,7 @@ class UserManagement extends React.Component {
         <span>
           <span  className='blue' onClick={this.showModal} value={this.state.value}>成员管理</span>
           <Modal title="设置角色" visible={this.state.visible}
+            closable={false} maskClosable={false}
             onOk={this.handleOk} onCancel={this.handleCancel}
             okText="确定" cancelText="取消">
             <div style={{height:'370px'}} >
