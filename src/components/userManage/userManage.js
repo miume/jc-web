@@ -233,7 +233,7 @@ class User extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${server}/jc/user/getAllByPage`,
+        url: `${server}/jc/auth/user/getAllByPage`,
         method:'get',
         headers:{
           'Authorization':Authorization
@@ -267,7 +267,7 @@ class User extends React.Component{
         //console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
         axios({
-          url:`${server}/jc/user/signIn`,
+          url:`${server}/jc/auth/user/signIn`,
           method:'post',
           headers:{
             'Authorization':Authorization
@@ -308,7 +308,7 @@ class User extends React.Component{
         const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-          url:`${server}/jc/user/deleteById?id=${id}`,
+          url:`${server}/jc/auth/user/deleteById?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':Authorization
@@ -347,7 +347,7 @@ class User extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${server}/jc/user/deleteByIds`,
+            url:`${server}/jc/auth/user/deleteByIds`,
             method:'Delete',
             headers:{
                   'Authorization' :Authorization
@@ -409,7 +409,7 @@ class User extends React.Component{
             
             //console.log(data);
             axios({
-              url:`${server}/jc/user/update`,
+              url:`${server}/jc/auth/user/update`,
               method:'post',
               headers:{
                 'Authorization':Authorization
@@ -452,7 +452,7 @@ class User extends React.Component{
            const username=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${server}/jc/user/getUserByNameByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${server}/jc/auth/user/getUserByNameByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':Authorization
@@ -486,7 +486,7 @@ class User extends React.Component{
       /**获取所有部门 */
       getAllDepartment(){
         axios({
-          url:`${server}/jc/department/getAll`,
+          url:`${server}/jc/auth/department/getAll`,
           method:'get',
           headers:{
             'Authorization': Authorization

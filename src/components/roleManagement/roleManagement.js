@@ -69,12 +69,11 @@ const EditableFormRow = Form.create()(EditableRow);
 //     name: `管理员${i}`,
 //     description: `权限${i}`
 // })}
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
-/**这是服务器网址及端口 */
-const server = localStorage.getItem('remote');
+
 class Role extends React.Component {
 
+   Authorization
+   server
     componentDidMount() {
       this.fetch();
     }
@@ -97,7 +96,7 @@ class Role extends React.Component {
             roleName: '',
             selectedRowKeys: [],
             searchContent:'',
-            Authorization:Authorization,
+            
             reset:false
             
         };
@@ -181,11 +180,11 @@ class Role extends React.Component {
                       </Popconfirm>
                       <Divider type="vertical" />
                       <span>
-                          <UserManagement value={record.id} Authorization={this.state.Authorization} server={server}/>  {/**实现给成员分配角色的功能*/}
+                          <UserManagement value={record.id} Authorization={this.Authorization} server={this.server}/>  {/**实现给成员分配角色的功能*/}
                       </span>
                       <Divider type="vertical" />
                       <span>
-                          <PermissionManagement value={record.id} Authorization={this.state.Authorization} server={server}/>  {/**实现角色分配权限的功能*/}
+                          <PermissionManagement value={record.id} Authorization={this.Authorization} server={this.server}/>  {/**实现角色分配权限的功能*/}
                       </span>
                     </span>
                 );
@@ -206,10 +205,10 @@ class Role extends React.Component {
       //console.log('params:', params);
       //this.setState({ loading: true });
       axios({
-        url: `${server}/jc/role/getRolesByPage`,
+        url: `${this.server}/jc/auth/role/getRolesByPage`,
         method: 'get',
         headers:{
-        'Authorization': Authorization
+        'Authorization': this.Authorization
       },
        params: params,
         // type: 'json',
@@ -237,10 +236,10 @@ class Role extends React.Component {
      handleDelete(id){
        //console.log(id)
         axios({
-          url:`${server}/jc/role/${id}`,
+          url:`${this.server}/jc/auth/role/${id}`,
           method:'Delete',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
         }).then((data)=>{
           message.info(data.data.message);
@@ -277,10 +276,10 @@ class Role extends React.Component {
             data['id'] = id.toString()
             //console.log(data)
             axios({
-              url:`${server}/jc/role/update`,
+              url:`${this.server}/jc/auth/role/update`,
               method:'post',
               headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
               },
               data:data,
               type:'json'
@@ -315,10 +314,10 @@ class Role extends React.Component {
           visible: false,
         });
         axios({
-          url : `${server}/jc/role/add`,
+          url : `${this.server}/jc/auth/role/add`,
           method:'post',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
           data:this.formRef.getItemsValue(),
           type:'json'
@@ -355,10 +354,10 @@ class Role extends React.Component {
         const ids = this.state.selectedRowKeys;
         // console.log(ids)
         axios({
-          url:`${server}/jc/role/deleteByIds`,
+          url:`${this.server}/jc/auth/role/deleteByIds`,
           method:'Delete',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
           data:ids,
           type:'json'
@@ -395,10 +394,10 @@ class Role extends React.Component {
         const role_name = this.state.searchContent;
         //console.log(role_name)
         axios({
-          url:`${server}/jc/role/getRolesByNameLikeByPage`,
+          url:`${this.server}/jc/auth/role/getRolesByNameLikeByPage`,
           method:'get',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
           params:{
             size: this.pagination.pageSize,
@@ -420,6 +419,11 @@ class Role extends React.Component {
         
       }
       render() {
+
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
           const rowSelection = {
             onChange: this.onSelectChange,
             onSelect() {

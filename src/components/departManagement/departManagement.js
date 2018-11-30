@@ -111,7 +111,7 @@ class Depart extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${server}/jc/department/getDepartmentsByPage`,
+            url: `${server}/jc/auth/department/getDepartmentsByPage`,
             method: 'get',
             headers:{
                 'Authorization': Authorization
@@ -140,7 +140,7 @@ class Depart extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${server}/jc/department/deleteByIds`,
+            url:`${server}/jc/auth/department/deleteByIds`,
             method:'Delete',
             headers:{
                 'Authorization':Authorization
@@ -171,7 +171,7 @@ class Depart extends React.Component {
     searchEvent(){
         const dep_name = this.state.searchContent;
         axios({
-            url:`${server}/jc/department/getDepartmentsByNameLikeByPage`,
+            url:`${server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
             method:'get',
             headers:{
                 'Authorization':Authorization

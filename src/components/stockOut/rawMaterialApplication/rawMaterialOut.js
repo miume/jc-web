@@ -102,7 +102,7 @@ class RawMaterialOut extends React.Component{
             render:(text,record)=>{
                 return (
                    <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
-                       <a id={record.id}>删除</a>
+                       <i id={record.id}>删除</i>
                    </Popconfirm> 
                 );
             }
@@ -123,7 +123,7 @@ class RawMaterialOut extends React.Component{
     handleDelete(id){
         console.log(id)
         var newData = [...this.state.dataSource];
-        newData = newData.filter(f=>{return f.id!=id})
+        newData = newData.filter(f=>{return f.id !== id})
         this.setState({
             dataSource:newData
         })
@@ -139,7 +139,7 @@ class RawMaterialOut extends React.Component{
     searchEvent(){
         const content = this.state.searchContent;
         axios({
-            url:`${server}/jc/role/getRolesByNameLikeByPage`,
+            url:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
               'Authorization':Authorization

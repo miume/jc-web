@@ -113,7 +113,7 @@ class OperationManagement extends React.Component {
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/operation/getOperationsByPage`,
+            url: `${this.server}/jc/auth/operation/getOperationsByPage`,
             method: 'get',
             headers:{
                 'Authorization': this.Authorization
@@ -140,7 +140,7 @@ class OperationManagement extends React.Component {
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${this.server}/jc/operation/deleteByIds`,
+            url:`${this.server}/jc/auth/operation/deleteByIds`,
             method:'Delete',
             headers:{
                 'Authorization':this.Authorization
@@ -172,7 +172,7 @@ class OperationManagement extends React.Component {
     searchEvent(){
         const ope_name = this.state.searchContent;
         axios({
-            url:`${this.server}/jc/operation/getRolesByNameLikeByPage`,
+            url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
