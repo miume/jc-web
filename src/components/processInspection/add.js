@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button,Modal,} from 'antd';
+import AddButton from '../BlockQuote/addButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import './editor.css';
 import Tr from './tr';
@@ -198,7 +199,7 @@ class Add extends React.Component{
     render() {
         return (
             <span>
-                <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button>
+                <AddButton handleAdd={this.handleAdd} />
                 <Modal title="新增" visible={this.state.visible}
                     onCancel={this.handleCancel} width='1200px'
                     footer={[

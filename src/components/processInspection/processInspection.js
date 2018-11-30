@@ -3,7 +3,7 @@ import axio from 'axios';
 import BlockQuote from '../dataEntry/blockQuote'
 import {Table,Popconfirm,Divider } from 'antd';
 import '../Home/page.css';
-import DeleteByIds from '../roleManagement/deleteByIds';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
@@ -46,14 +46,13 @@ const data = [
     isUrgent:0
   },
 ]
-const server = localStorage.getItem('remote1');
-const server1 = localStorage.getItem('remote');
-const Authorization = localStorage.getItem('Authorization');
+
 class ProcessInspection extends React.Component{
+    server
+    Authorization
     componentDidMount(){
         this.getAllProductLine();
         this.getAllProductionProcess();
-        this.getAllSamplePoint();
         this.getAllTestItem();
         this.getAllUser();
         document.getElementById('/processInspection').style.color = '#0079FE'
@@ -70,16 +69,16 @@ class ProcessInspection extends React.Component{
             selectedRowKeys : [],     //存取所选中checkbox的ids
             allProductLine : [],      //存取所有产品线
             allProductionProcess : [],//存取所有产品工序
-            allSamplePoint : [],      //存取所有取样点
             allTestItem : [],         //存取所有检测项目
             allUser : [],             //存取所有用户
         }
+        this.server = localStorage.getItem('remote');
+        this.Authorization = localStorage.getItem('Authorization');
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.lastStep = this.lastStep.bind(this);
         this.getAllProductLine = this.getAllProductLine.bind(this);
-        this.getAllSamplePoint = this.getAllSamplePoint.bind(this);
         this.getAllTestItem = this.getAllTestItem.bind(this);
         // this.getAllUser = this.getAllUser.bind(this);
         this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
@@ -109,10 +108,10 @@ class ProcessInspection extends React.Component{
     /**获取所有产品线 */
     getAllProductLine(){
         axio({
-          url:`${server}/jc/productLine/getAll`,
+          url:`${this.server}/jc/common/productLine/getAll`,
           method:'get',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           }
         }).then(data=>{
           const res = data.data.data;
@@ -124,10 +123,10 @@ class ProcessInspection extends React.Component{
     /**获取所有产品工序 */
     getAllProductionProcess(){
       axio({
-        url:`${server}/jc/productionProcess/getAll`,
+        url:`${this.server}/jc/common/productionProcess/getAll`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
@@ -136,28 +135,13 @@ class ProcessInspection extends React.Component{
       })
     })   
     }
-    /**获取所有取样点 */
-    getAllSamplePoint(){
-      axio({
-        url:`${server}/jc/samplePoint/getAll`,
-        method:'get',
-        headers:{
-          'Authorization':Authorization
-        }
-      }).then(data=>{
-        const res = data.data.data;
-        this.setState({
-          samplePoint : res
-      })
-    })   
-    }
     /**获取所有检测项目 */
     getAllTestItem(){
       axio({
-        url:`${server}/jc/testItem/getAll`,
+        url:`${this.server}/jc/common/testItem/getAll`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
@@ -169,10 +153,10 @@ class ProcessInspection extends React.Component{
     /**获取所有用户 */
     getAllUser(){
       axio({
-        url:`${server1}/jc/auth/user/getAll`,
+        url:`${this.server}/jc/common/authUser/getAll`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
