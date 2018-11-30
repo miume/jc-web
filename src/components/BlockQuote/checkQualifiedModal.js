@@ -21,7 +21,6 @@ class CheckQualifiedModal extends React.Component {
                         </div>
                     </div>
                 );
-                break;
             case 1:
                 return(
                     <div>
@@ -33,7 +32,6 @@ class CheckQualifiedModal extends React.Component {
                         </div>
                     </div>
                 );
-                break;
             case 2:
                 return(
                     <div>
@@ -45,7 +43,10 @@ class CheckQualifiedModal extends React.Component {
                         </div>
                     </div>
                 );
-                break;
+            default:
+                return(
+                    <div></div>
+                )
         }
     }
     /**实现选择合格:1与不合格:0功能 */

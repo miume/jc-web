@@ -1,9 +1,9 @@
 import React from 'react';
-import {Divider, Table,Button,Input,Switch} from 'antd';
+import {Divider,Button,Switch} from 'antd';
 import '../Home/page.css';
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
-import axios from "axios";
+// import axios from "axios";
 //
 const data = [];
 for (let i = 0; i < 20; i++) {
@@ -55,7 +55,7 @@ class Pack extends React.Component {
     render() {
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
-        const { loading, selectedRowKeys } = this.state;
+        const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -144,7 +144,7 @@ class Pack extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const ope_name = this.state.searchContent;
+        // const ope_name = this.state.searchContent;
         // axios({
         //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
         //     method:'get',

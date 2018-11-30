@@ -1,5 +1,4 @@
 import React from 'react';
-import WhiteSpace from '../BlockQuote/whiteSpace';
 import BlockQuote from '../BlockQuote/blockquote';
 import DepartTable from './departTable';
 import '../Home/page.css';

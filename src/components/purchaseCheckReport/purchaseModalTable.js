@@ -39,6 +39,13 @@ class PurchaseModalTable extends React.Component {
             // 宽度
             theadMiddleWidth: 0,
             middleTheadIdWidth: 0,
+            // 用来存储已经变红的标签id--转换成这一行
+            radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
+            radioTrueArr: [],   //合格的数组--
+            purchaseStatus: '待定', //显示判定，合格，不合格
+            radioTrueNum: 0,
+            radioFalseNum: 0,
+            colorStatueId: [], //用来存储已经变红的标签id--转换成这一行
         }
     }
     render() {
@@ -139,7 +146,32 @@ class PurchaseModalTable extends React.Component {
     handleCellOnclick = (e) => {
         const id = e.target.id;
         console.log(e.target.id)
-    }
+        var flag = -1;
+        var tdId = document.getElementById(id);
+        var colorStatueId = this.state.colorStatueId;
+        for(var i=0; i<colorStatueId.length; i++) {
+            if(id===colorStatueId[i]){
+                flag = i;
+            }
+        }
+        if(flag>=0){
+            tdId.style.background = 'white';
+            colorStatueId.splice(flag,1);
+            console.log('---',colorStatueId)
+            this.setState({
+                colorStatueId:colorStatueId,
+                purchaseStatus: '待定'
+            })
+        }else{
+            tdId.style.background = 'red';
+            console.log('++++',colorStatueId)
+            colorStatueId.push(id);
+            this.setState({
+                colorStatueId:colorStatueId,
+                purchaseStatus: '不合格'
+            })
+        }
+    };
     /**---------------------- */
     /**获取鼠标移进移出数据*/
     handleMouseOver = (e) => {

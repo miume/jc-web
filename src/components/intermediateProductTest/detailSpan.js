@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover } from 'antd';
+import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
 
 const data = [];
@@ -63,7 +63,7 @@ class DetailSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <a  href ="#" disabled={this.props.disabled}>详情</a>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>详情</span>
             </span>
         )
     }

@@ -1,12 +1,9 @@
 import React from 'react';
 import BlockQuote from '../BlockQuote/blockquote';
 import InterTable from '../intermediateProductTest/intermediateTable';
-// import AddButton from '../intermediateProductTest/addButton';
-// import DeleteButton from '../intermediateProductTest/deleteButton';
 import SearchCell from '../BlockQuote/search';
 
 import '../Home/page.css';
-import axios from "axios";
 
 const data =[];
 for(let i=0; i<20; i++){
@@ -161,7 +158,7 @@ class InterProduct extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const interName = this.state.searchContent;
+        // const interName = this.state.searchContent;
         // axios({
         //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
         //     method:'get',

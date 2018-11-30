@@ -1,7 +1,6 @@
 import React from 'react';
 import { Input,Button,Table,Radio } from 'antd';
 import './aePopModal.css';
-import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 
 

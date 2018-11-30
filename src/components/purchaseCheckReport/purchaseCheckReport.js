@@ -8,9 +8,6 @@ import Release from './release';
 
 
 class PurchaseCheckReport extends React.Component {
-    constructor(props) {
-        super(props);
-    };
     render() {
         const TabPane = Tabs.TabPane;
         return(
