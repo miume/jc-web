@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input} from 'antd';
+import {Input,Button} from 'antd';
 const Search = Input.Search;
 class SearchCell extends React.Component{
     render(){
@@ -11,8 +11,19 @@ class SearchCell extends React.Component{
                     onChange={this.props.searchContentChange}
                     onSearch={this.props.searchEvent}
                     enterButton/>
-                </span>
+                <Button
+                    type="primary"
+                    style={{marginLeft:10}}
+                    onClick={this.getFetch}
+                    className='button'
+                ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
+                </span>  
         );
+    }
+    getFetch = () => {
+        this.props.fetch();
+        /**重置时清除搜索框的值 */
+        document.getElementById('search').value = '';
     }
 }
 export default SearchCell;

@@ -3,10 +3,11 @@ import {Popconfirm,message} from "antd";
 import axios from "axios";
 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
 
 class DeletaSpan extends React.Component {
     render() {
+        this.Authorization = localStorage.getItem('Authorization');
+        this.server = localStorage.getItem('remote2');
         return (
             <span>
                 <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
@@ -17,10 +18,10 @@ class DeletaSpan extends React.Component {
     }
     handleDelete = (id) => {
         axios({
-            url:'http://192.168.1.105:8081/jc/auth/menu/'+parseInt(id),
+            url:`${this.server}/jc/auth/menu/`+parseInt(id),
             method:'Delete',
             headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
             },
         }).then((data)=>{
             console.log(data);
