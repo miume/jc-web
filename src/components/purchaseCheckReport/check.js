@@ -1,9 +1,7 @@
 import React from 'react';
 import '../Home/page.css';
-import WhiteSpace from "../BlockQuote/whiteSpace";
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
-import {Divider, Switch} from "antd";
 
 const data =[];
 for (let i = 0; i < 20; i++) {
@@ -54,7 +52,6 @@ class Check extends React.Component {
     render() {
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
-        const { loading } = this.state;
         return(
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
@@ -114,7 +111,7 @@ class Check extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const ope_name = this.state.searchContent;
+        // const ope_name = this.state.searchContent;
         // axios({
         //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
         //     method:'get',

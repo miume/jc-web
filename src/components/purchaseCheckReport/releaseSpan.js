@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Button, Popconfirm, Popover, Input} from 'antd';
+import {Modal, Button, Input} from 'antd';
 import PurchaseModal from './purchaseModal';
 
 
@@ -41,7 +41,7 @@ class ReleaseSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <a  href ="#" >发布</a>
+                <span  style={{color:'#1890ff'}} >发布</span>
             </span>
         )
     }

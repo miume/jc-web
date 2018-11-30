@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Button, Popconfirm, Popover, Select, Switch} from 'antd';
+import {Modal, Button, Popover, Select, Switch} from 'antd';
 import CheckSpanModal from './checkSpanModal';
 
 const data = [];
@@ -98,7 +98,7 @@ class CheckSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <a  href ="#" disabled={this.props.disabled}>录检</a>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>录检</span>
             </span>
         )
     }

@@ -1,8 +1,7 @@
 import React from 'react';
-import { Input,Button,Table,Radio,Form,Popconfirm } from 'antd';
+import { Radio} from 'antd';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
-import QualifiedJudge from './qualifiedJudge';
 import PurchaseModalTable from './purchaseModalTable';
 import './pack.css';
 const data =[];
@@ -41,20 +40,20 @@ class PurchaseModal extends React.Component {
         /**动态表头数据获取与组装 */
         const dynHeadData = this.assembleDynamicData(this.getDynamicHeadData());
         //获取滚动条的x轴大小
-        const arrColumnslength = parseInt(dynHeadData.length*100 + 280);
+        // const arrColumnslength = parseInt(dynHeadData.length*100 + 280);
         const totalColumns = this.assembleTableHead(dynHeadData);
 
         /**---------------------- */
         this.columns = totalColumns;
         //就没有获取到动态数据里的内容
-        const columns = this.columns.map((col) => {
-            return {
-                ...col, //展开的，无前两级Ca,%的表头title
-                onCell: record => ({
-                    record,
-                }),
-            };
-        });
+        // const columns = this.columns.map((col) => {
+        //     return {
+        //         ...col, //展开的，无前两级Ca,%的表头title
+        //         onCell: record => ({
+        //             record,
+        //         }),
+        //     };
+        // });
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>

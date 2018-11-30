@@ -11,7 +11,7 @@ class DeletaSpan extends React.Component {
         return (
             <span>
                 <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
-                    <a href="#">删除</a>
+                    <span style={{color:'#1890ff'}}>删除</span>
                 </Popconfirm>
             </span>
         )

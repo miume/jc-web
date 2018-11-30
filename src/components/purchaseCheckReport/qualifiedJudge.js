@@ -18,7 +18,6 @@ class QualifiedJudge extends React.Component {
                         合格
                     </div>
                 );
-                break;
             case 1:
                 return(
                     <div>
@@ -26,7 +25,10 @@ class QualifiedJudge extends React.Component {
                         {/*<span value="nopass" onClick={this.modifyNoQualified} style={{background:'#999999'}}>不合格</span>*/}
                     </div>
                 );
-                break;
+            default:
+                return(
+                    <div></div>
+                )
         }
     }
     /**实现选择合格:1与不合格:0功能 */

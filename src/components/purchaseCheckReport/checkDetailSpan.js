@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal,Button,Popconfirm,Popover,Input } from 'antd';
+import { Modal,Button,Input } from 'antd';
 import PurchaseModal from "./purchaseModal";
 
 class CheckDetailSpan extends React.Component {
@@ -37,7 +37,7 @@ class CheckDetailSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <a  href ="#" >详情</a>
+                <span  style={{color:'#1890ff'}} >详情</span>
             </span>
         )
     }

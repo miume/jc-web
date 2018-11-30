@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Popconfirm } from 'antd';
+import { Button, Popconfirm } from 'antd';
 
 
 class DeleteButton extends React.Component {

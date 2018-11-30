@@ -1,8 +1,8 @@
 import React from 'react';
 import {Button, Input} from 'antd';
-const Search = Input.Search;
 class SearchCell extends React.Component{
     render(){
+        const Search = Input.Search;
         return(
             <span style={{float:'right',paddingBottom:'8px'}}>
                 <Search

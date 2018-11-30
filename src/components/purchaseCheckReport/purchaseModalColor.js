@@ -1,9 +1,6 @@
 import React from 'react';
 
 class PurchaseModalColor extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         switch (this.props.purchaseStatus) {
             case '待定':
@@ -17,7 +14,6 @@ class PurchaseModalColor extends React.Component {
                     //     </span>
                     // </div>
                 );
-                break;
             case '不合格':
                 return(
                     <div style={{border:'5px solid #FF3B30',width:'200px',float:'left'}}>
@@ -29,7 +25,6 @@ class PurchaseModalColor extends React.Component {
                     //     </span>
                     // </div>
                 );
-                break;
             case '合格':
                 return(
                     <div style={{border:'5px solid #4BD863',width:'200px',float:'left'}}>
@@ -41,7 +36,10 @@ class PurchaseModalColor extends React.Component {
                     //     </span>
                     // </div>
                 );
-                break;
+            default:
+                return(
+                    <div></div>
+                )
         }
         // return(
         //     <div></div>

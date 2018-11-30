@@ -66,7 +66,7 @@ class DetailSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <a  href ="#" disabled={this.props.disabled}>详情</a>
+                <span style={{color:'#1890ff'}}  disabled={this.props.disabled}>详情</span>
             </span>
         )
     }

@@ -9,17 +9,17 @@ class DeletaSpan extends React.Component {
                     title="确认删除?"
                     onConfirm={() => this.handleDelete(this.props.record.id)}
                     okText="确定" cancelText="取消" >
-                    <a
-                        href="#"
+                    <span
+                        style={{color:'#1890ff'}}
                         disabled={this.props.disabled}
-                    >删除</a>
+                    >删除</span>
                 </Popconfirm>
             </span>
         )
     }
     handleDelete = (key) => {
-        console.log("++++++")
-        console.log(key);
+        // console.log("++++++")
+        // console.log(key);
         // const dataSource = this.state.dataSource;
         // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     }

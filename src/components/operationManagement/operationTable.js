@@ -107,13 +107,12 @@ class OperationTable extends React.Component {
                             <span>
                                 <EditableContext.Consumer>
                                     {form => (
-                                        <a
-                                            href="javascript:;"
+                                        <span
                                             onClick={() => this.save(form, record.id)}
-                                            style={{ marginRight: 8 }}
+                                            style={{ marginRight: 8,color:'#1890ff' }}
                                         >
                                             保存
-                                        </a>
+                                        </span>
                                     )}
                                     </EditableContext.Consumer>
                                 <Popconfirm
@@ -121,11 +120,11 @@ class OperationTable extends React.Component {
                                     onConfirm={() => this.cancel(record.id)}
                                     okText="确定" cancelText="取消"
                                 >
-                                    <a>取消</a>
+                                    <span>取消</span>
                                 </Popconfirm>
                             </span>
                         ) : (
-                            <a onClick={() => this.edit(record.id)}>编辑</a>
+                            <span onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
                     <Divider type="vertical" />

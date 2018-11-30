@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button,Table,Radio,Divider } from 'antd';
+import { Table,Divider } from 'antd';
 // import './aePopModal.css';
 import '../Home/page.css';
 // import IsQualified from "";

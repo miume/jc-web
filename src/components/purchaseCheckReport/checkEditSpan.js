@@ -80,7 +80,7 @@ class CheckEditSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <a  href ="#" disabled={this.props.disabled}>编辑</a>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>编辑</span>
             </span>
         )
     }

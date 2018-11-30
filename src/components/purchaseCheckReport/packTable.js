@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Table} from 'antd';
+import {Table} from 'antd';
 import DetailSpan from './packDetailSpan';
 
 
