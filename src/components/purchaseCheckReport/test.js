@@ -3,7 +3,6 @@ import { Input,Button,Table,Radio,Form,Popconfirm } from 'antd';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
 import QualifiedJudge from './qualifiedJudge';
-import PurchaseModalTable from './purchaseModalTable';
 import './pack.css';
 const data =[];
 for (let i = 0; i < 5; i++) {
@@ -91,17 +90,16 @@ class PurchaseModal extends React.Component {
                     </table>
                 </div>
                 <div style={{paddingTop:'80px'}}>
-                    {/*<Table*/}
-                        {/*className="purchaseTable"*/}
-                        {/*rowKey={record => record.id}*/}
-                        {/*columns={columns}*/}
-                        {/*dataSource={this.state.dataSource}*/}
-                        {/*data*/}
-                        {/*size="small"*/}
-                        {/*pagination={{hideOnSinglePage:true,pageSize:1000}}*/}
-                        {/*scroll={{ x:arrColumnslength, y: 240 }}*/}
-                    {/*/>*/}
-                    <PurchaseModalTable />
+                    <Table
+                        className="purchaseTable"
+                        rowKey={record => record.id}
+                        columns={columns}
+                        dataSource={this.state.dataSource}
+                        data
+                        size="small"
+                        pagination={{hideOnSinglePage:true,pageSize:1000}}
+                        scroll={{ x:arrColumnslength, y: 240 }}
+                    />
                 </div>
             </div>
         )
@@ -225,7 +223,7 @@ class PurchaseModal extends React.Component {
             dataIndex: 'index',
             key: 'id',
             align:'center',
-            width: 80,
+            width: '8%',
             fixed: 'left',
             editable: true,
         },{
@@ -233,7 +231,7 @@ class PurchaseModal extends React.Component {
             dataIndex: 'a',
             key: 'a',
             align:'center',
-            width: 100,
+            width: '10%',
             fixed: 'left',
         }];
         const endColumns = [{
@@ -241,7 +239,7 @@ class PurchaseModal extends React.Component {
             key: 'judge',
             dataIndex: 'judge',
             align:'center',
-            width: 100,
+            width: '10%',
             fixed: 'right',
             render : (text,record) => {
                 const recordId = record.id;
@@ -279,7 +277,7 @@ class PurchaseModal extends React.Component {
         var radioFalseNum = this.state.radioFalseNum;
         for(var i=0;i<radioDataArr.length;i++){
             if(radioDataArr[i].id===recordId){
-                radioDataArr[i].purchaseStmatus = radioState;
+                radioDataArr[i].purchaseStatus = radioState;
                 if(radioDataArr[i].purchaseStatus === 'pass'){
                     radioTrueNum = radioTrueNum + 1;
                     radioFalseNum = radioFalseNum - 1;
