@@ -88,7 +88,7 @@ class RawMaterialApplication extends React.Component{
     searchEvent(){
         const content = this.state.searchContent;
         axios({
-            url:`${server}/jc/role/getRolesByNameLikeByPage`,
+            url:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
               'Authorization':Authorization

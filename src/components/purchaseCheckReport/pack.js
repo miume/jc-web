@@ -146,7 +146,7 @@ class Pack extends React.Component {
     searchEvent(){
         const ope_name = this.state.searchContent;
         // axios({
-        //     url:`${this.server}/jc/operation/getRolesByNameLikeByPage`,
+        //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
         //     method:'get',
         //     headers:{
         //         'Authorization':this.Authorization

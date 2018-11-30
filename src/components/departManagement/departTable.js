@@ -208,7 +208,7 @@ class DepartTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString();
                 axios({
-                    url:`${server}/jc/department/update`,
+                    url:`${server}/jc/auth/department/update`,
                     method:'post',
                     headers:{
                         'Authorization':Authorization
