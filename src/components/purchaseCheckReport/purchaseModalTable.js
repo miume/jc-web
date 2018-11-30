@@ -229,7 +229,6 @@ class PurchaseModalTable extends React.Component {
             leftDistance = middleTheadIdWidth - theadMiddleWidth;
             left = -1 * leftDistance;
             middleTheadId.style.left = left+'px';
-            // middleTheadId.style.right = 0;
         }else{
             console.log('xxx',middleTheadIdWidth - theadMiddleWidth)
             leftDistance = leftDistance + theadMiddleWidth;

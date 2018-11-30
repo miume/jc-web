@@ -146,9 +146,7 @@
     width: 70%;
     overflow-x: hidden;
     overflow-y: hidden; /*才能让y滚动取消*/
-    /*overflow-y: auto; !*才能让y滚动取消*!*/
 
-    /*display: inline-block;*/
     float:left;
 }
 .middleTbody {
