@@ -7,7 +7,7 @@ import axios from "axios";
 class DeletaSpan extends React.Component {
     render() {
         this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote2');
+        this.server = localStorage.getItem('remote');
         return (
             <span>
                 <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >

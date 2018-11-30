@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Input, InputNumber, Popconfirm, Form, Divider, message,Select,Button,Icon} from 'antd';
+import {Table, Input, Popconfirm, Form, Divider, message,Select,Icon} from 'antd';
 import DeletaSpan from './deleteSpan';
 import axios from "axios";
 import SearchFather from './searchCell'
@@ -17,7 +17,7 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
     getInput = () => {
-        if (this.props.inputType === 'select' && this.props.record.parentId != -1) {
+        if (this.props.inputType === 'select' && this.props.record.parentId !== -1) {
             return <Select >
               {
                 this.props.fathermenu.map(de=>{
@@ -53,7 +53,7 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `Please Input ${title}!`,
                                         }],
-                                        initialValue: record[dataIndex]==-1?"无父菜单":record[dataIndex], 
+                                        initialValue: record[dataIndex]===-1?"无父菜单":record[dataIndex], 
                                         // initialValue: (record[dataIndex]==1)? '父菜单':(record[dataIndex]==2 ? '子菜单' : record[dataIndex]),                                       
                                     })(this.getInput())}
                                 </FormItem>
@@ -103,9 +103,9 @@ class MenuTable extends React.Component{
         align:'center',
         width: '20%',
         render:(text, record)=>{
-            if(record.menuType==1){
+            if(record.menuType===1){
                 return '父菜单'
-            }else if(record.menuType==2){
+            }else if(record.menuType===2){
                 return '子菜单'
             }
         }
@@ -140,13 +140,13 @@ class MenuTable extends React.Component{
                             <span>
                                 <EditableContext.Consumer>
                                     {form => (
-                                        <a
-                                            href="javascript:;"
+                                        <span
                                             onClick={() => this.save(form, record.id)}
                                             style={{ marginRight: 8 }}
+                                            className="blue"
                                         >
                                             保存
-                                        </a>
+                                        </span>
                                     )}
                                     </EditableContext.Consumer>
                                 <Popconfirm
@@ -154,11 +154,11 @@ class MenuTable extends React.Component{
                                     onConfirm={() => this.cancel(record.id)}
                                     okText="确定" cancelText="取消"
                                 >
-                                    <a>取消</a>
+                                    <span className="blue">取消</span>
                                 </Popconfirm>
                             </span>
                         ) : (
-                            <a onClick={() => this.edit(record.id)}>编辑</a>
+                            <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
                     <Divider type="vertical" />
@@ -186,7 +186,6 @@ class MenuTable extends React.Component{
             return {
               ...col,
               onCell: record => ({
-                record,
                 inputType: col.dataIndex === 'parentId' ? 'select' : 'text',
                 record : record,
                 editable: col.editable,
@@ -250,7 +249,7 @@ class MenuTable extends React.Component{
                 const data = row;
                 data['id'] = id.toString()
                 console.log(data)
-                let server = localStorage.getItem("remote2")
+                let server = localStorage.getItem("remote")
                 axios({
                     url:`${server}/jc/auth/menu/update`,
                     method:'post',

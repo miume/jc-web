@@ -12,7 +12,7 @@ const CollectionCreateForm = Form.create()(
         }
         render() {
             console.log(this.props.visible1)
-            this.server= localStorage.getItem("remote2")
+            this.server= localStorage.getItem("remote")
             const { visible, onCancel, onCreate, form,fatherMenu } = this.props;
             const { getFieldDecorator } = form;
             return (
@@ -133,7 +133,7 @@ class AddModal extends React.Component {
     };
 
     render() {
-        this.server = localStorage.getItem("remote2")
+        this.server = localStorage.getItem("remote")
         return (
             <span>
                 <Button type="primary" size="small" style={{marginRight:'15px'}} onClick={this.showModal}>新增</Button>

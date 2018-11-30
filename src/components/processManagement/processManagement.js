@@ -22,7 +22,7 @@ class Management extends React.Component{
             searchContent:'',
             searchText: '',
         }
-        this.server = localStorage.getItem('remote2');
+        this.server = localStorage.getItem('remote');
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancle = this.cancle.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);

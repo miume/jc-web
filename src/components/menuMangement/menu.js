@@ -88,7 +88,7 @@ class Menu extends React.Component{
             })
     };
   render(){
-       this.server = localStorage.getItem('remote2');
+       this.server = localStorage.getItem('remote');
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
@@ -191,7 +191,7 @@ class Menu extends React.Component{
     start = () => {
       const ids = this.state.selectedRowKeys;
       axios({
-          url:`${localStorage.getItem('remote2')}/jc/auth/menu/deleteByIds`,
+          url:`${localStorage.getItem('remote')}/jc/auth/menu/deleteByIds`,
           method:'post',
           headers:{
               'Authorization':this.Authorization
