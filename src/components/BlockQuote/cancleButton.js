@@ -17,7 +17,7 @@ class CancleButton extends React.Component{
             onConfirm={this.props.handleCancel} onCancel={this.cancle}
             okText='确定' cancelText='取消'
             >
-                <Button className='white-button' style={{float:'left',backgroundColor:'white'}}><Icon type="close" />取消</Button>
+                <Button className='white-button' style={{float:'left',backgroundColor:'white'}}><Icon type="close"/>取消</Button>
             </Popconfirm>
         );
     }

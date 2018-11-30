@@ -1,14 +1,15 @@
 import React from 'react';
 import CancleButton from '../BlockQuote/cancleButton';
+import SaveButton from '../BlockQuote/saveButton';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
-import {Modal,Button,Table,Icon, Input} from 'antd';
-import Submit from '../stockOut/rawMaterialApplication/submit';
+import {Modal,Table, Input} from 'antd';
+import Submit from '../BlockQuote/submit';
 const data = [];
 for(var i = 1; i <=10; i++){
     data.push({
         id:i,
         testItem:`Ca${i}`,
-        result:`结果${i}`,
+        result:'',
         unit:'g/ml'
     })
 }
@@ -35,14 +36,14 @@ class RecordChecking extends React.Component{
             dataIndex:'testItem',
             key:'testItem',
             align:'center',
-            width:'30%'
+            width:'20%'
         },{
             title:'检测结果',
             dataIndex:'result',
             key:'result',
             align:'center',
-            width:'30%',
-            render:(record)=>{
+            width:'40%',
+            render:(text,record)=>{
                 return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'35px'}} onChange={this.save} />
             }
         },{
@@ -83,7 +84,7 @@ class RecordChecking extends React.Component{
         const name = e.target.name;
         const id = e.target.id
         const newData = [...this.state.dataSource];
-        const index = newData.findIndex(item=> id===item.id);
+        const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
         newData[index][name] = value;
         this.setState({
             dataSource:newData
@@ -97,7 +98,7 @@ class RecordChecking extends React.Component{
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 footer={[
                     <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                    <Button key='save' type='primary' size='default' onClick={this.handleSave}><Icon type="appstore" />保存</Button>,
+                    <SaveButton key='save' handleSave={this.handleSave} />,
                     <Submit key='submit' data = {this.state.dataSource}/>                       
                 ]}>
                 <div style={{height:'550px'}}>
@@ -118,10 +119,10 @@ class RecordChecking extends React.Component{
                      </div>
                      <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} pagination={false} size='small' bordered scroll={{y:330}}></Table>
                      <div style={{padding:'20px',height:'80px',fontSize:'15px'}}>
-                         <div style={{float:'left'}}>
+                         {/* <div style={{float:'left'}}>
                          <p className='span'>检验人：<span></span></p>
                              <p className='span'>检验时间：<span></span></p>
-                         </div>
+                         </div> */}
                          <CheckQualifiedModal />
                      </div>
 

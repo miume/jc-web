@@ -6,8 +6,9 @@ import RoleModal from './roleModal';
 import BlockQuote from '../BlockQuote/blockquote';
 import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
+import AddButton from '../BlockQuote/addButton';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -437,7 +438,8 @@ class Role extends React.Component {
             <div>
                 <BlockQuote name="角色管理" menu='用户与权限'></BlockQuote>
                 <div style={{padding:'15px'}}>
-                  <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
+                  <AddButton handleAdd={this.handleAdd} />
+                  {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
                       <Modal title="新增" visible={this.state.visible}
                             footer={[
                               <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,

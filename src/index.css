@@ -75,12 +75,22 @@ code {
   background-color: white !important;
   margin-right: 10px !important;
 }
-
+.green-button {
+  color:#ffffff !important;
+  background-color: #4BD863 !important;
+  margin-right: 10px !important;
+  border:none !important;
+}
 .ant-tabs-nav-wrap{
   padding-left: 1.3% !important;
 }
 .ant-switch-checked{
   background-color: red !important;
+}
+button span{
+  font-size:14px !important;
+  font-weight:bolder !important;
+  font-family:'PingFangSC-Regular', 'PingFang SC' !important;
 }
 .blue{
   color: #0086ff;

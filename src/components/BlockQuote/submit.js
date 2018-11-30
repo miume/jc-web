@@ -95,7 +95,7 @@ class Submit extends React.Component{
             visible={this.state.visible}
             onVisibleChange={this.handleVisibleChange}
             >
-                <Button type='primary' className='button'><Icon type="check" />送审</Button>  
+                <Button type='primary' size='default' className='button'><Icon type="check"/> 送审</Button>  
             </Popover>
         );
     }
