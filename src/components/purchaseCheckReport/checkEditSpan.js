@@ -35,7 +35,7 @@ class CheckEditSpan extends React.Component {
                     onCancel={this.handleCancel}
                     okText="确认"
                     cancelText="取消"
-                    width="1000px"
+                    width="1050px"
                     // footer下的每个组件都要有唯一的key
                     footer={[
                         <Popconfirm  key="popcon" placement="right" title={'你确定是想取消这个任务吗？'} onConfirm={this.handleOk} okText="确定" cancelText="再想想">
@@ -76,9 +76,6 @@ class CheckEditSpan extends React.Component {
                 >
                     <div style={{height:450}}>
                         <PurchaseModal
-                            // purchaseStatus = '合格'
-                            // data={data}
-                            // topData={topData}
                         />
 
                     </div>

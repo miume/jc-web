@@ -3,110 +3,148 @@ import '../Home/page.css';
 import WhiteSpace from "../BlockQuote/whiteSpace";
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
-import DeleteButton from './checkDeleteButton';
+import {Divider, Switch} from "antd";
 
 const data =[];
 for (let i = 0; i < 20; i++) {
     data.push({
         index: i,
         id:i,
-        a: '周小伟',
-        b: '启动',
-        c: 'c',
-        d: 'd',
-        e: 'e',
-        f: 'f',
-        g: '无',
-        h: '无',
-        i: '不通过',
-        j: 'j',
-        k: 'k',
-        l: 'l'
+        a: '测试',
+        b: '测试',
+        c: '启东北新',
+        d: '2019年1月10号',
+        e: '李小红',
+        f: '2018年11月27日',
+        g: '李小红',
+        h: '2018年11月27日',
+        i: '进货检验',
+        j: '不通过',
+        k: '正常',
     });
 }
 
 
 class Check extends React.Component {
+    Authorization;
+    server;
     constructor(props) {
         super(props);
         this.state = {
             dataSource: data,
-            selectedRowKeys: [],    //多选框key
             loading: false,
+            searchContent:'',
+            searchText: '',
         };
-        this.start=this.start.bind(this);
-        this.cancel=this.cancel.bind(this);
+        this.fetch=this.fetch.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
+        this.pagination = {
+            total: this.state.dataSource.length,
+            showSizeChanger: true,
+            onShowSizeChange(current, pageSize) {
+                // console.log('Current: ', current, '; PageSize: ', pageSize);
+            },
+            onChange(current) {
+                // console.log('Current: ', current);
+            }
+        }
     };
     render() {
-        const { loading,selectedRowKeys } = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
+        this.Authorization = localStorage.getItem('Authorization');
+        this.server = localStorage.getItem('remote');
+        const { loading } = this.state;
         return(
             <div>
-                <div className="fl">
-                    <DeleteButton
-                        selectedRowKeys={this.state.selectedRowKeys}
-                        start={this.start}
-                        loading={loading}
-                        cancel={this.cancel}
+                <span style={{float:'right',paddingBottom:'8px'}}>
+                    <SearchCell
+                        name='请输入搜索内容'
+                        searchEvent={this.searchEvent}
+                        searchContentChange={this.searchContentChange}
+                        fetch={this.fetch}
                     />
-                </div>
-                <SearchCell
-                />
-
-                <WhiteSpace></WhiteSpace>
+                </span>
                 <div className='clear' ></div>
                 <CheckTable
                     data={this.state.dataSource}
-                    rowSelection={rowSelection}
+                    pagination={this.pagination}
                 />
             </div>
         )
     }
-    /**实现全选功能 */
-    onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
+    /**获取所有数据 getAllByPage */
+    handleTableChange = (pagination) => {
+        this.fetch({
+            size: pagination.pageSize,
+            page: pagination.current,
+            orderField: 'id',
+            orderType: 'desc',
+
+        });
     };
-    /**---------------------- */
-    /**实现批量删除功能 */
-    start = () => {
-        const ids = this.state.selectedRowKeys.toString();
-        console.log(ids);
+    fetch = (params = {}) => {
+        this.setState({ loading: true });
         // axios({
-        //     url:`http://218.77.105.241:40080/jc/department/deleteByIds?ids=`+ids,
-        //     method:'Delete',
+        //     // url: `${this.server}/jc/purchaseReportRecord/getAllByPage`,
+        //     url: `http://2p277534k9.iok.la:58718/jc/purchaseReportRecord/getAllByPage`,
+        //     method: 'get',
         //     headers:{
-        //         'Authorization':Authorization
+        //         'Authorization': this.Authorization
         //     },
+        //     params: params,
+        //     // type: 'json',
+        // }).then((data) => {
+        //     console.log('data',data.data)
+        //     const res = data.data.data;
+        //     console.log('res',res);
+        //     this.pagination.total=res.total;
+        //     for(var i = 1; i<=res.list.length; i++){
+        //         res.list[i-1]['index']=(res.prePage)*10+i;
+        //     }
+        //     this.setState({
+        //         loading: false,
+        //         dataSource: res.list,
+        //     });
+        // });
+    };
+    componentDidMount() {
+        this.fetch();
+    }
+    /**---------------------- */
+    /** 根据角色名称分页查询*/
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        // axios({
+        //     url:`${this.server}/jc/operation/getRolesByNameLikeByPage`,
+        //     method:'get',
+        //     headers:{
+        //         'Authorization':this.Authorization
+        //     },
+        //     params:{
+        //         size: this.pagination.pageSize,
+        //         page: this.pagination.current,
+        //         operationName:ope_name
+        //     },
+        //     type:'json',
         // }).then((data)=>{
-        //     message.info(data.data.message);
+        //     const res = data.data.data;
+        //     this.pagination.total=res.total;
+        //     for(var i = 1; i<=res.list.length; i++){
+        //         res.list[i-1]['index']=(res.prePage)*10+i;
+        //     }
+        //     this.setState({
+        //         dataSource: res.list,
+        //     });
         // }).catch((error)=>{
         //     message.info(error.data.message)
-        // });
-        // this.fetch();
-        this.setState({ loading: true });
-        // ajax request after empty completing
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
-        }, 1000);
+        // })
+
     };
-    onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
-    };
-    cancel() {
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
-        }, 1000);
+    /**获取查询时角色名称的实时变化 */
+    searchContentChange = (e) => {
+        const value = e.target.value;
+        this.setState({searchContent:value});
     }
     /**---------------------- */
 }

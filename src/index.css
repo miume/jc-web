@@ -40,6 +40,11 @@ code {
   margin-bottom :0px !important;
 }
 
+
+.show {
+  visibility: visible;
+}
+
 .ant-pagination.ant-table-pagination.mini {
   text-align: right !important; 
 }
@@ -68,3 +73,4 @@ code {
 .ant-switch-checked{
   background-color: red !important;
 }
+

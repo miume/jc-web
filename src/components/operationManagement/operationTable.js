@@ -76,7 +76,7 @@ class OperationTable extends React.Component {
         title: '序号',
         dataIndex: 'index',
         key: 'id',
-        sorter: (a, b) => a.key - b.key,
+        sorter: (a, b) => a.id - b.id,
         align:'center',
         width: '20%',
     },{

@@ -9,9 +9,9 @@ class CheckTable extends React.Component {
         title: '序号',
         dataIndex: 'index',
         key: 'id',
-        sorter: (a, b) => a.key - b.key,
+        sorter: (a, b) => a.id - b.id,
         align:'center',
-        width: '6%',
+        width: '5%',
     },{
         title: '批号',
         dataIndex: 'a',
@@ -35,7 +35,7 @@ class CheckTable extends React.Component {
         dataIndex: 'd',
         key: 'd',
         align:'center',
-        width: '6%',
+        width: '10%',
     },{
         title: '创建人',
         dataIndex: 'e',
@@ -47,35 +47,35 @@ class CheckTable extends React.Component {
         dataIndex: 'f',
         key: 'f',
         align:'center',
-        width: '6%',
+        width: '10%',
     },{
         title: '修改人',
-        dataIndex: 'h',
-        key: 'h',
+        dataIndex: 'g',
+        key: 'g',
         align:'center',
         width: '6%',
     },{
         title: '修改日期',
+        dataIndex: 'h',
+        key: 'h',
+        align:'center',
+        width: '10%',
+    },{
+        title: '类型',
         dataIndex: 'i',
         key: 'i',
         align:'center',
         width: '6%',
     },{
-        title: '类型',
+        title: '审核状态',
         dataIndex: 'j',
         key: 'j',
         align:'center',
         width: '6%',
     },{
-        title: '审核状态',
+        title: '紧急',
         dataIndex: 'k',
         key: 'k',
-        align:'center',
-        width: '6%',
-    },{
-        title: '紧急',
-        dataIndex: 'l',
-        key: 'l',
         align:'center',
         width: '6%',
     },{
@@ -83,9 +83,9 @@ class CheckTable extends React.Component {
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '25%',
+        width: '13%',
         render: (text,record) => {
-            let operationFlag = this.judgeOperation(record.i);
+            let operationFlag = this.judgeOperation(record.j);
             return (
                 <span>
                     <CheckEditSpan
@@ -120,10 +120,10 @@ class CheckTable extends React.Component {
                 rowKey={record => record.id}
                 dataSource={this.props.data}
                 columns={columns}
-                rowSelection={this.props.rowSelection}
+                pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ x: 1500}}
+                scroll={{ x: 1500,y: 400 }}
             />
         )
     }
