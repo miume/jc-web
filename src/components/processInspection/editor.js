@@ -1,160 +1,149 @@
 import React from 'react';
-import {Modal,Button,Select,Table} from 'antd';
+import {Modal,Button} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import './editor.css';
 import Tr from './tr';
-const Option = Select.Option;
-const approvalProcess = [{
-    id:1,
-    name:'流程1'
-},{
-    id:2,
-    name:'流程2'
-},{
-    id:3,
-    name:'流程3'
-}]
-const children = approvalProcess.map(p => 
-    <Option key={p.id}>{p.name}</Option>
-)
-const columns = [{
-    title: '批号',
-    dataIndex: 'batchNumber' ,
-    key: 'batchNumber',
-    width: '9%',
-    align:'center',
-  }, {
-    title: '创建人',
-    dataIndex: 'creatPerson',
-    key:  'creatPerson.id',
-    render:creatPerson => `${creatPerson.userName}`,
-    width: '8%',
-    align:'center',
-  }, {
-    title: '创建时间',
-    dataIndex: 'creatTime',
-    key: 'creatTime',
-    width: '19%',
-    align:'center',
-  }, {
-    title: '修改人',
-    dataIndex: 'updatePerson',
-    key: 'updatePerson.id',
-    render:updatePerson => `${updatePerson.userName}`,
-    width: '9%',
-    align:'center',
-  }, {
-    title: '修改时间',
-    dataIndex: 'updateTime',
-    key: 'updateTime',
-    width: '19%',
-    align:'center',
-  }, {
-    title: '类型',
-    dataIndex: 'type',
-    key: 'type',
-    render: type => {
-        switch(`${type}`) {
-          case '1': return '制成检测数据';
-          case '2': return '样品送检数据';
-          case '3': return '样品报告单数据';
-          default: return '';
-        }
-    },
-    width: '12%',
-    align:'center',
-  }, {
-    title: '状态',
-    dataIndex: 'state',
-    key:'state',
-    render: state => {
-      switch(`${state}`) {
-        case '-1': return '已保存未提交';
-        case '0': return '已提交未未审核';
-        case '1': return '审核中';
-        case '2': return '审核通过';
-        case '3': return '审核未通过';
-        case '4': return '合格';
-        case '5': return '不合格';
-      }
-    },
-    width: '10%',
-    align:'center',
-  }, {
-    title: '紧急',
-    dataIndex: 'isUrgent',
-    key: 'isUrgent',
-    render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
-    width: '7%',
-    align:'center',
-  }]
-  const columns1 = [{
-    title: '产品线',
-    dataIndex: 'productLine' ,
-    key: 'productLine',
-    width: '9%',
-    align:'center',
-  },{
-    title: '工序',
-    dataIndex: 'procedureName' ,
-    key: 'procedureName',
-    width: '9%',
-    align:'center',
-  },{
-    title: '样品检测点',
-    dataIndex: 'samplePoint' ,
-    key: 'samplePoint',
-    width: '9%',
-    align:'center',
-  },{
-    title: '测试项目',
-    dataIndex: 'testItem' ,
-    key: 'testItem',
-    width: '9%',
-    align:'center',
-  },{
-    title: '测试频率',
-    dataIndex: 'testFrequency' ,
-    key: 'testFrequency',
-    width: '9%',
-    align:'center',
-  },{
-    title: '采样人',
-    dataIndex: 'sampler' ,
-    key: 'sampler',
-    width: '9%',
-    align:'center',
-  },{
-    title: '检测人',
-    dataIndex: 'tester' ,
-    key: 'tester',
-    width: '9%',
-    align:'center',
-  },{
-    title: '状态',
-    dataIndex: 'status' ,
-    key: 'status',
-    width: '9%',
-    align:'center',
-  },{
-    title: '备注',
-    dataIndex: 'comment' ,
-    key: 'comment',
-    width: '9%',
-    align:'center',
-  }]
-  const detailData = [{
-      id: 1,
-      productLine:{id:1,name:'产品线'},
-      procedureName:{id:1,name:'工序'},
-      samplePoint:{id:1,name:'样品检测点'},
-      testItem:{id:1,name:'测试项目'},
-      testFrequency:{id:1,name:'测试频率'},
-      sampler:{id:1,name:'张三'},
-      tester:{id:1,name:'傻子'},
-      status:0,
-      comment:'xxxxx'
-  }]
+// const children = approvalProcess.map(p => 
+//     <Option key={p.id}>{p.name}</Option>
+// )
+// const columns = [{
+//     title: '批号',
+//     dataIndex: 'batchNumber' ,
+//     key: 'batchNumber',
+//     width: '9%',
+//     align:'center',
+//   }, {
+//     title: '创建人',
+//     dataIndex: 'creatPerson',
+//     key:  'creatPerson.id',
+//     render:creatPerson => `${creatPerson.userName}`,
+//     width: '8%',
+//     align:'center',
+//   }, {
+//     title: '创建时间',
+//     dataIndex: 'creatTime',
+//     key: 'creatTime',
+//     width: '19%',
+//     align:'center',
+//   }, {
+//     title: '修改人',
+//     dataIndex: 'updatePerson',
+//     key: 'updatePerson.id',
+//     render:updatePerson => `${updatePerson.userName}`,
+//     width: '9%',
+//     align:'center',
+//   }, {
+//     title: '修改时间',
+//     dataIndex: 'updateTime',
+//     key: 'updateTime',
+//     width: '19%',
+//     align:'center',
+//   }, {
+//     title: '类型',
+//     dataIndex: 'type',
+//     key: 'type',
+//     render: type => {
+//         switch(`${type}`) {
+//           case '1': return '制成检测数据';
+//           case '2': return '样品送检数据';
+//           case '3': return '样品报告单数据';
+//           default: return '';
+//         }
+//     },
+//     width: '12%',
+//     align:'center',
+//   }, {
+//     title: '状态',
+//     dataIndex: 'state',
+//     key:'state',
+//     render: state => {
+//       switch(`${state}`) {
+//         case '-1': return '已保存未提交';
+//         case '0': return '已提交未未审核';
+//         case '1': return '审核中';
+//         case '2': return '审核通过';
+//         case '3': return '审核未通过';
+//         case '4': return '合格';
+//         case '5': return '不合格';
+//       }
+//     },
+//     width: '10%',
+//     align:'center',
+//   }, {
+//     title: '紧急',
+//     dataIndex: 'isUrgent',
+//     key: 'isUrgent',
+//     render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
+//     width: '7%',
+//     align:'center',
+//   }]
+//   const columns1 = [{
+//     title: '产品线',
+//     dataIndex: 'productLine' ,
+//     key: 'productLine',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '工序',
+//     dataIndex: 'procedureName' ,
+//     key: 'procedureName',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '样品检测点',
+//     dataIndex: 'samplePoint' ,
+//     key: 'samplePoint',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '测试项目',
+//     dataIndex: 'testItem' ,
+//     key: 'testItem',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '测试频率',
+//     dataIndex: 'testFrequency' ,
+//     key: 'testFrequency',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '采样人',
+//     dataIndex: 'sampler' ,
+//     key: 'sampler',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '检测人',
+//     dataIndex: 'tester' ,
+//     key: 'tester',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '状态',
+//     dataIndex: 'status' ,
+//     key: 'status',
+//     width: '9%',
+//     align:'center',
+//   },{
+//     title: '备注',
+//     dataIndex: 'comment' ,
+//     key: 'comment',
+//     width: '9%',
+//     align:'center',
+//   }]
+//   const detailData = [{
+//       id: 1,
+//       productLine:{id:1,name:'产品线'},
+//       procedureName:{id:1,name:'工序'},
+//       samplePoint:{id:1,name:'样品检测点'},
+//       testItem:{id:1,name:'测试项目'},
+//       testFrequency:{id:1,name:'测试频率'},
+//       sampler:{id:1,name:'张三'},
+//       tester:{id:1,name:'傻子'},
+//       status:0,
+//       comment:'xxxxx'
+//   }]
 class Editor extends React.Component{
     constructor(props){
         super(props);
@@ -215,7 +204,7 @@ class Editor extends React.Component{
     render() {
         return (
             <span>
-                <a onClick={this.handleEditor} >编辑</a>
+                <span className='blue' onClick={this.handleEditor} >编辑</span>
                 <Modal title="详情" visible={this.state.visible}
                     onCancel={this.handleCancel}  width='1000px'
                     footer={[

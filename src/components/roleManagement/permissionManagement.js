@@ -18,7 +18,6 @@ class PermissionManagement extends React.Component {
         this.getAllAuth = this.getAllAuth.bind(this);
         this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
         this.getAllMenus = this.getAllMenus.bind(this);
-        this.isChecked = this.isChecked.bind(this);
     }
     /**显示权限分配弹出框 */
     showModal() {
@@ -39,10 +38,8 @@ class PermissionManagement extends React.Component {
                 'Authorization':this.props.Authorization
             }
         }).then(data=>{
-            const menu = data.data.data
-            //console.log(menu)
             this.setState({
-                allMenus:menu
+                allMenus:data.data.data
             })
         })
     }
@@ -113,8 +110,8 @@ class PermissionManagement extends React.Component {
             }).then(data =>{
                 message.info(data.data.message)
             })
-            .catch(error=>{
-                message.info(error.data.message)
+            .catch(()=>{
+                message.info('权限新增失败，请联系管理员！')
             })
         }
         //实现删除权限的功能
@@ -129,37 +126,34 @@ class PermissionManagement extends React.Component {
             }).then(data =>{
                 message.info(data.data.message)
             })
-            .catch(error=>{
-                message.info(error.data.message)
+            .catch(()=>{
+                message.info('权限删除失败，请联系管理员！')
             })
         }
             
     }
     isChecked(){
-        // console.log(value)
-        // console.log(menuId)
         return 1;
     }
     render() {
-        const api = [
-            {id:3,name:'新增'},
-            {id:1,name:'删除'},
-            {id:2,name:'编辑'},
-            {id:4,name:'搜索'},
-            {id:5,name:'导出'}
-        ]
-        const mennus = [
-            {id:1, name : '用户权限', prefix:'AUTH_', parent:-1},
-            {id:2, name : '权限管理', prefix:'AUTH_ROLE_', parent:1},
-            {id:3, name : '菜单管理', prefix:'AUTH_MENU_', parent:1},
-            {id:4, name : '操作管理', prefix:'AUTH_OP_', parent:1},
-            {id:5, name : '基础信息', prefix:'AUTH_', parent:-1},
-            {id:6, name : '菜单管理', prefix:'AUTH_MENU_', parent:4},
-        ]
-    //    console.log(this.state.roleAuth)
+        // const api = [
+        //     {id:3,name:'新增'},
+        //     {id:1,name:'删除'},
+        //     {id:2,name:'编辑'},
+        //     {id:4,name:'搜索'},
+        //     {id:5,name:'导出'}
+        // ]
+        // const mennus = [
+        //     {id:1, name : '用户权限', prefix:'AUTH_', parent:-1},
+        //     {id:2, name : '权限管理', prefix:'AUTH_ROLE_', parent:1},
+        //     {id:3, name : '菜单管理', prefix:'AUTH_MENU_', parent:1},
+        //     {id:4, name : '操作管理', prefix:'AUTH_OP_', parent:1},
+        //     {id:5, name : '基础信息', prefix:'AUTH_', parent:-1},
+        //     {id:6, name : '菜单管理', prefix:'AUTH_MENU_', parent:4},
+        // ]
         return (
             <span>
-                <a onClick={this.showModal} value={this.state.value}>权限管理</a>
+                <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} 
                 onOk={this.handleOk} onCancel={this.handleCancel}
                 okText='确定' cancelText='取消' width='780px' destroyOnClose='true' >
@@ -182,7 +176,7 @@ class PermissionManagement extends React.Component {
                                             /**遍历二级菜单 */
                                             m1.menuList.map(m2=>{
                                                 var auth = this.state.roleAuth;
-                                                var menuList = auth.filter(au=>au.id==m2.menuId);
+                                                var menuList = auth.filter(au=>au.id === m2.menuId);
                                                 //console.log(menuList)
                                                 if(menuList.length>0){
                                                     var menu = menuList[0];

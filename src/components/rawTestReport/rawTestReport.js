@@ -136,13 +136,13 @@ class RawTestReport extends React.Component{
             dataIndex:'operation',
             key:'operation',
             align:'center',
-            render:(text,record)=>{
+            render:(record)=>{
                 return (
                     <span>
                         <Detail value={record} />
                         <Divider type='vertical' />
                         <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消' >
-                            <a href='#'>删除</a>
+                            <span className='blue'>删除</span>
                         </Popconfirm>
                         <Divider type='vertical' />
                         <RecordChecking value={record} />

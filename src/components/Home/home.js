@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch,BrowserRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Menu1List from './menu';
 // import SonRoute from '../../routes/sonRoute';
 import './home.css';
@@ -111,7 +111,7 @@ class Home extends Component {
         var showCanvas = setInterval(function() {
             //console.log('get canvas');
             canvas = document.getElementById('defaultCanvas0');
-            if(canvas != null && canvas != undefined) {
+            if(canvas !== null && canvas !== undefined) {
                 canvas.style.visibility='hidden';
                 clearInterval(showCanvas);
             }    
@@ -121,7 +121,7 @@ class Home extends Component {
     componentDidMount() {
         var showFrame = setInterval(function() {
             var frame = window.frame;
-            if(frame != undefined && frame != null) {
+            if(frame !== undefined && frame !== null) {
                 frame(0);   //消除帧
                 //console.log('clear intervals')
                 clearInterval(showFrame);

@@ -1,152 +1,152 @@
 import React from 'react';
-import {Button,Modal,Select,Input,Table,Popconfirm} from 'antd';
+import {Button,Modal,} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import './editor.css';
 import Tr from './tr';
-const Option = Select.Option;
-const approvalProcess = [{
-    id:1,
-    name:'产品线1'
-},{
-    id:2,
-    name:'产品线2'
-},{
-    id:3,
-    name:'产品线3'
-}]
-const children = approvalProcess.map(p => 
-    <Option key={p.id.toString()}>{p.name}</Option>
-)
-const columns1 = [{
-    title: '产品线',
-    dataIndex: 'productLine' ,
-    key: 'productLine',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        console.log(text);
-        return (
-            <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
-        )
-    }
-  },{
-    title: '工序',
-    dataIndex: 'procedureName' ,
-    key: 'procedureName',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
-        )
-    }
-  },{
-    title: '样品检测点',
-    dataIndex: 'samplePoint' ,
-    key: 'samplePoint',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
-        )
-    }
-  },{
-    title: '测试项目',
-    dataIndex: 'testItem' ,
-    key: 'testItem',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
-        )
-    }
-  },{
-    title: '测试频率',
-    dataIndex: 'testFrequency' ,
-    key: 'testFrequency',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Input defaultValue={text} />
-        )
-    }
-  },{
-    title: '采样人',
-    dataIndex: 'sampler' ,
-    key: 'sampler',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
-        )
-    }
-  },{
-    title: '检测人',
-    dataIndex: 'tester' ,
-    key: 'tester',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        console.log(text);
-        return (
-            <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
-        )
-    }
-  },{
-    title: '状态',
-    dataIndex: 'status' ,
-    key: 'status',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Input defaultValue={text}/>
-        )
-    }
-  },{
-    title: '备注',
-    dataIndex: 'comment' ,
-    key: 'comment',
-    width: '9%',
-    align:'center',
-    render: (text) => {
-        return (
-            <Input defaultValue={text}/>
-        )
-    }
-  },{
-    title: '操作',
-    dataIndex: 'operation' ,
-    key: 'operation',
-    width: '9%',
-    align:'center',
-    render: (text,record) => {
-        return (
-            <span>
-                <Popconfirm title="确定删除?" onConfirm={() =>this.handleDelete(record.key)} okText="确定" cancelText="取消" >
-                          <a href="#">删除</a>
-                      </Popconfirm>
-            </span>
-        )
-    }
-  }]
-const data = [{
-    id:1,
-    batchNumber:'NNNN',
-    productLine:{id:1,name:'产品线1'},
-    procedureName:{id:1,name:'产品线1'},
-    samplePoint:{id:1,name:'产品线1'},
-    testItem:{id:1,name:'产品线1'},
-    sampler:{id:1,name:'产品线1'},
-    tester:{id:1,name:'产品线1'},
-    testFrequency:'23',
-    status:0,
-    comment:'kkkk'
-}]
+// const Option = Select.Option;
+// const approvalProcess = [{
+//     id:1,
+//     name:'产品线1'
+// },{
+//     id:2,
+//     name:'产品线2'
+// },{
+//     id:3,
+//     name:'产品线3'
+// }]
+// const children = approvalProcess.map(p => 
+//     <Option key={p.id.toString()}>{p.name}</Option>
+// )
+// const columns1 = [{
+//     title: '产品线',
+//     dataIndex: 'productLine' ,
+//     key: 'productLine',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         console.log(text);
+//         return (
+//             <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
+//         )
+//     }
+//   },{
+//     title: '工序',
+//     dataIndex: 'procedureName' ,
+//     key: 'procedureName',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
+//         )
+//     }
+//   },{
+//     title: '样品检测点',
+//     dataIndex: 'samplePoint' ,
+//     key: 'samplePoint',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
+//         )
+//     }
+//   },{
+//     title: '测试项目',
+//     dataIndex: 'testItem' ,
+//     key: 'testItem',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
+//         )
+//     }
+//   },{
+//     title: '测试频率',
+//     dataIndex: 'testFrequency' ,
+//     key: 'testFrequency',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Input defaultValue={text} />
+//         )
+//     }
+//   },{
+//     title: '采样人',
+//     dataIndex: 'sampler' ,
+//     key: 'sampler',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
+//         )
+//     }
+//   },{
+//     title: '检测人',
+//     dataIndex: 'tester' ,
+//     key: 'tester',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         console.log(text);
+//         return (
+//             <Select defaultValue={text.id.toString()} style={{width:'100%'}}>{children}</Select>
+//         )
+//     }
+//   },{
+//     title: '状态',
+//     dataIndex: 'status' ,
+//     key: 'status',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Input defaultValue={text}/>
+//         )
+//     }
+//   },{
+//     title: '备注',
+//     dataIndex: 'comment' ,
+//     key: 'comment',
+//     width: '9%',
+//     align:'center',
+//     render: (text) => {
+//         return (
+//             <Input defaultValue={text}/>
+//         )
+//     }
+//   },{
+//     title: '操作',
+//     dataIndex: 'operation' ,
+//     key: 'operation',
+//     width: '9%',
+//     align:'center',
+//     render: (text,record) => {
+//         return (
+//             <span>
+//                 <Popconfirm title="确定删除?" onConfirm={() =>this.handleDelete(record.key)} okText="确定" cancelText="取消" >
+//                           <a href="#">删除</a>
+//                       </Popconfirm>
+//             </span>
+//         )
+//     }
+//   }]
+// const data = [{
+//     id:1,
+//     batchNumber:'NNNN',
+//     productLine:{id:1,name:'产品线1'},
+//     procedureName:{id:1,name:'产品线1'},
+//     samplePoint:{id:1,name:'产品线1'},
+//     testItem:{id:1,name:'产品线1'},
+//     sampler:{id:1,name:'产品线1'},
+//     tester:{id:1,name:'产品线1'},
+//     testFrequency:'23',
+//     status:0,
+//     comment:'kkkk'
+// }]
 class Add extends React.Component{
     constructor(props){
         super(props);
@@ -200,7 +200,7 @@ class Add extends React.Component{
             <span>
                 <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button>
                 <Modal title="新增" visible={this.state.visible}
-                    onCancel={this.handleCancel}  width='1200px'
+                    onCancel={this.handleCancel} width='1200px'
                     footer={[
                         <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
                         <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>

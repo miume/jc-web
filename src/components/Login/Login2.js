@@ -40,8 +40,7 @@ class Login extends React.Component {
   }
 
   keyPress(e){
-    if(e.keyCode == 13){
-      alert('1111')
+    if(e.keyCode === 13){
     }
   }
   handleSubmit(){

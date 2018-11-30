@@ -60,15 +60,6 @@ class EditableCell extends React.Component {
 }
 
 const EditableFormRow = Form.create()(EditableRow);
-/*假数据 */
-// const data = [];
-// for (let i = 0; i < 46; i++) {
-//   data.push({
-//     key: i.toString(),
-//     operation:i,
-//     name: `管理员${i}`,
-//     description: `权限${i}`
-// })}
 
 class Role extends React.Component {
 
@@ -78,14 +69,12 @@ class Role extends React.Component {
       this.fetch();
     }
     componentWillUnmount() {
-      this.setState = (state, callback) => {
+      this.setState = () => {
         return ;
       }
     }
     constructor(props) {
         super(props);
-        // const da = store.getState();
-        // console.log(da)
         this.state = {
             dataSource : [],
             searchText: '',
@@ -96,7 +85,6 @@ class Role extends React.Component {
             roleName: '',
             selectedRowKeys: [],
             searchContent:'',
-            
             reset:false
             
         };
@@ -117,11 +105,9 @@ class Role extends React.Component {
             return `共${total}条记录`
           } ,
           showSizeChanger: true,
-          onShowSizeChange(current, pageSize) {
-            // console.log('Current: ', current, '; PageSize: ', pageSize);
+          onShowSizeChange() {
           },
-          onChange(current) {
-            // console.log('Current: ', current);
+          onChange() {
           }
         }
         this.columns = [{
@@ -151,7 +137,7 @@ class Role extends React.Component {
             key: 'operation',
             align:'center',
             width: '25%',
-            render : (text, record) =>  {
+            render : (record) =>  {
               const editable = this.isEditing(record);
                 return (
                     <span>
@@ -160,23 +146,22 @@ class Role extends React.Component {
                           <span>
                             <EditableContext.Consumer>
                               {form => (
-                                <a
-                                  href="javascript:;"
+                                <span
                                   onClick={() => this.save(form, record.id)}
-                                  style={{ marginRight: 8 }}>保存</a>
+                                  style={{ marginRight: 8 }}>保存</span>
                               )}
                             </EditableContext.Consumer>
                             <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
-                              <a>取消</a>
+                              <span className='blue'>取消</span>
                             </Popconfirm>
                           </span>
                         ) : (
-                          <a onClick={() => this.edit(record.id)}>编辑</a>
+                          <span  className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                       </span>
                       <Divider type="vertical" />
                       <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                          <a href="#">删除</a>
+                          <span className='blue'>删除</span>
                       </Popconfirm>
                       <Divider type="vertical" />
                       <span>
@@ -202,8 +187,6 @@ class Role extends React.Component {
       });
     }
     fetch = (params = {}) => {
-      //console.log('params:', params);
-      //this.setState({ loading: true });
       axios({
         url: `${this.server}/jc/auth/role/getRolesByPage`,
         method: 'get',
@@ -211,14 +194,12 @@ class Role extends React.Component {
         'Authorization': this.Authorization
       },
        params: params,
-        // type: 'json',
       }).then((data) => {
         const res = data.data.data;
         this.pagination.total=res.total;
         for(var i = 1; i<=res.list.length; i++){
           res.list[i-1]['index']=res.prePage*10+i;
         }
-        // console.log(res.list)
         this.setState({
           dataSource: res.list,
         });
@@ -244,8 +225,8 @@ class Role extends React.Component {
         }).then((data)=>{
           message.info(data.data.message);
           this.fetch();
-        }).catch((error)=>{
-          message.info(error.data.message)
+        }).catch(()=>{
+          message.info('删除失败，请联系管理员！')
         })
 
       }
@@ -286,8 +267,8 @@ class Role extends React.Component {
             }).then((data)=>{
               message.info(data.data.message); 
               this.fetch();
-            }).catch((error)=>{
-              message.info(error);
+            }).catch(()=>{
+              message.info('保存失败，请联系管理员！');
             })
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
@@ -322,13 +303,11 @@ class Role extends React.Component {
           data:this.formRef.getItemsValue(),
           type:'json'
         }).then((data) => {
-          // console.log(data)
           message.info(data.data.message); 
           this.fetch();
         })
-        .catch(function (error) {
-          // console.log(error)
-          message.info(error);
+        .catch(function () {
+          message.info('新增失败，请联系管理员！');
         }); 
         /**清空新增form组件的内容 */
         this.formRef.resetField()
@@ -364,8 +343,8 @@ class Role extends React.Component {
         }).then((data)=>{
           message.info(data.data.message);
           this.fetch();
-        }).catch((error)=>{
-          message.info(error.data.message)
+        }).catch(()=>{
+          message.info('删除错误，请联系管理员！')
         })
         
      }

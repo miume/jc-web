@@ -44,7 +44,6 @@ class UserManagement extends React.Component {
     getAssignedUsersByRoleId(){
         // console.log(this.props.Authorization)
         let url=`${this.props.server}/jc/auth/role/getUsersOfRole?id=${this.props.value}`
-        const data = [];
         axios({
             url:url,
             method:'get',
@@ -53,13 +52,12 @@ class UserManagement extends React.Component {
             }
         }).then((data)=>{
             let res = data.data.data;
-            // console.log(res)
             this.setState({
                 assignedRole : res.assigned,
                 unsignedRole : res.notAssigned
             })
-        }).catch((error)=>{
-            message.info(error.data.message)
+        }).catch(()=>{
+            message.info('查询失败，请联系管理员！')
         })
     }
     showModal() {
@@ -78,9 +76,6 @@ class UserManagement extends React.Component {
       let unsignedIds = [];
       this.state.assignedRole.forEach(e => assignedIds.push(e.id) );
       this.state.unsignedRole.forEach(e => unsignedIds.push(e.id) );
-    //   console.log(assignedIds)
-    //   console.log(unsignedIds)
-    //   const userIds = assignedIds;
       const url = `${this.props.server}/jc/auth/role/assignRoleToUser?roleId=${this.props.value}`;
       axios({
           url:url,
@@ -162,7 +157,7 @@ class UserManagement extends React.Component {
     //   console.log(this.state)
       return (
         <span>
-          <a onClick={this.showModal} value={this.state.value}>成员管理</a>
+          <span  className='blue' onClick={this.showModal} value={this.state.value}>成员管理</span>
           <Modal title="设置角色" visible={this.state.visible}
             onOk={this.handleOk} onCancel={this.handleCancel}
             okText="确定" cancelText="取消">

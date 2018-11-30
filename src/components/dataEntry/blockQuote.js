@@ -58,7 +58,7 @@ class BlockQuote extends React.Component {
         return (
             <div style={{borderBottom:'1px solid darkgrey',height:'80px'}}>
                 <div style={{width:'100%',padding:'10px 20px',display:'inline-block'}} >
-                    <div style={{paddingBottom:'10px'}}><span><a onClick={this.backHome}>首页 </a>> {this.props.menu} > </span><a onClick={this.returnDataEntry}>{this.props.menu2}</a>
+                    <div style={{paddingBottom:'10px'}}><span><span className='blue' onClick={this.backHome}>首页 </span>> {this.props.menu} > </span><span className='blue' onClick={this.returnDataEntry}>{this.props.menu2}</span>
                     <span style={{background:'#F2F2F2',marginLeft:'25px',color:'#999999',fontSize:'14px'}}>
                     {
                         data.map(d=>
