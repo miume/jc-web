@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
-import { Table,Input,Icon,Button,Form,Popconfirm,Divider,message } from 'antd';
+import { Table,Input,Icon,Button,Popconfirm,Divider,message } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';

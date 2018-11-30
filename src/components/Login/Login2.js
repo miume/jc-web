@@ -56,7 +56,11 @@ class Login extends React.Component {
       history.push({pathname:'/home'});
     })
     .catch(function (error) {
-      message.info('账号或密码有误，请重新输入！');
+      if(error.toString().indexOf("Network Error")>0){
+        message.info("服务器未响应!");
+      }else{
+        message.info('账号或密码有误，请重新输入！');
+      }
     });
   }
   render() {
