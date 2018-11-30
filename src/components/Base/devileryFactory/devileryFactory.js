@@ -16,10 +16,7 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-/** 通过localStorage可查到http://218.77.105.241:40080*/
-const server = localStorage.getItem("remote2"); 
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization=localStorage.getItem('Authorization');
+
 
 class EditableCell extends React.Component {
   constructor(props){
@@ -70,6 +67,8 @@ class EditableCell extends React.Component {
 }
 
 class DeliveryFactory extends React.Component{
+  server;
+  Authorization;
   componentDidMount(){
     this.fetch();
     document.getElementById('/deliveryFactory').style.color='#0079FE';
@@ -87,7 +86,7 @@ class DeliveryFactory extends React.Component{
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
         editingKey:'',
-        Authorization:Authorization,
+        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -134,7 +133,7 @@ class DeliveryFactory extends React.Component{
         return (
             <span>
                 <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                <a href="#">删除</a>
+                <span className='blue'>删除</span>
                 </Popconfirm>
                 <Divider type="vertical" />
                 <span>
@@ -142,18 +141,18 @@ class DeliveryFactory extends React.Component{
                   <span>
                     <EditableContext.Consumer>
                       {form => (
-                        <a
+                        <span className='blue'
                           href="javascript:;"
                           onClick={() => this.save(form, record.id)}
-                          style={{ marginRight: 8 }}>保存</a>
+                          style={{ marginRight: 8 }}>保存</span>
                       )}
                     </EditableContext.Consumer>
                     <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
-                      <a>取消</a>
+                      <span className='blue'>取消</span>
                     </Popconfirm>
                   </span>
                 ) : (
-                  <a onClick={() => this.edit(record.id)}>编辑</a>
+                  <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
             </span>
@@ -174,10 +173,10 @@ class DeliveryFactory extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${server}/jc/deliveryFactory/getDeliveryFactoriesByPage`,
+        url: `${this.server}/jc/deliveryFactory/getDeliveryFactoriesByPage`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         },
         params:{
           ...params,
@@ -200,10 +199,10 @@ class DeliveryFactory extends React.Component{
       //console.log(id);
         const dataSource = this.state.dataSource;
         axios({
-          url:`${server}/jc/deliveryFactory/${id}`,
+          url:`${this.server}/jc/deliveryFactory/${id}`,
           method:'Delete',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
          data:id,
          type:'json'
@@ -214,8 +213,8 @@ class DeliveryFactory extends React.Component{
           this.fetch();
         })
         
-        .catch((error)=>{
-         message.info(error.data.message);
+        .catch(()=>{
+         message.info('删除失败，请联系管理员');
         });
       }
     //实现checkbox全选
@@ -260,10 +259,10 @@ class DeliveryFactory extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${server}/jc/deliveryFactory/update`,
+              url:`${this.server}/jc/deliveryFactory/update`,
               method:'post',
               headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
               },
               data:data,
               type:'json'
@@ -273,9 +272,9 @@ class DeliveryFactory extends React.Component{
               message.info(data.data.message);
               this.fetch();
             })
-            .catch((error)=>{
+            .catch(()=>{
              // console.log(error.data);
-              message.info(error.data.message);
+              message.info('编辑失败，请联系管理员！');
             });
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
@@ -302,10 +301,10 @@ class DeliveryFactory extends React.Component{
       searchEvent(){
            const name=this.state.searchContent;
            axios({
-             url:`${server}/jc/deliveryFactory/getDeliveryFactoriesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/deliveryFactory/getDeliveryFactoriesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':Authorization
+               'Authorization':this.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -324,13 +323,17 @@ class DeliveryFactory extends React.Component{
                dataSource:res.list//list取到的是所有符合要求的数据
              });
            })
-           .catch((error)=>{
+           .catch(()=>{
 
-            message.info(error.data.message)
+            message.info('查询失败，请联系管理员！')
            });
       }
   
    render(){
+     /**这是个令牌，每次调用接口都将其放在header里 */
+     this.Authorization = localStorage.getItem('Authorization');
+     /**这是服务器网址及端口 */
+     this.server = localStorage.getItem('remote');
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {

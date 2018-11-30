@@ -2,9 +2,10 @@ import React from 'react';
 import {Button,Popconfirm,message} from 'antd';
 import axios from 'axios';
 
-const Authorization=localStorage.getItem('Authorization');
-const server=localStorage.getItem('remote2');
+
 class DeleteByIds extends React.Component {
+    server;
+    Authorization;
     constructor(props){
        super(props);
        this.cancel=this.cancel.bind(this);
@@ -15,10 +16,10 @@ class DeleteByIds extends React.Component {
         const ids = this.props.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${server}/jc/deliveryFactory/deleteByIds?ids=${ids}`,
+            url:`${this.server}/jc/deliveryFactory/deleteByIds?ids=${ids}`,
             method:'Delete',
             headers:{
-                  'Authorization' :Authorization
+                  'Authorization' :this.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -28,9 +29,9 @@ class DeleteByIds extends React.Component {
           message.info(data.data.message);
           this.props.fetch();//调用getAllByPage,渲染删除后的表格
         })//处理成功
-        .catch((error)=>{
+        .catch(()=>{
          // console.log(error);
-          message.info(error.data.message)
+          message.info('删除失败，请联系管理员！')
         });//处理异常
        
      }
@@ -38,6 +39,8 @@ class DeleteByIds extends React.Component {
       
     }
     render() {
+        this.Authorization=localStorage.getItem('Authorization');
+        this.server=localStorage.getItem('remote');
         return (
             <span>
              <Popconfirm placement="rightBottom" title="确定要删除所选择的数据吗?" onConfirm={this.deleteByIds} onCancel={this.cancel} okText="确定" cancelText="取消">
