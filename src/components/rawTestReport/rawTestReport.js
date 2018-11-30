@@ -5,21 +5,8 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import Detail from './detail';
 import RecordChecking from './recordChecking';
+import './rawTestReport.css';
 
-// const data = [{
-//     id:1,
-//     date:'2018-11-11 11:11:11',
-//     user:'张三',
-//     factory:'鹅厂',
-//     batchNumber:'YYYYH',
-//     textItem:'ca',
-//     notes:'ccc',
-//     type:0,
-//     receiveState:0,
-//     feedback:'sss',
-//     state:0,
-//     isUrgent:'紧急'
-// }]
 const data = [];
 for(var i = 1; i <= 20;i++){
     data.push({
@@ -44,14 +31,25 @@ class RawTestReport extends React.Component{
     constructor(props){
         super(props);
         this.state ={
+            dataSource:data,
             selectedRowKeys : [],
             searchContent : ''
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        this.lastStep = this.lastStep.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.pagination = {
+            total: this.state.dataSource.length,
+            showTotal(total) {
+              return `共${total}条记录`
+            } ,
+            showSizeChanger: true,
+            onShowSizeChange(current, pageSize) {
+            },
+            onChange(current) {
+            }
+          }
         this.columns = [{
             title:'序号',
             dataIndex:'id',
@@ -117,13 +115,22 @@ class RawTestReport extends React.Component{
             dataIndex:'state',
             key:'state',
             align:'center',
-            width:'6%'
+            width:'6%',
+            render:state => {
+                switch(`${state}`) {
+                  case '1': return '审核中';
+                  case '2': return '不通过';
+                  case '3': return '已通过';
+                  default: return '';
+                }
+            },
         },{
             title:'紧急',
             dataIndex:'isUrgent',
             key:'isUrgent',
             align:'center',
-            width:'6%'
+            width:'6%',
+            render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
         },{
             title:'操作',
             dataIndex:'operation',
@@ -154,19 +161,14 @@ class RawTestReport extends React.Component{
     }
     /**批量删除 */
     deleteByIds(){
-
+        const ids = this.state.selectedRowKeys;
     }
     /**搜索功能 */
     searchEvent(){
 
     }
-    /**实现上一步，返回数据录入页面 */
-    lastStep(){
-        this.props.history.push({pathname:'dataEntry'});
-    }
     /**实现全选 */
    onSelectChange(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys:selectedRowKeys }); 
    } 
     render(){
@@ -174,12 +176,6 @@ class RawTestReport extends React.Component{
             onChange:this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-          };
-          const pagination = {
-              total: data.length,
-              showSizeChange(current,pageSize) {
-              },
-              onChange(current) {}
           };
         return (
             <div>
@@ -190,10 +186,7 @@ class RawTestReport extends React.Component{
                     <span style={{float:'right',paddingBottom:'8px'}} >
                         <SearchCell name='请输入什么什么' searchEvent={this.searchEvent} searchContent={this.searchContent}></SearchCell>
                     </span>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={data} rowSelection={rowSelection} pagination={pagination} scroll={{y:400}} size='small' bordered/> 
-                <div style={{marginLeft:'90%', marginTop:'29%',marginRight:'80px',height:'50px',position:'absolute'}} >
-                    <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
-                </div> 
+                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} pagination={this.pagination} scroll={{y:400}} size='small' bordered/> 
                 </div>
             </div>
         );

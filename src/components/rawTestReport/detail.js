@@ -1,24 +1,6 @@
 import React from 'react';
+import IsQualified from '../BlockQuote/isQualified'
 import {Modal,Button,Table, Divider,Icon} from 'antd';
-const columns = [{
-    title:'批号',
-    dataIndex:'batchNumber',
-    key:'batchNumber',
-    align:'center',
-    width:'33%'
-},{
-    title:'原材料',
-    dataIndex:'raw',
-    key:'raw',
-    align:'center',
-    width:'33%'
-},{
-    title:'送样日期',
-    dataIndex:'date',
-    key:'date',
-    align:'center',
-    width:'33%'
-},]
 const columns1 = [{
     title:'序号',
     dataIndex:'id',
@@ -82,29 +64,40 @@ class Detail extends React.Component{
         })
     }
     render(){
+        const value = this.props.value;
         return (
             <span>
                 <a onClick={this.handleDetail} >详情</a>
                 <Modal title='详情' visible={this.state.visible} closable={false}
-                 onCancel={this.handleCancel} style={{top:15}}
+                maskClosable={false}
+                 onCancel={this.handleCancel} style={{top:10}}
                  footer={[
                     //  <Button key='submit' type='primary' size='large' onClick={this.handleOk} >确定</Button>,
-                     <Button key='back' type='primary' size='large' onClick={this.handleCancel}><Icon type="left" />返回</Button>
+                     <Button key='back' type='primary' size='default' onClick={this.handleCancel} className='button' style={{right:'80%'}}><Icon type="left" />返回</Button>
                  ]}>
-                 <div style={{height:'600px'}}>
-                     <Table rowKey={record=>record.id} columns={columns} dataSource={[this.props.value]} pagination={false} size='small' bordered></Table>
+                 <div style={{height:'550px'}}>
+                     <table>
+                         <thead className='thead'>
+                             <tr>
+                                 <td>批号</td><td>原材料</td><td>送样日期</td>
+                             </tr>
+                         </thead>
+                         <tbody className='tbody'>
+                             <tr>
+                                 <td>{value.factory}</td><td>{value.batchNumberId}</td><td>{value.date}</td>
+                             </tr>
+                         </tbody>
+                     </table>
                      <div style={{padding:'10px'}}>
-                         <span>样品名称：镍矿石样品</span>
+                         <span className='span'>样品名称：镍矿石样品</span>
                      </div>
-                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:330}}></Table>
+                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:250}}></Table>
                      <div style={{padding:'10px',height:'40px',fontSize:'15px'}}>
                          <div style={{float:'left'}}>
-                             <span>检验人：</span><span></span><br/>
-                             <span>检验时间：</span><span></span>
+                             <p className='span'>检验人：<span></span></p>
+                             <p className='span'>检验时间：<span></span></p>
                          </div>
-                         <div style={{float:'right'}}>
-                             合格
-                         </div>
+                         <IsQualified status={1}></IsQualified>
                      </div>
                      <Divider type='horizontal'/>
                      <div style={{textAlign:'center',fontSize:'15px'}}>
