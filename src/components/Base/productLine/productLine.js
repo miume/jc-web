@@ -181,7 +181,7 @@ class ProductLine extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/productLine/getAllByPage`,
+        url: `${this.server}/jc/common/productLine/getAllByPage`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -208,7 +208,7 @@ class ProductLine extends React.Component{
       //console.log(id);
         const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/productLine/${id}`,
+          url:`${this.server}/jc/common/productLine/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -245,7 +245,7 @@ class ProductLine extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/productLine/deleteByIds`,
+            url:`${this.server}/jc/common/productLine/deleteByIds`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization
@@ -304,7 +304,7 @@ class ProductLine extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/productLine/update`,
+              url:`${this.server}/jc/common/productLine/update`,
               method:'post',
               headers:{
                 'Authorization':this.Authorization
@@ -345,7 +345,7 @@ class ProductLine extends React.Component{
       searchEvent(){
            const productLineName=this.state.searchContent;
            axios({
-             url:`${this.server}/jc/productLine/getByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/productLine/getByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization

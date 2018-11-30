@@ -190,7 +190,7 @@ class SamplePoint extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/testItem/getAllByPage`,
+        url: `${this.server}/jc/common/testItem/getAllByPage`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -219,7 +219,7 @@ class SamplePoint extends React.Component{
       //console.log(id);
         const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/testItem?id=${id}`,
+          url:`${this.server}/jc/common/testItem?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -256,7 +256,7 @@ class SamplePoint extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/testItem/deleteByIds`,
+            url:`${this.server}/jc/common/testItem/deleteByIds`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization
@@ -314,7 +314,7 @@ class SamplePoint extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/testItem/update`,
+              url:`${this.server}/jc/common/testItem/update`,
               method:'post',
               headers:{
                 'Authorization':this.Authorization
@@ -356,7 +356,7 @@ class SamplePoint extends React.Component{
            const testItemName=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${this.server}/jc/testItem/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/testItem/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization

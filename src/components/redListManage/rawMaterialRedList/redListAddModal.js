@@ -112,7 +112,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                 )}
                 </FormItem>
                 <FormItem  label='损失货品重量' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('number',{
+                {getFieldDecorator('weight',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
@@ -126,16 +126,28 @@ const CollectionCreateForm = Form.create()(//弹出层
       }
     }
   );
-  //这是个令牌，每次调接口将其放在header里面
-//const Authorization=localStorage.getItem('Authorization');
-//通过这个获取接口地址
-//const server=localStorage.getItem('remote2');
+
 class RawMaterialRedListAddModal extends React.Component{
     state = {
         visible: false,//新增的弹出框
       
       };
-    
+    //显示当前时间为某年某月某日
+    getNowFormatDate=()=> {
+      let date = new Date();
+      
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+          month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+          strDate = "0" + strDate;
+      }
+      let currentdate = year + '年' + month + '月'+ strDate+'日';
+      return currentdate;
+  }
       showModal = () => {
         this.setState({ visible: true });
       }
@@ -174,7 +186,11 @@ class RawMaterialRedListAddModal extends React.Component{
         //   this.setState({ visible: false });
         // });
         form.validateFields((error,values)=>{
+              
+              values['userId']=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
+              values['currentDate']=this.getNowFormatDate();
               console.log(values);
+              //console.log(a);
         })
       }
     

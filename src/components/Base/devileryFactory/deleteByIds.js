@@ -16,7 +16,7 @@ class DeleteByIds extends React.Component {
         const ids = this.props.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/deliveryFactory/deleteByIds?ids=${ids}`,
+            url:`${this.server}/jc/common/deliveryFactory/deleteByIds?ids=${ids}`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization

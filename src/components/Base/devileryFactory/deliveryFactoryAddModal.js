@@ -13,8 +13,8 @@ const CollectionCreateForm = Form.create()(//弹出层
             visible={visible}
             title="新增"
             maskClosable='false'
-            onOk={this.props.onCreate}
-            onCancel={this.props.onCancel}
+            onOk={onCreate}
+            onCancel={onCancel}
             footer={[
                 <Button key='submit' type='primary' size='large' onClick={this.props.onCreate}>确定</Button>,
                 <Button key='back' type='ghost'size='large' onClick={this.props.onCancel}>取消</Button>
@@ -60,7 +60,7 @@ class DeliveryFactoryAddModal extends React.Component{
             return;
           }
           axios({
-            url:`${this.server}/jc/deliveryFactory/add`,
+            url:`${this.server}/jc/common/deliveryFactory/add`,
             method:'post',
             headers:{
               'Authorization':this.Authorization
@@ -90,7 +90,7 @@ class DeliveryFactoryAddModal extends React.Component{
           //这是个令牌，每次调接口将其放在header里面
          this.Authorization=localStorage.getItem('Authorization');
        //通过这个获取接口地址
-         this.server=localStorage.getItem('remote2');
+         this.server=localStorage.getItem('remote');
         return(
           <span>
               <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.showModal} >新增</Button>
