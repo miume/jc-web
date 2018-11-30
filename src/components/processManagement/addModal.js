@@ -110,7 +110,7 @@ class AddModal extends React.Component {
     state = {
         visible: false,
     };
-    server = localStorage.getItem('remote2');
+    server = localStorage.getItem('remote');
 
     showModal = () => {
         this.setState({ visible: true });

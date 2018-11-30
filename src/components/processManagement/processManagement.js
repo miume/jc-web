@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
-import { Table,Input,Icon,Button,Form,Popconfirm,Divider,message } from 'antd';
+import { Table,Input,Icon,Button,Popconfirm,Divider,message } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';
@@ -22,7 +22,7 @@ class Management extends React.Component{
             searchContent:'',
             searchText: '',
         }
-        this.server = localStorage.getItem('remote2');
+        this.server = localStorage.getItem('remote');
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancle = this.cancle.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);

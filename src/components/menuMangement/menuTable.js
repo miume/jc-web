@@ -141,7 +141,6 @@ class MenuTable extends React.Component{
                                 <EditableContext.Consumer>
                                     {form => (
                                         <span
-                                            href="javascript:;"
                                             onClick={() => this.save(form, record.id)}
                                             style={{ marginRight: 8 }}
                                             className="blue"
