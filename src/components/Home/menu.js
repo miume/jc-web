@@ -21,7 +21,7 @@ class Menu1List extends React.Component {
     const latestOpenKeys = openKeys.find(key=>this.state.openKeys.indexOf(key)===-1);
     // console.log('latestOPenKeys:'+latestOpenKeys)
     /**如果展开当前一级菜单和以前的不一样 */
-    if(this.state.openKeys != latestOpenKeys){
+    if(this.state.openKeys !== latestOpenKeys){
         this.setState({
           openKeys : [latestOpenKeys]
         });
@@ -33,7 +33,7 @@ class Menu1List extends React.Component {
     const menuName = event.item.props.children;
     var menuClick = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):[];
     if(menuClick){
-        var repeat = menuClick.find(m=>m.menuName==menuName);
+        var repeat = menuClick.find(m=>m.menuName===menuName);
         if(!repeat && menuClick.length === 6){
           /**删除第一条，然后添加最新的访问记录 */
           menuClick.splice(0,1);

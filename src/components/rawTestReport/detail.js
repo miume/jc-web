@@ -67,7 +67,7 @@ class Detail extends React.Component{
         const value = this.props.value;
         return (
             <span>
-                <a onClick={this.handleDetail} >详情</a>
+                <span className='blue' onClick={this.handleDetail} >详情</span>
                 <Modal title='详情' visible={this.state.visible} closable={false}
                 maskClosable={false}
                  onCancel={this.handleCancel} style={{top:10}}

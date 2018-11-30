@@ -5,9 +5,9 @@ import RawMaterialApplication from './rawMaterialApplication/rawMaterialApplicat
 import RawMaterialOut from './rawMaterialApplication/rawMaterialOut';
 const TabPane = Tabs.TabPane;
 class StockOut extends React.Component{
-    constructor(props){
-        super(props);
-    }
+    // constructor(props){
+    //     super(props);
+    // }
     render(){
         return (
             <div>

@@ -142,11 +142,6 @@ const approvalProcess = [{
     width: '9%',
     align:'center',
   }]
-  const detailData = [{
-      id: 1,
-      productLine:'HHHH',
-
-  }]
 /**存取 */
 
 class Detail extends React.Component{
@@ -187,7 +182,7 @@ class Detail extends React.Component{
     click(e){
       const id = e.target.id;
       console.log('this.state.clickId:'+this.state.clickId+'  id:'+id)
-      if(id!=this.state.clickId){
+      if(id!==this.state.clickId){
         document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
         e.target.style.backgroundColor='#00b4f0';
       }
@@ -200,10 +195,9 @@ class Detail extends React.Component{
     }
 
     render() {
-        const data = [this.props.value];
         return (
             <span>
-                <a onClick={this.handleDetail} >详情</a>
+                <span className='blue' onClick={this.handleDetail} >详情</span>
                 <Modal title="详情" visible={this.state.visible}
                     onCancel={this.handleCancel}  width='1000px'
                     footer={[

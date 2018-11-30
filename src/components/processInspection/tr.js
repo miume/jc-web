@@ -16,7 +16,6 @@ const approvalProcess = [{
 const children = approvalProcess.map(p => 
     <Option key={p.id}>{p.name}</Option>
 )
-const text ='1111';
 class Tr extends React.Component{
     constructor(props){
         super(props);
@@ -53,7 +52,7 @@ class Tr extends React.Component{
                             </Row>
                             </Checkbox.Group>
                         }
-                        <a onClick={this.hide}>Close</a>
+                        <span className='blue' onClick={this.hide}>Close</span>
                         </div>
                     )}
                     title="Click title"
@@ -67,7 +66,7 @@ class Tr extends React.Component{
                 <td><Input defaultValue='' placeholder='请输入测试频率' style={{border:'none',textAlign:'center'}} /></td>
                 <td><Input defaultValue='' placeholder='请输入状态' style={{border:'none',textAlign:'center'}}/></td>
                 <td><Input defaultValue='' placeholder='请输入备注' style={{border:'none',textAlign:'center'}}/></td>
-                <td><a href='#' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</a></td>
+                <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
             </tr>
         );
 

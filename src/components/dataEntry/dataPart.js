@@ -1,9 +1,6 @@
 import React from 'react';
 import './data.css';
 class DataPart extends React.Component{
-    constructor(props){
-        super(props);
-    }
     render(){
         return (
             <div className='nav-card' style={{cursor:'pointer',display:'inline-block',height:'220px'}} id={this.props.path} onClick={this.props.click}>

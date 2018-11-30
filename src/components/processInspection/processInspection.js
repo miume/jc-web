@@ -55,11 +55,11 @@ class ProcessInspection extends React.Component{
         this.getAllProductionProcess();
         this.getAllSamplePoint();
         this.getAllTestItem();
-        // this.getAllUser();
+        this.getAllUser();
         document.getElementById('/processInspection').style.color = '#0079FE'
     }
     componentWillMount(){
-        this.setState = (state,callback)=>{
+        this.setState = ()=>{
           return;
         }
     }
@@ -86,8 +86,8 @@ class ProcessInspection extends React.Component{
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
-      const ids = this.state.selectedRowKeys.toString();
-      console.log(ids)
+      // const ids = this.state.selectedRowKeys.toString();
+      // console.log(ids)
    }
     cancle() {
 
@@ -167,7 +167,7 @@ class ProcessInspection extends React.Component{
     })   
     }
     /**获取所有用户 */
-    getAllTestItem(){
+    getAllUser(){
       axio({
         url:`${server1}/jc/auth/user/getAll`,
         method:'get',
@@ -189,9 +189,9 @@ class ProcessInspection extends React.Component{
         };
         const pagination = {
             total: data.length,
-            showSizeChange(current,pageSize) {
+            showSizeChange() {
             },
-            onChange(current) {}
+            onChange() {}
         };
         const columns = [{
           title: '序号',
@@ -258,6 +258,7 @@ class ProcessInspection extends React.Component{
               case '3': return '审核未通过';
               case '4': return '合格';
               case '5': return '不合格';
+              default:return '';
             }
           },
           width: '10%',
@@ -268,7 +269,7 @@ class ProcessInspection extends React.Component{
           key:'operate',
           width: '15%',
           align:'center',
-          render: (text,record) => {
+          render: (record) => {
               return (
                   <span>
                       <Detail value={record} />
@@ -276,7 +277,7 @@ class ProcessInspection extends React.Component{
                       <Editor value={record} />
                       <Divider type="vertical" />
                       <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.key)} okText="确定" cancelText="取消" >
-                          <a href="#">删除</a>
+                          <span className='blue'>删除</span>
                       </Popconfirm>
                   </span>
                   );

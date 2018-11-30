@@ -91,7 +91,7 @@ class RecordChecking extends React.Component{
         const value = this.props.value;
         return (
             <span>
-                <a onClick={this.handleClick}>录检</a>
+                <span className='blue' onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 footer={[
                     <Button key='back' type='ghost' size='large' onClick={this.handleCancel} style={{float:'left'}}><Icon type="close" />取消</Button>,

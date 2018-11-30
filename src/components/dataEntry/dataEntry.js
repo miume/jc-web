@@ -2,8 +2,6 @@ import React from 'react';
 import './data.css';
 import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
-// const menuList = JSON.parse(localStorage.getItem('menuList'));
-// console.log(menuList.userId)
 const data = [{
     id:1,
     name:'制程检测',

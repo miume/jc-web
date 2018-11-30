@@ -22,7 +22,7 @@ class Exit extends Component {
         document.getElementById('defaultCanvas0').style.visibility='visible'; 
         var showFrame = setInterval(function() {
             var frame = window.frame;
-            if(frame != undefined && frame != null) {
+            if(frame !== undefined && frame !== null) {
                 frame(20);   //恢复帧
                 clearInterval(showFrame);
             }

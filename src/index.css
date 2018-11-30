@@ -73,4 +73,6 @@ code {
 .ant-switch-checked{
   background-color: red !important;
 }
-
+.blue{
+  color: #0086ff;
+}
