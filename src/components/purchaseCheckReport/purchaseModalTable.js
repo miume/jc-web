@@ -241,11 +241,8 @@ class PurchaseModalTable extends React.Component {
         this.setState({
             leftDistance : leftDistance
         });
-        // var removeDistance = -1 *(this.state.middleTheadIdWidth-this.state.theadMiddleWidth);
-        // middleTheadId.style.left = removeDistance+'px';
 
         console.log(this.state.theadMiddleWidth);
-        console.log(this.state.middleTheadIdWidth);
 
     };
     handleRightOnclick = () => {
