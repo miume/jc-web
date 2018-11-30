@@ -1,8 +1,8 @@
 import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
-import axios from "axios";
-import {message,Table,Divider} from "antd";
-import WhiteSpace from '../BlockQuote/whiteSpace';
+// import axios from "axios";
+import {Table,Divider} from "antd";
+// import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
@@ -147,13 +147,13 @@ class SampleInspection extends React.Component{
         render(text,record){
             return(
                 <div>
-                    <a href='#'>编辑</a>
+                    <span className='blue' href='#'>编辑</span>
                     <Divider type="vertical" />
-                    <a href='#'>删除</a>
+                    <span className='blue' href='#'>删除</span>
                     <Divider type="vertical" />
-                    <a href='#'>接收</a>
+                    <span className='blue' href='#'>接收</span>
                     <Divider type="vertical" />
-                    <a href='#'>拒绝</a>
+                    <span className='blue' href='#'>拒绝</span>
                 </div>
             )
         }
@@ -182,7 +182,7 @@ class SampleInspection extends React.Component{
         }
     }
     render(){
-        const { loading,selectedRowKeys } = this.state;
+        const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,

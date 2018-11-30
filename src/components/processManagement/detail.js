@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Button,Input,Table,Form} from 'antd';
+import {Modal,Button,Input,Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace'
 
 const columns = [{
@@ -46,7 +46,7 @@ class Detail extends React.Component{
     render(){
         return(
             <span>
-                <a onClick={this.handleDetail} >详情</a>
+                <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
                     onCancel={this.handleCancel} width='1000px'
                     footer={[

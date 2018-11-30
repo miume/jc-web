@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
-import { Table,Input,Icon,Button,InputNumber,Form,Popconfirm,Divider,Modal,message } from 'antd';
+import { Table,Input,Icon,Button,Form,Popconfirm,Divider,message } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';
@@ -9,7 +9,7 @@ import Detail from './detail';
 import Editor from './editor';
 import axios from "axios";
 
-const FormItem = Form.Item;
+// const FormItem = Form.Item;
 
 class Management extends React.Component{
     constructor(props){
@@ -109,21 +109,14 @@ class Management extends React.Component{
             width: '13%',
             render(text,record){
                 switch(record.status){
-                    case -1 : return "已保存未提交"
-                    break;
-                    case 0 : return "已审核未提交"
-                    break;
-                    case 1 : return "审核"
-                    break;
-                    case 2 : return "审核通过"
-                    break;
-                    case 3 : return "审核未通过"
-                    break;
-                    case 4 : return "合格"
-                    break;
-                    case 5 : return "不合格"
-                    break;
-                    default : return ''
+                    case -1 : return "已保存未提交";
+                    case 0 : return "已审核未提交";
+                    case 1 : return "审核";
+                    case 2 : return "审核通过";
+                    case 3 : return "审核未通过";
+                    case 4 : return "合格";
+                    case 5 : return "不合格";
+                    default : return '';
                 }
             }
         },{
@@ -154,7 +147,7 @@ class Management extends React.Component{
                         <Editor value={record} />
                         <Divider type="vertical" />
                         <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
-                            <a href="#">删除</a>
+                            <span className='blue' href="#">删除</span>
                         </Popconfirm>
                     </span>
                     );

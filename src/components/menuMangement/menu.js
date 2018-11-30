@@ -88,7 +88,7 @@ class Menu extends React.Component{
             })
     };
   render(){
-       this.server = localStorage.getItem('remote2');
+       this.server = localStorage.getItem('remote');
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
