@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
-import axios from 'axios';
+// import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import './rawAdd.css';
 import ApplyStockOut from './applyStockOut';
@@ -16,9 +16,9 @@ for(var i = 1; i<=20; i++){
         weight:'22' 
     })
 }
-const Authorization = localStorage.getItem('Authorization');
-const server = localStorage.getItem('remote');
 class RawMaterialApplication extends React.Component{
+    Authorization
+    server
     constructor(props){
         super(props);
         this.state = {
@@ -27,6 +27,8 @@ class RawMaterialApplication extends React.Component{
         }
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        // this.Authorization = localStorage.getItem('Authorization');
+        // this.server = localStorage.getItem('remote');
         this.columns = [{
             title:'序号',
             dataIndex:'id',
@@ -86,29 +88,29 @@ class RawMaterialApplication extends React.Component{
     }
     /**根据货物名称进行搜索 */
     searchEvent(){
-        const content = this.state.searchContent;
-        axios({
-            url:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
-            method:'get',
-            headers:{
-              'Authorization':Authorization
-            },
-            params:{
-              size: this.pagination.pageSize,
-              page: this.pagination.current,
-              roleName:content
-            },
-            type:'json',
-          }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total=res.total;
-            for(var i = 1; i<=res.list.length; i++){
-              res.list[i-1]['index']=(res.pages-1)*10+i;
-            }
-            this.setState({
-              dataSource: res.list,
-            });
-          })
+        // const content = this.state.searchContent;
+        // axios({
+        //     url:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
+        //     method:'get',
+        //     headers:{
+        //       'Authorization':Authorization
+        //     },
+        //     params:{
+        //       size: this.pagination.pageSize,
+        //       page: this.pagination.current,
+        //       roleName:content
+        //     },
+        //     type:'json',
+        //   }).then((data)=>{
+        //     const res = data.data.data;
+        //     this.pagination.total=res.total;
+        //     for(var i = 1; i<=res.list.length; i++){
+        //       res.list[i-1]['index']=(res.pages-1)*10+i;
+        //     }
+        //     this.setState({
+        //       dataSource: res.list,
+        //     });
+        //   })
     }
     render(){
         return (

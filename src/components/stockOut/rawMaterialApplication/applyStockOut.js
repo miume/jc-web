@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button,Modal,Icon,Table} from 'antd';
+import {Button,Modal,Table} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import Submit from './submit';
 import './rawAdd.css';
@@ -116,7 +116,7 @@ class ApplyStockOut extends React.Component{
             <span>
                 <Button type='primary' size='default' className='button' onClick={this.apply} ><i className="fa fa-plus-square" style={{color:'white'}}></i> 申请出库</Button>
                 <Modal title='申请' visible={this.state.visible}
-                    closable= {false} width='1100px'
+                    closable= {false} width='1100px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         // <Button key='back' type='ghost' onClick={this.handleCancel} style={{float:'left'}}><Icon type="close" />取消</Button>,
