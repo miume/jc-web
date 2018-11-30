@@ -183,7 +183,7 @@ Authorization;
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/productionProcess/getProductionProcessesByPage`,
+        url: `${this.server}/jc/common/productionProcess/getProductionProcessesByPage`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -211,7 +211,7 @@ Authorization;
       //console.log(id);
         const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/productionProcess/${id}`,
+          url:`${this.server}/jc/common/productionProcess/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -248,7 +248,7 @@ Authorization;
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/productionProcess/deleteByIds?ids=${ids}`,
+            url:`${this.server}/jc/common/productionProcess/deleteByIds?ids=${ids}`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization
@@ -308,7 +308,7 @@ Authorization;
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/productionProcess/update`,
+              url:`${this.server}/jc/common/productionProcess/update`,
               method:'post',
               headers:{
                 'Authorization':this.Authorization
@@ -350,7 +350,7 @@ Authorization;
            const name=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${this.server}/jc/productionProcess/getProductionProcessesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/productionProcess/getProductionProcessesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization

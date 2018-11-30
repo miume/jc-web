@@ -12,8 +12,8 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             title="新增"
-            onOk={this.props.onCreate}
-            onCancel={this.props.onCancel}
+            onOk={onCreate}
+            onCancel={onCancel}
             footer={[
                 <Button key='submit' type='primary' size='large' onClick={this.props.onCreate}>确定</Button>,
                 <Button key='back' type='ghost'size='large' onClick={this.props.onCancel}>取消</Button>
@@ -59,7 +59,7 @@ class TestItemAddModal extends React.Component{
             return;
           }
           axios({
-            url:`${this.server}/jc/testItem/add`,
+            url:`${this.server}/jc/common/testItem/add`,
             method:'post',
             headers:{
               'Authorization':this.Authorization

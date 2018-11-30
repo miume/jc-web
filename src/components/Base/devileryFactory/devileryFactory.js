@@ -173,7 +173,7 @@ class DeliveryFactory extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/deliveryFactory/getDeliveryFactoriesByPage`,
+        url: `${this.server}/jc/common/deliveryFactory/getDeliveryFactoriesByPage`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -199,7 +199,7 @@ class DeliveryFactory extends React.Component{
       //console.log(id);
         const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/deliveryFactory/${id}`,
+          url:`${this.server}/jc/common/deliveryFactory/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -259,7 +259,7 @@ class DeliveryFactory extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/deliveryFactory/update`,
+              url:`${this.server}/jc/common/deliveryFactory/update`,
               method:'post',
               headers:{
                 'Authorization':this.Authorization
@@ -301,7 +301,7 @@ class DeliveryFactory extends React.Component{
       searchEvent(){
            const name=this.state.searchContent;
            axios({
-             url:`${this.server}/jc/deliveryFactory/getDeliveryFactoriesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/deliveryFactory/getDeliveryFactoriesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization
