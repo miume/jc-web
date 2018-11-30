@@ -130,10 +130,7 @@ class OperationManagement extends React.Component {
                 loading: false,
                 dataSource: res.list,
             });
-        }).catch((error)=>{
-            console.log(error)
-            message.info(error.data.message)
-        });
+        })
     };
     componentDidMount() {
         this.fetch();

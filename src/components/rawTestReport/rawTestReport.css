@@ -1,0 +1,16 @@
+.thead{
+    background-color: #3369ff;
+    color:white;
+}
+.tbody tr td{
+    /* color:black;
+    border:1px solid grey; */
+    text-align: center;
+    color:#666;
+}
+.span{
+    color:black;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+}
