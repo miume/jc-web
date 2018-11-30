@@ -161,7 +161,7 @@ class RowMaterialInventor extends Component{
     render(){
        
         return(
-            <div>
+            <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入搜索内容'
                         searchContentChange={this.searchContentChange}
