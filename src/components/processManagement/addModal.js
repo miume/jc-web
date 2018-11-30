@@ -111,6 +111,7 @@ class AddModal extends React.Component {
     state = {
         visible: false,
     };
+    server = localStorage.getItem('remote2');
 
     showModal = () => {
         this.setState({ visible: true });
@@ -132,7 +133,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : 'http://192.168.1.105:8081/jc/batchAuditTask/add',
+                url : `${this.server}/jc/common/batchAuditTask/add`,
                 method:'post',
                 data: values,
                 type:'json'

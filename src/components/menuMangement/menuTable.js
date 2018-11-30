@@ -2,7 +2,7 @@ import React from 'react';
 import {Table, Input, InputNumber, Popconfirm, Form, Divider, message,Select,Button,Icon} from 'antd';
 import DeletaSpan from './deleteSpan';
 import axios from "axios";
-
+import SearchFather from './searchCell'
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -66,8 +66,6 @@ class EditableCell extends React.Component {
         );
     }
 }
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
 
 class MenuTable extends React.Component{
     constructor(props){
@@ -75,21 +73,16 @@ class MenuTable extends React.Component{
         this.state = {
             editingKey: '',
             searchText: '',
+            
         };
+        this.Authorization = localStorage.getItem('Authorization');
         this.isEditing = this.isEditing.bind(this);
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
     }
-    handleSearch = (selectedKeys, confirm) => () => {
-        confirm();
-        this.setState({ searchText: selectedKeys[0] });
-      }
     
-    handleReset = clearFilters => () => {
-    clearFilters();
-    this.setState({ searchText: '' });
-    }
+    
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -124,6 +117,13 @@ class MenuTable extends React.Component{
         align:'center',
         editable: 1,
         width: '20%',
+        filterDropdown: () => (
+            <div className="custom-filter-dropdown">
+              <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
+            </div>
+          ),
+        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
         render:(text,record)=>{
             return record.parentName
         },
@@ -255,7 +255,7 @@ class MenuTable extends React.Component{
                     url:'http://192.168.1.105:8081/jc/menu/update',
                     method:'post',
                     headers:{
-                        'Authorization':Authorization
+                        'Authorization':this.Authorization
                     },
                     data:data,
                     type:'json'

@@ -8,33 +8,21 @@ const CollectionCreateForm = Form.create()(
     class extends React.Component {
         constructor(props){
             super(props)
-            this.state={
-                visible1:false,
-            }
-        }
-        selectChange= (value) =>{
-            if(value=='1'){
-                this.setState({
-                    visible1:false
-                })
-            }else if(value=='2'){
-                this.setState({
-                    visible1:true
-                })
-            }
         }
         render() {
+            console.log(this.props.visible1)
+            this.server= localStorage.getItem("remote2")
             const { visible, onCancel, onCreate, form,fatherMenu } = this.props;
             const { getFieldDecorator } = form;
             return (
                 <Modal
                     visible={visible}
+                    closable={false}
                     title="新增"
-                    okText="确定"
-                    cancelText="取消"
-                    onCancel={onCancel}
-                    onOk={onCreate}
-                >
+                    footer={[
+                        <Button key="submit" type="primary" size="large" onClick={() => onCreate()}>确 定</Button>,
+                        <Button key="back" type="ghost" size="large" onClick={() => onCancel()}>返 回</Button>
+                      ]}>
                     <Form horizontal='true'>
                         <FormItem label="菜单名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('menuName', {
@@ -48,14 +36,14 @@ const CollectionCreateForm = Form.create()(
                                 rules: [{ required: true, message: '请选择菜单类型' }],
                                 initialValue : '1'
                             })(
-                                <Select onChange={this.selectChange}>
+                                <Select onChange={this.props.selectChange}>
                                     <Option value='1'>父菜单</Option>
                                     <Option value='2'>子菜单</Option>
                                 </Select>
                             )}
                         </FormItem>
                        {
-                           this.state.visible1 === true ?  <FormItem label='父菜单选择' labelCol={{span:5}} wrapperCol={{ span: 14 }} required >
+                           this.props.visible1 === true ?  <FormItem label='父菜单选择' labelCol={{span:5}} wrapperCol={{ span: 14 }} required >
                            {getFieldDecorator('parent',{
                                initialValue: '',
                                rules: [{required: true, message: '请选择父菜单'}],
@@ -80,10 +68,12 @@ const CollectionCreateForm = Form.create()(
 );
 
 /**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization = localStorage.getItem('Authorization');
+
 class AddModal extends React.Component {
     state = {
         visible: false,
+        visible1:false,
+        Authorization : localStorage.getItem('Authorization')
     };
 
     showModal = () => {
@@ -92,9 +82,21 @@ class AddModal extends React.Component {
 
     handleCancel = () => {
         const form = this.formRef.props.form;
-        this.setState({ visible: false });
+        this.setState({ visible: false,visible1:false });
         form.resetFields();
     };
+
+    selectChange= (value) =>{
+        if(value=='1'){
+            this.setState({
+                visible1 : false
+            })
+        }else if(value=='2'){
+            this.setState({
+                visible1 : true
+            })
+        }
+    }
 
     handleCreate = () => {
         const form = this.formRef.props.form;
@@ -107,7 +109,7 @@ class AddModal extends React.Component {
                 url : 'http://192.168.1.105:8081/jc/menu/add',
                 method:'post',
                 headers:{
-                    'Authorization': Authorization
+                    'Authorization': this.state.Authorization
                 },
                 data: values,
                 type:'json'
@@ -119,7 +121,7 @@ class AddModal extends React.Component {
             });
             // 将value传给后台
             form.resetFields();
-            this.setState({ visible: false });
+            this.setState({ visible: false,visible1:false });
         });
     };
 
@@ -137,6 +139,8 @@ class AddModal extends React.Component {
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                     fatherMenu = {this.props.fatherMenu}
+                    visible1={this.state.visible1}
+                    selectChange={this.selectChange}
                 />
             </span>
         );

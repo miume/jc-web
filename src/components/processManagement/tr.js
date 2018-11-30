@@ -12,12 +12,13 @@ class Tr extends React.Component{
             loading : false,
             searchContent : []
         }
-        this.searchContentChange=this.searchContentChange.bind(this)
+        this.server = localStorage.getItem('remote2');
+        // this.searchContentChange=this.searchContentChange.bind(this)
     }
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
         axios({
-            url: 'http://2p277534k9.iok.la:58718/jc/authUser/getAll',
+            url: `${this.server}/jc/common/authUser/getAll`,
             method:'get',
             params: params,
         }).then((data)=>{
