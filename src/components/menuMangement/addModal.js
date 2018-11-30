@@ -6,6 +6,7 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
+        server
         constructor(props){
             super(props)
         }
@@ -70,6 +71,7 @@ const CollectionCreateForm = Form.create()(
 /**这是个令牌，每次调用接口都将其放在header里 */
 
 class AddModal extends React.Component {
+    server
     state = {
         visible: false,
         visible1:false,
@@ -105,8 +107,9 @@ class AddModal extends React.Component {
                 return;
             }
             console.log(values)
+            
             axios({
-                url : 'http://192.168.1.105:8081/jc/menu/add',
+                url : `${this.server}/jc/auth/menu/add`,
                 method:'post',
                 headers:{
                     'Authorization': this.state.Authorization
@@ -130,6 +133,7 @@ class AddModal extends React.Component {
     };
 
     render() {
+        this.server = localStorage.getItem("remote2")
         return (
             <span>
                 <Button type="primary" size="small" style={{marginRight:'15px'}} onClick={this.showModal}>新增</Button>

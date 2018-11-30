@@ -45,16 +45,14 @@ class Editor extends React.Component{
         console.log(this.state)
     }
     deleteRow(value){
-        // const value = event.target.value;
-        // console.log(value)
         const {count,data} = this.state;
         this.setState({
             count: count-1,
             data: data.filter(d => d.toString()!==value)
         })
-        // console.log(this.state.data)
     }
     render(){
+        console.log(this.props.value.batchNumberId)
         return(
             <span>
                 <a onClick={this.handleDetail} >编辑</a>
@@ -67,8 +65,6 @@ class Editor extends React.Component{
                     <div style={{height:'400px'}}>
                          <div>
                              <Input value={this.props.value.name} style={{width:200}}/>
-                             <WhiteSpace />
-                             <Input value={"xxx的工艺"} style={{width:200}}/>
                              <WhiteSpace />
                              <Input value={this.props.value.type} style={{width:200}}/>
                          </div>
@@ -93,7 +89,6 @@ class Editor extends React.Component{
                          <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>
                 >
-
                 </Modal>
             </span>
         );

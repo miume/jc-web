@@ -1,8 +1,5 @@
 import React from 'react';
-import {Select,Input,Popover,Button,Checkbox,Row,Col} from 'antd';
 import axios from 'axios';
-
-const Option = Select.Option;
 
 class Tr extends React.Component{
     constructor(props){
@@ -10,7 +7,7 @@ class Tr extends React.Component{
         this.state = {
             approvalProcess:[],
             loading : false,
-            searchContent : []
+            // searchContent : []
         }
         this.server = localStorage.getItem('remote2');
         // this.searchContentChange=this.searchContentChange.bind(this)
@@ -32,19 +29,19 @@ class Tr extends React.Component{
     componentDidMount() {
         this.getAllUser();
     }
-    /**获取查询时菜单名称的实时变化 */
-    searchContentChange(e){
-        const value = e.target.value;
-        this.setState({searchContent:value});
-    }
+    // /**获取查询时菜单名称的实时变化 */
+    // searchContentChange(e){
+    //     const value = e.target.value;
+    //     this.setState({searchContent:value});
+    // }
     render(){
         const children = this.state.approvalProcess.map(p => 
-            <Option key={p.id} value={p.id}>{p.name}</Option>
+            <option id={p.id} key={p.id} value={p.id}>{p.name}</option>
         )
         return(
-            <tr className='tbody' id={this.props.value}>
-                <td><Select style={{width:'100%'}}>{children}</Select></td>
-                <td><Input onChange={this.searchContentChange}/></td>
+            <tr className='tbody'>
+                <td><select style={{width:'100%',border:"none"}} name="select" placeholder="请选择负责人">{children}</select></td>
+                <td><input name="input" style={{width:'100%',border:"none"}} placeholder="请输入职责"/></td>
                 <td><a href='#' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</a></td>
             </tr>
         )

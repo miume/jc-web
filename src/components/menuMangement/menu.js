@@ -11,6 +11,7 @@ import SearchCell from '../BlockQuote/search';
 /**这是个令牌，每次调用接口都将其放在header里 */
 
 class Menu extends React.Component{
+    server
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -87,6 +88,7 @@ class Menu extends React.Component{
             })
     };
   render(){
+       this.server = localStorage.getItem('remote2');
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
@@ -148,7 +150,7 @@ class Menu extends React.Component{
       this.getAllFatherMenu();
       this.setState({ loading: true });
       axios({
-          url: 'http://192.168.1.105:8081/jc/menu/findAllByPage',
+          url: `${this.server}/jc/auth/menu/findAllByPage`,
           method: 'get',
           headers:{
               'Authorization': this.Authorization
@@ -173,7 +175,7 @@ class Menu extends React.Component{
   /**获取所有父菜单 */
   getAllFatherMenu(){
     axios({
-      url:'http://192.168.1.105:8081/jc/menu/findByMenuType',
+      url:`${this.server}/jc/auth/menu/findByMenuType`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -189,7 +191,7 @@ class Menu extends React.Component{
     start = () => {
       const ids = this.state.selectedRowKeys;
       axios({
-          url:'http://192.168.1.105:8081/jc/menu/deleteByIds',
+          url:`${localStorage.getItem('remote2')}/jc/auth/menu/deleteByIds`,
           method:'post',
           headers:{
               'Authorization':this.Authorization
@@ -217,7 +219,7 @@ class Menu extends React.Component{
     searchEvent(){
       const ope_name = this.state.searchContent;
       axios({
-          url:'http://192.168.1.105:8081/jc/menu/findByNameLikeByPage',
+          url:`${this.server}/jc/auth/menu/findByNameLikeByPage`,
           method:'get',
           headers:{
               'Authorization':this.Authorization
