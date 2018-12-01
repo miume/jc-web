@@ -10,7 +10,7 @@ class CheckEditSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            pvisivle: false,
+            modalVisible: false,
             checkSelectData:true,
             checkSwitchData:false,
         };
@@ -76,6 +76,7 @@ class CheckEditSpan extends React.Component {
                 >
                     <div style={{height:450}}>
                         <PurchaseModal
+                            modalVisible={this.state.modalVisible}
                         />
 
                     </div>
@@ -107,6 +108,7 @@ class CheckEditSpan extends React.Component {
         this.setState({
             pvisivle: false,
         });
+
     };
     handleVisibleChange = (pvisivle) => {
         this.setState({ pvisivle });

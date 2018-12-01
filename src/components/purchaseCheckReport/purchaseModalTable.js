@@ -35,9 +35,7 @@ class PurchaseModalTable extends React.Component {
             headColumns: headData ,
             tbodyData: tbodyData,
             // 用于鼠标移进移出
-            detailShow: 'none',
-            x: 0,
-            y: 0,
+            hover: false,
             // 宽度
             theadMiddleWidth: 0, //表头动态宽度
             middleTheadIdWidth: 0, //表头动态含滚动的宽度
@@ -49,7 +47,9 @@ class PurchaseModalTable extends React.Component {
             radioTrueNum: 0,
             radioFalseNum: 0,
             colorStatueId: [], //用来存储已经变红的标签id--转换成这一行
-        }
+        };
+        this.handleMouseOver = this.handleMouseOver.bind(this);
+        this.handleMouseOut = this.handleMouseOut.bind(this);
     }
     render() {
         /**这是个令牌，每次调用接口都将其放在header里 */
@@ -64,8 +64,8 @@ class PurchaseModalTable extends React.Component {
                         <div className="leftThead">序号</div>
                         <div className="leftThead">批号</div>
                     </div>
-                    <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-                        <div id="leftOnclick" onClick={this.handleLeftOnclick}>
+                    <div id="theadMiddle"  onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                        <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
                         <div className="middleThead" id="middleTheadId">
@@ -92,7 +92,7 @@ class PurchaseModalTable extends React.Component {
                             }
                             <div style={{clear: 'both'}}></div>
                         </div>
-                        <div id="rightOnclick" onClick={this.handleRightOnclick}>
+                        <div className={(this.state.hover? 'rightOnclick':'')} onClick={this.handleRightOnclick}>
                             <i className="fa fa-chevron-right fa-2x"></i>
                         </div>
                     </div>
@@ -184,25 +184,14 @@ class PurchaseModalTable extends React.Component {
     /**获取鼠标移进移出数据*/
     handleMouseOver = (e) => {
         this.setState({
-            detailShow: 'block',
-            x: e.pageX, //pageX是以html左上角为原点，相应的clientX是以浏览器左上角为原点
-            y: e.pageY,
-        });
-        const leftOnclick = document.getElementById("leftOnclick");
-        const rightOnclick = document.getElementById("rightOnclick");
-        leftOnclick.style.display = "block";
-        rightOnclick.style.display = "block";
+            hover: true,
+        })
+
     };
     handleMouseOut = () =>{
         this.setState({
-            detailShow: 'none',
-            x: 0,
-            y: 0
-        });
-        const leftOnclick = document.getElementById("leftOnclick");
-        const rightOnclick = document.getElementById("rightOnclick");
-        leftOnclick.style.display = "none";
-        rightOnclick.style.display = "none";
+            hover: false,
+        })
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
