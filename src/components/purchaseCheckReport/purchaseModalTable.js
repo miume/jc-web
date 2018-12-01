@@ -217,44 +217,42 @@ class PurchaseModalTable extends React.Component {
         });
     }
     handleLeftOnclick = () => {
-        var theadMiddle = document.getElementById("theadMiddle");
         var middleTheadId = document.getElementById("middleTheadId");
         const theadMiddleWidth = this.state.theadMiddleWidth;
         const middleTheadIdWidth = this.state.middleTheadIdWidth;
         var leftDistance = this.state.leftDistance;
         var left = 0;
-        // var removeDistanceFlag = this.state.removeDistanceFlag - 1;
         const endLength = middleTheadIdWidth - leftDistance - theadMiddleWidth;
-        if(endLength>0&&endLength<theadMiddleWidth){
+        if((endLength>0&&endLength<theadMiddleWidth)||(theadMiddleWidth + leftDistance === middleTheadIdWidth)){
             leftDistance = middleTheadIdWidth - theadMiddleWidth;
             left = -1 * leftDistance;
             middleTheadId.style.left = left+'px';
         }else{
-            console.log('xxx',middleTheadIdWidth - theadMiddleWidth)
             leftDistance = leftDistance + theadMiddleWidth;
             left = -1 * leftDistance;
-            console.log('aaa',leftDistance)
             middleTheadId.style.left = left+'px';
-            // middleTheadId.style.right = 0;
         }
         this.setState({
             leftDistance : leftDistance
         });
-
-        console.log(this.state.theadMiddleWidth);
-
     };
     handleRightOnclick = () => {
-        var theadMiddle = document.getElementById("theadMiddle");
         var middleTheadId = document.getElementById("middleTheadId");
-        var theadMiddleWidth = theadMiddle.offsetWidth;
-        var middleTheadIdWidth = middleTheadId.offsetWidth;
+        const theadMiddleWidth = this.state.theadMiddleWidth;
+        var leftDistance = this.state.leftDistance;
+        var left = 0;
+        if(theadMiddleWidth-leftDistance > 0){
+            leftDistance = 0;
+            left = leftDistance;
+            middleTheadId.style.left = left;
+        }else{
+            leftDistance = leftDistance - theadMiddleWidth;
+            left = -1 * leftDistance;
+            middleTheadId.style.left = left+'px';
+        }
         this.setState({
-            theadMiddleWidth: theadMiddleWidth,
-            middleTheadIdWidth: middleTheadIdWidth
+            leftDistance : leftDistance
         });
-        console.log(this.state.theadMiddleWidth);
-        console.log(this.state.middleTheadIdWidth);
     };
 
     /**---------------------- */
