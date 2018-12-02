@@ -1,5 +1,5 @@
 import React from 'react';
-import axio from 'axios';
+// import axios from 'axios';
 import BlockQuote from '../dataEntry/blockQuote'
 import {Table,Popconfirm,Divider } from 'antd';
 import '../Home/page.css';
@@ -51,10 +51,6 @@ class ProcessInspection extends React.Component{
     server
     Authorization
     componentDidMount(){
-        this.getAllProductLine();
-        this.getAllProductionProcess();
-        this.getAllTestItem();
-        this.getAllUser();
         document.getElementById('/processInspection').style.color = '#0079FE'
     }
     componentWillMount(){
@@ -67,105 +63,48 @@ class ProcessInspection extends React.Component{
         this.state = {
             dataSource : data,
             selectedRowKeys : [],     //存取所选中checkbox的ids
-            allProductLine : [],      //存取所有产品线
-            allProductionProcess : [],//存取所有产品工序
-            allTestItem : [],         //存取所有检测项目
-            allUser : [],             //存取所有用户
         }
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
+        
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.lastStep = this.lastStep.bind(this);
-        this.getAllProductLine = this.getAllProductLine.bind(this);
-        this.getAllTestItem = this.getAllTestItem.bind(this);
-        // this.getAllUser = this.getAllUser.bind(this);
-        this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
+        
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
-      // const ids = this.state.selectedRowKeys.toString();
-      // console.log(ids)
-   }
+      const ids = this.state.selectedRowKeys;
+        // console.log(ids)
+        // axios({
+        //   url:`${this.server}/jc/auth/role/deleteByIds`,
+        //   method:'Delete',
+        //   headers:{
+        //     'Authorization':this.Authorization
+        //   },
+        //   data:ids,
+        //   type:'json'
+        // }).then((data)=>{
+        //   message.info(data.data.message);
+        //   this.fetch();
+        // }).catch(()=>{
+        //   message.info('删除错误，请联系管理员！')
+        // })
+        
+     }
     cancle() {
 
     }
    /**实现全选 */
    onSelectChange(selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys);
-      this.setState({ selectedRowKeys:selectedRowKeys }); 
+    this.setState({ selectedRowKeys:selectedRowKeys }); 
    } 
     /**处理单条记录删除 */
     handleDelete(key){
       const dataSource = this.state.dataSource;
       this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     }
-    /**返回数据录入的页面 */
-    lastStep(){
-      this.props.history.push({pathname:'dataEntry'})
-    }
-    /**获取所有产品线 */
-    getAllProductLine(){
-        axio({
-          url:`${this.server}/jc/common/productLine/getAll`,
-          method:'get',
-          headers:{
-            'Authorization':this.Authorization
-          }
-        }).then(data=>{
-          const res = data.data.data;
-          this.setState({
-              allProductLine : res
-          })
-      })
-    }
-    /**获取所有产品工序 */
-    getAllProductionProcess(){
-      axio({
-        url:`${this.server}/jc/common/productionProcess/getAll`,
-        method:'get',
-        headers:{
-          'Authorization':this.Authorization
-        }
-      }).then(data=>{
-        const res = data.data.data;
-        this.setState({
-          allProductionProcess : res
-      })
-    })   
-    }
-    /**获取所有检测项目 */
-    getAllTestItem(){
-      axio({
-        url:`${this.server}/jc/common/testItem/getAll`,
-        method:'get',
-        headers:{
-          'Authorization':this.Authorization
-        }
-      }).then(data=>{
-        const res = data.data.data;
-        this.setState({
-          allTestItem : res
-      })
-    })   
-    }
-    /**获取所有用户 */
-    getAllUser(){
-      axio({
-        url:`${this.server}/jc/common/authUser/getAll`,
-        method:'get',
-        headers:{
-          'Authorization':this.Authorization
-        }
-      }).then(data=>{
-        const res = data.data.data;
-        this.setState({
-          allUser : res
-      })
-    })   
-    }
     render() {
+        this.server = localStorage.getItem('remote');
+        this.Authorization = localStorage.getItem('Authorization');
         const rowSelection = {
           onChange:this.onSelectChange,
           onSelect() {},
@@ -272,7 +211,7 @@ class ProcessInspection extends React.Component{
                 <BlockQuote name='制程检测' menu='质量与流程' menu2='数据录入' returnDataEntry={this.returnDataEntry}/>
                 <div style={{padding:'15px'}}>
                     <Add />
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} checked={!this.state.selectedRowKeys.length} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号'/>
                     </span>

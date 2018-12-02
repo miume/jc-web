@@ -320,11 +320,11 @@ class Role extends React.Component {
         this.formRef.resetField()
       }
       
-      rowSelected(selectedRowKeys){
-        this.setState({
-          selectedIds: selectedRowKeys
-        });
-      }
+      // rowSelected(selectedRowKeys){
+      //   this.setState({
+      //     selectedIds: selectedRowKeys
+      //   });
+      // }
       showIds(event) {
         //console.log(event.target.value)
       }
