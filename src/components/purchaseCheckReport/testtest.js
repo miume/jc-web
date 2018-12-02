@@ -32,17 +32,18 @@ class PurchaseModalTable extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            //
+            flag: false,
+            //
             headColumns: headData ,
             tbodyData: tbodyData,
             // 用于鼠标移进移出
             hover: false,
-            detailShow: 'none',
-            x: 0,
-            y: 0,
             // 宽度
             theadMiddleWidth: 0, //表头动态宽度
             middleTheadIdWidth: 0, //表头动态含滚动的宽度
             leftDistance: 0, //移动的距离
+            movieLeftDistance: 0,
             // 用来存储已经变红的标签id--转换成这一行
             radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
             radioTrueArr: [],   //合格的数组--
@@ -67,16 +68,16 @@ class PurchaseModalTable extends React.Component {
                         <div className="leftThead">序号</div>
                         <div className="leftThead">批号</div>
                     </div>
-                    <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-                        <div id="leftOnclick" onClick={this.handleLeftOnclick}>
+                    <div id="theadMiddle"  ref={(ref) => this.theadMiddleRef = ref} onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                        <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
-                        <div className="middleThead" id="middleTheadId">
+                        <div className="middleThead" id="middleTheadId" ref={(ref) => this.middleTheadIdRef = ref} style={{left:this.state.movieLeftDistance+'px'}}>
                             {
                                 this.state.headColumns.map((item,index) => {
                                     if(index===0){
                                         return(
-                                            <div className="middleTheadDiv firstMiddleDiv" key={item.id}>
+                                            <div className="middleTheadDiv firstMiddleDiv"  key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -95,7 +96,7 @@ class PurchaseModalTable extends React.Component {
                             }
                             <div style={{clear: 'both'}}></div>
                         </div>
-                        <div id="rightOnclick" onClick={this.handleRightOnclick}>
+                        <div className={(this.state.hover? 'rightOnclick':'')} onClick={this.handleRightOnclick}>
                             <i className="fa fa-chevron-right fa-2x"></i>
                         </div>
                     </div>
@@ -184,89 +185,81 @@ class PurchaseModalTable extends React.Component {
         }
     };
     /**---------------------- */
-    onMouseEnter(){
+    /**获取鼠标移进移出数据*/
+    handleMouseOver = () => {
+        var middle = document.getElementsByClassName('theadMiddle')[0]
+        // // var middleItem = document.getElementsByClassName('middle-item')[0];
+        console.log('middle',middle)
         this.setState({
             hover: true,
-        });
-    }
+            flag: true,
+        })
 
-    onMouseLeave(){
+    };
+    handleMouseOut = () =>{
+        var middle = document.getElementsByClassName('middleTbodyDiv')[0].offsetWidth;
+        // var middleItem = document.getElementsByClassName('middle-item')[0];
+        console.log('middle',middle)
         this.setState({
             hover: false,
         })
-    }
-    /**获取鼠标移进移出数据*/
-    handleMouseOver = (e) => {
-        this.setState({
-            detailShow: 'block',
-            x: e.pageX, //pageX是以html左上角为原点，相应的clientX是以浏览器左上角为原点
-            y: e.pageY,
-        });
-        const leftOnclick = document.getElementById("leftOnclick");
-        const rightOnclick = document.getElementById("rightOnclick");
-        leftOnclick.style.display = "block";
-        rightOnclick.style.display = "block";
-    };
-    handleMouseOut = () =>{
-        this.setState({
-            detailShow: 'none',
-            x: 0,
-            y: 0
-        });
-        const leftOnclick = document.getElementById("leftOnclick");
-        const rightOnclick = document.getElementById("rightOnclick");
-        leftOnclick.style.display = "none";
-        rightOnclick.style.display = "none";
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
     componentDidMount () {
-        var theadMiddle = document.getElementById("theadMiddle");
-        var middleTheadId = document.getElementById("middleTheadId");
-        var theadMiddleWidth = theadMiddle.offsetWidth;
-        var middleTheadIdWidth = middleTheadId.scrollWidth;
+        // 通过设置ref来获取虚拟的dom节点
+        var theadMiddleWidth = this.theadMiddleRef.offsetWidth;
+        var middleTheadIdWidth = this.middleTheadIdRef.offsetWidth;
         this.setState({
             theadMiddleWidth: theadMiddleWidth,
-            middleTheadIdWidth: middleTheadIdWidth
+            middleTheadIdWidth: middleTheadIdWidth,
         });
     }
     handleLeftOnclick = () => {
-        var middleTheadId = document.getElementById("middleTheadId");
         const theadMiddleWidth = this.state.theadMiddleWidth;
         const middleTheadIdWidth = this.state.middleTheadIdWidth;
+        console.log(theadMiddleWidth)
+        console.log(middleTheadIdWidth)
         var leftDistance = this.state.leftDistance;
         var left = 0;
         const endLength = middleTheadIdWidth - leftDistance - theadMiddleWidth;
         if((endLength>0&&endLength<theadMiddleWidth)||(theadMiddleWidth + leftDistance === middleTheadIdWidth)){
             leftDistance = middleTheadIdWidth - theadMiddleWidth;
             left = -1 * leftDistance;
-            middleTheadId.style.left = left+'px';
+            this.setState({
+                leftDistance : leftDistance,
+                movieLeftDistance : left,
+            })
+            // middleTheadId.style.left = left+'px';
         }else{
             leftDistance = leftDistance + theadMiddleWidth;
             left = -1 * leftDistance;
-            middleTheadId.style.left = left+'px';
+            this.setState({
+                leftDistance : leftDistance,
+                movieLeftDistance : left,
+            })
+            // middleTheadId.style.left = left+'px';
         }
-        this.setState({
-            leftDistance : leftDistance
-        });
     };
     handleRightOnclick = () => {
-        var middleTheadId = document.getElementById("middleTheadId");
         const theadMiddleWidth = this.state.theadMiddleWidth;
         var leftDistance = this.state.leftDistance;
         var left = 0;
         if(theadMiddleWidth-leftDistance > 0){
             leftDistance = 0;
             left = leftDistance;
-            middleTheadId.style.left = left;
+            this.setState({
+                leftDistance : leftDistance,
+                movieLeftDistance : left,
+            })
         }else{
             leftDistance = leftDistance - theadMiddleWidth;
             left = -1 * leftDistance;
-            middleTheadId.style.left = left+'px';
+            this.setState({
+                leftDistance : leftDistance,
+                movieLeftDistance : left,
+            })
         }
-        this.setState({
-            leftDistance : leftDistance
-        });
     };
 
     /**---------------------- */

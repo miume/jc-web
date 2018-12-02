@@ -10,8 +10,6 @@
     padding-top: 12px;
     padding-bottom: 11px;
     z-index:100;
-    flex-grow: 2;
-    cursor: pointer;
 }
 .rightOnclick {
     /*display: none;*/
@@ -24,8 +22,7 @@
     padding-top: 12px;
     padding-bottom: 11px;
     z-index:100;
-    flex-grow: 1;
-    cursor: pointer;
+
 }
 /*#middle:hover {*/
 /*color: green;*/
@@ -82,11 +79,6 @@
     position: relative;
     left: 0;
     /*font-size: 0;*/
-    flex-grow: 7;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    justify-content: space-between;
 }
 .middleThead .middleTheadDiv{
     background-color: #E4E4E4;
@@ -100,7 +92,6 @@
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
     font-size: 12px;
-    transition: transform 2s;
 }
 .middleThead .middleTheadDiv div {
     border-bottom: 1px solid #CCCCCC;

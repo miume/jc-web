@@ -32,6 +32,9 @@ class PurchaseModalTable extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            //
+            flag: false,
+            //
             headColumns: headData ,
             tbodyData: tbodyData,
             // 用于鼠标移进移出
@@ -40,6 +43,7 @@ class PurchaseModalTable extends React.Component {
             theadMiddleWidth: 0, //表头动态宽度
             middleTheadIdWidth: 0, //表头动态含滚动的宽度
             leftDistance: 0, //移动的距离
+            movieLeftDistance: 0,
             // 用来存储已经变红的标签id--转换成这一行
             radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
             radioTrueArr: [],   //合格的数组--
@@ -68,12 +72,12 @@ class PurchaseModalTable extends React.Component {
                         <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
-                        <div className="middleThead" id="middleTheadId">
+                        <div className="middleThead" id="middleTheadId" ref={(ref) => this.middleTheadIdRef = ref} style={{left:this.state.movieLeftDistance+'px'}}>
                             {
                                 this.state.headColumns.map((item,index) => {
                                     if(index===0){
                                         return(
-                                            <div className="middleTheadDiv firstMiddleDiv" key={item.id}>
+                                            <div className="middleTheadDiv firstMiddleDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -107,7 +111,6 @@ class PurchaseModalTable extends React.Component {
                     {
                         this.state.tbodyData.map((item,index) => {
                             lineNum = lineNum + 1;
-                            // console.log(lineNum);
                             return(
                                 <div key={'tbody'+index}>
                                     <div id="tbodyLeft">
@@ -182,9 +185,10 @@ class PurchaseModalTable extends React.Component {
     };
     /**---------------------- */
     /**获取鼠标移进移出数据*/
-    handleMouseOver = (e) => {
+    handleMouseOver = () => {
         this.setState({
             hover: true,
+            flag: true,
         })
 
     };
@@ -195,53 +199,68 @@ class PurchaseModalTable extends React.Component {
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
-    componentDidMount () {
-        var theadMiddle = document.getElementById("theadMiddle");
-        var middleTheadId = document.getElementById("middleTheadId");
-        var theadMiddleWidth = theadMiddle.offsetWidth;
-        var middleTheadIdWidth = middleTheadId.scrollWidth;
-        this.setState({
-            theadMiddleWidth: theadMiddleWidth,
-            middleTheadIdWidth: middleTheadIdWidth
-        });
-    }
     handleLeftOnclick = () => {
-        var middleTheadId = document.getElementById("middleTheadId");
-        const theadMiddleWidth = this.state.theadMiddleWidth;
-        const middleTheadIdWidth = this.state.middleTheadIdWidth;
-        var leftDistance = this.state.leftDistance;
-        var left = 0;
-        const endLength = middleTheadIdWidth - leftDistance - theadMiddleWidth;
-        if((endLength>0&&endLength<theadMiddleWidth)||(theadMiddleWidth + leftDistance === middleTheadIdWidth)){
-            leftDistance = middleTheadIdWidth - theadMiddleWidth;
-            left = -1 * leftDistance;
-            middleTheadId.style.left = left+'px';
-        }else{
-            leftDistance = leftDistance + theadMiddleWidth;
-            left = -1 * leftDistance;
-            middleTheadId.style.left = left+'px';
+        var middle  = this.middleTheadIdRef;
+        var middleItem = this.middleTheadDivRef;
+        let count = middleItem.offsetWidth * 7;
+        let gap = (count / 100);
+        gap = gap.toFixed(0);
+        if(gap >= 1){
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                if(count < 5) {
+                    count -= 1;
+                    middle.scrollLeft += 1;
+                }else {
+                    count -= gap;
+                    middle.scrollLeft += Number(gap);
+                }
+                if(count <= 0 || pre === middle.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap >0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                count -= 1;
+                middle.scrollLeft += 1;
+                if(count <= 0|| pre === middle.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
         }
-        this.setState({
-            leftDistance : leftDistance
-        });
     };
     handleRightOnclick = () => {
-        var middleTheadId = document.getElementById("middleTheadId");
-        const theadMiddleWidth = this.state.theadMiddleWidth;
-        var leftDistance = this.state.leftDistance;
-        var left = 0;
-        if(theadMiddleWidth-leftDistance > 0){
-            leftDistance = 0;
-            left = leftDistance;
-            middleTheadId.style.left = left;
-        }else{
-            leftDistance = leftDistance - theadMiddleWidth;
-            left = -1 * leftDistance;
-            middleTheadId.style.left = left+'px';
+        var middle  = this.middleTheadIdRef;
+        var middleItem = this.middleTheadDivRef;
+        let count = middleItem.offsetWidth * 1;
+        let gap = (count / 100);
+        gap = gap.toFixed(0);
+        if(gap >= 1) {
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                if(count < 5) {
+                    count -= 1;
+                    middle.scrollLeft -= 1;
+                }
+                else {
+                    count -= gap;
+                    middle.scrollLeft -= Number(gap);
+                }
+                if(count <= 0 || pre === middle.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap > 0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                count -= 1;
+                middle.scrollLeft -= 1;
+                if(count <= 0|| pre === middle.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
         }
-        this.setState({
-            leftDistance : leftDistance
-        });
     };
 
     /**---------------------- */
