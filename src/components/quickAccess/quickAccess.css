@@ -19,6 +19,37 @@
     text-align: left;
     min-width: 415px;
 }
+div.quick-middle {
+    width: 40%;
+    margin: 0 auto 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+}
+
+div.quick-middle div.quick-text {
+    text-align: center;
+    display: inline-block;
+    padding: 0px 15px 0px 15px;
+    animation: shake 0.1s linear 0s 12 alternate;
+    
+}
+@keyframes shake {
+    from {
+        transform: rotate(10deg)
+    }
+    to {
+        transform: rotate(-10deg)
+    }
+}
+div.quick-middle div.quick-shadow {
+    height: 1px;
+    background-color: #999999;
+    
+    flex-grow: 2
+}
 
 .quick-tag-wrapper {
     padding: 5px;
@@ -41,6 +72,10 @@
         margin: 0 auto;
         text-align: left;
     }
+    div.quick-middle {
+        width: 46%;
+    }
+    
     .quick-tag-text {
         width:60%;
         position: relative;
@@ -61,6 +96,9 @@
         width:60%;
         position: relative;
         left: 5%;
+    }
+    div.quick-middle {
+        width: 58.5%;
     }
     .text-gap {
         display: inline-block;
@@ -90,5 +128,8 @@
         padding: 5px;
         display: inline-block;
         width: 50%;
+    }
+    .quick-container {
+        min-width: 701px;
     }
 }

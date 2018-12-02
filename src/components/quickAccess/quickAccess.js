@@ -5,11 +5,15 @@ class QuickAccess extends React.Component{
     render(){
         const quickAccess = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):'' ;
         return (
-            <div>
+            <div className='quick-container'>
                 <div className='quick-top'>
                     <img src={require(`./u8.svg`)} alt='图片加载失败' style={{width:'447px',height:'212px',borderWidth:'0px'/*position:'absolute',left:'33%',top:'10%'*/}} />
                 </div>
-                <p style={{textAlign:'center',fontSize:'20px',fontWeight:'bold',color:'black', margin:'0'}}><span>快速访问</span></p>
+                <div className='quick-middle' style={{textAlign:'center',fontSize:'20px',fontWeight:'400'}}>
+                    <div className='quick-shadow'></div>
+                    <div className='quick-text' style={{color:'#999999'}}>快速访问</div>
+                    <div className='quick-shadow'></div>
+                </div>
                 <div className='quick-tag-parent'>
                     {
                         (quickAccess)? quickAccess.map(menu=>
