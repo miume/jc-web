@@ -131,17 +131,11 @@ const CollectionCreateForm = Form.create()(//弹出层
     }
   );
 
-class RawMaterialRedListEditModal extends React.Component{
-  constructor(props){
-      super(props);
-      this.state = {
+class ProductRedListEditModal extends React.Component{
+    state = {
         visible: false,//新增的弹出框
         checkSwitch:false,
-        editColor:'grey',
       };
-  }
-  
-     
     //显示当前时间为某年某月某日
     getNowFormatDate=()=> {
       let date = new Date();
@@ -158,12 +152,9 @@ class RawMaterialRedListEditModal extends React.Component{
       return currentdate;
   }
       showModal = () => {
-        console.log(this.state.editColor);
         this.setState({ visible: true });
       }
-       notShowModal=()=>{
-        this.setState({ visible: false });
-       }
+     
       handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
@@ -231,4 +222,4 @@ class RawMaterialRedListEditModal extends React.Component{
         );
     }
 }
-export default Form.create()(RawMaterialRedListEditModal);//创建form实例
+export default Form.create()(ProductRedListEditModal);//创建form实例

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber} from 'antd';
+import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,Icon} from 'antd';
 
 //import axios from 'axios';
 const Option=Select.Option;
@@ -9,12 +9,13 @@ const CollectionCreateForm = Form.create()(//弹出层
       constructor(props){
         super(props);
         this.state={
-          checkSelectData:-1,
-          popVisible:false,
+          checkSelectData:-1,//最开始下拉框是没选择数据的
+          popVisible:false,//送检的气泡弹出
+          checkSwitch:false,//是否紧急那个开关最开始是关闭的即否
         }
-        this.hide=this.hide.bind(this);//送审气泡点击取消
-        this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审气泡点击确定
-        this.selectChange=this.selectChange.bind(this);
+        this.hide=this.hide.bind(this);//送审气泡的取消
+        this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
+        this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
         
       }
     
@@ -27,7 +28,7 @@ const CollectionCreateForm = Form.create()(//弹出层
         //console.log(this.state.popVisible)
         this.setState({popVisible:false});
       }
-      handleSongShenOk(){//送审气泡点击确定
+      handleSongShenOk(){//送审事件的确认按钮
         this.setState({popVisible:false});
       }
       handleVisibleChange=(visible)=>{
@@ -36,6 +37,14 @@ const CollectionCreateForm = Form.create()(//弹出层
           popVisible:visible
         })
     }
+     //红单是否紧急
+     urgentChange=(checked)=>{//checked指定当前是否选中
+        console.log(`switch to ${checked}`);//选中的话checked为true
+        this.setState({
+            checkSwitch:checked
+        });
+
+      }
       render() {
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
@@ -43,7 +52,7 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             maskClosable={false}
-            title="编辑红单数据"
+            title="添加红单"
             onOk={onCreate}
             onCancel={onCancel}
             
@@ -53,7 +62,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                        <Button key='cancel' style={{float:'left'}}>取消</Button>
                 </Popconfirm>,
                 
-                <Button key='save' type='primary'  onClick={this.props.onCreate}>保存</Button>,
+                <Button key='save' type='primary'  onClick={onCreate}>保存</Button>,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                 maskClosable={false}
                  content={
@@ -70,7 +79,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
                             <Button onClick={this.hide}>取消</Button>
-                            <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
+                            <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
                         </div>
                      </div>
                  }
@@ -78,7 +87,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                  visible={this.state.popVisible}
                  onVisibleChange={this.handleVisibleChange}
                 >
-                  <Button key='submit' type='primary'>送审</Button>
+                <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
                 </Popover>
             ]}
           >
@@ -131,20 +140,15 @@ const CollectionCreateForm = Form.create()(//弹出层
     }
   );
 
-class RawMaterialRedListEditModal extends React.Component{
-  constructor(props){
-      super(props);
-      this.state = {
+class ProductRedListAddModal extends React.Component{
+    state = {
         visible: false,//新增的弹出框
-        checkSwitch:false,
-        editColor:'grey',
+      
       };
-  }
-  
-     
     //显示当前时间为某年某月某日
     getNowFormatDate=()=> {
       let date = new Date();
+      
       let year = date.getFullYear();
       let month = date.getMonth() + 1;
       let strDate = date.getDate();
@@ -158,19 +162,16 @@ class RawMaterialRedListEditModal extends React.Component{
       return currentdate;
   }
       showModal = () => {
-        console.log(this.state.editColor);
         this.setState({ visible: true });
       }
-       notShowModal=()=>{
-        this.setState({ visible: false });
-       }
+     
       handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
         form.resetFields();
       }
     
-      handleCreate = () => {//编辑一条记录
+      handleCreate = () => {//新增一条记录
         const form = this.formRef.props.form;
         // form.validateFields((err, values) => {//校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
         //   if (err) {
@@ -209,17 +210,13 @@ class RawMaterialRedListEditModal extends React.Component{
       saveFormRef = (formRef) => {
         this.formRef = formRef;
       }
-      //红单是否紧急
-      urgentChange=(checked)=>{//checked指定当前是否选中
-        console.log(`switch to ${checked}`);
-        this.setState();
-      }
+     
      
     render(){
         
         return(
           <span>
-              <span className={this.props.editFlag?'blue':'grey'} onClick={this.props.editFlag?this.showModal:this.notShowModal} >编辑</span>
+              <Button type="primary" size="small" style={{marginBottom:'10px' ,marginRight:'15px' }}  onClick={this.showModal} >新增</Button>
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}
@@ -231,4 +228,4 @@ class RawMaterialRedListEditModal extends React.Component{
         );
     }
 }
-export default Form.create()(RawMaterialRedListEditModal);//创建form实例
+export default Form.create()(ProductRedListAddModal);//创建form实例
