@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,Input,Table,Popconfirm,Form,Divider,message} from 'antd';
+import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../blockquote';
@@ -19,10 +19,7 @@ const EditableFormRow = Form.create()(EditableRow);
 
 
 class EditableCell extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  
+
     getInput = () => {
     
         return <Input />;
@@ -197,7 +194,7 @@ class DeliveryFactory extends React.Component{
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
-        const dataSource = this.state.dataSource;
+        //const dataSource = this.state.dataSource;
         axios({
           url:`${this.server}/jc/common/deliveryFactory/${id}`,
           method:'Delete',

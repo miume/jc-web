@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,Input,Table,Popconfirm,Form,Divider,message} from 'antd';
+import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../blockquote';

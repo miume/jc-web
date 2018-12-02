@@ -1,8 +1,6 @@
 import React from 'react';
 class BasePart extends React.Component{
-    constructor(props){
-        super(props);
-    }
+  
     render(){
         // console.log(this.props.path)
         return (

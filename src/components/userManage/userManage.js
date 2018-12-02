@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,Input,Icon,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
+import { Button,Input,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../BlockQuote/blockquote';
@@ -20,9 +20,7 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
-  constructor(props){
-    super(props);
-  }
+ 
   
     getInput = () => {
       //  console.log(this.props.departmentchildren);//获取部门的data（getAll）
@@ -303,8 +301,6 @@ class User extends React.Component{
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
-        const dataSource = this.state.dataSource;
-        // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
           url:`${this.server}/jc/auth/user/deleteById?id=${id}`,
           method:'Delete',
@@ -400,11 +396,9 @@ class User extends React.Component{
               */
             const data=row;
             /**将id变成字符串 */
-            data['id']=id.toString();
+            //data['id']=id.toString();
             /**根据部门名称删选得到部门id */
-
-            let departmentId = ''; 
-            
+ 
             //console.log(data);
             axios({
               url:`${this.server}/jc/auth/user/update`,

@@ -85,6 +85,9 @@ code {
 .blue{
   color: #0086ff;
 }
+.grey{
+  color:grey
+}
 table .blue{
   cursor: pointer;
 }
