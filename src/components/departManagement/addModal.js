@@ -1,21 +1,24 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message } from 'antd';
+import { Modal, Form, Input,message } from 'antd';
+import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 import axios from 'axios';
 
 const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         render() {
-            const { visible, onCancel, onCreate, form } = this.props;
+            const { visible, handleCancel, handleOk, form } = this.props;
             const { getFieldDecorator } = form;
             return (
                 <Modal
                     visible={visible}
                     title="新增"
-                    okText="确定"
-                    cancelText="取消"
-                    onCancel={onCancel}
-                    onOk={onCreate}
+                    closable={false}
+                    footer={[
+                        <CancleButton key='back' handleCancel={handleCancel}/>,
+                        <NewButton key="submit" handleClick={handleOk} name='确定' style='button' className='fa fa-check' />
+                    ]}
                 >
                     <Form horizontal='true'>
                         <FormItem label="部门名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
@@ -42,21 +45,23 @@ const CollectionCreateForm = Form.create()(
 class AddModal extends React.Component {
     Authorization;
     server;
+    constructor(props){
+        super(props);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+    }
     state = {
         visible: false,
     };
-
     showModal = () => {
         this.setState({ visible: true });
     };
-
     handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
         form.resetFields();
     };
-
-    handleCreate = () => {
+    handleOk = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
@@ -93,12 +98,12 @@ class AddModal extends React.Component {
         this.server = localStorage.getItem('remote');
         return (
             <span>
-                <Button type="primary" size="small" style={{marginRight:'15px'}} onClick={this.showModal}>新增</Button>
+                <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
+                    handleCancel={this.handleCancel}
+                    handleOk={this.handleOk}
                 />
             </span>
         );

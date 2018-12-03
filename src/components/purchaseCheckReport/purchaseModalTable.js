@@ -92,7 +92,7 @@ class PurchaseModalTable extends React.Component {
                                 this.state.headColumns.map((item,index) => {
                                     if(index===0){
                                         return(
-                                            <div className="middleTheadDiv firstMiddleDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
+                                            <div className="middleTheadDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -142,7 +142,7 @@ class PurchaseModalTable extends React.Component {
                                         {
                                             this.state.headColumns.map((item,index) => {
                                                 return(
-                                                    <div>
+                                                    <div className="middleTbodyDiv">
                                                         {data[item.testItem]}
                                                     </div>
                                                 )

@@ -1,6 +1,5 @@
 import React from 'react';
 import {Table, Input, InputNumber, Popconfirm, Form, Divider, message} from 'antd';
-// import EditSpan from './editSpan';
 import DeletaSpan from './deleteSpan'
 import axios from "axios";;
 
@@ -119,11 +118,11 @@ class DepartTable extends React.Component {
                                     onConfirm={() => this.cancel(record.id)}
                                     okText="确定" cancelText="取消"
                                 >
-                                    <span>取消</span>
+                                    <span className='blue'>取消</span>
                                 </Popconfirm>
                             </span>
                         ) : (
-                            <span onClick={() => this.edit(record.id)}>编辑</span>
+                            <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
                     <Divider type="vertical" />
