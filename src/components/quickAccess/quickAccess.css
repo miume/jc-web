@@ -40,27 +40,27 @@ div.quick-middle div.quick-text {
 /* 达到一种震颤的效果 */
 @keyframes shake {
     2% {
-        color: aquamarine;
+        color: #0079fe;
         transform: rotate(-10deg)
     }
     3% {
-        color: red;
+        color: #999999;
         transform: rotate(10deg)
     }
     49% {
-        color: blue;
+        color: #0079fe;
         transform: rotate(-11deg)
     }
     53% {
-        color: red;
+        color:#999999;
         transform: rotate(11deg)
     }
     99% {
-        color:  blue;
+        color: #0079fe;
         transform: rotate(-10deg)
     }
     100% {
-        color: black;
+        color: #999999;
         transform: rotate(10deg)
     }
 }
