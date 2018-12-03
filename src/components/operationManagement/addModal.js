@@ -104,7 +104,7 @@ class AddModal extends React.Component {
         this.server = localStorage.getItem('remote');
         return (
             <span>
-                <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />
+                <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus'/>&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
