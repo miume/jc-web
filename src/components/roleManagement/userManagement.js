@@ -185,7 +185,7 @@ class UserManagement extends React.Component {
                     {
                         this.state.unsignedRole.map((unsigned) => {
                             return (
-                                <li key={unsigned.id}><label className='check-label'>{unsigned.username}</label><input type='checkbox' value={unsigned.id} style={{marginLeft:'10px'}}
+                                <li key={unsigned.id}><label className='check-label'>{unsigned.name}</label><input type='checkbox' value={unsigned.id} style={{marginLeft:'10px'}}
                                 onChange={this.handleUnsignedInputChange} /></li>
                             )
                         })
@@ -195,8 +195,8 @@ class UserManagement extends React.Component {
 
                 <div className="middle" style={{width:"19%"}}>
                     <div style={{margin:'130px 30px'}} >
-                        <Button type="primary"  style={{marginBottom:'15px',backgroundColor:'#3369ff'}} onClick={this.moveRight}><Icon type="right"/></Button>
-                        <Button type="primary" onClick={this.moveLeft} style={{backgroundColor:'#3369ff'}}><Icon type="left"/></Button>
+                        <Button className='moddal-button-arrow' type="default"  style={{marginBottom:'15px'}} onClick={this.moveRight}><strong><i className='fa fa-chevron-right'></i></strong></Button>
+                        <Button className='moddal-button-arrow' type="default" onClick={this.moveLeft}><strong><i className='fa fa-chevron-left'></i></strong></Button>
                     </div>
                 </div>
 
@@ -204,7 +204,7 @@ class UserManagement extends React.Component {
                     {
                         this.state.assignedRole.map((assigned) => {
                             return (
-                                <li key={assigned.id}><label className='check-label'>{assigned.username}</label><input type='checkbox' value={assigned.id}
+                                <li key={assigned.id}><label className='check-label'>{assigned.name}</label><input type='checkbox' value={assigned.id}
                                 onChange={this.handleAssignedInputChange}/></li>
                             )
                         })
