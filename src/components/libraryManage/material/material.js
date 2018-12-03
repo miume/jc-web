@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table,Icon,Tooltip} from 'antd';
 import SearchCell from '../../BlockQuote/search';
+import Difference from './difference'
 
 const data = [{
     key : 1,
@@ -110,7 +111,7 @@ class Material extends React.Component{
             render:(text,record)=>{
                     return(//onConfirm是点击确认时的事件回调
                         <span>
-                            <a href='#'><i className='fa fa-balance-scale'></i>&nbsp;提交差异</a>
+                            <Difference />
                         </span>
                     );
                 }
