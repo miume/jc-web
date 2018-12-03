@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message } from 'antd';
+import {Modal, Form, Input,message } from 'antd';
 import axios from 'axios';
 import CancleButton from "../BlockQuote/cancleButton";
 import NewButton from "../BlockQuote/newButton";
@@ -50,6 +50,7 @@ class AddModal extends React.Component {
         super(props);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
+        this.showModal = this.showModal.bind(this);
     }
     state = {
         visible: false,
@@ -108,7 +109,7 @@ class AddModal extends React.Component {
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     handleCancel={this.handleCancel}
-                    handleOk={this.handleCreate}
+                    handleOk={this.handleOk}
                 />
             </span>
         );
