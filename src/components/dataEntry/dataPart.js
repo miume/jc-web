@@ -4,7 +4,7 @@ class DataPart extends React.Component{
     render(){
         return (
             <div className='nav-card' style={{cursor:'pointer',display:'inline-block',height:'220px'}} id={this.props.path} onClick={this.props.click}>
-                <div style={{border:'1px solid #0079FE'}}>
+                <div className='nav-card-child' style={{border:'1px solid #0079FE'}}>
                     <div style={{width:'100%',height:'80%',backgroundColor:'#0079FE',textAlign:'center'}}>
                         <p style={{padding:'40px'}} id={this.props.path} ><i className={this.props.className} style={{color:'white'}} id={this.props.path} ></i></p>
                     </div>
