@@ -33,15 +33,35 @@ div.quick-middle div.quick-text {
     text-align: center;
     display: inline-block;
     padding: 0px 15px 0px 15px;
-    animation: shake 0.1s linear 0s 12 alternate;
+    animation: shake 2s linear 1s 1 alternate;
     
 }
+
+/* 达到一种震颤的效果 */
 @keyframes shake {
-    from {
+    2% {
+        color: aquamarine;
+        transform: rotate(-10deg)
+    }
+    3% {
+        color: red;
         transform: rotate(10deg)
     }
-    to {
+    49% {
+        color: blue;
+        transform: rotate(-11deg)
+    }
+    53% {
+        color: red;
+        transform: rotate(11deg)
+    }
+    99% {
+        color:  blue;
         transform: rotate(-10deg)
+    }
+    100% {
+        color: black;
+        transform: rotate(10deg)
     }
 }
 div.quick-middle div.quick-shadow {
