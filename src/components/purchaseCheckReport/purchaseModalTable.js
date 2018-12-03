@@ -75,7 +75,6 @@ class PurchaseModalTable extends React.Component {
         this.Authorization = localStorage.getItem('Authorization');
         /**这是服务器网址及端口 */
         this.server = localStorage.getItem('remote');
-        var lineNum = -1;
         return(
             <div id="modalTable">
                 <div>
@@ -138,11 +137,11 @@ class PurchaseModalTable extends React.Component {
                             this.state.tbodyData.map((item,index) => {
                                 const data = item;
                                 return(
-                                    <div className="middleTbody" ref={(ref) => this.middleTbodyRef = ref}>
+                                    <div className="middleTbody" ref={(ref) => this.middleTbodyRef = ref} key={'tbodyData'+index}>
                                         {
                                             this.state.headColumns.map((item,index) => {
                                                 return(
-                                                    <div className="middleTbodyDiv">
+                                                    <div className="middleTbodyDiv" key={'tbody'+index}>
                                                         {data[item.testItem]}
                                                     </div>
                                                 )
