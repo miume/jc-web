@@ -183,7 +183,7 @@ class AddModal extends React.Component {
     render() {
         return (
             <span>
-                <Button type="primary" size="small" style={{marginRight:'15px'}} onClick={this.showModal}>新增</Button>
+                <Button type="primary" onClick={this.showModal}><i className="fa fa-plus" aria-hidden="true" style={{color:'white'}}></i>&nbsp;新增</Button>
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

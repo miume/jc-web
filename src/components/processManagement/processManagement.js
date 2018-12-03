@@ -306,7 +306,7 @@ class Management extends React.Component{
                     <div style={{padding:'15px'}}>
                     <Add 
                         fetch={this.fetch}
-                    />
+                    />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         start={this.start}
