@@ -68,16 +68,16 @@ class PurchaseModalTable extends React.Component {
                         <div className="leftThead">序号</div>
                         <div className="leftThead">批号</div>
                     </div>
-                    <div id="theadMiddle"  ref={(ref) => this.theadMiddleRef = ref} onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                    <div id="theadMiddle"  onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
                         <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
-                        <div className="middleThead" id="middleTheadId" ref={(ref) => this.middleTheadIdRef = ref} style={{left:this.state.movieLeftDistance+'px'}}>
+                        <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} style={{left:this.state.movieLeftDistance+'px'}}>
                             {
                                 this.state.headColumns.map((item,index) => {
                                     if(index===0){
                                         return(
-                                            <div className="middleTheadDiv firstMiddleDiv"  key={item.id}>
+                                            <div className="middleTheadDiv firstMiddleDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -85,7 +85,7 @@ class PurchaseModalTable extends React.Component {
                                         )
                                     }else{
                                         return (
-                                            <div className="middleTheadDiv" key={item.id}>
+                                            <div className="middleTheadDiv" ref={(ref) => this.middleTheadDivRef = ref} key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -111,7 +111,6 @@ class PurchaseModalTable extends React.Component {
                     {
                         this.state.tbodyData.map((item,index) => {
                             lineNum = lineNum + 1;
-                            // console.log(lineNum);
                             return(
                                 <div key={'tbody'+index}>
                                     <div id="tbodyLeft">
@@ -119,18 +118,18 @@ class PurchaseModalTable extends React.Component {
                                         <div className="leftTbody" key={'a'}>{item.a}</div>
                                     </div>
                                     <div id="tbodyMiddle">
-                                        <div className="middleTbody" id="middleTbodyId">
+                                        <div className="middleTbody" ref={(ref) => this.middleTbodyRef = ref}>
                                             {
                                                 item.dynData.map((item,index) => {
                                                     if(index===0){
                                                         return(
-                                                            <div className="middleTbodyDiv firstMiddleDiv" key={index}>
+                                                            <div className="middleTbodyDiv firstMiddleDiv" ref={(ref) => this.middleTbodyDivRef = ref} key={index}>
                                                                 <div onClick={this.handleCellOnclick} id={`${lineNum}${index}`}>{item}</div>
                                                             </div>
                                                         )
                                                     }else{
                                                         return (
-                                                            <div className="middleTbodyDiv" key={index}>
+                                                            <div className="middleTbodyDiv" ref={(ref) => this.middleTbodyDivRef = ref} key={index}>
                                                                 <div onClick={this.handleCellOnclick} id={`${lineNum}${index}`}>{item}</div>
                                                             </div>
                                                         )
@@ -187,9 +186,6 @@ class PurchaseModalTable extends React.Component {
     /**---------------------- */
     /**获取鼠标移进移出数据*/
     handleMouseOver = () => {
-        var middle = document.getElementsByClassName('theadMiddle')[0]
-        // // var middleItem = document.getElementsByClassName('middle-item')[0];
-        console.log('middle',middle)
         this.setState({
             hover: true,
             flag: true,
@@ -197,68 +193,85 @@ class PurchaseModalTable extends React.Component {
 
     };
     handleMouseOut = () =>{
-        var middle = document.getElementsByClassName('middleTbodyDiv')[0].offsetWidth;
-        // var middleItem = document.getElementsByClassName('middle-item')[0];
-        console.log('middle',middle)
         this.setState({
             hover: false,
         })
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
-    componentDidMount () {
-        // 通过设置ref来获取虚拟的dom节点
-        var theadMiddleWidth = this.theadMiddleRef.offsetWidth;
-        var middleTheadIdWidth = this.middleTheadIdRef.offsetWidth;
-        this.setState({
-            theadMiddleWidth: theadMiddleWidth,
-            middleTheadIdWidth: middleTheadIdWidth,
-        });
-    }
     handleLeftOnclick = () => {
-        const theadMiddleWidth = this.state.theadMiddleWidth;
-        const middleTheadIdWidth = this.state.middleTheadIdWidth;
-        console.log(theadMiddleWidth)
-        console.log(middleTheadIdWidth)
-        var leftDistance = this.state.leftDistance;
-        var left = 0;
-        const endLength = middleTheadIdWidth - leftDistance - theadMiddleWidth;
-        if((endLength>0&&endLength<theadMiddleWidth)||(theadMiddleWidth + leftDistance === middleTheadIdWidth)){
-            leftDistance = middleTheadIdWidth - theadMiddleWidth;
-            left = -1 * leftDistance;
-            this.setState({
-                leftDistance : leftDistance,
-                movieLeftDistance : left,
-            })
-            // middleTheadId.style.left = left+'px';
-        }else{
-            leftDistance = leftDistance + theadMiddleWidth;
-            left = -1 * leftDistance;
-            this.setState({
-                leftDistance : leftDistance,
-                movieLeftDistance : left,
-            })
-            // middleTheadId.style.left = left+'px';
+        var middle  = this.middleTheadRef;
+        var middleItem = this.middleTheadDivRef;
+        var middleTbodyRef = this.middleTbodyRef;
+        var middleTbodyDivRef = this.middleTbodyDivRef;
+        let count = middleItem.offsetWidth * 7;
+        let countTbody = middleTbodyDivRef.offsetWidth * 7;
+        let gap = (count / 100);
+        let gapTbody = (countTbody / 100);
+        gap = gap.toFixed(0);
+        gapTbody = gapTbody.toFixed(0);
+        if(gap >= 1&&gapTbody >= 1){
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                let preTbody = middleTbodyRef.scrollLeft;
+                if(count < 5&&countTbody<5) {
+                    count -= 1;
+                    countTbody -= 1;
+                    middle.scrollLeft += 1;
+                    middleTbodyRef.scrollLeft += 1;
+                }else {
+                    count -= gap;
+                    countTbody -= gapTbody
+                    middle.scrollLeft += Number(gap);
+                    middleTbodyRef.scrollLeft += Number(gap);
+                }
+                if(count <= 0&&countTbody <=0 || pre === middle.scrollLeft&&preTbody === middleTbodyRef.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap >0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                let preTbody = middleTbodyRef.scrollLeft;
+                count -= 1;
+                countTbody -= 1;
+                middle.scrollLeft += 1;
+                if(count <= 0&&countTbody <=0 || pre === middle.scrollLeft&&preTbody === middleTbodyRef.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
         }
     };
     handleRightOnclick = () => {
-        const theadMiddleWidth = this.state.theadMiddleWidth;
-        var leftDistance = this.state.leftDistance;
-        var left = 0;
-        if(theadMiddleWidth-leftDistance > 0){
-            leftDistance = 0;
-            left = leftDistance;
-            this.setState({
-                leftDistance : leftDistance,
-                movieLeftDistance : left,
-            })
-        }else{
-            leftDistance = leftDistance - theadMiddleWidth;
-            left = -1 * leftDistance;
-            this.setState({
-                leftDistance : leftDistance,
-                movieLeftDistance : left,
-            })
+        var middle  = this.middleTheadRef;
+        var middleItem = this.middleTheadDivRef;
+        let count = middleItem.offsetWidth * 1;
+        let gap = (count / 100);
+        gap = gap.toFixed(0);
+        if(gap >= 1) {
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                if(count < 5) {
+                    count -= 1;
+                    middle.scrollLeft -= 1;
+                }
+                else {
+                    count -= gap;
+                    middle.scrollLeft -= Number(gap);
+                }
+                if(count <= 0 || pre === middle.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap > 0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                count -= 1;
+                middle.scrollLeft -= 1;
+                if(count <= 0|| pre === middle.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
         }
     };
 
