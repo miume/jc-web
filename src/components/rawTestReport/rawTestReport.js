@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Popconfirm, Divider} from 'antd';
-import BlockQuote from '../dataEntry/blockQuote';
+import BlockQuote from '../BlockQuote/blockquote';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import Detail from './detail';
@@ -25,9 +25,6 @@ for(var i = 1; i <= 20;i++){
     })
 }
 class RawTestReport extends React.Component{
-    componentDidMount(){
-        document.getElementById('/rawTestReport').style.color = '#0079FE'
-    }
     constructor(props){
         super(props);
         this.state ={
@@ -35,6 +32,7 @@ class RawTestReport extends React.Component{
             selectedRowKeys : [],
             searchContent : ''
         }
+        this.returnDataEntry = this.returnDataEntry.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -171,6 +169,10 @@ class RawTestReport extends React.Component{
    onSelectChange(selectedRowKeys) {
     this.setState({ selectedRowKeys:selectedRowKeys }); 
    } 
+   /**返回数据录入页面 */
+   returnDataEntry(){
+    this.props.history.push({pathname:'/dataEntry'});
+}
     render(){
         const rowSelection = {
             onChange:this.onSelectChange,
@@ -179,10 +181,10 @@ class RawTestReport extends React.Component{
           };
         return (
             <div>
-                <BlockQuote name='原料检测报告' menu='质量与流程' menu2='数据录入'></BlockQuote>
+                <BlockQuote name='原料检测报告' menu='质量与流程' menu2='返回'  returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}} >
                         <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} searchContent={this.searchContent}></SearchCell>
                     </span>

@@ -1,5 +1,6 @@
 import React from 'react';
-import {Modal,Button,Table} from 'antd';
+import {Modal,Table} from 'antd';
+import NewButton from '../BlockQuote/newButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import SmallButton from '../BlockQuote/smallbutton';
 const approvalProcess = [{
@@ -201,9 +202,9 @@ class Detail extends React.Component{
                 <Modal title="详情" visible={this.state.visible}
                     onCancel={this.handleCancel}  width='1000px'
                     footer={[
-                        <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
-                        <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
-                    ]}>
+                      <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                    ]} 
+                  >
                     <div style={{height:'400px'}}>
                          <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>

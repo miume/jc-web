@@ -1,5 +1,6 @@
 import React from 'react';
-import IsQualified from '../BlockQuote/isQualified'
+import IsQualified from '../BlockQuote/isQualified';
+import NewButton from '../BlockQuote/newButton';
 import {Modal,Button,Table, Divider,Icon} from 'antd';
 const columns1 = [{
     title:'序号',
@@ -72,9 +73,9 @@ class Detail extends React.Component{
                 maskClosable={false}
                  onCancel={this.handleCancel} style={{top:10}}
                  footer={[
-                    //  <Button key='submit' type='primary' size='large' onClick={this.handleOk} >确定</Button>,
-                     <Button key='back' type='primary' size='default' onClick={this.handleCancel} className='button' style={{right:'80%'}}><Icon type="left" />返回</Button>
-                 ]}>
+                    <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                  ]}
+                  >
                  <div style={{height:'550px'}}>
                      <table>
                          <thead className='thead'>
