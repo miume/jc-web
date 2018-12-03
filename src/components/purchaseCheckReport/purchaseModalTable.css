@@ -107,23 +107,28 @@
     line-height: 22px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
-    font-size: 16px;
+    font-size: 12px;
 }
 .tbodyMiddle {
     width: 70%;
     overflow-x: hidden;
     overflow-y: hidden; /*才能让y滚动取消*/
     float:left;
+    box-sizing: border-box;
 }
 .middleTbody {
     min-width: 14.3%;  /*14*/
     flex:1;
-    border-right: 1px solid #CCCCCC;
+    /*border-right: 1px solid #CCCCCC;*/
     height: 22px;
     line-height: 22px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
     font-size: 12px;
     transition: transform 2s;
+    box-sizing: content-box;
+}
+.middleTbodyDiv {
+    border-right: 1px solid #CCCCCC;
 }
 /**/
