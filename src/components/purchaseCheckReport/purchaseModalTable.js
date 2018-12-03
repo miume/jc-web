@@ -271,38 +271,6 @@ class PurchaseModalTable extends React.Component {
             },1)
         }
     };
-    // handleRightOnclick = () => {
-    //     var middle  = this.middleTheadRef;
-    //     var middleItem = this.middleTheadDivRef;
-    //     let count = middleItem.offsetWidth * 1;
-    //     let gap = (count / 100);
-    //     gap = gap.toFixed(0);
-    //     if(gap >= 1) {
-    //         var interval = setInterval(function() {
-    //             let pre = middle.scrollLeft;
-    //             if(count < 5) {
-    //                 count -= 1;
-    //                 middle.scrollLeft -= 1;
-    //             }
-    //             else {
-    //                 count -= gap;
-    //                 middle.scrollLeft -= Number(gap);
-    //             }
-    //             if(count <= 0 || pre === middle.scrollLeft) {
-    //                 clearInterval(interval);
-    //             }
-    //         },1)
-    //     }else if(gap > 0){
-    //         var interval2 = setInterval(function() {
-    //             let pre = middle.scrollLeft;
-    //             count -= 1;
-    //             middle.scrollLeft -= 1;
-    //             if(count <= 0|| pre === middle.scrollLeft) {
-    //                 clearInterval(interval2);
-    //             }
-    //         },1)
-    //     }
-    // };
 
     /**---------------------- */
     /**获取表头数据*/
