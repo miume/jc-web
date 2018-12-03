@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button,Modal,Table} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
-import Submit from './submit';
+import Submit from '../../BlockQuote/submit';
 import './rawAdd.css';
 const data = [];
 for(var i = 1; i<=20; i++){

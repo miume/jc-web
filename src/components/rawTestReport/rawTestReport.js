@@ -161,7 +161,7 @@ class RawTestReport extends React.Component{
     }
     /**批量删除 */
     deleteByIds(){
-        const ids = this.state.selectedRowKeys;
+        // const ids = this.state.selectedRowKeys;
     }
     /**搜索功能 */
     searchEvent(){

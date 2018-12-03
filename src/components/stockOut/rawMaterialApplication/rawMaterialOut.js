@@ -102,7 +102,7 @@ class RawMaterialOut extends React.Component{
             render:(text,record)=>{
                 return (
                    <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
-                       <i id={record.id}>删除</i>
+                       <span className='blue' id={record.id}>删除</span>
                    </Popconfirm> 
                 );
             }

@@ -2,7 +2,7 @@ import React from 'react';
 import './purchaseModalTable.css';
 
 const headData =[];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 20; i++) {
     headData.push({
         index: i,
         id:i,
@@ -27,19 +27,23 @@ for(let i=0; i<20; i++){
 }
 
 class PurchaseModalTable extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
+            //
+            flag: false,
+            //
             headColumns: headData ,
             tbodyData: tbodyData,
             // 用于鼠标移进移出
-            detailShow: 'none',
-            x: 0,
-            y: 0,
+            hover: false,
             // 宽度
-            theadMiddleWidth: 0, //表头宽度
-            middleTheadIdWidth: 0, //表格宽度
-            removeDistance: 0, //移动的距离
+            theadMiddleWidth: 0, //表头动态宽度
+            middleTheadIdWidth: 0, //表头动态含滚动的宽度
+            leftDistance: 0, //移动的距离
+            movieLeftDistance: 0,
             // 用来存储已经变红的标签id--转换成这一行
             radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
             radioTrueArr: [],   //合格的数组--
@@ -47,9 +51,15 @@ class PurchaseModalTable extends React.Component {
             radioTrueNum: 0,
             radioFalseNum: 0,
             colorStatueId: [], //用来存储已经变红的标签id--转换成这一行
-        }
+        };
+        this.handleMouseOver = this.handleMouseOver.bind(this);
+        this.handleMouseOut = this.handleMouseOut.bind(this);
     }
     render() {
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         var lineNum = -1;
         return(
             <div id="modalTable">
@@ -58,16 +68,16 @@ class PurchaseModalTable extends React.Component {
                         <div className="leftThead">序号</div>
                         <div className="leftThead">批号</div>
                     </div>
-                    <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-                        <div id="leftOnclick" onClick={this.handleLeftOnclick}>
+                    <div id="theadMiddle"  onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                        <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
-                        <div className="middleThead" id="middleTheadId">
+                        <div className="middleThead" id="middleTheadId" ref={(ref) => this.middleTheadIdRef = ref} style={{left:this.state.movieLeftDistance+'px'}}>
                             {
                                 this.state.headColumns.map((item,index) => {
                                     if(index===0){
                                         return(
-                                            <div className="middleTheadDiv firstMiddleDiv" key={item.id}>
+                                            <div className="middleTheadDiv firstMiddleDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -86,7 +96,7 @@ class PurchaseModalTable extends React.Component {
                             }
                             <div style={{clear: 'both'}}></div>
                         </div>
-                        <div id="rightOnclick" onClick={this.handleRightOnclick}>
+                        <div className={(this.state.hover? 'rightOnclick':'')} onClick={this.handleRightOnclick}>
                             <i className="fa fa-chevron-right fa-2x"></i>
                         </div>
                     </div>
@@ -101,7 +111,6 @@ class PurchaseModalTable extends React.Component {
                     {
                         this.state.tbodyData.map((item,index) => {
                             lineNum = lineNum + 1;
-                            // console.log(lineNum);
                             return(
                                 <div key={'tbody'+index}>
                                     <div id="tbodyLeft">
@@ -132,7 +141,10 @@ class PurchaseModalTable extends React.Component {
                                     </div>
                                     <div id="tbodyRight">
                                         <div className="rightTbody">
-                                            判定
+                                            合格
+                                        </div>
+                                        <div className="rightTbody">
+                                            不合格
                                         </div>
                                     </div>
                                 </div>
@@ -173,54 +185,82 @@ class PurchaseModalTable extends React.Component {
     };
     /**---------------------- */
     /**获取鼠标移进移出数据*/
-    handleMouseOver = (e) => {
+    handleMouseOver = () => {
         this.setState({
-            detailShow: 'block',
-            x: e.pageX, //pageX是以html左上角为原点，相应的clientX是以浏览器左上角为原点
-            y: e.pageY,
-        });
-        const leftOnclick = document.getElementById("leftOnclick");
-        const rightOnclick = document.getElementById("rightOnclick");
-        leftOnclick.style.display = "block";
-        rightOnclick.style.display = "block";
+            hover: true,
+            flag: true,
+        })
+
     };
     handleMouseOut = () =>{
         this.setState({
-            detailShow: 'none',
-            x: 0,
-            y: 0
-        });
-        const leftOnclick = document.getElementById("leftOnclick");
-        const rightOnclick = document.getElementById("rightOnclick");
-        leftOnclick.style.display = "none";
-        rightOnclick.style.display = "none";
+            hover: false,
+        })
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
     handleLeftOnclick = () => {
-        var theadMiddle = document.getElementById("theadMiddle");
-        var middleTheadId = document.getElementById("middleTheadId");
-        var theadMiddleWidth = theadMiddle.offsetWidth;
-        var middleTheadIdWidth = middleTheadId.offsetWidth;
-        this.setState({
-            theadMiddleWidth: theadMiddleWidth,
-            middleTheadIdWidth: middleTheadIdWidth
-        });
-        console.log(this.state.theadMiddleWidth);
-        console.log(this.state.middleTheadIdWidth);
-
+        var middle  = this.middleTheadIdRef;
+        var middleItem = this.middleTheadDivRef;
+        let count = middleItem.offsetWidth * 7;
+        let gap = (count / 100);
+        gap = gap.toFixed(0);
+        if(gap >= 1){
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                if(count < 5) {
+                    count -= 1;
+                    middle.scrollLeft += 1;
+                }else {
+                    count -= gap;
+                    middle.scrollLeft += Number(gap);
+                }
+                if(count <= 0 || pre === middle.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap >0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                count -= 1;
+                middle.scrollLeft += 1;
+                if(count <= 0|| pre === middle.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
+        }
     };
     handleRightOnclick = () => {
-        var theadMiddle = document.getElementById("theadMiddle");
-        var middleTheadId = document.getElementById("middleTheadId");
-        var theadMiddleWidth = theadMiddle.offsetWidth;
-        var middleTheadIdWidth = middleTheadId.offsetWidth;
-        this.setState({
-            theadMiddleWidth: theadMiddleWidth,
-            middleTheadIdWidth: middleTheadIdWidth
-        })
-        console.log(this.state.theadMiddleWidth);
-        console.log(this.state.middleTheadIdWidth);
+        var middle  = this.middleTheadIdRef;
+        var middleItem = this.middleTheadDivRef;
+        let count = middleItem.offsetWidth * 1;
+        let gap = (count / 100);
+        gap = gap.toFixed(0);
+        if(gap >= 1) {
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                if(count < 5) {
+                    count -= 1;
+                    middle.scrollLeft -= 1;
+                }
+                else {
+                    count -= gap;
+                    middle.scrollLeft -= Number(gap);
+                }
+                if(count <= 0 || pre === middle.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap > 0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                count -= 1;
+                middle.scrollLeft -= 1;
+                if(count <= 0|| pre === middle.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
+        }
     };
 
     /**---------------------- */

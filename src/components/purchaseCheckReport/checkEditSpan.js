@@ -10,7 +10,7 @@ class CheckEditSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            pvisivle: false,
+            modalVisible: false,
             checkSelectData:true,
             checkSwitchData:false,
         };
@@ -45,7 +45,6 @@ class CheckEditSpan extends React.Component {
                         // 如何设置弹出
                         <Popover
                             key="popover"
-                            // content={<a onClick={this.hide}>Close</a>}
                             content = {
                                 <div style={{width:200}}>
                                     <div >
@@ -76,6 +75,7 @@ class CheckEditSpan extends React.Component {
                 >
                     <div style={{height:450}}>
                         <PurchaseModal
+
                         />
 
                     </div>
@@ -107,6 +107,7 @@ class CheckEditSpan extends React.Component {
         this.setState({
             pvisivle: false,
         });
+
     };
     handleVisibleChange = (pvisivle) => {
         this.setState({ pvisivle });

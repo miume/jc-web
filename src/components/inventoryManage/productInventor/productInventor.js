@@ -155,7 +155,7 @@ class ProductInventor extends Component{
          this.setState({searchContent:value});
     }
     searchEvent(){
-      const name=this.state.searchContent;
+      //const name=this.state.searchContent;
      //console.log(name);//此处显示的是我搜索框填的内容
     }
     render(){

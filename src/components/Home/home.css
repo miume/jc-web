@@ -91,3 +91,7 @@ input::-webkit-input-placeholder{
     font-size: 15px !important;
     text-align:left !important;
   }
+
+  .iconHover {
+      text-align: center;
+  }

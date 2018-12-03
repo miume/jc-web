@@ -54,6 +54,7 @@ class PurchaseModal extends React.Component {
         //         }),
         //     };
         // });
+        // console.log('1',document.getElementById('modalTable'))
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
@@ -90,21 +91,13 @@ class PurchaseModal extends React.Component {
                     </table>
                 </div>
                 <div style={{paddingTop:'80px'}}>
-                    {/*<Table*/}
-                        {/*className="purchaseTable"*/}
-                        {/*rowKey={record => record.id}*/}
-                        {/*columns={columns}*/}
-                        {/*dataSource={this.state.dataSource}*/}
-                        {/*data*/}
-                        {/*size="small"*/}
-                        {/*pagination={{hideOnSinglePage:true,pageSize:1000}}*/}
-                        {/*scroll={{ x:arrColumnslength, y: 240 }}*/}
-                    {/*/>*/}
-                    <PurchaseModalTable />
+                    <PurchaseModalTable
+                    />
                 </div>
             </div>
         )
     }
+
     /**动态表头数据获取与组装 */
     getDynamicHeadData = () => {
         const dyHead = [{
