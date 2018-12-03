@@ -6,10 +6,6 @@
   border-radius: 1%;
   overflow: hidden;
 }
-.nav-card-child div:first-child{
-  border-top-left-radius: 1%;
-  border-top-right-radius: 1%;
-}
 
 @media screen and (min-width: 1000px) {
   .nav-card {
