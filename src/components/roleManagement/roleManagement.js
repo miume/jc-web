@@ -9,6 +9,7 @@ import PermissionManagement from './permissionManagement';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import AddButton from '../BlockQuote/addButton';
+// import CancleButton from '../BlockQuote/cancleButton';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -146,7 +147,7 @@ class Role extends React.Component {
                           <span>
                             <EditableContext.Consumer>
                               {form => (
-                                <span
+                                <span className='blue'
                                   onClick={() => this.save(form, record.id)}
                                   style={{ marginRight: 8 }}>保存</span>
                               )}
@@ -398,11 +399,10 @@ class Role extends React.Component {
         
       }
       render() {
-
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+          /**这是个令牌，每次调用接口都将其放在header里 */
+          this.Authorization = localStorage.getItem('Authorization');
+          /**这是服务器网址及端口 */
+          this.server = localStorage.getItem('remote');
           const rowSelection = {
             onChange: this.onSelectChange,
             onSelect() {
@@ -440,7 +440,7 @@ class Role extends React.Component {
                 <div style={{padding:'15px'}}>
                   <AddButton handleAdd={this.handleAdd} />
                   {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                      <Modal title="新增" visible={this.state.visible}
+                      <Modal title="新增" visible={this.state.visible} closable={false}
                             footer={[
                               <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
                               <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>

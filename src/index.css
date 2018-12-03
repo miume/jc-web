@@ -97,7 +97,8 @@ button span{
   cursor: pointer;
 }
 .grey{
-  color:grey
+  color:grey;
+  background-color: #ffffff !important;
 }
 table .blue{
   cursor: pointer;

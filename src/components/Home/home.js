@@ -1,22 +1,23 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Menu1List from './menu';
-// import SonRoute from '../../routes/sonRoute';
 import './home.css';
 import Exit from './exit';
 import QuickAccess from '../quickAccess/quickAccess';
+
 import Role from '../roleManagement/roleManagement';
 import Menu from '../menuMangement/menu';
-import ProcessInspection from '../processInspection/processInspection'
-import SampleInspection from '../sampleInspection/sampleInspection'
 import User from '../userManage/userManage';
 import Management from '../processManagement/processManagement'
 
+import ProcessInspection from '../processInspection/processInspection'
+import SampleInspection from '../sampleInspection/sampleInspection'
 import Depart from '../departManagement/departManagement';
 import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
 import RawTestReport from '../rawTestReport/rawTestReport';
 import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
+import TodoList from '../todolist/todolist';
 
 import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
@@ -102,6 +103,9 @@ class Home extends Component {
         },{
             path:'/libraryManage',
             component:LibraryManage
+        },{
+            path:'/todoList',
+            component:TodoList
         }]  
         return data;
     }
