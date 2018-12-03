@@ -1,6 +1,8 @@
 import React from 'react';
 import {Modal,Button} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
+import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 import './editor.css';
 import Tr from './tr';
 // const children = approvalProcess.map(p => 
@@ -208,8 +210,8 @@ class Editor extends React.Component{
                 <Modal title="详情" visible={this.state.visible}
                     onCancel={this.handleCancel}  width='1000px'
                     footer={[
-                        <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
-                        <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
+                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                        <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
                     ]}>
                     <div style={{height:'400px'}}>
                          {/* <div style={{marginBottom:'15px'}}>

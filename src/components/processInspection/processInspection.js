@@ -1,6 +1,6 @@
 import React from 'react';
 // import axios from 'axios';
-import BlockQuote from '../dataEntry/blockQuote'
+import BlockQuote from '../BlockQuote/blockquote'
 import {Table,Popconfirm,Divider } from 'antd';
 import '../Home/page.css';
 import DeleteByIds from '../BlockQuote/deleteByIds';
@@ -33,9 +33,9 @@ for(var i = 1; i<=15;i++){
 class ProcessInspection extends React.Component{
     server
     Authorization
-    componentDidMount(){
-        document.getElementById('/processInspection').style.color = '#0079FE'
-    }
+    // componentDidMount(){
+    //     document.getElementById('/processInspection').style.color = '#0079FE'
+    // }
     // componentWillMount(){
     //     this.setState = ()=>{
     //       return;
@@ -47,7 +47,7 @@ class ProcessInspection extends React.Component{
             dataSource : data,
             selectedRowKeys : [],     //存取所选中checkbox的ids
         }
-        
+        this.returnDataEntry = this.returnDataEntry.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
@@ -185,6 +185,10 @@ class ProcessInspection extends React.Component{
       const dataSource = this.state.dataSource;
       this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     }
+    /**返回数据录入页面 */
+    returnDataEntry(){
+      this.props.history.push({pathname:'/dataEntry'});
+  }
     render() {
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
@@ -195,9 +199,9 @@ class ProcessInspection extends React.Component{
         };
         return (
             <div>
-                <BlockQuote name='制程检测' menu='质量与流程' menu2='数据录入' returnDataEntry={this.returnDataEntry}/>
+                <BlockQuote name='制程检测' menu='质量与流程' menu2='返回' returnDataEntry={this.returnDataEntry}/>
                 <div style={{padding:'15px'}}>
-                    <Add />
+                    <Add/>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号'/>

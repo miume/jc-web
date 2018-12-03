@@ -2,6 +2,7 @@ import React from 'react';
 import {Modal,Icon,message} from 'antd';
 import './permissionManagement.css';
 import axios from 'axios';
+import NewButton from '../BlockQuote/newButton';
 class PermissionManagement extends React.Component {
     constructor(props){
         super(props);
@@ -13,7 +14,7 @@ class PermissionManagement extends React.Component {
         }
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+        // this.handleCancel = this.handleCancel.bind(this);
         this.change = this.change.bind(this);
         this.getAllAuth = this.getAllAuth.bind(this);
         this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
@@ -82,11 +83,11 @@ class PermissionManagement extends React.Component {
           visible: false
         });
     }
-    handleCancel() {
-        this.setState({
-          visible: false
-        });
-      }
+    // handleCancel() {
+    //     this.setState({
+    //       visible: false
+    //     });
+    //   }
     change(event) {
         const target = event.target;
         /**获取操作id 二级菜单id */
@@ -155,9 +156,11 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} 
-                closable={false} maskClosable={false}
-                onOk={this.handleOk} onCancel={this.handleCancel}
-                okText='确定' cancelText='取消' width='780px' destroyOnClose='true' >
+                closable={false} maskClosable={false} width='780px' destroyOnClose='true'
+                footer={[
+                    <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                  ]} 
+                   >
                 <div style={{height:'450px',overflowY:'auto'}}>
                 {/**实现用div布局，显示table */}
                     <div style={{height:'600px'}}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button,Modal,} from 'antd';
-import AddButton from '../BlockQuote/addButton';
+import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import './editor.css';
 import Tr from './tr';
@@ -55,12 +56,12 @@ class Add extends React.Component{
     render() {
         return (
             <span>
-                <AddButton handleAdd={this.handleAdd} />
+                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />
                 <Modal title="新增" visible={this.state.visible}
                     onCancel={this.handleCancel} width='1200px'
                     footer={[
-                        <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
-                        <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
+                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                        <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
                     ]}>
                     <div style={{height:'400px'}}>
                     <p className='fr'>已录入{this.state.count}条数据</p>

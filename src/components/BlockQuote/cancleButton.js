@@ -14,10 +14,10 @@ class CancleButton extends React.Component{
     render(){
         return (
             <Popconfirm placement='rightBottom' title='你确定取消这个任务吗？'
-            onConfirm={this.props.handleCancel} onCancel={this.cancle}
-            okText='确定' cancelText='取消'
+            onConfirm={this.props.handleCancel} 
+            okText='确定' cancelText='再想想'
             >
-                <Button className='white-button' style={{float:'left',backgroundColor:'white'}}><Icon type="close"/>取消</Button>
+                <Button className='white-button' style={{float:'left',backgroundColor:'white'}}><i className="fa fa-times" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 取消</span></Button>
             </Popconfirm>
         );
     }

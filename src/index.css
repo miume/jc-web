@@ -103,4 +103,7 @@ button span{
 table .blue{
   cursor: pointer;
 }
+i{
+  font-weight: bolder;
+}
 

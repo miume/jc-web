@@ -119,7 +119,6 @@ class ApplyStockOut extends React.Component{
                     closable= {false} width='1100px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        // <Button key='back' type='ghost' onClick={this.handleCancel} style={{float:'left'}}><Icon type="close" />取消</Button>,
                         <Submit key='submit' data = {this.state.dataSource}/>                       
                     ]}
                 >
