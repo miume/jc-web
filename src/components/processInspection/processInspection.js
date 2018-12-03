@@ -8,44 +8,27 @@ import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
 import SearchCell from '../BlockQuote/search';
-const data = [
-  {
-    id : 1,
-    operate:1,
-    batchNumber:'SDERER',
-    creatPerson:{
-        id:1,
-        userName:'张三'
-    },
-    creatTime:'2018-10-12 00:11:11',
-    updatePerson:{
-      id:1,
-      userName:'张三'
-  },
-    updateTime:'2018-10-18 00:11:11',
-    type:1,
-    state:1,
-    isUrgent:0
-  },
-  {
-    id : 2,
-    operate:2,
-    batchNumber:'SDER',
-    creatPerson:{
-        id:1,
-        userName:'李四'
-    },
-    creatTime:'2018-10-12 00:11:11',
-    updatePerson:{
-      id:1,
-      userName:'张傻'
-  },
-    updateTime:'2018-10-18 00:11:11',
-    type:2,
-    state:2,
-    isUrgent:0
-  },
-]
+const data = [];
+for(var i = 1; i<=15;i++){
+    data.push({
+        id : `${i}`,
+        operate:1,
+        batchNumber:'SDERER',
+        creatPerson:{
+            id:1,
+            userName:'张三'
+        },
+        creatTime:'2018-10-12 00:11:11',
+        updatePerson:{
+          id:1,
+          userName:'张三'
+      },
+        updateTime:'2018-10-18 00:11:11',
+        type:1,
+        state:1,
+        isUrgent:0
+        })
+  }
 
 class ProcessInspection extends React.Component{
     server
@@ -53,11 +36,11 @@ class ProcessInspection extends React.Component{
     componentDidMount(){
         document.getElementById('/processInspection').style.color = '#0079FE'
     }
-    componentWillMount(){
-        this.setState = ()=>{
-          return;
-        }
-    }
+    // componentWillMount(){
+    //     this.setState = ()=>{
+    //       return;
+    //     }
+    // }
     constructor(props){
         super(props);
         this.state = {
@@ -68,55 +51,18 @@ class ProcessInspection extends React.Component{
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        
-    }
-    /**批量删除弹出框确认函数 */
-    deleteByIds() {
-      const ids = this.state.selectedRowKeys;
-        // console.log(ids)
-        // axios({
-        //   url:`${this.server}/jc/auth/role/deleteByIds`,
-        //   method:'Delete',
-        //   headers:{
-        //     'Authorization':this.Authorization
-        //   },
-        //   data:ids,
-        //   type:'json'
-        // }).then((data)=>{
-        //   message.info(data.data.message);
-        //   this.fetch();
-        // }).catch(()=>{
-        //   message.info('删除错误，请联系管理员！')
-        // })
-        
-     }
-    cancle() {
-
-    }
-   /**实现全选 */
-   onSelectChange(selectedRowKeys) {
-    this.setState({ selectedRowKeys:selectedRowKeys }); 
-   } 
-    /**处理单条记录删除 */
-    handleDelete(key){
-      const dataSource = this.state.dataSource;
-      this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
-    }
-    render() {
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
-        const rowSelection = {
-          onChange:this.onSelectChange,
-          onSelect() {},
-          onSelectAll() {},
-        };
-        const pagination = {
-            total: data.length,
-            showSizeChange() {
-            },
-            onChange() {}
-        };
-        const columns = [{
+        this.pagination = {
+          total: this.state.dataSource.length,
+          showTotal(total) {
+            return `共${total}条记录`
+          } ,
+          showSizeChanger: true,
+          onShowSizeChange() {
+          },
+          onChange() {
+          }
+        }
+        this.columns = [{
           title: '序号',
           dataIndex: 'id',
           key: 'id',
@@ -206,19 +152,57 @@ class ProcessInspection extends React.Component{
                   );
           }
         }];
+    }
+    /**批量删除弹出框确认函数 */
+    deleteByIds() {
+      // const ids = this.state.selectedRowKeys;
+        // console.log(ids)
+        // axios({
+        //   url:`${this.server}/jc/auth/role/deleteByIds`,
+        //   method:'Delete',
+        //   headers:{
+        //     'Authorization':this.Authorization
+        //   },
+        //   data:ids,
+        //   type:'json'
+        // }).then((data)=>{
+        //   message.info(data.data.message);
+        //   this.fetch();
+        // }).catch(()=>{
+        //   message.info('删除错误，请联系管理员！')
+        // })
+        
+     }
+    cancle() {
+
+    }
+   /**实现全选 */
+   onSelectChange(selectedRowKeys) {
+    this.setState({ selectedRowKeys:selectedRowKeys }); 
+   } 
+    /**处理单条记录删除 */
+    handleDelete(key){
+      const dataSource = this.state.dataSource;
+      this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    }
+    render() {
+        this.server = localStorage.getItem('remote');
+        this.Authorization = localStorage.getItem('Authorization');
+        const rowSelection = {
+          onChange:this.onSelectChange,
+          onSelect() {},
+          onSelectAll() {},
+        };
         return (
             <div>
                 <BlockQuote name='制程检测' menu='质量与流程' menu2='数据录入' returnDataEntry={this.returnDataEntry}/>
                 <div style={{padding:'15px'}}>
                     <Add />
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} checked={!this.state.selectedRowKeys.length} deleteByIds={this.deleteByIds} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号'/>
                     </span>
-                  <Table rowKey={record => record.id} rowSelection={rowSelection} columns={columns} dataSource={this.state.dataSource}  pagination={pagination} size="small" bordered  scroll={{ y: 400 }}/>
-                  <div style={{marginLeft:'90%', marginTop:'29%',marginRight:'80px',height:'50px',position:'absolute'}} >
-                  <button style={{backgroundColor:'#30c7f5',width:'100px',height:'40px'}} onClick={this.lastStep}>上一步</button>
-                </div> 
+                  <Table rowKey={record => record.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} size="small" bordered  scroll={{ y: 400 }}/>
                 </div> 
             </div>
 
