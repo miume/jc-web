@@ -7,7 +7,7 @@ import BlockQuote from '../BlockQuote/blockquote';
 import DeleteByIds from './deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
-
+import NewButton from "../BlockQuote/newButton";
 
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
@@ -182,6 +182,7 @@ class User extends React.Component{
         const editable = this.isEditing(record);
         return (
             <span>
+                
                 <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
@@ -534,7 +535,8 @@ class User extends React.Component{
            <div>
                <BlockQuote name='用户管理' menu='用户和权限'/>
                <div style={{padding:'15px'}}>
-               <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button>
+               <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
+               {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
                     <Modal title="新增" visible={this.state.visible}
                           onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
                           footer={[

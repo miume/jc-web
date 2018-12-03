@@ -444,7 +444,7 @@ class Role extends React.Component {
             <div>
                 <BlockQuote name="角色管理" menu='用户与权限'></BlockQuote>
                 <div style={{padding:'15px'}}>
-                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />
+                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                   {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
                   <Modal title="新增" visible={this.state.visible} closable={false}
                         footer={[
