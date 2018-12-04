@@ -4,7 +4,7 @@ import '../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../BlockQuote/blockquote';
 //import Span from '../BlockQuote/span';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
 import NewButton from "../BlockQuote/newButton";
@@ -83,6 +83,10 @@ class EditableCell extends React.Component {
 class User extends React.Component{
   server;
   Authorization;
+  componentDidMount(){
+    this.fetch();
+    this.getAllDepartment();
+  }
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return ;
@@ -193,7 +197,6 @@ class User extends React.Component{
                     <EditableContext.Consumer>
                       {form => (
                         <span
-                          href="javascript:;"
                           onClick={() => this.save(form, record.id)}
                           style={{ marginRight: 8 }}>保存</span>
                       )}
@@ -228,7 +231,7 @@ class User extends React.Component{
     }
     fetch=(params = {})=>{
       //console.log('params:', params);
-      this.setState({loading:true});
+     // this.setState({loading:true});
       axios({
         url: `${this.server}/jc/auth/user/getAllByPage`,
         method:'get',
@@ -251,10 +254,7 @@ class User extends React.Component{
         });
       });
     }
-    componentDidMount(){
-      this.fetch();
-      this.getAllDepartment();
-    }
+   
     //新增
       //显示新增弹出框
       handleAdd=()=>{
@@ -514,7 +514,7 @@ class User extends React.Component{
             },
         };
        
-         const table_column =this. columns.map((col) => {
+         const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
             }
@@ -535,6 +535,7 @@ class User extends React.Component{
            <div>
                <BlockQuote name='用户管理' menu='用户和权限'/>
                <div style={{padding:'15px'}}>
+
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
                     <Modal title="新增" visible={this.state.visible}

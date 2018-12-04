@@ -150,7 +150,6 @@ Authorization;
                     <EditableContext.Consumer>
                       {form => (
                         <span className='blue'
-                          href="javascript:;"
                           onClick={() => this.save(form, record.id)}
                           style={{ marginRight: 8 }}>保存</span>
                       )}
@@ -398,7 +397,7 @@ Authorization;
             },
         };
        
-         const table_column =this. columns.map((col) => {
+         const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
             }
