@@ -75,6 +75,8 @@ class PurchaseModalTable extends React.Component {
         this.Authorization = localStorage.getItem('Authorization');
         /**这是服务器网址及端口 */
         this.server = localStorage.getItem('remote');
+        const handleRightClick = () => this.handleClick(1)
+        const handleLeftClick = () => this.handleClick(-1)
         return(
             <div id="modalTable">
                 <div>
@@ -83,7 +85,7 @@ class PurchaseModalTable extends React.Component {
                         <div className="leftThead">批号</div>
                     </div>
                     <div id="theadMiddle"  onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-                        <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
+                        <div className={(this.state.hover? 'leftOnclick':'')} onClick={handleLeftClick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
                         <div className="middleThead" ref={(ref) => this.middleTheadRef = ref}>
@@ -110,7 +112,7 @@ class PurchaseModalTable extends React.Component {
                             }
                             <div style={{clear: 'both'}}></div>
                         </div>
-                        <div className={(this.state.hover? 'rightOnclick':'')} onClick={this.handleRightOnclick}>
+                        <div className={(this.state.hover? 'rightOnclick':'')} onClick={handleRightClick}>
                             <i className="fa fa-chevron-right fa-2x"></i>
                         </div>
                     </div>
@@ -151,6 +153,10 @@ class PurchaseModalTable extends React.Component {
                                 );
                             })
                         }
+                    </div>
+                    <div id="tbodyRight">
+                        <div>合格</div>
+                        <div>不合格</div>
                     </div>
                 </div>
             </div>
@@ -199,77 +205,50 @@ class PurchaseModalTable extends React.Component {
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
-    handleLeftOnclick = () => {
-        var middle  = this.middleTheadRef;
-        var middleItem = this.middleTheadDivRef;
-        var tbodyMiddleRef = this.tbodyMiddleRef;
+    handleClick(number) {
+        if(number === 1) {
+            console.log('>>>>>>>>>')
+        }else {
+            console.log('<<<<<<<<<')
+        }
 
-        let count = middleItem.offsetWidth * 7;
-        let gap = (count / 100);
-        gap = gap.toFixed(0);
-        if(gap >= 1){
-            var interval = setInterval(function() {
-                let pre = middle.scrollLeft;
-                if(count < 5) {
-                    count -= 1;
-                    middle.scrollLeft -= 1;
-                    tbodyMiddleRef.scrollLeft -= 1;
-                }else {
-                    count -= gap;
-                    middle.scrollLeft -= Number(gap);
-                    tbodyMiddleRef.scrollLeft -= Number(gap);
-                }
-                if(count <= 0 || pre === middle.scrollLeft) {
-                    clearInterval(interval);
-                }
-            },1)
-        }else if(gap >0){
-            var interval2 = setInterval(function() {
-                let pre = middle.scrollLeft;
-                count -= 1;
-                middle.scrollLeft -= 1;
-                tbodyMiddleRef.scrollLeft += 1;
-                if(count <= 0|| pre === middle.scrollLeft) {
-                    clearInterval(interval2);
-                }
-            },1)
-        }
-    };
-    handleRightOnclick = () => {
         var middle  = this.middleTheadRef;
         var middleItem = this.middleTheadDivRef;
         var tbodyMiddleRef = this.tbodyMiddleRef;
         let count = middleItem.offsetWidth * 7;
         let gap = (count / 100);
         gap = gap.toFixed(0);
-        if(gap >= 1){
+        if(gap >= 1) {
             var interval = setInterval(function() {
                 let pre = middle.scrollLeft;
                 if(count < 5) {
                     count -= 1;
-                    middle.scrollLeft += 1;
-                    tbodyMiddleRef.scrollLeft += 1;
-                }else {
+                    middle.scrollLeft += (number === 1 ? 1 : -1);
+                    tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
+                }
+                else {
                     count -= gap;
-                    middle.scrollLeft += Number(gap);
-                    tbodyMiddleRef.scrollLeft += Number(gap);
+                    middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
+                    tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
                 }
                 if(count <= 0 || pre === middle.scrollLeft) {
+                    // console.log('clear')
                     clearInterval(interval);
                 }
             },1)
-        }else if(gap >0){
+        }else if(gap > 0){
             var interval2 = setInterval(function() {
                 let pre = middle.scrollLeft;
                 count -= 1;
-                middle.scrollLeft += 1;
-                tbodyMiddleRef.scrollLeft += 1;
+                middle.scrollLeft += (number === 1 ? 1 : -1);
+                tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
                 if(count <= 0|| pre === middle.scrollLeft) {
+                    // console.log('clear')
                     clearInterval(interval2);
                 }
             },1)
         }
-    };
+    }
 
     /**---------------------- */
     /**获取表头数据*/
