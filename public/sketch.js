@@ -10,10 +10,10 @@ var attractor;
 function setup() {
   // put setup code here
   createCanvas(800,400);
-  DIST_MAX = width / 2;
-  DIST_MIN = width/4;
-  SPEED_MAX = 3;
-  NB_PARTS = 10;
+  DIST_MAX = width / 2.5;
+  DIST_MIN = width/8;
+  SPEED_MAX = 0.5;
+  NB_PARTS = 8;
   for (var i = 0; i < NB_PARTS; i++) {
     parts[i] = new part(random(width), random(height));
   }
@@ -21,6 +21,7 @@ function setup() {
 }
 
  function draw() {
+  console.log('draw')
   noStroke();
   background(255);
   triangles = [];
@@ -44,7 +45,7 @@ function setup() {
         var froce = p5.Vector.sub(p2.pos, p1.pos);
         var dsquared = froce.magSq();
         dsquared = constrain(dsquared,25,500);
-        var G = 7;
+        var G = 10;
         var strength = G / dsquared;
         froce.setMag(strength);
         // froce.mult(-1);
