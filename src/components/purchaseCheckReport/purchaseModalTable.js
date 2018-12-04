@@ -203,7 +203,6 @@ class PurchaseModalTable extends React.Component {
         var middle  = this.middleTheadRef;
         var middleItem = this.middleTheadDivRef;
         var tbodyMiddleRef = this.tbodyMiddleRef;
-
         let count = middleItem.offsetWidth * 7;
         let gap = (count / 100);
         gap = gap.toFixed(0);
