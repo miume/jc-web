@@ -1,17 +1,22 @@
 import React from 'react';
+import '../dataEntry/data.css'
 class BasePart extends React.Component{
   
     render(){
         // console.log(this.props.path)
         return (
-            <div style={{width:'240px',height:'200px',border:'1px solid #0079FE',margin:'15px',float:'left',cursor:'pointer'}} id={this.props.path} onClick={this.props.click}>
-                <div style={{width:'100%',height:'160px',backgroundColor:'#0079FE',textAlign:'center'}}>
-                    <p style={{padding:'40px'}}><i className={this.props.className} style={{color:'white'}} id={this.props.path} ></i></p>
-                </div>
-                <div style={{textAlign:'center',fontSize:'17px',fontWeight:'bold',color:'black',padding:'5px'}}>
-                    <p>{this.props.name}</p>
-                </div>
-            </div>
+           <div className='nav-card' style={{cursor:'pointer' ,display:'inline-block',height:'220px'}} id={this.props.path} onClick={this.props.click}>
+              <div className='nav-card-child' style={{border:'1px solid #0079EE'}} >
+                 <div style={{width:'100%',height:'80%',backgroundColor:'#0079EE',textAlign:'center'}}>
+                       <p style={{padding:'40px'}} id={this.props.path}>
+                          <i className={this.props.className} style={{color:'white'}} id={this.props.path}></i>
+                       </p>
+                 </div>
+                 <div style={{textAlign:'center',fontSize:'14px' ,fontWeight:'500',color:'black' ,marginTop:'10px'}}>
+                     <p id={this.props.path} className='hover'>{this.props.name}</p>
+                 </div>
+              </div>
+           </div>
         );
     }
 }

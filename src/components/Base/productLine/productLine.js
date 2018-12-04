@@ -2,7 +2,7 @@ import React from 'react';
 import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
-import BlockQuote from '../blockquote';
+import BlockQuote from '../../BlockQuote/blockquote';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import SearchCell from '../../BlockQuote/search';
 import ProductLineAddModal from './productLineAddModal';
@@ -69,7 +69,7 @@ class ProductLine extends React.Component{
   Authorization;
   componentDidMount(){
     this.fetch();
-    document.getElementById('/productLine').style.color='#0079FE';
+    //document.getElementById('/productLine').style.color='#0079FE';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {
@@ -98,7 +98,7 @@ class ProductLine extends React.Component{
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
-      
+      this.returnBaseInfo=this.returnBaseInfo.bind(this);
       
       this.pagination = {
         total: this.state.dataSource.length,
@@ -165,6 +165,12 @@ class ProductLine extends React.Component{
         }
      },];
     }
+    
+      /**返回基础数据页面 */
+      returnBaseInfo(){
+        this.props.history.push({pathname:'/baseInfo'});
+       }
+
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
        this.fetch=({//前端需要传的参数
@@ -228,11 +234,11 @@ class ProductLine extends React.Component{
         //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys }); 
      } 
-    //  rowSelected(selectedRowKeys){//？
-    //     this.setState({
-    //       selectedIds: selectedRowKeys
-    //     });
-    //   }
+     rowSelected(selectedRowKeys){//？
+        this.setState({
+          selectedIds: selectedRowKeys
+        });
+      }
     //   showIds(event) {//?
     //    // console.log(event.target.value)
     //   }
@@ -410,7 +416,7 @@ class ProductLine extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='产品线' menu='质量与流程' menu2='基础数据'/>
+               <BlockQuote name='产品线' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo}/>
                <div style={{padding:'15px'}}>  
                <ProductLineAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

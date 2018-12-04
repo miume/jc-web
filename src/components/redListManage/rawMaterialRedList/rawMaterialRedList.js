@@ -112,7 +112,7 @@ class RawMaterialRedList extends Component{
             key:'operation',
             align:'center',
             render:(text,record)=>{
-                console.log(record.status);
+               // console.log(record.status);
                 let editFlag=this.judgeStatus(record.status);
                return(//onConfirm是点击确认时的事件回调
                    <span>
@@ -137,7 +137,7 @@ class RawMaterialRedList extends Component{
        this.setState({selectedRowKeys:selectedRowKeys});
     }
     judgeStatus(record_status){
-         console.log(record_status);
+         //console.log(record_status);
          switch(`${record_status}`){
             case '审核中':return false   //'审核中'
             case '待审核':return  false      //'待审核'

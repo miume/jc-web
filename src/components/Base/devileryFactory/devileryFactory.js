@@ -2,7 +2,7 @@ import React from 'react';
 import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
-import BlockQuote from '../blockquote';
+import BlockQuote from '../../BlockQuote/blockquote';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import SearchCell from '../../BlockQuote/search';
 import DeliveryFactoryAddModal from './deliveryFactoryAddModal';
@@ -68,7 +68,7 @@ class DeliveryFactory extends React.Component{
   Authorization;
   componentDidMount(){
     this.fetch();
-    document.getElementById('/deliveryFactory').style.color='#0079FE';
+    //document.getElementById('/deliveryFactory').style.color='#0079FE';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {
@@ -93,6 +93,7 @@ class DeliveryFactory extends React.Component{
       this.searchEvent=this.searchEvent.bind(this);
       this.cancel=this.cancel.bind(this);
       this.deleteByIds=this.deleteByIds.bind(this);
+      this.returnBaseInfo=this.returnBaseInfo.bind(this);
 
       this.pagination = {
         total: this.state.dataSource.length,
@@ -317,8 +318,8 @@ class DeliveryFactory extends React.Component{
       cancel = () => {
         this.setState({ editingKey: '' });
       };
-       /**返回数据录入页面 */
-      returnDataEntry(){
+       /**返回基础数据页面 */
+      returnBaseInfo(){
         this.props.history.push({pathname:'/baseInfo'});
        }
       /**---------------------- */
@@ -400,7 +401,7 @@ class DeliveryFactory extends React.Component{
       
        return(
            <div>
-               <BlockQuote name='送样工厂' menu='质量与流程' menu2='基础数据' returnBaseInfo={this.returnBaseInfo}/>
+               <BlockQuote name='送样工厂' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo}/>
                <div style={{padding:'15px'}}>  
                <DeliveryFactoryAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

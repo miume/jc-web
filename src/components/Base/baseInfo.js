@@ -1,6 +1,7 @@
 import React from 'react';
 import Blockquote from '../BlockQuote/blockquote';
 import BasePart from './basePart';
+import '../dataEntry/data.css';
 const data=[{
     id:1,
     name:'送样工厂',
@@ -43,8 +44,8 @@ class BaseInfo extends React.Component{
             clickButton:''
         }
         this.click=this.click.bind(this);
-        this.nextStep=this.nextStep.bind(this);
-        this.lastStep=this.lastStep.bind(this);
+        // this.nextStep=this.nextStep.bind(this);
+        // this.lastStep=this.lastStep.bind(this);
     }
     click(e){  
        //console.log(e.target);
@@ -53,23 +54,23 @@ class BaseInfo extends React.Component{
      
     this.props.history.push({pathname:path})
     }
-    nextStep(){
+    // nextStep(){
         
-        this.setState({
-            flag:1
-        });
-        //console.log(this.state.path);
-        this.props.history.push({pathname:this.state.path});//react的路由跳转
-    }
-    lastStep(){
-        this.setState({flag:0});
-    }
+    //     this.setState({
+    //         flag:1
+    //     });
+    //     //console.log(this.state.path);
+    //     this.props.history.push({pathname:this.state.path});//react的路由跳转
+    // }
+    // lastStep(){
+    //     this.setState({flag:0});
+    // }
     render(){
         return(
             <div>
                 <Blockquote menu='质量与流程' name='基础数据'/>
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
-                    <div style={{marginLeft:'20px'}}>
+                    <div className='card-parent'>
                     {
                         data.map(d=>
                             <BasePart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></BasePart>
