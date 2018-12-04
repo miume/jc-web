@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button,Modal,Table} from 'antd';
+import {Button,Modal,Table,Input} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import Submit from '../../BlockQuote/submit';
 import './rawAdd.css';
@@ -20,14 +20,14 @@ class ApplyStockOut extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource:data,
+            dataSource:[],
             visible:false
         }
         this.columns = [{
             title:'序号',
-            dataIndex:'id',
-            key:'id',
-            sorter:(a,b)=>a.id-b.id,
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b)=>a.index-b.index,
             align:'center',
             width:'9%'
         },{
@@ -41,11 +41,19 @@ class ApplyStockOut extends React.Component{
             dataIndex:'materialClass',
             key:'materialClass',
             align:'center',
-            width:'13%'
+            width:'13%',
+            render:(text,record)=>{
+                switch(text){
+                    case 1: return '原材料';
+                    case 2: return '中间件';
+                    case 1: return '成品';
+                    default:return '';
+                }
+            }
         },{
-            title:'批号',
-            dataIndex:'batchNumberId',
-            key:'batchNumberId',
+            title:'编号',
+            dataIndex:'serialNumber',
+            key:'serialNumber',
             align:'center',
             width:'15%'
         },{
@@ -66,15 +74,16 @@ class ApplyStockOut extends React.Component{
             key:'outQuantity',
             align:'center',
             width:'15%',
-            render:(record)=>{return <input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'38px'}} placeholder='请输入出库数量' onChange={this.save} />},
+            render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
+            className:'tdStyle'
         },{
             title:'出库重量',
             dataIndex:'outWeight',
             key:'outWeight',
             align:'center',
             width:'15%',
-            render:(record)=>{return <input id={record.id} name='outWeight' style={{border:'none',width:'100%',height:'38px'}} placeholder='请输入出库重量' onChange={this.save} />},
-
+            render:(text,record)=>{return <Input id={record.id} name='outWeight' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库重量' onChange={this.save} />},
+            className:'tdStyle'
         }]
         this.apply = this.apply.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -102,28 +111,42 @@ class ApplyStockOut extends React.Component{
     /**input框内容变化，实现自动保存数据 */
     save(e){
         const value = e.target.value;
-        const name = e.target.name;
+        const name = e.target.name.toString();
         const id = e.target.id
         const newData = [...this.state.dataSource];
-        const index = newData.findIndex(item=> id===item.id);
-        newData[index][name] = value;
-        this.setState({
-            dataSource:newData
-        })
+        const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
+        // console.log(newData[index].id )
+        newData[index][name] = value.toString();
+        console.log(newData)
+        // this.setState({
+        //     dataSource:newData
+        // })
     }
     render(){
+        const keys = this.props.selectedRowKeys;
+        var outData = this.props.data.filter(d=>{
+            for(var i = 0; i < keys.length;i++){
+                if(keys[i]===d.id){
+                    d['outQuantity']='';
+                    d['outWeight']='';
+                    d['index']=i+1
+                    return d;
+                }
+            }
+        })
+        this.state.dataSource = outData;
         return (
             <span>
-                <Button type='primary' size='default' className='button' onClick={this.apply} ><i className="fa fa-plus-square" style={{color:'white'}}></i> 申请出库</Button>
+                <Button type='primary' size='default' className='button' onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" style={{color:'white'}}></i> 申请出库</Button>
                 <Modal title='申请' visible={this.state.visible}
-                    closable= {false} width='1100px' maskClosable={false}
+                    closable= {false} width='1000px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <Submit key='submit' data = {this.state.dataSource}/>                       
                     ]}
                 >
-                <div style={{height:'400px'}}>
-                    <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:330}} pagination={false} rowClassName={() => 'editable-row'}></Table>
+                <div style={{height:'200px'}}>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:170}} pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>
