@@ -187,7 +187,6 @@ class Role extends React.Component {
         page: pagination.current,
         orderField: 'id',
         orderType: 'desc',
-        
       });
     }
     fetch = (params = {}) => {
@@ -412,10 +411,8 @@ class Role extends React.Component {
           const rowSelection = {
             onChange: this.onSelectChange,
             onSelect() {
-                // console.log(record, selected, selectedRows);
             },
             onSelectAll() {
-                // console.log(selected, selectedRows, changeRows);
             },
           };
         
