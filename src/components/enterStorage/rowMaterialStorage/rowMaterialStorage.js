@@ -174,6 +174,7 @@ class RowMaterialStorage extends Component{
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.fetch}
+                        type={this.props.type}
                     >
                     </SearchCell>
                 </span>
