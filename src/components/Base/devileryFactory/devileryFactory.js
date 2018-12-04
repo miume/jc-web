@@ -3,7 +3,7 @@ import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../blockquote';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../../BlockQuote/deleteByIds';
 import SearchCell from '../../BlockQuote/search';
 import DeliveryFactoryAddModal from './deliveryFactoryAddModal';
 //import EditableCell from './editaleCell';
@@ -91,6 +91,8 @@ class DeliveryFactory extends React.Component{
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
+      this.cancel=this.cancel.bind(this);
+      this.deleteByIds=this.deleteByIds.bind(this);
 
       this.pagination = {
         total: this.state.dataSource.length,
@@ -139,7 +141,6 @@ class DeliveryFactory extends React.Component{
                     <EditableContext.Consumer>
                       {form => (
                         <span className='blue'
-                          href="javascript:;"
                           onClick={() => this.save(form, record.id)}
                           style={{ marginRight: 8 }}>保存</span>
                       )}
@@ -214,12 +215,44 @@ class DeliveryFactory extends React.Component{
          message.info('删除失败，请联系管理员');
         });
       }
+    rowSelected(selectedRowKeys){//？
+        this.setState({
+          selectedIds: selectedRowKeys
+        });
+      }
+        /**批量删除弹出框确认函数 */
+    deleteByIds(){
+      const ids =this.state.selectedRowKeys;//删除的几行的id
+     // console.log(ids);
+      axios({
+          url:`${this.server}/jc/common/deliveryFactory/deleteByIds?ids=${ids}`,
+          method:'Delete',
+          headers:{
+                'Authorization' :this.Authorization
+          },
+          data:ids,//前端要传的参数放在data里面，
+          type:'json'
+      })
+      .then((data)=>{
+       // console.log(data);
+        message.info(data.data.message);
+        this.fetch();//调用getAllByPage,渲染删除后的表格
+      })//处理成功
+      .catch(()=>{
+       // console.log(error);
+        message.info('删除失败，请联系管理员！')
+      });//处理异常
+     
+   }
+  cancel(){
+    
+  }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
         //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys }); 
      } 
- 
+  
     //编辑
     //判断单元格是否可编辑
     isEditing (record)  {
@@ -348,7 +381,7 @@ class DeliveryFactory extends React.Component{
             },
         };
        
-         const table_column =this. columns.map((col) => {
+         const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
             }
@@ -370,7 +403,7 @@ class DeliveryFactory extends React.Component{
                <BlockQuote name='送样工厂' menu='质量与流程' menu2='基础数据' returnBaseInfo={this.returnBaseInfo}/>
                <div style={{padding:'15px'}}>  
                <DeliveryFactoryAddModal fetch={this.fetch}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} fetch={this.fetch}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入送样工厂' 
                       searchEvent={this.searchEvent}

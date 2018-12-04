@@ -139,7 +139,7 @@ class ProductLine extends React.Component{
         return (
             <span>
                 <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                <a href="#">删除</a>
+                <span className='blue'>删除</span>
                 </Popconfirm>
                 <Divider type="vertical" />
                 <span>
@@ -148,7 +148,6 @@ class ProductLine extends React.Component{
                     <EditableContext.Consumer>
                       {form => (
                         <span className='blue'
-                          href="javascript:;"
                           onClick={() => this.save(form, record.id)}
                           style={{ marginRight: 8 }}>保存</span>
                       )}
@@ -393,7 +392,7 @@ class ProductLine extends React.Component{
             },
         };
        
-         const table_column =this. columns.map((col) => {
+         const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
             }

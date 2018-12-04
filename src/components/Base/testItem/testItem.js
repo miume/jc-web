@@ -25,10 +25,6 @@ const EditableFormRow = Form.create()(EditableRow);
 
 
 class EditableCell extends React.Component {
-  constructor(props){
-    super(props);
-  }
-  
     getInput = () => {
     
         return <Input />;
@@ -73,7 +69,7 @@ class EditableCell extends React.Component {
     }
 }
 
-class SamplePoint extends React.Component{
+class TestItem extends React.Component{
   server;
   Authorization;
   componentDidMount(){
@@ -127,7 +123,7 @@ class SamplePoint extends React.Component{
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
        //sorter:true,//需要服务端排序
-       //sorter:(a, b) => a.id-b.id,
+       sorter:(a, b) => a.id-b.id,
         width: '20%',
         align:'center',
      },{
@@ -159,7 +155,6 @@ class SamplePoint extends React.Component{
                     <EditableContext.Consumer>
                       {form => (
                         <span className='blue'
-                          href="javascript:;"
                           onClick={() => this.save(form, record.id)}
                           style={{ marginRight: 8 }}>保存</span>
                       )}
@@ -198,7 +193,6 @@ class SamplePoint extends React.Component{
         params:{
           ...params,
         },
-        //type:'json',
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res.total;
@@ -217,7 +211,7 @@ class SamplePoint extends React.Component{
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
-        const dataSource = this.state.dataSource;
+        //const dataSource = this.state.dataSource;
         axios({
           url:`${this.server}/jc/common/testItem?id=${id}`,
           method:'Delete',
@@ -354,7 +348,7 @@ class SamplePoint extends React.Component{
       //根据用户名称分页查询
       searchEvent(){
            const testItemName=this.state.searchContent;
-           //console.log(username);
+           console.log(this.pagination);
            axios({
              url:`${this.server}/jc/common/testItem/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
@@ -406,7 +400,7 @@ class SamplePoint extends React.Component{
             },
         };
        
-         const table_column =this. columns.map((col) => {
+         const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
             }
@@ -449,4 +443,4 @@ class SamplePoint extends React.Component{
        );
    }
 }
-export default SamplePoint;
+export default TestItem;

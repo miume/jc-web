@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form,Input,Button,Modal,message} from 'antd';
 import axios from 'axios';
+import AddButton from '../../BlockQuote/addButton';
 
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
@@ -93,7 +94,7 @@ class ProductLineAddModal extends React.Component{
       this.server=localStorage.getItem('remote');
         return(
           <span>
-              <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.showModal} >新增</Button>
+              <AddButton   handleAdd={this.showModal} />
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}
