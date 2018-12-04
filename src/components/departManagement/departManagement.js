@@ -4,9 +4,10 @@ import DepartTable from './departTable';
 import '../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
-import DeleteModal from "./deleteModal";
 import {message} from "antd";
 import SearchCell from '../BlockQuote/search';
+import DeleteByIds from "../BlockQuote/deleteByIds";
+
 
 
 
@@ -32,7 +33,7 @@ class Depart extends React.Component {
             searchText: '',
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
-        this.start=this.start.bind(this);
+        this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
         this.fetch=this.fetch.bind(this);
         this.modifyDataSource=this.modifyDataSource.bind(this);
@@ -41,13 +42,10 @@ class Depart extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
+            showTotal(total) {
+                return `共${total}条记录`
             },
-            onChange(current) {
-                // console.log('Current: ', current);
-            }
+            showSizeChanger: true,
         }
     }
     render() {
@@ -55,7 +53,7 @@ class Depart extends React.Component {
         this.Authorization = localStorage.getItem('Authorization');
         /**这是服务器网址及端口 */
         this.server = localStorage.getItem('remote');
-        const { loading, selectedRowKeys } = this.state;
+        const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -67,10 +65,9 @@ class Depart extends React.Component {
                     <AddModal
                         fetch={this.fetch}
                     />
-                    <DeleteModal
+                    <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
-                        start={this.start}
-                        loading={loading}
+                        deleteByIds={this.deleteByIds}
                         cancel={this.cancel}
                     />
                     <span style={{float:'right',paddingBottom:'8px'}}>
@@ -139,7 +136,7 @@ class Depart extends React.Component {
     }
     /**---------------------- */
     /**实现批量删除功能 */
-    start = () => {
+    deleteByIds = () => {
         const ids = this.state.selectedRowKeys;
         axios({
             url:`${this.server}/jc/auth/department/deleteByIds`,
@@ -164,7 +161,6 @@ class Depart extends React.Component {
         setTimeout(() => {
             this.setState({
                 selectedRowKeys: [],
-                loading: false,
             });
         }, 1000);
     }

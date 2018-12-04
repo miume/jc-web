@@ -54,20 +54,15 @@ class DataEntry extends React.Component{
             clickButton:''
         }
         this.click = this.click.bind(this);
-        this.returnDataEntry = this.returnDataEntry.bind(this);
     }
      click(e){
          const path = e.target.id;
          this.props.history.push({pathname:path})
     }
-    /**返回数据录入页面 */
-    returnDataEntry(){
-        this.props.history.push({pathname:'/dataEntry'});
-    }
     render(){
         return (
             <div>
-                <Blockquote menu='质量流程' name='数据录入' onClick={this.returnDataEntry}/>
+                <Blockquote menu='质量流程' name='数据录入' />
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
                     <div className='card-parent'>
                     {

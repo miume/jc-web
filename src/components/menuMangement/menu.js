@@ -101,7 +101,7 @@ class Menu extends React.Component{
             <AddModal
                 fetch={this.fetch}
                 fatherMenu = {this.state.fatherMenu}
-            />
+            />&nbsp;&nbsp;&nbsp;
             <DeleteByIds
                 selectedRowKeys={this.state.selectedRowKeys}
                 start={this.start}
@@ -191,7 +191,7 @@ class Menu extends React.Component{
     start = () => {
       const ids = this.state.selectedRowKeys;
       axios({
-          url:`${localStorage.getItem('remote2')}/jc/auth/menu/deleteByIds`,
+          url:`${localStorage.getItem('remote')}/jc/auth/menu/deleteByIds`,
           method:'post',
           headers:{
               'Authorization':this.Authorization

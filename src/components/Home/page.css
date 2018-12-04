@@ -42,5 +42,8 @@
     float : right;
   }
    div .iconHover:hover{
-    background-color: #0079FE;
+       background-color: #0079FE;
+       color:#ffffff;
+       font-weight: bolder;
   }
+

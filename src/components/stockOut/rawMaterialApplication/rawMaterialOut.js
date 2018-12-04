@@ -18,9 +18,12 @@ for(var i = 1; i<=20; i++){
         isUrgent:0
     })
 }
-const Authorization = localStorage.getItem('Authorization');
-const server = localStorage.getItem('remote');
 class RawMaterialOut extends React.Component{
+    Authorization
+    server
+    componentDidMount(){
+
+    }
     constructor(props){
         super(props);
         this.state = {
@@ -118,6 +121,8 @@ class RawMaterialOut extends React.Component{
             onChange(current) {
             }
           }
+        this.Authorization = localStorage.getItem('Authorization');
+        this.server = localStorage.getItem('remote');
     }
     /**单条记录删除 */
     handleDelete(id){
@@ -139,10 +144,10 @@ class RawMaterialOut extends React.Component{
     searchEvent(){
         const content = this.state.searchContent;
         axios({
-            url:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
+            url:`${this.componentWillReceivePropsserver}/jc/auth/role/getRolesByNameLikeByPage`,
             method:'get',
             headers:{
-              'Authorization':Authorization
+              'Authorization':this.Authorization
             },
             params:{
               size: this.pagination.pageSize,

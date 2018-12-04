@@ -1,64 +1,22 @@
-.leftOnclick {
-    /*display: none;*/
-    font-size: 20px;
-    background: no-repeat;
-    position:absolute;
-    left:210px;
-    /*background:url(bg.png) no-repeat;*/
-    /*background-position: 20px 18px;*/
-    background-color: #0079FE;
-    padding-top: 12px;
-    padding-bottom: 11px;
-    z-index:100;
-    flex-grow: 2;
-    cursor: pointer;
-}
-.rightOnclick {
-    /*display: none;*/
-    font-size: 20px;
-    background: no-repeat;
-    position:absolute;
-    right:125px;
-    top:170px;
-    background-color: #0079FE;
-    padding-top: 12px;
-    padding-bottom: 11px;
-    z-index:100;
-    flex-grow: 1;
-    cursor: pointer;
-}
-/*#middle:hover {*/
-/*color: green;*/
-/*}*/
-.flag {
-
-}
-
 #modalTable {
-    /*border-radius:3px;*/
-    /*min-width: 80%;*/
-    /*max-width: 80%;*/
     width: 100%;
-    /*background-color: crimson;*/
     height: 400px;
-    /*margin: 0 auto;*/
     white-space: nowrap;
+    /*display: flex;*/
     font-size: 0;
 }
 #theadLeft {
-    border-radius:3px 0 0 0;
+    border-radius: 3px 0 0 0;
     width: 20%;
-    background-color: #E4E4E4;
-    /*border-right: 1px solid black;*/
     height: 66px;
-    float:left;
-    white-space: nowrap; /*强制内部原文不换行*/
-    /*font-size: 0;*/
+    background-color: #E4E4E4;
+    float: left;
+    white-space: nowrap;
 }
 .leftThead {
     width: 50%;
-    border-right: 1px solid #CCCCCC;
     height: 66px;
+    border-right: 1px solid #CCCCCC;
     line-height: 66px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
@@ -67,33 +25,48 @@
 #theadMiddle {
     background-color: #E4E4E4;
     width: 70%;
-    overflow-x: auto;
-    overflow-y: hidden; /*才能让y滚动取消*/
-    /*display: inline-block;*/
     float:left;
+}
+.leftOnclick {
+    font-size: 20px;
+    position:absolute;
+    left:210px;
+    background-color: #0079FE;
+    padding-top: 12px;
+    padding-bottom: 11px;
+    z-index:100;
+    /*flex-grow: 2;*/
+    cursor: pointer;
+}
+.rightOnclick {
+    font-size: 20px;
+    position:absolute;
+    right:125px;
+    top:170px;
+    background-color: #0079FE;
+    padding-top: 12px;
+    padding-bottom: 11px;
+    z-index:100;
+    /*flex-grow: 1;*/
+    cursor: pointer;
 }
 .middleThead {
     border-right: 1px solid #CCCCCC;
     height: 66px;
     width: 100%;
-    display: flex;
-    /*display: inline-block;*/
     white-space: nowrap;
     position: relative;
     left: 0;
-    /*font-size: 0;*/
     flex-grow: 7;
-    overflow-x: auto;
+    overflow-x: hidden; /*需要有overflow-x hidden只是将滚动条掩盖了*/
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-between;
 }
-.middleThead .middleTheadDiv{
+.middleTheadDiv {
     background-color: #E4E4E4;
-    /*float:left;*/
     min-width: 14.3%;  /*14*/
     flex:1;
-    /*width: 10%; !*需要设定，才能保证布满div*!*/
     border-right: 1px solid #CCCCCC;
     height: 66px;
     line-height: 21px;
@@ -102,114 +75,60 @@
     font-size: 12px;
     transition: transform 2s;
 }
-.middleThead .middleTheadDiv div {
-    border-bottom: 1px solid #CCCCCC;
-}
-.middleThead .firstMiddleDiv {
-    border-left: 1px solid #CCCCCC;
-}
 #theadRight {
     border-radius:0 3px 0 0;
     width: 10%;
-    background-color: #E4E4E4;
-    /*border-right: 1px solid black;*/
     height: 66px;
+    background-color: #E4E4E4;
     float:left;
     white-space: nowrap; /*强制内部原文不换行*/
-    /*font-size: 0;*/
-}
-#theadRight .rightThead {
-    width: 100%;
-    border-right: 1px solid #CCCCCC;
-    height: 66px;
     line-height: 66px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
     font-size: 16px;
 }
-/*------------------*/
+
+/*----tbody--------*/
 #tbody {
     height: 70%;
     overflow-y: auto; /*才能让y滚动取消*/
     border-radius:0 0 3px 3px;
-
 }
 #tbodyLeft {
+    border-radius: 3px 0 0 0;
     width: 20%;
-    background-color: white;
-    /*border-right: 1px solid black;*/
-    height: 30px;
-    float:left;
-    white-space: nowrap; /*强制内部原文不换行*/
-    border-bottom: 1px solid #CCCCCC;
-    /*font-size: 0;*/
+    float: left;
+    white-space: nowrap;
 }
 .leftTbody {
     width: 50%;
+    height: 22px;
     border-right: 1px solid #CCCCCC;
-    height: 30px;
-    line-height: 30px;
+    line-height: 22px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
     font-size: 12px;
 }
-#tbodyMiddle {
-    background-color: white;
+.tbodyMiddle {
     width: 70%;
     overflow-x: hidden;
     overflow-y: hidden; /*才能让y滚动取消*/
-
     float:left;
+    box-sizing: border-box;
 }
 .middleTbody {
-    border-right: 1px solid #CCCCCC;
-    height: 30px;
-    width: 100%;
-    display: flex;
-    /*display: inline-block;*/
-    white-space: nowrap;
-    position: relative;
-    left: 0;
-    /*font-size: 0;*/
-}
-.middleTbody .middleTbodyDiv{
-    background-color: white;
-    /*float:left;*/
     min-width: 14.3%;  /*14*/
     flex:1;
-    /*width: 10%; !*需要设定，才能保证布满div*!*/
-    border-right: 1px solid #CCCCCC;
-    height: 30px;
-    line-height: 30px;
+    /*border-right: 1px solid #CCCCCC;*/
+    height: 22px;
+    line-height: 22px;
     text-align: center;
     display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
     font-size: 12px;
-    border-bottom: 1px solid #CCCCCC;
+    transition: transform 2s;
+    box-sizing: content-box;
 }
-.middleTbody .middleTbodyDiv div {
-    height: 29px;
-    /*border-bottom: 1px solid #CCCCCC;*/
-}
-.middleTbody .firstMiddleDiv {
-    border-left: 1px solid #CCCCCC;
-}
-#tbodyRight {
-    width: 10%;
-    background-color: #999999;
-    /*border-right: 1px solid black;*/
-    height: 30px;
-    float:left;
-    white-space: nowrap; /*强制内部原文不换行*/
-    border-bottom: 1px solid #CCCCCC;
-    /*font-size: 0;*/
-}
-#tbodyRight .rightTbody {
-    width: 50%;
+.middleTbodyDiv {
     border-right: 1px solid #CCCCCC;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    display: inline-block; /*div  设置该元素为行内块级元素，且可以设置宽高*/
-    font-size: 12px;
 }
-
+/**/

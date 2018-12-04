@@ -92,6 +92,14 @@ input::-webkit-input-placeholder{
     text-align:left !important;
   }
 
-  .iconHover {
+.iconHover {
       text-align: center;
-  }
+}
+.iconHover:hover {
+   background-color: #1890ff;
+   color: white;
+}
+
+.ant-menu-item-active {
+    background-color: #1890ff !important;
+}

@@ -8,8 +8,8 @@ import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
-import AddButton from '../BlockQuote/addButton';
-// import CancleButton from '../BlockQuote/cancleButton';
+import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -89,6 +89,9 @@ class Role extends React.Component {
             reset:false
             
         };
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleOk = this.handleOk.bind(this);
         this.cancel = this.cancel.bind(this);
         this.showIds = this.showIds.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
@@ -184,7 +187,6 @@ class Role extends React.Component {
         page: pagination.current,
         orderField: 'id',
         orderType: 'desc',
-        
       });
     }
     fetch = (params = {}) => {
@@ -284,14 +286,18 @@ class Role extends React.Component {
       };
    
        /**显示新增弹出框 */
-      handleAdd = () => {
+      handleAdd() {
         this.setState({
           visible: true
         });
       }
       /**新增一条记录 */
       handleOk() {
-        //console.log(this.formRef.getItemsValue());
+        // console.log(this.formRef.getItemsValue());
+        if(this.formRef.getItemsValue().roleName===''){
+            message.info('角色名称不能为空！');
+            return
+        }
         this.setState({
           visible: false,
         });
@@ -315,9 +321,8 @@ class Role extends React.Component {
       }
       handleCancel() {
         this.setState({
-          visible: false
+          visible: false,
         });
-        
         this.formRef.resetField()
       }
       
@@ -406,10 +411,8 @@ class Role extends React.Component {
           const rowSelection = {
             onChange: this.onSelectChange,
             onSelect() {
-                // console.log(record, selected, selectedRows);
             },
             onSelectAll() {
-                // console.log(selected, selectedRows, changeRows);
             },
           };
         
@@ -438,20 +441,19 @@ class Role extends React.Component {
             <div>
                 <BlockQuote name="角色管理" menu='用户与权限'></BlockQuote>
                 <div style={{padding:'15px'}}>
-                  <AddButton handleAdd={this.handleAdd} />
+                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                   {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                      <Modal title="新增" visible={this.state.visible} closable={false}
-                            footer={[
-                              <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
-                              <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
-                            ]}>
-                            <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
-                      </Modal>
-                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
-                      <span style={{float:'right',paddingBottom:'8px'}}>
-                          <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
-                      </span>
-                  
+                  <Modal title="新增" visible={this.state.visible} closable={false}
+                        footer={[
+                          <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                          <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                        ]}>
+                        <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
+                  </Modal>
+                  <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
+                  <span style={{float:'right',paddingBottom:'8px'}}>
+                      <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
+                  </span>
                   <div className='clear'></div>
                   <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
                 </div>

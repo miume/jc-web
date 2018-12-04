@@ -2,6 +2,10 @@
   color:#0079FE;
 }
 
+.nav-card-child {
+  border-radius: 1%;
+  overflow: hidden;
+}
 
 @media screen and (min-width: 1000px) {
   .nav-card {

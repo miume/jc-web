@@ -2,6 +2,8 @@ import React from 'react';
 import {Modal,Button,Icon,message} from 'antd';
 import './userManagement.css';
 import axios from 'axios';
+import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 /**测试假数据 */
 // const assignedRole : [
 //     {id:3, name : '张一'},
@@ -159,10 +161,13 @@ class UserManagement extends React.Component {
         <span>
           <span  className='blue' onClick={this.showModal} value={this.state.value}>成员管理</span>
           <Modal title="设置角色" visible={this.state.visible}
-            closable={false} maskClosable={false}
-            onOk={this.handleOk} onCancel={this.handleCancel}
-            okText="确定" cancelText="取消">
-            <div style={{height:'370px'}} >
+            closable={false} maskClosable={false} width={600}
+            footer={[
+                <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+              ]}
+              >
+            <div style={{height:'377px'}} >
                 <header style={{width:"40%",marginRight:'19%'}}>
                     <li className="theHead">未分配角色</li>
                 </header>
@@ -180,7 +185,7 @@ class UserManagement extends React.Component {
                     {
                         this.state.unsignedRole.map((unsigned) => {
                             return (
-                                <li key={unsigned.id}><label className='check-label'>{unsigned.username}</label><input type='checkbox' value={unsigned.id} style={{marginLeft:'10px'}}
+                                <li key={unsigned.id}><label className='check-label'>{unsigned.name}</label><input type='checkbox' value={unsigned.id} style={{marginLeft:'10px'}}
                                 onChange={this.handleUnsignedInputChange} /></li>
                             )
                         })
@@ -189,9 +194,9 @@ class UserManagement extends React.Component {
                 </div>
 
                 <div className="middle" style={{width:"19%"}}>
-                    <div style={{margin:'130px 20px'}} >
-                        <Button type="primary"  style={{marginBottom:'15px'}} onClick={this.moveRight}><Icon type="right"/></Button>
-                        <Button type="primary" onClick={this.moveLeft} ><Icon type="left"/></Button>
+                    <div style={{margin:'130px 30px'}} >
+                        <Button className='moddal-button-arrow' type="default"  style={{marginBottom:'15px'}} onClick={this.moveRight}><strong><i className='fa fa-chevron-right'></i></strong></Button>
+                        <Button className='moddal-button-arrow' type="default" onClick={this.moveLeft}><strong><i className='fa fa-chevron-left'></i></strong></Button>
                     </div>
                 </div>
 
@@ -199,7 +204,7 @@ class UserManagement extends React.Component {
                     {
                         this.state.assignedRole.map((assigned) => {
                             return (
-                                <li key={assigned.id}><label className='check-label'>{assigned.username}</label><input type='checkbox' value={assigned.id}
+                                <li key={assigned.id}><label className='check-label'>{assigned.name}</label><input type='checkbox' value={assigned.id}
                                 onChange={this.handleAssignedInputChange}/></li>
                             )
                         })

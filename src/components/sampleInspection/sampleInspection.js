@@ -7,6 +7,7 @@ import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
 import Delete from './delete'
+import DeleteByIds from '../BlockQuote/deleteByIds';
 
 const data = [{
     index : '1',

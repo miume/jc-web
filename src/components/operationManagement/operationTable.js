@@ -118,11 +118,11 @@ class OperationTable extends React.Component {
                                     onConfirm={() => this.cancel(record.id)}
                                     okText="确定" cancelText="取消"
                                 >
-                                    <span>取消</span>
+                                    <span className='blue'>取消</span>
                                 </Popconfirm>
                             </span>
                         ) : (
-                            <span onClick={() => this.edit(record.id)}>编辑</span>
+                            <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
                     <Divider type="vertical" />
