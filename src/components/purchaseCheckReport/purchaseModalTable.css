@@ -51,7 +51,7 @@
     cursor: pointer;
 }
 .middleThead {
-    border-right: 1px solid #CCCCCC;
+    /*border-right: 1px solid #CCCCCC;*/
     height: 66px;
     width: 100%;
     white-space: nowrap;

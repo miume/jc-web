@@ -13,16 +13,31 @@ for (let i = 0; i < 20; i++) {
 }
 const tbodyData = [];
 for(let i=0; i<20; i++){
-    var dynData = [];
-    for(let j=0; j<headData.length; j++){
-        dynData.push(`C${j}11`)
-    }
     tbodyData.push({
         index: i,
         id:i,
         a: 'ECT/12372',
         b: '启动',
-        dynData:dynData,
+        C0: '0',
+        C1: '1',
+        C2: '2',
+        C3: '3',
+        C4: '4',
+        C5: '5',
+        C6: '6',
+        C7: '7',
+        C8: '8',
+        C9: '9',
+        C10: '10',
+        C11: '11',
+        C12: '12',
+        C13: '13',
+        C14: '14',
+        C15: '15',
+        C16: '16',
+        C17: '17',
+        C18: '18',
+        C19: '19',
     })
 }
 
@@ -34,7 +49,7 @@ class PurchaseModalTable extends React.Component {
         this.state = {
             //
             flag: false,
-            //
+            //数据
             headColumns: headData ,
             tbodyData: tbodyData,
             // 用于鼠标移进移出
@@ -60,7 +75,6 @@ class PurchaseModalTable extends React.Component {
         this.Authorization = localStorage.getItem('Authorization');
         /**这是服务器网址及端口 */
         this.server = localStorage.getItem('remote');
-        var lineNum = -1;
         return(
             <div id="modalTable">
                 <div>
@@ -72,12 +86,12 @@ class PurchaseModalTable extends React.Component {
                         <div className={(this.state.hover? 'leftOnclick':'')} onClick={this.handleLeftOnclick}>
                             <i className="fa fa-chevron-left fa-2x"></i>
                         </div>
-                        <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} style={{left:this.state.movieLeftDistance+'px'}}>
+                        <div className="middleThead" ref={(ref) => this.middleTheadRef = ref}>
                             {
                                 this.state.headColumns.map((item,index) => {
                                     if(index===0){
                                         return(
-                                            <div className="middleTheadDiv firstMiddleDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
+                                            <div className="middleTheadDiv" ref={(ref) => this.middleTheadDivRef = ref}   key={item.id}>
                                                 <div>{item.testItem}</div>
                                                 <div>{item.itemUnit}</div>
                                                 <div>{item.testResult}</div>
@@ -101,56 +115,43 @@ class PurchaseModalTable extends React.Component {
                         </div>
                     </div>
                     <div id="theadRight">
-                        <div className="rightThead">
-                            判定
-                        </div>
+                        判定
                     </div>
                 </div>
                 <div style={{clear: 'both'}}></div>
                 <div id="tbody">
-                    {
-                        this.state.tbodyData.map((item,index) => {
-                            lineNum = lineNum + 1;
-                            return(
-                                <div key={'tbody'+index}>
-                                    <div id="tbodyLeft">
+                    <div id="tbodyLeft">
+                        {
+                            this.state.tbodyData.map((item,index) => {
+                                return(
+                                    <div key={'tbody'+index}>
                                         <div className="leftTbody" key={item.id}>{item.index}</div>
                                         <div className="leftTbody" key={'a'}>{item.a}</div>
                                     </div>
-                                    <div id="tbodyMiddle">
-                                        <div className="middleTbody" ref={(ref) => this.middleTbodyRef = ref}>
-                                            {
-                                                item.dynData.map((item,index) => {
-                                                    if(index===0){
-                                                        return(
-                                                            <div className="middleTbodyDiv firstMiddleDiv" ref={(ref) => this.middleTbodyDivRef = ref} key={index}>
-                                                                <div onClick={this.handleCellOnclick} id={`${lineNum}${index}`}>{item}</div>
-                                                            </div>
-                                                        )
-                                                    }else{
-                                                        return (
-                                                            <div className="middleTbodyDiv" ref={(ref) => this.middleTbodyDivRef = ref} key={index}>
-                                                                <div onClick={this.handleCellOnclick} id={`${lineNum}${index}`}>{item}</div>
-                                                            </div>
-                                                        )
-                                                    }
-                                                })
-                                            }
-                                            <div style={{clear: 'both'}}></div>
-                                        </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className="tbodyMiddle" ref={(ref) => this.tbodyMiddleRef = ref}>
+                        {
+                            this.state.tbodyData.map((item,index) => {
+                                const data = item;
+                                return(
+                                    <div className="middleTbody" ref={(ref) => this.middleTbodyRef = ref} key={'tbodyData'+index}>
+                                        {
+                                            this.state.headColumns.map((item,index) => {
+                                                return(
+                                                    <div className="middleTbodyDiv" key={'tbody'+index}>
+                                                        {data[item.testItem]}
+                                                    </div>
+                                                )
+                                            })
+                                        }
                                     </div>
-                                    <div id="tbodyRight">
-                                        <div className="rightTbody">
-                                            合格
-                                        </div>
-                                        <div className="rightTbody">
-                                            不合格
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })
-                    }
+                                );
+                            })
+                        }
+                    </div>
                 </div>
             </div>
         )
@@ -188,7 +189,6 @@ class PurchaseModalTable extends React.Component {
     handleMouseOver = () => {
         this.setState({
             hover: true,
-            flag: true,
         })
 
     };
@@ -202,41 +202,34 @@ class PurchaseModalTable extends React.Component {
     handleLeftOnclick = () => {
         var middle  = this.middleTheadRef;
         var middleItem = this.middleTheadDivRef;
-        var middleTbodyRef = this.middleTbodyRef;
-        var middleTbodyDivRef = this.middleTbodyDivRef;
+        var tbodyMiddleRef = this.tbodyMiddleRef;
+
         let count = middleItem.offsetWidth * 7;
-        let countTbody = middleTbodyDivRef.offsetWidth * 7;
         let gap = (count / 100);
-        let gapTbody = (countTbody / 100);
         gap = gap.toFixed(0);
-        gapTbody = gapTbody.toFixed(0);
-        if(gap >= 1&&gapTbody >= 1){
+        if(gap >= 1){
             var interval = setInterval(function() {
                 let pre = middle.scrollLeft;
-                let preTbody = middleTbodyRef.scrollLeft;
-                if(count < 5&&countTbody<5) {
+                if(count < 5) {
                     count -= 1;
-                    countTbody -= 1;
-                    middle.scrollLeft += 1;
-                    middleTbodyRef.scrollLeft += 1;
+                    middle.scrollLeft -= 1;
+                    tbodyMiddleRef.scrollLeft -= 1;
                 }else {
                     count -= gap;
-                    countTbody -= gapTbody
-                    middle.scrollLeft += Number(gap);
-                    middleTbodyRef.scrollLeft += Number(gap);
+                    middle.scrollLeft -= Number(gap);
+                    tbodyMiddleRef.scrollLeft -= Number(gap);
                 }
-                if(count <= 0&&countTbody <=0 || pre === middle.scrollLeft&&preTbody === middleTbodyRef.scrollLeft) {
+                if(count <= 0 || pre === middle.scrollLeft) {
                     clearInterval(interval);
                 }
             },1)
         }else if(gap >0){
             var interval2 = setInterval(function() {
                 let pre = middle.scrollLeft;
-                let preTbody = middleTbodyRef.scrollLeft;
                 count -= 1;
-                countTbody -= 1;
-                middle.scrollLeft += 1;
-                if(count <= 0&&countTbody <=0 || pre === middle.scrollLeft&&preTbody === middleTbodyRef.scrollLeft) {
+                middle.scrollLeft -= 1;
+                tbodyMiddleRef.scrollLeft += 1;
+                if(count <= 0|| pre === middle.scrollLeft) {
                     clearInterval(interval2);
                 }
             },1)
@@ -245,29 +238,32 @@ class PurchaseModalTable extends React.Component {
     handleRightOnclick = () => {
         var middle  = this.middleTheadRef;
         var middleItem = this.middleTheadDivRef;
-        let count = middleItem.offsetWidth * 1;
+        var tbodyMiddleRef = this.tbodyMiddleRef;
+        let count = middleItem.offsetWidth * 7;
         let gap = (count / 100);
         gap = gap.toFixed(0);
-        if(gap >= 1) {
+        if(gap >= 1){
             var interval = setInterval(function() {
                 let pre = middle.scrollLeft;
                 if(count < 5) {
                     count -= 1;
-                    middle.scrollLeft -= 1;
-                }
-                else {
+                    middle.scrollLeft += 1;
+                    tbodyMiddleRef.scrollLeft += 1;
+                }else {
                     count -= gap;
-                    middle.scrollLeft -= Number(gap);
+                    middle.scrollLeft += Number(gap);
+                    tbodyMiddleRef.scrollLeft += Number(gap);
                 }
                 if(count <= 0 || pre === middle.scrollLeft) {
                     clearInterval(interval);
                 }
             },1)
-        }else if(gap > 0){
+        }else if(gap >0){
             var interval2 = setInterval(function() {
                 let pre = middle.scrollLeft;
                 count -= 1;
-                middle.scrollLeft -= 1;
+                middle.scrollLeft += 1;
+                tbodyMiddleRef.scrollLeft += 1;
                 if(count <= 0|| pre === middle.scrollLeft) {
                     clearInterval(interval2);
                 }
