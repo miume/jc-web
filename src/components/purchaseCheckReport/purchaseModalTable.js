@@ -148,8 +148,16 @@ class PurchaseModalTable extends React.Component {
                         </div>
                     </div>
                     <div id="tbodyRight">
-                        <div>合格</div>
-                        <div>不合格</div>
+                        {
+                            this.state.tbodyData.map((item,index) => {
+                                return(
+                                    <div>
+                                        <div id={`pass${index}`}>合格</div>
+                                        <div id={`nopass${index}`}>不合格</div>
+                                    </div>
+                                )
+                            })
+                        }
                     </div>
                 </div>
             </div>
