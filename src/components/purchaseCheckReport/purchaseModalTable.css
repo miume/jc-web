@@ -131,12 +131,12 @@
     font-size: 12px;
 }
 #tbodyArea {
-    height: 100%;
+    /*height: 100%;*/
     min-width: 70%;
     max-width: 70%;
 }
 .tbodyMiddle {
-    height: 100%;
+    /*height: 100%;*/
     min-width: 100%;
     max-width: 100%;
     white-space: nowrap;
@@ -167,16 +167,23 @@
 #tbodyRight {
     min-width: 10%;
     max-width: 10%;
+
+}
+#tbodyRight div {
     white-space: nowrap; /*强制内部原文不换行*/
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: center;
 }
-#tbodyRight div {
+#tbodyRight div div {
+    background-color: #999999;
+    color:white;
     min-width: 50%;
     max-width: 50%;
     height: 22px;
+    line-height: 22px;
+    text-align: center;
     font-size: 12px;
 
 }
