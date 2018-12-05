@@ -38,15 +38,15 @@ class ApplyStockOut extends React.Component{
             width:'12%'
         },{
             title:'货物类型',
-            dataIndex:'materialClass',
-            key:'materialClass',
+            dataIndex:'materialType',
+            key:'materialType',
             align:'center',
             width:'13%',
             render:(text,record)=>{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
-                    case 1: return '成品';
+                    case 3: return '产品';
                     default:return '';
                 }
             }
@@ -95,6 +95,8 @@ class ApplyStockOut extends React.Component{
         this.setState({
             visible:false
         })
+        /**实现取消选中 */
+        this.props.cancle();
     }
     /**申请出库弹出框 点击送审按钮 */
     handleOk(){
@@ -124,13 +126,14 @@ class ApplyStockOut extends React.Component{
     }
     render(){
         const keys = this.props.selectedRowKeys;
-        var outData = this.props.data.filter(d=>{
+        var outData = this.props.data.forEach(d=>{
+            var newD = d;
             for(var i = 0; i < keys.length;i++){
                 if(keys[i]===d.id){
-                    d['outQuantity']='';
-                    d['outWeight']='';
-                    d['index']=i+1
-                    return d;
+                    newD['outQuantity']='';
+                    newD['outWeight']='';
+                    newD['index']=i+1
+                    return newD;
                 }
             }
         })
@@ -145,8 +148,8 @@ class ApplyStockOut extends React.Component{
                         <Submit key='submit' data = {this.state.dataSource}/>                       
                     ]}
                 >
-                <div style={{height:'200px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:170}} pagination={false} rowClassName={() => 'editable-row'}></Table>
+                <div style={{height:'250px'}}>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:230}} pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>

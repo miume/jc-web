@@ -211,7 +211,7 @@ class Editor extends React.Component{
                     onCancel={this.handleCancel}  width='1000px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                        <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     ]}>
                     <div style={{height:'400px'}}>
                          {/* <div style={{marginBottom:'15px'}}>

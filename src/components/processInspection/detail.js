@@ -202,7 +202,7 @@ class Detail extends React.Component{
                 <Modal title="详情" visible={this.state.visible}
                     onCancel={this.handleCancel}  width='1000px'
                     footer={[
-                      <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                      <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     ]} 
                   >
                     <div style={{height:'400px'}}>

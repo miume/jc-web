@@ -1,23 +1,26 @@
 .tableHead {
     width : 99%;
     margin : 0 auto;
-    height: 35px;
+    height: 40px;
     font-weight: 600;
     font-size: 15px;
-    background: #f2f2f2;
-    border: 1px darkgrey solid;
+    color:#ffffff;
+    background: #0086ff;
+    border-radius: 0.2em 0.2em 0 0;
+    /* border: 1px darkgrey solid; */
     margin-left:5px;
 }
 .tableHead span{
     /* color: #6a6a6a; */
-    padding:7px;
+    padding:10px 7px 8px 8px;
     min-width:200px;
     text-align: center;
     display: inline-table;
     /* margin-top:0.5px; */
 }
-.tableHead :first-child{
-    border-right: 1px darkgrey solid;
+.tableHead :last-child{
+    border-left: 1px grey solid;
+    min-width: 350px;
 }
 
 .divborder{
@@ -32,7 +35,7 @@
 }
 .divborder span{
     /* color: #6a6a6a; */
-    margin-top: 1px;
+    margin-top: 0px;
     padding:7px;
     min-width:200px;
     text-align: center;
@@ -45,4 +48,8 @@
 } */
 .rightBorder{
     border-right: 1px darkgrey solid;
+}
+.menu1Label{
+    text-align: left !important;
+    padding-left: 35px !important;
 }

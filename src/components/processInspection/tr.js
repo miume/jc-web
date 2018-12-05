@@ -58,9 +58,6 @@ class Tr extends React.Component{
           }
         }).then(data=>{
           const res = data.data.data;
-          const children = res.map(p => 
-            <Option key={p.id}>{p.name}</Option>
-            )
           this.setState({
               allProductLine : res
           })

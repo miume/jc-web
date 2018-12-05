@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popover,Button,Icon,Select, Switch} from 'antd';
+import {Popover,Button,Select, Switch} from 'antd';
 const Option = Select.Option;
 const process = [{
     id:1,

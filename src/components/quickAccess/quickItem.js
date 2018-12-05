@@ -7,9 +7,15 @@ class QuickItem extends React.Component{
         this.click = this.click.bind(this);
     }
     click(){ 
-        //console.log(this.props.path)
-        // console.log(event)
+        /**实现每次点击快速访问，都将当前访问的二级菜单放在快速访问的最后一个 */
         const path = this.props.path
+        var quickAccess = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):'' ;
+        var repeat = quickAccess.find(m=>m.path === path)
+        if(repeat){
+            quickAccess = quickAccess.filter(m => m.path !== path);
+            quickAccess.push(repeat)
+        }
+        localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
         this.props.history.push({pathname:path})
     }
     render(){

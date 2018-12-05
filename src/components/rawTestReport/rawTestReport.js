@@ -181,7 +181,7 @@ class RawTestReport extends React.Component{
           };
         return (
             <div>
-                <BlockQuote name='原料检测报告' menu='质量与流程' menu2='返回'  returnDataEntry={this.returnDataEntry}></BlockQuote>
+                <BlockQuote name='原料检测报告' menu='质量与流程' menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

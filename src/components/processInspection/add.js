@@ -56,12 +56,12 @@ class Add extends React.Component{
     render() {
         return (
             <span>
-                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />
+                <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
                 <Modal title="新增" visible={this.state.visible}
                     onCancel={this.handleCancel} width='1200px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                        <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     ]}>
                     <div style={{height:'400px'}}>
                     <p className='fr'>已录入{this.state.count}条数据</p>
