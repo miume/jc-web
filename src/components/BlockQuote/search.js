@@ -3,10 +3,12 @@ import {Button, Input} from 'antd';
 class SearchCell extends React.Component{
     render(){
         const Search = Input.Search;
+        const type= this.props.type;
         return(
             <span style={{float:'right',paddingBottom:'8px'}}>
                 <Search
-                    id = 'search'
+                    id='search'
+                    className = {`search-${type}`}
                     placeholder={this.props.name}
                     onSearch={this.props.searchEvent}
                     onChange={this.props.searchContentChange}
@@ -23,9 +25,10 @@ class SearchCell extends React.Component{
         );
     }
     getFetch = () => {
-        this.props.fetch();
         /**重置时清除搜索框的值 */
-        document.getElementById('search').value = '';
+        let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]        
+        searchComponent.childNodes[0].value = ''
+        this.props.fetch();
     }
 }
 export default SearchCell;

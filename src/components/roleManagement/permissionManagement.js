@@ -158,7 +158,7 @@ class PermissionManagement extends React.Component {
                 <Modal title='编辑权限' visible={this.state.visible} 
                 closable={false} maskClosable={false} width='780px' destroyOnClose='true'
                 footer={[
-                    <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                    <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                   ]} 
                    >
                 <div style={{height:'450px',overflowY:'auto'}}>
@@ -174,7 +174,7 @@ class PermissionManagement extends React.Component {
                                 return (
                                     /**先显示一级菜单*/
                                     <div key={m1.menuId}>
-                                        <div className='divborder'><span className='rightBorder'><Icon type="caret-right" />{m1.menuName}</span><span></span></div>
+                                        <div className='divborder'><span className='rightBorder menu1Label' style={{paddingLeft:'3px'}}><Icon type="caret-right" />{m1.menuName}</span><span></span></div>
                                             <div>
                                             {
                                             /**遍历二级菜单 */

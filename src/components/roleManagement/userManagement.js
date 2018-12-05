@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Button,Icon,message} from 'antd';
+import {Modal,Button,message} from 'antd';
 import './userManagement.css';
 import axios from 'axios';
 import NewButton from '../BlockQuote/newButton';
@@ -127,7 +127,7 @@ class UserManagement extends React.Component {
             ids.forEach(value => {
                 let changeRoles = newState.unsignedRole.find(v => v.id === value );
                 // console.log(changeRoles)
-                newState.assignedRole.push(changeRoles)
+                newState.assignedRole.splice(0,0,changeRoles)
                 newState.unsignedRole.splice(newState.unsignedRole.findIndex(v => v.id === changeRoles.id), 1)
             })
             newState.unsignedCheckIds.splice(0,ids.length); //右移以后，将未分配id清空
@@ -145,15 +145,14 @@ class UserManagement extends React.Component {
             // console.log(ids)
             ids.forEach(value => {
                 let changeRoles = newState.assignedRole.find(v => v.id === value );
-                // console.log(changeRoles)
-                newState.unsignedRole.push(changeRoles)
+                //每次将移动的元素都放在第一个显示
+                newState.unsignedRole.splice(0,0,changeRoles)
+                // newState.unsignedRole.push(changeRoles)
                 newState.assignedRole.splice(newState.assignedRole.findIndex(v => v.id === changeRoles.id), 1)
             })
             newState.assignedCheckIds.splice(0,ids.length); //左移以后 将已分配的ids清空
             this.setState(newState)
         }
-        // console.log(this.state.unsignedCheckIds)
-        // console.log(this.state.assignedCheckIds)
     }
     render() {
     //   console.log(this.state)
@@ -164,7 +163,7 @@ class UserManagement extends React.Component {
             closable={false} maskClosable={false} width={600}
             footer={[
                 <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
               ]}
               >
             <div style={{height:'377px'}} >

@@ -34,6 +34,14 @@ class Menu1List extends React.Component {
     var menuClick = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):[];
     if(menuClick){
         var repeat = menuClick.find(m=>m.menuName===menuName);
+        /**实现每次访问，最近一次点击都在最后显示 */
+        if(repeat && menuClick.length === 6){
+          menuClick = menuClick.filter(m=>m.menuName!== menuName);
+          menuClick.push({
+            menuName:menuName,
+            path:path
+          })
+        }
         if(!repeat && menuClick.length === 6){
           /**删除第一条，然后添加最新的访问记录 */
           menuClick.splice(0,1);
