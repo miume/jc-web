@@ -14,7 +14,7 @@ class UserAddModal extends React.Component{
     }
     //'username','password','departmentId','phone'
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
-        const values= this.props.form.getFieldsValue(['username','password','departmentId','phone']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
+        const values= this.props.form.getFieldsValue(['username','password','departmentId','phone','name']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         return values;//用来得到新增框中填写的新值
     }
     
@@ -49,15 +49,23 @@ class UserAddModal extends React.Component{
         // const departmentChildren=this.state.depart;
         return(
             <Form horizontal='true' onSubmit={()=>this.handleSubmit()}>
-               <FormItem label='用户名' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               <FormItem label='登录名' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
                   {getFieldDecorator('username',{
                         initialValue: '',
-                        rules: [{required: true, message: '用户名不能为空'}],
+                        rules: [{required: true, message: '登录名不能为空'}],
                      })(    //2、getFieldDecorator 的使用方法，
-                            <Input placeholder='请输入用户名'></Input>
+                            <Input placeholder='请输入登录名'></Input>
                         )}
                </FormItem>
-               <FormItem label="密码" labelCol={{span:5}} wrapperCol={{ span: 14 }} require>
+               <FormItem label='用户名' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               {getFieldDecorator('name',{
+                     initialValue: '',
+                     rules: [{required: true, message: '用户名不能为空'}],
+                  })(    //2、getFieldDecorator 的使用方法，
+                         <Input placeholder='请输入用户名'></Input>
+                     )}
+            </FormItem>
+               <FormItem label="密码" labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
                {getFieldDecorator('password', {
                  rules: [{
                    required: true, message: '密码不能为空!',

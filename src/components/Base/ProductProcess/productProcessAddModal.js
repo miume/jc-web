@@ -13,7 +13,7 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             title="新增"
-            maskClosable='false'
+            closable={false} maskClosable={false}
             onOk={onCreate}
             onCancel={onCancel}
             footer={[

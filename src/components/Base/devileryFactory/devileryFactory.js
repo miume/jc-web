@@ -401,7 +401,7 @@ class DeliveryFactory extends React.Component{
       
        return(
            <div>
-               <BlockQuote name='送样工厂' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo}/>
+               <BlockQuote name='送样工厂' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
                <DeliveryFactoryAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

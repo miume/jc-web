@@ -4,7 +4,7 @@ import {Button,Popconfirm} from 'antd';
 
 // const Authorization=localStorage.getItem('Authorization');
 // const server=localStorage.getItem('remote2');
-class DeleteByIds extends React.Component {
+class Delete extends React.Component {
     constructor(props){
        super(props);
        this.cancel=this.cancel.bind(this);
@@ -47,4 +47,4 @@ class DeleteByIds extends React.Component {
         );
     }
 }
-export default DeleteByIds;
+export default Delete;

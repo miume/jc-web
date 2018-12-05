@@ -142,23 +142,32 @@ class User extends React.Component{
         key:'id',
        //sorter:true,//需要服务端排序
        sorter:(a, b) => a.id-b.id,
-        width: '15%',
+        width: '10%',
         align:'center',
      },{
-        title:'用户名',
+        title:'登录名',
         dataIndex:'username',
         key:'username',
         editable:1,//?
-        width: '20%',
+        width: '16%',
         align:'center',
 
     },
+    {
+      title:'用户名',
+      dataIndex:'name',
+      key:'name',
+      editable:1,//?
+      width: '16%',
+      align:'center',
+
+  },
      {
          title:'所属部门',
          dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
          key:'departmentId',
          editable:1,
-         width: '20%',
+         width: '16%',
          align:'center',
          render:(text,record) => {
           //console.log(text);//text是dataIndex对应的字段值
@@ -166,19 +175,21 @@ class User extends React.Component{
            return `${record.departmentName}`  //渲染此条记录的部门名称
            
           }
-     },{
+     },
+     {
          title:'手机号',
          dataIndex:'phone',
          key:'phone',
          editable:1,
-         width: '20%',
+        width: '16%',
          align:'center',
         
-     },{
+     },
+     {
       title: '操作',
       //dataIndex: 'type',
       key:'operation',
-      width: '20%',
+      width: '18%',
       align:'center',
       render : (text, record) =>  {
         //console.log(text);
@@ -261,7 +272,7 @@ class User extends React.Component{
         this.setState({visible:true});
       }
       handleOk(){//处理新增一条记录
-        //console.log(this.formRef.getItemsValue());
+        console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
         axios({
           url:`${this.server}/jc/auth/user/signIn`,
@@ -538,11 +549,11 @@ class User extends React.Component{
 
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                    <Modal title="新增" visible={this.state.visible}
+                    <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false}
                           onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
                           footer={[
                             <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
-                            <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>返 回</Button>
+                            <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>取消</Button>
                           ]}>
                           <UserAddModal deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
