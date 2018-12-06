@@ -2,6 +2,7 @@ import React from 'react';
 import {Form,Input,Button,Modal,message} from 'antd';
 import axios from 'axios';
 import NewButton from '../../BlockQuote/newButton';
+import CancleButton from '../../BlockQuote/cancleButton';
 
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
@@ -17,8 +18,8 @@ const CollectionCreateForm = Form.create()(//弹出层
             onOk={onCreate}
             onCancel={onCancel}
             footer={[
-                <Button key='submit' type='primary' size='large' onClick={this.props.onCreate}>确定</Button>,
-                <Button key='back' type='ghost'size='large' onClick={this.props.onCancel}>取消</Button>
+                <NewButton  handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
+                <CancleButton        handleCancel={this.props.onCancel} />
             ]}
           >
             <Form horizontal='true' >
@@ -95,7 +96,7 @@ class TestItemAddModal extends React.Component{
       this.server=localStorage.getItem('remote');
         return(
           <span>
-              <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
+              <NewButton handleClick={this.showModal} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}

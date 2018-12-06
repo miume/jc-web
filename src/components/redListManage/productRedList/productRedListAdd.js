@@ -1,6 +1,8 @@
 import React from 'react';
 import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,Icon} from 'antd';
-
+import NewButton from '../../BlockQuote/newButton';
+import CancleButton from '../../BlockQuote/cancleButton';
+import SaveButton from '../../BlockQuote/saveButton';
 //import axios from 'axios';
 const Option=Select.Option;
 const FormItem=Form.Item;
@@ -58,11 +60,9 @@ const CollectionCreateForm = Form.create()(//弹出层
             
              // footer下的每个组件都要有唯一的key
             footer={[
-                <Popconfirm key='popcon' placement='right' title='你确定是想取消这个任务吗？' onConfirm={onCancel} okText='确定' cancelText='再想想'>
-                       <Button key='cancel' style={{float:'left'}}>取消</Button>
-                </Popconfirm>,
+                <CancleButton handleCancel={onCancel}/>,
                 
-                <Button key='save' type='primary'  onClick={onCreate}>保存</Button>,
+                <SaveButton key='save'   handleSave={onCreate}>保存</SaveButton>,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                 maskClosable={false}
                  content={
@@ -216,7 +216,7 @@ class ProductRedListAddModal extends React.Component{
         
         return(
           <span>
-              <Button type="primary" size="small" style={{marginBottom:'10px' ,marginRight:'15px' }}  onClick={this.showModal} >新增</Button>
+              <NewButton   handleClick={this.showModal} className='fa fa-plus' name='新增'/>&nbsp;&nbsp;&nbsp;
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}

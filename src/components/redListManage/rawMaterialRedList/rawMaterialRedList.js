@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
 import {Table,Popconfirm,Divider} from 'antd';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../../BlockQuote/deleteByIds';
 import RawMaterialRedListAddModal from './redListAddModal';
 import RawMaterialRedListEditModal from './rawMaterialRedListEdit';
 import SearchCell from '../../BlockQuote/search';
+import axios from 'axios';
 
 const data=[];
 for(let i=0;i<20;i++){
@@ -33,13 +34,29 @@ data.push({
     status:'未申请',//审核状态
 });
 class RawMaterialRedList extends Component{
+    server;
+    Authorization;
+    componentDidMount(){
+        this.fetch();
+    }
+    componentWillUnmount(){
+        this.setState=(state,callback)=>{
+            return;
+        }
+    }
     constructor(props){
         super(props);
         this.state={
             dataSource:data,
             selectedRowKeys:[],
             searchContent:'',
+            Authorization:this.Authorization,
         };
+        this.pagination={
+            total:this.state.dataSource.length,
+            showTotal:(total)=>`共${total}条记录`,
+            showSizeChanger:true,
+        }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.columns=[{
@@ -50,7 +67,7 @@ class RawMaterialRedList extends Component{
           align:'center',
           width:'6%'
         },{
-            title:'批号',
+            title:'编号',
             dataIndex:'lotNumber',
             key:'lotNumber',
             align:'center',
@@ -104,6 +121,8 @@ class RawMaterialRedList extends Component{
             //         case '3':return '已通过'
             //         case '4':return '未通过'
                      //case '5':return '未申请'
+                     //case '5':return '合格'
+                     //case '5':return '不合格'
             //       }
             // }
         },{
@@ -146,6 +165,31 @@ class RawMaterialRedList extends Component{
             case '未申请':return  true      //未申请，新增时点击了保存没有点送审
          }
     }
+
+    handleTableChange=(pagination)=>{
+          this.fetch={
+              page:this.pagination.pageSize,//当前页显示的记录数
+              size:this.pagination.current,//当前是第几页
+             // orderField:,//
+              orderType:'desc'//
+          }
+    }
+    fetch=(params={})=>{
+        axios({
+            url:`${this.server}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                ...params
+            },
+
+        })
+        .then((data)=>{
+             console.log(data);
+        });
+    }
     searchEvent(){
        // const username=this.state.searchContent;
         //console.log(username);
@@ -181,6 +225,8 @@ class RawMaterialRedList extends Component{
            this.setState({searchContent:value});
     }
     render(){
+        this.Authorization=localStorage.getItem('Authorization');
+        this.server=localStorage.getItem('remote');
         const rowSelection={
          onChange:this.onSelectChange,
     };
@@ -201,6 +247,7 @@ class RawMaterialRedList extends Component{
                         dataSource={this.state.dataSource}
                         columns={this.columns}
                         rowSelection={rowSelection}
+                        pagination={this.pagination}
                         bordered
                         size='small'
                         scroll={{y:400}}

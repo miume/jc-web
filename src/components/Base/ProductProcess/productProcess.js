@@ -176,7 +176,7 @@ Authorization;
 
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
-       this.fetch=({//前端需要传的参数
+       this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
          orderField:'id',//排序属性
@@ -200,7 +200,7 @@ Authorization;
         const res=data.data.data;
         this.pagination.total=res.total;
         for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=(res.pages-1)*10+i;
+          res.list[i-1]['index']=res.prePage*10+i;
         }//是序号从1开始
         this.setState({
           loading:false,
@@ -306,7 +306,7 @@ Authorization;
               item1, ..., itemX	可选。向数组添加的新项目。
               */
               //console.log(row);//修改后的数据（name）
-              console.log(item);//修改前得数据
+              //console.log(item);//修改前得数据
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();           
@@ -370,7 +370,7 @@ Authorization;
              const res=data.data.data;
              this.pagination.total=res.total;
              for(var i=1;i<=res.list.length;i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
                dataSource:res.list//list取到的是所有符合要求的数据
