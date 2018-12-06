@@ -1,24 +1,48 @@
 import React from 'react';
 import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,Icon} from 'antd';
-
-//import axios from 'axios';
+import axios from 'axios';
+import SaveButton from '../../BlockQuote/saveButton';
+import NewButton from '../../BlockQuote/newButton';
+import CancleButton from '../../BlockQuote/cancleButton';
 const Option=Select.Option;
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
     class extends React.Component {
+        server;
+        Authorizaion;
+        componentDidMount(){
+            this.getAllProcess();
+        }
       constructor(props){
         super(props);
         this.state={
           checkSelectData:-1,//最开始下拉框是没选择数据的
           popVisible:false,//送检的气泡弹出
           checkSwitch:false,//是否紧急那个开关最开始是关闭的即否
+          process:[],//送审流程
         }
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
-        
+        this.getAllProcess=this.getAllProcess.bind(this);
       }
-    
+    getAllProcess(){
+           axios({
+               url:`${this.server}/jc/common/batchAuditTask/getAllByPage`,
+               method:'get',
+               headers:{
+                   'Authorizaion':this.Authorizaion
+               },
+
+           })
+           .then((data)=>{
+                 const res=data.data.data.list;
+                 console.log(res);
+                 this.setState({
+                     process:res
+                 });
+           });
+    }
       //监听下拉框变化
       selectChange=(value)=>{
           this.setState({checkSelectData:value});
@@ -39,39 +63,44 @@ const CollectionCreateForm = Form.create()(//弹出层
     }
      //红单是否紧急
      urgentChange=(checked)=>{//checked指定当前是否选中
-        console.log(`switch to ${checked}`);//选中的话checked为true
+        //console.log(`switch to ${checked}`);//选中的话checked为true
         this.setState({
             checkSwitch:checked
         });
 
       }
       render() {
-        const { visible, onCancel, onCreate, form } = this.props;
+          this.server=localStorage.getItem('remote');
+          this.Authorizaion=localStorage.getItem('Authorizaion');
+        const { visible, onCancel, handleSave, form } = this.props;
         const { getFieldDecorator } = form;
         return (
           <Modal
             visible={visible}
             maskClosable={false}
             title="添加红单"
-            onOk={onCreate}
+            onOk={handleSave}
             onCancel={onCancel}
             
              // footer下的每个组件都要有唯一的key
             footer={[
-                <Popconfirm key='popcon' placement='right' title='你确定是想取消这个任务吗？' onConfirm={onCancel} okText='确定' cancelText='再想想'>
-                       <Button key='cancel' style={{float:'left'}}>取消</Button>
-                </Popconfirm>,
+                <CancleButton handleCancel={onCancel}/>,
                 
-                <Button key='save' type='primary'  onClick={onCreate}>保存</Button>,
+                <SaveButton key='save'   handleSave={handleSave}>保存</SaveButton>,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                 maskClosable={false}
                  content={
                      <div style={{width:250 ,height:150}}>
                         <div>
                             <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
-                              <Option value='1'>送审流程1</Option>
-                              <Option value='2'>送审流程2</Option>
-                              <Option value='3'>送审流程3</Option>
+                              {
+                                  this.state.process.map((pro)=>{
+                                          return(
+                                            <Option key={pro.batchNumberId} value={pro.batchNumberId}>{pro.name}</Option>
+
+                                          );
+                                  })
+                              }
                             </Select>
                         </div>
                         <div style={{paddingTop:'10px'}}>
@@ -141,10 +170,14 @@ const CollectionCreateForm = Form.create()(//弹出层
   );
 
 class RawMaterialRedListAddModal extends React.Component{
-    state = {
-        visible: false,//新增的弹出框
-      
-      };
+    constructor(props){
+        super(props);
+       this.state = {
+            visible: false,//新增的弹出框
+          
+          };
+        }
+   
     //显示当前时间为某年某月某日
     getNowFormatDate=()=> {
       let date = new Date();
@@ -158,7 +191,7 @@ class RawMaterialRedListAddModal extends React.Component{
       if (strDate >= 0 && strDate <= 9) {
           strDate = "0" + strDate;
       }
-      let currentdate = year + '年' + month + '月'+ strDate+'日';
+      let currentdate = year + '-' + month + '-'+ strDate;
       return currentdate;
   }
       showModal = () => {
@@ -171,7 +204,7 @@ class RawMaterialRedListAddModal extends React.Component{
         form.resetFields();
       }
     
-      handleCreate = () => {//新增一条记录
+      handleCreate = () => {//新增一条记录（点击保存但是没点送审）
         const form = this.formRef.props.form;
         // form.validateFields((err, values) => {//校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
         //   if (err) {
@@ -216,12 +249,12 @@ class RawMaterialRedListAddModal extends React.Component{
         
         return(
           <span>
-              <Button type="primary" size="small" style={{marginBottom:'10px' ,marginRight:'15px' }}  onClick={this.showModal} >新增</Button>
+              <NewButton   handleClick={this.showModal} className='fa fa-plus'  name='新增' />&nbsp;&nbsp;&nbsp;
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}
                 onCancel={this.handleCancel}
-                onCreate={this.handleCreate}
+                handleSave={this.handleCreate}
                
               />
           </span>

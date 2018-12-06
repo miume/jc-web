@@ -22,13 +22,20 @@ for(let i=0;i<20;i++){
 }
 
 class ProductRedList extends Component{
+    server;
+    Authorization;
     constructor(props){
         super(props);
         this.state={
             dataSource:data,
             selectedRowKeys:[],
             searchContent:'',
+            Authorization:this.Authorization,
         };
+        this.pagination={
+            total:this.state.dataSource.length,
+            showTotal:(total)=>`共${total}条记录`
+        }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.columns=[{
@@ -191,6 +198,7 @@ class ProductRedList extends Component{
                         dataSource={this.state.dataSource}
                         columns={this.columns}
                         rowSelection={rowSelection}
+                        pagination={this.pagination}
                         bordered
                         size='small'
                         scroll={{y:400}}

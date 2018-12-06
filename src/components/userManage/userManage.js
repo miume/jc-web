@@ -8,6 +8,7 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
 import NewButton from "../BlockQuote/newButton";
+import CancleButton from '../BlockQuote/cancleButton';
 
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
@@ -96,16 +97,13 @@ class User extends React.Component{
       super(props);
       this.state={
         dataSource : [],
-        pagination:[],
-        //count:2,
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
         visible:false,
         departmentchildren:[],
         editingKey:'',
         username:'',
-        phone:'',
-        department:'',
+       
         reset:false,
         Authorization:this.Authorization,
       }
@@ -115,9 +113,7 @@ class User extends React.Component{
       this.cancel = this.cancel.bind(this);
       this.showIds = this.showIds.bind(this);
       this.isEditing=this.isEditing.bind(this);
-      this.handleUserNameChange=this.handleUserNameChange.bind(this);
-      this.handleDepartmentChang=this.handleDepartmentChang.bind(this);
-      this.handlePhoneChange=this.handlePhoneChange.bind(this);
+     
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
@@ -227,22 +223,17 @@ class User extends React.Component{
     }
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
-         //const pager = { ...this.state.pagination };
-        //console.log( { ...this.state.pagination });
-        // pager.current = pagination.current;
-        // this.setState({
-        //   pagination: pager,
-        // });
-       this.fetch=({//前端需要传的参数
+       //console.log(pagination);
+       this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
-         sortField:'id',//排序属性
-         sortOrder:'desc'//排序方法（降序）
+         orderField:'id',//排序属性
+         orderType:'desc'//排序方法（降序）
        });
     }
     fetch=(params = {})=>{
-      //console.log('params:', params);
-     // this.setState({loading:true});
+     // console.log('params:', params);
+    
       axios({
         url: `${this.server}/jc/auth/user/getAllByPage`,
         method:'get',
@@ -257,10 +248,10 @@ class User extends React.Component{
         const res=data.data.data;
         this.pagination.total=res.total;//分页
         for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=(res.pages-1)*10+i;
+          res.list[i-1]['index']=res.prePage*10+i;//使用前一页编写序号
         }
         this.setState({
-          loading:false,
+          //loading:false,
           dataSource:res.list,
         });
       });
@@ -297,19 +288,7 @@ class User extends React.Component{
         /**清空新增form组件的内容*/
         this.formRef.resetField();
       }
-       //实时追踪新增弹出框，，用户名称，
-    handleUserNameChange(e){//用户名称改变
-      this.setState({userName:e.target.value});
-    }
-    handleDepartmentChang(e){//下拉框
-      this.setState({deparment:e.target.value});
-    }
-    handlePasswordChange(e){//密码
-      this.setState({password:e.target.value});
-    }
-    handlePhoneChange(e){//手机号
-      this.setState({phone:e.target.value});
-    }
+
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
@@ -372,8 +351,10 @@ class User extends React.Component{
         });//处理异常
        
      }
-    cancel(){
-      
+    cancel(){//批量删除的取消，要将那个checkbox置空
+      this.setState({
+        selectedRowKeys:[]
+      });
     }
    
     //编辑
@@ -407,8 +388,10 @@ class User extends React.Component{
               item1, ..., itemX	可选。向数组添加的新项目。
               */
             const data=row;
-            /**将id变成字符串 */
-            //data['id']=id.toString();
+            /**将id变成字符串,给data加id字段
+             * 
+             */
+            data['id']=id.toString();
             /**根据部门名称删选得到部门id */
  
             //console.log(data);
@@ -476,7 +459,7 @@ class User extends React.Component{
              const res=data.data.data;
              this.pagination.total=res.total;
              for(var i=1;i<=res.list.length;i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
                dataSource:res.list//list取到的是所有符合要求的数据
@@ -552,8 +535,8 @@ class User extends React.Component{
                     <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false}
                           onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
                           footer={[
-                            <Button key="submit" type="primary" size="large" onClick={() => this.handleOk()}>确 定</Button>,
-                            <Button key="back" type="ghost" size="large" onClick={() => this.handleCancel()}>取消</Button>
+                            <NewButton  handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
+                            <CancleButton handleCancel={() => this.handleCancel()} />
                           ]}>
                           <UserAddModal deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>

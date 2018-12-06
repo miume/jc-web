@@ -173,7 +173,7 @@ class ProductLine extends React.Component{
 
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
-       this.fetch=({//前端需要传的参数
+       this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
          orderField:'id',//排序属性
@@ -197,7 +197,7 @@ class ProductLine extends React.Component{
         const res=data.data.data;
         this.pagination.total=res.total;
         for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=(res.pages-1)*10+i;
+          res.list[i-1]['index']=res.prePage*10+i;
         }//是序号从1开始
         this.setState({
           loading:false,
@@ -364,7 +364,7 @@ class ProductLine extends React.Component{
              const res=data.data.data;
              this.pagination.total=res.total;
              for(var i=1;i<=res.list.length;i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
                dataSource:res.list//list取到的是所有符合要求的数据
