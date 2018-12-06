@@ -163,6 +163,22 @@
     font-size: 12px;
     transition: transform 2s;
 }
+.middleTbodyDivRed {
+    background-color: red;
+    min-width: 14.3%;
+    max-width: 14.3%;
+    line-height: 22px;
+    text-align: center;
+    border-right: 1px solid #CCCCCC;
+    font-size: 12px;
+    transition: transform 2s;
+}
+.false{
+
+}
+.true{
+
+}
 
 #tbodyRight {
     min-width: 10%;
