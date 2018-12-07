@@ -147,19 +147,6 @@ i {
     padding: 8px 24px !important;
 }
 
-.ant-modal-body {
-    /* margin:0 0 0 60px  !important; */
-    /* display: flex !important;
-
-    justify-content: space-around !important; */
-
-    /* transform: translate(-15px,0px) !important; */
-}
-
-/* .ant-form {
-  width: 100% !important;
-  text-align: center !important;
-}*/
 .ant-row {
     display: flex !important;
     flex-direction: row !important;
@@ -170,7 +157,7 @@ i {
 }
 .clear{
   clear: both;
-
+}
 .ant-modal-footer {
     padding: 8px 16px !important;
 }
