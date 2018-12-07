@@ -52,7 +52,7 @@ const CollectionCreateForm = Form.create()(
                 >
                     <Form horizontal='true'>
                         <FormItem label="流程名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('name', {
+                            {getFieldDecorator('description', {
                                 rules: [{ required: true, message: '请输入流程名称' }],
                             })(
                                 <Input placeholder='请输入菜单名称'/>
@@ -154,9 +154,12 @@ class AddModal extends React.Component {
         const form = this.formRef.props.form;
         const taskPersonList = this.getData();
         form.validateFields((err, values) => {
-            let key = 'createPersonId'
-            values[key] = parseInt(ob.userId)
-            values["taskPersonList"] = taskPersonList
+            let data = {}
+            values['createPersonId'] = parseInt(ob.userId)
+            data["commonBatchNumber"] = values
+            data["details"] = taskPersonList
+
+            // values["details"] = taskPersonList
             console.log(values)
             if (err) {
                 return;
@@ -164,7 +167,7 @@ class AddModal extends React.Component {
             axios({
                 url : `${this.server}/jc/common/batchAuditTask/add`,
                 method:'post',
-                data: values,
+                data: data,
                 type:'json'
             }).then((data) => {
                 message.info(data.data.message);
