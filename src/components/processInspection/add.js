@@ -120,15 +120,17 @@ class Add extends React.Component{
     /**获取每个Tr的值 */
     getData(data){
         const {addData} = this.state;
+        if(addData===[])  {addData.push(data)};
+        
         for(var i = 0; i < addData.length; i++){
             if(addData[i].id===data.id){
-                    
+                addData[i] = data;
+            }else{
+                addData.push(data)
             }
         }
         
-        this.setState({
-            addData:data
-        })
+        console.log(data)
         // if(addData&&) 
     }
     render() {
