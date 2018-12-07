@@ -168,6 +168,8 @@ i {
     margin: 0px !important;
     padding: 6px 0px 6px 0px !important;
 }
+.clear{
+  clear: both;
 
 .ant-modal-footer {
     padding: 8px 16px !important;
