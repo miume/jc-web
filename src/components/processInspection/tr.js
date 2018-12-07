@@ -170,10 +170,10 @@ class Tr extends React.Component{
     render() {
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
-        this.state.data.push({
-            id:this.props.value,
+        // this.state.data.push({
+        //     id:this.props.value,
 
-        })
+        // })
         return (
             <tr className='tbody' id={this.props.value}>
                 <td><Select style={{width:'100%',border:'none'}} placeholder='请选择产品线' onChange={this.productLineChange}>{this.state.allProductLine}</Select></td>
