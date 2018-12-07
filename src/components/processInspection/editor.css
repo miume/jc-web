@@ -22,3 +22,9 @@
     border:'none';
     text-align:center;
 }
+.tbody .ant-select-selection{
+    border:none !important;
+}
+.tbody .ant-btn{
+    border-color:#ffffff;
+}
