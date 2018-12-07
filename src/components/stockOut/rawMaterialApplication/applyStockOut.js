@@ -161,7 +161,7 @@ class ApplyStockOut extends React.Component{
      /**监控是否紧急 */
      urgentChange(checked){
         this.setState({
-            urgent:checked?1:0
+            urgent:checked?0:-1
         })
     }
      /**监控申请送审 保存 */
@@ -205,15 +205,14 @@ class ApplyStockOut extends React.Component{
             })
         }
         const taskId = parseInt(this.state.process) !== -1?parseInt(this.state.process) :''
-        console.log(taskId)
+        //console.log(taskId)
         axios.post(`${this.props.server}/jc/common/repoOutApply/outApply`,{
             commonBatchNumber:commonBatchNumber,
             details:details
         },{
             headers:{
                 'Authorization':this.props.Authorization
-            }
-        },{
+            },
             params:{
                 taskId:taskId
             }
@@ -226,7 +225,7 @@ class ApplyStockOut extends React.Component{
     render(){
         return (
             <span>
-                <Button type='primary' size='default' className='button' onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" style={{color:'white'}}></i> 申请出库</Button>
+                <Button type='primary' size='default' className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'} onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" ></i> 申请出库</Button>
                 <Modal title='申请' visible={this.state.visible}
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[
