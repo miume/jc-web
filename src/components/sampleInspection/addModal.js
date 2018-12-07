@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Form, Input,Select,DatePicker,TimePicker  } from 'antd';
-import AddButton from '../BlockQuote/addButton'
+import NewButton from '../BlockQuote/newButton'
 // import WhiteSpace from '../BlockQuote/whiteSpace';
 // import moment from 'moment';
 
@@ -122,7 +122,7 @@ class AddModal extends React.Component{
     render(){
         return(
             <span>
-                <AddButton handleAdd={this.showModal}/>
+                <NewButton handleAdd={this.showModal}/>
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
