@@ -5,7 +5,7 @@ import axios from 'axios';
 import BlockQuote from '../../dataEntry/blockQuote';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import SearchCell from '../../BlockQuote/search';
-import SamplePointAddModal from './samplePointAddModal';
+import SerialNumberAddModal from './/serialNumberAddModal';
 
 const EditableContext = React.createContext(); // ??这个是什么作用
 
@@ -22,10 +22,7 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-/** 通过localStorage可查到http://218.77.105.241:40080*/
-const server = localStorage.getItem("remote2"); 
-/**这是个令牌，每次调用接口都将其放在header里 */
-const Authorization=localStorage.getItem('Authorization');
+
 
 class EditableCell extends React.Component {
   constructor(props){
@@ -76,7 +73,13 @@ class EditableCell extends React.Component {
     }
 }
 
-class SamplePoint extends React.Component{
+class SerialNumber extends React.Component{
+  server;
+  Authorization;
+  componentDidMount(){
+    this.fetch();
+    
+  }
   componentWillUnmount() {
     this.setState = (state, callback) => {
       return ;
@@ -92,7 +95,7 @@ class SamplePoint extends React.Component{
         visible:false,
         editingKey:'',
         reset:false,
-        Authorization:Authorization,
+        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -104,7 +107,7 @@ class SamplePoint extends React.Component{
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
-      
+      this.returnBaseInfo=this.returnBaseInfo.bind(this);
       
       this.pagination = {
         total: this.state.dataSource.length,
@@ -173,9 +176,12 @@ class SamplePoint extends React.Component{
         }
      },];
     }
+    returnBaseInfo(){
+      this.props.history.push({pathname:'/baseInfo'});
+    }
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
-       this.fetch=({//前端需要传的参数
+       this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
          orderField:'id',//排序属性
@@ -184,12 +190,12 @@ class SamplePoint extends React.Component{
     }
     fetch=(params = {})=>{
       //console.log('params:', params);
-      this.setState({loading:true});
+      
       axios({
-        url: `${server}/jc/samplePoint/getAllByPage`,
+        url: `${this.server}/jc/samplePoint/getAllByPage`,
         method:'get',
         headers:{
-          'Authorization':Authorization
+          'Authorization':this.Authorization
         },
         params:{
           ...params,
@@ -199,29 +205,26 @@ class SamplePoint extends React.Component{
         const res=data.data.data;
         this.pagination.total=res.total;
         for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=(res.pages-1)*10+i;
+          res.list[i-1]['index']=res.prePage*10+i;
         }//是序号从1开始
         this.setState({
-          loading:false,
+          
           dataSource:res.list,
         });
       });
     }
-    componentDidMount(){
-      this.fetch();
-      
-    }
+  
 
 
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
-        const dataSource = this.state.dataSource;
+        
         axios({
-          url:`${server}/jc/samplePoint?id=${id}`,
+          url:`${this.server}/jc/samplePoint?id=${id}`,
           method:'Delete',
           headers:{
-            'Authorization':Authorization
+            'Authorization':this.Authorization
           },
          data:id,
          type:'json'
@@ -232,8 +235,8 @@ class SamplePoint extends React.Component{
           this.fetch();
         })
         
-        .catch((error)=>{
-         message.info(error.data.message);
+        .catch(()=>{
+         message.info('删除失败，请联系管理员！');
         });
       }
     //实现checkbox全选
@@ -241,24 +244,17 @@ class SamplePoint extends React.Component{
         //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys }); 
      } 
-     rowSelected(selectedRowKeys){//？
-        this.setState({
-          selectedIds: selectedRowKeys
-        });
-      }
-      showIds(event) {//?
-       // console.log(event.target.value)
-      }
+   
       /**---------------------- */
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${server}/jc/samplePoint/deleteByIds`,
+            url:`${this.server}/jc/samplePoint/deleteByIds`,
             method:'Delete',
             headers:{
-                  'Authorization' :Authorization
+                  'Authorization' :this.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -268,14 +264,16 @@ class SamplePoint extends React.Component{
           message.info(data.data.message);
           this.fetch();
         })//处理成功
-        .catch((error)=>{
+        .catch(()=>{
          // console.log(error);
-          message.info(error.data.message)
+          message.info('删除失败，请联系管理员！')
         });//处理异常
        
      }
     cancel(){
-      
+      this.setState({
+        selectedRowKeys:[]
+      });
     }
    
     //编辑
@@ -313,10 +311,10 @@ class SamplePoint extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${server}/jc/samplePoint/update`,
+              url:`${this.server}/jc/samplePoint/update`,
               method:'post',
               headers:{
-                'Authorization':Authorization
+                'Authorization':this.Authorization
               },
               data:data,
               type:'json'
@@ -326,9 +324,9 @@ class SamplePoint extends React.Component{
               message.info(data.data.message);
               this.fetch();
             })
-            .catch((error)=>{
+            .catch(()=>{
              // console.log(error.data);
-              message.info(error.data.message);
+              message.info('编辑失败，请联系管理员！');
             });
             this.setState({ dataSource: newData, editingKey: '' });
           } else {
@@ -355,10 +353,10 @@ class SamplePoint extends React.Component{
            const samplePointName=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${server}/jc/samplePoint/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/samplePoint/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':Authorization
+               'Authorization':this.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -371,19 +369,23 @@ class SamplePoint extends React.Component{
              const res=data.data.data;
              this.pagination.total=res.total;
              for(var i=1;i<=res.list.length;i++){
-                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
                dataSource:res.list//list取到的是所有符合要求的数据
              });
            })
-           .catch((error)=>{
+           .catch(()=>{
 
-            message.info(error.data.message)
+            message.info('搜索失败，请联系管理员！')
            });
       }
   
    render(){
+     /** 通过localStorage*/
+        this.server = localStorage.getItem("remote"); 
+/**这是个令牌，每次调用接口都将其放在header里 */
+       this.Authorization=localStorage.getItem('Authorization');
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
@@ -419,10 +421,10 @@ class SamplePoint extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='取样点' menu='数据录入'/>
+               <BlockQuote name='编号' menu='质量流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
-               <SamplePointAddModal fetch={this.fetch}/>
+               <SerialNumberAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入取样点' 
@@ -444,4 +446,4 @@ class SamplePoint extends React.Component{
        );
    }
 }
-export default SamplePoint;
+export default SerialNumber;

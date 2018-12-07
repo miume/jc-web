@@ -467,7 +467,7 @@ class User extends React.Component{
            })
            .catch(()=>{
             // console.log(error);
-            message.info('查询失败，请联系管理员！')
+            message.info('搜索失败，请联系管理员！')
            });
       }
       /**获取所有部门 */
