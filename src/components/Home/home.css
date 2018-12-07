@@ -11,7 +11,7 @@ html, body, .parent {
     height: 55px;
     border-bottom:1px solid #cccccc;
     /* background-color:  #333333; */
-    
+
 }
 .left {
     position: absolute;
@@ -88,7 +88,7 @@ html, body, .parent {
 /**修改全局input placeholder里面字体的大小和颜色 */
 input::-webkit-input-placeholder{
     color: #cccccc !important;
-    font-size: 15px !important;
+    font-size: 14px !important;
     text-align:left !important;
   }
 

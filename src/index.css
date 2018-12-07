@@ -29,7 +29,10 @@ code {
 .ant-menu-item {
     padding-left: 30px !important;
 }
-
+.ant-btn-primary {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
 #defaultCanvas0 {
     position: absolute;
     display: block;
@@ -63,7 +66,7 @@ code {
     font-size: 14px !important;
     font-weight: bolder !important;
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
-    background-color: #0086ff !important;
+    /* background-color: #0079fe !important; */
     margin-right: 10px !important;
 }
 
@@ -107,7 +110,7 @@ button span {
 }
 
 .blue {
-    color: #0086ff;
+    color: #1890ff;
     cursor: pointer;
 }
 
@@ -174,4 +177,3 @@ i {
     text-align: center !important;
     margin-left: 80px !important;
 }
-
