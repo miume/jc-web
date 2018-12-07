@@ -16,7 +16,8 @@ class Add extends React.Component{
             count: 1,
             data : [1],
             urgent:0,
-            process:-1
+            process:-1,
+            addData:[]
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -118,14 +119,24 @@ class Add extends React.Component{
     }
     /**获取每个Tr的值 */
     getData(data){
-        console.log(data)
+        const {addData} = this.state;
+        for(var i = 0; i < addData.length; i++){
+            if(addData[i].id===data.id){
+                    
+            }
+        }
+        
+        this.setState({
+            addData:data
+        })
+        // if(addData&&) 
     }
     render() {
         return (
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
                 <Modal title="新增" visible={this.state.visible}
-                    onCancel={this.handleCancel} width='1200px'
+                    onCancel={this.handleCancel} width='1300px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
