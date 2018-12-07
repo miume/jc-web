@@ -19,16 +19,17 @@ const CollectionCreateForm = Form.create()(//弹出层
           checkSelectData:-1,//最开始下拉框是没选择数据的
           popVisible:false,//送检的气泡弹出
           checkSwitch:false,//是否紧急那个开关最开始是关闭的即否
-          process:[],//送审流程
+          processChildren:[],//送审流程（对应那个下拉框）
         }
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
         this.getAllProcess=this.getAllProcess.bind(this);
+        this.banchNumberSelectChange=this.banchNumberSelectChange.bind(this);
       }
     getAllProcess(){
            axios({
-               url:`${this.server}/jc/common/batchAuditTask/getAllByPage`,
+               url:`${this.server}/jc/common/batchAuditTask/getAll`,
                method:'get',
                headers:{
                    'Authorizaion':this.Authorizaion
@@ -36,13 +37,21 @@ const CollectionCreateForm = Form.create()(//弹出层
 
            })
            .then((data)=>{
-                 const res=data.data.data.list;
-                 console.log(res);
+               console.log(data);
+                const res=data.data.data;
+                //  console.log(res);
                  this.setState({
-                     process:res
+                     processChildren:res
                  });
            });
     }
+    getAllBatchNumber(){//获取所有编号
+
+    }
+    //新增编号选择框变化时调用的函数
+    banchNumberSelectChange(){
+        
+        }
       //监听下拉框变化
       selectChange=(value)=>{
           this.setState({checkSelectData:value});
@@ -69,9 +78,10 @@ const CollectionCreateForm = Form.create()(//弹出层
         });
 
       }
+     
       render() {
-          this.server=localStorage.getItem('remote');
-          this.Authorizaion=localStorage.getItem('Authorizaion');
+         this.server=localStorage.getItem('remote');
+         this.Authorizaion=localStorage.getItem('Authorizaion');
         const { visible, onCancel, handleSave, form } = this.props;
         const { getFieldDecorator } = form;
         return (
@@ -88,15 +98,15 @@ const CollectionCreateForm = Form.create()(//弹出层
                 
                 <SaveButton key='save'   handleSave={handleSave}>保存</SaveButton>,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
-                maskClosable={false}
+                maskClosable={false} closable={false}
                  content={
                      <div style={{width:250 ,height:150}}>
                         <div>
                             <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
                               {
-                                  this.state.process.map((pro)=>{
+                                  this.state.processChildren.map((pro)=>{
                                           return(
-                                            <Option key={pro.batchNumberId} value={pro.batchNumberId}>{pro.name}</Option>
+                                            <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
 
                                           );
                                   })
@@ -121,32 +131,32 @@ const CollectionCreateForm = Form.create()(//弹出层
             ]}
           >
             <Form horizontal='true' >
-                <FormItem  label='批号'labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('lotNumber',{
+                <FormItem  label='编号'labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('repoBaseSerialNumber.serialNumber',{
                     initialValue: '',
-                    rules:[{required:true,message:'批号不能为空'}]
+                    rules:[{required:true,message:'请选择编号'}]
                 })(
-                    <Input placeholder='请输入批号'></Input>
+                    <Select onChange={this.banchNumberSelectChange}></Select>
                 )}
                 </FormItem>
                 <FormItem  label='货品名称' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('name',{
+                {getFieldDecorator('repoBaseSerialNumber.materialName',{
                     initialValue: '',
-                    rules:[{required:true,message:'货品名称不能为空'}]
+                    
                 })(
-                    <Input placeholder='请输入货品名称'></Input>
+                    <Input placeholder='请先选择编号'  />
                 )}
                 </FormItem>
                 <FormItem  label='货品型号' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('model',{
+                {getFieldDecorator('repoBaseSerialNumber.materialClass',{
                     initialValue: '',
-                    rules:[{required:true,message:'货品型号不能为空'}]
+                    
                 })(
-                    <Input placeholder='请输入货品型号'></Input>
+                    <Input placeholder='请先选择编号' />
                 )}
                 </FormItem>
                 <FormItem  label='损失货品数量' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('number',{
+                {getFieldDecorator('repoRedTable.quantityLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
@@ -154,7 +164,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                 )}
                 </FormItem>
                 <FormItem  label='损失货品重量' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('weight',{
+                {getFieldDecorator('repoRedTable.weightLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
@@ -176,8 +186,9 @@ class RawMaterialRedListAddModal extends React.Component{
             visible: false,//新增的弹出框
           
           };
+          
         }
-   
+        
     //显示当前时间为某年某月某日
     getNowFormatDate=()=> {
       let date = new Date();

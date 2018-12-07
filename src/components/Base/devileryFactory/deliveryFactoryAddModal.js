@@ -77,7 +77,7 @@ class DeliveryFactoryAddModal extends React.Component{
           .catch(()=>{
               message.info('新增失败，请联系管理员！');
           });
-          console.log('Received values of form: ', values);//打印表单新增获得到的值
+         // console.log('Received values of form: ', values);//打印表单新增获得到的值
           form.resetFields();//重置一组输入控件的值（为 initialValue）与状态，如不传入参数，则重置所有组件
           this.setState({ visible: false });
         });

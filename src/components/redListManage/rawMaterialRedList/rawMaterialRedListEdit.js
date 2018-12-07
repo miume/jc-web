@@ -1,11 +1,14 @@
 import React from 'react';
 import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber} from 'antd';
-
+import CancleButton from '../../BlockQuote/cancleButton';
+import SaveButton from '../../BlockQuote/saveButton';
 //import axios from 'axios';
 const Option=Select.Option;
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
     class extends React.Component {
+      server;
+      Authorization;
       constructor(props){
         super(props);
         this.state={
@@ -14,7 +17,7 @@ const CollectionCreateForm = Form.create()(//弹出层
         }
         this.hide=this.hide.bind(this);//送审气泡点击取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审气泡点击确定
-        this.selectChange=this.selectChange.bind(this);
+        this.selectChange=this.selectChange.bind(this);//监听下拉框变化
         
       }
     
@@ -27,7 +30,7 @@ const CollectionCreateForm = Form.create()(//弹出层
         //console.log(this.state.popVisible)
         this.setState({popVisible:false});
       }
-      handleSongShenOk(){//送审气泡点击确定
+      handleSongShenOk(){//送审气泡点击确定(status为-1，状态为待审核)
         this.setState({popVisible:false});
       }
       handleVisibleChange=(visible)=>{
@@ -37,6 +40,8 @@ const CollectionCreateForm = Form.create()(//弹出层
         })
     }
       render() {
+        this.server=localStorage.getItem('remote');
+        this.Authorization=localStorage.getItem('Authorization');
         const { visible, onCancel, onCreate, form } = this.props;
         const { getFieldDecorator } = form;
         return (
@@ -49,11 +54,8 @@ const CollectionCreateForm = Form.create()(//弹出层
             
              // footer下的每个组件都要有唯一的key
             footer={[
-                <Popconfirm key='popcon' placement='right' title='你确定是想取消这个任务吗？' onConfirm={onCancel} okText='确定' cancelText='再想想'>
-                       <Button key='cancel' style={{float:'left'}}>取消</Button>
-                </Popconfirm>,
-                
-                <Button key='save' type='primary'  onClick={this.props.onCreate}>保存</Button>,
+              <CancleButton  handleCancel={onCreate}/>,
+                <SaveButton handleSave={onCancel}/> ,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                 maskClosable={false}
                  content={

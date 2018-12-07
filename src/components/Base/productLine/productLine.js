@@ -416,7 +416,7 @@ class ProductLine extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='产品线' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo}/>
+               <BlockQuote name='产品线' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
                <ProductLineAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

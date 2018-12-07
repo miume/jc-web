@@ -1,7 +1,8 @@
 import React from 'react';
 import {Form,Input,Button,Modal,message} from 'antd';
 import axios from 'axios';
-
+import NewButton from '../..//BlockQuote/newButton';
+import CancleButton from '../../BlockQuote/cancleButton';
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
     class extends React.Component {
@@ -12,11 +13,11 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             title="新增"
-            onOk={this.props.onCreate}
-            onCancel={this.props.onCancel}
+            onOk={onCreate}
+            onCancel={onCancel}
             footer={[
-                <Button key='submit' type='primary' size='large' onClick={this.props.onCreate}>确定</Button>,
-                <Button key='back' type='ghost'size='large' onClick={this.props.onCancel}>取消</Button>
+                <NewButton  handleClick={onCreate} className='fa fa-plus' name='确定'/>,
+                <CancleButton handleCancel={onCancel}/>
             ]}
           >
             <Form horizontal='true' >
@@ -34,11 +35,10 @@ const CollectionCreateForm = Form.create()(//弹出层
       }
     }
   );
-  //这是个令牌，每次调接口将其放在header里面
-const Authorization=localStorage.getItem('Authorization');
-//通过这个获取接口地址
-const server=localStorage.getItem('remote1');
-class SamplePointAddModal extends React.Component{
+
+class SerialNumberAddModal extends React.Component{
+  server;
+  Authorization;
     state = {
         visible: false,
       };
@@ -60,10 +60,10 @@ class SamplePointAddModal extends React.Component{
             return;
           }
           axios({
-            url:'http://2p277534k9.iok.la:58718/jc/samplePoint/add',
+            url:`${this.server}/jc/samplePoint/add`,
             method:'post',
             headers:{
-              'Authorization':Authorization
+              'Authorization':this.Authorization
             },
             data:values,
             type:'json'
@@ -74,9 +74,9 @@ class SamplePointAddModal extends React.Component{
               this.props.fetch();//
           })
           .catch((error)=>{
-              message.info(error.data.message);
+              message.info('新增失败，请联系管理员！');
           });
-          console.log('Received values of form: ', values);//打印表单新增获得到的值
+          //console.log('Received values of form: ', values);//打印表单新增获得到的值
           form.resetFields();//重置一组输入控件的值（为 initialValue）与状态，如不传入参数，则重置所有组件
           this.setState({ visible: false });
         });
@@ -87,10 +87,13 @@ class SamplePointAddModal extends React.Component{
       }
     
     render(){
-        
+          //这是个令牌，每次调接口将其放在header里面
+          this.Authorization=localStorage.getItem('Authorization');
+          //通过这个获取接口地址
+          this.server=localStorage.getItem('remote');
         return(
           <span>
-              <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.showModal} >新增</Button>
+              <NewButton   handleClick={this.showModal} name='新增'/>
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}
@@ -101,4 +104,4 @@ class SamplePointAddModal extends React.Component{
         );
     }
 }
-export default Form.create()(SamplePointAddModal);//创建form实例
+export default Form.create()(SerialNumberAddModal);//创建form实例
