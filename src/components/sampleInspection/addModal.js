@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, Form, Input,Select,DatePicker,TimePicker  } from 'antd';
+import AddButton from '../BlockQuote/addButton'
 // import WhiteSpace from '../BlockQuote/whiteSpace';
 // import moment from 'moment';
 
@@ -30,21 +31,21 @@ const CollectionCreateForm = Form.create()(
                     onOk={onCreate}
                 >
                     <Form horizontal='true'>
-                        <FormItem label="送样日期" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem label="送检日期" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('date', {
                                 rules: [{ required: true, message: '请选择送样日期' }],
                             })(
                                 <DatePicker onChange={this.onChange}/>
                             )}
                         </FormItem>
-                        <FormItem label="送样时间" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem label="送检时间" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('time', {
                                 rules: [{ required: true, message: '请选择送样时间' }],
                             })(
                                 <TimePicker />
                             )}
                         </FormItem>
-                        <FormItem label="送样人" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem label="送检人" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('person', {
                                 rules: [{ required: true, message: '请选择送样人' }],
                             })(
@@ -54,7 +55,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem label="送样工厂" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem label="送检工厂" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('factory', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
@@ -121,7 +122,7 @@ class AddModal extends React.Component{
     render(){
         return(
             <span>
-                <Button type="primary" size="small" style={{marginRight:'15px'}} onClick={this.showModal}>新增</Button>
+                <AddButton handleAdd={this.showModal}/>
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
