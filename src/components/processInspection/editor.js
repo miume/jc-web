@@ -208,7 +208,7 @@ class Editor extends React.Component{
             <span>
                 <span className='blue' onClick={this.handleEditor} >编辑</span>
                 <Modal title="详情" visible={this.state.visible}
-                    onCancel={this.handleCancel}  width='1000px'
+                    onCancel={this.handleCancel}  width='1100px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
@@ -226,10 +226,12 @@ class Editor extends React.Component{
                                  <tr>
                                      <td>产品线</td>
                                      <td>工序</td>
-                                     <td>样品检测点</td>
-                                     <td>测试项目</td><td>测试频率</td>
-                                     <td>采样人</td><td>检测人</td>
-                                     <td>状态</td><td>备注</td><td>操作</td>
+                                     <td>取样点</td>
+                                     <td>取样人</td>
+                                     <td>检测人</td>
+                                     <td>检测项目</td><td>频次</td>
+                                     <td>受检物料</td>
+                                     <td>备注</td><td>操作</td>
                                  </tr>
                              </thead>
                              <tbody>
