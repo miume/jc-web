@@ -17,20 +17,9 @@ import ApplyStockOut from './applyStockOut';
 //     })
 // }
 class RawMaterialApplication extends React.Component{
-    Authorization
-    server
-    componentDidMount(){
-        this.fetch();
-    }
-    componentWillUnmount(){
-        this.setState=()=>{
-            return;
-        }
-    }
     constructor(props){
         super(props);
         this.state = {
-            dataSource : [],
             searchContent:'',
             selectedRowKeys:[]
         }
@@ -39,8 +28,8 @@ class RawMaterialApplication extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
+        // this.server = localStorage.getItem('remote');
+        // this.Authorization = localStorage.getItem('Authorization');
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -87,20 +76,16 @@ class RawMaterialApplication extends React.Component{
             width:'15%'
         }]
         this.pagination = {
-            total: this.state.dataSource.length,
+            total: this.props.data.length,
             showTotal(total) {
               return `共${total}条记录`
             } ,
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
           }
     }   
     /**监控表格的变化 */
     handleTableChange = (pagination) => {
-        this.fetch({
+        this.props.fetch({
           size: pagination.pageSize,
           page: pagination.current,
           orderField: 'id',
@@ -149,8 +134,8 @@ class RawMaterialApplication extends React.Component{
     }
     /**根据货物名称进行搜索 */
     searchEvent(){
-        this.fetch({
-            personName:this.state.searchContent
+        this.props.fetch({
+            materialName:this.state.searchContent
         });
     }
     /**监控checkbox选中的情况 */
@@ -170,13 +155,14 @@ class RawMaterialApplication extends React.Component{
             selectedRowKeys,
             onChange:this.onSelectChange,
         }
+        this.pagination.total = this.props.data.total;
         return (
             <div style={{padding:'0 15px'}}>
-                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.state.dataSource} cancle={this.cancle} Authorization={this.Authorization} server={this.server} />
+                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} Authorization={this.props.Authorization} server={this.props.server} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.fetch} searchContentChange={this.searchContentChange}></SearchCell>
+                    <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
-                <Table rowKey={record=>record.id} dataSource={this.state.dataSource} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{ y: 398 }} bordered size='small'></Table>
+                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{ y: 398 }} bordered size='small'></Table>
             </div>
         );
     }

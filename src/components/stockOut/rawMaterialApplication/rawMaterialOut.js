@@ -21,10 +21,8 @@ import axios from 'axios';
 //     })
 // }
 class RawMaterialOut extends React.Component{
-    Authorization
-    server
     componentDidMount(){
-        this.fetch();
+        //this.fetch();
     }
     constructor(props){
         super(props);
@@ -117,7 +115,7 @@ class RawMaterialOut extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail id={record.id} server={this.server} Authorization={this.Authorization}></Detail>
+                        <Detail id={record.id} server={this.props.server} Authorization={this.props.Authorization}></Detail>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
                             <span className='blue' id={record.id}>删除</span>
@@ -127,18 +125,14 @@ class RawMaterialOut extends React.Component{
             }
         }]
         this.pagination = {
-            total: this.state.dataSource.length,
+            total: this.props.data.length,
             showTotal(total) {
               return `共${total}条记录`
             } ,
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
           }
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        // this.Authorization = localStorage.getItem('Authorization');
+        // this.server = localStorage.getItem('remote');
     }
     /**监控表格变化 */
     handleTableChange(pagination){
@@ -148,50 +142,50 @@ class RawMaterialOut extends React.Component{
         })
     }
     /**getAllByPage分页查询 */
-    fetch=(params={})=>{
-        axios({
-            url:`${this.server}/jc/common/repoOutApply/getAllByNameLikeAndTypeByPage`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                ...params,
-                type:this.props.type
-            }
-        }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total = res.total;
-            var out = []
-            console.log(res)
-            for(var i = 1; i<=res.list.length; i++){
-                var li = res.list[i-1];
-                out.push({
-                    id:li.commonBatchNumber.id,
-                    index:res.prePage*10+i,
-                    batchNumber:li.commonBatchNumber.batchNumber,
-                    createPersonName:li.createPersonName,
-                    createTime:li.commonBatchNumber.createTime,
-                    status:li.commonBatchNumber.status,
-                    isUrgent:li.commonBatchNumber.isUrgent,
-                })
-            }
-          this.setState({
-            dataSource: out,
-          });
-        })
-    }
+    // fetch=(params={})=>{
+    //     axios({
+    //         url:`${this.server}/jc/common/repoOutApply/getAllByNameLikeAndTypeByPage`,
+    //         method:'get',
+    //         headers:{
+    //             'Authorization':this.Authorization
+    //         },
+    //         params:{
+    //             ...params,
+    //             type:this.props.type
+    //         }
+    //     }).then((data)=>{
+    //         const res = data.data.data;
+    //         this.pagination.total = res.total;
+    //         var out = []
+    //         console.log(res)
+    //         for(var i = 1; i<=res.list.length; i++){
+    //             var li = res.list[i-1];
+    //             out.push({
+    //                 id:li.commonBatchNumber.id,
+    //                 index:res.prePage*10+i,
+    //                 batchNumber:li.commonBatchNumber.batchNumber,
+    //                 createPersonName:li.createPersonName,
+    //                 createTime:li.commonBatchNumber.createTime,
+    //                 status:li.commonBatchNumber.status,
+    //                 isUrgent:li.commonBatchNumber.isUrgent,
+    //             })
+    //         }
+    //       this.setState({
+    //         dataSource: out,
+    //       });
+    //     })
+    // }
     /**单条记录删除 */
     handleDelete(id){
         axios({ 
-            url:`${this.server}/jc/common/repoOutApply/deleteByBatchNumberId?batchNumberId=${id}`,
+            url:`${this.props.server}/jc/common/repoOutApply/deleteByBatchNumberId?batchNumberId=${id}`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.props.Authorization
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.fetch();
+            this.props.fetch();
         }).catch(()=>{
             message.info('删除失败，请联系管理员！')
         })
@@ -199,15 +193,15 @@ class RawMaterialOut extends React.Component{
     /**批量删除 */
     deleteByIds(){
         axios({
-            url:`${this.server}/jc/common/repoOutApply/deleteByBatchNumberIds`,
+            url:`${this.props.server}/jc/common/repoOutApply/deleteByBatchNumberIds`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.props.Authorization
             },
             data:this.state.selectedRowKeys
         }).then((data)=>{
             message.info(data.data.message);
-            this.fetch();
+            this.props.fetch();
         }).catch(()=>{
             message.info('删除错误，请联系管理员！')
         })
@@ -227,7 +221,7 @@ class RawMaterialOut extends React.Component{
     }
     /**根据货物名称进行搜索 */
     searchEvent(){
-        this.fetch({
+        this.props.fetch({
             personName:this.state.searchContent
         });
     }
@@ -243,14 +237,15 @@ class RawMaterialOut extends React.Component{
             selectedRowKeys,
             onChange: this.onSelectChange,
           };
+        this.pagination.total = this.props.data.total;
         return (
             <div style={{padding:'0 15px'}}>
                 <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel} selectedRowKeys={this.state.selectedRowKeys}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}></SearchCell>
+                    <SearchCell name='请输入申请人' type={this.props.index} fetch={this.props.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
                 <div className='clear'></div>
-                <Table rowKey={record=>record.id} dataSource={this.state.dataSource} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{y:380}} size='small' bordered></Table>
+                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{y:380}} size='small' bordered></Table>
             </div>
         );
     }
