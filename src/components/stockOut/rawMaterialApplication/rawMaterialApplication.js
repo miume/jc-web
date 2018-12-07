@@ -150,7 +150,7 @@ class RawMaterialApplication extends React.Component{
     /**根据货物名称进行搜索 */
     searchEvent(){
         this.fetch({
-            materialName:this.state.searchContent
+            personName:this.state.searchContent
         });
     }
     /**监控checkbox选中的情况 */
@@ -172,7 +172,7 @@ class RawMaterialApplication extends React.Component{
         }
         return (
             <div style={{padding:'0 15px'}}>
-                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.state.dataSource} cancle={this.cancle}/>
+                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.state.dataSource} cancle={this.cancle} Authorization={this.Authorization} server={this.server} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>

@@ -151,4 +151,6 @@ i{
   text-align: center !important;
   margin-left: 80px !important;
 }
-
+.clear{
+  clear: both;
+}

@@ -1,0 +1,24 @@
+.wholediv{
+    height:140px;
+    width:100%;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.35);
+    border-radius: 0.2em;
+}
+.wholep{
+    padding:5px 15px;
+    vertical-align: bottom;
+}
+.smallSize{
+    color:black;
+    padding:0 10px;
+}
+.bigSize{
+    font-size: 18px;
+    font-weight: bolder;
+    color:#0066fe;
+    padding: 0 10px 0px;
+}
+.time{
+    color:#333;
+    padding:0 10px;
+}

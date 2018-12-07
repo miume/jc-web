@@ -1,27 +1,32 @@
 import React from 'react';
-import {Button,Modal,Table,Input} from 'antd';
+import {Button,Modal,Table,Input,message} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import Submit from '../../BlockQuote/submit';
+import SaveButton from '../../BlockQuote/saveButton';
 import './rawAdd.css';
-const data = [];
-for(var i = 1; i<=20; i++){
-    data.push({
-        id:`${i}`,
-        materialName:'钴锰矿',
-        materialClass:'钴锰矿一号',
-        batchNumberId:'ECT/314314',
-        quantity:'122',
-        weight:'22' ,
-        outQuantity:'',
-        outWeight:'' 
-    })
-}
+import axios from 'axios';
+// const data = [];
+// for(var i = 1; i<=20; i++){
+//     data.push({
+//         id:`${i}`,
+//         materialName:'钴锰矿',
+//         materialClass:'钴锰矿一号',
+//         batchNumberId:'ECT/314314',
+//         quantity:'122',
+//         weight:'22' ,
+//         outQuantity:'',
+//         outWeight:'' 
+//     })
+// }
 class ApplyStockOut extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             dataSource:[],
-            visible:false
+            visible:false,
+            visible1:false,
+            process:-1,      //用来存取送审流程,
+            urgent:0
         }
         this.columns = [{
             title:'序号',
@@ -89,6 +94,12 @@ class ApplyStockOut extends React.Component{
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel =this.handleCancel.bind(this);
         this.save = this.save.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.urgentChange = this.urgentChange.bind(this);
+        this.handleCancelApply = this.handleCancelApply.bind(this);
+        this.handleOkApply = this.handleOkApply.bind(this);
     }
     /**申请出库弹出框 点击取消按钮 */
     handleCancel(){
@@ -109,6 +120,21 @@ class ApplyStockOut extends React.Component{
         this.setState({
             visible:true
         })
+        const keys = this.props.selectedRowKeys;
+        var outData = [];
+        this.props.data.forEach(d=>{
+            var newD = d;
+            for(var i = 0; i < keys.length;i++){
+                if(keys[i]===d.id){
+                    newD['outQuantity']='';
+                    newD['outWeight']='';
+                    newD['index']=i+1;
+                    outData.push(newD)
+                }
+            }
+        })
+        
+        this.state.dataSource = outData;
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){
@@ -119,25 +145,85 @@ class ApplyStockOut extends React.Component{
         const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
         // console.log(newData[index].id )
         newData[index][name] = value.toString();
-        console.log(newData)
-        // this.setState({
-        //     dataSource:newData
-        // })
+    }
+    /**监控申请送审弹出框的visible */
+    handleVisibleChange(visible){
+        this.setState({
+            visible1:visible
+        })
+    }
+    /**监听select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
+     /**监控是否紧急 */
+     urgentChange(checked){
+        this.setState({
+            urgent:checked?1:0
+        })
+    }
+     /**监控申请送审 保存 */
+     handleSave(){
+        this.applyOut(-1);
+    }
+    /**点击确定送审 */
+    handleOkApply(){
+        this.applyOut(0);
+    }
+    /**点击取消送审 */
+    handleCancelApply(){
+        this.setState({
+            visible1:false,
+        })
+    }
+    applyOut(status){
+        this.setState({
+            visible:false,
+            visible1:false
+        })
+        const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const commonBatchNumber = {
+            createPersonId:createPersonId,
+            status:status,
+            isUrgent:this.state.urgent
+        }
+        const details = [];
+        const data = this.state.dataSource;
+        for(var i=0; i<data.length;i++ )
+        {
+            var e = data[i];
+            if(!e.outQuantity || !e.outWeight){
+                message.info('出库数量和出库重量都不能为空！');
+                return 
+            }
+            details.push({
+                stockId:parseInt(e.id),
+                quantity:parseInt(e.outQuantity),
+                weight:parseInt(e.outWeight)
+            })
+        }
+        const taskId = parseInt(this.state.process) !== -1?parseInt(this.state.process) :''
+        console.log(taskId)
+        axios.post(`${this.props.server}/jc/common/repoOutApply/outApply`,{
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        },{
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        },{
+            params:{
+                taskId:taskId
+            }
+        }).then((data)=>{
+            message.info(data.data.message)
+        }).catch(()=>{
+            message.info('送审失败，请联系管理员！')
+        })
     }
     render(){
-        const keys = this.props.selectedRowKeys;
-        var outData = this.props.data.forEach(d=>{
-            var newD = d;
-            for(var i = 0; i < keys.length;i++){
-                if(keys[i]===d.id){
-                    newD['outQuantity']='';
-                    newD['outWeight']='';
-                    newD['index']=i+1
-                    return newD;
-                }
-            }
-        })
-        this.state.dataSource = outData;
         return (
             <span>
                 <Button type='primary' size='default' className='button' onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" style={{color:'white'}}></i> 申请出库</Button>
@@ -145,7 +231,8 @@ class ApplyStockOut extends React.Component{
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <Submit key='submit' data = {this.state.dataSource}/>                       
+                        <SaveButton key='save' handleSave={this.handleSave} />,
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
                     ]}
                 >
                 <div style={{height:'250px'}}>
