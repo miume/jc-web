@@ -48,17 +48,12 @@ class PurchaseModalTable extends React.Component {
         super(props);
         this.state = {
             //
-            flag: false,
             //数据
             headColumns: headData ,
             tbodyData: tbodyData,
             // 用于鼠标移进移出
             hover: false,
-            // 宽度
-            theadMiddleWidth: 0, //表头动态宽度
-            middleTheadIdWidth: 0, //表头动态含滚动的宽度
-            leftDistance: 0, //移动的距离
-            movieLeftDistance: 0,
+            visible:'',
             // 用来存储已经变红的标签id--转换成这一行
             radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
             radioTrueArr: [],   //合格的数组--
@@ -78,7 +73,7 @@ class PurchaseModalTable extends React.Component {
         const handleRightClick = () => this.handleClick(1)
         const handleLeftClick = () => this.handleClick(-1)
         return(
-            <div id="modalTable">
+            <div id="modalTable" className={this.state.visible}>
                 <div id="thead">
                     <div id="theadLeft">
                         <div>
@@ -125,17 +120,18 @@ class PurchaseModalTable extends React.Component {
                             })
                         }
                     </div>
-                    <div id="tbodyArea">
+                    <div id="tbodyArea" className={this.state.className}>
                         <div className="tbodyMiddle" ref={(ref) => this.tbodyMiddleRef = ref}>
                             {
                                 this.state.tbodyData.map((item,index) => {
                                     const data = item;
+                                    const tbodyRow = index;
                                     return(
                                         <div className="middleTbody"   key={'tbodyData'+index}>
                                             {
                                                 this.state.headColumns.map((item,index) => {
                                                     return(
-                                                        <div className="middleTbodyDiv" key={'tbody'+index}>
+                                                        <div className='middleTbodyDiv' ref={`${tbodyRow}${index}`}  id={`${tbodyRow}${index}`} key={index} onClick={this.handleCellOnclick.bind(this)}>
                                                             {data[item.testItem]}
                                                         </div>
                                                     )
@@ -151,7 +147,7 @@ class PurchaseModalTable extends React.Component {
                         {
                             this.state.tbodyData.map((item,index) => {
                                 return(
-                                    <div>
+                                    <div key={`right${index}`}>
                                         <div id={`pass${index}`}>合格</div>
                                         <div id={`nopass${index}`}>不合格</div>
                                     </div>
@@ -166,29 +162,38 @@ class PurchaseModalTable extends React.Component {
     /**表格单元格按钮点击事件*/
     handleCellOnclick = (e) => {
         const id = e.target.id;
+        //可以通过这种方式操作真实dom,但是要保证唯一
+        // var backgroundColor = this.refs[id].style.background;
+        // if(backgroundColor==='red'){
+        //     this.refs[id].style.background = 'white';
+        // }else{
+        //     this.refs[id].style.background = 'red';
+        // }
+        // this.refs[id].style.background='red';
+        console.log(this.refs[id].style.background)
         var flag = -1;
-        var tdId = document.getElementById(id);
-        var colorStatueId = this.state.colorStatueId;
+        var colorStatueId = this.props.colorStatueId;
         for(var i=0; i<colorStatueId.length; i++) {
             if(id===colorStatueId[i]){
                 flag = i;
             }
         }
-        if(flag>=0){
-            tdId.style.background = 'white';
-            // tdId.style.border = '1px solid #CCCCCC';
+        if(flag >= 0) {
+            this.refs[id].style.background = 'white';
             colorStatueId.splice(flag,1);
-            this.setState({
-                colorStatueId:colorStatueId,
-                purchaseStatus: '待定'
-            })
+            this.props.modifyColorStatueId(colorStatueId)
+            // this.setState({
+            //     colorStatueId:colorStatueId,
+            //     purchaseStatus: '待定'
+            // })
         }else{
-            tdId.style.background = 'red';
+            this.refs[id].style.background = 'red';
             colorStatueId.push(id);
-            this.setState({
-                colorStatueId:colorStatueId,
-                purchaseStatus: '不合格'
-            })
+            this.props.modifyColorStatueId(colorStatueId)
+            // this.setState({
+            //     colorStatueId:colorStatueId,
+            //     purchaseStatus: '不合格'
+            // })
         }
     };
     /**---------------------- */

@@ -50,13 +50,13 @@ class BlockQuote extends React.Component{
                         <span key={d.id} id={d.path} onClick={this.clickSpan}
                         style={{padding:'10px',cursor:'pointer'}} className='hover'>{d.name}</span>)
                     }
-                    </span>  
+                    </span>
                  </div>
                  <div style={{color:'black',paddingLeft:'15px',height:'25px',borderLeft:'4px solid #0079FE',fontSize:'20px',fontWeight:'bolder'}}>
                     {this.props.name}
                  </div>
               </div>
-    
+
             </div>
         );
     }

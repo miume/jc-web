@@ -22,6 +22,7 @@ class CheckEditSpan extends React.Component {
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.urgentChange = this.urgentChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.modifyColorStatueId = this.modifyColorStatueId.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -75,7 +76,6 @@ class CheckEditSpan extends React.Component {
                 >
                     <div style={{height:450}}>
                         <PurchaseModal
-
                         />
 
                     </div>
@@ -130,6 +130,11 @@ class CheckEditSpan extends React.Component {
         }
     }
     /**---------------------- */
+    modifyColorStatueId = (id) => {
+        this.setState({
+            colorStatueId:[...this.state.colorStatueId,id],
+        })
+    }
 }
 
 export default CheckEditSpan;
