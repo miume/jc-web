@@ -15,10 +15,10 @@ class RedListManage extends React.Component{
                 <Tabs defaultActiveKey='1' onChange={()=>this.callback}>
                  {/* //tab是选项卡头显示文字,key是对应activekey，activekey是当前激活 tab 面板的 key */}
                 <TabPane tab={<span><i className='fa fa-tint'></i>&nbsp; 原材料红单</span>} key='1'> 
-                   <RawMaterialRedList/>
+                   <RawMaterialRedList type={1}/>
                  </TabPane>
                  <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 产品红单</span>} key='2'>
-                    <ProductRedList/>
+                    <ProductRedList type={3}/>
                  </TabPane>
                </Tabs>
             </div>
