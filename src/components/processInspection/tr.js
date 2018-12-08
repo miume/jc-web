@@ -37,15 +37,17 @@ class Tr extends React.Component{
         this.state = {
             detail:{
                 id:this.props.value,
-                comment:'',
-                procedureId:-1,
-                productLineId:-1,
-                samplePointName:'',
-                sampler:-1,
-                testFrequency:'',
-                testMaterialId:-1,
-                tester:-1,
-                testItems:[]
+                procedureTestRecord:{
+                    comment:'',
+                    procedureId:-1,
+                    productLineId:-1,
+                    samplePointName:'',
+                    sampler:-1,
+                    testFrequency:'',
+                    testMaterialId:-1,
+                    tester:-1,
+                },
+                testItemIds:[]
             },
             clicked: false,
             hovered: false,
@@ -178,7 +180,7 @@ class Tr extends React.Component{
     /**下拉面板checkbox的变化 */
     onChange(checkedValues){
         const {detail} = this.state;
-        detail.testItems = checkedValues
+        detail.testItemIds = checkedValues;
         this.setState({
             detail:detail
         })
@@ -187,7 +189,7 @@ class Tr extends React.Component{
     /**监控产品线下拉框的变化 */
     productLineChange(value){
         const {detail} = this.state;
-        detail.productLineId = value
+        detail.procedureTestRecord.productLineId = value
         this.setState({
             detail:detail
         })
@@ -195,7 +197,7 @@ class Tr extends React.Component{
     /**监控工序下拉框的变化 */
     productionProcessChange(value){
         const {detail} = this.state;
-        detail.procedureId = value
+        detail.procedureTestRecord.procedureId = value
         this.setState({
             detail:detail
         })
@@ -204,7 +206,7 @@ class Tr extends React.Component{
     samplePointName(e){
         const value = e.target.value;
         const {detail} = this.state;
-        detail.samplePointName = value
+        detail.procedureTestRecord.samplePointName = value
         this.setState({
             detail:detail
         })
@@ -215,7 +217,7 @@ class Tr extends React.Component{
     /**监控下拉框取样人的变化 */
     sampler(value){
         const {detail} = this.state;
-        detail.sampler = value
+        detail.procedureTestRecord.sampler = value
         this.setState({
             detail:detail
         })
@@ -223,7 +225,7 @@ class Tr extends React.Component{
     /**监控检测人下拉框的变化 */
     tester(value){
         const {detail} = this.state;
-        detail.tester = value
+        detail.procedureTestRecord.tester = value
         this.setState({
             detail:detail
         })
@@ -232,7 +234,7 @@ class Tr extends React.Component{
     testFrequency(e){
         const value = e.target.value;
         const {detail} = this.state;
-        detail.testFrequency = value
+        detail.procedureTestRecord.testFrequency = value
         this.setState({
             detail:detail
         })
@@ -240,7 +242,7 @@ class Tr extends React.Component{
     /**监控受检物料下拉框的变化 */
     testMaterialId(value){
         const {detail} = this.state;
-        detail.testMaterialId = value
+        detail.procedureTestRecord.testMaterialId = value
         this.setState({
             detail:detail
         })
@@ -249,7 +251,7 @@ class Tr extends React.Component{
     comment(e){
         const value = e.target.value;
         const {detail} = this.state;
-        detail.comment = value
+        detail.procedureTestRecord.comment = value
         this.setState({
             detail:detail
         })
