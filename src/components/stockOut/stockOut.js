@@ -79,7 +79,7 @@ class StockOut extends React.Component{
     /**出库记录 */
     outCheck(params){
         axios({
-            url:`${this.server}/jc/common/repoOutApply/getAllByNameLikeAndTypeByPage`,
+            url:`${this.server}/jc/common/repoOutApply/pages`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization

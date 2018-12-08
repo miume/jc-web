@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal,Button,Input,Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace'
+import axios from 'axios'
 
 const columns = [{
         title: '负责人',
@@ -16,15 +17,55 @@ const columns = [{
         align:'center',
 }]
 
+const columns1 = [{
+    title:'流程名称',
+    dataIndex : 'description',
+    key : "description",
+    width:'30%',
+    align:'center'
+},{
+    title:'所属工艺',
+    dataIndex : 'process',
+    key : "process",
+    width:'30%',
+    align:'center'
+}]
+
 class Detail extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             visible : false,
+            data : [],
+            data1 : []
         }
+        this.server = localStorage.getItem('remote');
         this.handleDetail = this.handleDetail.bind(this)
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
+        this.fetch = this.fetch.bind(this);
+    }
+    componentDidMount() {
+        this.fetch(this.props.value.commonBatchNumber.id);
+    }
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
+    fetch = (id) => {
+        axios({
+            url:`${this.server}/jc/common/batchAuditTask/`+parseInt(id),
+            method:"GET",
+        }).then((data) => {
+            const res = data.data.data;
+            var dataName = [{}]
+            dataName[0].description = res.commonBatchNumber.description
+            this.setState({
+                data : res.details,
+                data1 : dataName
+            })
+        })
     }
     /**处理一条详情记录 */
     handleDetail() {
@@ -44,23 +85,35 @@ class Detail extends React.Component{
         });
     }
     render(){
+        const td = this.state.data1.map(p=>
+            <td key={p.description.toString()}>{p.description}</td>
+        )
         return(
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
-                    onCancel={this.handleCancel} width='1000px'
+                    onCancel={this.handleCancel} width='700px'
                     footer={[
                         <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
                         <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
                     ]}>
                     <div style={{height:'400px'}}>
-                         <div>
-                             流程名称：<Input value={this.props.value.name} style={{width:300}} disabled={true}/>
-                             <WhiteSpace />
-                             所属工艺：<Input value={"xxx的工艺"} style={{width:300}} disabled={true}/>
-                         </div>
+                         <table>
+                             <thead className='thead'>
+                                 <tr>
+                                     <td>流程名称</td>
+                                     <td>所属工艺</td>
+                                 </tr>
+                             </thead>
+                             <tbody className='tbody'>
+                                <tr>
+                                {td}
+                                <td></td>
+                                </tr>
+                             </tbody>
+                         </table>
                          <WhiteSpace />
-                         <Table columns={columns} size='small' pagination={false} bordered dataSource={this.props.value.taskPersonList}></Table>
+                         <Table columns={columns} rowKey={record => record.responsibility} size='small' pagination={false} bordered dataSource={this.state.data}></Table>
                     </div>
                 </Modal>
             </span>

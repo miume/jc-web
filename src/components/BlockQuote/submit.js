@@ -17,12 +17,12 @@ const Option = Select.Option;
 // },]
 class Submit extends React.Component{
     componentDidMount(){
-        axios.get(`${this.props.server}/jc/common/batchAuditTask/getAll`,{
+        axios.get(`${this.props.server}/jc/common/batchAuditTask/validTasks`,{
             headers:{
                 'Authorization':this.props.Authorization
             }
         }).then((data)=>{
-            console.log(data.data)
+            //console.log(data.data)
             this.setState({
                 process:data.data?data.data.data:[]
             })
@@ -81,11 +81,11 @@ class Submit extends React.Component{
                 <div>
                     <Select placeholder='请选择审核流程' style={{width:'240px',height:'40px'}} onChange={this.props.selectChange}>
                     {
-                        this.state.process.map(p=>{
+                        this.state.process? this.state.process.map(p=>{
                             return (
                                 <Option key={p.commonBatchNumber.id} value={p.commonBatchNumber.id}>{p.commonBatchNumber.description}</Option>
                             );
-                        })
+                        }):''
                     }
                     </Select>
                 </div>

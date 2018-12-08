@@ -1,15 +1,26 @@
 .thead{
-    background: #f2f2f2;
     color: #6a6a6a;
     text-align: center;
 }
 .thead tr td{
+    background: #1890ff !important;
     height: 35px;
     padding: 5px;
     font-weight: 600;
     font-size: 15px;
     width:10%;
     border: 1px darkgrey solid;
+    border-radius: 4px 0 0 0;
+}
+.thead tr :first-child,{
+    border-top: none;
+    border-left:none;
+    border-radius: 5px 0 0 0 !important;
+}
+.thead tr :last-child,{
+    border-top: none;
+    border-right:none;
+    border-radius: 5px 0 0 0 !important;
 }
 .tbody  td{
     height: 35px;
@@ -21,4 +32,10 @@
 .textAlign{
     border:'none';
     text-align:center;
+}
+.tbody .ant-select-selection{
+    border:none !important;
+}
+.tbody .ant-btn{
+    border-color:#ffffff;
 }

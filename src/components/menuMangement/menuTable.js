@@ -179,19 +179,19 @@ class MenuTable extends React.Component{
                 cell: EditableCell,
             },
         };
-        const table_column =this. columns.map((col) => {
+        const table_column=this.columns.map((col) =>{
             if (!col.editable) {
               return col;
             }
             return {
               ...col,
               onCell: record => ({
-                inputType: col.dataIndex === 'parentId' ? 'select' : 'text',
-                record : record,
-                editable: col.editable,
-                dataIndex: col.dataIndex,
-                title: col.title,
-                editing: this.isEditing(record),
+                inputType:col.dataIndex === 'parentId' ? 'select' : 'text',
+                record:record,
+                editable:col.editable,
+                dataIndex:col.dataIndex,
+                title:col.title,
+                editing:this.isEditing(record),
                 fathermenu:this.props.fatherMenu
               }),
             };

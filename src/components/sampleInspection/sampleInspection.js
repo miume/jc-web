@@ -8,134 +8,77 @@ import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
 import Delete from './delete'
 import DeleteByIds from '../BlockQuote/deleteByIds';
-
-const data = [{
-    index : '1',
-    id : '1',
-    key: '1',
-    deliverTime:'2018年6月10日',
-    deliver:'张小刚',
-    deliveryFactory:'原料工厂',
-    serialNumber:'ECT/1231245',
-    testItem:'TD',
-    urgentComment:'加急',
-    type:'样品送检',
-    status:'待接受',
-    handleComment:'无',
-},{
-    index : '2',
-    id : '2',
-    key: '2',
-    deliverTime:'2018年6月10日',
-    deliver:'张小刚',
-    deliveryFactory:'原料工厂',
-    serialNumber:'ECT/1231245',
-    testItem:'TD',
-    urgentComment:'加急',
-    type:'样品送检',
-    status:'待接受',
-    handleComment:'无',
-},{
-    index : '3',
-    id : '3',
-    key: '3',
-    deliverTime:'2018年6月10日',
-    deliver:'张小刚',
-    deliveryFactory:'原料工厂',
-    serialNumber:'ECT/1231245',
-    testItem:'TD',
-    urgentComment:'加急',
-    type:'样品送检',
-    status:'待接受',
-    handleComment:'无',
-},{
-    index : '4',
-    id : '4',
-    key: '4',
-    deliverTime:'2018年6月10日',
-    deliver:'张小刚',
-    deliveryFactory:'原料工厂',
-    serialNumber:'ECT/1231245',
-    testItem:'TD',
-    urgentComment:'加急',
-    type:'样品送检',
-    status:'待接受',
-    handleComment:'无',
-},{
-    index : '5',
-    id : '5',
-    key: '5',
-    deliverTime:'2018年6月10日',
-    deliver:'张小刚',
-    deliveryFactory:'原料工厂',
-    serialNumber:'ECT/1231245',
-    testItem:'TD',
-    urgentComment:'加急',
-    type:'样品送检',
-    status:'待接受',
-    handleComment:'无',
-},]
+import axios from 'axios'
 
 
 class SampleInspection extends React.Component{
+    server
+    componentDidMount() {
+        this.fetch();
+      }
+    componentWillUnmount() {
+    this.setState = () => {
+        return ;
+    }
+    }
      columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
-        sorter: (a, b) => a.key - b.key,
+        key: 'commonBatchNumber.id',
+        sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
         align:'center',
         width: '6%',
     },{
-        title: '送样日期',
-        dataIndex: 'deliverTime',
-        key: 'deliverTime',
+        title: '送检时间',
+        dataIndex: 'details.sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'sampleDeliveringDate',
         align:'center',
         width: '10%',
     },{
-        title: '送样人',
-        dataIndex: 'deliver',
-        key: 'deliver',
+        title: '送检人',
+        dataIndex: 'details.sampleDeliveringRecord.deliverer',
+        key: 'deliverer',
         align:'center',
         width: '10%',
     },{
-        title: '送样工厂',
-        dataIndex: 'deliveryFactory',
-        key: 'deliveryFactory',
+        title: '送检工厂',
+        dataIndex: 'details.deliveryFactory.name',
+        key: 'name',
         align:'center',
         width: '10%',
     },{
         title: '批号',
-        dataIndex: 'serialNumber',
-        key: 'serialNumber',
+        dataIndex: 'commonBatchNumber.batchNumber',
+        key: 'batchNumber',
         align:'center',
         width: '10%',
     },{
         title: '检测项目',
-        dataIndex: 'testItem',
-        key: 'testItem',
+        dataIndex: 'details.testItemString',
+        key: 'testItemString',
         align:'center',
         width: '10%',
     },{
         title: '异常备注',
-        dataIndex: 'urgentComment',
-        key: 'urgentComment',
+        dataIndex: 'details.sampleDeliveringRecord.exceptionComment',
+        key: 'memo',
         align:'center',
         width: '10%',
     },{
         title: '类型',
-        dataIndex: 'type',
+        dataIndex: 'commonBatchNumber.dataType',
         key: 'type',
         align:'center',
         width: '10%',
     },{
         title: '接受状态',
-        dataIndex: 'status',
+        dataIndex: 'details.sampleDeliveringRecord.acceptStatus',
         key: 'status',
         align:'center',
         width: '10%',
     },{
-        title: '接受反馈',
-        dataIndex: 'handleComment',
+        title: '拒绝原因',
+        dataIndex: 'details.sampleDeliveringRecord.handleComment',
         key: 'handleComment',
         align:'center',
         width: '10%',
@@ -162,11 +105,13 @@ class SampleInspection extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             selectedRowKeys: [],    //多选框key
             loading: false,
             pagination:[],
         };
+        this.handleTableChange = this.handleTableChange.bind(this);
+        this.fetch = this.fetch.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
@@ -184,6 +129,7 @@ class SampleInspection extends React.Component{
     }
     render(){
         const { selectedRowKeys } = this.state;
+        this.server = localStorage.getItem('remote');
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -192,24 +138,74 @@ class SampleInspection extends React.Component{
             <div>
                 <BlockQuote name="样品送检"></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddModal />
-                    <Delete />
+                    <AddModal />&nbsp;&nbsp;&nbsp;
+                    <DeleteByIds 
+                        selectedRowKeys = {this.state.selectedRowKeys}
+                        cancel={this.cancel}
+                        deleteByIds={this.deleteByIds}
+                    />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入搜索内容'/>
                     </span>
                     <div className='clear' ></div>
-                    <Table columns={this.columns} dataSource={data} rowSelection={rowSelection} size="small"
+                    <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
                     bordered
+                    rowKey={record => record.commonBatchNumber.id}
+                    onChange={this.handleTableChange}
                     pagination={this.pagination}
                     scroll={{ x: 1500}}></Table>
                 </div>
             </div>
         )
     }
+    /**获取所有数据 getAllByPage */
+    handleTableChange = (pagination) => {
+        this.fetch({
+            size: pagination.pageSize,
+            page: pagination.current,
+            orderField: 'id',
+            orderType: 'desc',
+  
+        });
+    };
+    fetch = (params = {}) => {
+        axios({
+            url: `${this.server}/jc/common/sampleDeliveringRecord/pages`,
+            method: 'get',
+            params: params,
+            // type: 'json',
+        }).then((data) => {
+            const res = data.data.data;
+            console.log(data)
+            this.pagination.total=res.total;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
+        })
+    };
     onSelectChange = (selectedRowKeys) => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
+    deleteByIds(){
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
 }
 
 export default SampleInspection

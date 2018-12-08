@@ -12,6 +12,8 @@ import axios from "axios";
 // const FormItem = Form.Item;
 
 class Management extends React.Component{
+    Authorization
+    server
     constructor(props){
         super(props)
         this.state = {
@@ -22,7 +24,6 @@ class Management extends React.Component{
             searchContent:'',
             searchText: '',
         }
-        this.server = localStorage.getItem('remote');
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancle = this.cancle.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -46,73 +47,40 @@ class Management extends React.Component{
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
-            key: 'batchNumberId',
-            sorter: (a, b) => a.batchNumberId - b.batchNumberId,
+            key: 'commonBatchNumber.id',
+            sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
-            width: '10%',
+            width: '8%',
         },{
             title: '流程名称',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'commonBatchNumber.description',
+            key: 'description',
             align:'center',
-            width: '15%',
-            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-                <div className="custom-filter-dropdown">
-                  <Input
-                    ref={ele => this.searchInput = ele}
-                    placeholder="流程名称"
-                    value={selectedKeys[0]}
-                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={this.handleSearch(selectedKeys, confirm)}
-                  />
-                  <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>搜索</Button>
-                  <Button onClick={this.handleReset(clearFilters)}>重置</Button>
-                </div>
-              ),
-              filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-              onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-              onFilterDropdownVisibleChange: (visible) => {
-                if (visible) {
-                  setTimeout(() => {
-                    this.searchInput.focus();
-                  });
-                }
-              },
-              render: (text) => {
-                const { searchText } = this.state;
-                return searchText ? (
-                  <span>
-                    {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-                      fragment.toLowerCase() === searchText.toLowerCase()
-                        ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-                    ))}
-                  </span>
-                ) : text;
-              },
+            width: '13%',
         },{
             title: '创建人',
-            dataIndex: 'personName',
-            key: 'personName',
+            dataIndex: 'createPersonName',
+            key: 'createPersonName',
             align:'center',
             width: '13%',
         },{
             title: '创建时间',
-            dataIndex: 'createTime',
+            dataIndex: 'commonBatchNumber.createTime',
             key: 'createTime',
             align:'center',
             width: '15%',
         },{
-            title: '审核状态',
-            dataIndex: 'status',
+            title: '保存状态',
+            dataIndex: 'commonBatchNumber.status',
             key: 'status',
             align:'center',
-            width: '13%',
+            width: '14%',
             render(text,record){
-                switch(record.status){
-                    case -1 : return "已保存未提交";
+                switch(record.commonBatchNumber.status){
+                    case -1 : return "已保存";
                     case 0 : return "已审核未提交";
                     case 1 : return "审核";
-                    case 2 : return "审核通过";
+                    case 2 : return "已提交";
                     case 3 : return "审核未通过";
                     case 4 : return "合格";
                     case 5 : return "不合格";
@@ -120,18 +88,11 @@ class Management extends React.Component{
                 }
             }
         },{
-            title: '是否紧急',
-            dataIndex: 'isUrgent',
-            key: 'isUrgent',
+            title: '批号',
+            dataIndex: 'commonBatchNumber.batchNumber',
+            key: 'batchNumber',
             align:'center',
             width: '13%',
-            render(text,record){
-                if(record.isUrgent === 0){
-                    return '不紧急'
-                }else {
-                    return "紧急"
-                }
-            }
         },{
             title: '操作',
             dataIndex: 'operate',
@@ -139,14 +100,13 @@ class Management extends React.Component{
             align:'center',
             width: '13%',
             render : (text,record) =>{
-                console.log(record)
                 return (
                     <span>
                         <Detail value={record} />
                         <Divider type="vertical" />
                         <Editor value={record} />
                         <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>
                         </Popconfirm>
                     </span>
@@ -158,12 +118,13 @@ class Management extends React.Component{
 
     }
     handleDelete = (id) => {
+        console.log(this.Authorization)
         axios({
-            url:`${this.server}/jc/commom/batchAuditTask/`+parseInt(id),
+            url:`${this.server}/jc/common/batchAuditTask/${id}`,
             method:'Delete',
-            // headers:{
-            //     'Authorization':Authorization
-            // },
+            headers:{
+                'Authorization':this.Authorization
+            },
         }).then((data)=>{
             console.log(data);
             message.info(data.data.message);
@@ -188,16 +149,15 @@ class Management extends React.Component{
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/common/batchAuditTask/getAllByPage`,
+            url: `${this.server}/jc/common/batchAuditTask/pages`,
             method: 'get',
-            // headers:{
-            //     'Authorization': Authorization
-            // },
+            headers:{
+                'Authorization': this.Authorization
+            },
             params: params,
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
@@ -228,15 +188,15 @@ class Management extends React.Component{
     searchEvent(){
     const ope_name = this.state.searchContent;
     axios({
-        url:`${this.server}/jc/common/batchAuditTask/getAllByPageByFactors`,
+        url:`${this.server}/jc/common/batchAuditTask/Pages`,
         method:'get',
-        // headers:{
-        //     'Authorization':Authorization
-        // },
+        headers:{
+            'Authorization':this.Authorization
+        },
         params:{
             size: this.pagination.pageSize,
             page: this.pagination.current,
-            name:ope_name
+            taskName:ope_name
         },
         type:'json',
     }).then((data)=>{
@@ -260,19 +220,17 @@ class Management extends React.Component{
         const ids = this.state.selectedRowKeys;
         console.log(ids)
         axios({
-            url:`${this.server}/jc/commom/batchAuditTask/deleteByIds`,
+            url:`${this.server}/jc/common/batchAuditTask`,
             method:'delete',
-            // headers:{
-            //     'Authorization':Authorization
-            // },
+            headers:{
+                'Authorization':this.Authorization
+            },
             data:ids,
             type:'json'
         }).then((data)=>{
             message.info(data.data.message);
             this.fetch();
-        }).catch((error)=>{
-            message.info(error.data.message)
-        });
+        })
     };
     cancel() {
         setTimeout(() => {
@@ -293,6 +251,8 @@ class Management extends React.Component{
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     render(){
+        this.Authorization = localStorage.getItem("Authorization")
+        this.server = localStorage.getItem('remote');
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -316,7 +276,7 @@ class Management extends React.Component{
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
                     </span>
-                <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.batchNumberId} size="small" bordered onChange={this.handleTableChange}/>
+                <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
                     </div>
                 </div>
             );
