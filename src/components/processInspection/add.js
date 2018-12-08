@@ -155,7 +155,6 @@ class Add extends React.Component{
             addApplyData.push(data)
         }
         this.state.addApplyData = addApplyData;
-        // if(addData&&) 
     }
     render() {
         return (
