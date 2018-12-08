@@ -178,7 +178,7 @@ class RawMaterialOut extends React.Component{
     /**单条记录删除 */
     handleDelete(id){
         axios({ 
-            url:`${this.props.server}/jc/common/repoOutApply/deleteByBatchNumberId?batchNumberId=${id}`,
+            url:`${this.props.server}/jc/common/repoOutApply/deleteByBatchNumberId/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.Authorization
@@ -193,7 +193,7 @@ class RawMaterialOut extends React.Component{
     /**批量删除 */
     deleteByIds(){
         axios({
-            url:`${this.props.server}/jc/common/repoOutApply/deleteByBatchNumberIds`,
+            url:`${this.props.server}/jc/common/repoOutApply`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.Authorization

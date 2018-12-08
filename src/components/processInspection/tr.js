@@ -56,7 +56,7 @@ class Tr extends React.Component{
             allTestItem : [],         //存取所有检测项目
             allUser : [],             //存取所有用户
             allTestMaterial: [],   //存取所有送检物料,
-            // testItems:[],          //存取检测项目
+            testItems: this.props.value.testItems?this.props.value.testItems:'',          //存取检测项目
             // productLineId:-1,      //存取产品线
             // procedureId:-1 ,       //存取工序ID
             // sampler:-1,            //存取取样人角色id
@@ -179,10 +179,24 @@ class Tr extends React.Component{
     }
     /**下拉面板checkbox的变化 */
     onChange(checkedValues){
-        const {detail} = this.state;
+        const {detail,allTestItem} = this.state;
         detail.testItemIds = checkedValues;
+        var testItems = '';
+        for(var i = 0; i < allTestItem.length; i++){
+            for(var j = 0; j < checkedValues.length; j++){
+                if(checkedValues[j] === allTestItem[i].id ){
+                    testItems += allTestItem[i].name + ','
+                }
+            }
+        }
+        var testItem = testItems.split(',');
+        /**如果检测项目超过两个，则只显示两个检测项目，其他的隐藏 */
+        if(testItem.length>4){
+            testItems = testItem[0]+','+testItem[1]+','+testItem[2]+','+testItem[3]+'...';
+        }
         this.setState({
-            detail:detail
+            detail:detail,
+            testItems:testItems
         })
         // console.log(checkedValues)
     }
@@ -210,9 +224,6 @@ class Tr extends React.Component{
         this.setState({
             detail:detail
         })
-        // this.setState({
-        //     samplePointName:value
-        // })
     }
     /**监控下拉框取样人的变化 */
     sampler(value){
@@ -260,13 +271,14 @@ class Tr extends React.Component{
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         this.props.getData(this.state.detail)
+        const d = this.props.value;
         return (
-            <tr className='tbody' id={this.props.value}>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择产品线' onChange={this.productLineChange}>{this.state.allProductLine}</Select></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择工序' onChange={this.productionProcessChange}>{this.state.allProductionProcess}</Select></td>
-                <td><Input defaultValue='' placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName}/></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择取样人' onChange={this.sampler}>{this.state.allUser}</Select></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择检测人' onChange={this.tester}>{this.state.allUser}</Select></td>
+            <tr className='tbody' id={this.props.id}>
+                <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange} defaultValue={d.productLineId}>{this.state.allProductLine}</Select></td>
+                <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange} defaultValue={d.procedureId}>{this.state.allProductionProcess}</Select></td>
+                <td><Input placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
+                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler}>{this.state.allUser}</Select></td>
+                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择检测人' onChange={this.tester} defaultValue={d.tester}>{this.state.allUser}</Select></td>
                 <td><Popover
                     content={(
                         <div style={{ width: '200px'}} >
@@ -284,13 +296,13 @@ class Tr extends React.Component{
                     height={170}
                     visible={this.state.clicked}
                     onVisibleChange={this.handleClickChange}>
-                    <Button>请选择测试项目</Button>
+                    <Button>{this.state.testItems?this.state.testItems:'请选择检测项目'}</Button>
                     </Popover></td>
                 
-                <td><Input defaultValue='' placeholder='请输入频次' style={{border:'none',textAlign:'center'}} onChange={this.testFrequency}/></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.testMaterialId}>{this.state.allTestMaterial}</Select></td>
-                <td><Input defaultValue='' placeholder='请输入备注' style={{border:'none',textAlign:'center'}} onChange={this.comment}/></td>
-                <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
+                <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center'}} onChange={this.testFrequency} defaultValue={d.testFrequency}/></td>
+                <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.testMaterialId} defaultValue={d.testMaterialId}>{this.state.allTestMaterial}</Select></td>
+                <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center'}} onChange={this.comment} defaultValue={d.comment}/></td>
+                <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span></td>
             </tr>
         );
 

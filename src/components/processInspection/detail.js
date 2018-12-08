@@ -1,51 +1,40 @@
 import React from 'react';
+import axios from 'axios';
 import {Modal,Table} from 'antd';
 import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import SmallButton from '../BlockQuote/smallbutton';
-const approvalProcess = [{
-    id:1,
-    name:'流程1'
-},{
-    id:2,
-    name:'流程2'
-},{
-    id:3,
-    name:'流程3'
-}]
-  const columns1 = [{
+// const approvalProcess = [{
+//     id:1,
+//     name:'流程1'
+// },{
+//     id:2,
+//     name:'流程2'
+// },{
+//     id:3,
+//     name:'流程3'
+// }]
+  const columns = [{
     title: '产品线',
-    dataIndex: 'productLine.id' ,
-    key: 'productLine.id',
+    dataIndex: 'productLine.name' ,
+    key: 'productLine.name',
     width: '9%',
-    render:productLine=>{return productLine.name},
     align:'center',
   },{
     title: '工序',
-    dataIndex: 'procedureName' ,
-    key: 'procedureName',
+    dataIndex: 'productionProcess.name' ,
+    key: 'productionProcess.name',
     width: '9%',
     align:'center',
   },{
-    title: '样品检测点',
-    dataIndex: 'samplePoint' ,
-    key: 'samplePoint',
+    title: '取样点',
+    dataIndex: 'procedureTestRecord.samplePointName' ,
+    key: 'procedureTestRecord.samplePointName',
     width: '9%',
     align:'center',
   },{
-    title: '测试项目',
-    dataIndex: 'testItem' ,
-    key: 'testItem',
-    width: '9%',
-    align:'center',
-  },{
-    title: '测试频率',
-    dataIndex: 'testFrequency' ,
-    key: 'testFrequency',
-    width: '9%',
-    align:'center',
-  },{
-    title: '采样人',
+    title: '取样人',
     dataIndex: 'sampler' ,
     key: 'sampler',
     width: '9%',
@@ -57,15 +46,27 @@ const approvalProcess = [{
     width: '9%',
     align:'center',
   },{
-    title: '状态',
-    dataIndex: 'status' ,
-    key: 'status',
+    title: '检测项目',
+    dataIndex: 'procedureTestRecord.testItems' ,
+    key: 'procedureTestRecord.testItems',
+    width: '9%',
+    align:'center',
+  },{
+    title: '频次',
+    dataIndex: 'procedureTestRecord.testFrequency' ,
+    key: 'procedureTestRecord.testFrequency',
+    width: '9%',
+    align:'center',
+  },{
+    title: '受检物料',
+    dataIndex: 'testMaterialName' ,
+    key: 'testMaterialName',
     width: '9%',
     align:'center',
   },{
     title: '备注',
-    dataIndex: 'comment' ,
-    key: 'comment',
+    dataIndex: 'procedureTestRecord.comment' ,
+    key: 'procedureTestRecord.comment',
     width: '9%',
     align:'center',
   }]
@@ -76,29 +77,53 @@ class Detail extends React.Component{
         super(props);
         this.state = {
             visible : false,
-            clickId : 'all'
+            clickId : 'all',
+            detailData:[],
+            data:[]
         }
         this.handleDetail = this.handleDetail.bind(this);
         this.handleOk = this.handleOk.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.click = this.click.bind(this);
+        // this.getDetailData = this.getDetailData.bind(this);
     }
     /**处理新增一条记录 */
     handleDetail() {
-        console.log(this.props.value)
+        this.getDetailData();
         this.setState({
-          visible: true
+          visible: true,
         });
       }
+    /**通过id查询详情 */
+    getDetailData(){
+       axios.get(`${this.props.server}/jc/common/procedureTestRecord/${this.props.value}`,{
+           headers:{
+               'Authorization':this.props.Authorization
+           }
+       }).then((data)=>{
+           const details = data.data.data.details;
+           this.setState({
+               detailData:details,
+               data:details
+           })
+       })
+    }
     handleOk() {
         this.setState({
-        visible: false
+            visible: false
         });
     }
+    /**确定取消 */
+    cancel() {
+      this.setState({
+          visible: false
+      });
+  }
     handleCancel() {
         this.setState({
-        visible: false
+            visible: false
         });
     }
     /**下拉框变化 */
@@ -108,38 +133,41 @@ class Detail extends React.Component{
     /**点击button进行删选 根据产品线进行删选数据 */
     click(e){
       const id = e.target.id;
-      console.log('this.state.clickId:'+this.state.clickId+'  id:'+id)
+      var {detailData,data} = this.state;
       if(id!==this.state.clickId){
         document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
         e.target.style.backgroundColor='#00b4f0';
+        detailData = data.filter(d => parseInt(d.productionProcess.id) === parseInt(id));
+        console.log(detailData)
+      }
+      if(id === 'all'){
+        detailData = data;
       }
       this.setState({
-        clickId:id
+        clickId:id,
+        detailData:detailData
       })
     }
-    componentDidMount(){
-        
-    }
-
     render() {
         return (
             <span>
                 <span className='blue' onClick={this.handleDetail} >详情</span>
-                <Modal title="详情" visible={this.state.visible}
-                    onCancel={this.handleCancel}  width='1000px'
+                <Modal title="详情" visible={this.state.visible} closable={false}
+                    onCancel={this.handleCancel}  width='1000px' maskClosable={false}
                     footer={[
-                      <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
+                      <CancleButton key='cancle' handleCancel={this.cancel}/>,
+                      <NewButton key="submit" handleClick={this.handleOk} name='迭代' className='fa fa-level-up' />
                     ]} 
                   >
                     <div style={{height:'400px'}}>
                          <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>
                            {
-                             approvalProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />)
+                             this.props.allProductionProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />)
                            }
                          </div>
                          <WhiteSpace />
-                         <Table columns={columns1} size='small' pagination={false} bordered></Table>
+                         <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} bordered></Table>
                     </div>
                 </Modal>
             </span>
