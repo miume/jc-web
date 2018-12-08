@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Modal, Form, Input,message,Select } from 'antd';
 import axios from 'axios';
-import AddButton from '../BlockQuote/newButton'
 import CancleButton from "../BlockQuote/cancleButton";
+import NewButton from '../BlockQuote/newButton'
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -134,7 +134,7 @@ class AddModal extends React.Component {
         this.server = localStorage.getItem("remote")
         return (
             <span>
-                <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
+                <NewButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

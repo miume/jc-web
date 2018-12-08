@@ -22,7 +22,7 @@ class Submit extends React.Component{
                 'Authorization':this.props.Authorization
             }
         }).then((data)=>{
-            console.log(data.data)
+            //console.log(data.data)
             this.setState({
                 process:data.data?data.data.data:[]
             })

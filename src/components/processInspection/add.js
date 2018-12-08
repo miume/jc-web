@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button,Modal,} from 'antd';
+import {Button,Modal,message} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
@@ -7,6 +7,7 @@ import './editor.css';
 import Tr from './tr';
 import Submit from '../BlockQuote/submit';
 import SaveButton from '../BlockQuote/saveButton';
+import axios from 'axios';
 class Add extends React.Component{
     constructor(props){
         super(props);
@@ -16,7 +17,8 @@ class Add extends React.Component{
             count: 1,
             data : [1],
             urgent:0,
-            process:-1
+            process:-1,
+            addApplyData:[]
         }
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -98,6 +100,17 @@ class Add extends React.Component{
         this.applyOut(-1);
     }
     applyOut(status){
+        const details = this.state.addApplyData;
+        for(var i = 0; i < details.length; i++){
+            delete details[i].id;
+            var e = details[i].procedureTestRecord;
+            for(var j in e){
+                if( e[j]==='' || e[j] === -1 || e[j] === []){
+                    message.info('新增数据不能为空，请填写完整！');
+                    return
+                }
+            }
+        }
         this.setState({
             visible:false,
             visible1:false
@@ -108,24 +121,48 @@ class Add extends React.Component{
             status:status,
             isUrgent:this.state.urgent
         }
-        const details = [];
-        const {data} = this.state;
-        data.forEach(e=>{
-            console.log(e)
-            var ele = document.getElementById(e)
-            console.log(ele)
+        const taskId = this.state.process === -1?'':this.state.process;
+        axios.post(`${this.props.server}/jc/common/procedureTestRecord/add`,{
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        },{
+            headers:{
+                'Authorization':this.props.Authorization
+            },
+            params:{
+                taskId:taskId
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.fetch();
+            
+        }).catch(()=>{
+            message.info('操作失败，请联系管理员！')
         })
+        console.log(details)
     }
     /**获取每个Tr的值 */
     getData(data){
-        console.log(data)
+        const {addApplyData} = this.state;
+        if(addApplyData.length === 0) { console.log(1); addApplyData.push(data)};
+        var flag = 0;
+        for(var i = 0; i < addApplyData.length; i++){
+            if(addApplyData[i].id === data.id){
+                addApplyData[i] = data;
+                flag = 1;
+            }
+        }
+        if(!flag){
+            addApplyData.push(data)
+        }
+        this.state.addApplyData = addApplyData;
     }
     render() {
         return (
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
                 <Modal title="新增" visible={this.state.visible}
-                    onCancel={this.handleCancel} width='1200px'
+                    onCancel={this.handleCancel} width='1300px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,

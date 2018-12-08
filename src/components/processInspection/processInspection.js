@@ -261,7 +261,7 @@ class ProcessInspection extends React.Component{
             <div>
                 <BlockQuote name='制程检测' menu='质量与流程' menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
-                    <Add server={this.server} Authorization={this.Authorization} />&nbsp;&nbsp;&nbsp;
+                    <Add server={this.server} Authorization={this.Authorization} fetch={this.fetch} />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
