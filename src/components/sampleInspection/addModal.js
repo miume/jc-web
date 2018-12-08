@@ -91,7 +91,7 @@ const CollectionCreateForm = Form.create()(
                     title="新增"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
-                        <AddButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
+                        <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}
                 >
                     <Form horizontal='true'>
