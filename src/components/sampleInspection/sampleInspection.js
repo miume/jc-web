@@ -138,7 +138,7 @@ class SampleInspection extends React.Component{
             <div>
                 <BlockQuote name="样品送检"></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddModal />
+                    <AddModal />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds 
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
@@ -170,7 +170,7 @@ class SampleInspection extends React.Component{
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.server}/jc/common/sampleDeliveringRecord/getAllByNameByPage`,
+            url: `${this.server}/jc/common/sampleDeliveringRecord/pages`,
             method: 'get',
             params: params,
             // type: 'json',

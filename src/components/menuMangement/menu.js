@@ -101,7 +101,7 @@ class Menu extends React.Component{
             <AddModal
                 fetch={this.fetch}
                 fatherMenu = {this.state.fatherMenu}
-            />
+            />&nbsp;&nbsp;&nbsp;
             <DeleteByIds
                 selectedRowKeys={this.state.selectedRowKeys}
                 start={this.start}

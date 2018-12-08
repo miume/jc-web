@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal, Form, Input,message,Select } from 'antd';
 import axios from 'axios';
+import CancleButton from "../BlockQuote/cancleButton";
 import NewButton from '../BlockQuote/newButton'
 
 const Option = Select.Option;
@@ -18,8 +19,8 @@ const CollectionCreateForm = Form.create()(
                     closable={false}
                     title="新增"
                     footer={[
-                        <Button key="submit" type="primary" size="large" onClick={() => onCreate()}>确 定</Button>,
-                        <Button key="back" type="ghost" size="large" onClick={() => onCancel()}>返 回</Button>
+                        <CancleButton key='back' handleCancel={onCancel}/>,
+                        <AddButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}>
                     <Form horizontal='true'>
                         <FormItem label="菜单名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
@@ -133,7 +134,6 @@ class AddModal extends React.Component {
         this.server = localStorage.getItem("remote")
         return (
             <span>
-                {/* < NewButton handleAdd={this.showModal}/> */}
                 <NewButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
