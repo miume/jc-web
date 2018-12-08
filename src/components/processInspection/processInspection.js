@@ -8,34 +8,34 @@ import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
 import SearchCell from '../BlockQuote/search';
-const data = [];
-for(var i = 1; i<=15;i++){
-    data.push({
-        id : `${i}`,
-        operate:1,
-        batchNumber:'SDERER',
-        creatPerson:{
-            id:1,
-            userName:'张三'
-        },
-        creatTime:'2018-10-12 00:11:11',
-        updatePerson:{
-          id:1,
-          userName:'张三'
-      },
-        updateTime:'2018-10-18 00:11:11',
-        type:1,
-        state:1,
-        isUrgent:0
-        })
-  }
+// const data = [];
+// for(var i = 1; i<=15;i++){
+//     data.push({
+//         id : `${i}`,
+//         operate:1,
+//         batchNumber:'SDERER',
+//         creatPerson:{
+//             id:1,
+//             userName:'张三'
+//         },
+//         creatTime:'2018-10-12 00:11:11',
+//         updatePerson:{
+//           id:1,
+//           userName:'张三'
+//       },
+//         updateTime:'2018-10-18 00:11:11',
+//         type:1,
+//         state:1,
+//         isUrgent:0
+//         })
+//   }
 
 class ProcessInspection extends React.Component{
     server
     Authorization
     componentDidMount(){
         this.fetch();
-        
+        this.getAllProductionProcess();
     }
     componentWillUnmount(){
         this.setState = ()=>{
@@ -47,7 +47,9 @@ class ProcessInspection extends React.Component{
         this.state = {
             dataSource : [],
             selectedRowKeys : [],     //存取所选中checkbox的ids
-            searchContent:''
+            searchContent:'',
+            allProductionProcess:[],
+            detailData:[]
         }
         this.fetch = this.fetch.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -57,6 +59,7 @@ class ProcessInspection extends React.Component{
         this.onSelectChange = this.onSelectChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
         this.pagination = {
           total: this.state.dataSource.length,
           showTotal(total) {
@@ -92,21 +95,7 @@ class ProcessInspection extends React.Component{
           key: 'commonBatchNumber.createTime',
           width: '20%',
           align:'center',
-        }, 
-        // {
-        //   title: '修改人',
-        //   dataIndex: 'updatePerson',
-        //   key: 'updatePerson',
-        //   width: '8%',
-        //   align:'center',
-        // }, {
-        //   title: '修改时间',
-        //   dataIndex: 'updateTime',
-        //   key: 'updateTime',
-        //   width: '14%',
-        //   align:'center',
-        // }, 
-        {
+        },{
           title: '类型',
           dataIndex: 'commonBatchNumber.dataType',
           key: 'commonBatchNumber.dataType',
@@ -146,9 +135,9 @@ class ProcessInspection extends React.Component{
           render: (text) => {
               return (
                   <span>
-                      <Detail value={text} />
+                      <Detail value={text} allProductionProcess={this.state.allProductionProcess} server={this.server} Authorization={this.Authorization} />
                       <Divider type="vertical" />
-                      <Editor value={text} />
+                      <Editor value={text} server={this.server} Authorization={this.Authorization}/>
                       <Divider type="vertical" />
                       <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
                           <span className='blue'>删除</span>
@@ -168,7 +157,7 @@ class ProcessInspection extends React.Component{
     }
     /**分页查询 getAllByPage */
     fetch(params){
-        axios.get(`${this.server}/jc/common/procedureTestRecord/getAllByPage`,{
+        axios.get(`${this.server}/jc/common/procedureTestRecord/pages`,{
             headers:{
                'Authorization':this.Authorization
             },
@@ -183,7 +172,6 @@ class ProcessInspection extends React.Component{
             this.setState({
                 dataSource:res.list
             })
-            // console.log(res.list)
         })
     }
     /**批量删除弹出框确认函数 */
@@ -244,11 +232,50 @@ class ProcessInspection extends React.Component{
   }
   /**绑定搜索事件 */
   searchEvent(){
-    console.log(this.state.searchContent)
+    //console.log(this.state.searchContent)
       this.fetch({
         personName:this.state.searchContent
       });
   }
+  /**获取所有产品工序 */
+  getAllProductionProcess(){
+    axios({
+      url:`${this.server}/jc/common/productionProcess/getAll`,
+      method:'get',
+      headers:{
+        'Authorization':this.Authorization
+      }
+    }).then(data=>{
+      const res = data.data.data;
+      this.setState({
+        allProductionProcess : res
+    })
+  })  
+  }
+  /**通过id查询详情 */
+//   getDetailData(value){
+//     axios.get(`${this.server}/jc/common/procedureTestRecord/${value}`,{
+//         headers:{
+//             'Authorization':this.Authorization
+//         }
+//     }).then((data)=>{
+      
+//         const details = data.data.data.details;
+//         this.setState({
+//             detailData:details,
+//         })
+//     })
+//     let self = this;   
+//     let result
+//     var interval = setInterval(function() {
+//       console.log(self.state.detailData)
+//       if(self.state.detailData !== undefined) {
+//         result = self.state.detailData
+//         console.log(result)
+//         clearInterval(interval);
+//       }
+//     }, 300)  
+// }
     render() {
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');

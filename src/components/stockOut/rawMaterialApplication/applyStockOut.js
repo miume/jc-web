@@ -179,10 +179,6 @@ class ApplyStockOut extends React.Component{
         })
     }
     applyOut(status){
-        this.setState({
-            visible:false,
-            visible1:false
-        })
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             createPersonId:createPersonId,
@@ -206,7 +202,7 @@ class ApplyStockOut extends React.Component{
         }
         const taskId = parseInt(this.state.process) !== -1?parseInt(this.state.process) :''
         //console.log(taskId)
-        axios.post(`${this.props.server}/jc/common/repoOutApply/outApply`,{
+        axios.post(`${this.props.server}/jc/common/repoOutApply`,{
             commonBatchNumber:commonBatchNumber,
             details:details
         },{
@@ -220,6 +216,10 @@ class ApplyStockOut extends React.Component{
             message.info(data.data.message)
         }).catch(()=>{
             message.info('送审失败，请联系管理员！')
+        })
+        this.setState({
+            visible:false,
+            visible1:false
         })
     }
     render(){

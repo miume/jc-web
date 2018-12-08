@@ -57,7 +57,6 @@ class Add extends React.Component{
             count: count+1,
             data: [...data, count+1],
         })
-        console.log(data)
     }
     /**删除一条数据 */
     deleteRow(value){
@@ -122,7 +121,7 @@ class Add extends React.Component{
             isUrgent:this.state.urgent
         }
         const taskId = this.state.process === -1?'':this.state.process;
-        axios.post(`${this.props.server}/jc/common/procedureTestRecord/add`,{
+        axios.post(`${this.props.server}/jc/common/procedureTestRecord`,{
             commonBatchNumber:commonBatchNumber,
             details:details
         },{
@@ -139,12 +138,11 @@ class Add extends React.Component{
         }).catch(()=>{
             message.info('操作失败，请联系管理员！')
         })
-        console.log(details)
     }
     /**获取每个Tr的值 */
     getData(data){
         const {addApplyData} = this.state;
-        if(addApplyData.length === 0) { console.log(1); addApplyData.push(data)};
+        if(addApplyData.length === 0) { addApplyData.push(data)};
         var flag = 0;
         for(var i = 0; i < addApplyData.length; i++){
             if(addApplyData[i].id === data.id){
@@ -161,8 +159,8 @@ class Add extends React.Component{
         return (
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
-                <Modal title="新增" visible={this.state.visible}
-                    onCancel={this.handleCancel} width='1300px'
+                <Modal title="新增" visible={this.state.visible} closable={false}
+                    onCancel={this.handleCancel} width='1300px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
@@ -185,7 +183,7 @@ class Add extends React.Component{
                              </thead>
                              <tbody>
                              {
-                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()} getData={this.getData}></Tr> })
+                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} id={m.toString()} value='' getData={this.getData}></Tr> })
                              }
                              </tbody>
                          </table>

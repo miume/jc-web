@@ -1,174 +1,64 @@
 import React from 'react';
-import {Modal,Button} from 'antd';
+import {Modal,Button,message} from 'antd';
+import axios from 'axios';
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import NewButton from '../BlockQuote/newButton';
+import SaveButton from '../BlockQuote/saveButton';
 import CancleButton from '../BlockQuote/cancleButton';
+import Submit from '../BlockQuote/submit';
 import './editor.css';
 import Tr from './tr';
-// const children = approvalProcess.map(p => 
-//     <Option key={p.id}>{p.name}</Option>
-// )
-// const columns = [{
-//     title: '批号',
-//     dataIndex: 'batchNumber' ,
-//     key: 'batchNumber',
-//     width: '9%',
-//     align:'center',
-//   }, {
-//     title: '创建人',
-//     dataIndex: 'creatPerson',
-//     key:  'creatPerson.id',
-//     render:creatPerson => `${creatPerson.userName}`,
-//     width: '8%',
-//     align:'center',
-//   }, {
-//     title: '创建时间',
-//     dataIndex: 'creatTime',
-//     key: 'creatTime',
-//     width: '19%',
-//     align:'center',
-//   }, {
-//     title: '修改人',
-//     dataIndex: 'updatePerson',
-//     key: 'updatePerson.id',
-//     render:updatePerson => `${updatePerson.userName}`,
-//     width: '9%',
-//     align:'center',
-//   }, {
-//     title: '修改时间',
-//     dataIndex: 'updateTime',
-//     key: 'updateTime',
-//     width: '19%',
-//     align:'center',
-//   }, {
-//     title: '类型',
-//     dataIndex: 'type',
-//     key: 'type',
-//     render: type => {
-//         switch(`${type}`) {
-//           case '1': return '制成检测数据';
-//           case '2': return '样品送检数据';
-//           case '3': return '样品报告单数据';
-//           default: return '';
-//         }
-//     },
-//     width: '12%',
-//     align:'center',
-//   }, {
-//     title: '状态',
-//     dataIndex: 'state',
-//     key:'state',
-//     render: state => {
-//       switch(`${state}`) {
-//         case '-1': return '已保存未提交';
-//         case '0': return '已提交未未审核';
-//         case '1': return '审核中';
-//         case '2': return '审核通过';
-//         case '3': return '审核未通过';
-//         case '4': return '合格';
-//         case '5': return '不合格';
-//       }
-//     },
-//     width: '10%',
-//     align:'center',
-//   }, {
-//     title: '紧急',
-//     dataIndex: 'isUrgent',
-//     key: 'isUrgent',
-//     render: isUrgent =>  `${isUrgent}`?'正常':'紧急',
-//     width: '7%',
-//     align:'center',
-//   }]
-//   const columns1 = [{
-//     title: '产品线',
-//     dataIndex: 'productLine' ,
-//     key: 'productLine',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '工序',
-//     dataIndex: 'procedureName' ,
-//     key: 'procedureName',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '样品检测点',
-//     dataIndex: 'samplePoint' ,
-//     key: 'samplePoint',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '测试项目',
-//     dataIndex: 'testItem' ,
-//     key: 'testItem',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '测试频率',
-//     dataIndex: 'testFrequency' ,
-//     key: 'testFrequency',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '采样人',
-//     dataIndex: 'sampler' ,
-//     key: 'sampler',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '检测人',
-//     dataIndex: 'tester' ,
-//     key: 'tester',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '状态',
-//     dataIndex: 'status' ,
-//     key: 'status',
-//     width: '9%',
-//     align:'center',
-//   },{
-//     title: '备注',
-//     dataIndex: 'comment' ,
-//     key: 'comment',
-//     width: '9%',
-//     align:'center',
-//   }]
-//   const detailData = [{
-//       id: 1,
-//       productLine:{id:1,name:'产品线'},
-//       procedureName:{id:1,name:'工序'},
-//       samplePoint:{id:1,name:'样品检测点'},
-//       testItem:{id:1,name:'测试项目'},
-//       testFrequency:{id:1,name:'测试频率'},
-//       sampler:{id:1,name:'张三'},
-//       tester:{id:1,name:'傻子'},
-//       status:0,
-//       comment:'xxxxx'
-//   }]
 class Editor extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             visible : false,
-            count : 1,
+            visible1:false,
+            count : 0,
             dataSource:[],
-            data:[1]
+            data:[1],
+            addApplyData:[],
+            editorData:[],
         }
         this.handleEditor = this.handleEditor.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.addData = this.addData.bind(this);
         this.deleteRow = this.deleteRow.bind(this);
+        this.getData = this.getData.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        this.urgentChange = this.urgentChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.applyOut = this.applyOut.bind(this);
+        this.handleCancelApply = this.handleCancelApply.bind(this);
+        this.handleOkApply = this.handleOkApply.bind(this);
     }
     /**处理新增一条记录 */
     handleEditor() {
-        console.log(this.props.value)
+        this.getDetailData();
         this.setState({
-          visible: true
+          visible: true,
         });
       }
+    /**通过id查询数据 */
+    getDetailData(){
+        axios.get(`${this.props.server}/jc/common/procedureTestRecord/${this.props.value}`,{
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then((data)=>{
+            const details = data.data.data.details;
+            const count = details.length;
+            for(var i = 0; i < count; i++){
+                details[i].id = i+1;
+            }
+            this.setState({
+                editorData:details,
+                count:count
+            })
+            console.log(details)
+        })
+     }
     handleOk() {
         this.setState({
         visible: false
@@ -179,39 +69,128 @@ class Editor extends React.Component{
         visible: false
         });
     }
-    /**下拉框变化 */
-    handleChange(value){
-        console.log(`selected:${value}`)
-    }
     /**编辑中新增按钮 */
     addData() {
-        const {count,data} = this.state;
+        const {count,editorData} = this.state;
+        editorData.push({
+            id:count+1,
+            procedureTestRecord:{}
+        })
         this.setState({
             count: count+1,
-            data: [...data, count+1],
+            editorData: editorData
         })
-        console.log(this.state)
+        // console.log(editorData)
     }
     /**删除一条 */
     deleteRow(value){
-        // const value = event.target.value;
-        // console.log(value)
-        const {count,data} = this.state;
+        const {count,editorData} = this.state;
         this.setState({
             count: count-1,
-            data: data.filter(d => d.toString()!==value)
+            editorData: editorData.filter(d => d.id.toString()!== value)
         })
         // console.log(this.state.data)
+    }
+    /**获取每个Tr的值 */
+    getData(data){
+        const {addApplyData} = this.state;
+        if(addApplyData.length === 0) { addApplyData.push(data)};
+        var flag = 0;
+        for(var i = 0; i < addApplyData.length; i++){
+            if(addApplyData[i].id === data.id){
+                addApplyData[i] = data;
+                flag = 1;
+            }
+        }
+        if(!flag){
+            addApplyData.push(data)
+        }
+        this.state.addApplyData = addApplyData;
+    }
+    /**监控送审界面的visible */
+    handleVisibleChange(visible){
+        this.setState({
+            visible1:visible
+        })
+    }
+     /**监控是否紧急 */
+     urgentChange(checked){
+        this.setState({
+            urgent:checked?0:-1
+        })
+    }
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
+    /**点击取消送审 */
+    handleCancelApply(){
+        this.setState({
+            visible1:false
+        })
+    }
+    /**点击送审 */
+    handleOkApply(){
+        this.applyOut(0);
+    }
+    /**点击保存送审 */
+    handleSave(){
+        this.applyOut(-1);
+    }
+    applyOut(status){
+        const details = this.state.addApplyData;
+        for(var i = 0; i < details.length; i++){
+            delete details[i].id;
+            var e = details[i].procedureTestRecord;
+            for(var j in e){
+                if( e[j]==='' || e[j] === -1 || e[j] === []){
+                    message.info('新增数据不能为空，请填写完整！');
+                    return
+                }
+            }
+        }
+        this.setState({
+            visible:false,
+            visible1:false
+        })
+        const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const commonBatchNumber = {
+            createPersonId:createPersonId,
+            status:status,
+            isUrgent:this.state.urgent
+        }
+        const taskId = this.state.process === -1?'':this.state.process;
+        // axios.post(`${this.props.server}/jc/common/procedureTestRecord`,{
+        //     commonBatchNumber:commonBatchNumber,
+        //     details:details
+        // },{
+        //     headers:{
+        //         'Authorization':this.props.Authorization
+        //     },
+        //     params:{
+        //         taskId:taskId
+        //     }
+        // }).then((data)=>{
+        //     message.info(data.data.message);
+        //     this.props.fetch();
+            
+        // }).catch(()=>{
+        //     message.info('操作失败，请联系管理员！')
+        // })
+        console.log(details)
     }
     render() {
         return (
             <span>
                 <span className='blue' onClick={this.handleEditor} >编辑</span>
-                <Modal title="详情" visible={this.state.visible}
-                    onCancel={this.handleCancel}  width='1100px'
+                <Modal title="详情" visible={this.state.visible} closable={false}
+                    onCancel={this.handleCancel}  width='1100px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
+                        <SaveButton key='save' handleSave={this.handleSave} />,
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/> ,
                     ]}>
                     <div style={{height:'400px'}}>
                          {/* <div style={{marginBottom:'15px'}}>
@@ -234,12 +213,18 @@ class Editor extends React.Component{
                                      <td>备注</td><td>操作</td>
                                  </tr>
                              </thead>
-                             <tbody>
                              {
-                               this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                                this.state.editorData?
+                                 <tbody>
+                                    {
+                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} ></Tr> })
+                                    }
+                             </tbody>:
+                             <tbody></tbody>
                              }
-                             </tbody>
+                             
                          </table>
+
                          <WhiteSpace />
                          <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>
