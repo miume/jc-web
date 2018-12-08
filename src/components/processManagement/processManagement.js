@@ -56,48 +56,35 @@ class Management extends React.Component{
             dataIndex: 'commonBatchNumber.description',
             key: 'description',
             align:'center',
-            width: '10%',
+            width: '13%',
         },{
             title: '创建人',
             dataIndex: 'createPersonName',
             key: 'createPersonName',
             align:'center',
-            width: '10%',
+            width: '13%',
         },{
             title: '创建时间',
             dataIndex: 'commonBatchNumber.createTime',
             key: 'createTime',
             align:'center',
-            width: '13%',
+            width: '15%',
         },{
-            title: '审核状态',
+            title: '保存状态',
             dataIndex: 'commonBatchNumber.status',
             key: 'status',
             align:'center',
-            width: '13%',
+            width: '14%',
             render(text,record){
                 switch(record.commonBatchNumber.status){
-                    case -1 : return "已保存未提交";
+                    case -1 : return "已保存";
                     case 0 : return "已审核未提交";
                     case 1 : return "审核";
-                    case 2 : return "审核通过";
+                    case 2 : return "已提交";
                     case 3 : return "审核未通过";
                     case 4 : return "合格";
                     case 5 : return "不合格";
                     default : return '';
-                }
-            }
-        },{
-            title: '是否紧急',
-            dataIndex: 'commonBatchNumber.isUrgent',
-            key: 'isUrgent',
-            align:'center',
-            width: '10%',
-            render(text,record){
-                if(record.isUrgent === 0){
-                    return '不紧急'
-                }else {
-                    return "紧急"
                 }
             }
         },{
@@ -162,7 +149,7 @@ class Management extends React.Component{
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/common/batchAuditTask/getAllByNameLikeByPage`,
+            url: `${this.server}/jc/common/batchAuditTask/pages`,
             method: 'get',
             headers:{
                 'Authorization': this.Authorization
@@ -201,7 +188,7 @@ class Management extends React.Component{
     searchEvent(){
     const ope_name = this.state.searchContent;
     axios({
-        url:`${this.server}/jc/common/batchAuditTask/getAllByNameLikeByPage`,
+        url:`${this.server}/jc/common/batchAuditTask/Pages`,
         method:'get',
         headers:{
             'Authorization':this.Authorization
@@ -233,7 +220,7 @@ class Management extends React.Component{
         const ids = this.state.selectedRowKeys;
         console.log(ids)
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/deleteByBatchNumberIds`,
+            url:`${this.server}/jc/common/batchAuditTask`,
             method:'delete',
             headers:{
                 'Authorization':this.Authorization

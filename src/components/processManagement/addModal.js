@@ -3,6 +3,9 @@ import { Button, Modal, Form, Input,message,Select } from 'antd';
 import axios from 'axios';
 import Tr from './tr';
 import WhiteSpace from '../BlockQuote/whiteSpace';
+import AddButton from '../BlockQuote/newButton'
+import CancleButton from "../BlockQuote/cancleButton";
+import SaveButton from "../BlockQuote/saveButton";
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -39,16 +42,18 @@ const CollectionCreateForm = Form.create()(
             })
         }
         render() {
-            const { visible, onCancel, onCreate, form } = this.props;
+            const { visible, onCancel, onCreate, form,onSubmit } = this.props;
             const { getFieldDecorator } = form;
             return (
                 <Modal
                     visible={visible}
+                    closable={false}
                     title="新增"
-                    okText="确定"
-                    cancelText="取消"
-                    onCancel={onCancel}
-                    onOk={onCreate}
+                    footer={[
+                        <CancleButton key='back' handleCancel={onCancel}/>,
+                        <SaveButton key="submit" handleSave={onCreate} style='button' className='fa fa-check' />,
+                        <AddButton key="submit" handleClick={onSubmit} name='提交' style='button' className='fa fa-check' />
+                      ]}
                 >
                     <Form horizontal='true'>
                         <FormItem label="流程名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
@@ -58,19 +63,19 @@ const CollectionCreateForm = Form.create()(
                                 <Input placeholder='请输入菜单名称'/>
                             )}
                         </FormItem>
-                        <FormItem label="是否紧急" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        {/* <FormItem label="是否紧急" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('isUrgent', {
-                                rules: [{ required: true, message: '请选择紧急类型' }],
+                                // rules: [{ required: true, message: '请选择紧急类型' }],
                             })(
                                 <Select placeholder="请选择紧急类型">
-                                    <Option value='-1'>不紧急</Option>
-                                    <Option value='0'>紧急</Option>
+                                    <Option value='0'>不紧急</Option>
+                                    <Option value='1'>紧急</Option>
                                 </Select>
                             )}
-                        </FormItem>
-                        <FormItem label="审核状态" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        </FormItem> */}
+                        {/* <FormItem label="审核状态" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('status', {
-                                rules: [{ required: true, message: '请选择审核状态' }],
+                                // rules: [{ required: true, message: '请选择审核状态' }],
                             })(
                                 <Select placeholder="请选择审核状态">
                                     <Option value='-1'>已保存未提交</Option>
@@ -82,7 +87,7 @@ const CollectionCreateForm = Form.create()(
                                     <Option value='5'>不合格</Option>
                                 </Select>
                             )}
-                        </FormItem>
+                        </FormItem> */}
                         <table style={{width:'100%'}}>
                             <thead className='thead'>
                                 <tr>
@@ -149,23 +154,52 @@ class AddModal extends React.Component {
         }
         return taskPersonList
     };
+    handleSubmit = () =>{
+        const form = this.formRef.props.form;
+        const taskPersonList = this.getData();
+        form.validateFields((err, values) => {
+            let data = {}
+            values['createPersonId'] = parseInt(ob.userId)
+            values["isUrgent"] = 0
+            values["status"] = 2
+            data["commonBatchNumber"] = values
+            data["details"] = taskPersonList
 
+            // values["details"] = taskPersonList
+            if (err) {
+                return;
+            }
+            axios({
+                url : `${this.server}/jc/common/batchAuditTask`,
+                method:'post',
+                data: data,
+                type:'json'
+            }).then((data) => {
+                message.info(data.data.message);
+                this.props.fetch(); // 重新调用分页函数
+            })
+            // 将value传给后台
+            form.resetFields();
+            this.setState({ visible: false });
+        });
+    }
     handleCreate = () => {
         const form = this.formRef.props.form;
         const taskPersonList = this.getData();
         form.validateFields((err, values) => {
             let data = {}
             values['createPersonId'] = parseInt(ob.userId)
+            values["isUrgent"] = 0
+            values["status"] = -1
             data["commonBatchNumber"] = values
             data["details"] = taskPersonList
 
             // values["details"] = taskPersonList
-            console.log(values)
             if (err) {
                 return;
             }
             axios({
-                url : `${this.server}/jc/common/batchAuditTask/add`,
+                url : `${this.server}/jc/common/batchAuditTask`,
                 method:'post',
                 data: data,
                 type:'json'
@@ -186,12 +220,13 @@ class AddModal extends React.Component {
     render() {
         return (
             <span>
-                <Button type="primary" onClick={this.showModal}><i className="fa fa-plus" aria-hidden="true" style={{color:'white'}}></i>&nbsp;新增</Button>
+                <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                    onSubmit = {this.handleSubmit}
                 />
             </span>
         );
