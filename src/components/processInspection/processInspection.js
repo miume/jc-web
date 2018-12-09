@@ -2,11 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import BlockQuote from '../BlockQuote/blockquote'
 import {Table,Popconfirm,Divider,message } from 'antd';
-import '../Home/page.css';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
+import './editor.css';
 import SearchCell from '../BlockQuote/search';
 // const data = [];
 // for(var i = 1; i<=15;i++){
@@ -179,8 +179,7 @@ class ProcessInspection extends React.Component{
       const ids = this.state.selectedRowKeys;
         // console.log(ids)
         axios({
-          url:`${this.server}/jc/common/procedureTestRecord/deleteByBatchNumberIds
-          `,
+          url:`${this.server}/jc/common/procedureTestRecord`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -206,8 +205,9 @@ class ProcessInspection extends React.Component{
    } 
     /**处理单条记录删除 */
     handleDelete(key){
+      console.log(key)
       axios({
-          url:`${this.server}/jc/common/role/procedureTestRecord/{${key}}`,
+          url:`${this.server}/jc/common/procedureTestRecord/${key}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -288,7 +288,7 @@ class ProcessInspection extends React.Component{
             <div>
                 <BlockQuote name='制程检测' menu='质量与流程' menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
-                    <Add server={this.server} Authorization={this.Authorization} fetch={this.fetch} />&nbsp;&nbsp;&nbsp;
+                    <Add server={this.server} Authorization={this.Authorization} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>

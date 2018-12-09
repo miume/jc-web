@@ -26,6 +26,7 @@ class Tr extends React.Component{
         this.getAllTestItem();
         this.getAllUser();
         this.getAllTestMaterial();
+        this.getTrData();
     }
     // componentWillMount(){
     //     this.setState = ()=>{
@@ -36,7 +37,7 @@ class Tr extends React.Component{
         super(props);
         this.state = {
             detail:{
-                id:this.props.value,
+                id:this.props.id,
                 procedureTestRecord:{
                     comment:'',
                     procedureId:-1,
@@ -56,7 +57,8 @@ class Tr extends React.Component{
             allTestItem : [],         //存取所有检测项目
             allUser : [],             //存取所有用户
             allTestMaterial: [],   //存取所有送检物料,
-            testItems: this.props.value.testItems?this.props.value.testItems:'',          //存取检测项目
+            testItems: '',          //存取检测项目
+            testItemIds:[]
             // productLineId:-1,      //存取产品线
             // procedureId:-1 ,       //存取工序ID
             // sampler:-1,            //存取取样人角色id
@@ -81,6 +83,7 @@ class Tr extends React.Component{
         this.testFrequency = this.testFrequency.bind(this);
         this.testMaterialId = this.testMaterialId.bind(this);
         this.comment = this.comment.bind(this);
+        this.getTrData = this.getTrData.bind(this);
     }
      /**获取所有产品线 */
      getAllProductLine(){
@@ -267,11 +270,51 @@ class Tr extends React.Component{
             detail:detail
         })
     }
+    getTrData(){
+        var {detail} = this.state;
+        const allTestItem = this.props.allTestItem;
+        if(allTestItem){
+            const d = this.props.value;
+        const items = d.testItems?d.testItems.split(','):[];
+        var testItemIds = [];
+        for(var i = 0; i < allTestItem.length; i++){
+            for(var j = 0; j < items.length; j++){
+                if(items[j] === allTestItem[i].name ){
+                    testItemIds.push(allTestItem[i].id)
+                }
+            }
+        }
+        
+        detail = {
+            id:this.props.id,
+            procedureTestRecord:{
+                comment:d.comment,
+                procedureId:d.procedureId,
+                productLineId:d.productLineId,
+                samplePointName:d.samplePointName,
+                sampler:d.sampler,
+                testFrequency:d.testFrequency,
+                testMaterialId:d.testMaterialId,
+                tester:d.tester,
+            },
+            testItemIds:testItemIds
+        }
+        //console.log(detail)
+        this.setState({
+            detail:detail,
+            testItems:d.testItems,
+            testItemIds:testItemIds
+        })
+        }
+        
+    }
     render() {
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         this.props.getData(this.state.detail)
         const d = this.props.value;
+        const {testItemIds} = this.state;
+        const allTestItem = this.props.allTestItem?this.props.allTestItem:this.state.allTestItem;
         return (
             <tr className='tbody' id={this.props.id}>
                 <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange} defaultValue={d.productLineId}>{this.state.allProductLine}</Select></td>
@@ -282,12 +325,11 @@ class Tr extends React.Component{
                 <td><Popover
                     content={(
                         <div style={{ width: '200px'}} >
-                         <Checkbox.Group style={{ width: '100%' }} onChange={this.onChange}>
+                         <Checkbox.Group style={{ width: '100%' }} onChange={this.onChange} defaultValue={testItemIds}>
                          {
-                            this.state.allTestItem.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
+                            allTestItem.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
                          }
                         </Checkbox.Group>
-                        {/* <div onClick={this.hide} style={{display:'flex'}}><div><Button className='blue' size='small' onClick={this.hide}>取消</Button></div><div></div><div><Button className='button' size='small' onClick={this.hide} >确定</Button></div></div> */}
                         </div>
                     )}
                     title="检测项目"

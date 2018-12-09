@@ -3,8 +3,10 @@ import axios from 'axios';
 import {Modal,Table} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
+import SaveButton from '../BlockQuote/saveButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import SmallButton from '../BlockQuote/smallbutton';
+import EditorApply from './editorApply';
 // const approvalProcess = [{
 //     id:1,
 //     name:'流程1'
@@ -49,6 +51,18 @@ import SmallButton from '../BlockQuote/smallbutton';
     title: '检测项目',
     dataIndex: 'procedureTestRecord.testItems' ,
     key: 'procedureTestRecord.testItems',
+    render:(text)=>{ 
+      const items = text.split(',');
+      var testItems = '';
+      if(items.length>3){
+          testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
+          return <abbr title={text}>{testItems}</abbr>;
+      }else{
+        testItems = text;
+        return text;
+      }
+      
+     },
     width: '9%',
     align:'center',
   },{
@@ -79,21 +93,24 @@ class Detail extends React.Component{
             visible : false,
             clickId : 'all',
             detailData:[],
-            data:[]
+            data:[],
+            flag:0
         }
         this.handleDetail = this.handleDetail.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.cancel = this.cancel.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
         this.click = this.click.bind(this);
         // this.getDetailData = this.getDetailData.bind(this);
+        this.handleIteration = this.handleIteration.bind(this);
     }
     /**处理新增一条记录 */
     handleDetail() {
         this.getDetailData();
         this.setState({
           visible: true,
+          flag:0
         });
       }
     /**通过id查询详情 */
@@ -112,8 +129,15 @@ class Detail extends React.Component{
     }
     handleOk() {
         this.setState({
-            visible: false
+            // visible: false
+            flag:1
         });
+    }
+    /**点击迭代 */
+    handleIteration(){
+      this.setState({
+        flag:1
+    });
     }
     /**确定取消 */
     cancel() {
@@ -127,9 +151,9 @@ class Detail extends React.Component{
         });
     }
     /**下拉框变化 */
-    handleChange(value){
-        console.log(`selected:${value}`)
-    }
+    // handleChange(value){
+    //     console.log(`selected:${value}`)
+    // }
     /**点击button进行删选 根据产品线进行删选数据 */
     click(e){
       const id = e.target.id;
@@ -138,7 +162,7 @@ class Detail extends React.Component{
         document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
         e.target.style.backgroundColor='#00b4f0';
         detailData = data.filter(d => parseInt(d.productionProcess.id) === parseInt(id));
-        console.log(detailData)
+        //console.log(detailData)
       }
       if(id === 'all'){
         detailData = data;
@@ -156,10 +180,11 @@ class Detail extends React.Component{
                     onCancel={this.handleCancel}  width='1000px' maskClosable={false}
                     footer={[
                       <CancleButton key='cancle' handleCancel={this.cancel}/>,
-                      <NewButton key="submit" handleClick={this.handleOk} name='迭代' className='fa fa-level-up' />
+                      <SaveButton key='save'  className={this.state.flag?'show':'hide'}></SaveButton>,
+                      <NewButton key="submit" handleClick={this.handleIteration} name='迭代' className='fa fa-level-up' />
                     ]} 
                   >
-                    <div style={{height:'400px'}}>
+                    <div style={{height:'400px'}} className={this.state.flag?'hide':'show'}>
                          <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>
                            {
@@ -169,6 +194,10 @@ class Detail extends React.Component{
                          <WhiteSpace />
                          <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} bordered></Table>
                     </div>
+                    <div style={{height:'400px'}} className={this.state.flag?'show':'hide'}>
+                       <EditorApply />
+                    </div>
+                    
                 </Modal>
             </span>
         );

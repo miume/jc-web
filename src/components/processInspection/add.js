@@ -3,7 +3,6 @@ import {Button,Modal,message} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import './editor.css';
 import Tr from './tr';
 import Submit from '../BlockQuote/submit';
 import SaveButton from '../BlockQuote/saveButton';
