@@ -62,7 +62,7 @@ class DataEntry extends React.Component{
     render(){
         return (
             <div>
-                <Blockquote menu='质量流程' name='数据录入' />
+                <Blockquote menu='质量与流程' name='数据录入' />
                 <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
                     <div className='card-parent'>
                     {
