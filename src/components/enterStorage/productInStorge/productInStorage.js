@@ -94,7 +94,7 @@ class ProductInStorage extends Component{
     }
     fetch=(params={})=>{
       axios({
-        url:`${this.server}/jc/common/repoInRecord/getAllByNameAndTypeByPage`,
+        url:`${this.server}/jc/common/repoInRecord/pages`,
         method:'get',
         headers:{
               'Authorization':this.Authorization
@@ -125,7 +125,7 @@ class ProductInStorage extends Component{
       const materialName=this.state.searchContent;
      //console.log(name);//此处显示的是我搜索框填的内容
      axios({
-        url:`${this.server}/jc/common/repoInRecord/getAllByNameAndTypeByPage`,
+        url:`${this.server}/jc/common/repoInRecord/pages`,
         method:'get',
         headers:{
                'Authorization':this.Authorization

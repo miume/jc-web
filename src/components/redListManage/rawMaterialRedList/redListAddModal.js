@@ -10,49 +10,49 @@ const CollectionCreateForm = Form.create()(//弹出层
     class extends React.Component {
         server;
         Authorizaion;
-        componentDidMount(){
-            this.getAllProcess();
-        }
+      
       constructor(props){
         super(props);
         this.state={
           checkSelectData:-1,//最开始下拉框是没选择数据的
           popVisible:false,//送检的气泡弹出
           checkSwitch:false,//是否紧急那个开关最开始是关闭的即否
-          processChildren:[],//送审流程（对应那个下拉框）
+          materialName:'',
+          materialClass:''
         }
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
-        this.getAllProcess=this.getAllProcess.bind(this);
+        
         this.banchNumberSelectChange=this.banchNumberSelectChange.bind(this);
       }
-    getAllProcess(){
-           axios({
-               url:`${this.server}/jc/common/batchAuditTask/getAll`,
-               method:'get',
-               headers:{
-                   'Authorizaion':this.Authorizaion
-               },
-
-           })
-           .then((data)=>{
-               console.log(data);
-                const res=data.data.data;
-                //  console.log(res);
-                 this.setState({
-                     processChildren:res
-                 });
-           });
-    }
-    getAllBatchNumber(){//获取所有编号
-
-    }
+   
     //新增编号选择框变化时调用的函数
-    banchNumberSelectChange(){
-        
+    banchNumberSelectChange(value){//下拉框得到的value是id
+          const id=value;
+          const res=this.props.batchNumber;
+        //   console.log(res);
+        //   console.log(id);
+           //console.log(res[id-1]);
+          //console.log(res[id-1].materialName);
+          for(var i=0;i<res.length;i++){
+                 if(res[i].id===id){
+                    this.setState({
+                        materialName:res[i].materialName,
+                        materialClass:res[i].materialClass
+                      });
+                      this.props.form.setFieldsValue({
+                        materialName: res[i].materialName,
+                        materialClass:res[i].materialClass
+                      });
+                      console.log( res[i].materialName);
+                      console.log(res[i].materialClass);
+                    break;
+                 };
+               
+          }
         }
-      //监听下拉框变化
+      //监听流程下拉框变化
       selectChange=(value)=>{
           this.setState({checkSelectData:value});
       }
@@ -61,15 +61,16 @@ const CollectionCreateForm = Form.create()(//弹出层
         //console.log(this.state.popVisible)
         this.setState({popVisible:false});
       }
+      handleVisibleChange=(visible)=>{
+        // console.log(this.props.data)
+         this.setState({
+           popVisible:visible
+         })
+     }
       handleSongShenOk(){//送审事件的确认按钮
         this.setState({popVisible:false});
       }
-      handleVisibleChange=(visible)=>{
-       // console.log(this.props.data)
-        this.setState({
-          popVisible:visible
-        })
-    }
+  
      //红单是否紧急
      urgentChange=(checked)=>{//checked指定当前是否选中
         //console.log(`switch to ${checked}`);//选中的话checked为true
@@ -82,21 +83,21 @@ const CollectionCreateForm = Form.create()(//弹出层
       render() {
          this.server=localStorage.getItem('remote');
          this.Authorizaion=localStorage.getItem('Authorizaion');
-        const { visible, onCancel, handleSave, form } = this.props;
+        const { visible, onCancel,onCreate, form } = this.props;
         const { getFieldDecorator } = form;
+        //console.log(this.props.process);
         return (
           <Modal
             visible={visible}
             maskClosable={false}
             title="添加红单"
-            onOk={handleSave}
+            onOk={onCreate}
             onCancel={onCancel}
             
              // footer下的每个组件都要有唯一的key
             footer={[
-                <CancleButton handleCancel={onCancel}/>,
-                
-                <SaveButton key='save'   handleSave={handleSave}>保存</SaveButton>,
+                <CancleButton key='cancel' handleCancel={onCancel}/>,
+                <SaveButton key='save'   handleSave={onCreate}>保存</SaveButton>,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                 maskClosable={false} closable={false}
                  content={
@@ -104,7 +105,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                         <div>
                             <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
                               {
-                                  this.state.processChildren.map((pro)=>{
+                                  this.props.process.map((pro)=>{
                                           return(
                                             <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
 
@@ -131,32 +132,40 @@ const CollectionCreateForm = Form.create()(//弹出层
             ]}
           >
             <Form horizontal='true' >
-                <FormItem  label='编号'labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('repoBaseSerialNumber.serialNumber',{
+                <FormItem  label='编号' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('serialNumber',{
                     initialValue: '',
                     rules:[{required:true,message:'请选择编号'}]
                 })(
-                    <Select onChange={this.banchNumberSelectChange}></Select>
+                    <Select onChange={this.banchNumberSelectChange} >
+                    {
+                        this.props.batchNumber.map((bat)=>{
+                            return(
+                                <Option key={bat.id} value={bat.id}>{bat.serialNumber}</Option>
+                            );
+                        })
+                    }
+                    </Select>
                 )}
                 </FormItem>
                 <FormItem  label='货品名称' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('repoBaseSerialNumber.materialName',{
+                {getFieldDecorator('materialName',{
                     initialValue: '',
                     
                 })(
-                    <Input placeholder='请先选择编号'  />
+                    <Input placeholder='请先选择编号'/>
                 )}
                 </FormItem>
                 <FormItem  label='货品型号' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('repoBaseSerialNumber.materialClass',{
+                {getFieldDecorator('materialClass',{
                     initialValue: '',
                     
                 })(
-                    <Input placeholder='请先选择编号' />
+                    <Input placeholder='请先选择编号'/>
                 )}
                 </FormItem>
                 <FormItem  label='损失货品数量' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('repoRedTable.quantityLoss',{
+                {getFieldDecorator('quantityLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
@@ -164,14 +173,21 @@ const CollectionCreateForm = Form.create()(//弹出层
                 )}
                 </FormItem>
                 <FormItem  label='损失货品重量' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('repoRedTable.weightLoss',{
+                {getFieldDecorator('weightLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
                     <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'275px'}}></InputNumber>
                 )}
                 </FormItem>
-               
+                <FormItem  label='备注' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('note',{
+                    initialValue: '',
+                    
+                })(
+                    <textarea style={{width:'275px'}}></textarea>
+                )}
+                </FormItem>
             </Form>
           </Modal>
         );
@@ -265,8 +281,9 @@ class RawMaterialRedListAddModal extends React.Component{
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}
                 onCancel={this.handleCancel}
-                handleSave={this.handleCreate}
-               
+                onCreate={this.handleCreate}
+                process={this.props.process}
+                batchNumber={this.props.batchNumber}
               />
           </span>
         );

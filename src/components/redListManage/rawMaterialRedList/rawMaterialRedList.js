@@ -38,6 +38,8 @@ class RawMaterialRedList extends Component{
     Authorization;
     componentDidMount(){
         this.fetch();
+        this.getAllBatchNumber();
+        this.getAllProcess();
     }
     componentWillUnmount(){
         this.setState=(state,callback)=>{
@@ -50,6 +52,8 @@ class RawMaterialRedList extends Component{
             dataSource:[],
             selectedRowKeys:[],
             searchContent:'',
+            processChildren:[],//送审流程（对应那个下拉框）
+            batchNumberChildren:[],//编号下拉框
             Authorization:this.Authorization,
         };
         this.pagination={
@@ -71,41 +75,41 @@ class RawMaterialRedList extends Component{
             align:'center',
             width:'10%'
         },{
-            title:'货品名称',
+            title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
             key:'repoBaseSerialNumber.materialName',
             align:'center',
-            width:'10%'
+            width:'8%'
         },{
-            title:'货品型号',
+            title:'物料类型',
             dataIndex:'repoBaseSerialNumber.materialClass',
             key:'repoBaseSerialNumber.materialClass',
             align:'center',
-            width:'10%'
+            width:'8%'
         },{
             title:'损失数量',
             dataIndex:'repoRedTable.quantityLoss',
             key:'repoRedTable.quantityLoss',
             align:'center',
-            width:'10%'
+            width:'8%'
         },{
             title:'损失重量',
             dataIndex:'repoRedTable.weightLoss',
             key:'repoRedTable.weightLoss',
             align:'center',
-            width:'10%'
+            width:'8%'
         },{
             title:'申请人',
             dataIndex:'createPersonName',
             key:'createPersonName',
             align:'center',
-            width:'10%'
+            width:'8%'
         },{
             title:'申请日期',
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'13%'
+            width:'10%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -126,10 +130,18 @@ class RawMaterialRedList extends Component{
             }
           }
         },{
+            title:'备注',
+            dataIndex:'repoRedTable.note',
+            key:'repoRedTable.note',
+            aligin:'center',
+            width:'10%'
+        },
+        {
             title:'操作',
             dataIndex:'operation',
             key:'operation',
             align:'center',
+            width:'8%',
             render:(text,record)=>{
                 //console.log(record.commonBatchNumber.status);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
@@ -151,7 +163,9 @@ class RawMaterialRedList extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
-        this.modifySeletedRowKeys=this.modifySeletedRowKeys.bind(this);
+        this.getAllProcess=this.getAllProcess.bind(this);
+        this.getAllBatchNumber=this.getAllBatchNumber.bind(this);
+        
     }
    
   
@@ -204,11 +218,7 @@ class RawMaterialRedList extends Component{
     onSelectChange(selectedRowKeys){
         this.setState({selectedRowKeys:selectedRowKeys});
      }
-    modifySeletedRowKeys(){//批量删除点击取消的时候，checkbox的勾勾也要没
-        this.setState({
-            selectedRowKeys:[]
-        });
-    }
+    
     handleDelete(id){//处理单条记录删除
         //   const dataSource=this.state.dataSource;
         //   this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
@@ -257,6 +267,15 @@ class RawMaterialRedList extends Component{
            selectedRowKeys:[]
        });
      }
+
+       //监控搜索框的输入变化
+    searchContentChange(e){
+        //console.log(e.target.value);
+          const value=e.target.value;//搜索框输入的内容
+          this.setState({
+                 searchContent:value
+          });
+    }
     //根据名称进行搜索
     searchEvent(){
       const anyField=this.state.searchContent;
@@ -273,6 +292,7 @@ class RawMaterialRedList extends Component{
           }
       })
       .then((data)=>{
+         // console.log(data);
               const res=data.data.data;
               this.pagination.totlal=res.total;
               for(let i=1;i<=res.list.length;i++){
@@ -286,14 +306,41 @@ class RawMaterialRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-    //监控搜索框的输入变化
-    searchContentChange(e){
-        console.log(e.target);
-          const value=e.target.value;
-          this.setState({
-                 searchContent:value
-          });
-    }
+  
+    getAllProcess(){
+        axios({
+            url:`${this.server}/jc/common/batchAuditTask/validTasks`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.Authorizaion
+            },
+
+        })
+        .then((data)=>{
+            //console.log(data);
+             const res=data.data.data;
+             //  console.log(res);
+              this.setState({
+                  processChildren:res
+              });
+        });
+ }
+ getAllBatchNumber(){//获取所有编号
+      axios({
+            url:`${this.server}/jc/common/repoBaseSerialNumber/getAll`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.Authorizaion
+            }
+
+      }).then((data)=>{
+         //console.log(data);
+         const res=data.data.data;
+         this.setState({
+             batchNumberChildren:res
+         });
+      });
+ }
     render(){
         this.Authorization=localStorage.getItem('Authorization');
         this.server=localStorage.getItem('remote');
@@ -302,16 +349,17 @@ class RawMaterialRedList extends Component{
             selectedRowKeys,
            onChange:this.onSelectChange,
     };
-      
+      //console.log(this.state.batchNumberChildren);
         return(
             <div style={{padding:'15px'}}>
-                <RawMaterialRedListAddModal fetch={this.fetch}/>
+                <RawMaterialRedListAddModal fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入搜索内容' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
                           fetch={this.fetch}
+                          type={this.props.type}
                     />
                     </span>
                 <Table

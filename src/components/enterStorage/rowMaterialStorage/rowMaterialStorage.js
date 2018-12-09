@@ -99,7 +99,7 @@ class RowMaterialStorage extends Component{
     fetch=(params={})=>{
         //console.log(params)//空
         axios({
-            url:`${this.server}/jc/common/repoInRecord/getAllByNameAndTypeByPage`,
+            url:`${this.server}/jc/common/repoInRecord/pages`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -135,7 +135,7 @@ class RowMaterialStorage extends Component{
       const materialName=this.state.searchContent;
     //  console.log(this.pagination);
       axios({
-         url:`${this.server}/jc/common/repoInRecord/getAllByNameAndTypeByPage`,
+         url:`${this.server}/jc/common/repoInRecord/pages`,
          method:'get',
          headers:{
              'Authorization':this.Authorization
