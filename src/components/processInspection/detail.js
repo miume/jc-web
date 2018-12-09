@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table} from 'antd';
+import {Modal,Table,message} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
@@ -61,7 +61,6 @@ import EditorApply from './editorApply';
         testItems = text;
         return text;
       }
-      
      },
     width: '9%',
     align:'center',
@@ -94,20 +93,25 @@ class Detail extends React.Component{
             clickId : 'all',
             detailData:[],
             data:[],
-            flag:0
+            flag:0,
+            allTestItem:[],
+            applyData:[]
         }
         this.handleDetail = this.handleDetail.bind(this);
-        this.handleOk = this.handleOk.bind(this);
+        this.handleOkApply = this.handleOkApply.bind(this);
         this.cancel = this.cancel.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        // this.handleChange = this.handleChange.bind(this);
+        this.applyOut = this.applyOut.bind(this);
         this.click = this.click.bind(this);
         // this.getDetailData = this.getDetailData.bind(this);
         this.handleIteration = this.handleIteration.bind(this);
+        this.getAllTestItem = this.getAllTestItem.bind(this);
+        this.getApplyData = this.getApplyData.bind(this);
     }
-    /**处理新增一条记录 */
+    /**点击详情 */
     handleDetail() {
         this.getDetailData();
+        this.getAllTestItem();
         this.setState({
           visible: true,
           flag:0
@@ -121,6 +125,9 @@ class Detail extends React.Component{
            }
        }).then((data)=>{
            const details = data.data.data.details;
+           for(var i = 0; i < details.length; i++){
+              details[i].id = i+1;
+           }
            this.setState({
                detailData:details,
                data:details
@@ -150,10 +157,6 @@ class Detail extends React.Component{
             visible: false
         });
     }
-    /**下拉框变化 */
-    // handleChange(value){
-    //     console.log(`selected:${value}`)
-    // }
     /**点击button进行删选 根据产品线进行删选数据 */
     click(e){
       const id = e.target.id;
@@ -172,16 +175,87 @@ class Detail extends React.Component{
         detailData:detailData
       })
     }
+    /**获取所有检测项目 */
+    getAllTestItem(){
+      axios({
+      url:`${this.props.server}/jc/common/testItem/getAll`,
+      method:'get',
+      headers:{
+          'Authorization':this.props.Authorization
+      }
+      }).then(data=>{
+      const res = data.data.data;
+      this.setState({
+          allTestItem : res
+      })
+  })   
+  }
+    /**获取数据 */
+    getApplyData(data){
+        this.state.applyData = data;
+        console.log(data)
+    }
+    /**点击送审 */
+    handleOkApply(){
+      this.applyOut(0);
+  }
+  /**点击保存送审 */
+  handleSave(){
+      this.applyOut(-1);
+  }
+  applyOut(status){
+      const details = this.state.applyData;
+      for(var i = 0; i < details.length; i++){
+          delete details[i].id;
+          var e = details[i].procedureTestRecord;
+          for(var j in e){
+              if( e[j]==='' || e[j] === -1 || e[j] === []){
+                  message.info('新增数据不能为空，请填写完整！');
+                  return
+              }
+          }
+      }
+      this.setState({
+          visible:false,
+          visible1:false
+      })
+      const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+      const commonBatchNumber = {
+          id:this.props.value,
+          createPersonId:createPersonId,
+          status:status,
+          isUrgent:this.state.urgent
+      }
+      const taskId = this.state.process === -1?'':this.state.process;
+      axios.put(`${this.props.server}/jc/common/procedureTestRecord`,{
+          commonBatchNumber:commonBatchNumber,
+          details:details
+      },{
+          headers:{
+              'Authorization':this.props.Authorization
+          },
+          params:{
+              taskId:taskId
+          }
+      }).then((data)=>{
+          message.info(data.data.message);
+          this.props.fetch();
+          
+      }).catch(()=>{
+          message.info('操作失败，请联系管理员！')
+      })
+      console.log(details)
+  }
     render() {
         return (
             <span>
                 <span className='blue' onClick={this.handleDetail} >详情</span>
                 <Modal title="详情" visible={this.state.visible} closable={false}
-                    onCancel={this.handleCancel}  width='1000px' maskClosable={false}
+                    onCancel={this.handleCancel}  width='1200px' maskClosable={false}
                     footer={[
                       <CancleButton key='cancle' handleCancel={this.cancel}/>,
-                      <SaveButton key='save'  className={this.state.flag?'show':'hide'}></SaveButton>,
-                      <NewButton key="submit" handleClick={this.handleIteration} name='迭代' className='fa fa-level-up' />
+                      <span key='save'  className={this.state.flag?'show':'hide'}><SaveButton handleSave={this.handleSave}/></span>,
+                      <NewButton key="submit" handleClick={this.state.flag?this.handleOkApply:this.handleIteration} name={this.state.flag?'确定':'迭代'} className={this.state.flag?'fa fa-check':'fa fa-level-up' }/>
                     ]} 
                   >
                     <div style={{height:'400px'}} className={this.state.flag?'hide':'show'}>
@@ -195,7 +269,7 @@ class Detail extends React.Component{
                          <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} bordered></Table>
                     </div>
                     <div style={{height:'400px'}} className={this.state.flag?'show':'hide'}>
-                       <EditorApply />
+                       <EditorApply data={this.state.data} allTestItem={this.state.allTestItem} getApplyData={this.getApplyData}/>
                     </div>
                     
                 </Modal>

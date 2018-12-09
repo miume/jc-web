@@ -8,7 +8,9 @@ class Menu1List extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      openKeys : [],
+      defaultOpenKeys : localStorage.getItem('defaultOpenKeys')?localStorage.getItem('defaultOpenKeys'):[],
+      openKeys:[],
+      current : localStorage.getItem('current')?localStorage.getItem('current').path:'',
       // rootSubmenuKeys : menu.map(element => element.menuId)
     }
     this.onOpenChange = this.onOpenChange.bind(this);
@@ -25,13 +27,19 @@ class Menu1List extends React.Component {
         this.setState({
           openKeys : [latestOpenKeys]
         });
+        localStorage.setItem('defaultOpenKeys',[latestOpenKeys])
     }
   }
   /**点击二级菜单 存取6个访问的二级菜单*/
   menuClick(event){
     const path = event.key;
     const menuName = event.item.props.children;
-    localStorage.setItem('menuName',menuName)
+    const current = {
+      menuName:menuName,
+      path:path
+    }
+    localStorage.setItem('current',current);
+    console.log((localStorage.getItem('current')).path)
     var menuClick = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):[];
     if(menuClick){
         var repeat = menuClick.find(m=>m.menuName===menuName);
@@ -107,11 +115,11 @@ class Menu1List extends React.Component {
     //  }
     // ];
     // console.log(this.state.openKeys)
-  
+    //console.log(this.state.defaultOpenKeys)
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
       <div>
-        <Menu mode="inline" theme="dark" openKeys={this.state.openKeys} onOpenChange={this.onOpenChange} style={{width:130}}>
+        <Menu mode="inline" theme="dark" defaultOpenKeys={['4']} openKeys={this.state.openKeys}  onOpenChange={this.onOpenChange} style={{width:130}}>
             {
               localStorage.getItem('menuList') ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>
