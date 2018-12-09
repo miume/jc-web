@@ -23,6 +23,14 @@ const CollectionCreateForm = Form.create()(
                 serialNumber : [],
             }
         }
+        componentDidMount() {
+            this.fetch();
+        }
+        componentWillUnmount() {
+            this.setState = (state, callback) => {
+              return ;
+            }
+        }
         fetch = () =>{
             axios({
                 url: `${this.server}/jc/common/authUser/getAll`,
@@ -91,7 +99,7 @@ const CollectionCreateForm = Form.create()(
                     title="新增"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
-                        <AddButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
+                        <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}
                 >
                     <Form horizontal='true'>
@@ -130,7 +138,7 @@ const CollectionCreateForm = Form.create()(
                             })(
                                 <Select>
                                     {
-                                        this.state.person.map(pe=>{
+                                        this.state.factor.map(pe=>{
                                             return(
                                                 <Option key={pe.id} value={pe.id}>{pe.name}</Option>
                                             )
@@ -145,7 +153,7 @@ const CollectionCreateForm = Form.create()(
                             })(
                                 <Select>
                                     {
-                                        this.state.person.map(pe=>{
+                                        this.state.items.map(pe=>{
                                             return(
                                                 <Option key={pe.id} value={pe.id}>{pe.name}</Option>
                                             )
@@ -160,9 +168,9 @@ const CollectionCreateForm = Form.create()(
                             })(
                                 <Select>
                                     {
-                                        this.state.person.map(pe=>{
+                                        this.state.serialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.name}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber}</Option>
                                             )
                                         })
                                     }
