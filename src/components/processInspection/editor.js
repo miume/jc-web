@@ -5,7 +5,6 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 import SaveButton from '../BlockQuote/saveButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import Submit from '../BlockQuote/submit';
-import './editor.css';
 import Tr from './tr';
 class Editor extends React.Component{
     constructor(props){
@@ -18,6 +17,9 @@ class Editor extends React.Component{
             data:[1],
             addApplyData:[],
             editorData:[],
+            allTestItem:[],
+            process:-1,
+            urgent:-1
         }
         this.handleEditor = this.handleEditor.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -32,10 +34,27 @@ class Editor extends React.Component{
         this.applyOut = this.applyOut.bind(this);
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
+        this.getAllTestItem = this.getAllTestItem.bind(this);
+    }
+    /**获取所有检测项目 */
+    getAllTestItem(){
+        axios({
+        url:`${this.props.server}/jc/common/testItem/getAll`,
+        method:'get',
+        headers:{
+            'Authorization':this.props.Authorization
+        }
+        }).then(data=>{
+        const res = data.data.data;
+        this.setState({
+            allTestItem : res
+        })
+    })   
     }
     /**处理新增一条记录 */
     handleEditor() {
         this.getDetailData();
+        this.getAllTestItem();
         this.setState({
           visible: true,
         });
@@ -48,12 +67,12 @@ class Editor extends React.Component{
             }
         }).then((data)=>{
             const details = data.data.data.details;
-            const count = details.length;
+            const count = details?details.length:0;
             for(var i = 0; i < count; i++){
                 details[i].id = i+1;
             }
             this.setState({
-                editorData:details,
+                editorData:details?details:[],
                 count:count
             })
             console.log(details)
@@ -93,6 +112,7 @@ class Editor extends React.Component{
     }
     /**获取每个Tr的值 */
     getData(data){
+        //console.log(data)
         const {addApplyData} = this.state;
         if(addApplyData.length === 0) { addApplyData.push(data)};
         var flag = 0;
@@ -157,48 +177,43 @@ class Editor extends React.Component{
         })
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
+            id:this.props.value,
             createPersonId:createPersonId,
             status:status,
             isUrgent:this.state.urgent
         }
         const taskId = this.state.process === -1?'':this.state.process;
-        // axios.post(`${this.props.server}/jc/common/procedureTestRecord`,{
-        //     commonBatchNumber:commonBatchNumber,
-        //     details:details
-        // },{
-        //     headers:{
-        //         'Authorization':this.props.Authorization
-        //     },
-        //     params:{
-        //         taskId:taskId
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.fetch();
+        axios.put(`${this.props.server}/jc/common/procedureTestRecord`,{
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        },{
+            headers:{
+                'Authorization':this.props.Authorization
+            },
+            params:{
+                taskId:taskId
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.fetch();
             
-        // }).catch(()=>{
-        //     message.info('操作失败，请联系管理员！')
-        // })
+        }).catch(()=>{
+            message.info('操作失败，请联系管理员！')
+        })
         console.log(details)
     }
     render() {
         return (
             <span>
                 <span className='blue' onClick={this.handleEditor} >编辑</span>
-                <Modal title="详情" visible={this.state.visible} closable={false}
-                    onCancel={this.handleCancel}  width='1100px' maskClosable={false}
+                <Modal title="编辑" visible={this.state.visible} closable={false}
+                    onCancel={this.handleCancel}  width='1200px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
                         <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/> ,
                     ]}>
                     <div style={{height:'400px'}}>
-                         {/* <div style={{marginBottom:'15px'}}>
-                             <Select placeholder='请选择审批流程' onChange={this.handleChange} style={{ width: 200 }}>{children}</Select>
-                         </div>
-                         <Table rowKey={record => record.id} columns={columns} dataSource={data} width='650px' pagination={false} size='small'></Table>
-                         <WhiteSpace /> */}
-                         
                          <p className='fr'>已录入{this.state.count}条数据</p>
                          <table style={{width:'100%'}}>
                              <thead className='thead'>
@@ -217,7 +232,7 @@ class Editor extends React.Component{
                                 this.state.editorData?
                                  <tbody>
                                     {
-                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} ></Tr> })
+                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.state.allTestItem}></Tr> })
                                     }
                              </tbody>:
                              <tbody></tbody>

@@ -31,6 +31,7 @@ class Menu1List extends React.Component {
   menuClick(event){
     const path = event.key;
     const menuName = event.item.props.children;
+    localStorage.setItem('menuName',menuName)
     var menuClick = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):[];
     if(menuClick){
         var repeat = menuClick.find(m=>m.menuName===menuName);
