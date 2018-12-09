@@ -118,7 +118,7 @@ class Role extends React.Component {
             title: '序号',
             dataIndex: 'index',
             key: 'id',
-            sorter: (a, b) => a.id - b.id,
+            sorter: (a, b) => a.index - b.index,
             // render:id =>index },
             align:'center',
             width: '10%',

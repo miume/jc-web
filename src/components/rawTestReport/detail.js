@@ -1,7 +1,8 @@
 import React from 'react';
 import IsQualified from '../BlockQuote/isQualified';
 import NewButton from '../BlockQuote/newButton';
-import {Modal,Button,Table, Divider,Icon} from 'antd';
+import {Modal,Table, Divider} from 'antd';
+import axios from 'axios';
 const columns1 = [{
     title:'序号',
     dataIndex:'id',
@@ -45,11 +46,24 @@ class Detail extends React.Component{
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
+        this.getDetailData = this.getDetailData.bind(this);
     }
     /**点击详情 */
     handleDetail(){
+        this.getDetailData();
         this.setState({
             visible:true
+        })
+    }
+    /**通过id获取数据 */
+    getDetailData(){
+        axios.get(`${this.props.server}/jc/common/rawTestReport/${this.props.value}`,{
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+            console.log(res);
         })
     }
     /**点击确定按钮 */
