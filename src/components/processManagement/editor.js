@@ -1,7 +1,10 @@
 import React from 'react';
 import {Modal,Button,Input} from 'antd';
+import AddButton from '../BlockQuote/newButton'
+import CancleButton from "../BlockQuote/cancleButton";
+import SaveButton from "../BlockQuote/saveButton";
+import axios from "axios"
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import Tr from './tr'
 
 class Editor extends React.Component{
     constructor(props){
@@ -10,8 +13,12 @@ class Editor extends React.Component{
             visible : false,
             count : 1,
             dataSource:[],
-            data:[1]
+            data:[1],
+            id:this.props.value,
+            name:''        
         }
+        this.Authorization = localStorage.getItem("Authorization")
+        this.server = localStorage.getItem('remote');
         this.handleDetail = this.handleDetail.bind(this)
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -20,7 +27,7 @@ class Editor extends React.Component{
     }
     /**处理一条编辑记录 */
     handleDetail() {
-        console.log(this.props.value)
+        this.fetch()
         this.setState({
           visible: true
         });
@@ -30,6 +37,11 @@ class Editor extends React.Component{
         visible: false
         });
     }
+    // defaultOption(){
+    //     var osel = document.getElementById("selID");
+    //     var opts = osel.getElementsByTagName("option");
+        
+    // }
     handleCancel() {
         this.setState({
         visible: false
@@ -42,7 +54,6 @@ class Editor extends React.Component{
             count: count+1,
             data: [...data, count+1],
         })
-        console.log(this.state)
     }
     deleteRow(value){
         const {count,data} = this.state;
@@ -51,44 +62,50 @@ class Editor extends React.Component{
             data: data.filter(d => d.toString()!==value)
         })
     }
+    fetch = ()=>{
+        axios({
+            url:`${this.server}/jc/common/batchAuditTask/${this.state.id}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            const name = res.commonBatchNumber.description
+            this.setState({
+                dataSource:res,
+                name:name
+            })
+        })
+    }
     render(){
-        console.log(this.props.value.batchNumberId)
         return(
             <span>
                 <span className='blue' onClick={this.handleDetail} >编辑</span>
                 <Modal title='编辑' visible={this.state.visible}
-                    onCancel={this.handleCancel} width='1000px'
+                    closable={false}
                     footer={[
-                        <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
-                        <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
-                    ]}>
-                    <div style={{height:'400px'}}>
-                         <div>
-                             <Input value={this.props.value.name} style={{width:200}}/>
-                             <WhiteSpace />
-                             <Input value={this.props.value.type} style={{width:200}}/>
-                         </div>
-                         <WhiteSpace />
-                         <div>
-                             <table style={{width:'100%'}}>
-                             <thead className='thead'>
-                                 <tr>
-                                     <td>负责人</td>
-                                     <td>职责</td>
-                                     <td>操作</td>
-                                 </tr>
-                             </thead>
-                             <tbody>
-                             {
-                               this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
-                             }
-                             </tbody>
-                             </table>
-                         </div>
-                         <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
-                    </div>
-                >
+                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                        <SaveButton key="define" handleSave={this.handleOk} style='button' className='fa fa-check' />,
+                        <AddButton key="submit" handleClick={this.handleOk} name='提交' style='button' className='fa fa-check' />
+                      ]}>
+                      {/* 流程名称：<Input className="name" defaultValue={this.state.name} placeholder="请输入名称"/>
+                      <table style={{width:'100%'}}>
+                            <thead className='thead'>
+                                <tr>
+                                    <td>负责人</td>
+                                    <td>职责</td>
+                                    <td>操作</td>
+                                </tr>
+                            </thead>
+                            <tbody id="data">
+                            {
+                            this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                            }
+                            </tbody>
+                        </table>
+                        <WhiteSpace />
+                        <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/> */}
                 </Modal>
             </span>
         );

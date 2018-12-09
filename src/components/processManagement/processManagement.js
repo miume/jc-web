@@ -50,7 +50,7 @@ class Management extends React.Component{
             key: 'commonBatchNumber.id',
             sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
-            width: '8%',
+            width: '13%',
         },{
             title: '流程名称',
             dataIndex: 'commonBatchNumber.description',
@@ -95,8 +95,8 @@ class Management extends React.Component{
             width: '13%',
         },{
             title: '操作',
-            dataIndex: 'operate',
-            key: 'operate',
+            dataIndex: 'commonBatchNumber.id',
+            key: 'id',
             align:'center',
             width: '13%',
             render : (text,record) =>{
@@ -104,7 +104,7 @@ class Management extends React.Component{
                     <span>
                         <Detail value={record} />
                         <Divider type="vertical" />
-                        <Editor value={record} />
+                        <Editor value={text} />
                         <Divider type="vertical" />
                         <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>

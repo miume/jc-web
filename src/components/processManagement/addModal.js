@@ -7,7 +7,6 @@ import AddButton from '../BlockQuote/newButton'
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 
-const Option = Select.Option;
 const FormItem = Form.Item;
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
@@ -51,7 +50,7 @@ const CollectionCreateForm = Form.create()(
                     title="新增"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
-                        <SaveButton key="submit" handleSave={onCreate} style='button' className='fa fa-check' />,
+                        <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
                         <AddButton key="submit" handleClick={onSubmit} name='提交' style='button' className='fa fa-check' />
                       ]}
                 >
