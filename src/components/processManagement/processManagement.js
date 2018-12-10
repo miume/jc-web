@@ -104,7 +104,7 @@ class Management extends React.Component{
                     <span>
                         <Detail value={record} />
                         <Divider type="vertical" />
-                        <Editor value={text} />
+                        <Editor value={text} status={record.commonBatchNumber.status} handle={this.fetch}/>
                         <Divider type="vertical" />
                         <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>

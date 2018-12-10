@@ -2,6 +2,7 @@ import React from 'react';
 import {Modal,Button,Input,Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace'
 import axios from 'axios'
+import "./difference.css"
 
 const columns = [{
         title: '负责人',
@@ -17,19 +18,6 @@ const columns = [{
         align:'center',
 }]
 
-const columns1 = [{
-    title:'流程名称',
-    dataIndex : 'description',
-    key : "description",
-    width:'30%',
-    align:'center'
-},{
-    title:'所属工艺',
-    dataIndex : 'process',
-    key : "process",
-    width:'30%',
-    align:'center'
-}]
 
 class Detail extends React.Component{
     constructor(props){
@@ -45,14 +33,6 @@ class Detail extends React.Component{
         this.handleCancel = this.handleCancel.bind(this)
         this.fetch = this.fetch.bind(this);
     }
-    componentDidMount() {
-        this.fetch(this.props.value.commonBatchNumber.id);
-    }
-    componentWillUnmount() {
-        this.setState = (state, callback) => {
-          return ;
-        }
-      }
     fetch = (id) => {
         axios({
             url:`${this.server}/jc/common/batchAuditTask/`+parseInt(id),
@@ -70,6 +50,7 @@ class Detail extends React.Component{
     /**处理一条详情记录 */
     handleDetail() {
         console.log(this.props.value)
+        this.fetch(this.props.value.commonBatchNumber.id)
         this.setState({
           visible: true
         });
@@ -98,7 +79,7 @@ class Detail extends React.Component{
                         <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
                     ]}>
                     <div style={{height:'400px'}}>
-                         <table>
+                         <table className="custom_tb">
                              <thead className='thead'>
                                  <tr>
                                      <td>流程名称</td>
