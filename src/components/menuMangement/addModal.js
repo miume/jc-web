@@ -23,14 +23,14 @@ const CollectionCreateForm = Form.create()(
                         <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}>
                     <Form horizontal='true'>
-                        <FormItem label="菜单名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('menuName', {
                                 rules: [{ required: true, message: '请输入菜单名称' }],
                             })(
                                 <Input placeholder='请输入菜单名称'/>
                             )}
                         </FormItem>
-                        <FormItem label="菜单类型" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('menuType', {
                                 rules: [{ required: true, message: '请选择菜单类型' }],
                                 initialValue : '1'

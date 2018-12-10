@@ -17,29 +17,10 @@ const CollectionCreateForm = Form.create()(
             super(props)
             this.state={
                 visible : false,
-                count: 1,
-                data : [1],
             }
-            this.addData = this.addData.bind(this)
-            this.deleteRow = this.deleteRow.bind(this)
         }
-        /**新增一条数据 */
-        addData() {
-            const {count,data} = this.state;
-            this.setState({
-                count: count+1,
-                data: [...data, count+1],
-            })
-            console.log(this.state)
-        }
-        /**删除一条数据 */
-        deleteRow(value){
-            const {count,data} = this.state;
-            this.setState({
-                count:count-1,
-                data:data.filter(d=>d.toString()!==value)
-            })
-        }
+    
+      
         render() {
             const { visible, onCancel, onCreate, form,onSubmit } = this.props;
             const { getFieldDecorator } = form;
@@ -48,6 +29,7 @@ const CollectionCreateForm = Form.create()(
                     visible={visible}
                     closable={false}
                     title="新增"
+                    style={{height:"900px"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
@@ -55,11 +37,11 @@ const CollectionCreateForm = Form.create()(
                       ]}
                 >
                     <Form horizontal='true'>
-                        <FormItem label="流程名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('description', {
                                 rules: [{ required: true, message: '请输入流程名称' }],
                             })(
-                                <Input placeholder='请输入菜单名称'/>
+                                <Input placeholder='请输入流程名称'/>
                             )}
                         </FormItem>
                         {/* <FormItem label="是否紧急" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
@@ -97,12 +79,12 @@ const CollectionCreateForm = Form.create()(
                             </thead>
                             <tbody id="data">
                             {
-                            this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
+                            this.props.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.props.deleteRow} value={m.toString()}></Tr> })
                             }
                             </tbody>
                         </table>
                         <WhiteSpace />
-                        <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+                        <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.props.addData}/>
                     </Form>
                 </Modal>
             );
@@ -113,8 +95,29 @@ const CollectionCreateForm = Form.create()(
 class AddModal extends React.Component {
     state = {
         visible: false,
+        count: 1,
+        data : [1],
     };
     server = localStorage.getItem('remote');
+
+    /**新增一条数据 */
+    addData = ()=>{
+        const {count,data} = this.state;
+        this.setState({
+            count: count+1,
+            data: [...data, count+1],
+        })
+        console.log(this.state)
+    }
+
+    /**删除一条数据 */
+    deleteRow = (value)=>{
+        const {count,data} = this.state;
+        this.setState({
+            count:count-1,
+            data:data.filter(d=>d.toString()!==value)
+        })
+    }
 
     showModal = () => {
         this.setState({ visible: true });
@@ -122,7 +125,11 @@ class AddModal extends React.Component {
 
     handleCancel = () => {
         const form = this.formRef.props.form;
-        this.setState({ visible: false });
+        let name = document.getElementsByName("input")
+        for(let i=0;i<name.length;i++){
+            name[i].value = ""
+        }
+        this.setState({ visible: false,count:1,data:[1] });
         form.resetFields();
     };
 
@@ -178,8 +185,12 @@ class AddModal extends React.Component {
                 this.props.fetch(); // 重新调用分页函数
             })
             // 将value传给后台
+            let name = document.getElementsByName("input")
+            for(let i=0;i<name.length;i++){
+                name[i].value = ""
+            }
             form.resetFields();
-            this.setState({ visible: false });
+            this.setState({ visible: false,count:1,data:[1] });
         });
     }
     handleCreate = () => {
@@ -206,9 +217,13 @@ class AddModal extends React.Component {
                 message.info(data.data.message);
                 this.props.fetch(); // 重新调用分页函数
             })
+            let name = document.getElementsByName("input")
+            for(let i=0;i<name.length;i++){
+                name[i].value = ""
+            }
             // 将value传给后台
             form.resetFields();
-            this.setState({ visible: false });
+            this.setState({ visible: false,count:1,data:[1] });
         });
     };
 
@@ -226,6 +241,10 @@ class AddModal extends React.Component {
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                     onSubmit = {this.handleSubmit}
+                    deleteRow = {this.deleteRow}
+                    count = {this.state.count}
+                    data = {this.state.data}
+                    addData = {this.addData}
                 />
             </span>
         );

@@ -118,7 +118,6 @@ class Management extends React.Component{
 
     }
     handleDelete = (id) => {
-        console.log(this.Authorization)
         axios({
             url:`${this.server}/jc/common/batchAuditTask/${id}`,
             method:'Delete',
