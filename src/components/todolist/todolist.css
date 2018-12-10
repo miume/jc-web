@@ -54,7 +54,8 @@
       background-color: #0079fe;
   }
   .item2{
-    flex: 0 0 70%;
+    flex: 0 0 68%;
+    overflow: hidden;
     /* border:1px solid grey; */
   }
   .item3{
@@ -77,7 +78,7 @@
 .item2 .part{
     width:250px;
     height:100%;
-    border:1px solid grey;
+    /* border:1px solid grey; */
     padding:5px;
     display: flex;
 }
@@ -88,4 +89,8 @@
 .item2 .partSpan1{
     font-size: 12px;
     font-weight: 400;
+}
+.item2 .item2Scroll{
+    width:120%;
+    display: flex;
 }
