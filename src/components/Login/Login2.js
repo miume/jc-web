@@ -41,6 +41,7 @@ class Login extends React.Component {
 
   keyPress(e){
     if(e.keyCode === 13){
+      alert('enter')
     }
   }
   handleSubmit(){
@@ -64,14 +65,14 @@ class Login extends React.Component {
     });
   }
   render() {
-    
+    // this.keyPress();
     return (
-      <div className={`full-height`} id="wrapper">  
+      <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>  
         <div className='gutter-box' style={{minWidth: '290px'}}>
               <div className='login-box'>
                 <img src={require(`../Login/logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
                 <div style={{height:'10%'}}></div>
-                <div style={{padding: '0px 28px 0px 28px', height:'50%'} }>
+                <div style={{padding: '0px 28px 0px 28px', height:'50%'}}>
                   <Input className='login-input' size='large' id='userName' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称"/>
                   <div style={{height:'10%'}}></div>
                   <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录" />

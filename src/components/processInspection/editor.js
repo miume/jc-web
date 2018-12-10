@@ -197,7 +197,8 @@ class Editor extends React.Component{
             message.info(data.data.message);
             this.props.fetch();
             
-        }).catch(()=>{
+        }).catch((error)=>{
+            console.log(error)
             message.info('操作失败，请联系管理员！')
         })
         console.log(details)
