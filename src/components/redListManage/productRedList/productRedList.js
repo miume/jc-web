@@ -122,12 +122,12 @@ class ProductRedList extends Component{
             key:'operation',
             align:'center',
             render:(text,record)=>{
-                console.log(record.status);
+               // console.log(record.status);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
-                console.log(editFlag);
+               // console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
                    <span>
-                        <ProductRedListEditModal editFlag={editFlag}/>
+                        <ProductRedListEditModal record={record} editFlag={editFlag} fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
                         <Divider type='vertical'/>
                        <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
                        <span className={editFlag?'blue':'grey'}>删除</span>

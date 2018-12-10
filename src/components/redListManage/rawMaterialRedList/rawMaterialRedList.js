@@ -148,7 +148,7 @@ class RawMaterialRedList extends Component{
                 //console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
                    <span>
-                        <RawMaterialRedListEditModal editFlag={this.judgeStatus(record.commonBatchNumber.status)}/>
+                        <RawMaterialRedListEditModal record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
                         <Divider type='vertical'/>
                        <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
                        <span className={editFlag?'blue':'grey'}>删除</span>

@@ -73,7 +73,7 @@ class UserAddModal extends React.Component{
                    validator: this.validateToNextPassword,
                  }],
                })(
-                 <Input type="password" />
+                 <Input placeholder='请输入密码'   type="password" />
                )}
              </FormItem>
                <FormItem label="确认密码"  labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
@@ -84,7 +84,7 @@ class UserAddModal extends React.Component{
                         validator: this.compareToFirstPassword,
                         }],
                     })(
-                        <Input type="password" onBlur={this.handleConfirmBlur} />
+                        <Input type="password"  placeholder='请确认密码' onBlur={this.handleConfirmBlur} />
                     )}
               </FormItem>
                <FormItem label='所属部门' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
@@ -92,7 +92,8 @@ class UserAddModal extends React.Component{
                         initialValue: '',
                         rules: [{required: true, message: '请选择所属部门'}],
                      })(    //2、getFieldDecorator 的使用方法，
-                        <Select>
+                        <span>
+                        <Select placeholder='请选择所属部门'>
                            {
                                this.props.deparment.map(de=>{
                                  return(
@@ -101,6 +102,7 @@ class UserAddModal extends React.Component{
                             })
                            }
                         </Select>
+                        </span>
                         )}
                </FormItem>
 
