@@ -14,13 +14,39 @@ const CollectionCreateForm = Form.create()(//弹出层
         this.state={
           checkSelectData:-1,
           popVisible:false,
+          materialName:'',
+          materialClass:''
         }
         this.hide=this.hide.bind(this);//送审气泡点击取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审气泡点击确定
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化
-        
+        this.banchNumberSelectChange=this.banchNumberSelectChange.bind(this);
       }
-    
+       //编辑编号选择框变化时调用的函数
+       banchNumberSelectChange(value){//下拉框得到的value是id
+        const id=value;
+        const res=this.props.batchNumber;
+      //   console.log(res);
+      //   console.log(id);
+         //console.log(res[id-1]);
+        //console.log(res[id-1].materialName);
+        for(var i=0;i<res.length;i++){
+               if(res[i].id===id){
+                  this.setState({
+                      materialName:res[i].materialName,
+                      materialClass:res[i].materialClass
+                    });
+                    this.props.form.setFieldsValue({
+                      materialName: res[i].materialName,
+                      materialClass:res[i].materialClass
+                    });
+                    // console.log( res[i].materialName);
+                    // console.log(res[i].materialClass);
+                  break;
+               };
+             
+        }
+      }
       //监听下拉框变化
       selectChange=(value)=>{
           this.setState({checkSelectData:value});
@@ -61,11 +87,15 @@ const CollectionCreateForm = Form.create()(//弹出层
                  content={
                      <div style={{width:250 ,height:150}}>
                         <div>
-                            <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
-                              <Option value='1'>送审流程1</Option>
-                              <Option value='2'>送审流程2</Option>
-                              <Option value='3'>送审流程3</Option>
-                            </Select>
+                        <Select onChange={this.banchNumberSelectChange} placeholder='请选择编号'>
+                    {
+                        this.props.batchNumber.map((bat)=>{
+                            return(
+                                <Option key={bat.id} value={bat.id}>{bat.serialNumber}</Option>
+                            );
+                        })
+                    }
+                    </Select>
                         </div>
                         <div style={{paddingTop:'10px'}}>
                           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
@@ -85,33 +115,42 @@ const CollectionCreateForm = Form.create()(//弹出层
             ]}
           >
             <Form horizontal='true' >
-                <FormItem  label='批号'labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('lotNumber',{
-                    initialValue: '',
-                    rules:[{required:true,message:'批号不能为空'}]
+                <FormItem  label='编号'labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('batchNumber',{
+                    initialValue: this.props.record.repoBaseSerialNumber.serialNumber,
+                    rules:[{required:true,message:'编号不能为空'}]
                 })(
-                    <Input placeholder='请输入批号'></Input>
+                  <Select onChange={this.banchNumberSelectChange} placeholder='请选择编号'>
+                  {
+                      this.props.batchNumber.map((bat)=>{
+                          return(
+                              <Option key={bat.id} value={bat.id}>{bat.serialNumber}</Option>
+                          );
+                      })
+                  }
+                  </Select>
+                  
                 )}
                 </FormItem>
                 <FormItem  label='货品名称' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('name',{
-                    initialValue: '',
-                    rules:[{required:true,message:'货品名称不能为空'}]
+                {getFieldDecorator('materialName',{
+                    initialValue: this.props.record.repoBaseSerialNumber.materialName,
+                    
                 })(
-                    <Input placeholder='请输入货品名称'></Input>
+                    <Input placeholder='请先选择编号'/>
                 )}
                 </FormItem>
                 <FormItem  label='货品型号' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('model',{
-                    initialValue: '',
-                    rules:[{required:true,message:'货品型号不能为空'}]
+                {getFieldDecorator('materialClass',{
+                    initialValue: this.props.record.repoBaseSerialNumber.materialClass,
+                    
                 })(
-                    <Input placeholder='请输入货品型号'></Input>
+                    <Input placeholder='请先选择编号'/>
                 )}
                 </FormItem>
                 <FormItem  label='损失货品数量' labelCol={{span:7}} wrapperCol={{span:14}} required>
-                {getFieldDecorator('number',{
-                    initialValue: '',
+                {getFieldDecorator('quantity',{
+                    initialValue: this.props.record.repoRedTable.quantityLoss,
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
                     <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'275px'}}></InputNumber>
@@ -119,13 +158,20 @@ const CollectionCreateForm = Form.create()(//弹出层
                 </FormItem>
                 <FormItem  label='损失货品重量' labelCol={{span:7}} wrapperCol={{span:14}} required>
                 {getFieldDecorator('weight',{
-                    initialValue: '',
+                    initialValue: this.props.record.repoRedTable.weightLoss,
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
                     <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'275px'}}></InputNumber>
                 )}
                 </FormItem>
-               
+                <FormItem  label='备注' labelCol={{span:7}} wrapperCol={{span:14}} required>
+                {getFieldDecorator('note',{
+                    initialValue: this.props.record.repoRedTable.note,
+                    
+                })(
+                    <textarea style={{width:'275px'}}></textarea>
+                )}
+                </FormItem>
             </Form>
           </Modal>
         );
@@ -227,7 +273,9 @@ class RawMaterialRedListEditModal extends React.Component{
                 visible={this.state.visible}
                 onCancel={this.handleCancel}
                 onCreate={this.handleCreate}
-               
+                process={this.props.process}
+                batchNumber={this.props.batchNumber}
+                record={this.props.record}
               />
           </span>
         );

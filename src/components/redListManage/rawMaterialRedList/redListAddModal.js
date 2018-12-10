@@ -42,11 +42,12 @@ const CollectionCreateForm = Form.create()(//弹出层
                         materialClass:res[i].materialClass
                       });
                       this.props.form.setFieldsValue({
+                       // serialNumber:'请输入编号',
                         materialName: res[i].materialName,
                         materialClass:res[i].materialClass
                       });
-                      console.log( res[i].materialName);
-                      console.log(res[i].materialClass);
+                    //   console.log( res[i].materialName);
+                    //   console.log(res[i].materialClass);
                     break;
                  };
                
@@ -136,8 +137,8 @@ const CollectionCreateForm = Form.create()(//弹出层
                 {getFieldDecorator('serialNumber',{
                     initialValue: '',
                     rules:[{required:true,message:'请选择编号'}]
-                })(
-                    <Select onChange={this.banchNumberSelectChange} >
+                })(<span>
+                    <Select placeholder='请输入编号'  onChange={this.banchNumberSelectChange}>
                     {
                         this.props.batchNumber.map((bat)=>{
                             return(
@@ -146,6 +147,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                         })
                     }
                     </Select>
+                    </span>
                 )}
                 </FormItem>
                 <FormItem  label='货品名称' labelCol={{span:7}} wrapperCol={{span:14}} required>
@@ -185,7 +187,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                     initialValue: '',
                     
                 })(
-                    <textarea style={{width:'275px'}}></textarea>
+                    <textarea style={{width:'275px'}} placeholder='请输入备注'></textarea>
                 )}
                 </FormItem>
             </Form>
