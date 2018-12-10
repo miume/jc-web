@@ -135,9 +135,9 @@ class ProcessInspection extends React.Component{
           render: (text) => {
               return (
                   <span>
-                      <Detail value={text} allProductionProcess={this.state.allProductionProcess} server={this.server} Authorization={this.Authorization} />
+                      <Detail value={text} allProductionProcess={this.state.allProductionProcess} server={this.server} Authorization={this.Authorization}  fetch={this.fetch}/>
                       <Divider type="vertical" />
-                      <Editor value={text} server={this.server} Authorization={this.Authorization}/>
+                      <Editor value={text} server={this.server} Authorization={this.Authorization} fetch={this.fetch}/>
                       <Divider type="vertical" />
                       <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
                           <span className='blue'>删除</span>
