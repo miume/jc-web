@@ -28,7 +28,7 @@
     padding: 0 1% 0;
 }
 .rightSpan{
-    padding-left: 28%;
+    padding-left: 17%;
     width:50%;
     text-align: right;
 }
@@ -40,7 +40,7 @@
     width:100%;
     height: 90px; 
     display: flex; 
-    padding:0.5% 1%;
+    padding:1% 1%;
     vertical-align: bottom;
   }
   .item{
@@ -63,7 +63,7 @@
   }
   .item4{
     /* flex: 0 0 10%; */
-    border:1px solid grey;
+    
   }
   .item1 i{
       height:100%;
@@ -84,10 +84,12 @@
 }
 .item2 .partSpan{
     font-size: 14px;
+    padding:0 15px 0 0;
     font-weight: 600;
 }
 .item2 .partSpan1{
     font-size: 12px;
+    padding:0 15px 0 0;
     font-weight: 400;
 }
 .item2 .item2Scroll{

@@ -289,7 +289,7 @@ class PurchaseModal extends React.Component {
     /**---------------------- */
     /**获取表头左右图标点击效果*/
     handleClick(number) {
-        var middle  = this.middleTheadRef;
+        var middle  = this.middleTheadRef;         
         var middleItem = this.middleTheadDivRef;
         var tbodyMiddleRef = this.tbodyMiddleRef;
         let count = middleItem.offsetWidth * 7;
