@@ -104,8 +104,6 @@ class AddModal extends React.Component {
             if (err) {
                 return;
             }
-            console.log(values)
-            
             axios({
                 url : `${this.server}/jc/auth/menu/add`,
                 method:'post',
