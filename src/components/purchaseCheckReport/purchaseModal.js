@@ -20,7 +20,8 @@ for (let i = 0; i < 5; i++) {
     });
 }
 const headData =[];
-for (let i = 0; i < 20; i++) {
+const headBorder = [];
+for (let i = 0; i < 17; i++) {
     headData.push({
         index: i,
         id:i,
@@ -28,10 +29,11 @@ for (let i = 0; i < 20; i++) {
         itemUnit: '%',
         testResult: '20.00',
     });
+    headBorder.push(false);
 }
 const tbodyData = [];
 const nopassRowNum = [];
-const passRowNum =[];
+const passRowNum = [];
 for(let i=0; i<15; i++){
     tbodyData.push({
         index: i,
@@ -110,14 +112,6 @@ for(let i=0; i<15; i++){
             value: '17',
             isQualified: false
         },
-        C18: {
-            value: '18',
-            isQualified: false
-        },
-        C19: {
-            value: '19',
-            isQualified: false
-        },
         pass: false,
         nopass: false,
     });
@@ -138,6 +132,7 @@ class PurchaseModal extends React.Component {
             nopassTotalNum: 0, //保存表格总红色（非合格）的数量
             passRowNum: passRowNum ,//保存每一行绿色（合格）的数量
             passTotalNum: 0, //保存表格总绿色（合格）的数量
+            headBorder: headBorder, //保存需要消除border的哪一列下标
             headColumns: headData ,
             tbodyData: tbodyData,
             //控制类的存在
@@ -162,18 +157,18 @@ class PurchaseModal extends React.Component {
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
-                    <table style={{float:'left',border:"1px solid gray",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px'}} >
-                        <thead>
+                    <table style={{float:'left',border:"1px solid #E9E9E9",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px'}} >
+                        <thead style={{background:'#0079FE',color:'white'}}>
                         <tr>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>原材料</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>规格</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>数量</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>到货日期</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>生产厂家</th>
+                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>原材料</th>
+                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>规格</th>
+                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>数量</th>
+                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>到货日期</th>
+                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>生产厂家</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr className="placeholder">
+                        <tr>
                             <td><input placeholder="原材料名称" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
                             <td><input placeholder="请输入规格" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
                             <td><input placeholder="请输入数量" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
@@ -199,15 +194,15 @@ class PurchaseModal extends React.Component {
                         <div id="thead">
                             <div id="theadLeft">
                                 <div>
-                                    <div className="leftThead">序号</div>
+                                    <div className="leftThead borderRight">序号</div>
                                     <div className="leftThead">批号</div>
                                 </div>
                             </div>
-                            <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+                            <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}  style={{paddingLeft:'1px'}}>
                                 <div className={(this.state.hover? 'leftOnclick':'')} onClick={handleLeftClick}>
                                     <i className="fa fa-chevron-left fa-2x"></i>
                                 </div>
-                                <div className="middleThead" ref={(ref) => this.middleTheadRef = ref}>
+                                <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} >
                                     {
                                         this.state.headColumns.map((item,index) => {
                                             return (
@@ -235,26 +230,30 @@ class PurchaseModal extends React.Component {
                                     this.state.tbodyData.map((item,index) => {
                                         return(
                                             <div key={'tbody'+index}>
-                                                <div className="leftTbody" key={item.id}>{item.index}</div>
+                                                <div className="leftTbody borderRight" key={item.id}>{item.index}</div>
                                                 <div className="leftTbody" key={'a'}>{item.a}</div>
                                             </div>
                                         )
                                     })
                                 }
                             </div>
-                            <div id="tbodyArea" className={this.state.className}>
+                            <div id="tbodyArea">
                                 <div className="tbodyMiddle" ref={(ref) => this.tbodyMiddleRef = ref}>
                                     {
                                         this.state.tbodyData.map((item,index) => {
                                             const data = item;
                                             const tbodyRow = index;
+                                            const dynDataLength = this.state.headColumns.length;
+
+                                            console.log('dynDataLength',dynDataLength)
                                             return(
-                                                <div className="middleTbody"   key={'tbodyData'+index}>
+                                                <div className="middleTbody"   key={'tbodyData'+index} style={{paddingLeft:'1px'}}>
                                                     {
                                                         this.state.headColumns.map((item,index) => {
+                                                            //通过计算去除边框
                                                             return(
                                                                 <div
-                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDiv')}
+                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDiv') }
                                                                     ref={`${tbodyRow}|${index}`}
                                                                     id={`${tbodyRow}|${item.testItem}`}
                                                                     key={index}
