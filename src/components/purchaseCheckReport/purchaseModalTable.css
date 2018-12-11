@@ -164,7 +164,7 @@
     transition: transform 2s;
 }
 .middleTbodyDivRed {
-    background-color: red;
+    background-color: #FF3B30;
     min-width: 14.3%;
     max-width: 14.3%;
     line-height: 22px;
@@ -192,7 +192,19 @@
     flex-wrap: nowrap;
     justify-content: center;
 }
-#tbodyRight div div {
+/*#tbodyRight div div {*/
+    /*background-color: #999999;*/
+    /*color:white;*/
+    /*min-width: 50%;*/
+    /*max-width: 50%;*/
+    /*height: 22px;*/
+    /*line-height: 22px;*/
+    /*text-align: center;*/
+    /*font-size: 12px;*/
+
+/*}*/
+
+.isQualified {
     background-color: #999999;
     color:white;
     min-width: 50%;
@@ -201,6 +213,25 @@
     line-height: 22px;
     text-align: center;
     font-size: 12px;
-
+}
+.passJudge {
+    background-color: #4BD863;
+    color:white;
+    min-width: 50%;
+    max-width: 50%;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    font-size: 12px;
+}
+.nopassJudge {
+    background-color: #FF3B30;
+    color:white;
+    min-width: 50%;
+    max-width: 50%;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    font-size: 12px;
 }
 /*!**!*/
