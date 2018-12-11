@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Todo from './todo';
 import './todolist.css';
+import { Certificate } from 'crypto';
 
 class TodoProcessed extends React.Component{
     server
@@ -9,11 +10,11 @@ class TodoProcessed extends React.Component{
     componentDidMount(){
         this.fetch();
     }
-    componentWillUnmount(){
-        this.setState=()=>{
-            return;
+    componentWillUnmount() {
+        this.setState = () => {
+          return ;
         }
-    }
+      }
     constructor(props){
         super(props);
         this.state = {
@@ -32,10 +33,11 @@ class TodoProcessed extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
+            const count = res? res.length : 0;
             this.setState({
-                // createPersonId:res?res[0].commonBatchNumber.createPersonId:-1,
                 data:res
             })
+            this.props.getCount(count);
             console.log(res)
         })
     }
@@ -46,15 +48,29 @@ class TodoProcessed extends React.Component{
     render(){
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
+        const data = [
+            'quan',
+            'line2',
+            'quan',
+            'line2',
+            'quan'
+        ]
         return (
-            <div style={{padding:'15px',overflow:'auto'}}>
-            <div style={{height:'100%'}}>
-            {
-              this.state.data?this.state.data.map(e=>{
-                  return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
-              }):null
-            }   
-            </div> 
+            <div style={{padding:'15px', overflowX:'auto'}}>
+                <div style={{height:'100%'}}>
+                    {
+                    this.state.data?this.state.data.map(e=>{
+                        return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
+                    }):null
+                    }   
+                </div> 
+                    {/* <div className='wrapxxx'>
+                        {data.map((e,index) => {
+                            return (
+                                <div key={index} className={e}></div>
+                            )
+                        })}
+                    </div> */}
             </div>
         );
     }
