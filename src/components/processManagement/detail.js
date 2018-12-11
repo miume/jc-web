@@ -3,6 +3,8 @@ import {Modal,Button,Input,Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace'
 import axios from 'axios'
 import "./difference.css"
+import AddButton from '../BlockQuote/newButton'
+import CancleButton from "../BlockQuote/cancleButton";
 
 const columns = [{
         title: '负责人',
@@ -73,10 +75,11 @@ class Detail extends React.Component{
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
-                    onCancel={this.handleCancel} width='700px'
+                closable={false}
+                
                     footer={[
-                        <Button key="submit" type="primary" size="large" onClick={this.handleOk}>确 定</Button>,
-                        <Button key="back" type="ghost" size="large" onClick={this.handleCancel}>返 回</Button>
+                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                        <AddButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
                     ]}>
                     <div style={{height:'400px'}}>
                          <table className="custom_tb">

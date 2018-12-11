@@ -64,6 +64,13 @@ class SampleInspection extends React.Component{
         key: 'memo',
         align:'center',
         width: '10%',
+        render(text,record){
+            if(record.details.sampleDeliveringRecord.exceptionComment === null){
+                return "无"
+            }else{
+                return record.details.sampleDeliveringRecord.exceptionComment
+            }
+        }
     },{
         title: '类型',
         dataIndex: 'commonBatchNumber.dataType',
@@ -76,12 +83,26 @@ class SampleInspection extends React.Component{
         key: 'status',
         align:'center',
         width: '10%',
+        render:status=>{
+            switch(`${status}`){
+                case '1':return "等待接受";
+                case "2":return "接受";
+                case "3":return "拒绝"
+            }
+        }
     },{
         title: '拒绝原因',
         dataIndex: 'details.sampleDeliveringRecord.handleComment',
         key: 'handleComment',
         align:'center',
         width: '10%',
+        render(text,record){
+            if(record.details.sampleDeliveringRecord.handleComment === null){
+                return "无"
+            }else{
+                return record.details.sampleDeliveringRecord.handleComment
+            }
+        }
     },{
         title:'操作',
         dataIndex: 'operation',
@@ -138,7 +159,7 @@ class SampleInspection extends React.Component{
             <div>
                 <BlockQuote name="样品送检"></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddModal />&nbsp;&nbsp;&nbsp;
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
@@ -176,7 +197,6 @@ class SampleInspection extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            console.log(data)
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
