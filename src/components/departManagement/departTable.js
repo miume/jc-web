@@ -175,7 +175,7 @@ class DepartTable extends React.Component {
                 onChange={this.props.handleTableChange}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
+                scroll={{ y: 450 }}
             />
         );
         //useFixedHeader 用来固定表头（需要指定 column 的 width 属性，否则列头和内容可能不对齐）
