@@ -1,7 +1,8 @@
 import React from 'react';
 import {Table, Input, InputNumber, Popconfirm, Form, Divider, message} from 'antd';
 import DeletaSpan from './deleteSpan'
-import axios from "axios";;
+import axios from "axios";
+
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
