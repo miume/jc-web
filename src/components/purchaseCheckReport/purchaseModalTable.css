@@ -1,17 +1,23 @@
 #modalTable {
     width: 100%;
-    height: 400px;
+    height: 470px;
     white-space: nowrap;
     /*display: flex;*/
     font-size: 0;
+
+
 }
 #thead {
-    height: 66px;
+    height: 90px;
     width: 100%;
     transition: width 0.3s, height 0.3s;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    border-radius: 3px 3px 0 0;
+    border: 1px solid #E9E9E9;
+    background-color: #F2F2F2;
+
 }
 #theadLeft {
     min-width: 20%;
@@ -20,9 +26,8 @@
 #theadLeft div {
     border-radius: 3px 0 0 0;
     width: 100%;
-    height: 66px;
-    line-height: 66px;
-    background-color: #E4E4E4;
+    height: 90px;
+    line-height: 90px;
     white-space: nowrap;
     display: flex;
     flex-direction: row;
@@ -33,13 +38,13 @@
 .leftThead {
     min-width: 50%;
     max-width: 50%;
-    height: 66px;
-    border-right: 1px solid #CCCCCC;
-    font-size: 16px;
+    height: 90px;
+    border-right: 1px solid #E9E9E9;
+    font-size: 13px;
 }
 #theadMiddle {
-    background-color: #E4E4E4;
-    height: 66px;
+    background-color: #F2F2F2;
+    height: 87px;
     min-width: 70%;
     max-width: 70%;
 }
@@ -79,22 +84,27 @@
 .middleTheadDiv {
     min-width: 14.3%;
     max-width: 14.3%;
-    line-height: 22px;
+    line-height: 29px;
     text-align: center;
-    font-size: 12px;
-    border-right: 1px solid #CCCCCC;
+    font-size: 13px;
+    border-right: 1px solid #E9E9E9;
+    cursor: default;
     transition: transform 2s;
+}
+.middleTheadDiv div{
+    border-bottom: 1px solid #E9E9E9;
 }
 
 #theadRight {
     border-radius:0 3px 0 0;
     width: 10%;
-    height: 66px;
-    background-color: #E4E4E4;
+    height: 90px;
+    background-color: #F2F2F2;
     white-space: nowrap; /*强制内部原文不换行*/
-    line-height: 66px;
+    line-height: 90px;
     text-align: center;
-    font-size: 16px;
+    cursor: default;
+    font-size: 13px;
 }
 
 /*----tbody--------*/
@@ -106,6 +116,10 @@
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-y: auto; /*才能让y滚动取消*/
+    /*border: 1px solid #E9E9E9;*/
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #E9E9E9;
     border-radius:0 0 3px 3px;
 }
 #tbodyLeft {
@@ -115,8 +129,8 @@
 #tbodyLeft div {
     border-radius: 3px 0 0 0;
     width: 100%;
-    height: 22px;
-    line-height: 22px;
+    height: 30px;
+    line-height: 30px;
     white-space: nowrap;
     display: flex;
     flex-direction: row;
@@ -126,9 +140,11 @@
 .leftTbody {
     min-width: 50%;
     max-width: 50%;
-    height: 22px;
-    border-right: 1px solid #CCCCCC;
-    font-size: 12px;
+    height: 30px;
+    border-right: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+    cursor: default;
+    font-size: 13px;
 }
 #tbodyArea {
     /*height: 100%;*/
@@ -151,34 +167,34 @@
     flex-wrap: nowrap;
     flex-direction: row;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 13px;
+
     /*transition: transform 2s;*/
 }
 .middleTbodyDiv {
     min-width: 14.3%;
     max-width: 14.3%;
-    line-height: 22px;
+    line-height: 29px;
     text-align: center;
-    border-right: 1px solid #CCCCCC;
-    font-size: 12px;
+    border-right: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+    font-size: 13px;
+    cursor: pointer;
     transition: transform 2s;
 }
 .middleTbodyDivRed {
     background-color: #FF3B30;
     min-width: 14.3%;
     max-width: 14.3%;
-    line-height: 22px;
+    line-height: 29px;
     text-align: center;
-    border-right: 1px solid #CCCCCC;
-    font-size: 12px;
+    border-right: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+    font-size: 13px;
+    cursor: pointer;
     transition: transform 2s;
 }
-.false{
 
-}
-.true{
-
-}
 
 #tbodyRight {
     min-width: 10%;
@@ -191,6 +207,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: center;
+    cursor: pointer;
 }
 /*#tbodyRight div div {*/
     /*background-color: #999999;*/
@@ -209,29 +226,32 @@
     color:white;
     min-width: 50%;
     max-width: 50%;
-    height: 22px;
-    line-height: 22px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #E9E9E9;
 }
 .passJudge {
     background-color: #4BD863;
     color:white;
     min-width: 50%;
     max-width: 50%;
-    height: 22px;
-    line-height: 22px;
+    height: 29px;
+    line-height: 29px;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #E9E9E9;
 }
 .nopassJudge {
     background-color: #FF3B30;
     color:white;
     min-width: 50%;
     max-width: 50%;
-    height: 22px;
-    line-height: 22px;
+    height: 30px;
+    line-height: 30px;
     text-align: center;
-    font-size: 12px;
+    font-size: 13px;
+    border-bottom: 1px solid #E9E9E9;
 }
 /*!**!*/

@@ -15,24 +15,29 @@ const CollectionCreateForm = Form.create()(
                     visible={visible}
                     title="新增"
                     closable={false}
+                    width='360px'
+                    centered={true}
+                    className='modal'
+                    maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={handleCancel}/>,
                         <NewButton key="submit" handleClick={handleOk} name='确定' style='button' className='fa fa-check' />
                     ]}
                 >
                     <Form horizontal='true'>
-                        <FormItem label="操作名称" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem wrapperCol={{ span: 23 }} required>
                             {getFieldDecorator('operationName', {
+                                initialValue: '',
                                 rules: [{ required: true, message: '请输入操作名称' }],
                             })(
-                                <Input placeholder='请输入操作名称'/>
+                                <Input placeholder='请输入操作名称' style={{height:40}}></Input>
                             )}
                         </FormItem>
-                        <FormItem label="描述" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem wrapperCol={{ span: 23 }}>
                             {getFieldDecorator('operationCode', {
                                 initialValue: '',
                             })(
-                                <Input placeholder='请输入操作描述' />
+                                <Input placeholder='请输入操作描述' style={{height:40}}></Input>
                             )}
                         </FormItem>
                     </Form>

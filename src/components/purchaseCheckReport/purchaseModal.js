@@ -32,7 +32,7 @@ for (let i = 0; i < 20; i++) {
 const tbodyData = [];
 const nopassRowNum = [];
 const passRowNum =[];
-for(let i=0; i<6; i++){
+for(let i=0; i<15; i++){
     tbodyData.push({
         index: i,
         id:i,
@@ -138,8 +138,6 @@ class PurchaseModal extends React.Component {
             nopassTotalNum: 0, //保存表格总红色（非合格）的数量
             passRowNum: passRowNum ,//保存每一行绿色（合格）的数量
             passTotalNum: 0, //保存表格总绿色（合格）的数量
-            // colorStatueId: [], //用来存储已经变红的标签id（唯一）
-            // passColorIdNum: passColorIdNum,  //用于存储合格变色的标签id
             headColumns: headData ,
             tbodyData: tbodyData,
             //控制类的存在
@@ -164,23 +162,23 @@ class PurchaseModal extends React.Component {
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
-                    <table style={{float:'left',textAlign:'center',border:"1px solid gray",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px'}} >
+                    <table style={{float:'left',border:"1px solid gray",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px'}} >
                         <thead>
                         <tr>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'14px' }}>原材料</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'14px' }}>规格</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'14px' }}>数量</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'14px' }}>到货日期</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'14px' }}>生产厂家</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>原材料</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>规格</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>数量</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>到货日期</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>生产厂家</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr className="placeholder">
-                            <td><input placeholder="原材料名称" style={{ width: 130,border:0}}></input></td>
-                            <td><input placeholder="请输入规格" style={{ width: 130,border:0}}></input></td>
-                            <td><input placeholder="请输入数量" style={{ width: 130,border:0}}></input></td>
-                            <td><input placeholder="请输入到货日期" style={{ width: 130,border:0}}></input></td>
-                            <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0}}></input></td>
+                            <td><input placeholder="原材料名称" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
+                            <td><input placeholder="请输入规格" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
+                            <td><input placeholder="请输入数量" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
+                            <td><input placeholder="请输入到货日期" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
+                            <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
                         </tr>
                         </tbody>
                     </table>
@@ -197,7 +195,7 @@ class PurchaseModal extends React.Component {
                     </table>
                 </div>
                 <div style={{paddingTop:'80px'}}>
-                    <div id="modalTable" className={this.state.visible}>
+                    <div id="modalTable">
                         <div id="thead">
                             <div id="theadLeft">
                                 <div>
@@ -358,8 +356,6 @@ class PurchaseModal extends React.Component {
             //  点击判定为不合格--（变红）
             tbodyData[tbodyRow].pass = false;
             tbodyData[tbodyRow].nopass = true;
-            // this.refs['nopass'+tbodyRow].style.background = '#FF3B30';
-            // this.refs['pass'+tbodyRow].style.background = '#999999';
             nopassRowNum[tbodyRow] += 1;
             if(nopassRowNum[tbodyRow] === 1){
                 nopassTotalNum += 1;
@@ -379,8 +375,6 @@ class PurchaseModal extends React.Component {
             // 点击变白
             tbodyData[tbodyRow][testItem].isQualified = false;
             //  点击判定为不合格--（变红）
-            // this.refs['nopass'+tbodyRow].style.background = '#999999';
-            // this.refs['pass'+tbodyRow].style.background = '#4BD863';
             nopassRowNum[tbodyRow] -= 1;
             if(nopassRowNum[tbodyRow] === 0){
                 nopassTotalNum -= 1;
@@ -390,7 +384,6 @@ class PurchaseModal extends React.Component {
                     passRowNum[tbodyRow] = 1;
                     passTotalNum += 1;
                 }
-                // passTotalNum += 1;
             }else{
                 tbodyData[tbodyRow].pass = false;
                 tbodyData[tbodyRow].nopass = true;
@@ -426,11 +419,6 @@ class PurchaseModal extends React.Component {
                 })
             }
         }
-
-
-
-
-
     };
     /**---------------------- */
     /**获取鼠标移进移出数据*/
@@ -487,99 +475,7 @@ class PurchaseModal extends React.Component {
     /**修改已经选择的颜色的id*/
 
     /**---------------------- */
-    /**动态表头数据获取与组装 */
-    cellChange = (e) => {
-        const id = e.target.id;
-        var flag = -1;
-        var tdId = document.getElementById(id).parentNode;
-        var colorStatueId = this.state.colorStatueId;
-        for(var i=0; i<colorStatueId.length; i++){
-            if(id===colorStatueId[i]){
-                flag = i;
-            }
-        }
-        if(flag>=0){
-            tdId.style.background = 'white';
-            colorStatueId.splice(flag,1);
-            this.setState({
-                colorStatueId:colorStatueId,
-                purchaseStatus: '待定'
-            })
-        }else{
-            tdId.style.background = 'red';
-            colorStatueId.push(id);
-            this.setState({
-                colorStatueId:colorStatueId,
-                purchaseStatus: '不合格'
-            })
-        }
-    };
-    /**---------------------- */
 
-
-    /**表格判定的结果获取 */
-    radioChange = (recordId,e) => {
-        //获取下标，将下标进行排序或许与数据进行组合，传给数据库
-        // 或者 单独将id和value构成一个新的数据传给后台
-        const radioState = e.target.value;
-        const radioData = {
-            id: recordId,
-            purchaseStatus: radioState,
-        };
-        var flag = false;
-        var radioDataArr = this.state.radioDataArr;
-        const radioArrLength = this.state.radioDataArr.length;
-        var radioTrueNum = this.state.radioTrueNum;
-        var radioFalseNum = this.state.radioFalseNum;
-        for(var i=0;i<radioDataArr.length;i++){
-            if(radioDataArr[i].id===recordId){
-                radioDataArr[i].purchaseStmatus = radioState;
-                if(radioDataArr[i].purchaseStatus === 'pass'){
-                    radioTrueNum = radioTrueNum + 1;
-                    radioFalseNum = radioFalseNum - 1;
-                }
-                if(radioDataArr[i].purchaseStatus === 'nopass'){
-                    radioFalseNum = radioFalseNum + 1;
-                    radioTrueNum = radioTrueNum - 1;
-                }
-                flag = true;
-            }
-        }
-        if(flag === false){
-            // this.setState({
-            //     radioDataArr: [...this.state.radioDataArr,radioData]
-            // });
-            if(radioData.purchaseStatus === 'pass'){
-                radioTrueNum = radioTrueNum + 1;
-            }
-            if(radioData.purchaseStatus === 'nopass'){
-                radioFalseNum = radioFalseNum + 1;
-            }
-            radioDataArr.push(radioData);
-        }
-        this.setState({
-            radioTrueNum: radioTrueNum,
-            radioFalseNum: radioFalseNum,
-            radioDataArr: radioDataArr
-        },() => {
-            if(radioArrLength<this.state.dataSource.length){
-                this.setState({
-                    purchaseStatus: '待定'
-                })
-            }
-            if(radioFalseNum > 0){
-                this.setState({
-                    purchaseStatus: '不合格'
-                })
-            }
-            if(radioTrueNum === this.state.dataSource.length){
-                this.setState({
-                    purchaseStatus: '合格'
-                })
-            }
-        });
-    };
-    /**--------------------- */
     /**根据判定结果返回div-style颜色*/
 
 
