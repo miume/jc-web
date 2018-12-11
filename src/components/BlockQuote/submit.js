@@ -106,7 +106,7 @@ class Submit extends React.Component{
             visible={this.props.visible}
             onVisibleChange={this.props.handleVisibleChange}
             >
-                <Button type='primary' size='default' className='button'><i className="fa fa-check"></i><span> 送审</span></Button>  
+                <Button type='primary' size='default' className='button'><i className="fa fa-check"></i><span> 送审</span></Button>
             </Popover>
         );
     }
