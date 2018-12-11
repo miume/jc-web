@@ -173,24 +173,25 @@ class Editor extends React.Component{
                 {/* <span className='blue' onClick={this.props.status === -1?this.handleDetail:null}>编辑</span> */}
                 {/* <span className='blue' onClick={this.handleDetail}>编辑</span> */}
                 <Modal title='编辑' visible={this.state.visible}
-                    closable={false}
+                    closable={false} centered={true}
+                    maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleOk} style='button' className='fa fa-check' />,
                         <AddButton key="submit" handleClick={this.handleYes} name='提交' style='button' className='fa fa-check' />
                       ]}>
-                      流程名称：<input id="name" defaultValue={this.state.name} placeholder="请输入名称"/>
+                      <input id="name" defaultValue={this.state.name} placeholder="请输入名称"/>
                       <WhiteSpace />
                       <div style={{height:'400px'}}>
-                        <table style={{width:'100%'}}>
-                            <thead className='thead'>
+                        <table className="table">
+                            <thead className='thead' id="th">
                                 <tr>
                                     <td>负责人</td>
                                     <td>职责</td>
                                     <td>操作</td>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="edit">
                                 <EditTr dataSource={this.state.dataSource} detail = {this.state.detail} deleteRow={this.deleteRow}/>
                             </tbody>
                         </table>

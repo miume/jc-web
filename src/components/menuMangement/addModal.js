@@ -17,37 +17,40 @@ const CollectionCreateForm = Form.create()(
                 <Modal
                     visible={visible}
                     closable={false}
+                    centered={true}
+                    maskClosable={false}
+                    width='360px'
                     title="新增"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}>
                     <Form horizontal='true'>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 23 }}>
                             {getFieldDecorator('menuName', {
                                 rules: [{ required: true, message: '请输入菜单名称' }],
                             })(
-                                <Input placeholder='请输入菜单名称'/>
+                                <Input placeholder='请输入菜单名称' style={{height:40}}/>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 23 }}>
                             {getFieldDecorator('menuType', {
                                 rules: [{ required: true, message: '请选择菜单类型' }],
                                 initialValue : '1'
                             })(
-                                <Select onChange={this.props.selectChange}>
+                                <Select onChange={this.props.selectChange} size="large">
                                     <Option value='1'>父菜单</Option>
                                     <Option value='2'>子菜单</Option>
                                 </Select>
                             )}
                         </FormItem>
                        {
-                           this.props.visible1 === true ?  <FormItem label='父菜单选择' labelCol={{span:5}} wrapperCol={{ span: 14 }} required >
+                           this.props.visible1 === true ?  <FormItem labelCol={{span:5}} wrapperCol={{ span: 23 }} required >
                            {getFieldDecorator('parent',{
                                initialValue: '',
                                rules: [{required: true, message: '请选择父菜单'}],
                            })(    //2、getFieldDecorator 的使用方法，
-                               <Select>
+                               <Select size="large">
                                {
                                    fatherMenu.map(de=>{
                                        return(

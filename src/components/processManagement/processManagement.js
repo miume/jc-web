@@ -48,7 +48,7 @@ class Management extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'commonBatchNumber.id',
-            sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
+            // sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
             width: '13%',
         },{
@@ -110,7 +110,7 @@ class Management extends React.Component{
                             <span className='blue' href="#">删除</span>
                         </Popconfirm>
                     </span>
-                    );
+                );
             }
         }]
     }
@@ -157,6 +157,7 @@ class Management extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
+            console.log(res)
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;

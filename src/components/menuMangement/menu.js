@@ -96,7 +96,7 @@ class Menu extends React.Component{
     };
     return (
       <div>
-        <BlockQuote name="菜单管理" menu='用户与权限'></BlockQuote>
+        <BlockQuote name="菜单管理" menu='用户和权限'></BlockQuote>
         <div style={{padding:'15px'}}>
             <AddModal
                 fetch={this.fetch}
