@@ -1,11 +1,11 @@
-
 #modalTable {
     width: 100%;
-    height: 475px;
+    height: 470px;
     white-space: nowrap;
     /*display: flex;*/
     font-size: 0;
-    border: 1px solid #E9E9E9;
+
+
 }
 #thead {
     height: 90px;
@@ -14,6 +14,10 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    border-radius: 3px 3px 0 0;
+    border: 1px solid #E9E9E9;
+    background-color: #F2F2F2;
+
 }
 #theadLeft {
     min-width: 20%;
@@ -24,7 +28,6 @@
     width: 100%;
     height: 90px;
     line-height: 90px;
-    background-color: #F2F2F2;
     white-space: nowrap;
     display: flex;
     flex-direction: row;
@@ -41,7 +44,7 @@
 }
 #theadMiddle {
     background-color: #F2F2F2;
-    height: 90px;
+    height: 87px;
     min-width: 70%;
     max-width: 70%;
 }
@@ -81,12 +84,15 @@
 .middleTheadDiv {
     min-width: 14.3%;
     max-width: 14.3%;
-    line-height: 30px;
+    line-height: 29px;
     text-align: center;
     font-size: 13px;
     border-right: 1px solid #E9E9E9;
     cursor: default;
     transition: transform 2s;
+}
+.middleTheadDiv div{
+    border-bottom: 1px solid #E9E9E9;
 }
 
 #theadRight {
@@ -110,6 +116,10 @@
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-y: auto; /*才能让y滚动取消*/
+    /*border: 1px solid #E9E9E9;*/
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #E9E9E9;
     border-radius:0 0 3px 3px;
 }
 #tbodyLeft {
@@ -132,6 +142,7 @@
     max-width: 50%;
     height: 30px;
     border-right: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
     cursor: default;
     font-size: 13px;
 }
@@ -157,14 +168,16 @@
     flex-direction: row;
     justify-content: space-between;
     font-size: 13px;
+
     /*transition: transform 2s;*/
 }
 .middleTbodyDiv {
     min-width: 14.3%;
     max-width: 14.3%;
-    line-height: 30px;
+    line-height: 29px;
     text-align: center;
     border-right: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
     font-size: 13px;
     cursor: pointer;
     transition: transform 2s;
@@ -173,9 +186,10 @@
     background-color: #FF3B30;
     min-width: 14.3%;
     max-width: 14.3%;
-    line-height: 30px;
+    line-height: 29px;
     text-align: center;
     border-right: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
     font-size: 13px;
     cursor: pointer;
     transition: transform 2s;
@@ -216,16 +230,18 @@
     line-height: 30px;
     text-align: center;
     font-size: 13px;
+    border-bottom: 1px solid #E9E9E9;
 }
 .passJudge {
     background-color: #4BD863;
     color:white;
     min-width: 50%;
     max-width: 50%;
-    height: 30px;
-    line-height: 30px;
+    height: 29px;
+    line-height: 29px;
     text-align: center;
     font-size: 13px;
+    border-bottom: 1px solid #E9E9E9;
 }
 .nopassJudge {
     background-color: #FF3B30;
@@ -236,5 +252,6 @@
     line-height: 30px;
     text-align: center;
     font-size: 13px;
+    border-bottom: 1px solid #E9E9E9;
 }
 /*!**!*/

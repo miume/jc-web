@@ -165,11 +165,11 @@ class PurchaseModal extends React.Component {
                     <table style={{float:'left',border:"1px solid gray",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px'}} >
                         <thead>
                         <tr>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'13px',paddingLeft:'10px' }}>原材料</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'13px',paddingLeft:'10px' }}>规格</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'13px',paddingLeft:'10px' }}>数量</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'13px',paddingLeft:'10px' }}>到货日期</th>
-                            <th style={{background:'#0079FE', color:'white' ,fontSize:'13px',paddingLeft:'10px' }}>生产厂家</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>原材料</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>规格</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>数量</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>到货日期</th>
+                            <th style={{background:'#0079FE', color:'white' ,fontSize:'15px',paddingLeft:'10px' }}>生产厂家</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -195,7 +195,7 @@ class PurchaseModal extends React.Component {
                     </table>
                 </div>
                 <div style={{paddingTop:'80px'}}>
-                    <div id="modalTable" className={this.state.visible}>
+                    <div id="modalTable">
                         <div id="thead">
                             <div id="theadLeft">
                                 <div>
