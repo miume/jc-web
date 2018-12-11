@@ -30,35 +30,97 @@ for (let i = 0; i < 20; i++) {
     });
 }
 const tbodyData = [];
-const passColorIdNum = [];
-for(let i=0; i<20; i++){
+const nopassRowNum = [];
+const passRowNum =[];
+for(let i=0; i<6; i++){
     tbodyData.push({
         index: i,
         id:i,
         a: 'ECT/12372',
         b: '启动',
-        C0: '0',
-        C1: '1',
-        C2: '2',
-        C3: '3',
-        C4: '4',
-        C5: '5',
-        C6: '6',
-        C7: '7',
-        C8: '8',
-        C9: '9',
-        C10: '10',
-        C11: '11',
-        C12: '12',
-        C13: '13',
-        C14: '14',
-        C15: '15',
-        C16: '16',
-        C17: '17',
-        C18: '18',
-        C19: '19',
+        C0: {
+            value: '0',
+            isQualified: false  // 0代表不合格-变红，1代表合格-白
+        },
+        C1: {
+            value: '1',
+            isQualified: false
+        },
+        C2: {
+            value: '2',
+            isQualified: false
+        },
+        C3: {
+            value: '3',
+            isQualified: false
+        },
+        C4: {
+            value: '4',
+            isQualified: false
+        },
+        C5: {
+            value: '5',
+            isQualified: false
+        },
+        C6: {
+            value: '6',
+            isQualified: false
+        },
+        C7: {
+            value: '7',
+            isQualified: false
+        },
+        C8: {
+            value: '8',
+            isQualified: false
+        },
+        C9: {
+            value: '9',
+            isQualified: false
+        },
+        C10: {
+            value: '10',
+            isQualified: false
+        },
+        C11: {
+            value: '11',
+            isQualified: false
+        },
+        C12: {
+            value: '12',
+            isQualified: false
+        },
+        C13: {
+            value: '13',
+            isQualified: false
+        },
+        C14: {
+            value: '14',
+            isQualified: false
+        },
+        C15: {
+            value: '15',
+            isQualified: false
+        },
+        C16: {
+            value: '16',
+            isQualified: false
+        },
+        C17: {
+            value: '17',
+            isQualified: false
+        },
+        C18: {
+            value: '18',
+            isQualified: false
+        },
+        C19: {
+            value: '19',
+            isQualified: false
+        },
     });
-    passColorIdNum.push(0);
+    nopassRowNum.push(0);
+    passRowNum.push(0);
 }
 class PurchaseModal extends React.Component {
     Authorization;
@@ -69,13 +131,18 @@ class PurchaseModal extends React.Component {
             columns: [],
             dataSource: data,
             purchaseStatus: '待定', //显示判定，合格，不合格
-            purchaseTotalNum: 0,
-            //用于自定义表
-            colorStatueId: [], //用来存储已经变红的标签id--转换成这一行
-            passColorIdNum: passColorIdNum,  //用于存储合格变色的标签id
+            //用于合格与非合格的数量
+            nopassRowNum: nopassRowNum, //保存每一行红色（非合格）的数量 -下标代表row,值代表num
+            nopassTotalNum: 0, //保存表格总红色（非合格）的数量
+            passRowNum: passRowNum ,//保存每一行绿色（合格）的数量
+            passTotalNum: 0, //保存表格总绿色（合格）的数量
+            // colorStatueId: [], //用来存储已经变红的标签id（唯一）
+            // passColorIdNum: passColorIdNum,  //用于存储合格变色的标签id
             headColumns: headData ,
             tbodyData: tbodyData,
+            //控制类的存在
             hover: false,
+            color: false,  //当ture变为红， 当false为白
 
         };
         this.handleMouseOver = this.handleMouseOver.bind(this);
@@ -91,7 +158,6 @@ class PurchaseModal extends React.Component {
         /**---------------------- */
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
-
 
         return(
             <div style={{paddingTop:'10px'}}>
@@ -187,8 +253,14 @@ class PurchaseModal extends React.Component {
                                                     {
                                                         this.state.headColumns.map((item,index) => {
                                                             return(
-                                                                <div className='middleTbodyDiv'  ref={`${tbodyRow}|${index}`}  id={`${tbodyRow}|${index}`} key={index} onClick={this.handleCellOnclick.bind(this)}>
-                                                                    {data[item.testItem]}
+                                                                <div
+                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDiv')}
+                                                                    ref={`${tbodyRow}|${index}`}
+                                                                    id={`${tbodyRow}|${item.testItem}`}
+                                                                    key={index}
+                                                                    onClick={this.handleCellOnclick.bind(this)}  //参数 行数和列对象的名字
+                                                                >
+                                                                    {data[item.testItem].value}
                                                                 </div>
                                                             )
                                                         })
@@ -204,7 +276,7 @@ class PurchaseModal extends React.Component {
                                     this.state.tbodyData.map((item,index) => {
                                         return(
                                             <div key={`right${index}`}>
-                                                <div ref={`pass${index}`}>合格</div>
+                                                <div ref={`pass${index}`} onClick={this.handleJudgePass.bind(this,index)}>合格</div>
                                                 <div ref={`nopass${index}`}>不合格</div>
                                             </div>
                                         )
@@ -217,61 +289,114 @@ class PurchaseModal extends React.Component {
             </div>
         )
     }
-
     /**表格单元格按钮点击事件*/
+    handleJudgePass = (index) => {
+        const tbodyData = this.state.tbodyData;
+        // 保存每一行绿色（合格）的数量
+        var passRowNum = this.state.passRowNum;
+        passRowNum[index] = 1;
+        // 保存表格总绿色（合格）的数量
+        var passTotalNum = this.state.passTotalNum;
+        passTotalNum += 1;
+        this.refs['pass'+index].style.background = '#4BD863';
+        this.refs['nopass'+index].style.background = '#999999';
 
+        this.setState({
+            passRowNum: passRowNum,
+            passTotalNum: passTotalNum,
+        })
+    };
+    /**---------------------- */
+    /**表格单元格按钮点击事件*/
     handleCellOnclick = (e) => {
         const id = e.target.id;
-        const nopassColorId = id.split('|')[0];
-        const row = 'nopass'+id.split('|')[0];
-        // this.refs[row].style.background = 'green';
-        //可以通过这种方式操作真实dom,但是要保证唯一
-        // var backgroundColor = this.refs[id].style.background;
-        var flag = -1;
-        var colorStatueId = this.state.colorStatueId;
-        var passColorIdNum = this.state.passColorIdNum;
-        var purchaseTotalNum = this.state.purchaseTotalNum;
-        for(var i=0; i<colorStatueId.length; i++) {
-            if(id===colorStatueId[i]){
-                flag = i;
+        const tbodyData = this.state.tbodyData;
+        // 当前单元格的行数
+        const tbodyRow = id.split('|')[0];
+        // 当前单元格的内容
+        const testItem = id.split('|')[1];
+        // 保存每一行红色（非合格）的数量-数组-下标代表row,值代表num
+        var nopassRowNum = this.state.nopassRowNum;
+        // 保存表格总红色（非合格）的数量
+        var nopassTotalNum = this.state.nopassTotalNum;
+        // 保存每一行绿色（合格）的数量
+        var passRowNum = this.state.passRowNum;
+        // 保存表格总绿色（合格）的数量
+        var passTotalNum = this.state.passTotalNum;
+        const isQualified = tbodyData[tbodyRow][testItem].isQualified;
+        if(isQualified===false){
+            //  点击单元格变红
+            tbodyData[tbodyRow][testItem].isQualified = true;
+            //  点击判定为不合格--（变红）
+            this.refs['nopass'+tbodyRow].style.background = '#FF3B30';
+            this.refs['pass'+tbodyRow].style.background = '#999999';
+            nopassRowNum[tbodyRow] += 1;
+            if(nopassRowNum[tbodyRow] === 1){
+                nopassTotalNum += 1;
+                if(passRowNum[tbodyRow] === 1){
+                    passRowNum[tbodyRow] = 0;
+                    passTotalNum -= 1;
+                }
             }
-        }
-        if(flag >= 0) {
-            this.refs[id].style.background = 'white';
-            colorStatueId.splice(flag,1);
-            passColorIdNum[nopassColorId] -= 1;
-            purchaseTotalNum -= 1;
-            if(passColorIdNum[nopassColorId]===0){
-                this.refs[row].style.background = '#999999';
+            this.setState({
+                tbodyData: tbodyData,
+                nopassTotalNum: nopassTotalNum,
+                passTotalNum: passTotalNum,
+                purchaseStatus: '不合格',
+                passRowNum: passRowNum,
+            })
+        }else{
+            // 点击变白
+            tbodyData[tbodyRow][testItem].isQualified = false;
+            //  点击判定为不合格--（变红）
+            this.refs['nopass'+tbodyRow].style.background = '#999999';
+            this.refs['pass'+tbodyRow].style.background = '#4BD863';
+            nopassRowNum[tbodyRow] -= 1;
+            if(nopassRowNum[tbodyRow] === 0){
+                nopassTotalNum -= 1;
+                if(passRowNum[tbodyRow] === 0){
+                    passRowNum[tbodyRow] = 1;
+                    passTotalNum += 1;
+                }
+                // passTotalNum += 1;
+
             }
-            if(purchaseTotalNum===0){
-                this.setState({
-                    colorStatueId:colorStatueId,
-                    passColorIdNum:passColorIdNum,
-                    purchaseTotalNum:purchaseTotalNum,
-                    purchaseStatus: '待定',
-                })
+            // 如果不合格总数变为0，则状态为"待定"、"合格"
+            if(nopassTotalNum === 0){
+                // 如果状态为"合格",即合格数达到表格数据总长度
+                if(passTotalNum === this.state.tbodyData.length){
+                    this.setState({
+                        tbodyData: tbodyData,
+                        nopassTotalNum: nopassTotalNum,
+                        passTotalNum: passTotalNum,
+                        purchaseStatus: '合格',
+                        passRowNum: passRowNum,
+                    })
+                }else{
+                    // 状态为"待定"
+                    this.setState({
+                        tbodyData: tbodyData,
+                        nopassTotalNum: nopassTotalNum,
+                        passTotalNum: passTotalNum,
+                        purchaseStatus: '待定',
+                        passRowNum: passRowNum,
+                    })
+                }
             }else{
                 this.setState({
-                    colorStatueId:colorStatueId,
-                    passColorIdNum:passColorIdNum,
-                    purchaseTotalNum:purchaseTotalNum,
+                    tbodyData: tbodyData,
+                    nopassTotalNum: nopassTotalNum,
+                    passTotalNum: passTotalNum,
                     purchaseStatus: '不合格',
+                    passRowNum: passRowNum,
                 })
             }
-        }else{
-            this.refs[id].style.background = 'red';
-            this.refs[row].style.background = 'red';
-            passColorIdNum[nopassColorId] += 1;
-            purchaseTotalNum +=1;
-            colorStatueId.push(id);
-            this.setState({
-                colorStatueId:colorStatueId,
-                passColorIdNum:passColorIdNum,
-                purchaseTotalNum:purchaseTotalNum,
-                purchaseStatus: '不合格'
-            })
         }
+
+
+
+
+
     };
     /**---------------------- */
     /**获取鼠标移进移出数据*/

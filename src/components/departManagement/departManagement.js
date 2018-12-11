@@ -72,7 +72,7 @@ class Depart extends React.Component {
                     />
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
-                            name='请输入操作名称'
+                            name='请输入部门名称'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
