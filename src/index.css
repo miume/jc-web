@@ -33,6 +33,9 @@ code {
   text-shadow: none !important;
   box-shadow: none !important;
 }
+.ant-btn-primary:nth-last-child(1){
+  margin-right: 0 !important;
+}
 #defaultCanvas0 {
     position: absolute;
     display: block;
