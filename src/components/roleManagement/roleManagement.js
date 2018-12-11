@@ -435,7 +435,8 @@ class Role extends React.Component {
                 <div style={{padding:'15px'}}>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                   {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                  <Modal title="新增" visible={this.state.visible} closable={false} className='modal'
+                  <Modal title="新增" visible={this.state.visible} closable={false} className='modal' maskClosable={false} 
+                        width='360px' centered={true}
                         footer={[
                           <CancleButton key='back' handleCancel={this.handleCancel}/>,
                           <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />

@@ -207,7 +207,7 @@ class Editor extends React.Component{
         return (
             <span>
                 <span className='blue' onClick={this.handleEditor} >编辑</span>
-                <Modal title="编辑" visible={this.state.visible} closable={false}
+                <Modal title="编辑" visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel}  width='1200px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,

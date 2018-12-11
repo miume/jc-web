@@ -160,7 +160,7 @@ class UserManagement extends React.Component {
         <span>
           <span  className='blue' onClick={this.showModal} value={this.state.value}>成员管理</span>
           <Modal title="设置角色" visible={this.state.visible}
-            closable={false} maskClosable={false} width={600}
+            closable={false} maskClosable={false} width={600} centered={true}
             footer={[
                 <CancleButton key='back' handleCancel={this.handleCancel}/>,
                 <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
