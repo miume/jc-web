@@ -1,38 +1,12 @@
 import React,{Component} from 'react';
 import {Table,Popconfirm,Divider,message} from 'antd';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
-import RawMaterialRedListAddModal from './redListAddModal';
+import Add from './add';
 import RawMaterialRedListEditModal from './rawMaterialRedListEdit';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 
-// const data=[];
-// for(let i=0;i<20;i++){
-//   data.push({
-//       //index:i,
-//       id:i+1,//序号
-//       lotNumber:'EcT/300',//批号
-//       name:'钴锰矿',//货品名称
-//       model:'钴锰矿一号',//货品型号
-//       number:'5袋',//损失数量
-//       weight:'10千克',//损失重量
-//       person:'周月',//申请人
-//       date:'2018年11月29日',//申请日期
-//       status:'已通过',//审核状态
-//   });
-// }
-// data.push({
-//     //index:i,
-//     id:21,//序号
-//     lotNumber:'EcT/300',//批号
-//     name:'钴锰矿',//货品名称
-//     model:'钴锰矿一号',//货品型号
-//     number:'5袋',//损失数量
-//     weight:'10千克',//损失重量
-//     person:'周月',//申请人
-//     date:'2018年11月29日',//申请日期
-//     status:'未申请',//审核状态
-// });
+
 class RawMaterialRedList extends Component{
     server;
     Authorization;
@@ -165,7 +139,8 @@ class RawMaterialRedList extends Component{
         this.searchEvent=this.searchEvent.bind(this);
         this.getAllProcess=this.getAllProcess.bind(this);
         this.getAllBatchNumber=this.getAllBatchNumber.bind(this);
-        
+        this.deleteByIds=this.deleteByIds.bind(this);
+        this.cancel=this.cancel.bind(this);
     }
    
   
@@ -242,7 +217,7 @@ class RawMaterialRedList extends Component{
     }
       /**批量删除弹出框确认函数 */
       deleteByIds(){
-        const ids=this.selectedRowKeys;
+        const ids=this.state.selectedRowKeys;
         axios({
              url:`${this.server}/jc/common/repoRedTable/deleteByIds`,
              method:'Delete',
@@ -352,8 +327,8 @@ class RawMaterialRedList extends Component{
       //console.log(this.state.batchNumberChildren);
         return(
             <div style={{padding:'15px'}}>
-                <RawMaterialRedListAddModal fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
-                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}/>
+                <Add fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入搜索内容' 
                       searchEvent={this.searchEvent}

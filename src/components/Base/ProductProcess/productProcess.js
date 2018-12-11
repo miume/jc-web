@@ -140,10 +140,6 @@ Authorization;
         const editable = this.isEditing(record);
         return (
             <span>
-                <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                <span className='blue'>删除</span>
-                </Popconfirm>
-                <Divider type="vertical" />
                 <span>
                 {editable ? (
                   <span>
@@ -162,6 +158,10 @@ Authorization;
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
+              <Divider type="vertical" />
+              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+                <span className='blue'>删除</span>
+                </Popconfirm>
             </span>
         );
         }

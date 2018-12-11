@@ -74,28 +74,30 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             maskClosable={false}
+            closable={false}
             title="编辑红单数据"
             onOk={onCreate}
             onCancel={onCancel}
             
              // footer下的每个组件都要有唯一的key
             footer={[
-              <CancleButton  handleCancel={onCreate}/>,
+              <CancleButton key='cancel'  handleCancel={onCancel}/>,
                 <SaveButton handleSave={onCancel}/> ,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                 maskClosable={false}
                  content={
                      <div style={{width:250 ,height:150}}>
                         <div>
-                        <Select onChange={this.banchNumberSelectChange} placeholder='请选择编号'>
-                    {
-                        this.props.batchNumber.map((bat)=>{
-                            return(
-                                <Option key={bat.id} value={bat.id}>{bat.serialNumber}</Option>
-                            );
-                        })
-                    }
-                    </Select>
+                            <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
+                            {
+                                this.props.process.map((pro)=>{
+                                        return(
+                                        <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
+
+                                        );
+                                })
+                            }
+                           </Select>
                         </div>
                         <div style={{paddingTop:'10px'}}>
                           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>

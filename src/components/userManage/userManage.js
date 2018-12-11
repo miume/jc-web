@@ -193,7 +193,6 @@ class User extends React.Component{
         const editable = this.isEditing(record);
         return (
             <span>
-              
                 <span className='blue'>
                 {editable ? (
                   <span>

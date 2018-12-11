@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,Icon} from 'antd';
+import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,Icon,Fragment} from 'antd';
 import axios from 'axios';
 import SaveButton from '../../BlockQuote/saveButton';
 import NewButton from '../../BlockQuote/newButton';
@@ -18,7 +18,8 @@ const CollectionCreateForm = Form.create()(//弹出层
           popVisible:false,//送检的气泡弹出
           checkSwitch:false,//是否紧急那个开关最开始是关闭的即否
           materialName:'',
-          materialClass:''
+          materialClass:'',
+        
         }
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
@@ -46,8 +47,6 @@ const CollectionCreateForm = Form.create()(//弹出层
                         materialName: res[i].materialName,
                         materialClass:res[i].materialClass
                       });
-                    //   console.log( res[i].materialName);
-                    //   console.log(res[i].materialClass);
                     break;
                  };
                
@@ -78,6 +77,8 @@ const CollectionCreateForm = Form.create()(//弹出层
         this.setState({
             checkSwitch:checked
         });
+        var check=this.state.checked;
+        this.props.getUrgent(check);
 
       }
      
@@ -91,6 +92,7 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             maskClosable={false}
+            closable={false}
             title="添加红单"
             onOk={onCreate}
             onCancel={onCancel}
@@ -100,7 +102,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                 <CancleButton key='cancel' handleCancel={onCancel}/>,
                 <SaveButton key='save'   handleSave={onCreate}>保存</SaveButton>,
                 <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
-                maskClosable={false} closable={false}
+                
                  content={
                      <div style={{width:250 ,height:150}}>
                         <div>
@@ -137,8 +139,8 @@ const CollectionCreateForm = Form.create()(//弹出层
                 {getFieldDecorator('serialNumber',{
                     initialValue: '',
                     rules:[{required:true,message:'请选择编号'}]
-                })(<span>
-                    <Select placeholder='请输入编号'  onChange={this.banchNumberSelectChange}>
+                })( 
+                    <Select   onChange={this.banchNumberSelectChange}>
                     {
                         this.props.batchNumber.map((bat)=>{
                             return(
@@ -147,7 +149,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                         })
                     }
                     </Select>
-                    </span>
+                    
                 )}
                 </FormItem>
                 <FormItem  label='货品名称' labelCol={{span:7}} wrapperCol={{span:14}} required>
@@ -204,33 +206,38 @@ class RawMaterialRedListAddModal extends React.Component{
             visible: false,//新增的弹出框
           
           };
-          
+        this.getUrgent=this.getUrgent.bind(this);
         }
         
-    //显示当前时间为某年某月某日
-    getNowFormatDate=()=> {
-      let date = new Date();
-      
-      let year = date.getFullYear();
-      let month = date.getMonth() + 1;
-      let strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-          month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-          strDate = "0" + strDate;
-      }
-      let currentdate = year + '-' + month + '-'+ strDate;
-      return currentdate;
-  }
-      showModal = () => {
+    //显示当前时间为某年某月某日。时分秒
+//     getNowFormatDate=()=> {
+//         var date = new Date();
+//         var seperator1 = "-";
+//         var seperator2 = ":";
+//         var month = date.getMonth() + 1;
+//         var strDate = date.getDate();
+//         if (month >= 1 && month <= 9) {
+//             month = "0" + month;
+//         }
+//         if (strDate >= 0 && strDate <= 9) {
+//             strDate = "0" + strDate;
+//         }
+//         var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+//                 + " " + date.getHours() + seperator2 + date.getMinutes()
+//                 + seperator2 + date.getSeconds();
+//         return currentdate;
+//   }
+        getUrgent(check){
+            return check;
+        }
+     showModal = () => {
         this.setState({ visible: true });
       }
      
-      handleCancel = () => {
+      handleCancel = () => {//新增的取消
         const form = this.formRef.props.form;
         this.setState({ visible: false });
-        form.resetFields();
+        form.resetFields();//将填写的数据置空
       }
     
       handleCreate = () => {//新增一条记录（点击保存但是没点送审）
@@ -262,8 +269,9 @@ class RawMaterialRedListAddModal extends React.Component{
         // });
         form.validateFields((error,values)=>{
               
-              values['userId']=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-              values['currentDate']=this.getNowFormatDate();
+              values['createPersonId']=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
+              //values['currentDate']=this.getNowFormatDate();
+              values['check']=this.getUrgent();
               console.log(values);
               //console.log(a);
         })
@@ -286,6 +294,7 @@ class RawMaterialRedListAddModal extends React.Component{
                 onCreate={this.handleCreate}
                 process={this.props.process}
                 batchNumber={this.props.batchNumber}
+                getUrgent={this.getUrgent}
               />
           </span>
         );

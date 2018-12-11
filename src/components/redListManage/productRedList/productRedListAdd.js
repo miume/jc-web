@@ -78,6 +78,7 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             maskClosable={false}
+            closable={false}
             title="添加红单"
             onOk={onCreate}
             onCancel={onCancel}
