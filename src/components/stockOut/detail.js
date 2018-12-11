@@ -90,7 +90,7 @@ class Detail extends React.Component{
             <span>
                 <span className='blue' onClick={this.handleDetial}>详情</span>
                 <Modal visible={this.state.visible} closable={false} maskCloseable={false}
-                width={800} title='出库详情'
+                width={800} title='出库详情' centered={true}
                 footer={[
                     <NewButton key='back' name='确定' className='fa fa-check' handleClick={this.handleClick}/>
                 ]}

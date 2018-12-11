@@ -158,7 +158,7 @@ class Add extends React.Component{
         return (
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
-                <Modal title="新增" visible={this.state.visible} closable={false}
+                <Modal title="新增" visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel} width='1300px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,

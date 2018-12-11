@@ -250,7 +250,7 @@ class Detail extends React.Component{
         return (
             <span>
                 <span className='blue' onClick={this.handleDetail} >详情</span>
-                <Modal title="详情" visible={this.state.visible} closable={false}
+                <Modal title="详情" visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel}  width='1200px' maskClosable={false}
                     footer={[
                       <CancleButton key='cancle' handleCancel={this.cancel}/>,

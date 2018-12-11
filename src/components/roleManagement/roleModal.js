@@ -19,20 +19,21 @@ class RoleModal extends React.Component{
         const { getFieldDecorator } = form;    //1、将getFieldDecorator 解构出来，用于和表单进行双向绑定
         
         return (
+            /**label='角色名称'labelCol={{ span: 5 }}   label='角色描述'labelCol={{ span: 5 }}  */
             <Form horizontal='true' onSubmit={() => this.handleSubmit()}>
-                <FormItem label='角色名称'labelCol={{ span: 5 }} wrapperCol={{ span: 14 }} required>
+                <FormItem wrapperCol={{ span: 23 }} required>
                     {getFieldDecorator('roleName',{
                         initialValue: '',
                         rules: [{required: true, message: '角色名称不能为空'}],
                     })(    //2、getFieldDecorator 的使用方法，
-                            <Input placeholder='请输入角色名称'></Input>
+                            <Input placeholder='请输入角色名称' style={{height:40}}></Input>
                         )}
                 </FormItem>
-                <FormItem label='角色描述'labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                <FormItem wrapperCol={{ span: 23 }}>
                     {getFieldDecorator('description',{
                         initialValue: '',
                     })( 
-                        <Input placeholder='请输入角色名称' ></Input>
+                        <Input placeholder='请输入角色名称' style={{height:40}}></Input>
                     )}
                 </FormItem>
             </Form>

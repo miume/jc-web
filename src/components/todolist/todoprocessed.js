@@ -47,12 +47,14 @@ class TodoProcessed extends React.Component{
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         return (
-            <div style={{padding:'15px'}}>
+            <div style={{padding:'15px',overflow:'auto'}}>
+            <div style={{height:'100%'}}>
             {
               this.state.data?this.state.data.map(e=>{
                   return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
               }):null
-            }    
+            }   
+            </div> 
             </div>
         );
     }

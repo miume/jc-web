@@ -84,7 +84,7 @@ class Detail extends React.Component{
             <span>
                 <span className='blue' onClick={this.handleDetail} >详情</span>
                 <Modal title='详情' visible={this.state.visible} closable={false}
-                maskClosable={false}
+                maskClosable={false} centered={true}
                  onCancel={this.handleCancel} style={{top:10}}
                  footer={[
                     <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
