@@ -49,23 +49,23 @@ class UserAddModal extends React.Component{
         // const departmentChildren=this.state.depart;
         return(
             <Form horizontal='true' onSubmit={()=>this.handleSubmit()}>
-               <FormItem label='登录名' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               <FormItem wrapperCol={{ span: 20 }} required>
                   {getFieldDecorator('username',{
                         initialValue: '',
                         rules: [{required: true, message: '登录名不能为空'}],
                      })(    //2、getFieldDecorator 的使用方法，
-                            <Input placeholder='请输入登录名'></Input>
+                            <Input placeholder='请输入登录名' style={{height:'40px' }}></Input>
                         )}
                </FormItem>
-               <FormItem label='用户名' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               <FormItem   wrapperCol={{ span: 20 }} required>
                {getFieldDecorator('name',{
                      initialValue: '',
                      rules: [{required: true, message: '用户名不能为空'}],
                   })(    //2、getFieldDecorator 的使用方法，
-                         <Input placeholder='请输入用户名'></Input>
+                         <Input placeholder='请输入用户名' style={{height:'40px' }}></Input>
                      )}
             </FormItem>
-               <FormItem label="密码" labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               <FormItem wrapperCol={{ span: 20 }} required>
                {getFieldDecorator('password', {
                  rules: [{
                    required: true, message: '密码不能为空!',
@@ -73,10 +73,10 @@ class UserAddModal extends React.Component{
                    validator: this.validateToNextPassword,
                  }],
                })(
-                 <Input placeholder='请输入密码'   type="password" />
+                 <Input placeholder='请输入密码'   type="password" style={{height:'40px' }}/>
                )}
              </FormItem>
-               <FormItem label="确认密码"  labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               <FormItem   wrapperCol={{ span: 20 }} required>
                     {getFieldDecorator('confirm', {
                         rules: [{
                         required: true, message: '请确认你的密码!',
@@ -84,15 +84,17 @@ class UserAddModal extends React.Component{
                         validator: this.compareToFirstPassword,
                         }],
                     })(
-                        <Input type="password"  placeholder='请确认密码' onBlur={this.handleConfirmBlur} />
+                        <Input style={{height:'40px' }} type="password"  placeholder='请确认密码' onBlur={this.handleConfirmBlur} />
                     )}
               </FormItem>
-               <FormItem label='所属部门' labelCol={{span:5}} wrapperCol={{ span: 14 }} required>
+               <FormItem   wrapperCol={{ span: 20 }} required>
                   {getFieldDecorator('departmentId',{
-                        // initialValue: '初始值',
+                        
                         rules: [{required: true, message: '请选择所属部门'}],
                      })(    //2、getFieldDecorator 的使用方法，
-                        <Select placeholder='请选择所属部门'>
+                        
+                        <Select placeholder='请选择所属部门' style={{height:'40px' }}>
+
                            {
                                this.props.deparment.map(de=>{
                                  return(
@@ -101,17 +103,17 @@ class UserAddModal extends React.Component{
                             })
                            }
                         </Select>
+                       
+                        )}
+               </FormItem>
+               <FormItem  wrapperCol={{ span: 20 }}>
+                    {getFieldDecorator('phone',{
+                        initialValue: '',
+                    })( 
+                        <Input placeholder='请输入手机号' style={{height:'40px'}}></Input>
                         )}
                </FormItem>
 
-
-               <FormItem label='手机号'labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                    {getFieldDecorator('phone',{
-                        initialValue: '',
-                    })(
-                        <Input placeholder='请输入手机号' ></Input>
-                    )}
-                </FormItem>
 
             </Form>
         );

@@ -159,7 +159,7 @@ Authorization;
                 )}
               </span>
               <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
             </span>
@@ -187,7 +187,7 @@ Authorization;
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/common/productionProcess/getProductionProcessesByPage`,
+        url: `${this.server}/jc/common/productionProcess/pages`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -252,7 +252,7 @@ Authorization;
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/common/productionProcess/deleteByIds?ids=${ids}`,
+            url:`${this.server}/jc/common/productionProcess?ids=${ids}`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization
@@ -264,6 +264,9 @@ Authorization;
          // console.log(data);
           message.info(data.data.message);
           this.fetch();
+          this.setState({
+            selectedRowKeys:[]
+          });
         })//处理成功
         .catch((error)=>{
          // console.log(error);
@@ -272,7 +275,9 @@ Authorization;
        
      }
     cancel(){
-      
+      this.setState({
+        selectedRowKeys:[]
+      });
     }
    
     //编辑
@@ -312,8 +317,8 @@ Authorization;
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/common/productionProcess/update`,
-              method:'post',
+              url:`${this.server}/jc/common/productionProcess`,
+              method:'put',
               headers:{
                 'Authorization':this.Authorization
               },
@@ -354,7 +359,7 @@ Authorization;
            const name=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${this.server}/jc/common/productionProcess/getProductionProcessesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/productionProcess/pagesNameLike`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization

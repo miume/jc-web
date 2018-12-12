@@ -14,21 +14,20 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             title="新增"
-            closable={false} maskClosable={false}
-            onOk={onCreate}
-            onCancel={onCancel}
+            closable={false} maskClosable={false} centered={true}
+            width='400px'
             footer={[
               <NewButton  handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
               <CancleButton        handleCancel={this.props.onCancel} />
             ]}
           >
             <Form horizontal='true' >
-                <FormItem label='产品线名称' labelCol={{span:5}} wrapperCol={{span:14}} required>
+                <FormItem wrapperCol={{span:20}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
                     rules:[{required:true,message:'产品线名称不能为空'}]
                 })(
-                    <Input placeholder='请输入产品线名称'></Input>
+                    <Input placeholder='请输入产品线名称' style={{height:'40px'}}></Input>
                 )}
                 </FormItem>
             </Form>
@@ -62,7 +61,7 @@ class ProductLineAddModal extends React.Component{
             return;
           }
           axios({
-            url:`${this.server}/jc/common/productLine/add`,
+            url:`${this.server}/jc/common/productLine`,
             method:'post',
             headers:{
               'Authorization':this.Authorization

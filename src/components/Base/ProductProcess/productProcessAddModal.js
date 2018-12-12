@@ -13,7 +13,7 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             title="新增"
-            closable={false} maskClosable={false}
+            closable={false} maskClosable={false} centered={true}
             onOk={onCreate}
             onCancel={onCancel}
             footer={[
@@ -22,12 +22,12 @@ const CollectionCreateForm = Form.create()(//弹出层
             ]}
           >
             <Form horizontal='true' >
-                <FormItem label='产品工序名称' labelCol={{span:5}} wrapperCol={{span:14}} required>
+                <FormItem  wrapperCol={{span:20}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
                     rules:[{required:true,message:'产品工序名称不能为空'}]
                 })(
-                    <Input placeholder='请输入产品工序名称'></Input>
+                    <Input placeholder='请输入产品工序名称' style={{height:'40px'}}></Input>
                 )}
                 </FormItem>
             </Form>
@@ -61,7 +61,7 @@ class  ProductProcessAddModal extends React.Component{
             return;
           }
           axios({
-            url:`${this.server}/jc/common/productionProcess/add`,
+            url:`${this.server}/jc/common/productionProcess`,
             method:'post',
             headers:{
               'Authorization':this.Authorization
