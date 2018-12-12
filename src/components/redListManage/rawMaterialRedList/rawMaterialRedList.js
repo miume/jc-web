@@ -83,7 +83,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'10%'
+            width:'11%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -107,7 +107,7 @@ class RawMaterialRedList extends Component{
             title:'备注',
             dataIndex:'repoRedTable.note',
             key:'repoRedTable.note',
-            aligin:'center',
+            align:'center',
             width:'10%'
         },
         {
@@ -115,7 +115,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'operation',
             key:'operation',
             align:'center',
-            width:'8%',
+            //width:'',
             render:(text,record)=>{
                 //console.log(record.commonBatchNumber.status);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
@@ -357,7 +357,7 @@ class RawMaterialRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400}}
+                        scroll={{y:400,x:800}}
                     >
                 
                 </Table>

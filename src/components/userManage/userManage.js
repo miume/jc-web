@@ -533,12 +533,12 @@ class User extends React.Component{
                <div style={{padding:'15px'}}>
 
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
-                    <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} width='400px' centered={true}
+                    <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} width='360px' centered={true}
                           footer={[
                             <NewButton  handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
                             <CancleButton handleCancel={() => this.handleCancel()} />
                           ]}>
-                          <UserAddModal  style={{height:'600px'}} deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
+                          <UserAddModal   deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>

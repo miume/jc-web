@@ -83,7 +83,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'10%'
+            width:'11%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -115,7 +115,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'operation',
             key:'operation',
             align:'center',
-            width:'8%',
+            //width:'8%',
             render:(text,record)=>{
                 //console.log(record.commonBatchNumber.status);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
@@ -127,7 +127,7 @@ class RawMaterialRedList extends Component{
                        <span >
                        {editFlag ? (
                          <span>
-                           <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
+                           <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='再想想'>
                            <span className='blue'>删除</span>
                            </Popconfirm>
                          </span>

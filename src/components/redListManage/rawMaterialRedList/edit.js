@@ -67,12 +67,13 @@ class Edit extends Component{
               type:'json'
 
         }).then((data)=>{
-
+                message.info(data.data.message);
+                this.props.fetch();
         }).catch(()=>{
-          
+          message.info('编辑失败，请联系管理员！');
         });
         this.setState({ visible: false });
-         
+        this.formRef.resetField();
         }
       //红单是否紧急
    urgentChange=(checked)=>{//checked指定当前是否选中
