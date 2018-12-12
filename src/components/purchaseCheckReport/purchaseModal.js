@@ -140,8 +140,7 @@ class PurchaseModal extends React.Component {
             color: false,  //当ture变为红， 当false为白
 
         };
-        this.handleMouseOver = this.handleMouseOver.bind(this);
-        this.handleMouseOut = this.handleMouseOut.bind(this)
+
     }
 
     render() {
