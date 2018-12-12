@@ -58,7 +58,7 @@ class Add extends React.Component{
            },
            type:'json'
         }).then((data)=>{
-            console.log(data);
+           // console.log(data);
             const res=data.data.data;
             message.info(data.data.message);
             this.props.fetch();
@@ -69,6 +69,7 @@ class Add extends React.Component{
         this.setState({
         visible: false
         });
+        this.formRef.resetField();
     }
     handleCancel() {//点击新增的取消
         this.setState({
@@ -169,8 +170,7 @@ class Add extends React.Component{
                         maskClosable={false}
                         closable={false}
                         title="新增红单"
-                        onOk={this.handleSave}
-                        onCancel={this.handleCancel}
+                        width='360px'
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,

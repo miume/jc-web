@@ -14,7 +14,7 @@ class UserAddModal extends React.Component{
     }
     //'username','password','departmentId','phone'
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
-        const values= this.props.form.getFieldsValue(['username','password','departmentId','phone','name']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
+        const values= this.props.form.getFieldsValue(['username','name1','password','departmentId','phone',]);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         return values;//用来得到新增框中填写的新值
     }
 
@@ -57,8 +57,8 @@ class UserAddModal extends React.Component{
                             <Input placeholder='请输入登录名' style={{height:'40px' }}></Input>
                         )}
                </FormItem>
-               <FormItem   wrapperCol={{ span: 20 }} required>
-               {getFieldDecorator('name',{
+               <FormItem wrapperCol={{ span: 20 }} required>
+               {getFieldDecorator('name1',{
                      initialValue: '',
                      rules: [{required: true, message: '用户名不能为空'}],
                   })(    //2、getFieldDecorator 的使用方法，
@@ -93,7 +93,7 @@ class UserAddModal extends React.Component{
                         rules: [{required: true, message: '请选择所属部门'}],
                      })(    //2、getFieldDecorator 的使用方法，
                         
-                        <Select placeholder='请选择所属部门' style={{height:'40px' }}>
+                        <Select placeholder='请选择所属部门' >
 
                            {
                                this.props.deparment.map(de=>{

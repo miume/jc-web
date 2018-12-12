@@ -169,8 +169,7 @@ class Add extends React.Component{
                         maskClosable={false}
                         closable={false}
                         title="新增红单"
-                        onOk={this.handleSave}
-                        onCancel={this.handleCancel}
+                        width='360px'
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,
