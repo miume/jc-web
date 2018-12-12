@@ -11,7 +11,7 @@ class QuickAccess extends React.Component{
                 </div>
                 <div className='quick-middle' style={{textAlign:'center',fontSize:'20px',fontWeight:'400'}}>
                     <div className='quick-shadow'></div>
-                    <div className='quick-text' style={{color:'#999999'}}>快速访问</div>
+                    <div className='quick-text'>快速访问</div>
                     <div className='quick-shadow'></div>
                 </div>
                 <div className='quick-tag-parent'>
