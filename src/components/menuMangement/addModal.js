@@ -14,7 +14,7 @@ const CollectionCreateForm = Form.create()(
             const { visible, onCancel, onCreate, form,fatherMenu } = this.props;
             const { getFieldDecorator } = form;
             return (
-                <Modal
+                <Modal className='modal-sm'
                     visible={visible}
                     closable={false}
                     title="新增"
@@ -23,14 +23,14 @@ const CollectionCreateForm = Form.create()(
                         <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}>
                     <Form horizontal='true'>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('menuName', {
                                 rules: [{ required: true, message: '请输入菜单名称' }],
                             })(
                                 <Input placeholder='请输入菜单名称'/>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('menuType', {
                                 rules: [{ required: true, message: '请选择菜单类型' }],
                                 initialValue : '1'
