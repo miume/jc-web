@@ -6,6 +6,7 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 import AddButton from '../BlockQuote/newButton'
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
+import './difference.css'
 
 const FormItem = Form.Item;
 const userId = localStorage.getItem('menuList')
@@ -28,14 +29,16 @@ const CollectionCreateForm = Form.create()(
                 <Modal
                     visible={visible}
                     closable={false}
+                    centered={true}
+                    maskClosable={false}
                     title="新增"
-                    style={{height:"900px"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
                         <AddButton key="submit" handleClick={onSubmit} name='提交' style='button' className='fa fa-check' />
                       ]}
                 >
+                    <div style={{height:'400px'}}>
                     <Form horizontal='true'>
                         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
                             {getFieldDecorator('description', {
@@ -44,37 +47,13 @@ const CollectionCreateForm = Form.create()(
                                 <Input placeholder='请输入流程名称'/>
                             )}
                         </FormItem>
-                        {/* <FormItem label="是否紧急" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('isUrgent', {
-                                // rules: [{ required: true, message: '请选择紧急类型' }],
-                            })(
-                                <Select placeholder="请选择紧急类型">
-                                    <Option value='0'>不紧急</Option>
-                                    <Option value='1'>紧急</Option>
-                                </Select>
-                            )}
-                        </FormItem> */}
-                        {/* <FormItem label="审核状态" labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
-                            {getFieldDecorator('status', {
-                                // rules: [{ required: true, message: '请选择审核状态' }],
-                            })(
-                                <Select placeholder="请选择审核状态">
-                                    <Option value='-1'>已保存未提交</Option>
-                                    <Option value='0'>已提交未审核</Option>
-                                    <Option value='1'>审核</Option>
-                                    <Option value='2'>审核通过</Option>
-                                    <Option value='3'>审核未通过</Option>
-                                    <Option value='4'>合格</Option>
-                                    <Option value='5'>不合格</Option>
-                                </Select>
-                            )}
-                        </FormItem> */}
-                        <table style={{width:'100%'}}>
-                            <thead className='thead'>
+                        <WhiteSpace />
+                        <table className="table">
+                            <thead className='thead' id="thd">
                                 <tr>
-                                    <td>负责人</td>
-                                    <td>职责</td>
-                                    <td>操作</td>
+                                    <td style={{width:"164px"}}>负责人</td>
+                                    <td style={{width:"164px"}}>职责</td>
+                                    <td style={{width:"164px"}}>操作</td>
                                 </tr>
                             </thead>
                             <tbody id="data">
@@ -86,6 +65,7 @@ const CollectionCreateForm = Form.create()(
                         <WhiteSpace />
                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.props.addData}/>
                     </Form>
+                    </div>
                 </Modal>
             );
         }
@@ -170,8 +150,6 @@ class AddModal extends React.Component {
             values["status"] = 2
             data["commonBatchNumber"] = values
             data["details"] = taskPersonList
-
-            // values["details"] = taskPersonList
             if (err) {
                 return;
             }

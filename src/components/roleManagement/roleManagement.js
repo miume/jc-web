@@ -87,7 +87,7 @@ class Role extends React.Component {
             selectedRowKeys: [],
             searchContent:'',
             reset:false
-            
+
         };
         this.confrimCancel = this.confrimCancel.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -237,7 +237,7 @@ class Role extends React.Component {
       isEditing = (record) => {
         return record.id === this.state.editingKey;
       };
-    
+
       edit(id) {
         this.setState({ editingKey: id });
       }
@@ -268,7 +268,7 @@ class Role extends React.Component {
               data:data,
               type:'json'
             }).then((data)=>{
-              message.info(data.data.message); 
+              message.info(data.data.message);
               this.fetch();
             }).catch(()=>{
               message.info('保存失败，请联系管理员！');
@@ -284,7 +284,7 @@ class Role extends React.Component {
       cancel(){
         this.setState({ editingKey: '' });
       };
-   
+
       /**显示新增弹出框 */
       handleAdd() {
         this.setState({
@@ -310,12 +310,12 @@ class Role extends React.Component {
           data:this.formRef.getItemsValue(),
           type:'json'
         }).then((data) => {
-          message.info(data.data.message); 
+          message.info(data.data.message);
           this.fetch();
         })
         .catch(function () {
           message.info('新增失败，请联系管理员！');
-        }); 
+        });
         /**清空新增form组件的内容 */
         this.formRef.resetField()
       }
@@ -344,7 +344,7 @@ class Role extends React.Component {
         }).catch(()=>{
           message.info('删除错误，请联系管理员！')
         })
-        
+
      }
      /**对应于批量删除时，确认取消删除 并实现checkbox选中为空 */
      confrimCancel(){
@@ -352,7 +352,7 @@ class Role extends React.Component {
              selectedRowKeys:[]
          })
      }
- 
+
       /**成员管理 */
       userManagement(){
           this.setState({
@@ -361,7 +361,7 @@ class Role extends React.Component {
       }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-          this.setState({ selectedRowKeys:selectedRowKeys }); 
+          this.setState({ selectedRowKeys:selectedRowKeys });
       }
       /**获取查询时角色名称的实时变化 */
       searchContentChange(e){
@@ -396,7 +396,7 @@ class Role extends React.Component {
             dataSource: res.list,
           });
         })
-        
+
       }
       render() {
           /**这是个令牌，每次调用接口都将其放在header里 */
@@ -407,7 +407,7 @@ class Role extends React.Component {
           const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-          };    
+          };
         const components = {
           body: {
             row: EditableFormRow,
@@ -431,11 +431,12 @@ class Role extends React.Component {
         });
         return (
             <div>
-                <BlockQuote name="角色管理" menu='用户与权限'></BlockQuote>
+                <BlockQuote name="角色管理" menu='用户和权限'></BlockQuote>
                 <div style={{padding:'15px'}}>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                   {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                  <Modal title="新增" visible={this.state.visible} closable={false} className='modal'
+                  <Modal title="新增" visible={this.state.visible} closable={false} className='modal modal-sm' maskClosable={false} 
+                        centered={true}
                         footer={[
                           <CancleButton key='back' handleCancel={this.handleCancel}/>,
                           <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />

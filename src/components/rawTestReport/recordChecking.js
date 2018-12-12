@@ -96,6 +96,7 @@ class RecordChecking extends React.Component{
             <span>
                 <span className='blue' onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
+                maskClosable={false} centered={true}
                 footer={[
                     <CancleButton key='back' handleCancel={this.handleCancel}/>,
                     <SaveButton key='save' handleSave={this.handleSave} />,

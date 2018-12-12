@@ -34,7 +34,6 @@ div.quick-middle div.quick-text {
     display: inline-block;
     padding: 0px 15px 0px 15px;
     animation: shake 2s linear 1s 1 alternate;
-    
 }
 
 /* 达到一种震颤的效果 */
@@ -64,10 +63,10 @@ div.quick-middle div.quick-text {
         transform: rotate(10deg)
     }
 }
+
 div.quick-middle div.quick-shadow {
     height: 1px;
     background-color: #999999;
-    
     flex-grow: 2
 }
 
@@ -75,7 +74,7 @@ div.quick-middle div.quick-shadow {
     padding: 5px;
     display: inline-block;
     width: 33.33%;
-    
+
 }
 .quick-tag-text {
     width:72%;
@@ -95,7 +94,7 @@ div.quick-middle div.quick-shadow {
     div.quick-middle {
         width: 46%;
     }
-    
+
     .quick-tag-text {
         width:60%;
         position: relative;
@@ -130,7 +129,7 @@ div.quick-middle div.quick-shadow {
         height:50px;
         width:25%;
         min-width:50px;
-        float:left; 
+        float:left;
         text-align:center;
         line-height:60px;
         border-radius: 3px;

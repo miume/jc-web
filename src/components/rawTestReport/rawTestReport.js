@@ -62,19 +62,21 @@ class RawTestReport extends React.Component{
             key:'index',
             sorter:(a,b)=> a.index-b.index,
             align:'center',
-            width:'5%'
+            fixed:'left',
+            width:'70px'
+        },{
+            title:'送样人',
+            dataIndex:'deliverer',
+            key:'deliverer',
+            align:'center',
+            fixed:'left',
+            width:'100px'
         },{
             title:'送样日期',
             dataIndex:'sampleDeliveringDate',
             key:'sampleDeliveringDate',
             align:'center',
             width:'13%'
-        },{
-            title:'送样人',
-            dataIndex:'deliverer',
-            key:'deliverer',
-            align:'center',
-            width:'6%'
         },{
             title:'送样工厂',
             dataIndex:'deliveryFactory.id',
@@ -154,6 +156,7 @@ class RawTestReport extends React.Component{
             dataIndex:'id',
             key:'id',
             align:'center',
+            fixed:'right',
             render:(text,record)=>{
                 return (
                     <span>

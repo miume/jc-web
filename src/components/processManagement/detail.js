@@ -75,8 +75,8 @@ class Detail extends React.Component{
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
-                closable={false}
-                
+                closable={false} centered={true}
+                maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <AddButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
@@ -97,7 +97,7 @@ class Detail extends React.Component{
                              </tbody>
                          </table>
                          <WhiteSpace />
-                         <Table columns={columns} rowKey={record => record.responsibility} size='small' pagination={false} bordered dataSource={this.state.data}></Table>
+                         <Table columns={columns} rowKey={record => record.responsibility} size='small' pagination={false} bordered dataSource={this.state.data} scroll={{ y: 240 }}></Table>
                     </div>
                 </Modal>
             </span>

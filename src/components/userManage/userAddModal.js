@@ -10,14 +10,14 @@ class UserAddModal extends React.Component{
        this.state={
         confirmDirty: false,
        }
-       
+
     }
     //'username','password','departmentId','phone'
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
         const values= this.props.form.getFieldsValue(['username','password','departmentId','phone','name']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         return values;//用来得到新增框中填写的新值
     }
-    
+
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });
@@ -30,7 +30,7 @@ class UserAddModal extends React.Component{
           callback();
         }
       }
-    
+
       validateToNextPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && this.state.confirmDirty) {
@@ -106,16 +106,15 @@ class UserAddModal extends React.Component{
                        
                         )}
                </FormItem>
-
-              
                <FormItem  wrapperCol={{ span: 20 }}>
                     {getFieldDecorator('phone',{
                         initialValue: '',
                     })( 
                         <Input placeholder='请输入手机号' style={{height:'40px'}}></Input>
-                    )}
-                </FormItem>
-               
+                        )}
+               </FormItem>
+
+
             </Form>
         );
     }
