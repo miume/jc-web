@@ -31,7 +31,7 @@ class Part extends React.Component{
         const flag = this.props.flag;
         const userId = this.props.data.userId;
         const curId = this.props.id; 
-        console.log(`flag=${flag},this.props.style=${this.props.style},this.props.style1=${this.props.style1}`)
+        // console.log(`flag=${flag},this.props.style=${this.props.style},this.props.style1=${this.props.style1}`)
         return (
             <div className='part'>
                 <span style={{padding:'0 10px'}}>{this.checkUser(flag,this.props.data.userId,this.props.id)}</span>
