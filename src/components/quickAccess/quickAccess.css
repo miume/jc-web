@@ -1,12 +1,14 @@
 .quick-top {
-    padding-top: 11.3%;
-    padding-bottom: 3.7%;
+    padding-top: 100px;
+    padding-bottom: 100px;
     text-align: center;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease-in-out 0.3s 1 forwards;
 }
 
 .quick-tag {
-    height: 50px;
-   border-radius: 3px;
+  height: 50px;
+   border-radius: 4px;
    box-shadow: none;
    box-sizing: border-box;
    overflow: hidden;
@@ -28,53 +30,82 @@ div.quick-middle {
     align-items: center;
 
 }
+@keyframes fadeInUp {
+    0% {
+      transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+      transform: translateY(0px);
+        opacity:1;
+    }
+}
+@keyframes scaleIn{
+    0% {
+      transform: scaleX(0) translateY(20px);
+        opacity: 0;
+    }
+    30% {
+      transform: scaleX(0) translateY(20px);
+        opacity: 0;
+    }
+    100% {
+      transform: scaleX(1) translateY(0px);
+        opacity:1;
+    }
+}
 
 div.quick-middle div.quick-text {
+    color: #1890ff;
     text-align: center;
     display: inline-block;
     padding: 0px 15px 0px 15px;
-    animation: shake 2s linear 1s 1 alternate;
+    animation: fadeInUp 0.5s ease-in-out 0.6s 1 forwards;
+    opacity: 0;
 }
 
-/* 达到一种震颤的效果 */
-@keyframes shake {
-    2% {
-        color: #0079fe;
-        transform: rotate(-10deg)
-    }
-    3% {
-        color: #999999;
-        transform: rotate(10deg)
-    }
-    49% {
-        color: #0079fe;
-        transform: rotate(-11deg)
-    }
-    53% {
-        color:#999999;
-        transform: rotate(11deg)
-    }
-    99% {
-        color: #0079fe;
-        transform: rotate(-10deg)
-    }
-    100% {
-        color: #999999;
-        transform: rotate(10deg)
-    }
-}
-
-div.quick-middle div.quick-shadow {
+div.quick-middle div.quick-shadow:nth-child(1) {
+  opacity: 0;
     height: 1px;
     background-color: #999999;
-    flex-grow: 2
+    flex-grow: 2;
+    animation: scaleIn 0.5s ease-in-out 0.6s 1 forwards;
+    transform-origin: center right;
+}
+
+div.quick-middle div.quick-shadow:nth-child(3) {
+  opacity: 0;
+    height: 1px;
+    background-color: #999999;
+    flex-grow: 2;
+    animation: scaleIn 0.5s ease-in-out 0.6s 1 forwards;
+    transform-origin: center left;
 }
 
 .quick-tag-wrapper {
     padding: 5px;
     display: inline-block;
     width: 33.33%;
-
+    animation: fadeInUp 0.5s ease-in-out 1 forwards;
+    opacity: 0;
+}
+.quick-tag-wrapper:nth-child(1){
+  animation-delay: 0.8s;
+}
+.quick-tag-wrapper:nth-child(2){
+  animation-delay: 0.9s;
+}
+.quick-tag-wrapper:nth-child(3){
+  animation-delay: 1s;
+}
+.quick-tag-wrapper:nth-child(4){
+  animation-delay: 1.1s;
+}
+.quick-tag-wrapper:nth-child(5){
+  animation-delay: 1.2s;
+}
+.quick-tag-wrapper:nth-child(6){
+  animation-delay: 1.3s;
 }
 .quick-tag-text {
     width:72%;
