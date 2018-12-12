@@ -38,7 +38,7 @@ const CollectionCreateForm = Form.create()(
                                 rules: [{ required: true, message: '请选择菜单类型' }],
                                 initialValue : '1'
                             })(
-                                <Select onChange={this.props.selectChange} size="large">
+                                <Select onChange={this.props.selectChange} size="large" style={{fontSize:"14px"}}>
                                     <Option value='1'>父菜单</Option>
                                     <Option value='2'>子菜单</Option>
                                 </Select>
