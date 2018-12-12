@@ -5,7 +5,7 @@ import {Form,Input,Select,InputNumber} from 'antd';
 const Option=Select.Option;
 const FormItem=Form.Item;
 
-    class RawMaterialRedListAddModal extends React.Component {
+    class ProductRedListAddModal extends React.Component {
           constructor(props){
               super(props);
               this.state={
@@ -117,4 +117,4 @@ const FormItem=Form.Item;
       }
     }
   
-export default Form.create()(RawMaterialRedListAddModal);//创建form实例
+export default Form.create()(ProductRedListAddModal);//创建form实例

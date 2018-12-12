@@ -1,13 +1,10 @@
 import React from 'react';
 import {Table} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-import Difference from "./difference"
-import axios from "axios"
-import NewButton from "../../BlockQuote/newButton";
+import Difference from '../material/difference'
+import axios from 'axios'
 
-const forkData = [900,900,900,900,900,900,900,900,900,900,900,900,900,900,900,900,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
-
-class Product extends React.Component{
+class MaterialProduct extends React.Component{
     server
     Authorization
     componentWillUnmount() {
@@ -58,45 +55,25 @@ class Product extends React.Component{
             dataIndex:'repoStock.quantity',
             key:'repoStock.quantity',
             width:'10%',
-            align:'center',
-            render:(text,record)=>{
-                if(record.repoStock.quantity !== record.realNum){
-                    return(<div style={{color:"red"}}>{record.repoStock.quantity}</div>)
-                }else{
-                    return (<div style={{color:"blue"}}>{record.repoStock.quantity}</div>)
-                }
-            }
+            align:'center'
         },{
             title:'实际数量',
             dataIndex:'realNum',
             key:'realNum',
             width:'10%',
-            align:'center',
-            render:(text,record)=>{
-                return (<div style={{color:"blue"}}>{record.realNum}</div>)
-            }
+            align:'center'
         },{
             title:'记录重量(kg)',
             dataIndex:'repoStock.weight',
             key:'repoStock.weight',
             width:'10%',
-            align:'center',
-            render:(text,record)=>{
-                if(record.repoStock.weight !== record.realWeig){
-                    return(<div style={{color:"red"}}>{record.repoStock.weight}</div>)
-                }else{
-                    return (<div style={{color:"blue"}}>{record.repoStock.weight}</div>)
-                }
-            }
+            align:'center'
         },{
             title:'实际重量(kg)',
             dataIndex:'realWeig',
             key:'realWeig',
             width:'10%',
-            align:'center',
-            render:(text,record)=>{
-                return (<div style={{color:"blue"}}>{record.realWeig}</div>)
-            }
+            align:'center'
         },{
             title:'操作',
             dataIndex:'operation',
@@ -135,13 +112,11 @@ class Product extends React.Component{
       headers:{
         'Authorization': this.Authorization
         },
-        params: {materialType:3},
+        params: {materialType:1},
     }).then((data)=>{
       const res = data.data.data;
       for(var i = 1; i<=res.length; i++){
         res[i-1]['index']=i;
-        res[i-1]["realNum"]=forkData[i-1]
-        res[i-1]["realWeig"]=forkData[i-1]
     }
       this.setState({
         dataSource:res
@@ -152,16 +127,18 @@ class Product extends React.Component{
         const  value=e.target.value;//此处显示的是我搜索框填的内容
           this.setState({searchContent:value});
      }
-     searchEvent(){
+    searchEvent(){
         const name=this.state.searchContent;
        //console.log(name);//此处显示的是我搜索框填的内容
-      }
+    }
+    handleClick(){
+        console.log(111)
+    }
     render(){
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (
             <div style={{padding:'0 15px'}}>
-            <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale"/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入搜索内容'
                         searchContentChange={this.searchContentChange}
@@ -173,12 +150,16 @@ class Product extends React.Component{
                 <Table
                 rowKey={record=>record.repoStock.id}
                 columns={this.columns}
-                dataSource={this.state.dataSource   }
+                dataSource={this.state.dataSource}
                 pagination={false}
                 bordered
                 size='small'
                 scroll={{y:600}}
                 ></Table>
+                {/* <div style={{position:"absolute",top:"108.4px",left:"670px",color:"white"}}>记录数量</div> */}
+                {/* <div style={{position:"absolute",}}>实际数量</div>
+                <div style={{position:"absolute",}}>记录重量</div>
+                <div style={{position:"absolute",}}>实际重量</div> */}
                 <div style={{position:"absolute",top:"90px",left:"619px",width:"602px",height:"50px",backgroundColor:"#0079FE"}}>
                     <div style={{position:"absolute",color:"white",top:"18px",left:"40px"}}>记录数量</div>
                     <div style={{position:"absolute",color:"white",top:"20px",left:"142px"}} className="fa fa-balance-scale"></div>
@@ -194,4 +175,4 @@ class Product extends React.Component{
     }
 }
 
-export default Product
+export default MaterialProduct

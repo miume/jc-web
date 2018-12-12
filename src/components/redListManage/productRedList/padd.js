@@ -3,7 +3,7 @@ import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
-import RawMaterialRedListAddModal from './addModal';
+import ProductRedListAddModal from './paddModal';
 import axios from 'axios';
 const Option=Select.Option;
 
@@ -206,7 +206,7 @@ class Add extends React.Component{
                         <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
                         </Popover>
                     ]}>
-                    <RawMaterialRedListAddModal serialNumber={this.props.serialNumber}  wrappedComponentRef={(form)=>this.formRef=form}></RawMaterialRedListAddModal>
+                    <ProductRedListAddModal serialNumber={this.props.serialNumber}  wrappedComponentRef={(form)=>this.formRef=form}></ProductRedListAddModal>
                     
                 </Modal>
             </span>

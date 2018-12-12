@@ -3,6 +3,8 @@ import {Tabs} from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import  Material from './material/material';
 import Product from './product/product'
+import MaterialRecord from "./materialRecord/materialRecord"
+import ProductRecord from "./productRecord/productRecord"
 // import ProductInventor from './productInventor/productInventor';
 const TabPane=Tabs.TabPane;
 class LibraryManage extends React.Component{
@@ -22,10 +24,10 @@ class LibraryManage extends React.Component{
                     <Product />
                  </TabPane>
                  <TabPane tab={<span><i className='fa fa-leaf'></i>&nbsp; 原材料盘库记录</span>} key='3'>
-                    <Product />
+                    <MaterialRecord />
                  </TabPane>
                  <TabPane tab={<span><i className='fa fa-cube'></i>&nbsp; 产品盘库记录</span>} key='4'>
-                    <Product />
+                    <ProductRecord />
                  </TabPane>
                </Tabs>
             </div>

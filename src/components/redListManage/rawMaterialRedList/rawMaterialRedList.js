@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import {Table,Popconfirm,Divider,message} from 'antd';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import Add from './add';
-import RawMaterialRedListEditModal from './rawMaterialRedListEdit';
+import Edit from './edit';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 
@@ -12,7 +12,7 @@ class RawMaterialRedList extends Component{
     Authorization;
     componentDidMount(){
         this.fetch();
-        this.getAllBatchNumber();
+        this.getAllSerialNumber();
         this.getAllProcess();
     }
     componentWillUnmount(){
@@ -27,7 +27,7 @@ class RawMaterialRedList extends Component{
             selectedRowKeys:[],
             searchContent:'',
             processChildren:[],//送审流程（对应那个下拉框）
-            batchNumberChildren:[],//编号下拉框
+            serialNumberChildren:[],//编号下拉框
             Authorization:this.Authorization,
         };
         this.pagination={
@@ -122,12 +122,19 @@ class RawMaterialRedList extends Component{
                 //console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
                    <span>
-                        <RawMaterialRedListEditModal record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
+                        <Edit record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                         <Divider type='vertical'/>
-                       <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
-                       <span className={editFlag?'blue':'grey'}>删除</span>
-                       </Popconfirm>
-                      
+                       <span >
+                       {editFlag ? (
+                         <span>
+                           <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
+                           <span className='blue'>删除</span>
+                           </Popconfirm>
+                         </span>
+                       ) : (
+                         <span className='grey' >删除</span>
+                       )}
+                     </span>
                    </span>
                );
             }
@@ -138,9 +145,10 @@ class RawMaterialRedList extends Component{
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.getAllProcess=this.getAllProcess.bind(this);
-        this.getAllBatchNumber=this.getAllBatchNumber.bind(this);
+        this.getAllSerialNumber=this.getAllSerialNumber.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
+        this.fetch = this.fetch.bind(this);
     }
    
   
@@ -300,19 +308,22 @@ class RawMaterialRedList extends Component{
               });
         });
  }
- getAllBatchNumber(){//获取所有编号
+ getAllSerialNumber(){//获取所有编号
       axios({
-            url:`${this.server}/jc/common/repoBaseSerialNumber/getAll`,
+            url:`${this.server}/jc/common/repoBaseSerialNumber`,
             method:'get',
             headers:{
                 'Authorizaion':this.Authorizaion
+            },
+            params:{
+                materialClass:1
             }
 
       }).then((data)=>{
-         //console.log(data);
+         console.log(data);
          const res=data.data.data;
          this.setState({
-             batchNumberChildren:res
+             serialNumberChildren:res
          });
       });
  }
@@ -327,7 +338,7 @@ class RawMaterialRedList extends Component{
       //console.log(this.state.batchNumberChildren);
         return(
             <div style={{padding:'15px'}}>
-                <Add fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
+                <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入搜索内容' 
