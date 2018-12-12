@@ -34,9 +34,9 @@ class Todo extends React.Component{
                    <span className='smallSize'><span className={this.props.data.isUrgent?'':'urgent'}>{this.props.data.isUrgent?'正常':'紧急'}</span></span>
                 </div>
             </div>
-           {/* <div className='demo'>
-               <div className='item item1' onClick={this.moveLeft}><i className='fa fa-2x fa-caret-left'></i></div>
-               <div className='item item2'>
+           <div className='demo'>
+               <div className='item1' onClick={this.moveLeft}><i className='fa fa-2x fa-caret-left'></i></div>
+               <div className='item2'>
                    <div className='item2Scroll' id={this.props.data.id}>
                    {
                        this.props.details.map((e,index)=>{
@@ -46,11 +46,11 @@ class Todo extends React.Component{
                    }
                    </div>
                </div>
-               <div className='item item3'><i className='fa fa-2x fa-caret-right'></i></div>
-               <div className='item item4'>
+               <div className='item3'><i className='fa fa-2x fa-caret-right'></i></div>
+               <div className='item4'>
                    <div style={{padding:'10% 0 0 70%'}}><NewButton name='审核' className='fa fa-check'></NewButton></div>
                </div>
-           </div> */}
+           </div>
         </div>
         );
     }
