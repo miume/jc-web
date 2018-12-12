@@ -8,7 +8,7 @@ class CheckTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         sorter: (a, b) => a.id - b.id,
         align:'center',
         width: '5%',
@@ -62,37 +62,48 @@ class CheckTable extends React.Component {
         width: '10%',
     },{
         title: '类型',
-        dataIndex: 'i',
-        key: 'i',
+        dataIndex: 'type',
+        key: 'type',
         align:'center',
         width: '6%',
     },{
         title: '审核状态',
-        dataIndex: 'j',
-        key: 'j',
+        dataIndex: 'state',
+        key: 'state',
         align:'center',
         width: '6%',
+        render:state => {
+            switch(`${state}`) {
+                case '1': return '审核中';
+                case '2': return '已通过';
+                case '3': return '未通过';
+                default: return '';
+            }
+        },
     },{
         title: '紧急',
-        dataIndex: 'k',
-        key: 'k',
+        dataIndex: 'isUrgent',
+        key: 'isUrgent',
         align:'center',
         width: '6%',
+        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'id',
+        key: 'id',
         align:'center',
         width: '13%',
         render: (text,record) => {
-            let operationFlag = this.judgeOperation(record.j);
+            let operationFlag = this.judgeOperation(record.type);
             return (
                 <span>
                     <CheckEditSpan
                         disabled={operationFlag}
                     />
                     <Divider type="vertical" />
-                    <CheckDetailSpan />
+                    <CheckDetailSpan
+                        state={record.state}
+                    />
                     <Divider type="vertical" />
                     <DeletaSpan
                         record={record}
