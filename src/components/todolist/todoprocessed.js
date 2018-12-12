@@ -56,14 +56,14 @@ class TodoProcessed extends React.Component{
             'quan'
         ]
         return (
-            <div style={{padding:'15px', overflowX:'auto'}}>
-                <div style={{height:'100%'}}>
-                    {
-                    this.state.data?this.state.data.map(e=>{
-                        return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
-                    }):null
-                    }   
-                </div> 
+            <div style={{padding:'15px',overflowX:'auto'}}>
+                    <div style={{height:'1000px'}}>
+                        {
+                            this.state.data?this.state.data.map(e=>{
+                                return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
+                            }):null
+                        }   
+                    </div> 
                     {/* <div className='wrapxxx'>
                         {data.map((e,index) => {
                             return (
