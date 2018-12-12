@@ -100,7 +100,12 @@ code {
     margin-right: 10px !important;
     border: none !important;
 }
-
+.ant-btn:not(.ant-btn-sm) {
+    height: 35px;
+}
+.ant-btn.ant-btn-sm {
+    border: none;
+}
 .ant-tabs-nav-wrap {
     padding-left: 1.3% !important;
 }
@@ -180,14 +185,15 @@ i {
     margin-left: 80px !important;
 }
 /* 输入框样式 */
-/* .ant-input {
-    height: 40px !important;
-} */
+.ant-input {
+    height: 35px !important;
+}
 /* 下拉选择器样式 */
-/* .ant-select-selection--single {
-    height: 40px !important;
+.ant-select-selection--single {
+    height: 35px !important;
 }
 .ant-select-selection__rendered {
-  height: 40px !important;
-  line-height: 40px !important;
-} */
+  height: 35px !important;
+  line-height: 35px !important;
+}
+
