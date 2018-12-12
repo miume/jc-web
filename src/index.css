@@ -60,6 +60,9 @@ code {
     text-align: right !important;
 }
 
+.ant-pagination-options-size-changer.ant-select {
+    margin-right: 0 !important;
+}
 .ant-tabs-bar {
     margin: 0 0 10px 0 !important;
 }
@@ -138,7 +141,6 @@ i {
     max-height: 417px !important;
     overflow: hidden !important;
 }
-
 /**控制一个元素显示或隐藏*/
 .show {
     display: true;
@@ -149,8 +151,11 @@ i {
 }
 
 /**修改弹出框样式*/
+.ant-modal.modal-sm{
+    width: 360px !important;
+}
 .ant-modal-header {
-    padding: 8px 24px !important;
+    padding: 8px 20px !important;
 }
 .ant-row {
     display: flex !important;
@@ -161,13 +166,28 @@ i {
     padding: 6px 0px 6px 0px !important;
 }
 .clear{
-  clear: both;
+    clear: both;
+}
+.ant-modal-body {
+    padding: 20px !important;
 }
 .ant-modal-footer {
-    padding: 8px 16px !important;
+    padding: 8px 10px !important;
 }
 
 .ant-modal-body > .ant-row .ant-form-item {
     text-align: center !important;
     margin-left: 80px !important;
 }
+/* 输入框样式 */
+/* .ant-input {
+    height: 40px !important;
+} */
+/* 下拉选择器样式 */
+/* .ant-select-selection--single {
+    height: 40px !important;
+}
+.ant-select-selection__rendered {
+  height: 40px !important;
+  line-height: 40px !important;
+} */
