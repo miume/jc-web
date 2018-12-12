@@ -196,12 +196,12 @@ class PurchaseModal extends React.Component {
                                 <div>
                                     <div className="leftThead borderRight">序号</div>
                                     <div className="leftThead">批号</div>
+                                    <div className="leftOnclick" onClick={handleLeftClick}>
+                                        <i className="fa fa-caret-left"></i>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="theadMiddle" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}  style={{paddingLeft:'1px'}}>
-                                <div className={(this.state.hover? 'leftOnclick':'')} onClick={handleLeftClick}>
-                                    <i className="fa fa-chevron-left fa-2x"></i>
-                                </div>
+                            <div id="theadMiddle"  style={{paddingLeft:'1px'}}>
                                 <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} >
                                     {
                                         this.state.headColumns.map((item,index) => {
@@ -215,12 +215,12 @@ class PurchaseModal extends React.Component {
                                         })
                                     }
                                 </div>
-                                <div className={(this.state.hover? 'rightOnclick':'')} onClick={handleRightClick}>
-                                    <i className="fa fa-chevron-right fa-2x"></i>
-                                </div>
                             </div>
                             <div id="theadRight">
-                                判定
+                                <div className="rightOnclick" onClick={handleRightClick}>
+                                    <i className="fa fa-caret-right"></i>
+                                </div>
+                                <div>判定</div>
                             </div>
                         </div>
                         <div style={{clear: 'both'}}></div>
@@ -418,19 +418,6 @@ class PurchaseModal extends React.Component {
                 })
             }
         }
-    };
-    /**---------------------- */
-    /**获取鼠标移进移出数据*/
-    handleMouseOver = () => {
-        this.setState({
-            hover: true,
-        })
-
-    };
-    handleMouseOut = () =>{
-        this.setState({
-            hover: false,
-        })
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/

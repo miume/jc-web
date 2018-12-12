@@ -119,10 +119,6 @@ class CheckTable extends React.Component {
                 ...col,
                 onCell: record => ({
                     record,
-                    // editable: col.editable,
-                    // dataIndex: col.dataIndex,
-                    // title: col.title,
-                    // handleSave: this.handleSave,
                 }),
             };
         });
@@ -153,6 +149,5 @@ class CheckTable extends React.Component {
         // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     };
     /**---------------------- */
-
 }
 export default CheckTable;
