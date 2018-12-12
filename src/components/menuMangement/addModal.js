@@ -25,6 +25,7 @@ const CollectionCreateForm = Form.create()(
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
                       ]}>
+                      <Form>
                         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('menuName', {
                                 rules: [{ required: true, message: '请输入菜单名称' }],
