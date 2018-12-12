@@ -212,7 +212,7 @@ class User extends React.Component{
                 )}
               </span>
               <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
             </span>
@@ -262,7 +262,7 @@ class User extends React.Component{
         this.setState({visible:true});
       }
       handleOk(){//处理新增一条记录
-        console.log(this.formRef.getItemsValue());
+       //console.log(this.formRef.getItemsValue());
         this.setState({visible:false});
         axios({
           url:`${this.server}/jc/auth/user/signIn`,
@@ -343,6 +343,9 @@ class User extends React.Component{
          // console.log(data);
           message.info(data.data.message);
           this.fetch();
+          this.setState({
+            selectedRowKeys:[]
+          });
         })//处理成功
         .catch(()=>{
          // console.log(error);
@@ -530,14 +533,12 @@ class User extends React.Component{
                <div style={{padding:'15px'}}>
 
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
-               {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                    <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false}
-                          onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}
+                    <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} width='400px' centered={true}
                           footer={[
                             <NewButton  handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
                             <CancleButton handleCancel={() => this.handleCancel()} />
                           ]}>
-                          <UserAddModal deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
+                          <UserAddModal  style={{height:'600px'}} deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
@@ -548,7 +549,7 @@ class User extends React.Component{
                     </span>
                 
                 <div className='clear'  ></div>
-                <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
+                <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 418 }}/>
                 </div>
            </div>
        );

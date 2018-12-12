@@ -165,3 +165,6 @@ i {
     text-align: center !important;
     margin-left: 80px !important;
 }
+.ant-select-selection__placeholder, .ant-select-search__field__placeholder{
+    display: true !important;
+}

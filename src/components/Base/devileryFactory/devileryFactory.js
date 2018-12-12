@@ -151,7 +151,7 @@ class DeliveryFactory extends React.Component{
                 )}
               </span>
               <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
             </span>
@@ -172,7 +172,7 @@ class DeliveryFactory extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/common/deliveryFactory/getDeliveryFactoriesByPage`,
+        url: `${this.server}/jc/common/deliveryFactory/pages`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -226,7 +226,7 @@ class DeliveryFactory extends React.Component{
       const ids =this.state.selectedRowKeys;//删除的几行的id
      // console.log(ids);
       axios({
-          url:`${this.server}/jc/common/deliveryFactory/deleteByIds?ids=${ids}`,
+          url:`${this.server}/jc/common/deliveryFactory?ids=${ids}`,
           method:'Delete',
           headers:{
                 'Authorization' :this.Authorization
@@ -238,6 +238,9 @@ class DeliveryFactory extends React.Component{
        // console.log(data);
         message.info(data.data.message);
         this.fetch();//调用getAllByPage,渲染删除后的表格
+        this.setState({
+          selectedRowKeys:[]
+        });
       })//处理成功
       .catch(()=>{
        // console.log(error);
@@ -246,7 +249,9 @@ class DeliveryFactory extends React.Component{
      
    }
   cancel(){
-    
+    this.setState({
+      selectedRowKeys:[]
+    });
   }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
@@ -290,8 +295,8 @@ class DeliveryFactory extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/common/deliveryFactory/update`,
-              method:'post',
+              url:`${this.server}/jc/common/deliveryFactory`,
+              method:'put',
               headers:{
                 'Authorization':this.Authorization
               },
@@ -332,7 +337,7 @@ class DeliveryFactory extends React.Component{
       searchEvent(){
            const name=this.state.searchContent;
            axios({
-             url:`${this.server}/jc/common/deliveryFactory/getDeliveryFactoriesByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/deliveryFactory/pagesNameLike`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization
