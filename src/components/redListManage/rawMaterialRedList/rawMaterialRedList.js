@@ -124,10 +124,20 @@ class RawMaterialRedList extends Component{
                    <span>
                         <RawMaterialRedListEditModal record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} batchNumber={this.state.batchNumberChildren}/>
                         <Divider type='vertical'/>
-                       <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
+                       {/* <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
                        <span className={editFlag?'blue':'grey'}>删除</span>
-                       </Popconfirm>
-                      
+                       </Popconfirm> */}
+                       <span >
+                       {editFlag ? (
+                         <span>
+                           <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
+                           <span className='blue'>删除</span>
+                           </Popconfirm>
+                         </span>
+                       ) : (
+                         <span className='grey' >删除</span>
+                       )}
+                     </span>
                    </span>
                );
             }
