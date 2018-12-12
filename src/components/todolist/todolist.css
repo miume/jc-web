@@ -1,15 +1,36 @@
 .wholediv{
     height:140px;
-    width:100%;
+    overflow: auto;
+    
     box-shadow: 0px 1px 4px rgba(0,0,0,0.35);
     border-radius: 0.2em;
-    white-space: nowrap;
     margin-bottom:15px;
+}
+.rightDiv > div:first-child {
+    
 }
 .wholep{
     width: 100%;
+    height:50px;
+    display: flex;
+    flex-direction: row;
     padding:0.5% 1%;
+    white-space: nowrap;
     vertical-align: bottom;
+    min-width: 800px;
+}
+.wrap1{
+    flex-grow: 3;
+    height: 100%;
+}
+.wrap2{
+    flex-grow: 3;
+    height: 100%;
+}
+.wrap3{
+    flex-grow: 6;
+    height: 100%;
+    text-align: right;
 }
 .smallSize{
     color:black;
@@ -84,15 +105,82 @@
 }
 .item2 .partSpan{
     font-size: 14px;
-    padding:0 15px 0 0;
+    /* padding:0 15px 0 0; */
     font-weight: 600;
 }
+.darkBlue{
+    font-size: 14px;
+    font-weight: 600;
+    color:#0066fe;
+}
+.darkBlue1{
+    font-size: 13px;
+    font-weight: 400;
+    color:#0066fe;
+}
 .item2 .partSpan1{
-    font-size: 12px;
-    padding:0 15px 0 0;
+    font-size: 13px;
     font-weight: 400;
 }
 .item2 .item2Scroll{
     width:120%;
     display: flex;
+}
+.line{
+    width:100px;
+    height:1.5px;
+    padding:5px 20px 5px 0;
+    border-bottom: 1px solid grey;
+}
+.online{
+    width:100px;
+    height:1.5px;
+    padding:5px 20px 5px 0;
+    border-bottom: 1px solid grey;
+    display: none;
+}
+.iconColor{
+    background-color:#0079fe;
+}
+.circle{
+    width:32px;
+    height:32px;
+    border-radius: 25px;
+    border:2px solid #0079fe;
+}
+.circle i{
+    margin:0 auto;
+    color:#0079fe;
+    padding:26%;
+}
+.circle1{
+    width:32px;
+    height:32px;
+    border-radius: 25px;
+    border:2px solid #CCCCCC;
+    margin:0 auto;
+    color:#999999;
+    padding:11% 28%;
+}
+
+.wrapxxx {
+    border: 1px solid black;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 538px;
+    padding: 10px;
+}
+.quan {
+    height: 100%;
+    flex-grow: 1;
+    background-color: red;
+    border-radius: 50%;
+}
+.line2 {
+    height: 2%;
+    flex-grow: 1;
+    background-color: black;
+    z-index: 100;
 }

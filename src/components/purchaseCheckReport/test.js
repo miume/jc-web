@@ -1,5 +1,4 @@
 import React from 'react';
-import { Radio} from 'antd';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
 import './pack.css';
@@ -31,33 +30,95 @@ for (let i = 0; i < 20; i++) {
     });
 }
 const tbodyData = [];
+const nopassRowNum = [];
 for(let i=0; i<20; i++){
     tbodyData.push({
         index: i,
         id:i,
         a: 'ECT/12372',
         b: '启动',
-        C0: '0',
-        C1: '1',
-        C2: '2',
-        C3: '3',
-        C4: '4',
-        C5: '5',
-        C6: '6',
-        C7: '7',
-        C8: '8',
-        C9: '9',
-        C10: '10',
-        C11: '11',
-        C12: '12',
-        C13: '13',
-        C14: '14',
-        C15: '15',
-        C16: '16',
-        C17: '17',
-        C18: '18',
-        C19: '19',
-    })
+        C0: {
+            value: '0',
+            isQualified: true  // 0代表不合格-变红，1代表合格-白
+        },
+        C1: {
+            value: '1',
+            isQualified: false
+        },
+        C2: {
+            value: '2',
+            isQualified: false
+        },
+        C3: {
+            value: '3',
+            isQualified: false
+        },
+        C4: {
+            value: '4',
+            isQualified: false
+        },
+        C5: {
+            value: '5',
+            isQualified: false
+        },
+        C6: {
+            value: '6',
+            isQualified: false
+        },
+        C7: {
+            value: '7',
+            isQualified: false
+        },
+        C8: {
+            value: '8',
+            isQualified: false
+        },
+        C9: {
+            value: '9',
+            isQualified: false
+        },
+        C10: {
+            value: '10',
+            isQualified: false
+        },
+        C11: {
+            value: '11',
+            isQualified: false
+        },
+        C12: {
+            value: '12',
+            isQualified: false
+        },
+        C13: {
+            value: '13',
+            isQualified: false
+        },
+        C14: {
+            value: '14',
+            isQualified: false
+        },
+        C15: {
+            value: '15',
+            isQualified: false
+        },
+        C16: {
+            value: '16',
+            isQualified: false
+        },
+        C17: {
+            value: '17',
+            isQualified: false
+        },
+        C18: {
+            value: '18',
+            isQualified: false
+        },
+        C19: {
+            value: '19',
+            isQualified: false
+        },
+    });
+    nopassRowNum.push(0);
 }
 class PurchaseModal extends React.Component {
     Authorization;
@@ -67,20 +128,20 @@ class PurchaseModal extends React.Component {
         this.state = {
             columns: [],
             dataSource: data,
-            radioDataArr: [],  //id , purchaseStatus 构成数组 传给后台
-            radioTrueArr: [],   //合格的数组--
             purchaseStatus: '待定', //显示判定，合格，不合格
-            radioTrueNum: 0,
-            radioFalseNum: 0,
-            //用于自定义表
-            colorStatueId: [], //用来存储已经变红的标签id--转换成这一行
+            //用于合格与非合格的数量
+            nopassRowNum: [], //保存每一行红色（非合格）的数量 -下标代表row,值代表num
+            nopassTotalNum: 0, //保存表格总红色（非合格）的数量
+            passTotalNum: 0, //保存表格总绿色（合格）的数量
+            // colorStatueId: [], //用来存储已经变红的标签id（唯一）
+            // passColorIdNum: passColorIdNum,  //用于存储合格变色的标签id
             headColumns: headData ,
             tbodyData: tbodyData,
+            //控制类的存在
             hover: false,
+            color: false,  //当ture变为红， 当false为白
 
         };
-        // this.radioChange = this.radioChange.bind(this);
-        this.modifyColorStatueId = this.modifyColorStatueId.bind(this);
         this.handleMouseOver = this.handleMouseOver.bind(this);
         this.handleMouseOut = this.handleMouseOut.bind(this)
     }
@@ -91,14 +152,9 @@ class PurchaseModal extends React.Component {
         /**这是服务器网址及端口 */
         this.server = localStorage.getItem('remote');
         /**动态表头数据获取与组装 */
-        const dynHeadData = this.assembleDynamicData(this.getDynamicHeadData());
-        const totalColumns = this.assembleTableHead(dynHeadData);
-
         /**---------------------- */
-        this.columns = totalColumns;
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
-
 
         return(
             <div style={{paddingTop:'10px'}}>
@@ -194,8 +250,14 @@ class PurchaseModal extends React.Component {
                                                     {
                                                         this.state.headColumns.map((item,index) => {
                                                             return(
-                                                                <div className='middleTbodyDiv' ref={`${tbodyRow}${index}`}  id={`${tbodyRow}${index}`} key={index} onClick={this.handleCellOnclick.bind(this)}>
-                                                                    {data[item.testItem]}
+                                                                <div
+                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDiv')}
+                                                                    ref={`${tbodyRow}|${index}`}
+                                                                    id={`${tbodyRow}|${item.testItem}|${index}`}
+                                                                    key={index}
+                                                                    onClick={this.handleCellOnclick.bind(this)}  //参数 行数和列对象的名字
+                                                                >
+                                                                    {data[item.testItem].value}
                                                                 </div>
                                                             )
                                                         })
@@ -211,8 +273,8 @@ class PurchaseModal extends React.Component {
                                     this.state.tbodyData.map((item,index) => {
                                         return(
                                             <div key={`right${index}`}>
-                                                <div id={`pass${index}`}>合格</div>
-                                                <div id={`nopass${index}`}>不合格</div>
+                                                <div ref={`pass${index}`}>合格</div>
+                                                <div ref={`nopass${index}`}>不合格</div>
                                             </div>
                                         )
                                     })
@@ -224,40 +286,145 @@ class PurchaseModal extends React.Component {
             </div>
         )
     }
+    cellIsQualifiedColor = (e) => {
 
+    }
     /**表格单元格按钮点击事件*/
+        //判断合格，根据passTotalNum的数量来判断，如果passTotalNum数量等于数据长度，则转换为合格，但是需要理清楚逻辑
     handleCellOnclick = (e) => {
         const id = e.target.id;
-        //可以通过这种方式操作真实dom,但是要保证唯一
-        // var backgroundColor = this.refs[id].style.background;
-        // if(backgroundColor==='red'){
-        //     this.refs[id].style.background = 'white';
-        // }else{
-        //     this.refs[id].style.background = 'red';
-        // }
-        // this.refs[id].style.background='red';
-        var flag = -1;
-        var colorStatueId = this.state.colorStatueId;
-        for(var i=0; i<colorStatueId.length; i++) {
-            if(id===colorStatueId[i]){
-                flag = i;
+        // 当前单元格的行数
+        const tbodyRow = id.split('|')[0];
+        // 当前单元格的内容
+        const testItem = id.split('|')[1];
+        // 当前单元格的列数--在动态div内
+        const index = id.split('|')[2];
+        // 保存每一行红色（非合格）的数量-数组-下标代表row,值代表num
+        var nopassRowNum = this.state.nopassRowNum;
+        // 保存表格总红色（非合格）的数量
+        var nopassTotalNum = this.state.nopassTotalNum;
+        // 保存表格总绿色（合格）的数量
+        var passTotalNum = this.state.passTotalNum;
+        console.log(id)
+        console.log(tbodyRow)
+        console.log(testItem)
+        console.log(index)
+        const isQualified = tbodyData[tbodyRow][testItem].isQualified;
+        if(isQualified===false){
+            //  点击变红
+            tbodyData[tbodyRow][testItem].isQualified = true;
+            nopassRowNum[tbodyRow] += 1;
+            if(nopassRowNum[tbodyRow] === 1){
+                nopassTotalNum += 1;
+                passTotalNum -= 1;
             }
-        }
-        if(flag >= 0) {
-            this.refs[id].style.background = 'white';
-            colorStatueId.splice(flag,1);
             this.setState({
-                colorStatueId:colorStatueId,
-                purchaseStatus: '待定'
+                tbodyData: tbodyData,
+                nopassTotalNum: nopassTotalNum,
+                passTotalNum: passTotalNum,
             })
         }else{
-            this.refs[id].style.background = 'red';
-            colorStatueId.push(id);
+            // 点击变白
+            tbodyData[tbodyRow][testItem].isQualified = false;
+            nopassRowNum[tbodyRow] -= 1;
+            if(nopassRowNum[tbodyRow] === 0){
+                nopassTotalNum -= 1;
+                passTotalNum += 1;
+            }
             this.setState({
-                colorStatueId:colorStatueId,
-                purchaseStatus: '不合格'
+                tbodyData: tbodyData,
+                nopassTotalNum: nopassTotalNum,
+                passTotalNum: passTotalNum,
             })
         }
+
+
+
+
+        // const id = e.target.id;
+        // const nopassColorId = id.split('|')[0]; //行
+        // const rowNopass = 'nopass'+id.split('|')[0];
+        // const rowPass = 'pass'+id.split('|')[0];
+        // // this.refs[row].style.background = 'green';
+        // //可以通过这种方式操作真实dom,但是要保证唯一
+        // // var backgroundColor = this.refs[id].style.background;
+        // var flag = -1;
+        // var colorStatueId = this.state.colorStatueId;
+        // var passColorIdNum = this.state.passColorIdNum;
+        // var nopassTotalNum = this.state.nopassTotalNum;
+        // var passTotalNum = this.state.passTotalNum;
+        // for(var i=0; i<colorStatueId.length; i++) {
+        //     if(id===colorStatueId[i]){
+        //         flag = i;   //用来存储已经变红的标签id（唯一）
+        //     }
+        // }
+        // // 若点击部分已经变红，则需要将单元格变白
+        // if(flag >= 0) {
+        //     this.refs[id].style.background = 'white';
+        //     colorStatueId.splice(flag,1); //从colorStatueId剔除此id
+        //     passColorIdNum[nopassColorId] -= 1; //则该行单元格变红的个数减一
+        //     nopassTotalNum -= 1; //不通过总数  有什么用？
+        //     //针对一行数据，如果该行单元格变红个数为0，则将此行判定为合格，总合格数passTotalNum +1
+        //     if(passColorIdNum[nopassColorId]===0){
+        //         passTotalNum +=1;
+        //         // console.log(passTotalNum)
+        //         this.refs[rowNopass].style.background = '#999999';
+        //         this.refs[rowPass].style.background = 'green';
+        //     }
+        //     // 如果不合格总数为0，则状态改为"待定"或者"合格"
+        //     if(nopassTotalNum===0){
+        //         //若合格总数达到tbodyData数据的长度，则状态改为"合格"
+        //         if(passTotalNum===this.state.tbodyData.length){
+        //             this.setState({
+        //                 colorStatueId:colorStatueId,
+        //                 passColorIdNum:passColorIdNum,
+        //                 nopassTotalNum:nopassTotalNum,
+        //                 passTotalNum:passTotalNum,
+        //                 purchaseStatus: '合格',
+        //             })
+        //         }else{
+        //             //若合格总数不达到tbodyData数据的长度，则状态改为"待定"
+        //             this.setState({
+        //                 colorStatueId:colorStatueId,
+        //                 passColorIdNum:passColorIdNum,
+        //                 nopassTotalNum:nopassTotalNum,
+        //                 passTotalNum:passTotalNum,
+        //                 purchaseStatus: '待定',
+        //             })
+        //         }
+        //     }else{
+        //         //如果不合格总数非0，则状态改为"不合格"
+        //         this.setState({
+        //             colorStatueId:colorStatueId,
+        //             passColorIdNum:passColorIdNum,
+        //             nopassTotalNum:nopassTotalNum,
+        //             purchaseStatus: '不合格',
+        //         })
+        //     }
+        // }else{
+        //     // 若点击部分未变红，则将此部分变红
+        //     this.refs[id].style.background = 'red';
+        //     this.refs[rowNopass].style.background = 'red';
+        //     this.refs[rowPass].style.background = '#999999';
+        //     passColorIdNum[nopassColorId] += 1;
+        //     nopassTotalNum +=1;
+        //     // passTotalNum -=1;
+        //     colorStatueId.push(id);
+        //     //判断此时该行的合格数是否已经-1过，若减过，则不变。若未减，则-1，同时总合格数-1
+        //     if(passColorIdNum[rowPass]===0){
+        //         //若此行合格并未-1,则将合格总数-1
+        //         passTotalNum -= 1;
+        //         passColorIdNum[rowPass] -= 1;
+        //     }
+        //     this.setState({
+        //         colorStatueId:colorStatueId,
+        //         passColorIdNum:passColorIdNum,
+        //         nopassTotalNum:nopassTotalNum,
+        //         passTotalNum: passTotalNum,
+        //         purchaseStatus: '不合格'
+        //     })
+        // }
+        //问题：全合格后  再变红，再合格，则状态未变
     };
     /**---------------------- */
     /**获取鼠标移进移出数据*/
@@ -275,12 +442,6 @@ class PurchaseModal extends React.Component {
     /**---------------------- */
     /**获取表头左右图标点击效果*/
     handleClick(number) {
-        if(number === 1) {
-            console.log('>>>>>>>>>')
-        }else {
-            console.log('<<<<<<<<<')
-        }
-
         var middle  = this.middleTheadRef;
         var middleItem = this.middleTheadDivRef;
         var tbodyMiddleRef = this.tbodyMiddleRef;
@@ -301,7 +462,6 @@ class PurchaseModal extends React.Component {
                     tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
                 }
                 if(count <= 0 || pre === middle.scrollLeft) {
-                    // console.log('clear')
                     clearInterval(interval);
                 }
             },1)
@@ -312,7 +472,6 @@ class PurchaseModal extends React.Component {
                 middle.scrollLeft += (number === 1 ? 1 : -1);
                 tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
                 if(count <= 0|| pre === middle.scrollLeft) {
-                    // console.log('clear')
                     clearInterval(interval2);
                 }
             },1)
@@ -320,44 +479,9 @@ class PurchaseModal extends React.Component {
     }
 
     /**修改已经选择的颜色的id*/
-    modifyColorStatueId = (id) => {
-        this.setState({colorStatueId:data});
-    };
 
     /**---------------------- */
     /**动态表头数据获取与组装 */
-    getDynamicHeadData = () => {
-        const dyHead = [{
-            name: 'Ca',
-            symbol: '%',
-            area: '>=20.00',
-        },{
-            name: 'Fe',
-            symbol: '%',
-            area: '>=20.00',
-        },{
-            name: 'Na',
-            symbol: '%',
-            area: '>=20.00',
-        },{
-            name: 'Si',
-            symbol: '%',
-            area: '>=20.00',
-        },{
-            name: 'Li',
-            symbol: '%',
-            area: '>=20.00',
-        },{
-            name: 'Al',
-            symbol: '%',
-            area: '>=20.00',
-        },{
-            name: 'Mg',
-            symbol: '%',
-            area: '>=20.00',
-        }];
-        return dyHead;
-    };
     cellChange = (e) => {
         const id = e.target.id;
         var flag = -1;
@@ -385,99 +509,6 @@ class PurchaseModal extends React.Component {
                 purchaseStatus: '不合格'
             })
         }
-    };
-    assembleDynamicData = (dataArr) => {
-        const colums = [];
-        const length = dataArr.length;
-        for(var i=0; i<length-1; i++) {
-            const headData = {
-                title: '',
-                align:'center',
-                key: '',
-                children: [{
-                    title: '',
-                    align:'center',
-                    children: [{
-                        title: '',
-                        dataIndex: '',
-                        align:'center',
-                        width: 100,
-                        render: (text,record,index) => {
-                            const idTd = index+text;
-                            return (
-                                <div id={idTd}  onClick={this.cellChange} >{text}</div>
-                            )
-                        },
-                    }],
-                }],
-            };
-            headData.title = dataArr[i].name;
-            headData.key = dataArr[i].name;
-            headData.children[0].title = dataArr[i].symbol;
-            headData.children[0].children[0].title = dataArr[i].area;
-            headData.children[0].children[0].dataIndex = dataArr[i].name;
-            colums.push(headData);
-        }
-        // 动态列的时候 动态中的最后一列不能设置width
-        const endArrData = {
-            title: dataArr[length-1].name,
-            align:'center',
-            children: [{
-                title: dataArr[length-1].symbol,
-                align:'center',
-                children: [{
-                    title: dataArr[length-1].area,
-                    dataIndex: dataArr[length-1].name,
-                    key: dataArr[length-1].name,
-                    align:'center',
-                    // editable: true,
-                }]
-            }],
-        };
-        colums.push(endArrData);
-        // console.log('columssss',colums)
-        return colums;
-    };
-    assembleTableHead = (dynColums) => {
-        const firstColumns = [{
-            title: '序号',
-            dataIndex: 'index',
-            key: 'id',
-            align:'center',
-            width: 80,
-            fixed: 'left',
-            editable: true,
-        },{
-            title: '批号',
-            dataIndex: 'a',
-            key: 'a',
-            align:'center',
-            width: 100,
-            fixed: 'left',
-        }];
-        const endColumns = [{
-            title: '判定',
-            key: 'judge',
-            dataIndex: 'judge',
-            align:'center',
-            width: 100,
-            fixed: 'right',
-            render : (text,record) => {
-                const recordId = record.id;
-                return (
-                    <div>
-                        <span>
-                            <Radio.Group buttonStyle="solid" size="small"  onChange = {this.radioChange.bind(this,recordId)}>
-                                <Radio.Button value='pass'  style={{border:0}}>合格</Radio.Button>
-                                <Radio.Button value="nopass" style={{border:0}}>不合格</Radio.Button>
-                            </Radio.Group>
-                        </span>
-                    </div>
-                )
-            }
-        }];
-        const columns = [...firstColumns,...dynColums,...endColumns];
-        return columns;
     };
     /**---------------------- */
 
