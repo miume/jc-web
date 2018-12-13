@@ -20,27 +20,26 @@ class Todo extends React.Component{
         // console.log(moveItem)
     }
     moveRight(){
-        console.log(11)
         this.handleMove(1);
     }
     judgeFlag(value){
         this.state.flag = value;
     }
     handleMove(number) {
-        var middle  = document.getElementById(this.props.data.id);;         
+        // var middle  = document.getElementById(this.props.data.id);
+        var middle  = document.getElementsByClassName('item2')[0];         
         var middleItem = document.getElementsByClassName('part')[0];
         console.log(middle)
+       
         console.log(middleItem)
         // var tbodyMiddleRef = this.tbodyMiddleRef;
         // let count = middleItem.offsetWidth * 7;
-        let count = 817
+        let count = 830;
         let gap = (count / 100);
-        console.log(count)
         gap = gap.toFixed(0);
         if(gap >= 1) {
             var interval = setInterval(function() {
                 let pre = middle.scrollLeft;
-                console.log(pre)
                 if(count < 5) {
                     count -= 1;
                     middle.scrollLeft += (number === 1 ? 1 : -1);
@@ -49,6 +48,7 @@ class Todo extends React.Component{
                 else {
                     count -= gap;
                     middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
+                    
                     // tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
                 }
                 if(count <= 0 || pre === middle.scrollLeft) {

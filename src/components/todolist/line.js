@@ -15,11 +15,16 @@ class Line extends React.Component{
     */
     render(){
         return (
-            <div className='part'>
-            {
-                this.judge(this.props.index,this.props.count)?
-                <span className={this.props.flag?'line1':'line'}></span>:null
-            }
+            <div>
+                {
+                    this.judge(this.props.index,this.props.count) ?
+                    <div className='part'>
+                    {
+                        
+                        <span className={this.props.flag?'line1':'line'}></span>
+                    }
+                    </div> :null
+                }
             </div>
         );
     }

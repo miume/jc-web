@@ -78,9 +78,9 @@
   }
   .item2{
     flex-grow: 6;
-    min-width: 820px;
-    max-width: 820px;
-    overflow: hidden;
+    min-width: 840px;
+    max-width: 840px;
+    overflow: auto;
     /* border:1px solid grey; */
   }
   @media screen and (max-width:1200px){
@@ -117,7 +117,7 @@
 .item2 .part{
     width:120px;
     height:100%;
-    padding-right:5px;
+    padding-right:15px;
     display: flex;
 }
 .item2 .partSpan{
@@ -140,7 +140,7 @@
     font-weight: 400;
 }
 .item2 .item2Scroll{
-    width:120%;
+    /* width:120%; */
     display: flex;
 }
 .line{
