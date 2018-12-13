@@ -41,6 +41,7 @@ const FormItem=Form.Item;
   
       getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
         const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
+        //console.log(values);
         return values;//用来得到新增框中填写的新值
     }
         /**重置组件的值 */
@@ -54,7 +55,7 @@ const FormItem=Form.Item;
         return (
          
             <Form horizontal='true' >
-                <FormItem   wrapperCol={{span:20}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('serialNumberId',{
                     
                     rules:[{required:true,message:'请选择编号'}]
@@ -71,7 +72,7 @@ const FormItem=Form.Item;
                     
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:20}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('materialName',{
                     initialValue: '',
                     
@@ -79,7 +80,7 @@ const FormItem=Form.Item;
                     <Input placeholder='物料名称'/>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:20}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('materialClass',{
                     initialValue: '',
                     
@@ -87,23 +88,23 @@ const FormItem=Form.Item;
                     <Input placeholder='物料类型'/>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:20}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('quantityLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
-                    <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'275px'}}></InputNumber>
+                    <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'320px'}}></InputNumber>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:20}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('weightLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
-                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'275px'}}></InputNumber>
+                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'320px'}}></InputNumber>
                 )}
                 </FormItem>
-                <FormItem  wrapperCol={{span:20}} >
+                <FormItem  wrapperCol={{span:24}} >
                 {getFieldDecorator('note',{
                     
                     

@@ -7,7 +7,7 @@ import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 
 
-class RawMaterialRedList extends Component{
+class ProductRedList extends Component{
     server;
     Authorization;
     componentDidMount(){
@@ -107,7 +107,7 @@ class RawMaterialRedList extends Component{
             title:'备注',
             dataIndex:'repoRedTable.note',
             key:'repoRedTable.note',
-            aligin:'center',
+            align:'center',
             width:'10%'
         },
         {
@@ -115,7 +115,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'operation',
             key:'operation',
             align:'center',
-            //width:'8%',
+            //width:'',
             render:(text,record)=>{
                 //console.log(record.commonBatchNumber.status);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
@@ -173,9 +173,9 @@ class RawMaterialRedList extends Component{
           })
     }
     fetch=(params={})=>{
-        const materialType=1;
+        const materialType=3;
         axios({
-            url:`${this.server}/jc/common/repoRedTable/getAllByPage?materialType=${materialType}`,
+            url:`${this.server}/jc/common/repoRedTables/?materialType=${materialType}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -187,7 +187,7 @@ class RawMaterialRedList extends Component{
 
         })
         .then((data)=>{
-             //console.log(data);
+            // console.log(data);
              const res=data.data.data;
              this.pagination.total=res.total;
              for(let i=1;i<=res.list.length;i++){
@@ -228,7 +228,7 @@ class RawMaterialRedList extends Component{
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
         axios({
-             url:`${this.server}/jc/common/repoRedTable/deleteByIds`,
+             url:`${this.server}/jc/common/repoRedTables`,
              method:'Delete',
              headers:{
                 'Authorization' :this.Authorization
@@ -244,7 +244,9 @@ class RawMaterialRedList extends Component{
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
-        
+        this.setState({
+            selectedRowKeys:[]
+        });
       }
      cancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
        this.setState({
@@ -310,17 +312,18 @@ class RawMaterialRedList extends Component{
         });
  }
  getAllSerialNumber(){//获取所有编号
-    const materialClass=3;
       axios({
-            url:`${this.server}/jc/common/repoBaseSerialNumber?materialClass=${materialClass}`,
+            url:`${this.server}/jc/common/repoBaseSerialNumber`,
             method:'get',
             headers:{
                 'Authorizaion':this.Authorizaion
             },
-            
+            params:{
+                materialClass:3
+            }
 
       }).then((data)=>{
-         console.log(data);
+         //console.log(data);
          const res=data.data.data;
          this.setState({
              serialNumberChildren:res
@@ -357,7 +360,7 @@ class RawMaterialRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400}}
+                        scroll={{y:400,x:800}}
                     >
                 
                 </Table>
@@ -365,4 +368,4 @@ class RawMaterialRedList extends Component{
         );
     }
 }
-export default RawMaterialRedList; 
+export default ProductRedList; 

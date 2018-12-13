@@ -31,9 +31,7 @@ class ProductRedListEditModal extends React.Component{
   }
   getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
     const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
-    values['createPersonId']=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-    //values['currentDate']=this.getNowFormatDate();
-    values['isUrgent']=this.props.urgent;
+  console.log(values);
     
     return values;//用来得到新增框中填写的新值
 }
@@ -47,9 +45,9 @@ class ProductRedListEditModal extends React.Component{
         return(
          
            <Form horizontal='true' >
-                <FormItem   wrapperCol={{span:14}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('batchNumber',{
-                    initialValue: this.props.record.repoBaseSerialNumber.serialNumber,
+                    initialValue: this.props.record.repoBaseSerialNumber.id,
                     rules:[{required:true,message:'编号不能为空'}]
                 })(
                   <Select onChange={this.serialNumberSelectChange} placeholder='请选择编号'>
@@ -64,7 +62,7 @@ class ProductRedListEditModal extends React.Component{
                   
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:14}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('materialName',{
                     initialValue: this.props.record.repoBaseSerialNumber.materialName,
                     
@@ -72,7 +70,7 @@ class ProductRedListEditModal extends React.Component{
                     <Input placeholder='物料名称'/>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:14}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('materialClass',{
                     initialValue: this.props.record.repoBaseSerialNumber.materialClass,
                     
@@ -80,23 +78,23 @@ class ProductRedListEditModal extends React.Component{
                     <Input placeholder='物料类型'/>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:14}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('quantity',{
                     initialValue: this.props.record.repoRedTable.quantityLoss,
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
-                    <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'275px'}}></InputNumber>
+                    <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'320px'}}></InputNumber>
                 )}
                 </FormItem>
-                <FormItem  wrapperCol={{span:14}} required>
+                <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('weight',{
                     initialValue: this.props.record.repoRedTable.weightLoss,
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
-                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'275px'}}></InputNumber>
+                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'320px'}}></InputNumber>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:14}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('note',{
                     initialValue: this.props.record.repoRedTable.note,
                     
