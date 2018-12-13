@@ -157,7 +157,7 @@ class ProductLine extends React.Component{
                 )}
               </span>
               <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
             </span>
@@ -184,7 +184,7 @@ class ProductLine extends React.Component{
       //console.log('params:', params);
       this.setState({loading:true});
       axios({
-        url: `${this.server}/jc/common/productLine/getAllByPage`,
+        url: `${this.server}/jc/common/productLine/pages`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -239,16 +239,14 @@ class ProductLine extends React.Component{
           selectedIds: selectedRowKeys
         });
       }
-    //   showIds(event) {//?
-    //    // console.log(event.target.value)
-    //   }
+  
       /**---------------------- */
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/common/productLine/deleteByIds`,
+            url:`${this.server}/jc/common/productLine`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization
@@ -260,6 +258,9 @@ class ProductLine extends React.Component{
          // console.log(data);
           message.info(data.data.message);
           this.fetch();
+          this.setState({
+            selectedRowKeys:[]
+          });
         })//处理成功
         .catch(()=>{
          // console.log(error);
@@ -268,7 +269,9 @@ class ProductLine extends React.Component{
        
      }
     cancel(){
-      
+      this.setState({
+        selectedRowKeys:[]
+      });
     }
    
     //编辑
@@ -307,8 +310,8 @@ class ProductLine extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/common/productLine/update`,
-              method:'post',
+              url:`${this.server}/jc/common/productLine`,
+              method:'put',
               headers:{
                 'Authorization':this.Authorization
               },
@@ -348,7 +351,7 @@ class ProductLine extends React.Component{
       searchEvent(){
            const productLineName=this.state.searchContent;
            axios({
-             url:`${this.server}/jc/common/productLine/getByNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.server}/jc/common/productLine/pagesNameLike`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization

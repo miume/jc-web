@@ -14,7 +14,7 @@ const CollectionCreateForm = Form.create()(//弹出层
           <Modal
             visible={visible}
             title="新增"
-            closable={false} maskClosable={false}
+            closable={false} maskClosable={false} centered={true}
             onOk={onCreate}
             onCancel={onCancel}
             footer={[
@@ -23,12 +23,12 @@ const CollectionCreateForm = Form.create()(//弹出层
             ]}
           >
             <Form horizontal='true' >
-                <FormItem label='检测项目名称' labelCol={{span:5}} wrapperCol={{span:14}} required>
+                <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
                     rules:[{required:true,message:'检测项目名称不能为空'}]
                 })(
-                    <Input placeholder='请输入检测项目名称'></Input>
+                    <Input placeholder='请输入检测项目名称' ></Input>
                 )}
                 </FormItem>
             </Form>
@@ -63,7 +63,7 @@ class TestItemAddModal extends React.Component{
           }
           values['unit']='';
           axios({
-            url:`${this.server}/jc/common/testItem/add`,
+            url:`${this.server}/jc/common/testItem`,
             method:'post',
             headers:{
               'Authorization':this.Authorization
