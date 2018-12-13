@@ -192,7 +192,7 @@ class PurchaseModal extends React.Component {
                     <div id="modalTable">
                         <div className="thead">
                             <div className="theadLeft">
-                                <div className="leftThead">序号</div>
+                                <div className="leftThead borderRadius">序号</div>
                                 <div className="leftThead">批号</div>
                                 <div className="leftOnclick" onClick={handleLeftClick}>
                                     <i className="fa fa-caret-left"></i>
@@ -225,12 +225,22 @@ class PurchaseModal extends React.Component {
                             <div className="tbodyLeft" >
                                 {
                                     this.state.tbodyData.map((item,index) => {
-                                        return(
-                                            <div className="leftTbody" key={'tbody'+index}>
-                                                <div key={item.id}>{item.index}</div>
-                                                <div key={'a'}>{item.a}</div>
-                                            </div>
-                                        )
+                                        if(index === this.state.tbodyData.length-1){
+                                            return(
+                                                <div className="leftTbody" key={'tbody'+index}>
+                                                    <div className="leftBorderRadius" key={item.id}>{item.index}</div>
+                                                    <div key={'a'}>{item.a}</div>
+                                                </div>
+                                            )
+                                        }else{
+                                            return(
+                                                <div className="leftTbody" key={'tbody'+index}>
+                                                    <div key={item.id}>{item.index}</div>
+                                                    <div key={'a'}>{item.a}</div>
+                                                </div>
+                                            )
+                                        }
+
                                     })
                                 }
                             </div>
@@ -267,19 +277,36 @@ class PurchaseModal extends React.Component {
                             <div className="tbodyRight">
                                 {
                                     this.state.tbodyData.map((item,index) => {
-                                        return(
-                                            <div className="rightTbody" key={`right${index}`}>
-                                                <div
-                                                    className={(item.pass? 'passJudge': 'isQualified')}
-                                                    ref={`pass${index}`}
-                                                    onClick={this.handleJudgePass.bind(this,index)}
-                                                >合格</div>
-                                                <div
-                                                    className={(item.nopass? 'nopassJudge': 'isQualified')}
-                                                    ref={`nopass${index}`}
-                                                >不合格</div>
-                                            </div>
-                                        )
+                                        if(index == this.state.tbodyData.length-1){
+                                            return(
+                                                <div className="rightTbody" key={`right${index}`}>
+                                                    <div
+                                                        className={(item.pass? 'passJudge': 'isQualified')}
+                                                        ref={`pass${index}`}
+                                                        onClick={this.handleJudgePass.bind(this,index)}
+                                                    >合格</div>
+                                                    <div
+                                                        className={(item.nopass? 'nopassJudge leftBorderRadius': 'isQualified leftBorderRadius')}
+                                                        ref={`nopass${index}`}
+                                                    >不合格</div>
+                                                </div>
+                                            )
+                                        }else{
+                                            return(
+                                                <div className="rightTbody" key={`right${index}`}>
+                                                    <div
+                                                        className={(item.pass? 'passJudge': 'isQualified')}
+                                                        ref={`pass${index}`}
+                                                        onClick={this.handleJudgePass.bind(this,index)}
+                                                    >合格</div>
+                                                    <div
+                                                        className={(item.nopass? 'nopassJudge': 'isQualified')}
+                                                        ref={`nopass${index}`}
+                                                    >不合格</div>
+                                                </div>
+                                            )
+                                        }
+
                                     })
                                 }
                             </div>

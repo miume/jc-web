@@ -1,5 +1,8 @@
-.borderRight {
-    border-right: 1px solid #E9E9E9;
+.borderRadius {
+    border-radius: 3px 0 0 0;
+}
+.leftBorderRadius {
+    border-radius: 0 0 3px 3px;
 }
 #modalTable {
     width: 1000px;
