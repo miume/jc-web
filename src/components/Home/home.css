@@ -31,7 +31,7 @@ html, body, .parent {
 }
 .rightDiv {
     position: absolute;
-    overflow: auto;
+    overflow: hidden;
     left: 130px;
     right: 0;
     top: 60px;
