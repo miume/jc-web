@@ -8,7 +8,7 @@
     padding: 5px;
     font-weight: 600;
     font-size: 15px;
-    width:10%;
+    min-width:124px;
     border: 1px darkgrey solid;
     border-radius: 4px 0 0 0;
 }
@@ -22,8 +22,15 @@
     border-right:none;
     border-radius: 5px 0 0 0 !important;
 }
+.tbody {
+    max-height:270px;
+    overflow-y:scroll;
+    display:block
+}
 .tbody  td{
     height: 35px;
+    min-width:124px;
+    max-width:124px;
     font-weight: 600;
     font-size: 15px;
     text-align: center;

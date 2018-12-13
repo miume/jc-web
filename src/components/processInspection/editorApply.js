@@ -75,7 +75,7 @@ class EditorApply extends React.Component{
         return (
             <div>
                 <p className='fr'>已录入{this.state.count}条数据</p>
-                    <table style={{width:'100%'}}>
+                    <table style={{width:'100%'}} className='table'>
                         <thead className='thead'>
                             <tr>
                                 <td>产品线</td>
@@ -90,12 +90,12 @@ class EditorApply extends React.Component{
                         </thead>
                         {
                         this.state.editorData.length>0 || !this.state.flag?
-                            <tbody>
+                            <tbody className='tbody'>
                             {
                             this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.props.allTestItem}></Tr> })
                             }
                         </tbody>:
-                        <tbody>
+                        <tbody className='tbody'>
                         {
                             this.props.data.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.props.allTestItem}></Tr> })
                         }
@@ -105,7 +105,7 @@ class EditorApply extends React.Component{
                     </table>
 
                     <WhiteSpace />
-                    <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+                    <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
             </div>
         );
     }

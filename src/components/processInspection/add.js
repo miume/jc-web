@@ -46,7 +46,8 @@ class Add extends React.Component{
     }
     handleCancel() {
         this.setState({
-        visible: false
+        visible: false,
+        data : [1]
         });
     }
     /**新增一条数据 */
@@ -167,7 +168,7 @@ class Add extends React.Component{
                     ]}>
                     <div style={{height:'400px'}}>
                     <p className='fr'>已录入{this.state.count}条数据</p>
-                         <table style={{width:'100%'}}>
+                         <table style={{width:'100%'}} className='table'>
                              <thead className='thead'>
                              <tr>
                                 <td>产品线</td>
@@ -175,19 +176,19 @@ class Add extends React.Component{
                                 <td>取样点</td>
                                 <td>取样人</td>
                                 <td>检测人</td>
-                                <td>检测项目</td><td>频次</td>
+                                <td style={{minWidth:'135px'}}>检测项目</td><td>频次</td>
                                 <td>受检物料</td>
                                 <td>备注</td><td>操作</td>
                                  </tr>
                              </thead>
-                             <tbody>
+                             <tbody className='tbody'>
                              {
                                 this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} id={m.toString()} value='' getData={this.getData}></Tr> })
                              }
                              </tbody>
                          </table>
                          <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+                         <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
                          
                     </div>
                 </Modal>
