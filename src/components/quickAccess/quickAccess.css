@@ -16,7 +16,7 @@ div.quick-middle {
 
 @keyframes fadeInUp {
   0% {
-    transform: translateY(50px);
+    transform: translateY(20px);
     opacity: 0;
   }
   100% {
@@ -88,7 +88,7 @@ div.quick-middle div.quick-shadow:nth-child(3) {
   padding: 10px;
   display: inline-block;
   width: 33.33%;
-  animation: scaleIn 0.5s ease-in-out 1 forwards;
+  animation: fadeInUp 0.3s ease-in-out 1 forwards;
   opacity: 0;
 }
 
@@ -97,23 +97,23 @@ div.quick-middle div.quick-shadow:nth-child(3) {
 }
 
 .quick-tag-wrapper:nth-child(2) {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 
 .quick-tag-wrapper:nth-child(3) {
-  animation-delay: 0.3s;
+  animation-delay: 0.1s;
 }
 
 .quick-tag-wrapper:nth-child(4) {
-  animation-delay: 0.4s;
+  animation-delay: 0.3s;
 }
 
 .quick-tag-wrapper:nth-child(5) {
-  animation-delay: 0.5s;
+  animation-delay: 0.3s;
 }
 
 .quick-tag-wrapper:nth-child(6) {
-  animation-delay: 0.6s;
+  animation-delay: 0.3s;
 }
 .quick-tag-wrapper:nth-last-child(1)::after {
   content: "最近访问";
