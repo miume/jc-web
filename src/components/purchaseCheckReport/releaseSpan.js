@@ -6,6 +6,8 @@ import PurchaseModal from './purchaseModal';
 
 
 class ReleaseSpan extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
@@ -15,6 +17,10 @@ class ReleaseSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         return(
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal

@@ -4,7 +4,7 @@ import PurchaseModal from "./purchaseModal";
 import ReleaseNewButton from './releaseNew';
 import ReleaseButton from './releaseButton';
 
-class CheckDetailSpan extends React.Component {
+class CheckReleaseSpan extends React.Component {
     Authorization;
     server;
     constructor(props){
@@ -42,7 +42,7 @@ class CheckDetailSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <span  className="blue" >详情</span>
+                <span  className="blue">{this.props.name}</span>
             </span>
         )
     }
@@ -53,7 +53,7 @@ class CheckDetailSpan extends React.Component {
                 footer.push(<Button className='white-button' style={{float:'left',backgroundColor:'white'}} key="back"  onClick={this.handleCancel}>返回</Button>);
                 footer.push(<Input key="input" style={{width:300,color:'black',textAlign: 'center'}} disabled defaultValue="该数据审核中，审核通过后方可发布"/>);
                 return footer;
-            case 2: //已通过
+            case 2: //已通过  未发布
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
                     <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default'}} disabled defaultValue="该数据审核通过，请发布"/>,
@@ -119,4 +119,4 @@ class CheckDetailSpan extends React.Component {
         this.setState({ pvisivle });
     };
 }
-export default CheckDetailSpan;
+export default CheckReleaseSpan;
