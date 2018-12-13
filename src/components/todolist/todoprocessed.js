@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import Todo from './todo';
 import './todolist.css';
-import { Certificate } from 'crypto';
 
 class TodoProcessed extends React.Component{
     server
@@ -48,16 +47,9 @@ class TodoProcessed extends React.Component{
     render(){
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
-        const data = [
-            'quan',
-            'line2',
-            'quan',
-            'line2',
-            'quan'
-        ]
         return (
-            <div style={{padding:'15px',overflowX:'auto'}}>
-                    <div style={{height:'1000px'}}>
+            <div style={{padding:'15px',overflow:'auto',height:'480px'}}>
+                    <div>
                         {
                             this.state.data?this.state.data.map(e=>{
                                 return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
