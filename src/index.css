@@ -156,8 +156,17 @@ i {
 }
 
 /**修改弹出框样式*/
-.ant-modal.modal-sm{
+.ant-modal.modal-sm {
     width: 360px !important;
+}
+.ant-modal.modal-md {
+    width: 520px !important;
+}
+.ant-modal.modal-lg {
+    width: 720px !important;
+}
+.ant-modal.modal-xlg {
+    width: 1080px !important;
 }
 .ant-modal-header {
     padding: 8px 20px !important;
@@ -196,4 +205,3 @@ i {
   height: 35px !important;
   line-height: 35px !important;
 }
-
