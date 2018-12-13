@@ -41,12 +41,12 @@ class Edit extends Component{
         
       }
       handleSave () {//编辑一条记录
-       const value=this.formRef.getItemsValue();
-        
-        value['id']=this.props.record.repoRedTable.id;
+       const  details=this.formRef.getItemsValue();
+       // console.log(details);
+       details['id']=this.props.record.repoRedTable.id;
         
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-        const isUrgent=this.props.urgent;
+        const isUrgent=this.state.checkSwitch;
         const commonBatchNumber={
             id:this.props.record.commonBatchNumber.id,
             batchNumber:this.props.record.commonBatchNumber.batchNumber,
@@ -55,14 +55,14 @@ class Edit extends Component{
             isUrgent:isUrgent,
         }
         axios({
-              url:`${this.server}/jc/common/repoRedTable/update`,
-              method:'post',
+              url:`${this.server}/jc/common/repoRedTable`,
+              method:'put',
               headers:{
                   'Authorization':this.Authorization
               },
               data:{
-                 commonBatchNumber,
-                  value,
+                commonBatchNumber:commonBatchNumber,
+                details: details,
                 },
               type:'json'
 
@@ -96,7 +96,59 @@ class Edit extends Component{
          popVisible:visible
        })
    }
+   getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+    axios({
+        url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
+        method:'post',
+        headers:{
+            'Authorization':this.Authorization
+        },
+        data:{dataBatchNumberId,taskBatchNumberId},
+        type:'json'
+     }).then((data)=>{
+         message.info(data.data.message);
+         this.props.fetch();
+     }).catch(()=>{
+         message.info('新增失败，请联系管理员！');
+     });
+   }
     handleSongShenOk(){//送审事件的确认按钮
+        const details=this.formRef.getItemsValue();
+       // console.log(details);
+        details['id']=this.props.record.repoRedTable.id;
+        
+        const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
+        const isUrgent=this.state.checkSwitch;
+        const commonBatchNumber={
+            id:this.props.record.commonBatchNumber.id,
+            batchNumber:this.props.record.commonBatchNumber.batchNumber,
+            createPersonId:createPersonId,
+            status:-1,
+            isUrgent:isUrgent,
+        }
+        axios({
+              url:`${this.server}/jc/common/repoRedTable`,
+              method:'put',
+              headers:{
+                  'Authorization':this.Authorization
+              },
+              data:{
+                commonBatchNumber:commonBatchNumber,
+                details: details,
+                },
+              type:'json'
+
+        }).then((data)=>{
+            const res=data.data.data;
+            const dataBatchNumberId=res.commonBatchNumber.id;//返回的batchnumberId
+            const taskBatchNumberId=this.state.checkSelectData;//选择的流程id
+            this.getCheck(dataBatchNumberId,taskBatchNumberId);//调用待办事项的送审
+                this.props.fetch();
+        }).catch(()=>{
+          message.info('编辑失败，请联系管理员！');
+        });
+        this.setState({ visible: false });
+      
       this.setState({popVisible:false});
     }
          
@@ -111,8 +163,7 @@ class Edit extends Component{
                 maskClosable={false}
                 closable={false}
                 title="编辑红单"
-                onOk={this.handleSave}
-                onCancel={this.handleCancel}
+                width='360px'
             
              // footer下的每个组件都要有唯一的key
             footer={[
@@ -138,8 +189,8 @@ class Edit extends Component{
                           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
-                            <Button onClick={this.hide}>取消</Button>
-                            <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
+                            <Button onClick={this.hide} key='hide'>取消</Button>
+                            <Button type='primary' key='ok' disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
                         </div>
                      </div>
                  }

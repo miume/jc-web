@@ -47,7 +47,7 @@ class Add extends React.Component{
         }
         //console.log(value);
         axios({
-           url:`${this.server}/jc/common/repoRedTable/add`,
+           url:`${this.server}/jc/common/repoRedTable`,
            method:'post',
            headers:{
                    'Authorization':this.Authorization
@@ -122,7 +122,7 @@ class Add extends React.Component{
         }
         //console.log(value);
         axios({
-           url:`${this.server}/jc/common/repoRedTable/add`,
+           url:`${this.server}/jc/common/repoRedTable`,
            method:'post',
            headers:{
                    'Authorization':this.Authorization
