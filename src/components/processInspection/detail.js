@@ -124,9 +124,11 @@ class Detail extends React.Component{
                'Authorization':this.props.Authorization
            }
        }).then((data)=>{
-           const details = data.data.data.details;
-           for(var i = 0; i < details.length; i++){
-              details[i].id = i+1;
+           const details = data.data.data? data.data.data.details:[];
+           if(details){
+            for(var i = 0; i < details.length; i++){
+                details[i].id = i+1;
+             }
            }
            this.setState({
                detailData:details,
@@ -244,7 +246,6 @@ class Detail extends React.Component{
       }).catch(()=>{
           message.info('操作失败，请联系管理员！')
       })
-      console.log(details)
   }
     render() {
         return (

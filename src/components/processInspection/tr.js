@@ -88,7 +88,7 @@ class Tr extends React.Component{
      /**获取所有产品线 */
      getAllProductLine(){
         axios({
-          url:`${this.server}/jc/common/productLine/getAll`,
+          url:`${this.server}/jc/common/productLine`,
           method:'get',
           headers:{
             'Authorization':this.Authorization
@@ -106,7 +106,7 @@ class Tr extends React.Component{
     /**获取所有产品工序 */
     getAllProductionProcess(){
       axios({
-        url:`${this.server}/jc/common/productionProcess/getAll`,
+        url:`${this.server}/jc/common/productionProcess`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -124,7 +124,7 @@ class Tr extends React.Component{
     /**获取所有检测项目 */
     getAllTestItem(){
       axios({
-        url:`${this.server}/jc/common/testItem/getAll`,
+        url:`${this.server}/jc/common/testItem`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -139,7 +139,7 @@ class Tr extends React.Component{
     /**获取所有用户 */
     getAllUser(){
       axios({
-        url:`${this.server}/jc/auth/role/getAll`,
+        url:`${this.server}/jc/auth/role`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -157,7 +157,7 @@ class Tr extends React.Component{
     /**获取所有受检物料 */
     getAllTestMaterial(){
         axios({
-            url:`${this.server}/jc/common/repoBaseSerialNumber/getAll`,
+            url:`${this.server}/jc/common/repoBaseSerialNumber`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization

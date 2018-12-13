@@ -17,7 +17,7 @@ const Option = Select.Option;
 // },]
 class Submit extends React.Component{
     componentDidMount(){
-        axios.get(`${this.props.server}/jc/common/batchAuditTask/validTasks`,{
+        axios.get(`${this.props.server}/jc/common/batchAuditTask`,{
             headers:{
                 'Authorization':this.props.Authorization
             }

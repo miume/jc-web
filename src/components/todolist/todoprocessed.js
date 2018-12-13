@@ -37,7 +37,6 @@ class TodoProcessed extends React.Component{
                 data:res
             })
             this.props.getCount(count);
-            console.log(res)
         })
     }
     moveLeft(){

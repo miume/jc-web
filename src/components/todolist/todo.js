@@ -28,11 +28,7 @@ class Todo extends React.Component{
     handleMove(number) {
         // var middle  = document.getElementById(this.props.data.id);
         var middle  = document.getElementsByClassName('item2')[0];         
-        var middleItem = document.getElementsByClassName('part')[0];
-        console.log(middle)
-       
-        console.log(middleItem)
-        // var tbodyMiddleRef = this.tbodyMiddleRef;
+        // var middleItem = document.getElementsByClassName('part')[0];
         // let count = middleItem.offsetWidth * 7;
         let count = 830;
         let gap = (count / 100);
