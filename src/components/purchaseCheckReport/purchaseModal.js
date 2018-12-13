@@ -190,17 +190,15 @@ class PurchaseModal extends React.Component {
                 </div>
                 <div style={{paddingTop:'80px'}}>
                     <div id="modalTable">
-                        <div id="thead">
-                            <div id="theadLeft">
-                                <div>
-                                    <div className="leftThead borderRight">序号</div>
-                                    <div className="leftThead">批号</div>
-                                    <div className="leftOnclick" onClick={handleLeftClick}>
-                                        <i className="fa fa-caret-left"></i>
-                                    </div>
+                        <div className="thead">
+                            <div className="theadLeft">
+                                <div className="leftThead">序号</div>
+                                <div className="leftThead">批号</div>
+                                <div className="leftOnclick" onClick={handleLeftClick}>
+                                    <i className="fa fa-caret-left"></i>
                                 </div>
                             </div>
-                            <div id="theadMiddle"  style={{paddingLeft:'1px'}}>
+                            <div className="theadMiddle">
                                 <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} >
                                     {
                                         this.state.headColumns.map((item,index) => {
@@ -223,40 +221,37 @@ class PurchaseModal extends React.Component {
                             </div>
                         </div>
                         <div style={{clear: 'both'}}></div>
-                        <div id="tbody">
-                            <div id="tbodyLeft">
+                        <div className="tbody">
+                            <div className="tbodyLeft" >
                                 {
                                     this.state.tbodyData.map((item,index) => {
                                         return(
-                                            <div key={'tbody'+index}>
-                                                <div className="leftTbody borderRight" key={item.id}>{item.index}</div>
-                                                <div className="leftTbody" key={'a'}>{item.a}</div>
+                                            <div className="leftTbody" key={'tbody'+index}>
+                                                <div key={item.id}>{item.index}</div>
+                                                <div key={'a'}>{item.a}</div>
                                             </div>
                                         )
                                     })
                                 }
                             </div>
-                            <div id="tbodyArea">
-                                <div className="tbodyMiddle" ref={(ref) => this.tbodyMiddleRef = ref}>
+                            <div className="tbodyMiddle" >
+                                <div className="middleTbody" ref={(ref) => this.middleTbody = ref}>
                                     {
                                         this.state.tbodyData.map((item,index) => {
+                                            //  每一行数据
                                             const data = item;
                                             const tbodyRow = index;
-                                            const dynDataLength = this.state.headColumns.length;
-
-                                            console.log('dynDataLength',dynDataLength)
                                             return(
-                                                <div className="middleTbody"   key={'tbodyData'+index} style={{paddingLeft:'1px'}}>
+                                                <div className="middleTbodyDiv" key={index}>
                                                     {
                                                         this.state.headColumns.map((item,index) => {
-                                                            //通过计算去除边框
                                                             return(
                                                                 <div
-                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDiv') }
+                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDivWhite')}
                                                                     ref={`${tbodyRow}|${index}`}
                                                                     id={`${tbodyRow}|${item.testItem}`}
                                                                     key={index}
-                                                                    onClick={this.handleCellOnclick.bind(this)}  //参数 行数和列对象的名字
+                                                                    onClick={this.handleCellOnclick.bind(this)}
                                                                 >
                                                                     {data[item.testItem].value}
                                                                 </div>
@@ -264,16 +259,16 @@ class PurchaseModal extends React.Component {
                                                         })
                                                     }
                                                 </div>
-                                            );
+                                            )
                                         })
                                     }
                                 </div>
                             </div>
-                            <div id="tbodyRight">
+                            <div className="tbodyRight">
                                 {
                                     this.state.tbodyData.map((item,index) => {
                                         return(
-                                            <div key={`right${index}`}>
+                                            <div className="rightTbody" key={`right${index}`}>
                                                 <div
                                                     className={(item.pass? 'passJudge': 'isQualified')}
                                                     ref={`pass${index}`}
@@ -423,7 +418,7 @@ class PurchaseModal extends React.Component {
     handleClick(number) {
         var middle  = this.middleTheadRef;         
         var middleItem = this.middleTheadDivRef;
-        var tbodyMiddleRef = this.tbodyMiddleRef;
+        var middleTbody = this.middleTbody;
         let count = middleItem.offsetWidth * 7;
         let gap = (count / 100);
         gap = gap.toFixed(0);
@@ -433,12 +428,12 @@ class PurchaseModal extends React.Component {
                 if(count < 5) {
                     count -= 1;
                     middle.scrollLeft += (number === 1 ? 1 : -1);
-                    tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
+                    middleTbody.scrollLeft += (number === 1 ? 1 : -1);
                 }
                 else {
                     count -= gap;
                     middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
-                    tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
+                    middleTbody.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
                 }
                 if(count <= 0 || pre === middle.scrollLeft) {
                     clearInterval(interval);
@@ -449,7 +444,7 @@ class PurchaseModal extends React.Component {
                 let pre = middle.scrollLeft;
                 count -= 1;
                 middle.scrollLeft += (number === 1 ? 1 : -1);
-                tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
+                middleTbody.scrollLeft += (number === 1 ? 1 : -1);
                 if(count <= 0|| pre === middle.scrollLeft) {
                     clearInterval(interval2);
                 }

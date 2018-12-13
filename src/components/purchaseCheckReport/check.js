@@ -17,7 +17,7 @@ for (let i = 0; i < 20; i++) {
         g: '李小红',
         h: '2018年11月27日',
         type: '进货检验',
-        state:1,
+        state:3,
         isUrgent:'紧急',
     });
 }
@@ -40,13 +40,10 @@ class Check extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
+            showTotal(total) {
+                return `共${total}条记录`
             },
-            onChange(current) {
-                // console.log('Current: ', current);
-            }
+            showSizeChanger: true,
         }
     };
     render() {
@@ -66,6 +63,7 @@ class Check extends React.Component {
                 <CheckTable
                     data={this.state.dataSource}
                     pagination={this.pagination}
+                    fetch={this.fetch}
                 />
             </div>
         )

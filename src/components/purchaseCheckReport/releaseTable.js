@@ -1,16 +1,17 @@
 import React from 'react';
-import {Divider, Table} from 'antd';
+import {Table} from 'antd';
 import ReleaseSpan from './releaseSpan';
-import DeletaSpan from './deleteSpan';
+import CheckReleaseSpan from './checkReleaseSpan';
+
 
 class ReleaseTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
-        sorter: (a, b) => a.key - b.key,
+        key: 'index',
+        sorter: (a, b) => a.id - b.id,
         align:'center',
-        width: '6%',
+        width: '5%',
     },{
         title: '批号',
         dataIndex: 'a',
@@ -34,7 +35,7 @@ class ReleaseTable extends React.Component {
         dataIndex: 'd',
         key: 'd',
         align:'center',
-        width: '6%',
+        width: '10%',
     },{
         title: '创建人',
         dataIndex: 'e',
@@ -46,55 +47,64 @@ class ReleaseTable extends React.Component {
         dataIndex: 'f',
         key: 'f',
         align:'center',
-        width: '6%',
+        width: '10%',
     },{
         title: '修改人',
-        dataIndex: 'h',
-        key: 'h',
+        dataIndex: 'g',
+        key: 'g',
         align:'center',
         width: '6%',
     },{
         title: '修改日期',
-        dataIndex: 'i',
-        key: 'i',
+        dataIndex: 'h',
+        key: 'h',
         align:'center',
-        width: '6%',
+        width: '10%',
     },{
         title: '类型',
-        dataIndex: 'j',
-        key: 'j',
+        dataIndex: 'type',
+        key: 'type',
         align:'center',
         width: '6%',
     },{
-        title: '审核状态',
-        dataIndex: 'k',
-        key: 'k',
+        title: '发布状态',
+        dataIndex: 'state',
+        key: 'state',
         align:'center',
         width: '6%',
+        render:state => {
+            switch(`${state}`) {
+                case '1': return '已发布';
+                case '2': return '未发布';
+                default: return '';
+            }
+        },
     },{
         title: '紧急',
-        dataIndex: 'l',
-        key: 'l',
+        dataIndex: 'isUrgent',
+        key: 'isUrgent',
         align:'center',
         width: '6%',
+        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'id',
+        key: 'id',
         align:'center',
-        width: '25%',
+        width: '13%',
         render: (text,record) => {
-            console.log("-----");
-            console.log(record);
+            let operationFlag = this.judgeOperation(record.state);
+            console.log(operationFlag)
             return (
                 <span>
-                    <ReleaseSpan
-                    />
-                    <Divider type="vertical" />
-                    <DeletaSpan
-                        record={record}
-                        handleDelete={this.handleDelete.bind(this)}
-                    />
+                    {operationFlag?(
+                        <CheckReleaseSpan
+                            state={2}
+                            name='发布'
+                        />
+                    ):(
+                        <span  className="grey">发布</span>
+                    )}
                 </span>
             )
         }
@@ -105,10 +115,6 @@ class ReleaseTable extends React.Component {
                 ...col,
                 onCell: record => ({
                     record,
-                    // editable: col.editable,
-                    // dataIndex: col.dataIndex,
-                    // title: col.title,
-                    // handleSave: this.handleSave,
                 }),
             };
         });
@@ -118,12 +124,22 @@ class ReleaseTable extends React.Component {
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}
+                pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ x: 1500}}
+                scroll={{ x: 1500,y: 400 }}
             />
         )
     }
+    /**判断发布可否功能 */
+    judgeOperation = (record) => {
+        if(record===2){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    /**---------------------- */
     /**单条记录删除 */
     handleDelete = (key) => {
         console.log("++++++");

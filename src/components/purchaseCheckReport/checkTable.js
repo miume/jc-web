@@ -1,7 +1,7 @@
 import React from 'react';
 import {Divider, Table} from 'antd';
 import CheckEditSpan from './checkEditSpan';
-import CheckDetailSpan from './checkDetailSpan';
+import CheckReleaseSpan from './checkReleaseSpan';
 import DeletaSpan from './deleteSpan';
 
 class CheckTable extends React.Component {
@@ -76,7 +76,7 @@ class CheckTable extends React.Component {
             switch(`${state}`) {
                 case '1': return '审核中';
                 case '2': return '已通过';
-                case '3': return '未通过';
+                case '3': return '不通过';
                 default: return '';
             }
         },
@@ -94,15 +94,19 @@ class CheckTable extends React.Component {
         align:'center',
         width: '13%',
         render: (text,record) => {
-            let operationFlag = this.judgeOperation(record.type);
+            let operationFlag = this.judgeOperation(record.state);
             return (
                 <span>
-                    <CheckEditSpan
-                        disabled={operationFlag}
-                    />
+                    {operationFlag?(
+                        <CheckEditSpan
+                        />
+                    ):(
+                        <span  className="grey">编辑</span>
+                    )}
                     <Divider type="vertical" />
-                    <CheckDetailSpan
+                    <CheckReleaseSpan
                         state={record.state}
+                        name='详情'
                     />
                     <Divider type="vertical" />
                     <DeletaSpan
@@ -136,10 +140,10 @@ class CheckTable extends React.Component {
     }
     /**判断编辑可否功能 */
     judgeOperation = (record) => {
-        if(record==="不通过"){
-            return false;
-        }else{
+        if(record===3){
             return true;
+        }else{
+            return false;
         }
     };
     /**---------------------- */

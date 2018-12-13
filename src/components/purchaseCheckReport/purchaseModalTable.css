@@ -2,7 +2,7 @@
     border-right: 1px solid #E9E9E9;
 }
 #modalTable {
-    width: 100%;
+    width: 1000px;
     height: 470px;
     white-space: nowrap;
     /*display: flex;*/
@@ -10,7 +10,7 @@
 
 
 }
-#thead {
+.thead {
     height: 90px;
     width: 100%;
     transition: width 0.3s, height 0.3s;
@@ -18,45 +18,32 @@
     flex-direction: row;
     flex-wrap: nowrap;
     border-radius: 3px 3px 0 0;
-    border: 1px solid #E9E9E9;
     background-color: #F2F2F2;
 
 }
-#theadLeft {
+.theadLeft {
     min-width: 20%;
     max-width: 20%;
+    height: 90px;
     position: relative;
     border-radius: 3px 0 0 0;
-}
-#theadLeft div {
-    width: 100%;
-    height: 90px;
-    line-height: 90px;
-    white-space: nowrap;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-
+    line-height: 90px;
+    text-align: center;
 }
 .leftThead {
-    min-width: 50%;
-    max-width: 50%;
+    min-width: 49.9%;
+    max-width: 49.9%;
     height: 90px;
+    color: black;
     /*border-right: 1px solid #E9E9E9;*/
     font-size: 13px;
-}
-#theadMiddle {
-    background-color: #F2F2F2;
-    height: 87px;
-    min-width: 70%;
-    max-width: 70%;
+    border-left: 1px solid #E9E9E9;
 }
 .leftOnclick {
     display: block !important;
     width: 20px !important;
-    right:-2px;
-    top: -1px;
+    right:-1px;
     height: 90px;
     font-size: 20px;
     position:absolute;
@@ -73,7 +60,6 @@
     display: block !important;
     width: 20px !important;
     left:-1px;
-    top: -1px;
     height: 90px;
     font-size: 20px;
     position:absolute;
@@ -87,6 +73,12 @@
 .rightOnclick i {
     color: white;
 }
+.theadMiddle {
+    background-color: #F2F2F2;
+    height: 90px;
+    min-width: 70%;
+    max-width: 70%;
+}
 .middleThead {
     height: 100%;
     min-width: 100%;
@@ -95,18 +87,20 @@
     overflow-x: hidden; /*需要有overflow-x hidden只是将滚动条掩盖了*/
     overflow-y: hidden;
     display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    justify-content: space-between;
+    /*flex-wrap: nowrap;*/
+    /*flex-direction: row;*/
+    /*justify-content: space-between;*/
 }
 .middleTheadDiv {
-    min-width: 14.3%;
-    max-width: 14.3%;
+    min-width: 100px;
+    max-width: 100px;
     line-height: 29px;
     text-align: center;
     font-size: 13px;
-    border-left: 1px solid #E9E9E9;
+    color:black;
+    /*border-left: 1px solid #E9E9E9;*/
     cursor: default;
+    border-left: 1px solid #E9E9E9;
     transition: transform 2s;
 }
 .middleTheadDiv div{
@@ -118,161 +112,120 @@
     width: 10%;
     height: 90px;
     background-color: #F2F2F2;
-    white-space: nowrap; /*强制内部原文不换行*/
     line-height: 90px;
     text-align: center;
     cursor: default;
     font-size: 13px;
     border-left: 1px solid #E9E9E9;
+    color:black;
     position: relative;
 }
 
 /*----tbody--------*/
-#tbody {
+.tbody {
     height: 70%;
     width: 100%;
     transition: width 0.3s, height 0.3s;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    overflow-y: auto; /*才能让y滚动取消*/
-    /*border: 1px solid #E9E9E9;*/
-    border-width: 0 1px 1px 1px;
-    border-style: solid;
-    border-color: #E9E9E9;
-    border-radius:0 0 3px 3px;
+    overflow-y: auto ; /*才能让y滚动取消*/
 }
-#tbodyLeft {
+.tbodyLeft {
     min-width: 20%;
     max-width: 20%;
-}
-#tbodyLeft div {
-    border-radius: 3px 0 0 0;
-    width: 100%;
-    height: 30px;
-    line-height: 30px;
-    white-space: nowrap;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
+    height: 100%;
 }
 .leftTbody {
-    min-width: 50%;
-    max-width: 50%;
+    min-width: 100%;
+    max-width: 100%;
     height: 30px;
-    /*border-right: 1px solid #E9E9E9;*/
-    border-bottom: 1px solid #E9E9E9;
+    line-height: 30px;
+    text-align: center;
     cursor: default;
     font-size: 13px;
-}
-#tbodyArea {
-    /*height: 100%;*/
-    min-width: 70%;
-    max-width: 70%;
-}
-.tbodyMiddle {
-    /*height: 100%;*/
-    min-width: 100%;
-    max-width: 100%;
-    white-space: nowrap;
-    overflow-x: hidden; /*需要有overflow-x hidden只是将滚动条掩盖了*/
-}
-.middleTbody{
-    /*min-width: 14.3%;  !*14*!*/
-    min-width: 100%;
-    max-width: 100%;
-    white-space: nowrap;
     display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 13px;
 
-    /*transition: transform 2s;*/
 }
-.middleTbodyDiv {
-    min-width: 14.3%;
-    max-width: 14.3%;
-    line-height: 29px;
-    text-align: center;
+.leftTbody div{
+    height: 30px;
+    min-width: 49.9%;
+    max-width: 49.9%;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+}
+
+.tbodyMiddle {
+    min-width: 70%;
+    max-width: 70%;
+    /*overflow-y: inherit;*/
+
+}
+.middleTbody {
+    min-width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+.middleTbodyDiv {
+    min-width: 100%;
+    max-width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
     font-size: 13px;
+    white-space: nowrap;
+    display: flex;
     cursor: pointer;
-    transition: transform 2s;
+}
+.middleTbodyDivWhite {
+    min-width: 100px;
+    max-width: 100px;
+    height: 30px;
+    border-left: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
 }
 .middleTbodyDivRed {
     background-color: #FF3B30;
-    min-width: 14.3%;
-    max-width: 14.3%;
-    line-height: 29px;
-    text-align: center;
+    min-width: 100px;
+    max-width: 100px;
+    height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
-    font-size: 13px;
-    cursor: pointer;
-    transition: transform 2s;
 }
-
-
-#tbodyRight {
+.tbodyRight {
     min-width: 10%;
     max-width: 10%;
-    border-left: 1px solid #E9E9E9;
-
+    height: 100%;
 }
-#tbodyRight div {
-    white-space: nowrap; /*强制内部原文不换行*/
+.rightTbody {
+    min-width: 100%;
+    max-width: 100%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    cursor: default;
+    font-size: 13px;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
+}
+.rightTbody div {
+    height: 30px;
+    min-width: 49.9%;
+    max-width: 49.9%;
+    border-left: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
     cursor: pointer;
 }
-/*#tbodyRight div div {*/
-    /*background-color: #999999;*/
-    /*color:white;*/
-    /*min-width: 50%;*/
-    /*max-width: 50%;*/
-    /*height: 22px;*/
-    /*line-height: 22px;*/
-    /*text-align: center;*/
-    /*font-size: 12px;*/
-
-/*}*/
 
 .isQualified {
     background-color: #999999;
     color:white;
-    min-width: 50%;
-    max-width: 50%;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 13px;
-    border-bottom: 1px solid #E9E9E9;
 }
 .passJudge {
     background-color: #4BD863;
     color:white;
-    min-width: 50%;
-    max-width: 50%;
-    height: 29px;
-    line-height: 29px;
-    text-align: center;
-    font-size: 13px;
-    border-bottom: 1px solid #E9E9E9;
 }
 .nopassJudge {
     background-color: #FF3B30;
     color:white;
-    min-width: 50%;
-    max-width: 50%;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    font-size: 13px;
-    border-bottom: 1px solid #E9E9E9;
 }
-/*!**!*/
