@@ -139,7 +139,7 @@ class Tr extends React.Component{
     /**获取所有用户 */
     getAllUser(){
       axios({
-        url:`${this.server}/jc/auth/role`,
+        url:`${this.server}/jc/auth/role/getAll`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -316,13 +316,13 @@ class Tr extends React.Component{
         const {testItemIds} = this.state;
         const allTestItem = this.props.allTestItem?this.props.allTestItem:this.state.allTestItem;
         return (
-            <tr className='tbody' id={this.props.id}>
+            <tr id={this.props.id}>
                 <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange} defaultValue={d.productLineId}>{this.state.allProductLine}</Select></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange} defaultValue={d.procedureId}>{this.state.allProductionProcess}</Select></td>
-                <td><Input placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler}>{this.state.allUser}</Select></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='请选择检测人' onChange={this.tester} defaultValue={d.tester}>{this.state.allUser}</Select></td>
-                <td><Popover
+                <td style={{maxWidth:'124px'}}><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
+                <td><Select style={{width:'100%'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler}>{this.state.allUser}</Select></td>
+                <td><Select style={{width:'100%'}} placeholder='请选择检测人' onChange={this.tester} defaultValue={d.tester}>{this.state.allUser}</Select></td>
+                <td style={{minWidth:'135px'}}><Popover
                     content={(
                         <div style={{ width: '200px'}} >
                          <Checkbox.Group style={{ width: '100%' }} onChange={this.onChange} defaultValue={testItemIds}>
@@ -341,9 +341,9 @@ class Tr extends React.Component{
                     <Button>{this.state.testItems?this.state.testItems:'请选择检测项目'}</Button>
                     </Popover></td>
                 
-                <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center'}} onChange={this.testFrequency} defaultValue={d.testFrequency}/></td>
+                <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} defaultValue={d.testFrequency}/></td>
                 <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.testMaterialId} defaultValue={d.testMaterialId}>{this.state.allTestMaterial}</Select></td>
-                <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center'}} onChange={this.comment} defaultValue={d.comment}/></td>
+                <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment} defaultValue={d.comment}/></td>
                 <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span></td>
             </tr>
         );

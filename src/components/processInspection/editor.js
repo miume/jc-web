@@ -39,7 +39,7 @@ class Editor extends React.Component{
     /**获取所有检测项目 */
     getAllTestItem(){
         axios({
-        url:`${this.props.server}/jc/common/testItem/getAll`,
+        url:`${this.props.server}/jc/common/testItem`,
         method:'get',
         headers:{
             'Authorization':this.props.Authorization
@@ -66,7 +66,7 @@ class Editor extends React.Component{
                 'Authorization':this.props.Authorization
             }
         }).then((data)=>{
-            const details = data.data.data.details;
+            const details = data.data.data?data.data.data.details:[];
             const count = details?details.length:0;
             for(var i = 0; i < count; i++){
                 details[i].id = i+1;
@@ -75,7 +75,7 @@ class Editor extends React.Component{
                 editorData:details?details:[],
                 count:count
             })
-            console.log(details)
+            // console.log(details)
         })
      }
     handleOk() {
@@ -208,7 +208,7 @@ class Editor extends React.Component{
             <span>
                 <span className='blue' onClick={this.handleEditor} >编辑</span>
                 <Modal title="编辑" visible={this.state.visible} closable={false} centered={true}
-                    onCancel={this.handleCancel}  width='1200px' maskClosable={false}
+                    onCancel={this.handleCancel}  width='1300px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
@@ -216,7 +216,7 @@ class Editor extends React.Component{
                     ]}>
                     <div style={{height:'400px'}}>
                          <p className='fr'>已录入{this.state.count}条数据</p>
-                         <table style={{width:'100%'}}>
+                         <table style={{width:'100%'}} className='table'>
                              <thead className='thead'>
                                  <tr>
                                      <td>产品线</td>
@@ -231,7 +231,7 @@ class Editor extends React.Component{
                              </thead>
                              {
                                 this.state.editorData?
-                                 <tbody>
+                                 <tbody className='tbody'>
                                     {
                                     this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.state.allTestItem}></Tr> })
                                     }
@@ -242,7 +242,7 @@ class Editor extends React.Component{
                          </table>
 
                          <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+                         <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>
                 </Modal>
             </span>
