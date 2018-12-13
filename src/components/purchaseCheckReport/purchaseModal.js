@@ -190,7 +190,7 @@ class PurchaseModal extends React.Component {
                 </div>
                 <div style={{paddingTop:'80px'}}>
                     <div id="modalTable">
-                        <div className="thead">
+                        <div className="purchaseThead">
                             <div className="theadLeft">
                                 <div className="leftThead borderRadius">序号</div>
                                 <div className="leftThead">批号</div>
@@ -221,7 +221,7 @@ class PurchaseModal extends React.Component {
                             </div>
                         </div>
                         <div style={{clear: 'both'}}></div>
-                        <div className="tbody">
+                        <div className="purchaseTbody">
                             <div className="tbodyLeft" >
                                 {
                                     this.state.tbodyData.map((item,index) => {
