@@ -1,6 +1,7 @@
 import React from 'react';
 import NewButton from '../BlockQuote/newButton';
 import Part from './part';
+import Line from './line';
 class Todo extends React.Component{
     constructor(props){
         super(props);
@@ -8,16 +9,63 @@ class Todo extends React.Component{
             flag:0,
         }
         this.moveLeft = this.moveLeft.bind(this);
+        this.moveRight = this.moveRight.bind(this);
         this.judgeFlag = this.judgeFlag.bind(this);
-        // this.judgeStyle = this.judgeStyle.bind(this);
+        this.handleMove = this.handleMove.bind(this);
     }
     moveLeft(){
-        console.log(this.props.data.id)
-        const moveItem = document.getElementById(this.props.data.id);
-        console.log(moveItem)
+        this.handleMove(-1);
+        // console.log(this.props.data.id)
+        // const moveItem = document.getElementById(this.props.data.id);
+        // console.log(moveItem)
+    }
+    moveRight(){
+        this.handleMove(1);
     }
     judgeFlag(value){
         this.state.flag = value;
+    }
+    handleMove(number) {
+        // var middle  = document.getElementById(this.props.data.id);
+        var middle  = document.getElementsByClassName('item2')[0];         
+        var middleItem = document.getElementsByClassName('part')[0];
+        console.log(middle)
+       
+        console.log(middleItem)
+        // var tbodyMiddleRef = this.tbodyMiddleRef;
+        // let count = middleItem.offsetWidth * 7;
+        let count = 830;
+        let gap = (count / 100);
+        gap = gap.toFixed(0);
+        if(gap >= 1) {
+            var interval = setInterval(function() {
+                let pre = middle.scrollLeft;
+                if(count < 5) {
+                    count -= 1;
+                    middle.scrollLeft += (number === 1 ? 1 : -1);
+                    // tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
+                }
+                else {
+                    count -= gap;
+                    middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
+                    
+                    // tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
+                }
+                if(count <= 0 || pre === middle.scrollLeft) {
+                    clearInterval(interval);
+                }
+            },1)
+        }else if(gap > 0){
+            var interval2 = setInterval(function() {
+                let pre = middle.scrollLeft;
+                count -= 1;
+                middle.scrollLeft += (number === 1 ? 1 : -1);
+                // tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
+                if(count <= 0|| pre === middle.scrollLeft) {
+                    clearInterval(interval2);
+                }
+            },1)
+        }
     }
     render(){
         const count = this.props.details?this.props.details.length:0;
@@ -40,15 +88,20 @@ class Todo extends React.Component{
                    <div className='item2Scroll' id={this.props.data.id}>
                    {
                        this.props.details.map((e,index)=>{
-                           return <Part key={e.userId} index={index+1} data={e} id={this.props.data.createPersonId} count={count} flag={this.state.flag} judgeFlag={this.judgeFlag} />
+                           return (
+                           <div key={e.userId} style={{display:'flex',textAlign:'center'}}>
+                               <Part index={index+1} data={e} id={this.props.data.createPersonId} count={count} flag={this.state.flag} judgeFlag={this.judgeFlag} />
+                               <Line index={index+1} count={count} flag={this.state.flag}/>
+                           </div>)
                        }
                        )
                    }
                    </div>
                </div>
-               <div className='item3'><i className='fa fa-2x fa-caret-right'></i></div>
+               <div className='item3' onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
-                   <div style={{padding:'10% 0 0 70%'}}><NewButton name='审核' className='fa fa-check'></NewButton></div>
+                   {/** style={{padding:'10% 0 0 70%'}} */}
+                   <NewButton name='审核' className='fa fa-check'></NewButton>
                </div>
            </div>
         </div>

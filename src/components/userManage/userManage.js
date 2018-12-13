@@ -262,7 +262,14 @@ class User extends React.Component{
         this.setState({visible:true});
       }
       handleOk(){//处理新增一条记录
-       //console.log(this.formRef.getItemsValue());
+       const value=this.formRef.getItemsValue();
+        //value.splice(4,1);
+        //console.log(value)
+        
+       if(!value['username'] || !value['name1'] || !value['password'] || !value['confirm'] || !value['departmentId']){
+               message.info('信息填写不完整！');
+               return
+       }
         this.setState({visible:false});
         axios({
           url:`${this.server}/jc/auth/user/signIn`,
@@ -535,10 +542,11 @@ class User extends React.Component{
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                     <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} width='360px' centered={true}
                           footer={[
-                            <NewButton  handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
-                            <CancleButton handleCancel={() => this.handleCancel()} />
+                            <CancleButton  ley='cancel' handleCancel={() => this.handleCancel()} />,
+                            <NewButton key='ok' handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
+                            
                           ]}>
-                          <UserAddModal   deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
+                          <UserAddModal  key='user' deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>

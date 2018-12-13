@@ -33,7 +33,7 @@ class CheckEditSpan extends React.Component {
                 <Modal
                     title="编辑数据"
                     visible={visible}
-                    width="1050px"
+                    width="1030px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
@@ -64,7 +64,7 @@ class CheckEditSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <span  className="blue" disabled={this.props.disabled}>编辑</span>
+                <span  className="blue">编辑</span>
             </span>
         )
     }

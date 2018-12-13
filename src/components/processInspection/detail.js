@@ -262,7 +262,7 @@ class Detail extends React.Component{
                          <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>
                            {
-                             this.props.allProductionProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />)
+                             this.props.allProductionProcess?this.props.allProductionProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />):null
                            }
                          </div>
                          <WhiteSpace />

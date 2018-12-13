@@ -8,7 +8,7 @@ class Part extends React.Component{
     }
     /**判断line是否显示 */
     judge(index,last){
-        if(index===4||index===last) return 'noline';
+        if(index===last) return 'noline';
         else return 'line'
     }
     /**判断当前用户之前的用户，以及之后的用户 
@@ -19,7 +19,7 @@ class Part extends React.Component{
         /**之前 */
         if(flag === 0 && userId !== curId){
             return <div className='circle'><i className="fa fa-check"></i></div>
-        }else if(userId === curId){
+        }else if(userId === curId && this.props.data.visible){
             this.props.judgeFlag(1);
             return <Avatar style={{backgroundColor:'#0079fe'}}><span style={{fontWeight:'bolder'}}>{this.props.index}</span></Avatar>
         }
@@ -34,12 +34,12 @@ class Part extends React.Component{
         // console.log(`flag=${flag},this.props.style=${this.props.style},this.props.style1=${this.props.style1}`)
         return (
             <div className='part'>
-                <span style={{padding:'0 10px'}}>{this.checkUser(flag,this.props.data.userId,this.props.id)}</span>
-                <div style={{minWidth:80}}>
+                <span style={{padding:'5 10px'}}>{this.checkUser(flag,this.props.data.userId,this.props.id)}</span>
+                <div style={{minWidth:80,paddingTop:'5px'}}>
                     <p className={!flag||userId===curId?'darkBlue':'partSpan'}>{this.props.data.userId === this.props.id?'有您进行':this.props.data.personName}</p>
                     <p className={!flag||userId===curId?'darkBlue1':'partSpan1'}>{this.props.data.responsibility}</p>
                 </div>
-                <span className={this.judge(this.props.index,this.props.count)}></span>
+                {/* <span className={this.judge(this.props.index,this.props.count)}></span> */}
             </div>
         );
     }

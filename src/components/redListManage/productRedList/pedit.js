@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber} from 'antd';
+import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,message} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
 import ProductRedListEditModal from './peditModal';
@@ -41,20 +41,40 @@ class Edit extends Component{
         
       }
       handleSave () {//编辑一条记录
-        const value=this.formRef.getItemsValue();
-        value['status']=-1;
-        value['id']=this.props.record.
-
-        axios({
-
-        }).then((data)=>{
-
-        }).catch(()=>{
-          
-        });
-        this.setState({ visible: false });
+        const  details=this.formRef.getItemsValue();
+        // console.log(details);
+        details['id']=this.props.record.repoRedTable.id;
          
-        }
+         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
+         const isUrgent=this.state.checkSwitch;
+         const commonBatchNumber={
+             id:this.props.record.commonBatchNumber.id,
+             batchNumber:this.props.record.commonBatchNumber.batchNumber,
+             createPersonId:createPersonId,
+             status:-1,
+             isUrgent:isUrgent,
+         }
+         axios({
+               url:`${this.server}/jc/common/repoRedTable`,
+               method:'put',
+               headers:{
+                   'Authorization':this.Authorization
+               },
+               data:{
+                 commonBatchNumber:commonBatchNumber,
+                 details: details,
+                 },
+               type:'json'
+ 
+         }).then((data)=>{
+                 message.info(data.data.message);
+                 this.props.fetch();
+         }).catch(()=>{
+           message.info('编辑失败，请联系管理员！');
+         });
+         this.setState({ visible: false });
+         this.formRef.resetField();
+         }
       //红单是否紧急
    urgentChange=(checked)=>{//checked指定当前是否选中
     //console.log(`switch to ${checked}`);//选中的话checked为true
@@ -76,9 +96,61 @@ class Edit extends Component{
          popVisible:visible
        })
    }
-    handleSongShenOk(){//送审事件的确认按钮
-      this.setState({popVisible:false});
+   getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+    axios({
+        url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
+        method:'post',
+        headers:{
+            'Authorization':this.Authorization
+        },
+        data:{dataBatchNumberId,taskBatchNumberId},
+        type:'json'
+     }).then((data)=>{
+         message.info(data.data.message);
+         this.props.fetch();
+     }).catch(()=>{
+         message.info('新增失败，请联系管理员！');
+     });
+   }
+   handleSongShenOk(){//送审事件的确认按钮
+    const details=this.formRef.getItemsValue();
+   // console.log(details);
+    details['id']=this.props.record.repoRedTable.id;
+    
+    const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
+    const isUrgent=this.state.checkSwitch;
+    const commonBatchNumber={
+        id:this.props.record.commonBatchNumber.id,
+        batchNumber:this.props.record.commonBatchNumber.batchNumber,
+        createPersonId:createPersonId,
+        status:-1,
+        isUrgent:isUrgent,
     }
+    axios({
+          url:`${this.server}/jc/common/repoRedTable`,
+          method:'put',
+          headers:{
+              'Authorization':this.Authorization
+          },
+          data:{
+            commonBatchNumber:commonBatchNumber,
+            details: details,
+            },
+          type:'json'
+
+    }).then((data)=>{
+        const res=data.data.data;
+        const dataBatchNumberId=res.commonBatchNumber.id;//返回的batchnumberId
+        const taskBatchNumberId=this.state.checkSelectData;//选择的流程id
+        this.getCheck(dataBatchNumberId,taskBatchNumberId);//调用待办事项的送审
+            this.props.fetch();
+    }).catch(()=>{
+      message.info('编辑失败，请联系管理员！');
+    });
+    this.setState({ visible: false });
+  
+  this.setState({popVisible:false});
+}
          
     render(){
         return(
@@ -89,8 +161,7 @@ class Edit extends Component{
                 maskClosable={false}
                 closable={false}
                 title="编辑红单"
-                onOk={this.handleSave}
-                onCancel={this.handleCancel}
+                width='360px'
             
              // footer下的每个组件都要有唯一的key
             footer={[

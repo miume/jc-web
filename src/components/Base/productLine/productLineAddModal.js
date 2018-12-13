@@ -17,8 +17,8 @@ const CollectionCreateForm = Form.create()(//弹出层
             closable={false} maskClosable={false} centered={true}
             width='400px'
             footer={[
-              <NewButton  handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
-              <CancleButton        handleCancel={this.props.onCancel} />
+              <NewButton key='ok' handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
+              <CancleButton   key='cancel'     handleCancel={this.props.onCancel} />
             ]}
           >
             <Form horizontal='true' >

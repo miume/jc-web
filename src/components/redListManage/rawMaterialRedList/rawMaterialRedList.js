@@ -127,7 +127,7 @@ class RawMaterialRedList extends Component{
                        <span >
                        {editFlag ? (
                          <span>
-                           <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='取消'>
+                           <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='再想想'>
                            <span className='blue'>删除</span>
                            </Popconfirm>
                          </span>
@@ -168,25 +168,25 @@ class RawMaterialRedList extends Component{
           this.fetch({
               page:pagination.pageSize,//当前页显示的记录数
               size:pagination.current,//当前是第几页
-              orderField:'commonBatchNumber.id',//
-              orderType:'desc'//
+             
           })
     }
     fetch=(params={})=>{
+        const materialType=1;
         axios({
-            url:`${this.server}/jc/common/repoRedTable/getAllByPage`,
+            url:`${this.server}/jc/common/repoRedTables/?materialType=${materialType}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
             },
             params:{
                 ...params,
-                materialType:1
+               
             },
 
         })
         .then((data)=>{
-             //console.log(data);
+            // console.log(data);
              const res=data.data.data;
              this.pagination.total=res.total;
              for(let i=1;i<=res.list.length;i++){
@@ -227,7 +227,7 @@ class RawMaterialRedList extends Component{
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
         axios({
-             url:`${this.server}/jc/common/repoRedTable/deleteByIds`,
+             url:`${this.server}/jc/common/repoRedTables`,
              method:'Delete',
              headers:{
                 'Authorization' :this.Authorization
@@ -320,7 +320,7 @@ class RawMaterialRedList extends Component{
             }
 
       }).then((data)=>{
-         console.log(data);
+         //console.log(data);
          const res=data.data.data;
          this.setState({
              serialNumberChildren:res
