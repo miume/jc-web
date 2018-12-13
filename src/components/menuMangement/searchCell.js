@@ -6,7 +6,8 @@ class SearchCell extends React.Component{
         return(
             <span>
                 <Search
-                    style={{width:200}}
+
+                    style={{width:170}}
                     placeholder={this.props.name}
                     onChange={this.props.searchContentChange}
                     onSearch={this.props.searchEvent}

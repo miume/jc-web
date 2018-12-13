@@ -16,7 +16,7 @@ table tr:first-child th:first-child {
 }
 
 #data{
-    height:200px;
+    max-height:200px;
     overflow-y:scroll;
     display:block
 }
@@ -32,7 +32,7 @@ table tr:first-child th:first-child {
 }
 
 #edit{
-    height:200px;
+    max-height:200px;
     overflow-y:scroll;
     display:block
 }
@@ -41,7 +41,7 @@ table tr:first-child th:first-child {
     font-family: "微软雅黑";
     margin:0px;
     background: rgba(0,0,0,0);
-    width: 149px;
+    width: 152px;
     height: 30px;
     text-align: center;
     border: 1px #1a1a1a solid;

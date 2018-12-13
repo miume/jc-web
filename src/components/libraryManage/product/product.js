@@ -20,6 +20,7 @@ class Product extends React.Component{
         this.state={
             searchContent:'',
             dataSource:[],
+            height:[]
         }
 
         this.columns=[{
@@ -31,8 +32,8 @@ class Product extends React.Component{
             align:'center'
         },{
             title:'批号',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:"repoBaseSerialNumber.serialNumber",
+            dataIndex:'serialNumber',
+            key:"serialNumber",
             width:'10%',
             align:'center'
          },{
@@ -135,7 +136,7 @@ class Product extends React.Component{
       headers:{
         'Authorization': this.Authorization
         },
-        params: {materialType:3},
+        params: {materialClass:3},
     }).then((data)=>{
       const res = data.data.data;
       for(var i = 1; i<=res.length; i++){
