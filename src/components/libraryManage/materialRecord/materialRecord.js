@@ -28,8 +28,8 @@ class MaterialProduct extends React.Component{
             align:'center'
         },{
             title:'批号',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:"repoBaseSerialNumber.serialNumber",
+            dataIndex:'serialNumber',
+            key:"serialNumber",
             width:'10%',
             align:'center'
          },{
@@ -112,7 +112,7 @@ class MaterialProduct extends React.Component{
       headers:{
         'Authorization': this.Authorization
         },
-        params: {materialType:1},
+        params: {materialClass:1},
     }).then((data)=>{
       const res = data.data.data;
       for(var i = 1; i<=res.length; i++){

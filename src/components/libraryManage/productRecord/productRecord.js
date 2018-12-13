@@ -3,6 +3,7 @@ import {Table} from 'antd';
 import SearchCell from '../../BlockQuote/search';
 import Difference from "../product/difference"
 import axios from "axios"
+import "./table.css"
 
 class ProductRecord extends React.Component{
     server
@@ -17,6 +18,7 @@ class ProductRecord extends React.Component{
         this.state={
             searchContent:'',
             dataSource:[],
+            height:[]
         }
 
         this.columns=[{
@@ -28,8 +30,8 @@ class ProductRecord extends React.Component{
             align:'center'
         },{
             title:'批号',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:"repoBaseSerialNumber.serialNumber",
+            dataIndex:'serialNumber',
+            key:"serialNumber",
             width:'10%',
             align:'center'
          },{
@@ -87,22 +89,20 @@ class ProductRecord extends React.Component{
                     );
                 }
         }];
-        this.pagination={
-            total:this.state.dataSource.length,
-            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-                //console.log('Current: ', current, '; PageSize: ', pageSize);
-              },
-              onChange(current) {//跳转，页码改变
-                //console.log('Current: ', current);
-              }
-        }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
+        this.getHeight = this.getHeight.bind(this)
     }
     componentDidMount() {
         this.getAllData();
+        this.getHeight()
+    }
+    getHeight(){
+        let height = document.getElementById("tbHeight")
+        console.log(height.clientHeight)
+        this.setState({
+            height:height.clientHeight
+        })
     }
     /**获取所有父菜单 */
   getAllData(){
@@ -112,7 +112,7 @@ class ProductRecord extends React.Component{
       headers:{
         'Authorization': this.Authorization
         },
-        params: {materialType:3},
+        params: {materialClass:3},
     }).then((data)=>{
       const res = data.data.data;
       for(var i = 1; i<=res.length; i++){
@@ -144,25 +144,55 @@ class ProductRecord extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
-                <Table
+                {/* <Table
                 rowKey={record=>record.repoStock.id}
                 columns={this.columns}
-                dataSource={this.state.dataSource   }
+                dataSource={this.state.dataSource}
                 pagination={false}
                 bordered
                 size='small'
                 scroll={{y:600}}
-                ></Table>
-                <div style={{position:"absolute",top:"90px",left:"619px",width:"602px",height:"50px",backgroundColor:"#0079FE"}}>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"40px"}}>记录数量</div>
-                    <div style={{position:"absolute",color:"white",top:"20px",left:"142px"}} className="fa fa-balance-scale"></div>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"200px"}}>实际数量</div>
-                    <div style={{position:"absolute",backgroundColor:"#FFFFFF",height:"30px",width:"3px",top:"16px",left:"300px"}}></div>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"340px"}}>记录重量</div>
-                    <div style={{position:"absolute",color:"white",top:"20px",left:"445px"}} className="fa fa-balance-scale"></div>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"500px"}}>实际重量</div>
+                ></Table> */}
+                <table className="tableR">
+                    <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>批号</td>
+                            <td>货物名称</td>
+                            <td>货物型号</td>
+                            <td>记录数量</td>
+                            <td>实际数量</td>
+                            <td>记录重量</td>
+                            <td>实际重量</td>
+                        </tr>
+                    </thead>
+                    <tbody id="tbHeight">
+                        {
+                            this.state.dataSource.map((m)=>{
+                                return (<tr key={m.index}>
+                                    <td>{m.index}</td>
+                                    <td>{m.serialNumber}</td>
+                                    <td>{m.name}</td>
+                                    <td>{m.manterialClass}</td>
+                                    <td>{m.repoStock.quantity}</td>
+                                    <td>{}</td>
+                                    <td>{m.repoStock.weight}</td>
+                                    <td>{}</td>
+                                </tr>)
+                            })
+                        }
+                    </tbody>
+                </table>
+                <div style={{position:"absolute",top:"90px",left:"685.5px",width:"672px",height:"50px",backgroundColor:"#0079FE"}}>
+                    <div style={{position:"absolute",color:"white",top:"18px",left:"55px"}}>记录数量</div>
+                    <div style={{position:"absolute",color:"white",top:"20px",left:"157px"}} className="fa fa-balance-scale"></div>
+                    <div style={{position:"absolute",color:"white",top:"18px",left:"215px"}}>实际数量</div>
+                    <div style={{position:"absolute",backgroundColor:"#FFFFFF",height:"30px",width:"3px",top:"16px",left:"333px"}}></div>
+                    <div style={{position:"absolute",color:"white",top:"18px",left:"390px"}}>记录重量</div>
+                    <div style={{position:"absolute",color:"white",top:"20px",left:"495px"}} className="fa fa-balance-scale"></div>
+                    <div style={{position:"absolute",color:"white",top:"18px",left:"550px"}}>实际重量</div>
                 </div>
-                <div style={{position:"absolute",top:"140px",left:"619px",width:"602px",height:"382.2px",border:"2px solid #0079FE"}}></div>
+                <div style={{position:"absolute",top:"140px",left:"685.5px",width:"672px",height:this.state.height,border:"2px solid #0079FE"}}></div>
             </div>
         )
     }

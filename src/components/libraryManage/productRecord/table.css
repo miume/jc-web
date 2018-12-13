@@ -1,0 +1,34 @@
+.tableR{
+    /* border: 1px solid #E9E9E9; */
+    width: 1357.2px;
+    display: block;
+    overflow-x: auto;
+}
+.tableR thead{
+    /* border: 1px solid #E9E9E9; */
+    overflow-y: scroll;
+    display: block;
+}
+.tableR thead tr{
+    /* border: 1px solid #E9E9E9; */
+}
+.tableR thead tr td{
+    border: 1px solid #E9E9E9;
+    height: 36.8px;
+    width: 169.65px;
+    text-align:center;
+}
+.tableR tbody{
+    overflow-y: scroll;
+    display: block;
+    max-height: 380px;
+}
+.tableR tbody tr{
+    border: 1px solid #E9E9E9;
+}
+.tableR tbody tr td{
+    border: 1px solid #E9E9E9;
+    height: 36.8px;
+    width: 169.65px;
+    text-align:center;
+}
