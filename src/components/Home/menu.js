@@ -16,7 +16,7 @@ class Menu1List extends React.Component {
     super(props);
     this.state = {
       selectedKeys : localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[],
-      // openKeys:localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[],
+      openKeys:localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[],
       current : localStorage.getItem('current')?localStorage.getItem('current').path:'',
     }
     this.onOpenChange = this.onOpenChange.bind(this);
@@ -24,7 +24,7 @@ class Menu1List extends React.Component {
   }
   /**只展开当前父级菜单 */
   onOpenChange(openKeys){
-    // console.log('openKeys:'+openKeys)
+    console.log('openKeys:'+openKeys)
     /**找到当前展开的菜单id */
     const latestOpenKeys = openKeys.find(key=>this.state.openKeys.indexOf(key)===-1);
     // console.log('latestOPenKeys:'+latestOpenKeys)
@@ -116,10 +116,11 @@ class Menu1List extends React.Component {
     // console.log(this.state.openKeys)
     //console.log(this.state.defaultOpenKeys)
     const openKeys = localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[];
+    console.log(openKeys)
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
       <div>
-        <Menu mode="inline" theme="dark" selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]} openKeys={openKeys}  onOpenChange={this.onOpenChange} style={{width:130}}>
+        <Menu mode="inline" theme="dark" selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]} openKeys={this.state.openKeys}  onOpenChange={this.onOpenChange} style={{width:130}}>
             {
               localStorage.getItem('menuList') ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>

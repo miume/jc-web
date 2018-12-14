@@ -22,12 +22,12 @@
     border-bottom: none !important;
     border-radius: 4px 0 0 0;
 }
-#process-table  .thead tr :first-child,{
+#process-table  .thead tr :first-child{
     border-top: none;
     border-left:none;
     border-radius: 5px 0 0 0 !important;
 }
-#process-table  .thead tr :last-child,{
+#process-table  .thead tr :last-child{
     border-top: none;
     border-right:none;
     border-radius: 5px 0 0 0 !important;

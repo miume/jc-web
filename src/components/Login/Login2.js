@@ -9,41 +9,23 @@ class Login extends React.Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.keyPress = this.keyPress.bind(this);
+    this.remindLogin = this.remindLogin.bind(this);
   }
-
   componentWillMount() {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
     localStorage.setItem("remote1", "http://192.168.1.105:8080");     //模块二的局域网
     localStorage.setItem("remote2", "http://192.168.1.105:8081");      //模块一的局域网
     localStorage.setItem("remote", "http://2p277534k9.iok.la:58718");//模块二的外网
     localStorage.setItem("remote3", "http://218.77.105.241:40080");
-    // const quickAccess = [{
-    //   openKeys:[],
-    //   menuParent:'用户和权限',
-    //   menuName:'菜单管理',
-    //   path:'/menu'
-    // },{
-    //   menuName:'角色管理',
-    //   path:'/role'
-    // },{
-    //   menuName:'用户管理',
-    //   path:'/user'
-    // },{
-    //   menuName:'部门管理',
-    //   path:'/departManagement'
-    // },{
-    //   menuName:'数据录入',
-    //   path:'/dataEntry'
-    // },{
-    //   menuName:'流程管理',
-    //   path:'/management'
-    // }]
   }
-
   keyPress(e){
     if(e.keyCode === 13){
       alert('enter')
     }
+  }
+  /**实行记住密码 */
+  remindLogin(value){
+    console.log(value)
   }
   handleSubmit(){
     const history = this.props.history;
@@ -69,7 +51,7 @@ class Login extends React.Component {
               })
           })
       }
-      console.log(quickAccess)
+      // console.log(quickAccess)
       localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('Authorization',res.headers.authorization);
@@ -97,7 +79,7 @@ class Login extends React.Component {
                   <div style={{height:'10%'}}></div>
                   <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录" />
                   <div style={{height:'10%'}}></div>
-                  <Checkbox style={{float:'left'}}>记住登录状态</Checkbox>
+                  <Checkbox style={{float:'left'}} onChange={this.remindLogin}>记住登录状态</Checkbox>
                   <div style={{height:'20%'}}></div>
                   <Button size='large' type="primary" style={{width:'100%', fontSize:'14px'}} onClick={this.handleSubmit}>
                     登录
