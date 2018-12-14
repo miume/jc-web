@@ -406,6 +406,7 @@ class Role extends React.Component {
           this.Authorization = localStorage.getItem('Authorization');
           /**这是服务器网址及端口 */
           this.url = JSON.parse(localStorage.getItem('url')); 
+          const current = JSON.parse(localStorage.getItem('current')) ;
           const {selectedRowKeys} = this.state;
           const rowSelection = {
             selectedRowKeys,
@@ -434,7 +435,7 @@ class Role extends React.Component {
         });
         return (
             <div>
-                <BlockQuote name="角色管理" menu='用户和权限'></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                   {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}

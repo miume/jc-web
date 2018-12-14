@@ -46,7 +46,7 @@ class OperationManagement extends React.Component {
     render() {
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
-
+        const current = JSON.parse(localStorage.getItem('current')) ;
         const {  selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -54,7 +54,7 @@ class OperationManagement extends React.Component {
         };
         return (
             <div>
-                <BlockQuote name="操作管理" menu='用户和权限'></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal
                         fetch={this.fetch}

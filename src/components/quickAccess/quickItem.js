@@ -15,7 +15,11 @@ class QuickItem extends React.Component{
             quickAccess = quickAccess.filter(m => m.path !== path);
             quickAccess.push(repeat)
         }
+        /**点击快速访问 实时更新一级菜单选中展开 以及二级菜单选中 以及最近访问二级菜单点击 */
+        localStorage.setItem('defaultOpenKeys',[repeat.openKeys.toString()])
+        localStorage.setItem('selectedKeys',repeat.path)
         localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
+        localStorage.setItem('current',JSON.stringify(repeat))
         this.props.history.push({pathname:path})
     }
     render(){
