@@ -53,10 +53,10 @@ class DetailSpan extends React.Component {
                     cancelText="取消"
                     width="500px"
                     footer={[
-                        <Button key="back" style={{right:'400px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <Button key="back" style={{right:'415px'}}  onClick={this.handleCancel}>返回</Button>,
                     ]}
                 >
-                    <div style={{height:550}}>
+                    <div style={{height:670}}>
                         <DrSpanModal
                             data={data}
                             record={this.props.record}

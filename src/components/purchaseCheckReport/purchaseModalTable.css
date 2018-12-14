@@ -1,8 +1,51 @@
+.purchaseTopTable {
+    float: left;
+    margin-right: 20px;
+    margin-top: 5px;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+    border-radius: 3px;
+}
+.purchaseTopThead {
+    color: white;
+    background: #0079FE;
+}
+.purchaseTopThead tr th {
+    /*background: #0079FE;*/
+    font-size: 15px;
+    padding-left: 10px;
+    /*border-collapse: collapse;*/
+    border: 1px solid #E9E9E9;
+}
+.purchaseTopThead tr th:first-child{
+    /*border-right: none;*/
+    /*border-radius: 3px 0 0 0;*/
+}
+.purchaseTopThead tr th:last-child{
+    border-right: none;
+    /*border-radius: 0 3px 0 0;*/
+}
+
+.purchaseTopTbody tr td {
+    border: 1px solid #E9E9E9;
+    /*border-radius: 3px;*/
+}
+/*.purchaseTopTbody tr td:first-child{*/
+    /*border-radius: 3px;*/
+/*}*/
+.purchaseTopTbody tr td input{
+    width:130px;
+    border: none;
+    padding-left: 10px;
+}
+.borderRight {
+    border-right: 1px solid #E9E9E9;
+}
 .borderRadius {
     border-radius: 3px 0 0 0;
 }
 .leftBorderRadius {
-    border-radius: 0 0 3px 3px;
+    border-radius: 0 0 0 3px;
 }
 .cursorPointer {
     cursor: pointer;

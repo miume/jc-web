@@ -1,6 +1,9 @@
 import React from 'react';
 import {Modal, Button, Popover, Select, Switch} from 'antd';
 import CheckSpanModal from './checkSpanModal';
+import CancleButton from '../BlockQuote/cancleButton';
+import SaveButton from '../BlockQuote/saveButton';
+import Submit from '../BlockQuote/submit';
 
 const data = [];
 for (let i = 0; i < 50; i++) {
@@ -14,22 +17,71 @@ for (let i = 0; i < 50; i++) {
 }
 
 class CheckSpan extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
             visible: false,
             subVisible: false,
-            checkSelectData:true,
-            checkSwitchData:false,
+            process:-1,
         };
-        this.handleChange = this.handleChange.bind(this);
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.hide = this.hide.bind(this);
+        this.subHide = this.subHide.bind(this);
+        this.subOk = this.subOk.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        this.urgentChange = this.urgentChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+
+    }
+    render() {
+        const { visible } = this.state;
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
+        return (
+            <span type="primary" onClick={this.showModal} size="small"    >
+                <Modal
+                    title="数据录检"
+                    visible={visible}
+                    centered={true}
+                    closable={false}
+                    maskClosable={false}
+                    width="500px"
+                    footer={[
+                        <CancleButton
+                            handleCancel = {this.handleCancel}
+                            key='cancel'
+                        />,
+                        <SaveButton
+                            onClick={this.handleOk}
+                            key='save'
+                        />,
+                        <Submit
+                            Authorization={this.Authorization}
+                            server={this.server}
+                            visible={this.state.subVisible}
+                            handleCancel={this.subHide}
+                            handleOk={this.subOk}
+                            handleVisibleChange={this.handleVisibleChange}
+                            selectChange={this.selectChange}
+                            key='submit'
+                            process={this.state.process}
+                        />
+                    ]}
+                >
+                    <div style={{height:600}}>
+                        <CheckSpanModal
+                            data={data}
+                            record={this.props.record}
+                        />
+                    </div>
+                </Modal>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>录检</span>
+            </span>
+        )
     }
     showModal = () => {
         this.setState({
@@ -43,104 +95,31 @@ class CheckSpan extends React.Component {
             });
         }, 500);
     };
-    render() {
-        const { visible } = this.state;
-        const Option = Select.Option;
-        return (
-            <span type="primary" onClick={this.showModal} size="small"    >
-                <Modal
-                    title="数据录检"
-                    style={{ top: 20 }}
-                    visible={visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                    okText="确认"
-                    cancelText="取消"
-                    width="500px"
-                    footer={[
-                        <Button key="back" style={{right:'265px'}}  onClick={this.handleCancel}>返回</Button>,
-                        <Button key="keep" style={{left:'10px',background:'#4BD863',color:'white'}}  onClick={this.handleKeep}>保存</Button>,
-                        <Popover
-                            key="popover"
-                            // content={<a onClick={this.hide}>Close</a>}
-                            content = {
-                                <div style={{width:300}}>
-                                    <div >
-                                        <Select placeholder="选择送审流程" style={{ width: 250 }} onChange={this.handleChange}>
-                                            <Option value="a">a</Option>
-                                            <Option value="b">b</Option>
-                                            <Option value="c">c</Option>
-                                        </Select>
-                                    </div>
-                                    <div style={{paddingTop:'15px'}}>
-                                        <span style={{marginRight:'10px'}}>是否紧急</span><Switch onChange={this.urgentChange} style={{width:'70px'}}/>
-                                    </div>
-                                    <div style={{paddingTop:'20px'}}>
-                                        <Button onClick={this.hide} size="small" style={{left:'200px'}}>取消</Button>
-                                        <Button disabled={this.state.checkSelectData} size="small" style={{left:'200px',marginLeft:'5px'}}>确认</Button>
-                                    </div>
-                                </div>
-                            }
-                            title="设置审批细节"
-                            trigger="click"
-                            visible={this.state.subVisible}
-                            onVisibleChange={this.handleVisibleChange}
-                            placement="topRight"
-                        >
-                            <Button key="submit" style={{left:'10px',background:'#0079FE',color:'white'}} >送审</Button>
-                        </Popover>
-                    ]}
-                >
-                    <div style={{height:550}}>
-                        <CheckSpanModal
-                            data={data}
-                            record={this.props.record}
-                        />
-                    </div>
-                </Modal>
-                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>录检</span>
-            </span>
-        )
-    }
-    /**实现Button返回，保存,送审功能 */
-    handleKeep = () => {
-
-    };
-    handleSubmit = () => {
-
-    };
-    handleCancel = (e) => {
+    handleCancel = () => {
         setTimeout(() => {
             this.setState({
                 visible: false,
             });
         }, 500);
     };
-    /**送审提交框所需要的函数 */
-    // 提交Modal中是否紧急
-    urgentChange(checked) {
-        console.log(`switch to ${checked}`);
-        this.setState({
-            checkSwitchData:checked
-        })
-    }
-    // 获取下拉框的内容
-    handleChange(value) {
-        console.log(value.length);
-        if(value.length>0){
-            this.setState({
-                checkSelectData:false
-            })
-        }
-    }
-    handleVisibleChange = (subVisible) => {
-        this.setState({ subVisible });
-    };
-    hide = () => {
+    subHide = () => {
         this.setState({
             subVisible: false,
         });
+
     };
+    subOk = () => {
+        console.log('ok');
+    };
+    handleVisibleChange = (subVisible) => {
+        this.setState({ subVisible });
+    };
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
     /**---------------------- */
     /**---------------------- */
     /**实现字段搜索功能 */
