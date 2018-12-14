@@ -1,29 +1,41 @@
 
 
 
-.block{
+.rawStanstdardBlock{
     color:black;
     height: 70px;
     width: 200px;
     line-height: 70px;  /*行高 */
     text-align:center;
     border:1px solid #e4e4e4;
-    cursor: 'pointer';
+    cursor: pointer;
     /* display:'inline-block'; */
     margin-left: 15px;
     margin-top: 15px;
 }
-.block:hover{
+.rawStanstdardBlock:hover{
       background-color: #1890ff
 }
-.block:active{
+.rawStanstdardBlock:active{
     background-color: #1890ff
 }
 
-.parent{
+.rawStanstdardParent{
     display:flex ;
     flex-wrap: wrap;
-    position:'absolute';
+    /* position:'absolute'; */
     padding-left: 20px;
     width: 100%;
+}
+.rawStanstdardBlockQuo{
+    color:black;
+    height:40px;
+    width:33%;
+    border: 1px solid #1890ff;
+    background-color:#e4e4e4 ;
+    line-height: 40px;
+    text-align:center;
+    cursor: pointer;
+    display: inline-block;
+   
 }

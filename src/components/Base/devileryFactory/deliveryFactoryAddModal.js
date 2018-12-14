@@ -60,6 +60,9 @@ class DeliveryFactoryAddModal extends React.Component{
           if (err) {
             return;
           }
+          if(!values['name']){
+            return
+         }
           axios({
             url:`${this.server}/jc/common/deliveryFactory`,
             method:'post',

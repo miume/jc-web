@@ -62,6 +62,9 @@ class TestItemAddModal extends React.Component{
             return;
           }
           values['unit']='';
+          if(!values['name']){
+             return
+          }
           axios({
             url:`${this.server}/jc/common/testItem`,
             method:'post',

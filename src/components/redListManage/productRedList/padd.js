@@ -45,7 +45,10 @@ class Add extends React.Component{
             status:-1,
             isUrgent:this.state.checkSwitch,
         }
-        //console.log(value);
+        if(!value['serialNumberId']||!value['materialName']||!value['materialClass']||!value['quantityLoss']||!value['weightLoss']){
+            message.info('信息填写不完整！');
+            return
+        }
         axios({
            url:`${this.server}/jc/common/repoRedTable`,
            method:'post',
@@ -120,7 +123,10 @@ class Add extends React.Component{
             status:-1,
             isUrgent:this.state.checkSwitch,
         }
-        //console.log(value);
+        if(!value['serialNumberId']||!value['materialName']||!value['materialClass']||!value['quantityLoss']||!value['weightLoss']){
+            message.info('信息填写不完整！');
+            return
+        }
         axios({
            url:`${this.server}/jc/common/repoRedTable`,
            method:'post',

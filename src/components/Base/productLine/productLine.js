@@ -195,14 +195,16 @@ class ProductLine extends React.Component{
         //type:'json',
       }).then((data)=>{
         const res=data.data.data;
-        this.pagination.total=res.total;
-        for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=res.prePage*10+i;
-        }//是序号从1开始
-        this.setState({
-          loading:false,
-          dataSource:res.list,
-        });
+        this.pagination.totlal=res?res.total:0;
+        if(res&&res.list){
+          
+          for(let i=1;i<=res.list.length;i++){
+              res.list[i-1]['index']=res.prePage*10+i;
+         }
+         this.setState({
+          dataSource:res.list
+           });
+        }
       });
     }
 
@@ -365,13 +367,16 @@ class ProductLine extends React.Component{
            })
            .then((data)=>{
              const res=data.data.data;
-             this.pagination.total=res.total;
-             for(var i=1;i<=res.list.length;i++){
-                res.list[i-1]['index']=res.prePage*10+i;
+             this.pagination.totlal=res?res.total:0;
+             if(res&&res.list){
+              
+              for(let i=1;i<=res.list.length;i++){
+                  res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
-               dataSource:res.list//list取到的是所有符合要求的数据
-             });
+              dataSource:res.list
+               });
+            }
            })
            .catch(()=>{
 

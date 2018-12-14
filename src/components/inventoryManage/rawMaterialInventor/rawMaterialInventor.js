@@ -51,14 +51,14 @@ class RowMaterialInventor extends Component{
            align:'center'
         },{
            title:'数量',
-           dataIndex:'repoStock.quantity',
-           key:'repoStock.quantity',
+           dataIndex:'quantity',
+           key:'quantity',
            width:'10%',
            align:'center'
         },{
            title:'重量',
-           dataIndex:'repoStock.weight',
-           key:'repoStock.weight',
+           dataIndex:'weight',
+           key:'weight',
            width:'10%',
            align:'center'
         },];

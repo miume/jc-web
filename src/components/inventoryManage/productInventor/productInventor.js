@@ -33,32 +33,32 @@ class ProductInventor extends Component{
             align:'center'
         },{
            title:'货物名称',
-           dataIndex:'repoBaseSerialNumber.materialName',
-           key:'repoBaseSerialNumber.materialName',
+           dataIndex:'materialName',
+           key:'materialName',
            width:'18%',
            align:'center'
         },{
             title:'货物型号',
-            dataIndex:'repoBaseSerialNumber.materialClass',
-            key:'repoBaseSerialNumber.materialClass',
+            dataIndex:'materialClass',
+            key:'materialClass',
             width:'18%',
             align:'center'
         },{
            title:'编号',
-           dataIndex:'repoBaseSerialNumber.serialNumber',
-           key:'repoBaseSerialNumber.serialNumber',
+           dataIndex:'serialNumber',
+           key:'serialNumber',
            width:'20%',
            align:'center'
         },{
            title:'数量',
-           dataIndex:'repoStock.quantity',
-           key:'repoStock.quantity',
+           dataIndex:'quantity',
+           key:'quantity',
            width:'10%',
            align:'center'
         },{
            title:'重量',
-           dataIndex:'repoStock.weight',
-           key:'repoStock.weight',
+           dataIndex:'weight',
+           key:'weight',
            width:'10%',
            align:'center'
         },];
@@ -86,8 +86,9 @@ class ProductInventor extends Component{
           });
     }
     fetch=(params={})=>{
+        const materialClass=3;
         axios({
-            url:`${this.server}/jc/common/RepoStock/getAllByFactorsByPage`,
+            url:`${this.server}/jc/common/RepoStock/pages?materialClass=${materialClass}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization

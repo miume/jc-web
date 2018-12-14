@@ -189,16 +189,16 @@ class ProductRedList extends Component{
         .then((data)=>{
             // console.log(data);
              const res=data.data.data;
-             this.pagination.total=res.total;
-             if(res.list.length){
+            
+             if(res&&res.list){
+                this.pagination.total=res.total;
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
+               this.setState({
+                dataSource:res.list
+                 });
               }
-             this.setState({
-                 dataSource:res.list
-
-             });
         });
     }
     onSelectChange(selectedRowKeys){
@@ -282,15 +282,16 @@ class ProductRedList extends Component{
       .then((data)=>{
          // console.log(data);
               const res=data.data.data;
-              this.pagination.totlal=res.total;
-              if(res.list.length){
+              
+              if(res&&res.list){
+                this.pagination.totlal=res.total;
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
+               this.setState({
+                dataSource:res.list
+                 });
               }
-              this.setState({
-                  dataSource:res.list
-              });
       })
       .catch(()=>{
              message.info('搜索失败，请联系管理员！');
@@ -299,7 +300,7 @@ class ProductRedList extends Component{
   
     getAllProcess(){
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/validTasks`,
+            url:`${this.server}/jc/common/batchAuditTask`,
             method:'get',
             headers:{
                 'Authorizaion':this.Authorizaion

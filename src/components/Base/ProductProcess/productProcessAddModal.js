@@ -60,6 +60,9 @@ class  ProductProcessAddModal extends React.Component{
           if (err) {
             return;
           }
+          if(!values['name']){
+            return
+         }
           axios({
             url:`${this.server}/jc/common/productionProcess`,
             method:'post',

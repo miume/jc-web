@@ -246,13 +246,17 @@ class User extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res.total;//分页
-        for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=res.prePage*10+i;//使用前一页编写序号
-        }
-        this.setState({
-          //loading:false,
-          dataSource:res.list,
-        });
+        
+          this.pagination.total=res.total?res.total:0;
+          if(res&&res.list){
+           for(var i=1;i<=res.list.length;i++){
+             res.list[i-1]['index']=res.prePage*10+i;
+          }
+          this.setState({
+            dataSource:res.list//list取到的是所有符合要求的数据
+          });
+          }
+        
       });
     }
    
@@ -466,13 +470,15 @@ class User extends React.Component{
             //  console.log(data.data);
             //  console.log(data.data.data);
              const res=data.data.data;
-             this.pagination.total=res.total;
-             for(var i=1;i<=res.list.length;i++){
+             this.pagination.total=res.total?res.total:0;
+             if(res&&res.list){
+              for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
                dataSource:res.list//list取到的是所有符合要求的数据
              });
+             }
            })
            .catch(()=>{
             // console.log(error);
