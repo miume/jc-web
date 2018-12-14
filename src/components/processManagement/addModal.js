@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message,Select } from 'antd';
+import { Button, Modal, Form, Input,message } from 'antd';
 import axios from 'axios';
 import Tr from './tr';
 import WhiteSpace from '../BlockQuote/whiteSpace';
@@ -34,8 +34,8 @@ const CollectionCreateForm = Form.create()(
                     title="新增"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
-                        <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
-                        <AddButton key="submit" handleClick={onSubmit} name='提交' style='button' className='fa fa-check' />
+                        <SaveButton key="define" handleSave={onCreate} className='fa fa-check' />,
+                        <AddButton key="submit" handleClick={onSubmit} name='提交' className='fa fa-check' />
                       ]}
                 >
                     <div style={{height:'400px'}}>
@@ -48,15 +48,15 @@ const CollectionCreateForm = Form.create()(
                             )}
                         </FormItem>
                         <WhiteSpace />
-                        <table className="table">
-                            <thead className='thead' id="thd">
+                        <table className="protable">
+                            <thead className='prothead' id="thd">
                                 <tr>
                                     <td style={{width:"164px"}}>负责人</td>
                                     <td style={{width:"164px"}}>职责</td>
                                     <td style={{width:"164px"}}>操作</td>
                                 </tr>
                             </thead>
-                            <tbody id="data">
+                            <tbody id="edit">
                             {
                             this.props.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.props.deleteRow} value={m.toString()}></Tr> })
                             }
@@ -87,7 +87,6 @@ class AddModal extends React.Component {
             count: count+1,
             data: [...data, count+1],
         })
-        console.log(this.state)
     }
 
     /**删除一条数据 */

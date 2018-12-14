@@ -6,10 +6,10 @@
     height: 30px;
     border-radius:6px;
 }  */
-table tr:first-child th:first-child {
+/* table tr:first-child th:first-child {
     border-top-left-radius: 12px;
-}
-.table {
+} */
+.protable {
     display: block;
     overflow-x: auto;
     white-space: nowrap;
@@ -34,10 +34,14 @@ table tr:first-child th:first-child {
 #edit{
     max-height:200px;
     overflow-y:scroll;
-    display:block
+    display:block;
 }
 
-.select{
+#edit tr td{
+    border: 1px #999999 solid;
+}
+
+.proselect{
     font-family: "微软雅黑";
     margin:0px;
     background: rgba(0,0,0,0);
@@ -52,32 +56,50 @@ table tr:first-child th:first-child {
     font-family: "微软雅黑";
     margin:0px;
     background: rgba(0,0,0,0);
-    width: 155px;
+    width: 157px;
     height: 30px;
     text-align: center;
     border: 1px #1a1a1a solid;
     border-radius: 20px;
 }
 
-.input{
+.proinput{
     width:148px;
     height: 30px;
     margin: 0%;
     border-radius: 8px;
 }
 
-.inputName{
-    width:145px;
+.proinputName{
+    width:148px;
     height: 30px;
     margin: 0%;
     border-radius: 8px;
 }
 
-#name{
+#proname{
     border: 1px solid #ccc;
     padding: 6px 0px;
     border-radius: 3px;
     padding-left:5px;
     margin-left: 23%;
     width: 50%;
+}
+
+.prothead tr td{
+    background: #0079FE;
+    color: #ffffff;
+    text-align: center;
+    list-style: none;
+    padding: 5px;
+    font-weight: 600;
+    border: 1px #999999 solid;
+    width: 400px;
+    height: 40px;
+}
+
+.protbody tr td{
+    text-align: center;
+    border: 1px #666666 solid;
+    height: 40px;
 }

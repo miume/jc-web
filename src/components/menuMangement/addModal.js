@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message,Select } from 'antd';
+import { Modal, Form, Input,message,Select } from 'antd';
 import axios from 'axios';
 import CancleButton from "../BlockQuote/cancleButton";
 import NewButton from '../BlockQuote/newButton'
@@ -23,7 +23,7 @@ const CollectionCreateForm = Form.create()(
                     title="新增"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
-                        <NewButton key="submit" handleClick={onCreate} name='确定' style='button' className='fa fa-check' />
+                        <NewButton key="submit" handleClick={onCreate} name='确定' className='fa fa-check' />
                       ]}>
                       <Form>
                         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
@@ -45,12 +45,12 @@ const CollectionCreateForm = Form.create()(
                             )}
                         </FormItem>
                        {
-                           this.props.visible1 === true ?  <FormItem labelCol={{span:5}} wrapperCol={{ span: 23 }} required >
+                           this.props.visible1 === true ?  <FormItem labelCol={{span:5}} wrapperCol={{ span: 24 }} required >
                            {getFieldDecorator('parent',{
                                initialValue: '',
                                rules: [{required: true, message: '请选择父菜单'}],
                            })(    //2、getFieldDecorator 的使用方法，
-                               <Select size="large">
+                               <Select size="large" style={{fontSize:"14px"}}>
                                {
                                    fatherMenu.map(de=>{
                                        return(
