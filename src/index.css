@@ -192,6 +192,10 @@ i {
     text-align: center !important;
     margin-left: 80px !important;
 }
+/**屏幕缩小 表格不会变形 td换行*/
+.ant-table td{
+    white-space: normal !important;
+}
 /* 输入框样式 */
 /* .ant-input {
     height: 35px !important;
