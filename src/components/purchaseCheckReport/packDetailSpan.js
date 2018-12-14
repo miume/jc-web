@@ -59,7 +59,7 @@ class DetailSpan extends React.Component {
                         <Button key="publish" type="primary"  onClick={this.selectionOnDetail}>选中</Button>
                     ]}
                 >
-                    <div style={{height:550}}>
+                    <div style={{height:670}}>
                         <DrSpanModal
                             data={data}
                             record={this.props.record}

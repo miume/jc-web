@@ -11,7 +11,7 @@ class InterTable extends React.Component{
         key: 'id',
         sorter: (a, b) => a.key - b.key,
         align:'center',
-        width: '5%',
+        width: '6%',
     },{
         title: '送样日期',
         dataIndex: 'sampleDeliveringDate',
@@ -119,7 +119,7 @@ class InterTable extends React.Component{
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
+                scroll={{ y: 200 }}
             />
         );
     }

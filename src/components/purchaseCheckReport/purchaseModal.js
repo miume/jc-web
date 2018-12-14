@@ -163,23 +163,23 @@ class PurchaseModal extends React.Component {
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
-                    <table style={{float:'left',border:"1px solid #E9E9E9",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px',borderRadius:'3px 3px 3px 3px'}} >
-                        <thead style={{background:'#0079FE',color:'white'}}>
+                    <table className="purchaseTopTable">
+                        <thead className="purchaseTopThead">
                         <tr>
-                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>原材料</th>
-                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>规格</th>
-                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>数量</th>
-                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>到货日期</th>
-                            <th style={{fontSize:'15px',paddingLeft:'10px' }}>生产厂家</th>
+                            <th>原材料</th>
+                            <th>规格</th>
+                            <th>数量</th>
+                            <th>到货日期</th>
+                            <th>生产厂家</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="purchaseTopTbody">
                         <tr>
-                            <td><input placeholder="原材料名称" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
-                            <td><input placeholder="请输入规格" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
-                            <td><input placeholder="请输入数量" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
-                            <td><input placeholder="请输入到货日期" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
-                            <td><input placeholder="请输入生产厂家" style={{ width: 130,border:0,paddingLeft:'10px'}}></input></td>
+                            <td><input placeholder="原材料名称"></input></td>
+                            <td><input placeholder="请输入规格"></input></td>
+                            <td><input placeholder="请输入数量"></input></td>
+                            <td><input placeholder="请输入到货日期"></input></td>
+                            <td><input placeholder="请输入生产厂家"></input></td>
                         </tr>
                         </tbody>
                     </table>

@@ -14,6 +14,7 @@ class CheckEditSpan extends React.Component {
         this.state = {
             visible: false,
             subVisible: false,
+            process:-1,
         };
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -21,6 +22,7 @@ class CheckEditSpan extends React.Component {
         this.subHide = this.subHide.bind(this);
         this.subOk = this.subOk.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -54,7 +56,9 @@ class CheckEditSpan extends React.Component {
                             handleCancel={this.subHide}
                             handleOk={this.subOk}
                             handleVisibleChange={this.handleVisibleChange}
+                            selectChange={this.selectChange}
                             key='submit'
+                            process={this.state.process}
                         />
                     ]}
                 >
@@ -68,6 +72,12 @@ class CheckEditSpan extends React.Component {
                 <span  className="blue">编辑</span>
             </span>
         )
+    }
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
     }
     showModal = () => {
         this.setState({
