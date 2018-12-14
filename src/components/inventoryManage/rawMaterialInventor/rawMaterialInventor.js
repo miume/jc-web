@@ -33,20 +33,20 @@ class RowMaterialInventor extends Component{
             align:'center'
         },{
            title:'货物名称',
-           dataIndex:'repoBaseSerialNumber.materialName',
-           key:'repoBaseSerialNumber.materialName',
+           dataIndex:'materialName',
+           key:'materialName',
            width:'18%',
            align:'center'
         },{
             title:'货物型号',
-            dataIndex:'repoBaseSerialNumber.materialClass',
-            key:'repoBaseSerialNumber.materialClass',
+            dataIndex:'materialClass',
+            key:'materialClass',
             width:'18%',
             align:'center'
         },{
            title:'编号',
-           dataIndex:'repoBaseSerialNumber.serialNumber',
-           key:'repoBaseSerialNumber.serialNumber',
+           dataIndex:'serialNumber',
+           key:'serialNumber',
            width:'20%',
            align:'center'
         },{
@@ -86,15 +86,16 @@ class RowMaterialInventor extends Component{
           });
     }
     fetch=(params={})=>{
+        const materialClass=1;
         axios({
-            url:`${this.server}/jc/common/RepoStock/getAllByFactorsByPage`,
+            url:`${this.server}/jc/common/RepoStock/pages?materialClass=${materialClass}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
             },
             params:{
                 ...params,
-                materialType:1
+               
             },
         })
         .then((data)=>{
@@ -159,7 +160,7 @@ class RowMaterialInventor extends Component{
                 </span>
                 <div className='clear'  ></div>
                 <Table
-                rowKey={record=>record.repoStock.id}
+                rowKey={record=>record.id}
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 pagination={this.pagination}

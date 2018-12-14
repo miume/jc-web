@@ -1,22 +1,22 @@
 import React,{Component} from 'react';
 import Blockquote from '../BlockQuote/blockquote';
-import {Steps} from 'antd';
+//import {Steps} from 'antd';
 import SearchCell from '../BlockQuote/search';
 import './block.css';
 import DataPart from './div';
-const Step=Steps.Step;
+//const Step=Steps.Step;
 
 
-const steps=[{
-    title:'选择原材料',
-    content:'first'
-},{
-    title:'选择生产厂家',
-    constent:'second'
-},{
-    title:'设置标准',
-    content:'third'
-}];
+// const steps=[{
+//     title:'选择原材料',
+//     content:'first'
+// },{
+//     title:'选择生产厂家',
+//     constent:'second'
+// },{
+//     title:'设置标准',
+//     content:'third'
+// }];
 
 const data=[{
     id:1,
@@ -108,10 +108,13 @@ class RawStandard extends Component{
                    <Blockquote menu='技术中心' name='原材料标准'/>
                    
                    <div style={{padding:'20px'}}>
-                     <img src={require(`./jinaTou.svg`)} style={{width:'100px', height:'50px'}} />
-                     <Steps current={this.state.current}>
+                     
+                     {/* <Steps current={this.state.current}>
                           {steps.map(item => <Step key={item.title} title={item.title} />)}
-                    </Steps>
+                    </Steps> */}
+                    <div style={{height:'16px',width:'477px',backgroundColor:'blue'}}>你好吗</div>
+                    <span></span>
+                    <span></span>
                    </div >
                    <div style={{padding:'15px'}}>
                     &nbsp; <h2 style={{display:'inline-block'}}><span style={{width:'24px',height:'90px'}}>请选择原材料</span></h2>
