@@ -1,8 +1,15 @@
-.thead{
-    color: #6a6a6a;
+ #process-table {
+    display: block;
+    margin-top:30px;
+    width:'100%';
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+#process-table .thead{
+    color: white;
     text-align: center;
 }
-.thead tr td{
+#process-table .thead tr td{
     background: #1890ff !important;
     height: 35px;
     padding: 5px;
@@ -12,22 +19,23 @@
     border: 1px darkgrey solid;
     border-radius: 4px 0 0 0;
 }
-.thead tr :first-child,{
+#process-table  .thead tr :first-child,{
     border-top: none;
     border-left:none;
     border-radius: 5px 0 0 0 !important;
 }
-.thead tr :last-child,{
+#process-table  .thead tr :last-child,{
     border-top: none;
     border-right:none;
     border-radius: 5px 0 0 0 !important;
 }
-.tbody {
-    max-height:270px;
+#process-table  .tbody {
+    max-height:267px;
     overflow-y:scroll;
+    overflow-x: hidden;
     display:block
 }
-.tbody  td{
+#process-table  .tbody  td{
     height: 35px;
     min-width:124px;
     max-width:124px;
@@ -36,13 +44,13 @@
     text-align: center;
     border: 1px darkgrey solid;
 }
-.textAlign{
+#process-table  .textAlign{
     border:'none';
     text-align:center;
 }
-.tbody .ant-select-selection{
+#process-table  .tbody .ant-select-selection{
     border:none !important;
 }
-.tbody .ant-btn{
+#process-table  .tbody .ant-btn{
     border-color:#ffffff;
 }

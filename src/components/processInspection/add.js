@@ -167,8 +167,8 @@ class Add extends React.Component{
                         <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
                     ]}>
                     <div style={{height:'400px'}}>
-                    <p className='fr'>已录入{this.state.count}条数据</p>
-                         <table style={{width:'100%'}} className='table'>
+                    <div className='fr'>已录入{this.state.count}条数据</div><br/>
+                         <table id='process-table'>
                              <thead className='thead'>
                              <tr>
                                 <td>产品线</td>

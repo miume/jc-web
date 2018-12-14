@@ -216,7 +216,7 @@ class Editor extends React.Component{
                     ]}>
                     <div style={{height:'400px'}}>
                          <p className='fr'>已录入{this.state.count}条数据</p>
-                         <table style={{width:'100%'}} className='table'>
+                         <table style={{width:'100%'}} id='process-table'>
                              <thead className='thead'>
                                  <tr>
                                      <td>产品线</td>
