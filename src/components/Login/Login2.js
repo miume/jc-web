@@ -17,26 +17,27 @@ class Login extends React.Component {
     localStorage.setItem("remote2", "http://192.168.1.105:8081");      //模块一的局域网
     localStorage.setItem("remote", "http://2p277534k9.iok.la:58718");//模块二的外网
     localStorage.setItem("remote3", "http://218.77.105.241:40080");
-    const quickAccess = [{
-      menuName:'菜单管理',
-      path:'/menu'
-    },{
-      menuName:'角色管理',
-      path:'/role'
-    },{
-      menuName:'用户管理',
-      path:'/user'
-    },{
-      menuName:'部门管理',
-      path:'/departManagement'
-    },{
-      menuName:'数据录入',
-      path:'/dataEntry'
-    },{
-      menuName:'流程管理',
-      path:'/management'
-    }]
-    localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
+    // const quickAccess = [{
+    //   openKeys:[],
+    //   menuParent:'用户和权限',
+    //   menuName:'菜单管理',
+    //   path:'/menu'
+    // },{
+    //   menuName:'角色管理',
+    //   path:'/role'
+    // },{
+    //   menuName:'用户管理',
+    //   path:'/user'
+    // },{
+    //   menuName:'部门管理',
+    //   path:'/departManagement'
+    // },{
+    //   menuName:'数据录入',
+    //   path:'/dataEntry'
+    // },{
+    //   menuName:'流程管理',
+    //   path:'/management'
+    // }]
   }
 
   keyPress(e){
@@ -51,6 +52,25 @@ class Login extends React.Component {
     let password = document.getElementById('password').value;
     axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
       //console.log(res.data)
+      const quickAccess = [];
+      var i = 1;
+      if(res.data){
+          res.data.menuList.forEach(e=>{
+              e.menuList.forEach(e1=>{
+                if(i <= 6){
+                  quickAccess.push({
+                    openKeys:e.menuId,
+                    menuParent:e.menuName,
+                    menuName:e1.menuName,
+                    path:e1.path
+                  }) 
+                  i++; 
+                }
+              })
+          })
+      }
+      console.log(quickAccess)
+      localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('Authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));

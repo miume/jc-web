@@ -45,32 +45,32 @@ class StockOut extends React.Component{
     /**申请出库 */
     apply(params){
         axios({
-            url: `${this.server}/jc/common/RepoStock/getAllRepoDiffRecord`,
+            url: `${this.server}/jc/common/RepoStock/pages`,
             method: 'get',
             headers:{
             'Authorization': this.Authorization
           },
            params: {
                ...params,
-               materialType:this.state.type,
+               materialClass:this.state.type,
            },
           }).then((data) => {
             const res = data.data.data;
             var out = []
-            if(res&&res.list){
-                for(var i = 1; i<=res.list.length; i++){
-                    var li = res.list[i-1];
-                    out.push({
-                        id:li.repoStock.id,
-                        index:res.prePage*10+i,
-                        materialName:li.repoBaseSerialNumber.materialName,
-                        materialType:li.repoStock.materialType,
-                        serialNumber:li.repoBaseSerialNumber.serialNumber,
-                        quantity:li.repoStock.quantity,
-                        weight:li.repoStock.weight
-                    })
-                }
-            }
+            // if(res&&res.list){
+            //     for(var i = 1; i<=res.list.length; i++){
+            //         var li = res.list[i-1];
+            //         out.push({
+            //             id:li.repoStock.id,
+            //             index:res.prePage*10+i,
+            //             materialName:li.repoBaseSerialNumber.materialName,
+            //             materialType:li.repoStock.materialType,
+            //             serialNumber:li.repoBaseSerialNumber.serialNumber,
+            //             quantity:li.repoStock.quantity,
+            //             weight:li.repoStock.weight
+            //         })
+            //     }
+            // }
             this.setState({
                 applyDataSource: out,
             });
