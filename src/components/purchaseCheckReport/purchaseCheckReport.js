@@ -1,5 +1,5 @@
 import React from 'react';
-import BlockQuote from '../dataEntry/blockQuote';
+import BlockQuote from '../BlockQuote/blockquote';
 import {Tabs} from 'antd';
 import Pack from './pack';
 import Check from './check';
@@ -8,11 +8,16 @@ import Release from './release';
 
 
 class PurchaseCheckReport extends React.Component {
+    constructor(props){
+        super(props);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
+    }
     render() {
         const TabPane = Tabs.TabPane;
+        const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name="进货检测报告" menu="质量与流程" menu2="数据录入"></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Tabs defaultActiveKey="2"  onChange={this.callback}  style={{padding:'15px'}}>
                     <TabPane tab={<span style={{paddingLeft:'25px',paddingRight:'25px'}}><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;生成</span>} key="1" >
                         <Pack />
@@ -29,6 +34,10 @@ class PurchaseCheckReport extends React.Component {
     };
     callback= (key) => {
         // console.log(key);
+    }
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/dataEntry'});
     }
 }
 
