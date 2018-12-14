@@ -24,10 +24,8 @@ class DeletaSpan extends React.Component {
                 'Authorization':this.Authorization
             },
         }).then((data)=>{
-            console.log(data);
             message.info(data.data.message);
         }).catch((error)=>{
-            console.log(error);
             message.info(error.data)
         });
         setTimeout(() => {

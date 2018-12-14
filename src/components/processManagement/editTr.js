@@ -1,9 +1,7 @@
 import React from "react";
 import axios from "axios";
-import {Select} from "antd"
 import "./difference.css"
 
-const Option = Select.Option
 
 class EditTr extends React.Component{
     constructor(props){
@@ -44,7 +42,7 @@ class EditTr extends React.Component{
                 return (
             <tr className='tbody' key={i}>
                 <td><select style={{border:"none"}} defaultValue={m.userId} id="sleID" name="sleID" className="sleID" placeholder="请选择负责人">{children}</select></td>
-                <td><input name="input" onChange={this.onChange} style={{border:"none"}} className="inputName" value={m.responsibility} placeholder="请输入职责"/></td>
+                <td><input name="input" onChange={this.onChange} style={{border:"none"}} className="proinputName" value={m.responsibility} placeholder="请输入职责"/></td>
                 <td style={{width:"154px"}}><span style={{width:'100%'}} className="blue" onClick={()=>this.props.deleteRow(m.id)} value={m.id}>删除</span></td>
             </tr>
         )})

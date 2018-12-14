@@ -48,10 +48,8 @@ class Menu extends React.Component{
         },
         showSizeChanger: true,
         onShowSizeChange(current, pageSize) {
-            // console.log('Current: ', current, '; PageSize: ', pageSize);
         },
         onChange(current) {
-            // console.log('Current: ', current);
         }
     }
   }

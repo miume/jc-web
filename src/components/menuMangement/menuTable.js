@@ -224,8 +224,6 @@ class MenuTable extends React.Component{
     };
 
     edit(id) {
-        console.log(id);
-        console.log(this.state.editingKey)
         this.setState({ editingKey: id });
     }
 
@@ -248,7 +246,6 @@ class MenuTable extends React.Component{
                 });
                 const data = row;
                 data['id'] = id.toString()
-                console.log(data)
                 let server = localStorage.getItem("remote")
                 axios({
                     url:`${server}/jc/auth/menu/update`,
@@ -262,7 +259,6 @@ class MenuTable extends React.Component{
                     message.info(data.data.message);
                     this.props.fetch();
                 }).catch((error)=>{
-                    console.log(error);
                     message.info(error.data.message);
                 });
                 this.props.modifyDataSource(newData);

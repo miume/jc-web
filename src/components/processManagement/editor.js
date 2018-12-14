@@ -48,9 +48,9 @@ class Editor extends React.Component{
 
         const inputName = document.getElementsByClassName("inputName")
         const selID = document.getElementsByClassName("sleID")
-        for(var i=0;i<selID.length;i++){
-            data.details[i]["responsibility"] = inputName[i].value
-            data.details[i]["userId"] = selID[i].value
+        for(var e=0;e<selID.length;e++){
+            data.details[e]["responsibility"] = inputName[e].value
+            data.details[e]["userId"] = selID[e].value
         }
 
         let name = document.getElementById("name").value
@@ -87,9 +87,9 @@ class Editor extends React.Component{
 
         const inputName = document.getElementsByClassName("inputName")
         const selID = document.getElementsByClassName("sleID")
-        for(var i=0;i<selID.length;i++){
-            data.details[i]["responsibility"] = inputName[i].value
-            data.details[i]["userId"] = selID[i].value
+        for(var e=0;e<selID.length;e++){
+            data.details[e]["responsibility"] = inputName[e].value
+            data.details[e]["userId"] = selID[e].value
         }
 
         let name = document.getElementById("name").value
@@ -122,7 +122,6 @@ class Editor extends React.Component{
     }
     deleteRow(value){
         const {count,detail} = this.state;
-        console.log(detail)
         this.setState({
             count: count-1,
             detail: detail.filter(d => d.id !== value)
@@ -177,14 +176,14 @@ class Editor extends React.Component{
                     maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleOk} style='button' className='fa fa-check' />,
-                        <AddButton key="submit" handleClick={this.handleYes} name='提交' style='button' className='fa fa-check' />
+                        <SaveButton key="define" handleSave={this.handleOk} className='fa fa-check' />,
+                        <AddButton key="submit" handleClick={this.handleYes} name='提交' className='fa fa-check' />
                       ]}>
-                      <input id="name" defaultValue={this.state.name} placeholder="请输入名称"/>
+                      <input id="proname" defaultValue={this.state.name} placeholder="请输入名称"/>
                       <WhiteSpace />
                       <div style={{height:'400px'}}>
-                        <table className="table">
-                            <thead className='thead' id="th">
+                        <table className="protable">
+                            <thead className='prothead' id="th">
                                 <tr>
                                     <td>负责人</td>
                                     <td>职责</td>

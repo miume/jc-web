@@ -215,11 +215,11 @@ class Material extends React.Component{
                                 return (<tr key={m.index}>
                                     <td>{m.index}</td>
                                     <td>{m.serialNumber}</td>
-                                    <td>{m.name}</td>
-                                    <td>{m.manterialClass}</td>
-                                    <td>{m.repoStock.quantity}</td>
+                                    <td>{m.materialName}</td>
+                                    <td>{m.materialClass}</td>
+                                    <td>{m.quantity}</td>
                                     <td>{m.realNum}</td>
-                                    <td>{m.repoStock.weight}</td>
+                                    <td>{m.weight}</td>
                                     <td>{m.realWeig}</td>
                                 </tr>)
                             })
