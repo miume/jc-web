@@ -60,6 +60,7 @@ class CheckEditSpan extends React.Component {
                 >
                     <div style={{height:500}}>
                         <PurchaseModal
+                            clickState ={0}
                         />
 
                     </div>

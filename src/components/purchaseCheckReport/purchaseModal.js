@@ -138,6 +138,8 @@ class PurchaseModal extends React.Component {
             //控制类的存在
             hover: false,
             color: false,  //当ture变为红， 当false为白
+            //判断是否可以点击数据
+            // clickState:0, //0可以点击，1为不可以点击
 
         };
 
@@ -152,11 +154,16 @@ class PurchaseModal extends React.Component {
         /**---------------------- */
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
+        // 控制动态数据的长度headColumns--默认小于7
+        var headColumnsLength = false;
+        if(this.state.headColumns.length>7){
+            headColumnsLength = true;
+        }
 
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
-                    <table style={{float:'left',border:"1px solid #E9E9E9",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px'}} >
+                    <table style={{float:'left',border:"1px solid #E9E9E9",borderCollapse:'collapse',marginRight:'20px',marginTop:'5px',borderRadius:'3px 3px 3px 3px'}} >
                         <thead style={{background:'#0079FE',color:'white'}}>
                         <tr>
                             <th style={{fontSize:'15px',paddingLeft:'10px' }}>原材料</th>
@@ -203,7 +210,11 @@ class PurchaseModal extends React.Component {
                                     {
                                         this.state.headColumns.map((item,index) => {
                                             return (
-                                                <div className="middleTheadDiv" ref={(ref) => this.middleTheadDivRef = ref} key={item.id}>
+                                                <div
+                                                    className={(headColumnsLength?'middleTheadDiv':'middleTheadDivLength')}
+                                                    ref={(ref) => this.middleTheadDivRef = ref}
+                                                    key={item.id}
+                                                >
                                                     <div>{item.testItem}</div>
                                                     <div>{item.itemUnit}</div>
                                                     <div>{item.testResult}</div>
@@ -252,20 +263,65 @@ class PurchaseModal extends React.Component {
                                             const data = item;
                                             const tbodyRow = index;
                                             return(
-                                                <div className="middleTbodyDiv" key={index}>
+                                                <div
+                                                    className="middleTbodyDiv"
+                                                    key={index}
+                                                >
                                                     {
                                                         this.state.headColumns.map((item,index) => {
-                                                            return(
-                                                                <div
-                                                                    className={(data[item.testItem].isQualified? 'middleTbodyDivRed':'middleTbodyDivWhite')}
-                                                                    ref={`${tbodyRow}|${index}`}
-                                                                    id={`${tbodyRow}|${item.testItem}`}
-                                                                    key={index}
-                                                                    onClick={this.handleCellOnclick.bind(this)}
-                                                                >
-                                                                    {data[item.testItem].value}
-                                                                </div>
-                                                            )
+                                                            if(headColumnsLength === false){
+                                                                // 数据长度小于7
+                                                                if(this.props.clickState === 0){
+                                                                    return(
+                                                                        <div
+                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRedLength cursorPointer':'middleTbodyDivWhiteLength cursorPointer')}
+                                                                            ref={`${tbodyRow}|${index}`}
+                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            key={index}
+                                                                            onClick={this.handleCellOnclick.bind(this)}
+                                                                        >
+                                                                            {data[item.testItem].value}
+                                                                        </div>
+                                                                    )
+                                                                }else{
+                                                                    return(
+                                                                        <div
+                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRed cursorDefault':'middleTbodyDivWhite cursorDefault')}
+                                                                            ref={`${tbodyRow}|${index}`}
+                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            key={index}
+                                                                        >
+                                                                            {data[item.testItem].value}
+                                                                        </div>
+                                                                    )
+                                                                }
+
+                                                            }else{
+                                                                if(this.props.clickState === 0){
+                                                                    return(
+                                                                        <div
+                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRed cursorPointer':'middleTbodyDivWhite cursorPointer')}
+                                                                            ref={`${tbodyRow}|${index}`}
+                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            key={index}
+                                                                            onClick={this.handleCellOnclick.bind(this)}
+                                                                        >
+                                                                            {data[item.testItem].value}
+                                                                        </div>
+                                                                    )
+                                                                }else{
+                                                                    return(
+                                                                        <div
+                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRed cursorDefault':'middleTbodyDivWhite cursorDefault')}
+                                                                            ref={`${tbodyRow}|${index}`}
+                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            key={index}
+                                                                        >
+                                                                            {data[item.testItem].value}
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            }
                                                         })
                                                     }
                                                 </div>
@@ -278,33 +334,64 @@ class PurchaseModal extends React.Component {
                                 {
                                     this.state.tbodyData.map((item,index) => {
                                         if(index == this.state.tbodyData.length-1){
-                                            return(
-                                                <div className="rightTbody" key={`right${index}`}>
-                                                    <div
-                                                        className={(item.pass? 'passJudge': 'isQualified')}
-                                                        ref={`pass${index}`}
-                                                        onClick={this.handleJudgePass.bind(this,index)}
-                                                    >合格</div>
-                                                    <div
-                                                        className={(item.nopass? 'nopassJudge leftBorderRadius': 'isQualified leftBorderRadius')}
-                                                        ref={`nopass${index}`}
-                                                    >不合格</div>
-                                                </div>
-                                            )
+                                            if(this.props.clickState === 0){
+                                                return(
+                                                    <div className="rightTbody" key={`right${index}`}>
+                                                        <div
+                                                            className={(item.pass? 'passJudge cursorPointer': 'isQualified cursorPointer')}
+                                                            ref={`pass${index}`}
+                                                            onClick={this.handleJudgePass.bind(this,index)}
+                                                        >合格</div>
+                                                        <div
+                                                            className={(item.nopass? 'nopassJudge leftBorderRadius cursorDefault': 'isQualified leftBorderRadius cursorDefault')}
+                                                            ref={`nopass${index}`}
+                                                        >不合格</div>
+                                                    </div>
+                                                )
+                                            }else{
+                                                return(
+                                                    <div className="rightTbody" key={`right${index}`}>
+                                                        <div
+                                                            className={(item.pass? 'passJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            ref={`pass${index}`}
+                                                        >合格</div>
+                                                        <div
+                                                            className={(item.nopass? 'nopassJudge leftBorderRadius cursorDefault': 'isQualified leftBorderRadius cursorDefault')}
+                                                            ref={`nopass${index}`}
+                                                        >不合格</div>
+                                                    </div>
+                                                )
+                                            }
                                         }else{
-                                            return(
-                                                <div className="rightTbody" key={`right${index}`}>
-                                                    <div
-                                                        className={(item.pass? 'passJudge': 'isQualified')}
-                                                        ref={`pass${index}`}
-                                                        onClick={this.handleJudgePass.bind(this,index)}
-                                                    >合格</div>
-                                                    <div
-                                                        className={(item.nopass? 'nopassJudge': 'isQualified')}
-                                                        ref={`nopass${index}`}
-                                                    >不合格</div>
-                                                </div>
-                                            )
+                                            if(this.props.clickState === 0){
+                                                return(
+                                                    <div className="rightTbody" key={`right${index}`}>
+                                                        <div
+                                                            className={(item.pass? 'passJudge cursorPointer': 'isQualified cursorPointer')}
+                                                            ref={`pass${index}`}
+                                                            onClick={this.handleJudgePass.bind(this,index)}
+                                                        >合格</div>
+                                                        <div
+                                                            className={(item.nopass? 'nopassJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            ref={`nopass${index}`}
+                                                        >不合格</div>
+                                                    </div>
+                                                )
+                                            }else{
+                                                return(
+                                                    <div className="rightTbody" key={`right${index}`}>
+                                                        <div
+                                                            className={(item.pass? 'passJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            ref={`pass${index}`}
+                                                        >合格</div>
+                                                        <div
+                                                            className={(item.nopass? 'nopassJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            ref={`nopass${index}`}
+                                                        >不合格</div>
+                                                    </div>
+                                                )
+                                            }
+
                                         }
 
                                     })
