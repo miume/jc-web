@@ -164,14 +164,18 @@ class ProcessInspection extends React.Component{
             params:params,
         }).then((data)=>{
             const res = data.data.data;
-            this.pagination.total = res.total;
-            for(var i = 1; i <= res.list.length;i++){
+            this.pagination.total = res?res.total:0;
+            if(res&&res.list)
+            {
+              for(var i = 1; i <= res.list.length;i++){
                 var e = res.list[i-1];
                 e['index'] = res.prePage*10+i
             }
             this.setState({
                 dataSource:res.list
             })
+            }
+            
         })
     }
     /**批量删除弹出框确认函数 */
