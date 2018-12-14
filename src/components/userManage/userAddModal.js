@@ -50,7 +50,7 @@ class UserAddModal extends React.Component{
         // const departmentChildren=this.state.depart;
         return(
             <Form horizontal='true' onSubmit={()=>this.handleSubmit()}>
-               <FormItem wrapperCol={{ span: 20 }} required>
+               <FormItem wrapperCol={{ span: 24 }} required>
                   {getFieldDecorator('username',{
                         initialValue: '',
                         rules: [{required: true, message: '登录名不能为空'}],
@@ -58,15 +58,15 @@ class UserAddModal extends React.Component{
                             <Input placeholder='请输入登录名' style={{height:'40px' }}></Input>
                         )}
                </FormItem>
-               <FormItem wrapperCol={{ span: 20 }} required>
-               {getFieldDecorator('name1',{
+               <FormItem wrapperCol={{ span: 24 }} required>
+               {getFieldDecorator('name',{
                      initialValue: '',
                      rules: [{required: true, message: '用户名不能为空'}],
                   })(    //2、getFieldDecorator 的使用方法，
                          <Input placeholder='请输入用户名' style={{height:'40px' }}></Input>
                      )}
             </FormItem>
-               <FormItem wrapperCol={{ span: 20 }} required>
+               <FormItem wrapperCol={{ span: 24 }} required>
                {getFieldDecorator('password', {
                  rules: [{
                    required: true, message: '密码不能为空!',
@@ -77,7 +77,7 @@ class UserAddModal extends React.Component{
                  <Input placeholder='请输入密码'   type="password" style={{height:'40px' }}/>
                )}
              </FormItem>
-               <FormItem   wrapperCol={{ span: 20 }} required>
+               <FormItem   wrapperCol={{ span: 24 }} required>
                     {getFieldDecorator('confirm', {
                         rules: [{
                         required: true, message: '请确认你的密码!',
@@ -88,7 +88,7 @@ class UserAddModal extends React.Component{
                         <Input style={{height:'40px' }} type="password"  placeholder='请确认密码' onBlur={this.handleConfirmBlur} />
                     )}
               </FormItem>
-               <FormItem   wrapperCol={{ span: 20 }} required>
+               <FormItem   wrapperCol={{ span: 24 }} required>
                   {getFieldDecorator('departmentId',{
                         
                         rules: [{required: true, message: '请选择所属部门'}],
@@ -107,7 +107,7 @@ class UserAddModal extends React.Component{
                        
                         )}
                </FormItem>
-               <FormItem  wrapperCol={{ span: 20 }}>
+               <FormItem  wrapperCol={{ span: 24 }}>
                     {getFieldDecorator('phone',{
                         initialValue: '',
                     })( 

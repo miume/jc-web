@@ -1,0 +1,29 @@
+
+
+
+.block{
+    color:black;
+    height: 70px;
+    width: 200px;
+    line-height: 70px;  /*行高 */
+    text-align:center;
+    border:1px solid #e4e4e4;
+    cursor: 'pointer';
+    /* display:'inline-block'; */
+    margin-left: 15px;
+    margin-top: 15px;
+}
+.block:hover{
+      background-color: #1890ff
+}
+.block:active{
+    background-color: #1890ff
+}
+
+.parent{
+    display:flex ;
+    flex-wrap: wrap;
+    position:'absolute';
+    padding-left: 20px;
+    width: 100%;
+}
