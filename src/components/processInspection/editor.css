@@ -1,7 +1,7 @@
  #process-table {
     display: block;
     margin-top:30px;
-    width:'100%';
+    width:100%;
     overflow-x: hidden;
     white-space: nowrap;
 }
@@ -45,7 +45,7 @@
     border: 1px darkgrey solid;
 }
 #process-table  .textAlign{
-    border:'none';
+    border:none;
     text-align:center;
 }
 #process-table  .tbody .ant-select-selection{

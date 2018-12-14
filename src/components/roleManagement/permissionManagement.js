@@ -31,7 +31,7 @@ class PermissionManagement extends React.Component {
       }
     /**获取所有菜单 */
     getAllMenus(){
-        const url = `${this.props.server}/jc/auth/menu/getAllRecursive`;
+        const url = `${this.props.url.menu.getAll}`;
         axios({
             url:url,
             type:'get',
@@ -40,13 +40,13 @@ class PermissionManagement extends React.Component {
             }
         }).then(data=>{
             this.setState({
-                allMenus:data.data.data
+                allMenus:data.data?data.data.data:[]
             })
         })
     }
     /** 获取所有操作权限*/
     getAllAuth(){
-        const url = `${this.props.server}/jc/auth/operation/getAll`;
+        const url = `${this.props.url.operation.getAll}`;
         axios({
             url:url,
             type:'get',
@@ -62,7 +62,7 @@ class PermissionManagement extends React.Component {
     }
     /** 通过角色id获取角色菜单权限*/
     getAuthByRoleId(){
-        const url = `${this.props.server}/jc/auth/role/getAuths?id=${this.props.value}`;
+        const url = `${this.props.url.role.getAuths}?id=${this.props.value}`;
         axios({
             url:url,
             type:'get',
@@ -102,7 +102,7 @@ class PermissionManagement extends React.Component {
         //实现新增权限的功能
         if(target.checked === true ){
             axios({
-                url:`${this.props.server}/jc/auth/role/addOneOperation`,
+                url:`${this.props.url.role.addOneOperation}`,
                 method:'post',
                 params:data,
                 headers:{
@@ -118,7 +118,7 @@ class PermissionManagement extends React.Component {
         //实现删除权限的功能
         else {
             axios({
-                url:`${this.props.server}/jc/auth/role/deleteOneOperation`,
+                url:`${this.props.url.role.deleteOneOperation}`,
                 method:'Delete',
                 params:data,
                 headers:{

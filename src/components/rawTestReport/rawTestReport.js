@@ -188,28 +188,29 @@ class RawTestReport extends React.Component{
                 // deliverer : this.state.searchContent
             }
         }).then((data)=>{
-            const res = data.data.data.list;
+            const res = data.data.data?data.data.data.list:[];
             const da = [];
-            for(var i = 1; i <= res.length; i++){
-                var e = res[i-1];
-                da.push({
-                    index:i,
-                    id:e.commonBatchNumber.id,
-                    sampleDeliveringDate:e.details.sampleDeliveringRecord.sampleDeliveringDate,
-                    deliverer:e.details.deliverer,
-                    deliveryFactory:e.details.deliveryFactory.id,
-                    batchNumber:e.commonBatchNumber.batchNumber,
-                    testItemString:e.details.testItemString,
-                    exceptionComment:e.details.sampleDeliveringRecord.exceptionComment,
-                    type:e.details.sampleDeliveringRecord.type,
-                    acceptStatus:e.details.sampleDeliveringRecord.acceptStatus,
-                    handleComment:e.details.sampleDeliveringRecord.handleComment,
-                    status:e.commonBatchNumber.status,
-                    isUrgent:e.commonBatchNumber.isUrgent
-
-                })
+            if(res.length>0){
+                for(var i = 1; i <= res.length; i++){
+                    var e = res[i-1];
+                    da.push({
+                        index:i,
+                        id:e.commonBatchNumber.id,
+                        sampleDeliveringDate:e.details.sampleDeliveringRecord.sampleDeliveringDate,
+                        deliverer:e.details.deliverer,
+                        deliveryFactory:e.details.deliveryFactory.id,
+                        batchNumber:e.commonBatchNumber.batchNumber,
+                        testItemString:e.details.testItemString,
+                        exceptionComment:e.details.sampleDeliveringRecord.exceptionComment,
+                        type:e.details.sampleDeliveringRecord.type,
+                        acceptStatus:e.details.sampleDeliveringRecord.acceptStatus,
+                        handleComment:e.details.sampleDeliveringRecord.handleComment,
+                        status:e.commonBatchNumber.status,
+                        isUrgent:e.commonBatchNumber.isUrgent
+    
+                    })
+                }
             }
-            console.log(da)
             this.setState({
                 dataSource:da
             })

@@ -35,9 +35,6 @@ import LibraryManage from '../libraryManage/library'
 
 import RawStandard from '../rawStandard/rawStandard';
 
-
-
-//检测项目
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
@@ -125,13 +122,37 @@ class Home extends Component {
     componentWillMount() {
         var canvas;
         var showCanvas = setInterval(function() {
-            //console.log('get canvas');
             canvas = document.getElementById('defaultCanvas0');
             if(canvas !== null && canvas !== undefined) {
                 canvas.style.visibility='hidden';
                 clearInterval(showCanvas);
             }    
         },100)
+        const server = localStorage.getItem('remote');
+        const url = {
+            role:{
+                add:`${server}/jc/auth/role/add`,
+                deleteById:`${server}/jc/auth/role`,
+                update:`${server}/jc/auth/role/update`,
+                getAll:`${server}/jc/auth/role/getAll`,
+                getAuths:`${server}/jc/auth/role/getAuths`,
+                deleteByIds:`${server}/jc/auth/role/deleteByIds`,
+                getUsersOfRole:`${server}/jc/auth/role/getUsersOfRole`,
+                getRolesByPage:`${server}/jc/auth/role/getRolesByPage`,
+                addOneOperation:`${server}/jc/auth/role/addOneOperation`,
+                search:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
+                assignRoleToUser:`${server}/jc/auth/role/assignRoleToUser`,
+                deleteOneOperation:`${server}/jc/auth/role/deleteOneOperation`,
+            },
+            menu:{
+                getAll:`${server}/jc/auth/menu/getAllRecursive`
+            },
+            operation:{
+                getAll:`${server}/jc/auth/operation/getAll`
+            }
+
+        }
+        localStorage.setItem('url',JSON.stringify(url))
     }
     /**控制登陆背景图 */
     componentDidMount() {
@@ -139,7 +160,6 @@ class Home extends Component {
             var frame = window.frame;
             if(frame !== undefined && frame !== null) {
                 frame(0);   //消除帧
-                //console.log('clear intervals')
                 clearInterval(showFrame);
             }
         },500)
@@ -160,7 +180,6 @@ class Home extends Component {
                         </div>
                         <div >
                             <div className="fr" >
-                                {/* <div><Icon type="login" theme="outlined" /></div> */}
                                 <Exit name='退出'></Exit>
                             </div>
                         </div>
