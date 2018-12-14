@@ -46,14 +46,14 @@ class Editor extends React.Component{
             data.details.push({})
         }
 
-        const inputName = document.getElementsByClassName("inputName")
+        const inputName = document.getElementsByClassName("proinputName")
         const selID = document.getElementsByClassName("sleID")
         for(var e=0;e<selID.length;e++){
             data.details[e]["responsibility"] = inputName[e].value
             data.details[e]["userId"] = selID[e].value
         }
 
-        let name = document.getElementById("name").value
+        let name = document.getElementById("proname").value
         let id = this.state.id
         data.commonBatchNumber["description"] = name
         data.commonBatchNumber["id"] = id
@@ -168,7 +168,7 @@ class Editor extends React.Component{
     render(){
         return(
             <span>
-                {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span>编辑</span>}
+                {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="Editgrey">编辑</span>}
                 {/* <span className='blue' onClick={this.props.status === -1?this.handleDetail:null}>编辑</span> */}
                 {/* <span className='blue' onClick={this.handleDetail}>编辑</span> */}
                 <Modal title='编辑' visible={this.state.visible}

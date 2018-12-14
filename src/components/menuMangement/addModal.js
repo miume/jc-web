@@ -36,9 +36,8 @@ const CollectionCreateForm = Form.create()(
                         <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('menuType', {
                                 rules: [{ required: true, message: '请选择菜单类型' }],
-                                initialValue : '1'
                             })(
-                                <Select onChange={this.props.selectChange} size="large" style={{fontSize:"14px"}}>
+                                <Select onChange={this.props.selectChange} size="large" style={{fontSize:"14px"}} placeholder="请选择菜单类型">
                                     <Option value='1'>父菜单</Option>
                                     <Option value='2'>子菜单</Option>
                                 </Select>
@@ -47,10 +46,9 @@ const CollectionCreateForm = Form.create()(
                        {
                            this.props.visible1 === true ?  <FormItem labelCol={{span:5}} wrapperCol={{ span: 24 }} required >
                            {getFieldDecorator('parent',{
-                               initialValue: '',
                                rules: [{required: true, message: '请选择父菜单'}],
                            })(    //2、getFieldDecorator 的使用方法，
-                               <Select size="large" style={{fontSize:"14px"}}>
+                               <Select size="large" style={{fontSize:"14px"}} placeholder="请选择父菜单">
                                {
                                    fatherMenu.map(de=>{
                                        return(
