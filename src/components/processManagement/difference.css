@@ -100,6 +100,11 @@
 
 .protbody tr td{
     text-align: center;
-    border: 1px #666666 solid;
+    border: 1px #e8e8e8 solid;
     height: 40px;
+}
+
+.Editgrey {
+    color: #CCCCCC;
+    cursor: not-allowed; 
 }

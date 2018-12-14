@@ -183,7 +183,7 @@ class Management extends React.Component{
     searchEvent(){
     const ope_name = this.state.searchContent;
     axios({
-        url:`${this.server}/jc/common/batchAuditTask/Pages`,
+        url:`${this.server}/jc/common/batchAuditTask/pages`,
         method:'get',
         headers:{
             'Authorization':this.Authorization
@@ -203,9 +203,7 @@ class Management extends React.Component{
         this.setState({
             dataSource: res.list,
         });
-    }).catch((error)=>{
-            message.info(error.data.message)
-        })
+    })
     };
     handleReset = clearFilters => () => {
         clearFilters();
