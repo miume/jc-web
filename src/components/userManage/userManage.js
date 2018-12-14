@@ -266,7 +266,7 @@ class User extends React.Component{
         //value.splice(4,1);
         //console.log(value)
         
-       if(!value['username'] || !value['name1'] || !value['password'] || !value['confirm'] || !value['departmentId']){
+       if(!value['username'] || !value['name'] || !value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
                message.info('信息填写不完整！');
                return
        }
@@ -542,14 +542,14 @@ class User extends React.Component{
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                     <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} width='360px' centered={true}
                           footer={[
-                            <CancleButton  ley='cancel' handleCancel={() => this.handleCancel()} />,
+                            <CancleButton  key='cancel' handleCancel={() => this.handleCancel()} />,
                             <NewButton key='ok' handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
                             
                           ]}>
                           <UserAddModal  key='user' deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
-                    <span style={{float:'right',paddingBottom:'8px'}}>
+                    <span style={{float:'right'}}>
                       <SearchCell name='请输入用户名称' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 

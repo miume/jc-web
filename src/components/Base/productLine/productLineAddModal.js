@@ -22,7 +22,7 @@ const CollectionCreateForm = Form.create()(//弹出层
             ]}
           >
             <Form horizontal='true' >
-                <FormItem wrapperCol={{span:20}} required>
+                <FormItem wrapperCol={{span:24}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
                     rules:[{required:true,message:'产品线名称不能为空'}]

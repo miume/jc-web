@@ -32,6 +32,11 @@ import EnterStorage  from '../enterStorage/enterStorage';
 import InventorManage from '../inventoryManage/inventorManage';
 import RedListManage from '../redListManage/redListManage';
 import LibraryManage from '../libraryManage/library'
+
+import RawStandard from '../rawStandard/rawStandard';
+
+
+
 //检测项目
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
@@ -106,6 +111,9 @@ class Home extends Component {
         },{
             path:'/todoList',
             component:TodoList
+        },{
+            path:'/rawStandard',
+            component:RawStandard
         }]  
         return data;
     }
