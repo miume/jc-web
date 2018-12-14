@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Button,Input,Table} from 'antd';
+import {Modal,Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace'
 import axios from 'axios'
 import "./difference.css"
@@ -51,7 +51,6 @@ class Detail extends React.Component{
     }
     /**处理一条详情记录 */
     handleDetail() {
-        console.log(this.props.value)
         this.fetch(this.props.value.commonBatchNumber.id)
         this.setState({
           visible: true
@@ -79,17 +78,17 @@ class Detail extends React.Component{
                 maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <AddButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
+                        <AddButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     ]}>
                     <div style={{height:'400px'}}>
                          <table className="custom_tb">
-                             <thead className='thead'>
+                             <thead className='prothead'>
                                  <tr>
                                      <td>流程名称</td>
                                      <td>所属工艺</td>
                                  </tr>
                              </thead>
-                             <tbody className='tbody'>
+                             <tbody className='protbody'>
                                 <tr>
                                 {td}
                                 <td></td>

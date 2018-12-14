@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
-import { Table,Input,Icon,Button,Popconfirm,Divider,message } from 'antd';
+import { Table,Popconfirm,Divider,message } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';
@@ -38,10 +38,8 @@ class Management extends React.Component{
             },
             showSizeChanger: true,
             onShowSizeChange(current, pageSize) {
-              console.log('Current: ', current, '; PageSize: ', pageSize);
             },
             onChange(current) {
-              console.log('Current: ', current);
             }
           };
         this.columns = [{
@@ -125,10 +123,8 @@ class Management extends React.Component{
                 'Authorization':this.Authorization
             },
         }).then((data)=>{
-            console.log(data);
             message.info(data.data.message);
         }).catch((error)=>{
-            console.log(error);
             message.info(error.data)
         });
         setTimeout(() => {
@@ -157,7 +153,6 @@ class Management extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
             this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
@@ -218,7 +213,6 @@ class Management extends React.Component{
     }
     start = () => {
         const ids = this.state.selectedRowKeys;
-        console.log(ids)
         axios({
             url:`${this.server}/jc/common/batchAuditTask`,
             method:'delete',
@@ -247,7 +241,6 @@ class Management extends React.Component{
       }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     render(){
