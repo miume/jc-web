@@ -8,7 +8,7 @@ class Menu1List extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      defaultOpenKeys : localStorage.getItem('defaultOpenKeys')?localStorage.getItem('defaultOpenKeys'):[],
+      // defaultOpenKeys : localStorage.getItem('defaultOpenKeys')?localStorage.getItem('defaultOpenKeys'):[],
       openKeys:[],
       current : localStorage.getItem('current')?localStorage.getItem('current').path:'',
       // rootSubmenuKeys : menu.map(element => element.menuId)
@@ -39,7 +39,7 @@ class Menu1List extends React.Component {
       path:path
     }
     localStorage.setItem('current',current);
-    console.log((localStorage.getItem('current')).path)
+    //console.log((localStorage.getItem('current')).path)
     var menuClick = localStorage.getItem('quickAccess')?JSON.parse(localStorage.getItem('quickAccess')):[];
     if(menuClick){
         var repeat = menuClick.find(m=>m.menuName===menuName);

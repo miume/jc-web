@@ -65,7 +65,7 @@ const EditableFormRow = Form.create()(EditableRow);
 
 class Role extends React.Component {
    Authorization
-   server
+   url
     componentDidMount() {
       this.fetch();
     }
@@ -169,11 +169,11 @@ class Role extends React.Component {
                       </Popconfirm>
                       <Divider type="vertical" />
                       <span>
-                          <UserManagement value={record.id} Authorization={this.Authorization} server={this.server}/>  {/**实现给成员分配角色的功能*/}
+                          <UserManagement value={record.id} Authorization={this.Authorization} url={this.url}/>  {/**实现给成员分配角色的功能*/}
                       </span>
                       <Divider type="vertical" />
                       <span>
-                          <PermissionManagement value={record.id} Authorization={this.Authorization} server={this.server}/>  {/**实现角色分配权限的功能*/}
+                          <PermissionManagement value={record.id} Authorization={this.Authorization} url={this.url}/>  {/**实现角色分配权限的功能*/}
                       </span>
                     </span>
                 );
@@ -191,7 +191,8 @@ class Role extends React.Component {
     }
     fetch = (params = {}) => {
       axios({
-        url: `${this.server}/jc/auth/role/getRolesByPage`,
+        // url: `${this.server}/jc/auth/role/getRolesByPage`,
+        url: `${this.url.role.getRolesByPage}` ,
         method: 'get',
         headers:{
         'Authorization': this.Authorization
@@ -199,13 +200,15 @@ class Role extends React.Component {
        params: params,
       }).then((data) => {
         const res = data.data.data;
-        this.pagination.total=res.total;
-        for(var i = 1; i<=res.list.length; i++){
-          res.list[i-1]['index']=res.prePage*10+i;
+        this.pagination.total=res?res.total:0;
+        if(res&&res.list){
+          for(var i = 1; i<=res.list.length; i++){
+            res.list[i-1]['index']=res.prePage*10+i;
+          }
+          this.setState({
+            dataSource: res.list,
+          });
         }
-        this.setState({
-          dataSource: res.list,
-        });
       });
     }
 
@@ -220,7 +223,7 @@ class Role extends React.Component {
      handleDelete(id){
        //console.log(id)
         axios({
-          url:`${this.server}/jc/auth/role/${id}`,
+          url:`${this.url.role.deleteById}/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -260,7 +263,7 @@ class Role extends React.Component {
             data['id'] = id.toString()
             //console.log(data)
             axios({
-              url:`${this.server}/jc/auth/role/update`,
+              url:`${this.url.role.update}`,
               method:'post',
               headers:{
                 'Authorization':this.Authorization
@@ -302,7 +305,7 @@ class Role extends React.Component {
           visible: false,
         });
         axios({
-          url : `${this.server}/jc/auth/role/add`,
+          url : `${this.url.role.add}`,
           method:'post',
           headers:{
             'Authorization':this.Authorization
@@ -331,7 +334,7 @@ class Role extends React.Component {
         const ids = this.state.selectedRowKeys;
         // console.log(ids)
         axios({
-          url:`${this.server}/jc/auth/role/deleteByIds`,
+          url:`${this.url.role.deleteByIds}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -374,7 +377,7 @@ class Role extends React.Component {
         const role_name = this.state.searchContent;
         //console.log(role_name)
         axios({
-          url:`${this.server}/jc/auth/role/getRolesByNameLikeByPage`,
+          url:`${this.url.role.search}`,
           method:'get',
           headers:{
             'Authorization':this.Authorization
@@ -402,7 +405,7 @@ class Role extends React.Component {
           /**这是个令牌，每次调用接口都将其放在header里 */
           this.Authorization = localStorage.getItem('Authorization');
           /**这是服务器网址及端口 */
-          this.server = localStorage.getItem('remote');
+          this.url = JSON.parse(localStorage.getItem('url')); 
           const {selectedRowKeys} = this.state;
           const rowSelection = {
             selectedRowKeys,

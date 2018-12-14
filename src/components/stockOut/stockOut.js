@@ -57,7 +57,7 @@ class StockOut extends React.Component{
           }).then((data) => {
             const res = data.data.data;
             var out = []
-            if(res.list){
+            if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     var li = res.list[i-1];
                     out.push({
@@ -91,21 +91,23 @@ class StockOut extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             var out = []
-            for(var i = 1; i<=res.list.length; i++){
-                var li = res.list[i-1];
-                out.push({
-                    id:li.commonBatchNumber.id,
-                    index:res.prePage*10+i,
-                    batchNumber:li.commonBatchNumber.batchNumber,
-                    createPersonName:li.createPersonName,
-                    createTime:li.commonBatchNumber.createTime,
-                    status:li.commonBatchNumber.status,
-                    isUrgent:li.commonBatchNumber.isUrgent,
-                })
+            if(res&&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    var li = res.list[i-1];
+                    out.push({
+                        id:li.commonBatchNumber.id,
+                        index:res.prePage*10+i,
+                        batchNumber:li.commonBatchNumber.batchNumber,
+                        createPersonName:li.createPersonName,
+                        createTime:li.commonBatchNumber.createTime,
+                        status:li.commonBatchNumber.status,
+                        isUrgent:li.commonBatchNumber.isUrgent,
+                    })
+                }
             }
-          this.setState({
-            recordDataSource: out,
-          });
+            this.setState({
+                recordDataSource: out,
+            });
         })
     }
     render(){
