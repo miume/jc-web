@@ -149,6 +149,12 @@ class Home extends Component {
             },
             operation:{
                 getAll:`${server}/jc/auth/operation/getAll`
+            },
+            stockOut:{
+                getAll:`${server}/jc/common/RepoStock`,
+                repoOut:`${server}/jc/common/repoOutApply`,
+                RepoStock:`${server}/jc/common/RepoStock/pages`,
+                repoOutApply:`${server}/jc/common/repoOutApply/pages`,
             }
 
         }
