@@ -115,7 +115,7 @@ class RawMaterialOut extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail id={record.id} server={this.props.server} Authorization={this.props.Authorization}></Detail>
+                        <Detail id={record.id} url={this.props.url} Authorization={this.props.Authorization}></Detail>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
                             <span className='blue' id={record.id}>删除</span>
@@ -178,7 +178,7 @@ class RawMaterialOut extends React.Component{
     /**单条记录删除 */
     handleDelete(id){
         axios({ 
-            url:`${this.props.server}/jc/common/repoOutApply/deleteByBatchNumberId/${id}`,
+            url:`${this.props.url.stockOut.repoOut}/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.Authorization
@@ -193,7 +193,7 @@ class RawMaterialOut extends React.Component{
     /**批量删除 */
     deleteByIds(){
         axios({
-            url:`${this.props.server}/jc/common/repoOutApply`,
+            url:`${this.props.url.stockOut.repoOut}`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.Authorization

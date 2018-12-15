@@ -11,7 +11,7 @@ class Part extends React.Component{
     */
     checkUser(flag,userId,curId){
         /**之前 */
-        if(flag === 0 && userId !== curId){
+        if(flag === 0 && userId !== curId ){
             return <div className='circle'><i className="fa fa-check"></i></div>
         }else if(userId === curId && this.props.data.visible){
             this.props.judgeFlag(1);

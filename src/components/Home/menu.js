@@ -113,9 +113,7 @@ class Menu1List extends React.Component {
     //       ]
     //  }
     // ];
-    // console.log(this.state.openKeys)
-    //console.log(this.state.defaultOpenKeys)
-    const openKeys = localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[];
+    // const openKeys = localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[];
     //console.log(openKeys)
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */

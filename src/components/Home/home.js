@@ -129,7 +129,9 @@ class Home extends Component {
             }    
         },100)
         const server = localStorage.getItem('remote');
+        this.Authorization = localStorage.getItem('Authorization');
         const url = {
+            Authorization:this.Authorization,
             role:{
                 add:`${server}/jc/auth/role/add`,
                 deleteById:`${server}/jc/auth/role`,
@@ -153,8 +155,12 @@ class Home extends Component {
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
                 repoOut:`${server}/jc/common/repoOutApply`,
-                RepoStock:`${server}/jc/common/RepoStock/pages`,
+                getAllStockByPage:`${server}/jc/common/RepoStock/pages`,
                 repoOutApply:`${server}/jc/common/repoOutApply/pages`,
+            },
+            toDoList:`${server}/jc/common/toDoList`,
+            process:{
+                process:`${server}/jc/common/batchAuditTask`
             }
 
         }

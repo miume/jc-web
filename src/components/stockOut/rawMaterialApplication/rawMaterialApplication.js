@@ -28,8 +28,6 @@ class RawMaterialApplication extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        // this.server = localStorage.getItem('remote');
-        // this.Authorization = localStorage.getItem('Authorization');
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -45,8 +43,8 @@ class RawMaterialApplication extends React.Component{
             width:'15%'
         },{
             title:'物料类型',
-            dataIndex:'materialType',
-            key:'materialType',
+            dataIndex:'materialClass',
+            key:'materialClass',
             align:'center',
             width:'15%',
             render:(text,record)=>{
@@ -92,39 +90,6 @@ class RawMaterialApplication extends React.Component{
           orderType: 'desc',
         });
       }
-      /**获取所有数据 getAllByPage */
-      fetch = (params = {}) => {
-        axios({
-          url: `${this.server}/jc/common/RepoStock/getAllByFactorsByPage`,
-          method: 'get',
-          headers:{
-          'Authorization': this.Authorization
-        },
-         params: {
-             ...params,
-             materialType:this.props.type,
-         },
-        }).then((data) => {
-          const res = data.data.data;
-          this.pagination.total=res.total;
-          var out = []
-          for(var i = 1; i<=res.list.length; i++){
-              var li = res.list[i-1];
-              out.push({
-                  id:li.repoStock.id,
-                  index:res.prePage*10+i,
-                  materialName:li.repoBaseSerialNumber.materialName,
-                  materialType:li.repoStock.materialType,
-                  serialNumber:li.repoBaseSerialNumber.serialNumber,
-                  quantity:li.repoStock.quantity,
-                  weight:li.repoStock.weight
-              })
-          }
-          this.setState({
-            dataSource: out,
-          });
-        });
-      }
     /**监控搜索框的输入变化 */
     searchContentChange(e){
         const value = e.target.value;
@@ -158,7 +123,7 @@ class RawMaterialApplication extends React.Component{
         this.pagination.total = this.props.data.total;
         return (
             <div style={{padding:'0 15px'}}>
-                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} Authorization={this.props.Authorization} server={this.props.server} />
+                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} Authorization={this.props.Authorization} url={this.props.url} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>

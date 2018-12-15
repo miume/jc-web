@@ -53,13 +53,13 @@ class Detail extends React.Component{
     /**点击详情 显示弹出框 */
     handleDetial(){
         axios({
-            url:`${this.props.server}/jc/common/repoOutApply/getByBatchNumberId?batchNumberId=${this.props.id}`,
+            url:`${this.props.url.stockOut.repoOut}/${this.props.id}`,
             method:'get',
             headers:{
                 'Authorization':this.props.Authorization
             }
         }).then((data)=>{
-            const res = data.data.data.details;
+            const res = data.data.data?data.data.data.details:[];
             var detail = [];
             for(var i = 0; i < res.length; i++){
                 var e = res[i];

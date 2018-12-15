@@ -19,6 +19,7 @@ import axios from 'axios';
 //     })
 // }
 class ApplyStockOut extends React.Component{
+    toDoList
     constructor(props){
         super(props);
         this.state = {
@@ -43,8 +44,8 @@ class ApplyStockOut extends React.Component{
             width:'12%'
         },{
             title:'货物类型',
-            dataIndex:'materialType',
-            key:'materialType',
+            dataIndex:'materialClass',
+            key:'materialClass',
             align:'center',
             width:'13%',
             render:(text,record)=>{
@@ -100,6 +101,7 @@ class ApplyStockOut extends React.Component{
         this.urgentChange = this.urgentChange.bind(this);
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
+        this.applyReview = this.applyReview.bind(this);
     }
     /**申请出库弹出框 点击取消按钮 */
     handleCancel(){
@@ -166,11 +168,11 @@ class ApplyStockOut extends React.Component{
     }
      /**监控申请送审 保存 */
      handleSave(){
-        this.applyOut(-1);
+        this.applyOut(0);
     }
     /**点击确定送审 */
     handleOkApply(){
-        this.applyOut(0);
+        this.applyOut(1);
     }
     /**点击取消送审 */
     handleCancelApply(){
@@ -178,11 +180,11 @@ class ApplyStockOut extends React.Component{
             visible1:false,
         })
     }
+    /**保存 */
     applyOut(status){
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             createPersonId:createPersonId,
-            status:status,
             isUrgent:this.state.urgent
         }
         const details = [];
@@ -200,29 +202,53 @@ class ApplyStockOut extends React.Component{
                 weight:parseInt(e.outWeight)
             })
         }
-        const taskId = parseInt(this.state.process) !== -1?parseInt(this.state.process) :''
+        // const taskId = parseInt(this.state.process) !== -1?parseInt(this.state.process) :''
         //console.log(taskId)
-        axios.post(`${this.props.server}/jc/common/repoOutApply`,{
+        axios.post(`${this.props.url.stockOut.repoOut}`,{
             commonBatchNumber:commonBatchNumber,
             details:details
         },{
             headers:{
                 'Authorization':this.props.Authorization
             },
-            params:{
-                taskId:taskId
-            }
+            // params:{
+            //     taskId:taskId
+            // }
         }).then((data)=>{
-            message.info(data.data.message)
+            if(status){
+                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                console.log(data.data.data)
+                this.applyReview(dataId);
+            }else{
+                message.info(data.data.message);
+            }
         }).catch(()=>{
-            message.info('送审失败，请联系管理员！')
+            message.info('保存失败，请联系管理员！')
         })
         this.setState({
             visible:false,
             visible1:false
         })
     }
+    /**送审 */
+    applyReview(dataId){
+        axios.post(`${this.toDoList}`,{},{
+            headers:{
+                'Authorization':this.props.Authorization
+            },
+            params:{
+                dataId:dataId,
+                taskId:parseInt(this.state.process),
+                isUrgent:this.state.urgent
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch(()=>{
+            message.info('审核失败，请联系管理员！')
+        })
+    }
     render(){
+        this.toDoList = JSON.parse(localStorage.getItem('url')).toDoList
         return (
             <span>
                 <Button type='primary' size='default' className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'} onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" ></i> 申请出库</Button>
@@ -231,11 +257,11 @@ class ApplyStockOut extends React.Component{
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
                     ]}
                 >
                 <div style={{height:'250px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:230}} pagination={false} rowClassName={() => 'editable-row'}></Table>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:200}} pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>
