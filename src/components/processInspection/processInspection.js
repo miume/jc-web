@@ -31,6 +31,7 @@ import SearchCell from '../BlockQuote/search';
 //   }
 
 class ProcessInspection extends React.Component{
+    url
     server
     Authorization
     componentDidMount(){
@@ -132,16 +133,20 @@ class ProcessInspection extends React.Component{
           dataIndex: 'commonBatchNumber.id',
           key:'commonBatchNumber.id',
           align:'center',
-          render: (text) => {
+          render: (text,record) => {
+              const status = record.commonBatchNumber.status;
               return (
                   <span>
-                      <Detail value={text} allProductionProcess={this.state.allProductionProcess} server={this.server} Authorization={this.Authorization}  fetch={this.fetch}/>
+                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} server={this.server} url={this.url} Authorization={this.Authorization}  fetch={this.fetch}/>
                       <Divider type="vertical" />
-                      <Editor value={text} server={this.server} Authorization={this.Authorization} fetch={this.fetch}/>
+                      <Editor value={text} status={status} server={this.server} url={this.url} fetch={this.fetch}/>
                       <Divider type="vertical" />
-                      <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
-                          <span className='blue'>删除</span>
-                      </Popconfirm>
+                      {
+                        status === -1?
+                          <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
+                              <span className='blue'>删除</span>
+                          </Popconfirm>:<span>删除</span>
+                      }
                   </span>
                   );
           }
@@ -157,9 +162,9 @@ class ProcessInspection extends React.Component{
     }
     /**分页查询 getAllByPage */
     fetch(params){
-        axios.get(`${this.server}/jc/common/procedureTestRecord/pages`,{
+        axios.get(`${this.url.procedure.getAllByPage}`,{
             headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
             },
             params:params,
         }).then((data)=>{
@@ -183,10 +188,10 @@ class ProcessInspection extends React.Component{
       const ids = this.state.selectedRowKeys;
         // console.log(ids)
         axios({
-          url:`${this.server}/jc/common/procedureTestRecord`,
+          url:`${this.url.procedure.procedureTestRecord}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
           data:ids,
           type:'json'
@@ -211,10 +216,10 @@ class ProcessInspection extends React.Component{
     handleDelete(key){
       console.log(key)
       axios({
-          url:`${this.server}/jc/common/procedureTestRecord/${key}`,
+          url:`${this.url.procedure.procedureTestRecord}/${key}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           }
       }).then((data)=>{
           message.info(data.data.message);
@@ -244,10 +249,10 @@ class ProcessInspection extends React.Component{
   /**获取所有产品工序 */
   getAllProductionProcess(){
     axios({
-      url:`${this.server}/jc/common/productionProcess/getAll`,
+      url:`${this.url.productionProcess.productionProcess}`,
       method:'get',
       headers:{
-        'Authorization':this.Authorization
+        'Authorization':this.url.Authorization
       }
     }).then(data=>{
       const res = data.data.data;
@@ -281,8 +286,9 @@ class ProcessInspection extends React.Component{
 //     }, 300)  
 // }
     render() {
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
+        this.Authorization =  localStorage.getItem('Authorization')
         const {selectedRowKeys} = this.state; 
         const rowSelection = {
           selectedRowKeys,
@@ -292,7 +298,7 @@ class ProcessInspection extends React.Component{
             <div>
                 <BlockQuote name='制程检测' menu='质量与流程' menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
-                    <Add server={this.server} Authorization={this.Authorization} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
+                    <Add server={this.server} url={this.url} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入批号' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>

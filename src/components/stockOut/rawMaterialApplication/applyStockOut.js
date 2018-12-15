@@ -217,7 +217,7 @@ class ApplyStockOut extends React.Component{
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-                console.log(data.data.data)
+                //console.log(data.data.data)
                 this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
@@ -232,13 +232,13 @@ class ApplyStockOut extends React.Component{
     }
     /**送审 */
     applyReview(dataId){
-        axios.post(`${this.toDoList}`,{},{
+        axios.post(`${this.toDoList}/{${parseInt(this.state.process)}}`,{},{
             headers:{
                 'Authorization':this.props.Authorization
             },
             params:{
                 dataId:dataId,
-                taskId:parseInt(this.state.process),
+                // taskId:parseInt(this.state.process),
                 isUrgent:this.state.urgent
             }
         }).then((data)=>{

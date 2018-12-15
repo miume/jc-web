@@ -32,6 +32,7 @@ class Add extends React.Component{
         this.handleSave = this.handleSave.bind(this);
         this.applyOut = this.applyOut.bind(this);
         this.getData = this.getData.bind(this);
+        this.applyReview = this.applyReview.bind(this);
     }
     /**处理新增一条记录 */
     handleAdd = () => {
@@ -92,11 +93,11 @@ class Add extends React.Component{
     }
     /**点击送审 */
     handleOkApply(){
-        this.applyOut(0);
+        this.applyOut(1);
     }
     /**点击保存送审 */
     handleSave(){
-        this.applyOut(-1);
+        this.applyOut(0);
     }
     applyOut(status){
         const details = this.state.addApplyData;
@@ -117,26 +118,49 @@ class Add extends React.Component{
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             createPersonId:createPersonId,
-            status:status,
-            isUrgent:this.state.urgent
+            // status:status,
+            // isUrgent:this.state.urgent
         }
-        const taskId = this.state.process === -1?'':this.state.process;
-        axios.post(`${this.props.server}/jc/common/procedureTestRecord`,{
+        axios.post(`${this.props.url.procedure.procedureTestRecord}`,{
             commonBatchNumber:commonBatchNumber,
             details:details
         },{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
+            },
+            // params:{
+            //     taskId:taskId
+            // }
+        }).then((data)=>{
+            if(status){
+                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                this.applyReview(dataId);
+            }
+            else{
+                message.info(data.data.message);
+                this.props.fetch();
+            }
+            
+        }).catch(()=>{
+            message.info('操作失败，请联系管理员！')
+        })
+    }
+    /**保存后送审送审 */
+    applyReview(dataId){
+        //const taskId = this.state.process === -1?'':this.state.process;
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
+            headers:{
+                'Authorization':this.props.url.Authorization
             },
             params:{
-                taskId:taskId
+                dataId:dataId,
+                isUrgent:this.state.urgent
             }
         }).then((data)=>{
             message.info(data.data.message);
             this.props.fetch();
-            
         }).catch(()=>{
-            message.info('操作失败，请联系管理员！')
+            message.info('审核失败，请联系管理员！')
         })
     }
     /**获取每个Tr的值 */
