@@ -90,7 +90,7 @@ class InterProduct extends React.Component {
         this.server = localStorage.getItem('remote');
         return(
             <div>
-                <BlockQuote name="中间品检测"  menu="质量与流程" menu2="数据录入"></BlockQuote>
+                <BlockQuote name="中间品录检"  menu="质量与流程" menu2="数据录入"></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell

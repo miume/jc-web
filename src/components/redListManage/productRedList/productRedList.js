@@ -166,10 +166,9 @@ class ProductRedList extends Component{
 
     handleTableChange(pagination){
           this.fetch({
-              page:pagination.pageSize,//当前页显示的记录数
-              size:pagination.current,//当前是第几页
-              orderField:'commonBatchNumber.id',//
-              orderType:'desc'//
+              size:pagination.pageSize,//当前页显示的记录数
+              page:pagination.current,//当前是第几页
+            
           })
     }
     fetch=(params={})=>{
@@ -189,9 +188,9 @@ class ProductRedList extends Component{
         .then((data)=>{
             // console.log(data);
              const res=data.data.data;
-            
+             this.pagination.total=res?res.total:0;
              if(res&&res.list){
-                this.pagination.total=res.total;
+                
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
@@ -300,7 +299,7 @@ class ProductRedList extends Component{
   
     getAllProcess(){
         axios({
-            url:`${this.server}/jc/common/batchAuditTask`,
+            url:`${this.server}/jc/common/batchAuditTask/validTasks`,
             method:'get',
             headers:{
                 'Authorizaion':this.Authorizaion

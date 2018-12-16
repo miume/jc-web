@@ -37,7 +37,9 @@ class Add extends React.Component{
         });
       }
     handleSave() {//点击新增保存，未申请状态
+        
         const value=this.formRef.getItemsValue();
+        //console.log(value);
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
            
@@ -45,7 +47,7 @@ class Add extends React.Component{
             status:-1,
             isUrgent:this.state.checkSwitch,
         }
-        if(!value['serialNumberId']||!value['materialName']||!value['materialClass']||!value['quantityLoss']||!value['weightLoss']){
+        if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
             return
         }
@@ -58,6 +60,7 @@ class Add extends React.Component{
            data:{
                 commonBatchNumber:commonBatchNumber,
                 details: value,
+                
            },
            type:'json'
         }).then((data)=>{
@@ -99,14 +102,15 @@ class Add extends React.Component{
          popVisible:visible
        })
    }
-   getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+   getCheck(dataId,taskId){//调用代办事项接口
+    const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
+        url:`${this.server}/jc/common/toDoList/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
             'Authorization':this.Authorization
         },
-        data:{dataBatchNumberId,taskBatchNumberId},
+     
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -117,6 +121,7 @@ class Add extends React.Component{
    }
     handleSongShenOk(){//送审事件的确认按钮(先保存，在送审)
         const value=this.formRef.getItemsValue();
+        //console.log(value);
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
            
@@ -124,7 +129,7 @@ class Add extends React.Component{
             status:-1,
             isUrgent:this.state.checkSwitch,
         }
-        if(!value['serialNumberId']||!value['materialName']||!value['materialClass']||!value['quantityLoss']||!value['weightLoss']){
+        if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
             return
         }
@@ -137,14 +142,15 @@ class Add extends React.Component{
            data:{
                 commonBatchNumber:commonBatchNumber,
                 details: value,
+               
            },
            type:'json'
         }).then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            const dataBatchNumberId=res.commonBatchNumber.id;//返回的batchnumberId
-            const taskBatchNumberId=this.state.checkSelectData;//选择的流程id
-            this.getCheck(dataBatchNumberId,taskBatchNumberId);//调用待办事项的送审
+            const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+            const taskId=this.state.checkSelectData;//选择的流程id
+            this.getCheck(dataId,taskId);//调用待办事项的送审
             //message.info(data.data.message);
             this.props.fetch();
         })

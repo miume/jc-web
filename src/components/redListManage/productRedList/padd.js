@@ -45,7 +45,7 @@ class Add extends React.Component{
             status:-1,
             isUrgent:this.state.checkSwitch,
         }
-        if(!value['serialNumberId']||!value['materialName']||!value['materialClass']||!value['quantityLoss']||!value['weightLoss']){
+        if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
             return
         }
@@ -61,7 +61,7 @@ class Add extends React.Component{
            },
            type:'json'
         }).then((data)=>{
-            console.log(data);
+            //console.log(data);
             const res=data.data.data;
             message.info(data.data.message);
             this.props.fetch();
@@ -98,14 +98,15 @@ class Add extends React.Component{
          popVisible:visible
        })
    }
-   getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+   getCheck(dataId,taskId){//调用代办事项接口
+    const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
+        url:`${this.server}/jc/common/toDoList/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
             'Authorization':this.Authorization
         },
-        data:{dataBatchNumberId,taskBatchNumberId},
+        // data:isUrgent,
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -123,7 +124,7 @@ class Add extends React.Component{
             status:-1,
             isUrgent:this.state.checkSwitch,
         }
-        if(!value['serialNumberId']||!value['materialName']||!value['materialClass']||!value['quantityLoss']||!value['weightLoss']){
+        if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
             return
         }
@@ -136,14 +137,15 @@ class Add extends React.Component{
            data:{
                 commonBatchNumber:commonBatchNumber,
                 details: value,
+                isUrgent:this.state.checkSwitch,
            },
            type:'json'
         }).then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            const dataBatchNumberId=res.commonBatchNumber.id;//返回的batchnumberId
-            const taskBatchNumberId=this.state.checkSelectData;//选择的流程id
-            this.getCheck(dataBatchNumberId,taskBatchNumberId);//调用待办事项的送审
+            const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+            const taskId=this.state.checkSelectData;//选择的流程id
+            this.getCheck(dataId,taskId);//调用待办事项的送审
             //message.info(data.data.message);
             this.props.fetch();
         })

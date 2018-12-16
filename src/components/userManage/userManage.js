@@ -82,6 +82,7 @@ class EditableCell extends React.Component {
 }
 
 class User extends React.Component{
+  url;
   server;
   Authorization;
   componentDidMount(){
@@ -111,7 +112,7 @@ class User extends React.Component{
       this.onSelectChange=this.onSelectChange.bind(this);
       this.deleteByIds=this.deleteByIds.bind(this);
       this.cancel = this.cancel.bind(this);
-      this.showIds = this.showIds.bind(this);
+      
       this.isEditing=this.isEditing.bind(this);
      
       this.handleTableChange=this.handleTableChange.bind(this);
@@ -226,15 +227,14 @@ class User extends React.Component{
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
-         orderField:'id',//排序属性
-         orderType:'desc'//排序方法（降序）
+        
        });
     }
     fetch=(params = {})=>{
      // console.log('params:', params);
     
       axios({
-        url: `${this.server}/jc/auth/user/getAllByPage`,
+        url: `${this.url.userManage.getAllByPage}`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -276,7 +276,7 @@ class User extends React.Component{
        }
         this.setState({visible:false});
         axios({
-          url:`${this.server}/jc/auth/user/signIn`,
+          url:`${this.url.userManage.add}`,
           method:'post',
           headers:{
             'Authorization':this.Authorization
@@ -303,7 +303,7 @@ class User extends React.Component{
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
         axios({
-          url:`${this.server}/jc/auth/user/deleteById?id=${id}`,
+          url:`${this.url.userManage.deleteById}?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -333,16 +333,14 @@ class User extends React.Component{
           selectedIds: selectedRowKeys
         });
       }
-      showIds(event) {//?
-       // console.log(event.target.value)
-      }
+
       /**---------------------- */
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/auth/user/deleteByIds`,
+            url:`${this.url.userManage.deleteByIds}`,
             method:'Delete',
             headers:{
                   'Authorization' :this.Authorization
@@ -409,7 +407,7 @@ class User extends React.Component{
  
             //console.log(data);
             axios({
-              url:`${this.server}/jc/auth/user/update`,
+              url:`${this.url.userManage.update}`,
               method:'post',
               headers:{
                 'Authorization':this.Authorization
@@ -418,13 +416,12 @@ class User extends React.Component{
               type:'json'
             })
             .then((data)=>{
-              // console.log(data);
-              // console.log(data.data);
+             
               message.info(data.data.message);
               this.fetch();
             })
             .catch(()=>{
-             // console.log(error.data);
+             
               message.info('编辑失败，请联系管理员！');
             });
             this.setState({ dataSource: newData, editingKey: '' });
@@ -452,7 +449,7 @@ class User extends React.Component{
            const username=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${this.server}/jc/auth/user/getUserByNameByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.url.userManage.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization
@@ -470,7 +467,7 @@ class User extends React.Component{
             //  console.log(data.data);
             //  console.log(data.data.data);
              const res=data.data.data;
-             this.pagination.total=res.total?res.total:0;
+             this.pagination.total=res?res.total:0;
              if(res&&res.list){
               for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
@@ -506,6 +503,7 @@ class User extends React.Component{
         this.Authorization = localStorage.getItem('Authorization');
         /**这是服务器网址及端口 */
         this.server = localStorage.getItem('remote');
+        this.url=JSON.parse(localStorage.getItem('url'))
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {

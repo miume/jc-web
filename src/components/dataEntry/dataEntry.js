@@ -30,12 +30,12 @@ const data = [{
 },{
     id:6,
     name:'成品检验',
-    path:'/process',
+    path:'/productInspection',
     className:'fa fa-codepen fa-5x'
 },{
     id:7,
     name:'不合格审评表',
-    path:'/InterProduct',
+    path:'/unqualifiedExamineTable',
     className:'fa fa-exclamation-triangle fa-5x'
 },{
     id:8,

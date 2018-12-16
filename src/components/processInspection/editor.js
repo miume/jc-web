@@ -39,16 +39,16 @@ class Editor extends React.Component{
     /**获取所有检测项目 */
     getAllTestItem(){
         axios({
-        url:`${this.props.server}/jc/common/testItem`,
-        method:'get',
-        headers:{
-            'Authorization':this.props.Authorization
-        }
-        }).then(data=>{
-        const res = data.data.data;
-        this.setState({
-            allTestItem : res
-        })
+            url:`${this.props.url.testItems.testItems}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+            }).then(data=>{
+            const res = data.data.data;
+            this.setState({
+                allTestItem : res
+            })
     })   
     }
     /**处理新增一条记录 */
@@ -61,21 +61,22 @@ class Editor extends React.Component{
       }
     /**通过id查询数据 */
     getDetailData(){
-        axios.get(`${this.props.server}/jc/common/procedureTestRecord/${this.props.value}`,{
+        axios.get(`${this.props.url.procedure.procedureTestRecord}/${this.props.value}`,{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const details = data.data.data?data.data.data.details:[];
             const count = details?details.length:0;
             for(var i = 0; i < count; i++){
                 details[i].id = i+1;
+                details[i].procedureTestRecord.testItems = details[i].testItemString;
             }
             this.setState({
                 editorData:details?details:[],
                 count:count
             })
-            // console.log(details)
+            //console.log(details)
         })
      }
     handleOk() {
@@ -153,14 +154,15 @@ class Editor extends React.Component{
     }
     /**点击送审 */
     handleOkApply(){
-        this.applyOut(0);
+        this.applyOut(1);
     }
     /**点击保存送审 */
     handleSave(){
-        this.applyOut(-1);
+        this.applyOut(0);
     }
     applyOut(status){
         const details = this.state.addApplyData;
+        console.log(details)
         for(var i = 0; i < details.length; i++){
             delete details[i].id;
             var e = details[i].procedureTestRecord;
@@ -178,21 +180,19 @@ class Editor extends React.Component{
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             id:this.props.value,
-            createPersonId:createPersonId,
-            status:status,
-            isUrgent:this.state.urgent
+            memo:''
+            // createPersonId:createPersonId,
+            // status:status,
+            // isUrgent:this.state.urgent
         }
-        const taskId = this.state.process === -1?'':this.state.process;
-        axios.put(`${this.props.server}/jc/common/procedureTestRecord`,{
+        // const taskId = this.state.process === -1?'':this.state.process;
+        axios.put(`${this.props.url.procedure.procedureTestRecord}`,{
             commonBatchNumber:commonBatchNumber,
             details:details
         },{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             },
-            params:{
-                taskId:taskId
-            }
         }).then((data)=>{
             message.info(data.data.message);
             this.props.fetch();
@@ -206,7 +206,7 @@ class Editor extends React.Component{
     render() {
         return (
             <span>
-                <span className='blue' onClick={this.handleEditor} >编辑</span>
+                <span className={this.props.status===-1?'blue':null} onClick={this.props.status===-1?this.handleEditor:null} >编辑</span>
                 <Modal title="编辑" visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel}  width='1300px' maskClosable={false}
                     footer={[
@@ -224,7 +224,7 @@ class Editor extends React.Component{
                                      <td>取样点</td>
                                      <td>取样人</td>
                                      <td>检测人</td>
-                                     <td>检测项目</td><td>频次</td>
+                                     <td style={{minWidth:'135px'}}>检测项目</td><td>频次</td>
                                      <td>受检物料</td>
                                      <td>备注</td><td>操作</td>
                                  </tr>

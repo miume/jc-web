@@ -1,9 +1,10 @@
 import React,{Component} from 'react';
-import {Table,Popconfirm,Divider,message} from 'antd';
+import {Table,Popconfirm,Divider,message,Modal} from 'antd';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import Add from './add';
 import Edit from './edit';
 import SearchCell from '../../BlockQuote/search';
+import Note from './note';
 import axios from 'axios';
 
 
@@ -29,11 +30,18 @@ class RawMaterialRedList extends Component{
             processChildren:[],//送审流程（对应那个下拉框）
             serialNumberChildren:[],//编号下拉框
             Authorization:this.Authorization,
+            
         };
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,
             showSizeChanger:true,
+            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+                //console.log('Current: ', current, '; PageSize: ', pageSize);
+              },
+              onChange(current) {//跳转，页码改变
+                //console.log('Current: ', current);
+              }
         }
         this.columns=[{
           title:'序号',
@@ -103,12 +111,6 @@ class RawMaterialRedList extends Component{
                         default: return '';
             }
           }
-        },{
-            title:'备注',
-            dataIndex:'repoRedTable.note',
-            key:'repoRedTable.note',
-            align:'center',
-            width:'10%'
         },
         {
             title:'操作',
@@ -124,7 +126,7 @@ class RawMaterialRedList extends Component{
                    <span>
                         <Edit record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                         <Divider type='vertical'/>
-                       <span >
+                       <span>
                        {editFlag ? (
                          <span>
                            <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='再想想'>
@@ -135,6 +137,9 @@ class RawMaterialRedList extends Component{
                          <span className='grey' >删除</span>
                        )}
                      </span>
+                     <Divider type='vertical'/>
+                     <Note record={record}/>
+                    
                    </span>
                );
             }
@@ -149,6 +154,7 @@ class RawMaterialRedList extends Component{
         this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
         this.fetch = this.fetch.bind(this);
+        
     }
    
   
@@ -165,9 +171,10 @@ class RawMaterialRedList extends Component{
     }
 
     handleTableChange(pagination){
+        //console.log(pagination);
           this.fetch({
-              page:pagination.pageSize,//当前页显示的记录数
-              size:pagination.current,//当前是第几页
+              size:pagination.pageSize,//当前页显示的记录数
+              page:pagination.current,//当前是第几页
              
           })
     }
@@ -188,9 +195,9 @@ class RawMaterialRedList extends Component{
         .then((data)=>{
             // console.log(data);
              const res=data.data.data;
-            
+             this.pagination.total=res?res.total:0;
           if(res&&res.list){
-            this.pagination.total=res.total;
+            
             for(let i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
            }
@@ -239,7 +246,7 @@ class RawMaterialRedList extends Component{
              type:'json'
         })
         .then((data)=>{
-           // console.log(data);
+          
            message.info(data.data.message);
            this.fetch();
         })
@@ -264,32 +271,31 @@ class RawMaterialRedList extends Component{
     }
     //根据名称进行搜索
     searchEvent(){
-      const anyField=this.state.searchContent;
+      const serialNumber=this.state.searchContent;
+      const materialType=1;
       axios({
-          url:`${this.server}/jc/common/repoRedTable/getByAnyFiledLikeByPage`,
+          url:`${this.server}/jc/common/repoRedTables/${serialNumber}?materialType=${materialType}`,
           method:'get',
           headers:{
               'Authorization':this.Authorization
           },
-          params:{
-            materialType:1,
-            anyField:anyField
-
-          }
+        
       })
       .then((data)=>{
          // console.log(data);
               const res=data.data.data;
              
+              this.pagination.total=res?res.total:0;
               if(res&&res.list){
-                this.pagination.totlal=res.total;
-                for(let i=1;i<=res.list.length;i++){
-                    res.list[i-1]['index']=res.prePage*10+i;
-               }
-               this.setState({
-                dataSource:res.list
-                 });
+               for(var i=1;i<=res.list.length;i++){
+                 res.list[i-1]['index']=res.prePage*10+i;
               }
+              this.setState({
+                dataSource:res.list//list取到的是所有符合要求的数据
+              });
+              }
+             
+              message.info(data.data.message);
              
       })
       .catch(()=>{
@@ -299,7 +305,7 @@ class RawMaterialRedList extends Component{
   
     getAllProcess(){
         axios({
-            url:`${this.server}/jc/common/batchAuditTask`,
+            url:`${this.server}/jc/common/batchAuditTask/validTasks`,
             method:'get',
             headers:{
                 'Authorizaion':this.Authorizaion

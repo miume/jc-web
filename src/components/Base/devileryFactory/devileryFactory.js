@@ -164,13 +164,12 @@ class DeliveryFactory extends React.Component{
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
-         orderField:'id',//排序属性
-         orderType	:'desc'//排序方法（降序）
+        
        });
     }
     fetch=(params = {})=>{
       //console.log('params:', params);
-      this.setState({loading:true});
+     
       axios({
         url: `${this.server}/jc/common/deliveryFactory/pages`,
         method:'get',
@@ -182,7 +181,7 @@ class DeliveryFactory extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
-        this.pagination.totlal=res.total?res.total:0;
+        this.pagination.total=res.total?res.total:0;
      if(res&&res.list){
       for(var i = 1; i<=res.list.length; i++){
         res.list[i-1]['index']=res.prePage*10+i;
