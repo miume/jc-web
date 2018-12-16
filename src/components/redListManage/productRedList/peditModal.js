@@ -2,7 +2,7 @@ import React from 'react';
 import {Form,Input,Select,InputNumber} from 'antd';
 const Option=Select.Option;
 const FormItem=Form.Item;
-
+const {TextArea}=Input;
 
 
 class ProductRedListEditModal extends React.Component{
