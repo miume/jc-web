@@ -78,11 +78,11 @@ class RowMaterialInventor extends Component{
         this.searchEvent=this.searchEvent.bind(this);
     }
     handleTableChange=(pagination)=>{//页切换时调用
-          this.fetch=({
-              page:this.pagination.pageSize,//当前页显示了几条记录
-              size:this.pagination.current,//当前是第几页
-              orderField:'repoStock.id',
-              orderType:'desc'
+        //console.log(this.pagination);
+          this.fetch({
+              size:pagination.pageSize,//当前页显示了几条记录
+              page:pagination.current,//当前是第几页
+             
           });
     }
     fetch=(params={})=>{
@@ -120,25 +120,27 @@ class RowMaterialInventor extends Component{
       const materialName=this.state.searchContent;
      //console.log(name);//此处显示的是我搜索框填的内容
      axios({
-        url:`${this.server}/jc/common/RepoStock/getAllByFactorsByPage`,
+        url:`${this.server}/jc/common/RepoStock/pages`,
         method:'get',
         headers:{
             'Authorization':this.Authorization
         },
         params:{
             materialName:materialName,
-            materialType:1
+            materialClass:1
         }
      })
      .then((data)=>{
          const res=data.data.data;
-         for(var i=1;i<=res.list.length;i++){
-              res.list[i-1]['index']=(res.pages-1)*10+i;
+         this.pagination.total=res.total?res.total:0;
+         if(res&&res.list){
+          for(var i=1;i<=res.list.length;i++){
+            res.list[i-1]['index']=res.prePage*10+i;
          }
-
          this.setState({
-             dataSource:res.list
-         });  
+           dataSource:res.list//list取到的是所有符合要求的数据
+         });
+         } 
      })
      .catch(()=>{
          message.info('搜索失败，请联系管理员！');

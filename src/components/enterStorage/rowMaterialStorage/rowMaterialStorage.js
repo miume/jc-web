@@ -88,11 +88,10 @@ class RowMaterialStorage extends Component{
     
     handleTableChange=(pagination)=>{//当点击第二页，第三页的时候，调用
        //console.log(pagination);
-        this.fetch=({
+        this.fetch({
             size:pagination.pageSize,//每页条目数
-            page:pagination.current,//当前页
-            orderField:'repoInRecord.id',
-            orderType:'desc',
+            page:pagination.current,//当前是第几页
+          
         });
     }
 

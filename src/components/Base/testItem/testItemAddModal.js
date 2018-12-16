@@ -15,8 +15,7 @@ const CollectionCreateForm = Form.create()(//弹出层
             visible={visible}
             title="新增"
             closable={false} maskClosable={false} centered={true}
-            onOk={onCreate}
-            onCancel={onCancel}
+            width='360px'
             footer={[
                 <NewButton key='ok' handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
                 <CancleButton  key='cancel'      handleCancel={this.props.onCancel} />
@@ -26,7 +25,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                 <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
-                    rules:[{required:true,message:'检测项目名称不能为空'}]
+                    
                 })(
                     <Input placeholder='请输入检测项目名称' ></Input>
                 )}
@@ -63,8 +62,9 @@ class TestItemAddModal extends React.Component{
           }
           values['unit']='';
           if(!values['name']){
-             return
-          }
+            message.info('检测项目名称不能为空！');
+            return
+         }
           axios({
             url:`${this.server}/jc/common/testItem`,
             method:'post',
@@ -82,7 +82,7 @@ class TestItemAddModal extends React.Component{
           .catch(()=>{
               message.info('新增失败，请联系管理员！');
           });
-          console.log('Received values of form: ', values);//打印表单新增获得到的值
+         // console.log('Received values of form: ', values);//打印表单新增获得到的值
           form.resetFields();//重置一组输入控件的值（为 initialValue）与状态，如不传入参数，则重置所有组件
           this.setState({ visible: false });
         });

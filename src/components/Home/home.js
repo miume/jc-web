@@ -155,6 +155,17 @@ class Home extends Component {
             operation:{
                 getAll:`${server}/jc/auth/operation/getAll`
             },
+            /**用户管理*/
+            userManage:{
+                add:`${server}/jc/auth/user/signIn`,
+                deleteById:`${server}/jc/auth/user/deleteById`,
+                update:`${server}/jc/auth/user/update`,
+                getAll:`${server}/jc/auth/user/getAll`,
+                deleteByIds:`${server}/jc/auth/user/deleteByIds`,    
+                getAllByPage:`${server}/jc/auth/user/getAllByPage`,
+                search:`${server}/jc/auth/user/getUserByNameByPage`,
+                
+            },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,

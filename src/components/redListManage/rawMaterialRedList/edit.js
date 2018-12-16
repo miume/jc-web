@@ -97,13 +97,14 @@ class Edit extends Component{
        })
    }
    getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+    const isUrgent=this.state.checkSwitch;
     axios({
         url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
         method:'post',
         headers:{
             'Authorization':this.Authorization
         },
-        data:{dataBatchNumberId,taskBatchNumberId},
+        data:{dataBatchNumberId,taskBatchNumberId,isUrgent,},
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -155,6 +156,7 @@ class Edit extends Component{
     render(){
         this.server=localStorage.getItem('remote');
         this.Authorization=localStorage.getItem('Authorization');
+        //console.log(this.props.record);
         return(
             <span>
             <span className={this.props.editFlag?'blue':'grey'} onClick={this.props.editFlag?this.showModal:this.notShowModal}>编辑</span>

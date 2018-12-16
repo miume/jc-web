@@ -85,11 +85,10 @@ class ProductInStorage extends Component{
         this.searchEvent=this.searchEvent.bind(this);
     }
     handleTableChange=(pagination)=>{//页码发生改变时调用
-         this.fetch=({
-             size:pagination.pageSize,
-             page:pagination.current,
-             orderField:'repoInRecord.id',
-             orderType:'desc'
+         this.fetch({
+             size:pagination.pageSize,//此页显示了几条
+             page:pagination.current,//当是第几页
+           
          });
     }
     fetch=(params={})=>{
