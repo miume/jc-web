@@ -14,8 +14,7 @@ const CollectionCreateForm = Form.create()(//弹出层
             visible={visible}
             title="新增"
             closable={false} maskClosable={false} centered={true}
-            onOk={onCreate}
-            onCancel={onCancel}
+            width='360px'
             footer={[
               <NewButton key='ok' handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
               <CancleButton   key='cancel'     handleCancel={this.props.onCancel} />
@@ -25,7 +24,7 @@ const CollectionCreateForm = Form.create()(//弹出层
                 <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('name',{
                     initialValue: '',
-                    rules:[{required:true,message:'送样工厂名称不能为空'}]
+                    
                 })(
                     <Input placeholder='请输入送样工厂名称' ></Input>
                 )}
@@ -61,6 +60,7 @@ class DeliveryFactoryAddModal extends React.Component{
             return;
           }
           if(!values['name']){
+            message.info('送样工厂名称不能为空！');
             return
          }
           axios({

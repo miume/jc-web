@@ -176,13 +176,12 @@ class ProductLine extends React.Component{
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
-         orderField:'id',//排序属性
-         orderType	:'desc'//排序方法（降序）
+        
        });
     }
     fetch=(params = {})=>{
       //console.log('params:', params);
-      this.setState({loading:true});
+      
       axios({
         url: `${this.server}/jc/common/productLine/pages`,
         method:'get',

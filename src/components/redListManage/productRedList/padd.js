@@ -61,7 +61,7 @@ class Add extends React.Component{
            },
            type:'json'
         }).then((data)=>{
-            console.log(data);
+            //console.log(data);
             const res=data.data.data;
             message.info(data.data.message);
             this.props.fetch();
@@ -99,13 +99,14 @@ class Add extends React.Component{
        })
    }
    getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+    const isUrgent=this.state.checkSwitch;
     axios({
         url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
         method:'post',
         headers:{
             'Authorization':this.Authorization
         },
-        data:{dataBatchNumberId,taskBatchNumberId},
+        data:{dataBatchNumberId,taskBatchNumberId,isUrgent},
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -136,6 +137,7 @@ class Add extends React.Component{
            data:{
                 commonBatchNumber:commonBatchNumber,
                 details: value,
+                isUrgent:this.state.checkSwitch,
            },
            type:'json'
         }).then((data)=>{

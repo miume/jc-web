@@ -2,7 +2,7 @@ import React from 'react';
 import {Form,Input,Select,InputNumber} from 'antd';
 const Option=Select.Option;
 const FormItem=Form.Item;
-
+const { TextArea } = Input;
 
 
 class RawMaterialRedListEditModal extends React.Component{
@@ -99,10 +99,10 @@ class RawMaterialRedListEditModal extends React.Component{
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('note',{
-                    initialValue: this.props.record.repoRedTable.note,
+                    initialValue: '',
                     
                 })(
-                    <Input placeholder='备注'/>
+                    <TextArea autosize={true} />
                 )}
                 </FormItem>
             </Form>

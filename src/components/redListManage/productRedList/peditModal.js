@@ -94,12 +94,13 @@ class ProductRedListEditModal extends React.Component{
                     <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'320px'}}></InputNumber>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:24}} required>
+               
+                <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('note',{
                     initialValue: this.props.record.repoRedTable.note,
                     
                 })(
-                    <Input placeholder='备注'/>
+                    <TextArea autosize={true} placeholder='请填写损失说明'/>
                 )}
                 </FormItem>
             </Form>
