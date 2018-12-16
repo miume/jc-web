@@ -13,7 +13,7 @@ class InterTable extends React.Component{
         align:'center',
         width: '6%',
     },{
-        title: '送样日期',
+        title: '送检日期',
         dataIndex: 'sampleDeliveringDate',
         key: 'sampleDeliveringDate',
         align:'center',
@@ -31,7 +31,7 @@ class InterTable extends React.Component{
         align:'center',
         width: '8%',
     },{
-        title: '批号',
+        title: '编号',
         dataIndex: 'batchNumber',
         key: 'batchNumber',
         align:'center',
