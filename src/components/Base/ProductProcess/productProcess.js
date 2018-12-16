@@ -197,7 +197,7 @@ Authorization;
         //type:'json',
       }).then((data)=>{
         const res=data.data.data;
-        this.pagination.totlal=res.total?res.total:0;
+        this.pagination.total=res.total?res.total:0;
         if(res&&res.list){
           
           for(let i=1;i<=res.list.length;i++){
