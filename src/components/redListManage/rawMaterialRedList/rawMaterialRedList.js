@@ -246,7 +246,7 @@ class RawMaterialRedList extends Component{
              type:'json'
         })
         .then((data)=>{
-           // console.log(data);
+          
            message.info(data.data.message);
            this.fetch();
         })
