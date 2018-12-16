@@ -35,6 +35,8 @@ import LibraryManage from '../libraryManage/library'
 
 import RawStandard from '../rawStandard/rawStandard';
 
+import ProductInspection from '../productInspection/productInspection';
+import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
@@ -111,7 +113,13 @@ class Home extends Component {
         },{
             path:'/rawStandard',
             component:RawStandard
-        }]  
+        },{
+            path:'/productInspection',
+            component:ProductInspection
+        },{
+            path:'/unqualifiedExamineTable',
+            component:UnqualifiedExamine
+        }]
         return data;
     }
     constructor(props) {
