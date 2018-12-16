@@ -195,9 +195,9 @@ class RawMaterialRedList extends Component{
         .then((data)=>{
             // console.log(data);
              const res=data.data.data;
-            
+             this.pagination.total=res?res.total:0;
           if(res&&res.list){
-            this.pagination.total=res.total;
+            
             for(let i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
            }
