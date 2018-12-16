@@ -39,6 +39,7 @@ class CheckReleaseSpan extends React.Component {
                 >
                     <div style={{height:500}}>
                         <PurchaseModal
+                            clickState ={1}
                         />
                     </div>
                 </Modal>

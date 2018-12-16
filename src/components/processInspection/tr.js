@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Select,Input,Popover,Button,Checkbox,Row,Col} from 'antd';
+import {Select,Input,Popover,Button,Checkbox,Col} from 'antd';
 import './editor.css';
 const Option = Select.Option;
 // const approvalProcess = [{
@@ -18,6 +18,7 @@ const Option = Select.Option;
 //     <Option key={p.id} value={p.id}>{p.name}</Option>
 // )
 class Tr extends React.Component{
+    url
     server
     Authorization
     componentDidMount(){
@@ -41,11 +42,11 @@ class Tr extends React.Component{
                 procedureTestRecord:{
                     comment:'',
                     procedureId:-1,
-                    productLineId:-1,
+                    deliveryFactoryId:-1,
                     samplePointName:'',
                     sampler:-1,
                     testFrequency:'',
-                    testMaterialId:-1,
+                    serialNumberId:-1,
                     tester:-1,
                 },
                 testItemIds:[]
@@ -59,12 +60,12 @@ class Tr extends React.Component{
             allTestMaterial: [],   //存取所有送检物料,
             testItems: '',          //存取检测项目
             testItemIds:[]
-            // productLineId:-1,      //存取产品线
+            // deliveryFactoryId:-1,      //存取产品线
             // procedureId:-1 ,       //存取工序ID
             // sampler:-1,            //存取取样人角色id
             // tester:-1,             //存取检测人角色id
             // testFrequency:'',      //存取频次的内容
-            // testMaterialId:-1,     //存取检测物料id
+            // serialNumberId:-1,     //存取检测物料id
             // comment:''             //存取备注
         }
         this.hide = this.hide.bind(this);
@@ -81,17 +82,17 @@ class Tr extends React.Component{
         this.sampler = this.sampler.bind(this);
         this.tester = this.tester.bind(this);
         this.testFrequency = this.testFrequency.bind(this);
-        this.testMaterialId = this.testMaterialId.bind(this);
+        this.serialNumberId = this.serialNumberId.bind(this);
         this.comment = this.comment.bind(this);
         this.getTrData = this.getTrData.bind(this);
     }
      /**获取所有产品线 */
      getAllProductLine(){
         axios({
-          url:`${this.server}/jc/common/productLine`,
+          url:`${this.url.deliveryFactory.deliveryFactory}`,
           method:'get',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           }
         }).then(data=>{
           const res = data.data.data;
@@ -157,7 +158,7 @@ class Tr extends React.Component{
     /**获取所有受检物料 */
     getAllTestMaterial(){
         axios({
-            url:`${this.server}/jc/common/repoBaseSerialNumber`,
+            url:`${this.url.serialNumber.serialNumber}?materialClass=2`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -187,16 +188,26 @@ class Tr extends React.Component{
         var testItems = '';
         for(var i = 0; i < allTestItem.length; i++){
             for(var j = 0; j < checkedValues.length; j++){
-                if(checkedValues[j] === allTestItem[i].id ){
-                    testItems += allTestItem[i].name + ','
+                if(checkedValues[j] === allTestItem[i].id && j < checkedValues.length-1){
+                    testItems += allTestItem[i].name + ' ';
+                }
+                if(checkedValues[j] === allTestItem[i].id && j === checkedValues.length-1){
+                    testItems += allTestItem[i].name; 
                 }
             }
         }
-        var testItem = testItems.split(',');
+        var testItem = testItems.split(' ');
         /**如果检测项目超过两个，则只显示两个检测项目，其他的隐藏 */
-        if(testItem.length>4){
-            testItems = testItem[0]+','+testItem[1]+','+testItem[2]+','+testItem[3]+'...';
+        const length = testItem.length;
+        if(length>4){
+            testItems = testItem[0]+' '+testItem[1]+' '+testItem[2]+' '+testItem[3]+'...';
         }
+        // else{
+        //     var items = '';
+        //     for(var i = 0; i < length; i++){
+        //         items += testItem[i] + ''  
+        //     } 
+        // }
         this.setState({
             detail:detail,
             testItems:testItems
@@ -206,7 +217,7 @@ class Tr extends React.Component{
     /**监控产品线下拉框的变化 */
     productLineChange(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.productLineId = value
+        detail.procedureTestRecord.deliveryFactoryId = value
         this.setState({
             detail:detail
         })
@@ -254,9 +265,9 @@ class Tr extends React.Component{
         })
     }
     /**监控受检物料下拉框的变化 */
-    testMaterialId(value){
+    serialNumberId(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.testMaterialId = value
+        detail.procedureTestRecord.serialNumberId = value
         this.setState({
             detail:detail
         })
@@ -275,31 +286,32 @@ class Tr extends React.Component{
         const allTestItem = this.props.allTestItem;
         if(allTestItem){
             const d = this.props.value;
-        const items = d.testItems?d.testItems.split(','):[];
-        var testItemIds = [];
-        for(var i = 0; i < allTestItem.length; i++){
-            for(var j = 0; j < items.length; j++){
-                if(items[j] === allTestItem[i].name ){
-                    testItemIds.push(allTestItem[i].id)
+            const items = d.testItems?d.testItems.split(','):[];
+            var testItemIds = [];
+            //console.log(allTestItem.length)
+            /**将查到的testItems字符串转换为id数组 */
+            for(var i = 0; i < allTestItem.length; i++){
+                for(var j = 0; j < items.length; j++){
+                    if(items[j] === allTestItem[i].name ){
+                        testItemIds.push(allTestItem[i].id)
+                    }
                 }
-            }
         }
-        
+        //console.log(testItemIds)
         detail = {
             id:this.props.id,
             procedureTestRecord:{
                 comment:d.comment,
                 procedureId:d.procedureId,
-                productLineId:d.productLineId,
+                deliveryFactoryId:d.deliveryFactoryId,
                 samplePointName:d.samplePointName,
                 sampler:d.sampler,
                 testFrequency:d.testFrequency,
-                testMaterialId:d.testMaterialId,
+                serialNumberId:d.serialNumberId,
                 tester:d.tester,
             },
             testItemIds:testItemIds
         }
-        //console.log(detail)
         this.setState({
             detail:detail,
             testItems:d.testItems,
@@ -309,6 +321,7 @@ class Tr extends React.Component{
         
     }
     render() {
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         this.props.getData(this.state.detail)
@@ -317,7 +330,7 @@ class Tr extends React.Component{
         const allTestItem = this.props.allTestItem?this.props.allTestItem:this.state.allTestItem;
         return (
             <tr id={this.props.id}>
-                <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange} defaultValue={d.productLineId}>{this.state.allProductLine}</Select></td>
+                <td><Select style={{width:'100%'}} placeholder='请选择送样工厂' onChange={this.productLineChange} defaultValue={d.deliveryFactoryId}>{this.state.allProductLine}</Select></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange} defaultValue={d.procedureId}>{this.state.allProductionProcess}</Select></td>
                 <td style={{maxWidth:'124px'}}><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler}>{this.state.allUser}</Select></td>
@@ -342,7 +355,7 @@ class Tr extends React.Component{
                     </Popover></td>
                 
                 <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} defaultValue={d.testFrequency}/></td>
-                <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.testMaterialId} defaultValue={d.testMaterialId}>{this.state.allTestMaterial}</Select></td>
+                <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.serialNumberId} defaultValue={d.serialNumberId}>{this.state.allTestMaterial}</Select></td>
                 <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment} defaultValue={d.comment}/></td>
                 <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span></td>
             </tr>

@@ -17,7 +17,8 @@ const Option = Select.Option;
 // },]
 class Submit extends React.Component{
     componentDidMount(){
-        axios.get(`${this.props.server}/jc/common/batchAuditTask`,{
+        const url = JSON.parse(localStorage.getItem('url')).process;
+        axios.get(`${url.process}`,{
             headers:{
                 'Authorization':this.props.Authorization
             }

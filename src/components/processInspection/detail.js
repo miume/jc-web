@@ -18,9 +18,9 @@ import EditorApply from './editorApply';
 //     name:'流程3'
 // }]
   const columns = [{
-    title: '产品线',
-    dataIndex: 'productLine.name' ,
-    key: 'productLine.name',
+    title: '送样工厂',
+    dataIndex: 'deliveryFactory.name' ,
+    key: 'deliveryFactory.name',
     width: '9%',
     align:'center',
   },{
@@ -49,17 +49,19 @@ import EditorApply from './editorApply';
     align:'center',
   },{
     title: '检测项目',
-    dataIndex: 'procedureTestRecord.testItems' ,
-    key: 'procedureTestRecord.testItems',
+    dataIndex: 'testItemString' ,
+    key: 'testItemString',
     render:(text)=>{ 
-      const items = text.split(',');
-      var testItems = '';
-      if(items.length>3){
-          testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
-          return <abbr title={text}>{testItems}</abbr>;
-      }else{
-        testItems = text;
-        return text;
+      if(text){
+        const items = text.split(',');
+        var testItems = '';
+        if(items.length>3){
+            testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
+            return <abbr title={text}>{testItems}</abbr>;
+        }else{
+          testItems = text;
+          return text;
+        }
       }
      },
     width: '9%',
@@ -119,9 +121,9 @@ class Detail extends React.Component{
       }
     /**通过id查询详情 */
     getDetailData(){
-       axios.get(`${this.props.server}/jc/common/procedureTestRecord/${this.props.value}`,{
+       axios.get(`${this.props.url.procedure.procedureTestRecord}/${this.props.value}`,{
            headers:{
-               'Authorization':this.props.Authorization
+               'Authorization':this.props.url.Authorization
            }
        }).then((data)=>{
            const details = data.data.data? data.data.data.details:[];
@@ -180,22 +182,21 @@ class Detail extends React.Component{
     /**获取所有检测项目 */
     getAllTestItem(){
       axios({
-      url:`${this.props.server}/jc/common/testItem/getAll`,
-      method:'get',
-      headers:{
-          'Authorization':this.props.Authorization
-      }
-      }).then(data=>{
-      const res = data.data.data;
-      this.setState({
-          allTestItem : res
-      })
+        url:`${this.props.url.procedure.testItems}`,
+        method:'get',
+        headers:{
+            'Authorization':this.props.url.Authorization
+        }
+        }).then(data=>{
+        const res = data.data.data;
+        this.setState({
+            allTestItem : res
+        })
   })   
   }
     /**获取数据 */
     getApplyData(data){
         this.state.applyData = data;
-        console.log(data)
     }
     /**点击送审 */
     handleOkApply(){
@@ -234,7 +235,7 @@ class Detail extends React.Component{
           details:details
       },{
           headers:{
-              'Authorization':this.props.Authorization
+              'Authorization':this.props.url.Authorization
           },
           params:{
               taskId:taskId
@@ -255,13 +256,18 @@ class Detail extends React.Component{
                     onCancel={this.handleCancel}  width='1300px' maskClosable={false}
                     footer={[
                       <CancleButton key='cancle' handleCancel={this.cancel}/>,
-                      <span key='save'  className={this.state.flag?'show':'hide'}><SaveButton handleSave={this.handleSave}/></span>,
-                      <NewButton key="submit" handleClick={this.state.flag?this.handleOkApply:this.handleIteration} name={this.state.flag?'确定':'迭代'} className={this.state.flag?'fa fa-check':'fa fa-level-up' }/>
+                      <span key='save'  className={this.state.flag?'show':'hide'}>
+                          <SaveButton handleSave={this.handleSave}/>
+                          <NewButton  handleClick={this.handleOkApply} name={'审核'} className={'fa fa-check'}/>
+                          </span>,
+                          <span key="submit">
+                              <NewButton handleClick={this.handleOkApply} name={'迭代'} className={this.state.flag?'fa fa-check':'fa fa-level-up' }/>
+                          </span>
                     ]} 
                   >
                     <div style={{height:'400px'}} className={this.state.flag?'hide':'show'}>
                          <div>
-                         <button style={{width:'100px',height:'40px',backgroundColor:'#00b4f0',marginRight:'10px'}} id='all' onClick={this.click}>全部</button>
+                         <button style={{width:'100px',height:'40px',backgroundColor:'#0086ff',marginRight:'10px',borderRadius:'3px'}} id='all' onClick={this.click}>全部</button>
                            {
                              this.props.allProductionProcess?this.props.allProductionProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />):null
                            }

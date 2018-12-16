@@ -1,4 +1,105 @@
-.difference{
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.parent{
+    /* line-height: 50px; */
+    flex-direction: row;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.one{
+    line-height: 36.8px;
+    border: 1px solid #E4E4E4;
+    display: inline-block;
+    width: 9%;
+    text-align: center;
+}
+.two{
+    line-height: 36.8px;
+    border: 1px solid #E4E4E4;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.three{
+    line-height: 36.8px;
+    border: 1px solid #E4E4E4;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.four{
+    line-height: 36.8px;
+    border: 1px solid #E4E4E4;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.five{
+    line-height: 36.8px;
+    border-right: none;
+    border-top: 1px solid #E4E4E4;
+    border-left: 2px solid #0079FE;
+    border-bottom: 1px solid #0079FE;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.six{
+    line-height: 36.8px;
+    border-top: 1px solid #E4E4E4;
+    border-left: none;
+    border-bottom: 1px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.seven{
+    line-height: 36.8px;
+    border: 1px solid #E4E4E4;
+    border-bottom: 1px solid #0079FE;
+    border-right: none;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.eight{
+    line-height: 36.8px;
+    border: 1px solid #E4E4E4;
+    border-bottom: 1px solid #0079FE;
+    border-left: none;
+    border-right: 2px solid #0079FE;
+    display: inline-block;
+    width: 13%;
+    text-align: center;
+}
+.border-down {
+    border-bottom: 1px solid #E4E4E4;
+    border-left: 1px solid #E4E4E4;
+  }
+.border-down1 {
+    /* border-bottom: 1px solid #E4E4E4; */
+    border-left: 2px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    background: #0079FE;
+    color: #ffffff;
+}
+.border-down2 {
+    /* border-bottom: 1px solid #E4E4E4; */
+    border-left: 2px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    background: #0079FE;
+    color: #ffffff;
+}
+.border-down3 {
+    /* border-bottom: 1px solid #E4E4E4; */
+    border-left: 2px solid #0079FE;
+    border-right: none;
+    background: #0079FE;
+    color: #ffffff;
+}
+.border-down4 {
+    /* border-bottom: 1px solid #E4E4E4; */
+    border-left: 2px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    background: #0079FE;
+    color: #ffffff;
 }

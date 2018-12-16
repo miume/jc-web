@@ -1,8 +1,57 @@
+.purchaseTopTable {
+    float: left;
+    margin-right: 20px;
+    margin-top: 5px;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+    border-radius: 3px;
+}
+.purchaseTopThead {
+    color: white;
+    background: #0079FE;
+}
+.purchaseTopThead tr th {
+    /*background: #0079FE;*/
+    font-size: 15px;
+    padding-left: 10px;
+    /*border-collapse: collapse;*/
+    border: 1px solid #E9E9E9;
+}
+.purchaseTopThead tr th:first-child{
+    /*border-right: none;*/
+    /*border-radius: 3px 0 0 0;*/
+}
+.purchaseTopThead tr th:last-child{
+    border-right: none;
+    /*border-radius: 0 3px 0 0;*/
+}
+
+.purchaseTopTbody tr td {
+    border: 1px solid #E9E9E9;
+    /*border-radius: 3px;*/
+}
+/*.purchaseTopTbody tr td:first-child{*/
+    /*border-radius: 3px;*/
+/*}*/
+.purchaseTopTbody tr td input{
+    width:130px;
+    border: none;
+    padding-left: 10px;
+}
+.borderRight {
+    border-right: 1px solid #E9E9E9;
+}
 .borderRadius {
     border-radius: 3px 0 0 0;
 }
 .leftBorderRadius {
-    border-radius: 0 0 3px 3px;
+    border-radius: 0 0 0 3px;
+}
+.cursorPointer {
+    cursor: pointer;
+}
+.cursorDefault {
+    cursor: default;
 }
 #modalTable {
     width: 1000px;
@@ -109,6 +158,20 @@
 .middleTheadDiv div{
     border-bottom: 1px solid #E9E9E9;
 }
+.middleTheadDivLength {
+    flex-grow:1;
+    line-height: 29px;
+    text-align: center;
+    font-size: 13px;
+    color:black;
+    /*border-left: 1px solid #E9E9E9;*/
+    cursor: default;
+    border-left: 1px solid #E9E9E9;
+    transition: transform 2s;
+}
+.middleTheadDivLength div{
+    border-bottom: 1px solid #E9E9E9;
+}
 
 #theadRight {
     border-radius:0 3px 0 0;
@@ -179,7 +242,6 @@
     font-size: 13px;
     white-space: nowrap;
     display: flex;
-    cursor: pointer;
 }
 .middleTbodyDivWhite {
     min-width: 100px;
@@ -188,10 +250,22 @@
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
 }
+.middleTbodyDivWhiteLength {
+    flex-grow:1;
+    height: 30px;
+    border-left: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+}
 .middleTbodyDivRed {
     background-color: #FF3B30;
     min-width: 100px;
     max-width: 100px;
+    height: 30px;
+    border-left: 1px solid #E9E9E9;
+    border-bottom: 1px solid #E9E9E9;
+}
+.middleTbodyDivRedLength {
+    flex-grow:1;
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
@@ -207,7 +281,6 @@
     height: 30px;
     line-height: 30px;
     text-align: center;
-    cursor: default;
     font-size: 13px;
     display: flex;
 }
@@ -217,7 +290,6 @@
     max-width: 49.9%;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
-    cursor: pointer;
 }
 
 .isQualified {

@@ -129,7 +129,10 @@ class Home extends Component {
             }    
         },100)
         const server = localStorage.getItem('remote');
+        this.Authorization = localStorage.getItem('Authorization');
         const url = {
+            Authorization:this.Authorization,
+            /**角色管理 */
             role:{
                 add:`${server}/jc/auth/role/add`,
                 deleteById:`${server}/jc/auth/role`,
@@ -144,12 +147,15 @@ class Home extends Component {
                 assignRoleToUser:`${server}/jc/auth/role/assignRoleToUser`,
                 deleteOneOperation:`${server}/jc/auth/role/deleteOneOperation`,
             },
+            /**菜单管理 */
             menu:{
                 getAll:`${server}/jc/auth/menu/getAllRecursive`
             },
+            /**操作管理 */
             operation:{
                 getAll:`${server}/jc/auth/operation/getAll`
             },
+            /**用户管理*/
             userManage:{
                 add:`${server}/jc/auth/user/signIn`,
                 deleteById:`${server}/jc/auth/user/deleteById`,
@@ -160,8 +166,41 @@ class Home extends Component {
                 search:`${server}/jc/auth/user/getUserByNameByPage`,
                 
             },
+            /**出库管理 */
+            stockOut:{
+                getAll:`${server}/jc/common/RepoStock`,
+                repoOut:`${server}/jc/common/repoOutApply`,
+                getAllStockByPage:`${server}/jc/common/RepoStock/pages`,
+                repoOutApply:`${server}/jc/common/repoOutApply/pages`,
+            },
+            /**待办事项 */
+            toDoList:`${server}/jc/common/toDoList`,
+            /**流程管理 */
+            process:{
+                process:`${server}/jc/common/batchAuditTask`
+            },
+            /**制程检验 */
+            procedure:{
+                procedureTestRecord:`${server}/jc/common/procedureTestRecord`,
+                getAllByPage:`${server}/jc/common/procedureTestRecord/pages`,
+                iteration:`${server}/jc/common/procedureTestRecord/iteration`,
+                testItems:`${server}/jc/common/procedureTestRecord/testItems`,
+            },
+            /**送样工厂 */
             deliveryFactory:{
-
+                deliveryFactory:`${server}/jc/common/deliveryFactory`,
+            },
+            /**基础编号 */
+            serialNumber:{
+                serialNumber:`${server}/jc/common/repoBaseSerialNumber`,
+            },
+            /**检测项目 */
+            testItems:{
+                testItems:`${server}/jc/common/testItem`
+            },
+            /**产品工序 */
+            productionProcess:{
+                productionProcess:`${server}/jc/common/productionProcess`,
             }
 
         }

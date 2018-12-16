@@ -16,15 +16,18 @@
     font-weight: 600;
     font-size: 15px;
     min-width:124px;
-    border: 1px darkgrey solid;
+    
+    border: 1px #e8e8e8 solid;
+    border-top: none !important;
+    border-bottom: none !important;
     border-radius: 4px 0 0 0;
 }
-#process-table  .thead tr :first-child,{
+#process-table  .thead tr :first-child{
     border-top: none;
     border-left:none;
     border-radius: 5px 0 0 0 !important;
 }
-#process-table  .thead tr :last-child,{
+#process-table  .thead tr :last-child{
     border-top: none;
     border-right:none;
     border-radius: 5px 0 0 0 !important;
@@ -42,7 +45,7 @@
     font-weight: 600;
     font-size: 15px;
     text-align: center;
-    border: 1px darkgrey solid;
+    border: 1px #e8e8e8 solid;
 }
 #process-table  .textAlign{
     border:none;
