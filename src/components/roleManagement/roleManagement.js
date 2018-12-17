@@ -169,11 +169,11 @@ class Role extends React.Component {
                       </Popconfirm>
                       <Divider type="vertical" />
                       <span>
-                          <UserManagement value={record.id} Authorization={this.Authorization} url={this.url}/>  {/**实现给成员分配角色的功能*/}
+                          <UserManagement value={record.id} Authorization={this.url.Authorization} url={this.url}/>  {/**实现给成员分配角色的功能*/}
                       </span>
                       <Divider type="vertical" />
                       <span>
-                          <PermissionManagement value={record.id} Authorization={this.Authorization} url={this.url}/>  {/**实现角色分配权限的功能*/}
+                          <PermissionManagement value={record.id} Authorization={this.url.Authorization} url={this.url}/>  {/**实现角色分配权限的功能*/}
                       </span>
                     </span>
                 );
@@ -195,7 +195,7 @@ class Role extends React.Component {
         url: `${this.url.role.getRolesByPage}` ,
         method: 'get',
         headers:{
-        'Authorization': this.Authorization
+        'Authorization': this.url.Authorization
       },
        params: params,
       }).then((data) => {
@@ -226,7 +226,7 @@ class Role extends React.Component {
           url:`${this.url.role.deleteById}/${id}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
         }).then((data)=>{
           message.info(data.data.message);
@@ -266,7 +266,7 @@ class Role extends React.Component {
               url:`${this.url.role.update}`,
               method:'post',
               headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
               },
               data:data,
               type:'json'
@@ -308,7 +308,7 @@ class Role extends React.Component {
           url : `${this.url.role.add}`,
           method:'post',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
           data:this.formRef.getItemsValue(),
           type:'json'
@@ -337,7 +337,7 @@ class Role extends React.Component {
           url:`${this.url.role.deleteByIds}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
           data:ids,
           type:'json'
@@ -380,7 +380,7 @@ class Role extends React.Component {
           url:`${this.url.role.search}`,
           method:'get',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
           params:{
             size: this.pagination.pageSize,
@@ -403,7 +403,7 @@ class Role extends React.Component {
       }
       render() {
           /**这是个令牌，每次调用接口都将其放在header里 */
-          this.Authorization = localStorage.getItem('Authorization');
+          // this.Authorization = localStorage.getItem('Authorization');
           /**这是服务器网址及端口 */
           this.url = JSON.parse(localStorage.getItem('url')); 
           const current = JSON.parse(localStorage.getItem('current')) ;

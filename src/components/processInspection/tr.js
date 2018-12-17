@@ -18,9 +18,6 @@ const Option = Select.Option;
 //     <Option key={p.id} value={p.id}>{p.name}</Option>
 // )
 class Tr extends React.Component{
-    url
-    server
-    Authorization
     componentDidMount(){
         this.getAllProductLine();
         this.getAllProductionProcess();
@@ -89,10 +86,10 @@ class Tr extends React.Component{
      /**获取所有产品线 */
      getAllProductLine(){
         axios({
-          url:`${this.url.deliveryFactory.deliveryFactory}`,
+          url:`${this.props.url.deliveryFactory.deliveryFactory}`,
           method:'get',
           headers:{
-            'Authorization':this.url.Authorization
+            'Authorization':this.props.url.Authorization
           }
         }).then(data=>{
           const res = data.data.data;
@@ -107,10 +104,10 @@ class Tr extends React.Component{
     /**获取所有产品工序 */
     getAllProductionProcess(){
       axios({
-        url:`${this.server}/jc/common/productionProcess`,
+        url:`${this.props.url.productionProcess.productionProcess}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.props.url.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
@@ -125,10 +122,10 @@ class Tr extends React.Component{
     /**获取所有检测项目 */
     getAllTestItem(){
       axios({
-        url:`${this.server}/jc/common/testItem`,
+        url:`${this.props.url.testItems.testItems}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.props.url.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
@@ -140,10 +137,10 @@ class Tr extends React.Component{
     /**获取所有用户 */
     getAllUser(){
       axios({
-        url:`${this.server}/jc/auth/role/getAll`,
+        url:`${this.props.url.role.getAll}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.props.url.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
@@ -158,10 +155,10 @@ class Tr extends React.Component{
     /**获取所有受检物料 */
     getAllTestMaterial(){
         axios({
-            url:`${this.url.serialNumber.serialNumber}?materialClass=2`,
+            url:`${this.props.url.serialNumber.serialNumber}?materialClass=2`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const res = data.data.data;
@@ -321,9 +318,6 @@ class Tr extends React.Component{
         
     }
     render() {
-        this.url = JSON.parse(localStorage.getItem('url'));
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
         this.props.getData(this.state.detail)
         const d = this.props.value;
         const {testItemIds} = this.state;

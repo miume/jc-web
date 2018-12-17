@@ -236,7 +236,7 @@ class Detail extends React.Component{
           isUrgent:this.state.urgent
       }
       const taskId = this.state.process === -1?'':this.state.process;
-      axios.put(`${this.props.server}/jc/common/procedureTestRecord`,{
+      axios.put(`${this.props.url.procedure.procedureTestRecord}`,{
           commonBatchNumber:commonBatchNumber,
           details:details
       },{
@@ -249,7 +249,6 @@ class Detail extends React.Component{
       }).then((data)=>{
           message.info(data.data.message);
           this.props.fetch();
-          
       }).catch(()=>{
           message.info('操作失败，请联系管理员！')
       })

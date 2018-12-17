@@ -50,7 +50,7 @@ class StockOut extends React.Component{
             url: `${this.url.stockOut.getAllStockByPage}`,
             method: 'get',
             headers:{
-            'Authorization': this.Authorization
+            'Authorization': this.url.Authorization
           },
            params: {
                ...params,
@@ -78,7 +78,7 @@ class StockOut extends React.Component{
             url:`${this.url.stockOut.repoOutApply}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 ...params,
@@ -113,10 +113,10 @@ class StockOut extends React.Component{
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <Tabs defaultActiveKey='1-1' onChange={this.handleChange} >
-                    <TabPane key='1-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;原材料出库申请</span>}><RawMaterialApplication index={1} url={this.url} data={this.state.applyDataSource} Authorization={this.Authorization} server={this.server} fetch={this.apply}/></TabPane>
-                    <TabPane key='1-3' tab={<span><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;产品出库申请</span>}><RawMaterialApplication index={2} url={this.url}  data={this.state.applyDataSource} fetch={this.apply} Authorization={this.Authorization} server={this.server} /></TabPane>
-                    <TabPane key='2-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;原材料出库记录</span>}><RawMaterialOut index={3} url={this.url} data={this.state.recordDataSource} Authorization={this.Authorization} server={this.server} fetch={this.outCheck}/></TabPane>
-                    <TabPane key='2-3' tab={<span><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;产品出库记录</span>}><RawMaterialOut index={4} url={this.url} data={this.state.recordDataSource} Authorization={this.Authorization} server={this.server} fetch={this.outCheck}/></TabPane>
+                    <TabPane key='1-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;原材料出库申请</span>}><RawMaterialApplication index={1} url={this.url} data={this.state.applyDataSource} fetch={this.apply}/></TabPane>
+                    <TabPane key='1-3' tab={<span><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;产品出库申请</span>}><RawMaterialApplication index={2} url={this.url}  data={this.state.applyDataSource} fetch={this.apply}/></TabPane>
+                    <TabPane key='2-1' tab={<span><i className="fa fa-leaf" aria-hidden="true"></i> &nbsp;原材料出库记录</span>}><RawMaterialOut index={3} url={this.url} data={this.state.recordDataSource} fetch={this.outCheck}/></TabPane>
+                    <TabPane key='2-3' tab={<span><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;产品出库记录</span>}><RawMaterialOut index={4} url={this.url} data={this.state.recordDataSource} fetch={this.outCheck}/></TabPane>
                 </Tabs>
                 
             </div>

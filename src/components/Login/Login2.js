@@ -15,8 +15,9 @@ class Login extends React.Component {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
     localStorage.setItem("remote1", "http://192.168.1.105:8080");     //模块二的局域网
     localStorage.setItem("remote2", "http://192.168.1.105:8081");      //模块一的局域网
-    localStorage.setItem("remote", "http://2p277534k9.iok.la:58718");//模块二的外网
+    // localStorage.setItem("remote", "http://2p277534k9.iok.la:58718");//模块二的外网
     localStorage.setItem("remote3", "http://218.77.105.241:40080");
+    localStorage.setItem("remote", "http://localhost:8080");
   }
   keyPress(e){
     if(e.keyCode === 13){
