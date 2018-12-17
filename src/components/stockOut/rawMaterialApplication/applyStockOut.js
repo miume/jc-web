@@ -209,7 +209,7 @@ class ApplyStockOut extends React.Component{
             details:details
         },{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             },
             // params:{
             //     taskId:taskId
@@ -234,7 +234,7 @@ class ApplyStockOut extends React.Component{
     applyReview(dataId){
         axios.post(`${this.toDoList}/{${parseInt(this.state.process)}}`,{},{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             },
             params:{
                 dataId:dataId,
@@ -257,7 +257,7 @@ class ApplyStockOut extends React.Component{
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
                     ]}
                 >
                 <div style={{height:'250px'}}>

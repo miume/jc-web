@@ -56,7 +56,7 @@ class Detail extends React.Component{
             url:`${this.props.url.stockOut.repoOut}/${this.props.id}`,
             method:'get',
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const res = data.data.data?data.data.data.details:[];

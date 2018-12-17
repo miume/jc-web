@@ -115,7 +115,7 @@ class RawMaterialOut extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail id={record.id} url={this.props.url} Authorization={this.props.Authorization}></Detail>
+                        <Detail id={record.id} url={this.props.url}></Detail>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
                             <span className='blue' id={record.id}>删除</span>
@@ -181,7 +181,7 @@ class RawMaterialOut extends React.Component{
             url:`${this.props.url.stockOut.repoOut}/${id}`,
             method:'Delete',
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             message.info(data.data.message);
@@ -196,7 +196,7 @@ class RawMaterialOut extends React.Component{
             url:`${this.props.url.stockOut.repoOut}`,
             method:'Delete',
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             },
             data:this.state.selectedRowKeys
         }).then((data)=>{

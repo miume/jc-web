@@ -17,10 +17,9 @@ const Option = Select.Option;
 // },]
 class Submit extends React.Component{
     componentDidMount(){
-        const url = JSON.parse(localStorage.getItem('url')).process;
-        axios.get(`${url.process}`,{
+        axios.get(`${this.props.url.process}`,{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             //console.log(data.data)
