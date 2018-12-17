@@ -145,7 +145,7 @@ class ProcessInspection extends React.Component{
                         status === -1?
                           <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
                               <span className='blue'>删除</span>
-                          </Popconfirm>:<span>删除</span>
+                          </Popconfirm>:<span className='notClick'>删除</span>
                       }
                   </span>
                   );
