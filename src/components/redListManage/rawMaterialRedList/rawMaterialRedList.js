@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 class RawMaterialRedList extends Component{
-    server;
+    url;
     Authorization;
     componentDidMount(){
         this.fetch();
