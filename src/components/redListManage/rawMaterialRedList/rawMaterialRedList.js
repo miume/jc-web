@@ -237,16 +237,16 @@ class RawMaterialRedList extends Component{
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
         console.log(ids);
-        for(var i=0;i<ids.length;i++){
-            console.log(this.state.dataSource[ids[i]]);
-                if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
-                       ids.length=0;      
-                    break
-                }
-        }
-        if(ids.length===0){
-            return
-        }
+        // for(var i=0;i<ids.length;i++){
+        //     console.log(this.state.dataSource[ids[i]]);
+        //         if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
+        //                ids.length=0;      
+        //             break
+        //         }
+        // }
+        // if(ids.length===0){
+        //     return
+        // }
         axios({
              url:`${this.url.redList.redList}`,
              method:'Delete',

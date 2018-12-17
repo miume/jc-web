@@ -434,7 +434,7 @@ class TestItem extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name={current.name} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+               <BlockQuote name='检测项目' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
                <TestItemAddModal fetch={this.fetch}/>

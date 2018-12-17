@@ -191,7 +191,7 @@ class Edit extends Component{
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
                             <Button onClick={this.hide} key='hide'>取消</Button>
-                            <Button type='primary' key='ok' disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
+                            <Button type='primary' key='ok' disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
                         </div>
                      </div>
                  }
