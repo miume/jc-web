@@ -181,6 +181,10 @@ class Home extends Component {
                 search:`${server}/jc/auth/user/getUserByNameByPage`,
                 
             },
+            /**部门管理 */
+            department:{
+                getAll:`${server}/jc/auth/department/getAll`,
+                },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
