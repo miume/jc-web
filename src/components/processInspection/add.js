@@ -144,7 +144,6 @@ class Add extends React.Component{
                 message.info(data.data.message);
                 this.props.fetch();
             }
-            
         }).catch(()=>{
             message.info('操作失败，请联系管理员！')
         })

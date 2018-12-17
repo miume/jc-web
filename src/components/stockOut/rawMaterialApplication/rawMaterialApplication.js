@@ -25,7 +25,7 @@ class RawMaterialApplication extends React.Component{
         }
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.handleTableChange = this.handleTableChange.bind(this);
+        // this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.columns = [{
@@ -73,23 +73,23 @@ class RawMaterialApplication extends React.Component{
             align:'center',
             width:'15%'
         }]
-        this.pagination = {
-            total: this.props.data.length,
-            showTotal(total) {
-              return `共${total}条记录`
-            } ,
-            showSizeChanger: true,
-          }
+        // this.pagination = {
+        //     total: this.props.data.total,
+        //     showTotal(total) {
+        //       return `共${total}条记录`
+        //     } ,
+        //     showSizeChanger: true,
+        //   }
     }   
     /**监控表格的变化 */
-    handleTableChange = (pagination) => {
-        this.props.fetch({
-          size: pagination.pageSize,
-          page: pagination.current,
-          orderField: 'id',
-          orderType: 'desc',
-        });
-      }
+    // handleTableChange = (pagination) => {
+    //     this.props.fetch({
+    //       size: pagination.pageSize,
+    //       page: pagination.current,
+    //       orderField: 'id',
+    //       orderType: 'desc',
+    //     });
+    //   }
     /**监控搜索框的输入变化 */
     searchContentChange(e){
         const value = e.target.value;
@@ -120,14 +120,13 @@ class RawMaterialApplication extends React.Component{
             selectedRowKeys,
             onChange:this.onSelectChange,
         }
-        this.pagination.total = this.props.data.total;
         return (
             <div style={{padding:'0 15px'}}>
                 <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
-                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{ y: 398 }} bordered size='small'></Table>
+                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={false} scroll={{ y: 398 }} bordered size='small'></Table>
             </div>
         );
     }

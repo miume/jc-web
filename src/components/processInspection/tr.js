@@ -83,7 +83,7 @@ class Tr extends React.Component{
         this.comment = this.comment.bind(this);
         this.getTrData = this.getTrData.bind(this);
     }
-     /**获取所有产品线 */
+     /**获取所有送样工厂 */
      getAllProductLine(){
         axios({
           url:`${this.props.url.deliveryFactory.deliveryFactory}`,
@@ -186,7 +186,7 @@ class Tr extends React.Component{
         for(var i = 0; i < allTestItem.length; i++){
             for(var j = 0; j < checkedValues.length; j++){
                 if(checkedValues[j] === allTestItem[i].id && j < checkedValues.length-1){
-                    testItems += allTestItem[i].name + ' ';
+                    testItems += allTestItem[i].name + ',';
                 }
                 if(checkedValues[j] === allTestItem[i].id && j === checkedValues.length-1){
                     testItems += allTestItem[i].name; 

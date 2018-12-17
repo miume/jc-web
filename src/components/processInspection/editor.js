@@ -14,7 +14,7 @@ class Editor extends React.Component{
             visible1:false,
             count : 0,
             dataSource:[],
-            data:[1],
+            data:[],
             addApplyData:[],
             editorData:[],
             allTestItem:[],
@@ -73,7 +73,7 @@ class Editor extends React.Component{
                 details[i].procedureTestRecord.testItems = details[i].testItemString;
             }
             this.setState({
-                editorData:details?details:[],
+                editorData:details?details:[1],
                 count:count
             })
             //console.log(details)
@@ -104,10 +104,11 @@ class Editor extends React.Component{
     }
     /**删除一条 */
     deleteRow(value){
-        const {count,editorData} = this.state;
+        const {count,editorData,addApplyData} = this.state;
         this.setState({
             count: count-1,
-            editorData: editorData.filter(d => d.id.toString()!== value)
+            editorData: editorData.filter(d => d.id.toString()!== value),
+            addApplyData:addApplyData.filter(d => d.id.toString()!== value)
         })
         // console.log(this.state.data)
     }
@@ -137,7 +138,7 @@ class Editor extends React.Component{
      /**监控是否紧急 */
      urgentChange(checked){
         this.setState({
-            urgent:checked?0:-1
+            urgent:checked?1:0
         })
     }
     /**监听送审select变化事件 */
@@ -165,9 +166,13 @@ class Editor extends React.Component{
         console.log(details)
         for(var i = 0; i < details.length; i++){
             delete details[i].id;
+            if(details[i].testItemIds.length===0){
+                message.info('检测项目不能为空，请填写完整！');
+                return 
+            }
             var e = details[i].procedureTestRecord;
             for(var j in e){
-                if( e[j]==='' || e[j] === -1 || e[j] === []){
+                if( !e[j] || e[j] === -1 || e[j] === []){
                     message.info('新增数据不能为空，请填写完整！');
                     return
                 }
@@ -177,7 +182,7 @@ class Editor extends React.Component{
             visible:false,
             visible1:false
         })
-        const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+        // const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             id:this.props.value,
             memo:''
@@ -186,22 +191,44 @@ class Editor extends React.Component{
             // isUrgent:this.state.urgent
         }
         // const taskId = this.state.process === -1?'':this.state.process;
-        axios.put(`${this.props.url.procedure.procedureTestRecord}`,{
-            commonBatchNumber:commonBatchNumber,
-            details:details
-        },{
+        // axios.put(`${this.props.url.procedure.procedureTestRecord}`,{
+        //     commonBatchNumber:commonBatchNumber,
+        //     details:details
+        // },{
+        //     headers:{
+        //         'Authorization':this.props.url.Authorization
+        //     },
+        // }).then((data)=>{
+        //     if(status){
+        //         const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+        //         this.applyReview(dataId);
+        //     }
+        //     else{
+        //         message.info(data.data.message);
+        //         this.props.fetch();
+        //     }
+        // }).catch((error)=>{
+        //     message.info('操作失败，请联系管理员！')
+        // })
+        console.log(details)
+    }
+    /**保存后送审送审 */
+    applyReview(dataId){
+        //const taskId = this.state.process === -1?'':this.state.process;
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
+            params:{
+                dataId:dataId,
+                isUrgent:this.state.urgent
+            }
         }).then((data)=>{
             message.info(data.data.message);
             this.props.fetch();
-            
-        }).catch((error)=>{
-            console.log(error)
-            message.info('操作失败，请联系管理员！')
+        }).catch(()=>{
+            message.info('审核失败，请联系管理员！')
         })
-        console.log(details)
     }
     render() {
         return (
@@ -212,7 +239,7 @@ class Editor extends React.Component{
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/> ,
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/> ,
                     ]}>
                     <div style={{height:'400px'}}>
                          <p className='fr'>已录入{this.state.count}条数据</p>
@@ -233,7 +260,7 @@ class Editor extends React.Component{
                                 this.state.editorData?
                                  <tbody className='tbody'>
                                     {
-                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.state.allTestItem}></Tr> })
+                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} url={this.props.url} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.state.allTestItem}></Tr> })
                                     }
                              </tbody>:
                              <tbody></tbody>
