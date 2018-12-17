@@ -209,7 +209,7 @@ class ProductRedList extends Component{
         //   const dataSource=this.state.dataSource;
         //   this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-           url:`${this.url.redList.redList}/${id}`,
+           url:`${this.url.redList.redList1}/${id}`,
            method:'Delete',
            headers:{
                'Authorization':this.url.Authorization
@@ -342,7 +342,7 @@ class ProductRedList extends Component{
       });
  }
     render(){
-        this.Authorization=localStorage.getItem('Authorization');
+        
       this.url=JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys}=this.state;
         const rowSelection={

@@ -55,7 +55,7 @@ class Edit extends Component{
              isUrgent:isUrgent,
          }
          axios({
-               url:`${this.url.redList.redList}`,
+               url:`${this.url.redList.redList1}`,
                method:'put',
                headers:{
                    'Authorization':this.url.Authorization
@@ -128,7 +128,7 @@ class Edit extends Component{
         isUrgent:isUrgent,
     }
     axios({
-          url:`${this.redList.redList}`,
+          url:`${this.redList.redList1}`,
           method:'put',
           headers:{
               'Authorization':this.url.Authorization
@@ -190,7 +190,7 @@ class Edit extends Component{
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
                             <Button onClick={this.hide}>取消</Button>
-                            <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
+                            <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
                         </div>
                      </div>
                  }

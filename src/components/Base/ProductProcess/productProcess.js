@@ -432,7 +432,7 @@ Authorization;
           });
        return(
            <div>
-               <BlockQuote name={current.name} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+               <BlockQuote name='产品工序' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
                <ProductProcessAddModal fetch={this.fetch}/>
