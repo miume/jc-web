@@ -43,7 +43,7 @@ class Add extends React.Component{
            
             createPersonId:createPersonId,
             status:-1,
-            isUrgent:this.state.checkSwitch,
+            //isUrgent:this.state.checkSwitch,
         }
         if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
@@ -72,6 +72,7 @@ class Add extends React.Component{
         this.setState({
         visible: false
         });
+        this.formRef.resetField();
     }
     handleCancel() {//点击新增的取消
         this.setState({
@@ -122,7 +123,7 @@ class Add extends React.Component{
            
             createPersonId:createPersonId,
             status:-1,
-            isUrgent:this.state.checkSwitch,
+            //isUrgent:this.state.checkSwitch,
         }
         if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
@@ -137,7 +138,7 @@ class Add extends React.Component{
            data:{
                 commonBatchNumber:commonBatchNumber,
                 details: value,
-                isUrgent:this.state.checkSwitch,
+               // isUrgent:this.state.checkSwitch,
            },
            type:'json'
         }).then((data)=>{

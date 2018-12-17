@@ -197,6 +197,8 @@ class Home extends Component {
             /**送样工厂 */
             deliveryFactory:{
                 deliveryFactory:`${server}/jc/common/deliveryFactory`,
+                getAllByPage:`${server}/jc/common/deliveryFactory/pages`,
+                 search:`${server}/jc/common/deliveryFactory/pagesNameLike`
             },
             /**基础编号 */
             serialNumber:{

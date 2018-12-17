@@ -188,6 +188,7 @@ class ProductRedList extends Component{
         .then((data)=>{
             // console.log(data);
              const res=data.data.data;
+            
              this.pagination.total=res?res.total:0;
              if(res&&res.list){
                 
@@ -228,6 +229,15 @@ class ProductRedList extends Component{
       /**批量删除弹出框确认函数 */
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
+        for(var i=0;i<ids.length;i++){
+            if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
+                   ids.length=0;      
+                break
+            }
+    }
+    if(ids.length===0){
+        return
+    }
         axios({
              url:`${this.server}/jc/common/repoRedTables`,
              method:'Delete',
@@ -265,25 +275,22 @@ class ProductRedList extends Component{
     }
     //根据名称进行搜索
     searchEvent(){
-      const anyField=this.state.searchContent;
+        const serialNumber=this.state.searchContent;
+        const materialType=3;
       axios({
-          url:`${this.server}/jc/common/repoRedTable/getByAnyFiledLikeByPage`,
+          url:`${this.server}/jc/common/repoRedTables/${serialNumber}?materialType=${materialType}`,
           method:'get',
           headers:{
               'Authorization':this.Authorization
           },
-          params:{
-            materialType:3,
-            anyField:anyField
-
-          }
+        
       })
       .then((data)=>{
          // console.log(data);
               const res=data.data.data;
-              
+              console.log(res.total);
               if(res&&res.list){
-                this.pagination.totlal=res.total;
+                this.pagination.total=res.total;
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }

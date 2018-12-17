@@ -57,6 +57,9 @@ class Manufacturer extends Component{
       this.state={
           searchContent:''
       }
+      this.searchContentChange=this.searchContentChange.bind(this);
+      this.searchEvent=this.searchEvent.bind(this);
+      this.checkRaw=this.checkRaw.bind(this);
     }
     searchEvent(){
 
@@ -66,6 +69,9 @@ class Manufacturer extends Component{
        this.setState({
            searchContent:value
        });
+    }
+    checkRaw(){//点击重新选择原材料调用的函数
+
     }
     render(){
         return(
@@ -85,6 +91,9 @@ class Manufacturer extends Component{
                     <DataPart  key={d.id} name={d.name}/>
                     )
                   }
+              </div>
+              <div style={{height:'300px'}}>
+                  <span className='blue' onClick={this.checkRaw}>重新选择原材料</span>
               </div>
           </div>
         );

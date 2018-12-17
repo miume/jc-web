@@ -35,11 +35,11 @@ class RawMaterialRedListEditModal extends React.Component{
   getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
     const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
     console.log(values);
-    return values;//用来得到新增框中填写的新值
+    return values;//用来得到编辑框中填写的新值
 }
     /**重置组件的值 */
     resetField=()=>{
-        this.props.form.resetFields();
+        this.props.form.resetFields();//对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
     }
     render(){
         
@@ -53,7 +53,7 @@ class RawMaterialRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoBaseSerialNumber.id,
                     rules:[{required:true,message:'编号不能为空'}]
                 })(
-                  <Select onChange={this.serialNumberSelectChange} >
+                  <Select onChange={this.serialNumberSelectChange} placeholder='请选择编号'>
                   {
                       this.props.serialNumber.map((bat)=>{
                           return(
@@ -70,7 +70,7 @@ class RawMaterialRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoBaseSerialNumber.materialName,
                     
                 })(
-                    <Input placeholder='物料名称'/>
+                    <Input placeholder='请输入物料名称'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
@@ -78,7 +78,7 @@ class RawMaterialRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoBaseSerialNumber.materialClass,
                     
                 })(
-                    <Input placeholder='物料类型'/>
+                    <Input placeholder='请输入物料类型'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>

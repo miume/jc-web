@@ -156,7 +156,7 @@ class ProductInStorage extends Component{
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入搜索内容'
+                    <SearchCell name='请输入产品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.fetch}

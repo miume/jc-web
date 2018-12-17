@@ -154,7 +154,7 @@ class ProductInventor extends Component{
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入搜索内容'
+                    <SearchCell name='请输入货物名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         type={this.props.type}

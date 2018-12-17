@@ -161,11 +161,11 @@ class RawMaterialRedList extends Component{
     judgeStatus=(record_status)=>{
          //console.log(record_status);
          switch(`${record_status}`){
-            case '-1':return true   //'未申请'
+            case '-1':return true   //'未申请'新增时点击了保存没有点送审
             case '0':return  false      //'待审核'
             case '1':return  false     // '审核中'
             case '2':return   true     //'已通过'
-            case '3':return  true      //未通过，新增时点击了保存没有点送审
+            case '3':return  true      //未通过，
             default:return false
         }
     }
@@ -236,6 +236,17 @@ class RawMaterialRedList extends Component{
       /**批量删除弹出框确认函数 */
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
+        console.log(ids);
+        for(var i=0;i<ids.length;i++){
+            console.log(this.state.dataSource[ids[i]]);
+                if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
+                       ids.length=0;      
+                    break
+                }
+        }
+        if(ids.length===0){
+            return
+        }
         axios({
              url:`${this.server}/jc/common/repoRedTables`,
              method:'Delete',
@@ -282,9 +293,9 @@ class RawMaterialRedList extends Component{
         
       })
       .then((data)=>{
-         // console.log(data);
+         
               const res=data.data.data;
-             
+            // console.log(res.total);
               this.pagination.total=res?res.total:0;
               if(res&&res.list){
                for(var i=1;i<=res.list.length;i++){

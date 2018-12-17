@@ -51,8 +51,8 @@ class Edit extends Component{
             id:this.props.record.commonBatchNumber.id,
             batchNumber:this.props.record.commonBatchNumber.batchNumber,
             createPersonId:createPersonId,
-            status:-1,
-            isUrgent:isUrgent,
+            // status:-1,
+            // isUrgent:isUrgent,
         }
         axios({
               url:`${this.server}/jc/common/repoRedTable`,
@@ -96,15 +96,15 @@ class Edit extends Component{
          popVisible:visible
        })
    }
-   getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+   getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
+        url:`${this.server}/jc/common/toDoList/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
             'Authorization':this.Authorization
         },
-        data:{dataBatchNumberId,taskBatchNumberId,isUrgent,},
+        
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -141,9 +141,9 @@ class Edit extends Component{
 
         }).then((data)=>{
             const res=data.data.data;
-            const dataBatchNumberId=res.commonBatchNumber.id;//返回的batchnumberId
-            const taskBatchNumberId=this.state.checkSelectData;//选择的流程id
-            this.getCheck(dataBatchNumberId,taskBatchNumberId);//调用待办事项的送审
+            const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+            const taskId=this.state.checkSelectData;//选择的流程id
+            this.getCheck(dataId,taskId);//调用待办事项的送审
                 this.props.fetch();
         }).catch(()=>{
           message.info('编辑失败，请联系管理员！');
