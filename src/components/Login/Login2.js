@@ -29,7 +29,7 @@ class Login extends React.Component {
   }
   handleSubmit(){
     const history = this.props.history;
-    const server = localStorage.getItem("remote");  
+    const server = localStorage.getItem("remote2");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
     axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {

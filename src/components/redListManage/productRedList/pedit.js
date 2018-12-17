@@ -7,7 +7,7 @@ import axios from 'axios';
 const Option=Select.Option;
 
 class Edit extends Component{
-    server;
+    url;
     Authorization;
     constructor(props){
         super(props);
@@ -55,10 +55,10 @@ class Edit extends Component{
              isUrgent:isUrgent,
          }
          axios({
-               url:`${this.server}/jc/common/repoRedTable`,
+               url:`${this.url.redList.redList}`,
                method:'put',
                headers:{
-                   'Authorization':this.Authorization
+                   'Authorization':this.url.Authorization
                },
                data:{
                  commonBatchNumber:commonBatchNumber,
@@ -96,14 +96,15 @@ class Edit extends Component{
          popVisible:visible
        })
    }
-   getCheck(dataBatchNumberId,taskBatchNumberId){//调用代办事项接口
+   getCheck(dataId,taskId){//调用代办事项接口
+    const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskBatchNumberId}?dataId=${dataBatchNumberId}`,
+        url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
         },
-        data:{dataBatchNumberId,taskBatchNumberId},
+  
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -127,10 +128,10 @@ class Edit extends Component{
         isUrgent:isUrgent,
     }
     axios({
-          url:`${this.server}/jc/common/repoRedTable`,
+          url:`${this.redList.redList}`,
           method:'put',
           headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
           },
           data:{
             commonBatchNumber:commonBatchNumber,
@@ -140,9 +141,9 @@ class Edit extends Component{
 
     }).then((data)=>{
         const res=data.data.data;
-        const dataBatchNumberId=res.commonBatchNumber.id;//返回的batchnumberId
-        const taskBatchNumberId=this.state.checkSelectData;//选择的流程id
-        this.getCheck(dataBatchNumberId,taskBatchNumberId);//调用待办事项的送审
+        const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+        const taskId=this.state.checkSelectData;//选择的流程id
+        this.getCheck(dataId,taskId);//调用待办事项的送审
             this.props.fetch();
     }).catch(()=>{
       message.info('编辑失败，请联系管理员！');
@@ -153,6 +154,7 @@ class Edit extends Component{
 }
          
     render(){
+        this.ur=JSON.parse(localStorage.getItem('url'));
         return(
             <span>
             <span className={this.props.editFlag?'blue':'grey'} onClick={this.props.editFlag?this.showModal:this.notShowModal} >编辑</span>

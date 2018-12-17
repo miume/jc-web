@@ -136,7 +136,7 @@ class Home extends Component {
                 clearInterval(showCanvas);
             }    
         },100)
-        const server = localStorage.getItem('remote');
+        const server = localStorage.getItem('remote1');
         this.Authorization = localStorage.getItem('Authorization');
         const url = {
             Authorization:this.Authorization,
@@ -206,12 +206,21 @@ class Home extends Component {
             },
             /**检测项目 */
             testItems:{
-                testItems:`${server}/jc/common/testItem`
+                testItems:`${server}/jc/common/testItem`,
+                getAllByPage:`${server}/jc/common/testItem/pages`
             },
             /**产品工序 */
             productionProcess:{
                 productionProcess:`${server}/jc/common/productionProcess`,
-            }
+                getAllByPage:`${server}/jc/common/productionProcess/pages`,
+                search: `${server}/jc/common/productionProcess/pagesNameLike`,
+            },
+             /**产品线 */
+             productLine:{
+                productLine:`${server}/jc/common/productLine`,
+                getAllByPage:`${server}/jc/common/productLine/pages`,
+                search:`${server}/jc/common/productLine/pagesNameLike`
+             }
 
         }
         localStorage.setItem('url',JSON.stringify(url))

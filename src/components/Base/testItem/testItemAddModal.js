@@ -4,6 +4,7 @@ import axios from 'axios';
 import NewButton from '../../BlockQuote/newButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 
+
 const FormItem=Form.Item;
 const CollectionCreateForm = Form.create()(//弹出层
     class extends React.Component {
@@ -38,7 +39,8 @@ const CollectionCreateForm = Form.create()(//弹出层
   );
 
 class TestItemAddModal extends React.Component{
-  server;
+  url;
+ 
   Authorization;
     state = {
         visible: false,
@@ -66,10 +68,10 @@ class TestItemAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.server}/jc/common/testItem`,
+            url:`${this.url.testItem.testItem}`,
             method:'post',
             headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
             },
             data:values,
             type:'json'
@@ -96,7 +98,7 @@ class TestItemAddModal extends React.Component{
           //这是个令牌，每次调接口将其放在header里面
       this.Authorization=localStorage.getItem('Authorization');
       //通过这个获取接口地址
-      this.server=localStorage.getItem('remote');
+      this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <span>
               <NewButton handleClick={this.showModal} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
