@@ -14,7 +14,7 @@ class Add extends React.Component{
             visible : false,
             visible1:false,
             count: 1,
-            data : [1],
+            data : [],
             urgent:0,
             process:-1,
             addApplyData:[]
@@ -37,7 +37,8 @@ class Add extends React.Component{
     /**处理新增一条记录 */
     handleAdd = () => {
         this.setState({
-          visible: true
+          visible: true,
+          data:[1]
         });
       }
     handleOk() {
@@ -61,10 +62,12 @@ class Add extends React.Component{
     }
     /**删除一条数据 */
     deleteRow(value){
-        const {count,data} = this.state;
+        var {count,data,addApplyData} = this.state;
+        addApplyData = addApplyData.filter(e=>e.id.toString()!==value);
         this.setState({
             count:count-1,
-            data:data.filter(d=>d.toString()!==value)
+            data:data.filter(d=>d.toString()!==value),
+            addApplyData:addApplyData
         })
     }
     /**监控送审界面的visible */
@@ -101,6 +104,7 @@ class Add extends React.Component{
     }
     applyOut(status){
         const details = this.state.addApplyData;
+        console.log(details)
         for(var i = 0; i < details.length; i++){
             delete details[i].id;
             var e = details[i].procedureTestRecord;
