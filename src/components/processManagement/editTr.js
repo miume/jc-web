@@ -10,7 +10,7 @@ class EditTr extends React.Component{
             approvalProcess:[],
             loading : false,
         }
-        this.server = localStorage.getItem('remote');
+        this.server = "http://localhost:8080";
     }
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
