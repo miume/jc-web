@@ -19,7 +19,6 @@ import axios from 'axios';
 //     })
 // }
 class ApplyStockOut extends React.Component{
-    toDoList
     constructor(props){
         super(props);
         this.state = {
@@ -232,7 +231,7 @@ class ApplyStockOut extends React.Component{
     }
     /**送审 */
     applyReview(dataId){
-        axios.post(`${this.toDoList}/{${parseInt(this.state.process)}}`,{},{
+        axios.post(`${this.props.url.toDoList}/{${parseInt(this.state.process)}}`,{},{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
