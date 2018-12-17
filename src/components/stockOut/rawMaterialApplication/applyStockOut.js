@@ -162,7 +162,7 @@ class ApplyStockOut extends React.Component{
      /**监控是否紧急 */
      urgentChange(checked){
         this.setState({
-            urgent:checked?0:-1
+            urgent:checked?1:0
         })
     }
      /**监控申请送审 保存 */
@@ -184,7 +184,7 @@ class ApplyStockOut extends React.Component{
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             createPersonId:createPersonId,
-            isUrgent:this.state.urgent
+            // isUrgent:this.state.urgent
         }
         const details = [];
         const data = this.state.dataSource;
@@ -216,7 +216,7 @@ class ApplyStockOut extends React.Component{
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-                //console.log(data.data.data)
+                //console.log(dataId)
                 this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
@@ -231,7 +231,9 @@ class ApplyStockOut extends React.Component{
     }
     /**送审 */
     applyReview(dataId){
-        axios.post(`${this.props.url.toDoList}/{${parseInt(this.state.process)}}`,{},{
+        // console.log(this.state.urgent)
+        // console.log(this.state.process)
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
