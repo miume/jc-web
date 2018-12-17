@@ -188,7 +188,7 @@ class Add extends React.Component{
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} Authorization={this.props.Authorization} server={this.props.server} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
                     ]}>
                     <div style={{height:'400px'}}>
                     <div className='fr'>已录入{this.state.count}条数据</div><br/>
@@ -207,7 +207,7 @@ class Add extends React.Component{
                              </thead>
                              <tbody className='tbody'>
                              {
-                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} id={m.toString()} value='' getData={this.getData}></Tr> })
+                                this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} id={m.toString()} url={this.props.url} value='' getData={this.getData}></Tr> })
                              }
                              </tbody>
                          </table>

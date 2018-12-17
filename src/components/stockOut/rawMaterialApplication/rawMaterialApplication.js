@@ -123,7 +123,7 @@ class RawMaterialApplication extends React.Component{
         this.pagination.total = this.props.data.total;
         return (
             <div style={{padding:'0 15px'}}>
-                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} Authorization={this.props.Authorization} url={this.props.url} />
+                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>

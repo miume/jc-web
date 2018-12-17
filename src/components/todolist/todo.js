@@ -79,9 +79,9 @@ class Todo extends React.Component{
                 </div>
             </div>
            <div className='demo'>
-               <div className='item1' onClick={this.moveLeft}><i className='fa fa-2x fa-caret-left'></i></div>
+               <div className={`item1-${this.props.data.id}`} onClick={this.moveLeft}><i className='fa fa-2x fa-caret-left'></i></div>
                <div className='item2'>
-                   <div className='item2Scroll' id={this.props.data.id}>
+                   <div className={`item2Scroll-${this.props.data.id}`}  id={this.props.data.id}>
                    {
                        this.props.details.map((e,index)=>{
                            return (
@@ -94,7 +94,7 @@ class Todo extends React.Component{
                    }
                    </div>
                </div>
-               <div className='item3' onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
+               <div className={`item3-${this.props.data.id}`} onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
                    {/** style={{padding:'10% 0 0 70%'}} */}
                    <NewButton name='审核' className='fa fa-check'></NewButton>

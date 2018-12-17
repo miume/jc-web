@@ -5,12 +5,60 @@ import HistoryRecord from './historyRecord';
 import TodoProcessed from './todoprocessed';
 import axios from 'axios';
 const TabPane = Tabs.TabPane;
+const data = [];
+for(var i = 1; i < 4; i++){
+    data.push({
+        commonBatchNumber:{
+            batchNumber: "ECT/99c4cb57dc53",
+                createPersonId: 1,
+                createTime: "2018-11-27 14:37:35",
+                dataType: 2,
+                description: "制程检测",
+                id: `${i}`,
+                isUrgent: -1,
+                memo: "制程检测专用",
+                status: 0,
+        },
+        createPersonName: "王大大",
+        details:[{
+            personName: "嘻嘻嘻",
+            responsibility: "算命",
+            taskType: 2,
+            userId: 121,
+            visible: null,
+        },{
+            personName: "陈小春",
+            responsibility: "打野",
+            taskType: 2,
+            userId: 129,
+            visible: null
+        },{
+            personName: "王大大",
+            responsibility: "抽签",
+            taskType: 2,
+            userId: 1,
+            visible: 1,
+        },{
+            personName: "嘻嘻嘻",
+                responsibility: "算命",
+                taskType: 2,
+                userId: 121,
+                visible: null,
+        },{
+            personName: "陈小春",
+            responsibility: "打野",
+            taskType: 2,
+            userId: 129,
+            visible: null
+        }]
+})
+}
 class TodoList extends React.Component{
     url
     componentDidMount(){
         const id = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
-        this.fetch(id);
-        this.getHistory(id);
+        //this.fetch(id);
+        //this.getHistory(id);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -22,6 +70,7 @@ class TodoList extends React.Component{
         this.state = {
             count : 0,
             historyCount : 0,
+            data:data
         }
         this.fetch = this.fetch.bind(this);
         this.getHistory = this.getHistory.bind(this);

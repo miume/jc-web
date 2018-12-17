@@ -33,7 +33,6 @@ import SearchCell from '../BlockQuote/search';
 class ProcessInspection extends React.Component{
     url
     server
-    Authorization
     componentDidMount(){
         this.fetch();
         this.getAllProductionProcess();
@@ -137,7 +136,7 @@ class ProcessInspection extends React.Component{
               const status = record.commonBatchNumber.status;
               return (
                   <span>
-                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} server={this.server} url={this.url} Authorization={this.Authorization}  fetch={this.fetch}/>
+                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} server={this.server} url={this.url} fetch={this.fetch}/>
                       <Divider type="vertical" />
                       <Editor value={text} status={status} server={this.server} url={this.url} fetch={this.fetch}/>
                       <Divider type="vertical" />
@@ -288,15 +287,15 @@ class ProcessInspection extends React.Component{
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.server = localStorage.getItem('remote');
-        this.Authorization =  localStorage.getItem('Authorization')
         const {selectedRowKeys} = this.state; 
         const rowSelection = {
           selectedRowKeys,
           onChange:this.onSelectChange,
         };
+        const current = JSON.parse(localStorage.getItem('current'));
         return (
             <div>
-                <BlockQuote name='制程检测' menu='质量与流程' menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <BlockQuote  name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
                     <Add server={this.server} url={this.url} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
