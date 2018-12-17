@@ -242,8 +242,9 @@ class Management extends React.Component{
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     render(){
+        const current = JSON.parse(localStorage.getItem('current')) ;
         this.Authorization = localStorage.getItem("Authorization")
-        this.server = "http://localhost:8080"
+        this.server = localStorage.getItem("remote")
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -253,7 +254,7 @@ class Management extends React.Component{
           };
             return(
                 <div>
-                    <BlockQuote name="流程管理" menu='质量与流程'></BlockQuote>
+                    <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                     <div style={{padding:'15px'}}>
                     <Add 
                         fetch={this.fetch}

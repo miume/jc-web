@@ -12,9 +12,10 @@ class LibraryManage extends React.Component{
         console.log(key);
     }
     render(){
+        const current = JSON.parse(localStorage.getItem('current')) ;
         return(
            <div>
-               <BlockQuote name='盘库管理' menu='智能仓库'/>
+               <BlockQuote name={current.menuName} menu={current.menuParent}/>
                 <Tabs defaultActiveKey='1' onChange={()=>this.callback}>
                  {/* //tab是选项卡头显示文字,key是对应activekey，activekey是当前激活 tab 面板的 key */}
                 <TabPane tab={<span><i className='fa fa-leaf'></i>&nbsp; 原材料盘库</span>} key='1'> 

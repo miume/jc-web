@@ -20,8 +20,7 @@ const CollectionCreateForm = Form.create()(
                 visible : false,
             }
         }
-    
-      
+
         render() {
             const { visible, onCancel, onCreate, form,onSubmit } = this.props;
             const { getFieldDecorator } = form;
@@ -79,7 +78,7 @@ class AddModal extends React.Component {
         count: 1,
         data : [1],
     };
-    server = "http://localhost:8080";
+    server = localStorage.getItem("remote")
 
     /**新增一条数据 */
     addData = ()=>{

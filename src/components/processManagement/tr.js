@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import "./difference.css";
+import { Select } from 'antd';
+
+const Option = Select.Option;
 
 class Tr extends React.Component{
     constructor(props){
@@ -10,7 +13,7 @@ class Tr extends React.Component{
             loading : false,
             // searchContent : []
         }
-        this.server = "http://localhost:8080";
+        this.server = localStorage.getItem("remote")
         // this.searchContentChange=this.searchContentChange.bind(this)
     }
     getAllUser = (params = {})=>{

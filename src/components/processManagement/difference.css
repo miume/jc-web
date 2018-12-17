@@ -13,6 +13,7 @@
     display: block;
     /* overflow-x: auto; */
     white-space: nowrap;
+    /* border-collapse: collapse */
 }
 
 #data{
@@ -56,7 +57,7 @@
     font-family: "微软雅黑";
     margin:0px;
     background: rgba(0,0,0,0);
-    width: 119px;
+    width: 119.5px;
     height: 30px;
     text-align: center;
     border: 1px #1a1a1a solid;
@@ -67,7 +68,7 @@
     font-family: "微软雅黑";
     margin:0px;
     background: rgba(0,0,0,0);
-    width: 123px;
+    width: 123.5px;
     height: 30px;
     text-align: center;
     border: 1px #1a1a1a solid;
