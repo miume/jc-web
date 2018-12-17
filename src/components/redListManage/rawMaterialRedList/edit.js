@@ -203,7 +203,11 @@ class Edit extends Component{
                 </Popover>
             ]}
           >
-          <RawMaterialRedListEditModal serialNumber={this.props.serialNumber} record={this.props.record} urgent={this.state.checkSwitch} wrappedComponentRef={(form)=>this.formRef=form}/>
+          <RawMaterialRedListEditModal 
+          serialNumber={this.props.serialNumber} 
+          record={this.props.record} 
+          urgent={this.state.checkSwitch} 
+          wrappedComponentRef={(form)=>this.formRef=form}/>
           </Modal>
           </span>
         );
