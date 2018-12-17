@@ -157,7 +157,14 @@ class Home extends Component {
             },
             /**菜单管理 */
             menu:{
-                getAll:`${server}/jc/auth/menu/getAllRecursive`
+                getAll:`${server}/jc/auth/menu/getAllRecursive`,
+                add:`${server}/jc/auth/menu/add`,
+                deleteById:`${server}/jc/auth/menu`,
+                findByParentNameLikeByPage:`${this.server}/jc/auth/menu/findByParentNameLikeByPage`,
+                findAllByPage:`${this.server}/jc/auth/menu/findAllByPage`,
+                findByMenuType:`${this.server}/jc/auth/menu/findByMenuType`,
+                findByNameLikeByPage:`${this.server}/jc/auth/menu/findByNameLikeByPage`,
+                update:`${server}/jc/auth/menu/update`,
             },
             /**操作管理 */
             operation:{
@@ -185,7 +192,9 @@ class Home extends Component {
             toDoList:`${server}/jc/common/toDoList`,
             /**流程管理 */
             process:{
-                process:`${server}/jc/common/batchAuditTask`
+                process:`${server}/jc/common/batchAuditTask`,
+                getAll:`${this.server}/jc/common/authUser/getAll`,
+                pages:`${this.server}/jc/common/batchAuditTask/pages`,
             },
             /**制程检验 */
             procedure:{

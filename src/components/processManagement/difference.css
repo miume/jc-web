@@ -11,7 +11,7 @@
 } */
 .protable {
     display: block;
-    overflow-x: auto;
+    /* overflow-x: auto; */
     white-space: nowrap;
 }
 
@@ -30,11 +30,18 @@
     overflow-y:scroll;
     display:block
 }
+#thd::-webkit-scrollbar{
+    display: none;
+}
 
 #edit{
     max-height:200px;
     overflow-y:scroll;
     display:block;
+}
+
+#edit::-webkit-scrollbar{
+    display: none;
 }
 
 #edit tr td{
@@ -45,7 +52,7 @@
     font-family: "微软雅黑";
     margin:0px;
     background: rgba(0,0,0,0);
-    width: 152px;
+    width: 156px;
     height: 30px;
     text-align: center;
     border: 1px #1a1a1a solid;
@@ -64,7 +71,7 @@
 }
 
 .proinput{
-    width:148px;
+    width:156px;
     height: 30px;
     margin: 0%;
     border-radius: 8px;
