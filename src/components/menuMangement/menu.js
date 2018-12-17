@@ -189,7 +189,7 @@ class Menu extends React.Component{
     start = () => {
       const ids = this.state.selectedRowKeys;
       axios({
-          url:`${localStorage.getItem('remote')}/jc/auth/menu/deleteByIds`,
+          url:`${this.server}/jc/auth/menu/deleteByIds`,
           method:'post',
           headers:{
               'Authorization':this.Authorization
