@@ -8,7 +8,7 @@ const Option=Select.Option;
 
 class Edit extends Component{
     url;
-    Authorization;
+    
     constructor(props){
         super(props);
         this.state = {
@@ -42,7 +42,7 @@ class Edit extends Component{
       }
       handleSave () {//编辑一条记录
         const  details=this.formRef.getItemsValue();
-        // console.log(details);
+         console.log(details);
         details['id']=this.props.record.repoRedTable.id;
          
          const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
@@ -51,8 +51,8 @@ class Edit extends Component{
              id:this.props.record.commonBatchNumber.id,
              batchNumber:this.props.record.commonBatchNumber.batchNumber,
              createPersonId:createPersonId,
-             status:-1,
-             isUrgent:isUrgent,
+            //  status:-1,
+            //  isUrgent:isUrgent,
          }
          axios({
                url:`${this.url.redList.redList1}`,
@@ -75,13 +75,7 @@ class Edit extends Component{
          this.setState({ visible: false });
          this.formRef.resetField();
          }
-      //红单是否紧急
-   urgentChange=(checked)=>{//checked指定当前是否选中
-    //console.log(`switch to ${checked}`);//选中的话checked为true
-    this.setState({
-        checkSwitch:checked?0:-1
-    });
-  }
+
            //监听流程下拉框变化
     selectChange=(value)=>{
         this.setState({checkSelectData:value});
@@ -124,8 +118,8 @@ class Edit extends Component{
         id:this.props.record.commonBatchNumber.id,
         batchNumber:this.props.record.commonBatchNumber.batchNumber,
         createPersonId:createPersonId,
-        status:-1,
-        isUrgent:isUrgent,
+        // status:-1,
+        // isUrgent:isUrgent,
     }
     axios({
           url:`${this.redList.redList1}`,
@@ -148,13 +142,20 @@ class Edit extends Component{
     }).catch(()=>{
       message.info('编辑失败，请联系管理员！');
     });
+    this.setState({popVisible:false});
     this.setState({ visible: false });
-  
-  this.setState({popVisible:false});
+    this.formRef.resetField();
+ 
 }
-         
+             //红单是否紧急
+   urgentChange=(checked)=>{//checked指定当前是否选中
+    //console.log(`switch to ${checked}`);//选中的话checked为true
+    this.setState({
+        checkSwitch:checked?1:0
+    });
+  }  
     render(){
-        this.ur=JSON.parse(localStorage.getItem('url'));
+        this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <span>
             <span className={this.props.editFlag?'blue':'grey'} onClick={this.props.editFlag?this.showModal:this.notShowModal} >编辑</span>
@@ -202,7 +203,10 @@ class Edit extends Component{
                 </Popover>
             ]}
           >
-          <ProductRedListEditModal serialNumber={this.props.serialNumber} record={this.props.record}/>
+          <ProductRedListEditModal serialNumber={this.props.serialNumber} 
+          record={this.props.record}
+           urgent={this.state.checkSwitch}  
+            wrappedComponentRef={(form)=>this.formRef=form}/>
           </Modal>
           </span>
         );
