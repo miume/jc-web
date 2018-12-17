@@ -33,11 +33,11 @@ class ProductRedListEditModal extends React.Component{
     const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
   console.log(values);
     
-    return values;//用来得到新增框中填写的新值
+    return values;//
 }
     /**重置组件的值 */
     resetField=()=>{
-        this.props.form.resetFields();
+        this.props.form.resetFields();//对整个表单进行重置，将所有字段值重置为初始值并移除校验结果
     }
     render(){
       const { form } = this.props;

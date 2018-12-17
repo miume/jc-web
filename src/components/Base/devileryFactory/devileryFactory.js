@@ -65,6 +65,7 @@ class EditableCell extends React.Component {
 
 class DeliveryFactory extends React.Component{
   server;
+  url;
   Authorization;
   componentDidMount(){
     this.fetch();
@@ -171,7 +172,7 @@ class DeliveryFactory extends React.Component{
       //console.log('params:', params);
      
       axios({
-        url: `${this.server}/jc/common/deliveryFactory/pages`,
+        url: `${this.url.deliveryFactory.getAllByPage}`,
         method:'get',
         headers:{
           'Authorization':this.Authorization
@@ -199,7 +200,7 @@ class DeliveryFactory extends React.Component{
       //console.log(id);
         //const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/common/deliveryFactory/${id}`,
+          url:`${this.url.deliveryFactory.deliveryFactory}/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.Authorization
@@ -227,7 +228,7 @@ class DeliveryFactory extends React.Component{
       const ids =this.state.selectedRowKeys;//删除的几行的id
      // console.log(ids);
       axios({
-          url:`${this.server}/jc/common/deliveryFactory?ids=${ids}`,
+          url:`${this.url.deliveryFactory.deliveryFactory}?ids=${ids}`,
           method:'Delete',
           headers:{
                 'Authorization' :this.Authorization
@@ -296,7 +297,7 @@ class DeliveryFactory extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/common/deliveryFactory`,
+              url:`${this.url.deliveryFactory.deliveryFactory}`,
               method:'put',
               headers:{
                 'Authorization':this.Authorization
@@ -338,7 +339,7 @@ class DeliveryFactory extends React.Component{
       searchEvent(){
            const name=this.state.searchContent;
            axios({
-             url:`${this.server}/jc/common/deliveryFactory/pagesNameLike`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.url.deliveryFactory.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.Authorization
@@ -373,6 +374,7 @@ class DeliveryFactory extends React.Component{
      this.Authorization = localStorage.getItem('Authorization');
      /**这是服务器网址及端口 */
      this.server = localStorage.getItem('remote');
+     this.url=JSON.parse(localStorage.getItem('url'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {

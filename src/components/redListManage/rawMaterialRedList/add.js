@@ -45,7 +45,7 @@ class Add extends React.Component{
            
             createPersonId:createPersonId,
             status:-1,
-            isUrgent:this.state.checkSwitch,
+            //isUrgent:this.state.checkSwitch,
         }
         if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
@@ -127,7 +127,7 @@ class Add extends React.Component{
            
             createPersonId:createPersonId,
             status:-1,
-            isUrgent:this.state.checkSwitch,
+            //isUrgent:this.state.checkSwitch,
         }
         if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
             message.info('信息填写不完整！');
