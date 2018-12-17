@@ -17,7 +17,7 @@ const Option = Select.Option;
 // },]
 class Submit extends React.Component{
     componentDidMount(){
-        axios.get(`${this.props.url.process.getAll}`,{
+        axios.get(`${this.props.url.process.process}`,{
             headers:{
                 'Authorization':this.props.url.Authorization
             }
