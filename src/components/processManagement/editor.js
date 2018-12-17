@@ -22,7 +22,7 @@ class Editor extends React.Component{
             batchStatus: 0  
         }
         this.Authorization = localStorage.getItem("Authorization");
-        this.server = localStorage.getItem('remote');
+        this.server = "http://localhost:8080";
         this.handleDetail = this.handleDetail.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -172,6 +172,7 @@ class Editor extends React.Component{
                 {/* <span className='blue' onClick={this.props.status === -1?this.handleDetail:null}>编辑</span> */}
                 {/* <span className='blue' onClick={this.handleDetail}>编辑</span> */}
                 <Modal title='编辑' visible={this.state.visible}
+                width="400px"
                     closable={false} centered={true}
                     maskClosable={false}
                     footer={[

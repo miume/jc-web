@@ -243,7 +243,7 @@ class Management extends React.Component{
     }
     render(){
         this.Authorization = localStorage.getItem("Authorization")
-        this.server = localStorage.getItem('remote');
+        this.server = "http://localhost:8080"
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
