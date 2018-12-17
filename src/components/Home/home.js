@@ -136,7 +136,7 @@ class Home extends Component {
                 clearInterval(showCanvas);
             }    
         },100)
-        const server = localStorage.getItem('remote1');
+        const server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         const url = {
             Authorization:this.Authorization,
