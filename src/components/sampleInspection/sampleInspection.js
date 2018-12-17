@@ -165,8 +165,8 @@
 //                         cancel={this.cancel}
 //                         deleteByIds={this.deleteByIds}
 //                     />
-//                     <span style={{float:'right',paddingBottom:'8px'}}>
-//                         <SearchCell name='请输入搜索内容'/>
+//                     <span style={{float:'right',paddingBottom:'8px'}}>   
+//                         <SearchCell name='请输入搜索内容'  />
 //                     </span>
 //                     <div className='clear' ></div>
 //                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
