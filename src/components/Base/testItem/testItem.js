@@ -179,7 +179,7 @@ class TestItem extends React.Component{
        }
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
-      console.log(pagination);
+      //console.log(pagination);
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
@@ -190,18 +190,18 @@ class TestItem extends React.Component{
       //console.log('params:', params);
       
       axios({
-        url: `${this.server}/jc/common/testItem/pages`,
+        url: `${this.url.testItem.getAllByPage}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.url.Authorization
         },
         params:{
           ...params,
         },
       }).then((data)=>{
-        console.log(data);
+        //console.log(data);
         const res=data.data.data;
-        console.log(res.total);
+        //console.log(res.total);
         this.pagination.total=res?res.total:0;
         if(res&&res.list){
           
@@ -222,10 +222,10 @@ class TestItem extends React.Component{
       //console.log(id);
         //const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/common/testItem/{id}?id=${id}`,
+          url:`${this.url.testItem.testItem}/{id}?id=${id}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
          data:id,
          type:'json'
@@ -259,10 +259,10 @@ class TestItem extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/common/testItem`,
+            url:`${this.url.testItem.testItem}`,
             method:'Delete',
             headers:{
-                  'Authorization' :this.Authorization
+                  'Authorization' :this.url.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -322,7 +322,7 @@ class TestItem extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/common/testItem`,
+              url:`${this.url.testItem.testItem}`,
               method:'put',
               headers:{
                 'Authorization':this.Authorization
@@ -364,10 +364,10 @@ class TestItem extends React.Component{
            const testItemName=this.state.searchContent;
           // console.log(this.pagination);
            axios({
-             url:`${this.server}/jc/common/testItem/pagesNameLike`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.url.testItem.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -397,7 +397,7 @@ class TestItem extends React.Component{
   
    render(){
      /** 通过localStorage可查到http://218.77.105.241:40080*/
-        this.server = localStorage.getItem("remote"); 
+        this.url=JSON.parse(localStorage.getItem('url'));
         /**这是个令牌，每次调用接口都将其放在header里 */
         this.Authorization=localStorage.getItem('Authorization');
         const rowSelection = {//checkbox

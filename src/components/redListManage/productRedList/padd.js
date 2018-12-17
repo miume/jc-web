@@ -8,7 +8,7 @@ import axios from 'axios';
 const Option=Select.Option;
 
 class Add extends React.Component{
-    server;
+    url;
     Authorization;
     constructor(props){
         super(props);
@@ -50,10 +50,10 @@ class Add extends React.Component{
             return
         }
         axios({
-           url:`${this.server}/jc/common/repoRedTable`,
+           url:`${this.url.redList.redList}`,
            method:'post',
            headers:{
-                   'Authorization':this.Authorization
+                   'Authorization':this.url.Authorization
            },
            data:{
                 commonBatchNumber:commonBatchNumber,
@@ -102,10 +102,10 @@ class Add extends React.Component{
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
+        url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
         },
         // data:isUrgent,
         type:'json'
@@ -130,10 +130,10 @@ class Add extends React.Component{
             return
         }
         axios({
-           url:`${this.server}/jc/common/repoRedTable`,
+           url:`${this.url.redList.redList}`,
            method:'post',
            headers:{
-                   'Authorization':this.Authorization
+                   'Authorization':this.url.Authorization
            },
            data:{
                 commonBatchNumber:commonBatchNumber,

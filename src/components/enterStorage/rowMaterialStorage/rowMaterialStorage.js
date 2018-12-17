@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 class RowMaterialStorage extends Component{
-    server;
+    url;
     Authorization;
     componentDidMount(){
         this.fetch();
@@ -98,10 +98,10 @@ class RowMaterialStorage extends Component{
     fetch=(params={})=>{
         //console.log(params)//空
         axios({
-            url:`${this.server}/jc/common/repoInRecord/pages`,
+            url:`${this.url.enterStorage.enterStorage}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params: {
                 ...params,
@@ -134,10 +134,10 @@ class RowMaterialStorage extends Component{
       const materialName=this.state.searchContent;
     //  console.log(this.pagination);
       axios({
-         url:`${this.server}/jc/common/repoInRecord/pages`,
+         url:`${this.url.enterStorage.enterStorage}`,
          method:'get',
          headers:{
-             'Authorization':this.Authorization
+             'Authorization':this.url.Authorization
          },
          params:{
             //  size:this.pagination.pageSize,
@@ -164,7 +164,7 @@ class RowMaterialStorage extends Component{
       });
     }
     render(){
-       this.server=localStorage.getItem('remote');
+      this.url=JSON.parse(localStorage.getItem('url'));
        this.Authorization=localStorage.getItem('Authorization');
         return(
             <div style={{padding:'0 15px'}}>

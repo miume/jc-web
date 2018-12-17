@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 class RowMaterialInventor extends Component{
-    server;
+    url;
     Authorization;
     componentDidMount(){
       this.fetch();
@@ -88,10 +88,10 @@ class RowMaterialInventor extends Component{
     fetch=(params={})=>{
         const materialClass=1;
         axios({
-            url:`${this.server}/jc/common/RepoStock/pages?materialClass=${materialClass}`,
+            url:`${this.url.inventorManage.inventorManage}?materialClass=${materialClass}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 ...params,
@@ -120,10 +120,10 @@ class RowMaterialInventor extends Component{
       const materialName=this.state.searchContent;
      //console.log(name);//此处显示的是我搜索框填的内容
      axios({
-        url:`${this.server}/jc/common/RepoStock/pages`,
+        url:`${this.url.inventorManage.inventorManage}`,
         method:'get',
         headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
         },
         params:{
             materialName:materialName,
@@ -148,7 +148,7 @@ class RowMaterialInventor extends Component{
     }
     render(){
         this.Authorization=localStorage.getItem('Authorization');
-        this.server=localStorage.getItem('remote');
+        this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>

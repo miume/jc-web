@@ -65,7 +65,7 @@ class EditableCell extends React.Component {
 }
 
 class ProductProcess extends React.Component{
-  server;
+  url;
 Authorization;
   componentDidMount(){
     this.fetch();
@@ -184,12 +184,12 @@ Authorization;
     }
     fetch=(params = {})=>{
       //console.log('params:', params);
-      this.setState({loading:true});
+      
       axios({
-        url: `${this.server}/jc/common/productionProcess/pages`,
+        url: `${this.url.productProcess.getAllByPage}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.url.Authorization
         },
         params:{
           ...params,
@@ -216,10 +216,10 @@ Authorization;
       //console.log(id);
         //const dataSource = this.state.dataSource;
         axios({
-          url:`${this.server}/jc/common/productionProcess/${id}`,
+          url:`${this.url.productProcess.productProcess}/${id}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
          data:id,
          type:'json'
@@ -253,10 +253,10 @@ Authorization;
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.server}/jc/common/productionProcess?ids=${ids}`,
+            url:`${this.url.productProcess.productProcess}?ids=${ids}`,
             method:'Delete',
             headers:{
-                  'Authorization' :this.Authorization
+                  'Authorization' :this.url.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -318,10 +318,10 @@ Authorization;
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.server}/jc/common/productionProcess`,
+              url:`${this.url.productProcess.productProcess}`,
               method:'put',
               headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
               },
               data:data,
               type:'json'
@@ -360,10 +360,10 @@ Authorization;
            const name=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${this.server}/jc/common/productionProcess/pagesNameLike`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.url.productProcess.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -393,7 +393,7 @@ Authorization;
   
    render(){
      //通过localStorage可查到
-        this.server = localStorage.getItem("remote"); 
+        this.url=JSON.parse(localStorage.getItem('url'));
         /**这是个令牌，每次调用接口都将其放在header里 */
         this.Authorization=localStorage.getItem('Authorization');
         const rowSelection = {//checkbox

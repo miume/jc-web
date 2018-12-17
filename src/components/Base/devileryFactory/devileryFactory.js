@@ -64,7 +64,7 @@ class EditableCell extends React.Component {
 }
 
 class DeliveryFactory extends React.Component{
-  server;
+  
   url;
   Authorization;
   componentDidMount(){
@@ -373,7 +373,7 @@ class DeliveryFactory extends React.Component{
      /**这是个令牌，每次调用接口都将其放在header里 */
      this.Authorization = localStorage.getItem('Authorization');
      /**这是服务器网址及端口 */
-     this.server = localStorage.getItem('remote');
+     
      this.url=JSON.parse(localStorage.getItem('url'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
