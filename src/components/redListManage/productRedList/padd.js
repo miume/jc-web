@@ -9,7 +9,7 @@ const Option=Select.Option;
 
 class Add extends React.Component{
     url;
-    Authorization;
+    
     constructor(props){
         super(props);
         this.state = {
@@ -50,7 +50,7 @@ class Add extends React.Component{
             return
         }
         axios({
-           url:`${this.url.redList.redList}`,
+           url:`${this.url.redList.redList1}`,
            method:'post',
            headers:{
                    'Authorization':this.url.Authorization
@@ -130,7 +130,7 @@ class Add extends React.Component{
             return
         }
         axios({
-           url:`${this.url.redList.redList}`,
+           url:`${this.url.redList.redList1}`,
            method:'post',
            headers:{
                    'Authorization':this.url.Authorization
@@ -169,8 +169,7 @@ class Add extends React.Component{
     }
 
     render() {
-        this.server=localStorage.getItem('remote');
-        this.Authorization=localStorage.getItem('Authorization');
+        this.url=JSON.parse(localStorage.getItem('url'));
         return (
             <span>
                 <NewButton   handleClick={this.showModal} className='fa fa-plus'  name='新增' />&nbsp;&nbsp;&nbsp;

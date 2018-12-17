@@ -8,8 +8,8 @@ import axios from 'axios';
 const Option=Select.Option;
 
 class Add extends React.Component{
-    server;
-    Authorization;
+    url;
+    
     constructor(props){
         super(props);
         this.state = {
@@ -52,10 +52,10 @@ class Add extends React.Component{
             return
         }
         axios({
-           url:`${this.server}/jc/common/repoRedTable`,
+           url:`${this.url.redList.redList1}`,
            method:'post',
            headers:{
-                   'Authorization':this.Authorization
+                   'Authorization':this.url.Authorization
            },
            data:{
                 commonBatchNumber:commonBatchNumber,
@@ -105,10 +105,10 @@ class Add extends React.Component{
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
+        url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
         },
      
         type:'json'
@@ -134,10 +134,10 @@ class Add extends React.Component{
             return
         }
         axios({
-           url:`${this.server}/jc/common/repoRedTable`,
+           url:`${this.url.redList.redList1}`,
            method:'post',
            headers:{
-                   'Authorization':this.Authorization
+                   'Authorization':this.url.Authorization
            },
            data:{
                 commonBatchNumber:commonBatchNumber,
@@ -168,13 +168,13 @@ class Add extends React.Component{
    urgentChange=(checked)=>{//checked指定当前是否选中
       //console.log(`switch to ${checked}`);//选中的话checked为true
       this.setState({
-          checkSwitch:checked?0:-1
+          checkSwitch:checked?1:0
       });
     }
 
     render() {
-        this.server=localStorage.getItem('remote');
-        this.Authorization=localStorage.getItem('Authorization');
+        this.url=JSON.parse(localStorage.getItem('url'));
+        
         return (
             <span>
                 <NewButton   handleClick={this.showModal} className='fa fa-plus'  name='新增' />&nbsp;&nbsp;&nbsp;

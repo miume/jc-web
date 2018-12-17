@@ -68,7 +68,7 @@ class TestItemAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.url.testItem.testItem}`,
+            url:`${this.url.testItems.testItems}`,
             method:'post',
             headers:{
               'Authorization':this.url.Authorization
@@ -96,7 +96,7 @@ class TestItemAddModal extends React.Component{
     
     render(){
           //这是个令牌，每次调接口将其放在header里面
-      this.Authorization=localStorage.getItem('Authorization');
+      
       //通过这个获取接口地址
       this.url=JSON.parse(localStorage.getItem('url'));
         return(
