@@ -233,7 +233,20 @@ class Home extends Component {
                 productLine:`${server}/jc/common/productLine`,
                 getAllByPage:`${server}/jc/common/productLine/pages`,
                 search:`${server}/jc/common/productLine/pagesNameLike`
-             }
+             },
+             /**入库管理 */
+             enterStorage: {
+                enterStorage:`${server}/jc/common/repoInRecord/pages`
+              },
+              /** 库存管理*/
+              inventorManage:{
+                  inventorManage:`${server}/jc/common/RepoStock/pages`
+              },
+              /**红单管理 */
+              redList:{
+                  redList:`${server}/jc/common/repoRedTables`,
+                  redList1:`${server}/jc/common/repoRedTable`
+              }
 
         }
         localStorage.setItem('url',JSON.stringify(url))

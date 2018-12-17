@@ -64,7 +64,7 @@ class  ProductProcessAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.url.productProcess.productProcess}`,
+            url:`${this.url.productionProcess.productionProcess}`,
             method:'post',
             headers:{
               'Authorization':this.url.Authorization

@@ -94,7 +94,7 @@ class UserAddModal extends React.Component{
                         rules: [{required: true, message: '请选择所属部门'}],
                      })(    //2、getFieldDecorator 的使用方法，
                         
-                        <Select placeholder='请选择所属部门' style={{fontSize:'14px'}} size='large'>
+                        <Select placeholder="请选择所属部门" style={{fontSize:"14px"}} size="large">
 
                            {
                                this.props.deparment.map(de=>{
