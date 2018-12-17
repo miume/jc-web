@@ -22,7 +22,7 @@ class Editor extends React.Component{
             batchStatus: 0  
         }
         this.Authorization = localStorage.getItem("Authorization");
-        this.server = "http://localhost:8080";
+        this.server = localStorage.getItem("remote")
         this.handleDetail = this.handleDetail.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);

@@ -87,6 +87,7 @@ class Menu extends React.Component{
     };
   render(){
        this.server = localStorage.getItem('remote');
+       const current = JSON.parse(localStorage.getItem('current')) ;
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
@@ -94,7 +95,7 @@ class Menu extends React.Component{
     };
     return (
       <div>
-        <BlockQuote name="菜单管理" menu='用户和权限'></BlockQuote>
+        <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
         <div style={{padding:'15px'}}>
             <AddModal
                 fetch={this.fetch}
