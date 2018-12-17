@@ -8,7 +8,7 @@ import axios from 'axios';
 
 
 class ProductRedList extends Component{
-    server;
+    url;
     Authorization;
     componentDidMount(){
         this.fetch();
@@ -174,10 +174,10 @@ class ProductRedList extends Component{
     fetch=(params={})=>{
         const materialType=3;
         axios({
-            url:`${this.server}/jc/common/repoRedTables/?materialType=${materialType}`,
+            url:`${this.url.redList.redList}/?materialType=${materialType}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 ...params,
@@ -209,10 +209,10 @@ class ProductRedList extends Component{
         //   const dataSource=this.state.dataSource;
         //   this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-           url:`${this.server}/jc/common/repoRedTable/${id}`,
+           url:`${this.url.redList.redList}/${id}`,
            method:'Delete',
            headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
            },
            data:id,
            type:'json'
@@ -239,10 +239,10 @@ class ProductRedList extends Component{
         return
     }
         axios({
-             url:`${this.server}/jc/common/repoRedTables`,
+             url:`${this.url.redList.redList}`,
              method:'Delete',
              headers:{
-                'Authorization' :this.Authorization
+                'Authorization' :this.url.Authorization
              },
              data:ids,
              type:'json'
@@ -278,17 +278,17 @@ class ProductRedList extends Component{
         const serialNumber=this.state.searchContent;
         const materialType=3;
       axios({
-          url:`${this.server}/jc/common/repoRedTables/${serialNumber}?materialType=${materialType}`,
+          url:`${this.url.redList.redList}/${serialNumber}?materialType=${materialType}`,
           method:'get',
           headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
           },
         
       })
       .then((data)=>{
          // console.log(data);
               const res=data.data.data;
-              console.log(res.total);
+             // console.log(res.total);
               if(res&&res.list){
                 this.pagination.total=res.total;
                 for(let i=1;i<=res.list.length;i++){
@@ -306,10 +306,10 @@ class ProductRedList extends Component{
   
     getAllProcess(){
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/validTasks`,
+            url:`${this.url.process.process}/validTasks`,
             method:'get',
             headers:{
-                'Authorizaion':this.Authorizaion
+                'Authorizaion':this.url.Authorizaion
             },
 
         })
@@ -324,10 +324,10 @@ class ProductRedList extends Component{
  }
  getAllSerialNumber(){//获取所有编号
       axios({
-            url:`${this.server}/jc/common/repoBaseSerialNumber`,
+            url:`${this.url.serialNumber.serialNumber}`,
             method:'get',
             headers:{
-                'Authorizaion':this.Authorizaion
+                'Authorizaion':this.url.Authorizaion
             },
             params:{
                 materialClass:3
@@ -343,7 +343,7 @@ class ProductRedList extends Component{
  }
     render(){
         this.Authorization=localStorage.getItem('Authorization');
-        this.server=localStorage.getItem('remote');
+      this.url=JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,

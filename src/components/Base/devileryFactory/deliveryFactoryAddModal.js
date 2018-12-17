@@ -37,7 +37,8 @@ const CollectionCreateForm = Form.create()(//弹出层
   );
 
 class DeliveryFactoryAddModal extends React.Component{
-  server;
+  url;
+  
   Authorization;
     state = {
         visible: false,
@@ -64,7 +65,7 @@ class DeliveryFactoryAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.server}/jc/common/deliveryFactory`,
+            url:`${this.url.deliveryFactory.deliveryFactory}`,
             method:'post',
             headers:{
               'Authorization':this.Authorization
@@ -94,7 +95,7 @@ class DeliveryFactoryAddModal extends React.Component{
           //这是个令牌，每次调接口将其放在header里面
          this.Authorization=localStorage.getItem('Authorization');
        //通过这个获取接口地址
-         this.server=localStorage.getItem('remote');
+         this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <span>
               <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;

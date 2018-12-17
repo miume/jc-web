@@ -6,7 +6,7 @@ import axios from 'axios';
 
 
 class ProductInStorage extends Component{
-    server;
+    url;
     Authorization;
     componentDidMount(){
       this.fetch();
@@ -93,10 +93,10 @@ class ProductInStorage extends Component{
     }
     fetch=(params={})=>{
       axios({
-        url:`${this.server}/jc/common/repoInRecord/pages`,
+        url:`${this.url.enterStorage.enterStorage}`,
         method:'get',
         headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
         },
         params:{
             ...params,
@@ -124,10 +124,10 @@ class ProductInStorage extends Component{
       const materialName=this.state.searchContent;
      //console.log(name);//此处显示的是我搜索框填的内容
      axios({
-        url:`${this.server}/jc/common/repoInRecord/pages`,
+        url:`${this.url.enterStorage.enterStorage}`,
         method:'get',
         headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
         },
         params:{
            materialName:materialName,
@@ -152,7 +152,7 @@ class ProductInStorage extends Component{
     }
     render(){
        this.Authorization=localStorage.getItem('Authorization');
-       this.server=localStorage.getItem('remote');
+       this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
