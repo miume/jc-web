@@ -97,7 +97,8 @@ class Detail extends React.Component{
             data:[],
             flag:0,
             allTestItem:[],
-            applyData:[]
+            applyData:[],
+            iteration:1
         }
         this.handleDetail = this.handleDetail.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
@@ -127,20 +128,25 @@ class Detail extends React.Component{
            }
        }).then((data)=>{
            const details = data.data.data? data.data.data.details:[];
+           var iteration = 1;
+           console.log(details)
            if(details){
             for(var i = 0; i < details.length; i++){
+                // console.log(details[i].commonBatchNumber.iteration)
+                iteration = details[i].procedureTestRecord.isIteration;
                 details[i].id = i+1;
              }
            }
            this.setState({
                detailData:details,
-               data:details
+               data:details,
+               iteration:0
+            //    iteration:!iteration&&this.props.status===2?0:1
            })
        })
     }
     handleOk() {
         this.setState({
-            // visible: false
             flag:1
         });
     }
@@ -255,17 +261,17 @@ class Detail extends React.Component{
                 <Modal title="详情" visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel}  width='1300px' maskClosable={false}
                     footer={[
-                      <CancleButton key='cancle' handleCancel={this.cancel}/>,
-                      <span key='save'  className={this.state.flag?'show':'hide'}>
+                      <CancleButton key='cancle' handleCancel={this.cancel} />,
+                      <span key='save' className={this.state.flag?'show':'hide'}>
                           <SaveButton handleSave={this.handleSave}/>
                           <NewButton  handleClick={this.handleOkApply} name={'审核'} className={'fa fa-check'}/>
                           </span>,
-                          <span key="submit">
-                              <NewButton handleClick={this.handleOkApply} name={'迭代'} className={this.state.flag?'fa fa-check':'fa fa-level-up' }/>
-                          </span>
+                        <span key="submit" className={this.state.iteration || this.state.flag?'hide':'show'}>
+                            <NewButton handleClick={this.handleIteration} name={'迭代'} className={this.state.flag?'fa fa-check':'fa fa-level-up' }/>
+                        </span>
                     ]} 
                   >
-                    <div style={{height:'400px'}} className={this.state.flag?'hide':'show'}>
+                    <div style={{height:'350px'}} className={this.state.flag?'hide':'show'}>
                          <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#0086ff',marginRight:'10px',borderRadius:'3px'}} id='all' onClick={this.click}>全部</button>
                            {
@@ -275,7 +281,7 @@ class Detail extends React.Component{
                          <WhiteSpace />
                          <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} bordered></Table>
                     </div>
-                    <div style={{height:'400px'}} className={this.state.flag?'show':'hide'}>
+                    <div style={{height:'350px'}} className={this.state.flag?'show':'hide'}>
                        <EditorApply data={this.state.data} allTestItem={this.state.allTestItem} getApplyData={this.getApplyData}/>
                     </div>
                     

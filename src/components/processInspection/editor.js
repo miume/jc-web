@@ -206,7 +206,7 @@ class Editor extends React.Component{
     render() {
         return (
             <span>
-                <span className={this.props.status===-1?'blue':null} onClick={this.props.status===-1?this.handleEditor:null} >编辑</span>
+                <span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleEditor:null} >编辑</span>
                 <Modal title="编辑" visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel}  width='1300px' maskClosable={false}
                     footer={[
