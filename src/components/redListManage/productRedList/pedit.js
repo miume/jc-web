@@ -122,7 +122,7 @@ class Edit extends Component{
         // isUrgent:isUrgent,
     }
     axios({
-          url:`${this.redList.redList1}`,
+          url:`${this.url.redList.redList1}`,
           method:'put',
           headers:{
               'Authorization':this.url.Authorization
