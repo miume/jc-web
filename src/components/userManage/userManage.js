@@ -237,7 +237,7 @@ class User extends React.Component{
         url: `${this.url.userManage.getAllByPage}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.url.Authorization
         },
         params:{
           ...params,
@@ -306,7 +306,7 @@ class User extends React.Component{
           url:`${this.url.userManage.deleteById}?id=${id}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
          data:id,
          type:'json'
@@ -343,7 +343,7 @@ class User extends React.Component{
             url:`${this.url.userManage.deleteByIds}`,
             method:'Delete',
             headers:{
-                  'Authorization' :this.Authorization
+                  'Authorization' :this.url.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'
@@ -410,7 +410,7 @@ class User extends React.Component{
               url:`${this.url.userManage.update}`,
               method:'post',
               headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
               },
               data:data,
               type:'json'
@@ -484,11 +484,12 @@ class User extends React.Component{
       }
       /**获取所有部门 */
       getAllDepartment(){
+        console.log(this.url.department.getAll)
         axios({
-          url:`${this.server}/jc/auth/department/getAll`,
+          url:`${this.url.department.getAll}`,
           method:'get',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
         },
         }).then((data)=>{ 
           const res = data.data.data;
@@ -502,8 +503,9 @@ class User extends React.Component{
         /**这是个令牌，每次调用接口都将其放在header里 */
         this.Authorization = localStorage.getItem('Authorization');
         /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+      
         this.url=JSON.parse(localStorage.getItem('url'))
+        const current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
@@ -540,7 +542,7 @@ class User extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='用户管理' menu='用户和权限'/>
+               <BlockQuote name={current.menuName} menu={current.menuParent}/>
                <div style={{padding:'15px'}}>
 
                <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
