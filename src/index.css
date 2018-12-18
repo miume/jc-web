@@ -29,13 +29,7 @@ code {
 .ant-menu-item {
     padding-left: 30px !important;
 }
-.ant-btn-primary {
-  text-shadow: none !important;
-  box-shadow: none !important;
-}
-.ant-btn-primary:nth-last-child(1){
-  margin-right: 0 !important;
-}
+
 #defaultCanvas0 {
     position: absolute;
     display: block;
@@ -55,7 +49,21 @@ code {
 .show {
     visibility: visible;
 }
+.ant-tabs-nav-wrap {
+    padding-left: 1.3% !important;
+}
 
+.ant-switch-checked {
+    background-color: red !important;
+}
+
+table .blue {
+    cursor: pointer;
+}
+
+i {
+    font-weight: bolder;
+}
 .ant-pagination.ant-table-pagination.mini {
     text-align: right !important;
 }
@@ -67,6 +75,14 @@ code {
     margin: 0 0 10px 0 !important;
 }
 
+.ant-btn-primary {
+  text-shadow: none !important;
+  box-shadow: none !important;
+}
+.ant-btn-primary:nth-last-child(1){
+  margin-right: 0 !important;
+}
+
 .button {
     /* color: #ffffff !important; */
     font-size: 14px !important;
@@ -74,6 +90,7 @@ code {
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
     /* background-color: #0079fe !important; */
     margin-right: 10px !important;
+    box-sizing: border-box !important;
 }
 
 .grey-button {
@@ -92,7 +109,6 @@ code {
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
     background-color: white !important;
     margin-right: 10px !important;
-
 }
 
 .green-button {
@@ -107,14 +123,6 @@ code {
 .ant-btn.ant-btn-sm {
     border: none !important;
 }
-.ant-tabs-nav-wrap {
-    padding-left: 1.3% !important;
-}
-
-.ant-switch-checked {
-    background-color: red !important;
-}
-
 button span {
     font-size: 14px !important;
     font-weight: bolder !important;
@@ -129,14 +137,6 @@ button span {
 .grey {
     color: grey;
     background-color: #ffffff !important;
-}
-
-table .blue {
-    cursor: pointer;
-}
-
-i {
-    font-weight: bolder;
 }
 
 /**用来调整table的最大高度，使切换一页展示多行时，table无明显变化*/
