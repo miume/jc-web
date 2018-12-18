@@ -21,13 +21,6 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-.ant-modal-footer span::after{
-  content: "";
-  clear: both;
-}
-.ant-modal-footer {
-  overflow: auto;
-}
 .ant-menu-inline .ant-menu-submenu-title {
     margin: 0 !important;
 }
@@ -200,6 +193,13 @@ button span {
 }
 .ant-modal-footer {
     padding: 8px 10px !important;
+}
+.ant-modal-footer span::after{
+  content: "";
+  clear: both;
+}
+.ant-modal-footer {
+  overflow: auto;
 }
 .ant-modal-body > .ant-row .ant-form-item {
     text-align: center !important;
