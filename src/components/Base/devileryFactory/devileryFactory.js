@@ -375,6 +375,7 @@ class DeliveryFactory extends React.Component{
      /**这是服务器网址及端口 */
      
      this.url=JSON.parse(localStorage.getItem('url'));
+     const current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
@@ -411,7 +412,7 @@ class DeliveryFactory extends React.Component{
       
        return(
            <div>
-               <BlockQuote name='送样工厂' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+               <BlockQuote name='送样工厂' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
                <DeliveryFactoryAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

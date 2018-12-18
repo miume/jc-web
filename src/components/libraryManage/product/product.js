@@ -156,7 +156,8 @@ class Product extends React.Component{
                     <div className="five">
 
                             <div className="head-shadow">
-                                <div className="border-down3">记录数量<div className="fa fa-balance-scale"></div></div>
+                                <div className="border-down3">记录数量</div>
+                                {/* <div className="fa fa-balance-scale"></div> */}
                             </div>
 
 

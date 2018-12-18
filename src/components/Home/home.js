@@ -181,6 +181,10 @@ class Home extends Component {
                 search:`${server}/jc/auth/user/getUserByNameByPage`,
                 
             },
+            /**部门管理 */
+            department:{
+                getAll:`${server}/jc/auth/department/getAll`,
+                },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
@@ -236,6 +240,19 @@ class Home extends Component {
                  // getAllByPage:`${server}/jc/common/productLine/pages`,
                  // search:`${server}/jc/common/productLine/pagesNameLike`
              }
+             /**入库管理 */
+             enterStorage: {
+                enterStorage:`${server}/jc/common/repoInRecord/pages`
+              },
+              /** 库存管理*/
+              inventorManage:{
+                  inventorManage:`${server}/jc/common/RepoStock/pages`
+              },
+              /**红单管理 */
+              redList:{
+                  redList:`${server}/jc/common/repoRedTables`,
+                  redList1:`${server}/jc/common/repoRedTable`
+              }
 
 
         }

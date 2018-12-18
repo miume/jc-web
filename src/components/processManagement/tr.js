@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import "./difference.css";
+import { Select } from 'antd';
+
+const Option = Select.Option;
 
 class Tr extends React.Component{
     constructor(props){
@@ -10,7 +13,7 @@ class Tr extends React.Component{
             loading : false,
             // searchContent : []
         }
-        this.server = localStorage.getItem('remote');
+        this.server = localStorage.getItem("remote")
         // this.searchContentChange=this.searchContentChange.bind(this)
     }
     getAllUser = (params = {})=>{
@@ -43,7 +46,7 @@ class Tr extends React.Component{
             <tr className='tbody'>
                 <td><select style={{border:"none"}} className="proselect" name="select" placeholder="请选择负责人">{children}</select></td>
                 <td><input name="input" id="input" className="proinput" style={{border:"none"}} placeholder="请输入职责"/></td>
-                <td style={{width:"159.5px"}}><span style={{width:'100%'}} href='#' className="blue" onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
+                <td style={{width:"159.5px",textAlign:"center"}}><span style={{width:'100%'}} href='#' className="blue" onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
             </tr>
         )
     }

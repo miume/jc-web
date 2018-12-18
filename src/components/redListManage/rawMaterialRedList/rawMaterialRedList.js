@@ -181,10 +181,10 @@ class RawMaterialRedList extends Component{
     fetch=(params={})=>{
         const materialType=1;
         axios({
-            url:`${this.server}/jc/common/repoRedTables/?materialType=${materialType}`,
+            url:`${this.url.redList.redList}/?materialType=${materialType}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 ...params,
@@ -216,10 +216,10 @@ class RawMaterialRedList extends Component{
         //   const dataSource=this.state.dataSource;
         //   this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
-           url:`${this.server}/jc/common/repoRedTable/${id}`,
+           url:`${this.url.redList.redList1}/${id}`,
            method:'Delete',
            headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
            },
            data:id,
            type:'json'
@@ -237,21 +237,21 @@ class RawMaterialRedList extends Component{
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
         console.log(ids);
-        for(var i=0;i<ids.length;i++){
-            console.log(this.state.dataSource[ids[i]]);
-                if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
-                       ids.length=0;      
-                    break
-                }
-        }
-        if(ids.length===0){
-            return
-        }
+        // for(var i=0;i<ids.length;i++){
+        //     console.log(this.state.dataSource[ids[i]]);
+        //         if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
+        //                ids.length=0;      
+        //             break
+        //         }
+        // }
+        // if(ids.length===0){
+        //     return
+        // }
         axios({
-             url:`${this.server}/jc/common/repoRedTables`,
+             url:`${this.url.redList.redList}`,
              method:'Delete',
              headers:{
-                'Authorization' :this.Authorization
+                'Authorization' :this.url.Authorization
              },
              data:ids,
              type:'json'
@@ -285,10 +285,10 @@ class RawMaterialRedList extends Component{
       const serialNumber=this.state.searchContent;
       const materialType=1;
       axios({
-          url:`${this.server}/jc/common/repoRedTables/${serialNumber}?materialType=${materialType}`,
+          url:`${this.url.redList.redList}/${serialNumber}?materialType=${materialType}`,
           method:'get',
           headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
           },
         
       })
@@ -316,10 +316,10 @@ class RawMaterialRedList extends Component{
   
     getAllProcess(){
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/validTasks`,
+            url:`${this.url.process.process}/validTasks`,
             method:'get',
             headers:{
-                'Authorizaion':this.Authorizaion
+                'Authorizaion':this.url.Authorizaion
             },
 
         })
@@ -334,10 +334,10 @@ class RawMaterialRedList extends Component{
  }
  getAllSerialNumber(){//获取所有编号
       axios({
-            url:`${this.server}/jc/common/repoBaseSerialNumber`,
+            url:`${this.url.serialNumber.serialNumber}`,
             method:'get',
             headers:{
-                'Authorizaion':this.Authorizaion
+                'Authorizaion':this.url.Authorizaion
             },
             params:{
                 materialClass:1
@@ -352,8 +352,7 @@ class RawMaterialRedList extends Component{
       });
  }
     render(){
-        this.Authorization=localStorage.getItem('Authorization');
-        this.server=localStorage.getItem('remote');
+        this.url=JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,

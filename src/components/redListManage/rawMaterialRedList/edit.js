@@ -7,8 +7,7 @@ import axios from 'axios';
 const Option=Select.Option;
 
 class Edit extends Component{
-    server;
-    Authorization;
+   url;
     constructor(props){
         super(props);
         this.state = {
@@ -55,10 +54,10 @@ class Edit extends Component{
             // isUrgent:isUrgent,
         }
         axios({
-              url:`${this.server}/jc/common/repoRedTable`,
+              url:`${this.url.redList.redList1}`,
               method:'put',
               headers:{
-                  'Authorization':this.Authorization
+                  'Authorization':this.url.Authorization
               },
               data:{
                 commonBatchNumber:commonBatchNumber,
@@ -75,13 +74,7 @@ class Edit extends Component{
         this.setState({ visible: false });
         this.formRef.resetField();
         }
-      //红单是否紧急
-   urgentChange=(checked)=>{//checked指定当前是否选中
-    //console.log(`switch to ${checked}`);//选中的话checked为true
-    this.setState({
-        checkSwitch:checked?0:-1
-    });
-  }
+ 
            //监听流程下拉框变化
     selectChange=(value)=>{
         this.setState({checkSelectData:value});
@@ -99,10 +92,10 @@ class Edit extends Component{
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
     axios({
-        url:`${this.server}/jc/common/toDoList/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
+        url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
         headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
         },
         
         type:'json'
@@ -110,7 +103,7 @@ class Edit extends Component{
          message.info(data.data.message);
          this.props.fetch();
      }).catch(()=>{
-         message.info('新增失败，请联系管理员！');
+         message.info('编辑失败，请联系管理员！');
      });
    }
     handleSongShenOk(){//送审事件的确认按钮
@@ -124,14 +117,14 @@ class Edit extends Component{
             id:this.props.record.commonBatchNumber.id,
             batchNumber:this.props.record.commonBatchNumber.batchNumber,
             createPersonId:createPersonId,
-            status:-1,
-            isUrgent:isUrgent,
+            // status:-1,
+            // isUrgent:isUrgent,
         }
         axios({
-              url:`${this.server}/jc/common/repoRedTable`,
+              url:`${this.url.redList.redList1}`,
               method:'put',
               headers:{
-                  'Authorization':this.Authorization
+                  'Authorization':this.url.Authorization
               },
               data:{
                 commonBatchNumber:commonBatchNumber,
@@ -148,14 +141,20 @@ class Edit extends Component{
         }).catch(()=>{
           message.info('编辑失败，请联系管理员！');
         });
+        this.setState({popVisible:false});
         this.setState({ visible: false });
+        this.formRef.resetField();
       
-      this.setState({popVisible:false});
     }
-         
+    //红单是否紧急
+   urgentChange=(checked)=>{//checked指定当前是否选中
+    //console.log(`switch to ${checked}`);//选中的话checked为true
+    this.setState({
+        checkSwitch:checked?1:0
+    });
+  }
     render(){
-        this.server=localStorage.getItem('remote');
-        this.Authorization=localStorage.getItem('Authorization');
+        this.url=JSON.parse(localStorage.getItem('url'));
         //console.log(this.props.record);
         return(
             <span>
@@ -192,7 +191,7 @@ class Edit extends Component{
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
                             <Button onClick={this.hide} key='hide'>取消</Button>
-                            <Button type='primary' key='ok' disabled={this.state.checkSelectData>-1?false:true}>确认</Button>
+                            <Button type='primary' key='ok' disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
                         </div>
                      </div>
                  }
@@ -204,7 +203,11 @@ class Edit extends Component{
                 </Popover>
             ]}
           >
-          <RawMaterialRedListEditModal serialNumber={this.props.serialNumber} record={this.props.record} urgent={this.state.checkSwitch} wrappedComponentRef={(form)=>this.formRef=form}/>
+          <RawMaterialRedListEditModal 
+          serialNumber={this.props.serialNumber} 
+          record={this.props.record} 
+          urgent={this.state.checkSwitch} 
+          wrappedComponentRef={(form)=>this.formRef=form}/>
           </Modal>
           </span>
         );

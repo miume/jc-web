@@ -31,7 +31,7 @@ class ProductRedListEditModal extends React.Component{
   }
   getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
     const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
-  console.log(values);
+    console.log(values);
     
     return values;//
 }
@@ -46,7 +46,7 @@ class ProductRedListEditModal extends React.Component{
          
            <Form horizontal='true' >
                 <FormItem   wrapperCol={{span:24}} required>
-                {getFieldDecorator('batchNumber',{
+                {getFieldDecorator('serialNumberId',{
                     initialValue: this.props.record.repoBaseSerialNumber.id,
                     rules:[{required:true,message:'编号不能为空'}]
                 })(
@@ -79,7 +79,7 @@ class ProductRedListEditModal extends React.Component{
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
-                {getFieldDecorator('quantity',{
+                {getFieldDecorator('quantityLoss',{
                     initialValue: this.props.record.repoRedTable.quantityLoss,
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
@@ -87,7 +87,7 @@ class ProductRedListEditModal extends React.Component{
                 )}
                 </FormItem>
                 <FormItem  wrapperCol={{span:24}} required>
-                {getFieldDecorator('weight',{
+                {getFieldDecorator('weightLoss',{
                     initialValue: this.props.record.repoRedTable.weightLoss,
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(

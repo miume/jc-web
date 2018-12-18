@@ -58,7 +58,7 @@ class StockOut extends React.Component{
            },
           }).then((data) => {
             const res = data.data.data;
-            console.log(res)
+            //console.log(res)
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     var li = res.list[i-1];

@@ -1,6 +1,9 @@
 import React from "react";
 import axios from "axios";
-import "./difference.css"
+import "./difference.css";
+import { Select } from 'antd';
+
+const Option = Select.Option;
 
 
 class EditTr extends React.Component{
@@ -10,7 +13,7 @@ class EditTr extends React.Component{
             approvalProcess:[],
             loading : false,
         }
-        this.server = localStorage.getItem('remote');
+        this.server = localStorage.getItem("remote")
     }
     getAllUser = (params = {})=>{
         this.setState({ loading: true });

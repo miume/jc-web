@@ -29,7 +29,7 @@ class Detail extends React.Component{
             data : [],
             data1 : []
         }
-        this.server = localStorage.getItem('remote');
+        this.server = localStorage.getItem("remote")
         this.handleDetail = this.handleDetail.bind(this)
         this.handleOk = this.handleOk.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -74,6 +74,7 @@ class Detail extends React.Component{
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
+                width="400px"
                 closable={false} centered={true}
                 maskClosable={false}
                     footer={[

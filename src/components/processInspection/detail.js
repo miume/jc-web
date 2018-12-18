@@ -278,11 +278,11 @@ class Detail extends React.Component{
                            }
                          </div>
                          <WhiteSpace />
-                         <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} bordered></Table>
+                         <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} scroll={{y:200}} bordered></Table>
                     </div>
-                    <div style={{height:'350px'}} className={this.state.flag?'show':'hide'}>
+                    {/* <div style={{height:'350px'}} className={this.state.flag?'show':'hide'}>
                        <EditorApply data={this.state.data} allTestItem={this.state.allTestItem} getApplyData={this.getApplyData}/>
-                    </div>
+                    </div> */}
                     
                 </Modal>
             </span>

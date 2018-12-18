@@ -5,7 +5,7 @@ import axios from 'axios'
 import NewButton from "../../BlockQuote/newButton";
 import "./difference.css"
 
-const forkData = [2000,2000,2000,2000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [1000,1000,1000,1000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -101,7 +101,7 @@ class Material extends React.Component{
     }
     render(){
         this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.server = "http://localhost:8080";
         return (
             <div style={{padding:'0 15px'}}>
                 <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale"/>

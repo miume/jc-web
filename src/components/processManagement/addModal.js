@@ -20,8 +20,7 @@ const CollectionCreateForm = Form.create()(
                 visible : false,
             }
         }
-    
-      
+
         render() {
             const { visible, onCancel, onCreate, form,onSubmit } = this.props;
             const { getFieldDecorator } = form;
@@ -32,6 +31,7 @@ const CollectionCreateForm = Form.create()(
                     centered={true}
                     maskClosable={false}
                     title="新增"
+                    width="400px"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} className='fa fa-check' />,
@@ -40,11 +40,11 @@ const CollectionCreateForm = Form.create()(
                 >
                     <div style={{height:'400px'}}>
                     <Form horizontal='true'>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('description', {
                                 rules: [{ required: true, message: '请输入流程名称' }],
                             })(
-                                <Input placeholder='请输入流程名称'/>
+                                <Input placeholder='请输入流程名称' size="large"/>
                             )}
                         </FormItem>
                         <WhiteSpace />
@@ -78,7 +78,7 @@ class AddModal extends React.Component {
         count: 1,
         data : [1],
     };
-    server = localStorage.getItem('remote');
+    server = localStorage.getItem("remote")
 
     /**新增一条数据 */
     addData = ()=>{

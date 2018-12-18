@@ -186,7 +186,7 @@ Authorization;
       //console.log('params:', params);
       
       axios({
-        url: `${this.url.productProcess.getAllByPage}`,
+        url: `${this.url. productionProcess.getAllByPage}`,
         method:'get',
         headers:{
           'Authorization':this.url.Authorization
@@ -216,7 +216,7 @@ Authorization;
       //console.log(id);
         //const dataSource = this.state.dataSource;
         axios({
-          url:`${this.url.productProcess.productProcess}/${id}`,
+          url:`${this.url. productionProcess. productionProcess}/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -253,7 +253,7 @@ Authorization;
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.url.productProcess.productProcess}?ids=${ids}`,
+            url:`${this.url. productionProcess. productionProcess}?ids=${ids}`,
             method:'Delete',
             headers:{
                   'Authorization' :this.url.Authorization
@@ -318,7 +318,7 @@ Authorization;
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.url.productProcess.productProcess}`,
+              url:`${this.url. productionProcess. productionProcess}`,
               method:'put',
               headers:{
                 'Authorization':this.url.Authorization
@@ -360,7 +360,7 @@ Authorization;
            const name=this.state.searchContent;
            //console.log(username);
            axios({
-             url:`${this.url.productProcess.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.url.productionProcess.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.url.Authorization
@@ -396,6 +396,7 @@ Authorization;
         this.url=JSON.parse(localStorage.getItem('url'));
         /**这是个令牌，每次调用接口都将其放在header里 */
         this.Authorization=localStorage.getItem('Authorization');
+        const current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
@@ -431,7 +432,7 @@ Authorization;
           });
        return(
            <div>
-               <BlockQuote name='产品工序' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+               <BlockQuote name='产品工序' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
                <ProductProcessAddModal fetch={this.fetch}/>

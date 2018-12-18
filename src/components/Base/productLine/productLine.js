@@ -389,6 +389,7 @@ class ProductLine extends React.Component{
         this.url=JSON.parse(localStorage.getItem('url'));
         /**这是个令牌，每次调用接口都将其放在header里 */
         this.Authorization=localStorage.getItem('Authorization');
+        const  current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
@@ -424,7 +425,7 @@ class ProductLine extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='产品线' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+               <BlockQuote name='产品线' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
                <ProductLineAddModal fetch={this.fetch}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>

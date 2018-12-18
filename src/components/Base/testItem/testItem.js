@@ -190,7 +190,7 @@ class TestItem extends React.Component{
       //console.log('params:', params);
       
       axios({
-        url: `${this.url.testItem.getAllByPage}`,
+        url: `${this.url.testItems.getAllByPage}`,
         method:'get',
         headers:{
           'Authorization':this.url.Authorization
@@ -222,7 +222,7 @@ class TestItem extends React.Component{
       //console.log(id);
         //const dataSource = this.state.dataSource;
         axios({
-          url:`${this.url.testItem.testItem}/{id}?id=${id}`,
+          url:`${this.url.testItems.testItems}/{id}?id=${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -259,7 +259,7 @@ class TestItem extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.url.testItem.testItem}`,
+            url:`${this.url.testItems.testItems}`,
             method:'Delete',
             headers:{
                   'Authorization' :this.url.Authorization
@@ -322,10 +322,10 @@ class TestItem extends React.Component{
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.url.testItem.testItem}`,
+              url:`${this.url.testItems.testItems}`,
               method:'put',
               headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
               },
               data:data,
               type:'json'
@@ -364,7 +364,7 @@ class TestItem extends React.Component{
            const testItemName=this.state.searchContent;
           // console.log(this.pagination);
            axios({
-             url:`${this.url.testItem.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
+             url:`${this.url.testItems.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
                'Authorization':this.url.Authorization
@@ -398,8 +398,7 @@ class TestItem extends React.Component{
    render(){
      /** 通过localStorage可查到http://218.77.105.241:40080*/
         this.url=JSON.parse(localStorage.getItem('url'));
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization=localStorage.getItem('Authorization');
+       const current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
             onSelect() {
@@ -435,7 +434,7 @@ class TestItem extends React.Component{
           });
        return(
            <div>
-               <BlockQuote name='检测项目' menu='质量与流程' menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
+               <BlockQuote name='检测项目' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
                <TestItemAddModal fetch={this.fetch}/>
