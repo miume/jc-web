@@ -1,0 +1,87 @@
+/*interProduct中公用默认*/
+.interCursorPointer {
+    cursor: pointer;
+}
+.interCursorDefault {
+    cursor: default;
+}
+/*详情中drSpanModal中样式*/
+.drSpanModalTableFirst {
+    padding-top: 20px;
+    padding-bottom: 50px;
+    margin-top: -7px;
+    cursor: default;
+}
+.drSpanModalTableFirst table {
+    float: left;
+}
+.drSpanModalTableSecond {
+    margin-top: -7px;
+    cursor: default;
+}
+.drSpanModalTableSecond table {
+    float: left;
+}
+/*
+    录检中checkSpanModal
+    Top:设置表格样式
+    Middle:设置样品名称和清空按钮样式
+    Bottom: 设置底部表格样式
+
+ */
+/*Top:设置表格样式*/
+.checkModalTop {
+    width: 100%;
+    cursor: default;
+}
+.checkModalTop table{
+    width:100%;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+}
+.checkModalTop table thead {
+    color: white;
+    background: #0079FE;
+    border: 1px solid  #E9E9E9;
+}
+.checkModalTop table thead tr th{
+    height: 30px;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid  #E9E9E9;
+}
+.checkModalTop table tbody tr td {
+    height: 30px;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid  #E9E9E9;
+}
+/*Middle:设置样品名称和清空按钮样式*/
+.checkModalMiddle {
+    width: 100%;
+    padding-top: 5px;
+    cursor: default;
+}
+.checkModalMiddle div{
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.checkModalMiddle button {
+    color: #999999 ;
+    font-size: 14px ;
+    font-weight: bolder ;
+    font-family:'PingFangSC-Regular', 'PingFang SC' ;
+    background-color: white;
+    float:right;
+    margin-top:5px;
+}
+/*Bottom: 设置底部表格样式*/
+.checkModalBottom {
+    padding-top: 50px;
+    padding-bottom: 20px
+}
+.checkModalBottom table {
+    cursor: default;
+}
+
