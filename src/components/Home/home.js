@@ -37,6 +37,7 @@ import RawStandard from '../rawStandard/rawStandard';
 
 import ProductInspection from '../productInspection/productInspection';
 import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
+import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
@@ -120,6 +121,9 @@ class Home extends Component {
         },{
             path:'/unqualifiedExamineTable',
             component:UnqualifiedExamine
+        },{
+            path:'/unqualifiedTrackTable',
+            component:UnqualifiedTrack
         }]
         return data;
     }

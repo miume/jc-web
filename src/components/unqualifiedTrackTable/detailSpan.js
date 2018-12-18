@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal,Button,Input } from 'antd';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
-import './unqualifiedExamine.css';
+import './unqualifiedTrack.css';
 
 class DetailSpan extends React.Component {
     url;
@@ -38,7 +38,7 @@ class DetailSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <span  className="unqualifiedBlueSpan"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;{this.props.name}</span>
+                <span  className="unqualifiedTrackBlueSpan"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;{this.props.name}</span>
             </span>
         )
     }
