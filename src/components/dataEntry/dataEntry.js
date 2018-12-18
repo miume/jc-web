@@ -16,12 +16,12 @@ const data = [{
     id:3,
     name:'原材料检测',
     path:'/rawTestReport',
-    className:'fa fa-envira fa-5x'
+    className:'fa fa-leaf fa-5x'
 },{
     id:4,
     name:'进货检验',
     path:'/PurchaseCheckReport',
-    className:'fa fa-cube fa-5x'
+    className:'fa fa-shopping-cart fa-5x'
 },{
     id:5,
     name:'中间品检验',

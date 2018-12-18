@@ -285,7 +285,7 @@ class Tr extends React.Component{
             const d = this.props.value;
             const items = d.testItems?d.testItems.split(','):[];
             var testItemIds = [];
-            //console.log(allTestItem.length)
+            console.log(d)
             /**将查到的testItems字符串转换为id数组 */
             for(var i = 0; i < allTestItem.length; i++){
                 for(var j = 0; j < items.length; j++){
