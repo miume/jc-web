@@ -32,7 +32,7 @@ import SearchCell from '../BlockQuote/search';
 
 class ProcessInspection extends React.Component{
     url
-    server
+    // server
     componentDidMount(){
         this.fetch();
         this.getAllProductionProcess();
@@ -87,29 +87,45 @@ class ProcessInspection extends React.Component{
           title: '创建人',
           dataIndex: 'createPersonName',
           key:  'createPersonName',
-          width: '8%',
+          width: '15%',
           align:'center',
         }, {
           title: '创建时间',
           dataIndex: 'commonBatchNumber.createTime',
           key: 'commonBatchNumber.createTime',
-          width: '20%',
+          width: '15%',
           align:'center',
-        },{
-          title: '类型',
-          dataIndex: 'commonBatchNumber.dataType',
-          key: 'commonBatchNumber.dataType',
-          render: type => {
-              switch(`${type}`) {
-                case '1': return '制成检测数据';
-                case '2': return '样品送检数据';
-                case '3': return '样品报告单数据';
-                default: return '';
-              }
-          },
-          width: '12%',
+         },{
+          title:'紧急',
+          dataIndex:'commonBatchNumber.isUrgent',
+          key:'commonBatchNumber.isUrgent',
           align:'center',
-        }, {
+          width:'10%',
+          render:isUrgent=>!isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+      },
+         //,{
+        //   title: '类型',
+        //   dataIndex: 'commonBatchNumber.dataType',
+        //   key: 'commonBatchNumber.dataType',
+        //   render: type => {
+        //       switch(`${type}`) {
+        //         case '1': return '流程管理数据';
+        //         case '2': return '制成检测数据';
+        //         case '3': return '样品检测数据';
+        //         case '4': return '原材料出库申请数据';
+        //         case '5': return '成品出库申请数据';
+        //         case '6': return '红单申请数据';
+        //         case '7': return '进货检验数据';
+        //         case '8': return '成品检验数据';
+        //         case '9': return '原材料检验数据';
+        //         case '10': return '中间品检验数据';
+        //         default: return '';
+        //       }
+        //   },
+        //   width: '12%',
+        //   align:'center',
+        // }, 
+        {
           title: '状态',
           dataIndex: 'commonBatchNumber.status',
           key:'commonBatchNumber.status',
@@ -125,7 +141,7 @@ class ProcessInspection extends React.Component{
               default:return '';
             }
           },
-          width: '9%',
+          width: '15%',
           align:'center',
         }, {
           title: '操作',
@@ -136,9 +152,9 @@ class ProcessInspection extends React.Component{
               const status = record.commonBatchNumber.status;
               return (
                   <span>
-                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} server={this.server} url={this.url} fetch={this.fetch}/>
+                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} fetch={this.fetch}/>
                       <Divider type="vertical" />
-                      <Editor value={text} status={status} server={this.server} url={this.url} fetch={this.fetch}/>
+                      <Editor value={text} status={status} url={this.url} fetch={this.fetch}/>
                       <Divider type="vertical" />
                       {
                         status === -1?

@@ -6,8 +6,8 @@ import RawMaterialApplication from './rawMaterialApplication/rawMaterialApplicat
 import RawMaterialOut from './rawMaterialApplication/rawMaterialOut';
 const TabPane = Tabs.TabPane;
 class StockOut extends React.Component{
-    Authorization
-    server
+    // Authorization
+    // server
     url
     componentDidMount(){
         this.apply(1);
@@ -25,8 +25,8 @@ class StockOut extends React.Component{
             recordDataSource:[]
         }
         this.url = JSON.parse(localStorage.getItem('url')); 
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
+        // this.server = localStorage.getItem('remote');
+        // this.Authorization = localStorage.getItem('Authorization');
         this.handleChange = this.handleChange.bind(this);
         this.apply = this.apply.bind(this);
         this.outCheck = this.outCheck.bind(this);

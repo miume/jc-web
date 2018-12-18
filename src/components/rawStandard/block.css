@@ -1,7 +1,5 @@
 
-
-
-.rawStanstdardBlock{
+.rawStanstdardBlock{/**块的样式*/
     color:black;
     height: 70px;
     width: 200px;
@@ -13,7 +11,7 @@
     margin-left: 15px;
     margin-top: 15px;
 }
-.rawStanstdardBlock:hover{
+.rawStanstdardBlock:hover{/**块覆上的时候会显示为蓝色*/
       background-color: #1890ff
 }
 .rawStanstdardBlock:active{
@@ -33,9 +31,11 @@
     width:33%;
     border: 1px solid #1890ff;
     background-color:#e4e4e4 ;
+    
     line-height: 40px;
     text-align:center;
     cursor: pointer;
     display: inline-block;
    
 }
+

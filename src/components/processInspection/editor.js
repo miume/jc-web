@@ -19,7 +19,7 @@ class Editor extends React.Component{
             editorData:[],
             allTestItem:[],
             process:-1,
-            urgent:-1
+            urgent:0
         }
         this.handleEditor = this.handleEditor.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -35,6 +35,7 @@ class Editor extends React.Component{
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
         this.getAllTestItem = this.getAllTestItem.bind(this);
+        this.checkData = this.checkData.bind(this);
     }
     /**获取所有检测项目 */
     getAllTestItem(){
@@ -81,12 +82,12 @@ class Editor extends React.Component{
      }
     handleOk() {
         this.setState({
-        visible: false
+            visible: false
         });
     }
     handleCancel() {
         this.setState({
-        visible: false
+            visible: false
         });
     }
     /**编辑中新增按钮 */
@@ -114,7 +115,6 @@ class Editor extends React.Component{
     }
     /**获取每个Tr的值 */
     getData(data){
-        //console.log(data)
         const {addApplyData} = this.state;
         if(addApplyData.length === 0) { addApplyData.push(data)};
         var flag = 0;
@@ -127,6 +127,7 @@ class Editor extends React.Component{
         if(!flag){
             addApplyData.push(data)
         }
+        // console.log(addApplyData)
         this.state.addApplyData = addApplyData;
     }
     /**监控送审界面的visible */
@@ -155,17 +156,21 @@ class Editor extends React.Component{
     }
     /**点击送审 */
     handleOkApply(){
-        this.applyOut(1);
+        this.checkData(1);
+        // this.applyOut(1);
     }
     /**点击保存送审 */
     handleSave(){
-        this.applyOut(0);
+        this.checkData(0);
+        // this.applyOut(0);
     }
-    applyOut(status){
+    /**验证数据是否都不为空 */
+    checkData(status){
         const details = this.state.addApplyData;
-        console.log(details)
+        //console.log(this.state.addApplyData)
+        var flag = 1;
         for(var i = 0; i < details.length; i++){
-            delete details[i].id;
+            //delete details[i].id;
             if(details[i].testItemIds.length===0){
                 message.info('检测项目不能为空，请填写完整！');
                 return
@@ -178,39 +183,39 @@ class Editor extends React.Component{
                 }
             }
         }
+        if(flag){
+            this.applyOut(status);
+        }
+    }
+    applyOut(status){
         this.setState({
             visible:false,
             visible1:false
         })
-        // const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const details = this.state.addApplyData;
         const commonBatchNumber = {
             id:this.props.value,
             memo:''
-            // createPersonId:createPersonId,
-            // status:status,
-            // isUrgent:this.state.urgent
         }
-        // const taskId = this.state.process === -1?'':this.state.process;
-        // axios.put(`${this.props.url.procedure.procedureTestRecord}`,{
-        //     commonBatchNumber:commonBatchNumber,
-        //     details:details
-        // },{
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     },
-        // }).then((data)=>{
-        //     if(status){
-        //         const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-        //         this.applyReview(dataId);
-        //     }
-        //     else{
-        //         message.info(data.data.message);
-        //         this.props.fetch();
-        //     }
-        // }).catch((error)=>{
-        //     message.info('操作失败，请联系管理员！')
-        // })
-        console.log(details)
+        axios.put(`${this.props.url.procedure.procedureTestRecord}`,{
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        },{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            if(status){
+                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                this.applyReview(dataId);
+            }
+            else{
+                message.info(data.data.message);
+                this.props.fetch();
+            }
+        }).catch(()=>{
+            message.info('操作失败，请联系管理员！')
+        })
     }
     /**保存后送审送审 */
     applyReview(dataId){
@@ -260,7 +265,7 @@ class Editor extends React.Component{
                                 this.state.editorData?
                                  <tbody className='tbody'>
                                     {
-                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} url={this.props.url} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.state.allTestItem}></Tr> })
+                                    this.state.editorData.map((m) => { return <Tr key={m.id.toString()} id={m.id.toString()} url={this.props.url} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.state.allTestItem}></Tr> })
                                     }
                              </tbody>:
                              <tbody></tbody>

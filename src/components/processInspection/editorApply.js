@@ -9,6 +9,11 @@ class EditorApply extends React.Component{
     //         count: this.props.editorData?this.props.editorData.length:0
     //     })
     // }
+    // componentWillUnmount(){
+    //     this.setState=()=>{
+    //         return;
+    //     }
+    // }
     constructor(props){
         super(props);
         this.state = {
@@ -24,7 +29,6 @@ class EditorApply extends React.Component{
      /**编辑中新增按钮 */
      addData() {
         var {count,editorData} = this.state;
-
         if(editorData.length===0 && this.state.flag){
             editorData = this.props.data;
             count = this.props.data.length;
@@ -40,16 +44,17 @@ class EditorApply extends React.Component{
     }
      /**删除一条 */
      deleteRow(value){
-        var {editorData} = this.state;
-
+        var {editorData,addApplyData} = this.state;
         if(editorData.length === 0 && this.state.flag){
             editorData = this.props.data;
         }
         const flag = editorData.length === 1 ? 0 : 1;
         editorData = editorData.filter(d => parseInt(d.id) !== parseInt(value) );
+        addApplyData = addApplyData.filter(d => parseInt(d.id) !== parseInt(value) );
         this.setState({
+            addApplyData:addApplyData,
             editorData: editorData,
-            flag:flag
+            flag:flag,
         })
     }
     /**获取每个Tr的值 */
@@ -75,33 +80,32 @@ class EditorApply extends React.Component{
         return (
             <div>
                 <p className='fr'>已录入{this.state.count}条数据</p>
-                    <table style={{width:'100%'}} id='process-table'>
-                        <thead className='thead'>
-                            <tr>
-                                <td>产品线</td>
-                                <td>工序</td>
-                                <td>取样点</td>
-                                <td>取样人</td>
-                                <td>检测人</td>
-                                <td style={{minWidth:'135px'}}>检测项目</td><td>频次</td>
-                                <td>受检物料</td>
-                                <td>备注</td><td>操作</td>
-                            </tr>
-                        </thead>
-                        {
+                <table style={{width:'100%'}} id='process-table'>
+                    <thead className='thead'>
+                        <tr>
+                            <td>产品线</td>
+                            <td>工序</td>
+                            <td>取样点</td>
+                            <td>取样人</td>
+                            <td>检测人</td>
+                            <td style={{minWidth:'135px'}}>检测项目</td><td>频次</td>
+                            <td>受检物料</td>
+                            <td>备注</td><td>操作</td>
+                        </tr>
+                    </thead>
+                    {
                         this.state.editorData.length>0 || !this.state.flag?
                             <tbody className='tbody'>
                             {
-                            this.state.editorData.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.props.allTestItem}></Tr> })
+                            this.state.editorData.map((m) => { return <Tr key={m.id.toString()} url={this.props.url} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.props.allTestItem}></Tr> })
                             }
                         </tbody>:
                         <tbody className='tbody'>
                         {
-                            this.props.data.map((m) => { return <Tr key={m.id.toString()} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.props.allTestItem}></Tr> })
+                            this.props.data.map((m) => { return <Tr key={m.id.toString()} url={this.props.url} deleteRow={this.deleteRow} id={m.id.toString()} value={m.procedureTestRecord} getData={this.getData} allTestItem={this.props.allTestItem}></Tr> })
                         }
                         </tbody>
                         }
-
                     </table>
 
                     <WhiteSpace />

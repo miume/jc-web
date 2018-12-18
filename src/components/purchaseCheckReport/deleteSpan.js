@@ -1,7 +1,7 @@
 import React from 'react';
 import {Popconfirm} from "antd";
 
-class DeletaSpan extends React.Component {
+class DeleteSpan extends React.Component {
     render() {
         return (
             <span>
@@ -24,4 +24,4 @@ class DeletaSpan extends React.Component {
     }
 }
 
-export default DeletaSpan;
+export default DeleteSpan;

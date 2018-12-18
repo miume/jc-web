@@ -32,7 +32,6 @@ class LibraryManage extends React.Component{
                  </TabPane>
                </Tabs>
             </div>
-            
         );
     }
 }

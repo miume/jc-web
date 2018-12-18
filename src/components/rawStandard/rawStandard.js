@@ -1,18 +1,18 @@
 import React,{Component} from 'react';
 import Blockquote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
+import {Tabs} from 'antd';
 import './block.css';
-
 import RawMaterial from './rawMaterial/rawMaterial';
 import Manufacturer from './factory/factory';
 import Standard  from './standard/standard';
+//const TabPane = Tabs.TabPane;
 class RawStandard extends Component{
     constructor(props){
         super(props);
         this.state={
-            flag1:true,//决定渲染那个界面
-            flag2:false,
-            flag3:false,
+            flag:1,//决定渲染那个界面
+           
 
             click1:false,//是否可以点击
             click2:false,
@@ -23,22 +23,28 @@ class RawStandard extends Component{
             content3:'设置标准',
 
         }
+        this.onBlockChange1=this.onBlockChange1.bind(this);
+        this.onBlockChange2=this.onBlockChange2.bind(this);
+       
     }
-    // next(){
-    //    const current=this.state.current+1;
-    //    this.setState({
-    //        current:current
-    //    }); 
-    // }
-    // previous(){
-    //    const current=this.state.current-1;
-    //    this.setState({
-    //     current:current
-    //    });
-    // }
-  onBlockChange(value){
-      console.log(value);
+ 
+  onBlockChange1(flag,content1,click1){//原材料那个块是否被选中，选中后发生的变化
+      //console.log(flag,content1,click1);
+    
+      this.setState({
+        flag:flag,
+        content1:content1,
+        click1:click1
+    });
   }
+  onBlockChange2(flag,content2,click2){
+         this.setState({
+             flag:flag,
+             content2:content2,
+             click2:click2,
+         });
+  }
+ 
    
        render(){
            return(
@@ -47,15 +53,19 @@ class RawStandard extends Component{
                   
                    <div style={{paddingLeft:'35px',paddingTop:'15px'}}>
                      
-                     {/* <Steps current={this.state.current}>
-                          {steps.map(item => <Step key={item.title} title={item.title} />)}
-                    </Steps> */}
-                    <div className='rawStanstdardBlockQuo' >{this.state.content1}</div>
-                    <div className='rawStanstdardBlockQuo' >{this.state.content2}</div>
-                    <div className='rawStanstdardBlockQuo' >{this.state.content3}</div>
-                    {/* <RawMaterial onBlockChange={this.onBlockChange}/> */}
-                    {/* <Manufacturer/> */}
-                    <Standard/>
+                     <div className='rawStanstdardBlockQuo' >{this.state.content1}</div>
+                     <div className='rawStanstdardBlockQuo' >{this.state.content2}</div>
+                     <div className='rawStanstdardBlockQuo' >{this.state.content3}</div>
+                   
+                     <div  className={this.state.flag===1?'show':'hide'}>
+                         <RawMaterial onBlockChange={this.onBlockChange1}/>
+                     </div>
+                     <div   className={this.state.flag===2?'show':'hide'}  >
+                          <Manufacturer onBlockChange={this.onBlockChange2}/> 
+                      </div>
+                     <div className={this.state.flag===3?'show':'hide'}>
+                          <Standard />
+                      </div>
                    </div >
                    
                </div>

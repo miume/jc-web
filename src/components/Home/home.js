@@ -113,7 +113,8 @@ class Home extends Component {
         },{
             path:'/rawStandard',
             component:RawStandard
-        },{
+        },
+        {
             path:'/productInspection',
             component:ProductInspection
         },{
@@ -297,14 +298,13 @@ class Home extends Component {
                     <Switch>
                         {/**默认选中快速访问界面 */}
                         <Route exact path="/home" component={QuickAccess}/>
-                    {
-                        
-                        path2Component.map(e => {
-                            return (
-                                <Route key={e.path} path={e.path} component={e.component}></Route>
-                            ) 
-                        })              
-                    }   
+                        {
+                            path2Component.map(e => {
+                                return (
+                                    <Route key={e.path} path={e.path} component={e.component}></Route>
+                                ) 
+                            })              
+                        }   
                     </Switch>
                     </div>
                 </div>
