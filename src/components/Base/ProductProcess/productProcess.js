@@ -69,7 +69,7 @@ class ProductProcess extends React.Component{
 Authorization;
   componentDidMount(){
     this.fetch();
-    //document.getElementById('/productProcess').style.color='#1890ff';
+    //document.getElementById('/productProcess').style.color='#0079FE';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {

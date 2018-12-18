@@ -39,7 +39,7 @@ class BlockQuote extends React.Component{
             path:'/productLine',
         }]
         return(
-            <div style={{borderBottom:'1px solid #e4e4e4',height:'80px'}}>
+            <div style={{borderBottom:'1px solid darkgrey',height:'80px'}}>
               <div style={{width:'100%',padding:'10px 20px',display:'inline-block'}}>
                  <div style={{paddingBottom:'10px'}}>
                     <span><span className='blue' onClick={this.returnHome}>首页</span>>{this.props.menu}></span>
@@ -52,10 +52,11 @@ class BlockQuote extends React.Component{
                     }
                     </span>
                  </div>
-                 <div style={{color:'#333',paddingLeft:'15px',height:'25px',borderLeft:'4px solid #1890ff',fontSize:'20px',fontWeight:'bolder'}}>
+                 <div style={{color:'black',paddingLeft:'15px',height:'25px',borderLeft:'4px solid #0079FE',fontSize:'20px',fontWeight:'bolder'}}>
                     {this.props.name}
                  </div>
               </div>
+
             </div>
         );
     }

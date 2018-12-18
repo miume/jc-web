@@ -70,7 +70,7 @@ class ProductLine extends React.Component{
   Authorization;
   componentDidMount(){
     this.fetch();
-    //document.getElementById('/productLine').style.color='#1890ff';
+    //document.getElementById('/productLine').style.color='#0079FE';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {

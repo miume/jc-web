@@ -66,7 +66,7 @@ class BlockQuote extends React.Component {
                     }
                     </span>
                     </div>
-                    <div style={{color:'black',paddingLeft:'15PX',height:'25px',borderLeft:'4px solid #1890ff',fontSize:'20px',fontWeight:'bolder'}} >
+                    <div style={{color:'black',paddingLeft:'15PX',height:'25px',borderLeft:'4px solid #0079FE',fontSize:'20px',fontWeight:'bolder'}} >
                         {this.props.name}
                     </div>
                 </div>

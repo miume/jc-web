@@ -15,7 +15,7 @@ class Part extends React.Component{
             return <div className='circle'><i className="fa fa-check"></i></div>
         }else if(userId === curId && this.props.data.visible){
             this.props.judgeFlag(1);
-            return <Avatar style={{backgroundColor:'#1890ff'}}><span style={{fontWeight:'bolder'}}>{this.props.index}</span></Avatar>
+            return <Avatar style={{backgroundColor:'#0079fe'}}><span style={{fontWeight:'bolder'}}>{this.props.index}</span></Avatar>
         }
         else{
             return <div className='circle1'>{this.props.index}</div>

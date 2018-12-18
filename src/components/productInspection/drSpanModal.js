@@ -82,9 +82,9 @@ class DrSpanModal extends React.Component {
                     <table style={{float:'left',align:'center',border:"1px solid gray"}} >
                         <thead>
                         <tr>
-                            <th style={{background:'#1890ff', color:'white', width:200,textAlign:'center'}}>批号</th>
-                            <th style={{background:'#1890ff', color:'white', width:200,textAlign:'center'}}>原材料</th>
-                            <th style={{background:'#1890ff', color:'white', width:200,textAlign:'center'}}>送样日期</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>批号</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>原材料</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
