@@ -7,8 +7,7 @@ import Submit from '../BlockQuote/submit';
 
 
 class CheckEditSpan extends React.Component {
-    Authorization;
-    server;
+    url;
     constructor(props){
         super(props);
         this.state = {
@@ -26,10 +25,7 @@ class CheckEditSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
@@ -50,6 +46,7 @@ class CheckEditSpan extends React.Component {
                             key='save'
                         />,
                         <Submit
+                            url={this.url}
                             Authorization={this.Authorization}
                             server={this.server}
                             visible={this.state.subVisible}

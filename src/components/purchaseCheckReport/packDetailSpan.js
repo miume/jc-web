@@ -46,20 +46,19 @@ class DetailSpan extends React.Component {
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
                     title="数据详情"
-                    style={{ top: 20 }}
                     visible={visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                    okText="确认"
-                    cancelText="取消"
+                    className='modal'
+                    closable={false}
+                    centered={true}
+                    maskClosable={false}
                     width="500px"
                     // 脚部footer中的每个按钮都要又一个key
                     footer={[
                         <Button key="back" style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
-                        <Button key="publish" type="primary"  onClick={this.selectionOnDetail}>选中</Button>
+                        <Button key="publish" type="primary"  onClick={this.selectionOnDetail}><i className="fa fa-check-square-o" aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>&nbsp;选中</Button>
                     ]}
                 >
-                    <div style={{height:670}}>
+                    <div style={{height:580}}>
                         <DrSpanModal
                             data={data}
                             record={this.props.record}

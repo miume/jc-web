@@ -17,7 +17,7 @@ class PurchaseCheckReport extends React.Component {
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name="进货检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Tabs defaultActiveKey="2"  onChange={this.callback}  style={{padding:'15px'}}>
                     <TabPane tab={<span style={{paddingLeft:'25px',paddingRight:'25px'}}><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;生成</span>} key="1" >
                         <Pack />

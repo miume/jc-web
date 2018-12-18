@@ -48,7 +48,7 @@ const data=[{
     name:'生产厂家O'
 },{
     id:735,
-    name:'生产厂家A'
+    name:'生产厂家G'
 }];
 
 class Manufacturer extends Component{
@@ -57,9 +57,18 @@ class Manufacturer extends Component{
       this.state={
           searchContent:''
       }
+      this.onBlockChange=this.onBlockChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.checkRaw=this.checkRaw.bind(this);
+    }
+
+    onBlockChange(e){
+       console.log(e.target);
+       const id=e.target.id.split('-')[0];
+       const name=e.target.id.split('-')[1];
+       this.props.onBlockChange(3,name,true);
+
     }
     searchEvent(){
 
@@ -71,7 +80,7 @@ class Manufacturer extends Component{
        });
     }
     checkRaw(){//点击重新选择原材料调用的函数
-
+        
     }
     render(){
         return(
@@ -88,12 +97,12 @@ class Manufacturer extends Component{
               <div className='rawStanstdardParent'>
                   {
                       data.map(d=>
-                    <DataPart  key={d.id} name={d.name}/>
+                    <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
               </div>
-              <div style={{height:'300px'}}>
-                  <span className='blue' onClick={this.checkRaw}>重新选择原材料</span>
+              <div style={{height:'400px',float:'right'}}>
+                  <span className='blue'>重新选择原材料</span>
               </div>
           </div>
         );

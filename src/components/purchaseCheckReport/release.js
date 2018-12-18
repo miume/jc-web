@@ -3,7 +3,6 @@ import '../Home/page.css';
 import SearchCell from '../BlockQuote/search';
 import ReleaseTable from "./releaseTable";
 import DeleteByIds from "../BlockQuote/deleteByIds";
-import BlockQuote from "../BlockQuote/blockquote";
 import axios from "axios";
 
 
@@ -28,8 +27,7 @@ for (let i = 0; i < 20; i++) {
 
 
 class Release extends React.Component {
-    Authorization;
-    server;
+    url
     constructor(props) {
         super(props);
         this.state = {
@@ -56,10 +54,7 @@ class Release extends React.Component {
         }
     }
     render() {
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -74,7 +69,7 @@ class Release extends React.Component {
                 />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
-                            name='请输入XX名称'
+                            name='请输入搜索内容'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}

@@ -131,7 +131,7 @@ class PermissionManagement extends React.Component {
                 message.info('权限删除失败，请联系管理员！')
             })
         }
-            
+
     }
     isChecked(){
         return 1;
@@ -156,25 +156,25 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
-                closable={false} maskClosable={false} width='830px' destroyOnClose='true'
+                closable={false} maskClosable={false} destroyOnClose='true' className='modal-lg'
                 footer={[
                     <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
-                  ]} 
+                  ]}
                    >
-                <div style={{height:'450px',overflowY:'auto'}}>
+                <div style={{height:'460px'}}>
                 {/**实现用div布局，显示table */}
                     <div style={{height:'600px'}}>
                         <div className='tableHead'>
                             <span>子模块选择</span>
                             <span>操作</span>
                         </div>
-                        <div>
+                        <div className='PM-tableBody'>
                         {
                             this.state.allMenus.map(m1=>{
                                 return (
                                     /**先显示一级菜单*/
                                     <div key={m1.menuId}>
-                                        <div className='divborder'><span className='rightBorder menu1Label' style={{paddingLeft:'3px'}}><Icon type="caret-right" />{m1.menuName}</span><span></span></div>
+                                        <div className='divborder'><span className='rightBorder menu1Label'><i class="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{m1.menuName}</span><span></span></div>
                                             <div>
                                             {
                                             /**遍历二级菜单 */
@@ -185,35 +185,35 @@ class PermissionManagement extends React.Component {
                                                 if(menuList.length>0){
                                                     var menu = menuList[0];
                                                    return (
-                                                       <div key={menu.id} className='divborder'><span className='rightBorder'><Icon type='caret-down' />{menu.menuName}</span>
+                                                       <div key={menu.id} className='divborder'><span className='rightBorder'><i class="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{menu.menuName}</span>
                                                            <span style={{display:'inline'}}>
                                                            {
                                                               this.state.operations.map(op=>{
                                                                   var isChecked = menu.operations.find(me=>me.id===op.id);
                                                                   if(isChecked){
-                                                                      
+
                                                                       return (
                                                                         <span key={op.id} style={{display:'inline'}}>
-                                                                          <input type='checkbox' key={op.id} value={op.id} id={menu.id.toString()} onChange={this.change} defaultChecked={true}/> {op.operationName}</span>
-                                                                       // <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName} checked={true} /> 
+                                                                          <input type='checkbox' key={op.id} value={op.id} id={menu.id.toString()} onChange={this.change} defaultChecked={true}/>&nbsp;&nbsp;&nbsp;{op.operationName}</span>
+                                                                       // <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName} checked={true} />
                                                                       );
                                                                   }else{
                                                                       return (
-                                                                      <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName}  /> 
+                                                                      <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName}  />
                                                                       )}
-                                                              }) 
+                                                              })
                                                            }
                                                            </span>
                                                        </div>
-                                                   ); 
+                                                   );
                                                 }else{
                                                     return (
-                                                    <div key={m2.menuId} className='divborder'><span className='rightBorder'><Icon type='caret-down' />{m2.menuName}</span>
+                                                    <div key={m2.menuId} className='divborder'><span className='rightBorder'><i class="fa fa-level-up fa-flip-horizontal"></i>&nbsp;&nbsp;&nbsp;{m2.menuName}</span>
                                                         <span style={{display:'inline'}}>
                                                         {
                                                         this.state.operations.map(op=>{
                                                             return (
-                                                                <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  /> 
+                                                                <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  />
                                                             );
                                                         })
                                                         }
@@ -230,7 +230,7 @@ class PermissionManagement extends React.Component {
                         </div>
                     </div>
                     </div>
-               
+
                 </Modal>
             </span>
         );
@@ -242,7 +242,7 @@ class AuthInput extends React.Component{
     render(){
         return(
             <span style={{display:'inline'}}>
-                <input type='checkbox' value={this.props.value} id={this.props.id} onChange={this.props.change} checked={this.props.checked} /> {this.props.operationName}</span>
+                <input type='checkbox' value={this.props.value} id={this.props.id} onChange={this.props.change} checked={this.props.checked} /> &nbsp;{this.props.operationName}</span>
         );
     }
 }

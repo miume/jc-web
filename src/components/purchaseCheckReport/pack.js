@@ -3,6 +3,9 @@ import {Divider,Button,Switch} from 'antd';
 import '../Home/page.css';
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
+import PackGenerateModal from './packGenerateModal';
+import axios from "axios";
+import NewButton from "../BlockQuote/newButton";
 // import axios from "axios";
 //
 const data = [];
@@ -10,23 +13,24 @@ for (let i = 0; i < 20; i++) {
     data.push({
         index:i,
         id: i,
-        a: '周小伟',
-        b: '启动',
-        c: 'c',
-        d: 'd',
-        e: 'e',
-        f: 'f',
-        g: '无',
-        h: '无',
-        i: 'i',
-        j: '已通过'
+        sampleDeliveringDate: '周小伟',
+        deliverer: '启动',
+        deliveryFactory: 'c',
+        serialNumberd: 'd',
+        testItem: 'e',
+        exceptionComment: 'f',
+        type: '无',
+        acceptStatus: '无',
+        status: '已通过'
     });
 }
 
 
 class Pack extends React.Component {
-    Authorization;
-    server;
+    url;
+    componentDidMount() {
+        this.fetch();
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -35,12 +39,14 @@ class Pack extends React.Component {
             loading: false,
             searchContent:'',
             searchText: '',
+            generateVisible: false,
         };
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
+        this.handleGenerateModal = this.handleGenerateModal.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -53,8 +59,7 @@ class Pack extends React.Component {
         }
     };
     render() {
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -62,25 +67,20 @@ class Pack extends React.Component {
         };
         return(
             <div>
-                <span>
-                    <Button
-                        type="primary"
-                        style={{marginRight:'15px'}}
-                        onClick={this.handleGenerateButton}
-                    >生成</Button>
-                </span>
-                <span style={{float:'right',paddingBottom:'8px'}}>
-                    {/*根据后台传过来的一个字段进行判断*/}
-                    <span style={{marginRight:'10px',fontSize:'6px'}}>仅显示未生成的数据</span>
-                    <Switch onChange={this.urgentChange} size='small' style={{width:'35px',marginBottom:'2px'}}/>
-                    <Divider type="vertical" style={{height:'35px'}}/>
-                    <SearchCell
-                        name='请输入搜索内容'
-                        searchEvent={this.searchEvent}
-                        searchContentChange={this.searchContentChange}
-                        fetch={this.fetch}
+                <div>
+                    <PackGenerateModal
+                        url={this.url}
                     />
-                </span>
+                    <div style={{float:'right'}}>
+                        <span style={{marginRight:'10px',fontSize:'6px'}}>仅显示未生成的数据</span>
+                        <Switch onChange={this.urgentChange} size='small' style={{width:'35px',marginBottom:'2px'}}/>
+                        <Divider type="vertical" style={{height:'35px'}}/>
+                        <span style={{float:'right',paddingBottom:'8px'}}>
+                            <SearchCell name='请输入搜索内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
+                        </span>
+                    </div>
+                </div>
+
                 <div className='clear' ></div>
                 <PackTable
                     data={this.state.dataSource}
@@ -92,18 +92,13 @@ class Pack extends React.Component {
             </div>
         )
     };
-    /**实现全选功能 */
-    onSelectChange = (selectedRowKeys) => {
-        // console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
-    };
-    /**---------------------- */
-    /**实现生成功能 */
-    handleGenerateButton = () => {
-        // console.log('selectedRowKeysselectedRowKeys',this.state.selectedRowKeys);
-    };
-    /**---------------------- */
-    /**获取所有数据 getAllByPage */
+    /**展示生成按钮Modal */
+    handleGenerateModal = () => {
+        this.setState({
+            generateVisible: true,
+        });
+    }
+    /**获取未生成的所有数据 unGenerated */
     handleTableChange = (pagination) => {
         this.fetch({
             size: pagination.pageSize,
@@ -114,33 +109,71 @@ class Pack extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
-        // axios({
-        //     // url: `${this.server}/jc/purchaseReportRecord/getAllByPage`,
-        //     url: `http://2p277534k9.iok.la:58718/jc/purchaseReportRecord/getAllByPage`,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.Authorization
-        //     },
-        //     params: params,
-        //     // type: 'json',
-        // }).then((data) => {
-        //     console.log('data',data.data)
-        //     const res = data.data.data;
-        //     console.log('res',res);
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         loading: false,
-        //         dataSource: res.list,
-        //     });
-        // });
+        axios({
+            // url: `${this.server}/jc/auth/role/getRolesByPage`,
+            url: `${this.url.purchaseCheckReport.unGenerated}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data;
+            console.log('res',data);
+            this.pagination.total=res?res.total:0;
+            if(res&&res.list){
+                const dataSource = this.dataAssemble(res);
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=res.prePage*10+i;
+                }
+                // this.setState({
+                //     dataSource: res.list,
+                // });
+            }
+        });
     };
-    componentDidMount() {
-        this.fetch();
-    }
+    /**数据组装 */
+    dataAssemble = (res) => {
+        const dataSource = [];
+        const list = res.list;
+        for(var i = 0; i<list.length; i++){
+            const testItem = list[i].testReportRecordDTO.testItemResultRecordDTOList;
+            var testItemName;
+            for(var j=0; j<testItem.length; j++){
+                if(j===0){
+                    testItemName = testItem.testItem.name;
+                }else{
+                    testItemName = testItemName + "," + testItem.testItem.name;
+                }
+            }
+            dataSource.push({
+                index:res.prePage*10+(i+1),
+                id: list[i].testReportRecordDTO.testReportRecord.id,
+                sampleDeliveringDate: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate,
+                deliverer: list[i].sampleDeliveringRecordDTO.deliverer.name,
+                deliveryFactory: list[i].sampleDeliveringRecordDTO.deliveryFactory.name,
+                serialNumberd: list[i].sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
+                testItem: testItemName,
+                exceptionComment: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment,
+                type: '无用子段',
+                acceptStatus: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus,
+                status: list[i].commonBatchNumberDTO.commonBatchNumber.status,
+            })
+        }
+        return dataSource
+    };
+
+    /**---------------------- */
+    /**实现全选功能 */
+    onSelectChange = (selectedRowKeys) => {
+        // console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    };
+    /**---------------------- */
+    /**实现生成功能 */
+    handleGenerateButton = () => {
+        // console.log('selectedRowKeysselectedRowKeys',this.state.selectedRowKeys);
+    };
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){

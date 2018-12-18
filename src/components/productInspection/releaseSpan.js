@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
 import Submit from '../BlockQuote/submit';
-import './interProduct.css';
 
 
 const data = [];
@@ -17,7 +16,8 @@ for (let i = 0; i < 50; i++) {
 }
 
 class ReleaseSpan extends React.Component {
-    url;
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
@@ -25,17 +25,18 @@ class ReleaseSpan extends React.Component {
             subVisible: false,
             process:-1,
         };
-        this.showModal = this.showModal.bind(this);
-        this.handleOk = this.handleOk.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
         this.subHide = this.subHide.bind(this);
         this.subOk = this.subOk.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         this.selectChange = this.selectChange.bind(this);
     }
     render() {
         const { visible } = this.state;
-        this.url = JSON.parse(localStorage.getItem('url'));
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         return (
             <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
@@ -48,7 +49,6 @@ class ReleaseSpan extends React.Component {
                     footer={[
                         <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
                         <Submit
-                            url={this.url}
                             Authorization={this.Authorization}
                             server={this.server}
                             visible={this.state.subVisible}
@@ -61,43 +61,18 @@ class ReleaseSpan extends React.Component {
                         />
                     ]}
                 >
-                    <div style={{height:580}}>
+                    <div style={{height:670}}>
                         <DrSpanModal
+                            status={4}
                             data={data}
                             record={this.props.record}
-                            spanStatus={0}
                         />
                     </div>
                 </Modal>
-                <span className="blue interCursorPointer">发布</span>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>发布</span>
             </span>
         )
     }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
-    handleOk = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
-    handleCancel = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
     subHide = () => {
         this.setState({
             subVisible: false,
@@ -110,6 +85,32 @@ class ReleaseSpan extends React.Component {
     handleVisibleChange = (subVisible) => {
         this.setState({ subVisible });
     };
+
+    showModal = () => {
+        this.setState({
+            visible: true,
+        });
+    };
+    handleOk = () => {
+        setTimeout(() => {
+            this.setState({
+                visible: false,
+            });
+        }, 500);
+    };
+    handleCancel = (e) => {
+        setTimeout(() => {
+            this.setState({
+                visible: false,
+            });
+        }, 500);
+    };
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
 }
 
 export default ReleaseSpan;

@@ -22,14 +22,14 @@ header{
 }
 .contents {
     float: left;
-    height: 333px;
+    height: 340px;
     border: #e4e4e4 solid 1px;
     list-style: none;
     overflow-y: scroll;
 }
 .middle {
     float: left;
-    height: 333px;
+    height: 340px;
     list-style: none;
     /* border-bottom: rgb(112,118,139) solid 1px;
     border-top: rgb(112,118,139) solid 1px; */
@@ -50,22 +50,37 @@ ul {
 }
 .contents li{
     padding: 6px 42px 6px 42px;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 14px;
     text-align: center;
     border-bottom: 1px #e4e4e4 solid;
     overflow: hidden;
 }
-
+.contents input[type="checkbox"]{
+    float: right;
+    right: 0;
+    margin-top: 5px;
+}
 .check-label {
-    display: block;
-    width: 100px;
+    display: inline;
+    /* width: 100px; */
     float: left;
     text-align: left;
 }
 
 .moddal-button-arrow {
-    background-color: #0086ff !important; 
+    background-color: #0086ff !important;
     color: #ffffff !important;
-    font-weight: 900 !important;
+    border:none !important;
+    margin:0 auto !important;
+    display: block !important;
+    text-align: center !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+}
+.moddal-button-arrow:nth-child(1){
+  transform: translate(-50%,-25px)!important;
+}
+.moddal-button-arrow:nth-child(2){
+  transform: translate(-50%,25px)!important;
 }

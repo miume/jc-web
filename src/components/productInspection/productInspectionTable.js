@@ -4,7 +4,7 @@ import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
 
-class InterTable extends React.Component{
+class ProductTable extends React.Component{
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -79,6 +79,7 @@ class InterTable extends React.Component{
             return (
                 <span>
                     <DetailSpan
+                        checkStatus={record.status}
                         record={record}
                         disabled={detailSpanFlag}
                     />
@@ -119,7 +120,7 @@ class InterTable extends React.Component{
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 380 }}
+                scroll={{ y: 200 }}
             />
         );
     }
@@ -153,4 +154,4 @@ class InterTable extends React.Component{
 
 }
 
-export default InterTable;
+export default ProductTable;

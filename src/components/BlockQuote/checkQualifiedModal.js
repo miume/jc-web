@@ -12,7 +12,7 @@ class CheckQualifiedModal extends React.Component {
         switch (this.state.qualifiedType) {
             case 0:
                 return(
-                    <div>
+                    <div style={{cursor:'pointer'}}>
                         <div style={{border:'3px solid #999999',width:'130px',float:'right'}}>
                             <span onClick={this.modifyQualifiedType} style={{display:'block',textAlign:'center',height:'55px',border:'1px solid #999999',color:'#999999',margin:'2px',fontSize:'25px',paddingTop:'8px'}}>合格</span>
                         </div>
@@ -23,7 +23,7 @@ class CheckQualifiedModal extends React.Component {
                 );
             case 1:
                 return(
-                    <div>
+                    <div style={{cursor:'pointer'}}>
                         <div style={{border:'3px solid #FF3B30',width:'130px',float:'right'}}>
                             <span style={{display:'block',textAlign:'center',height:'55px',border:'1px solid #FF3B30',color:'#FF3B30',margin:'2px',fontSize:'25px',paddingTop:'8px'}}>合格</span>
                         </div>
@@ -34,7 +34,7 @@ class CheckQualifiedModal extends React.Component {
                 );
             case 2:
                 return(
-                    <div>
+                    <div style={{cursor:'pointer'}}>
                         <div style={{border:'3px solid #999999',width:'130px',float:'right'}}>
                             <span onClick={this.modifyQualifiedType}  style={{display:'block',textAlign:'center',height:'55px',border:'1px solid #999999',color:'#999999',margin:'2px',fontSize:'25px',paddingTop:'8px'}}>合格</span>
                         </div>
@@ -45,7 +45,7 @@ class CheckQualifiedModal extends React.Component {
                 );
             default:
                 return(
-                    <div></div>
+                    <div style={{cursor:'pointer'}}></div>
                 )
         }
     }

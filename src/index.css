@@ -92,6 +92,7 @@ code {
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
     background-color: white !important;
     margin-right: 10px !important;
+
 }
 
 .green-button {
@@ -163,7 +164,7 @@ i {
     width: 520px !important;
 }
 .ant-modal.modal-lg {
-    width: 720px !important;
+    width: 800px !important;
 }
 .ant-modal.modal-xlg {
     width: 1080px !important;
@@ -197,15 +198,22 @@ i {
     white-space: normal !important;
 }
 /* 输入框样式 */
-/* .ant-input {
+.ant-input {
     height: 35px !important;
-} */
+}
 /* 下拉选择器样式 */
- /* .ant-select-selection--single {
+.ant-select-lg .ant-select-selection--single {
     height: 35px !important;
-} */
+}
+.ant-select-sm  .ant-select-selection--single{
+   height: 24px !important;
+}
 
-/* .ant-select-selection__rendered {
-  height: 35px !important;
-  line-height: 35px !important;
-} */
+.ant-select-lg .ant-select-selection__rendered {
+  height: 33px !important;
+  line-height: 33px !important;
+}
+.ant-select-sm .ant-select-selection__rendered {
+  height: 22px !important;
+  line-height: 22px !important;
+}

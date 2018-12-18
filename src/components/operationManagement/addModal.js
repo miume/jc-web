@@ -25,7 +25,7 @@ const CollectionCreateForm = Form.create()(
                     ]}
                 >
                     <Form horizontal='true'>
-                        <FormItem wrapperCol={{ span: 23 }} required>
+                        <FormItem wrapperCol={{ span: 24 }} required>
                             {getFieldDecorator('operationName', {
                                 initialValue: '',
                                 rules: [{ required: true, message: '请输入操作名称' }],
@@ -33,7 +33,7 @@ const CollectionCreateForm = Form.create()(
                                 <Input placeholder='请输入操作名称' style={{height:40}}></Input>
                             )}
                         </FormItem>
-                        <FormItem wrapperCol={{ span: 23 }}>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('operationCode', {
                                 initialValue: '',
                             })(

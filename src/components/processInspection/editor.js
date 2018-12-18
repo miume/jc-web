@@ -19,7 +19,7 @@ class Editor extends React.Component{
             editorData:[],
             allTestItem:[],
             process:-1,
-            urgent:-1
+            urgent:0
         }
         this.handleEditor = this.handleEditor.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -207,10 +207,9 @@ class Editor extends React.Component{
         //         message.info(data.data.message);
         //         this.props.fetch();
         //     }
-        // }).catch((error)=>{
+        // }).catch(()=>{
         //     message.info('操作失败，请联系管理员！')
         // })
-        console.log(details)
     }
     /**保存后送审送审 */
     applyReview(dataId){

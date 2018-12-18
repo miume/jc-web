@@ -1,0 +1,8 @@
+.drTable .ant-talbe-body {
+    max-height: 300px !important;
+}
+
+.testDataTbody tr td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}

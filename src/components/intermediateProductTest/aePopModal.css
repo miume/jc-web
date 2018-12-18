@@ -21,60 +21,41 @@
     margin-right: 50px;
 
 }
-.ant-table td { white-space: nowrap; }
-
-input::-webkit-input-placeholder {
-    /* placeholder颜色  */
-    /* placeholder字体大小  */
-    font-size: 17px;
-    /* placeholder位置  */
-    text-align: center;
+.padding tr td {
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
-
-/*.theHead {*/
-    /*background: #f2f2f2;*/
-    /*color: #6a6a6a;*/
-    /*text-align: center;*/
-    /*list-style: none;*/
-    /*padding: 5px;*/
-    /*font-weight: 600;*/
-/*}*/
-/*.clear {*/
-    /*clear: both;*/
-/*}*/
-/*.contents {*/
-    /*float: left;*/
-    /*height: 345px;*/
-    /*border: rgb(112,118,139) solid 1px;*/
-    /*list-style: none;*/
-    /*overflow-y: scroll;*/
-/*}*/
-/*.middle {*/
-    /*float: left;*/
-    /*height: 345px;*/
-    /*list-style: none;*/
-    /*!* border-bottom: rgb(112,118,139) solid 1px;*/
-    /*border-top: rgb(112,118,139) solid 1px; *!*/
-/*}*/
-/*.unsignedTable{*/
-    /*text-align: center;*/
-    /*float: left;*/
-    /*border: rgb(112,118,139) solid 1px;*/
-    /*position: relative;*/
-    /*font-size: 15px;*/
-/*}*/
-/*.contents li input {*/
-    /*margin-right: 30px;*/
-    /*margin-left: 25px;*/
-/*}*/
-/*ul {*/
-    /*width: 100%;*/
-/*}*/
-/*.contents li{*/
-    /*padding: 8px;*/
-    /*font-size: 16px;*/
-    /*font-weight: 500;*/
-    /*text-align: center;*/
-    /*border-bottom: 1px rgb(112,118,139) solid;*/
-    /*overflow: hidden;*/
-/*}*/
+.interTopTable {
+    width: 100%;
+    float: left;
+    margin-right: 20px;
+    margin-top: 5px;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+    border-radius: 3px;
+}
+.interTopThead {
+    color: white;
+    background: #0079FE;
+}
+.interTopThead tr th {
+    height: 30px;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid #E9E9E9;
+}
+.interTopTbody tr td {
+    height: 30px;
+    font-size: 13px;
+    border: 1px solid #E9E9E9;
+    padding-left: 10px;
+}
+.clearButtton {
+    color: grey ;
+    font-size: 14px ;
+    font-weight: bolder ;
+    font-family:'PingFangSC-Regular', 'PingFang SC' ;
+    background-color: white;
+    float:right;
+    margin-top:5px;
+}

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Modal,Button } from 'antd';
-import DrSpanModal from './drSpanModal';
+import {Modal, Button, Popover, Select, Switch} from 'antd';
+import CheckSpanModal from './checkSpanModal';
+import CancleButton from '../BlockQuote/cancleButton';
+import SaveButton from '../BlockQuote/saveButton';
 import Submit from '../BlockQuote/submit';
-import './interProduct.css';
-
 
 const data = [];
 for (let i = 0; i < 50; i++) {
@@ -12,12 +12,14 @@ for (let i = 0; i < 50; i++) {
         id: i,
         testItem: `测试`,
         testResult: '0.001',
-        itemUnit: `g/mL`,
+        a: '0.002',
+        itemUnit: `kg`,
     });
 }
 
-class ReleaseSpan extends React.Component {
-    url;
+class CheckSpan extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
@@ -32,23 +34,33 @@ class ReleaseSpan extends React.Component {
         this.subOk = this.subOk.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.selectChange = this.selectChange.bind(this);
+
     }
     render() {
         const { visible } = this.state;
-        this.url = JSON.parse(localStorage.getItem('url'));
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
         return (
             <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
-                    title="数据发布"
+                    title="数据录检"
                     visible={visible}
                     centered={true}
                     closable={false}
                     maskClosable={false}
                     width="500px"
                     footer={[
-                        <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <CancleButton
+                            handleCancel = {this.handleCancel}
+                            key='cancel'
+                        />,
+                        <SaveButton
+                            onClick={this.handleOk}
+                            key='save'
+                        />,
                         <Submit
-                            url={this.url}
                             Authorization={this.Authorization}
                             server={this.server}
                             visible={this.state.subVisible}
@@ -61,23 +73,16 @@ class ReleaseSpan extends React.Component {
                         />
                     ]}
                 >
-                    <div style={{height:580}}>
-                        <DrSpanModal
+                    <div style={{height:600}}>
+                        <CheckSpanModal
                             data={data}
                             record={this.props.record}
-                            spanStatus={0}
                         />
                     </div>
                 </Modal>
-                <span className="blue interCursorPointer">发布</span>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>录检</span>
             </span>
         )
-    }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
     }
     showModal = () => {
         this.setState({
@@ -110,6 +115,17 @@ class ReleaseSpan extends React.Component {
     handleVisibleChange = (subVisible) => {
         this.setState({ subVisible });
     };
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
+    /**---------------------- */
+    /**---------------------- */
+    /**实现字段搜索功能 */
+    /**---------------------- */
+
 }
 
-export default ReleaseSpan;
+export default CheckSpan;
