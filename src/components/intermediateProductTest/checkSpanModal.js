@@ -1,6 +1,5 @@
 import React from 'react';
 import { Input,Button,Table } from 'antd';
-import './aePopModal.css';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import './interProduct.css';
 

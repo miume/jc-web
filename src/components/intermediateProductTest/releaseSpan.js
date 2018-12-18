@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
-import Submit from '../BlockQuote/submit';
 import './interProduct.css';
 
 
@@ -26,12 +25,8 @@ class ReleaseSpan extends React.Component {
             process:-1,
         };
         this.showModal = this.showModal.bind(this);
-        this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.subHide = this.subHide.bind(this);
-        this.subOk = this.subOk.bind(this);
-        this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -47,18 +42,7 @@ class ReleaseSpan extends React.Component {
                     width="500px"
                     footer={[
                         <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
-                        <Submit
-                            url={this.url}
-                            Authorization={this.Authorization}
-                            server={this.server}
-                            visible={this.state.subVisible}
-                            handleCancel={this.subHide}
-                            handleOk={this.subOk}
-                            handleVisibleChange={this.handleVisibleChange}
-                            selectChange={this.selectChange}
-                            key='submit'
-                            process={this.state.process}
-                        />
+                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleReleaseNew} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
                     <div style={{height:580}}>
@@ -73,23 +57,14 @@ class ReleaseSpan extends React.Component {
             </span>
         )
     }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
+    // 处理发布
+    handleRelease = () => {
+        console.log('handleRelease')
+    };
     showModal = () => {
         this.setState({
             visible: true,
         });
-    };
-    handleOk = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
     };
     handleCancel = () => {
         setTimeout(() => {
@@ -97,18 +72,6 @@ class ReleaseSpan extends React.Component {
                 visible: false,
             });
         }, 500);
-    };
-    subHide = () => {
-        this.setState({
-            subVisible: false,
-        });
-
-    };
-    subOk = () => {
-        console.log('ok');
-    };
-    handleVisibleChange = (subVisible) => {
-        this.setState({ subVisible });
     };
 }
 
