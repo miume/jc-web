@@ -21,7 +21,13 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+.ant-modal-footer span::after{
+  content: "";
+  clear: both;
+}
+.ant-modal-footer {
+  overflow: auto;
+}
 .ant-menu-inline .ant-menu-submenu-title {
     margin: 0 !important;
 }
