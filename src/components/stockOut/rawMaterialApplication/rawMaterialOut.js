@@ -106,7 +106,7 @@ class RawMaterialOut extends React.Component{
             key:'isUrgent',
             align:'center',
             width:'10%',
-            render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+            render:isUrgent=>!isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
         },{
             title:'操作',
             dataIndex:'id',
