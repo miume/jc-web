@@ -24,7 +24,7 @@ class EditorApply extends React.Component{
      /**编辑中新增按钮 */
      addData() {
         var {count,editorData} = this.state;
-        
+
         if(editorData.length===0 && this.state.flag){
             editorData = this.props.data;
             count = this.props.data.length;
@@ -41,7 +41,7 @@ class EditorApply extends React.Component{
      /**删除一条 */
      deleteRow(value){
         var {editorData} = this.state;
-        
+
         if(editorData.length === 0 && this.state.flag){
             editorData = this.props.data;
         }
@@ -101,11 +101,11 @@ class EditorApply extends React.Component{
                         }
                         </tbody>
                         }
-                        
+
                     </table>
 
                     <WhiteSpace />
-                    <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
+                    <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
             </div>
         );
     }

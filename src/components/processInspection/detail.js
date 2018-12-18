@@ -51,7 +51,7 @@ import EditorApply from './editorApply';
     title: '检测项目',
     dataIndex: 'testItemString' ,
     key: 'testItemString',
-    render:(text)=>{ 
+    render:(text)=>{
       if(text){
         const items = text.split(',');
         var testItems = '';
@@ -198,7 +198,7 @@ class Detail extends React.Component{
         this.setState({
             allTestItem : res
         })
-  })   
+  })
   }
     /**获取数据 */
     getApplyData(data){
@@ -258,7 +258,7 @@ class Detail extends React.Component{
             <span>
                 <span className='blue' onClick={this.handleDetail} >详情</span>
                 <Modal title="详情" visible={this.state.visible} closable={false} centered={true}
-                    onCancel={this.handleCancel}  width='1300px' maskClosable={false}
+                    onCancel={this.handleCancel} maskClosable={false} className='modal-xxlg'
                     footer={[
                       <CancleButton key='cancle' handleCancel={this.cancel} />,
                       <span key='save' className={this.state.flag?'show':'hide'}>
@@ -268,7 +268,7 @@ class Detail extends React.Component{
                         <span key="submit" className={this.state.iteration || this.state.flag?'hide':'show'}>
                             <NewButton handleClick={this.handleIteration} name={'迭代'} className={this.state.flag?'fa fa-check':'fa fa-level-up' }/>
                         </span>
-                    ]} 
+                    ]}
                   >
                     <div style={{height:'350px'}} className={this.state.flag?'hide':'show'}>
                          <div>
@@ -283,7 +283,7 @@ class Detail extends React.Component{
                     {/* <div style={{height:'350px'}} className={this.state.flag?'show':'hide'}>
                        <EditorApply data={this.state.data} allTestItem={this.state.allTestItem} getApplyData={this.getApplyData}/>
                     </div> */}
-                    
+
                 </Modal>
             </span>
         );
