@@ -64,5 +64,5 @@
     cursor: not-allowed;
 }
 .PI-popover-placeholder{
-  color: #cccccc;
+  color: #cccccc !important;
 }
