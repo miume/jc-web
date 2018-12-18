@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
+import './productInspection.css';
 
 const data = [];
 for (let i = 0; i < 50; i++) {
@@ -42,31 +43,28 @@ class DetailSpan extends React.Component {
     };
     render() {
         const { visible } = this.state;
-        const checkStatus = this.props.checkStatus;
         return (
             <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
                     title="数据详情"
-                    style={{ top: 20 }}
                     visible={visible}
-                    onOk={this.handleOk}
-                    onCancel={this.handleCancel}
-                    okText="确认"
-                    cancelText="取消"
+                    centered={true}
+                    closable={false}
+                    maskClosable={false}
                     width="500px"
                     footer={[
                         <Button key="back" style={{right:'415px'}}  onClick={this.handleCancel}>返回</Button>,
                     ]}
                 >
-                    <div style={{height:700}}>
+                    <div style={{height:730}}>
                         <DrSpanModal
-                            checkStatus={checkStatus}
+                            checkStatus={this.props.checkStatus}
                             data={data}
                             record={this.props.record}
                         />
                     </div>
                 </Modal>
-                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>详情</span>
+                <span  className="productBlueSpan"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;详情</span>
             </span>
         )
     }
