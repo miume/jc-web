@@ -17,7 +17,7 @@ class ProductTable extends React.Component{
         dataIndex: 'sampleDeliveringDate',
         key: 'sampleDeliveringDate',
         align:'center',
-        width: '15%',
+        width: '13%',
     },{
         title: '送检人',
         dataIndex: 'deliverer',
@@ -87,7 +87,7 @@ class ProductTable extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '17%',
+        width: '19%',
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
