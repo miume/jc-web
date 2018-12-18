@@ -8,10 +8,10 @@
 }
 .purchaseTopThead {
     color: white;
-    background: #0079FE;
+    background: #1890ff;
 }
 .purchaseTopThead tr th {
-    /*background: #0079FE;*/
+    /*background: #1890ff;*/
     font-size: 15px;
     padding-left: 10px;
     /*border-collapse: collapse;*/
@@ -99,7 +99,7 @@
     height: 90px;
     font-size: 20px;
     position:absolute;
-    background-color: #0079FE;
+    background-color: #1890ff;
     border-radius: 20px 0 0 20px;
     text-align:center;
     z-index:100;
@@ -115,7 +115,7 @@
     height: 90px;
     font-size: 20px;
     position:absolute;
-    background-color: #0079FE;
+    background-color: #1890ff;
     border-radius: 0 20px 20px 0;
     text-align:center;
     z-index:100;

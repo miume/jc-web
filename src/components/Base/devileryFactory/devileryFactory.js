@@ -69,7 +69,7 @@ class DeliveryFactory extends React.Component{
   Authorization;
   componentDidMount(){
     this.fetch();
-    //document.getElementById('/deliveryFactory').style.color='#0079FE';
+    //document.getElementById('/deliveryFactory').style.color='#1890ff';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {

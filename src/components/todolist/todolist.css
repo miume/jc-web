@@ -74,7 +74,7 @@
     padding-right: 5px;
   }
   .item1 :hover,.item3 :hover{
-      background-color: #0079fe;
+      background-color: #1890ff;
   }
   .item2{
     flex-grow: 6;
@@ -165,17 +165,17 @@
     display: none;
 }
 .iconColor{
-    background-color:#0079fe;
+    background-color:#1890ff;
 }
 .circle{
     width:32px;
     height:32px;
     border-radius: 25px;
-    border:2px solid #0079fe;
+    border:2px solid #1890ff;
 }
 .circle i{
     margin:0 auto;
-    color:#0079fe;
+    color:#1890ff;
     padding:26%;
 }
 .circle1{

@@ -74,7 +74,7 @@ class TestItem extends React.Component{
   Authorization;
   componentDidMount(){
     this.fetch();
-    //document.getElementById('/testItem').style.color='#0079FE';
+    //document.getElementById('/testItem').style.color='#1890ff';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {
