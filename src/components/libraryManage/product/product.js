@@ -1,9 +1,9 @@
 import React from 'react';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios'
-import NewButton from "../../BlockQuote/newButton";
+import NewButton from "./button";
 
-const forkData = [2000,2000,2000,2000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [2000,2000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 

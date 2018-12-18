@@ -1,10 +1,8 @@
 import React from 'react';
-import {Table} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-import Difference from '../material/difference'
 import axios from 'axios'
 
-class MaterialProduct extends React.Component{
+class MaterialRecord extends React.Component{
     server
     Authorization
     componentWillUnmount() {
@@ -18,88 +16,9 @@ class MaterialProduct extends React.Component{
             searchContent:'',
             dataSource:[],
         }
-
-        this.columns=[{
-            title:'序号',
-            dataIndex:'index',
-            key:"repoStock.id",
-            sorter: (a, b) => a.repoStock.id - b.repoStock.id,
-            width:'10%',
-            align:'center'
-        },{
-            title:'批号',
-            dataIndex:'serialNumber',
-            key:"serialNumber",
-            width:'10%',
-            align:'center'
-         },{
-            title:'货物名称',
-            dataIndex:'name',
-            width:'10%',
-            align:'center'
-        },{
-            title:'货物型号',
-            dataIndex:'manterialClass',
-            key:'manterialClass',
-            width:'10%',
-            align:'center',
-            render:(text,record)=>{
-                switch(record.manterialClass){
-                    case 1:return "原材料";
-                    case 2:return "中间品";
-                    case 3:return '产品';
-                }
-            }
-        },{
-            title:'记录数量',
-            dataIndex:'repoStock.quantity',
-            key:'repoStock.quantity',
-            width:'10%',
-            align:'center'
-        },{
-            title:'实际数量',
-            dataIndex:'realNum',
-            key:'realNum',
-            width:'10%',
-            align:'center'
-        },{
-            title:'记录重量(kg)',
-            dataIndex:'repoStock.weight',
-            key:'repoStock.weight',
-            width:'10%',
-            align:'center'
-        },{
-            title:'实际重量(kg)',
-            dataIndex:'realWeig',
-            key:'realWeig',
-            width:'10%',
-            align:'center'
-        },{
-            title:'操作',
-            dataIndex:'operation',
-            width:'10%',
-            align:'center',
-            render:(text,record)=>{
-                    return(//onConfirm是点击确认时的事件回调
-                        <span>
-                            <Difference />
-                        </span>
-                    );
-                }
-        }];
-        this.pagination={
-            total:this.state.dataSource.length,
-            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-                //console.log('Current: ', current, '; PageSize: ', pageSize);
-              },
-              onChange(current) {//跳转，页码改变
-                //console.log('Current: ', current);
-              }
-        }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
+        this.getAllData = this.getAllData.bind(this);
     }
     componentDidMount() {
         this.getAllData();
@@ -107,7 +26,7 @@ class MaterialProduct extends React.Component{
     /**获取所有父菜单 */
   getAllData(){
     axios({
-      url:`${this.server}/jc/common/RepoStock`,
+      url:`${this.server}/jc/common/RepoDiffRecord`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -129,11 +48,28 @@ class MaterialProduct extends React.Component{
      }
     searchEvent(){
         const name=this.state.searchContent;
-       //console.log(name);//此处显示的是我搜索框填的内容
+        axios({
+            url:`${this.server}/jc/common/RepoDiffRecord/getByMaterialNameLike`,
+            method:"get",
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                materialName:name,
+                materialClass:1
+            },
+            type:"json",
+        }).then((data)=>{
+            const res = data.data.data;
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            this.setState({
+                dataSource:res
+              })
+        })
     }
-    handleClick(){
-        console.log(111)
-    }
+
     render(){
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
@@ -143,36 +79,132 @@ class MaterialProduct extends React.Component{
                     <SearchCell name='请输入搜索内容'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
+                        fetch = {this.getAllData}
                     >
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
-                <Table
-                rowKey={record=>record.repoStock.id}
-                columns={this.columns}
-                dataSource={this.state.dataSource}
-                pagination={false}
-                bordered
-                size='small'
-                scroll={{y:600}}
-                ></Table>
-                {/* <div style={{position:"absolute",top:"108.4px",left:"670px",color:"white"}}>记录数量</div> */}
-                {/* <div style={{position:"absolute",}}>实际数量</div>
-                <div style={{position:"absolute",}}>记录重量</div>
-                <div style={{position:"absolute",}}>实际重量</div> */}
-                <div style={{position:"absolute",top:"90px",left:"619px",width:"602px",height:"50px",backgroundColor:"#0079FE"}}>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"40px"}}>记录数量</div>
-                    <div style={{position:"absolute",color:"white",top:"20px",left:"142px"}} className="fa fa-balance-scale"></div>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"200px"}}>实际数量</div>
-                    <div style={{position:"absolute",backgroundColor:"#FFFFFF",height:"30px",width:"3px",top:"16px",left:"300px"}}></div>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"340px"}}>记录重量</div>
-                    <div style={{position:"absolute",color:"white",top:"20px",left:"445px"}} className="fa fa-balance-scale"></div>
-                    <div style={{position:"absolute",color:"white",top:"18px",left:"500px"}}>实际重量</div>
+                <div className="MRparent">
+                    <div className="MRone">
+                        <div className="MRborder-down">序号</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    {m.index}
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRtwo">
+                        <div className="MRborder-down">批号</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    {m.serialNumber}
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRthree">
+                        <div className="MRborder-down">货品名称</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    {m.materialName}
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRfour">
+                        <div className="MRborder-down">货品型号</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    原材料
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRfour">
+                        <div className="MRborder-down">盘库日期</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    盘库日期
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRfour">
+                        <div className="MRborder-down">盘库人</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    {m.repoDiffRecord.creator}
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRfive">
+
+                            <div className="head-shadow">
+                                <div className="MRborder-down3">记录数量</div>
+                                {/* <div className="fa fa-balance-scale"></div> */}
+                            </div>
+
+
+                {
+                    this.state.dataSource.map((m)=>{
+                        if(m.repoDiffRecord.supposedQuantity !== m.repoDiffRecord.realQuantity){
+                            return <div className="MRborder-down" style={{color:"red"}}>
+                        {m.repoDiffRecord.supposedQuantity}  </div>    
+                        }else{
+                            return <div className="MRborder-down">
+                            {m.repoDiffRecord.supposedQuantity}  </div>  
+                        }
+                    })
+                }
+                    </div>
+                    <div className="MRsix">
+                        <div className="MRborder-down1">实际数量</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    {m.repoDiffRecord.realQuantity}
+                                </div>    
+                    })
+                }
+                    </div>
+                    <div className="MRseven">
+                        <div className="MRborder-down2">记录重量</div>
+                        <div className='white-space space-left'></div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        if(m.repoDiffRecord.supposedWeight !== m.repoDiffRecord.realWeight){
+                            return <div className="MRborder-down" style={{color:"red"}}>
+                            {m.repoDiffRecord.supposedWeight}
+                        </div>
+                        }else{ return <div className="MRborder-down">
+                        {m.repoDiffRecord.supposedWeight}
+                    </div>}
+                       
+                    })
+                }
+                    </div>
+                    <div className="MReight">
+                        <div className="MRborder-down4">实际重量</div>
+                {
+                    this.state.dataSource.map((m)=>{
+                        return <div className="MRborder-down">
+                                    {m.repoDiffRecord.realWeight}
+                                </div>    
+                    })
+                }
+                    </div>
                 </div>
-                <div style={{position:"absolute",top:"140px",left:"619px",width:"602px",height:"382.2px",border:"2px solid #0079FE"}}></div>
             </div>
         )
     }
 }
 
-export default MaterialProduct
+export default MaterialRecord
