@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal,Button } from 'antd';
-import DrSpanModal from '../intermediateProductTest/drSpanModal';
-
+import DrSpanModal from './drSpanModal';
 
 const data = [];
 for (let i = 0; i < 50; i++) {
@@ -10,6 +9,7 @@ for (let i = 0; i < 50; i++) {
         id: i,
         testItem: `测试`,
         testResult: '0.001',
+        a: '0.002',
         itemUnit: `g/mL`,
     });
 }
@@ -42,44 +42,34 @@ class DetailSpan extends React.Component {
     };
     render() {
         const { visible } = this.state;
+        const checkStatus = this.props.checkStatus;
         return (
-            <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+            <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
                     title="数据详情"
                     style={{ top: 20 }}
                     visible={visible}
-                    className='modal'
-                    closable={false}
-                    maskClosable={false}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    okText="确认"
+                    cancelText="取消"
                     width="500px"
-                    // 脚部footer中的每个按钮都要又一个key
                     footer={[
-                        <Button key="back" style={{float:'left'}} onClick={this.handleCancel}>返回</Button>,
-                        <Button key="publish" type="primary"  onClick={this.selectionOnDetail}><i className="fa fa-check-square-o" aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>&nbsp;选中</Button>
+                        <Button key="back" style={{right:'415px'}}  onClick={this.handleCancel}>返回</Button>,
                     ]}
                 >
-                    <div style={{height:580}}>
+                    <div style={{height:700}}>
                         <DrSpanModal
+                            checkStatus={checkStatus}
                             data={data}
                             record={this.props.record}
                         />
                     </div>
                 </Modal>
-                <span style={{color:'#1890ff'}}  disabled={this.props.disabled}>详情</span>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>详情</span>
             </span>
         )
     }
-    /**实现detailSpan里的选中功能 */
-    selectionOnDetail = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-        this.props.modifySelectedRowKeysData(this.props.record.id);
-
-    };
-    /**---------------------- */
 
 }
 

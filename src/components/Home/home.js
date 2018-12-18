@@ -229,7 +229,14 @@ class Home extends Component {
                 productLine:`${server}/jc/common/productLine`,
                 getAllByPage:`${server}/jc/common/productLine/pages`,
                 search:`${server}/jc/common/productLine/pagesNameLike`
+             },
+             /**进货检验 */
+             purchaseCheckReport:{
+                 unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
+                 // getAllByPage:`${server}/jc/common/productLine/pages`,
+                 // search:`${server}/jc/common/productLine/pagesNameLike`
              }
+
 
         }
         localStorage.setItem('url',JSON.stringify(url))

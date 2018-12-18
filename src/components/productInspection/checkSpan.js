@@ -1,13 +1,25 @@
 import React from 'react';
-import { Modal} from 'antd';
-import PurchaseModal from './purchaseModal';
+import {Modal, Button, Popover, Select, Switch} from 'antd';
+import CheckSpanModal from './checkSpanModal';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import Submit from '../BlockQuote/submit';
 
+const data = [];
+for (let i = 0; i < 50; i++) {
+    data.push({
+        index:i,
+        id: i,
+        testItem: `测试`,
+        testResult: '0.001',
+        a: '0.002',
+        itemUnit: `kg`,
+    });
+}
 
-class CheckEditSpan extends React.Component {
-    url;
+class CheckSpan extends React.Component {
+    Authorization;
+    server;
     constructor(props){
         super(props);
         this.state = {
@@ -22,20 +34,23 @@ class CheckEditSpan extends React.Component {
         this.subOk = this.subOk.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.selectChange = this.selectChange.bind(this);
+
     }
     render() {
         const { visible } = this.state;
-        this.url = JSON.parse(localStorage.getItem('url'));
-        return(
-            <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+        /**这是个令牌，每次调用接口都将其放在header里 */
+        this.Authorization = localStorage.getItem('Authorization');
+        /**这是服务器网址及端口 */
+        this.server = localStorage.getItem('remote');
+        return (
+            <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
-                    title="编辑数据"
+                    title="数据录检"
                     visible={visible}
-                    width="1030px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    // footer下的每个组件都要有唯一的key
+                    width="500px"
                     footer={[
                         <CancleButton
                             handleCancel = {this.handleCancel}
@@ -46,7 +61,6 @@ class CheckEditSpan extends React.Component {
                             key='save'
                         />,
                         <Submit
-                            url={this.url}
                             Authorization={this.Authorization}
                             server={this.server}
                             visible={this.state.subVisible}
@@ -59,22 +73,16 @@ class CheckEditSpan extends React.Component {
                         />
                     ]}
                 >
-                    <div style={{height:500}}>
-                        <PurchaseModal
-                            clickState ={0}
+                    <div style={{height:600}}>
+                        <CheckSpanModal
+                            data={data}
+                            record={this.props.record}
                         />
-
                     </div>
                 </Modal>
-                <span  className="blue">编辑</span>
+                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>录检</span>
             </span>
         )
-    }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
     }
     showModal = () => {
         this.setState({
@@ -107,7 +115,17 @@ class CheckEditSpan extends React.Component {
     handleVisibleChange = (subVisible) => {
         this.setState({ subVisible });
     };
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
+    /**---------------------- */
+    /**---------------------- */
+    /**实现字段搜索功能 */
+    /**---------------------- */
 
 }
 
-export default CheckEditSpan;
+export default CheckSpan;

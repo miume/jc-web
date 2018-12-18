@@ -5,6 +5,7 @@ import CheckReleaseSpan from './checkReleaseSpan';
 import DeletaSpan from './deleteSpan';
 
 class CheckTable extends React.Component {
+    url;
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -92,7 +93,7 @@ class CheckTable extends React.Component {
         dataIndex: 'id',
         key: 'id',
         align:'center',
-        width: '13%',
+        width: '11%',
         render: (text,record) => {
             let operationFlag = this.judgeOperation(record.state);
             return (

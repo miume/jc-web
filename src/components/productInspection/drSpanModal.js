@@ -1,9 +1,9 @@
 import React from 'react';
 import { Table,Divider } from 'antd';
 import './aePopModal.css';
-import '../Home/page.css';
 import IsQualified from "../BlockQuote/isQualified";
-
+import DetailStateModal from "./detailStateModal";
+import './drSpanModal.css';
 
 
 const topData = {
@@ -20,6 +20,10 @@ const examineData = {
     examineView: '数据正常，审核通过',
     examineTime: '2018年11月12日',
 }
+const optionalPerson = {
+    personer: '审核人',
+    personTime: '2018年11月12日',
+}
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
@@ -27,6 +31,7 @@ class DrSpanModal extends React.Component {
         topData : topData,      //表头数据
         testData: testData,   // 检验人数据
         examineData: examineData,  //审核人数据
+        optionalPerson:optionalPerson,
         // spanStatus: 0, //进行判断，0详情，1录检，2发布
         status : 1, //0不合格，1合格
 
@@ -36,24 +41,30 @@ class DrSpanModal extends React.Component {
         dataIndex: 'index',
         key: 'id',
         align:'center',
-        width: '20%',
+        width: '12%',
     },{
         title: '检测项目',
         dataIndex: 'testItem',
         key: 'testItem',
         align:'center',
-        width: '25%',
+        width: '20%',
     },{
         title: '检测结果',
         dataIndex: 'testResult',
         key: 'testResult',
         align:'center',
     },{
+        title: '行业标准',
+        dataIndex: 'a',
+        key: 'a',
+        align:'center',
+        width: '20%',
+    },{
         title: '计量单位',
         dataIndex: 'itemUnit',
         key: 'itemUnit',
         align:'center',
-        width: '25%',
+        width: '20%',
     }];
     render() {
         const columns = this.columns.map((col) => {
@@ -64,22 +75,23 @@ class DrSpanModal extends React.Component {
                 }),
             };
         });
+        const checkStatus = this.props.checkStatus;
         return(
-            <div>
+            <div >
                 <div>
-                    <table className="interTopTable">
-                        <thead className="interTopThead">
+                    <table style={{float:'left',align:'center',border:"1px solid gray"}} >
+                        <thead>
                         <tr>
-                            <th>批号</th>
-                            <th>原材料</th>
-                            <th>送样日期</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>批号</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>原材料</th>
+                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>送样日期</th>
                         </tr>
                         </thead>
-                        <tbody className="interTopTbody">
+                        <tbody>
                         <tr>
-                            <td>{this.state.topData.batchNumber}</td>
-                            <td>{this.state.topData.materialName}</td>
-                            <td>{this.state.topData.b}</td>
+                            <td style={{textAlign:'center'}}>{this.state.topData.batchNumber}</td>
+                            <td style={{textAlign:'center'}}>{this.state.topData.materialName}</td>
+                            <td style={{textAlign:'center'}}>{this.state.topData.b}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -96,13 +108,12 @@ class DrSpanModal extends React.Component {
                         dataSource={this.props.data}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 250 }}
-                        bordered
+                        scroll={{ y: 300 }}
                     />
                 </div>
                 <div style={{paddingTop:'20px',paddingBottom:'50px',marginTop:'-7px'}}>
                     <table style={{float:'left'}}>
-                        <tbody className="padding">
+                        <tbody className="testDataTbody">
                         <tr>
                             <td>检验人：</td>
                             <td>{this.state.testData.tester}</td>
@@ -118,24 +129,13 @@ class DrSpanModal extends React.Component {
                     />
                 </div>
                 <Divider />
-                <div>
-                    <table style={{paddingTop:'20px',paddingBottom:'50px',marginTop:'-7px'}}>
-                        <tbody className="padding">
-                        <tr>
-                            <td>审核人：</td>
-                            <td>{this.state.examineData.examiner}</td>
-                        </tr>
-                        <tr>
-                            <td>审核意见：</td>
-                            <td>{this.state.examineData.examineView}</td>
-                        </tr>
-                        <tr>
-                            <td>审核日期：</td>
-                            <td>{this.state.examineData.examineTime}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <DetailStateModal
+                    checkStatus={checkStatus}
+                    examineData={this.state.examineData}
+                    status={this.props.status}
+                    optionalPerson={this.state.optionalPerson}
+                />
+
             </div>
         )
     }
