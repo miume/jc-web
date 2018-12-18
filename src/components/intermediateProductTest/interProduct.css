@@ -5,22 +5,75 @@
 .interCursorDefault {
     cursor: default;
 }
-/*详情中drSpanModal中样式*/
-.drSpanModalTableFirst {
+/*
+    详情、发布中drSpanModal中样式
+    Top: 设置表格样式
+    middle: 设置样品名称
+    Bottom: 设置底部样式
+ */
+/*Top:设置表格样式*/
+.drSpanModalTop {
+    width: 100%;
+    cursor: default;
+}
+.drSpanModalTop table{
+    width:100%;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+}
+.drSpanModalTop table thead {
+    color: white;
+    background: #0079FE;
+    border: 1px solid  #E9E9E9;
+}
+.drSpanModalTop table thead tr th{
+    height: 30px;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid  #E9E9E9;
+}
+.drSpanModalTop table tbody tr td {
+    height: 30px;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid  #E9E9E9;
+}
+/*Middle:设置样品名称和清空按钮样式*/
+.drSpanModalMiddle {
+    width: 100%;
+    padding-top: 5px;
+    cursor: default;
+}
+.drSpanModalMiddle div{
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 14px;
+}
+
+.drSpanModalBottomFirst {
     padding-top: 20px;
     padding-bottom: 50px;
     margin-top: -7px;
     cursor: default;
 }
-.drSpanModalTableFirst table {
+.drSpanModalBottomFirst table {
     float: left;
+    margin-top: 5px;
 }
-.drSpanModalTableSecond {
+.drSpanModalBottomFirst table tbody{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.drSpanModalBottomSecond {
     margin-top: -7px;
     cursor: default;
 }
-.drSpanModalTableSecond table {
+.drSpanModalBottomSecond table {
     float: left;
+}
+.drSpanModalBottomSecond table tbody{
+    /*padding-top: 1px;*/
+    padding-bottom: 4px;
 }
 /*
     录检中checkSpanModal
@@ -84,4 +137,5 @@
 .checkModalBottom table {
     cursor: default;
 }
+
 
