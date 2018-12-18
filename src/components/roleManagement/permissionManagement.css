@@ -1,36 +1,28 @@
 .tableHead {
-    width : 99%;
-    margin : 0 auto;
+    width : 100%;
     height: 40px;
     font-weight: 600;
     font-size: 15px;
     color:#ffffff;
     background: #0086ff;
     border-radius: 0.2em 0.2em 0 0;
-    /* border: 1px darkgrey solid; */
-    margin-left:5px;
 }
 .tableHead span{
-    /* color: #6a6a6a; */
     padding:10px 7px 8px 8px;
     min-width:200px;
     text-align: center;
     display: inline-table;
-    /* margin-top:0.5px; */
 }
 .tableHead :last-child{
-    border-left: 1px grey solid;
-    min-width: 350px;
+    border-left: 1px #e4e4e4 solid;
+    min-width: 560px;
 }
 
 .divborder{
-    width : 99%;
-    margin-left:5px;
+    width : 100%;
     height: 35px;
-    
-    font-weight: 600;
     font-size: 15px;
-    border: 1px darkgrey solid;
+    border: 1px #E4E4E4 solid;
     border-top:none;
 }
 .divborder span{
@@ -38,18 +30,22 @@
     margin-top: 0px;
     padding:7px;
     min-width:200px;
-    text-align: center;
+    text-align: left;
     display: inline-table;
     border-top: none;
 }
-
 /* .divborder :first-child{
     border-right: 1px darkgrey solid;
 } */
 .rightBorder{
-    border-right: 1px darkgrey solid;
+    border-right: 1px #e4e4e4 solid;
+    padding-left: 56px !important;
 }
 .menu1Label{
     text-align: left !important;
-    padding-left: 35px !important;
+    padding-left: 30px !important;
+}
+.PM-tableBody{
+  overflow-y: scroll;
+  height: 420px;
 }
