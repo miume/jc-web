@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
-import Submit from '../BlockQuote/submit';
 import './productInspection.css';
 
 
@@ -27,11 +26,8 @@ class ReleaseSpan extends React.Component {
             subVisible: false,
             process:-1,
         };
-        this.subHide = this.subHide.bind(this);
-        this.subOk = this.subOk.bind(this);
-        this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.selectChange = this.selectChange.bind(this);
+        this.showModal - this.showModal.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -65,30 +61,10 @@ class ReleaseSpan extends React.Component {
             </span>
         )
     }
-    subHide = () => {
-        this.setState({
-            subVisible: false,
-        });
-
-    };
-    subOk = () => {
-        console.log('ok');
-    };
-    handleVisibleChange = (subVisible) => {
-        this.setState({ subVisible });
-    };
-
     showModal = () => {
         this.setState({
             visible: true,
         });
-    };
-    handleOk = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
     };
     handleCancel = (e) => {
         setTimeout(() => {
@@ -97,12 +73,7 @@ class ReleaseSpan extends React.Component {
             });
         }, 500);
     };
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
+
 }
 
 export default ReleaseSpan;
