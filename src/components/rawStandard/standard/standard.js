@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table} from 'antd';
+import {Table,Divider} from 'antd';
 import SearchCell from '../../BlockQuote/search';
 
 const data=[];
@@ -35,40 +35,48 @@ for(var i=0;i<20;i++){
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
-            sorter:(a,b)=>a.id-b.id,
             width:'10%',
             align:'center'
         },{
             title:'创建时间',
             dataIndex:'createTime',
             key:'createTime',
-            sorter:(a,b)=>a.id-b.id,
             width:'10%',
             align:'center'
         },{
             title:'创建人',
             dataIndex:'createPerson',
             key:'createPerson',
-            sorter:(a,b)=>a.id-b.id,
             width:'10%',
             align:'center'
         },{
             title:'状态',
             dataIndex:'status',
-            key:'status',
-            sorter:(a,b)=>a.id-b.id,
+            key:'status',      
             width:'10%',
             align:'center'
         },{
             title:'操作',
-            dataIndex:'id',
-            key:'id',
-            sorter:(a,b)=>a.id-b.id,
+            dataIndex:'operation',
+            key:'operation',
             width:'10%',
-            align:'center'
+            align:'center',
+            render:(text,record)=>{
+                let editFlag=this.judgeStatus(record.status);
+                return(
+                    <span>
+                        <Divider type='vertical'/>
+                        
+                    </span>
+                );
+            }
         }]
         this.searchEvent=this.searchEvent.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
+     }
+
+     judgeStatus=(record_status)=>{
+             
      }
      searchEvent(){
 
