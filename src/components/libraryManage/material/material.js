@@ -83,21 +83,23 @@ class Material extends React.Component{
         })
     }
     handleClick(){
-        this.state.dataSource.map((m)=>{
-            console.log(m.id)
-            axios({
-                url:`${this.server}/jc/common/RepoStock/oneKeyStock`,
-                method:'post',
-                params:{
-                    id:parseInt(m.id),
-                    quantity:m.realNum,
-                    weight:m.realWeig,
-                    creator:parseInt(ob.userId)
-                },
-            }).then((data)=>{
-                this.getAllData()
-            })
-        })
+        // this.state.dataSource.map((m)=>{
+        //     console.log(m.id)
+        //     axios({
+        //         url:`${this.server}/jc/common/RepoStock/oneKeyStock`,
+        //         method:'post',
+        //         params:{
+        //             id:parseInt(m.id),
+        //             quantity:m.realNum,
+        //             weight:m.realWeig,
+        //             creator:parseInt(ob.userId)
+        //         },
+        //     }).then((data)=>{
+        //         this.getAllData()
+        //     })
+        // })
+
+        console.log(this.state.dataSource);
     }
     render(){
         this.Authorization = localStorage.getItem('Authorization');
