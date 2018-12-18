@@ -1,8 +1,8 @@
 import React from 'react';
 import { Input,Button,Table } from 'antd';
 import './aePopModal.css';
-import '../Home/page.css';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
+import './productInspection.css';
 
 
 const topData = {
@@ -52,7 +52,7 @@ class CheckSpanModal extends React.Component {
             return(
                 <Input
                     placeholder='输入检测结果'
-                    style={{border:'0'}} 
+                    style={{border:'0',paddingLeft:'10px'}}
                 />
             )
         }
@@ -80,31 +80,31 @@ class CheckSpanModal extends React.Component {
         });
         return(
             <div >
-                <div style={{paddingBottom:'55px'}}>
-                    <table style={{float:'left',align:'center',border:"1px solid gray"}} >
+                <div className="productCheckModalTop">
+                    <table>
                         <thead>
                         <tr>
-                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>批号</th>
-                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>原材料</th>
-                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>送样日期</th>
+                            <th>批号</th>
+                            <th>原材料</th>
+                            <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td style={{textAlign:'center'}}>{this.state.topData.batchNumber}</td>
-                            <td style={{textAlign:'center'}}>{this.state.topData.materialName}</td>
-                            <td style={{textAlign:'center'}}>{this.state.topData.b}</td>
+                            <td>{this.state.topData.batchNumber}</td>
+                            <td>{this.state.topData.materialName}</td>
+                            <td>{this.state.topData.b}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div>
-                    <span style={{float:'left',paddingTop:'10px',paddingBottom:'10px'}}>
+                <div className="productCheckModalMiddle">
+                    <div>
                            样品名称：<span>{this.state.topData.materialName+'样品'}</span>
-                    </span>
-                    <Button style={{float:'right',width:'100px'}} size="large">清空</Button>
+                    </div>
+                    <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                 </div>
-                <div style={{paddingTop:'50px',paddingBottom:'20px'}}>
+                <div className="productCheckModalBottom">
                     <Table
                         rowKey={record => record.id}
                         columns={columns}
@@ -112,6 +112,7 @@ class CheckSpanModal extends React.Component {
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
                         scroll={{ y: 300 }}
+                        bordered
                     />
                 </div>
                 <CheckQualifiedModal

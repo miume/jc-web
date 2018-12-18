@@ -16,8 +16,8 @@ for(let i=0; i<20; i++){
             testItems: '测试',
             urgentComment: '测试',
             type: '测试',
-            h: '未发布',
-            status: 3
+            h: '0',
+            status: '3'
         });
         continue;
     };
@@ -32,8 +32,8 @@ for(let i=0; i<20; i++){
             testItems: '测试',
             urgentComment: '测试',
             type: '测试',
-            h: '测试',
-            status: 1
+            h: '0',
+            status: '0'
         });
         continue;
     };
@@ -47,13 +47,12 @@ for(let i=0; i<20; i++){
         testItems: '测试',
         urgentComment: '测试',
         type: '测试',
-        h: '未发布',
-        status: 2
+        h: '1',
+        status: '2'
     })
 }
 class ProductInspection extends React.Component {
-    Authorization;
-    server;
+    url;
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return ;
@@ -82,21 +81,18 @@ class ProductInspection extends React.Component {
         };
     }
     render() {
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name="成品检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell
-                            name='请输入搜索内容'
-                            searchEvent={this.searchEvent}
-                            searchContentChange={this.searchContentChange}
-                            fetch={this.fetch}
-                        />
-                    </span>
+                    <SearchCell
+                        name='请输入搜索内容'
+                        searchEvent={this.searchEvent}
+                        searchContentChange={this.searchContentChange}
+                        fetch={this.fetch}
+                    />
                     <div className='clear' ></div>
                     <ProductTable
                         data={this.state.dataSource}
@@ -130,28 +126,7 @@ class ProductInspection extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
-        // axios({
-        //     url: `${this.server}/jc/sampleDeliveringRecord`,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.Authorization
-        //     },
-        //     params: params,
-        //     // type: 'json',
-        // }).then((data) => {
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         loading: false,
-        //         dataSource: res.list,
-        //     });
-        // }).catch((error)=>{
-        //     message.info(error.data.message)
-        // });
+
     };
     componentDidMount() {
         this.fetch();
@@ -159,31 +134,6 @@ class ProductInspection extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        // const interName = this.state.searchContent;
-        // axios({
-        //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         interName:interName
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         dataSource: res.list,
-        //     });
-        // }).catch((error)=>{
-        //     message.info(error.data.message)
-        // })
 
     };
     /**获取查询时角色名称的实时变化 */

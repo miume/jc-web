@@ -60,6 +60,13 @@ class InterTable extends React.Component{
         key: 'h',
         align:'center',
         width: '8%',
+        render:state => {
+            switch(`${state}`) {
+                case '0': return '未发布';
+                case '1': return '已发布';
+                default: return '';
+            }
+        },
     },{
         title: '审核状态',
         dataIndex: 'status',
