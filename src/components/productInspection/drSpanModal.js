@@ -1,10 +1,8 @@
 import React from 'react';
 import { Table,Divider } from 'antd';
-import './aePopModal.css';
 import IsQualified from "../BlockQuote/isQualified";
 import DetailStateModal from "./detailStateModal";
-import './drSpanModal.css';
-
+import './productInspection.css';
 
 const topData = {
     batchNumber: 'EcT/139',
@@ -75,34 +73,34 @@ class DrSpanModal extends React.Component {
                 }),
             };
         });
-        const checkStatus = this.props.checkStatus;
         return(
             <div >
-                <div>
-                    <table style={{float:'left',align:'center',border:"1px solid gray"}} >
+                <div className="productDrSpanModalTop">
+                    <table>
                         <thead>
                         <tr>
-                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>批号</th>
-                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>原材料</th>
-                            <th style={{background:'#0079FE', color:'white', width:200,textAlign:'center'}}>送样日期</th>
+                            <th>批号</th>
+                            <th>原材料</th>
+                            <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td style={{textAlign:'center'}}>{this.state.topData.batchNumber}</td>
-                            <td style={{textAlign:'center'}}>{this.state.topData.materialName}</td>
-                            <td style={{textAlign:'center'}}>{this.state.topData.b}</td>
+                            <td>{this.state.topData.batchNumber}</td>
+                            <td>{this.state.topData.materialName}</td>
+                            <td>{this.state.topData.b}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <div>
-                       <span style={{float:'left',paddingTop:'10px',paddingBottom:'10px'}}>
+                <div className="productDrSpanModalMiddle">
+                       <div>
                            样品名称：<span>{this.state.topData.materialName+'样品'}</span>
-                       </span>
+                       </div>
                 </div>
                 <div>
                     <Table
+                        className="productCursorDefault"
                         rowKey={record => record.id}
                         columns={columns}
                         dataSource={this.props.data}
@@ -111,9 +109,9 @@ class DrSpanModal extends React.Component {
                         scroll={{ y: 300 }}
                     />
                 </div>
-                <div style={{paddingTop:'20px',paddingBottom:'50px',marginTop:'-7px'}}>
-                    <table style={{float:'left'}}>
-                        <tbody className="testDataTbody">
+                <div className="productDrSpanModalBottomFirst">
+                    <table>
+                        <tbody>
                         <tr>
                             <td>检验人：</td>
                             <td>{this.state.testData.tester}</td>
@@ -130,9 +128,8 @@ class DrSpanModal extends React.Component {
                 </div>
                 <Divider />
                 <DetailStateModal
-                    checkStatus={checkStatus}
+                    checkStatus={this.props.checkStatus}
                     examineData={this.state.examineData}
-                    status={this.props.status}
                     optionalPerson={this.state.optionalPerson}
                 />
 

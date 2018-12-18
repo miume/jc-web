@@ -96,7 +96,7 @@ class CheckSpanModal extends React.Component {
                     <div>
                            样品名称：<span>{this.state.topData.materialName+'样品'}</span>
                     </div>
-                    <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button>
+                    <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                 </div>
                 <div className="interCheckModalBottom">
                     <Table

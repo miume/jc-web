@@ -18,8 +18,7 @@ for (let i = 0; i < 50; i++) {
 }
 
 class CheckSpan extends React.Component {
-    Authorization;
-    server;
+    url;
     constructor(props){
         super(props);
         this.state = {
@@ -38,10 +37,7 @@ class CheckSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <span type="primary" onClick={this.showModal} size="small"    >
                 <Modal
@@ -61,8 +57,7 @@ class CheckSpan extends React.Component {
                             key='save'
                         />,
                         <Submit
-                            Authorization={this.Authorization}
-                            server={this.server}
+                            url={this.url}
                             visible={this.state.subVisible}
                             handleCancel={this.subHide}
                             handleOk={this.subOk}
@@ -73,16 +68,22 @@ class CheckSpan extends React.Component {
                         />
                     ]}
                 >
-                    <div style={{height:600}}>
+                    <div style={{height:590}}>
                         <CheckSpanModal
                             data={data}
                             record={this.props.record}
                         />
                     </div>
                 </Modal>
-                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>录检</span>
+                <span  className="productBlueSpan"><i className="fa fa-archive" aria-hidden="true"></i>&nbsp;录检</span>
             </span>
         )
+    }
+    /**监听送审select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
     }
     showModal = () => {
         this.setState({
@@ -115,12 +116,6 @@ class CheckSpan extends React.Component {
     handleVisibleChange = (subVisible) => {
         this.setState({ subVisible });
     };
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
     /**---------------------- */
     /**---------------------- */
     /**实现字段搜索功能 */

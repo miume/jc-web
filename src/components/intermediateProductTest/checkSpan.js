@@ -57,8 +57,6 @@ class CheckSpan extends React.Component {
                         />,
                         <Submit
                             url={this.url}
-                            Authorization={this.Authorization}
-                            server={this.server}
                             visible={this.state.subVisible}
                             handleCancel={this.subHide}
                             handleOk={this.subOk}
