@@ -46,10 +46,10 @@ class DetailSpan extends React.Component {
             <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
                 <Modal
                     title="数据详情"
-                    style={{ top: 20 }}
                     visible={visible}
                     className='modal'
                     closable={false}
+                    centered={true}
                     maskClosable={false}
                     width="500px"
                     // 脚部footer中的每个按钮都要又一个key
