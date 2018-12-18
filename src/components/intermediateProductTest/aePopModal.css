@@ -50,3 +50,12 @@
     border: 1px solid #E9E9E9;
     padding-left: 10px;
 }
+.clearButtton {
+    color: grey ;
+    font-size: 14px ;
+    font-weight: bolder ;
+    font-family:'PingFangSC-Regular', 'PingFang SC' ;
+    background-color: white;
+    float:right;
+    margin-top:5px;
+}

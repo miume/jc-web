@@ -3,6 +3,7 @@ import { Table,Divider } from 'antd';
 import './aePopModal.css';
 import '../Home/page.css';
 import IsQualified from "../BlockQuote/isQualified";
+import './interProduct.css';
 
 
 
@@ -91,6 +92,7 @@ class DrSpanModal extends React.Component {
                 </div>
                 <div>
                     <Table
+                        className="interCursorDefault"
                         rowKey={record => record.id}
                         columns={columns}
                         dataSource={this.props.data}
@@ -100,8 +102,8 @@ class DrSpanModal extends React.Component {
                         bordered
                     />
                 </div>
-                <div style={{paddingTop:'20px',paddingBottom:'50px',marginTop:'-7px'}}>
-                    <table style={{float:'left'}}>
+                <div className="drSpanModalTableFirst">
+                    <table>
                         <tbody className="padding">
                         <tr>
                             <td>检验人：</td>
@@ -118,8 +120,8 @@ class DrSpanModal extends React.Component {
                     />
                 </div>
                 <Divider />
-                <div>
-                    <table style={{paddingTop:'20px',paddingBottom:'50px',marginTop:'-7px'}}>
+                <div className="drSpanModalTableSecond">
+                    <table >
                         <tbody className="padding">
                         <tr>
                             <td>审核人：</td>

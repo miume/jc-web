@@ -3,8 +3,6 @@ import BlockQuote from '../BlockQuote/blockquote';
 import InterTable from '../intermediateProductTest/intermediateTable';
 import SearchCell from '../BlockQuote/search';
 
-import '../Home/page.css';
-
 const data =[];
 for(let i=0; i<20; i++){
     if(i%2===0){
@@ -92,7 +90,7 @@ class InterProduct extends React.Component {
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
