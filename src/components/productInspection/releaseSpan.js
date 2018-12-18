@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
 import Submit from '../BlockQuote/submit';
+import './productInspection.css';
 
 
 const data = [];
@@ -11,6 +12,7 @@ for (let i = 0; i < 50; i++) {
         id: i,
         testItem: `测试`,
         testResult: '0.001',
+        a: '0.002',
         itemUnit: `g/mL`,
     });
 }
@@ -48,28 +50,18 @@ class ReleaseSpan extends React.Component {
                     width="500px"
                     footer={[
                         <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
-                        <Submit
-                            Authorization={this.Authorization}
-                            server={this.server}
-                            visible={this.state.subVisible}
-                            handleCancel={this.subHide}
-                            handleOk={this.subOk}
-                            handleVisibleChange={this.handleVisibleChange}
-                            selectChange={this.selectChange}
-                            key='submit'
-                            process={this.state.process}
-                        />
+                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleReleaseNew} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
-                    <div style={{height:670}}>
+                    <div style={{height:640}}>
                         <DrSpanModal
-                            status={4}
+                            checkStatus={'4'}
                             data={data}
                             record={this.props.record}
                         />
                     </div>
                 </Modal>
-                <span  style={{color:'#1890ff'}} disabled={this.props.disabled}>发布</span>
+                <span className="productBlueSpan"><i className="fa fa-bullhorn" aria-hidden="true"></i>&nbsp;发布</span>
             </span>
         )
     }

@@ -50,7 +50,7 @@ class Editor extends React.Component{
             this.setState({
                 allTestItem : res
             })
-    })   
+    })
     }
     /**处理新增一条记录 */
     handleEditor() {
@@ -173,7 +173,7 @@ class Editor extends React.Component{
             //delete details[i].id;
             if(details[i].testItemIds.length===0){
                 message.info('检测项目不能为空，请填写完整！');
-                return 
+                return
             }
             var e = details[i].procedureTestRecord;
             for(var j in e){
@@ -240,7 +240,7 @@ class Editor extends React.Component{
             <span>
                 <span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleEditor:null} >编辑</span>
                 <Modal title="编辑" visible={this.state.visible} closable={false} centered={true}
-                    onCancel={this.handleCancel}  width='1300px' maskClosable={false}
+                    onCancel={this.handleCancel} maskClosable={false} className='modal-xxlg'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
@@ -270,11 +270,11 @@ class Editor extends React.Component{
                              </tbody>:
                              <tbody></tbody>
                              }
-                             
+
                          </table>
 
                          <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
+                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                     </div>
                 </Modal>
             </span>

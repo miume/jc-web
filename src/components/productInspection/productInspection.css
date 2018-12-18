@@ -13,6 +13,17 @@
     color: #1890ff;
     font-weight: bolder
 }
+/*发布*/
+.productReleaseFooter {
+    width: 80px ;
+    height: 35px;
+    background: #0079FE;
+    color: white
+}
+.productReleaseFooter i{
+    font-weight: bolder;
+    color: #0079FE;
+}
 
 /*
     详情、发布中drSpanModal中样式
@@ -146,3 +157,4 @@
 .productCheckModalBottom table {
     cursor: default;
 }
+

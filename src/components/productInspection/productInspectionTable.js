@@ -116,7 +116,7 @@ class ProductTable extends React.Component{
                             record={record}
                         />
                     ):(
-                        <span  className="notClick">发布</span>
+                        <span  className="notClick"><i className="fa fa-bullhorn" aria-hidden="true"></i>&nbsp;发布</span>
                     )}
                 </span>
             )
