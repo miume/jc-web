@@ -7,6 +7,13 @@
     color: #1890ff;
     font-weight: bolder
 }
+/*interProduct中公用默认*/
+.unTrackCursorPointer {
+    cursor: pointer;
+}
+.unTrackCursorDefault {
+    cursor: default;
+}
 /*
     编辑中editModal
     Top:设置表格样式
@@ -72,6 +79,7 @@
     height: 50%;
     border: 1px solid  #E9E9E9;
     text-align: center;
+    cursor: default;
 }
 .unTrackEditkModalMiddle table tbody tr td:last-child{
     width: 80%;

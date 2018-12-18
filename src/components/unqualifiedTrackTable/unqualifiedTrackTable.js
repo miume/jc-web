@@ -2,6 +2,7 @@ import React from 'react';
 import {Divider, Table} from 'antd';
 import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
+import './unqualifiedTrack.css';
 
 class UnqualifiedTrackTable extends React.Component {
     columns = [{
@@ -66,6 +67,7 @@ class UnqualifiedTrackTable extends React.Component {
         });
         return(
             <Table
+                className="unTrackCursorDefault"
                 rowKey={record => record.id}
                 dataSource={this.props.data}
                 columns={columns}
