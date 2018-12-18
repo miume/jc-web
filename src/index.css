@@ -92,7 +92,6 @@ i {
     /* background-color: #0079fe !important; */
     margin-right: 10px !important;
     box-sizing: border-box !important;
-    transition: 0.5s ease-in-out !important;
 }
 button span {
     font-size: 14px !important;
@@ -214,18 +213,22 @@ button span {
     height: 35px !important;
 }
 /* 下拉选择器样式 */
-.ant-select-lg .ant-select-selection--single {
+.ant-select-lg .ant-select-selection--single, .ant-select-selection--single{
     height: 35px !important;
 }
-.ant-select-sm  .ant-select-selection--single{
+.ant-select-sm .ant-select-selection--single{
    height: 24px !important;
 }
 
-.ant-select-lg .ant-select-selection__rendered {
+.ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{
   height: 33px !important;
   line-height: 33px !important;
 }
 .ant-select-sm .ant-select-selection__rendered {
   height: 22px !important;
   line-height: 22px !important;
+}
+/* 设置表格中的输入框和下拉选择器不要出现圆角 */
+table .ant-select-selection,table .ant-input{
+  border-radius: 0;
 }
