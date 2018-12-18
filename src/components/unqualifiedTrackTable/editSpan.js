@@ -3,7 +3,7 @@ import { Modal} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import NewButton from '../BlockQuote/newButton';
 import './unqualifiedTrack.css';
-import EditModal from './editModal';
+import EdSpanModal from './edSpanModal';
 
 
 class EditSpan extends React.Component {
@@ -45,8 +45,8 @@ class EditSpan extends React.Component {
                     ]}
                 >
                     <div style={{height:400}}>
-                        <EditModal
-
+                        <EdSpanModal
+                            spanState={true}
                         />
 
                     </div>

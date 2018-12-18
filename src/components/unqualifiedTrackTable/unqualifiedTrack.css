@@ -57,36 +57,44 @@
     padding-left: 0;
     border: 1px solid  #E9E9E9;
 }
+
 .unTrackSelect {
     width: 100%;
 }
-.unTrackEditkModalTop .ant-select-selection {
+.unTrackEditModalTop .ant-select-selection {
     border: none ;
     height: 30px;
 }
 
-.unTrackEditkModalMiddle {
+.unTrackEditModalTop {
     padding-top: 30px;
     width: 100%;
     height: 300px;
 }
-.unTrackEditkModalMiddle table {
+.unTrackEditModalTop table {
     width: 100%;
     height: 100%;
 }
-.unTrackEditkModalMiddle table tbody tr td:first-child {
-    width: 20%;
+.unTrackEditModalTop table tbody tr {
     height: 50%;
+}
+.unTrackEditModalTop table tbody tr td:first-child {
+    width: 20%;
+    /*height: 100%;*/
     border: 1px solid  #E9E9E9;
     text-align: center;
     cursor: default;
 }
-.unTrackEditkModalMiddle table tbody tr td:last-child{
+.unTrackEditModalTop table tbody tr td:last-child{
     width: 80%;
     height: 50%;
     border: 1px solid  #E9E9E9;
-    text-align: center;
+    cursor: default;
 }
-.unTrackEditkModalMiddle table tbody tr td TextArea{
+.unTrackEditModalTop table tbody tr td:last-child div{
+    width: 80%;
+    height: 100%;
+}
+.unTrackEditModalTop table tbody tr td TextArea{
     height: 100% !important;
 }
