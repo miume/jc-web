@@ -35,7 +35,7 @@ class ReleaseTable extends React.Component {
         dataIndex: 'd',
         key: 'd',
         align:'center',
-        width: '10%',
+        width: '12%',
     },{
         title: '创建人',
         dataIndex: 'e',
@@ -47,7 +47,7 @@ class ReleaseTable extends React.Component {
         dataIndex: 'f',
         key: 'f',
         align:'center',
-        width: '10%',
+        width: '12%',
     },{
         title: '修改人',
         dataIndex: 'g',
@@ -59,7 +59,7 @@ class ReleaseTable extends React.Component {
         dataIndex: 'h',
         key: 'h',
         align:'center',
-        width: '10%',
+        width: '12%',
     },{
         title: '类型',
         dataIndex: 'type',
@@ -91,7 +91,7 @@ class ReleaseTable extends React.Component {
         dataIndex: 'id',
         key: 'id',
         align:'center',
-        width: '13%',
+        width: '6%',
         render: (text,record) => {
             let operationFlag = this.judgeOperation(record.state);
             console.log(operationFlag)
@@ -127,7 +127,7 @@ class ReleaseTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ x: 1500,y: 400 }}
+                scroll={{y: 400 }}
             />
         )
     }

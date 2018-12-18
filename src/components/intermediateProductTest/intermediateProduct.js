@@ -74,6 +74,7 @@ class InterProduct extends React.Component {
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -88,9 +89,10 @@ class InterProduct extends React.Component {
     render() {
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
+        const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name="中间品录检"  menu="质量与流程" menu2="数据录入"></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
@@ -112,6 +114,10 @@ class InterProduct extends React.Component {
                 </div>
             </div>
         )
+    }
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/dataEntry'});
     }
     /**实现修改state功能 */
     modifyDataSource = (data) => {
