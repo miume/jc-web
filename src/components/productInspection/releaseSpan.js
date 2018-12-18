@@ -27,7 +27,7 @@ class ReleaseSpan extends React.Component {
             process:-1,
         };
         this.handleCancel = this.handleCancel.bind(this);
-        this.showModal - this.showModal.bind(this);
+        this.showModal = this.showModal.bind(this);
     }
     render() {
         const { visible } = this.state;
