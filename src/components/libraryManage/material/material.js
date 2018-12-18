@@ -1,11 +1,10 @@
 import React from 'react';
 import SearchCell from '../../BlockQuote/search';
-// import Difference from './difference'
-import axios from 'axios'
-import NewButton from "../../BlockQuote/newButton";
-import "./difference.css"
+import axios from 'axios';
+import NewButton from "./button";
+import "./difference.css";
 
-const forkData = [1000,1000,1000,1000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [1000,2000,2000,1001,2010,1010,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -23,6 +22,7 @@ class Material extends React.Component{
             searchContent:'',
             dataSource:[],
             height:[],
+            loading: false,
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -32,7 +32,7 @@ class Material extends React.Component{
     componentDidMount() {
         this.getAllData();
     }
-    /**获取所有父菜单 */
+    /**获取所有数据 */
   getAllData(){
     axios({
       url:`${this.server}/jc/common/RepoStock`,
@@ -52,6 +52,34 @@ class Material extends React.Component{
         dataSource:res
       })
     })
+  }
+
+  getAllData1(){
+    axios({
+      url:`${this.server}/jc/common/RepoStock`,
+      method:'get',
+      headers:{
+        'Authorization': this.Authorization
+        },
+        params: {materialClass:1},
+    }).then((data)=>{
+      const res = data.data.data;
+      for(var i = 1; i<=res.length; i++){
+        res[i-1]['index']=i;
+        res[i-1]["realNum"]=forkData[i-1]
+        res[i-1]["realWeig"]=forkData[i-1]
+    }
+      this.setState({
+        dataSource:res
+      })
+    })
+  }
+
+  sleep(delay){
+    var start = (new Date()).getTime();
+    while ((new Date()).getTime() - start < delay) {
+        continue;
+      }
   }
     searchContentChange(e){
         const  value=e.target.value;//此处显示的是我搜索框填的内容
@@ -83,30 +111,29 @@ class Material extends React.Component{
         })
     }
     handleClick(){
-        // this.state.dataSource.map((m)=>{
-        //     console.log(m.id)
-        //     axios({
-        //         url:`${this.server}/jc/common/RepoStock/oneKeyStock`,
-        //         method:'post',
-        //         params:{
-        //             id:parseInt(m.id),
-        //             quantity:m.realNum,
-        //             weight:m.realWeig,
-        //             creator:parseInt(ob.userId)
-        //         },
-        //     }).then((data)=>{
-        //         this.getAllData()
-        //     })
-        // })
 
-        console.log(this.state.dataSource);
+        this.state.dataSource.map((m)=>{
+                axios({
+                url:`${this.server}/jc/common/RepoStock/oneKeyStock`,
+                method:'post',
+                params:{
+                    id:parseInt(m.id),
+                    quantity:m.realNum,
+                    weight:m.realWeig,
+                    creator:parseInt(ob.userId)
+                },
+            }).then((data)=>{
+                this.sleep(1000)
+                this.getAllData1()
+            })
+        })
     }
     render(){
         this.Authorization = localStorage.getItem('Authorization');
-        this.server = "http://localhost:8080";
+        this.server = localStorage.getItem("remote")
         return (
             <div style={{padding:'0 15px'}}>
-                <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale"/>
+                <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入搜索内容'
                         searchContentChange={this.searchContentChange}

@@ -85,14 +85,14 @@ class Editor extends React.Component{
             data.details.push({})
         }
 
-        const inputName = document.getElementsByClassName("inputName")
+        const inputName = document.getElementsByClassName("proinputName")
         const selID = document.getElementsByClassName("sleID")
         for(var e=0;e<selID.length;e++){
             data.details[e]["responsibility"] = inputName[e].value
             data.details[e]["userId"] = selID[e].value
         }
 
-        let name = document.getElementById("name").value
+        let name = document.getElementById("proname").value
         let id = this.state.id
         data.commonBatchNumber["description"] = name
         data.commonBatchNumber["id"] = id

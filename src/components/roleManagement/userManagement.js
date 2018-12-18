@@ -102,7 +102,7 @@ class UserManagement extends React.Component {
         //console.log(value)
         if(target.checked === true )
             this.state.unsignedCheckIds.push(parseInt(value));
-        else 
+        else
             this.state.unsignedCheckIds.splice(this.state.unsignedCheckIds.findIndex(v => v=value),1);
         // console.log(this.state.unsignedCheckIds)
     }
@@ -111,13 +111,13 @@ class UserManagement extends React.Component {
         const value =  target.value;
         if(target.checked === true )
             this.state.assignedCheckIds.push(parseInt(value));
-        else 
+        else
             this.state.assignedCheckIds.splice(this.state.assignedCheckIds.findIndex(v => v=value),1);
     }
     /** 右移按钮 未分配到已分配*/
     moveRight(){
         if(this.state.unsignedCheckIds.length === 0) {
-            message.info('您还没选择未分配角色！',1);
+            message.info('您还没选择未被分配的用户！',1);
         }
         else{
             let newState = {...this.state};
@@ -136,7 +136,7 @@ class UserManagement extends React.Component {
     /** 左移按钮 已分配到未分配*/
     moveLeft(){
         if(this.state.assignedCheckIds.length === 0) {
-            message.info('您还没选择已分配角色！',1);
+            message.info('您还没选择已被分配的用户！',1);
         }
         else{
             let newState = {...this.state};
@@ -157,29 +157,28 @@ class UserManagement extends React.Component {
     //   console.log(this.state)
       return (
         <span>
-          <span  className='blue' onClick={this.showModal} value={this.state.value}>成员管理</span>
-          <Modal title="设置角色" visible={this.state.visible}
-            closable={false} maskClosable={false} width={600} centered={true}
+          <span  className='blue' onClick={this.showModal} value={this.state.value}>分配角色</span>
+          <Modal title="分配角色" visible={this.state.visible}
+            closable={false} maskClosable={false} centered={true}
+            className='.modal-md'
             footer={[
                 <CancleButton key='back' handleCancel={this.handleCancel}/>,
                 <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
               ]}
               >
-            <div style={{height:'377px'}} >
+            <div>
                 <header style={{width:"40%",marginRight:'19%'}}>
-                    <li className="theHead">未分配角色</li>
+                    <li className="theHead">未被分配用户</li>
                 </header>
                 {/* <header style={{width:"19%"}}>
                     <li className="theHead">操作</li>
                 </header> */}
                 <header style={{width:"40%"}}>
-                    <li className="theHead">已分配角色</li>
+                    <li className="theHead">已被分配用户</li>
                 </header>
-                
-                <div className="clear"></div>
 
                 <div className="contents" style={{width:"40%"}}>
-                    
+
                     {
                         this.state.unsignedRole.map((unsigned) => {
                             return (
@@ -188,12 +187,12 @@ class UserManagement extends React.Component {
                             )
                         })
                     }
-                   
+
                 </div>
 
                 <div className="middle" style={{width:"19%"}}>
-                    <div style={{margin:'130px 30px'}} >
-                        <Button className='moddal-button-arrow' type="default"  style={{marginBottom:'15px'}} onClick={this.moveRight}><strong><i className='fa fa-chevron-right'></i></strong></Button>
+                    <div >
+                        <Button className='moddal-button-arrow' type="default" onClick={this.moveRight}><strong><i className='fa fa-chevron-right'></i></strong></Button>
                         <Button className='moddal-button-arrow' type="default" onClick={this.moveLeft}><strong><i className='fa fa-chevron-left'></i></strong></Button>
                     </div>
                 </div>
@@ -203,11 +202,14 @@ class UserManagement extends React.Component {
                         this.state.assignedRole.map((assigned) => {
                             return (
                                 <li key={assigned.id}><label className='check-label'>{assigned.name}</label><input type='checkbox' value={assigned.id}
+                                style={{marginLeft:'10px'}}
                                 onChange={this.handleAssignedInputChange}/></li>
                             )
                         })
                     }
                 </div>
+
+                <div className="clear"></div>
             </div>
           </Modal>
         </span>
