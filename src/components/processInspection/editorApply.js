@@ -106,10 +106,11 @@ class EditorApply extends React.Component{
                         }
                         </tbody>
                         }
-                </table>
-                <WhiteSpace />
-                <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
-        </div>
+                    </table>
+
+                    <WhiteSpace />
+                    <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+            </div>
         );
     }
 }

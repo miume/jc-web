@@ -52,7 +52,7 @@ import EditorApply from './editorApply';
     title: '检测项目',
     dataIndex: 'testItemString' ,
     key: 'testItemString',
-    render:(text)=>{ 
+    render:(text)=>{
       if(text){
         const items = text.split(',');
         var testItems = '';
@@ -213,7 +213,7 @@ class Detail extends React.Component{
         this.setState({
             allTestItem : res
         })
-  })   
+  })
   }
      /**监控送审界面的visible */
     handleVisibleChange(visible){
@@ -372,6 +372,7 @@ applyReview(dataId){
             <span>
                 <span className='blue' onClick={this.handleDetail} >详情</span>
                 <Modal title="详情" visible={this.state.visible} closable={false} centered={true}
+                    maskClosable={false} className='modal-xxlg'
                     width='1300px' maskClosable={false}
                     footer={this.state.flag?iteration:detail} 
                   >
@@ -388,7 +389,6 @@ applyReview(dataId){
                     <div style={{height:'350px'}} className={this.state.flag?'show':'hide'}>
                        <EditorApply data={this.state.data} url={this.props.url} allTestItem={this.state.allTestItem} getApplyData={this.getApplyData}/>
                     </div>
-                    
                 </Modal>
             </span>
         );
