@@ -1,10 +1,8 @@
 import React from 'react';
 import { Modal,Button,Input } from 'antd';
-import PurchaseModal from "./purchaseModal";
-import ReleaseNewButton from './releaseNew';
-import ReleaseButton from './releaseButton';
+import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 
-class CheckReleaseSpan extends React.Component {
+class DetailSpan extends React.Component {
     url;
     constructor(props){
         super(props);
@@ -33,7 +31,7 @@ class CheckReleaseSpan extends React.Component {
                     // footer下的每个组件都要有唯一的key
                     footer={footer}
                 >
-                    <div style={{height:500}}>
+                    <div style={{maxHeight:500}}>
                         <PurchaseModal
                             clickState ={1}
                         />
@@ -53,21 +51,17 @@ class CheckReleaseSpan extends React.Component {
             case '2': //已通过  未发布
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
-                    <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default'}} disabled defaultValue="该数据审核通过，请发布"/>,
-                    <ReleaseNewButton  key="releaseNew" handleReleaseNew={this.handleReleaseNew}/>,
-                    <ReleaseButton key="releaseNew" handleRelease={this.handleRelease}/>
+                    <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleReleaseNew} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                 ];
                 return footer;
             case '3': //不通过
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
-                    <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default',right:'6px'}} disabled defaultValue="该数据审核不通过，请改正后再次申请审核"/>,
                 ];
                 return footer;
             case '0': //待审核
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
-                    <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default',right:'6px'}} disabled defaultValue="该数据待审核，审核通过后方可发布"/>,
                 ];
                 return footer;
             default:
@@ -116,4 +110,4 @@ class CheckReleaseSpan extends React.Component {
         this.setState({ pvisivle });
     };
 }
-export default CheckReleaseSpan;
+export default DetailSpan;

@@ -1,0 +1,9 @@
+/*表格中操作列Span*/
+.unqualifiedBlueSpan {
+    color: #1890ff;
+    cursor: pointer;
+}
+.unqualifiedBlueSpan i{
+    color: #1890ff;
+    font-weight: bolder
+}

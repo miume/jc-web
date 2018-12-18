@@ -53,8 +53,7 @@ for(let i=0; i<20; i++){
 }
 
 class InterProduct extends React.Component {
-    Authorization;
-    server;
+    url;
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return ;
@@ -85,8 +84,7 @@ class InterProduct extends React.Component {
         };
     }
     render() {
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>

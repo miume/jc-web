@@ -17,14 +17,13 @@ for (let i = 0; i < 20; i++) {
         g: '李小红',
         h: '2018年11月27日',
         type: '进货检验',
-        state:3,
+        state:'3',
         isUrgent:'紧急',
     });
 }
 
 class UnqualifiedExamine extends React.Component{
-    Authorization;
-    server;
+    url;
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return ;
@@ -47,26 +46,25 @@ class UnqualifiedExamine extends React.Component{
         }
     }
     render() {
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                <BlockQuote name="不合格审评表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <div style={{padding:'15px'}}>
                     <SearchCell
                         name='请输入搜索内容'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         // fetch={this.fetch}
                     />
-                </span>
-                <div className='clear' ></div>
-                <UnqualifiedTable
-                    data={this.state.dataSource}
-                    pagination={this.pagination}
-                    // fetch={this.fetch}
-                />
+                    <div className='clear' ></div>
+                    <UnqualifiedTable
+                        data={this.state.dataSource}
+                        pagination={this.pagination}
+                        // fetch={this.fetch}
+                    />
+                </div>
             </div>
         )
     }
