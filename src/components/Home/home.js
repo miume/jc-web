@@ -239,7 +239,7 @@ class Home extends Component {
                  unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
                  // getAllByPage:`${server}/jc/common/productLine/pages`,
                  // search:`${server}/jc/common/productLine/pagesNameLike`
-             }
+             },
              /**入库管理 */
              enterStorage: {
                 enterStorage:`${server}/jc/common/repoInRecord/pages`
