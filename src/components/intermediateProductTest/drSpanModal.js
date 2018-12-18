@@ -65,7 +65,7 @@ class DrSpanModal extends React.Component {
         });
         return(
             <div>
-                <div className="drSpanModalTop">
+                <div className="interDrSpanModalTop">
                     <table>
                         <thead>
                         <tr>
@@ -83,7 +83,7 @@ class DrSpanModal extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div className="drSpanModalMiddle">
+                <div className="interDrSpanModalMiddle">
                        <div>
                            样品名称：<span>{this.state.topData.materialName+'样品'}</span>
                        </div>
@@ -100,7 +100,7 @@ class DrSpanModal extends React.Component {
                         bordered
                     />
                 </div>
-                <div className="drSpanModalBottomFirst">
+                <div className="interDrSpanModalBottomFirst">
                     <table>
                         <tbody>
                         <tr>
@@ -118,7 +118,7 @@ class DrSpanModal extends React.Component {
                     />
                 </div>
                 <Divider />
-                <div className="drSpanModalBottomSecond">
+                <div className="interDrSpanModalBottomSecond">
                     <table >
                         <tbody>
                         <tr>

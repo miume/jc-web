@@ -20,7 +20,7 @@ for (let i = 0; i < 20; i++) {
         g: '李小红',
         h: '2018年11月27日',
         type: '进货检验',
-        state:2,
+        state:'0',
         isUrgent:'紧急',
     });
 }
@@ -97,26 +97,7 @@ class Release extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
-        // axios({
-        //     url: `${this.server}/jc/auth/department/getDepartmentsByPage`,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.Authorization
-        //     },
-        //     params: params,
-        //     // type: 'json',
-        // }).then((data) => {
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         loading: false,
-        //         dataSource: res.list,
-        //     });
-        // });
+
     };
     componentDidMount() {
         this.fetch();
@@ -124,30 +105,7 @@ class Release extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        // const dep_name = this.state.searchContent;
-        // axios({
-        //     url:`${this.server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         departmentName:dep_name
-        //         // department_name:dep_name
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         dataSource: res.list,
-        //     });
-        // });
+
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){

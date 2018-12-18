@@ -74,7 +74,7 @@ class CheckSpanModal extends React.Component {
         });
         return(
             <div >
-                <div className="checkModalTop">
+                <div className="interCheckModalTop">
                     <table>
                         <thead>
                         <tr>
@@ -92,13 +92,13 @@ class CheckSpanModal extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div className="checkModalMiddle">
+                <div className="interCheckModalMiddle">
                     <div>
                            样品名称：<span>{this.state.topData.materialName+'样品'}</span>
                     </div>
                     <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button>
                 </div>
-                <div className="checkModalBottom">
+                <div className="interCheckModalBottom">
                     <Table
                         rowKey={record => record.id}
                         columns={columns}

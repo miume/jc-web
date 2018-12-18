@@ -9,70 +9,69 @@
     详情、发布中drSpanModal中样式
     Top: 设置表格样式
     middle: 设置样品名称
-    Bottom: 设置底部样式
+    Bottom: 设置检验人、审核人等
  */
 /*Top:设置表格样式*/
-.drSpanModalTop {
+.interDrSpanModalTop {
     width: 100%;
     cursor: default;
 }
-.drSpanModalTop table{
+.interDrSpanModalTop table{
     width:100%;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
-.drSpanModalTop table thead {
+.interDrSpanModalTop table thead {
     color: white;
     background: #0079FE;
     border: 1px solid  #E9E9E9;
 }
-.drSpanModalTop table thead tr th{
+.interDrSpanModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
-.drSpanModalTop table tbody tr td {
+.interDrSpanModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
-.drSpanModalMiddle {
+.interDrSpanModalMiddle {
     width: 100%;
     padding-top: 5px;
     cursor: default;
 }
-.drSpanModalMiddle div{
+.interDrSpanModalMiddle div{
     float: left;
     padding-top: 10px;
     padding-bottom: 14px;
 }
-
-.drSpanModalBottomFirst {
+/*Bottom:设置检验人、审核人等*/
+.interDrSpanModalBottomFirst {
     padding-top: 20px;
     padding-bottom: 50px;
     margin-top: -7px;
     cursor: default;
 }
-.drSpanModalBottomFirst table {
+.interDrSpanModalBottomFirst table {
     float: left;
     margin-top: 5px;
 }
-.drSpanModalBottomFirst table tbody{
+.interDrSpanModalBottomFirst table tbody{
     padding-top: 4px;
     padding-bottom: 4px;
 }
-.drSpanModalBottomSecond {
+.interDrSpanModalBottomSecond {
     margin-top: -7px;
     cursor: default;
 }
-.drSpanModalBottomSecond table {
+.interDrSpanModalBottomSecond table {
     float: left;
 }
-.drSpanModalBottomSecond table tbody{
-    /*padding-top: 1px;*/
+.interDrSpanModalBottomSecond table tbody{
     padding-bottom: 4px;
 }
 /*
@@ -83,44 +82,44 @@
 
  */
 /*Top:设置表格样式*/
-.checkModalTop {
+.interCheckModalTop {
     width: 100%;
     cursor: default;
 }
-.checkModalTop table{
+.interCheckModalTop table{
     width:100%;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
-.checkModalTop table thead {
+.interCheckModalTop table thead {
     color: white;
     background: #0079FE;
     border: 1px solid  #E9E9E9;
 }
-.checkModalTop table thead tr th{
+.interCheckModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
-.checkModalTop table tbody tr td {
+.interCheckModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
-.checkModalMiddle {
+.interCheckModalMiddle {
     width: 100%;
     padding-top: 5px;
     cursor: default;
 }
-.checkModalMiddle div{
+.interCheckModalMiddle div{
     float: left;
     padding-top: 10px;
     padding-bottom: 10px;
 }
-.checkModalMiddle button {
+.interCheckModalMiddle button {
     color: #999999 ;
     font-size: 14px ;
     font-weight: bolder ;
@@ -130,11 +129,11 @@
     margin-top:5px;
 }
 /*Bottom: 设置底部表格样式*/
-.checkModalBottom {
+.interCheckModalBottom {
     padding-top: 50px;
     padding-bottom: 20px
 }
-.checkModalBottom table {
+.interCheckModalBottom table {
     cursor: default;
 }
 
