@@ -157,6 +157,7 @@ class Product extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
+                <div style={{verticalAlign:"baseline"}}>
                 <div className="border-down" style={{display:"inline-block",width:"9%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>序号</div>
                 <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>批号</div>
                 <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>货品名称</div>
@@ -165,6 +166,7 @@ class Product extends React.Component{
                 <div className="border-down1" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>实际数量</div>
                 <div className="border-down2" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>记录重量</div>
                 <div className="border-down4" style={{display:"inline-block",width:"12.9%",textAlign:'center',lineHeight:"36.8px"}}>实际重量</div>
+                </div>
                 <div className="parent" id="parent">
                     <div className="one col">
                     

@@ -15,6 +15,7 @@ class MaterialRecord extends React.Component{
         this.state={
             searchContent:'',
             dataSource:[],
+            user:[]
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -34,12 +35,14 @@ class MaterialRecord extends React.Component{
         params: {materialClass:1},
     }).then((data)=>{
       const res = data.data.data;
-      for(var i = 1; i<=res.length; i++){
-        res[i-1]['index']=i;
-    }
-      this.setState({
-        dataSource:res
-      })
+      if(res){
+        for(var i = 1; i<=res.length; i++){
+            res[i-1]['index']=i;
+        }
+          this.setState({
+            dataSource:res
+          })
+      }
     })
   }
     searchContentChange(e){
@@ -88,8 +91,8 @@ class MaterialRecord extends React.Component{
                     <div className="MRone">
                         <div className="MRborder-down">序号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
                                     {m.index}
                                 </div>    
                     })
@@ -98,8 +101,8 @@ class MaterialRecord extends React.Component{
                     <div className="MRtwo">
                         <div className="MRborder-down">批号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
                                     {m.serialNumber}
                                 </div>    
                     })
@@ -108,8 +111,8 @@ class MaterialRecord extends React.Component{
                     <div className="MRthree">
                         <div className="MRborder-down">货品名称</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
                                     {m.materialName}
                                 </div>    
                     })
@@ -118,8 +121,8 @@ class MaterialRecord extends React.Component{
                     <div className="MRfour">
                         <div className="MRborder-down">货品型号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
                                     原材料
                                 </div>    
                     })
@@ -128,9 +131,9 @@ class MaterialRecord extends React.Component{
                     <div className="MRfour">
                         <div className="MRborder-down">盘库日期</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
-                                    盘库日期
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
+                                    {m.repoDiffRecord.createTime}
                                 </div>    
                     })
                 }
@@ -138,9 +141,9 @@ class MaterialRecord extends React.Component{
                     <div className="MRfour">
                         <div className="MRborder-down">盘库人</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
-                                    {m.repoDiffRecord.creator}
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
+                                    {m.creator}
                                 </div>    
                     })
                 }
@@ -154,12 +157,12 @@ class MaterialRecord extends React.Component{
 
 
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.repoDiffRecord.supposedQuantity !== m.repoDiffRecord.realQuantity){
-                            return <div className="MRborder-down" style={{color:"red"}}>
+                            return <div className="MRborder-down" key={index} style={{color:"red"}}>
                         {m.repoDiffRecord.supposedQuantity}  </div>    
                         }else{
-                            return <div className="MRborder-down">
+                            return <div className="MRborder-down" key={index}>
                             {m.repoDiffRecord.supposedQuantity}  </div>  
                         }
                     })
@@ -168,8 +171,8 @@ class MaterialRecord extends React.Component{
                     <div className="MRsix">
                         <div className="MRborder-down1">实际数量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
                                     {m.repoDiffRecord.realQuantity}
                                 </div>    
                     })
@@ -179,12 +182,12 @@ class MaterialRecord extends React.Component{
                         <div className="MRborder-down2">记录重量</div>
                         <div className='white-space space-left'></div>
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.repoDiffRecord.supposedWeight !== m.repoDiffRecord.realWeight){
-                            return <div className="MRborder-down" style={{color:"red"}}>
+                            return <div className="MRborder-down" key={index} style={{color:"red"}}>
                             {m.repoDiffRecord.supposedWeight}
                         </div>
-                        }else{ return <div className="MRborder-down">
+                        }else{ return <div className="MRborder-down" key={index}>
                         {m.repoDiffRecord.supposedWeight}
                     </div>}
                        
@@ -194,8 +197,8 @@ class MaterialRecord extends React.Component{
                     <div className="MReight">
                         <div className="MRborder-down4">实际重量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="MRborder-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="MRborder-down" key={index}>
                                     {m.repoDiffRecord.realWeight}
                                 </div>    
                     })
