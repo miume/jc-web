@@ -31,7 +31,7 @@ const CollectionCreateForm = Form.create()(
                     centered={true}
                     maskClosable={false}
                     title="新增"
-                    width="400px"
+                    className='modal-md'
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} className='fa fa-check' />,
@@ -51,9 +51,9 @@ const CollectionCreateForm = Form.create()(
                         <table className="protable">
                             <thead className='prothead' id="thd">
                                 <tr>
-                                    <td style={{width:"164px"}}>负责人</td>
-                                    <td style={{width:"164px"}}>职责</td>
-                                    <td style={{width:"164px"}}>操作</td>
+                                    <td>负责人</td>
+                                    <td>职责</td>
+                                    <td>操作</td>
                                 </tr>
                             </thead>
                             <tbody id="edit">
@@ -127,7 +127,7 @@ class AddModal extends React.Component {
         for(let i=0;i<input.length;i++){
             inputData.push(input[i].value)
         }
-        
+
         let taskPersonList = [];
         for(let i=0;i<inputData.length;i++){
             taskPersonList.push({})
