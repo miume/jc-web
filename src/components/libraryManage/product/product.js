@@ -157,19 +157,19 @@ class Product extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
-                <div style={{verticalAlign:"baseline"}}>
-                <div className="border-down" style={{display:"inline-block",width:"9%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>序号</div>
-                <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>批号</div>
-                <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>货品名称</div>
-                <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>货品型号</div>
-                <div className="border-down3" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>记录数量</div>
-                <div className="border-down1" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>实际数量</div>
-                <div className="border-down2" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>记录重量</div>
-                <div className="border-down4" style={{display:"inline-block",width:"12.9%",textAlign:'center',lineHeight:"36.8px"}}>实际重量</div>
+                <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
+                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
+                <div className="LM-tableHead" >批号</div>
+                <div className="LM-tableHead" >货品名称</div>
+                <div className="LM-tableHead" >货品型号</div>
+                <div className="LM-blueTableHead LM-tableHead">记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际数量</div>
+                <div className="LM-blueTableHead LM-tableHead">记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际重量</div>
                 </div>
-                <div className="parent" id="parent">
+                <div className="LM-parent" id="parent">
                     <div className="one col">
-                    
+
                 {
                     this.state.dataSource.map((m ,index)=>{
                         return <div className={"border-down row"+index} key={index}>
@@ -179,7 +179,7 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="two col">
-                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
@@ -189,7 +189,7 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="three col">
-                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
@@ -199,7 +199,7 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="four col">
-                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
@@ -209,21 +209,21 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="five col">
-                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
                             return <div className={"border-down row"+index} style={{color:"red"}} key={index}>
-                        {m.quantity}  </div>    
+                        {m.quantity}  </div>
                         }else{
                             return <div className={"border-down row"+index} key={index}>
-                            {m.quantity}  </div>  
+                            {m.quantity}  </div>
                         }
                     })
                 }
                     </div>
                     <div className="six col">
-                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
@@ -233,7 +233,7 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="seven col">
-                        
+
 
                 {
                     this.state.dataSource.map((m,index)=>{
@@ -249,7 +249,7 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="eight col">
-                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
