@@ -89,8 +89,8 @@ class Submit extends React.Component{
                     }
                     </Select>
                 </div>
-                <div style={{padding:'10px'}}>
-                    <span style={{paddingRight:'10px'}}>是否紧急</span><Switch onChange={this.urgentChange} style={{width:'40px'}}></Switch>
+                <div style={{padding:'10px'}} className='submit'>
+                    <span style={{paddingRight:'10px'}}>是否紧急</span><Switch defaultChecked={this.props.defaultChecked} onChange={this.props.urgentChange} style={{width:'40px'}}></Switch>
                 </div>
                 <div style={{padding:'10px 10px 0px 10px',float:'right'}}>
                     <Button key='back' type='ghost' size='small' onClick={this.props.handleCancel} className='button' >取消</Button>

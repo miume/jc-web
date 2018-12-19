@@ -11,15 +11,12 @@
     background: #0079FE;
 }
 .purchaseTopThead tr th {
-    /*background: #0079FE;*/
     font-size: 15px;
     padding-left: 10px;
     /*border-collapse: collapse;*/
     border: 1px solid #E9E9E9;
 }
 .purchaseTopThead tr th:first-child{
-    /*border-right: none;*/
-    /*border-radius: 3px 0 0 0;*/
 }
 .purchaseTopThead tr th:last-child{
     border-right: none;
@@ -61,6 +58,14 @@
     /*display: flex;*/
     font-size: 0;
 
+
+}
+#unqualfiedModalTable {
+    width: 1000px;
+    height: 220px;
+    white-space: nowrap;
+    /*display: flex;*/
+    font-size: 0;
 
 }
 .purchaseThead {

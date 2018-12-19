@@ -119,7 +119,6 @@ class RawMaterialRedList extends Component{
             align:'center',
             //width:'',
             render:(text,record)=>{
-                console.log(record);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
                 //console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
@@ -208,7 +207,34 @@ class RawMaterialRedList extends Component{
              
         });
     }
-    onSelectChange(selectedRowKeys){
+    onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
+        // console.log(selectedRowKeys);//是一个数组
+        // const data=this.state.dataSource;
+        // let l=selectedRowKeys.length;
+        // for(let i=0;i<l;i++){
+        //     for(let j=0;j<data.length;j++){
+        //         console.log(data[j].repoRedTable.id);
+        //         console.log(data[j].commonBatchNumber.status);
+        //         if(selectedRowKeys[i]===data[j].repoRedTable.id){
+        //             if(data[j].commonBatchNumber.status!==-1&&data[j].commonBatchNumber.status!==3){
+        //                 this.setState({
+        //                     selectedRowKeys:[],
+        //                 });
+        //                            break;
+        //             }
+        //         }
+        //         console.log(this.state.selectedRowKeys);
+        //     } 
+        //     console.log(this.state.selectedRowKeys.length);
+        //     if(this.state.selectedRowKeys.length===0){
+        //          break;
+        //     }
+        // }
+        // console.log(this.state.selectedRowKeys.length);
+        // if(this.state.selectedRowKeys.length===0){
+        //     message.info('有不可删除数据！');
+        //            return
+        // }
         this.setState({selectedRowKeys:selectedRowKeys});
      }
     
@@ -236,27 +262,6 @@ class RawMaterialRedList extends Component{
       /**批量删除弹出框确认函数 */
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
-        const data=this.state.dataSource;
-        console.log(ids);
-        for(var i=0;i<ids.length;i++){
-            console.log(ids[i]);
-            for(var j=0;j<data.length;j++){
-                console.log(data[j].repoRedTable.id);
-                if(ids[i]===data[j].repoRedTable.id){
-                    if(!data[i].commonBatchNumber.status===-1||!data[i].commonBatchNumber.status===3){
-                                   ids.length=0;
-                                   break;
-                    }
-                }
-            } 
-            if(ids.length===0){
-                break;
-            }
-        }
-        if(ids.length===0){
-            message.info('有不可删除数据！');
-            return
-        }
         axios({
              url:`${this.url.redList.redList}`,
              method:'Delete',
@@ -367,8 +372,11 @@ class RawMaterialRedList extends Component{
         const rowSelection={
             selectedRowKeys,
            onChange:this.onSelectChange,
+           getCheckboxProps: record => ({
+            disabled: record.commonBatchNumber.status === 0|| record.commonBatchNumber.status === 1|| record.commonBatchNumber.status === 2, // Column configuration not to be checked
+          }),
     };
-      //console.log(this.state.batchNumberChildren);
+      
         return(
             <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>

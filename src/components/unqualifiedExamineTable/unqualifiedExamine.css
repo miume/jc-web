@@ -7,3 +7,50 @@
     color: #1890ff;
     font-weight: bolder
 }
+.unqualifiedDetailModal {
+    display: inline-block;
+    width: 100%;
+    height: 280px;
+    border: 1px solid black;
+    padding-top: 50px;
+}
+.unDetailModal {
+    display: inline-block;
+    width: 100%;
+    height: 250px;
+    border: 1px solid #E4E4E4;
+    margin-top: 30px;
+    text-align: center;
+    line-height: 250px;
+    color: #999999;
+}
+.unDetailModalPass {
+    width: 100%;
+    height: 250px;
+    border-collapse:collapse;
+    /*border: 1px solid #E4E4E4;*/
+    margin-top: 30px;
+}
+.unDetailModalPass table {
+    width: 1000px;
+    height: 250px;
+    /*border: 1px solid #E4E4E4;*/
+}
+.unDetailModalPass table tbody tr td {
+    width: 50%;
+    border: 1px solid #E4E4E4;
+}
+.unDetailModalPass table tbody tr td div:first-child{
+    width: 100%;
+    height: 50%;
+    /*border: 1px solid #E4E4E4;*/
+}
+.unDetailModalPass table tbody tr td div:last-child{
+    width: 100%;
+    height: 50%;
+    /*border: 1px solid #E4E4E4;*/
+    float: right;
+}
+.unDetailModalPassLast div {
+    text-align: right;
+}
