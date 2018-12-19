@@ -4,13 +4,9 @@ import axios from "axios";
 
 
 class DeletaSpan extends React.Component {
-    Authorization;
-    server;
+    url;
     render() {
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <span>
                 <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
@@ -21,19 +17,20 @@ class DeletaSpan extends React.Component {
     }
     handleDelete = (id) => {
         axios({
-            url:`${this.server}/jc/auth/department/`+parseInt(id),
+            url:`${this.url.department.deleteById}/${id}`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
         }).then((data)=>{
             message.info(data.data.message);
+            this.props.getFetch()
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
-        setTimeout(() => {
-            this.props.getFetch();
-        }, 1000);
+        // setTimeout(() => {
+        //     this.props.getFetch();
+        // }, 1000);
     }
 }
 

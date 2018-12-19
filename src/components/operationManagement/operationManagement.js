@@ -10,8 +10,10 @@ import DeleteByIds from "../BlockQuote/deleteByIds";
 
 /**这是个令牌，每次调用接口都将其放在header里 */
 class OperationManagement extends React.Component {
-    Authorization;
-    server;
+    url;
+    componentDidMount() {
+        this.fetch();
+    }
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -22,7 +24,6 @@ class OperationManagement extends React.Component {
         this.state = {
             dataSource: [],
             selectedRowKeys: [],
-            loading: false,
             searchContent:'',
             searchText: '',
         };
@@ -44,8 +45,7 @@ class OperationManagement extends React.Component {
         }
     }
     render() {
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         const {  selectedRowKeys } = this.state;
         const rowSelection = {
@@ -104,39 +104,33 @@ class OperationManagement extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/auth/operation/getOperationsByPage`,
+            url: `${this.url.operation.getOperationsByPage}` ,
             method: 'get',
             headers:{
-                'Authorization': this.Authorization
+                'Authorization': this.url.Authorization
             },
             params: params,
-            // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            this.pagination.total=res.total;
+            this.pagination.total=res?res.total:0;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
-                loading: false,
                 dataSource: res.list,
             });
         })
     };
-    componentDidMount() {
-        this.fetch();
-    }
     /**---------------------- */
     /**实现批量删除功能 */
     deleteByIds = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${this.server}/jc/auth/operation/deleteByIds`,
+            url: `${this.url.operation.deleteByIds}`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             data:ids,
             type:'json'
@@ -155,7 +149,6 @@ class OperationManagement extends React.Component {
         setTimeout(() => {
             this.setState({
                 selectedRowKeys: [],
-                loading: false,
             });
         }, 1000);
     }
@@ -165,10 +158,10 @@ class OperationManagement extends React.Component {
     searchEvent(){
         const ope_name = this.state.searchContent;
         axios({
-            url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
+            url: `${this.url.operation.pagesByName}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 size: this.pagination.pageSize,
@@ -178,7 +171,7 @@ class OperationManagement extends React.Component {
             type:'json',
         }).then((data)=>{
             const res = data.data.data;
-            this.pagination.total=res.total;
+            this.pagination.total=res?res.total:0;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
@@ -192,13 +185,6 @@ class OperationManagement extends React.Component {
         const value = e.target.value;
         this.setState({searchContent:value});
     }
-    /**---------------------- */
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
-    /**实现字段搜索功能 */
     /**---------------------- */
 }
 
