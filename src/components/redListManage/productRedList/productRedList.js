@@ -200,6 +200,30 @@ class ProductRedList extends Component{
         });
     }
     onSelectChange(selectedRowKeys){
+        const data=this.state.dataSource;
+        for(let i=0;i<selectedRowKeys.length;i++){
+            for(var j=0;j<data.length;j++){
+                // console.log(data[j].repoRedTable.id);
+                // console.log(data[j].commonBatchNumber.status);
+                if(selectedRowKeys[i]===data[j].repoRedTable.id){
+                    if(!data[j].commonBatchNumber.status===-1&&!data[j].commonBatchNumber.status===3){
+                        this.setState({
+                            selectedRowKeys:[]
+                        });
+                                   break;
+                    }
+                }
+                //console.log(this.state.selectedRowKeys);
+            } 
+            if(this.state.selectedRowKeys.length===0){
+                 break;
+            }
+        }
+        //console.log(this.state.selectedRowKeys.length);
+        if(this.state.selectedRowKeys.length===0){
+            message.info('有不可删除数据！');
+                   return
+        }
         this.setState({selectedRowKeys:selectedRowKeys});
      }
     
@@ -227,15 +251,6 @@ class ProductRedList extends Component{
       /**批量删除弹出框确认函数 */
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
-        for(var i=0;i<ids.length;i++){
-            if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
-                   ids.length=0;      
-                break
-            }
-    }
-    if(ids.length===0){
-        return
-    }
         axios({
              url:`${this.url.redList.redList}`,
              method:'Delete',
@@ -346,6 +361,9 @@ class ProductRedList extends Component{
         const rowSelection={
             selectedRowKeys,
            onChange:this.onSelectChange,
+           getCheckboxProps: record => ({
+            disabled: record.commonBatchNumber.status === 0|| record.commonBatchNumber.status === 1|| record.commonBatchNumber.status === 2, // Column configuration not to be checked
+          }),
     };
       //console.log(this.state.batchNumberChildren);
         return(
