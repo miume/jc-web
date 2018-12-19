@@ -253,9 +253,13 @@ class Home extends Component {
               redList:{
                   redList:`${server}/jc/common/repoRedTables`,
                   redList1:`${server}/jc/common/repoRedTable`
+              },
+              /**原材料检验 */
+              rawTestReport:{
+                  rawTestReport:`${server}/jc/common/rawTestReport`, 
+                  getById:`${server}/jc/common/rawTestReport/details`, 
+                  getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
               }
-
-
         }
         localStorage.setItem('url',JSON.stringify(url))
     }

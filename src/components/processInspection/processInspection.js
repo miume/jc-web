@@ -311,7 +311,7 @@ class ProcessInspection extends React.Component{
         const current = JSON.parse(localStorage.getItem('current'));
         return (
             <div>
-                <BlockQuote  name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <BlockQuote  name='制程检测' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
                     <Add server={this.server} url={this.url} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
