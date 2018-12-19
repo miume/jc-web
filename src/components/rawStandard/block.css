@@ -38,4 +38,11 @@
     display: inline-block;
    
 }
-
+.rawStandardPosition{
+    position: absolute;
+    right: 10px;
+   
+    /* font-size: 20px; */
+    color: #1890ff;
+    cursor: pointer;
+}

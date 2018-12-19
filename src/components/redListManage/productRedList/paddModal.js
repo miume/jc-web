@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form,Input,Select,InputNumber} from 'antd';
+import '../redList.css'
 const { TextArea } = Input;
 
 const Option=Select.Option;
@@ -108,7 +109,7 @@ const FormItem=Form.Item;
                     initialValue: ''
                     
                 })(
-                    <TextArea autosize={true} placeholder='请填写损失说明'/>
+                <TextArea placeholder='请填写损失说明' />
                 )}
                 </FormItem>
             </Form>

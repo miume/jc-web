@@ -3,6 +3,7 @@ import {Table,Popconfirm,Divider,message} from 'antd';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import Add from './padd';
 import Edit from './pedit';
+import Note from './note';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 
@@ -103,12 +104,6 @@ class ProductRedList extends Component{
                         default: return '';
             }
           }
-        },{
-            title:'备注',
-            dataIndex:'repoRedTable.note',
-            key:'repoRedTable.note',
-            align:'center',
-            width:'10%'
         },
         {
             title:'操作',
@@ -132,9 +127,12 @@ class ProductRedList extends Component{
                            </Popconfirm>
                          </span>
                        ) : (
-                         <span className='grey' >删除</span>
+                         <span className='notClick' >删除</span>
                        )}
                      </span>
+                     <Divider type='vertical'/>
+                         <Note record={record}/>
+                    
                    </span>
                );
             }
@@ -351,7 +349,7 @@ class ProductRedList extends Component{
     };
       //console.log(this.state.batchNumberChildren);
         return(
-            <div style={{padding:'15px'}}>
+            <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                 <span style={{float:'right',paddingBottom:'8px'}}>

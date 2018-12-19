@@ -110,6 +110,7 @@ class UserAddModal extends React.Component{
                <FormItem  wrapperCol={{ span: 24 }}>
                     {getFieldDecorator('phone',{
                         initialValue: '',
+                        rules:[{required: true, message: '手机号必须是11位',len:11}]
                     })( 
                         <Input placeholder='请输入手机号' style={{height:'40px'}}></Input>
                         )}

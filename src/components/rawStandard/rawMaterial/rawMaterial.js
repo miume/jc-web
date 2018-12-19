@@ -73,6 +73,7 @@ class RawMaterial extends Component{
        this.props.onBlockChange(2,name,true);
        
     }
+  
 /**---------------------- */
 //获取查询时用户名称的实时变化
     searchContentChange(e){
