@@ -161,6 +161,7 @@ class ApplyStockOut extends React.Component{
     }
      /**监控是否紧急 */
      urgentChange(checked){
+        console.log(checked)
         this.setState({
             urgent:checked?1:0
         })
@@ -178,6 +179,7 @@ class ApplyStockOut extends React.Component{
         this.setState({
             visible1:false,
         })
+        this.props.cancle();
     }
     /**保存 */
     applyOut(status){
@@ -228,10 +230,11 @@ class ApplyStockOut extends React.Component{
             visible:false,
             visible1:false
         })
+        this.props.cancle();
     }
     /**送审 */
     applyReview(dataId){
-        // console.log(this.state.urgent)
+        console.log(this.state.urgent)
         // console.log(this.state.process)
         axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
             headers:{
@@ -258,7 +261,7 @@ class ApplyStockOut extends React.Component{
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} defaultChecked={false}/>                       
                     ]}
                 >
                 <div style={{height:'250px'}}>
