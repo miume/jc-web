@@ -3,7 +3,7 @@ import SearchCell from '../../BlockQuote/search';
 import axios from 'axios'
 import NewButton from "./button";
 
-const forkData = [1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [31000,1300,1030,1000,111,110,10001,10100,10001,10001,101010,12002,2202,2023,1000,10001,1000,1000,1000,1000,10100,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -158,7 +158,7 @@ class Product extends React.Component{
                     this.state.dataSource.map((m ,index)=>{
                         return <div className={"border-down row"+index}>
                                     {m.index}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
@@ -168,7 +168,7 @@ class Product extends React.Component{
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index}>
                                     {m.serialNumber}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
@@ -178,7 +178,7 @@ class Product extends React.Component{
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index}>
                                     {m.materialName}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
@@ -188,7 +188,7 @@ class Product extends React.Component{
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index}>
                                     成品
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
@@ -204,10 +204,10 @@ class Product extends React.Component{
                     this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
                             return <div className={"border-down row"+index} style={{color:"red"}}>
-                        {m.quantity}  </div>    
+                        {m.quantity}  </div>
                         }else{
                             return <div className={"border-down row"+index}>
-                            {m.quantity}  </div>  
+                            {m.quantity}  </div>
                         }
                     })
                 }
@@ -218,7 +218,7 @@ class Product extends React.Component{
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index}>
                                     {m.realNum}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
@@ -234,7 +234,7 @@ class Product extends React.Component{
                         }else{ return <div className={"border-down row"+index}>
                         {m.weight}
                     </div>}
-                       
+
                     })
                 }
                     </div>
@@ -244,7 +244,7 @@ class Product extends React.Component{
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index}>
                                     {m.realWeig}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
