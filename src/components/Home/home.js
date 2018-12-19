@@ -37,6 +37,7 @@ import RawStandard from '../rawStandard/rawStandard';
 
 import ProductInspection from '../productInspection/productInspection';
 import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
+import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
@@ -113,12 +114,16 @@ class Home extends Component {
         },{
             path:'/rawStandard',
             component:RawStandard
-        },{
+        },
+        {
             path:'/productInspection',
             component:ProductInspection
         },{
             path:'/unqualifiedExamineTable',
             component:UnqualifiedExamine
+        },{
+            path:'/unqualifiedTrackTable',
+            component:UnqualifiedTrack
         }]
         return data;
     }
@@ -252,9 +257,13 @@ class Home extends Component {
               redList:{
                   redList:`${server}/jc/common/repoRedTables`,
                   redList1:`${server}/jc/common/repoRedTable`
+              },
+              /**原材料检验 */
+              rawTestReport:{
+                  rawTestReport:`${server}/jc/common/rawTestReport`, 
+                  getById:`${server}/jc/common/rawTestReport/details`, 
+                  getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
               }
-
-
         }
         localStorage.setItem('url',JSON.stringify(url))
     }
@@ -297,14 +306,13 @@ class Home extends Component {
                     <Switch>
                         {/**默认选中快速访问界面 */}
                         <Route exact path="/home" component={QuickAccess}/>
-                    {
-                        
-                        path2Component.map(e => {
-                            return (
-                                <Route key={e.path} path={e.path} component={e.component}></Route>
-                            ) 
-                        })              
-                    }   
+                        {
+                            path2Component.map(e => {
+                                return (
+                                    <Route key={e.path} path={e.path} component={e.component}></Route>
+                                ) 
+                            })              
+                        }   
                     </Switch>
                     </div>
                 </div>

@@ -122,7 +122,7 @@ class Pack extends React.Component {
             console.log('res',data);
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
-                const dataSource = this.dataAssemble(res);
+                // const dataSource = this.dataAssemble(res);
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
@@ -133,35 +133,35 @@ class Pack extends React.Component {
         });
     };
     /**数据组装 */
-    dataAssemble = (res) => {
-        const dataSource = [];
-        const list = res.list;
-        for(var i = 0; i<list.length; i++){
-            const testItem = list[i].testReportRecordDTO.testItemResultRecordDTOList;
-            var testItemName;
-            for(var j=0; j<testItem.length; j++){
-                if(j===0){
-                    testItemName = testItem.testItem.name;
-                }else{
-                    testItemName = testItemName + "," + testItem.testItem.name;
-                }
-            }
-            dataSource.push({
-                index:res.prePage*10+(i+1),
-                id: list[i].testReportRecordDTO.testReportRecord.id,
-                sampleDeliveringDate: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate,
-                deliverer: list[i].sampleDeliveringRecordDTO.deliverer.name,
-                deliveryFactory: list[i].sampleDeliveringRecordDTO.deliveryFactory.name,
-                serialNumberd: list[i].sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
-                testItem: testItemName,
-                exceptionComment: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment,
-                type: '无用子段',
-                acceptStatus: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus,
-                status: list[i].commonBatchNumberDTO.commonBatchNumber.status,
-            })
-        }
-        return dataSource
-    };
+    // dataAssemble = (res) => {
+    //     const dataSource = [];
+    //     const list = res.list;
+    //     for(var i = 0; i<list.length; i++){
+    //         const testItem = list[i].testReportRecordDTO.testItemResultRecordDTOList;
+    //         var testItemName;
+    //         for(var j=0; j<testItem.length; j++){
+    //             if(j===0){
+    //                 testItemName = testItem.testItem.name;
+    //             }else{
+    //                 testItemName = testItemName + "," + testItem.testItem.name;
+    //             }
+    //         }
+    //         dataSource.push({
+    //             index:res.prePage*10+(i+1),
+    //             id: list[i].testReportRecordDTO.testReportRecord.id,
+    //             sampleDeliveringDate: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate,
+    //             deliverer: list[i].sampleDeliveringRecordDTO.deliverer.name,
+    //             deliveryFactory: list[i].sampleDeliveringRecordDTO.deliveryFactory.name,
+    //             serialNumberd: list[i].sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
+    //             testItem: testItemName,
+    //             exceptionComment: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment,
+    //             type: '无用子段',
+    //             acceptStatus: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus,
+    //             status: list[i].commonBatchNumberDTO.commonBatchNumber.status,
+    //         })
+    //     }
+    //     return dataSource
+    // };
 
     /**---------------------- */
     /**实现全选功能 */

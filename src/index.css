@@ -21,7 +21,6 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
 .ant-menu-inline .ant-menu-submenu-title {
     margin: 0 !important;
 }
@@ -29,13 +28,7 @@ code {
 .ant-menu-item {
     padding-left: 30px !important;
 }
-.ant-btn-primary {
-  text-shadow: none !important;
-  box-shadow: none !important;
-}
-.ant-btn-primary:nth-last-child(1){
-  margin-right: 0 !important;
-}
+
 #defaultCanvas0 {
     position: absolute;
     display: block;
@@ -55,7 +48,21 @@ code {
 .show {
     visibility: visible;
 }
+.ant-tabs-nav-wrap {
+    padding-left: 1.3% !important;
+}
 
+.ant-switch-checked {
+    background-color: red !important;
+}
+
+table .blue {
+    cursor: pointer;
+}
+
+i {
+    font-weight: bolder;
+}
 .ant-pagination.ant-table-pagination.mini {
     text-align: right !important;
 }
@@ -67,6 +74,16 @@ code {
     margin: 0 0 10px 0 !important;
 }
 
+/* 全局按钮样式 */
+.ant-btn-primary {
+  text-shadow: none !important;
+  box-shadow: none !important;
+      font-weight: bolder !important;
+}
+.ant-btn-primary:nth-last-child(1){
+  margin-right: 0 !important;
+}
+
 .button {
     /* color: #ffffff !important; */
     font-size: 14px !important;
@@ -74,8 +91,12 @@ code {
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
     /* background-color: #0079fe !important; */
     margin-right: 10px !important;
+    box-sizing: border-box !important;
 }
-
+button span {
+    font-size: 14px !important;
+    font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
+}
 .grey-button {
     color: #ffffff !important;
     font-size: 14px !important;
@@ -83,6 +104,7 @@ code {
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
     background-color: grey !important;
     margin-right: 10px !important;
+    font-weight: bolder !important;
 }
 
 .white-button {
@@ -92,7 +114,7 @@ code {
     font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
     background-color: white !important;
     margin-right: 10px !important;
-
+    font-weight: bolder !important;
 }
 
 .green-button {
@@ -100,6 +122,7 @@ code {
     background-color: #4BD863 !important;
     margin-right: 10px !important;
     border: none !important;
+    font-weight: bolder !important;
 }
 .ant-btn:not(.ant-btn-sm) {
     height: 35px !important;
@@ -107,20 +130,6 @@ code {
 .ant-btn.ant-btn-sm {
     border: none !important;
 }
-.ant-tabs-nav-wrap {
-    padding-left: 1.3% !important;
-}
-
-.ant-switch-checked {
-    background-color: red !important;
-}
-
-button span {
-    font-size: 14px !important;
-    font-weight: bolder !important;
-    font-family: 'PingFangSC-Regular', 'PingFang SC' !important;
-}
-
 .blue {
     color: #1890ff;
     cursor: pointer;
@@ -129,14 +138,6 @@ button span {
 .grey {
     color: grey;
     background-color: #ffffff !important;
-}
-
-table .blue {
-    cursor: pointer;
-}
-
-i {
-    font-weight: bolder;
 }
 
 /**用来调整table的最大高度，使切换一页展示多行时，table无明显变化*/
@@ -169,6 +170,9 @@ i {
 .ant-modal.modal-xlg {
     width: 1080px !important;
 }
+.ant-modal.modal-xxlg {
+    width: 1300px !important;
+}
 .ant-modal-header {
     padding: 8px 20px !important;
 }
@@ -189,6 +193,13 @@ i {
 .ant-modal-footer {
     padding: 8px 10px !important;
 }
+.ant-modal-footer span::after{
+  content: "";
+  clear: both;
+}
+.ant-modal-footer {
+  overflow: auto;
+}
 .ant-modal-body > .ant-row .ant-form-item {
     text-align: center !important;
     margin-left: 80px !important;
@@ -202,18 +213,22 @@ i {
     height: 35px !important;
 }
 /* 下拉选择器样式 */
-.ant-select-lg .ant-select-selection--single {
+.ant-select-lg .ant-select-selection--single, .ant-select-selection--single{
     height: 35px !important;
 }
-.ant-select-sm  .ant-select-selection--single{
+.ant-select-sm .ant-select-selection--single{
    height: 24px !important;
 }
 
-.ant-select-lg .ant-select-selection__rendered {
+.ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{
   height: 33px !important;
   line-height: 33px !important;
 }
 .ant-select-sm .ant-select-selection__rendered {
   height: 22px !important;
   line-height: 22px !important;
+}
+/* 设置表格中的输入框和下拉选择器不要出现圆角 */
+table .ant-select-selection,table .ant-input{
+  border-radius: 0;
 }

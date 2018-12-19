@@ -60,12 +60,28 @@ class InterTable extends React.Component{
         key: 'h',
         align:'center',
         width: '8%',
+        render:state => {
+            switch(`${state}`) {
+                case '0': return '未发布';
+                case '1': return '已发布';
+                default: return '';
+            }
+        },
     },{
         title: '审核状态',
         dataIndex: 'status',
         key: 'status',
         align:'center',
         width: '8%',
+        render:state => {
+            switch(`${state}`) {
+                case '0': return '未申请'
+                case '1': return '审核中';
+                case '2': return '已通过';
+                case '3': return '不通过';
+                default: return '';
+            }
+        }
     },{
         title: '操作',
         dataIndex: 'operation',
@@ -78,20 +94,29 @@ class InterTable extends React.Component{
             let releaseSpanFlag = this.judgeReleaseOperation(record.h,record.status);
             return (
                 <span>
-                    <DetailSpan
-                        record={record}
-                        disabled={detailSpanFlag}
-                    />
+                    {detailSpanFlag?(
+                        <DetailSpan
+                            record={record}
+                        />
+                    ):(
+                        <span  className="notClick">详情</span>
+                    )}
                     <Divider type="vertical" />
-                    <CheckSpan
-                        record={record}
-                        disabled={checkSpanFlag}
-                    />
+                    {checkSpanFlag?(
+                        <CheckSpan
+                            record={record}
+                        />
+                    ):(
+                        <span  className="notClick">录检</span>
+                    )}
                     <Divider type="vertical" />
-                    <ReleaseSpan
-                        record={record}
-                        disabled={releaseSpanFlag}
-                    />
+                    {releaseSpanFlag?(
+                        <ReleaseSpan
+                            record={record}
+                        />
+                    ):(
+                        <span  className="notClick">发布</span>
+                    )}
                 </span>
             )
         }
@@ -125,24 +150,24 @@ class InterTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
-        if(status==="未申请"){
-            return true;
-        }else{
+        if(status==="0"){
             return false;
+        }else{
+            return true;
         }
     };
     judgeCheckOperation = (status) => {
-        if(status==="未申请"||status==="不通过"){
-            return false;
-        }else{
+        if(status==="0"||status==="3"){
             return true;
+        }else{
+            return false;
         }
     };
     judgeReleaseOperation = (h,status) => {
-        if(h==="未发布"&&status==="已通过"){
-            return false;
-        }else{
+        if(h==="0"&&status==="3"){
             return true;
+        }else{
+            return false;
         }
     };
     /**---------------------- */

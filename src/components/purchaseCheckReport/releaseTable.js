@@ -74,8 +74,8 @@ class ReleaseTable extends React.Component {
         width: '6%',
         render:state => {
             switch(`${state}`) {
+                case '0': return '未发布';
                 case '1': return '已发布';
-                case '2': return '未发布';
                 default: return '';
             }
         },
@@ -103,7 +103,7 @@ class ReleaseTable extends React.Component {
                             name='发布'
                         />
                     ):(
-                        <span  className="grey">发布</span>
+                        <span  className="notClick">发布</span>
                     )}
                 </span>
             )
@@ -133,7 +133,7 @@ class ReleaseTable extends React.Component {
     }
     /**判断发布可否功能 */
     judgeOperation = (record) => {
-        if(record===2){
+        if(record==='0'){
             return true;
         }else{
             return false;

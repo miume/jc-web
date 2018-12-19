@@ -1,0 +1,100 @@
+/*表格中操作列Span*/
+.unqualifiedTrackBlueSpan {
+    color: #1890ff;
+    cursor: pointer;
+}
+.unqualifiedTrackBlueSpan i{
+    color: #1890ff;
+    font-weight: bolder
+}
+/*interProduct中公用默认*/
+.unTrackCursorPointer {
+    cursor: pointer;
+}
+.unTrackCursorDefault {
+    cursor: default;
+}
+/*
+    编辑中editModal
+    Top:设置表格样式
+    Middle:设置样品名称和清空按钮样式
+    Bottom: 设置底部表格样式
+
+ */
+/*Top:设置表格样式*/
+.unTrackEditModalTop {
+    width: 100%;
+    cursor: default;
+}
+.unTrackEditModalTop table{
+    width:100%;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+}
+.unTrackEditModalTop table thead {
+    color: white;
+    background: #0079FE;
+    border: 1px solid  #E9E9E9;
+}
+.unTrackEditModalTop table thead tr th{
+    height: 30px;
+    width: 25%;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid  #E9E9E9;
+}
+.unTrackEditModalTop table tbody tr td {
+    height: 30px;
+    width: 25%;
+    font-size: 13px;
+    padding-left: 10px;
+    border: 1px solid  #E9E9E9;
+}
+.unTrackEditModalTop table tbody tr .unTrackTopSelect {
+    height: 30px;
+    width: 25%;
+    font-size: 13px;
+    padding-left: 0;
+    border: 1px solid  #E9E9E9;
+}
+
+.unTrackSelect {
+    width: 100%;
+}
+.unTrackEditModalTop table  .ant-select-selection {
+    border: none ;
+    height: 30px;
+}
+
+.unTrackEditModalMiddle {
+    padding-top: 30px;
+    width: 100%;
+    height: 300px;
+}
+.unTrackEditModalMiddle table {
+    width: 100%;
+    height: 100%;
+}
+.unTrackEditModalMiddle table tbody tr {
+    height: 50%;
+}
+.unTrackEditModalMiddle table tbody tr td:first-child {
+    width: 20%;
+    /*height: 100%;*/
+    border: 1px solid  #E9E9E9;
+    text-align: center;
+    cursor: default;
+}
+.unTrackEditModalMiddle table tbody tr td:last-child{
+    width: 80%;
+    height: 50%;
+    border: 1px solid  #E9E9E9;
+    cursor: default;
+}
+.unTrackEditModalMiddle table tbody tr td:last-child div{
+    width: 80%;
+    height: 100%;
+}
+.unTrackEditModalMiddle table tbody tr td TextArea{
+    height: 100% !important;
+}

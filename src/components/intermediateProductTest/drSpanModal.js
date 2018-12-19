@@ -1,7 +1,5 @@
 import React from 'react';
 import { Table,Divider } from 'antd';
-import './aePopModal.css';
-import '../Home/page.css';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
 
@@ -67,16 +65,16 @@ class DrSpanModal extends React.Component {
         });
         return(
             <div>
-                <div>
-                    <table className="interTopTable">
-                        <thead className="interTopThead">
+                <div className="interDrSpanModalTop">
+                    <table>
+                        <thead>
                         <tr>
                             <th>批号</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>
                         </thead>
-                        <tbody className="interTopTbody">
+                        <tbody>
                         <tr>
                             <td>{this.state.topData.batchNumber}</td>
                             <td>{this.state.topData.materialName}</td>
@@ -85,10 +83,10 @@ class DrSpanModal extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div>
-                       <span style={{float:'left',paddingTop:'10px',paddingBottom:'10px'}}>
+                <div className="interDrSpanModalMiddle">
+                       <div>
                            样品名称：<span>{this.state.topData.materialName+'样品'}</span>
-                       </span>
+                       </div>
                 </div>
                 <div>
                     <Table
@@ -102,9 +100,9 @@ class DrSpanModal extends React.Component {
                         bordered
                     />
                 </div>
-                <div className="drSpanModalTableFirst">
+                <div className="interDrSpanModalBottomFirst">
                     <table>
-                        <tbody className="padding">
+                        <tbody>
                         <tr>
                             <td>检验人：</td>
                             <td>{this.state.testData.tester}</td>
@@ -120,9 +118,9 @@ class DrSpanModal extends React.Component {
                     />
                 </div>
                 <Divider />
-                <div className="drSpanModalTableSecond">
+                <div className="interDrSpanModalBottomSecond">
                     <table >
-                        <tbody className="padding">
+                        <tbody>
                         <tr>
                             <td>审核人：</td>
                             <td>{this.state.examineData.examiner}</td>
