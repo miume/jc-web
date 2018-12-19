@@ -1,8 +1,7 @@
 import React from 'react';
-import {Table,Checkbox} from 'antd';
+import {Table} from 'antd';
 import DetailSpan from './packDetailSpan';
 
-const CheckboxGroup = Checkbox.Group;
 class PackTable extends React.Component {
     Authorization;
     server;

@@ -186,7 +186,12 @@ class Home extends Component {
             },
             /**操作管理 */
             operation:{
-                getAll:`${server}/jc/auth/operation/getAll`
+                getOperationsByPage:`${server}/jc/auth/operation/getOperationsByPage`,
+                deleteByIds:`${server}/jc/auth/operation/deleteByIds`,
+                pagesByName:`${server}/jc/auth/operation/pagesByName`,
+                update:`${server}/jc/auth/operation/update`,
+                add:`${server}/jc/auth/operation/add`,
+                deleteById:`${server}/jc/auth/operation`,
             },
             /**用户管理*/
             userManage:{
@@ -201,8 +206,13 @@ class Home extends Component {
             },
             /**部门管理 */
             department:{
-                getAll:`${server}/jc/auth/department/getAll`,
-                },
+                getDepartmentsByPage:`${server}/jc/auth/department/getDepartmentsByPage`,
+                deleteByIds:`${server}/jc/auth/department/deleteByIds`,
+                getDepartmentsByNameLikeByPage:`${server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
+                update:`${server}/jc/auth/department/update`,
+                add:`${server}/jc/auth/department/add`,
+                deleteById:`${server}/jc/auth/department`,
+            },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,

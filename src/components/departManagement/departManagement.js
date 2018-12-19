@@ -1,7 +1,6 @@
 import React from 'react';
 import BlockQuote from '../BlockQuote/blockquote';
 import DepartTable from './departTable';
-import '../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
 import {message} from "antd";
@@ -14,8 +13,10 @@ import DeleteByIds from "../BlockQuote/deleteByIds";
 
 
 class Depart extends React.Component {
-    Authorization;
-    server;
+    url;
+    componentDidMount() {
+        this.fetch();
+    }
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -27,7 +28,6 @@ class Depart extends React.Component {
             dataSource: [],
             selectedRowKeys: [],
             editingKey: '',
-            loading: false,
             pagination:{},
             searchContent:'',
             searchText: '',
@@ -49,10 +49,8 @@ class Depart extends React.Component {
         }
     }
     render() {
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
+        const current = JSON.parse(localStorage.getItem('current')) ;
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -60,7 +58,7 @@ class Depart extends React.Component {
         };
         return (
             <div>
-                <BlockQuote name="部门管理" menu='用户和权限'></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal
                         fetch={this.fetch}
@@ -110,39 +108,33 @@ class Depart extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/auth/department/getDepartmentsByPage`,
+            url: `${this.url.department.getDepartmentsByPage}` ,
             method: 'get',
             headers:{
-                'Authorization': this.Authorization
+                'Authorization': this.url.Authorization
             },
             params: params,
-            // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            this.pagination.total=res.total;
+            this.pagination.total=res?res.total:0;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
-                loading: false,
                 dataSource: res.list,
             });
         });
     };
-    componentDidMount() {
-        this.fetch();
-    }
     /**---------------------- */
     /**实现批量删除功能 */
     deleteByIds = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${this.server}/jc/auth/department/deleteByIds`,
+            url: `${this.url.department.deleteByIds}`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             data:ids,
             type:'json'
@@ -169,21 +161,20 @@ class Depart extends React.Component {
     searchEvent(){
         const dep_name = this.state.searchContent;
         axios({
-            url:`${this.server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
+            url: `${this.url.department.getDepartmentsByNameLikeByPage}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 size: this.pagination.pageSize,
                 page: this.pagination.current,
                 departmentName:dep_name
-                // department_name:dep_name
             },
             type:'json',
         }).then((data)=>{
             const res = data.data.data;
-            this.pagination.total=res.total;
+            this.pagination.total=res?res.total:0;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }

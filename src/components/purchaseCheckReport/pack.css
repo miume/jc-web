@@ -7,11 +7,17 @@
 /*}*/
 
 
-.placeholder td input::-webkit-input-placeholder {
-    font-size: 14px;
-    /* placeholder位置  */
-    text-align: center;
-}
+/*.placeholder td input::-webkit-input-placeholder {*/
+    /*font-size: 14px;*/
+    /*!* placeholder位置  *!*/
+    /*text-align: center;*/
+/*}*/
+
+
+/*.purchaseTable td {*/
+    /*font-size: 14px;*/
+    /*text-align: center;*/
+/*}*/
 
 .purchaseTable td {
     font-size: 14px;

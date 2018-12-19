@@ -58,8 +58,7 @@ class EditableCell extends React.Component {
 }
 
 class DepartTable extends React.Component {
-    Authorization;
-    server;
+    url;
     constructor(props){
         super(props);
         this.state = {
@@ -107,8 +106,9 @@ class DepartTable extends React.Component {
                                 <EditableContext.Consumer>
                                     {form => (
                                         <span
+                                            className='blue'
                                             onClick={() => this.save(form, record.id)}
-                                            style={{ marginRight: 8,color:'#1890ff' }}
+                                            style={{ marginRight: 8}}
                                         >
                                             保存
                                         </span>
@@ -136,10 +136,7 @@ class DepartTable extends React.Component {
         }
     }];
     render(){
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         //  获取record的记录
         const columns = this.columns.map((col) => {
             if (!col.editable) {
@@ -178,7 +175,6 @@ class DepartTable extends React.Component {
                 scroll={{ y: 450 }}
             />
         );
-        //useFixedHeader 用来固定表头（需要指定 column 的 width 属性，否则列头和内容可能不对齐）
     };
     /**实现初始化页面功能 */
     getFetch = () => {
@@ -211,10 +207,10 @@ class DepartTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString();
                 axios({
-                    url:`${this.server}/jc/auth/department/update`,
+                    url:`${this.url.department.update}`,
                     method:'post',
                     headers:{
-                        'Authorization':this.Authorization
+                        'Authorization':this.url.Authorization
                     },
                     data:data,
                     type:'json'

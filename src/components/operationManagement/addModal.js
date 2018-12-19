@@ -49,8 +49,7 @@ const CollectionCreateForm = Form.create()(
 
 
 class AddModal extends React.Component {
-    Authorization;
-    server;
+    url;
     constructor(props){
         super(props);
         this.handleCancel = this.handleCancel.bind(this);
@@ -78,10 +77,10 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${this.server}/jc/auth/operation/add`,
+                url : `${this.url.operation.add}`,
                 method:'post',
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
                 data: values,
                 type:'json'
@@ -103,10 +102,7 @@ class AddModal extends React.Component {
     };
 
     render() {
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <span>
                 <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus'/>&nbsp;&nbsp;&nbsp;
