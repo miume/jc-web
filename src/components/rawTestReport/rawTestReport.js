@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Popconfirm, Divider} from 'antd';
+import { Table, Divider,message} from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
-import DeleteByIds from '../BlockQuote/deleteByIds';
+// import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import Detail from './detail';
 import RecordChecking from './recordChecking';
@@ -42,14 +42,13 @@ class RawTestReport extends React.Component{
         super(props);
         this.state ={
             dataSource:[],
-            selectedRowKeys : [],
             searchContent : ''
         }
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
-        this.deleteByIds = this.deleteByIds.bind(this);
+        // this.deleteByIds = this.deleteByIds.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        this.onSelectChange = this.onSelectChange.bind(this);
+        // this.onSelectChange = this.onSelectChange.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.fetch = this.fetch.bind(this);
@@ -65,21 +64,19 @@ class RawTestReport extends React.Component{
             key:'index',
             sorter:(a,b)=> a.index-b.index,
             align:'center',
-            fixed:'left',
             width:'70px'
         },{
             title:'送样人',
             dataIndex:'deliverer',
             key:'deliverer',
             align:'center',
-            fixed:'left',
             width:'100px'
         },{
             title:'送样日期',
             dataIndex:'sampleDeliveringDate',
             key:'sampleDeliveringDate',
             align:'center',
-            width:'13%'
+            width:'15%'
         },{
             title:'送样工厂',
             dataIndex:'deliveryFactoryName',
@@ -97,7 +94,7 @@ class RawTestReport extends React.Component{
             dataIndex:'testItemString',
             key:'testItemString',
             align:'center',
-            width:'6%',
+            width:'8%',
             render:(text)=>{ 
                 const items = text.split(',');
                 var testItems = '';
@@ -149,7 +146,7 @@ class RawTestReport extends React.Component{
             dataIndex:'status',
             key:'status',
             align:'center',
-            width:'6%',
+            width:'10%',
             render: status => {
                 switch(`${status}`) {
                   case '-1': return '已保存未提交';
@@ -174,15 +171,14 @@ class RawTestReport extends React.Component{
             dataIndex:'id',
             key:'id',
             align:'center',
-            fixed:'right',
             render:(text,record)=>{
                 return (
                     <span>
                         <Detail value={text} url={this.url} />
-                        <Divider type='vertical' />
+                        {/* <Divider type='vertical' />
                         <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(text)} okText='确定' cancelText='取消' >
                             <span className='blue'>删除</span>
-                        </Popconfirm>
+                        </Popconfirm> */}
                         <Divider type='vertical' />
                         <RecordChecking value={record} />
                     </span>
@@ -194,17 +190,18 @@ class RawTestReport extends React.Component{
         this.fetch({
             pageSize:pagination.pageSize,
             pageNumber:pagination.current,
+            factoryName:this.state.searchContent
         })
     }
+    /**?factoryName=${this.state.searchContent} */
     fetch(params){
-        axios.get(`${this.url.rawTestReport.getAllByPage}?factoryName=${this.state.searchContent}`,{
+        axios.get(`${this.url.rawTestReport.getAllByPage}`,{
             headers:{
                 'Authorization':this.url.Authorization
             },
             params:params
         }).then((data)=>{
             const res = data.data.data?data.data.data.list:[];
-            console.log(res)
             const da = [];
             if(res&&res.length>0){
                 for(var i = 1; i <= res.length; i++){
@@ -216,15 +213,14 @@ class RawTestReport extends React.Component{
                         deliverer:e.deliverer,
                         deliveryFactoryId:e.sampleDeliveringRecord.deliveryFactoryId,
                         deliveryFactoryName:e.deliveryFactoryName,
-                        batchNumber:e.commonBatchNumber.batchNumber,
-                        testItemString:e.sampleDeliveringRecord.testItems,
+                        batchNumber:e.commonBatchNumber?e.commonBatchNumber.batchNumber:'',
+                        testItemString:e.testItemString?e.testItemString:'',
                         exceptionComment:e.sampleDeliveringRecord.exceptionComment,
                         type:e.sampleDeliveringRecord.type,
                         acceptStatus:e.sampleDeliveringRecord.acceptStatus,
                         handleComment:e.sampleDeliveringRecord.handleComment,
-                        status:e.commonBatchNumber.status,
-                        isUrgent:e.commonBatchNumber.isUrgent
-    
+                        status:e.commonBatchNumber?e.commonBatchNumber.status:0,
+                        isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0
                     })
                 }
             }
@@ -238,17 +234,26 @@ class RawTestReport extends React.Component{
 
     }
     /**删除一条记录 */
-    handleDelete(key){
-    
-    }
+    // handleDelete(key){
+    //     axios({
+    //         url:`${this.url.rawTestReport.rawTestReport}/${key}`,
+    //         method:'Delete',
+    //         headers:{
+    //             'Authorization':this.url.Authorization
+    //         }
+    //     }).then((data)=>{
+    //         message.info(data.data.message);
+    //     }).catch(()=>{
+    //         message.info('删除失败，请联系管理员！')
+    //     })
+    // }
     /**批量删除 */
-    deleteByIds(){
-        // const ids = this.state.selectedRowKeys;
-    }
+    // deleteByIds(){
+    //     const ids = this.state.selectedRowKeys;
+    // }
     /**监控搜索框的实时变化 */
     searchContentChange(e){
         const value = e.target.value;
-        console.log(value)
         this.setState({
             searchContent:value
         })
@@ -258,12 +263,13 @@ class RawTestReport extends React.Component{
         this.fetch({
             pageSize:10,
             pageNumber:1,
+            factoryName:this.state.searchContent
         })
     }
     /**实现全选 */
-   onSelectChange(selectedRowKeys) {
-    this.setState({ selectedRowKeys:selectedRowKeys }); 
-   } 
+//    onSelectChange(selectedRowKeys) {
+//     this.setState({ selectedRowKeys:selectedRowKeys }); 
+//    } 
    /**返回数据录入页面 */
    returnDataEntry(){
     this.props.history.push({pathname:'/dataEntry'});
@@ -271,21 +277,16 @@ class RawTestReport extends React.Component{
     render(){
         const current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url')); 
-        const {selectedRowKeys} = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange:this.onSelectChange,
-          };
         return (
             <div>
-                <BlockQuote name='原料检测报告' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
+                <BlockQuote name='原材料录检' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
+                    {/* <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/> */}
                     <span style={{float:'right',paddingBottom:'8px'}} >
                         <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     </span>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} rowSelection={rowSelection} pagination={this.pagination} scroll={{y:400,x:1400}} size='small' bordered/> 
+                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} pagination={this.pagination} scroll={{y:400}} size='small' bordered/> 
                 </div>
             </div>
         );
