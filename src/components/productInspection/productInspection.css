@@ -1,10 +1,30 @@
-/*interProduct中公用默认*/
-.interCursorPointer {
+.productCursorPointer {
     cursor: pointer;
 }
-.interCursorDefault {
+.productCursorDefault {
     cursor: default;
 }
+/*表格中操作列Span*/
+.productBlueSpan {
+    color: #1890ff;
+    cursor: pointer;
+}
+.productBlueSpan i{
+    color: #1890ff;
+    font-weight: bolder
+}
+/*发布*/
+.productReleaseFooter {
+    width: 80px ;
+    height: 35px;
+    background: #0079FE;
+    color: white
+}
+.productReleaseFooter i{
+    font-weight: bolder;
+    color: #0079FE;
+}
+
 /*
     详情、发布中drSpanModal中样式
     Top: 设置表格样式
@@ -12,68 +32,69 @@
     Bottom: 设置检验人、审核人等
  */
 /*Top:设置表格样式*/
-.interDrSpanModalTop {
+.productDrSpanModalTop {
     width: 100%;
     cursor: default;
 }
-.interDrSpanModalTop table{
+.productDrSpanModalTop table{
     width:100%;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
-.interDrSpanModalTop table thead {
+.productDrSpanModalTop table thead {
     color: white;
     background: #0079FE;
     border: 1px solid  #E9E9E9;
 }
-.interDrSpanModalTop table thead tr th{
+.productDrSpanModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
-.interDrSpanModalTop table tbody tr td {
+.productDrSpanModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
-.interDrSpanModalMiddle {
+.productDrSpanModalMiddle {
     width: 100%;
     padding-top: 5px;
     cursor: default;
 }
-.interDrSpanModalMiddle div{
+.productDrSpanModalMiddle div{
     float: left;
     padding-top: 10px;
     padding-bottom: 14px;
 }
 /*Bottom:设置检验人、审核人等*/
-.interDrSpanModalBottomFirst {
+.productDrSpanModalBottomFirst {
     padding-top: 20px;
     padding-bottom: 50px;
     margin-top: -7px;
     cursor: default;
 }
-.interDrSpanModalBottomFirst table {
+.productDrSpanModalBottomFirst table {
     float: left;
     margin-top: 5px;
 }
-.interDrSpanModalBottomFirst table tbody{
+.productDrSpanModalBottomFirst table tbody{
     padding-top: 4px;
     padding-bottom: 4px;
 }
-.interDrSpanModalBottomSecond {
-    margin-top: -7px;
-    cursor: default;
-}
-.interDrSpanModalBottomSecond table {
-    float: left;
-}
-.interDrSpanModalBottomSecond table tbody{
-    padding-bottom: 4px;
-}
+/*.productDrSpanModalBottomSecond {*/
+    /*margin-top: -7px;*/
+    /*cursor: default;*/
+/*}*/
+/*.productDrSpanModalBottomSecond table {*/
+    /*float: left;*/
+/*}*/
+/*.productDrSpanModalBottomSecond table tbody{*/
+    /*padding-bottom: 4px;*/
+/*}*/
+
 /*
     录检中checkSpanModal
     Top:设置表格样式
@@ -82,44 +103,44 @@
 
  */
 /*Top:设置表格样式*/
-.interCheckModalTop {
+.productCheckModalTop {
     width: 100%;
     cursor: default;
 }
-.interCheckModalTop table{
+.productCheckModalTop table{
     width:100%;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
-.interCheckModalTop table thead {
+.productCheckModalTop table thead {
     color: white;
     background: #0079FE;
     border: 1px solid  #E9E9E9;
 }
-.interCheckModalTop table thead tr th{
+.productCheckModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
-.interCheckModalTop table tbody tr td {
+.productCheckModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
     padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
-.interCheckModalMiddle {
+.productCheckModalMiddle {
     width: 100%;
     padding-top: 5px;
     cursor: default;
 }
-.interCheckModalMiddle div{
+.productCheckModalMiddle div{
     float: left;
     padding-top: 10px;
     padding-bottom: 10px;
 }
-.interCheckModalMiddle button {
+.productCheckModalMiddle button {
     color: #999999 ;
     font-size: 14px ;
     font-weight: bolder ;
@@ -129,12 +150,11 @@
     margin-top:5px;
 }
 /*Bottom: 设置底部表格样式*/
-.interCheckModalBottom {
+.productCheckModalBottom {
     padding-top: 50px;
     padding-bottom: 20px
 }
-.interCheckModalBottom table {
+.productCheckModalBottom table {
     cursor: default;
 }
-
 

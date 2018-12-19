@@ -69,7 +69,7 @@ div.quick-middle div.quick-text {
 div.quick-middle div.quick-shadow:nth-child(1) {
   opacity: 0;
   height: 1px;
-  background-color: #999999;
+  background-color: #1890ff;
   flex-grow: 2;
   animation: scaleInX 1s ease-in-out 1 forwards;
   transform-origin: center right;
@@ -78,7 +78,7 @@ div.quick-middle div.quick-shadow:nth-child(1) {
 div.quick-middle div.quick-shadow:nth-child(3) {
   opacity: 0;
   height: 1px;
-  background-color: #999999;
+  background-color: #1890ff;
   flex-grow: 2;
   animation: scaleInX 1s ease-in-out 1 forwards;
   transform-origin: center left;
@@ -116,14 +116,14 @@ div.quick-middle div.quick-shadow:nth-child(3) {
   animation-delay: 0.3s;
 }
 .quick-tag-wrapper:nth-last-child(1)::after {
-  content: "最近访问";
+  content: "";
   display: block;
   width: 40px;
   height: 40px;
   padding: 4px;
   background-color: #fff;
-  border: #1890ff 1px dashed ;
-  color: #1890ff;
+  /* border: #1890ff 1px dashed ;
+  color: #1890ff; */
   position: absolute;
   top: 0px;
   right: 0px;
@@ -131,6 +131,7 @@ div.quick-middle div.quick-shadow:nth-child(3) {
   text-align: center;
   border-radius: 20px 20px 20px 20px;
   opacity: 1;
+  background-image: url(./zuijinfangwen.svg);
 }
 .quick-tag {
   height: 50px;

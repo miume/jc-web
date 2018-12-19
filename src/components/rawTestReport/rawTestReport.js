@@ -26,10 +26,12 @@ import axios from 'axios';
 //     })
 // }
 class RawTestReport extends React.Component{
-    server
-    Authorization
+    url
     componentDidMount(){
-        this.fetch();
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
+        });
     }
     componentWillUnmount(){
         this.setState = () => {
@@ -49,6 +51,7 @@ class RawTestReport extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
         this.fetch = this.fetch.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
@@ -79,8 +82,8 @@ class RawTestReport extends React.Component{
             width:'13%'
         },{
             title:'送样工厂',
-            dataIndex:'deliveryFactory.id',
-            key:'deliveryFactory.id',
+            dataIndex:'deliveryFactoryName',
+            key:'deliveryFactoryName',
             align:'center',
             width:'6%'
         },{
@@ -112,18 +115,29 @@ class RawTestReport extends React.Component{
             key:'exceptionComment',
             align:'center',
             width:'6%'
-        },{
-            title:'类型',
-            dataIndex:'type',
-            key:'type',
-            align:'center',
-            width:'6%'
-        },{
+        },
+        // {
+        //     title:'类型',
+        //     dataIndex:'type',
+        //     key:'type',
+        //     align:'center',
+        //     width:'6%'
+        // },
+        {
             title:'接受状态',
             dataIndex:'acceptStatus',
             key:'acceptStatus',
             align:'center',
-            width:'6%'
+            width:'6%',
+            render: acceptStatus => {
+                switch(`${acceptStatus}`) {
+                  case '-1': return '保存';
+                  case '0': return '等待接受';
+                  case '1': return '接受';
+                  case '2': return '拒绝';
+                  default:return '';
+                }
+            }
         },{
             title:'接受反馈',
             dataIndex:'handleComment',
@@ -132,25 +146,29 @@ class RawTestReport extends React.Component{
             width:'6%'
         },{
             title:'审核状态',
-            dataIndex:'state',
-            key:'state',
+            dataIndex:'status',
+            key:'status',
             align:'center',
             width:'6%',
-            render:state => {
-                switch(`${state}`) {
+            render: status => {
+                switch(`${status}`) {
+                  case '-1': return '已保存未提交';
+                  case '0': return '已提交未未审核';
                   case '1': return '审核中';
-                  case '2': return '不通过';
-                  case '3': return '已通过';
-                  default: return '';
+                  case '2': return '审核通过';
+                  case '3': return '审核未通过';
+                  case '4': return '合格';
+                  case '5': return '不合格';
+                  default:return '';
                 }
-            },
+            }
         },{
             title:'紧急',
             dataIndex:'isUrgent',
             key:'isUrgent',
             align:'center',
             width:'6%',
-            render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+            render:isUrgent=>!isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
         },{
             title:'操作',
             dataIndex:'id',
@@ -160,7 +178,7 @@ class RawTestReport extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail value={text} server={this.server} Authorization={this.Authorization} />
+                        <Detail value={text} url={this.url} />
                         <Divider type='vertical' />
                         <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(text)} okText='确定' cancelText='取消' >
                             <span className='blue'>删除</span>
@@ -174,37 +192,36 @@ class RawTestReport extends React.Component{
     }
     handleTableChange(pagination){
         this.fetch({
-            size:pagination.pageSize,
-            page:pagination.current,
+            pageSize:pagination.pageSize,
+            pageNumber:pagination.current,
         })
     }
     fetch(params){
-        axios.get(`${this.server}/jc/common/rawTestReport/getAllByPage`,{
+        axios.get(`${this.url.rawTestReport.getAllByPage}?factoryName=${this.state.searchContent}`,{
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
-            params:{
-                params,
-                // deliverer : this.state.searchContent
-            }
+            params:params
         }).then((data)=>{
             const res = data.data.data?data.data.data.list:[];
+            console.log(res)
             const da = [];
-            if(res.length>0){
+            if(res&&res.length>0){
                 for(var i = 1; i <= res.length; i++){
                     var e = res[i-1];
                     da.push({
                         index:i,
-                        id:e.commonBatchNumber.id,
-                        sampleDeliveringDate:e.details.sampleDeliveringRecord.sampleDeliveringDate,
-                        deliverer:e.details.deliverer,
-                        deliveryFactory:e.details.deliveryFactory.id,
+                        id:e.sampleDeliveringRecord.id,
+                        sampleDeliveringDate:e.sampleDeliveringRecord.sampleDeliveringDate,
+                        deliverer:e.deliverer,
+                        deliveryFactoryId:e.sampleDeliveringRecord.deliveryFactoryId,
+                        deliveryFactoryName:e.deliveryFactoryName,
                         batchNumber:e.commonBatchNumber.batchNumber,
-                        testItemString:e.details.testItemString,
-                        exceptionComment:e.details.sampleDeliveringRecord.exceptionComment,
-                        type:e.details.sampleDeliveringRecord.type,
-                        acceptStatus:e.details.sampleDeliveringRecord.acceptStatus,
-                        handleComment:e.details.sampleDeliveringRecord.handleComment,
+                        testItemString:e.sampleDeliveringRecord.testItems,
+                        exceptionComment:e.sampleDeliveringRecord.exceptionComment,
+                        type:e.sampleDeliveringRecord.type,
+                        acceptStatus:e.sampleDeliveringRecord.acceptStatus,
+                        handleComment:e.sampleDeliveringRecord.handleComment,
                         status:e.commonBatchNumber.status,
                         isUrgent:e.commonBatchNumber.isUrgent
     
@@ -228,11 +245,19 @@ class RawTestReport extends React.Component{
     deleteByIds(){
         // const ids = this.state.selectedRowKeys;
     }
-    /**搜索功能 */
-    searchEvent(value){
+    /**监控搜索框的实时变化 */
+    searchContentChange(e){
+        const value = e.target.value;
         console.log(value)
         this.setState({
             searchContent:value
+        })
+    }
+    /**搜索功能 */
+    searchEvent(){
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
         })
     }
     /**实现全选 */
@@ -244,8 +269,8 @@ class RawTestReport extends React.Component{
     this.props.history.push({pathname:'/dataEntry'});
 }
     render(){
-        this.server = localStorage.getItem('remote');
-        this.Authrization = localStorage.getItem('Authorization');
+        const current = JSON.parse(localStorage.getItem('current'));
+        this.url = JSON.parse(localStorage.getItem('url')); 
         const {selectedRowKeys} = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -253,14 +278,14 @@ class RawTestReport extends React.Component{
           };
         return (
             <div>
-                <BlockQuote name='原料检测报告' menu='质量与流程' menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
+                <BlockQuote name='原料检测报告' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                     <span style={{float:'right',paddingBottom:'8px'}} >
-                        <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} searchContent={this.searchContent} fetch={this.fetch}></SearchCell>
+                        <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     </span>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} rowSelection={rowSelection} pagination={this.pagination} scroll={{y:400,x:1500}} size='small' bordered/> 
+                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} rowSelection={rowSelection} pagination={this.pagination} scroll={{y:400,x:1400}} size='small' bordered/> 
                 </div>
             </div>
         );

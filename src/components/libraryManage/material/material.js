@@ -158,8 +158,8 @@ class Material extends React.Component{
                     <div className="one">
                         <div className="border-down">序号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="border-down" key={index}>
                                     <div className="animation">{m.index}</div>
                                 </div>
                     })
@@ -168,8 +168,8 @@ class Material extends React.Component{
                     <div className="two">
                         <div className="border-down">批号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="border-down" key={index}>
                                     {m.serialNumber}
                                 </div>    
                     })
@@ -178,8 +178,8 @@ class Material extends React.Component{
                     <div className="three">
                         <div className="border-down">货品名称</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="border-down" key={index}>
                                     {m.materialName}
                                 </div>    
                     })
@@ -188,8 +188,8 @@ class Material extends React.Component{
                     <div className="four">
                         <div className="border-down">货品型号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="border-down" key={index}>
                                     原材料
                                 </div>    
                     })
@@ -204,12 +204,12 @@ class Material extends React.Component{
 
 
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
-                            return <div className="border-down" style={{color:"red"}}>
+                            return <div className="border-down"  key={index} style={{color:"red"}}>
                         {m.quantity}  </div>    
                         }else{
-                            return <div className="border-down">
+                            return <div className="border-down" key={index}>
                             {m.quantity}  </div>  
                         }
                     })
@@ -218,8 +218,8 @@ class Material extends React.Component{
                     <div className="six">
                         <div className="border-down1">实际数量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="border-down" key={index}>
                                     {m.realNum}
                                 </div>    
                     })
@@ -229,12 +229,12 @@ class Material extends React.Component{
                         <div className="border-down2">记录重量</div>
                         <div className='white-space space-left'></div>
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.weight !== m.realWeig){
-                            return <div className="border-down" style={{color:"red"}}>
+                            return <div className="border-down" key={index} style={{color:"red"}}>
                             {m.weight}
                         </div>
-                        }else{ return <div className="border-down">
+                        }else{ return <div className="border-down" key={index}>
                         {m.weight}
                     </div>}
                        
@@ -244,8 +244,8 @@ class Material extends React.Component{
                     <div className="eight">
                         <div className="border-down4">实际重量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className="border-down" key={index}>
                                     {m.realWeig}
                                 </div>    
                     })

@@ -156,7 +156,7 @@ class Product extends React.Component{
                         <div className="border-down">序号</div>
                 {
                     this.state.dataSource.map((m ,index)=>{
-                        return <div className={"border-down row"+index}>
+                        return <div className={"border-down row"+index} key={index}>
                                     {m.index}
                                 </div>    
                     })
@@ -166,7 +166,7 @@ class Product extends React.Component{
                         <div className="border-down">批号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index}>
+                        return <div className={"border-down row"+index} key={index}>
                                     {m.serialNumber}
                                 </div>    
                     })
@@ -176,7 +176,7 @@ class Product extends React.Component{
                         <div className="border-down">货品名称</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index}>
+                        return <div className={"border-down row"+index} key={index}>
                                     {m.materialName}
                                 </div>    
                     })
@@ -186,7 +186,7 @@ class Product extends React.Component{
                         <div className="border-down">货品型号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index}>
+                        return <div className={"border-down row"+index} key={index}>
                                     成品
                                 </div>    
                     })
@@ -203,10 +203,10 @@ class Product extends React.Component{
                 {
                     this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
-                            return <div className={"border-down row"+index} style={{color:"red"}}>
+                            return <div className={"border-down row"+index} style={{color:"red"}} key={index}>
                         {m.quantity}  </div>    
                         }else{
-                            return <div className={"border-down row"+index}>
+                            return <div className={"border-down row"+index} key={index}>
                             {m.quantity}  </div>  
                         }
                     })
@@ -216,7 +216,7 @@ class Product extends React.Component{
                         <div className="border-down1">实际数量</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index}>
+                        return <div className={"border-down row"+index} key={index}>
                                     {m.realNum}
                                 </div>    
                     })
@@ -228,10 +228,10 @@ class Product extends React.Component{
                 {
                     this.state.dataSource.map((m,index)=>{
                         if(m.weight !== m.realWeig){
-                            return <div className={"border-down row"+index} style={{color:"red"}}>
+                            return <div className={"border-down row"+index} style={{color:"red"}} key={index}>
                             {m.weight}
                         </div>
-                        }else{ return <div className={"border-down row"+index}>
+                        }else{ return <div className={"border-down row"+index} key={index}>
                         {m.weight}
                     </div>}
                        
@@ -242,7 +242,7 @@ class Product extends React.Component{
                         <div className="border-down4">实际重量</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index}>
+                        return <div className={"border-down row"+index} key={index}>
                                     {m.realWeig}
                                 </div>    
                     })

@@ -187,11 +187,11 @@ class Add extends React.Component{
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
                 <Modal title="新增" visible={this.state.visible} closable={false} centered={true}
-                    onCancel={this.handleCancel} width='1300px' maskClosable={false}
+                    onCancel={this.handleCancel} maskClosable={false} className='modal-xxlg'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save' handleSave={this.handleSave} />,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                       
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>
                     ]}>
                     <div style={{height:'400px'}}>
                     <div className='fr'>已录入{this.state.count}条数据</div><br/>
@@ -203,10 +203,11 @@ class Add extends React.Component{
                                 <td>取样点</td>
                                 <td>取样人</td>
                                 <td>检测人</td>
-                                <td style={{minWidth:'135px'}}>检测项目</td><td>频次</td>
+                                <td style={{minWidth:'135px'}}>检测项目</td>
+                                <td>频次</td>
                                 <td>受检物料</td>
                                 <td>备注</td><td>操作</td>
-                                 </tr>
+                              </tr>
                              </thead>
                              <tbody className='tbody'>
                              {
@@ -215,8 +216,8 @@ class Add extends React.Component{
                              </tbody>
                          </table>
                          <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'99.5%',fontSize:'15px'}} onClick={this.addData}/>
-                         
+                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+
                     </div>
                 </Modal>
             </span>

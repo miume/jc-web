@@ -5,19 +5,19 @@ import {Divider} from "antd";
 class DetailStateModal extends React.Component {
     render() {
         switch (this.props.checkStatus) {
-            case 0: //未申请
+            case '0': //未申请
                 return(
                     <div>
                         未申请
                     </div>
                 );
-            case 1: //审核中
+            case '1': //审核中
                 return(
                     <div className="noApply">
                         审核中
                     </div>
                 );
-            case 2: //已通过
+            case '2': //已通过
                 return(
                     <div>
                         <table style={{float:'left',marginBottom:'15px',marginTop:'-10px'}}>
@@ -51,7 +51,7 @@ class DetailStateModal extends React.Component {
                         </table>
                     </div>
                 );
-            case 3: //不通过
+            case '3': //不通过
                 return(
                     <div>
                         <table style={{float:'left',marginBottom:'15px',marginTop:'-10px'}}>
@@ -76,7 +76,7 @@ class DetailStateModal extends React.Component {
                         </div>
                     </div>
                 );
-            case 4: //发布
+            case '4': //发布
                 return(
                     <div>
                         <table style={{float:'left'}}>

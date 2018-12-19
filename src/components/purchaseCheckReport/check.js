@@ -17,15 +17,14 @@ for (let i = 0; i < 20; i++) {
         g: '李小红',
         h: '2018年11月27日',
         type: '进货检验',
-        state:3,
+        state:'0',
         isUrgent:'紧急',
     });
 }
 
 
 class Check extends React.Component {
-    Authorization;
-    server;
+    url;
     constructor(props) {
         super(props);
         this.state = {
@@ -47,8 +46,7 @@ class Check extends React.Component {
         }
     };
     render() {
-        this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem('remote');
+        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
@@ -79,29 +77,7 @@ class Check extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
-        // axios({
-        //     // url: `${this.server}/jc/purchaseReportRecord/getAllByPage`,
-        //     url: `http://2p277534k9.iok.la:58718/jc/purchaseReportRecord/getAllByPage`,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.Authorization
-        //     },
-        //     params: params,
-        //     // type: 'json',
-        // }).then((data) => {
-        //     console.log('data',data.data)
-        //     const res = data.data.data;
-        //     console.log('res',res);
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         loading: false,
-        //         dataSource: res.list,
-        //     });
-        // });
+
     };
     componentDidMount() {
         this.fetch();
@@ -109,31 +85,6 @@ class Check extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        // const ope_name = this.state.searchContent;
-        // axios({
-        //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         operationName:ope_name
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         dataSource: res.list,
-        //     });
-        // }).catch((error)=>{
-        //     message.info(error.data.message)
-        // })
 
     };
     /**获取查询时角色名称的实时变化 */

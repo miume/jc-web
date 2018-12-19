@@ -285,7 +285,6 @@ class Tr extends React.Component{
             const d = this.props.value;
             const items = d.testItems?d.testItems.split(','):[];
             var testItemIds = [];
-            //console.log(allTestItem.length)
             /**将查到的testItems字符串转换为id数组 */
             for(var i = 0; i < allTestItem.length; i++){
                 for(var j = 0; j < items.length; j++){
@@ -345,7 +344,9 @@ class Tr extends React.Component{
                     height={170}
                     visible={this.state.clicked}
                     onVisibleChange={this.handleClickChange}>
-                    <Button>{this.state.testItems?this.state.testItems:'请选择检测项目'}</Button>
+                    {
+                        this.state.testItems?<Button>{this.state.testItems}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
+                    }
                     </Popover></td>
                 
                 <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} defaultValue={d.testFrequency}/></td>
