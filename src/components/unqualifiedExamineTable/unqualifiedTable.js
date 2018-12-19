@@ -1,7 +1,7 @@
 import React from 'react';
 import {Divider, Table} from 'antd';
-// import CheckEditSpan from './checkEditSpan';
-// import CheckReleaseSpan from './checkReleaseSpan';
+import EditSpan from './editSpan';
+import DetailSpan from './detailSpan';
 
 class UnqualifiedTable extends React.Component {
     columns = [{
@@ -73,12 +73,13 @@ class UnqualifiedTable extends React.Component {
         width: '6%',
         render:state => {
             switch(`${state}`) {
+                case '0': return '未申请'
                 case '1': return '审核中';
                 case '2': return '已通过';
                 case '3': return '不通过';
                 default: return '';
             }
-        },
+        }
     },{
         title: '紧急',
         dataIndex: 'isUrgent',
@@ -93,27 +94,22 @@ class UnqualifiedTable extends React.Component {
         align:'center',
         width: '13%',
         render: (text,record) => {
-            let operationFlag = this.judgeOperation(record.state);
-            // return (
-            //     <span>
-            //         {operationFlag?(
-            //             <CheckEditSpan
-            //             />
-            //         ):(
-            //             <span  className="grey">编辑</span>
-            //         )}
-            //         <Divider type="vertical" />
-            //         <CheckReleaseSpan
-            //             state={record.state}
-            //             name='详情'
-            //         />
-            //         <Divider type="vertical" />
-            //         <DeletaSpan
-            //             record={record}
-            //             handleDelete={this.handleDelete.bind(this)}
-            //         />
-            //     </span>
-            // )
+            let operationCheckFlag = this.judgeCheckOperation(record.state);
+            return (
+                <span>
+                    {operationCheckFlag?(
+                        <EditSpan
+                        />
+                    ):(
+                        <span  className="notClick"><i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;编辑</span>
+                    )}
+                    <Divider type="vertical" />
+                    <DetailSpan
+                        state={record.state}
+                        name='详情'
+                    />
+                </span>
+            )
         }
     }];
     render() {
@@ -137,9 +133,9 @@ class UnqualifiedTable extends React.Component {
             />
         )
     }
-    /**判断编辑可否功能 */
-    judgeOperation = (record) => {
-        if(record===3){
+    /**判断编辑、删除可否功能 */
+    judgeCheckOperation = (record) => {
+        if(record==='0'||record==='3'){
             return true;
         }else{
             return false;

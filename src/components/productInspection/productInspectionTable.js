@@ -3,6 +3,7 @@ import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
+import './productInspection.css';
 
 class ProductTable extends React.Component{
     columns = [{
@@ -134,6 +135,7 @@ class ProductTable extends React.Component{
         });
         return (
             <Table
+                className="productCursorDefault"
                 rowKey={record => record.id}
                 dataSource={this.props.data}
                 columns={columns}

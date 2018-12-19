@@ -1,8 +1,7 @@
 import React from 'react';
 import SearchCell from "../BlockQuote/search";
-import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
-
+import UnqualifiedTrackTable from './unqualifiedTrackTable';
 const data =[];
 for (let i = 0; i < 20; i++) {
     data.push({
@@ -10,19 +9,12 @@ for (let i = 0; i < 20; i++) {
         id:i,
         a: '测试',
         b: '测试',
-        c: '启东北新',
-        d: '2019年1月10号',
-        e: '李小红',
-        f: '2018年11月27日',
-        g: '李小红',
-        h: '2018年11月27日',
-        type: '进货检验',
-        state:'3',
-        isUrgent:'紧急',
+        c: '2019年1月10号',
+        d: '启东北新',
     });
 }
 
-class UnqualifiedExamine extends React.Component{
+class UnqualifiedTrack extends React.Component{
     url;
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -50,7 +42,7 @@ class UnqualifiedExamine extends React.Component{
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
-                <BlockQuote name="不合格审评表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name="不合格跟踪表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
                         name='请输入搜索内容'
@@ -59,7 +51,7 @@ class UnqualifiedExamine extends React.Component{
                         // fetch={this.fetch}
                     />
                     <div className='clear' ></div>
-                    <UnqualifiedTable
+                    <UnqualifiedTrackTable
                         data={this.state.dataSource}
                         pagination={this.pagination}
                         // fetch={this.fetch}
@@ -74,4 +66,4 @@ class UnqualifiedExamine extends React.Component{
     }
 }
 
-export default UnqualifiedExamine;
+export default UnqualifiedTrack;

@@ -40,7 +40,7 @@ const data = [{
 },{
     id:8,
     name:'不合格跟踪表',
-    path:'/process',
+    path:'/unqualifiedTrackTable',
     className:'fa fa-cog fa-5x'
 }]
 
