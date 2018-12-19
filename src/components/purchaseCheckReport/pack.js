@@ -1,9 +1,11 @@
 import React from 'react';
-import {Divider,Switch} from 'antd';
+import {Divider,Button,Switch} from 'antd';
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
+import NewButton from "../BlockQuote/newButton";
+import './pack.css';
 // import axios from "axios";
 //
 const data = [];

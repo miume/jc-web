@@ -106,7 +106,7 @@ class RawMaterialOut extends React.Component{
             key:'isUrgent',
             align:'center',
             width:'10%',
-            render:isUrgent=>!isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+            render:isUrgent=>isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
         },{
             title:'操作',
             dataIndex:'id',
@@ -177,6 +177,7 @@ class RawMaterialOut extends React.Component{
     // }
     /**单条记录删除 */
     handleDelete(id){
+        console.log(id)
         axios({ 
             url:`${this.props.url.stockOut.repoOut}/${id}`,
             method:'Delete',

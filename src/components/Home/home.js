@@ -141,6 +141,19 @@ class Home extends Component {
                 clearInterval(showCanvas);
             }    
         },100)
+        const status = {
+            '-1': '已保存未提交',
+            '0' : '已提交未未审核',
+            '1' : '审核中',
+            '2' : '已保存未提交',
+            '3' : '审核未通过',
+            '4' : '合格',
+            '5' : '不合格',
+            '6' : '未接单',
+            '7' : '已接单',
+            '8' : '已完成',
+            '9' : '已评价'
+        }
         const server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         const url = {
@@ -275,6 +288,7 @@ class Home extends Component {
                   getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
               }
         }
+        localStorage.setItem('url',JSON.stringify(status))
         localStorage.setItem('url',JSON.stringify(url))
     }
     /**控制登陆背景图 */

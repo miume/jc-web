@@ -316,7 +316,7 @@ class ProcessInspection extends React.Component{
                     <Add server={this.server} url={this.url} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell name='请输入批号' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
+                        <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
                     </span>
                   <Table rowKey={record => record.index} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
                 </div> 

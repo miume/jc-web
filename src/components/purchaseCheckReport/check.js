@@ -1,5 +1,4 @@
 import React from 'react';
-import '../Home/page.css';
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 
