@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal,Button,Input } from 'antd';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 import './unqualifiedExamine.css';
+import DetailModal from './detailModal';
 
 class DetailSpan extends React.Component {
     url;
@@ -32,9 +33,13 @@ class DetailSpan extends React.Component {
                     // footer下的每个组件都要有唯一的key
                     footer={footer}
                 >
-                    <div style={{maxHeight:500}}>
+                    <div style={{maxHeight:600}}>
                         <PurchaseModal
-                            clickState ={1}
+                            clickState ={'1'}
+                            unqualifiedType={true}
+                        />
+                        <DetailModal
+                            state={this.props.state}
                         />
                     </div>
                 </Modal>
