@@ -33,7 +33,7 @@ class EdSpanModal extends React.Component {
 
         return(
             <div >
-                <div className="unTrackEditkModalTop">
+                <div className="unTrackEditModalTop">
                     <table>
                         <thead>
                         <tr>
@@ -61,7 +61,7 @@ class EdSpanModal extends React.Component {
                         </tbody>
                     </table>
                 </div>
-                <div className="unTrackEditModalTop">
+                <div className="unTrackEditModalMiddle">
                     <table>
                         <tbody>
                             <tr>
