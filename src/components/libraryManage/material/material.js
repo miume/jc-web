@@ -2,7 +2,7 @@ import React from 'react';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 import NewButton from "./button";
-import "./difference.css";
+import "../product/difference.css";
 
 const forkData = [1000,2000,2000,1001,2010,2010,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
@@ -108,6 +108,7 @@ class Material extends React.Component{
         this.setState({
             loading:true
         })
+        let parent = document.getElementById("Mparent")
         let $this = this;
         var index = 0;
         var myInterval = setInterval(() => {
@@ -128,10 +129,34 @@ class Material extends React.Component{
                     newDataSource[index]['quantity'] = res.data.data.realQuantity;
                     newDataSource[index]['weight'] = res.data.data.realWeight;
                     $this.setState({dataSource: newDataSource})
+                    var row = "Mrow"+index
+                    var Frow = "Mrow"+(index-1)
+                    if(index == 0){
+                        let col = document.getElementsByClassName(row)
+                        for(var i=0;i<col.length;i++){
+                            col[i].classList.add("MnowChange")
+                        }
+                    }else if(index >=0){
+                        let col = document.getElementsByClassName(row)
+                        let Fcol = document.getElementsByClassName(Frow)
+                        for(var i=0;i<col.length;i++){
+                            col[i].classList.add("MnowChange")
+                            Fcol[i].classList.remove("MnowChange")
+                        }
+                    }
+                    setTimeout(()=>{
+                        parent.scrollTop = 37.8*index+54.8;
+                    },500)
                     index++;
                 });
             }
             if (index === this.state.dataSource.length) {
+                parent.scrollTop = 0
+                var row = "Mrow"+(index-1)
+                let col = document.getElementsByClassName(row)
+                for(var i=0;i<col.length;i++){
+                    col[i].classList.remove("MnowChange")
+                }
                 this.setState({
                     loading:false
                 })
@@ -154,98 +179,98 @@ class Material extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
-                <div className="parent">
-                    <div className="one">
-                        <div className="border-down">序号</div>
+                <div className="Mparent" id="Mparent">
+                    <div className="Mone Mcol">
+                        <div className="Mborder-down">序号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
-                                    <div className="animation">{m.index}</div>
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"Mborder-down Mrow"+index} key={index}>
+                                    {m.index}
                                 </div>
                     })
                 }
                     </div>
-                    <div className="two">
-                        <div className="border-down">批号</div>
+                    <div className="Mtwo Mcol">
+                        <div className="Mborder-down">批号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.serialNumber}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="three">
-                        <div className="border-down">货品名称</div>
+                    <div className="Mthree Mcol">
+                        <div className="Mborder-down">货品名称</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.materialName}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="four">
-                        <div className="border-down">货品型号</div>
+                    <div className="Mfour Mcol">
+                        <div className="Mborder-down">货品型号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"Mborder-down Mrow"+index} key={index}>
                                     原材料
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="five">
+                    <div className="Mfive Mcol">
 
-                            <div className="head-shadow">
-                                <div className="border-down3">记录数量</div>
+                            <div className="Mhead-shadow">
+                                <div className="Mborder-down3">记录数量</div>
                                 {/* <div className="fa fa-balance-scale"></div> */}
                             </div>
 
 
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
-                            return <div className="border-down" style={{color:"red"}}>
+                            return <div className={"Mborder-down Mrow"+index} key={index} style={{color:"red"}}>
                         {m.quantity}  </div>    
                         }else{
-                            return <div className="border-down">
+                            return <div className={"Mborder-down Mrow"+index} key={index}>
                             {m.quantity}  </div>  
                         }
                     })
                 }
                     </div>
-                    <div className="six">
-                        <div className="border-down1">实际数量</div>
+                    <div className="Msix Mcol">
+                        <div className="Mborder-down1">实际数量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.realNum}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="seven">
-                        <div className="border-down2">记录重量</div>
+                    <div className="Mseven Mcol">
+                        <div className="Mborder-down2">记录重量</div>
                         <div className='white-space space-left'></div>
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.weight !== m.realWeig){
-                            return <div className="border-down" style={{color:"red"}}>
+                            return <div className={"Mborder-down Mrow"+index} key={index} style={{color:"red"}}>
                             {m.weight}
                         </div>
-                        }else{ return <div className="border-down">
+                        }else{ return <div className={"Mborder-down Mrow"+index} key={index}>
                         {m.weight}
                     </div>}
                        
                     })
                 }
                     </div>
-                    <div className="eight">
-                        <div className="border-down4">实际重量</div>
+                    <div className="Meight Mcol">
+                        <div className="Mborder-down4">实际重量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.realWeig}
                                 </div>    
                     })
