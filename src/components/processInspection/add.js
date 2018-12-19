@@ -104,7 +104,7 @@ class Add extends React.Component{
     }
     applyOut(status){
         const details = this.state.addApplyData;
-        console.log(details)
+        //console.log(details)
         for(var i = 0; i < details.length; i++){
             delete details[i].id;
             var e = details[i].procedureTestRecord;

@@ -28,6 +28,7 @@ class SearchCell extends React.Component{
         /**重置时清除搜索框的值 */
         let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]        
         searchComponent.childNodes[0].value = ''
+        console.log(searchComponent.childNodes[0])
         this.props.fetch();
     }
 }
