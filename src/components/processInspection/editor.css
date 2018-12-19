@@ -38,7 +38,7 @@
     max-height:267px;
     overflow-y:scroll;
     overflow-x: hidden;
-    display:block
+    display:block;
 }
 #process-table  .tbody  td{
     height: 35px;
