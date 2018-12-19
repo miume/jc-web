@@ -2,8 +2,9 @@ import React from 'react';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios'
 import NewButton from "./button";
+import "../material/difference.css"
 
-const forkData = [1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [1000,2300,2030,2000,2111,2110,20001,20100,20001,20001,101010,12002,2202,2023,1000,10001,1000,1000,1000,1000,10100,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -129,6 +130,11 @@ class Product extends React.Component{
             }
             if (index === this.state.dataSource.length) {
                 parent.scrollTop = 0
+                var row = "row"+(index-1)
+                let col = document.getElementsByClassName(row)
+                for(var i=0;i<col.length;i++){
+                    col[i].classList.remove("nowChange")
+                }
                 this.setState({
                     loading:false
                 })
@@ -151,55 +157,57 @@ class Product extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
+                <div className="border-down" style={{display:"inline-block",width:"9%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>序号</div>
+                <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>批号</div>
+                <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>货品名称</div>
+                <div className="border-down" style={{display:"inline-block",width:"12.8%",textAlign:"center",lineHeight:"36.8px",borderTop:"1px solid #E4E4E4"}}>货品型号</div>
+                <div className="border-down3" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>记录数量</div>
+                <div className="border-down1" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>实际数量</div>
+                <div className="border-down2" style={{display:"inline-block",width:"12.8%",textAlign:'center',lineHeight:"36.8px"}}>记录重量</div>
+                <div className="border-down4" style={{display:"inline-block",width:"12.9%",textAlign:'center',lineHeight:"36.8px"}}>实际重量</div>
                 <div className="parent" id="parent">
                     <div className="one col">
-                        <div className="border-down">序号</div>
+                    
                 {
                     this.state.dataSource.map((m ,index)=>{
                         return <div className={"border-down row"+index} key={index}>
                                     {m.index}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
                     <div className="two col">
-                        <div className="border-down">批号</div>
+                        
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
                                     {m.serialNumber}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
                     <div className="three col">
-                        <div className="border-down">货品名称</div>
+                        
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
                                     {m.materialName}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
                     <div className="four col">
-                        <div className="border-down">货品型号</div>
+                        
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
                                     成品
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
                     <div className="five col">
-
-                            <div className="head-shadow">
-                                <div className="border-down3">记录数量</div>
-                                {/* <div className="fa fa-balance-scale"></div> */}
-                            </div>
-
-
+                        
                 {
                     this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
@@ -213,18 +221,18 @@ class Product extends React.Component{
                 }
                     </div>
                     <div className="six col">
-                        <div className="border-down1">实际数量</div>
+                        
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
                                     {m.realNum}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
                     <div className="seven col">
-                        <div className="border-down2">记录重量</div>
-                        <div className='white-space space-left'></div>
+                        
+
                 {
                     this.state.dataSource.map((m,index)=>{
                         if(m.weight !== m.realWeig){
@@ -234,17 +242,17 @@ class Product extends React.Component{
                         }else{ return <div className={"border-down row"+index} key={index}>
                         {m.weight}
                     </div>}
-                       
+
                     })
                 }
                     </div>
                     <div className="eight col">
-                        <div className="border-down4">实际重量</div>
+                        
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"border-down row"+index} key={index}>
                                     {m.realWeig}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>

@@ -85,6 +85,7 @@
     border-left: 1px solid #E4E4E4;
     text-overflow: ellipsis;
     overflow: hidden;
+    position: relative;
   }
 .border-down1 {
     /* border-bottom: 1px solid #E4E4E4; */
@@ -130,24 +131,86 @@
 .head-shadow{
     background: #0079FE;
 }
-
-/* .animation {
-    background:red;
-    z-index: -1;
-    -webkit-animation:mymove 1s infinite;
-
+.border-down.nowChange::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top:0;
+  width: 100%;
+  height: 100%;
+  background: #1890ff;
+  opacity: 0.5;
+  transition: 0.5s;
+  z-index: 99999;
+}
+.border-down::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top:0;
+  width: 100%;
+  height: 100%;
+  background: #1890ff;
+  opacity: 0.0;
+  transition: 0.5s;
+  z-index: 99999;
 }
 
-@-webkit-keyframes mymove
-    {
-        0% {
-            opacity: 0;
-            }
-        50% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 1;
-        }
-    } */
-
+/* .Xborder-down{
+    border-bottom: 1px solid #E4E4E4;
+    border-left: 1px solid #E4E4E4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+}
+.Pborder-down{
+    border-bottom: 1px solid #E4E4E4;
+    border-left: 1px solid #E4E4E4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+}
+.Hborder-down{
+    border-bottom: 1px solid #E4E4E4;
+    border-left: 1px solid #E4E4E4;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    position: relative;
+}
+.Hborder-down3{
+    border-left: 2px solid #0079FE;
+    border-right: none;
+    border-top: 12px solid #0079FE;
+    border-bottom: 6px solid #0079FE;
+    background: #0079FE;
+    color: #ffffff;
+    text-overflow: ellipsis;
+}
+.Hborder-down1{
+    border-left: 2px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    border-top: 12px solid #0079FE;
+    border-bottom: 6px solid #0079FE;
+    text-align: center;
+    background: #0079FE;
+    color: #ffffff;
+    text-overflow: ellipsis;
+}
+.Hborder-down2{
+    border-left: 2px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    border-top: 12px solid #0079FE;
+    border-bottom: 6px solid #0079FE;
+    background: #0079FE;
+    color: #ffffff;
+    text-overflow: ellipsis;
+}
+.Hborder-down4{
+    border-left: 2px solid #0079FE;
+    border-right: 2px solid #0079FE;
+    border-top: 12px solid #0079FE;
+    border-bottom: 6px solid #0079FE;
+    background: #0079FE;
+    color: #ffffff;
+    text-overflow: ellipsis;
+} */
