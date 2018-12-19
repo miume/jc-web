@@ -24,8 +24,9 @@ class RawStandard extends Component{
 
         }
         this.onBlockChange1=this.onBlockChange1.bind(this);
+        
         this.onBlockChange2=this.onBlockChange2.bind(this);
-       
+        this.returnRaw=this.returnRaw.bind(this);
     }
  
   onBlockChange1(flag,content1,click1){//原材料那个块是否被选中，选中后发生的变化
@@ -34,9 +35,10 @@ class RawStandard extends Component{
       this.setState({
         flag:flag,
         content1:content1,
-        click1:click1
+        click1:click1//后面被选中的时候，就可以点击这个面板了
     });
   }
+
   onBlockChange2(flag,content2,click2){
          this.setState({
              flag:flag,
@@ -44,24 +46,27 @@ class RawStandard extends Component{
              click2:click2,
          });
   }
- 
+  returnRaw(){
+    const name=this.state.content1;
+    return name;
+}
    
        render(){
            return(
                <div>
                    <Blockquote menu='技术中心' name='原材料标准'/>
                   
-                   <div style={{paddingLeft:'35px',paddingTop:'15px'}}>
+                   <div style={{padding:'20px'}}>
                      
                      <div className='rawStanstdardBlockQuo' >{this.state.content1}</div>
                      <div className='rawStanstdardBlockQuo' >{this.state.content2}</div>
                      <div className='rawStanstdardBlockQuo' >{this.state.content3}</div>
                    
                      <div  className={this.state.flag===1?'show':'hide'}>
-                         <RawMaterial onBlockChange={this.onBlockChange1}/>
+                         <RawMaterial onBlockChange={this.onBlockChange1} />
                      </div>
                      <div   className={this.state.flag===2?'show':'hide'}  >
-                          <Manufacturer onBlockChange={this.onBlockChange2}/> 
+                          <Manufacturer onBlockChange={this.onBlockChange2} returnRaw={this.returnRaw}/> 
                       </div>
                      <div className={this.state.flag===3?'show':'hide'}>
                           <Standard />

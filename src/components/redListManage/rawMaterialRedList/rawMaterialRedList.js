@@ -119,7 +119,7 @@ class RawMaterialRedList extends Component{
             align:'center',
             //width:'',
             render:(text,record)=>{
-                //console.log(record.commonBatchNumber.status);
+                console.log(record);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
                 //console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
@@ -134,7 +134,7 @@ class RawMaterialRedList extends Component{
                            </Popconfirm>
                          </span>
                        ) : (
-                         <span className='grey' >删除</span>
+                         <span className='notClick' >删除</span>
                        )}
                      </span>
                      <Divider type='vertical'/>
@@ -236,17 +236,27 @@ class RawMaterialRedList extends Component{
       /**批量删除弹出框确认函数 */
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
+        const data=this.state.dataSource;
         console.log(ids);
-        // for(var i=0;i<ids.length;i++){
-        //     console.log(this.state.dataSource[ids[i]]);
-        //         if(!this.state.dataSource[ids[i]].commonBatchNumber.status=='未申请'||!this.state.dataSource[ids[i]].commonBatchNumber.status=='未通过'){
-        //                ids.length=0;      
-        //             break
-        //         }
-        // }
-        // if(ids.length===0){
-        //     return
-        // }
+        for(var i=0;i<ids.length;i++){
+            console.log(ids[i]);
+            for(var j=0;j<data.length;j++){
+                console.log(data[j].repoRedTable.id);
+                if(ids[i]===data[j].repoRedTable.id){
+                    if(!data[i].commonBatchNumber.status===-1||!data[i].commonBatchNumber.status===3){
+                                   ids.length=0;
+                                   break;
+                    }
+                }
+            } 
+            if(ids.length===0){
+                break;
+            }
+        }
+        if(ids.length===0){
+            message.info('有不可删除数据！');
+            return
+        }
         axios({
              url:`${this.url.redList.redList}`,
              method:'Delete',
@@ -360,7 +370,7 @@ class RawMaterialRedList extends Component{
     };
       //console.log(this.state.batchNumberChildren);
         return(
-            <div style={{padding:'15px'}}>
+            <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
