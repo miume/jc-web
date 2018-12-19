@@ -16,7 +16,7 @@ class Add extends React.Component{
             visible : false,
             checkSelectData:-1,//最开始下拉框是没选择数据的
             popVisible:false,//送检的气泡弹出
-            checkSwitch:-1,//是否紧急那个开关最开始是关闭的
+            checkSwitch:0,//是否紧急那个开关最开始是关闭的
             
         }
         
@@ -104,6 +104,7 @@ class Add extends React.Component{
    }
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
+    console.log(isUrgent);
     axios({
         url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',

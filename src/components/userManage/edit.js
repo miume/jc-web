@@ -19,7 +19,7 @@ class Edit extends React.Component{
         });
       }
     handleOk() {
-        console.log(this.formRef.getItemsValue());
+       // console.log(this.formRef.getItemsValue());
         this.setState({
         visible: false
         });
@@ -31,7 +31,7 @@ class Edit extends React.Component{
     }
     //部门管理的下拉框改变
     handleChange(value){
-        console.log(`selected:${value}`);
+        //console.log(`selected:${value}`);
     }
     render() {
         return (

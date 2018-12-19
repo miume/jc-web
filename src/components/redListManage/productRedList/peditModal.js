@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form,Input,Select,InputNumber} from 'antd';
+import '../redList.css'
 const Option=Select.Option;
 const FormItem=Form.Item;
 const {TextArea}=Input;
@@ -31,7 +32,7 @@ class ProductRedListEditModal extends React.Component{
   }
   getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
     const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
-    console.log(values);
+    //console.log(values);
     
     return values;//
 }
@@ -100,7 +101,7 @@ class ProductRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoRedTable.note,
                     
                 })(
-                    <TextArea autosize={true} placeholder='请填写损失说明'/>
+                    <TextArea  placeholder='请编辑损失说明'/>
                 )}
                 </FormItem>
             </Form>

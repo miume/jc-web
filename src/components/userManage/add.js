@@ -18,7 +18,7 @@ class Add extends React.Component{
         });
       }
     handleOk() {
-        console.log(this.formRef.getItemsValue());
+        //console.log(this.formRef.getItemsValue());
         this.setState({
         visible: false
         });

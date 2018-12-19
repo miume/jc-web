@@ -1,7 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
-import './pack.css';
 import './purchaseModalTable.css';
 
 const data =[];
