@@ -2,6 +2,7 @@ import React from 'react';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseModalTable.css';
+import EditSpan from "../unqualifiedExamineTable/editSpan";
 
 const data =[];
 for (let i = 0; i < 5; i++) {
@@ -158,7 +159,7 @@ class PurchaseModal extends React.Component {
         if(this.state.headColumns.length>7){
             headColumnsLength = true;
         }
-
+        const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
         return(
             <div style={{paddingTop:'10px'}}>
                 <div>
@@ -195,7 +196,7 @@ class PurchaseModal extends React.Component {
                     </table>
                 </div>
                 <div style={{paddingTop:'80px'}}>
-                    <div id="modalTable">
+                    <div id={unqualifiedType?'unqualfiedModalTable':'modalTable'}>
                         <div className="purchaseThead">
                             <div className="theadLeft">
                                 <div className="leftThead borderRadius">序号</div>
