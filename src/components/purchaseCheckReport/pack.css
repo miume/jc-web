@@ -17,7 +17,43 @@
     font-size: 14px;
     text-align: center;
 }
+.ant-checkbox.ant-checkbox-disabled {
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 37px;
+}
+.ant-checkbox.ant-checkbox-disabled::after {
+  content: "已生成";
+  position: absolute;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  color: #ccc;
+  top: 0;
+  left: 0;
+  line-height: 21px;
+}
+.ant-checkbox.ant-checkbox-disabled > *{
+  display: none;
+}
+.ant-table-tbody > tr > td.ant-table-selection-column {
+  height: 37px;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+.ant-table-tbody > tr > td.ant-table-selection-column > span{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
 
+}
+.ant-table-tbody > tr > td.ant-table-selection-column > span > .ant-checkbox-wrapper{
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+}
 
 /*.qualified {*/
     /*background: #999999;*/
