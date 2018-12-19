@@ -73,7 +73,8 @@ class UnqualifiedTable extends React.Component {
         width: '6%',
         render:state => {
             switch(`${state}`) {
-                case '0': return '未申请'
+                case '-1': return '未申请';
+                case '0': return '待审核';
                 case '1': return '审核中';
                 case '2': return '已通过';
                 case '3': return '不通过';
