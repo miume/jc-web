@@ -57,9 +57,9 @@ class Detail extends React.Component{
     }
     /**通过id获取数据 */
     getDetailData(){
-        axios.get(`${this.props.server}/jc/common/rawTestReport/${this.props.value}`,{
+        axios.get(`${this.props.url.rawTestReport.getById}?id=${this.props.value}`,{
             headers:{
-                'Authorization':this.props.Authorization
+                'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const res = data.data.data;
@@ -106,7 +106,7 @@ class Detail extends React.Component{
                      <div style={{padding:'10px'}}>
                          <span className='span'>样品名称：镍矿石样品</span>
                      </div>
-                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:250}}></Table>
+                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:200}}></Table>
                      <div style={{padding:'10px',height:'40px',fontSize:'15px'}}>
                          <div style={{float:'left'}}>
                              <p className='span'>检验人：<span></span></p>
