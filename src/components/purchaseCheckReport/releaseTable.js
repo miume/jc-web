@@ -1,6 +1,5 @@
 import React from 'react';
 import {Table} from 'antd';
-import ReleaseSpan from './releaseSpan';
 import CheckReleaseSpan from './checkReleaseSpan';
 
 
@@ -99,7 +98,7 @@ class ReleaseTable extends React.Component {
                 <span>
                     {operationFlag?(
                         <CheckReleaseSpan
-                            state={2}
+                            state={'2'}
                             name='发布'
                         />
                     ):(
