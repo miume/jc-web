@@ -2,7 +2,6 @@ import React from 'react';
 import '../Home/page.css';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseModalTable.css';
-import EditSpan from "../unqualifiedExamineTable/editSpan";
 
 const data =[];
 for (let i = 0; i < 5; i++) {
