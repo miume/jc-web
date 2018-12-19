@@ -10,19 +10,37 @@ import NewButton from "../BlockQuote/newButton";
 //
 const data = [];
 for (let i = 0; i < 20; i++) {
-    data.push({
-        index:i,
-        id: i,
-        sampleDeliveringDate: '周小伟',
-        deliverer: '启动',
-        deliveryFactory: 'c',
-        serialNumberd: 'd',
-        testItem: 'e',
-        exceptionComment: 'f',
-        type: '无',
-        acceptStatus: '无',
-        status: '已通过'
-    });
+    if(i%2===0){
+        data.push({
+            index:i,
+            id: i,
+            sampleDeliveringDate: '周小伟',
+            deliverer: '启动',
+            deliveryFactory: 'c',
+            serialNumberd: 'd',
+            testItem: 'e',
+            exceptionComment: 'f',
+            type: '无',
+            acceptStatus: '无',
+            status: '已通过',
+            ungenerate: '1', //未生成为：0，已生成为1
+        });
+    }else{
+        data.push({
+            index:i,
+            id: i,
+            sampleDeliveringDate: '周小伟',
+            deliverer: '启动',
+            deliveryFactory: 'c',
+            serialNumberd: 'd',
+            testItem: 'e',
+            exceptionComment: 'f',
+            type: '无',
+            acceptStatus: '无',
+            status: '已通过',
+            ungenerate: '0', //未生成为：0，已生成为1
+        });
+    }
 }
 
 
@@ -40,6 +58,7 @@ class Pack extends React.Component {
             searchContent:'',
             searchText: '',
             generateVisible: false,
+            unGenerateDate: true, //未生成数据--true为显示未生成数据，false为显示所有数据
         };
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -64,6 +83,10 @@ class Pack extends React.Component {
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+            getCheckboxProps: record => ({
+                disabled: record.ungenerate === '1',
+            })
+
         };
         return(
             <div>
@@ -73,7 +96,7 @@ class Pack extends React.Component {
                     />
                     <div style={{float:'right'}}>
                         <span style={{marginRight:'10px',fontSize:'6px'}}>仅显示未生成的数据</span>
-                        <Switch onChange={this.urgentChange} size='small' style={{width:'35px',marginBottom:'2px'}}/>
+                        <Switch onChange={this.urgentChange} size='small' defaultChecked style={{width:'35px',marginBottom:'2px',background:''}}/>
                         <Divider type="vertical" style={{height:'35px'}}/>
                         <span style={{float:'right',paddingBottom:'8px'}}>
                             <SearchCell name='请输入搜索内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
@@ -177,31 +200,7 @@ class Pack extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        // const ope_name = this.state.searchContent;
-        // axios({
-        //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         operationName:ope_name
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         dataSource: res.list,
-        //     });
-        // }).catch((error)=>{
-        //     message.info(error.data.message)
-        // })
+
 
     };
     /**获取查询时角色名称的实时变化 */
@@ -213,6 +212,7 @@ class Pack extends React.Component {
     /**实现选择是否只展现未生成的数据功能 */
     urgentChange = (checked) => {
         console.log(`switch to ${checked}`);
+
         // this.setState({
         //     checkSwitchData:checked
         // })
