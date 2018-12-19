@@ -3,7 +3,7 @@ import SearchCell from '../../BlockQuote/search';
 import axios from 'axios'
 import NewButton from "./button";
 
-const forkData = [2000,2000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -21,6 +21,7 @@ class Product extends React.Component{
             searchContent:'',
             dataSource:[],
             height:[],
+            loading:false
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -81,28 +82,66 @@ class Product extends React.Component{
         })
     }
     handleClick(){
-        this.state.dataSource.map((m)=>{
-            console.log(m.id)
-            axios({
-                url:`${this.server}/jc/common/RepoStock/oneKeyStock`,
-                method:'post',
-                params:{
-                    id:parseInt(m.id),
-                    quantity:m.realNum,
-                    weight:m.realWeig,
-                    creator:parseInt(ob.userId)
-                },
-            }).then((data)=>{
-                this.getAllData()
-            })
+        this.setState({
+            loading:true
         })
+        let parent = document.getElementById("parent")
+        let $this = this;
+        var index = 0;
+        var myInterval = setInterval(() => {
+            let current = this.state.dataSource[index];
+            if (current !== undefined) {
+                axios.post(`${this.server}/jc/common/RepoStock/oneKeyStock`,
+                    {},
+                    {
+                        params: {
+                            'id': current.id,
+                            'quantity': current.realNum,
+                            'weight': current.realWeig,
+                            'creator': ob.userId
+                        }
+                    }
+                ).then((res) => {
+                    let newDataSource = [...$this.state.dataSource]
+                    newDataSource[index]['quantity'] = res.data.data.realQuantity;
+                    newDataSource[index]['weight'] = res.data.data.realWeight;
+                    $this.setState({dataSource: newDataSource})
+                    var row = "row"+index
+                    var Frow = "row"+(index-1)
+                    if(index == 0){
+                        let col = document.getElementsByClassName(row)
+                        for(var i=0;i<col.length;i++){
+                            col[i].classList.add("nowChange")
+                        }
+                    }else if(index >=0){
+                        let col = document.getElementsByClassName(row)
+                        let Fcol = document.getElementsByClassName(Frow)
+                        for(var i=0;i<col.length;i++){
+                            col[i].classList.add("nowChange")
+                            Fcol[i].classList.remove("nowChange")
+                        }
+                    }
+                    setTimeout(()=>{
+                        parent.scrollTop = 37.8*index+54.8;
+                    },500)
+                    index++;
+                });
+            }
+            if (index === this.state.dataSource.length) {
+                parent.scrollTop = 0
+                this.setState({
+                    loading:false
+                })
+                clearInterval(myInterval);
+            }
+        }, 1000);
     }
     render(){
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (
             <div style={{padding:'0 15px'}}>
-                <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale"/>
+                <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入搜索内容'
                         searchContentChange={this.searchContentChange}
@@ -112,48 +151,48 @@ class Product extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
-                <div className="parent">
-                    <div className="one">
+                <div className="parent" id="parent">
+                    <div className="one col">
                         <div className="border-down">序号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m ,index)=>{
+                        return <div className={"border-down row"+index}>
                                     {m.index}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="two">
+                    <div className="two col">
                         <div className="border-down">批号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"border-down row"+index}>
                                     {m.serialNumber}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="three">
+                    <div className="three col">
                         <div className="border-down">货品名称</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"border-down row"+index}>
                                     {m.materialName}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="four">
+                    <div className="four col">
                         <div className="border-down">货品型号</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"border-down row"+index}>
                                     成品
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="five">
+                    <div className="five col">
 
                             <div className="head-shadow">
                                 <div className="border-down3">记录数量</div>
@@ -162,48 +201,48 @@ class Product extends React.Component{
 
 
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.quantity !== m.realNum){
-                            return <div className="border-down" style={{color:"red"}}>
+                            return <div className={"border-down row"+index} style={{color:"red"}}>
                         {m.quantity}  </div>    
                         }else{
-                            return <div className="border-down">
+                            return <div className={"border-down row"+index}>
                             {m.quantity}  </div>  
                         }
                     })
                 }
                     </div>
-                    <div className="six">
+                    <div className="six col">
                         <div className="border-down1">实际数量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"border-down row"+index}>
                                     {m.realNum}
                                 </div>    
                     })
                 }
                     </div>
-                    <div className="seven">
+                    <div className="seven col">
                         <div className="border-down2">记录重量</div>
                         <div className='white-space space-left'></div>
                 {
-                    this.state.dataSource.map((m)=>{
+                    this.state.dataSource.map((m,index)=>{
                         if(m.weight !== m.realWeig){
-                            return <div className="border-down" style={{color:"red"}}>
+                            return <div className={"border-down row"+index} style={{color:"red"}}>
                             {m.weight}
                         </div>
-                        }else{ return <div className="border-down">
+                        }else{ return <div className={"border-down row"+index}>
                         {m.weight}
                     </div>}
                        
                     })
                 }
                     </div>
-                    <div className="eight">
+                    <div className="eight col">
                         <div className="border-down4">实际重量</div>
                 {
-                    this.state.dataSource.map((m)=>{
-                        return <div className="border-down">
+                    this.state.dataSource.map((m,index)=>{
+                        return <div className={"border-down row"+index}>
                                     {m.realWeig}
                                 </div>    
                     })
