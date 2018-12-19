@@ -4,7 +4,7 @@ import axios from 'axios';
 import NewButton from "./button";
 import "./difference.css";
 
-const forkData = [1000,2000,2000,1001,2010,1010,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [1000,2000,2000,1001,2010,2010,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -21,7 +21,6 @@ class Material extends React.Component{
         this.state={
             searchContent:'',
             dataSource:[],
-            height:[],
             loading: false,
         }
         this.searchContentChange=this.searchContentChange.bind(this);
@@ -72,15 +71,10 @@ class Material extends React.Component{
       this.setState({
         dataSource:res
       })
+      console.log(this.state.dataSource)
     })
   }
 
-  sleep(delay){
-    var start = (new Date()).getTime();
-    while ((new Date()).getTime() - start < delay) {
-        continue;
-      }
-  }
     searchContentChange(e){
         const  value=e.target.value;//此处显示的是我搜索框填的内容
           this.setState({searchContent:value});
@@ -111,21 +105,39 @@ class Material extends React.Component{
         })
     }
     handleClick(){
-        this.state.dataSource.map((m)=>{
-                axios({
-                url:`${this.server}/jc/common/RepoStock/oneKeyStock`,
-                method:'post',
-                params:{
-                    id:parseInt(m.id),
-                    quantity:m.realNum,
-                    weight:m.realWeig,
-                    creator:parseInt(ob.userId)
-                },
-            }).then((data)=>{
-                this.sleep(1000)
-                this.getAllData1()
-            })
+        this.setState({
+            loading:true
         })
+        let $this = this;
+        var index = 0;
+        var myInterval = setInterval(() => {
+            let current = this.state.dataSource[index];
+            if (current !== undefined) {
+                axios.post(`${this.server}/jc/common/RepoStock/oneKeyStock`,
+                    {},
+                    {
+                        params: {
+                            'id': current.id,
+                            'quantity': current.realNum,
+                            'weight': current.realWeig,
+                            'creator': ob.userId
+                        }
+                    }
+                ).then((res) => {
+                    let newDataSource = [...$this.state.dataSource]
+                    newDataSource[index]['quantity'] = res.data.data.realQuantity;
+                    newDataSource[index]['weight'] = res.data.data.realWeight;
+                    $this.setState({dataSource: newDataSource})
+                    index++;
+                });
+            }
+            if (index === this.state.dataSource.length) {
+                this.setState({
+                    loading:false
+                })
+                clearInterval(myInterval);
+            }
+        }, 1000);
     }
     render(){
         this.Authorization = localStorage.getItem('Authorization');
@@ -148,8 +160,8 @@ class Material extends React.Component{
                 {
                     this.state.dataSource.map((m)=>{
                         return <div className="border-down">
-                                    {m.index}
-                                </div>    
+                                    <div className="animation">{m.index}</div>
+                                </div>
                     })
                 }
                     </div>
