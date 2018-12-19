@@ -26,37 +26,37 @@ class SampleInspection extends React.Component{
         key: 'commonBatchNumber.id',
         sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
         align:'center',
-        width: '6%',
+        width: '8%',
     },{
         title: '送检时间',
         dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
         key: 'sampleDeliveringDate',
         align:'center',
-        width: '15%',
+        width: '13%',
     },{
         title: '送检人',
         dataIndex: 'deliverer.name',
         key: 'deliverer',
         align:'center',
-        width: '10%',
+        width: '7%',
     },{
         title: '送检工厂',
         dataIndex: 'deliveryFactory.name',
         key: 'name',
         align:'center',
-        width: '10%',
+        width: '7%',
     },{
         title: '批号',
         dataIndex: 'serialNumberName',
         key: 'batchNumber',
         align:'center',
-        width: '10%',
+        width: '11%',
     },{
         title: '异常备注',
         dataIndex: 'sampleDeliveringRecord.exceptionComment',
         key: 'memo',
         align:'center',
-        width: '10%',
+        width: '9%',
         render(text,record){
             if(record.sampleDeliveringRecord.exceptionComment === null){
                 return "无"
@@ -69,13 +69,20 @@ class SampleInspection extends React.Component{
         dataIndex: 'sampleDeliveringRecord.type',
         key: 'type',
         align:'center',
-        width: '10%',
+        width: '6%',
+        render:status=>{
+            switch(`${status}`){
+                case '1':return "原材料";
+                case "2":return "中间品";
+                case "3":return "成品"
+            }
+        }
     },{
         title: '接受状态',
         dataIndex: 'sampleDeliveringRecord.acceptStatus',
         key: 'status',
         align:'center',
-        width: '10%',
+        width: '6%',
         render:status=>{
             switch(`${status}`){
                 case '-1':return "保存"
@@ -89,7 +96,7 @@ class SampleInspection extends React.Component{
         dataIndex: 'sampleDeliveringRecord.handleComment',
         key: 'handleComment',
         align:'center',
-        width: '10%',
+        width: '7%',
         render(text,record){
             if(record.sampleDeliveringRecord.exceptionComment === null){
                 return "无"
@@ -102,20 +109,20 @@ class SampleInspection extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '25%',
-        // render(text,record){
-        //     return(
-        //         <div>
-        //             <span className='blue' href='#'>编辑</span>
-        //             <Divider type="vertical" />
-        //             <span className='blue' href='#'>删除</span>
-        //             <Divider type="vertical" />
-        //             <span className='blue' href='#'>接收</span>
-        //             <Divider type="vertical" />
-        //             <span className='blue' href='#'>拒绝</span>
-        //         </div>
-        //     )
-        // }
+        width: '18%',
+        render(text,record){
+            return(
+                <div>
+                    <span className='blue' href='#'>编辑</span>
+                    <Divider type="vertical" />
+                    <span className='blue' href='#'>删除</span>
+                    <Divider type="vertical" />
+                    <span className='blue' href='#'>接收</span>
+                    <Divider type="vertical" />
+                    <span className='blue' href='#'>拒绝</span>
+                </div>
+            )
+        }
     }];
     constructor(props){
         super(props);
@@ -180,7 +187,6 @@ class SampleInspection extends React.Component{
             pageNumber: pagination.current,
             sortField: 'id',
             sortType: 'desc',
-  
         });
     };
     fetch = (params = {}) => {

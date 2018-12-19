@@ -119,7 +119,6 @@ class RawMaterialRedList extends Component{
             align:'center',
             //width:'',
             render:(text,record)=>{
-               // console.log(record);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
                 //console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
@@ -263,7 +262,6 @@ class RawMaterialRedList extends Component{
       /**批量删除弹出框确认函数 */
       deleteByIds(){
         const ids=this.state.selectedRowKeys;
-        
         axios({
              url:`${this.url.redList.redList}`,
              method:'Delete',
