@@ -14,7 +14,7 @@ const Option = Select.Option;
 //     name:'流程3'
 // }]
 
-// const children = approvalProcess.map(p => 
+// const children = approvalProcess.map(p =>
 //     <Option key={p.id} value={p.id}>{p.name}</Option>
 // )
 class Tr extends React.Component{
@@ -111,13 +111,13 @@ class Tr extends React.Component{
         }
       }).then(data=>{
         const res = data.data.data;
-        const children = res.map(p => 
+        const children = res.map(p =>
             <Option key={p.id} value={p.id}>{p.name}</Option>
             )
         this.setState({
           allProductionProcess : children
       })
-    })  
+    })
     }
     /**获取所有检测项目 */
     getAllTestItem(){
@@ -132,7 +132,7 @@ class Tr extends React.Component{
         this.setState({
           allTestItem : res
       })
-    })   
+    })
     }
     /**获取所有用户 */
     getAllUser(){
@@ -144,13 +144,13 @@ class Tr extends React.Component{
         }
       }).then(data=>{
         const res = data.data.data;
-        const children = res.map(p => 
+        const children = res.map(p =>
             <Option key={p.id} value={p.id}>{p.roleName}</Option>
             )
         this.setState({
           allUser : children
       })
-    })   
+    })
     }
     /**获取所有受检物料 */
     getAllTestMaterial(){
@@ -189,7 +189,7 @@ class Tr extends React.Component{
                     testItems += allTestItem[i].name + ',';
                 }
                 if(checkedValues[j] === allTestItem[i].id && j === checkedValues.length-1){
-                    testItems += allTestItem[i].name; 
+                    testItems += allTestItem[i].name;
                 }
             }
         }
@@ -202,8 +202,8 @@ class Tr extends React.Component{
         // else{
         //     var items = '';
         //     for(var i = 0; i < length; i++){
-        //         items += testItem[i] + ''  
-        //     } 
+        //         items += testItem[i] + ''
+        //     }
         // }
         this.setState({
             detail:detail,
@@ -314,7 +314,7 @@ class Tr extends React.Component{
             testItemIds:testItemIds
         })
         }
-        
+
     }
     render() {
         this.props.getData(this.state.detail)
@@ -325,10 +325,10 @@ class Tr extends React.Component{
             <tr id={this.props.id}>
                 <td><Select style={{width:'100%'}} placeholder='请选择送样工厂' onChange={this.productLineChange} defaultValue={d.deliveryFactoryId}>{this.state.allProductLine}</Select></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange} defaultValue={d.procedureId}>{this.state.allProductionProcess}</Select></td>
-                <td style={{maxWidth:'124px'}}><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
+                <td><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler}>{this.state.allUser}</Select></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择检测人' onChange={this.tester} defaultValue={d.tester}>{this.state.allUser}</Select></td>
-                <td style={{minWidth:'135px'}}><Popover
+                <td><Popover
                     content={(
                         <div style={{ width: '200px'}} >
                          <Checkbox.Group style={{ width: '100%' }} onChange={this.onChange} defaultValue={testItemIds}>
@@ -348,7 +348,7 @@ class Tr extends React.Component{
                         this.state.testItems?<Button>{this.state.testItems}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
                     }
                     </Popover></td>
-                
+
                 <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} defaultValue={d.testFrequency}/></td>
                 <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.serialNumberId} defaultValue={d.serialNumberId}>{this.state.allTestMaterial}</Select></td>
                 <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment} defaultValue={d.comment}/></td>
