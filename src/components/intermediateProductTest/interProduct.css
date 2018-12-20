@@ -50,28 +50,55 @@
     padding-bottom: 14px;
 }
 /*Bottom:设置检验人、审核人等*/
-.interDrSpanModalBottomFirst {
-    padding-top: 20px;
-    padding-bottom: 50px;
-    margin-top: -7px;
+.interDrSpanModalBottom {
+    /*border: 1px solid black;*/
+    position:absolute;
+    bottom: 70px;
+    height: 200px;
+    width: 460px;
     cursor: default;
 }
-.interDrSpanModalBottomFirst table {
-    float: left;
-    margin-top: 5px;
+.interDrSpanModalBottom .interDrSpanModalBottomFirst {
+    padding-top: 10px;
+    padding-bottom: 55px;
+    height: 50px;
 }
-.interDrSpanModalBottomFirst table tbody{
+.interDrSpanModalBottom .interDrSpanModalBottomFirst table {
+    float: left;
+}
+.interDrSpanDivider {
+    margin: 15px 0 !important;
+}
+/*.interDrSpanModalBottom .ant-divider .ant-divider-horizontal{*/
+    /*margin: 20px 0 !important;*/
+/*}*/
+/*
+    详情中底部中detailStateModal
+
+ */
+/*设置表格样式*/
+.interStateDefaultModal{
+    /*border: 1px solid black;*/
+    width: 100%;
+    height: 100px;
+    color: #999999;
+    text-align: center;
+    line-height: 90px;
+}
+.interStateModal{
+    overflow-y: auto;
+    width: 100%;
+    height: 100px;
+}
+.interStateModal table{
+    width: 100%;
+    float: left;
+    margin-bottom: 15px;
+    margin-top: -8px;
+    /*margin-top:-8px*/
+}
+.interPadding tr td {
     padding-top: 4px;
-    padding-bottom: 4px;
-}
-.interDrSpanModalBottomSecond {
-    margin-top: -7px;
-    cursor: default;
-}
-.interDrSpanModalBottomSecond table {
-    float: left;
-}
-.interDrSpanModalBottomSecond table tbody{
     padding-bottom: 4px;
 }
 /*
