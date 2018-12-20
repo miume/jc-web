@@ -13,7 +13,7 @@ function setup() {
   DIST_MAX = width / 2.5;
   DIST_MIN = width/8;
   SPEED_MAX = 0.5;
-  NB_PARTS = 8;
+  NB_PARTS = 9;
   for (var i = 0; i < NB_PARTS; i++) {
     parts[i] = new part(random(width), random(height));
   }
@@ -37,7 +37,7 @@ function setup() {
     for (var j = i + 1; j < NB_PARTS; j++) {
       p2 = parts[j];
       d = dist(p1.pos.x, p1.pos.y, p2.pos.x, p2.pos.y);
-      
+
       if (d > 0 && d < DIST_MAX) {
         p1.neighboors.push(p2);
       }
@@ -45,7 +45,7 @@ function setup() {
         var froce = p5.Vector.sub(p2.pos, p1.pos);
         var dsquared = froce.magSq();
         dsquared = constrain(dsquared,25,500);
-        var G = 10;
+        var G = -10;
         var strength = G / dsquared;
         froce.setMag(strength);
         // froce.mult(-1);
@@ -72,7 +72,7 @@ function drawTriangles() {
   noStroke();
   fill('rgba(0,121,230, 0.05)');
   stroke('rgba(0,121,230, 0.01)');
-  
+
   beginShape(TRIANGLES);
   for (i = 0; i < triangles.length; i++) {
     triangles[i].display();
@@ -92,7 +92,7 @@ function addTriangles(p_neighboors) {
 }
 
 function Triangle(p1, p2, p3) {
-  
+
   this.display = function() {
     vertex(p1.x, p1.y);
     vertex(p2.x, p2.y);
