@@ -158,14 +158,14 @@ class Product extends React.Component{
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"8.9%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"12.9%"}}>批号</div>
-                <div className="LM-tableHead" style={{width:"12.8%"}}>货品名称</div>
-                <div className="LM-tableHead" style={{width:"12.8%"}}>货品型号</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>记录数量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>实际数量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>实际重量</div>
+                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
+                <div className="LM-tableHead">批号</div>
+                <div className="LM-tableHead">货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
+                <div className="LM-blueTableHead LM-tableHead">记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际数量</div>
+                <div className="LM-blueTableHead LM-tableHead">记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际重量</div>
                 </div>
                 <div className="LM-parent" id="parent">
                     <div className="one col">

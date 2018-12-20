@@ -3,6 +3,10 @@
     max-height: 408px;
     overflow-y: auto;
 }
+.LM-parent::-webkit-scrollbar{
+    width: 1px;
+    height: 0px;
+}
 .one{
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
