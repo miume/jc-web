@@ -229,7 +229,7 @@ class ProcessInspection extends React.Component{
    } 
     /**处理单条记录删除 */
     handleDelete(key){
-      console.log(key)
+      //console.log(key)
       axios({
           url:`${this.url.procedure.procedureTestRecord}/${key}`,
           method:'Delete',
@@ -261,10 +261,10 @@ class ProcessInspection extends React.Component{
         personName:this.state.searchContent
       });
   }
-  /**获取所有产品工序 */
+  /**获取所有产品线 productionProcess*/
   getAllProductionProcess(){
     axios({
-      url:`${this.url.productionProcess.productionProcess}`,
+      url:`${this.url.deliveryFactory.deliveryFactory}`,
       method:'get',
       headers:{
         'Authorization':this.url.Authorization

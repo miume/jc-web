@@ -239,7 +239,7 @@ class Home extends Component {
             deliveryFactory:{
                 deliveryFactory:`${server}/jc/common/deliveryFactory`,
                 getAllByPage:`${server}/jc/common/deliveryFactory/pages`,
-                 search:`${server}/jc/common/deliveryFactory/pagesNameLike`
+                search:`${server}/jc/common/deliveryFactory/pagesNameLike`
             },
             /**基础编号 */
             serialNumber:{
