@@ -45,9 +45,9 @@ code {
     margin-bottom: 0px !important;
 }
 
-/* .show {
+.show {
     visibility: visible;
-} */
+}
 .ant-tabs-nav-wrap {
     padding-left: 1.3% !important;
 }
@@ -149,9 +149,6 @@ button span {
     overflow: hidden !important;
 }
 /**控制一个元素显示或隐藏*/
-.show {
-    display: inherit;
-}
 
 .hide {
     display: none;
