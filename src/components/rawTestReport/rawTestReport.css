@@ -14,3 +14,28 @@
     font-weight: 400;
     font-style: normal;
 }
+.checkMOdal{
+    border:3px solid #999999;
+    width:130px;
+    float:right;
+}
+.checkMOdal span{
+    display:block;
+    text-align:center;
+    height:55px;
+    border:1px solid #999999;
+    color:#999999;
+    margin:2px;
+    font-size:25px;
+    padding-top:8px;
+}
+.qulified{
+    border:3px solid #4BD863;
+    width:130px;
+    float:right;
+}
+.failed{
+    border:3px solid #FF3B30;
+    width:130px;
+    float:right;
+}
