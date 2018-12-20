@@ -179,9 +179,18 @@ class Material extends React.Component{
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
+                <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
+                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
+                <div className="LM-tableHead">批号</div>
+                <div className="LM-tableHead">货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
+                <div className="LM-blueTableHead LM-tableHead">记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际数量</div>
+                <div className="LM-blueTableHead LM-tableHead">记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际重量</div>
+                </div>
                 <div className="Mparent" id="Mparent">
                     <div className="Mone Mcol">
-                        <div className="Mborder-down">序号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
@@ -191,7 +200,6 @@ class Material extends React.Component{
                 }
                     </div>
                     <div className="Mtwo Mcol">
-                        <div className="Mborder-down">批号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
@@ -201,7 +209,6 @@ class Material extends React.Component{
                 }
                     </div>
                     <div className="Mthree Mcol">
-                        <div className="Mborder-down">货品名称</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
@@ -211,7 +218,6 @@ class Material extends React.Component{
                 }
                     </div>
                     <div className="Mfour Mcol">
-                        <div className="Mborder-down">货品型号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
@@ -223,7 +229,6 @@ class Material extends React.Component{
                     <div className="Mfive Mcol">
 
                             <div className="Mhead-shadow">
-                                <div className="Mborder-down3">记录数量</div>
                                 {/* <div className="fa fa-balance-scale"></div> */}
                             </div>
 
@@ -241,7 +246,6 @@ class Material extends React.Component{
                 }
                     </div>
                     <div className="Msix Mcol">
-                        <div className="Mborder-down1">实际数量</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
@@ -251,7 +255,6 @@ class Material extends React.Component{
                 }
                     </div>
                     <div className="Mseven Mcol">
-                        <div className="Mborder-down2">记录重量</div>
                         <div className='white-space space-left'></div>
                 {
                     this.state.dataSource.map((m,index)=>{
@@ -267,7 +270,6 @@ class Material extends React.Component{
                 }
                     </div>
                     <div className="Meight Mcol">
-                        <div className="Mborder-down4">实际重量</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>

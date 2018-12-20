@@ -161,7 +161,7 @@ class ApplyStockOut extends React.Component{
     }
      /**监控是否紧急 */
      urgentChange(checked){
-        console.log(checked)
+        //console.log(checked)
         this.setState({
             urgent:checked?1:0
         })
@@ -234,7 +234,7 @@ class ApplyStockOut extends React.Component{
     }
     /**送审 */
     applyReview(dataId){
-        console.log(this.state.urgent)
+        //console.log(this.state.urgent)
         // console.log(this.state.process)
         axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
             headers:{
@@ -265,7 +265,7 @@ class ApplyStockOut extends React.Component{
                     ]}
                 >
                 <div style={{height:'250px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:200}} pagination={false} rowClassName={() => 'editable-row'}></Table>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:216}} pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>

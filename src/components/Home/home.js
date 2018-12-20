@@ -143,9 +143,9 @@ class Home extends Component {
         },100)
         const status = {
             '-1': '已保存未提交',
-            '0' : '已提交未未审核',
+            '0' : '已提交未审核',
             '1' : '审核中',
-            '2' : '已保存未提交',
+            '2' : '审核通过',
             '3' : '审核未通过',
             '4' : '合格',
             '5' : '不合格',
@@ -239,7 +239,7 @@ class Home extends Component {
             deliveryFactory:{
                 deliveryFactory:`${server}/jc/common/deliveryFactory`,
                 getAllByPage:`${server}/jc/common/deliveryFactory/pages`,
-                 search:`${server}/jc/common/deliveryFactory/pagesNameLike`
+                search:`${server}/jc/common/deliveryFactory/pagesNameLike`
             },
             /**基础编号 */
             serialNumber:{

@@ -18,6 +18,7 @@
 }
 .interDrSpanModalTop table{
     width:100%;
+    text-align: center;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -69,6 +70,7 @@
 .interDrSpanDivider {
     margin: 15px 0 !important;
 }
+
 /*.interDrSpanModalBottom .ant-divider .ant-divider-horizontal{*/
     /*margin: 20px 0 !important;*/
 /*}*/
@@ -89,6 +91,12 @@
     overflow-y: auto;
     width: 100%;
     height: 100px;
+}
+.interDrSpanModalBottomSecond {
+    margin-top: -7px;
+    cursor: default;
+    height:80px;
+    overflow-y: auto;
 }
 .interStateModal table{
     width: 100%;

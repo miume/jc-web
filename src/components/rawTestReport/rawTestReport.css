@@ -14,3 +14,48 @@
     font-weight: 400;
     font-style: normal;
 }
+.checkMOdal{
+    border:3px solid #999999;
+    width:100px;
+    float:right;
+}
+.checkMOdal span{
+    display:block;
+    text-align:center;
+    height:50px;
+    border:1px solid #999999;
+    color:#999999;
+    margin:2px;
+    font-size:25px;
+    padding-top:4px;
+}
+.qulified{
+    border:3px solid #4BD863;
+    width:100px;
+    float:right;
+}
+.qulified span{
+    display:block;
+    text-align:center;
+    height:50px;
+    border:1px solid #4BD863;
+    color:#4BD863;
+    margin:2px;
+    font-size:25px;
+    padding-top:4px;
+}
+.failed{
+    border:3px solid #FF3B30;
+    width:100px;
+    float:right;
+}
+.failed span{
+    display:block;
+    text-align:center;
+    height:50px;
+    border:1px solid #FF3B30;
+    color:#FF3B30;
+    margin:2px;
+    font-size:25px;
+    padding-top:4px;
+}

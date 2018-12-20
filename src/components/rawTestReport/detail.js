@@ -46,26 +46,25 @@ class Detail extends React.Component{
             testData:{},
             examineData:{},
             detail:[],
-            allTestItem:[]
         }
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
-        this.getAllTestItem = this.getAllTestItem.bind(this);
+        this.getAllTester = this.getAllTester.bind(this);
     }
     /**点击详情 */
     handleDetail(){
-        this.getAllTestItem();
+        this.getAllTester();
         this.getDetailData();
         this.setState({
             visible:true
         })
     }
     /**获取所有检测项目 */
-    getAllTestItem(){
+    getAllTester(){
         axios({
-          url:`${this.props.url.testItems.testItems}`,
+          url:`${this.props.url.toDoList}/${this.props.id}/result`,
           method:'get',
           headers:{
             'Authorization':this.props.url.Authorization
@@ -73,7 +72,7 @@ class Detail extends React.Component{
         }).then(data=>{
           const res = data.data.data;
           this.setState({
-            allTestItem : res
+            examineData : res
         })
       })   
       }
@@ -85,51 +84,42 @@ class Detail extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            const {allTestItem} = this.state
-            var detail  = [];
+            var details  = [];
             var topData = {};
             var testData = {};
-            var examineData = {};
+            // var examineData = {};
+            var IsQualified = 0;
             if(res)
+                IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 topData={
-                    batchNumber: res.commonBatchNumber.batchNumber,
-                    materialName: res.materialName,
-                    b:res.sampleDeliveringRecord.sampleDeliveringDate
+                    batchNumber: res.serialNumber?res.serialNumber:'',
+                    materialName: res.materialName?res.materialName:'',
+                    b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
                 testData={
-                    tester:res.tester,
-                    testTime:'111',
+                    tester:res.tester?res.tester:'',
+                    testTime:res.testReportRecord?res.testReportRecord.judgeDate:'',
                 }
-                examineData = {
-                    examiner: '审核人',
-                    examineView: '数据正常，审核通过',
-                    examineTime: '2018年11月12日',
+                if(res.testDTOS){
+                    for(var i = 0; i < res.testDTOS.length; i++){
+                        var e = res.testDTOS[i];
+                            details.push({
+                                index:`${i+1}`,
+                                id:e.testItemResultRecord.id,
+                                testItemId:e.testItemResultRecord.testItemId,
+                                testItemName:e.name,
+                                testResult:e.testItemResultRecord.testResult,
+                                unit:'g/ml'
+                            })
+                    }   
                 }
-                console.log(this.state.allTestItem)
-                if(res.resultList){
-                    for(var j = 0; j < allTestItem.length;j++){
-                        for(var i = 0; i < res.resultList; i++){
-                            var e = res.resultList[i];
-                            if(e.testItemId === allTestItem[j].id){
-                                detail.push({
-                                    id:e.id,
-                                    testItem:allTestItem.name,
-                                    testResult:e.testResult,
-                                    unit:e.unit
-                                })
-                            }
-                        }
-                    }
-                    
-                }
-                
-                detail = res.resultList
                 this.setState({
                     detail:{
+                        details:details,
                         topData:topData,
                         testData:testData,
-                        examineData:examineData,
-                        detail:detail
+                        // examineData:examineData,
+                        IsQualified:IsQualified,
                     }
                 })
         })
@@ -149,7 +139,7 @@ class Detail extends React.Component{
     render(){
         return (
             <span>
-                <span className='blue' onClick={this.handleDetail} >详情</span>
+                <span className={this.props.status===0||this.props.status===1||this.props.status===2||this.props.status===3?'blue':'notClick'} onClick={this.handleDetail} >详情</span>
                 <Modal title='详情' visible={this.state.visible} closable={false}
                 maskClosable={false} centered={true} style={{top:10}}
                  footer={[
@@ -157,37 +147,8 @@ class Detail extends React.Component{
                   ]}
                   >
                   <div style={{height:580}}>
-                        <DetailModal topData={this.state.topData}  />
+                        <DetailModal detail={this.state.detail} examineData={this.props.examineData}  />
                     </div>
-                 {/* <div style={{height:'550px'}}>
-                     <table>
-                         <thead className='thead'>
-                             <tr>
-                                 <td>批号</td><td>原材料</td><td>送样日期</td>
-                             </tr>
-                         </thead>
-                         <tbody className='tbody'>
-                             <tr>
-                                 <td></td><td>{value.batchNumberId}</td><td>{value.date}</td>
-                             </tr>
-                         </tbody>
-                     </table>
-                     <div style={{padding:'10px'}}>
-                         <span className='span'>样品名称：镍矿石样品</span>
-                     </div>
-                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:200}}></Table>
-                     <div style={{padding:'10px',height:'40px',fontSize:'15px'}}>
-                         <div style={{float:'left'}}>
-                             <p className='span'>检验人：<span></span></p>
-                             <p className='span'>检验时间：<span></span></p>
-                         </div>
-                         <IsQualified status={1}></IsQualified>
-                     </div>
-                     <Divider type='horizontal'/>
-                     <div style={{textAlign:'center',fontSize:'15px'}}>
-                          审核中
-                     </div>
-                 </div> */}
                 </Modal>
             </span>
         );

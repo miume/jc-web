@@ -57,8 +57,8 @@ class TodoList extends React.Component{
     url
     componentDidMount(){
         const id = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
-        //this.fetch(id);
-        //this.getHistory(id);
+        this.fetch(id);
+        this.getHistory(id);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -70,7 +70,7 @@ class TodoList extends React.Component{
         this.state = {
             count : 0,
             historyCount : 0,
-            data:data
+            data:[]
         }
         this.fetch = this.fetch.bind(this);
         this.getHistory = this.getHistory.bind(this);
@@ -98,7 +98,7 @@ class TodoList extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            const count = res? res.length : 0;
+            // const count = res? res.length : 0;
             this.setState({
                 historyRecord:res,
             })
@@ -110,8 +110,8 @@ class TodoList extends React.Component{
             <div>
                  <BlockQuote name="待办事项" menu='质量与流程'></BlockQuote>
                  <Tabs defaultActiveKey='1'>
-                     <TabPane key='1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[15,8]}><span>待处理</span></Badge></span>}><TodoProcessed getCount={this.getCount} url={this.url} data={this.state.data}/></TabPane>
-                     <TabPane key='2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><HistoryRecord/></TabPane>
+                     <TabPane key='1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed getCount={this.getCount} url={this.url} data={this.state.data}/></TabPane>
+                     <TabPane key='2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><HistoryRecord data={this.state.historyRecord}/></TabPane>
                  </Tabs>
             </div>
         );

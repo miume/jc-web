@@ -1,13 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table,message} from 'antd';
+import {Modal,Table,message,Select} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import SmallButton from '../BlockQuote/smallbutton';
 import Submit from '../BlockQuote/submit';
 import EditorApply from './editorApply';
+const Option = Select.Option;
 // const approvalProcess = [{
 //     id:1,
 //     name:'流程1'
@@ -19,7 +19,7 @@ import EditorApply from './editorApply';
 //     name:'流程3'
 // }]
   const columns = [{
-    title: '送样工厂',
+    title: '产品线',
     dataIndex: 'deliveryFactory.name' ,
     key: 'deliveryFactory.name',
     width: '9%',
@@ -111,21 +111,23 @@ class Detail extends React.Component{
         }
         this.handleDetail = this.handleDetail.bind(this);
         // this.handleOkApply = this.handleOkApply.bind(this);
-        this.cancel = this.cancel.bind(this);
-        // this.handleCancel = this.handleCancel.bind(this);
-        this.applyOut = this.applyOut.bind(this);
         this.click = this.click.bind(this);
-        // this.getDetailData = this.getDetailData.bind(this);
-        this.handleIteration = this.handleIteration.bind(this);
-        this.getAllTestItem = this.getAllTestItem.bind(this);
-        this.getApplyData = this.getApplyData.bind(this);
-        this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        this.urgentChange = this.urgentChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.handleCancelApply = this.handleCancelApply.bind(this);
-        this.handleOkApply = this.handleOkApply.bind(this);
+        this.cancel = this.cancel.bind(this);
+        this.applyOut = this.applyOut.bind(this);
         this.checkData = this.checkData.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.urgentChange = this.urgentChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.getApplyData = this.getApplyData.bind(this);
+        this.getDetailData = this.getDetailData.bind(this);
+        this.getAllTestItem = this.getAllTestItem.bind(this);
+        this.handleIteration = this.handleIteration.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
+        
+        this.handleCancelApply = this.handleCancelApply.bind(this);
+        this.handleOkApply = this.handleOkApply.bind(this);
+        
+        this.selectionChange = this.selectionChange.bind(this);
     }
     /**点击详情 */
     handleDetail() {
@@ -160,11 +162,16 @@ class Detail extends React.Component{
            })
        })
     }
-    // handleOk() {
-    //     this.setState({
-    //         flag:1
-    //     });
-    // }
+    selectionChange(value) {
+        var {detailData,data} = this.state;
+        detailData = data.filter(d => parseInt(d.productionProcess.id) === parseInt(value));
+        if(value === 'all'){
+            detailData = data;
+          }
+          this.setState({
+            detailData:detailData
+          })
+    }
     /**点击迭代 */
     handleIteration(){
       this.setState({
@@ -377,12 +384,19 @@ applyReview(dataId){
                     footer={this.state.flag?iteration:detail} 
                   >
                     <div style={{height:'350px'}} className={this.state.flag?'hide':'show'}>
-                         <div>
+                         <Select onChange={this.selectionChange} style={{width:'35%'}} placeholder='请选择工序'><Option value='all'>选择所有产品线</Option>
+                        {
+                            this.props.allProductionProcess?this.props.allProductionProcess.map(m=>{
+                                return <Option key={m.id} value={m.id}>{m.name}</Option>
+                            }):null
+                        }
+                         </Select>
+                         {/* <div>
                          <button style={{width:'100px',height:'40px',backgroundColor:'#0086ff',marginRight:'10px',borderRadius:'3px'}} id='all' onClick={this.click}>全部</button>
                            {
                              this.props.allProductionProcess?this.props.allProductionProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />):null
                            }
-                         </div>
+                         </div> */}
                          <WhiteSpace />
                          <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} scroll={{y:200}} bordered></Table>
                     </div>

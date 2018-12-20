@@ -256,7 +256,7 @@ class Editor extends React.Component{
                                      <td>取样点</td>
                                      <td>取样人</td>
                                      <td>检测人</td>
-                                     <td style={{minWidth:'135px'}}>检测项目</td><td>频次</td>
+                                     <td>检测项目</td><td>频次</td>
                                      <td>受检物料</td>
                                      <td>备注</td><td>操作</td>
                                  </tr>

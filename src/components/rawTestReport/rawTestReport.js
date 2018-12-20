@@ -166,13 +166,9 @@ class RawTestReport extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail value={text} url={this.url} />
-                        {/* <Divider type='vertical' />
-                        <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(text)} okText='确定' cancelText='取消' >
-                            <span className='blue'>删除</span>
-                        </Popconfirm> */}
+                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId}/>
                         <Divider type='vertical' />
-                        <RecordChecking value={record} />
+                        <RecordChecking value={text} url={this.url} status={record.status}/>
                     </span>
                 );
             }
@@ -212,7 +208,8 @@ class RawTestReport extends React.Component{
                         acceptStatus:e.sampleDeliveringRecord.acceptStatus,
                         handleComment:e.sampleDeliveringRecord.handleComment,
                         status:e.commonBatchNumber?e.commonBatchNumber.status:0,
-                        isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0
+                        isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
+                        batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'',
                     })
                 }
             }
@@ -270,7 +267,6 @@ class RawTestReport extends React.Component{
         const current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url')); 
         this.status = JSON.parse(localStorage.getItem('status'));
-        console.log(this.status)
         return (
             <div>
                 <BlockQuote name='原材料录检' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>

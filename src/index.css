@@ -32,11 +32,12 @@ code {
 #defaultCanvas0 {
     position: absolute;
     display: block;
-    top: 7%;
-    margin: 0px auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     z-index: -1;
-    height: 92% !important;
-    width: 45% !important;
+    /* height: 92% !important;
+    width: 45% !important; */
     visibility: visible;
 }
 
@@ -210,6 +211,14 @@ button span {
 /* 输入框样式 */
 .ant-input {
     height: 35px !important;
+
+}
+.ant-input-lg {
+  font-size: inherit !important;
+}
+.ant-input-number {
+  height: 35px!important;
+  line-height: 35px!important;
 }
 /* 下拉选择器样式 */
 .ant-select-lg .ant-select-selection--single, .ant-select-selection--single{
@@ -226,6 +235,13 @@ button span {
 .ant-select-sm .ant-select-selection__rendered {
   height: 22px !important;
   line-height: 22px !important;
+}
+.particles-js-canvas-el {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  z-index: -1;
 }
 /* 设置表格中的输入框和下拉选择器不要出现圆角 */
 table .ant-select-selection,table .ant-input{

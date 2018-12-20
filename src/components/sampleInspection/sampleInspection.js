@@ -5,7 +5,7 @@ import {Table,Divider} from "antd";
 // import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
-// import AddModal from './addModal'
+import AddModal from './addModal'
 import Delete from './delete'
 import DeleteByIds from '../BlockQuote/deleteByIds';
 
@@ -135,6 +135,7 @@ class SampleInspection extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -151,6 +152,7 @@ class SampleInspection extends React.Component{
     }
     render(){
         const { selectedRowKeys } = this.state;
+        const current = JSON.parse(localStorage.getItem('current')) ;
         this.server = localStorage.getItem('remote');
         const rowSelection = {
             selectedRowKeys,
@@ -158,9 +160,9 @@ class SampleInspection extends React.Component{
         };
         return(
             <div>
-                <BlockQuote name="样品送检"></BlockQuote>
+                <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    {/* <AddModal fetch={this.fetch}/> */}
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
@@ -179,6 +181,10 @@ class SampleInspection extends React.Component{
                 </div>
             </div>
         )
+    }
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/dataEntry'});
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {

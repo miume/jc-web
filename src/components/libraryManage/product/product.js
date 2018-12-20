@@ -4,7 +4,7 @@ import axios from 'axios'
 import NewButton from "./button";
 import "../material/difference.css"
 
-const forkData = [1000,2300,2030,2000,2111,2110,20001,20100,20001,20001,101010,12002,2202,2023,1000,10001,1000,1000,1000,1000,10100,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
+const forkData = [2000,1300,1030,1000,1111,1110,10001,10100,10001,10001,201010,12002,2202,2023,1000,10001,1000,1000,1000,1000,10100,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
@@ -123,7 +123,7 @@ class Product extends React.Component{
                         }
                     }
                     setTimeout(()=>{
-                        parent.scrollTop = 37.8*index+54.8;
+                        parent.scrollTop = 37.8*index;
                     },500)
                     index++;
                 });
@@ -159,9 +159,9 @@ class Product extends React.Component{
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
                 <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
-                <div className="LM-tableHead" >批号</div>
-                <div className="LM-tableHead" >货品名称</div>
-                <div className="LM-tableHead" >货品型号</div>
+                <div className="LM-tableHead">批号</div>
+                <div className="LM-tableHead">货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
                 <div className="LM-blueTableHead LM-tableHead">记录数量</div>
                 <div className="LM-blueTableHead LM-tableHead">实际数量</div>
                 <div className="LM-blueTableHead LM-tableHead">记录重量</div>
