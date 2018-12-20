@@ -5,8 +5,6 @@ import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import moment from "moment";
-// import WhiteSpace from '../BlockQuote/whiteSpace';
-// import moment from 'moment';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -14,7 +12,6 @@ const FormItem = Form.Item;
 const userId = localStorage.getItem('menuList')
 let ob = JSON.parse(userId)
 
-// const { MonthPicker, RangePicker, WeekPicker } = DatePicker;
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
         server
@@ -27,10 +24,20 @@ const CollectionCreateForm = Form.create()(
                 factor : [],
                 items : [],
                 serialNumber : [],
+                MiddleserialNumber : [],
+                FinalserialNumber:[],
+
+                process : [],
+                sampling : [],
+                MiddleFactor : [],
+                materials : [],
+
                 clicked: false,
+                visible1: 1
             }
             this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
+            this.selectChange = this.selectChange.bind(this)
         }
         componentDidMount() {
             this.fetch();
@@ -84,8 +91,9 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/repoBaseSerialNumber/getAll`,
+                url: `${this.server}/jc/common/repoBaseSerialNumber`,
                 method : 'get',
+                params : {materialClass:1},
                 headers:{
                     'Authorization': this.Authorization
                 },
@@ -95,15 +103,72 @@ const CollectionCreateForm = Form.create()(
                     serialNumber:res
                   })
             })
+
+            axios({
+                url: `${this.server}/jc/common/repoBaseSerialNumber`,
+                method : 'get',
+                params : {materialClass:2},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data) =>{
+                const res = data.data.data;
+                this.setState({
+                    MiddleserialNumber:res
+                  })
+            })
+
+            axios({
+                url: `${this.server}/jc/common/repoBaseSerialNumber`,
+                method : 'get',
+                params : {materialClass:3},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data) =>{
+                const res = data.data.data;
+                this.setState({
+                    FinalserialNumber:res
+                  })
+            })
+
+            axios({
+                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                method:'get',
+                params:{},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
+                this.setState({
+                    MiddleFactor:res
+                })
+            })
         }
         onChangeTime = (date, dateString) => {
             console.log(date, dateString);
           }
+        selectChange= (value) =>{
+            if(value==='1'){
+                this.setState({
+                    visible1 : 1
+                })
+            }else if(value==='2'){
+                this.setState({
+                    visible1 : 2
+                })
+            }else if(value==="3"){
+                this.setState({
+                    visible1 : 3
+                })
+            }
+        }
 
         render(){
             this.Authorization = localStorage.getItem("Authorization");
             this.server = localStorage.getItem('remote');
-            const {visible,form,onCancel,onCreate,onChange} = this.props;
+            const {visible,form,onCancel,onCreate,onChange,onCenter} = this.props;
             const { getFieldDecorator } = form;
             return(
                 <Modal
@@ -114,25 +179,36 @@ const CollectionCreateForm = Form.create()(
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
-                        <AddButton key="submit" handleClick={onCreate} name='提交' style='button' className='fa fa-check' />
+                        <AddButton key="submit" handleClick={onCenter} name='提交' style='button' className='fa fa-check' />
                       ]}
                 >
                     <Form horizontal='true'>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                        <FormItem wrapperCol={{ span: 24 }}>
+                                {getFieldDecorator('type', {
+                                    rules: [{ required: true, message: '请选择样品种类' }],
+                                })(
+                                    <Select  onChange={this.selectChange} placeholder="请选择样品种类">
+                                        <Option key="1" value="1">原材料</Option>
+                                        <Option key="2" value="2">中间品</Option>
+                                        <Option key="3" value="3">成品</Option>
+                                    </Select>
+                                )}
+                        </FormItem>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('date', {
                                 rules: [{ required: true, message: '请选择送样日期' }],
                             })(
                                 <DatePicker style={{width:"320px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('time', {
                                 rules: [{ required: true, message: '请选择送样时间' }],
                             })(
                                 <TimePicker style={{width:"320px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('id', {
                                 rules: [{ required: true, message: '请选择送样人' }],
                             })(
@@ -147,7 +223,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                        {(this.state.visible1===1||this.state.visible1===3)?<FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
@@ -161,8 +237,24 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
+                        </FormItem> : <FormItem wrapperCol={{ span: 24 }}>
+                            {getFieldDecorator('deliveryFactoryId', {
+                                rules: [{ required: true, message: '请选择送样工厂' }],
+                            })(
+                                <Select placeholder="请选择送样工厂">
+                                    {
+                                        this.state.MiddleFactor.map(pe=>{
+                                            return(
+                                                <Option key={pe.id} value={pe.id}>{pe.name}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            )}
                         </FormItem>
-                        <Popover
+                        }
+                        {
+                            (this.state.visible1===1||this.state.visible1===3)?<Popover
                             content={(
                                 <div style={{ width: '200px'}} >
                                  <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
@@ -178,24 +270,41 @@ const CollectionCreateForm = Form.create()(
                             height={170}
                             visible={this.state.clicked}
                             onVisibleChange={this.handleClickChange}>
-                        <Button style={{width:"320px"}}>{'请选择检测项目'}</Button>
-                        </Popover>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                        <Button style={{width:"320px",height:"35px"}}>{'请选择检测项目'}</Button>
+                        </Popover> : null
+                        }
+                        {
+                            this.state.visible1 === 1 ?  <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
-                                rules: [{ required: true, message: '请输入批号' }],
+                                rules: [{ required: true, message: '请选择受检物料' }],
                             })(
-                                <Select placeholder="请选择批号">
+                                <Select placeholder="请选择受检物料">
                                     {
                                         this.state.serialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
                                             )
                                         })
                                     }
                                 </Select>
                             )}
-                        </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                        </FormItem> : this.state.visible1 === 3 ?  <FormItem wrapperCol={{ span: 24 }}>
+                            {getFieldDecorator('serialNumberId', {
+                                rules: [{ required: true, message: '请选择受检物料' }],
+                            })(
+                                <Select placeholder="请选择受检物料">
+                                    {
+                                        this.state.FinalserialNumber.map(pe=>{
+                                            return(
+                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            )}
+                        </FormItem> : null
+                        }
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('exceptionComment', {
                                 rules: [{ required: true, message: '请输入异常备注' }],
                             })(
@@ -222,7 +331,8 @@ class AddModal extends React.Component{
         exceptionComment:'',
         sampleDeliveringDate:'',
         serialNumberId:null,
-        testItemIds:[]
+        testItemIds:[],
+        type:null,
     };
 
     onChange = (checkedValues) =>{
@@ -248,25 +358,65 @@ class AddModal extends React.Component{
     onCreate = () =>{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
+            console.log(value)
             if(err){
                 return;
             }
-            console.log(value)
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            this.setState({
-                status:1,
-                id:value.id,
-                acceptStatus:1,
-                deliveryFactoryId:value.deliveryFactoryId,
-                exceptionComment:value.exceptionComment,
-                sampleDeliveringDate:dateTime,
-                serialNumberId:value.serialNumberId,
+            // this.setState({
+            //     status:1,
+            //     id:value.id,
+            //     acceptStatus:1,
+            //     deliveryFactoryId:value.deliveryFactoryId,
+            //     exceptionComment:value.exceptionComment,
+            //     sampleDeliveringDate:dateTime,
+            //     serialNumberId:value.serialNumberId,
+            //     type:value.type
+            // })
+            let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
+                sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
+                console.log(data)
+            axios({
+                url:`${this.server}/jc/common/sampleDeliveringRecord`,
+                method:'post',
+                headers:{
+                    'Authorization': this.state.Authorization
+                },
+                data: data,
+                type:'json'
+            }).then((data)=>{
+                message.info(data.data.message);
+                this.props.fetch();
             })
-            let data = {commonBatchNumber:{createPersonId:this.state.createPersonId,status:this.state.status},details:{deliverer:{id:this.state.id},sampleDeliveringRecord:{
-                acceptStatus:this.state.acceptStatus,deliveryFactoryId:this.state.deliveryFactoryId,exceptionComment:this.state.exceptionComment,sampleDeliveringDate:this.state.sampleDeliveringDate,serialNumberId:this.state.serialNumberId
-            },testItemIds:this.state.testItemIds}}
+        })
+        this.setState({ visible: false });
+    }
+
+    onCenter = () =>{
+        const form = this.formRef.props.form;
+        form.validateFields((err,value)=>{
+            console.log(value)
+            if(err){
+                return;
+            }
+            let date = moment(value.date).format("YYYY-MM-DD")
+            let time = moment(value.time).format("HH:mm:ss")
+            let dateTime = date + " " + time
+            // this.setState({
+            //     status:1,
+            //     id:value.id,
+            //     acceptStatus:1,
+            //     deliveryFactoryId:value.deliveryFactoryId,
+            //     exceptionComment:value.exceptionComment,
+            //     sampleDeliveringDate:dateTime,
+            //     serialNumberId:value.serialNumberId,
+            //     type:value.type
+            // })
+            let data = {sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
+                sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
+                console.log(data)
             axios({
                 url:`${this.server}/jc/common/sampleDeliveringRecord`,
                 method:'post',
@@ -295,6 +445,7 @@ class AddModal extends React.Component{
                     onCancel={this.handleCancel}
                     onCreate={this.onCreate}
                     onChange={this.onChange}
+                    onCenter={this.onCenter}
                 />
             </span>
         )
