@@ -27,6 +27,7 @@ import axios from 'axios';
 // }
 class RawTestReport extends React.Component{
     url
+    status
     componentDidMount(){
         this.fetch({
             pageSize:10,
@@ -148,16 +149,7 @@ class RawTestReport extends React.Component{
             align:'center',
             width:'10%',
             render: status => {
-                switch(`${status}`) {
-                  case '-1': return '已保存未提交';
-                  case '0': return '已提交未未审核';
-                  case '1': return '审核中';
-                  case '2': return '审核通过';
-                  case '3': return '审核未通过';
-                  case '4': return '合格';
-                  case '5': return '不合格';
-                  default:return '';
-                }
+                return this.status[status.toString()]
             }
         },{
             title:'紧急',
@@ -277,6 +269,8 @@ class RawTestReport extends React.Component{
     render(){
         const current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url')); 
+        this.status = JSON.parse(localStorage.getItem('status'));
+        console.log(this.status)
         return (
             <div>
                 <BlockQuote name='原材料录检' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>

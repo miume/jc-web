@@ -4,7 +4,6 @@ import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
-import NewButton from "../BlockQuote/newButton";
 import './pack.css';
 // import axios from "axios";
 //

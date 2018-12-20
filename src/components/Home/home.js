@@ -288,7 +288,7 @@ class Home extends Component {
                   getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
               }
         }
-        localStorage.setItem('url',JSON.stringify(status))
+        localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('url',JSON.stringify(url))
     }
     /**控制登陆背景图 */

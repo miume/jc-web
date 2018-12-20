@@ -102,6 +102,7 @@ class PackTable extends React.Component {
         });
         return(
             <Table
+                className="purchasePackTable"
                 rowKey={record => record.id}
                 dataSource={this.props.data}
                 columns={columns}
