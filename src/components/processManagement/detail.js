@@ -79,20 +79,17 @@ class Detail extends React.Component{
                 maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <AddButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     ]}>
                     <div>
                          <table className="custom_tb">
                              <thead className='prothead'>
                                  <tr>
                                      <td>流程名称</td>
-                                     <td>所属工艺</td>
                                  </tr>
                              </thead>
                              <tbody className='protbody'>
                                 <tr>
                                 {td}
-                                <td></td>
                                 </tr>
                              </tbody>
                          </table>

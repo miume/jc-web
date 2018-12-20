@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Form, Input,Select,DatePicker,TimePicker,Popover,Col,Checkbox,message  } from 'antd';
 import axios from "axios";
-import AddButton from '../BlockQuote/newButton'
+import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import moment from "moment";
@@ -58,7 +58,7 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/deliveryFactory/getAll`,
+                url: `${this.server}/jc/common/deliveryFactory`,
                 method : 'get',
                 headers:{
                     'Authorization': this.Authorization
@@ -71,7 +71,7 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/testItem/getAll`,
+                url: `${this.server}/jc/common/testItem`,
                 method : 'get',
                 headers:{
                     'Authorization': this.Authorization
@@ -110,7 +110,7 @@ const CollectionCreateForm = Form.create()(
                     visible={visible}
                     closable={false}
                     title="新增"
-                    width="400px"
+                    width="360px"
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
@@ -118,21 +118,21 @@ const CollectionCreateForm = Form.create()(
                       ]}
                 >
                     <Form horizontal='true'>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('date', {
                                 rules: [{ required: true, message: '请选择送样日期' }],
                             })(
-                                <DatePicker onChange={this.onChangeTime} placeholder="请选择送样日期"/>
+                                <DatePicker style={{width:"320px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('time', {
                                 rules: [{ required: true, message: '请选择送样时间' }],
                             })(
-                                <TimePicker onChange={this.onChangeTime} placeholder="请选择时间"/>
+                                <TimePicker style={{width:"320px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('id', {
                                 rules: [{ required: true, message: '请选择送样人' }],
                             })(
@@ -147,7 +147,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
@@ -178,9 +178,9 @@ const CollectionCreateForm = Form.create()(
                             height={170}
                             visible={this.state.clicked}
                             onVisibleChange={this.handleClickChange}>
-                        <Button style={{marginLeft:"73px"}}>{'请选择检测项目'}</Button>
+                        <Button style={{width:"320px"}}>{'请选择检测项目'}</Button>
                         </Popover>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
                                 rules: [{ required: true, message: '请输入批号' }],
                             })(
@@ -195,7 +195,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 14 }}>
+                        <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('exceptionComment', {
                                 rules: [{ required: true, message: '请输入异常备注' }],
                             })(
