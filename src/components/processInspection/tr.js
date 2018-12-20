@@ -323,7 +323,7 @@ class Tr extends React.Component{
         const allTestItem = this.props.allTestItem?this.props.allTestItem:this.state.allTestItem;
         return (
             <tr id={this.props.id}>
-                <td><Select style={{width:'100%'}} placeholder='请选择送样工厂' onChange={this.productLineChange} defaultValue={d.deliveryFactoryId}>{this.state.allProductLine}</Select></td>
+                <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange} defaultValue={d.deliveryFactoryId}>{this.state.allProductLine}</Select></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange} defaultValue={d.procedureId}>{this.state.allProductionProcess}</Select></td>
                 <td><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName}/></td>
                 <td><Select style={{width:'100%'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler}>{this.state.allUser}</Select></td>

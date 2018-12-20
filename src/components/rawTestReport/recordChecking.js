@@ -92,8 +92,10 @@ class RecordChecking extends React.Component{
             const res = data.data.data;
             var details  = [];
             var topData = {};
+            var {flag,fail} = this.state;
             if(res)
-                // IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
+                var IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
+                if(IsQualified) flag = 1; else fail = 1;
                 topData={
                     batchNumber: res.serialNumber?res.serialNumber:'',
                     materialName: res.materialName?res.materialName:'',
@@ -112,10 +114,12 @@ class RecordChecking extends React.Component{
                             })
                     }   
                 }
-                console.log(details)
+                //console.log(details)
                 this.setState({
                     detail:details,
-                    topData:topData
+                    topData:topData,
+                    flag:flag,
+                    fail:fail
                 })
         })
     }
