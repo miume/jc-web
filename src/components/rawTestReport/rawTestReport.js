@@ -149,18 +149,7 @@ class RawTestReport extends React.Component{
             align:'center',
             width:'10%',
             render: status => {
-                console.log(this.status)
                 return this.status[status.toString()]
-                // switch(`${status}`) {
-                //   case '-1': return '已保存未提交';
-                //   case '0': return '已提交未未审核';
-                //   case '1': return '审核中';
-                //   case '2': return '审核通过';
-                //   case '3': return '审核未通过';
-                //   case '4': return '合格';
-                //   case '5': return '不合格';
-                //   default:return '';
-                // }
             }
         },{
             title:'紧急',
