@@ -166,9 +166,9 @@ class RawTestReport extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail value={text} url={this.url} />
+                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId}/>
                         <Divider type='vertical' />
-                        <RecordChecking value={text} url={this.url} />
+                        <RecordChecking value={text} url={this.url} status={record.status}/>
                     </span>
                 );
             }
@@ -208,7 +208,8 @@ class RawTestReport extends React.Component{
                         acceptStatus:e.sampleDeliveringRecord.acceptStatus,
                         handleComment:e.sampleDeliveringRecord.handleComment,
                         status:e.commonBatchNumber?e.commonBatchNumber.status:0,
-                        isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0
+                        isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
+                        batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'',
                     })
                 }
             }

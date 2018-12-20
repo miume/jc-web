@@ -1,64 +1,76 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table, Input} from 'antd';
+import {Modal,Table, Input,message} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CheckModal from '../BlockQuote/checkModal';
 import Submit from '../BlockQuote/submit';
-const data = [];
-for(var i = 1; i <=10; i++){
-    data.push({
-        id:i,
-        testItem:`Ca${i}`,
-        result:'',
-        unit:'g/ml'
-    })
-}
+// const data = [];
+// for(var i = 1; i <=10; i++){
+//     data.push({
+//         id:i,
+//         testItem:`Ca${i}`,
+//         result:'',
+//         unit:'g/ml'
+//     })
+// }
 class RecordChecking extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             visible:false,
-            dataSource:data,
+            // dataSource:data,
             detail:[],
-            topData:{}
+            topData:{},
+            visible1:false,  //用来控制送审弹出框
+            process:-1,      //审核流程
+            urgent:0,         //紧急 1 正常 0
+            IsQualified:-1
         }
         this.save = this.save.bind(this);
         this.failed = this.failed.bind(this);
+        this.applyOut = this.applyOut.bind(this);
+        this.checkData = this.checkData.bind(this);
         this.qualified = this.qualified.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.getEditorData = this.getEditorData.bind(this);
         this.recordChecking = this.recordChecking.bind(this);
+        this.applyReview = this.applyReview.bind(this);
+        this.urgentChange = this.urgentChange.bind(this);
+        this.selectChange = this.selectChange.bind(this);
+        this.handleOkApply = this.handleOkApply.bind(this);
+        this.handleCancelApply = this.handleCancelApply.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.columns = [{
             title:'序号',
-            dataIndex:'id',
-            key:'id',
+            dataIndex:'index',
+            key:'index',
             align:'center',
-            width:'10%'
+            width:'25%'
         },{
             title:'检测项目',
-            dataIndex:'testItem',
-            key:'testItem',
+            dataIndex:'testItemName',
+            key:'testItemName',
             align:'center',
-            width:'20%'
+            width:'25%'
         },{
             title:'检测结果',
-            dataIndex:'result',
-            key:'result',
+            dataIndex:'testResult',
+            key:'testResult',
             align:'center',
-            width:'40%',
+            width:'25%',
             render:(text,record)=>{
                 //<Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />
-                return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} />
+                return <Input id={record.id} name='testResult' placeholder='请输入检测结果' defaultValue={text} style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} />
             }
         },{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
             align:'center',
-            width:'30%'
+            width:'25%'
         },]
     }
     /**点击录检 弹出框显示 */
@@ -95,11 +107,12 @@ class RecordChecking extends React.Component{
                                 id:e.testItemResultRecord.id,
                                 testItemId:e.testItemResultRecord.testItemId,
                                 testItemName:e.name,
-                                testResult:e.testItemResultRecord.testResult,
+                                testResult:e.testItemResultRecord.testResult?e.testItemResultRecord.testResult:'',
                                 unit:'g/ml'
                             })
                     }   
                 }
+                console.log(details)
                 this.setState({
                     detail:details,
                     topData:topData
@@ -113,33 +126,20 @@ class RecordChecking extends React.Component{
             visible:false
         })
     }
-    /**点击保存按钮 */
-    handleSave(){
-        this.setState({
-            visible:false
-        })
-    }
-    /**点击录检按钮 */
-    recordChecking(){
-        this.setState({
-            visible:false
-        })
-    }
     /**input框内容变化，实现自动保存数据 */
     save(e){
         const value = e.target.value;
         const name = e.target.name;
         const id = e.target.id
-        const newData = [...this.state.dataSource];
+        const newData = [...this.state.detail];
         const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
         newData[index][name] = value;
         this.setState({
-            dataSource:newData
+            detail:newData
         })
     }
     /**点击合格 */
     qualified(){
-        console.log(1)
         this.setState({
             flag:1,
             fail:0
@@ -152,16 +152,135 @@ class RecordChecking extends React.Component{
             fail:1
         })
     }
+    /**监控申请送审弹出框的visible */
+    handleVisibleChange(visible){
+        this.setState({
+            visible1:visible
+        })
+    }
+    /**监听select变化事件 */
+    selectChange(value){
+        this.setState({
+            process:value
+        })
+    }
+    /**监控是否紧急 */
+    urgentChange(checked){
+        this.setState({
+            urgent:checked?1:0
+        })
+    }
+    /**点击取消送审 */
+    handleCancelApply(){
+        this.setState({
+            visible1:false,
+        })
+        // this.props.cancle();
+    }
+    /**点击确定送审 */
+    handleOkApply(){
+        this.checkData(1);
+   }
+    /**点击保存按钮 */
+    handleSave(){
+        this.checkData(0);
+    }
+    checkData(status){
+        var {detail,flag,fail,IsQualified} = this.state;
+        // if(flag) IsQualified = 1; else IsQualified = 0;
+        const flag = 1;
+        if(IsQualified === -1 && flag === 0 && fail === 0){
+            message.info('请点击合格或者不合格！');
+            return
+        }
+        if(detail){
+            for(var i = 0; i < detail.length; i++){
+                if(detail[i].testResult === ''){
+                    message.info('所有检测结果不能为空，请填写完整！');
+                    return
+                }
+            }
+        } 
+        if(flag){
+            this.applyOut(status);
+        }
+        
+    }
+    /**保存 */
+    applyOut(status){
+        var {detail,flag,IsQualified} = this.state;
+        if(flag) IsQualified = 1; else IsQualified = 0;
+        var testDTOS = [];
+        for(var i=0; i<detail.length;i++ )
+        {
+            var e = detail[i];
+            testDTOS.push({
+                testItemResultRecord:{
+                    id:e.id,
+                    testResult:e.testResult
+                }
+            })
+        }
+        axios.put(`${this.props.url.rawTestReport.rawTestReport}`,{
+            testDTOS:testDTOS,
+            sampleDeliveringRecord:{
+                id:this.props.value
+            },
+            testReportRecord:{
+                isQualified:IsQualified
+            }
+        },{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            if(status){
+                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                //this.applyReview(dataId);
+            }else{
+                message.info(data.data.message);
+            }
+        }).catch(()=>{
+            message.info('保存失败，请联系管理员！')
+        })
+        this.setState({
+            visible:false,
+            visible1:false
+        })
+        // this.props.cancle();
+    }
+    /**送审 */
+    applyReview(dataId){
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                dataId:dataId,
+                isUrgent:this.state.urgent
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch(()=>{
+            message.info('审核失败，请联系管理员！')
+        })
+    }
+    /**点击录检按钮 */
+    recordChecking(){
+        this.setState({
+            visible:false
+        })
+    }
     render(){
         return (
             <span>
-                <span className='blue' onClick={this.handleClick}>录检</span>
+                <span className={this.props.status===-1||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 maskClosable={false} centered={true}
                 footer={[
                     <CancleButton key='back' handleCancel={this.handleCancel}/>,
                     <SaveButton key='save' handleSave={this.handleSave} />,
-                    <Submit key='submit' data = {this.state.dataSource} url={this.props.url} />                       
+                    <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/> 
                 ]}>
                 <div style={{height:'500px'}}>
                 <div className="interDrSpanModalTop">
@@ -189,12 +308,9 @@ class RecordChecking extends React.Component{
                 </div>
                 
                 <div style={{height:'350px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} pagination={false} size='small' bordered scroll={{y:216}}></Table>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:216}}></Table>
                 </div>
-                <CheckModal qualifiedType={this.state.flag} qualified={this.qualified} failed={this.failed}/>
-                {/* <div style={{padding:'20px',height:'80px',fontSize:'15px'}}>
-                    <CheckQualifiedModal />
-                </div> */}
+                <CheckModal flag={this.state.flag} fail={this.state.fail} qualified={this.qualified} failed={this.failed}/>
                 </div>
                 </Modal>
             </span>

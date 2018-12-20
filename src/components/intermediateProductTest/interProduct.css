@@ -68,6 +68,8 @@
 .interDrSpanModalBottomSecond {
     margin-top: -7px;
     cursor: default;
+    height:80px;
+    overflow-y: auto;
 }
 .interDrSpanModalBottomSecond table {
     float: left;

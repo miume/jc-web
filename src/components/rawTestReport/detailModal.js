@@ -85,23 +85,27 @@ class DetailModal extends React.Component {
                     />
                 </div>
                 <Divider />
-                <div className="interDrSpanModalBottomSecond">
-                    <table >
-                        <tbody>
-                        <tr>
-                            <td>审核人：</td>
-                            <td>{data.examineData?data.examineData.examiner:''}</td>
-                        </tr>
-                        <tr>
-                            <td>审核意见：</td>
-                            <td>{data.examineData?data.examineData.examineView:''}</td>
-                        </tr>
-                        <tr>
-                            <td>审核日期：</td>
-                            <td>{data.examineData?data.examineData.examineTime:''}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div className={this.props.examineData?"interDrSpanModalBottomSecond":'hide'}>
+                {
+                    this.props.examineData?this.props.examineData.map(e=>(
+                        <table key={e.id} >
+                            <tbody>
+                            <tr>
+                                <td>审核人：</td>
+                                <td>{e.handler?e.handler:''}</td>
+                            </tr>
+                            <tr>
+                                <td>审核意见：</td>
+                                <td>{e.handleReply?e.handleReply:''}</td>
+                            </tr>
+                            <tr>
+                                <td>审核日期：</td>
+                                <td>{e.handleTime?e.handleTime:''}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    )):null
+                }
                 </div>
             </div>
         )
