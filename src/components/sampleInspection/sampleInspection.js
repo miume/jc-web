@@ -5,7 +5,7 @@ import {Table,Divider} from "antd";
 // import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
-// import AddModal from './addModal'
+import AddModal from './addModal'
 import Delete from './delete'
 import DeleteByIds from '../BlockQuote/deleteByIds';
 
@@ -160,7 +160,7 @@ class SampleInspection extends React.Component{
             <div>
                 <BlockQuote name="样品送检"></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    {/* <AddModal fetch={this.fetch}/> */}
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
