@@ -18,6 +18,7 @@
 }
 .interDrSpanModalTop table{
     width:100%;
+    text-align: center;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }

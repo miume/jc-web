@@ -37,9 +37,8 @@
     height: 30px;
     text-align: center;
   }
-  .stock-out .ant-table-body {
+  /* .stock-out .ant-table-body {
     max-height: 200px !important;
-    /* overflow-y: auto; */
-  }
+  } */
     
   

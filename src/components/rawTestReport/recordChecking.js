@@ -1,8 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import {Modal,Table, Input} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
-import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
-import {Modal,Table, Input} from 'antd';
+import CheckModal from '../BlockQuote/checkModal';
 import Submit from '../BlockQuote/submit';
 const data = [];
 for(var i = 1; i <=10; i++){
@@ -18,13 +19,18 @@ class RecordChecking extends React.Component{
         super(props);
         this.state = {
             visible:false,
-            dataSource:data
+            dataSource:data,
+            detail:[],
+            topData:{}
         }
+        this.save = this.save.bind(this);
+        this.failed = this.failed.bind(this);
+        this.qualified = this.qualified.bind(this);
+        this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleSave = this.handleSave.bind(this);
+        this.getEditorData = this.getEditorData.bind(this);
         this.recordChecking = this.recordChecking.bind(this);
-        this.save = this.save.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'id',
@@ -44,7 +50,8 @@ class RecordChecking extends React.Component{
             align:'center',
             width:'40%',
             render:(text,record)=>{
-                return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'35px'}} onChange={this.save} />
+                //<Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />
+                return <Input id={record.id} name='result' placeholder='请输入检测结果' style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} />
             }
         },{
             title:'计量单位',
@@ -56,10 +63,50 @@ class RecordChecking extends React.Component{
     }
     /**点击录检 弹出框显示 */
     handleClick(){
+        this.getEditorData();
         this.setState({
-            visible:true
+            visible:true,
+            flag:0,       //1 表示合格 0 表示正常
+            fail:0        //1表示不合格 0 表示正常
         })  
     }
+    /**通过id获取数据 */
+    getEditorData(){
+        axios.get(`${this.props.url.rawTestReport.getById}?id=${this.props.value}`,{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+            var details  = [];
+            var topData = {};
+            if(res)
+                // IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
+                topData={
+                    batchNumber: res.serialNumber?res.serialNumber:'',
+                    materialName: res.materialName?res.materialName:'',
+                    b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
+                };
+                if(res.testDTOS){
+                    for(var i = 0; i < res.testDTOS.length; i++){
+                        var e = res.testDTOS[i];
+                            details.push({
+                                index:`${i+1}`,
+                                id:e.testItemResultRecord.id,
+                                testItemId:e.testItemResultRecord.testItemId,
+                                testItemName:e.name,
+                                testResult:e.testItemResultRecord.testResult,
+                                unit:'g/ml'
+                            })
+                    }   
+                }
+                this.setState({
+                    detail:details,
+                    topData:topData
+                })
+        })
+    }
+    
     /**点击取消按钮 */
     handleCancel(){
         this.setState({
@@ -90,8 +137,22 @@ class RecordChecking extends React.Component{
             dataSource:newData
         })
     }
+    /**点击合格 */
+    qualified(){
+        console.log(1)
+        this.setState({
+            flag:1,
+            fail:0
+        })
+    }
+    /**点击不合格 */
+    failed(){
+        this.setState({
+            flag:0,
+            fail:1
+        })
+    }
     render(){
-        const value = this.props.value;
         return (
             <span>
                 <span className='blue' onClick={this.handleClick}>录检</span>
@@ -100,33 +161,40 @@ class RecordChecking extends React.Component{
                 footer={[
                     <CancleButton key='back' handleCancel={this.handleCancel}/>,
                     <SaveButton key='save' handleSave={this.handleSave} />,
-                    <Submit key='submit' data = {this.state.dataSource}/>                       
+                    <Submit key='submit' data = {this.state.dataSource} url={this.props.url} />                       
                 ]}>
-                <div style={{height:'550px'}}>
+                <div style={{height:'500px'}}>
+                <div className="interDrSpanModalTop">
                     <table>
-                         <thead className='thead'>
-                             <tr>
-                                 <td>批号</td><td>原材料</td><td>送样日期</td>
-                             </tr>
-                         </thead>
-                         <tbody className='tbody'>
-                             <tr>
-                                 <td>{value.factory}</td><td>{value.batchNumberId}</td><td>{value.date}</td>
-                             </tr>
-                         </tbody>
-                     </table>
-                     <div style={{padding:'10px'}}>
-                         <span className='span'>样品名称：镍矿石样品</span>
-                     </div>
-                     <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} pagination={false} size='small' bordered scroll={{y:330}}></Table>
-                     <div style={{padding:'20px',height:'80px',fontSize:'15px'}}>
-                         {/* <div style={{float:'left'}}>
-                         <p className='span'>检验人：<span></span></p>
-                             <p className='span'>检验时间：<span></span></p>
-                         </div> */}
-                         <CheckQualifiedModal />
-                     </div>
-
+                        <thead>
+                        <tr>
+                            <th>批号</th>
+                            <th>原材料</th>
+                            <th>送样日期</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{this.state.topData?this.state.topData.batchNumber:''}</td>
+                            <td>{this.state.topData?this.state.topData.materialName:''}</td>
+                            <td>{this.state.topData?this.state.topData.b:''}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="interDrSpanModalMiddle">
+                       <div>
+                           样品名称：<span>{this.state.topData?this.state.topData.materialName+'样品':''}</span>
+                       </div>
+                </div>
+                
+                <div style={{height:'350px'}}>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} pagination={false} size='small' bordered scroll={{y:216}}></Table>
+                </div>
+                <CheckModal qualifiedType={this.state.flag} qualified={this.qualified} failed={this.failed}/>
+                {/* <div style={{padding:'20px',height:'80px',fontSize:'15px'}}>
+                    <CheckQualifiedModal />
+                </div> */}
                 </div>
                 </Modal>
             </span>

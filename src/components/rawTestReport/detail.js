@@ -46,37 +46,36 @@ class Detail extends React.Component{
             testData:{},
             examineData:{},
             detail:[],
-            allTestItem:[]
         }
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
-        this.getAllTestItem = this.getAllTestItem.bind(this);
+        // this.getAllTestItem = this.getAllTestItem.bind(this);
     }
     /**点击详情 */
     handleDetail(){
-        this.getAllTestItem();
+        // this.getAllTestItem();
         this.getDetailData();
         this.setState({
             visible:true
         })
     }
     /**获取所有检测项目 */
-    getAllTestItem(){
-        axios({
-          url:`${this.props.url.testItems.testItems}`,
-          method:'get',
-          headers:{
-            'Authorization':this.props.url.Authorization
-          }
-        }).then(data=>{
-          const res = data.data.data;
-          this.setState({
-            allTestItem : res
-        })
-      })   
-      }
+    // getAllTestItem(){
+    //     axios({
+    //       url:`${this.props.url.testItems.testItems}`,
+    //       method:'get',
+    //       headers:{
+    //         'Authorization':this.props.url.Authorization
+    //       }
+    //     }).then(data=>{
+    //       const res = data.data.data;
+    //       this.setState({
+    //         allTestItem : res
+    //     })
+    //   })   
+    //   }
     /**通过id获取数据 */
     getDetailData(){
         axios.get(`${this.props.url.rawTestReport.getById}?id=${this.props.value}`,{
@@ -85,51 +84,53 @@ class Detail extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            const {allTestItem} = this.state
-            var detail  = [];
+            var details  = [];
             var topData = {};
             var testData = {};
             var examineData = {};
+            var IsQualified = 0;
             if(res)
+                IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 topData={
-                    batchNumber: res.commonBatchNumber.batchNumber,
-                    materialName: res.materialName,
-                    b:res.sampleDeliveringRecord.sampleDeliveringDate
+                    batchNumber: res.serialNumber?res.serialNumber:'',
+                    materialName: res.materialName?res.materialName:'',
+                    b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
                 testData={
-                    tester:res.tester,
-                    testTime:'111',
+                    tester:res.tester?res.tester:'',
+                    testTime:res.testReportRecord?res.testReportRecord.judgeDate:'',
                 }
-                examineData = {
-                    examiner: '审核人',
-                    examineView: '数据正常，审核通过',
-                    examineTime: '2018年11月12日',
-                }
-                console.log(this.state.allTestItem)
-                if(res.resultList){
-                    for(var j = 0; j < allTestItem.length;j++){
-                        for(var i = 0; i < res.resultList; i++){
-                            var e = res.resultList[i];
-                            if(e.testItemId === allTestItem[j].id){
-                                detail.push({
-                                    id:e.id,
-                                    testItem:allTestItem.name,
-                                    testResult:e.testResult,
-                                    unit:e.unit
-                                })
-                            }
-                        }
+                if(res.testReportRecord.IsQualified){
+                    examineData = {
+                        examiner: '审核人',
+                        examineView: '数据正常，审核通过',
+                        examineTime: '2018年11月12日',
                     }
-                    
                 }
-                
-                detail = res.resultList
+                if(res.testDTOS){
+                    for(var i = 0; i < res.testDTOS.length; i++){
+                        var e = res.testDTOS[i];
+                            details.push({
+                                index:`${i+1}`,
+                                id:e.testItemResultRecord.id,
+                                testItemId:e.testItemResultRecord.testItemId,
+                                testItemName:e.name,
+                                testResult:e.testItemResultRecord.testResult,
+                                unit:'g/ml'
+                            })
+                    }   
+                }
+                // console.log(details)
+                // console.log(topData)
+                // console.log(testData)
+                // console.log(examineData)
                 this.setState({
                     detail:{
+                        details:details,
                         topData:topData,
                         testData:testData,
                         examineData:examineData,
-                        detail:detail
+                        IsQualified:IsQualified,
                     }
                 })
         })
@@ -157,7 +158,7 @@ class Detail extends React.Component{
                   ]}
                   >
                   <div style={{height:580}}>
-                        <DetailModal topData={this.state.topData}  />
+                        <DetailModal detail={this.state.detail}  />
                     </div>
                  {/* <div style={{height:'550px'}}>
                      <table>
