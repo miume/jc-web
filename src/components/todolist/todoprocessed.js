@@ -10,14 +10,14 @@ class TodoProcessed extends React.Component{
     }
     render(){
         return (
-            <div style={{padding:'15px',overflow:'auto',height:'480px'}}>
+            <div style={{padding:'15px',overflow:'auto',height:'510px'}}>
                     <div>
                         {
                             this.props.data?this.props.data.map(e=>{
                                 return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={e.details} />
                             }):null
-                        }   
-                    </div> 
+                        }
+                    </div>
                     {/* <div className='wrapxxx'>
                         {data.map((e,index) => {
                             return (

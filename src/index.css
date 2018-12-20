@@ -216,6 +216,10 @@ button span {
 .ant-input-lg {
   font-size: inherit !important;
 }
+.ant-input-number {
+  height: 35px!important;
+  line-height: 35px!important;
+}
 /* 下拉选择器样式 */
 .ant-select-lg .ant-select-selection--single, .ant-select-selection--single{
     height: 35px !important;
