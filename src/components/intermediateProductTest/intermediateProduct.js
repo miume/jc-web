@@ -2,6 +2,7 @@ import React from 'react';
 import BlockQuote from '../BlockQuote/blockquote';
 import InterTable from '../intermediateProductTest/intermediateTable';
 import SearchCell from '../BlockQuote/search';
+import axios from "axios";
 
 const data =[];
 for(let i=0; i<20; i++){
@@ -54,6 +55,9 @@ for(let i=0; i<20; i++){
 
 class InterProduct extends React.Component {
     url;
+    componentDidMount() {
+        this.fetch();
+    }
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return ;
@@ -62,9 +66,9 @@ class InterProduct extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             selectedRowKeys: [],    //多选框key
-            loading: false,
+            searchContent:'',
         };
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.fetch=this.fetch.bind(this);
@@ -86,13 +90,14 @@ class InterProduct extends React.Component {
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
+        const status = JSON.parse(localStorage.getItem('status')) ;
         return(
             <div>
                 <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
-                            name='请输入搜索内容'
+                            name='请输入送检工厂名称'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
@@ -100,8 +105,9 @@ class InterProduct extends React.Component {
                     </span>
                     <div className='clear' ></div>
                     <InterTable
+                        url={this.url}
+                        status={status}
                         data={this.state.dataSource}
-                        // rowSelection={rowSelection}
                         pagination={this.pagination}
                         fetch={this.fetch}
                         modifyDataSource={this.modifyDataSource}
@@ -125,72 +131,45 @@ class InterProduct extends React.Component {
         this.fetch({
             size: pagination.pageSize,
             page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
+            factoryName:this.state.searchContent
 
         });
     };
     fetch = (params = {}) => {
-        this.setState({ loading: true });
-        // axios({
-        //     url: `${this.server}/jc/sampleDeliveringRecord`,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.Authorization
-        //     },
-        //     params: params,
-        //     // type: 'json',
-        // }).then((data) => {
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         loading: false,
-        //         dataSource: res.list,
-        //     });
-        // }).catch((error)=>{
-        //     message.info(error.data.message)
-        // });
-    };
-    componentDidMount() {
-        this.fetch();
-    }
-    /**---------------------- */
-    /** 根据角色名称分页查询*/
-    searchEvent(){
-        // const interName = this.state.searchContent;
-        // axios({
-        //     url:`${this.server}/jc/auth/operation/getRolesByNameLikeByPage`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         interName:interName
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //     this.pagination.total=res.total;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         dataSource: res.list,
-        //     });
-        // }).catch((error)=>{
-        //     message.info(error.data.message)
-        // })
+        axios.get(`${this.url.intermediateProduct.getAllByPage}`,{
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:params,
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total = res?res.total:0;
+            if(res&&res.list)
+            {
+                for(var i = 1; i <= res.list.length;i++){
+                    var e = res.list[i-1];
+                    e['index'] = res.prePage*10+i
+                }
+                this.setState({
+                    dataSource:res.list
+                })
+            }
 
+        })
+    };
+    /**---------------------- */
+    /** 根据名称分页查询*/
+    searchEvent(){
+        this.fetch({
+            factoryName:this.state.searchContent
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){
         const value = e.target.value;
-        this.setState({searchContent:value});
+        this.setState({
+            searchContent:value
+        });
     }
     /**---------------------- */
 }

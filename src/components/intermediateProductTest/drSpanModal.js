@@ -1,31 +1,34 @@
 import React from 'react';
-import { Table,Divider } from 'antd';
+import axios from 'axios';
+
+import {Table, Divider, message} from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
+import DetailStateModal from "./detailStateModal";
 
-
-
-const topData = {
-    batchNumber: 'EcT/139',
-    materialName: '镍矿石',
-    b: '2018年11月11日',
-};
-const testData = {
-    tester: '检测人',
-    testTime: '2018年11月12日',
-};
-const examineData = {
-    examiner: '审核人',
-    examineView: '数据正常，审核通过',
-    examineTime: '2018年11月12日',
+const testData = [];
+for (let i = 0; i < 50; i++) {
+    testData.push({
+        index:i,
+        id: i,
+        testItem: `测试`,
+        testResult: '0.001',
+        itemUnit: `g/mL`,
+    });
+}
+const examineData = [];
+for (let i = 0; i < 50; i++) {
+    examineData.push({
+        handler: `测试`,
+        handleReply: '0.001',
+        handleTime: `g/mL`,
+    });
 }
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
     state = {
-        topData : topData,      //表头数据
-        testData: testData,   // 检验人数据
-        examineData: examineData,  //审核人数据
+        examineData: [],  //审核人数据
         // spanStatus: 0, //进行判断，0详情，1录检，2发布
         status : 1, //0不合格，1合格
 
@@ -33,7 +36,7 @@ class DrSpanModal extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         align:'center',
         width: '20%',
     },{
@@ -63,6 +66,7 @@ class DrSpanModal extends React.Component {
                 }),
             };
         });
+        this.getExamineData();
         return(
             <div>
                 <div className="interDrSpanModalTop">
@@ -76,68 +80,80 @@ class DrSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.state.topData.batchNumber}</td>
-                            <td>{this.state.topData.materialName}</td>
-                            <td>{this.state.topData.b}</td>
+                            <td>{(this.props.data.sampleDeliveringRecord?this.props.state.sampleDeliveringRecord.serialNumberId:'')}</td>
+                            <td>{this.props.data.materialName}</td>
+                            <td>{(this.props.data.sampleDeliveringRecord?this.props.state.sampleDeliveringRecord.sampleDeliveringDate:'')}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div className="interDrSpanModalMiddle">
                        <div>
-                           样品名称：<span>{this.state.topData.materialName+'样品'}</span>
+                           样品名称：<span>{this.props.data.materialName?(this.props.data.materialName+'样品'):''}</span>
                        </div>
                 </div>
                 <div>
                     <Table
                         className="interCursorDefault"
-                        rowKey={record => record.id}
+                        rowKey={record => record.index}
                         columns={columns}
-                        dataSource={this.props.data}
+                        // dataSource={this.props.data.testItems}
+                        dataSource={testData}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 250 }}
+                        scroll={{ y: 230 }}
                         bordered
                     />
                 </div>
-                <div className="interDrSpanModalBottomFirst">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>检验人：</td>
-                            <td>{this.state.testData.tester}</td>
-                        </tr>
-                        <tr>
-                            <td>检验时间：</td>
-                            <td>{this.state.testData.testTime}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <IsQualified
-                        status={this.state.status}
+                <div className="interDrSpanModalBottom">
+                    <div className="interDrSpanModalBottomFirst">
+                        <table>
+                            <tbody className="interPadding">
+                            <tr>
+                                <td>检验人：</td>
+                                <td>{this.props.data.tester}</td>
+                            </tr>
+                            <tr>
+                                <td>检验时间：</td>
+                                <td>{this.props.data.testReportRecord?this.props.data.testReportRecord.judgeDate:''}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <IsQualified
+                            status={this.props.data.testReportRecord?this.props.data.testReportRecord.isQualified:''}
+                            // status='0'
+                        />
+                    </div>
+                    <Divider
+                        className="interDrSpanDivider"
                     />
-                </div>
-                <Divider />
-                <div className="interDrSpanModalBottomSecond">
-                    <table >
-                        <tbody>
-                        <tr>
-                            <td>审核人：</td>
-                            <td>{this.state.examineData.examiner}</td>
-                        </tr>
-                        <tr>
-                            <td>审核意见：</td>
-                            <td>{this.state.examineData.examineView}</td>
-                        </tr>
-                        <tr>
-                            <td>审核日期：</td>
-                            <td>{this.state.examineData.examineTime}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <DetailStateModal
+                        checkStatus={this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.status:''}
+                        // checkStatus='2'
+                        examineData={this.state.examineData}
+                        // examineData={examineData}
+                    />
                 </div>
             </div>
         )
+    }
+    getExamineData = () => {
+        const examineStatus = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.status:'';
+        const batchNumber = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.batchNumber:'';
+        if(examineStatus==='2'||examineStatus==='3'){
+            axios({
+                url:`${this.url.toDoList}/${batchNumber}/result`,
+                method:'get',
+                headers:{
+                    'Authorization':this.url.Authorization
+                }
+            }).then((data)=>{
+                const res = data.data.data;
+                this.setState({
+                    examineData : res
+                })
+            })
+        }
     }
 }
 
