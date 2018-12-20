@@ -51,31 +51,31 @@ class Detail extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
-        // this.getAllTestItem = this.getAllTestItem.bind(this);
+        this.getAllTester = this.getAllTester.bind(this);
     }
     /**点击详情 */
     handleDetail(){
-        // this.getAllTestItem();
+        this.getAllTester();
         this.getDetailData();
         this.setState({
             visible:true
         })
     }
     /**获取所有检测项目 */
-    // getAllTestItem(){
-    //     axios({
-    //       url:`${this.props.url.testItems.testItems}`,
-    //       method:'get',
-    //       headers:{
-    //         'Authorization':this.props.url.Authorization
-    //       }
-    //     }).then(data=>{
-    //       const res = data.data.data;
-    //       this.setState({
-    //         allTestItem : res
-    //     })
-    //   })   
-    //   }
+    getAllTester(){
+        axios({
+          url:`${this.props.url.toDoList}/${this.props.id}/result`,
+          method:'get',
+          headers:{
+            'Authorization':this.props.url.Authorization
+          }
+        }).then(data=>{
+          const res = data.data.data;
+          this.setState({
+            examineData : res
+        })
+      })   
+      }
     /**通过id获取数据 */
     getDetailData(){
         axios.get(`${this.props.url.rawTestReport.getById}?id=${this.props.value}`,{
@@ -87,7 +87,7 @@ class Detail extends React.Component{
             var details  = [];
             var topData = {};
             var testData = {};
-            var examineData = {};
+            // var examineData = {};
             var IsQualified = 0;
             if(res)
                 IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
@@ -99,13 +99,6 @@ class Detail extends React.Component{
                 testData={
                     tester:res.tester?res.tester:'',
                     testTime:res.testReportRecord?res.testReportRecord.judgeDate:'',
-                }
-                if(res.testReportRecord.IsQualified){
-                    examineData = {
-                        examiner: '审核人',
-                        examineView: '数据正常，审核通过',
-                        examineTime: '2018年11月12日',
-                    }
                 }
                 if(res.testDTOS){
                     for(var i = 0; i < res.testDTOS.length; i++){
@@ -120,16 +113,12 @@ class Detail extends React.Component{
                             })
                     }   
                 }
-                // console.log(details)
-                // console.log(topData)
-                // console.log(testData)
-                // console.log(examineData)
                 this.setState({
                     detail:{
                         details:details,
                         topData:topData,
                         testData:testData,
-                        examineData:examineData,
+                        // examineData:examineData,
                         IsQualified:IsQualified,
                     }
                 })
@@ -150,7 +139,7 @@ class Detail extends React.Component{
     render(){
         return (
             <span>
-                <span className='blue' onClick={this.handleDetail} >详情</span>
+                <span className={this.props.status===0||this.props.status===1||this.props.status===2||this.props.status===3?'blue':'notClick'} onClick={this.handleDetail} >详情</span>
                 <Modal title='详情' visible={this.state.visible} closable={false}
                 maskClosable={false} centered={true} style={{top:10}}
                  footer={[
@@ -158,37 +147,8 @@ class Detail extends React.Component{
                   ]}
                   >
                   <div style={{height:580}}>
-                        <DetailModal detail={this.state.detail}  />
+                        <DetailModal detail={this.state.detail} examineData={this.props.examineData}  />
                     </div>
-                 {/* <div style={{height:'550px'}}>
-                     <table>
-                         <thead className='thead'>
-                             <tr>
-                                 <td>批号</td><td>原材料</td><td>送样日期</td>
-                             </tr>
-                         </thead>
-                         <tbody className='tbody'>
-                             <tr>
-                                 <td></td><td>{value.batchNumberId}</td><td>{value.date}</td>
-                             </tr>
-                         </tbody>
-                     </table>
-                     <div style={{padding:'10px'}}>
-                         <span className='span'>样品名称：镍矿石样品</span>
-                     </div>
-                     <Table rowKey={record=>record.id} columns={columns1} dataSource={data} pagination={false} size='small' bordered scroll={{y:200}}></Table>
-                     <div style={{padding:'10px',height:'40px',fontSize:'15px'}}>
-                         <div style={{float:'left'}}>
-                             <p className='span'>检验人：<span></span></p>
-                             <p className='span'>检验时间：<span></span></p>
-                         </div>
-                         <IsQualified status={1}></IsQualified>
-                     </div>
-                     <Divider type='horizontal'/>
-                     <div style={{textAlign:'center',fontSize:'15px'}}>
-                          审核中
-                     </div>
-                 </div> */}
                 </Modal>
             </span>
         );
