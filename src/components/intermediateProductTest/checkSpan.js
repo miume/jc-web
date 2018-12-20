@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {Modal} from 'antd';
 import CheckSpanModal from './checkSpanModal';
 import CancleButton from '../BlockQuote/cancleButton';
@@ -23,10 +24,11 @@ class CheckSpan extends React.Component {
         this.state = {
             visible: false,
             subVisible: false,
+            checkData: '',
             process:-1,
         };
         this.showModal = this.showModal.bind(this);
-        this.handleOk = this.handleOk.bind(this);
+        this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.subHide = this.subHide.bind(this);
         this.subOk = this.subOk.bind(this);
@@ -38,7 +40,8 @@ class CheckSpan extends React.Component {
         const { visible } = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
         return (
-            <span type="primary" onClick={this.showModal} size="small"    >
+            <span>
+                <span className="blue" onClick={this.handleDetail}>录检</span>
                 <Modal
                     title="数据录检"
                     visible={visible}
@@ -52,7 +55,7 @@ class CheckSpan extends React.Component {
                             key='cancel'
                         />,
                         <SaveButton
-                            onClick={this.handleOk}
+                            onClick={this.handleSave}
                             key='save'
                         />,
                         <Submit
@@ -74,7 +77,6 @@ class CheckSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <span className="blue interCursorPointer">录检</span>
             </span>
         )
     }
@@ -89,7 +91,8 @@ class CheckSpan extends React.Component {
             visible: true,
         });
     };
-    handleOk = () => {
+    /**处理保存功能*/
+    handleSave = () => {
         setTimeout(() => {
             this.setState({
                 visible: false,
@@ -118,7 +121,27 @@ class CheckSpan extends React.Component {
 
     /**---------------------- */
     /**---------------------- */
-    /**实现字段搜索功能 */
+    /**点击详情 */
+    handleDetail() {
+        this.getCheckData();
+        this.setState({
+            visible: true,
+        });
+    }
+    /**通过id查询详情 */
+    getCheckData(){
+        axios.get(`${this.props.url.intermediateProduct}/details/${this.props.id}`,{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const details = data.data.data;
+            console.log('details',details)
+            this.setState({
+                checkData:details,
+            })
+        })
+    }
     /**---------------------- */
 
 }

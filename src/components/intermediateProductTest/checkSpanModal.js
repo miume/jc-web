@@ -27,13 +27,14 @@ class CheckSpanModal extends React.Component {
             topData : topData,      //表头数据
             testData: testData,   // 检验人数据
             examineData: examineData,  //审核人数据
+            testItemRecord: '',
             status : '', //0不合格，1合格
         };
     }
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         align:'center',
         width: '20%',
     },{
@@ -48,11 +49,13 @@ class CheckSpanModal extends React.Component {
         key: 'testResult',
         align:'center',
         width: '30%',
-        render: (text,record) => {
+        render: (index) => {
+            console.log(index)
             return(
                 <Input
                     placeholder='输入检测结果'
                     style={{border:'0',paddingLeft:'10px'}}
+                    onChange={this.testItemResult(index)}
                 />
             )
         }
@@ -100,7 +103,7 @@ class CheckSpanModal extends React.Component {
                 </div>
                 <div className="interCheckModalBottom">
                     <Table
-                        rowKey={record => record.id}
+                        rowKey={record => record.index}
                         columns={columns}
                         dataSource={this.props.data}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
@@ -114,8 +117,10 @@ class CheckSpanModal extends React.Component {
             </div>
         )
     }
-    /**实现选择合格:1与不合格:0功能 */
+    /**监听检测结果输入框的变化 */
+    testItemResult = (index) => {
 
+    }
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */
