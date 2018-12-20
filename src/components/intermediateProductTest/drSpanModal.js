@@ -132,27 +132,6 @@ class DrSpanModal extends React.Component {
             </div>
         )
     }
-    // getExamineData = () => {
-    //     const examineStatus = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.status:'';
-    //     const batchNumber = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.batchNumber:'';
-    //     if(examineStatus==='2'||examineStatus==='3'){
-    //         axios({
-    //             url:`${this.url.toDoList}/${batchNumber}/result`,
-    //             method:'get',
-    //             headers:{
-    //                 'Authorization':this.url.Authorization
-    //             }
-    //         }).then((data)=>{
-    //             const res = data.data.data;
-    //             this.setState({
-    //                 examineData : res
-    //             })
-    //         })
-    //     }
-    // };
-    // handleTestDTOS = () => {
-    //
-    // }
 }
 
 export default DrSpanModal;

@@ -171,25 +171,6 @@ class DetailSpan extends React.Component {
             }
         })
     }
-    /**通过发布状态，判断是否有审核人 */
-    // getExamineData = () => {
-    //     const examineStatus = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.status:'';
-    //     const batchNumber = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.batchNumber:'';
-    //     if(examineStatus==='2'||examineStatus==='3'){
-    //         axios({
-    //             url:`${this.url.toDoList}/${batchNumber}/result`,
-    //             method:'get',
-    //             headers:{
-    //                 'Authorization':this.url.Authorization
-    //             }
-    //         }).then((data)=>{
-    //             const res = data.data.data;
-    //             this.setState({
-    //                 examineData : res
-    //             })
-    //         })
-    //     }
-    // };
 }
 
 export default DetailSpan;

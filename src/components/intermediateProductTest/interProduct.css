@@ -123,6 +123,7 @@
 }
 .interCheckModalTop table{
     width:100%;
+    text-align: center;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -171,5 +172,18 @@
 .interCheckModalBottom table {
     cursor: default;
 }
+.interCheckModalBottom table input{
+    text-align: center;
+}
+
+.interCheckQualifiedModal {
+    cursor: pointer;
+    position:absolute;
+    bottom: 70px;
+    height: 200px;
+    width: 260px;
+    float: right;
+}
+
 
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Input,Button,Table } from 'antd';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import './interProduct.css';
+import CheckModal from "../BlockQuote/checkModal";
 
 
 const topData = {
@@ -24,12 +25,23 @@ class CheckSpanModal extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            topData : topData,      //表头数据
-            testData: testData,   // 检验人数据
-            examineData: examineData,  //审核人数据
-            testItemRecord: '',
-            status : '', //0不合格，1合格
+            // status : '', //0不合格，1合格
+            newTestDTOS: [],
+            interCheckData:{
+                testDTOS: [],
+                sampleDeliveringRecord: {
+                    id: -1,
+                    testResult: ''
+                },
+                testReportRecord:{
+                    isQualified: -1,
+                }
+
+            },
+            isQualified: -1,
         };
+        this.save = this.save.bind(this);
+        this.clickIsQualified = this.clickIsQualified.bind(this);
     }
     columns = [{
         title: '序号',
@@ -39,8 +51,8 @@ class CheckSpanModal extends React.Component {
         width: '20%',
     },{
         title: '检测项目',
-        dataIndex: 'testItem',
-        key: 'testItem',
+        dataIndex: 'testItemName',
+        key: 'testItemName',
         align:'center',
         width: '25%',
     },{
@@ -49,20 +61,22 @@ class CheckSpanModal extends React.Component {
         key: 'testResult',
         align:'center',
         width: '30%',
-        render: (index) => {
-            console.log(index)
+        render: (text,record) => {
             return(
                 <Input
+                    id={record.id}
+                    name='testResult'
+                    defaultValue={text}
                     placeholder='输入检测结果'
                     style={{border:'0',paddingLeft:'10px'}}
-                    onChange={this.testItemResult(index)}
+                    onChange={this.save}
                 />
             )
         }
     },{
         title: '计量单位',
-        dataIndex: 'itemUnit',
-        key: 'itemUnit',
+        dataIndex: 'unit',
+        key: 'unit',
         align:'center',
         width: '25%',
     }];
@@ -88,16 +102,16 @@ class CheckSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.state.topData.batchNumber}</td>
-                            <td>{this.state.topData.materialName}</td>
-                            <td>{this.state.topData.b}</td>
+                            <td>{this.props.data.topData.serialNumberId}</td>
+                            <td>{this.props.data.topData.materialName}</td>
+                            <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div className="interCheckModalMiddle">
                     <div>
-                           样品名称：<span>{this.state.topData.materialName+'样品'}</span>
+                           样品名称：<span>{this.props.data.topData.materialName?(this.props.data.topData.materialName+'样品'):''}</span>
                     </div>
                     <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                 </div>
@@ -105,7 +119,7 @@ class CheckSpanModal extends React.Component {
                     <Table
                         rowKey={record => record.index}
                         columns={columns}
-                        dataSource={this.props.data}
+                        dataSource={this.props.data.testDTOS}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
                         scroll={{ y: 300 }}
@@ -113,16 +127,37 @@ class CheckSpanModal extends React.Component {
                     />
                 </div>
                 <CheckQualifiedModal
+                    status={this.props.data.isQualified}
+                    clickIsQualified = {this.clickIsQualified}
                 />
             </div>
         )
     }
     /**监听检测结果输入框的变化 */
-    testItemResult = (index) => {
-
+    /**input框内容变化，实现自动保存数据 */
+    save(e){
+        console.log(e.target.value)
+        const value = e.target.value;
+        const name = e.target.name;
+        const id = e.target.id;
+        var newData = [...this.props.data.testDTOS];
+        const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
+        newData[index][name] = value;
+        this.setState({
+            newTestDTOS:newData
+        })
     }
     /**---------------------- */
-    /**实现字段搜索功能 */
+    /**点击合格与不合格 */
+    clickIsQualified = (isQualified) => {
+        this.setState({
+            isQualified: isQualified
+        },()=>{
+            console.log(this.state.isQualified)
+        })
+    };
+    /**实现保存按钮功能 */
+
     /**---------------------- */
 }
 
