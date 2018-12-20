@@ -31,7 +31,7 @@ const data = [{
     id:6,
     name:'成品检验',
     path:'/productInspection',
-    className:'fa fa-codepen fa-5x'
+    className:'fa fa-cube fa-5x'
 },{
     id:7,
     name:'不合格审评表',
@@ -41,7 +41,7 @@ const data = [{
     id:8,
     name:'不合格跟踪表',
     path:'/unqualifiedTrackTable',
-    className:'fa fa-cog fa-5x'
+    className:'fa fa-crosshairs fa-5x'
 }]
 
 class DataEntry extends React.Component{
