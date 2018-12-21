@@ -106,7 +106,6 @@ class Add extends React.Component{
         const details = this.state.addApplyData;
         //console.log(details)
         for(var i = 0; i < details.length; i++){
-            delete details[i].id;
             var e = details[i].procedureTestRecord;
             for(var j in e){
                 if( e[j]==='' || e[j] === -1 || e[j] === []){
@@ -115,6 +114,7 @@ class Add extends React.Component{
                 }
             }
         }
+        console.log(details)
         this.setState({
             visible:false,
             visible1:false
@@ -122,8 +122,6 @@ class Add extends React.Component{
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             createPersonId:createPersonId,
-            // status:status,
-            // isUrgent:this.state.urgent
         }
         axios.post(`${this.props.url.procedure.procedureTestRecord}`,{
             commonBatchNumber:commonBatchNumber,
@@ -132,9 +130,6 @@ class Add extends React.Component{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
-            // params:{
-            //     taskId:taskId
-            // }
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;

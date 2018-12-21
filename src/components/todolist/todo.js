@@ -70,7 +70,7 @@ class Todo extends React.Component{
             <div className='wholep'>
                 <div className='wrap1'>
                     <span className='smallSize'>由您对</span>&nbsp;&nbsp;&nbsp;
-                    <span className='bigSize'>{this.props.data.description+'   '+this.props.data.batchNumber}</span>
+                    <span className='bigSize'>{this.props.data.description?this.props.data.description:'无'+'   '+this.props.data.batchNumber}</span>
                 </div>
                 <div className='wrap2'>初步审核，检查标准是否判断正确</div>
                 <div className='wrap3'>
@@ -86,11 +86,10 @@ class Todo extends React.Component{
                        this.props.details.map((e,index)=>{
                            return (
                            <div key={e.userId} style={{display:'flex',textAlign:'center'}}>
-                               <Part index={index+1} data={e} id={this.props.data.createPersonId} count={count} flag={this.state.flag} judgeFlag={this.judgeFlag} />
+                               <Part index={index+1} data={e} id={this.props.data.createPersonId} count={count} visible={e.visible} flag={this.state.flag} judgeFlag={this.judgeFlag} />
                                <Line index={index+1} count={count} flag={this.state.flag}/>
                            </div>)
-                       }
-                       )
+                       })
                    }
                    </div>
                </div>

@@ -147,6 +147,7 @@ class Detail extends React.Component{
        }).then((data)=>{
            const details = data.data.data? data.data.data.details:[];
            var iteration = 1;
+           //console.log(details)
            if(details){
             for(var i = 0; i < details.length; i++){
                 // console.log(details[i].commonBatchNumber.iteration)
@@ -154,12 +155,12 @@ class Detail extends React.Component{
                 details[i].id = i+1;
                 details[i].procedureTestRecord.testItems = details[i].testItemString;
              }
+             this.setState({
+                detailData:details,
+                data:details,
+                iteration:!iteration&&this.props.status===2?0:1
+            })
            }
-           this.setState({
-               detailData:details,
-               data:details,
-               iteration:!iteration&&this.props.status===2?0:1
-           })
        })
     }
     selectionChange(value) {

@@ -21,7 +21,7 @@ class Line extends React.Component{
                     <div className='part'>
                     {
                         
-                        <span className={this.props.flag?'line1':'line'}></span>
+                        <span className={this.props.flag?'line':'line1'}></span>
                     }
                     </div> :null
                 }
