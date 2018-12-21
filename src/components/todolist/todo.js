@@ -1,7 +1,7 @@
 import React from 'react';
-import NewButton from '../BlockQuote/newButton';
 import Part from './part';
 import Line from './line';
+import CheckModal from './checkModal';
 class Todo extends React.Component{
     constructor(props){
         super(props);
@@ -10,7 +10,6 @@ class Todo extends React.Component{
         }
         this.moveLeft = this.moveLeft.bind(this);
         this.moveRight = this.moveRight.bind(this);
-        // this.judgeFlag = this.judgeFlag.bind(this);
         this.handleMove = this.handleMove.bind(this);
     }
     moveLeft(){
@@ -20,10 +19,7 @@ class Todo extends React.Component{
         this.handleMove(1);
     }
     handleMove(number) {
-        // var middle  = document.getElementById(this.props.data.id);
-        var middle  = document.getElementsByClassName('item2')[0];         
-        // var middleItem = document.getElementsByClassName('part')[0];
-        // let count = middleItem.offsetWidth * 7;
+        var middle = document.getElementById(`item2-${this.props.data.id}`)        
         let count = 830;
         let gap = (count / 100);
         gap = gap.toFixed(0);
@@ -64,17 +60,17 @@ class Todo extends React.Component{
             <div className='wholep'>
                 <div className='wrap1'>
                     <span className='smallSize'>由您对</span>&nbsp;&nbsp;&nbsp;
-                    <span className='bigSize'>{this.props.data.description?this.props.data.description:'无'+'   '+this.props.data.batchNumber}</span>
+                    <span className='bigSize'>{this.props.data.description+'   '+this.props.data.batchNumber}</span>
                 </div>
                 <div className='wrap2'>初步审核，检查标准是否判断正确</div>
                 <div className='wrap3'>
                    <span className='time'>{this.props.data.createTime}</span>
-                   <span className='smallSize'><span className={this.props.data.isUrgent?'':'urgent'}>{this.props.data.isUrgent?'正常':'紧急'}</span></span>
+                   <span className='smallSize'><span className={this.props.data.isUrgent?'urgent':''}>{this.props.data.isUrgent?'紧急':'正常'}</span></span>
                 </div>
             </div>
            <div className='demo'>
                <div className='item1' onClick={this.moveLeft}><i className='fa fa-2x fa-caret-left'></i></div>
-               <div className='item2'>
+               <div className='item2' id={`item2-${this.props.data.id}`}>
                    <div className='item2Scroll' id={this.props.data.id}>
                    {
                        this.props.details.map((e,index)=>{
@@ -90,8 +86,7 @@ class Todo extends React.Component{
                </div>
                <div className={`item3`} onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
-                   {/** style={{padding:'10% 0 0 70%'}} */}
-                   <NewButton name='审核' className='fa fa-check'></NewButton>
+                   <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} />
                </div>
            </div>
         </div>
