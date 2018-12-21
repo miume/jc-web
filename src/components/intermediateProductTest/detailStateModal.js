@@ -119,7 +119,12 @@ class DetailStateModal extends React.Component {
                         </table>
                     </div>
                 );
-            default: return ''
+            default:
+                return(
+                    <div className="interStateDefaultModal">
+                        没有进行审核过程
+                    </div>
+                );
         }
     }
 }

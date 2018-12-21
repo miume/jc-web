@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Button,Table } from 'antd';
+import {Input, Button, Table, message} from 'antd';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import './interProduct.css';
 import CheckModal from "../BlockQuote/checkModal";
@@ -30,18 +30,17 @@ class CheckSpanModal extends React.Component {
             interCheckData:{
                 testDTOS: [],
                 sampleDeliveringRecord: {
-                    id: -1,
-                    testResult: ''
+                    id: this.props.data.id,
                 },
                 testReportRecord:{
-                    isQualified: -1,
+                    isQualified: this.props.data.isQualified,
                 }
 
             },
-            isQualified: -1,
         };
-        this.save = this.save.bind(this);
+        this.inputSave = this.inputSave.bind(this);
         this.clickIsQualified = this.clickIsQualified.bind(this);
+        this.clickSavaButton = this.clickSavaButton.bind(this);
     }
     columns = [{
         title: '序号',
@@ -69,7 +68,7 @@ class CheckSpanModal extends React.Component {
                     defaultValue={text}
                     placeholder='输入检测结果'
                     style={{border:'0',paddingLeft:'10px'}}
-                    onChange={this.save}
+                    onChange={this.inputSave}
                 />
             )
         }
@@ -135,7 +134,7 @@ class CheckSpanModal extends React.Component {
     }
     /**监听检测结果输入框的变化 */
     /**input框内容变化，实现自动保存数据 */
-    save(e){
+    inputSave(e){
         console.log(e.target.value)
         const value = e.target.value;
         const name = e.target.name;
@@ -150,14 +149,35 @@ class CheckSpanModal extends React.Component {
     /**---------------------- */
     /**点击合格与不合格 */
     clickIsQualified = (isQualified) => {
+        var interCheckData = this.state.interCheckData;
+        interCheckData.testReportRecord.isQualified = isQualified;
         this.setState({
-            isQualified: isQualified
-        },()=>{
-            console.log(this.state.isQualified)
+            interCheckData: interCheckData
         })
     };
     /**实现保存按钮功能 */
+    clickSavaButton = () => {
+        var interCheckData = this.state.interCheckData;
+        const newTestDTOS = this.state.newTestDTOS;
+        const testDTOS = interCheckData.testDTOS;
+        const id = interCheckData.sampleDeliveringRecord.id;
+        const isQualified = interCheckData.testReportRecord.isQualified;
+        //  进行testDTOS数据组装
+        for(var i=0; i<newTestDTOS.length; i++){
+            testDTOS.push({
+                testItemResultRecord:{
+                    id: newTestDTOS[i].id,
+                    testResult: newTestDTOS[i].testResult
+                }
+            })
+        }
+        console.log('testDTOStestDTOS',testDTOS);
+        if(isQualified === -1){
+            message.info('请点击合格或者不合格！');
+            return
+        }
 
+    };
     /**---------------------- */
 }
 
