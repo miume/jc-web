@@ -362,6 +362,7 @@ class CheckSpan extends React.Component {
             type:'json'
         }).then((data)=>{
             if(status){
+                console.log(data)
                 const dataId = data.data.data.commonBatchNumber?data.data.data.commonBatchNumber.id:null;
                 this.applyReview(dataId);
             }else{
