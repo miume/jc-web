@@ -174,7 +174,7 @@ class PermissionManagement extends React.Component {
                                 return (
                                     /**先显示一级菜单*/
                                     <div key={m1.menuId}>
-                                        <div className='divborder'><span className='rightBorder menu1Label'><i class="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{m1.menuName}</span><span></span></div>
+                                        <div className='divborder'><span className='rightBorder menu1Label'><i className="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{m1.menuName}</span><span></span></div>
                                             <div>
                                             {
                                             /**遍历二级菜单 */
@@ -185,7 +185,7 @@ class PermissionManagement extends React.Component {
                                                 if(menuList.length>0){
                                                     var menu = menuList[0];
                                                    return (
-                                                       <div key={menu.id} className='divborder'><span className='rightBorder'><i class="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{menu.menuName}</span>
+                                                       <div key={menu.id} className='divborder'><span className='rightBorder'><i className="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{menu.menuName}</span>
                                                            <span style={{display:'inline'}}>
                                                            {
                                                               this.state.operations.map(op=>{
@@ -208,7 +208,7 @@ class PermissionManagement extends React.Component {
                                                    );
                                                 }else{
                                                     return (
-                                                    <div key={m2.menuId} className='divborder'><span className='rightBorder'><i class="fa fa-level-up fa-flip-horizontal"></i>&nbsp;&nbsp;&nbsp;{m2.menuName}</span>
+                                                    <div key={m2.menuId} className='divborder'><span className='rightBorder'><i className="fa fa-level-up fa-flip-horizontal"></i>&nbsp;&nbsp;&nbsp;{m2.menuName}</span>
                                                         <span style={{display:'inline'}}>
                                                         {
                                                         this.state.operations.map(op=>{

@@ -1,64 +1,17 @@
 import React from 'react';
 import {Tabs,Badge} from 'antd';
+import './todolist.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import HistoryRecord from './historyRecord';
 import TodoProcessed from './todoprocessed';
 import axios from 'axios';
 const TabPane = Tabs.TabPane;
-const data = [];
-for(var i = 1; i < 4; i++){
-    data.push({
-        commonBatchNumber:{
-            batchNumber: "ECT/99c4cb57dc53",
-                createPersonId: 1,
-                createTime: "2018-11-27 14:37:35",
-                dataType: 2,
-                description: "制程检测",
-                id: `${i}`,
-                isUrgent: -1,
-                memo: "制程检测专用",
-                status: 0,
-        },
-        createPersonName: "王大大",
-        details:[{
-            personName: "嘻嘻嘻",
-            responsibility: "算命",
-            taskType: 2,
-            userId: 121,
-            visible: null,
-        },{
-            personName: "陈小春",
-            responsibility: "打野",
-            taskType: 2,
-            userId: 129,
-            visible: null
-        },{
-            personName: "王大大",
-            responsibility: "抽签",
-            taskType: 2,
-            userId: 1,
-            visible: 1,
-        },{
-            personName: "嘻嘻嘻",
-                responsibility: "算命",
-                taskType: 2,
-                userId: 121,
-                visible: null,
-        },{
-            personName: "陈小春",
-            responsibility: "打野",
-            taskType: 2,
-            userId: 129,
-            visible: null
-        }]
-})
-}
 class TodoList extends React.Component{
     url
     componentDidMount(){
         const id = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
         this.fetch(id);
-        this.getHistory(id);
+        //this.getHistory(id);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -84,6 +37,7 @@ class TodoList extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             const count = res? res.length : 0;
+            res['curId'] = id;
             this.setState({
                 data:res,
                 count:count
@@ -109,9 +63,9 @@ class TodoList extends React.Component{
         return (
             <div>
                  <BlockQuote name="待办事项" menu='质量与流程'></BlockQuote>
-                 <Tabs defaultActiveKey='1'>
-                     <TabPane key='1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed getCount={this.getCount} url={this.url} data={this.state.data}/></TabPane>
-                     <TabPane key='2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><HistoryRecord data={this.state.historyRecord}/></TabPane>
+                 <Tabs defaultActiveKey='todo1'>
+                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed url={this.url} data={this.state.data}/></TabPane>
+                     <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><HistoryRecord data={this.state.historyRecord}/></TabPane>
                  </Tabs>
             </div>
         );

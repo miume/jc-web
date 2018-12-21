@@ -10,20 +10,14 @@ class Todo extends React.Component{
         }
         this.moveLeft = this.moveLeft.bind(this);
         this.moveRight = this.moveRight.bind(this);
-        this.judgeFlag = this.judgeFlag.bind(this);
+        // this.judgeFlag = this.judgeFlag.bind(this);
         this.handleMove = this.handleMove.bind(this);
     }
     moveLeft(){
         this.handleMove(-1);
-        // console.log(this.props.data.id)
-        // const moveItem = document.getElementById(this.props.data.id);
-        // console.log(moveItem)
     }
     moveRight(){
         this.handleMove(1);
-    }
-    judgeFlag(value){
-        this.state.flag = value;
     }
     handleMove(number) {
         // var middle  = document.getElementById(this.props.data.id);
@@ -84,10 +78,11 @@ class Todo extends React.Component{
                    <div className='item2Scroll' id={this.props.data.id}>
                    {
                        this.props.details.map((e,index)=>{
+                           if(e.visible) this.state.flag=1;
                            return (
                            <div key={e.userId} style={{display:'flex',textAlign:'center'}}>
-                               <Part index={index+1} data={e} id={this.props.data.createPersonId} count={count} visible={e.visible} flag={this.state.flag} judgeFlag={this.judgeFlag} />
-                               <Line index={index+1} count={count} flag={this.state.flag}/>
+                               <Part index={index+1} data={e} id={this.props.curId} count={count} visible={e.visible} flag={e.flag}/>
+                               <Line index={index+1} count={count} flag={this.state.flag} visible={e.visible}/>
                            </div>)
                        })
                    }
