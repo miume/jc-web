@@ -1,5 +1,4 @@
 import React from 'react';
-import '../Home/page.css';
 import SearchCell from '../BlockQuote/search';
 import ReleaseTable from "./releaseTable";
 import DeleteByIds from "../BlockQuote/deleteByIds";

@@ -18,7 +18,6 @@ for (let i = 0; i < 50; i++) {
 }
 
 class CheckSpan extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.state = {
@@ -362,6 +361,7 @@ class CheckSpan extends React.Component {
             type:'json'
         }).then((data)=>{
             if(status){
+                console.log(data)
                 const dataId = data.data.data.commonBatchNumber?data.data.data.commonBatchNumber.id:null;
                 this.applyReview(dataId);
             }else{

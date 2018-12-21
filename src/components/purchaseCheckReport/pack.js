@@ -1,10 +1,10 @@
 import React from 'react';
-import {Divider,Button,Switch} from 'antd';
+import {Divider,Switch} from 'antd';
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
-import './pack.css';
+import './purchaseCheckReport.css';
 // import axios from "axios";
 //
 const data = [];
@@ -51,7 +51,7 @@ class Pack extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             selectedRowKeys: [],    //多选框key
             loading: false,
             searchContent:'',
@@ -77,7 +77,6 @@ class Pack extends React.Component {
         }
     };
     render() {
-        this.url = JSON.parse(localStorage.getItem('url'));
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -133,10 +132,10 @@ class Pack extends React.Component {
     fetch = (params = {}) => {
         axios({
             // url: `${this.server}/jc/auth/role/getRolesByPage`,
-            url: `${this.url.purchaseCheckReport.unGenerated}` ,
+            url: `${this.props.url.purchaseCheckReport.unGenerated}` ,
             method: 'get',
             headers:{
-                'Authorization': this.url.Authorization
+                'Authorization': this.props.url.Authorization
             },
             params: params,
         }).then((data) => {
@@ -148,9 +147,9 @@ class Pack extends React.Component {
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
-                // this.setState({
-                //     dataSource: res.list,
-                // });
+                this.setState({
+                    dataSource: res.list,
+                });
             }
         });
     };
