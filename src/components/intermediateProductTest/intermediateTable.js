@@ -1,10 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
 
 class InterTable extends React.Component{
+    url;
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -101,7 +103,6 @@ class InterTable extends React.Component{
             // let checkSpanFlag = this.judgeCheckOperation(status);
             let checkSpanFlag = true;
             let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
-            console.log(record)
             return (
                 <span>
                     {detailSpanFlag?(
@@ -116,7 +117,7 @@ class InterTable extends React.Component{
                     {checkSpanFlag?(
                         <CheckSpan
                             url={this.props.url}
-                            record={record}
+                            id={record.sampleDeliveringRecord.id}
                         />
                     ):(
                         <span  className="notClick">录检</span>
@@ -144,6 +145,7 @@ class InterTable extends React.Component{
                 }),
             };
         });
+        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <Table
                 rowKey={record => record.index}
@@ -180,7 +182,20 @@ class InterTable extends React.Component{
         }
     };
     /**---------------------- */
-    /**实现字段搜索功能 */
+    /**通过id查询详情 */
+    // getTestItemData(id){
+    //     axios.get(`${this.url.intermediateProduct.details}/${id}`,{
+    //         headers:{
+    //             'Authorization':this.url.Authorization
+    //         }
+    //     }).then((data)=>{
+    //         const details = data.data.data;
+    //         console.log('details',details)
+    //         this.setState({
+    //             detailData:details,
+    //         })
+    //     })
+    // }
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */

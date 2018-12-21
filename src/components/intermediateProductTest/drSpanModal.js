@@ -1,36 +1,35 @@
 import React from 'react';
-import axios from 'axios';
 
-import {Table, Divider, message} from 'antd';
+import {Table, Divider} from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
 import DetailStateModal from "./detailStateModal";
 
-const testData = [];
-for (let i = 0; i < 50; i++) {
-    testData.push({
-        index:i,
-        id: i,
-        testItem: `测试`,
-        testResult: '0.001',
-        itemUnit: `g/mL`,
-    });
-}
-const examineData = [];
-for (let i = 0; i < 50; i++) {
-    examineData.push({
-        handler: `测试`,
-        handleReply: '0.001',
-        handleTime: `g/mL`,
-    });
-}
+// const testData = [];
+// for (let i = 0; i < 50; i++) {
+//     testData.push({
+//         index:i,
+//         id: i,
+//         testItem: `测试`,
+//         testResult: '0.001',
+//         itemUnit: `g/mL`,
+//     });
+// }
+// const examineData = [];
+// for (let i = 0; i < 50; i++) {
+//     examineData.push({
+//         handler: `测试`,
+//         handleReply: '0.001',
+//         handleTime: `g/mL`,
+//     });
+// }
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
     state = {
         examineData: [],  //审核人数据
         // spanStatus: 0, //进行判断，0详情，1录检，2发布
-        status : 1, //0不合格，1合格
+        // status : 1, //0不合格，1合格
 
     };
     columns = [{
@@ -41,8 +40,8 @@ class DrSpanModal extends React.Component {
         width: '20%',
     },{
         title: '检测项目',
-        dataIndex: 'testItem',
-        key: 'testItem',
+        dataIndex: 'testItemName',
+        key: 'testItemName',
         align:'center',
         width: '25%',
     },{
@@ -52,8 +51,8 @@ class DrSpanModal extends React.Component {
         align:'center',
     },{
         title: '计量单位',
-        dataIndex: 'itemUnit',
-        key: 'itemUnit',
+        dataIndex: 'unit',
+        key: 'unit',
         align:'center',
         width: '25%',
     }];
@@ -66,7 +65,7 @@ class DrSpanModal extends React.Component {
                 }),
             };
         });
-        this.getExamineData();
+
         return(
             <div>
                 <div className="interDrSpanModalTop">
@@ -80,16 +79,16 @@ class DrSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{(this.props.data.sampleDeliveringRecord?this.props.state.sampleDeliveringRecord.serialNumberId:'')}</td>
-                            <td>{this.props.data.materialName}</td>
-                            <td>{(this.props.data.sampleDeliveringRecord?this.props.state.sampleDeliveringRecord.sampleDeliveringDate:'')}</td>
+                            <td>{this.props.data.topData.serialNumberId}</td>
+                            <td>{this.props.data.topData.materialName}</td>
+                            <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div className="interDrSpanModalMiddle">
                        <div>
-                           样品名称：<span>{this.props.data.materialName?(this.props.data.materialName+'样品'):''}</span>
+                           样品名称：<span>{this.props.data.topData.materialName?(this.props.data.topData.materialName+'样品'):''}</span>
                        </div>
                 </div>
                 <div>
@@ -97,8 +96,8 @@ class DrSpanModal extends React.Component {
                         className="interCursorDefault"
                         rowKey={record => record.index}
                         columns={columns}
-                        // dataSource={this.props.data.testItems}
-                        dataSource={testData}
+                        dataSource={this.props.data.testDTOS}
+                        // dataSource={testData}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
                         scroll={{ y: 230 }}
@@ -111,49 +110,27 @@ class DrSpanModal extends React.Component {
                             <tbody className="interPadding">
                             <tr>
                                 <td>检验人：</td>
-                                <td>{this.props.data.tester}</td>
+                                <td>{this.props.data.testData.tester}</td>
                             </tr>
                             <tr>
                                 <td>检验时间：</td>
-                                <td>{this.props.data.testReportRecord?this.props.data.testReportRecord.judgeDate:''}</td>
+                                <td>{this.props.data.testData.testTime}</td>
                             </tr>
                             </tbody>
                         </table>
                         <IsQualified
-                            status={this.props.data.testReportRecord?this.props.data.testReportRecord.isQualified:''}
-                            // status='0'
+                            status={this.props.data.isQualified}
                         />
                     </div>
                     <Divider
                         className="interDrSpanDivider"
                     />
                     <DetailStateModal
-                        checkStatus={this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.status:''}
-                        // checkStatus='2'
-                        examineData={this.state.examineData}
-                        // examineData={examineData}
+                        data={this.props.data.examine}
                     />
                 </div>
             </div>
         )
-    }
-    getExamineData = () => {
-        const examineStatus = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.status:'';
-        const batchNumber = this.props.data.commonBatchNumber?this.props.data.commonBatchNumber.batchNumber:'';
-        if(examineStatus==='2'||examineStatus==='3'){
-            axios({
-                url:`${this.url.toDoList}/${batchNumber}/result`,
-                method:'get',
-                headers:{
-                    'Authorization':this.url.Authorization
-                }
-            }).then((data)=>{
-                const res = data.data.data;
-                this.setState({
-                    examineData : res
-                })
-            })
-        }
     }
 }
 

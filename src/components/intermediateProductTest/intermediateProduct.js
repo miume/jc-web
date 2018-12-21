@@ -136,7 +136,7 @@ class InterProduct extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        axios.get(`${this.url.intermediateProduct.getAllByPage}`,{
+        axios.get(`${this.url.intermediateProduct}/pages`,{
             headers:{
                 'Authorization':this.url.Authorization
             },
