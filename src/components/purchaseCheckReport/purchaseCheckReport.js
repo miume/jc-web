@@ -8,6 +8,7 @@ import './purchaseCheckReport.css';
 
 
 class PurchaseCheckReport extends React.Component {
+    url;
     constructor(props){
         super(props);
         this.returnDataEntry = this.returnDataEntry.bind(this);
@@ -15,12 +16,15 @@ class PurchaseCheckReport extends React.Component {
     render() {
         const TabPane = Tabs.TabPane;
         const current = JSON.parse(localStorage.getItem('current')) ;
+        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
                 <BlockQuote name="进货检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Tabs defaultActiveKey="1"  onChange={this.callback}  style={{padding:'15px'}}>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;生成</span>} key="1" >
-                        <Pack />
+                        <Pack
+                            url={this.url}
+                        />
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
                         <Check />

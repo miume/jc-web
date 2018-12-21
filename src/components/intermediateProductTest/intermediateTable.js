@@ -52,8 +52,8 @@ class InterTable extends React.Component{
         }
     },{
         title: '检测项目',
-        dataIndex: 'testItems',
-        key: 'testItems',
+        dataIndex: 'testItemString',
+        key: 'testItemString',
         align:'center',
         width: '8%',
         render: testItems => {

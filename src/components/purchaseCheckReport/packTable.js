@@ -8,62 +8,56 @@ class PackTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         sorter: (a, b) => a.id - b.id,
         align:'center',
         width: '8%',
     },{
         title: '送检日期',
-        dataIndex: 'sampleDeliveringDate',
-        key: 'sampleDeliveringDate',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '15%',
     },{
         title: '送样人',
-        dataIndex: 'deliverer',
-        key: 'deliverer',
+        dataIndex: 'sampleDeliveringRecordDTO.deliverer.name',
+        key: 'sampleDeliveringRecordDTO.deliverer.name',
         align:'center',
         width: '8%',
     },{
         title: '送样工厂',
-        dataIndex: 'deliveryFactory',
-        key: 'deliveryFactory',
+        dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
+        key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
         align:'center',
         width: '8%',
     },{
         title: '编号',
-        dataIndex: 'serialNumberd',
-        key: 'serialNumberd',
+        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
+        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
         align:'center',
         width: '8%',
     },{
         title: '检测项目',
-        dataIndex: 'testItem',
-        key: 'testItem',
+        dataIndex: 'testItemString',
+        key: 'testItemString',
         align:'center',
         width: '8%',
     },{
         title: '异常备注',
-        dataIndex: 'exceptionComment',
-        key: 'exceptionCommentf',
-        align:'center',
-        width: '8%',
-    },{
-        title: '类型',
-        dataIndex: 'type',
-        key: 'type',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
         align:'center',
         width: '8%',
     },{
         title: '接受反馈',
-        dataIndex: 'acceptStatus',
-        key: 'acceptStatus',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
         align:'center',
         width: '8%',
     },{
         title: '审核状态',
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
+        key: 'commonBatchNumberDTO.commonBatchNumber.status',
         align:'center',
 
         width: '8%',
@@ -93,17 +87,14 @@ class PackTable extends React.Component {
                 ...col,
                 onCell: record => ({
                     record,
-                    // editable: col.editable,
-                    // dataIndex: col.dataIndex,
-                    // title: col.title,
-                    // handleSave: this.handleSave,
+
                 }),
             };
         });
         return(
             <Table
                 className="purchasePackTable"
-                rowKey={record => record.id}
+                rowKey={record => record.index}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}

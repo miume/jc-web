@@ -18,7 +18,6 @@ for (let i = 0; i < 50; i++) {
 }
 
 class CheckSpan extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.state = {
