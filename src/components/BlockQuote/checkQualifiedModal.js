@@ -21,7 +21,7 @@ class CheckQualifiedModal extends React.Component {
                         </div>
                     </div>
                 );
-            case 0:
+            case 1:
                 return(
                     <div style={{cursor:'pointer',position:'absolute',bottom:'90px',right:'20px',display:'flex',flexDirection:'row',flexWrap: 'nowrap'}}>
                         <div style={{border:'3px solid #4BD863',width:'130px',flexGrow:'1'}}>
@@ -32,7 +32,7 @@ class CheckQualifiedModal extends React.Component {
                         </div>
                     </div>
                 );
-            case 1:
+            case 0:
                 return(
                     <div style={{cursor:'pointer',position:'absolute',bottom:'90px',right:'20px',display:'flex',flexDirection:'row',flexWrap: 'nowrap'}}>
                         <div style={{border:'3px solid #999999',width:'130px',flexGrow:'1'}}>
@@ -52,16 +52,16 @@ class CheckQualifiedModal extends React.Component {
     /**实现选择合格:1与不合格:0功能 */
     modifyQualifiedType = () => {
         this.setState({
-            qualifiedType:0
+            qualifiedType:1
         },() => {
-            this.props.clickIsQualified(0);
+            this.props.clickIsQualified(1);
         })
     };
     modifyNoQualified = () => {
         this.setState({
-            qualifiedType:1
+            qualifiedType:0
         },() => {
-            this.props.clickIsQualified(1);
+            this.props.clickIsQualified(0);
         })
     };
     /**---------------------- */

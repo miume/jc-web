@@ -31,20 +31,8 @@ class DetailSpan extends React.Component {
             },
         };
         this.handleDetail = this.handleDetail.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
-
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
-    handleOk = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
     handleCancel = (e) => {
         setTimeout(() => {
             this.setState({

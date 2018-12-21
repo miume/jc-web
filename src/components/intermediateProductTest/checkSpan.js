@@ -374,7 +374,7 @@ class CheckSpan extends React.Component {
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
         })
-    }
+    };
     /**---------------------- */
     /**送审 */
     applyReview(dataId){
