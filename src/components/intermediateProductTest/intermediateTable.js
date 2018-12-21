@@ -52,8 +52,8 @@ class InterTable extends React.Component{
         }
     },{
         title: '检测项目',
-        dataIndex: 'testItems',
-        key: 'testItems',
+        dataIndex: 'testItemString',
+        key: 'testItemString',
         align:'center',
         width: '8%',
         render: testItems => {
@@ -100,9 +100,10 @@ class InterTable extends React.Component{
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
-            // let checkSpanFlag = this.judgeCheckOperation(status);
-            let checkSpanFlag = true;
+            let checkSpanFlag = this.judgeCheckOperation(status);
+            // let checkSpanFlag = true;
             let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
+            // let releaseSpanFlag = true;
             return (
                 <span>
                     {detailSpanFlag?(
@@ -126,7 +127,7 @@ class InterTable extends React.Component{
                     {releaseSpanFlag?(
                         <ReleaseSpan
                             url={this.props.url}
-                            record={record}
+                            id={record.sampleDeliveringRecord.id}
                         />
                     ):(
                         <span  className="notClick">发布</span>
@@ -175,7 +176,7 @@ class InterTable extends React.Component{
         }
     };
     judgeReleaseOperation = (isPublished,status) => {
-        if(isPublished==="0"&&status==="3"){
+        if(isPublished==="0"&&(status==="3"||status==='2')){
             return true;
         }else{
             return false;
@@ -183,19 +184,6 @@ class InterTable extends React.Component{
     };
     /**---------------------- */
     /**通过id查询详情 */
-    // getTestItemData(id){
-    //     axios.get(`${this.url.intermediateProduct.details}/${id}`,{
-    //         headers:{
-    //             'Authorization':this.url.Authorization
-    //         }
-    //     }).then((data)=>{
-    //         const details = data.data.data;
-    //         console.log('details',details)
-    //         this.setState({
-    //             detailData:details,
-    //         })
-    //     })
-    // }
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */

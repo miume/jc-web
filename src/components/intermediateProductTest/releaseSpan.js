@@ -1,5 +1,6 @@
 import React from 'react';
-import { Modal,Button } from 'antd';
+import axios from 'axios';
+import {Modal, Button, message} from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
 
@@ -16,23 +17,30 @@ for (let i = 0; i < 50; i++) {
 }
 
 class ReleaseSpan extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.state = {
             visible: false,
-            subVisible: false,
-            process:-1,
+            detailData:{
+                topData: {},   //头部数据
+                testDTOS: [],   //中部项目
+                testData: {},   //检验数据
+                examine: {       //审核数据
+                    examineStatus: 1000,
+                    examineData: []
+                },
+                isQualified: '', //不合格状态
+            },
         };
-        this.showModal = this.showModal.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
+        this.handleReleaseButton = this.handleReleaseButton.bind(this);
     }
     render() {
         const { visible } = this.state;
-        this.url = JSON.parse(localStorage.getItem('url'));
         return (
-            <span type="primary" onClick={this.showModal} size="small"    >
+            <span>
+                <span className="blue" onClick={this.handleRelease}>发布</span>
                 <Modal
                     title="数据发布"
                     visible={visible}
@@ -42,30 +50,21 @@ class ReleaseSpan extends React.Component {
                     width="500px"
                     footer={[
                         <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
-                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleReleaseNew} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
+                        <Button key="release" style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleReleaseButton} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
                     <div style={{height:580}}>
                         <DrSpanModal
-                            data={data}
+                            url={this.props.url}
+                            data={this.state.detailData}
                             record={this.props.record}
-                            spanStatus={0}
+                            // spanStatus={0}
                         />
                     </div>
                 </Modal>
-                <span className="blue interCursorPointer">发布</span>
             </span>
         )
     }
-    // 处理发布
-    handleRelease = () => {
-        console.log('handleRelease')
-    };
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
     handleCancel = () => {
         setTimeout(() => {
             this.setState({
@@ -73,6 +72,111 @@ class ReleaseSpan extends React.Component {
             });
         }, 500);
     };
+    /**点击发布按钮 */
+    handleReleaseButton = () => {
+        axios({
+            url : `${this.props.url.intermediateProduct}?id=${this.props.id}`,
+            method:'post',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.setState({
+                visible: false
+            })
+        }).catch(()=>{
+            message.info('保存失败，请联系管理员！')
+        })
+    };
+    /**点击发布-打开Modal */
+    handleRelease() {
+        this.getDetailData();
+        // this.setState({
+        //     visible: true,
+        // });
+    }
+    /**通过id查询详情 */
+    getDetailData(){
+        axios.get(`${this.props.url.intermediateProduct}/details/${this.props.id}`,{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data;
+            var topData = {};  //头部数据
+            var testDTOS = [];  //中部项目
+            var testData = {};  //检验数据
+            var isQualified = 0;
+            if(res){
+                isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
+                console.log('isQualified',isQualified)
+                topData = {
+                    serialNumberId: res.sampleDeliveringRecord?res.sampleDeliveringRecord.serialNumberId:'',
+                    materialName: res.materialName,
+                    sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
+                };
+                if(res.testDTOS) {
+                    for(var i=0; i<res.testDTOS.length; i++){
+                        var e = res.testDTOS[i];
+                        testDTOS.push({
+                            index:`${i+1}`,
+                            id:e.testItemResultRecord.id,
+                            testItemId:e.testItemResultRecord.testItemId,
+                            testItemName:e.name,
+                            testResult:e.testItemResultRecord.testResult,
+                            unit:'g/ml'
+                        })
+                    }
+                }
+                testData = {
+                    tester: res.tester?res.tester:'',
+                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
+                };
+                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
+                const batchNumber = res.commonBatchNumber?res.commonBatchNumber.batchNumber:'';
+                if(examineStatus==='2'||examineStatus==='3'){
+                    axios({
+                        url:`${this.url.toDoList}/${batchNumber}/result`,
+                        method:'get',
+                        headers:{
+                            'Authorization':this.url.Authorization
+                        }
+                    }).then((data)=>{
+                        const res = data.data.data;
+                        console.log('pp',isQualified)
+                        this.setState({
+                            detailData:{
+                                topData: topData,
+                                testDTOS: testDTOS,
+                                testData: testData,
+                                examine: {
+                                    examineStatus: examineStatus,
+                                    examineData: res
+                                },
+                                isQualified: isQualified,
+                            },
+                            visible: true
+                        });
+                    })
+                }else{
+                    this.setState({
+                        detailData:{
+                            topData: topData,
+                            testDTOS: testDTOS,
+                            testData: testData,
+                            examine: {
+                                examineStatus: examineStatus,
+                                examineData: []
+                            },
+                            isQualified: isQualified,
+                        },
+                        visible: true
+                    })
+                }
+            }
+        })
+    }
 }
 
 export default ReleaseSpan;

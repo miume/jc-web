@@ -1,129 +1,25 @@
 import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
 import axios from "axios";
-import {Table,Divider} from "antd";
+import {Table,Divider,message,Popconfirm} from "antd";
 // import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
-import Delete from './delete'
 import DeleteByIds from '../BlockQuote/deleteByIds';
 
 
 class SampleInspection extends React.Component{
     server
+    columns
     componentDidMount() {
         this.fetch();
       }
     componentWillUnmount() {
-    this.setState = () => {
-        return ;
+        this.setState = () => {
+            return ;
+        }
     }
-    }
-     columns = [{
-        title: '序号',
-        dataIndex: 'index',
-        key: 'commonBatchNumber.id',
-        sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
-        align:'center',
-        width: '8%',
-    },{
-        title: '送检时间',
-        dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
-        key: 'sampleDeliveringDate',
-        align:'center',
-        width: '13%',
-    },{
-        title: '送检人',
-        dataIndex: 'deliverer.name',
-        key: 'deliverer',
-        align:'center',
-        width: '7%',
-    },{
-        title: '送检工厂',
-        dataIndex: 'deliveryFactory.name',
-        key: 'name',
-        align:'center',
-        width: '7%',
-    },{
-        title: '批号',
-        dataIndex: 'serialNumberName',
-        key: 'batchNumber',
-        align:'center',
-        width: '11%',
-    },{
-        title: '异常备注',
-        dataIndex: 'sampleDeliveringRecord.exceptionComment',
-        key: 'memo',
-        align:'center',
-        width: '9%',
-        render(text,record){
-            if(record.sampleDeliveringRecord.exceptionComment === null){
-                return "无"
-            }else{
-                return record.sampleDeliveringRecord.exceptionComment
-            }
-        }
-    },{
-        title: '类型',
-        dataIndex: 'sampleDeliveringRecord.type',
-        key: 'type',
-        align:'center',
-        width: '6%',
-        render:status=>{
-            switch(`${status}`){
-                case '1':return "原材料";
-                case "2":return "中间品";
-                case "3":return "成品"
-            }
-        }
-    },{
-        title: '接受状态',
-        dataIndex: 'sampleDeliveringRecord.acceptStatus',
-        key: 'status',
-        align:'center',
-        width: '6%',
-        render:status=>{
-            switch(`${status}`){
-                case '-1':return "保存"
-                case '1':return "等待接受";
-                case "2":return "接受";
-                case "3":return "拒绝"
-            }
-        }
-    },{
-        title: '拒绝原因',
-        dataIndex: 'sampleDeliveringRecord.handleComment',
-        key: 'handleComment',
-        align:'center',
-        width: '7%',
-        render(text,record){
-            if(record.sampleDeliveringRecord.exceptionComment === null){
-                return "无"
-            }else{
-                return record.sampleDeliveringRecord.exceptionComment
-            }
-        }
-    },{
-        title:'操作',
-        dataIndex: 'operation',
-        key: 'operation',
-        align:'center',
-        width: '18%',
-        render(text,record){
-            return(
-                <div>
-                    <span className='blue' href='#'>编辑</span>
-                    <Divider type="vertical" />
-                    <span className='blue' href='#'>删除</span>
-                    <Divider type="vertical" />
-                    <span className='blue' href='#'>接收</span>
-                    <Divider type="vertical" />
-                    <span className='blue' href='#'>拒绝</span>
-                </div>
-            )
-        }
-    }];
     constructor(props){
         super(props);
         this.state = {
@@ -136,24 +32,128 @@ class SampleInspection extends React.Component{
         this.fetch = this.fetch.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.deleteByIds = this.deleteByIds.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
                 return `共${total}条记录`
             },
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
-            },
-            onChange(current) {
-                // console.log('Current: ', current);
-            }
         }
+        this.columns = [{
+            title: '序号',
+            dataIndex: 'index',
+            key: 'commonBatchNumber.id',
+            sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
+            align:'center',
+            width: '8%',
+        },{
+            title: '送检时间',
+            dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
+            key: 'sampleDeliveringDate',
+            align:'center',
+            width: '13%',
+        },{
+            title: '送检人',
+            dataIndex: 'deliverer.name',
+            key: 'deliverer',
+            align:'center',
+            width: '7%',
+        },{
+            title: '送检工厂',
+            dataIndex: 'deliveryFactory.name',
+            key: 'name',
+            align:'center',
+            width: '7%',
+        },{
+            title: '批号',
+            dataIndex: 'serialNumberName',
+            key: 'batchNumber',
+            align:'center',
+            width: '11%',
+        },{
+            title: '异常备注',
+            dataIndex: 'sampleDeliveringRecord.exceptionComment',
+            key: 'memo',
+            align:'center',
+            width: '9%',
+            render(text,record){
+                if(record.sampleDeliveringRecord.exceptionComment === null){
+                    return "无"
+                }else{
+                    return record.sampleDeliveringRecord.exceptionComment
+                }
+            }
+        },{
+            title: '类型',
+            dataIndex: 'sampleDeliveringRecord.type',
+            key: 'type',
+            align:'center',
+            width: '6%',
+            render:status=>{
+                switch(`${status}`){
+                    case '1':return "原材料";
+                    case "2":return "中间品";
+                    case "3":return "成品"
+                }
+            }
+        },{
+            title: '接受状态',
+            dataIndex: 'sampleDeliveringRecord.acceptStatus',
+            key: 'status',
+            align:'center',
+            width: '6%',
+            render:status=>{
+                switch(`${status}`){
+                    case '-1':return "保存"
+                    case '1':return "等待接受";
+                    case "2":return "接受";
+                    case "3":return "拒绝"
+                }
+            }
+        },{
+            title: '拒绝原因',
+            dataIndex: 'sampleDeliveringRecord.handleComment',
+            key: 'handleComment',
+            align:'center',
+            width: '7%',
+            render(text,record){
+                if(record.sampleDeliveringRecord.exceptionComment === null){
+                    return "无"
+                }else{
+                    return record.sampleDeliveringRecord.exceptionComment
+                }
+            }
+        },{
+            title:'操作',
+            dataIndex: 'id',
+            key: 'id',
+            align:'center',
+            width: '18%',
+            render(text,record){
+                return(
+                    <span>
+                        <span className='blue'>编辑</span>
+                        <Divider type="vertical" />
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消">
+                          <span className='blue'>删除</span>
+                        </Popconfirm>
+                        <Divider type="vertical" />
+                        <span className='blue'>接收</span>
+                        <Divider type="vertical" />
+                        <span className='blue'>拒绝</span>
+                    </span>
+                )
+            }
+        }];
     }
+    
     render(){
         const { selectedRowKeys } = this.state;
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.server = localStorage.getItem('remote');
+        
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -182,6 +182,22 @@ class SampleInspection extends React.Component{
             </div>
         )
     }
+    handleDelete(id){
+        axios({
+            url:`${this.server}/jc/common/sampleDeliveringRecord/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+        setTimeout(() => {
+            this.fetch();
+        }, 1000);
+    }
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
@@ -191,8 +207,8 @@ class SampleInspection extends React.Component{
         this.fetch({
             pageSize: pagination.pageSize,
             pageNumber: pagination.current,
-            sortField: 'id',
-            sortType: 'desc',
+            // sortField: 'sample_Delivering_Date',
+            // sortType: 'desc',
         });
     };
     fetch = (params = {}) => {
@@ -225,12 +241,19 @@ class SampleInspection extends React.Component{
         }, 1000);
     }
     deleteByIds(){
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
-        }, 1000);
+        const ids = this.state.selectedRowKeys;
+        axios({
+            url:`${this.server}/jc/common/sampleDeliveringRecord`,
+            method:'delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        })
     }
 }
 
