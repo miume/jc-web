@@ -154,6 +154,18 @@ class Home extends Component {
             '8' : '已完成',
             '9' : '已评价'
         }
+        const dataType = {
+            '1' : '流程管理数据',
+            '2' : '制程检测数据',
+            '3' : '样品检测数据',
+            '4' : '原材料出库',
+            '5' : '成品出库',
+            '6' : '红单申请',
+            '7' : '进货检验',
+            '8' : '成品检验',
+            '9' : '原材料检测',
+            '10': '中间品检测'
+        }
         const server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
         const url = {
@@ -293,6 +305,7 @@ class Home extends Component {
               intermediateProduct:`${server}/jc/common/middleProductionDetection`
         }
         localStorage.setItem('status',JSON.stringify(status));
+        localStorage.setItem('status',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
     }
     /**控制登陆背景图 */

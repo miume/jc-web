@@ -187,8 +187,26 @@
     color:#999999;
     padding:11% 28%;
 }
+.checkModal{
+    height:350px;
+    width:100%;
+}
+.checkModal .checkModalDiv{
+    height:250px;
+}
+.checkModal .checkModalTest{
+    float: right;
+    height:100px;
+    width:400px;
+    border:1px solid #e4e4e4;
+}
+/* .checkModal div:last-child{
+    width:100px;
+    height:70px;
+    text-align: right;
+} */
 
-.wrapxxx {
+/* .wrapxxx {
     border: 1px solid black;
     height: 100px;
     display: flex;
@@ -208,4 +226,4 @@
     flex-grow: 1;
     background-color: black;
     z-index: 100;
-}
+} */
