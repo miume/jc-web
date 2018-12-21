@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Fragement} from 'react';
 import { Button, Modal, Form, Input,Select,DatePicker,TimePicker,Popover,Col,Checkbox,message  } from 'antd';
 import axios from "axios";
 import AddButton from '../BlockQuote/newButton';
@@ -31,13 +31,19 @@ const CollectionCreateForm = Form.create()(
                 sampling : [],
                 MiddleFactor : [],
                 materials : [],
+                testItems :[],
+                factoryId:null,
+                procedureId : null,
+                samplingPoint:null,
+                materialsId : null,
 
                 clicked: false,
                 visible1: 1
             }
             this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
-            this.selectChange = this.selectChange.bind(this)
+            this.selectChange = this.selectChange.bind(this);
+            this.getProcess = this.getProcess.bind(this);
         }
         componentDidMount() {
             this.fetch();
@@ -149,6 +155,75 @@ const CollectionCreateForm = Form.create()(
         onChangeTime = (date, dateString) => {
             console.log(date, dateString);
           }
+
+        getSampling=(value)=>{
+            axios({
+                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                method:'get',
+                params:{factoryId:this.state.factoryId,procedureId:value},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
+                this.setState({
+                    sampling:res,
+                    procedureId:value
+                })
+            })
+        }
+
+        getMaterials = (value)=>{
+            axios({
+                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                method:'get',
+                params:{factoryId:this.state.factoryId,procedureId:this.state.procedureId,samplePointName:value},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
+                this.setState({
+                    materials:res,
+                    samplingPoint:value
+                })
+            })
+        }
+
+        getProcess=(value)=>{
+            axios({
+                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                method:'get',
+                params:{factoryId:value},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
+                this.setState({
+                    process:res,
+                    factoryId:value
+                })
+            })
+        }
+        getItems=(value)=>{
+            axios({
+                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                method:'get',
+                params:{factoryId:this.state.factoryId,procedureId:this.state.procedureId,
+                    samplePointName:this.state.samplingPoint,materialId:value},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
+                console.log(res)
+                this.props.onChange(res);
+                this.setState({
+                    testItems : res
+                })
+            })
+        }
         selectChange= (value) =>{
             if(value==='1'){
                 this.setState({
@@ -237,11 +312,13 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem> : <FormItem wrapperCol={{ span: 24 }}>
+                        </FormItem> : (
+                        <div>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
-                                <Select placeholder="请选择送样工厂">
+                                <Select placeholder="请选择送样工厂" onChange={this.getProcess}>
                                     {
                                         this.state.MiddleFactor.map(pe=>{
                                             return(
@@ -252,6 +329,53 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
+                        <FormItem wrapperCol={{ span: 24 }}>
+                            {getFieldDecorator('process', {
+                                rules: [{ required: true, message: '请选择工序' }],
+                            })(
+                                <Select placeholder="请选择工序" onChange={this.getSampling}>
+                                    {
+                                        this.state.process.map(pe=>{
+                                            return(
+                                                <Option key={pe.id} value={pe.id}>{pe.name}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            )}
+                        </FormItem>
+                        <FormItem wrapperCol={{ span: 24 }}>
+                            {getFieldDecorator('samplePointName', {
+                                rules: [{ required: true, message: '请选择取样点' }],
+                            })(
+                                <Select placeholder="请选择取样点" onChange={this.getMaterials}>
+                                    {
+                                        this.state.sampling.map(pe=>{
+                                            return(
+                                                <Option key={pe} value={pe}>{pe}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            )}
+                        </FormItem>
+                        <FormItem wrapperCol={{ span: 24 }}>
+                            {getFieldDecorator('serialNumberId', {
+                                rules: [{ required: true, message: '请选择受检物料' }],
+                            })(
+                                <Select placeholder="请选择受检物料" onChange={this.getItems}>
+                                    {
+                                        this.state.materials.map(pe=>{
+                                            return(
+                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            )}
+                        </FormItem>
+                        </div>
+                        )    
                         }
                         {
                             (this.state.visible1===1||this.state.visible1===3)?<Popover
