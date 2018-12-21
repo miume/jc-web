@@ -247,3 +247,6 @@ button span {
 table .ant-select-selection,table .ant-input{
   border-radius: 0;
 }
+.fr{
+    float:right;
+}

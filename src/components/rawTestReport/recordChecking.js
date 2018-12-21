@@ -1,10 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table, Input,message} from 'antd';
+import {Modal,Table, Input,message,Button} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CheckModal from '../BlockQuote/checkModal';
 import Submit from '../BlockQuote/submit';
+// import NewButton from '../BlockQuote/newButton';
 // const data = [];
 // for(var i = 1; i <=10; i++){
 //     data.push({
@@ -192,7 +193,6 @@ class RecordChecking extends React.Component{
     checkData(status){
         var {detail,flag,fail,IsQualified} = this.state;
         // if(flag) IsQualified = 1; else IsQualified = 0;
-        const flag = 1;
         if(IsQualified === -1 && flag === 0 && fail === 0){
             message.info('请点击合格或者不合格！');
             return
@@ -240,7 +240,7 @@ class RecordChecking extends React.Component{
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-                //this.applyReview(dataId);
+                this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
             }
@@ -309,6 +309,8 @@ class RecordChecking extends React.Component{
                        <div>
                            样品名称：<span>{this.state.topData?this.state.topData.materialName+'样品':''}</span>
                        </div>
+                       {/* <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button> */}
+                       {/* <Button className='white-button' onClick={this.props.handleCancel}><i className="fa fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button> */}
                 </div>
                 
                 <div style={{height:'350px'}}>

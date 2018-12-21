@@ -192,6 +192,7 @@ class Home extends Component {
                 update:`${server}/jc/auth/operation/update`,
                 add:`${server}/jc/auth/operation/add`,
                 deleteById:`${server}/jc/auth/operation`,
+                getAll:`${server}/jc/auth/operation/getAll`,
             },
             /**用户管理*/
             userManage:{
@@ -212,6 +213,7 @@ class Home extends Component {
                 update:`${server}/jc/auth/department/update`,
                 add:`${server}/jc/auth/department/add`,
                 deleteById:`${server}/jc/auth/department`,
+                getAll:`${server}/jc/auth/department/getAll`,
             },
             /**出库管理 */
             stockOut:{
