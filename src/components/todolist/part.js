@@ -12,13 +12,13 @@ class Part extends React.Component{
     checkUser(flag,userId,curId){
         /**之前 */
         if(flag === 0 && userId !== curId ){
-            return <div className='circle'><i className="fa fa-check"></i></div>
+            return <div className='circle1'>{this.props.index}</div>
         }else if(userId === curId && this.props.data.visible){
             this.props.judgeFlag(1);
-            return <Avatar style={{backgroundColor:'#0079fe'}}><span style={{fontWeight:'bolder'}}>{this.props.index}</span></Avatar>
+            return <div className='circle'><i className="fa fa-check"></i></div>
         }
         else{
-            return <div className='circle1'>{this.props.index}</div>
+            return <Avatar style={{backgroundColor:'#0079fe'}}><span style={{fontWeight:'bolder'}}>{this.props.index}</span></Avatar>
         }
     }
     render(){
@@ -30,8 +30,8 @@ class Part extends React.Component{
             <div className='part'>
                 <span style={{padding:'5 10px'}}>{this.checkUser(flag,this.props.data.userId,this.props.id)}</span>
                 <div style={{minWidth:80,paddingTop:'5px'}}>
-                    <p className={!flag||userId===curId?'darkBlue':'partSpan'}>{this.props.data.userId === this.props.id?'有您进行':this.props.data.personName}</p>
-                    <p className={!flag||userId===curId?'darkBlue1':'partSpan1'}>{this.props.data.responsibility}</p>
+                    <p className={this.props.flag||this.props.visible?'darkBlue':'partSpan'}>{this.props.data.userId === this.props.id?'有您进行':this.props.data.personName}</p>
+                    <p className={this.props.flag||this.props.visible?'darkBlue1':'partSpan1'}>{this.props.data.responsibility}</p>
                 </div>
                 {/* <span className={this.judge(this.props.index,this.props.count)}></span> */}
             </div>
