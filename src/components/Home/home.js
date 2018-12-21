@@ -23,7 +23,7 @@ import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
 import  ProductLine from '../Base/productLine/productLine';//产品线
 import  ProductProcess from '../Base/ProductProcess/productProcess';//产品工序
-//import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
+// import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
 import TestItem from '../Base/testItem/testItem';
 import OperationManagement from "../operationManagement/operationManagement";
 import StockOut from '../stockOut/stockOut';

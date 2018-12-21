@@ -2,7 +2,6 @@ import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
 import axios from "axios";
 import {Table,Divider,message,Popconfirm} from "antd";
-// import WhiteSpace from '../BlockQuote/whiteSpace';
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
@@ -14,7 +13,7 @@ class SampleInspection extends React.Component{
     columns
     componentDidMount() {
         this.fetch();
-      }
+    }
     componentWillUnmount() {
         this.setState = () => {
             return ;
@@ -27,6 +26,7 @@ class SampleInspection extends React.Component{
             selectedRowKeys: [],    //多选框key
             loading: false,
             pagination:[],
+            searchContent:'',
         };
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
@@ -34,6 +34,8 @@ class SampleInspection extends React.Component{
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -44,38 +46,38 @@ class SampleInspection extends React.Component{
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
-            key: 'commonBatchNumber.id',
+            key: 'index',
             sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
             width: '8%',
         },{
             title: '送检时间',
             dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
-            key: 'sampleDeliveringDate',
+            key: 'sampleDeliveringRecord.sampleDeliveringDate',
             align:'center',
             width: '13%',
         },{
             title: '送检人',
             dataIndex: 'deliverer.name',
-            key: 'deliverer',
+            key: 'deliverer.name',
             align:'center',
             width: '7%',
         },{
             title: '送检工厂',
             dataIndex: 'deliveryFactory.name',
-            key: 'name',
+            key: 'deliveryFactory.name',
             align:'center',
             width: '7%',
         },{
             title: '批号',
             dataIndex: 'serialNumberName',
-            key: 'batchNumber',
+            key: 'serialNumberName',
             align:'center',
             width: '11%',
         },{
             title: '异常备注',
             dataIndex: 'sampleDeliveringRecord.exceptionComment',
-            key: 'memo',
+            key: 'sampleDeliveringRecord.exceptionComment',
             align:'center',
             width: '9%',
             render(text,record){
@@ -88,7 +90,7 @@ class SampleInspection extends React.Component{
         },{
             title: '类型',
             dataIndex: 'sampleDeliveringRecord.type',
-            key: 'type',
+            key: 'sampleDeliveringRecord.type',
             align:'center',
             width: '6%',
             render:status=>{
@@ -115,7 +117,7 @@ class SampleInspection extends React.Component{
         },{
             title: '拒绝原因',
             dataIndex: 'sampleDeliveringRecord.handleComment',
-            key: 'handleComment',
+            key: 'sampleDeliveringRecord.handleComment',
             align:'center',
             width: '7%',
             render(text,record){
@@ -148,12 +150,11 @@ class SampleInspection extends React.Component{
             }
         }];
     }
-    
+
     render(){
         const { selectedRowKeys } = this.state;
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.server = localStorage.getItem('remote');
-        
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -163,21 +164,21 @@ class SampleInspection extends React.Component{
                 <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal fetch={this.fetch}/>
-                    <DeleteByIds 
+                    <DeleteByIds
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
                         deleteByIds={this.deleteByIds}
                     />
-                    <span style={{float:'right',paddingBottom:'8px'}}>   
-                        <SearchCell name='请输入搜索内容'  />
+                    <span style={{float:'right',paddingBottom:'8px'}}>
+                        <SearchCell name='请输入搜索内容'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
                     </span>
                     <div className='clear' ></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
-                    bordered
-                    rowKey={record => record.sampleDeliveringRecord.id}
-                    onChange={this.handleTableChange}
-                    pagination={this.pagination}
-                    scroll={{ x: 1500}}></Table>
+                           bordered
+                           rowKey={record => record.sampleDeliveringRecord.id}
+                           onChange={this.handleTableChange}
+                           pagination={this.pagination}
+                           scroll={{ x: 1500}}></Table>
                 </div>
             </div>
         )
@@ -202,13 +203,43 @@ class SampleInspection extends React.Component{
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
     }
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        axios({
+            url:`${this.server}/jc/common/sampleDeliveringRecord/pages`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                pageSize: this.pagination.pageSize,
+                pageNumber: this.pagination.current,
+                factoryName:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total=res.total;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
+        })
+    };
+    /**获取查询时菜单名称的实时变化 */
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
         this.fetch({
             pageSize: pagination.pageSize,
             pageNumber: pagination.current,
             // sortField: 'sample_Delivering_Date',
-            // sortType: 'desc',
+            // sortType: 'asc',
         });
     };
     fetch = (params = {}) => {
