@@ -1,86 +1,94 @@
 import React from 'react';
+import axios from 'axios';
 import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
 
 class InterTable extends React.Component{
+    url;
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         sorter: (a, b) => a.key - b.key,
         align:'center',
         width: '6%',
     },{
         title: '送检日期',
-        dataIndex: 'sampleDeliveringDate',
-        key: 'sampleDeliveringDate',
+        dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '15%',
+        render: sampleDeliveringDate => {
+            return sampleDeliveringDate?sampleDeliveringDate:'无';
+        }
     },{
         title: '送检人',
         dataIndex: 'deliverer',
         key: 'deliverer',
         align:'center',
         width: '8%',
+        render: deliverer => {
+            return deliverer?deliverer:'无';
+        }
     },{
         title: '送检工厂(原材料)',
-        dataIndex: 'deliveryFactory',
-        key: 'deliveryFactory',
+        dataIndex: 'deliveryFactoryName',
+        key: 'deliveryFactoryName',
         align:'center',
         width: '8%',
+        render: deliveryFactoryName => {
+            return deliveryFactoryName?deliveryFactoryName:'无';
+        }
     },{
         title: '编号',
-        dataIndex: 'batchNumber',
-        key: 'batchNumber',
+        dataIndex: 'sampleDeliveringRecord.serialNumberId',
+        key: 'sampleDeliveringRecord.serialNumberId',
         align:'center',
         width: '8%',
+        render: serialNumberId => {
+            return serialNumberId?serialNumberId:'无';
+        }
     },{
         title: '检测项目',
         dataIndex: 'testItems',
         key: 'testItems',
         align:'center',
         width: '8%',
+        render: testItems => {
+            return testItems?testItems:'无';
+        }
     },{
         title: '异常备注',
-        dataIndex: 'urgentComment',
-        key: 'urgentComment',
+        dataIndex: 'sampleDeliveringRecord.exceptionComment',
+        key: 'sampleDeliveringRecord.exceptionComment',
         align:'center',
         width: '8%',
-    },{
-        title: '类型',
-        dataIndex: 'type',
-        key: 'type',
-        align:'center',
-        width: '8%',
+        render: exceptionComment => {
+            return exceptionComment?exceptionComment:'无';
+        }
     },{
         title: '发布状态',
-        dataIndex: 'h',
-        key: 'h',
+        dataIndex: 'commonBatchNumber.isPublished',
+        key: 'commonBatchNumber.isPublished',
         align:'center',
         width: '8%',
-        render:state => {
-            switch(`${state}`) {
+        render: isPublished => {
+            switch(`${isPublished}`) {
                 case '0': return '未发布';
                 case '1': return '已发布';
-                default: return '';
+                default: return '无';
             }
         },
     },{
         title: '审核状态',
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'commonBatchNumber.status',
+        key: 'commonBatchNumber.status',
         align:'center',
         width: '8%',
         render:state => {
-            switch(`${state}`) {
-                case '0': return '未申请'
-                case '1': return '审核中';
-                case '2': return '已通过';
-                case '3': return '不通过';
-                default: return '';
-            }
+            return state?this.props.status[state]:'无';
         }
     },{
         title: '操作',
@@ -89,14 +97,18 @@ class InterTable extends React.Component{
         align:'center',
         width: '17%',
         render: (text,record) => {
-            let detailSpanFlag = this.judgeDetailOperation(record.status);
-            let checkSpanFlag = this.judgeCheckOperation(record.status);
-            let releaseSpanFlag = this.judgeReleaseOperation(record.h,record.status);
+            const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
+            const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
+            let detailSpanFlag = this.judgeDetailOperation(status);
+            // let checkSpanFlag = this.judgeCheckOperation(status);
+            let checkSpanFlag = true;
+            let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
             return (
                 <span>
                     {detailSpanFlag?(
                         <DetailSpan
-                            record={record}
+                            url={this.props.url}
+                            id={record.sampleDeliveringRecord.id}
                         />
                     ):(
                         <span  className="notClick">详情</span>
@@ -104,7 +116,8 @@ class InterTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
-                            record={record}
+                            url={this.props.url}
+                            id={record.sampleDeliveringRecord.id}
                         />
                     ):(
                         <span  className="notClick">录检</span>
@@ -112,6 +125,7 @@ class InterTable extends React.Component{
                     <Divider type="vertical" />
                     {releaseSpanFlag?(
                         <ReleaseSpan
+                            url={this.props.url}
                             record={record}
                         />
                     ):(
@@ -128,16 +142,13 @@ class InterTable extends React.Component{
                 ...col,
                 onCell: record => ({
                     record,
-                    // editable: col.editable,
-                    // dataIndex: col.dataIndex,
-                    // title: col.title,
-                    // handleSave: this.handleSave,
                 }),
             };
         });
+        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <Table
-                rowKey={record => record.id}
+                rowKey={record => record.index}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}
@@ -163,15 +174,28 @@ class InterTable extends React.Component{
             return false;
         }
     };
-    judgeReleaseOperation = (h,status) => {
-        if(h==="0"&&status==="3"){
+    judgeReleaseOperation = (isPublished,status) => {
+        if(isPublished==="0"&&status==="3"){
             return true;
         }else{
             return false;
         }
     };
     /**---------------------- */
-    /**实现字段搜索功能 */
+    /**通过id查询详情 */
+    // getTestItemData(id){
+    //     axios.get(`${this.url.intermediateProduct.details}/${id}`,{
+    //         headers:{
+    //             'Authorization':this.url.Authorization
+    //         }
+    //     }).then((data)=>{
+    //         const details = data.data.data;
+    //         console.log('details',details)
+    //         this.setState({
+    //             detailData:details,
+    //         })
+    //     })
+    // }
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */

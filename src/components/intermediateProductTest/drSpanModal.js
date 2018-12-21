@@ -1,45 +1,47 @@
 import React from 'react';
-import { Table,Divider } from 'antd';
+
+import {Table, Divider} from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
+import DetailStateModal from "./detailStateModal";
 
-
-
-const topData = {
-    batchNumber: 'EcT/139',
-    materialName: '镍矿石',
-    b: '2018年11月11日',
-};
-const testData = {
-    tester: '检测人',
-    testTime: '2018年11月12日',
-};
-const examineData = {
-    examiner: '审核人',
-    examineView: '数据正常，审核通过',
-    examineTime: '2018年11月12日',
-}
+// const testData = [];
+// for (let i = 0; i < 50; i++) {
+//     testData.push({
+//         index:i,
+//         id: i,
+//         testItem: `测试`,
+//         testResult: '0.001',
+//         itemUnit: `g/mL`,
+//     });
+// }
+// const examineData = [];
+// for (let i = 0; i < 50; i++) {
+//     examineData.push({
+//         handler: `测试`,
+//         handleReply: '0.001',
+//         handleTime: `g/mL`,
+//     });
+// }
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
     state = {
-        topData : topData,      //表头数据
-        testData: testData,   // 检验人数据
-        examineData: examineData,  //审核人数据
+        examineData: [],  //审核人数据
         // spanStatus: 0, //进行判断，0详情，1录检，2发布
-        status : 1, //0不合格，1合格
+        // status : 1, //0不合格，1合格
 
     };
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         align:'center',
         width: '20%',
     },{
         title: '检测项目',
-        dataIndex: 'testItem',
-        key: 'testItem',
+        dataIndex: 'testItemName',
+        key: 'testItemName',
         align:'center',
         width: '25%',
     },{
@@ -49,8 +51,8 @@ class DrSpanModal extends React.Component {
         align:'center',
     },{
         title: '计量单位',
-        dataIndex: 'itemUnit',
-        key: 'itemUnit',
+        dataIndex: 'unit',
+        key: 'unit',
         align:'center',
         width: '25%',
     }];
@@ -63,6 +65,7 @@ class DrSpanModal extends React.Component {
                 }),
             };
         });
+
         return(
             <div>
                 <div className="interDrSpanModalTop">
@@ -76,65 +79,55 @@ class DrSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.state.topData.batchNumber}</td>
-                            <td>{this.state.topData.materialName}</td>
-                            <td>{this.state.topData.b}</td>
+                            <td>{this.props.data.topData.serialNumberId}</td>
+                            <td>{this.props.data.topData.materialName}</td>
+                            <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div className="interDrSpanModalMiddle">
                        <div>
-                           样品名称：<span>{this.state.topData.materialName+'样品'}</span>
+                           样品名称：<span>{this.props.data.topData.materialName?(this.props.data.topData.materialName+'样品'):''}</span>
                        </div>
                 </div>
                 <div>
                     <Table
                         className="interCursorDefault"
-                        rowKey={record => record.id}
+                        rowKey={record => record.index}
                         columns={columns}
-                        dataSource={this.props.data}
+                        dataSource={this.props.data.testDTOS}
+                        // dataSource={testData}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 250 }}
+                        scroll={{ y: 230 }}
                         bordered
                     />
                 </div>
-                <div className="interDrSpanModalBottomFirst">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>检验人：</td>
-                            <td>{this.state.testData.tester}</td>
-                        </tr>
-                        <tr>
-                            <td>检验时间：</td>
-                            <td>{this.state.testData.testTime}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <IsQualified
-                        status={this.state.status}
+                <div className="interDrSpanModalBottom">
+                    <div className="interDrSpanModalBottomFirst">
+                        <table>
+                            <tbody className="interPadding">
+                            <tr>
+                                <td>检验人：</td>
+                                <td>{this.props.data.testData.tester}</td>
+                            </tr>
+                            <tr>
+                                <td>检验时间：</td>
+                                <td>{this.props.data.testData.testTime}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <IsQualified
+                            status={this.props.data.isQualified}
+                        />
+                    </div>
+                    <Divider
+                        className="interDrSpanDivider"
                     />
-                </div>
-                <Divider />
-                <div className="interDrSpanModalBottomSecond">
-                    <table >
-                        <tbody>
-                        <tr>
-                            <td>审核人：</td>
-                            <td>{this.state.examineData.examiner}</td>
-                        </tr>
-                        <tr>
-                            <td>审核意见：</td>
-                            <td>{this.state.examineData.examineView}</td>
-                        </tr>
-                        <tr>
-                            <td>审核日期：</td>
-                            <td>{this.state.examineData.examineTime}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <DetailStateModal
+                        data={this.props.data.examine}
+                    />
                 </div>
             </div>
         )

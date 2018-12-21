@@ -4,9 +4,13 @@
     max-height: 396px;
     overflow-y: scroll;
 }
+.Mparent::-webkit-scrollbar{
+    width: 1px;
+    height: 0px;
+}
 .Mone{
     line-height: 36.8px;
-    border-top: 1px solid #E4E4E4;
+    /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
     width: 9%;
     text-align: center;
@@ -14,7 +18,7 @@
 }
 .Mtwo{
     line-height: 36.8px;
-    border-top: 1px solid #E4E4E4;
+    /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
     width: 13%;
     text-align: center;
@@ -22,7 +26,7 @@
 }
 .Mthree{
     line-height: 36.8px;
-    border-top: 1px solid #E4E4E4;
+    /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
     width: 13%;
     text-align: center;
@@ -30,7 +34,7 @@
 }
 .Mfour{
     line-height: 36.8px;
-    border-top: 1px solid #E4E4E4;
+    /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
     width: 13%;
     text-align: center;

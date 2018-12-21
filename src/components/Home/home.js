@@ -286,7 +286,9 @@ class Home extends Component {
                   rawTestReport:`${server}/jc/common/rawTestReport`, 
                   getById:`${server}/jc/common/rawTestReport/details`, 
                   getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
-              }
+              },
+              /**中间品录检 */
+              intermediateProduct:`${server}/jc/common/middleProductionDetection`
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('url',JSON.stringify(url))
