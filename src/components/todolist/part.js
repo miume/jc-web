@@ -32,8 +32,8 @@ class Part extends React.Component{
                 <div style={{minWidth:80,paddingTop:'5px'}}>
                     <p className={this.props.flag||this.props.visible?'darkBlue':'partSpan'}>{this.props.data.userId === this.props.id?'有您进行':this.props.data.personName}</p>
                     <p className={this.props.flag||this.props.visible?'darkBlue1':'partSpan1'}>{this.props.data.responsibility}</p>
-//                     <p className={!flag||userId===curId?'darkBlue':'partSpan'}>{this.props.data.userId === this.props.id?'由您进行':this.props.data.personName}</p>
-//                     <p className={!flag||userId===curId?'darkBlue1':'partSpan1'}>{this.props.data.responsibility}</p>
+                    {/* <p className={!flag||userId===curId?'darkBlue':'partSpan'}>{this.props.data.userId === this.props.id?'由您进行':this.props.data.personName}</p>
+                    <p className={!flag||userId===curId?'darkBlue1':'partSpan1'}>{this.props.data.responsibility}</p> */}
                 </div>
                 {/* <span className={this.judge(this.props.index,this.props.count)}></span> */}
             </div>
