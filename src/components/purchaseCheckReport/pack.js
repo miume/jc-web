@@ -44,7 +44,6 @@ for (let i = 0; i < 20; i++) {
 
 
 class Pack extends React.Component {
-    url;
     componentDidMount() {
         this.fetch();
     }
@@ -81,16 +80,16 @@ class Pack extends React.Component {
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            getCheckboxProps: record => ({
-                disabled: record.ungenerate === '1',
-            })
+            // getCheckboxProps: record => ({
+            //     disabled: record.ungenerate === '1',
+            // })
 
         };
         return(
             <div>
                 <div>
                     <PackGenerateModal
-                        url={this.url}
+                        url={this.props.url}
                     />
                     <div style={{float:'right'}}>
                         <span style={{marginRight:'10px',fontSize:'10px'}}>仅显示未生成的数据</span>
@@ -104,6 +103,8 @@ class Pack extends React.Component {
 
                 <div className='clear' ></div>
                 <PackTable
+                    url={this.props.url}
+                    status={this.props.status}
                     data={this.state.dataSource}
                     rowSelection={rowSelection}
                     pagination={this.pagination}
@@ -188,6 +189,7 @@ class Pack extends React.Component {
     /**实现全选功能 */
     onSelectChange = (selectedRowKeys) => {
         // console.log('selectedRowKeys changed: ', selectedRowKeys);
+        console.log('selectedRowKeys',selectedRowKeys)
         this.setState({ selectedRowKeys });
     };
     /**---------------------- */
@@ -218,9 +220,19 @@ class Pack extends React.Component {
     /**---------------------- */
     /**实现selectedRowKeys里的数据改变功能 */
     modifySelectedRowKeysData = (recordId) => {
-        this.setState({
-            selectedRowKeys:[...this.state.selectedRowKeys,recordId]
-        });
+        var flag = 0;
+        const selectedRowKeys = this.state.selectedRowKeys;
+        for(var i=0; i<selectedRowKeys.length; i++){
+            if(selectedRowKeys[i]===recordId){
+                flag = 1;
+            }
+        }
+        if(flag === 0){
+            this.setState({
+                selectedRowKeys:[...this.state.selectedRowKeys,recordId]
+            });
+        }
+
     };
     /**---------------------- */
 }

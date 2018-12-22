@@ -72,14 +72,14 @@ class DrSpanModal extends React.Component {
                     <table>
                         <thead>
                         <tr>
-                            <th>批号</th>
+                            <th>编号</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.props.data.topData.serialNumberId}</td>
+                            <td>{this.props.data.topData.serialNumber}</td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
