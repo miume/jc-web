@@ -25,16 +25,22 @@ class Login extends React.Component {
     }
   }
   /**实行记住密码 */
-  remindLogin(){
+  remindLogin(value){
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    console.log(username)
-    if(username === '' && password === ''){
-        message.info('请先填写用户名和密码！')
+    /**点击记住密码 将登陆名和密码存入localStorage中   取消记住密码，则从localStorage中删除 */
+    if(value){
+        if(username === '' && password === ''){
+            message.info('请先填写用户名和密码！')
+        }else{
+          localStorage.setItem('username',username);
+          localStorage.setItem('password',password);
+        }
     }else{
-      localStorage.setItem('username',username);
-      localStorage.setItem('password',password);
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
     }
+    
 
   }
   handleSubmit(){
