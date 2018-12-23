@@ -279,6 +279,8 @@ class Home extends Component {
              /**进货检验 */
              purchaseCheckReport:{
                  unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
+                 generated:`${server}/jc/common/purchaseReportRecords/generated`,
+                 sampleDeliveringDate:`${server}/jc/common/purchaseReportRecords/sampleDeliveringDate`,
              },
              /**入库管理 */
              enterStorage: {

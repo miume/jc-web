@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider,Switch} from 'antd';
+import {Divider, message, Switch} from 'antd';
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
@@ -44,6 +44,7 @@ for (let i = 0; i < 20; i++) {
 
 
 class Pack extends React.Component {
+    rowSelection;
     componentDidMount() {
         this.fetch();
     }
@@ -64,6 +65,7 @@ class Pack extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
+        this.generateFetch = this.generateFetch.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -76,15 +78,30 @@ class Pack extends React.Component {
         }
     };
     render() {
-        const { selectedRowKeys } = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-            // getCheckboxProps: record => ({
-            //     disabled: record.ungenerate === '1',
-            // })
+        const { selectedRowKeys,unGenerateDate } = this.state;
+        // const rowSelection = {
+        //     selectedRowKeys,
+        //     onChange: this.onSelectChange,
+        //     // getCheckboxProps: record => ({
+        //     //     disabled: record.ungenerate === '1',
+        //     // })
+        //
+        // };
+        if(unGenerateDate===true){
+            this.rowSelection = {
+                selectedRowKeys,
+                onChange: this.onSelectChange,
+            };
+        }else{
+            this.rowSelection = {
+                selectedRowKeys,
+                onChange: this.onSelectChange,
+                getCheckboxProps: record => ({
+                    disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
+                })
 
-        };
+            };
+        }
         return(
             <div>
                 <div>
@@ -103,13 +120,14 @@ class Pack extends React.Component {
 
                 <div className='clear' ></div>
                 <PackTable
+                    fetch={this.fetch}
+                    unGenerateDate={this.state.unGenerateDate}
                     url={this.props.url}
                     status={this.props.status}
                     data={this.state.dataSource}
-                    rowSelection={rowSelection}
+                    rowSelection={this.rowSelection}
                     pagination={this.pagination}
                     modifySelectedRowKeysData={this.modifySelectedRowKeysData}
-                    // fetch={this.fetch}
                 />
             </div>
         )
@@ -119,20 +137,27 @@ class Pack extends React.Component {
         this.setState({
             generateVisible: true,
         });
-    }
+    };
     /**获取未生成的所有数据 unGenerated */
     handleTableChange = (pagination) => {
-        this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
-
-        });
+        if(this.state.unGenerateDate===true){
+            this.fetch({
+                size: pagination.pageSize,
+                page: pagination.current,
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }else{
+            this.generateFetch({
+                size: pagination.pageSize,
+                page: pagination.current,
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }
     };
     fetch = (params = {}) => {
         axios({
-            // url: `${this.server}/jc/auth/role/getRolesByPage`,
             url: `${this.props.url.purchaseCheckReport.unGenerated}` ,
             method: 'get',
             headers:{
@@ -141,7 +166,6 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            console.log('res',data);
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
                 // const dataSource = this.dataAssemble(res);
@@ -154,37 +178,28 @@ class Pack extends React.Component {
             }
         });
     };
-    /**数据组装 */
-    // dataAssemble = (res) => {
-    //     const dataSource = [];
-    //     const list = res.list;
-    //     for(var i = 0; i<list.length; i++){
-    //         const testItem = list[i].testReportRecordDTO.testItemResultRecordDTOList;
-    //         var testItemName;
-    //         for(var j=0; j<testItem.length; j++){
-    //             if(j===0){
-    //                 testItemName = testItem.testItem.name;
-    //             }else{
-    //                 testItemName = testItemName + "," + testItem.testItem.name;
-    //             }
-    //         }
-    //         dataSource.push({
-    //             index:res.prePage*10+(i+1),
-    //             id: list[i].testReportRecordDTO.testReportRecord.id,
-    //             sampleDeliveringDate: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate,
-    //             deliverer: list[i].sampleDeliveringRecordDTO.deliverer.name,
-    //             deliveryFactory: list[i].sampleDeliveringRecordDTO.deliveryFactory.name,
-    //             serialNumberd: list[i].sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
-    //             testItem: testItemName,
-    //             exceptionComment: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment,
-    //             type: '无用子段',
-    //             acceptStatus: list[i].sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus,
-    //             status: list[i].commonBatchNumberDTO.commonBatchNumber.status,
-    //         })
-    //     }
-    //     return dataSource
-    // };
-
+    generateFetch = (params = {}) => {
+        axios({
+            url: `${this.props.url.purchaseCheckReport.generated}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data;
+            this.pagination.total=res?res.total:0;
+            if(res&&res.list){
+                // const dataSource = this.dataAssemble(res);
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=res.prePage*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
+            }
+        });
+    };
     /**---------------------- */
     /**实现全选功能 */
     onSelectChange = (selectedRowKeys) => {
@@ -198,25 +213,57 @@ class Pack extends React.Component {
         // console.log('selectedRowKeysselectedRowKeys',this.state.selectedRowKeys);
     };
     /**---------------------- */
-    /** 根据角色名称分页查询*/
+    /** 根据送样时间子段分页查询*/
     searchEvent(){
-
-
+        const sampleDeliveringDate = this.state.searchContent;
+        axios({
+            url: `${this.props.url.purchaseCheckReport.sampleDeliveringDate}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
+                sampleDeliveringDate:sampleDeliveringDate
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total=res?res.total:0;
+            if(res&&res.list){
+                // const dataSource = this.dataAssemble(res);
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=res.prePage*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
+            }
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
         const value = e.target.value;
         this.setState({searchContent:value});
-    }
+    };
     /**---------------------- */
     /**实现选择是否只展现未生成的数据功能 */
     urgentChange = (checked) => {
         console.log(`switch to ${checked}`);
-
+        this.setState({
+            unGenerateDate: checked
+        },()=>{
+            if(this.state.unGenerateDate===true){
+                this.fetch()
+            }else{
+                this.generateFetch()
+            }
+        })
         // this.setState({
         //     checkSwitchData:checked
         // })
-    }
+    };
     /**---------------------- */
     /**实现selectedRowKeys里的数据改变功能 */
     modifySelectedRowKeysData = (recordId) => {
