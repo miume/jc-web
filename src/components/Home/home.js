@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Divider } from 'antd';
 import { Route, Switch } from 'react-router-dom';
 import Menu1List from './menu';
 import './home.css';
@@ -318,7 +319,8 @@ class Home extends Component {
     }
     
     render() {
-        const path2Component = this.getComponentArray();    
+        const path2Component = this.getComponentArray(); 
+        const userName = JSON.parse(localStorage.getItem('menuList')).username;
         return (
                 <div className="parent" >
                     <div className="top">
@@ -330,11 +332,15 @@ class Home extends Component {
                                 <span>金驰2+1信息管理系统</span>
                             </div>
                         </div>
-                        <div >
-                            <div className="fr" >
-                                <Exit name='退出'></Exit>
-                            </div>
+                        <div className="fr" >
+                            <Exit name='退出'></Exit>
                         </div>
+                        
+                        <div className="fr userName" >
+                            <i className="fa fa-user-circle-o" aria-hidden="true"></i> 
+                            <span> {userName}</span>
+                            <Divider type='vertical' />
+                        </div>     
                     </div>
                     <div className="left">
                         <div className="menu1" >
