@@ -32,7 +32,7 @@ import SearchCell from '../BlockQuote/search';
 
 class ProcessInspection extends React.Component{
     url
-    // server
+    status
     componentDidMount(){
         this.fetch();
         this.getAllProductionProcess();
@@ -130,16 +130,17 @@ class ProcessInspection extends React.Component{
           dataIndex: 'commonBatchNumber.status',
           key:'commonBatchNumber.status',
           render: state => {
-            switch(`${state}`) {
-              case '-1': return '已保存未提交';
-              case '0': return '已提交未未审核';
-              case '1': return '审核中';
-              case '2': return '审核通过';
-              case '3': return '审核未通过';
-              case '4': return '合格';
-              case '5': return '不合格';
-              default:return '';
-            }
+               return this.status[state.toString()];
+            // switch(`${state}`) {
+            //   case '-1': return '已保存未提交';
+            //   case '0': return '已提交未审核';
+            //   case '1': return '审核中';
+            //   case '2': return '审核通过';
+            //   case '3': return '审核未通过';
+            //   case '4': return '合格';
+            //   case '5': return '不合格';
+            //   default:return '';
+            //}
           },
           width: '15%',
           align:'center',
@@ -302,7 +303,7 @@ class ProcessInspection extends React.Component{
 // }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        this.server = localStorage.getItem('remote');
+        this.status = JSON.parse(localStorage.getItem('status'));
         const {selectedRowKeys} = this.state; 
         const rowSelection = {
           selectedRowKeys,
