@@ -23,13 +23,13 @@ const columns = [{
     title: '取样人',
     dataIndex: 'sampler' ,
     key: 'sampler',
-    width: '9%',
+    width: '11%',
     align:'center',
   },{
     title: '检测人',
     dataIndex: 'tester' ,
     key: 'tester',
-    width: '9%',
+    width: '11%',
     align:'center',
   },{
     title: '检测项目',
@@ -89,8 +89,15 @@ class Procedure extends React.Component{
                 'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
-            const details = data.data.data? data.data.data.details:[];
+            const res = data.data.data;
+            const details = res? res.details:[];
+            const status = JSON.parse(localStorage.getItem('status'));
             if(details){
+                details['batchNumber'] = res.commonBatchNumber.batchNumber;
+                details['createTime'] = res.commonBatchNumber.createTime;
+                details['status'] = status[res.commonBatchNumber.status.toString()];
+                details['isUrgent'] = res.commonBatchNumber.isUrgent?'正常':'紧急';
+                details['createPersonName'] = res.createPersonName;
              for(var i = 0; i < details.length; i++){
                  details[i].id = i+1;
                  details[i].procedureTestRecord.testItems = details[i].testItemString;
@@ -112,10 +119,32 @@ class Procedure extends React.Component{
         this.props.getReplyData(this.state.reply);
         return (
             <div className='checkModal'>
-                <div className='checkModalDiv'>
-                    <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:200}} bordered></Table>
+                <div className="interDrSpanModalTop">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>批号</th>
+                            <th>创建人</th>
+                            <th>创建时间</th>
+                            <th>状态</th>
+                            <th>紧急</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{this.state.data.batchNumber}</td>
+                            <td>{this.state.data.createPersonName}</td>
+                            <td>{this.state.data.createTime}</td>
+                            <td>{this.state.data.status}</td>
+                            <td>{this.state.data.isUrgent}</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div >
+                <div className='checkModalDiv'>
+                    <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
+                </div>
+                <div className={this.props.flag?'hide':''} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                 </div>
             </div>

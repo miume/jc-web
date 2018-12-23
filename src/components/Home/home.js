@@ -155,9 +155,9 @@ class Home extends Component {
             '9' : '已评价'
         }
         const dataType = {
-            '1' : '流程管理数据',
-            '2' : '制程检测数据',
-            '3' : '样品检测数据',
+            '1' : '流程管理',
+            '2' : '制程检测',
+            '3' : '样品检测',
             '4' : '原材料出库',
             '5' : '成品出库',
             '6' : '红单申请',
@@ -303,7 +303,7 @@ class Home extends Component {
               intermediateProduct:`${server}/jc/common/middleProductionDetection`
         }
         localStorage.setItem('status',JSON.stringify(status));
-        localStorage.setItem('status',JSON.stringify(dataType));
+        localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
     }
     /**控制登陆背景图 */

@@ -169,7 +169,7 @@ class InterTable extends React.Component{
         }
     };
     judgeCheckOperation = (status) => {
-        if(status==="0"||status==="3"){
+        if(status===-1||status===3){
             return true;
         }else{
             return false;

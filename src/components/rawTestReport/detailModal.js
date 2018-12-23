@@ -55,7 +55,7 @@ class DetailModal extends React.Component {
                            样品名称：<span>{data.topData?data.topData.materialName+'样品':''}</span>
                        </div>
                 </div>
-                <div style={{height:350}}>
+                <div style={{height:300}}>
                     <Table
                         className="interCursorDefault"
                         rowKey={record => record.id}
@@ -63,33 +63,34 @@ class DetailModal extends React.Component {
                         dataSource={data.details}
                         pagination={false}
                         size="small"
-                        // scroll={{ y: 250 }}
+                        scroll={{ y: 200 }}
                         bordered
                     />
                 </div>
-                <div className="interDrSpanModalBottomFirst">
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td>检验人：</td>
-                            <td>{data.testData?data.testData.tester:''}</td>
-                        </tr>
-                        <tr>
-                            <td>检验时间：</td>
-                            <td>{data.testData?data.testData.testTime:''}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <IsQualified
-                        status={data.IsQualified?data.IsQualified:0}
-                    />
-                </div>
+                <div className="interDrSpanModalBottom">
+                    <div className="interDrSpanModalBottomFirst">
+                        <table>
+                            <tbody className="interPadding">
+                            <tr>
+                                <td>检验人：</td>
+                                <td>{data.testData?data.testData.tester:''}</td>
+                            </tr>
+                            <tr>
+                                <td>检验时间：</td>
+                                <td>{data.testData?data.testData.testTime:''}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <IsQualified
+                            status={data.IsQualified?data.IsQualified:0}
+                        />
+                    </div>
                 <Divider />
                 <div className={this.props.examineData?"interDrSpanModalBottomSecond":'hide'}>
                 {
                     this.props.examineData?this.props.examineData.map(e=>(
                         <table key={e.id} >
-                            <tbody>
+                            <tbody className='interPadding'>
                             <tr>
                                 <td>审核人：</td>
                                 <td>{e.handler?e.handler:''}</td>
@@ -107,6 +108,7 @@ class DetailModal extends React.Component {
                     )):null
                 }
                 </div>
+            </div>
             </div>
         )
     }

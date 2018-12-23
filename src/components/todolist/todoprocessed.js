@@ -1,5 +1,6 @@
 import React from 'react';
 import Todo from './todo';
+import SearchCell from '../BlockQuote/search';
 // const data = [];
 // for(var i = 1; i < 4; i++){
 //     data.push({
@@ -51,19 +52,20 @@ import Todo from './todo';
 class TodoProcessed extends React.Component{
     render(){
         return (
-            <div style={{padding:'15px',overflow:'auto',height:'510px'}}>
-                    <div>
-                        {
-                            this.props.data?this.props.data.map(e=>{
-                                var flag = e.details.findIndex(e=>e.visible === 1)
-                                var details = e.details;
-                                for(var i = 0; i < details.length; i++){
-                                    if(i<flag) details[i]['flag'] = 0;
-                                    else {details[i]['flag'] = 1; }      
-                                }
-                                return <Todo key={e.commonBatchNumber.id} data={e.commonBatchNumber} details={details} curId={this.props.data.curId} url={this.props.url} fetch={this.props.fetch}/>
-                            }):null
-                        }
+            <div className={this.props.flag?'historyContianer':'container'} >
+                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' /></div>
+                <div>
+                    {
+                        this.props.data?this.props.data.map(e=>{
+                            var flag = e.details.findIndex(e=>e.visible === 1)
+                            var details = e.details;
+                            for(var i = 0; i < details.length; i++){
+                                if(i<flag) details[i]['flag'] = 0;
+                                else {details[i]['flag'] = 1; }      
+                            }
+                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} data={e.commonBatchNumber} details={details} curId={this.props.data.curId} url={this.props.url} fetch={this.props.fetch} flag={this.props.flag}/>
+                        }):null
+                    }
                     </div>
             </div>
         );

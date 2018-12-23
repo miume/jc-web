@@ -18,7 +18,7 @@ class IsQualified extends React.Component {
                 );
             default:
                 return(
-                    <div>aaa</div>
+                    <div></div>
                 );
         }
     }
