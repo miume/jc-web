@@ -305,8 +305,6 @@ class CheckSpan extends React.Component {
         detailData.isQualified = isQualified;
         this.setState({
             detailData: detailData
-        },()=>{
-            console.log(this.state.detailData.isQualified)
         })
     };
     /**实现保存按钮功能--实现保存的数据处理 */
@@ -369,6 +367,7 @@ class CheckSpan extends React.Component {
                     visible: false,
                     subVisible: false,
                 });
+                this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -393,6 +392,7 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
