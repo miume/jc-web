@@ -4,57 +4,58 @@ import InterTable from '../intermediateProductTest/intermediateTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
 
-const data =[];
-for(let i=0; i<20; i++){
-    if(i%2===0){
-        data.push({
-            index:i,
-            id: i,
-            sampleDeliveringDate: '2018年10月11日',
-            deliverer: '测试',
-            deliveryFactory: '测试',
-            batchNumber: '测试',
-            testItems: '测试',
-            urgentComment: '测试',
-            type: '测试',
-            h: '未发布',
-            status: '不通过'
-        });
-        continue;
-    };
-    if(i%3===0){
-        data.push({
-            index:i,
-            id: i,
-            sampleDeliveringDate: '2018年10月11日',
-            deliverer: '测试',
-            deliveryFactory: '测试',
-            batchNumber: '测试',
-            testItems: '测试',
-            urgentComment: '测试',
-            type: '测试',
-            h: '测试',
-            status: '未申请'
-        });
-        continue;
-    };
-    data.push({
-        index:i,
-        id: i,
-        sampleDeliveringDate: '2018年10月11日',
-        deliverer: '测试',
-        deliveryFactory: '测试',
-        batchNumber: '测试',
-        testItems: '测试',
-        urgentComment: '测试',
-        type: '测试',
-        h: '未发布',
-        status: '已通过'
-    })
-}
+// const data =[];
+// for(let i=0; i<20; i++){
+//     if(i%2===0){
+//         data.push({
+//             index:i,
+//             id: i,
+//             sampleDeliveringDate: '2018年10月11日',
+//             deliverer: '测试',
+//             deliveryFactory: '测试',
+//             batchNumber: '测试',
+//             testItems: '测试',
+//             urgentComment: '测试',
+//             type: '测试',
+//             h: '未发布',
+//             status: '不通过'
+//         });
+//         continue;
+//     };
+//     if(i%3===0){
+//         data.push({
+//             index:i,
+//             id: i,
+//             sampleDeliveringDate: '2018年10月11日',
+//             deliverer: '测试',
+//             deliveryFactory: '测试',
+//             batchNumber: '测试',
+//             testItems: '测试',
+//             urgentComment: '测试',
+//             type: '测试',
+//             h: '测试',
+//             status: '未申请'
+//         });
+//         continue;
+//     };
+//     data.push({
+//         index:i,
+//         id: i,
+//         sampleDeliveringDate: '2018年10月11日',
+//         deliverer: '测试',
+//         deliveryFactory: '测试',
+//         batchNumber: '测试',
+//         testItems: '测试',
+//         urgentComment: '测试',
+//         type: '测试',
+//         h: '未发布',
+//         status: '已通过'
+//     })
+// }
 
 class InterProduct extends React.Component {
     url;
+    status;
     componentDidMount() {
         this.fetch();
     }
@@ -80,17 +81,15 @@ class InterProduct extends React.Component {
             total: this.state.dataSource.length,
             showSizeChanger: true,
             onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
             },
             onChange(current) {
-                // console.log('Current: ', current);
             }
         };
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
-        const status = JSON.parse(localStorage.getItem('status')) ;
+        this.status = JSON.parse(localStorage.getItem('status')) ;
         return(
             <div>
                 <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -106,7 +105,7 @@ class InterProduct extends React.Component {
                     <div className='clear' ></div>
                     <InterTable
                         url={this.url}
-                        status={status}
+                        status={this.status}
                         data={this.state.dataSource}
                         pagination={this.pagination}
                         fetch={this.fetch}
