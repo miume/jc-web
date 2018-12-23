@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
+import CancleButton from '../BlockQuote/cancleButton';
+
 
 const data = [];
 for (let i = 0; i < 50; i++) {
@@ -53,14 +55,17 @@ class DetailSpan extends React.Component {
                     maskClosable={false}
                     width="500px"
                     footer={[
-                        <Button key="back" style={{right:'415px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <CancleButton
+                            handleCancel={this.handleCancel}
+                            flag = {true}
+                            key="back"
+                        />,
                     ]}
                 >
                     <div style={{height:580}}>
                         <DrSpanModal
                             url={this.props.url}
                             data={this.state.detailData}
-                            record={this.props.record}
                         />
                     </div>
                 </Modal>
@@ -70,9 +75,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
+        this.setState({
+            visible: true,
+        });
     }
     /**通过id查询详情 */
     getDetailData(){
@@ -94,7 +99,7 @@ class DetailSpan extends React.Component {
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 console.log('isQualified',isQualified)
                 topData = {
-                    serialNumberId: res.sampleDeliveringRecord?res.sampleDeliveringRecord.serialNumberId:'',
+                    serialNumber: res.serialNumber,
                     materialName: res.materialName,
                     sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
@@ -116,10 +121,10 @@ class DetailSpan extends React.Component {
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
                 const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
-                const batchNumber = res.commonBatchNumber?res.commonBatchNumber.batchNumber:'';
+                const batchNumberId = res.commonBatchNumber?res.commonBatchNumber.id:'';
                 if(examineStatus==='2'||examineStatus==='3'){
                     axios({
-                        url:`${this.url.toDoList}/${batchNumber}/result`,
+                        url:`${this.url.toDoList}/${batchNumberId}/result`,
                         method:'get',
                         headers:{
                             'Authorization':this.url.Authorization
@@ -138,7 +143,7 @@ class DetailSpan extends React.Component {
                                 },
                                 isQualified: isQualified,
                             },
-                            visible: true
+                            // visible: true
                         });
                     })
                 }else{
@@ -153,7 +158,7 @@ class DetailSpan extends React.Component {
                             },
                             isQualified: isQualified,
                         },
-                        visible: true
+                        // visible: true
                     })
                 }
             }
