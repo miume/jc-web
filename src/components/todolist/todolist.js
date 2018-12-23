@@ -2,7 +2,6 @@ import React from 'react';
 import {Tabs,Badge} from 'antd';
 import './todolist.css';
 import BlockQuote from '../BlockQuote/blockquote';
-import HistoryRecord from './historyRecord';
 import TodoProcessed from './todoprocessed';
 import axios from 'axios';
 const TabPane = Tabs.TabPane;

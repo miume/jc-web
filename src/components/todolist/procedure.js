@@ -92,12 +92,12 @@ class Procedure extends React.Component{
             const res = data.data.data;
             const details = res? res.details:[];
             const status = JSON.parse(localStorage.getItem('status'));
-            if(details){
-                details['batchNumber'] = res.commonBatchNumber.batchNumber;
-                details['createTime'] = res.commonBatchNumber.createTime;
-                details['status'] = status[res.commonBatchNumber.status.toString()];
-                details['isUrgent'] = res.commonBatchNumber.isUrgent?'正常':'紧急';
-                details['createPersonName'] = res.createPersonName;
+            if(res&&details){
+                details['batchNumber'] = res.commonBatchNumber?res.commonBatchNumber.batchNumber:'';
+                details['createTime'] = res.commonBatchNumber?res.commonBatchNumber.createTime:'';
+                details['status'] = res.commonBatchNumber?status[res.commonBatchNumber.status.toString()]:'';
+                details['isUrgent'] = res.commonBatchNumber?(res.commonBatchNumber.isUrgent?'正常':'紧急'):'';
+                details['createPersonName'] = res.createPersonName?res.createPersonName:'';
              for(var i = 0; i < details.length; i++){
                  details[i].id = i+1;
                  details[i].procedureTestRecord.testItems = details[i].testItemString;
