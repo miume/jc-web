@@ -1,3 +1,16 @@
+.container{
+    padding: 15px;
+    overflow: auto;
+    height:510px;
+}
+.historyContianer{
+    padding: 0px 15px;
+    overflow: auto;
+    height:510px;
+}
+.historySearch{
+    margin-bottom: 45px;
+}
 .wholediv{
     padding: 10px;
     overflow-x: auto;
@@ -188,13 +201,14 @@
     padding:11% 28%;
 }
 .checkModal{
-    height:350px;
+    height:400px;
     width:100%;
 }
 .checkModal .checkModalDiv{
+    padding-top:20px;
     height:250px;
 }
-.checkModal .checkModalTest{
+.checkModalTest{
     float: right;
     height:100px;
     width:400px;

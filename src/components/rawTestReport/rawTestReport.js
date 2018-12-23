@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Divider,message} from 'antd';
+import { Table, Divider} from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 // import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
@@ -168,7 +168,7 @@ class RawTestReport extends React.Component{
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId}/>
                         <Divider type='vertical' />
-                        <RecordChecking value={text} url={this.url} status={record.status}/>
+                        <RecordChecking value={text} url={this.url} status={record.status} fetch={this.fetch}/>
                     </span>
                 );
             }

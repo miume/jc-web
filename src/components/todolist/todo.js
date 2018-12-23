@@ -2,6 +2,7 @@ import React from 'react';
 import Part from './part';
 import Line from './line';
 import CheckModal from './checkModal';
+// import DetailModal from './detailModal';
 class Todo extends React.Component{
     constructor(props){
         super(props);
@@ -19,7 +20,7 @@ class Todo extends React.Component{
         this.handleMove(1);
     }
     handleMove(number) {
-        var middle = document.getElementById(`item2-${this.props.data.id}`)        
+        var middle = document.getElementById(`item2-${this.props.data.id}-${this.props.flag?1:0}`)        
         let count = 830;
         let gap = (count / 100);
         gap = gap.toFixed(0);
@@ -70,13 +71,13 @@ class Todo extends React.Component{
             </div>
            <div className='demo'>
                <div className='item1' onClick={this.moveLeft}><i className='fa fa-2x fa-caret-left'></i></div>
-               <div className='item2' id={`item2-${this.props.data.id}`}>
+               <div className='item2' id={`item2-${this.props.data.id}-${this.props.flag?1:0}`}>
                    <div className='item2Scroll' id={this.props.data.id}>
                    {
                        this.props.details.map((e,index)=>{
                            if(e.visible) this.state.flag=1;
                            return (
-                           <div key={e.userId} style={{display:'flex',textAlign:'center'}}>
+                           <div key={`${e.userId}-${this.props.flag?1:0}`} style={{display:'flex',textAlign:'center'}}>
                                <Part index={index+1} data={e} id={this.props.curId} count={count} visible={e.visible} flag={e.flag}/>
                                <Line index={index+1} count={count} flag={this.state.flag} visible={e.visible}/>
                            </div>)
@@ -86,7 +87,9 @@ class Todo extends React.Component{
                </div>
                <div className={`item3`} onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
-                   <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} />
+               {
+                    <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} flag={this.props.flag} dataType={this.props.data.dataType} />
+               }
                </div>
            </div>
         </div>
