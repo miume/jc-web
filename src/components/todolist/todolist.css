@@ -214,6 +214,15 @@
     width:400px;
     border:1px solid #e4e4e4;
 }
+.check-footer{
+    height: 100px;
+    width: 100%;
+    top:120px;
+    position: relative;
+    bottom: 0;
+    }
+    
+    
 /* .checkModal div:last-child{
     width:100px;
     height:70px;
