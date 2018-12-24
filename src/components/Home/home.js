@@ -320,7 +320,7 @@ class Home extends Component {
     
     render() {
         const path2Component = this.getComponentArray(); 
-        const userName = JSON.parse(localStorage.getItem('menuList')).username;
+        const userName = JSON.parse(localStorage.getItem('menuList')).name;
         return (
                 <div className="parent" >
                     <div className="top">

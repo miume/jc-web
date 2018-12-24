@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import DetailModal from '../rawTestReport/detailModal';
-class RawTest extends React.Component{
+class RedList extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;
         const type = this.props.type;
@@ -91,4 +90,4 @@ class RawTest extends React.Component{
         );
     }
 }
-export default RawTest;
+export default RedList;

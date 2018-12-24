@@ -44,7 +44,7 @@ class Detail extends React.Component{
             visible:false,
             topData:{},
             testData:{},
-            examineData:{},
+            examineData:[],
             detail:[],
         }
         this.handleDetail = this.handleDetail.bind(this);
@@ -71,9 +71,12 @@ class Detail extends React.Component{
           }
         }).then(data=>{
           const res = data.data.data;
-          this.setState({
-            examineData : res
-        })
+          console.log(res)
+          if(res){
+            this.setState({
+                examineData : res
+            })
+          }
       })   
       }
     /**通过id获取数据 */
@@ -147,7 +150,7 @@ class Detail extends React.Component{
                   ]}
                   >
                   <div style={{height:580}}>
-                        <DetailModal detail={this.state.detail} examineData={this.props.examineData}  />
+                        <DetailModal detail={this.state.detail} examineData={this.state.examineData}  />
                     </div>
                 </Modal>
             </span>

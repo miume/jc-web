@@ -94,7 +94,7 @@ class RecordChecking extends React.Component{
             var details  = [];
             var topData = {};
             var {flag,fail} = this.state;
-            if(res)
+            if(res){
                 var IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 if(IsQualified) flag = 1; else fail = 1;
                 topData={
@@ -122,6 +122,7 @@ class RecordChecking extends React.Component{
                     flag:flag,
                     fail:fail
                 })
+            }
         })
     }
     
@@ -282,7 +283,7 @@ class RecordChecking extends React.Component{
     render(){
         return (
             <span>
-                <span className={this.props.status===-1||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
+                <span className={this.props.status===0||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 maskClosable={false} centered={true}
                 footer={[
