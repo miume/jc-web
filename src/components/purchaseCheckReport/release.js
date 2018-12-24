@@ -26,19 +26,19 @@ for (let i = 0; i < 20; i++) {
 
 
 class Release extends React.Component {
-    url
+    componentDidMount() {
+        this.fetch();
+    }
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             selectedRowKeys: [],    //多选框key
             pagination:{},
             searchContent:'',
             searchText: '',
             loading: false,
         };
-        this.deleteByIds = this.deleteByIds.bind(this);
-        this.confrimCancel = this.confrimCancel.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -53,19 +53,13 @@ class Release extends React.Component {
         }
     }
     render() {
-        this.url = JSON.parse(localStorage.getItem('url'));
         const {selectedRowKeys } = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
+        // const rowSelection = {
+        //     selectedRowKeys,
+        //     onChange: this.onSelectChange,
+        // };
         return(
             <div>
-                <DeleteByIds
-                    selectedRowKeys={this.state.selectedRowKeys}
-                    deleteByIds={this.deleteByIds}
-                    cancel={this.confrimCancel}
-                />
                 <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
                             name='请输入搜索内容'
@@ -76,9 +70,11 @@ class Release extends React.Component {
                     </span>
                 <div className='clear' ></div>
                 <ReleaseTable
+                    url={this.props.url}
+                    status={this.props.status}
                     data={this.state.dataSource}
                     pagination={this.pagination}
-                    rowSelection={rowSelection}
+                    // rowSelection={rowSelection}
                     fetch={this.fetch}
                     handleTableChange={this.handleTableChange}
                 />
@@ -96,11 +92,27 @@ class Release extends React.Component {
         });
     };
     fetch = (params = {}) => {
-
+        axios({
+            url: `${this.props.url.purchaseCheckReport.deploy}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data;
+            this.pagination.total=res?res.total:0;
+            if(res&&res.list){
+                // const dataSource = this.dataAssemble(res);
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=res.prePage*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
+            }
+        });
     };
-    componentDidMount() {
-        this.fetch();
-    }
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
@@ -113,25 +125,25 @@ class Release extends React.Component {
     }
     /**---------------------- */
     /**对应于批量删除时，确认取消删除 并实现checkbox选中为空 */
-    confrimCancel(){
-        this.setState({
-            selectedRowKeys:[]
-        })
-    }
+    // confrimCancel(){
+    //     this.setState({
+    //         selectedRowKeys:[]
+    //     })
+    // }
     /**批量删除 */
-    deleteByIds(){
-        // const ids = this.state.selectedRowKeys;
-    }
+    // deleteByIds(){
+    //     // const ids = this.state.selectedRowKeys;
+    // }
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
     }
     /**---------------------- */
     /**实现全选功能 */
-    onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
-    };
+    // onSelectChange = (selectedRowKeys) => {
+    //     console.log('selectedRowKeys changed: ', selectedRowKeys);
+    //     this.setState({ selectedRowKeys });
+    // };
     /**---------------------- */
 }
 export default Release

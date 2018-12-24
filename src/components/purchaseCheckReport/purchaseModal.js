@@ -1,5 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
+import {Input} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 
@@ -118,13 +119,11 @@ for(let i=0; i<15; i++){
     passRowNum.push(0);
 }
 class PurchaseModal extends React.Component {
-    Authorization;
-    server;
     constructor(props){
         super(props);
         this.state = {
             columns: [],
-            dataSource: data,
+            dataSource: [],
             purchaseStatus: '待定', //显示判定，合格，不合格
             //用于合格与非合格的数量
             nopassRowNum: nopassRowNum, //保存每一行红色（非合格）的数量 -下标代表row,值代表num
@@ -145,17 +144,19 @@ class PurchaseModal extends React.Component {
     }
 
     render() {
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
         /**动态表头数据获取与组装 */
         /**---------------------- */
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
         // 控制动态数据的长度headColumns--默认小于7
+        // console.log(this.props.data.testDTOS[0].testDTOSItem.length)
         var headColumnsLength = false;
-        if(this.state.headColumns.length>7){
+        //头部数据
+        console.log('data',this.props.data)
+        const testDTOSFirstItem = this.props.data.testDTOS[0].testDTOSItem;
+        // console.log(testDTOSFirstItem)
+        //
+        if(testDTOSFirstItem.length>7){
             headColumnsLength = true;
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
@@ -174,22 +175,22 @@ class PurchaseModal extends React.Component {
                         </thead>
                         <tbody className="purchaseTopTbody">
                         <tr>
-                            <td><input placeholder="原材料名称"></input></td>
-                            <td><input placeholder="请输入规格"></input></td>
-                            <td><input placeholder="请输入数量"></input></td>
-                            <td><input placeholder="请输入到货日期"></input></td>
-                            <td><input placeholder="请输入生产厂家"></input></td>
+                            <td><Input name='materialName' placeholder="原材料名称" value={this.props.data.topData.materialName} onChange={this.props.inputSave}/></td>
+                            <td><Input name='norm' placeholder="请输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
+                            <td><Input name='quantity' placeholder="请输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
+                            <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.sampleDeliveringDate} onChange={this.props.inputSave}/></td>
+                            <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.deliveryFactory} onChange={this.props.inputSave}/></td>
                         </tr>
                         </tbody>
                     </table>
                     <PurchaseModalColor
-                        purchaseStatus={this.state.purchaseStatus}
+                        purchaseStatus={this.props.data.judgement}
                     />
-                    <table style={{float:'right',marginTop:'40px'}} >
+                    <table className="purchaseTopJudger" >
                         <tbody>
                         <tr>
                             <td>检验人:</td>
-                            <td>周小伟</td>
+                            <td>{this.props.data.judger}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -207,16 +208,16 @@ class PurchaseModal extends React.Component {
                             <div className="theadMiddle">
                                 <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} >
                                     {
-                                        this.state.headColumns.map((item,index) => {
+                                        testDTOSFirstItem.map((item,index) => {
                                             return (
                                                 <div
                                                     className={(headColumnsLength?'middleTheadDiv':'middleTheadDivLength')}
                                                     ref={(ref) => this.middleTheadDivRef = ref}
                                                     key={item.id}
                                                 >
-                                                    <div>{item.testItem}</div>
-                                                    <div>{item.itemUnit}</div>
-                                                    <div>{item.testResult}</div>
+                                                    <div>{item.name}</div>
+                                                    <div>{item.unit}</div>
+                                                    <div>{item.rawTestItemStandard}</div>
                                                 </div>
                                             )
                                         })
@@ -234,19 +235,19 @@ class PurchaseModal extends React.Component {
                         <div className="purchaseTbody">
                             <div className="tbodyLeft" >
                                 {
-                                    this.state.tbodyData.map((item,index) => {
-                                        if(index === this.state.tbodyData.length-1){
+                                    this.props.data.testDTOS.map((item,index) => {
+                                        if(index === this.props.data.testDTOS.length-1){
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
-                                                    <div className="leftBorderRadius" key={item.id}>{item.index}</div>
-                                                    <div key={'a'}>{item.a}</div>
+                                                    <div className="leftBorderRadius" key={item.index}>{item.index}</div>
+                                                    <div key={item.serialNumber}>{item.serialNumber}</div>
                                                 </div>
                                             )
                                         }else{
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
-                                                    <div key={item.id}>{item.index}</div>
-                                                    <div key={'a'}>{item.a}</div>
+                                                    <div key={item.index}>{item.index}</div>
+                                                    <div key={item.serialNumber}>{item.serialNumber}</div>
                                                 </div>
                                             )
                                         }
@@ -257,7 +258,7 @@ class PurchaseModal extends React.Component {
                             <div className="tbodyMiddle" >
                                 <div className="middleTbody" ref={(ref) => this.middleTbody = ref}>
                                     {
-                                        this.state.tbodyData.map((item,index) => {
+                                        this.props.data.testDTOS.map((item,index) => {
                                             //  每一行数据
                                             const data = item;
                                             const tbodyRow = index;
@@ -267,30 +268,30 @@ class PurchaseModal extends React.Component {
                                                     key={index}
                                                 >
                                                     {
-                                                        this.state.headColumns.map((item,index) => {
+                                                        data.testDTOSItem.map((item,index) => {
                                                             if(headColumnsLength === false){
                                                                 // 数据长度小于7
                                                                 if(this.props.clickState === 0){
                                                                     return(
                                                                         <div
-                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRedLength cursorPointer':'middleTbodyDivWhiteLength cursorPointer')}
+                                                                            className={(item.isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
                                                                             ref={`${tbodyRow}|${index}`}
-                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            id={`${tbodyRow}|${item.id}`}
                                                                             key={index}
                                                                             onClick={this.handleCellOnclick.bind(this)}
                                                                         >
-                                                                            {data[item.testItem].value}
+                                                                            {item.testResult}
                                                                         </div>
                                                                     )
                                                                 }else{
                                                                     return(
                                                                         <div
-                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRed cursorDefault':'middleTbodyDivWhite cursorDefault')}
+                                                                            className={(item.isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                             ref={`${tbodyRow}|${index}`}
-                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            id={`${tbodyRow}|${item.id}`}
                                                                             key={index}
                                                                         >
-                                                                            {data[item.testItem].value}
+                                                                            {item.testResult}
                                                                         </div>
                                                                     )
                                                                 }
@@ -299,24 +300,24 @@ class PurchaseModal extends React.Component {
                                                                 if(this.props.clickState === 0){
                                                                     return(
                                                                         <div
-                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRed cursorPointer':'middleTbodyDivWhite cursorPointer')}
+                                                                            className={(item.isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
                                                                             ref={`${tbodyRow}|${index}`}
-                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            id={`${tbodyRow}|${item.id}`}
                                                                             key={index}
                                                                             onClick={this.handleCellOnclick.bind(this)}
                                                                         >
-                                                                            {data[item.testItem].value}
+                                                                            {item.testResult}
                                                                         </div>
                                                                     )
                                                                 }else{
                                                                     return(
                                                                         <div
-                                                                            className={(data[item.testItem].isQualified? 'middleTbodyDivRed cursorDefault':'middleTbodyDivWhite cursorDefault')}
+                                                                            className={(item.isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                             ref={`${tbodyRow}|${index}`}
-                                                                            id={`${tbodyRow}|${item.testItem}`}
+                                                                            id={`${tbodyRow}|${item.id}`}
                                                                             key={index}
                                                                         >
-                                                                            {data[item.testItem].value}
+                                                                            {item.testResult}
                                                                         </div>
                                                                     )
                                                                 }
@@ -331,18 +332,19 @@ class PurchaseModal extends React.Component {
                             </div>
                             <div className="tbodyRight">
                                 {
-                                    this.state.tbodyData.map((item,index) => {
-                                        if(index == this.state.tbodyData.length-1){
+                                    this.props.data.testDTOS.map((item,index) => {
+                                        console.log('testDTOS',item)
+                                        if(index === this.props.data.testDTOS.length-1){
                                             if(this.props.clickState === 0){
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.pass? 'passJudge cursorPointer': 'isQualified cursorPointer')}
+                                                            className={(item.isQualified? 'passJudge cursorPointer': 'isQualified cursorPointer')}
                                                             ref={`pass${index}`}
-                                                            onClick={this.handleJudgePass.bind(this,index)}
+                                                            onClick={this.handleJudgePass(index)}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.nopass? 'nopassJudge leftBorderRadius cursorDefault': 'isQualified leftBorderRadius cursorDefault')}
+                                                            className={(item.isQualified? 'isQualified leftBorderRadius cursorDefault': 'nopassJudge leftBorderRadius cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -351,11 +353,11 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.pass? 'passJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            className={(item.isQualified? 'passJudge cursorDefault': 'isQualified cursorDefault')}
                                                             ref={`pass${index}`}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.nopass? 'nopassJudge leftBorderRadius cursorDefault': 'isQualified leftBorderRadius cursorDefault')}
+                                                            className={(item.isQualified? 'isQualified leftBorderRadius cursorDefault': 'nopassJudge leftBorderRadius cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -366,12 +368,12 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.pass? 'passJudge cursorPointer': 'isQualified cursorPointer')}
+                                                            className={(item.isQualified? 'passJudge cursorPointer': 'isQualified cursorPointer')}
                                                             ref={`pass${index}`}
-                                                            onClick={this.handleJudgePass.bind(this,index)}
+                                                            onClick={this.handleJudgePass(index)}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.nopass? 'nopassJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            className={(item.isQualified? 'isQualified cursorDefault': 'nopassJudge cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -380,11 +382,11 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.pass? 'passJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            className={(item.isQualified? 'passJudge cursorDefault': 'isQualified cursorDefault')}
                                                             ref={`pass${index}`}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.nopass? 'nopassJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            className={(item.isQualified? 'isQualified cursorDefault': 'nopassJudge cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -402,6 +404,7 @@ class PurchaseModal extends React.Component {
             </div>
         )
     }
+
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
         // 保存每一行绿色（合格）的数量
@@ -413,28 +416,36 @@ class PurchaseModal extends React.Component {
         // 该行的红色数量为0
         const nopassRowNum = this.state.nopassRowNum;
         nopassRowNum[index] = 0;
-        const tbodyData = this.state.tbodyData;
-        const headColumns = this.state.headColumns;
-        tbodyData[index].pass = true;
-        tbodyData[index].nopass = false;
-        headColumns.map((item) => {
-            tbodyData[index][item.testItem].isQualified = false;
-        });
-        if(passTotalNum === tbodyData.length){
-            this.setState({
-                tbodyData: tbodyData,
-                passRowNum: passRowNum,
-                passTotalNum: passTotalNum,
-                purchaseStatus: '合格',
-            })
-        }else{
-            this.setState({
-                tbodyData: tbodyData,
-                passRowNum: passRowNum,
-                passTotalNum: passTotalNum,
-                purchaseStatus: '待定',
-            })
-        }
+        //  只有合格才能点
+        var detailData = this.props.data;
+        detailData.testDTOS[index].isQualified = 0;
+
+        console.log('issss',detailData.testDTOS[index].isQualified)
+
+
+        // detailData.testDTOS[index].isQualified = 0;
+        // const tbodyData = this.props.data.tbodyData;
+        // const headColumns = this.state.headColumns;
+        // tbodyData[index].pass = true;
+        // tbodyData[index].nopass = false;
+        // detailData.map((item) => {
+        //     tbodyData[index][item.testItem].isQualified = false;
+        // });
+        // if(passTotalNum === tbodyData.length){
+        //     this.setState({
+        //         tbodyData: tbodyData,
+        //         passRowNum: passRowNum,
+        //         passTotalNum: passTotalNum,
+        //         purchaseStatus: '合格',
+        //     })
+        // }else{
+        //     this.setState({
+        //         tbodyData: tbodyData,
+        //         passRowNum: passRowNum,
+        //         passTotalNum: passTotalNum,
+        //         purchaseStatus: '待定',
+        //     })
+        // }
 
     };
     /**---------------------- */

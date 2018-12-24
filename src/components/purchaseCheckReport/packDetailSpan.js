@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal,Button } from 'antd';
+import {Modal, Button, message} from 'antd';
 import DrSpanModal from '../intermediateProductTest/drSpanModal';
 import CancleButton from '../BlockQuote/cancleButton';
 
@@ -103,7 +103,7 @@ class DetailSpan extends React.Component {
             visible: true,
         });
     }
-    /**通过id查询详情 */
+    /**获取该行的记录详情 */
     getDetailData(){
         const detail = this.props.record;
         var topData = {};  //头部数据
@@ -136,30 +136,49 @@ class DetailSpan extends React.Component {
                 testTime: detail.testReportRecordDTO.testReportRecord?detail.testReportRecordDTO.testReportRecord.judgeDate:'',
             };
             const examineStatus = detail.commonBatchNumberDTO.commonBatchNumber?detail.commonBatchNumberDTO.commonBatchNumber.status:'';
+            console.log('examineStatus',examineStatus)
             const batchNumberId = detail.commonBatchNumberDTO.commonBatchNumber?detail.commonBatchNumberDTO.commonBatchNumber.id:'';
-            if(examineStatus==='2'||examineStatus==='3'){
+            console.log('batchNumberId',batchNumberId)
+            if(examineStatus===2||examineStatus===3){
                 axios({
-                    url:`${this.url.toDoList}/${batchNumberId}/result`,
+                    url:`${this.props.url.toDoList}/${batchNumberId}/result`,
                     method:'get',
                     headers:{
-                        'Authorization':this.url.Authorization
+                        'Authorization':this.props.url.Authorization
                     }
                 }).then((data)=>{
                     const res = data.data.data;
-                    this.setState({
-                        detailData:{
-                            topData: topData,
-                            testDTOS: testDTOS,
-                            testData: testData,
-                            examine: {
-                                examineStatus: examineStatus,
-                                examineData: res
+                    // console.log('data',data.data)
+                    if(res===null){
+                        this.setState({
+                            detailData:{
+                                topData: topData,
+                                testDTOS: testDTOS,
+                                testData: testData,
+                                examine: {
+                                    examineStatus: examineStatus,
+                                    examineData: []
+                                },
+                                isQualified: isQualified,
                             },
-                            isQualified: isQualified,
-                        },
-                        // visible: true
-                    });
-                })
+                            // visible: true
+                        });
+                    }else{
+                        this.setState({
+                            detailData:{
+                                topData: topData,
+                                testDTOS: testDTOS,
+                                testData: testData,
+                                examine: {
+                                    examineStatus: examineStatus,
+                                    examineData: res
+                                },
+                                isQualified: isQualified,
+                            },
+                            // visible: true
+                        });
+                    }
+                });
             }else{
                 this.setState({
                     detailData:{

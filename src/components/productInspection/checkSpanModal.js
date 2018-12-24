@@ -116,6 +116,7 @@ class CheckSpanModal extends React.Component {
                     />
                 </div>
                 <CheckQualifiedModal
+
                 />
             </div>
         )

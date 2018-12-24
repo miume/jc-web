@@ -1,6 +1,8 @@
 import React from 'react';
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
+import axios from "axios";
+import PackTable from "./packTable";
 
 const data =[];
 for (let i = 0; i < 20; i++) {
@@ -23,12 +25,13 @@ for (let i = 0; i < 20; i++) {
 
 
 class Check extends React.Component {
-    url;
+    componentDidMount() {
+        this.fetch();
+    }
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: data,
-            loading: false,
+            dataSource: [],
             searchContent:'',
             searchText: '',
         };
@@ -45,7 +48,6 @@ class Check extends React.Component {
         }
     };
     render() {
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
@@ -58,6 +60,8 @@ class Check extends React.Component {
                 </span>
                 <div className='clear' ></div>
                 <CheckTable
+                    url={this.props.url}
+                    status={this.props.status}
                     data={this.state.dataSource}
                     pagination={this.pagination}
                     fetch={this.fetch}
@@ -76,11 +80,27 @@ class Check extends React.Component {
         });
     };
     fetch = (params = {}) => {
-
+        axios({
+            url: `${this.props.url.purchaseCheckReport.audit}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data;
+            this.pagination.total=res?res.total:0;
+            if(res&&res.list){
+                // const dataSource = this.dataAssemble(res);
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=res.prePage*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
+            }
+        });
     };
-    componentDidMount() {
-        this.fetch();
-    }
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){

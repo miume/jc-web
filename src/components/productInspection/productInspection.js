@@ -17,7 +17,7 @@ for(let i=0; i<20; i++){
             urgentComment: '测试',
             type: '测试',
             h: '0',
-            status: '3'
+            status: 3
         });
         continue;
     };
@@ -33,7 +33,7 @@ for(let i=0; i<20; i++){
             urgentComment: '测试',
             type: '测试',
             h: '0',
-            status: '0'
+            status: 0
         });
         continue;
     };
@@ -48,7 +48,7 @@ for(let i=0; i<20; i++){
         urgentComment: '测试',
         type: '测试',
         h: '1',
-        status: '2'
+        status: 2
     })
 }
 class ProductInspection extends React.Component {

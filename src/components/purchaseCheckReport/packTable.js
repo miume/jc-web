@@ -81,7 +81,7 @@ class PackTable extends React.Component {
         align:'center',
         width: '8%',
         render:state => {
-            return state?this.props.status[state]:'无';
+            return this.props.status[state.toString()];
         }
     },{
         title: '操作',
@@ -115,7 +115,7 @@ class PackTable extends React.Component {
         });
         return(
             <Table
-                // className="purchasePackTable"
+                className="purchasePackTable"
                 rowKey={record => record.sampleDeliveringRecordDTO.sampleDeliveringRecord.id}
                 dataSource={this.props.data}
                 columns={columns}
