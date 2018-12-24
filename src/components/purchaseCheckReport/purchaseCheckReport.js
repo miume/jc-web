@@ -17,7 +17,6 @@ class PurchaseCheckReport extends React.Component {
         const TabPane = Tabs.TabPane;
         const current = JSON.parse(localStorage.getItem('current')) ;
         const status = JSON.parse(localStorage.getItem('status')) ;
-        // console.log('statusstatus',status)
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
@@ -30,7 +29,10 @@ class PurchaseCheckReport extends React.Component {
                         />
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
-                        <Check />
+                        <Check
+                            url={this.url}
+                            status={status}
+                        />
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-bullhorn" aria-hidden="true"></i> &nbsp;发布</span>} key="3" >
                         <Release />

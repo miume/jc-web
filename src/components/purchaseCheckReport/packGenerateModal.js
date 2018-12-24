@@ -66,9 +66,46 @@ class PackGenerateModal extends React.Component {
         )
     }
     handlePack = () => {
-        this.setState({
-            visible: true,
-        });
+        const ids = this.props.selectedRowKeys;
+        if(ids.length===0){
+            message.info('请选择记录！')
+        }else{
+            axios({
+                url: `${this.props.url.purchaseCheckReport.check}`,
+                method:'put',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                },
+                data:ids,
+                type:'json',
+            }).then((data)=>{
+                const code = data.data.code;
+                console.log(data)
+                if(code!==0){
+                    message.info(data.data.message);
+                }else{
+
+                }
+                // const res = data.data.data;
+                // this.pagination.total=res?res.total:0;
+                // if(res&&res.list){
+                //     // const dataSource = this.dataAssemble(res);
+                //     for(var i = 1; i<=res.list.length; i++){
+                //         res.list[i-1]['index']=res.prePage*10+i;
+                //     }
+                //     this.setState({
+                //         dataSource: res.list,
+                //     });
+                // }
+            }).catch((data)=>{
+                // message.info(data.data.message);
+                // message.info(error.data.message);
+                message.info('生成失败，请联系管理员！')
+            });
+            this.setState({
+                visible: true,
+            });
+        }
     };
     handleCancel() {
         this.setState({

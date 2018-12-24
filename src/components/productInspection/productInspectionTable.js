@@ -149,21 +149,21 @@ class ProductTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
-        if(status==="0"){
+        if(status===0){
             return false;
         }else{
             return true;
         }
     };
     judgeCheckOperation = (status) => {
-        if(status==="0"||status==="3"){
+        if(status===0||status===3){
             return true;
         }else{
             return false;
         }
     };
     judgeReleaseOperation = (h,status) => {
-        if(h==="0"&&status==="3"){
+        if(h===0&&status===3){
             return true;
         }else{
             return false;

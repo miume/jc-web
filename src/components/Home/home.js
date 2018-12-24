@@ -281,6 +281,8 @@ class Home extends Component {
                  unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
                  generated:`${server}/jc/common/purchaseReportRecords/generated`,
                  sampleDeliveringDate:`${server}/jc/common/purchaseReportRecords/sampleDeliveringDate`,
+                 check:`${server}/jc/common/testReportRecord/check`,
+                 audit:`${server}/jc/common/purchaseReportRecords/audit`,
              },
              /**入库管理 */
              enterStorage: {

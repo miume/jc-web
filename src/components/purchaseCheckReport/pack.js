@@ -107,13 +107,18 @@ class Pack extends React.Component {
                 <div>
                     <PackGenerateModal
                         url={this.props.url}
+                        selectedRowKeys={this.state.selectedRowKeys}
                     />
                     <div style={{float:'right'}}>
                         <span style={{marginRight:'10px',fontSize:'10px'}}>仅显示未生成的数据</span>
                         <Switch onChange={this.urgentChange} size='small' defaultChecked style={{width:'35px',marginBottom:'2px',background:''}}/>
                         <Divider type="vertical" style={{height:'35px'}}/>
                         <span style={{float:'right',paddingBottom:'8px'}}>
-                            <SearchCell name='请输入搜索内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
+                            <SearchCell
+                                name='请输入送检日期'
+                                searchContentChange={this.searchContentChange}
+                                searchEvent={this.searchEvent}
+                                fetch={this.fetch}/>
                         </span>
                     </div>
                 </div>
@@ -209,9 +214,6 @@ class Pack extends React.Component {
     };
     /**---------------------- */
     /**实现生成功能 */
-    handleGenerateButton = () => {
-        // console.log('selectedRowKeysselectedRowKeys',this.state.selectedRowKeys);
-    };
     /**---------------------- */
     /** 根据送样时间子段分页查询*/
     searchEvent(){

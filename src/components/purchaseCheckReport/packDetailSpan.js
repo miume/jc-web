@@ -103,7 +103,7 @@ class DetailSpan extends React.Component {
             visible: true,
         });
     }
-    /**通过id查询详情 */
+    /**获取该行的记录详情 */
     getDetailData(){
         const detail = this.props.record;
         var topData = {};  //头部数据
