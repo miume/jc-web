@@ -191,21 +191,23 @@ class RecordChecking extends React.Component{
         this.checkData(0);
     }
     checkData(status){
-        var {detail,flag,fail,IsQualified} = this.state;
-        // if(flag) IsQualified = 1; else IsQualified = 0;
+        var {detail,fail,flag,IsQualified} = this.state;
+        var flag1 = 1;
         if(IsQualified === -1 && flag === 0 && fail === 0){
+            flag1 = 0;
             message.info('请点击合格或者不合格！');
             return
         }
         if(detail){
             for(var i = 0; i < detail.length; i++){
                 if(detail[i].testResult === ''){
+                    flag1 = 0;
                     message.info('所有检测结果不能为空，请填写完整！');
                     return
                 }
             }
         } 
-        if(flag){
+        if(flag1){
             this.applyOut(status);
         }
         
@@ -243,6 +245,7 @@ class RecordChecking extends React.Component{
                 this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
+                this.props.fetch();
             }
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
@@ -265,6 +268,7 @@ class RecordChecking extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
+            this.props.fetch();
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
         })

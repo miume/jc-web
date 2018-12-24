@@ -61,7 +61,7 @@ class Detail extends React.Component{
             visible:true
         })
     }
-    /**获取所有检测项目 */
+    /**通过batchNumberId 查询审核人 */
     getAllTester(){
         axios({
           url:`${this.props.url.toDoList}/${this.props.id}/result`,

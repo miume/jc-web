@@ -2,7 +2,6 @@ import React from 'react';
 import {Tabs,Badge} from 'antd';
 import './todolist.css';
 import BlockQuote from '../BlockQuote/blockquote';
-import HistoryRecord from './historyRecord';
 import TodoProcessed from './todoprocessed';
 import axios from 'axios';
 const TabPane = Tabs.TabPane;
@@ -11,7 +10,7 @@ class TodoList extends React.Component{
     componentDidMount(){
         const id = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
         this.fetch(id);
-        //this.getHistory(id);
+        this.getHistory(id);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -37,7 +36,7 @@ class TodoList extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             const count = res? res.length : 0;
-            res['curId'] = id;
+            if(res) res['curId'] = id;
             this.setState({
                 data:res,
                 count:count
@@ -53,6 +52,7 @@ class TodoList extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             // const count = res? res.length : 0;
+            if(res) res['curId'] = id;
             this.setState({
                 historyRecord:res,
             })
@@ -64,8 +64,8 @@ class TodoList extends React.Component{
             <div>
                  <BlockQuote name="待办事项" menu='质量与流程'></BlockQuote>
                  <Tabs defaultActiveKey='todo1'>
-                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed url={this.url} data={this.state.data}/></TabPane>
-                     <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><HistoryRecord data={this.state.historyRecord}/></TabPane>
+                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed url={this.url} data={this.state.data} fetch={this.fetch} /></TabPane>
+                     <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><TodoProcessed url={this.url} data={this.state.historyRecord} fetch={this.fetch} flag={1} /></TabPane>
                  </Tabs>
             </div>
         );

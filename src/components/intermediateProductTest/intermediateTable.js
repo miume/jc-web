@@ -1,12 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
 
 class InterTable extends React.Component{
-    url;
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -88,7 +86,9 @@ class InterTable extends React.Component{
         align:'center',
         width: '8%',
         render:state => {
-            return state?this.props.status[state]:'无';
+            // console.log(state)
+            // console.log(this.props.status[state.toString()])
+            return this.props.status[state.toString()];
         }
     },{
         title: '操作',
@@ -99,6 +99,7 @@ class InterTable extends React.Component{
         render: (text,record) => {
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
+            console.log(status)
             let detailSpanFlag = this.judgeDetailOperation(status);
             let checkSpanFlag = this.judgeCheckOperation(status);
             // let checkSpanFlag = true;
@@ -119,6 +120,7 @@ class InterTable extends React.Component{
                         <CheckSpan
                             url={this.props.url}
                             id={record.sampleDeliveringRecord.id}
+                            fetch={this.props.fetch}
                         />
                     ):(
                         <span  className="notClick">录检</span>
@@ -128,6 +130,7 @@ class InterTable extends React.Component{
                         <ReleaseSpan
                             url={this.props.url}
                             id={record.sampleDeliveringRecord.id}
+                            fetch={this.props.fetch}
                         />
                     ):(
                         <span  className="notClick">发布</span>
@@ -162,21 +165,21 @@ class InterTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
-        if(status==="0"){
+        if(status===0){
             return false;
         }else{
             return true;
         }
     };
     judgeCheckOperation = (status) => {
-        if(status==="0"||status==="3"){
+        if(status===-1||status===3){
             return true;
         }else{
             return false;
         }
     };
     judgeReleaseOperation = (isPublished,status) => {
-        if(isPublished==="0"&&(status==="3"||status==='2')){
+        if(isPublished===0&&(status===3||status===2)){
             return true;
         }else{
             return false;

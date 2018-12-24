@@ -13,7 +13,7 @@ class SampleInspection extends React.Component{
     columns
     componentDidMount() {
         this.fetch();
-      }
+    }
     componentWillUnmount() {
         this.setState = () => {
             return ;
@@ -150,7 +150,7 @@ class SampleInspection extends React.Component{
             }
         }];
     }
-    
+
     render(){
         const { selectedRowKeys } = this.state;
         const current = JSON.parse(localStorage.getItem('current')) ;
@@ -164,21 +164,23 @@ class SampleInspection extends React.Component{
                 <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal fetch={this.fetch}/>
-                    <DeleteByIds 
+                    <DeleteByIds
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
                         deleteByIds={this.deleteByIds}
                     />
-                    <span style={{float:'right',paddingBottom:'8px'}}>   
+
+                    <span style={{float:'right',paddingBottom:'8px'}}>
+
                         <SearchCell name='请输入搜索内容'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
                     </span>
                     <div className='clear' ></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
-                    bordered
-                    rowKey={record => record.sampleDeliveringRecord.id}
-                    onChange={this.handleTableChange}
-                    pagination={this.pagination}
-                    scroll={{ x: 1500}}></Table>
+                           bordered
+                           rowKey={record => record.sampleDeliveringRecord.id}
+                           onChange={this.handleTableChange}
+                           pagination={this.pagination}
+                           scroll={{ x: 1500}}></Table>
                 </div>
             </div>
         )
@@ -227,7 +229,9 @@ class SampleInspection extends React.Component{
                 dataSource: res.list,
             });
         })
-        };
+
+    };
+
     /**获取查询时菜单名称的实时变化 */
     searchContentChange(e){
         const value = e.target.value;

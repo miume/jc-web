@@ -1,3 +1,16 @@
+.container{
+    padding: 15px;
+    overflow: auto;
+    height:510px;
+}
+.historyContianer{
+    padding: 0px 15px;
+    overflow: auto;
+    height:510px;
+}
+.historySearch{
+    margin-bottom: 45px;
+}
 .wholediv{
     padding: 10px;
     overflow-x: auto;
@@ -187,8 +200,27 @@
     color:#999999;
     padding:11% 28%;
 }
+.checkModal{
+    height:400px;
+    width:100%;
+}
+.checkModal .checkModalDiv{
+    padding-top:20px;
+    height:250px;
+}
+.checkModalTest{
+    float: right;
+    height:100px;
+    width:400px;
+    border:1px solid #e4e4e4;
+}
+/* .checkModal div:last-child{
+    width:100px;
+    height:70px;
+    text-align: right;
+} */
 
-.wrapxxx {
+/* .wrapxxx {
     border: 1px solid black;
     height: 100px;
     display: flex;
@@ -208,4 +240,4 @@
     flex-grow: 1;
     background-color: black;
     z-index: 100;
-}
+} */

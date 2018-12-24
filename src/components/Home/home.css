@@ -102,3 +102,9 @@ input::-webkit-input-placeholder{
 .ant-menu-item-active {
     background-color: #1890ff !important;
 }
+.userName>i{
+    padding:10px 5px 10px 10px;
+}
+.userName>span{
+    padding-right:25px
+}

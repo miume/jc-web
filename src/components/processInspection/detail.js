@@ -57,7 +57,7 @@ const Option = Select.Option;
         const items = text.split(',');
         var testItems = '';
         if(items.length>3){
-            testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
+            testItems = items[0]+','+items[1]+','+items[2]+'...';
             return <abbr title={text}>{testItems}</abbr>;
         }else{
           testItems = text;
@@ -165,7 +165,7 @@ class Detail extends React.Component{
     }
     selectionChange(value) {
         var {detailData,data} = this.state;
-        detailData = data.filter(d => parseInt(d.productionProcess.id) === parseInt(value));
+        detailData = data.filter(d => parseInt(d.deliveryFactory.id) === parseInt(value));
         if(value === 'all'){
             detailData = data;
           }

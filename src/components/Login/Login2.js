@@ -26,7 +26,22 @@ class Login extends React.Component {
   }
   /**实行记住密码 */
   remindLogin(value){
-    console.log(value)
+    let username = document.getElementById('userName').value;
+    let password = document.getElementById('password').value;
+    /**点击记住密码 将登陆名和密码存入localStorage中   取消记住密码，则从localStorage中删除 */
+    if(value){
+        if(username === '' && password === ''){
+            message.info('请先填写用户名和密码！')
+        }else{
+          localStorage.setItem('username',username);
+          localStorage.setItem('password',password);
+        }
+    }else{
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+    }
+    
+
   }
   handleSubmit(){
     const history = this.props.history;
@@ -76,11 +91,11 @@ class Login extends React.Component {
                 <img src={require(`../Login/logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
                 <div style={{height:'10%'}}></div>
                 <div style={{padding: '0px 28px 0px 28px', height:'50%'}}>
-                  <Input className='login-input' size='large' id='userName' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称"/>
+                  <Input className='login-input' size='large' id='userName' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称" defaultValue={localStorage.getItem('username')&&localStorage.getItem('password')!==null?localStorage.getItem('username'):''}/>
                   <div style={{height:'10%'}}></div>
-                  <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录" />
+                  <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录"  defaultValue={localStorage.getItem('password')&&localStorage.getItem('password')!==null?localStorage.getItem('password'):''} />
                   <div style={{height:'10%'}}></div>
-                  <Checkbox style={{float:'left'}} onChange={this.remindLogin}>记住登录状态</Checkbox>
+                  <Checkbox style={{float:'left'}} onChange={this.remindLogin} defaultChecked={localStorage.getItem('username')?true:false}>记住登录状态</Checkbox>
                   <div style={{height:'20%'}}></div>
                   <Button size='large' type="primary" style={{width:'100%', fontSize:'14px'}} onClick={this.handleSubmit}>
                     登录

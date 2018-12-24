@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Divider } from 'antd';
 import { Route, Switch } from 'react-router-dom';
 import Menu1List from './menu';
 import './home.css';
@@ -23,7 +24,7 @@ import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
 import  ProductLine from '../Base/productLine/productLine';//产品线
 import  ProductProcess from '../Base/ProductProcess/productProcess';//产品工序
-//import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
+// import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
 import TestItem from '../Base/testItem/testItem';
 import OperationManagement from "../operationManagement/operationManagement";
 import StockOut from '../stockOut/stockOut';
@@ -153,6 +154,18 @@ class Home extends Component {
             '7' : '已接单',
             '8' : '已完成',
             '9' : '已评价'
+        }
+        const dataType = {
+            '1' : '流程管理',
+            '2' : '制程检测',
+            '3' : '样品检测',
+            '4' : '原材料出库',
+            '5' : '成品出库',
+            '6' : '红单申请',
+            '7' : '进货检验',
+            '8' : '成品检验',
+            '9' : '原材料检测',
+            '10': '中间品检测'
         }
         const server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');
@@ -291,6 +304,7 @@ class Home extends Component {
               intermediateProduct:`${server}/jc/common/middleProductionDetection`
         }
         localStorage.setItem('status',JSON.stringify(status));
+        localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
     }
     /**控制登陆背景图 */
@@ -305,7 +319,8 @@ class Home extends Component {
     }
     
     render() {
-        const path2Component = this.getComponentArray();    
+        const path2Component = this.getComponentArray(); 
+        const userName = JSON.parse(localStorage.getItem('menuList')).username;
         return (
                 <div className="parent" >
                     <div className="top">
@@ -317,11 +332,15 @@ class Home extends Component {
                                 <span>金驰2+1信息管理系统</span>
                             </div>
                         </div>
-                        <div >
-                            <div className="fr" >
-                                <Exit name='退出'></Exit>
-                            </div>
+                        <div className="fr" >
+                            <Exit name='退出'></Exit>
                         </div>
+                        
+                        <div className="fr userName" >
+                            <i className="fa fa-user-circle-o" aria-hidden="true"></i> 
+                            <span> {userName}</span>
+                            <Divider type='vertical' />
+                        </div>     
                     </div>
                     <div className="left">
                         <div className="menu1" >
