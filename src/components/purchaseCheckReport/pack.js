@@ -66,6 +66,7 @@ class Pack extends React.Component {
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
         this.generateFetch = this.generateFetch.bind(this);
+        this.judgeGetAll = this.judgeGetAll.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
@@ -79,14 +80,6 @@ class Pack extends React.Component {
     };
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
-        // const rowSelection = {
-        //     selectedRowKeys,
-        //     onChange: this.onSelectChange,
-        //     // getCheckboxProps: record => ({
-        //     //     disabled: record.ungenerate === '1',
-        //     // })
-        //
-        // };
         if(unGenerateDate===true){
             this.rowSelection = {
                 selectedRowKeys,
@@ -118,7 +111,8 @@ class Pack extends React.Component {
                                 name='请输入送检日期'
                                 searchContentChange={this.searchContentChange}
                                 searchEvent={this.searchEvent}
-                                fetch={this.fetch}/>
+                                fetch={this.judgeGetAll}
+                            />
                         </span>
                     </div>
                 </div>
@@ -159,6 +153,14 @@ class Pack extends React.Component {
                 orderField: 'id',
                 orderType: 'desc',
             });
+        }
+    };
+    /**未生成和已生成的所有数据进行判断调用结构 */
+    judgeGetAll = () => {
+        if(this.state.unGenerateDate===true){
+            this.fetch();
+        }else{
+            this.generateFetch();
         }
     };
     fetch = (params = {}) => {
@@ -218,31 +220,62 @@ class Pack extends React.Component {
     /** 根据送样时间子段分页查询*/
     searchEvent(){
         const sampleDeliveringDate = this.state.searchContent;
-        axios({
-            url: `${this.props.url.purchaseCheckReport.sampleDeliveringDate}`,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-                sampleDeliveringDate:sampleDeliveringDate
-            },
-            type:'json',
-        }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
-            if(res&&res.list){
-                // const dataSource = this.dataAssemble(res);
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=res.prePage*10+i;
+        const unGenerateDate = this.state.unGenerateDate;
+        if(unGenerateDate===true){
+            //  未生成数据
+            axios({
+                url: `${this.props.url.purchaseCheckReport.sampleDeliveringDate}/unGenerated`,
+                method:'get',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                },
+                params:{
+                    size: this.pagination.pageSize,
+                    page: this.pagination.current,
+                    sampleDeliveringDate:sampleDeliveringDate
+                },
+                type:'json',
+            }).then((data)=>{
+                const res = data.data.data;
+                this.pagination.total=res?res.total:0;
+                if(res&&res.list){
+                    // const dataSource = this.dataAssemble(res);
+                    for(var i = 1; i<=res.list.length; i++){
+                        res.list[i-1]['index']=res.prePage*10+i;
+                    }
+                    this.setState({
+                        dataSource: res.list,
+                    });
                 }
-                this.setState({
-                    dataSource: res.list,
-                });
-            }
-        });
+            });
+        }else{
+            //  已生成数据
+            axios({
+                url: `${this.props.url.purchaseCheckReport.sampleDeliveringDate}/generated`,
+                method:'get',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                },
+                params:{
+                    size: this.pagination.pageSize,
+                    page: this.pagination.current,
+                    sampleDeliveringDate:sampleDeliveringDate
+                },
+                type:'json',
+            }).then((data)=>{
+                const res = data.data.data;
+                this.pagination.total=res?res.total:0;
+                if(res&&res.list){
+                    // const dataSource = this.dataAssemble(res);
+                    for(var i = 1; i<=res.list.length; i++){
+                        res.list[i-1]['index']=res.prePage*10+i;
+                    }
+                    this.setState({
+                        dataSource: res.list,
+                    });
+                }
+            });
+        }
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {

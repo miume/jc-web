@@ -22,7 +22,8 @@ class CheckReleaseSpan extends React.Component {
         const footer = this.judgeFooter(this.props.state);
         // const footer = this.judgeFooter(2);
         return(
-            <span type="primary"  onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+            <span>
+                <span className="blue" onClick={this.handleDetail} >{this.props.name}</span>
                 <Modal
                     title="数据详情"
                     visible={visible}
@@ -39,7 +40,6 @@ class CheckReleaseSpan extends React.Component {
                         />
                     </div>
                 </Modal>
-                <span  className="blue">{this.props.name}</span>
             </span>
         )
     }

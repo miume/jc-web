@@ -13,38 +13,38 @@ class ReleaseTable extends React.Component {
         width: '5%',
     },{
         title: '批号',
-        dataIndex: 'a',
-        key: 'a',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
+        key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         align:'center',
         width: '6%',
     },{
         title: '原材料',
-        dataIndex: 'b',
-        key: 'b',
+        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName',
+        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName',
         align:'center',
         width: '6%',
     },{
         title: '生产厂家',
-        dataIndex: 'c',
-        key: 'c',
+        dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
+        key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
         align:'center',
         width: '6%',
     },{
         title: '到货日期',
-        dataIndex: 'd',
-        key: 'd',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '12%',
     },{
         title: '创建人',
-        dataIndex: 'e',
-        key: 'e',
+        dataIndex: 'commonBatchNumberDTO.createPersonName',
+        key: 'commonBatchNumberDTO.createPersonName',
         align:'center',
         width: '6%',
     },{
         title: '创建日期',
-        dataIndex: 'f',
-        key: 'f',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
+        key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         align:'center',
         width: '12%',
     },{
@@ -60,40 +60,33 @@ class ReleaseTable extends React.Component {
         align:'center',
         width: '12%',
     },{
-        title: '类型',
-        dataIndex: 'type',
-        key: 'type',
-        align:'center',
-        width: '6%',
-    },{
         title: '发布状态',
-        dataIndex: 'state',
-        key: 'state',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
+        key: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
         align:'center',
         width: '6%',
         render:state => {
-            switch(`${state}`) {
-                case '0': return '未发布';
-                case '1': return '已发布';
+            switch(state) {
+                case 0: return '未发布';
+                case 1: return '已发布';
                 default: return '';
             }
         },
     },{
         title: '紧急',
-        dataIndex: 'isUrgent',
-        key: 'isUrgent',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
+        key: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'operation',
+        key: 'operation',
         align:'center',
         width: '6%',
         render: (text,record) => {
-            let operationFlag = this.judgeOperation(record.state);
-            console.log(operationFlag)
+            let operationFlag = this.judgeOperation(record.commonBatchNumberDTO.commonBatchNumber.isPublished);
             return (
                 <span>
                     {operationFlag?(
@@ -122,7 +115,7 @@ class ReleaseTable extends React.Component {
                 rowKey={record => record.id}
                 dataSource={this.props.data}
                 columns={columns}
-                rowSelection={this.props.rowSelection}
+                // rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
                 size="small"
                 bordered
@@ -132,7 +125,7 @@ class ReleaseTable extends React.Component {
     }
     /**判断发布可否功能 */
     judgeOperation = (record) => {
-        if(record==='0'){
+        if(record===0){
             return true;
         }else{
             return false;

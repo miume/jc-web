@@ -80,11 +80,12 @@ class PackGenerateModal extends React.Component {
                 type:'json',
             }).then((data)=>{
                 const code = data.data.code;
+                const res = data.data.data;
                 console.log(data)
                 if(code!==0){
                     message.info(data.data.message);
                 }else{
-
+                    console.log('res',res)
                 }
                 // const res = data.data.data;
                 // this.pagination.total=res?res.total:0;
