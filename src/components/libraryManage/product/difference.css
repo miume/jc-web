@@ -14,7 +14,8 @@
     display: inline-block;
     width: 9%;
     text-align: center;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .Mtwo{
     line-height: 36.8px;
@@ -22,7 +23,8 @@
     display: inline-block;
     width: 13%;
     text-align: center;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .Mthree{
     line-height: 36.8px;
@@ -30,7 +32,8 @@
     display: inline-block;
     width: 13%;
     text-align: center;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .Mfour{
     line-height: 36.8px;
@@ -38,7 +41,8 @@
     display: inline-block;
     width: 13%;
     text-align: center;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .Mfive{
     line-height: 36.8px;
@@ -49,7 +53,8 @@
     display: inline-block;
     width: 13%;
     text-align: center;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .Msix{
     line-height: 36.8px;
@@ -60,7 +65,8 @@
     display: inline-block;
     width: 13%;
     text-align: center;
-    text-overflow: ellipsis
+    text-overflow: ellipsis;
+    min-width: 0;
 }
 .Mseven{
     line-height: 36.8px;
@@ -72,6 +78,7 @@
     width: 13%;
     text-align: center;
     text-overflow: ellipsis;
+    min-width: 0;
 }
 .Meight{
     line-height: 36.8px;
@@ -83,11 +90,13 @@
     width: 13%;
     text-align: center;
     text-overflow: ellipsis;
+    min-width: 0;
 }
 .Mborder-down {
     border-bottom: 1px solid #E4E4E4;
     border-left: 1px solid #E4E4E4;
     text-overflow: ellipsis;
+    white-space: nowrap; 
     overflow: hidden;
     position: relative;
   }
