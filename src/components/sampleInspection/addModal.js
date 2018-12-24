@@ -14,6 +14,7 @@ let ob = JSON.parse(userId)
 
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
+        userId
         server
         Authorization
         constructor(props){
@@ -153,7 +154,7 @@ const CollectionCreateForm = Form.create()(
             })
         }
         onChangeTime = (date, dateString) => {
-            console.log(date, dateString);
+
           }
 
         getSampling=(value)=>{
@@ -217,7 +218,6 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                console.log(res)
                 this.props.onChange(res);
                 this.setState({
                     testItems : res
@@ -482,26 +482,14 @@ class AddModal extends React.Component{
     onCreate = () =>{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
-            console.log(value)
             if(err){
                 return;
             }
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            // this.setState({
-            //     status:1,
-            //     id:value.id,
-            //     acceptStatus:1,
-            //     deliveryFactoryId:value.deliveryFactoryId,
-            //     exceptionComment:value.exceptionComment,
-            //     sampleDeliveringDate:dateTime,
-            //     serialNumberId:value.serialNumberId,
-            //     type:value.type
-            // })
             let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
-                console.log(data)
             axios({
                 url:`${this.server}/jc/common/sampleDeliveringRecord`,
                 method:'post',
@@ -521,23 +509,12 @@ class AddModal extends React.Component{
     onCenter = () =>{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
-            console.log(value)
             if(err){
                 return;
             }
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            // this.setState({
-            //     status:1,
-            //     id:value.id,
-            //     acceptStatus:1,
-            //     deliveryFactoryId:value.deliveryFactoryId,
-            //     exceptionComment:value.exceptionComment,
-            //     sampleDeliveringDate:dateTime,
-            //     serialNumberId:value.serialNumberId,
-            //     type:value.type
-            // })
             let data = {sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
                 console.log(data)

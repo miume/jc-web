@@ -169,7 +169,9 @@ class SampleInspection extends React.Component{
                         cancel={this.cancel}
                         deleteByIds={this.deleteByIds}
                     />
+
                     <span style={{float:'right',paddingBottom:'8px'}}>
+
                         <SearchCell name='请输入搜索内容'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
                     </span>
                     <div className='clear' ></div>
@@ -227,7 +229,9 @@ class SampleInspection extends React.Component{
                 dataSource: res.list,
             });
         })
+
     };
+
     /**获取查询时菜单名称的实时变化 */
     searchContentChange(e){
         const value = e.target.value;
