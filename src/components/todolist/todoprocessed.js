@@ -50,10 +50,23 @@ import SearchCell from '../BlockQuote/search';
 // })
 // }
 class TodoProcessed extends React.Component{
+    constructor(props){
+        super(props);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+    }
+    /**获取时间的实时变化 */
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+      }
+    searchEvent(){
+        
+    }
     render(){
         return (
             <div className={this.props.flag?'historyContianer':'container'} >
-                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' /></div>
+                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.props.getHistory}searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/></div>
                 <div>
                     {
                         this.props.data?this.props.data.map(e=>{

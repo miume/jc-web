@@ -84,7 +84,7 @@ class RawTest extends React.Component{
             <div style={{height:580}}>
                  {/* 目前接口还没写好，所以没有数据，但可以输入审核意见，点击通过或者不通过按钮 */}
                 <DetailModal detail={this.state.data} />
-                <div className={this.props.flag?'hide':'check-footer'} >
+                <div className={this.props.flag?'hide':'interProduct-footer'} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                 </div>
             </div>

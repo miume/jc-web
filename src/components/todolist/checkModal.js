@@ -22,7 +22,6 @@ class CheckModal extends React.Component{
     }
     /**根据dataType判断是那种类型产品送审 */
     judgeType(type){
-        console.log(type)
         switch(type){
             case 1:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 2:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
