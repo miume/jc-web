@@ -55,7 +55,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'12%'
+            width:'10%'
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -91,7 +91,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'20%'
+            width:'15%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -116,8 +116,8 @@ class RawMaterialRedList extends Component{
         },
         {
             title:'操作',
-            dataIndex:'operation',
-            key:'operation',
+            dataIndex:'id',
+            key:'id',
             align:'center',
             //width:'',
             render:(text,record)=>{
@@ -377,7 +377,7 @@ class RawMaterialRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400,x:1800}}
+                        scroll={{y:400}}
                     >
                 
                 </Table>
