@@ -36,12 +36,6 @@ class RawMaterialRedList extends Component{
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,
             showSizeChanger:true,
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-                //console.log('Current: ', current, '; PageSize: ', pageSize);
-              },
-              onChange(current) {//跳转，页码改变
-                //console.log('Current: ', current);
-              }
         }
         this.columns=[{
           title:'序号',
@@ -49,13 +43,13 @@ class RawMaterialRedList extends Component{
           key:'index',
           sorter:(a,b)=>a.index-b.index,
           align:'center',
-          width:'6%'
+          width:'5%'
         },{
             title:'编号',
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'10%'
+            width:'12%'
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -91,7 +85,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'15%'
+            width:'14%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
