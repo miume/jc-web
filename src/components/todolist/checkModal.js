@@ -2,6 +2,7 @@ import React from 'react';
 import {Modal,message} from 'antd';
 import RawTest from './rawTest';
 import Procedure from './procedure';
+import RedList from './redlist';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import axios from 'axios';
@@ -21,13 +22,14 @@ class CheckModal extends React.Component{
     }
     /**根据dataType判断是那种类型产品送审 */
     judgeType(type){
+        console.log(type)
         switch(type){
             case 1:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 2:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 4:  return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 5:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 6:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
+            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 7:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 8:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 9:  return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag} type={9}/>; break;

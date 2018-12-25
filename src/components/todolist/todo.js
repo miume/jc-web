@@ -56,12 +56,13 @@ class Todo extends React.Component{
     }
     render(){
         const count = this.props.details?this.props.details.length:0;
+        const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <div className='wholediv'>
             <div className='wholep'>
                 <div className='wrap1'>
                     <span className='smallSize'>由您对</span>&nbsp;&nbsp;&nbsp;
-                    <span className='bigSize'>{this.props.data.description+'   '+this.props.data.batchNumber}</span>
+                    <span className='bigSize'>{dataType[this.props.data.dataType.toString()]+'   '+this.props.data.batchNumber}</span>
                 </div>
                 <div className='wrap2'>初步审核，检查标准是否判断正确</div>
                 <div className='wrap3'>
