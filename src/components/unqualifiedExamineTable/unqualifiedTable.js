@@ -105,10 +105,10 @@ class UnqualifiedTable extends React.Component {
                         <span  className="notClick"><i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;编辑</span>
                     )}
                     <Divider type="vertical" />
-                    <DetailSpan
-                        state={record.state}
-                        name='详情'
-                    />
+                    {/*<DetailSpan*/}
+                        {/*state={record.state}*/}
+                        {/*name='详情'*/}
+                    {/*/>*/}
                 </span>
             )
         }
