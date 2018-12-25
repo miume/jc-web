@@ -29,10 +29,15 @@ const FormItem=Form.Item;
                               materialName:res[i].materialName,
                               materialClass:res[i].materialClass
                             });
+                            let  type=res[i].materialClass;
+                              switch(type){
+                                 case 1: {type='原材料';break;} 
+                                 case 3: {type='产品';break;} 
+                              }
                             this.props.form.setFieldsValue({
                              // serialNumber:'请输入编号',
                               materialName: res[i].materialName,
-                              materialClass:res[i].materialClass
+                              materialClass:type
                             });
                           break;
                        };
