@@ -343,7 +343,7 @@ class Home extends Component {
                         
                         <div className="fr userName" >
                             <i className="fa fa-user-circle-o" aria-hidden="true"></i> 
-                            <span> {userName}</span>
+                            <span>{userName}</span>
                             <Divider type='vertical' />
                         </div>     
                     </div>

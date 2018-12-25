@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Divider} from 'antd';
 class RedList extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;
@@ -79,10 +80,38 @@ class RedList extends React.Component{
     }
     render(){
         this.props.getReplyData(this.state.reply);
+        const {data} = this.state;
         return (
             <div style={{height:580}}>
                  {/* 目前接口还没写好，所以没有数据，但可以输入审核意见，点击通过或者不通过按钮 */}
-                <DetailModal detail={this.state.data} />
+                 <div className="interDrSpanModalTop">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>编号</th>
+                            <th>物料名称</th>
+                            <th>物料类型</th>
+                            <th>损失数量</th>
+                            <th>损失重量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>{data?data.batchNumber:''}</td>
+                            <td>{data?data.materialName:''}</td>
+                            <td>{data?data.b:''}</td>
+                            <td>{data?data.materialName:''}</td>
+                            <td>{data?data.b:''}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div className="interDrSpanModalMiddle">
+                       <div>
+                           损失说明：<span>{data.topData?data.topData.materialName+'样品':''}</span>
+                       </div>
+                </div>
+                <Divider  />
                 <div className={this.props.flag?'hide':'check-footer'} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                 </div>
