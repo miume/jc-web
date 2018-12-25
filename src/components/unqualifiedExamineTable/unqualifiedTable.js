@@ -135,6 +135,7 @@ class UnqualifiedTable extends React.Component {
         )
     }
     /**判断编辑、删除可否功能 */
+    // asdas
     judgeCheckOperation = (record) => {
         if(record==='0'||record==='3'){
             return true;
