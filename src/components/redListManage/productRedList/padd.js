@@ -3,6 +3,7 @@ import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
+import Submit from '../../BlockQuote/submit';
 import ProductRedListAddModal from './paddModal';
 import axios from 'axios';
 const Option=Select.Option;
@@ -78,6 +79,7 @@ class Add extends React.Component{
         this.setState({
         visible: false
         });
+        this.formRef.resetField();
     }
 
 
@@ -181,37 +183,38 @@ class Add extends React.Component{
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,
-                        <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
+                        // <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
                         
-                         content={
-                             <div style={{width:250 ,height:150}}>
-                                <div>
-                                    <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
-                                      {
-                                          this.props.process.map((pro)=>{
-                                                  return(
-                                                    <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
+                        //  content={
+                        //      <div style={{width:250 ,height:150}}>
+                        //         <div>
+                        //             <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
+                        //               {
+                        //                   this.props.process.map((pro)=>{
+                        //                           return(
+                        //                             <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
         
-                                                  );
-                                          })
-                                      }
-                                    </Select>
-                                </div>
-                                <div style={{paddingTop:'10px'}}>
-                                  <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
-                                </div>
-                                <div style={{paddingTop:'10px' ,float:'right'}}>
-                                    <Button onClick={this.hide}>取消</Button>
-                                    <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
-                                </div>
-                             </div>
-                         }
-                         trigger='click'
-                         visible={this.state.popVisible}
-                         onVisibleChange={this.handleVisibleChange}
-                        >
-                        <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
-                        </Popover>
+                        //                           );
+                        //                   })
+                        //               }
+                        //             </Select>
+                        //         </div>
+                        //         <div style={{paddingTop:'10px'}}>
+                        //           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
+                        //         </div>
+                        //         <div style={{paddingTop:'10px' ,float:'right'}}>
+                        //             <Button onClick={this.hide}>取消</Button>
+                        //             <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
+                        //         </div>
+                        //      </div>
+                        //  }
+                        //  trigger='click'
+                        //  visible={this.state.popVisible}
+                        //  onVisibleChange={this.handleVisibleChange}
+                        // >
+                        // <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
+                        // </Popover>
+                        <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.hide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.url} urgentChange={this.urgentChange}/>
                     ]}>
                     <ProductRedListAddModal serialNumber={this.props.serialNumber}  wrappedComponentRef={(form)=>this.formRef=form}></ProductRedListAddModal>
                     

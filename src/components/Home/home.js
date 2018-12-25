@@ -279,7 +279,8 @@ class Home extends Component {
               /**红单管理 */
               redList:{
                   redList:`${server}/jc/common/repoRedTables`,
-                  redList1:`${server}/jc/common/repoRedTable`
+                  redList1:`${server}/jc/common/repoRedTable`,
+                  search:`${server}/jc/common/repoRedTables/serialNumber`
               },
               /**原材料检验 */
               rawTestReport:{

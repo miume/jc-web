@@ -48,7 +48,7 @@ class ProductRedList extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'10%'
+            width:'12%'
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -84,7 +84,7 @@ class ProductRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'11%'
+            width:'20%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -94,8 +94,8 @@ class ProductRedList extends Component{
              render:(text,record)=>{
                  let status=record.commonBatchNumber.status;
                   switch(`${status}`){
-                        case '-1': return '未申请';
-                        case '0': return '待审核';
+                        case '-1': return '已保存未提交';
+                        case '0': return '已提交未审核';
                         case '1': return '审核中';
                         case '2': return '已通过';
                         case '3': return '未通过';
@@ -387,7 +387,7 @@ class ProductRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400,x:800}}
+                        scroll={{y:400,x:1800}}
                     >
                 
                 </Table>
