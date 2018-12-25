@@ -99,8 +99,8 @@ class RawTestReport extends React.Component{
             render:(text)=>{ 
                 const items = text.split(',');
                 var testItems = '';
-                if(items.length>3){
-                    testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
+                if(items.length>2){
+                    testItems = items[0]+','+items[1]+','+items[2]+'...';
                     return <abbr title={text}>{testItems}</abbr>;
                 }else{
                   testItems = text;

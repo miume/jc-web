@@ -27,6 +27,22 @@ const columns = [{
     align:'center',
     width: '25%',
 }];
+const examineData = [{
+    id: 100,
+    handler: 1,
+    handleTime: "2018-12-20 09:34:23",
+    handleReply: "我没意见",
+    dataTaskRecordId: 25,
+    visible: 0
+},{
+    id: 100,
+    handler: 1,
+    handleTime: "2018-12-20 09:34:23",
+    handleReply: "我没意见",
+    dataTaskRecordId: 25,
+    visible: 0
+}
+]
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;

@@ -86,10 +86,12 @@ class CheckModal extends React.Component{
         })
     }
     render(){
+        const type = this.props.dataType.toString();
+        const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <span>
                 <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton>
-                <Modal visible={this.state.visible} title='审核' centered={true}
+                <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
                 closable={false} maskClosable={false} className={this.props.dataType===2?'modal-xlg':'modal-md'}
                 footer={[
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
