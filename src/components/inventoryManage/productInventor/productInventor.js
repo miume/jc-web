@@ -32,17 +32,24 @@ class ProductInventor extends Component{
             width:'10%',
             align:'center'
         },{
-           title:'货物名称',
+           title:'物料名称',
            dataIndex:'materialName',
            key:'materialName',
            width:'18%',
            align:'center'
         },{
-            title:'货物型号',
+            title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
             width:'18%',
-            align:'center'
+            align:'center',
+            render:(text,record)=>{
+               switch(`${record.materialClass}`){
+                   case '1':return '原材料';
+                   case '3':return '产品';
+                   default:return ''
+               }
+            }
         },{
            title:'编号',
            dataIndex:'serialNumber',
@@ -53,13 +60,13 @@ class ProductInventor extends Component{
            title:'数量',
            dataIndex:'quantity',
            key:'quantity',
-           width:'10%',
+           width:'18%',
            align:'center'
         },{
            title:'重量',
            dataIndex:'weight',
            key:'weight',
-           width:'10%',
+           width:'18%',
            align:'center'
         },];
         this.pagination={
@@ -149,7 +156,7 @@ class ProductInventor extends Component{
      });
     }
     render(){
-        this.Authorization=localStorage.getItem('Authorization');
+        //this.Authorization=localStorage.getItem('Authorization');
         this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>

@@ -36,37 +36,37 @@ class ProductInStorage extends Component{
            title:'产品名称',
            dataIndex:'repoBaseSerialNumber.materialName',
            key:'repoBaseSerialNumber.materialName',
-           width:'20%',
+           width:'15%',
            align:'center'
         },{
            title:'编号',
            dataIndex:'repoBaseSerialNumber.serialNumber',
            key:'repoBaseSerialNumber.serialNumber',
-           width:'10%',
+           width:'15%',
            align:'center'
         },{
            title:'数量',
            dataIndex:'repoInRecord.quantity',
            key:'repoInRecord.quantity',
-           width:'10%',
+           width:'15%',
            align:'center'
         },{
            title:'重量',
            dataIndex:'repoInRecord.weight',
            key:'repoInRecord.weight',
-           width:'10%',
+           width:'15%',
            align:'center'
         },{
            title:'入库时间',
            dataIndex:'repoInRecord.createTime',
            key:'repoInRecord.createTime',
-           width:'20%',
+           width:'16%',
            align:'center'
         },{
            title:'入库人',
            dataIndex:'repoInRecord.createPerson',
            key:'repoInRecord.createPerson',
-           width:'10%',
+           width:'15%',
            align:'center'
         }];
         this.pagination={

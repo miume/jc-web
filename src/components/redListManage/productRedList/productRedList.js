@@ -42,7 +42,7 @@ class ProductRedList extends Component{
           key:'index',
           sorter:(a,b)=>a.index-b.index,
           align:'center',
-          width:'6%'
+          width:'5%'
         },{
             title:'编号',
             dataIndex:'repoBaseSerialNumber.serialNumber',
@@ -95,7 +95,7 @@ class ProductRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'20%'
+            width:'14%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -118,8 +118,8 @@ class ProductRedList extends Component{
         },
         {
             title:'操作',
-            dataIndex:'operation',
-            key:'operation',
+            dataIndex:'id',
+            key:'id',
             align:'center',
             //width:'',
             render:(text,record)=>{
@@ -401,7 +401,7 @@ class ProductRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400,x:1800}}
+                        scroll={{y:400}}
                     >
                 
                 </Table>
