@@ -165,7 +165,9 @@ class Home extends Component {
             '7' : '进货检验',
             '8' : '成品检验',
             '9' : '原材料检测',
-            '10': '中间品检测'
+            '10': '中间品检测',
+            '11': '不合格评审数据',
+            '12': '不合格追踪数据'
         }
         const server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem('Authorization');

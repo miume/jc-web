@@ -1,11 +1,16 @@
 import React from 'react';
-import {Button, Input} from 'antd';
+import {Button, Input,DatePicker} from 'antd';
 class SearchCell extends React.Component{
     render(){
         const Search = Input.Search;
         const type= this.props.type;
         return(
             <span style={{float:'right',paddingBottom:'8px'}}>
+            {
+                this.props.timeFlag?
+                <span>
+                <DatePicker className = {`search-${type}`} onChange={this.props.searchContentChange} placeholder='请选择日期' />
+                <Button type="primary" icon="search" className='time-search'></Button></span>:
                 <Search
                     id='search'
                     className = {`search-${type}`}
@@ -15,6 +20,7 @@ class SearchCell extends React.Component{
                     enterButton
                     style={{ width: 200 }}
                 />
+               }
                 <Button
                     type="primary"
                     style={{marginLeft:10}}

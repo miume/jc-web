@@ -217,11 +217,23 @@
 .check-footer{
     height: 100px;
     width: 100%;
-    top:120px;
     position: relative;
     bottom: 0;
-    }
-    
+}
+.interProduct-footer{
+    height: 100px;
+    width: 100%;
+    position: relative;
+    top:126px;
+    bottom: 0;
+}
+.redlistDiv{
+    height:100px;
+    padding:10px;
+}
+.red-min-width{
+    min-width: 100px;
+}  
     
 /* .checkModal div:last-child{
     width:100px;

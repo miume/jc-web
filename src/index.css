@@ -247,9 +247,13 @@ button span {
 table .ant-select-selection,table .ant-input{
   border-radius: 0;
 }
-.fr{
-    float:right;
-}
 .ant-popover-inner {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35) !important;
+}
+.time-search{
+    height:35px;
+    width:48px;
+}
+.time-search .ant-btn{
+    border-radius: 0 4px 4px 0 !important;
 }
