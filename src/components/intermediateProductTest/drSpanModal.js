@@ -26,12 +26,6 @@ import DetailStateModal from "./detailStateModal";
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
-    state = {
-        examineData: [],  //审核人数据
-        // spanStatus: 0, //进行判断，0详情，1录检，2发布
-        // status : 1, //0不合格，1合格
-
-    };
     columns = [{
         title: '序号',
         dataIndex: 'index',

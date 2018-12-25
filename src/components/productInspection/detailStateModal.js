@@ -1,44 +1,57 @@
 import React from 'react';
-import './drStateModal.css';
+import './productInspection.css';
 import {Divider} from "antd";
 
 class DetailStateModal extends React.Component {
     render() {
-        switch (this.props.checkStatus) {
-            case '0': //未申请
+        switch (this.props.examine.examineStatus) {
+            case 0: //未申请
                 return(
-                    <div>
+                    <div className="productStateDefaultModal">
                         未申请
                     </div>
                 );
-            case '1': //审核中
+            case 1: //审核中
                 return(
-                    <div className="noApply">
+                    <div className="productStateDefaultModal">
                         审核中
                     </div>
                 );
-            case '2': //已通过
+            case 2: //已通过
                 return(
-                    <div>
-                        <table style={{float:'left',marginBottom:'15px',marginTop:'-10px'}}>
-                            <tbody className="padding">
-                            <tr>
-                                <td>审核人：</td>
-                                <td>{this.props.examineData.examiner}</td>
-                            </tr>
-                            <tr>
-                                <td>审核意见：</td>
-                                <td>{this.props.examineData.examineView}</td>
-                            </tr>
-                            <tr>
-                                <td>审核日期：</td>
-                                <td>{this.props.examineData.examineTime}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div className="productPassModal">
+                        <div className="productPassExamineModal">
+                            <table>
+                                <tbody className="productPadding">
+                                {
+                                    this.props.examine.examineData.map((item,index) => {
+                                        return (
+                                            <div>
+                                                <tr key={`handler${index}`}>
+                                                    <td>审核人：</td>
+                                                    <td>{item?item.handler:''}</td>
+                                                </tr>
+                                                <tr key={`handleReply${index}`}>
+                                                    <td>审核意见：</td>
+                                                    <td>{item?item.handleReply:''}</td>
+                                                </tr>
+                                                <tr key={`handleTime${index}`}>
+                                                    <td>审核日期：</td>
+                                                    <td>{item?item.handleTime:''}</td>
+                                                </tr>
+                                                <Divider
+                                                    className="productDrSpanDivider"
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                                </tbody>
+                            </table>
+                        </div>
                         <Divider />
                         <table style={{marginBottom:'15px',marginTop:'-10px'}}>
-                            <tbody className="padding">
+                            <tbody className="productPadding">
                             <tr>
                                 <td>择优人：</td>
                                 <td>{this.props.optionalPerson.personer}</td>
@@ -51,48 +64,74 @@ class DetailStateModal extends React.Component {
                         </table>
                     </div>
                 );
-            case '3': //不通过
+            case 3: //不通过
                 return(
-                    <div>
-                        <table style={{float:'left',marginBottom:'15px',marginTop:'-10px'}}>
-                            <tbody className="padding">
-                            <tr>
-                                <td>审核人：</td>
-                                <td>{this.props.examineData.examiner}</td>
-                            </tr>
-                            <tr>
-                                <td>审核意见：</td>
-                                <td>{this.props.examineData.examineView}</td>
-                            </tr>
-                            <tr>
-                                <td>审核日期：</td>
-                                <td>{this.props.examineData.examineTime}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <Divider />
-                        <div className="nopass">
+                    <div className="productPassModal">
+                        <div className="productPassExamineModal">
+                            <table>
+                                <tbody className="productPadding">
+                                {
+                                    this.props.examine.examineData.map((item,index) => {
+                                        return (
+                                            <div>
+                                                <tr key={`handler${index}`}>
+                                                    <td>审核人：</td>
+                                                    <td>{item?item.handler:''}</td>
+                                                </tr>
+                                                <tr key={`handleReply${index}`}>
+                                                    <td>审核意见：</td>
+                                                    <td>{item?item.handleReply:''}</td>
+                                                </tr>
+                                                <tr key={`handleTime${index}`}>
+                                                    <td>审核日期：</td>
+                                                    <td>{item?item.handleTime:''}</td>
+                                                </tr>
+                                                <Divider
+                                                    className="productDrSpanDivider"
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                        <Divider
+                            className="productDrSpanDivider"
+                        />
+                        <div className="productOptionalModal">
                             审核不通过，无法择优
                         </div>
                     </div>
                 );
-            case '4': //发布
+            case 4: //发布
                 return(
-                    <div>
-                        <table style={{float:'left'}}>
-                            <tbody>
-                            <tr>
-                                <td>审核人：</td>
-                                <td>{this.props.examineData.examiner}</td>
-                            </tr>
-                            <tr>
-                                <td>审核意见：</td>
-                                <td>{this.props.examineData.examineView}</td>
-                            </tr>
-                            <tr>
-                                <td>审核日期：</td>
-                                <td>{this.props.examineData.examineTime}</td>
-                            </tr>
+                    <div className="productStateModal">
+                        <table>
+                            <tbody className="productPadding">
+                            {
+                                this.props.examine.examineData.map((item,index) => {
+                                    return (
+                                        <div>
+                                            <tr key={`handler${index}`}>
+                                                <td>审核人：</td>
+                                                <td>{item?item.handler:''}</td>
+                                            </tr>
+                                            <tr key={`handleReply${index}`}>
+                                                <td>审核意见：</td>
+                                                <td>{item?item.handleReply:''}</td>
+                                            </tr>
+                                            <tr key={`handleTime${index}`}>
+                                                <td>审核日期：</td>
+                                                <td>{item?item.handleTime:''}</td>
+                                            </tr>
+                                            <Divider
+                                                className="interDrSpanDivider"
+                                            />
+                                        </div>
+                                    )
+                                })
+                            }
                             </tbody>
                         </table>
                     </div>

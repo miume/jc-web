@@ -38,6 +38,7 @@
 }
 .productDrSpanModalTop table{
     width:100%;
+    text-align: center;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -49,13 +50,13 @@
 .productDrSpanModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
-    padding-left: 10px;
+    /*padding-left: 10px;*/
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
-    padding-left: 10px;
+    /*padding-left: 10px;*/
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
@@ -70,31 +71,71 @@
     padding-bottom: 14px;
 }
 /*Bottom:设置检验人、审核人等*/
-.productDrSpanModalBottomFirst {
-    padding-top: 20px;
-    padding-bottom: 50px;
-    margin-top: -7px;
+.productDrSpanModalBottom {
+    position:absolute;
+    bottom: 170px;
+    height: 200px;
+    width: 460px;
     cursor: default;
 }
-.productDrSpanModalBottomFirst table {
-    float: left;
-    margin-top: 5px;
+
+.productDrSpanModalBottom .productDrSpanModalBottomFirst {
+    padding-top: 20px;
+    padding-bottom: 55px;
+    height: 50px;
+    /*margin-top: -7px;*/
+    cursor: default;
 }
-.productDrSpanModalBottomFirst table tbody{
+.productDrSpanModalBottom .productDrSpanModalBottomFirst table {
+    float: left;
+    /*margin-top: 5px;*/
+}
+.productStateModal {
+    overflow-y: auto;
+    width: 100%;
+    height: 100px;
+}
+.productDrSpanDivider {
+    margin: 15px 0 !important;
+    /*z-index: 0 !important;*/
+}
+.productPadding tr td {
     padding-top: 4px;
     padding-bottom: 4px;
 }
-/*.productDrSpanModalBottomSecond {*/
-    /*margin-top: -7px;*/
-    /*cursor: default;*/
-/*}*/
-/*.productDrSpanModalBottomSecond table {*/
-    /*float: left;*/
-/*}*/
-/*.productDrSpanModalBottomSecond table tbody{*/
-    /*padding-bottom: 4px;*/
-/*}*/
+/*
+    详情中底部中detailStateModal
 
+ */
+/*设置表格样式*/
+.productStateDefaultModal{
+    /*border: 1px solid black;*/
+    width: 100%;
+    height: 100px;
+    color: #999999;
+    text-align: center;
+    line-height: 110px;
+}
+.productPassModal {
+    width: 100%;
+    /*background: #4BD863;*/
+    height: 200px;
+}
+.productPassModal .productPassExamineModal{
+    overflow-y: auto;
+    width: 100%;
+    height: 100px;
+}
+.productPassModal .productPassExamineModal table{
+    width: 100%;
+}
+.productPassModal .productOptionalModal {
+    width: 100%;
+    height: 50px;
+    color: #999999;
+    text-align: center;
+    line-height: 60px;
+}
 /*
     录检中checkSpanModal
     Top:设置表格样式

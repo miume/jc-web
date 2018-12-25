@@ -2,6 +2,7 @@ import React from 'react';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from "../BlockQuote/search";
 import ProductTable from "./productInspectionTable";
+import axios from "axios";
 
 const data =[];
 for(let i=0; i<20; i++){
@@ -53,6 +54,7 @@ for(let i=0; i<20; i++){
 }
 class ProductInspection extends React.Component {
     url;
+    status;
     componentWillUnmount() {
         this.setState = (state, callback) => {
             return ;
@@ -61,7 +63,7 @@ class ProductInspection extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
         };
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.fetch=this.fetch.bind(this);
@@ -82,6 +84,7 @@ class ProductInspection extends React.Component {
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
+        this.status = JSON.parse(localStorage.getItem('status')) ;
         const current = JSON.parse(localStorage.getItem('current')) ;
         return(
             <div>
@@ -96,6 +99,7 @@ class ProductInspection extends React.Component {
                     <div className='clear' ></div>
                     <ProductTable
                         data={this.state.dataSource}
+                        status={this.status}
                         // rowSelection={rowSelection}
                         pagination={this.pagination}
                         fetch={this.fetch}
@@ -126,7 +130,26 @@ class ProductInspection extends React.Component {
         });
     };
     fetch = (params = {}) => {
+        axios.get(`${this.url.productInspection.getAllByPage}`,{
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:params,
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total = res?res.total:0;
+            if(res&&res.list)
+            {
+                for(var i = 1; i <= res.list.length;i++){
+                    var e = res.list[i-1];
+                    e['index'] = res.prePage*10+i
+                }
+                this.setState({
+                    dataSource:res.list
+                })
+            }
 
+        })
     };
     componentDidMount() {
         this.fetch();
