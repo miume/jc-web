@@ -64,7 +64,7 @@ class TodoList extends React.Component{
             <div>
                  <BlockQuote name="待办事项" menu='质量与流程'></BlockQuote>
                  <Tabs defaultActiveKey='todo1'>
-                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed url={this.url} data={this.state.data} fetch={this.fetch} /></TabPane>
+                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed url={this.url} data={this.state.data} fetch={this.fetch} getHistory={this.getHistory} /></TabPane>
                      <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><TodoProcessed url={this.url} data={this.state.historyRecord} getHistory={this.getHistory} fetch={this.fetch} flag={1} /></TabPane>
                  </Tabs>
             </div>
