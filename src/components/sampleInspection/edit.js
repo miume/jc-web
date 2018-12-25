@@ -14,7 +14,7 @@ const FormItem = Form.Item;
 
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
-        userId
+        // userId
         server
         Authorization
         constructor(props){
@@ -39,7 +39,9 @@ const CollectionCreateForm = Form.create()(
                 materialsId : null,
 
                 clicked: false,
-                visible1: 1
+                visible1: 1,
+
+                oldData:[],
             }
             this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
@@ -241,6 +243,7 @@ const CollectionCreateForm = Form.create()(
         }
 
         render(){
+            console.log(this.props.data);
             this.Authorization = localStorage.getItem("Authorization");
             this.server = localStorage.getItem('remote');
             const {visible,form,onCancel,onCreate,onChange,onCenter} = this.props;
@@ -261,11 +264,12 @@ const CollectionCreateForm = Form.create()(
                         <FormItem wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('type', {
                                     rules: [{ required: true, message: '请选择样品种类' }],
+                                    initialValue:this.props.data.sampleDeliveringRecord.type
                                 })(
                                     <Select  onChange={this.selectChange} placeholder="请选择样品种类">
-                                        <Option key="1" value="1">原材料</Option>
-                                        <Option key="2" value="2">中间品</Option>
-                                        <Option key="3" value="3">成品</Option>
+                                        <Option key="1" value={1}>原材料</Option>
+                                        <Option key="2" value={2}>中间品</Option>
+                                        <Option key="3" value={3}>成品</Option>
                                     </Select>
                                 )}
                         </FormItem>
@@ -273,13 +277,15 @@ const CollectionCreateForm = Form.create()(
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('date', {
                                     rules: [{ required: true, message: '请选择送样日期' }],
+                           
                                 })(
-                                    <DatePicker  style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
+                                    <DatePicker style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                                 )}
                             </FormItem>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('time', {
                                     rules: [{ required: true, message: '请选择送样时间' }],
+                               
                                 })(
                                     <TimePicker style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                                 )}
@@ -383,7 +389,7 @@ const CollectionCreateForm = Form.create()(
                             </Checkbox.Group></div>
                         </FormItem>
                         </div>
-                        )    
+                        )
                         }
                         {
                             (this.state.visible1===1||this.state.visible1===3)?
@@ -439,7 +445,7 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-class AddModal extends React.Component{
+class Edit extends React.Component{
     server
     Authorization
     state = {
@@ -469,7 +475,7 @@ class AddModal extends React.Component{
     handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
-        form.resetFields();
+        // form.resetFields();
     };
 
     saveFormRef = (formRef) => {
@@ -485,11 +491,11 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
+            let data = {sampleDeliveringRecord:{id:this.props.id,acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
                 url:`${this.server}/jc/common/sampleDeliveringRecord`,
-                method:'post',
+                method:'PUT',
                 headers:{
                     'Authorization': this.state.Authorization
                 },
@@ -513,11 +519,11 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            let data = {sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
+            let data = {sampleDeliveringRecord:{id:this.props.id,acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
                 url:`${this.server}/jc/common/sampleDeliveringRecord`,
-                method:'post',
+                method:'PUT',
                 headers:{
                     'Authorization': this.state.Authorization
                 },
@@ -537,7 +543,7 @@ class AddModal extends React.Component{
         this.server = localStorage.getItem('remote');
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
+                <span onClick={this.showModal} className='blue'>编辑</span>
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
@@ -545,10 +551,11 @@ class AddModal extends React.Component{
                     onCreate={this.onCreate}
                     onChange={this.onChange}
                     onCenter={this.onCenter}
+                    data={this.props.data}
                 />
             </span>
         )
     }
 }
 
-export default AddModal
+export default Edit

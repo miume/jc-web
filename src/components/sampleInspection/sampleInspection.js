@@ -1,16 +1,19 @@
 import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
 import axios from "axios";
-import {Table,Divider,message,Popconfirm} from "antd";
+import {Table,Divider,message,Popconfirm,Popover,Input, Button} from "antd";
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
 import DeleteByIds from '../BlockQuote/deleteByIds';
+import PopRefuse from "./confuse"
+import "./sample.css"
+import Edit from "./edit"
 
 
 class SampleInspection extends React.Component{
     server
-    columns
+    Authorization
     componentDidMount() {
         this.fetch();
     }
@@ -27,15 +30,19 @@ class SampleInspection extends React.Component{
             loading: false,
             pagination:[],
             searchContent:'',
+            clicked:false,
+            Contentvalue:''
         };
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+        // this.handleDelete = this.handleDelete.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleRefuse = this.handleRefuse.bind(this);
+        this.contentChange = this.contentChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -80,7 +87,7 @@ class SampleInspection extends React.Component{
             key: 'sampleDeliveringRecord.exceptionComment',
             align:'center',
             width: '9%',
-            render(text,record){
+            render:(text,record)=>{
                 if(record.sampleDeliveringRecord.exceptionComment === null){
                     return "无"
                 }else{
@@ -120,72 +127,84 @@ class SampleInspection extends React.Component{
             key: 'sampleDeliveringRecord.handleComment',
             align:'center',
             width: '7%',
-            render(text,record){
-                if(record.sampleDeliveringRecord.exceptionComment === null){
+            render : (text,record)=>{
+                if(record.sampleDeliveringRecord.handleComment === null){
                     return "无"
                 }else{
-                    return record.sampleDeliveringRecord.exceptionComment
+                    return record.sampleDeliveringRecord.handleComment
                 }
             }
         },{
             title:'操作',
-            dataIndex: 'id',
+            dataIndex: 'sampleDeliveringRecord.id',
             key: 'id',
             align:'center',
             width: '18%',
-            render(text,record){
+            render : (text,record)=>{
                 return(
                     <span>
-                        <span className='blue'>编辑</span>
+                        {record.sampleDeliveringRecord.acceptStatus==-1?<Edit fetch={this.fetch} id={text} data={record}/>:<span className='Editgrey'>编辑</span>}
                         <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消">
+                        {record.sampleDeliveringRecord.acceptStatus==-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>删除</span>
-                        </Popconfirm>
+                        </Popconfirm>:<span  className="Editgrey">删除</span>}
                         <Divider type="vertical" />
-                        <span className='blue'>接收</span>
+                        {record.sampleDeliveringRecord.acceptStatus==1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
+                          <span className='blue'>接受</span>
+                        </Popconfirm>:<span  className="Editgrey">接受</span>}
                         <Divider type="vertical" />
-                        <span className='blue'>拒绝</span>
+                        {record.sampleDeliveringRecord.acceptStatus==1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="Editgrey">拒绝</span>}
                     </span>
-                )
+                );
             }
         }];
     }
-
-    render(){
-        const { selectedRowKeys } = this.state;
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.server = localStorage.getItem('remote');
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
-        return(
-            <div>
-                <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <div style={{padding:'15px'}}>
-                    <AddModal fetch={this.fetch}/>
-                    <DeleteByIds
-                        selectedRowKeys = {this.state.selectedRowKeys}
-                        cancel={this.cancel}
-                        deleteByIds={this.deleteByIds}
-                    />
-
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-
-                        <SearchCell name='请输入搜索内容'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-                    </span>
-                    <div className='clear' ></div>
-                    <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
-                           bordered
-                           rowKey={record => record.sampleDeliveringRecord.id}
-                           onChange={this.handleTableChange}
-                           pagination={this.pagination}
-                           scroll={{ x: 1500}}></Table>
-                </div>
-            </div>
-        )
+    contentChange(e){
+        const value = e.target.value;
+        this.setState({Contentvalue:value});
     }
-    handleDelete(id){
+    handleRefuse(id){
+        axios({
+            url:`${this.server}/jc/common/sampleDeliveringRecord/accept`,
+            method:'Post',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params : {
+                id:id,
+                isAccept:3,
+                handleComment:this.state.Contentvalue
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+        setTimeout(() => {
+            this.fetch();
+        }, 1000);
+    }
+    handleAccept = (id) =>{
+        axios({
+            url:`${this.server}/jc/common/sampleDeliveringRecord/accept`,
+            method:'Post',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params : {
+                id:id,
+                isAccept:2
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+        setTimeout(() => {
+            this.fetch();
+        }, 1000);
+    }
+    handleDelete = (id) => {
         axios({
             url:`${this.server}/jc/common/sampleDeliveringRecord/${id}`,
             method:'Delete',
@@ -289,6 +308,41 @@ class SampleInspection extends React.Component{
             message.info(data.data.message);
             this.fetch();
         })
+    }
+    render(){
+        const { selectedRowKeys } = this.state;
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        this.server = localStorage.getItem('remote');
+        this.Authorization = localStorage.getItem("Authorization")
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
+        return(
+            <div>
+                <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <div style={{padding:'15px'}}>
+                    <AddModal fetch={this.fetch}/>
+                    <DeleteByIds
+                        selectedRowKeys = {this.state.selectedRowKeys}
+                        cancel={this.cancel}
+                        deleteByIds={this.deleteByIds}
+                    />
+
+                    <span style={{float:'right',paddingBottom:'8px'}}>
+
+                        <SearchCell name='请输入搜索内容'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
+                    </span>
+                    <div className='clear' ></div>
+                    <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
+                           bordered
+                           rowKey={record => record.sampleDeliveringRecord.id}
+                           onChange={this.handleTableChange}
+                           pagination={this.pagination}
+                           scroll={{ x: 1500}}></Table>
+                </div>
+            </div>
+        )
     }
 }
 
