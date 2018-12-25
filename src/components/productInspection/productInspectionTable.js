@@ -9,79 +9,67 @@ class ProductTable extends React.Component{
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
-        sorter: (a, b) => a.key - b.key,
+        key: 'index',
+        sorter: (a, b) => a.index - b.index,
         align:'center',
         width: '6%',
     },{
         title: '送检日期',
-        dataIndex: 'sampleDeliveringDate',
-        key: 'sampleDeliveringDate',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '13%',
     },{
         title: '送检人',
-        dataIndex: 'deliverer',
-        key: 'deliverer',
+        dataIndex: 'sampleDeliveringRecordDTO.deliverer.name',
+        key: 'sampleDeliveringRecordDTO.deliverer.name',
         align:'center',
         width: '8%',
     },{
         title: '送检工厂(原材料)',
-        dataIndex: 'deliveryFactory',
-        key: 'deliveryFactory',
+        dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
+        key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
         align:'center',
         width: '8%',
     },{
         title: '编号',
-        dataIndex: 'batchNumber',
-        key: 'batchNumber',
+        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
+        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
         align:'center',
         width: '8%',
     },{
         title: '检测项目',
-        dataIndex: 'testItems',
-        key: 'testItems',
+        dataIndex: 'testReportRecordDTO.testItemName',
+        key: 'testReportRecordDTO.testItemName',
         align:'center',
         width: '8%',
     },{
         title: '异常备注',
-        dataIndex: 'urgentComment',
-        key: 'urgentComment',
-        align:'center',
-        width: '8%',
-    },{
-        title: '类型',
-        dataIndex: 'type',
-        key: 'type',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
         align:'center',
         width: '8%',
     },{
         title: '发布状态',
-        dataIndex: 'h',
-        key: 'h',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
+        key: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
         align:'center',
         width: '8%',
         render:state => {
-            switch(`${state}`) {
-                case '0': return '未发布';
-                case '1': return '已发布';
+            switch(state) {
+                case 0: return '未发布';
+                case 1: return '已发布';
                 default: return '';
             }
         },
     },{
         title: '审核状态',
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
+        key: 'commonBatchNumberDTO.commonBatchNumber.status',
         align:'center',
         width: '8%',
         render:state => {
-            switch(`${state}`) {
-                case '0': return '未申请'
-                case '1': return '审核中';
-                case '2': return '已通过';
-                case '3': return '不通过';
-                default: return '';
-            }
+            return this.props.status[state.toString()];
         }
     },{
         title: '操作',
@@ -98,10 +86,10 @@ class ProductTable extends React.Component{
                     {detailSpanFlag?(
                         <DetailSpan
                             record={record}
-                            checkStatus={record.status}
+                            checkStatus={record.commonBatchNumberDTO.commonBatchNumber.status}
                         />
                     ):(
-                        <span  className="notClick"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;详情</span>
+                        <span  className="notClick">详情</span>
                     )}
                     <Divider type="vertical" />
                     {checkSpanFlag?(
@@ -109,7 +97,7 @@ class ProductTable extends React.Component{
                             record={record}
                         />
                     ):(
-                        <span  className="notClick"><i className="fa fa-archive" aria-hidden="true"></i>&nbsp;录检</span>
+                        <span  className="notClick">录检</span>
                     )}
                     <Divider type="vertical" />
                     {releaseSpanFlag?(
@@ -117,7 +105,7 @@ class ProductTable extends React.Component{
                             record={record}
                         />
                     ):(
-                        <span  className="notClick"><i className="fa fa-bullhorn" aria-hidden="true"></i>&nbsp;发布</span>
+                        <span  className="notClick">发布</span>
                     )}
                 </span>
             )

@@ -64,7 +64,6 @@ class DetailSpan extends React.Component {
                 >
                     <div style={{height:580}}>
                         <DrSpanModal
-                            url={this.props.url}
                             data={this.state.detailData}
                         />
                     </div>
@@ -122,12 +121,12 @@ class DetailSpan extends React.Component {
                 };
                 const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
                 const batchNumberId = res.commonBatchNumber?res.commonBatchNumber.id:'';
-                if(examineStatus==='2'||examineStatus==='3'){
+                if(examineStatus===2||examineStatus===3){
                     axios({
-                        url:`${this.url.toDoList}/${batchNumberId}/result`,
+                        url:`${this.props.url.toDoList}/${batchNumberId}/result`,
                         method:'get',
                         headers:{
-                            'Authorization':this.url.Authorization
+                            'Authorization':this.props.url.Authorization
                         }
                     }).then((data)=>{
                         const res = data.data.data;

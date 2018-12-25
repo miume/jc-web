@@ -306,7 +306,11 @@ class Home extends Component {
                   getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
               },
               /**中间品录检 */
-              intermediateProduct:`${server}/jc/common/middleProductionDetection`
+              intermediateProduct:`${server}/jc/common/middleProductionDetection`,
+              /**产品工序 */
+              productInspection:{
+                  getAllByPage:`${server}/jc/common/productTestRecords`,
+              }
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
