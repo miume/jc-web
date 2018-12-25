@@ -169,8 +169,6 @@ class Editor extends React.Component{
         return(
             <span>
                 {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="Editgrey">编辑</span>}
-                {/* <span className='blue' onClick={this.props.status === -1?this.handleDetail:null}>编辑</span> */}
-                {/* <span className='blue' onClick={this.handleDetail}>编辑</span> */}
                 <Modal title='编辑' visible={this.state.visible}
                 width="400px"
                     closable={false} centered={true}
@@ -198,22 +196,6 @@ class Editor extends React.Component{
                         <WhiteSpace />
                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                       </div>
-                      {/* <table style={{width:'100%'}}>
-                            <thead className='thead'>
-                                <tr>
-                                    <td>负责人</td>
-                                    <td>职责</td>
-                                    <td>操作</td>
-                                </tr>
-                            </thead>
-                            <tbody id="data">
-                            {
-                            this.state.data.map((m) => { return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}></Tr> })
-                            }
-                            </tbody>
-                        </table>
-                        <WhiteSpace />
-                        <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/> */}
                 </Modal>
             </span>
         );
