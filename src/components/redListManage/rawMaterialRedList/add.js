@@ -3,6 +3,7 @@ import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
+import Submit from '../../BlockQuote/submit'
 import RawMaterialRedListAddModal from './addModal';
 import axios from 'axios';
 const Option=Select.Option;
@@ -81,6 +82,7 @@ class Add extends React.Component{
         this.setState({
         visible: false
         });
+         this.formRef.resetField();
     }
 
 
@@ -94,6 +96,7 @@ class Add extends React.Component{
       //console.log('hide')
       //console.log(this.state.popVisible)
       this.setState({popVisible:false});
+     // console.log(document.getElementsById('switch').item);
     }
 
     handleVisibleChange=(visible)=>{
@@ -104,7 +107,7 @@ class Add extends React.Component{
    }
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
-    console.log(isUrgent);
+   // console.log(isUrgent);
     axios({
         url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
         method:'post',
@@ -163,6 +166,7 @@ class Add extends React.Component{
         visible: false
         });
       this.formRef.resetField();
+      
     }
 
    //红单是否紧急
@@ -187,12 +191,12 @@ class Add extends React.Component{
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,
-                        <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
+                        <Popover key='songshen'   title='设置审批细节' width='50%' height='40%'
                         
                          content={
-                             <div style={{width:250 ,height:150}}>
+                             <div style={{width:300 ,height:130}}>
                                 <div>
-                                    <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
+                                    <Select className='select'  placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
                                       {
                                           this.props.process.map((pro)=>{
                                                   return(
@@ -204,7 +208,7 @@ class Add extends React.Component{
                                     </Select>
                                 </div>
                                 <div style={{paddingTop:'10px'}}>
-                                  <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
+                                  <span>是否紧急</span>&nbsp;&nbsp;<Switch id='switch' onChange={this.urgentChange}/>
                                 </div>
                                 <div style={{paddingTop:'10px' ,float:'right'}}>
                                     <Button onClick={this.hide}>取消</Button>
@@ -218,6 +222,7 @@ class Add extends React.Component{
                         >
                         <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
                         </Popover>
+                        // <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.hide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.url} urgentChange={this.urgentChange}/>
                     ]}>
                     <RawMaterialRedListAddModal serialNumber={this.props.serialNumber}  wrappedComponentRef={(form)=>this.formRef=form}></RawMaterialRedListAddModal>
                     

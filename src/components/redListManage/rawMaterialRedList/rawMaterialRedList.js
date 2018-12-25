@@ -7,7 +7,7 @@ import SearchCell from '../../BlockQuote/search';
 import Note from './note';
 import axios from 'axios';
 
-
+const status=localStorage.getItem('status');
 class RawMaterialRedList extends Component{
     url;
     Authorization;
@@ -55,7 +55,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'10%'
+            width:'12%'
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -91,7 +91,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'11%'
+            width:'20%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -101,16 +101,18 @@ class RawMaterialRedList extends Component{
              render:(text,record)=>{
                  let status=record.commonBatchNumber.status;
                   switch(`${status}`){
-                        case '-1': return '未申请';
-                        case '0': return '待审核';
+                        case '-1': return '已保存未提交';
+                        case '0': return '已提交未审核';
                         case '1': return '审核中';
                         case '2': return '已通过';
                         case '3': return '未通过';
-                        // case '4': return '合格';
-                        // case '5': return '不合格';
                         default: return '';
             }
           }
+        // render:status=>{
+        //          return this.status[status.toString()];
+        // }
+
         },
         {
             title:'操作',
@@ -208,33 +210,7 @@ class RawMaterialRedList extends Component{
         });
     }
     onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
-        // console.log(selectedRowKeys);//是一个数组
-        // const data=this.state.dataSource;
-        // let l=selectedRowKeys.length;
-        // for(let i=0;i<l;i++){
-        //     for(let j=0;j<data.length;j++){
-        //         console.log(data[j].repoRedTable.id);
-        //         console.log(data[j].commonBatchNumber.status);
-        //         if(selectedRowKeys[i]===data[j].repoRedTable.id){
-        //             if(data[j].commonBatchNumber.status!==-1&&data[j].commonBatchNumber.status!==3){
-        //                 this.setState({
-        //                     selectedRowKeys:[],
-        //                 });
-        //                            break;
-        //             }
-        //         }
-        //         console.log(this.state.selectedRowKeys);
-        //     } 
-        //     console.log(this.state.selectedRowKeys.length);
-        //     if(this.state.selectedRowKeys.length===0){
-        //          break;
-        //     }
-        // }
-        // console.log(this.state.selectedRowKeys.length);
-        // if(this.state.selectedRowKeys.length===0){
-        //     message.info('有不可删除数据！');
-        //            return
-        // }
+        
         this.setState({selectedRowKeys:selectedRowKeys});
      }
     
@@ -300,11 +276,14 @@ class RawMaterialRedList extends Component{
       const serialNumber=this.state.searchContent;
       const materialType=1;
       axios({
-          url:`${this.url.redList.redList}/${serialNumber}?materialType=${materialType}`,
+          url:`${this.url.redList.search}?materialType=${materialType}`,
           method:'get',
           headers:{
               'Authorization':this.url.Authorization
           },
+          params:{
+            serialNumber:serialNumber
+          }
         
       })
       .then((data)=>{
@@ -398,7 +377,7 @@ class RawMaterialRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400,x:800}}
+                        scroll={{y:400,x:1800}}
                     >
                 
                 </Table>
