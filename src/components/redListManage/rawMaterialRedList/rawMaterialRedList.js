@@ -7,6 +7,7 @@ import SearchCell from '../../BlockQuote/search';
 import Note from './note';
 import axios from 'axios';
 
+
 const status=localStorage.getItem('status');
 class RawMaterialRedList extends Component{
     url;
@@ -60,6 +61,17 @@ class RawMaterialRedList extends Component{
             title:'物料类型',
             dataIndex:'repoBaseSerialNumber.materialClass',
             key:'repoBaseSerialNumber.materialClass',
+            render:(text,record)=>{
+                // console.log(text);
+                // console.log(record);
+                let type=record.repoBaseSerialNumber.materialClass;
+                switch(`${type}`){
+                     case '1':return '原材料';
+                     case '3':return '产品';
+                     default:return '';
+
+                }
+            },
             align:'center',
             width:'8%'
         },{
@@ -294,7 +306,7 @@ class RawMaterialRedList extends Component{
               });
               }
              
-              message.info(data.data.message);
+             
              
       })
       .catch(()=>{
@@ -355,7 +367,7 @@ class RawMaterialRedList extends Component{
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                      <SearchCell name='请输入搜索内容' 
+                      <SearchCell name='请输入编号' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
                           fetch={this.fetch}
