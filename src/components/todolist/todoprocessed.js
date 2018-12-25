@@ -76,7 +76,7 @@ class TodoProcessed extends React.Component{
                                 if(i<flag) details[i]['flag'] = 0;
                                 else {details[i]['flag'] = 1; }      
                             }
-                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} data={e.commonBatchNumber} details={details} curId={this.props.data.curId} url={this.props.url} fetch={this.props.fetch} flag={this.props.flag}/>
+                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} data={e.commonBatchNumber} details={details} curId={this.props.data.curId} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag}/>
                         }):null
                     }
                     </div>

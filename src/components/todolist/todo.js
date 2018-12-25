@@ -89,7 +89,7 @@ class Todo extends React.Component{
                <div className={`item3`} onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
                {
-                    <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} flag={this.props.flag} dataType={this.props.data.dataType} />
+                    <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag} dataType={this.props.data.dataType} />
                }
                </div>
            </div>
