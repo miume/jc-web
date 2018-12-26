@@ -313,6 +313,10 @@ class Home extends Component {
               /**产品工序 */
               productInspection:{
                   getAllByPage:`${server}/jc/common/productTestRecords`,
+              },
+              /**产品检测 */
+              productTestRecord:{
+                getByBatchNUmberId:`${server}/jc/common/productTestRecord/batchNumberId`,
               }
         }
         localStorage.setItem('status',JSON.stringify(status));

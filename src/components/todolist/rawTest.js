@@ -6,10 +6,10 @@ class RawTest extends React.Component{
         const dataId = this.props.dataId;
         const type = this.props.type;
         var url = '';
-        if(type===9){
-            url = `${this.props.url.rawTestReport.rawTestReport}/detailsByBatchNumberId?id=${dataId}`;
-        }else{
-            url = `${this.props.url.intermediateProduct}/detailsByBatchNumberId/${dataId}`
+        switch(type){
+            case 5:  url = `${this.props.url.productTestRecord.getByBatchNUmberId}?batchNumberId=${dataId}`; break;
+            case 9:  url = `${this.props.url.rawTestReport.rawTestReport}/detailsByBatchNumberId?id=${dataId}`; break;
+            case 10: url =  `${this.props.url.intermediateProduct}/detailsByBatchNumberId/${dataId}`; break;
         }
         this.getData(url);
         this.getAllTester(dataId);
