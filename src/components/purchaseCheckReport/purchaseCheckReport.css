@@ -264,6 +264,7 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    z-index: 1000;
 }
 .middleTbodyDivWhiteLength {
     flex-grow:1;
@@ -284,6 +285,7 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    background-color: #FF3B30;
 }
 .tbodyRight {
     min-width: 10%;

@@ -50,18 +50,6 @@ class CheckTable extends React.Component {
         align:'center',
         width: '10%',
     },{
-        title: '修改人',
-        dataIndex: 'testReportRecordDTOList.judegrName',
-        key: 'testReportRecordDTOList.judegrName',
-        align:'center',
-        width: '6%',
-    },{
-        title: '修改日期',
-        dataIndex: 'testReportRecordDTOList.testReportRecord.judgeDate',
-        key: 'testReportRecordDTOList.testReportRecord.judgeDate',
-        align:'center',
-        width: '10%',
-    },{
         title: '审核状态',
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
         key: 'commonBatchNumberDTO.commonBatchNumber.status',
