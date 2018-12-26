@@ -234,7 +234,43 @@
 .red-min-width{
     min-width: 100px;
 }  
-    
+.check-status{
+    color:#999999;
+    width:100px;
+    padding:10px;
+    margin-right: 10px;
+}  
+.check-detail{
+    width:100%;
+    height: 100px;
+    padding:10px;
+    display: flex;
+    flex-direction: row;
+    /* border:1px solid grey;  */
+}
+
+.check-detail-div{
+    flex-grow: 60;
+    /* border:1px solid grey;  */
+}
+.check-detail-div-hidden{
+    width:95%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+.check-detail-div-hidden .check-detail-div-hidden-part{
+    flex:1;
+    padding-right:30px;
+}
+.check-detail-i{
+    flex-grow: 2;
+    align-self:flex-start;
+}
+.check-detail-i i{
+    width:30px;
+    border-radius: 0.2em 0 0 0.2em;
+}
 /* .checkModal div:last-child{
     width:100px;
     height:70px;

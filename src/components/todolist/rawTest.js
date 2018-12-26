@@ -12,6 +12,7 @@ class RawTest extends React.Component{
             url = `${this.props.url.intermediateProduct}/detailsByBatchNumberId/${dataId}`
         }
         this.getData(url);
+        this.getAllTester(dataId);
     }
     constructor(props){
         super(props);
@@ -19,8 +20,9 @@ class RawTest extends React.Component{
             data:[],
             reply:'',
         }
-        this.textChange = this.textChange.bind(this);
         this.getData = this.getData.bind(this);
+        this.textChange = this.textChange.bind(this);
+        this.getAllTester = this.getAllTester.bind(this);
     }
     getData(url){
         axios.get(`${url}`,{
@@ -63,14 +65,30 @@ class RawTest extends React.Component{
                     testData:testData,
                     IsQualified:IsQualified,
                 }
-                // console.log(IsQualified)
-                // console.log(detail)
                 this.setState({
                     data:detail
                 })
             }
         })
     }
+    /**通过batchNumberId 查询审核人 */
+    getAllTester(dataId){
+        axios({
+          url:`${this.props.url.toDoList}/${dataId}/result`,
+          method:'get',
+          headers:{
+            'Authorization':this.props.url.Authorization
+          }
+        }).then(data=>{
+          const res = data.data.data;
+          console.log(res)
+          if(res){
+            this.setState({
+                examineData : res
+            })
+          }
+      })   
+      }
     /**监控审核意见的变化 */
     textChange(e){
         const value = e.target.value;

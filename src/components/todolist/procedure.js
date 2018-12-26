@@ -1,6 +1,31 @@
 import React from 'react';
 import axios from 'axios';
 import {Table} from 'antd';
+const examineData = [{
+    id: 100,
+    handler: 1,
+    personName:'王大大',
+    handleTime: "2018-12-20 09:34:23",
+    handleReply: "我没意见",
+},{
+    id: 101,
+    handler: 2,
+    personName:'兰亚戈',
+    handleTime: "2018-12-23 09:34:23",
+    handleReply: "同意",
+},{
+    id: 103,
+    handler: 3,
+    personName:'胡旭东',
+    handleTime: "2018-12-24 09:34:23",
+    handleReply: "勉强",
+},{
+    id: 104,
+    handler: 4,
+    personName:'杨梅',
+    handleTime: "2018-12-25 09:34:23",
+    handleReply: "勉强",
+}]
 const columns = [{
     title: '产品线',
     dataIndex: 'deliveryFactory.name' ,
@@ -73,6 +98,7 @@ class Procedure extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;
         this.getData(dataId);
+        this.getAllTester(dataId);
     }
     constructor(props){
         super(props);
@@ -80,9 +106,11 @@ class Procedure extends React.Component{
             data:[],
             reply:''
         }
-        this.textChange = this.textChange.bind(this);
         this.getData = this.getData.bind(this);
+        this.textChange = this.textChange.bind(this);
+        this.getAllTester = this.getAllTester.bind(this);
     }
+    /**通过batchNumberId查单条记录 */
     getData(dataId){
         axios.get(`${this.props.url.procedure.procedureTestRecord}/${dataId}`,{
             headers:{
@@ -108,6 +136,24 @@ class Procedure extends React.Component{
             }
         })
     }
+     /**通过batchNumberId 查询审核人 */
+     getAllTester(dataId){
+        axios({
+          url:`${this.props.url.toDoList}/${dataId}/result`,
+          method:'get',
+          headers:{
+            'Authorization':this.props.url.Authorization
+          }
+        }).then(data=>{
+          const res = data.data.data;
+          console.log(res)
+          if(res){
+            this.setState({
+                examineData : res
+            })
+          }
+      })   
+      }
     /**监控审核意见的变化 */
     textChange(e){
         const value = e.target.value;
@@ -143,6 +189,33 @@ class Procedure extends React.Component{
                 </div>
                 <div className='checkModalDiv'>
                     <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
+                </div>
+                <div className={this.props.flag?"check-detail":'hide'}>
+                    <div className='check-detail-div'>
+                        <div className='check-detail-div-hidden'>
+                    {
+                        examineData.map(e=>(
+                            <div className='check-detail-div-hidden-part' key={e.id}>
+                            <table >
+                                <tr>
+                                    <td>审核人：</td>
+                                    <td>{e.personName?e.personName:''}</td>
+                                </tr>
+                                <tr>
+                                    <td>审核意见：</td>
+                                    <td>{e.handleReply?e.handleReply:''}</td>
+                                </tr>
+                                <tr>
+                                    <td>审核日期：</td>
+                                    <td>{e.handleTime?e.handleTime:''}</td>
+                                </tr>
+                            </table>
+                            </div>
+                        ))
+                    }
+                    </div>
+                    </div>
+                    <div className='check-detail-i' ><i className='fa fa-2x fa-caret-left' onClick={this.moveLeft}></i><i className='fa fa-2x fa-caret-right' onClick={this.moveLeft}></i></div>
                 </div>
                 <div className={this.props.flag?'hide':''} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>

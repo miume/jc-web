@@ -30,19 +30,28 @@ const columns = [{
 const examineData = [{
     id: 100,
     handler: 1,
+    personName:'王大大',
     handleTime: "2018-12-20 09:34:23",
     handleReply: "我没意见",
-    dataTaskRecordId: 25,
-    visible: 0
 },{
-    id: 100,
-    handler: 1,
-    handleTime: "2018-12-20 09:34:23",
-    handleReply: "我没意见",
-    dataTaskRecordId: 25,
-    visible: 0
-}
-]
+    id: 101,
+    handler: 2,
+    personName:'兰亚戈',
+    handleTime: "2018-12-23 09:34:23",
+    handleReply: "同意",
+},{
+    id: 103,
+    handler: 3,
+    personName:'胡旭东',
+    handleTime: "2018-12-24 09:34:23",
+    handleReply: "勉强",
+},{
+    id: 104,
+    handler: 4,
+    personName:'杨梅',
+    handleTime: "2018-12-25 09:34:23",
+    handleReply: "勉强",
+}]
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;
@@ -79,7 +88,7 @@ class DetailModal extends React.Component {
                         dataSource={data.details}
                         pagination={false}
                         size="small"
-                        scroll={{ y: 200 }}
+                        scroll={{ y: 190 }}
                         bordered
                     />
                 </div>
@@ -121,7 +130,23 @@ class DetailModal extends React.Component {
                             </tr>
                             </tbody>
                         </table>
-                    )):null
+                    )):examineData.map(e=>(
+                        <table key={e.id} >
+                            <tbody className='interPadding'>
+                            <tr>
+                                <td>审核人：</td>
+                                <td>{e.handler?e.handler:''}</td>
+                            </tr>
+                            <tr>
+                                <td>审核意见：</td>
+                                <td>{e.handleReply?e.handleReply:''}</td>
+                            </tr>
+                            <tr>
+                                <td>审核日期：</td>
+                                <td>{e.handleTime?e.handleTime:''}</td>
+                            </tr>
+                            </tbody>
+                        </table>))
                 }
                 </div>
             </div>
@@ -129,5 +154,4 @@ class DetailModal extends React.Component {
         )
     }
 }
-
 export default DetailModal;
