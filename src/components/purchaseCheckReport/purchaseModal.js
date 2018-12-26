@@ -123,20 +123,19 @@ class PurchaseModal extends React.Component {
         this.state = {
             checkData: this.props.data,
 
-            columns: [],
-            dataSource: data,
-            purchaseStatus: '待定', //显示判定，合格，不合格
-            //用于合格与非合格的数量
-            nopassRowNum: nopassRowNum, //保存每一行红色（非合格）的数量 -下标代表row,值代表num
-            nopassTotalNum: 0, //保存表格总红色（非合格）的数量
-            passRowNum: passRowNum ,//保存每一行绿色（合格）的数量
-            passTotalNum: 0, //保存表格总绿色（合格）的数量
-            headBorder: headBorder, //保存需要消除border的哪一列下标
-            headColumns: headData ,
-            tbodyData: tbodyData,
+            // columns: [],
+            // dataSource: data,
+            // purchaseStatus: '待定', //显示判定，合格，不合格
+            // //用于合格与非合格的数量
+            // nopassRowNum: nopassRowNum, //保存每一行红色（非合格）的数量 -下标代表row,值代表num
+            // nopassTotalNum: 0, //保存表格总红色（非合格）的数量
+            // passRowNum: passRowNum ,//保存每一行绿色（合格）的数量
+            // passTotalNum: 0, //保存表格总绿色（合格）的数量
+            // headBorder: headBorder, //保存需要消除border的哪一列下标
+            // headColumns: headData ,
+            // tbodyData: tbodyData,
             //控制类的存在
-            hover: false,
-            color: false,  //当ture变为红， 当false为白
+            // color: false,  //当ture变为红， 当false为白
             //判断是否可以点击数据
             // clickState:0, //0可以点击，1为不可以点击
 
@@ -268,11 +267,9 @@ class PurchaseModal extends React.Component {
                                                                 if(headColumnsLength === false){
                                                                     // 数据长度小于7
                                                                     if(this.props.clickState === 0){
-                                                                        // console.log(tbodyMiddleData[item.testItem].isValid)
                                                                         return(
                                                                             <div
                                                                                 className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
-                                                                                ref={`${tbodyRow}|${index}`}
                                                                                 id={`${tbodyRow}|${item.testItem}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
@@ -284,7 +281,6 @@ class PurchaseModal extends React.Component {
                                                                         return(
                                                                             <div
                                                                                 className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
-                                                                                ref={`${tbodyRow}|${index}`}
                                                                                 id={`${tbodyRow}|${item.testItem}`}
                                                                                 key={index}
                                                                             >
@@ -298,7 +294,6 @@ class PurchaseModal extends React.Component {
                                                                         return(
                                                                             <div
                                                                                 className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
-                                                                                ref={`${tbodyRow}|${index}`}
                                                                                 id={`${tbodyRow}|${item.testItem}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
@@ -310,7 +305,6 @@ class PurchaseModal extends React.Component {
                                                                         return(
                                                                             <div
                                                                                 className={(data.tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
-                                                                                ref={`${tbodyRow}|${index}`}
                                                                                 id={`${tbodyRow}|${item.testItem}`}
                                                                                 key={index}
                                                                             >
@@ -403,38 +397,31 @@ class PurchaseModal extends React.Component {
     }
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
-        // 保存每一行绿色（合格）的数量
-        var passRowNum = this.state.passRowNum;
-        passRowNum[index] = 1;
-        // 保存表格总绿色（合格）的数量
-        var passTotalNum = this.state.passTotalNum;
-        passTotalNum += 1;
-        // 该行的红色数量为0
-        const nopassRowNum = this.state.nopassRowNum;
-        nopassRowNum[index] = 0;
-        const tbodyData = this.state.tbodyData;
-        const headColumns = this.state.headColumns;
-        tbodyData[index].pass = true;
-        tbodyData[index].nopass = false;
-        headColumns.map((item) => {
-            tbodyData[index][item.testItem].isQualified = false;
-        });
-        if(passTotalNum === tbodyData.length){
-            this.setState({
-                tbodyData: tbodyData,
-                passRowNum: passRowNum,
-                passTotalNum: passTotalNum,
-                purchaseStatus: '合格',
-            })
-        }else{
-            this.setState({
-                tbodyData: tbodyData,
-                passRowNum: passRowNum,
-                passTotalNum: passTotalNum,
-                purchaseStatus: '待定',
-            })
+        var checkData = this.state.checkData;
+        checkData.tbodyData[index].isQualified = 1;
+        for(let i=0; i<checkData.headData.length; i++){
+            const testItem = checkData.headData[i].testItem;
+            if(checkData.tbodyData[index].tbodyMiddleData[testItem]){
+                checkData.tbodyData[index].tbodyMiddleData[testItem].isValid = 1;
+            }
         }
-
+        let judgeNum = 0;
+        for(let j=0; j<checkData.tbodyData.length; j++){
+            if(checkData.tbodyData[j].isQualified===0){
+                checkData.judgement = 0
+                break;
+            }else{
+                judgeNum += 1;
+                if(judgeNum === checkData.tbodyData.length){
+                    checkData.judgement = 1;
+                }
+            }
+        }
+        this.setState({
+            checkData: checkData
+        },()=>{
+            this.props.modifyDetailData(checkData);
+        })
     };
     /**---------------------- */
     /**表格单元格按钮点击事件*/
@@ -445,7 +432,6 @@ class PurchaseModal extends React.Component {
         const row = id.split('|')[0];
         // 当前单元格的内容
         const item = id.split('|')[1];
-        console.log(checkData.tbodyData[row].tbodyMiddleData[item])
         //  进行单元格变化的改变
         if(checkData.tbodyData[row].tbodyMiddleData[item].isValid===0){
             checkData.tbodyData[row].tbodyMiddleData[item].isValid = 1;
@@ -476,101 +462,16 @@ class PurchaseModal extends React.Component {
                 break;
             }else{
                 judgeNum += 1;
-                console.log('pre-judgeNum',judgeNum)
                 if(judgeNum === checkData.tbodyData.length){
                     checkData.judgement = 1;
-                    console.log('afjudgeNum',judgeNum)
                 }
             }
         }
-
-
         this.setState({
             checkData: checkData
         },()=>{
             this.props.modifyDetailData(checkData);
-            console.log(this.state.checkData.tbodyData)
         })
-
-
-        // // 保存每一行红色（非合格）的数量-数组-下标代表row,值代表num
-        // var nopassRowNum = this.state.nopassRowNum;
-        // // 保存表格总红色（非合格）的数量
-        // var nopassTotalNum = this.state.nopassTotalNum;
-        // // 保存每一行绿色（合格）的数量
-        // var passRowNum = this.state.passRowNum;
-        // // 保存表格总绿色（合格）的数量
-        // var passTotalNum = this.state.passTotalNum;
-        // const isQualified = tbodyData[tbodyRow][testItem].isQualified;
-        // if(isQualified===false){
-        //     //  点击单元格变红
-        //     tbodyData[tbodyRow][testItem].isQualified = true;
-        //     //  点击判定为不合格--（变红）
-        //     tbodyData[tbodyRow].pass = false;
-        //     tbodyData[tbodyRow].nopass = true;
-        //     nopassRowNum[tbodyRow] += 1;
-        //     if(nopassRowNum[tbodyRow] === 1){
-        //         nopassTotalNum += 1;
-        //         if(passRowNum[tbodyRow] === 1){
-        //             passRowNum[tbodyRow] = 0;
-        //             passTotalNum -= 1;
-        //         }
-        //     }
-        //     this.setState({
-        //         tbodyData: tbodyData,
-        //         nopassTotalNum: nopassTotalNum,
-        //         passTotalNum: passTotalNum,
-        //         purchaseStatus: '不合格',
-        //         passRowNum: passRowNum,
-        //     })
-        // }else{
-        //     // 点击变白
-        //     tbodyData[tbodyRow][testItem].isQualified = false;
-        //     //  点击判定为不合格--（变红）
-        //     nopassRowNum[tbodyRow] -= 1;
-        //     if(nopassRowNum[tbodyRow] === 0){
-        //         nopassTotalNum -= 1;
-        //         tbodyData[tbodyRow].pass = true;
-        //         tbodyData[tbodyRow].nopass = false;
-        //         if(passRowNum[tbodyRow] === 0){
-        //             passRowNum[tbodyRow] = 1;
-        //             passTotalNum += 1;
-        //         }
-        //     }else{
-        //         tbodyData[tbodyRow].pass = false;
-        //         tbodyData[tbodyRow].nopass = true;
-        //     }
-        //     // 如果不合格总数变为0，则状态为"待定"、"合格"
-        //     if(nopassTotalNum === 0){
-        //         // 如果状态为"合格",即合格数达到表格数据总长度
-        //         if(passTotalNum === this.state.tbodyData.length){
-        //             this.setState({
-        //                 tbodyData: tbodyData,
-        //                 nopassTotalNum: nopassTotalNum,
-        //                 passTotalNum: passTotalNum,
-        //                 purchaseStatus: '合格',
-        //                 passRowNum: passRowNum,
-        //             })
-        //         }else{
-        //             // 状态为"待定"
-        //             this.setState({
-        //                 tbodyData: tbodyData,
-        //                 nopassTotalNum: nopassTotalNum,
-        //                 passTotalNum: passTotalNum,
-        //                 purchaseStatus: '待定',
-        //                 passRowNum: passRowNum,
-        //             })
-        //         }
-        //     }else{
-        //         this.setState({
-        //             tbodyData: tbodyData,
-        //             nopassTotalNum: nopassTotalNum,
-        //             passTotalNum: passTotalNum,
-        //             purchaseStatus: '不合格',
-        //             passRowNum: passRowNum,
-        //         })
-        //     }
-        // }
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
