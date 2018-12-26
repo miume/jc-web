@@ -8,7 +8,7 @@ import AddModal from './addModal'
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import PopRefuse from "./confuse"
 import "./sample.css"
-import Edit from "./edit"
+import Edit from "./editor"
 
 
 class SampleInspection extends React.Component{
@@ -56,7 +56,7 @@ class SampleInspection extends React.Component{
             key: 'index',
             sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
-            width: '8%',
+            width: '10%',
         },{
             title: '送检时间',
             dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
@@ -143,17 +143,17 @@ class SampleInspection extends React.Component{
             render : (text,record)=>{
                 return(
                     <span>
-                        {record.sampleDeliveringRecord.acceptStatus==-1?<Edit fetch={this.fetch} id={text} data={record}/>:<span className='Editgrey'>编辑</span>}
+                        {record.sampleDeliveringRecord.acceptStatus==-1?<Edit fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus==-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>删除</span>
-                        </Popconfirm>:<span  className="Editgrey">删除</span>}
+                        </Popconfirm>:<span className="notClick">删除</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus==1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>接受</span>
-                        </Popconfirm>:<span  className="Editgrey">接受</span>}
+                        </Popconfirm>:<span className="notClick">接受</span>}
                         <Divider type="vertical" />
-                        {record.sampleDeliveringRecord.acceptStatus==1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="Editgrey">拒绝</span>}
+                        {record.sampleDeliveringRecord.acceptStatus==1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
                     </span>
                 );
             }
@@ -262,7 +262,7 @@ class SampleInspection extends React.Component{
             pageSize: pagination.pageSize,
             pageNumber: pagination.current,
             // sortField: 'sample_Delivering_Date',
-            // sortType: 'asc',
+            // sortType: 'desc',
         });
     };
     fetch = (params = {}) => {
@@ -317,6 +317,9 @@ class SampleInspection extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+            getCheckboxProps: record => ({
+                disabled: record.sampleDeliveringRecord.acceptStatus === 1|| record.sampleDeliveringRecord.acceptStatus === 2|| record.sampleDeliveringRecord.acceptStatus === 3, // Column configuration not to be checked
+              }),
         };
         return(
             <div>

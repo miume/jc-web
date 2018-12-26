@@ -99,7 +99,7 @@ class MaterialRecord extends React.Component{
                 }
                     </div>
                     <div className="MRtwo">
-                        <div className="MRborder-down">批号</div>
+                        <div className="MRborder-down">编号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -123,7 +123,7 @@ class MaterialRecord extends React.Component{
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
-                                    原材料
+                                    成品
                                 </div>    
                     })
                 }

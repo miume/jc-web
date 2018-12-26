@@ -1,12 +1,12 @@
 import React from 'react';
 import {Modal,Button,message} from 'antd';
-import AddButton from '../BlockQuote/newButton'
+import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
-import axios from "axios"
+import axios from "axios";
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import "./difference.css"
-import EditTr from "./editTr"
+import "./difference.css";
+import EditTr from "./editTr";
 
 class Editor extends React.Component{
     constructor(props){
@@ -168,7 +168,7 @@ class Editor extends React.Component{
     render(){
         return(
             <span>
-                {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="Editgrey">编辑</span>}
+                {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="notClick">编辑</span>}
                 <Modal title='编辑' visible={this.state.visible}
                 width="400px"
                     closable={false} centered={true}

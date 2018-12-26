@@ -78,7 +78,7 @@ class Detail extends React.Component{
                 closable={false} centered={true}
                 maskClosable={false}
                     footer={[
-                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                        <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
                     ]}>
                     <div>
                          <table className="custom_tb">
