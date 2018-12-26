@@ -15,12 +15,20 @@ class CheckEditSpan extends React.Component {
             visible: false,
             subVisible: false,
             process:-1,
-            detailData:{
-                topData: {},   //头部数据
-                judger: '',     //检验人
-                testDTOS: [],   //中部项目
-                judgement: '', //总判定  //0：不合格，1：合格
+            checkData: {
+                headData: [],
+                tbodyData: [],
+                judgement: '',
+                judger: '',
+                topData: {},
             },
+            // detailData:{
+            //     topData: {},   //头部数据
+            //     judger: '',     //检验人
+            //     testDTOSHead: [],// 中部头数据
+            //     testDTOS: [],   //中部项目
+            //     judgement: '', //总判定  //0：不合格，1：合格
+            // },
         };
         this.handleEdit = this.handleEdit.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -74,7 +82,7 @@ class CheckEditSpan extends React.Component {
                         <PurchaseModal
                             modifyDetailData={this.modifyDetailData}
                             inputSave={this.inputSave}
-                            data={this.state.detailData}
+                            data={this.state.checkData}
                             clickState ={0} //是否可以点击 0:可以点红， 其余：不可以点红
                         />
                     </div>
@@ -82,17 +90,7 @@ class CheckEditSpan extends React.Component {
             </span>
         )
     }
-    /**表格合格判定点击事件*/
-    // handleJudgePass = (index) => {
-    //     var detailData = this.state.detailData;
-    //     // detailData.testDTOS[index].isQualified = 1;
-    //     for(var i=0; i<detailData.testDTOS[index].testDTOSItem.length; i++){
-    //         detailData.testDTOS[index].testDTOSItem[i].isQualified = 0;
-    //     }
-    //     this.setState({
-    //         detailData:detailData
-    //     })
-    // };
+
     /**input框内容变化，实现自动保存数据 */
     inputSave(e){
         console.log(e.target.value)
@@ -120,14 +118,14 @@ class CheckEditSpan extends React.Component {
     }
     /**获取该行的记录详情 */
     getDetailData(){
-        const detail = this.props.record;
-        var topData = {};  //头部数据
-        var judger = '';    //检验人
-        var testDTOS = [];  //中部项目-表-总数据
-        var testDTOSItem = [];  //中部-表-每列数据
-        var judgement = 0;
+        let detail = this.props.record;
+        console.log(detail)
+        var headData = [];
+        var tbodyData = [];
+        var judger = '';
+        var judgement = '';
+        var topData = {};
         if(detail){
-            judgement = detail.purchaseReportRecord?detail.purchaseReportRecord.judgement:'';
             topData = {
                 materialName: detail.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName:'',
                 norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
@@ -135,44 +133,49 @@ class CheckEditSpan extends React.Component {
                 sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
                 deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
             };
-            judger = detail.testReportRecordDTOList.judegrName?detail.testReportRecordDTOList.judegrName:''
-            //  总数据
-            const testReportRecordDTOList = detail.testReportRecordDTOList;
-            if(testReportRecordDTOList) {
-                for(var i=0; i<testReportRecordDTOList.length; i++){
-                    //  行数据
-                    var e = testReportRecordDTOList[i];
-                    var itemList = e.testItemResultRecordDTOList;
-                    for(var j=0; j<itemList.length; j++){
-                        //  行中列数据--
-                        testDTOSItem.push({
-                            id:itemList[j].testItemResultRecord.id,
-                            testResult:itemList[j].testItemResultRecord.testResult,
-                            isValid:itemList[j].testItemResultRecord.isValid,
-                            rawTestItemStandard:itemList[j].rawTestItemStandard,
-                            name:itemList[j].testItem.name,
-                            unit:itemList[j].testItem.unit
-                        })
-                    }
-                    //  将列数据push到总数据中
-                    testDTOS.push({
-                        index:`${i+1}`,
-                        id:e.testReportRecord.id,
-                        serialNumber:`暂定${i}`,
-                        testDTOSItem:testDTOSItem,
-                        isQualified:e.testReportRecord.isQualified
-                    })
-                }
+            let detailHead = detail.testReportRecordDTOList
+            for(let i=0; i<detailHead[0].testItemResultRecordDTOList.length; i++){
+                headData.push({
+                    id: detailHead[0].testItemResultRecordDTOList[i].testItemResultRecord.id,
+                    testItem: detailHead[0].testItemResultRecordDTOList[i].testItem.name,
+                    itemUnit: detailHead[0].testItemResultRecordDTOList[i].testItem.unit,
+                    rawTestItemStandard: detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard,
+                })
             }
+            let detailTbody = detail.testReportRecordDTOList;
+            // console.log('detailTbody',detailTbody)
+            for(let j=0; j<detailTbody.length; j++){
+                let testItemResultRecordDTOList = detailTbody[j].testItemResultRecordDTOList;
+                let tbodyMiddleData = {};
+                testItemResultRecordDTOList.map((e) => {
+                    tbodyMiddleData[e.testItem.name] = {
+                        'isValid':e.testItemResultRecord.isValid,
+                        'testResult':e.testItemResultRecord.testResult,
+                        'id':e.testItemResultRecord.id,
+                    }
+                });
+                tbodyData.push({
+                    index: `${j+1}`,
+                    id: detailTbody[j].testReportRecord.id,
+                    serialNumber: '暂定',
+                    tbodyMiddleData: tbodyMiddleData,
+                    isQualified: detailTbody[j].testReportRecord.isQualified
+                })
+            }
+            judger = '待定';
+            judgement = detail.purchaseReportRecord.judgement ;
+            // console.log('headData',headData)
+            // console.log('tbodyData',tbodyData)
             this.setState({
-                detailData:{
+                checkData: {
+                    headData: headData,
+                    tbodyData: tbodyData,
+                    judgement: judgement,
+                    judger: judger,
                     topData: topData,
-                    judger: judger,     //检验人
-                    testDTOS: testDTOS,   //中部项目
-                    judgement: judgement, //总判定  //0：不合格，1：合格
                 }
             },()=>{
-                console.log(this.state.detailData)
+                console.log(this.state.checkData)
             })
         }
     }
