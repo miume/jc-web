@@ -79,10 +79,14 @@ class Add extends React.Component{
         this.formRef.resetField();
     }
     handleCancel() {//点击新增的取消
+        console.log(this.state);
         this.setState({
-        visible: false
+            visible: false,
+            checkSelectData:-1,
+            checkSwitch:0
         });
-         this.formRef.resetField();
+        console.log(this.state);
+         this.formRef.resetField();//重置表单
     }
 
 
@@ -93,10 +97,13 @@ class Add extends React.Component{
         this.setState({checkSelectData:value});
     }
     hide(){//送审气泡的取消
-      //console.log('hide')
-      //console.log(this.state.popVisible)
-      this.setState({popVisible:false});
-     // console.log(document.getElementsById('switch').item);
+     // console.log('hide')
+      console.log(document.getElementsByClassName('select'));
+      this.setState({
+            popVisible:false,//气泡取消
+        
+        });
+    
     }
 
     handleVisibleChange=(visible)=>{
@@ -104,6 +111,7 @@ class Add extends React.Component{
        this.setState({
          popVisible:visible
        })
+
    }
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;
@@ -155,16 +163,19 @@ class Add extends React.Component{
             const dataId=res.commonBatchNumber.id;//返回的batchnumberId
             const taskId=this.state.checkSelectData;//选择的流程id
             this.getCheck(dataId,taskId);//调用待办事项的送审
-            //message.info(data.data.message);
             this.props.fetch();
         })
         .catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
-      this.setState({popVisible:false});
+    
       this.setState({
-        visible: false
+        visible: false,//modal的取消
+        popVisible:false,//送审的气泡取消
+        checkSelectData:-1,//流程下拉框重置
+        checkSwitch:0
         });
+        
       this.formRef.resetField();
       
     }
@@ -211,8 +222,8 @@ class Add extends React.Component{
                                   <span>是否紧急</span>&nbsp;&nbsp;<Switch id='switch' onChange={this.urgentChange}/>
                                 </div>
                                 <div style={{paddingTop:'10px' ,float:'right'}}>
-                                    <Button onClick={this.hide}>取消</Button>
-                                    <Button type='primary'  disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
+                                    <Button type='ghost'size='small' onClick={this.hide} className='button'>取消</Button>
+                                    <Button type='primary' size='small'   className={this.state.checkSelectData>-1?'button':'grey-button'}   disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
                                 </div>
                              </div>
                          }
