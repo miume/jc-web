@@ -121,7 +121,6 @@ class Detail extends React.Component{
                         details:details,
                         topData:topData,
                         testData:testData,
-                        // examineData:examineData,
                         IsQualified:IsQualified,
                     }
                 })
@@ -142,7 +141,7 @@ class Detail extends React.Component{
     render(){
         return (
             <span>
-                <span className={this.props.status===0||this.props.status===1||this.props.status===2||this.props.status===3?'blue':'notClick'} onClick={this.handleDetail} >详情</span>
+                <span className={this.props.status===-1||this.props.status===1||this.props.status===2||this.props.status===3?'blue':'notClick'} onClick={this.handleDetail} >详情</span>
                 <Modal title='详情' visible={this.state.visible} closable={false}
                 maskClosable={false} centered={true} style={{top:10}}
                  footer={[

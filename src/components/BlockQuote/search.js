@@ -10,7 +10,7 @@ class SearchCell extends React.Component{
                 this.props.timeFlag?
                 <span>
                 <DatePicker className = {`search-${type}`} onChange={this.props.searchContentChange} placeholder='请选择日期' />
-                <Button type="primary" icon="search" className='time-search'></Button></span>:
+                <Button type="primary" icon="search" className='time-search' onClick={this.props.searchEvent}></Button></span>:
                 <Search
                     id='search'
                     className = {`search-${type}`}
