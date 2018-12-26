@@ -250,15 +250,9 @@ class RawTestReport extends React.Component{
     /**搜索功能 */
     searchEvent(){
         this.fetch({
-            pageSize:10,
-            pageNumber:1,
             factoryName:this.state.searchContent
         })
     }
-    /**实现全选 */
-//    onSelectChange(selectedRowKeys) {
-//     this.setState({ selectedRowKeys:selectedRowKeys }); 
-//    } 
    /**返回数据录入页面 */
    returnDataEntry(){
     this.props.history.push({pathname:'/dataEntry'});
@@ -274,8 +268,9 @@ class RawTestReport extends React.Component{
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     {/* <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/> */}
                     <span style={{float:'right',paddingBottom:'8px'}} >
-                        <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
+                        <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     </span>
+                    <div className='clear'></div>
                 <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} pagination={this.pagination} scroll={{y:400}} size='small' bordered/> 
                 </div>
             </div>

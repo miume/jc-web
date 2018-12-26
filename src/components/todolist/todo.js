@@ -4,11 +4,13 @@ import Line from './line';
 import CheckModal from './checkModal';
 // import DetailModal from './detailModal';
 class Todo extends React.Component{
+    status
     constructor(props){
         super(props);
         this.state = {
             flag:0,
         }
+        this.judge = this.judge.bind(this);
         this.moveLeft = this.moveLeft.bind(this);
         this.moveRight = this.moveRight.bind(this);
         this.handleMove = this.handleMove.bind(this);
@@ -54,9 +56,19 @@ class Todo extends React.Component{
             },1)
         }
     }
+    /**判断status 1 审核中 2 审核通过 3 审核未通过 */
+    judge(status){
+        switch(status){
+            case 1: return <span className='check-status'><i className='fa fa-ellipsis-h'></i>{this.status[status.toString()]}</span>; break;
+            case 2: return <span className='check-status'><i className='fa fa-check'></i>{this.status[status.toString()]}</span>; break ;
+            case 3: return <span className='check-status'><i className='fa fa-times'></i>{this.status[status.toString()]}</span>; break;
+            default : return <span className='check-status'>{this.status[status.toString()]}</span>; break;
+        }
+    }
     render(){
         const count = this.props.details?this.props.details.length:0;
         const dataType = JSON.parse(localStorage.getItem('dataType'));
+        this.status = JSON.parse(localStorage.getItem('status'));
         return (
             <div className='wholediv'>
             <div className='wholep'>
@@ -78,16 +90,19 @@ class Todo extends React.Component{
                        this.props.details.map((e,index)=>{
                            if(e.visible) this.state.flag=1;
                            return (
-                           <div key={`${e.userId}-${this.props.flag?1:0}`} style={{display:'flex',textAlign:'center'}}>
-                               <Part index={index+1} data={e} id={this.props.curId} count={count} visible={e.visible} flag={e.flag}/>
-                               <Line index={index+1} count={count} flag={this.state.flag} visible={e.visible}/>
-                           </div>)
+                                <div key={`${e.userId}-${this.props.flag?1:0}`} style={{display:'flex',textAlign:'center'}}>
+                                    <Part index={index+1} data={e} id={this.props.curId} count={count} visible={e.visible} flag={e.flag}/>
+                                    <Line index={index+1} count={count} flag={this.state.flag} visible={e.visible}/>
+                                </div>)
                        })
                    }
                    </div>
                </div>
                <div className={`item3`} onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
+               {   
+                   this.props.flag?this.judge(this.props.data.status):null
+               }
                {
                     <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag} dataType={this.props.data.dataType} />
                }
