@@ -295,9 +295,6 @@ class Pack extends React.Component {
                 this.generateFetch()
             }
         })
-        // this.setState({
-        //     checkSwitchData:checked
-        // })
     };
     /**---------------------- */
     /**实现selectedRowKeys里的数据改变功能 */

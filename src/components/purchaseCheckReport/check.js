@@ -2,7 +2,6 @@ import React from 'react';
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
-import PackTable from "./packTable";
 
 const data =[];
 for (let i = 0; i < 20; i++) {
@@ -60,6 +59,7 @@ class Check extends React.Component {
                 </span>
                 <div className='clear' ></div>
                 <CheckTable
+                    userId={this.props.userId}
                     url={this.props.url}
                     status={this.props.status}
                     data={this.state.dataSource}

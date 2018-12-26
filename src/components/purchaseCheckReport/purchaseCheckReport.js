@@ -18,6 +18,7 @@ class PurchaseCheckReport extends React.Component {
         const current = JSON.parse(localStorage.getItem('current')) ;
         const status = JSON.parse(localStorage.getItem('status')) ;
         this.url = JSON.parse(localStorage.getItem('url'));
+        const userId = JSON.parse(localStorage.getItem('menuList')).userId ;
         return(
             <div>
                 <BlockQuote name="进货检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -30,6 +31,7 @@ class PurchaseCheckReport extends React.Component {
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
                         <Check
+                            userId={userId}
                             url={this.url}
                             status={status}
                         />

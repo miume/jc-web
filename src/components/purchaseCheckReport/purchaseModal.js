@@ -3,151 +3,18 @@ import {Input} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 
-const data =[];
-for (let i = 0; i < 5; i++) {
-    data.push({
-        index: i,
-        id:i,
-        a: 'a',
-        Ca: '启动',
-        Fe: 'c',
-        Na: 'd',
-        Si: 'e',
-        Li: 'f',
-        Al: '无',
-        Mg: '无',
-    });
-}
-const headData =[];
-const headBorder = [];
-for (let i = 0; i < 17; i++) {
-    headData.push({
-        index: i,
-        id:i,
-        testItem: `C${i}`,
-        itemUnit: '%',
-        testResult: '20.00',
-    });
-    headBorder.push(false);
-}
-const tbodyData = [];
-const nopassRowNum = [];
-const passRowNum = [];
-for(let i=0; i<15; i++){
-    tbodyData.push({
-        index: i,
-        id:i,
-        a: 'ECT/12372',
-        b: '启动',
-        C0: {
-            value: '0',
-            isQualified: false  // 0代表不合格-变红，1代表合格-白
-        },
-        C1: {
-            value: '1',
-            isQualified: false
-        },
-        C2: {
-            value: '2',
-            isQualified: false
-        },
-        C3: {
-            value: '3',
-            isQualified: false
-        },
-        C4: {
-            value: '4',
-            isQualified: false
-        },
-        C5: {
-            value: '5',
-            isQualified: false
-        },
-        C6: {
-            value: '6',
-            isQualified: false
-        },
-        C7: {
-            value: '7',
-            isQualified: false
-        },
-        C8: {
-            value: '8',
-            isQualified: false
-        },
-        C9: {
-            value: '9',
-            isQualified: false
-        },
-        C10: {
-            value: '10',
-            isQualified: false
-        },
-        C11: {
-            value: '11',
-            isQualified: false
-        },
-        C12: {
-            value: '12',
-            isQualified: false
-        },
-        C13: {
-            value: '13',
-            isQualified: false
-        },
-        C14: {
-            value: '14',
-            isQualified: false
-        },
-        C15: {
-            value: '15',
-            isQualified: false
-        },
-        C16: {
-            value: '16',
-            isQualified: false
-        },
-        C17: {
-            value: '17',
-            isQualified: false
-        },
-        pass: false,
-        nopass: false,
-    });
-    nopassRowNum.push(0);
-    passRowNum.push(0);
-}
 class PurchaseModal extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             checkData: this.props.data,
-
-            // columns: [],
-            // dataSource: data,
-            // purchaseStatus: '待定', //显示判定，合格，不合格
-            // //用于合格与非合格的数量
-            // nopassRowNum: nopassRowNum, //保存每一行红色（非合格）的数量 -下标代表row,值代表num
-            // nopassTotalNum: 0, //保存表格总红色（非合格）的数量
-            // passRowNum: passRowNum ,//保存每一行绿色（合格）的数量
-            // passTotalNum: 0, //保存表格总绿色（合格）的数量
-            // headBorder: headBorder, //保存需要消除border的哪一列下标
-            // headColumns: headData ,
-            // tbodyData: tbodyData,
-            //控制类的存在
-            // color: false,  //当ture变为红， 当false为白
-            //判断是否可以点击数据
-            // clickState:0, //0可以点击，1为不可以点击
-
         };
-
     }
 
     render() {
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
         // 控制动态数据的长度headColumns--默认小于7
-
         var headColumnsLength = false;
         if(this.state.checkData.headData.length>7){
             headColumnsLength = true;
@@ -304,11 +171,11 @@ class PurchaseModal extends React.Component {
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(data.tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                                 id={`${tbodyRow}|${item.testItem}`}
                                                                                 key={index}
                                                                             >
-                                                                                {data.tbodyMiddleData[item.testItem].testResult}
+                                                                                {tbodyMiddleData[item.testItem].testResult}
                                                                             </div>
                                                                         )
                                                                     }

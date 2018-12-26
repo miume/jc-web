@@ -5,7 +5,6 @@ import CheckReleaseSpan from './checkReleaseSpan';
 import DeleteSpan from './deleteSpan';
 
 class CheckTable extends React.Component {
-    url;
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -82,7 +81,8 @@ class CheckTable extends React.Component {
                     {operationCheckFlag?(
                         <CheckEditSpan
                             url={this.props.url}
-                            record={record}
+                            id={record.purchaseReportRecord.id}
+                            userId={this.props.userId}
                         />
                     ):(
                         <span  className="notClick">编辑</span>
@@ -128,14 +128,14 @@ class CheckTable extends React.Component {
     }
     /**判断编辑、删除可否功能 */
     judgeCheckOperation = (record) => {
-        if(record==='0'||record==='3'){
+        if(record===0||record===3){
             return true;
         }else{
             return false;
         }
     };
     judgeDeleteOperation = (record) => {
-        if(record==='0'){
+        if(record===0){
             return true;
         }else{
             return false;
