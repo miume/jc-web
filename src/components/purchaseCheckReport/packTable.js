@@ -95,8 +95,7 @@ class PackTable extends React.Component {
                 <span>
                     <DetailSpan
                         url={this.props.url}
-                        record={record}
-                        id={record.sampleDeliveringRecordDTO.sampleDeliveringRecord.id}
+                        id={record.testReportRecordDTO.testReportRecord.id}
                         modifySelectedRowKeysData={this.props.modifySelectedRowKeysData}
                     />
                 </span>
@@ -116,7 +115,7 @@ class PackTable extends React.Component {
         return(
             <Table
                 className="purchasePackTable"
-                rowKey={record => record.sampleDeliveringRecordDTO.sampleDeliveringRecord.id}
+                rowKey={record => record.testReportRecordDTO.testReportRecord.id}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}
