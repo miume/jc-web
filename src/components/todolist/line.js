@@ -20,7 +20,6 @@ class Line extends React.Component{
                     this.judge(this.props.index,this.props.count) ?
                     <div className='part'>
                     {
-                        
                         <span className={this.props.flag?'line1':'line'}></span>
                     }
                     </div> :null

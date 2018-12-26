@@ -27,12 +27,12 @@ class CheckModal extends React.Component{
             case 2:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 4:  return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 5:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 7:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
             case 8:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 9:  return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag} type={9}/>; break;
-            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag} type={10}/>; break;
+            case 5: 
+            case 9:  
+            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag} type={type}/>; break;
             default: return null ; 
         }
     }

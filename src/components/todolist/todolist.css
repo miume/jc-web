@@ -148,6 +148,16 @@
     font-weight: 400;
     color:#0066fe;
 }
+.red-font{
+    font-size: 14px;
+    font-weight: 400;
+    color:red;
+}
+.red-font1{
+    font-size: 13px;
+    font-weight: 400;
+    color:red;
+}
 .item2 .partSpan1{
     font-size: 13px;
     font-weight: 400;
@@ -170,6 +180,12 @@
     /* padding:5px 20px 5px 0; */
     border-bottom: 1px solid grey;
 }
+.red-line{
+    width:100%;
+    height:1.5px;
+    margin-top: 13%;
+    border-bottom: 1px solid red;
+}
 .online{
     width:100px;
     height:1.5px;
@@ -189,6 +205,17 @@
 .circle i{
     margin:0 auto;
     color:#0079fe;
+    padding:26%;
+}
+.redCircle{
+    width:32px;
+    height:32px;
+    border-radius: 25px;
+    border:2px solid red;
+}
+.redCircle i{
+    margin:0 auto;
+    color:red;
     padding:26%;
 }
 .circle1{
