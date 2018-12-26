@@ -13,8 +13,8 @@ class PackTable extends React.Component {
         width: '6%',
     },{
         title: '送检日期',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '15%',
         render: sampleDeliveringDate => {
@@ -22,8 +22,8 @@ class PackTable extends React.Component {
         }
     },{
         title: '送样人',
-        dataIndex: 'sampleDeliveringRecordDTO.deliverer.name',
-        key: 'sampleDeliveringRecordDTO.deliverer.name',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliverer.name',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliverer.name',
         align:'center',
         width: '8%',
         render: deliverer => {
@@ -31,8 +31,8 @@ class PackTable extends React.Component {
         }
     },{
         title: '送样工厂',
-        dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
-        key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliveryFactory.name',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliveryFactory.name',
         align:'center',
         width: '8%',
         render: deliveryFactoryName => {
@@ -40,8 +40,8 @@ class PackTable extends React.Component {
         }
     },{
         title: '编号',
-        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
-        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
         align:'center',
         width: '15%',
         render: serialNumberId => {
@@ -49,8 +49,8 @@ class PackTable extends React.Component {
         }
     },{
         title: '检测项目',
-        dataIndex: 'testItemString',
-        key: 'testItemString',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.testItemString',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.testItemString',
         align:'center',
         width: '10%',
         render: testItems => {
@@ -58,8 +58,8 @@ class PackTable extends React.Component {
         }
     },{
         title: '异常备注',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
         align:'center',
         width: '8%',
         render: exceptionComment => {
@@ -67,8 +67,8 @@ class PackTable extends React.Component {
         }
     },{
         title: '接受反馈',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
+        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
+        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
         align:'center',
         width: '8%',
         render: acceptStatus => {

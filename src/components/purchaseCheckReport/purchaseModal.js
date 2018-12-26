@@ -34,13 +34,25 @@ class PurchaseModal extends React.Component {
                         </tr>
                         </thead>
                         <tbody className="purchaseTopTbody">
-                        <tr>
-                            <td><Input name='materialName' placeholder="原材料名称" value={this.state.checkData.topData.materialName} onChange={this.props.inputSave}/></td>
-                            <td><Input name='norm' placeholder="请输入规格" value={this.state.checkData.topData.norm} onChange={this.props.inputSave}/></td>
-                            <td><Input name='quantity' placeholder="请输入数量" value={this.state.checkData.topData.quantity} onChange={this.props.inputSave}/></td>
-                            <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.state.checkData.topData.sampleDeliveringDate} onChange={this.props.inputSave}/></td>
-                            <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.state.checkData.topData.deliveryFactory} onChange={this.props.inputSave}/></td>
-                        </tr>
+                        {
+                            this.props.clickState?(
+                                <tr style={{cursor:'default'}}>
+                                    <td>{this.state.checkData.topData.materialName}</td>
+                                    <td>{this.state.checkData.topData.norm}</td>
+                                    <td>{this.state.checkData.topData.quantity}</td>
+                                    <td><abbr style={{cursor:'default'}} title={this.state.checkData.topData.sampleDeliveringDate}>{this.state.checkData.topData.sampleDeliveringDate.substring(0,10)}</abbr></td>
+                                    <td>{this.state.checkData.topData.deliveryFactory}</td>
+                                </tr>
+                            ):(
+                                <tr>
+                                    <td><Input name='materialName' placeholder="原材料名称" value={this.state.checkData.topData.materialName} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='norm' placeholder="请输入规格" value={this.state.checkData.topData.norm} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='quantity' placeholder="请输入数量" value={this.state.checkData.topData.quantity} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.state.checkData.topData.sampleDeliveringDate} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.state.checkData.topData.deliveryFactory} onChange={this.props.inputSave}/></td>
+                                </tr>
+                            )
+                        }
                         </tbody>
                     </table>
                     <PurchaseModalColor

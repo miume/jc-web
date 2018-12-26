@@ -18,11 +18,12 @@ class PurchaseCheckReport extends React.Component {
         const current = JSON.parse(localStorage.getItem('current')) ;
         const status = JSON.parse(localStorage.getItem('status')) ;
         this.url = JSON.parse(localStorage.getItem('url'));
-        const userId = JSON.parse(localStorage.getItem('menuList')).userId ;
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        console.log()
         return(
             <div>
                 <BlockQuote name="进货检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <Tabs defaultActiveKey="2"  onChange={this.callback}  style={{padding:'15px'}}>
+                <Tabs defaultActiveKey="2"  onChange={this.callback}  style={{paddingLeft:'15px',paddingRight:'15px'}}>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;生成</span>} key="1" >
                         <Pack
                             url={this.url}
@@ -31,7 +32,7 @@ class PurchaseCheckReport extends React.Component {
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
                         <Check
-                            userId={userId}
+                            menuList={menuList}
                             url={this.url}
                             status={status}
                         />

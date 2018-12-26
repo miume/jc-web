@@ -117,9 +117,9 @@ class DetailSpan extends React.Component {
                 //  子段没有
                 isQualified = detail.testReportRecordDTO.testReportRecord?detail.testReportRecordDTO.testReportRecord.isQualified:'';
                 topData = {
-                    serialNumber: detail.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber:'',
-                    materialName: detail.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName:'',
-                    sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:''
+                    serialNumber: detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber:'',
+                    materialName: detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName:'',
+                    sampleDeliveringDate: detail.testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
                 const testItemResultRecordDTOList = detail.testReportRecordDTO.testItemResultRecordDTOList;
                 if(testItemResultRecordDTOList) {
@@ -198,7 +198,7 @@ class DetailSpan extends React.Component {
 
             }
         }).catch(()=>{
-            message.info('保存失败，请联系管理员！')
+            message.info('打开失败，请联系管理员！')
         })
     }
 

@@ -20,9 +20,8 @@
     background: #0079FE;
 }
 .purchaseTopThead tr th {
+    text-align: center;
     font-size: 15px;
-    padding-left: 10px;
-    /*border-collapse: collapse;*/
     border: 1px solid #E9E9E9;
 }
 .purchaseTopThead tr th:first-child{
@@ -30,13 +29,19 @@
 .purchaseTopThead tr th:last-child{
     border-right: none;
 }
+/*.purchaseTopTbody tr {*/
+    /*display: flex;*/
+    /**/
+/*}*/
 .purchaseTopTbody tr td {
+    width: 20%;
+    text-align: center;
     border: 1px solid #E9E9E9;
 }
 .purchaseTopTbody tr td .ant-input{
     height: 20px !important;
+    text-align: center;
     border: none;
-    padding-left: 10px;
 }
 .purchaseTopJudger {
     float: left;
@@ -261,10 +266,10 @@
 .middleTbodyDivWhite {
     min-width: 100px;
     max-width: 100px;
+    transition: transform 2s;
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
-    z-index: 1000;
 }
 .middleTbodyDivWhiteLength {
     flex-grow:1;
@@ -273,9 +278,10 @@
     border-bottom: 1px solid #E9E9E9;
 }
 .middleTbodyDivRed {
-    background-color: #FF3B30;
     min-width: 100px;
     max-width: 100px;
+    transition: transform 2s;
+    background-color: #FF3B30;
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;

@@ -289,6 +289,7 @@ class Home extends Component {
                  deploy:`${server}/jc/common/purchaseReportRecords/deploy`,
                  testReportRecord: `${server}/jc/common/testReportRecord`,
                  purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
+                 batchNumber:`${server}/jc/common/purchaseReportRecords/batchNumber`,
              },
              /**入库管理 */
              enterStorage: {

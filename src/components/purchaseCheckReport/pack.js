@@ -173,6 +173,7 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            console.log('data',data)
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
                 // const dataSource = this.dataAssemble(res);
