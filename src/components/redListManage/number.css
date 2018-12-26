@@ -1,0 +1,45 @@
+
+ .redListNum{
+    border-bottom:1px solid #e4e4e4;
+    line-height: normal;
+    text-align:center;
+     height:18px;
+     position:'absolue';
+     cursor: pointer;
+     box-shadow: none;
+    color: #cccccc;
+    width: 40px;
+     font-style: normal;
+     font-size: 10px;
+ }
+ .redListNum:hover{/**块覆上的时候会显示为蓝色*/
+    color: #1890ff
+}
+.redListNum:active{
+  color: #1890ff
+}
+
+.redListNum1{
+   
+    line-height: normal;
+    text-align:center;
+     height:18px;
+     position:'absolue';
+     cursor: pointer;
+     box-shadow: none;
+    color: #cccccc;
+    width: 40px;
+     font-style: normal;
+     font-size: 10px;
+ }
+ .redListNum1:hover{/**块覆上的时候会显示为蓝色*/
+    color: #1890ff
+}
+.redListNum1:active{
+  color: #1890ff
+}
+
+.reDiv{
+    border-left:1px solid #e4e4e4;
+    width:30px
+}

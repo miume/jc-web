@@ -102,24 +102,27 @@ class ProductRedList extends Component{
             key:'commonBatchNumber.status',
             align:'center',
             width:'8%',
-             render:(text,record)=>{
-                 let status=record.commonBatchNumber.status;
-                  switch(`${status}`){
-                        case '-1': return '已保存未提交';
-                        case '0': return '已提交未审核';
-                        case '1': return '审核中';
-                        case '2': return '已通过';
-                        case '3': return '未通过';
-                        // case '4': return '合格';
-                        // case '5': return '不合格';
-                        default: return '';
-            }
-          }
+        //      render:(text,record)=>{
+        //          let status=record.commonBatchNumber.status;
+        //           switch(`${status}`){
+        //                 case '-1': return '已保存未提交';
+        //                 case '0': return '已提交未审核';
+        //                 case '1': return '审核中';
+        //                 case '2': return '已通过';
+        //                 case '3': return '未通过';
+        //                 // case '4': return '合格';
+        //                 // case '5': return '不合格';
+        //                 default: return '';
+        //     }
+        //   }
+        render:status=>{
+            return this.status[status.toString()];
+        }
         },
         {
             title:'操作',
-            dataIndex:'id',
-            key:'id',
+            dataIndex:'repoRedTable.id',
+            key:'repoRedTable.id',
             align:'center',
             //width:'',
             render:(text,record)=>{
@@ -142,7 +145,7 @@ class ProductRedList extends Component{
                        )}
                      </span>
                      <Divider type='vertical'/>
-                         <Note record={record}/>
+                    <Note record={record}/>
                     
                    </span>
                );
@@ -211,30 +214,7 @@ class ProductRedList extends Component{
         });
     }
     onSelectChange(selectedRowKeys){
-        const data=this.state.dataSource;
-        for(let i=0;i<selectedRowKeys.length;i++){
-            for(var j=0;j<data.length;j++){
-                // console.log(data[j].repoRedTable.id);
-                // console.log(data[j].commonBatchNumber.status);
-                if(selectedRowKeys[i]===data[j].repoRedTable.id){
-                    if(!data[j].commonBatchNumber.status===-1&&!data[j].commonBatchNumber.status===3){
-                        this.setState({
-                            selectedRowKeys:[]
-                        });
-                                   break;
-                    }
-                }
-                //console.log(this.state.selectedRowKeys);
-            } 
-            if(this.state.selectedRowKeys.length===0){
-                 break;
-            }
-        }
-        //console.log(this.state.selectedRowKeys.length);
-        if(this.state.selectedRowKeys.length===0){
-            message.info('有不可删除数据！');
-                   return
-        }
+    
         this.setState({selectedRowKeys:selectedRowKeys});
      }
     
@@ -371,6 +351,7 @@ class ProductRedList extends Component{
     render(){
         
       this.url=JSON.parse(localStorage.getItem('url'));
+      this.status=JSON.parse(localStorage.getItem('status'));
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,

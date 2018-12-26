@@ -1,6 +1,7 @@
 import React from 'react';
 import '../redList.css'
 import {Form,Input,Select,InputNumber} from 'antd';
+
 const { TextArea } = Input;
 
 const Option=Select.Option;
@@ -25,10 +26,6 @@ const FormItem=Form.Item;
                 //console.log(res[id-1].materialName);
                 for(var i=0;i<res.length;i++){
                        if(res[i].id===id){
-                          this.setState({
-                              materialName:res[i].materialName,
-                              materialClass:res[i].materialClass
-                            });
                           let  type=res[i].materialClass;
                           
                             switch(type){
@@ -55,6 +52,7 @@ const FormItem=Form.Item;
         //console.log(values);
         return values;//用来得到新增框中填写的新值
     }
+   
         /**重置组件的值 */
         resetField=()=>{
             this.props.form.resetFields();
@@ -63,6 +61,8 @@ const FormItem=Form.Item;
        
         const { form } = this.props;
         const { getFieldDecorator } = form;
+        const quantityLoss= this.props.form.getFieldsValue(['quantityLoss']);
+        const weightLoss= this.props.form.getFieldsValue(['weightLoss']); 
         return (
          
             <Form horizontal='true' >
@@ -109,10 +109,11 @@ const FormItem=Form.Item;
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('weightLoss',{
-                    initialValue: '',
+                  
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
-                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'320px'}}></InputNumber>
+                    <InputNumber min={1} placeholder='请输入损失货品重量'   style={{width:'320px'}}></InputNumber>
+                  
                 )}
                 </FormItem>
                 <FormItem  wrapperCol={{span:24}} required>

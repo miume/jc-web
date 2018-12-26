@@ -190,8 +190,8 @@ class Edit extends Component{
                           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
                         </div>
                         <div style={{paddingTop:'10px' ,float:'right'}}>
-                            <Button onClick={this.hide} key='hide'>取消</Button>
-                            <Button type='primary' key='ok' disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
+                        <Button type='ghost'size='small' onClick={this.hide} className='button'>取消</Button>
+                        <Button type='primary' size='small'   className={this.state.checkSelectData>-1?'button':'grey-button'}   disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
                         </div>
                      </div>
                  }

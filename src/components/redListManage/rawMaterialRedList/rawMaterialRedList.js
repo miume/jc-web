@@ -104,20 +104,23 @@ class RawMaterialRedList extends Component{
             key:'commonBatchNumber.status',
             align:'center',
             width:'8%',
-             render:(text,record)=>{
-                 let status=record.commonBatchNumber.status;
-                  switch(`${status}`){
-                        case '-1': return '已保存未提交';
-                        case '0': return '已提交未审核';
-                        case '1': return '审核中';
-                        case '2': return '已通过';
-                        case '3': return '未通过';
-                        default: return '';
-            }
-          }
-        // render:status=>{
-        //          return this.status[status.toString()];
-        // }
+        //      render:(text,record)=>{
+                 
+        //          let status=record.commonBatchNumber.status;
+        //          console.log(status);
+        //           switch(`${status}`){
+        //                 case '-1': return '已保存未提交';
+        //                 case '0': return '已提交未审核';
+        //                 case '1': return '审核中';
+        //                 case '2': return '已通过';
+        //                 case '3': return '未通过';
+        //                 default: return '';
+        //     }
+        //   }
+        render:status=>{
+            //console.log(status);
+                 return this.status[status.toString()];
+        }
 
         },
         {
@@ -353,6 +356,7 @@ class RawMaterialRedList extends Component{
  }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
+        this.status=JSON.parse(localStorage.getItem('status'));
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,

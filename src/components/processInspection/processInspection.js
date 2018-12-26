@@ -308,6 +308,9 @@ class ProcessInspection extends React.Component{
         const rowSelection = {
           selectedRowKeys,
           onChange:this.onSelectChange,
+          getCheckboxProps:record=>({
+            disabled:record.commonBatchNumber.status!==-1&&record.commonBatchNumber.status!==3
+          })
         };
         const current = JSON.parse(localStorage.getItem('current'));
         return (
