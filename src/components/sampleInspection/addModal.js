@@ -41,7 +41,7 @@ const CollectionCreateForm = Form.create()(
                 clicked: false,
                 visible1: 1
             }
-            this.handleClickChange = this.handleClickChange.bind(this);
+            // this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
             this.selectChange = this.selectChange.bind(this);
             this.getProcess = this.getProcess.bind(this);
@@ -54,9 +54,9 @@ const CollectionCreateForm = Form.create()(
               return ;
             }
         }
-        handleClickChange(visible){
-            this.setState({clicked:visible})
-        }
+        // handleClickChange(visible){
+        //     this.setState({clicked:visible})
+        // }
         fetch = () =>{
             axios({
                 url: `${this.server}/jc/common/authUser/getAll`,
@@ -262,7 +262,7 @@ const CollectionCreateForm = Form.create()(
                                 {getFieldDecorator('type', {
                                     rules: [{ required: true, message: '请选择样品种类' }],
                                 })(
-                                    <Select  onChange={this.selectChange} placeholder="请选择样品种类">
+                                    <Select onChange={this.selectChange} placeholder="请选择样品种类">
                                         <Option key="1" value="1">原材料</Option>
                                         <Option key="2" value="2">中间品</Option>
                                         <Option key="3" value="3">成品</Option>
@@ -403,7 +403,7 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.serialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.materialName+" - "+pe.manufacturerName}</Option>
                                             )
                                         })
                                     }

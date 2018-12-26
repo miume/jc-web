@@ -75,7 +75,7 @@ class Management extends React.Component{
             width: '14%',
             render(text,record){
                 switch(record.commonBatchNumber.status){
-                    case -1 : return "已保存";
+                    case -1 : return "已保存未提交";
                     case 0 : return "已审核未提交";
                     case 1 : return "审核";
                     case 2 : return "已提交";
@@ -104,9 +104,10 @@ class Management extends React.Component{
                         <Divider type="vertical" />
                         <Editor value={text} status={record.commonBatchNumber.status} handle={this.fetch}/>
                         <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
+                        {record.commonBatchNumber.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>
-                        </Popconfirm>
+                        </Popconfirm>:<span className="notClick">删除</span>}
+                        
                     </span>
                 );
             }
@@ -251,6 +252,9 @@ class Management extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
+            getCheckboxProps: record => ({
+                disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
+              }),
           };
             return(
                 <div>

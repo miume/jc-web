@@ -43,7 +43,7 @@ const CollectionCreateForm = Form.create()(
 
                 oldData:[],
             }
-            this.handleClickChange = this.handleClickChange.bind(this);
+            // this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
             this.selectChange = this.selectChange.bind(this);
             this.getProcess = this.getProcess.bind(this);
@@ -56,9 +56,9 @@ const CollectionCreateForm = Form.create()(
               return ;
             }
         }
-        handleClickChange(visible){
-            this.setState({clicked:visible})
-        }
+        // handleClickChange(visible){
+        //     this.setState({clicked:visible})
+        // }
         fetch = () =>{
             axios({
                 url: `${this.server}/jc/common/authUser/getAll`,
@@ -112,20 +112,6 @@ const CollectionCreateForm = Form.create()(
                     serialNumber:res
                   })
             })
-
-            // axios({
-            //     url: `${this.server}/jc/common/repoBaseSerialNumber`,
-            //     method : 'get',
-            //     params : {materialClass:2},
-            //     headers:{
-            //         'Authorization': this.Authorization
-            //     },
-            // }).then((data) =>{
-            //     const res = data.data.data;
-            //     this.setState({
-            //         MiddleserialNumber:res
-            //       })
-            // })
 
             axios({
                 url: `${this.server}/jc/common/repoBaseSerialNumber`,
