@@ -86,7 +86,6 @@
     padding-right: 5px;
   }
   .item1 :hover,.item3 :hover{
-      /* background-color: #0079fe; */
       color: #1890ff;
   }
   .item2{
@@ -278,17 +277,30 @@
 
 .check-detail-div{
     flex-grow: 60;
+    width:800px;
+    overflow: hidden;
     /* border:1px solid grey;  */
 }
 .check-detail-div-hidden{
-    width:95%;
+    width:1000px;
     display: flex;
     flex-direction: row;
-    overflow: hidden;
 }
 .check-detail-div-hidden .check-detail-div-hidden-part{
-    flex:1;
-    padding-right:30px;
+    width:500px;
+    padding:10px;
+    display: flex;
+    flex-direction: row;
+}
+.check-detail-div-hidden-part .part-demo{
+    flex-grow: 2;
+    width:240px;
+}
+.check-detail-div-hidden-part .line-part{
+    flex-grow: 1;
+    width:100px;
+    height:30px;
+    border-bottom: 1px solid grey;
 }
 .check-detail-i{
     flex-grow: 2;
@@ -297,6 +309,9 @@
 .check-detail-i i{
     width:30px;
     border-radius: 0.2em 0 0 0.2em;
+}
+.check-detail-i :hover{
+    color: #1890ff;
 }
 /* .checkModal div:last-child{
     width:100px;
