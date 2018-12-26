@@ -1,10 +1,16 @@
 import React from 'react';
-import {Divider, Table} from 'antd';
+import {Divider, message, Popconfirm, Table} from 'antd';
 import CheckEditSpan from './checkEditSpan';
 import CheckReleaseSpan from './checkReleaseSpan';
-import DeleteSpan from './deleteSpan';
+// import DeleteById from '../BlockQuote/deleteById';
+import axios from "axios";
 
 class CheckTable extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.handleDelete = this.handleDelete.bind(this);
+    }
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -66,8 +72,8 @@ class CheckTable extends React.Component {
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'purchaseReportRecord.id',
+        key: 'purchaseReportRecord,id',
         align:'center',
         width: '11%',
         render: (text,record) => {
@@ -82,22 +88,24 @@ class CheckTable extends React.Component {
                         <CheckEditSpan
                             url={this.props.url}
                             id={record.purchaseReportRecord.id}
-                            userId={this.props.userId}
+                            menuList={this.props.menuList}
                         />
                     ):(
                         <span  className="notClick">编辑</span>
                     )}
                     <Divider type="vertical" />
                     <CheckReleaseSpan
+                        url={this.props.url}
+                        id={record.purchaseReportRecord.id}
+                        menuList={this.props.menuList}
                         state={record.state}
                         name='详情'
                     />
                     <Divider type="vertical" />
                     {operationDeleteFlag?(
-                        <DeleteSpan
-                            record={record}
-                            handleDelete={this.handleDelete.bind(this)}
-                        />
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
+                            <span className='blue'>删除</span>
+                        </Popconfirm>
                     ):(
                         <span  className="notClick">删除</span>
                     )}
@@ -143,9 +151,20 @@ class CheckTable extends React.Component {
     };
     /**---------------------- */
     /**单条记录删除 */
-    handleDelete = (key) => {
-        // const dataSource = this.state.dataSource;
-        // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
+    handleDelete = (id) => {
+        axios({
+            url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+            console.log('222')
+            this.props.fetch();
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     };
     /**---------------------- */
 }
