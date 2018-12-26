@@ -75,8 +75,8 @@ class CheckModal extends React.Component{
                 isAccept:status
             }
         }).then((data)=>{
-            this.props.fetch(userId)
-            this.props.getHistory(userId)
+            this.props.fetch()
+            this.props.getHistory()
             message.info(data.data.message);
         }).catch(()=>{
             message.info('操作失败，请联系管理员！')

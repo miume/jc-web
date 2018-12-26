@@ -1,32 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Table} from 'antd';
-import Line from './line';
-const examineData = [{
-    id: 100,
-    handler: 1,
-    personName:'王大大',
-    handleTime: "2018-12-20 09:34:23",
-    handleReply: "我没意见",
-},{
-    id: 101,
-    handler: 2,
-    personName:'兰亚戈',
-    handleTime: "2018-12-23 09:34:23",
-    handleReply: "同意",
-},{
-    id: 103,
-    handler: 3,
-    personName:'胡旭东',
-    handleTime: "2018-12-24 09:34:23",
-    handleReply: "勉强",
-},{
-    id: 104,
-    handler: 4,
-    personName:'杨梅',
-    handleTime: "2018-12-25 09:34:23",
-    handleReply: "勉强",
-}]
+import AllTester from '../BlockQuote/allTester';
 const columns = [{
     title: '产品线',
     dataIndex: 'deliveryFactory.name' ,
@@ -108,9 +83,6 @@ class Procedure extends React.Component{
             reply:''
         }
         this.getData = this.getData.bind(this);
-        this.moveLeft = this.moveLeft.bind(this);
-        this.moveRight = this.moveRight.bind(this);
-        this.handleMove = this.handleMove.bind(this);
         this.textChange = this.textChange.bind(this);
         this.getAllTester = this.getAllTester.bind(this);
     }
@@ -150,7 +122,7 @@ class Procedure extends React.Component{
           }
         }).then(data=>{
           const res = data.data.data;
-          console.log(res)
+          //console.log(res)
           if(res){
             this.setState({
                 examineData : res
@@ -165,51 +137,8 @@ class Procedure extends React.Component{
             reply:value
         })
     }
-    moveLeft(){
-        this.handleMove(-1);
-    }
-    moveRight(){
-        this.handleMove(1);
-    }
-    handleMove(number) {
-        var middle = document.getElementsByClassName('check-detail-div'); 
-        console.log(middle)    
-        let count = 830;
-        let gap = (count / 100);
-        gap = gap.toFixed(0);
-        if(gap >= 1) {
-            var interval = setInterval(function() {
-                let pre = middle.scrollLeft;
-                if(count < 5) {
-                    count -= 1;
-                    middle.scrollLeft += (number === 1 ? 1 : -1);
-                    // tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
-                }
-                else {
-                    count -= gap;
-                    middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
-                    
-                    // tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
-                }
-                if(count <= 0 || pre === middle.scrollLeft) {
-                    clearInterval(interval);
-                }
-            },1)
-        }else if(gap > 0){
-            var interval2 = setInterval(function() {
-                let pre = middle.scrollLeft;
-                count -= 1;
-                middle.scrollLeft += (number === 1 ? 1 : -1);
-                // tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
-                if(count <= 0|| pre === middle.scrollLeft) {
-                    clearInterval(interval2);
-                }
-            },1)
-        }
-    }
     render(){
         this.props.getReplyData(this.state.reply);
-        const count = examineData?examineData.length:0;
         return (
             <div className='checkModal'>
                 <div className="interDrSpanModalTop">
@@ -237,26 +166,30 @@ class Procedure extends React.Component{
                 <div className='checkModalDiv'>
                     <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
                 </div>
-                <div className={this.props.flag?"check-detail":'hide'}>
-                    <div className='check-detail-div'>
+                <div className={this.props.flag && this.state.examineData?'':'hide'}>
+                    <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />
+                </div>
+                {/* <div className={this.props.flag && this.state.examineData?"check-detail":'hide'}>
+                    <div className='check-detail-div' id={`check-detail-div`+this.props.dataId}>
                         <div className='check-detail-div-hidden'>
                        {
-                            examineData.map((e)=>(
-                                <div className='check-detail-div-hidden-part' key={e.id}>
+                            this.state.examineData?
+                            this.state.examineData.map((e,index)=>(
+                                <div className='check-detail-div-hidden-part' key={index}>
                                     <div className='part-demo' >
-                                        <div><span>审核人：<span>{e.personName?e.personName:''}</span></span></div>
-                                        <div><span>审核意见：<span>{e.handleReply?e.handleReply:''}</span></span></div>
-                                        <div><span>审核日期：<span>{e.handleTime?e.handleTime:''}</span></span></div>
+                                        <div><span>审核人：<span>{e.name?e.name:''}</span></span></div>
+                                        <div><span>审核日期：<span>{e.detail?e.detail.handleTime:''}</span></span></div>
+                                        <div><span>审核意见：<span>{e.detail?e.detail.handleReply:''}</span></span></div>
                                     </div>
-                                    <div className='line-part'>
+                                    <div className={index===count-1?'hide':'line-part'}>
                                     </div>
                                 </div>
-                            ))
+                            )):null
                         }
                         </div>
                     </div>
-                    <div className='check-detail-i' ><i className='fa fa-2x fa-caret-left' onClick={this.moveLeft}></i><i className='fa fa-2x fa-caret-right' onClick={this.moveLeft}></i></div>
-                </div>
+                    <div className='check-detail-i' ><i className='fa fa-2x fa-caret-left' onClick={this.moveLeft}></i><i className='fa fa-2x fa-caret-right' onClick={this.moveRight}></i></div>
+                </div> */}
                 <div className={this.props.flag?'hide':''} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                 </div>

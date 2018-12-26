@@ -56,17 +56,17 @@ class TodoProcessed extends React.Component{
         this.searchContentChange = this.searchContentChange.bind(this);
     }
     /**获取时间的实时变化 */
-    searchContentChange(e){
-        const value = e.target.value;
-        this.setState({searchContent:value});
+    searchContentChange(date, dateString){
+        this.setState({searchContent:dateString});
       }
     searchEvent(){
-        
+        const {searchContent} = this.state
+        this.props.getHistory(searchContent)
     }
     render(){
         return (
             <div className={this.props.flag?'historyContianer':'container'} >
-                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.props.getHistory}searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/></div>
+                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.props.getHistory} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/></div>
                 <div>
                     {
                         this.props.data?this.props.data.map(e=>{

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table,Divider } from 'antd';
+import AllTester from '../BlockQuote/allTester';
 import IsQualified from "../BlockQuote/isQualified";
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
@@ -27,31 +28,6 @@ const columns = [{
     align:'center',
     width: '25%',
 }];
-const examineData = [{
-    id: 100,
-    handler: 1,
-    personName:'王大大',
-    handleTime: "2018-12-20 09:34:23",
-    handleReply: "我没意见",
-},{
-    id: 101,
-    handler: 2,
-    personName:'兰亚戈',
-    handleTime: "2018-12-23 09:34:23",
-    handleReply: "同意",
-},{
-    id: 103,
-    handler: 3,
-    personName:'胡旭东',
-    handleTime: "2018-12-24 09:34:23",
-    handleReply: "勉强",
-},{
-    id: 104,
-    handler: 4,
-    personName:'杨梅',
-    handleTime: "2018-12-25 09:34:23",
-    handleReply: "勉强",
-}]
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;
@@ -111,44 +87,10 @@ class DetailModal extends React.Component {
                         />
                     </div>
                 <Divider />
-                <div className={this.props.examineData?"interDrSpanModalBottomSecond":'hide'}>
-                {
-                    this.props.examineData?this.props.examineData.map(e=>(
-                        <table key={e.id} >
-                            <tbody className='interPadding'>
-                            <tr>
-                                <td>审核人：</td>
-                                <td>{e.handler?e.handler:''}</td>
-                            </tr>
-                            <tr>
-                                <td>审核意见：</td>
-                                <td>{e.handleReply?e.handleReply:''}</td>
-                            </tr>
-                            <tr>
-                                <td>审核日期：</td>
-                                <td>{e.handleTime?e.handleTime:''}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    )):examineData.map(e=>(
-                        <table key={e.id} >
-                            <tbody className='interPadding'>
-                            <tr>
-                                <td>审核人：</td>
-                                <td>{e.handler?e.handler:''}</td>
-                            </tr>
-                            <tr>
-                                <td>审核意见：</td>
-                                <td>{e.handleReply?e.handleReply:''}</td>
-                            </tr>
-                            <tr>
-                                <td>审核日期：</td>
-                                <td>{e.handleTime?e.handleTime:''}</td>
-                            </tr>
-                            </tbody>
-                        </table>))
-                }
-                </div>
+                {/* <div className={this.props.flag && this.state.examineData?'':'hide'}>
+                    <AllTester examineData={this.state.examineData} />
+                </div> */}
+                <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1} />
             </div>
             </div>
         )

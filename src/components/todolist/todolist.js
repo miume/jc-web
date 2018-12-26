@@ -1,16 +1,16 @@
 import React from 'react';
-import {Tabs,Badge} from 'antd';
 import './todolist.css';
-import BlockQuote from '../BlockQuote/blockquote';
-import TodoProcessed from './todoprocessed';
 import axios from 'axios';
+import {Tabs,Badge} from 'antd';
+import TodoProcessed from './todoprocessed';
+import BlockQuote from '../BlockQuote/blockquote';
 const TabPane = Tabs.TabPane;
 class TodoList extends React.Component{
     url
+    userId
     componentDidMount(){
-        const id = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
-        this.fetch(id);
-        this.getHistory(id);
+        this.fetch();
+        this.getHistory('');
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -28,15 +28,15 @@ class TodoList extends React.Component{
         this.getHistory = this.getHistory.bind(this);
     }
     /**根据当前登陆用户id获取待办事项 */
-    fetch(id){
-        axios.get(`${this.url.toDoList}/${id}`,{
+    fetch(){
+        axios.get(`${this.url.toDoList}/${this.userId}`,{
             headers:{
                 'Authorization':this.Authorization
             }
         }).then((data)=>{
             const res = data.data.data;
             const count = res? res.length : 0;
-            if(res) res['curId'] = id;
+            if(res) res['curId'] = this.userId;
             this.setState({
                 data:res,
                 count:count
@@ -44,15 +44,16 @@ class TodoList extends React.Component{
         })
     }
     /**根据当前用户id获取待办事项历史记录 */
-    getHistory(id){
-        axios.get(`${this.url.toDoList}/${id}/history`,{},{
+    getHistory(date){
+        if(date===undefined) date = '';
+        axios.get(`${this.url.toDoList}/${this.userId}/history?date=${date}`,{},{
             headers:{
                 'Authorization':this.url.Authorization
-            }
+            },
         }).then((data)=>{
             const res = data.data.data;
-            // const count = res? res.length : 0;
-            if(res) res['curId'] = id;
+            //console.log(res)
+            if(res) res['curId'] = this.userId;
             this.setState({
                 historyRecord:res,
             })
@@ -60,6 +61,7 @@ class TodoList extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        this.userId = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
         return (
             <div>
                  <BlockQuote name="待办事项" menu='质量与流程'></BlockQuote>
