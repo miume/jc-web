@@ -7,10 +7,10 @@ for (let i = 0; i < 20; i++) {
     data.push({
         index: i,
         id:i,
-        a: '测试',
-        b: '测试',
-        c: '2019年1月10号',
-        d: '启东北新',
+        a: '镍咕锰',
+        b: '发生工序',
+        c: '2018年12月27日',
+        d: '周小伟',
     });
 }
 
@@ -29,6 +29,10 @@ class UnqualifiedTrack extends React.Component{
             searchText: '',
         };
         this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.fetch=this.fetch.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total) {
@@ -48,7 +52,7 @@ class UnqualifiedTrack extends React.Component{
                         name='请输入搜索内容'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
-                        // fetch={this.fetch}
+                        fetch={this.fetch}
                     />
                     <div className='clear' ></div>
                     <UnqualifiedTrackTable
@@ -64,6 +68,71 @@ class UnqualifiedTrack extends React.Component{
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
     }
+    /**获取所有数据 getAllByPage */
+    handleTableChange = (pagination) => {
+        this.fetch({
+            size: pagination.pageSize,
+            page: pagination.current,
+            orderField: 'id',
+            orderType: 'desc',
+
+        });
+    };
+    fetch = (params = {}) => {
+        // axios({
+        //     url: `${this.props.url.purchaseCheckReport.audit}` ,
+        //     method: 'get',
+        //     headers:{
+        //         'Authorization': this.props.url.Authorization
+        //     },
+        //     params: params,
+        // }).then((data) => {
+        //     const res = data.data.data;
+        //     this.pagination.total=res?res.total:0;
+        //     if(res&&res.list){
+        //         // const dataSource = this.dataAssemble(res);
+        //         for(var i = 1; i<=res.list.length; i++){
+        //             res.list[i-1]['index']=res.prePage*10+i;
+        //         }
+        //         this.setState({
+        //             dataSource: res.list,
+        //         });
+        //     }
+        // });
+    };
+    /**---------------------- */
+    /** 根据角色名称分页查询*/
+    searchEvent(){
+        // const batchNumber = this.state.searchContent;
+        // axios({
+        //     url: `${this.props.url.purchaseCheckReport.batchNumber}`,
+        //     method:'get',
+        //     headers:{
+        //         'Authorization':this.props.url.Authorization
+        //     },
+        //     params:{
+        //         size: this.pagination.pageSize,
+        //         page: this.pagination.current,
+        //         batchNumber: batchNumber
+        //     },
+        //     type:'json',
+        // }).then((data)=>{
+        //     const res = data.data.data;
+        //     this.pagination.total=res?res.total:0;
+        //     for(var i = 1; i<=res.list.length; i++){
+        //         res.list[i-1]['index']=(res.prePage)*10+i;
+        //     }
+        //     this.setState({
+        //         dataSource: res.list,
+        //     });
+        // });
+    };
+    /**获取查询时角色名称的实时变化 */
+    searchContentChange = (e) => {
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    /**---------------------- */
 }
 
 export default UnqualifiedTrack;

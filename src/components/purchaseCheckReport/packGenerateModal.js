@@ -102,7 +102,6 @@ class PackGenerateModal extends React.Component {
                 type:'json'
             }).then((data)=>{
                 const detail = data.data.data;
-                console.log('detail',detail)
                 var headData = [];
                 var tbodyData = [];
                 var judger = '';
@@ -267,7 +266,6 @@ class PackGenerateModal extends React.Component {
     };
     /**调用保存函数 */
     useSavaFunction = (savaData,status) => {
-        console.log('savaData',savaData)
         axios({
             url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=-1`,
             method:'put',
@@ -280,7 +278,6 @@ class PackGenerateModal extends React.Component {
             if(status){
                 console.log('此时commonBatchNumberDTO不存在，所以报错')
                 const dataId = data.data.data.commonBatchNumberDTO.commonBatchNumber?data.data.data.commonBatchNumberDTO.commonBatchNumber.id:null;
-                console.log('222')
                 this.applyReview(dataId);
             }else{
                 this.setState({
@@ -320,10 +317,8 @@ class PackGenerateModal extends React.Component {
                 subVisible: false,
             });
             this.props.fetch();
-            console.log('pass')
             message.info(data.data.message);
         }).catch(()=>{
-            console.log('nopass')
             message.info('送审失败，请联系管理员！')
         });
     }

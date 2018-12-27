@@ -135,7 +135,6 @@ class CheckSpanModal extends React.Component {
     /**监听检测结果输入框的变化 */
     /**input框内容变化，实现自动保存数据 */
     inputSave(e){
-        console.log(e.target.value)
         const value = e.target.value;
         const name = e.target.name;
         const id = e.target.id;
@@ -171,7 +170,6 @@ class CheckSpanModal extends React.Component {
                 }
             })
         }
-        console.log('testDTOStestDTOS',testDTOS);
         if(isQualified === -1){
             message.info('请点击合格或者不合格！');
             return

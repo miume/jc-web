@@ -5,11 +5,11 @@ import './unqualifiedTrack.css';
 const topData = {
     materialName: '镍矿石',
     time: '2018年11月11日',
-    materialer: '张张',
+    materialer: '张小伟',
 };
 const middleData = {
-    unTrackReason: 'abcd',
-    handleMethod: '张张aaaa',
+    unTrackReason: '因为Ca含量超标，所以不合格',
+    handleMethod: '该批次退货，联系厂家退款，并降低该厂家评级',
 };
 const Option = Select.Option;
 class EdSpanModal extends React.Component {
@@ -109,7 +109,6 @@ class EdSpanModal extends React.Component {
     };
     /**监控发生工艺下拉框的变化 */
     procedureChange = (value) => {
-        console.log(value);
         // const {detail} = this.state;
         // detail.procedureTestRecord.deliveryFactoryId = value
         // this.setState({

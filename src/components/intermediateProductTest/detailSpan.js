@@ -74,9 +74,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     }
     /**通过id查询详情 */
     getDetailData(){
@@ -86,7 +86,6 @@ class DetailSpan extends React.Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            console.log('details',res)
             // this.setState({
             //     detailData:details,
             // });
@@ -96,7 +95,6 @@ class DetailSpan extends React.Component {
             var isQualified = 0;
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
-                console.log('isQualified',isQualified)
                 topData = {
                     serialNumber: res.serialNumber,
                     materialName: res.materialName,
@@ -130,7 +128,6 @@ class DetailSpan extends React.Component {
                         }
                     }).then((data)=>{
                         const res = data.data.data;
-                        console.log('pp',isQualified)
                         this.setState({
                             detailData:{
                                 topData: topData,
@@ -142,7 +139,7 @@ class DetailSpan extends React.Component {
                                 },
                                 isQualified: isQualified,
                             },
-                            // visible: true
+                            visible: true
                         });
                     })
                 }else{
@@ -157,7 +154,7 @@ class DetailSpan extends React.Component {
                             },
                             isQualified: isQualified,
                         },
-                        // visible: true
+                        visible: true
                     })
                 }
             }

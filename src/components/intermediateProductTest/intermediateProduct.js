@@ -152,6 +152,10 @@ class InterProduct extends React.Component {
                 this.setState({
                     dataSource:res.list
                 })
+            }else{
+                this.setState({
+                    dataSource: []
+                })
             }
 
         })

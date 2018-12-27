@@ -1,46 +1,12 @@
 import React from 'react';
-import {Divider, message, Switch} from 'antd';
+import {Divider, Switch} from 'antd';
 import PackTable from './packTable';
 import SearchCell from '../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
 import './purchaseCheckReport.css';
 // import axios from "axios";
-//
-const data = [];
-for (let i = 0; i < 20; i++) {
-    if(i%2===0){
-        data.push({
-            index:i,
-            id: i,
-            sampleDeliveringDate: '周小伟',
-            deliverer: '启动',
-            deliveryFactory: 'c',
-            serialNumberd: 'd',
-            testItem: 'e',
-            exceptionComment: 'f',
-            type: '无',
-            acceptStatus: '无',
-            status: '已通过',
-            ungenerate: '1', //未生成为：0，已生成为1
-        });
-    }else{
-        data.push({
-            index:i,
-            id: i,
-            sampleDeliveringDate: '周小伟',
-            deliverer: '启动',
-            deliveryFactory: 'c',
-            serialNumberd: 'd',
-            testItem: 'e',
-            exceptionComment: 'f',
-            type: '无',
-            acceptStatus: '无',
-            status: '已通过',
-            ungenerate: '0', //未生成为：0，已生成为1
-        });
-    }
-}
+
 
 
 class Pack extends React.Component {
@@ -71,30 +37,32 @@ class Pack extends React.Component {
             total: this.state.dataSource.length,
             showSizeChanger: true,
             onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
             },
             onChange(current) {
-                // console.log('Current: ', current);
             }
         }
     };
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
-        if(unGenerateDate===true){
-            this.rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-            };
-        }else{
-            this.rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-                getCheckboxProps: record => ({
-                    disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
-                })
-
-            };
-        }
+        this.rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
+        // if(unGenerateDate===true){
+        //     this.rowSelection = {
+        //         selectedRowKeys,
+        //         onChange: this.onSelectChange,
+        //     };
+        // }else{
+        //     this.rowSelection = {
+        //         selectedRowKeys,
+        //         onChange: this.onSelectChange,
+        //         getCheckboxProps: record => ({
+        //             disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
+        //         })
+        //
+        //     };
+        // }
         return(
             <div>
                 <div>
@@ -213,8 +181,6 @@ class Pack extends React.Component {
     /**---------------------- */
     /**实现全选功能 */
     onSelectChange = (selectedRowKeys) => {
-        // console.log('selectedRowKeys changed: ', selectedRowKeys);
-        console.log('selectedRowKeys',selectedRowKeys)
         this.setState({ selectedRowKeys });
     };
     /**---------------------- */
@@ -288,7 +254,6 @@ class Pack extends React.Component {
     /**---------------------- */
     /**实现选择是否只展现未生成的数据功能 */
     urgentChange = (checked) => {
-        console.log(`switch to ${checked}`);
         this.setState({
             unGenerateDate: checked
         },()=>{

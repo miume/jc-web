@@ -23,7 +23,7 @@ class CheckTable extends React.Component {
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         align:'center',
-        width: '6%',
+        width: '10%',
         render: batchNumber => {
             return batchNumber?batchNumber:'无';
         }
@@ -78,8 +78,8 @@ class CheckTable extends React.Component {
         key: 'commonBatchNumberDTO.commonBatchNumber.status',
         align:'center',
         width: '6%',
-        render:state => {
-            return this.props.status[state.toString()];
+        render:status => {
+            return this.props.status[status.toString()];
         }
     },{
         title: '紧急',
@@ -95,11 +95,11 @@ class CheckTable extends React.Component {
         align:'center',
         width: '11%',
         render: (text,record) => {
-            // let operationCheckFlag = this.judgeCheckOperation(record.state);
-            let operationCheckFlag = true;
-            // let operationDeleteFlag = this.judgeDeleteOperation(record.state);
-            let operationDeleteFlag = true;
-
+            const status = record.commonBatchNumberDTO.commonBatchNumber.status;
+            let operationCheckFlag = this.judgeCheckOperation(status);
+            // let operationCheckFlag = true;
+            let operationDeleteFlag = this.judgeDeleteOperation(status);
+            // let operationDeleteFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
@@ -149,7 +149,7 @@ class CheckTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ x: 1500,y: 400 }}
+                scroll={{ x: 1500,y: 600 }}
             />
         )
     }

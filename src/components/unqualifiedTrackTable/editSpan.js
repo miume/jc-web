@@ -7,7 +7,6 @@ import EdSpanModal from './edSpanModal';
 
 
 class EditSpan extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.state = {
@@ -15,15 +14,15 @@ class EditSpan extends React.Component {
             subVisible: false,
             process:-1,
         };
-        this.showModal = this.showModal.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
     render() {
         const { visible } = this.state;
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
-            <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+            <span>
+                <span className="blue" onClick={this.handleEdit} >编辑</span>
                 <Modal
                     title="编辑数据"
                     visible={visible}
@@ -51,25 +50,27 @@ class EditSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <span  className="unqualifiedTrackBlueSpan"><i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;编辑</span>
             </span>
         )
     }
 
-    showModal = () => {
+    /**点击编辑 */
+    handleEdit() {
+        // this.getDetailData();
         this.setState({
             visible: true,
+        })
+    }
+
+    handleCancel = () => {
+        this.setState({
+            visible: false,
         });
     };
-    handleCancel = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
     handleClick = () => {
-        console.log("提交")
+        this.setState({
+            visible: false,
+        });
     }
 
 }

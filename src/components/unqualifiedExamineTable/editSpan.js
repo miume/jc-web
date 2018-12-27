@@ -255,20 +255,18 @@ class EditSpan extends React.Component {
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log('detail',detail)
             var headData = [];
             var tbodyData = [];
             var judger = '';
             var judgement = '';
             var topData = {};
-            console.log('0')
             if(detail){
                 topData = {
                     materialName: detail.materialName?detail.materialName:'',
                     norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
                     quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'',
-                    sampleDeliveringDate:'暂定',
-                    deliveryFactory:'暂定'
+                    sampleDeliveringDate:'',
+                    deliveryFactory:''
                     // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
                     // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
                 };
@@ -300,7 +298,6 @@ class EditSpan extends React.Component {
                         isQualified: detailTbody[j].testReportRecord.isQualified
                     })
                 }
-                console.log('tbodyData',tbodyData)
                 judger = this.props.menuList.username;
                 judgement = detail.purchaseReportRecord.judgement ;
                 this.setState({
