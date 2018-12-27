@@ -1,37 +1,37 @@
 import React from 'react';
-const examineData = [{
-    name:'王大大',
-    detail:{
-        id: 100,
-        handler: 1,
-        handleTime: "2018-12-20 09:34:23",
-        handleReply: "我没意见我没意见我没意见",
-    }
-},{
-    name:'兰亚戈',
-    detail:{
-        id: 101,
-        handler: 2,
-        handleTime: "2018-12-23 09:34:23",
-        handleReply: "同意",
-    }
-},{
-    name:'方乐',
-    detail:{
-        id: 103,
-        handler: 3,
-        handleTime: "2018-12-23 09:34:23",
-        handleReply: "可以",
-    }
-},{
-    name:'兰亚戈',
-    detail:{
-        id: 106,
-        handler: 4,
-        handleTime: "2018-12-24 09:34:23",
-        handleReply: "good",
-    }
-},]
+// const examineData = [{
+//     name:'王大大',
+//     detail:{
+//         id: 100,
+//         handler: 1,
+//         handleTime: "2018-12-20 09:34:23",
+//         handleReply: "我没意见我没意见我没意见",
+//     }
+// },{
+//     name:'兰亚戈',
+//     detail:{
+//         id: 101,
+//         handler: 2,
+//         handleTime: "2018-12-23 09:34:23",
+//         handleReply: "同意",
+//     }
+// },{
+//     name:'方乐',
+//     detail:{
+//         id: 103,
+//         handler: 3,
+//         handleTime: "2018-12-23 09:34:23",
+//         handleReply: "可以",
+//     }
+// },{
+//     name:'兰亚戈',
+//     detail:{
+//         id: 106,
+//         handler: 4,
+//         handleTime: "2018-12-24 09:34:23",
+//         handleReply: "good",
+//     }
+// },]
 class AllTester extends React.Component{
     constructor(props){
         super(props);
@@ -79,8 +79,8 @@ class AllTester extends React.Component{
         }
     }
     render(){
-        // const examineData = this.props.examineData;
-        const count = this.props.examineData?this.props.examineData.length:examineData.length;
+        const examineData = this.props.examineData;
+        const count = examineData?examineData.length:0;
         return (
             <div className='check-detail'>
                 <div className={this.props.hide?'check-detail-div1':'check-detail-div'} id={`check-detail-div`+this.props.dataId}>
@@ -94,7 +94,7 @@ class AllTester extends React.Component{
                                     <div><span>审核日期：<span>{e.detail?e.detail.handleTime:''}</span></span></div>
                                     <div><span>审核意见：<span>{e.detail?e.detail.handleReply:''}</span></span></div>
                                 </div>
-                                <div className={index===count || this.props.hide ?'hide':'line-part'}>
+                                <div className={index===count-1 || this.props.hide ?'hide':'line-part'}>
                                 </div>
                             </div>
                         )):null

@@ -70,13 +70,17 @@ class TodoProcessed extends React.Component{
                 <div>
                     {
                         this.props.data?this.props.data.map(e=>{
+                            var curId = this.props.data.curId;
+                            /**visible===1 表示到当前用户进行审核  前面为已审核，后面则为未审核 */
                             var flag = e.details.findIndex(e=>e.visible === 1)
                             var details = e.details;
+                            var contents = '';
                             for(var i = 0; i < details.length; i++){
+                                if(curId===details[i].userId) contents = details[i].responsibility;
                                 if(i<flag) details[i]['flag'] = 0;
                                 else {details[i]['flag'] = 1; }      
                             }
-                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} data={e.commonBatchNumber} details={details} curId={this.props.data.curId} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag}/>
+                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} contents={contents} data={e.commonBatchNumber} details={details} curId={curId} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag}/>
                         }):null
                     }
                     </div>

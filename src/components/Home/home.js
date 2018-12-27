@@ -340,6 +340,7 @@ class Home extends Component {
     render() {
         const path2Component = this.getComponentArray(); 
         const userName = JSON.parse(localStorage.getItem('menuList')).name;
+        const userId = JSON.parse(localStorage.getItem('menuList')).userId;
         return (
                 <div className="parent" >
                     <div className="top">
@@ -352,7 +353,7 @@ class Home extends Component {
                             </div>
                         </div>
                         <div className="fr" >
-                            <Exit name='退出'></Exit>
+                            <Exit name='退出' userId={userId}></Exit>
                         </div>
                         
                         <div className="fr userName" >

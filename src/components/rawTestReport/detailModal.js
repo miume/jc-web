@@ -87,10 +87,10 @@ class DetailModal extends React.Component {
                         />
                     </div>
                 <Divider />
-                {/* <div className={this.props.flag && this.state.examineData?'':'hide'}>
-                    <AllTester examineData={this.state.examineData} />
-                </div> */}
-                <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1} />
+                <div className={this.props.flag && this.props.examineData?'':'hide'}>
+                    <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1}/>
+                </div>
+                {/* <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1} /> */}
             </div>
             </div>
         )
