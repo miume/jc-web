@@ -98,6 +98,7 @@ class ProductInspection extends React.Component {
                     />
                     <div className='clear' ></div>
                     <ProductTable
+                        url = {this.url}
                         data={this.state.dataSource}
                         status={this.status}
                         // rowSelection={rowSelection}

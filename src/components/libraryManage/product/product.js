@@ -43,14 +43,16 @@ class Product extends React.Component{
         params: {materialClass:3},
     }).then((data)=>{
       const res = data.data.data;
-      for(var i = 1; i<=res.length; i++){
-        res[i-1]['index']=i;
-        res[i-1]["realNum"]=forkData[i-1]
-        res[i-1]["realWeig"]=forkData[i-1]
-    }
-      this.setState({
-        dataSource:res
-      })
+      if(res){
+        for(var i = 1; i<=res.length; i++){
+            res[i-1]['index']=i;
+            res[i-1]["realNum"]=forkData[i-1]
+            res[i-1]["realWeig"]=forkData[i-1]
+        }
+          this.setState({
+            dataSource:res
+          })
+      }
     })
   }
     searchContentChange(e){
@@ -72,14 +74,16 @@ class Product extends React.Component{
             type:"json",
         }).then((data)=>{
             const res = data.data.data.list;
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-                res[i-1]["realNum"]=forkData[i-1]
-                res[i-1]["realWeig"]=forkData[i-1]
+            if(res){
+                for(var i = 1; i<=res.length; i++){
+                    res[i-1]['index']=i;
+                    res[i-1]["realNum"]=forkData[i-1]
+                    res[i-1]["realWeig"]=forkData[i-1]
+                }
+                this.setState({
+                    dataSource:res
+                  })
             }
-            this.setState({
-                dataSource:res
-              })
         })
     }
     handleClick(){

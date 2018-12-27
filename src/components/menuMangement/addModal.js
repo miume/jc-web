@@ -71,6 +71,7 @@ const CollectionCreateForm = Form.create()(
 
 class AddModal extends React.Component {
     server
+    url
     state = {
         visible: false,
         visible1:false,
@@ -106,7 +107,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${this.server}/jc/auth/menu/add`,
+                url : `${this.url.menu.add}`,
                 method:'post',
                 headers:{
                     'Authorization': this.state.Authorization
@@ -131,6 +132,7 @@ class AddModal extends React.Component {
 
     render() {
         this.server = localStorage.getItem("remote")
+        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <span>
                 <NewButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;

@@ -24,10 +24,12 @@ class Tr extends React.Component{
             params: params,
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                approvalProcess : res,
-                loading: false,
-            })
+            if(res){
+                this.setState({
+                    approvalProcess : res,
+                    loading: false,
+                })
+            }
         })
     };
     componentDidMount() {

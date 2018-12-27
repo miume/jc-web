@@ -192,12 +192,33 @@ class Home extends Component {
             menu:{
                 getAll:`${server}/jc/auth/menu/getAllRecursive`,
                 add:`${server}/jc/auth/menu/add`,
-                deleteById:`${server}/jc/auth/menu`,
-                findByParentNameLikeByPage:`${this.server}/jc/auth/menu/findByParentNameLikeByPage`,
-                findAllByPage:`${this.server}/jc/auth/menu/findAllByPage`,
-                findByMenuType:`${this.server}/jc/auth/menu/findByMenuType`,
-                findByNameLikeByPage:`${this.server}/jc/auth/menu/findByNameLikeByPage`,
+                deleteByIds:`${server}/jc/auth/menu/deleteByIds`,
+                findByParentNameLikeByPage:`${server}/jc/auth/menu/findByParentNameLikeByPage`,
+                findAllByPage:`${server}/jc/auth/menu/findAllByPage`,
+                findByMenuType:`${server}/jc/auth/menu/findByMenuType`,
+                findByNameLikeByPage:`${server}/jc/auth/menu/findByNameLikeByPage`,
                 update:`${server}/jc/auth/menu/update`,
+                findById:`${server}/jc/auth/menu`,
+                deleteById:`${server}/jc/auth/menu`,
+            },
+            /**盘库管理 */
+            libraryManage:{
+                getAll:`${server}/jc/common/RepoDiffRecord`,
+                getAllLikeByPage:`${server}/jc/common/RepoDiffRecord/getByMaterialNameLike`,
+                getAllByPage:`${server}/jc/common/RepoDiffRecord/pages`,
+            },
+            /**流程管理 */
+            processManagement:{
+                deleteByIds:`${server}/jc/common/batchAuditTask`,
+                getAllByPage:`${server}/jc/common/batchAuditTask/pages`,
+                getAllUseManage:`${server}/jc/common/batchAuditTask/validTasks`,
+            },
+            /**样品送检 */
+            sampleInspection:{
+                findMiddleItem:`${server}/jc/common/procedureTestRecord/testItems`,
+                getAll:`${server}/jc/common/sampleDeliveringRecord`,
+                accept:`${server}/jc/common/sampleDeliveringRecord/accept`,
+                getAllBypages:`${server}/jc/common/sampleDeliveringRecord/pages`,
             },
             /**操作管理 */
             operation:{
@@ -239,12 +260,6 @@ class Home extends Component {
             },
             /**待办事项 */
             toDoList:`${server}/jc/common/toDoList`,
-            /**流程管理 */
-            process:{
-                process:`${server}/jc/common/batchAuditTask`,
-                getAll:`${this.server}/jc/common/authUser/getAll`,
-                pages:`${this.server}/jc/common/batchAuditTask/pages`,
-            },
             /**制程检验 */
             procedure:{
                 procedureTestRecord:`${server}/jc/common/procedureTestRecord`,

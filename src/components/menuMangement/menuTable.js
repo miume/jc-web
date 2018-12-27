@@ -67,6 +67,7 @@ class EditableCell extends React.Component {
 }
 
 class MenuTable extends React.Component{
+    url
     constructor(props){
         super(props);
         this.state = {
@@ -172,6 +173,7 @@ class MenuTable extends React.Component{
         }
     }];
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         //  单行编辑
         const components = {
             body: {
@@ -246,9 +248,8 @@ class MenuTable extends React.Component{
                 });
                 const data = row;
                 data['id'] = id.toString()
-                let server = localStorage.getItem("remote")
                 axios({
-                    url:`${server}/jc/auth/menu/update`,
+                    url:`${this.url.menu.update}`,
                     method:'post',
                     headers:{
                         'Authorization':this.Authorization

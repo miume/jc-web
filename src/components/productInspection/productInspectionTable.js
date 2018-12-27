@@ -30,13 +30,13 @@ class ProductTable extends React.Component{
         dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
         key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
         align:'center',
-        width: '8%',
+        width: '10%',
     },{
         title: '编号',
         dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
         key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
         align:'center',
-        width: '8%',
+        width: '10%',
     },{
         title: '检测项目',
         dataIndex: 'testReportRecordDTO.testItemName',
@@ -76,15 +76,19 @@ class ProductTable extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '19%',
+        width: '16%',
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
             let releaseSpanFlag = this.judgeReleaseOperation(record.h,record.status);
+            // let detailSpanFlag = true
+            // let checkSpanFlag = true
+            // let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
                         <DetailSpan
+                            url={this.props.url}
                             record={record}
                             checkStatus={record.commonBatchNumberDTO.commonBatchNumber.status}
                         />
@@ -124,7 +128,7 @@ class ProductTable extends React.Component{
         return (
             <Table
                 className="productCursorDefault"
-                rowKey={record => record.id}
+                rowKey={record => record.commonBatchNumberDTO.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}

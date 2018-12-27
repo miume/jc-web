@@ -137,20 +137,22 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            const name = res.commonBatchNumber.description
-            const status = res.commonBatchNumber.status
-            const detail = res.details
-            const count = detail?detail.length:0;
-            for(var i = 0; i < count; i++){
-                detail[i].id = i+1;
+            if(res){
+                const name = res.commonBatchNumber.description
+                const status = res.commonBatchNumber.status
+                const detail = res.details
+                const count = detail?detail.length:0;
+                for(var i = 0; i < count; i++){
+                    detail[i].id = i+1;
+                }
+                this.setState({
+                    dataSource:res,
+                    name:name,
+                    detail:detail,
+                    count:count,
+                    batchStatus:status
+                })
             }
-            this.setState({
-                dataSource:res,
-                name:name,
-                detail:detail,
-                count:count,
-                batchStatus:status
-            })
         })
     }
     /**编辑中新增按钮 */

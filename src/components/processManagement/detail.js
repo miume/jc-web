@@ -41,12 +41,14 @@ class Detail extends React.Component{
             method:"GET",
         }).then((data) => {
             const res = data.data.data;
-            var dataName = [{}]
-            dataName[0].description = res.commonBatchNumber.description
-            this.setState({
-                data : res.details,
-                data1 : dataName
-            })
+            if(res){
+                var dataName = [{}]
+                dataName[0].description = res.commonBatchNumber.description
+                this.setState({
+                    data : res.details,
+                    data1 : dataName
+                })
+            }
         })
     }
     /**处理一条详情记录 */
