@@ -6,7 +6,7 @@ class TopIcon extends React.Component{
                 <div onClick={ this.props.exitEvent} className='iconHover' >
                     <i className="fa fa-sign-out" aria-hidden="true" style={{padding:'10px'}}></i>
                 </div>
-                <div onClick={ this.props.exitEvent} className='iconHover'>
+                <div onClick={ this.props.drawerEvent} className='iconHover'>
                     <i className="fa fa-bell-o" aria-hidden="true" style={{padding:'10px'}}></i>
                 </div>
                 <div onClick={ this.props.exitEvent} className='iconHover'>

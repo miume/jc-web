@@ -8,7 +8,7 @@ class SearchCell extends React.Component{
             <span style={{float:'right',paddingBottom:'8px'}}>
             {
                 this.props.timeFlag?
-                <span>
+                <span id='date-choose'>
                 <DatePicker className = {`search-${type}`} onChange={this.props.searchContentChange} placeholder='请选择日期' />
                 <Button type="primary" icon="search" className='time-search' onClick={this.props.searchEvent}></Button></span>:
                 <Search

@@ -20,9 +20,9 @@ class TodoList extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            data:[],
             count : 0,
-            historyCount : 0,
-            data:[]
+            historyCount : 0
         }
         this.fetch = this.fetch.bind(this);
         this.getHistory = this.getHistory.bind(this);
@@ -37,6 +37,7 @@ class TodoList extends React.Component{
             const res = data.data.data;
             const count = res? res.length : 0;
             if(res) res['curId'] = this.userId;
+            //console.log(res)
             this.setState({
                 data:res,
                 count:count
@@ -52,7 +53,6 @@ class TodoList extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            //console.log(res)
             if(res) res['curId'] = this.userId;
             this.setState({
                 historyRecord:res,

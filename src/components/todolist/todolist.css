@@ -32,12 +32,14 @@
     min-width: 800px;
 }
 .wrap1{
-    flex-grow: 3;
+    flex-grow: 2;
     height: 100%;
 }
 .wrap2{
-    flex-grow: 3;
+    flex-grow: 2;
     height: 100%;
+    color:black;
+    text-align: left;
 }
 .wrap3{
     flex-grow: 6;
@@ -46,20 +48,17 @@
 }
 .smallSize{
     color:black;
-    width:10%;
-    padding:0 1%;
+    /* padding:0 10px; */
 }
 .smaSize{
     color:black;
-    width:10%;
-    padding:0 10%;
+    /* padding:0 20px; */
 }
 .bigSize{
     font-size: 18px;
-    width:30%;
     font-weight: bolder;
     color:#0066fe;
-    padding: 0 1% 0;
+    /* padding: 0 10px 0; */
 }
 .rightSpan{
     padding-left: 17%;
@@ -329,6 +328,13 @@
 }
 .check-detail-i :hover{
     color: #1890ff;
+}
+/**搜索框样式*/
+#date-choose .ant-input{
+    border-radius:4px 0 0 4px !important; 
+}
+#date-choose .time-search{
+    border-radius: 0 4px 4px 0 !important;
 }
 /* .checkModal div:last-child{
     width:100px;

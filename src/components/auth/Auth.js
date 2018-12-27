@@ -1,9 +1,6 @@
 import {withRouter} from "react-router-dom";
 import React from 'react'
-
-
 class Auth extends React.Component {
-
     componentDidMount() {
         let auth = localStorage.getItem("Authorization");
         let menus = localStorage.getItem("menuList");
@@ -13,6 +10,7 @@ class Auth extends React.Component {
         /**如果localStorage为空，则跳回登陆页 */
         }else {
             let quickAccess = localStorage.getItem('quickAccess');
+            let dataType = localStorage.getItem('dataType');
             let remote = localStorage.getItem('remote');
             let username = localStorage.getItem('username');
             let password = localStorage.getItem('password');
@@ -26,7 +24,7 @@ class Auth extends React.Component {
             }
             localStorage.setItem("remote", remote);
             localStorage.setItem("quickAccess", quickAccess);
-            // localStorage.setItem("remote1", remote1);
+            localStorage.setItem("dataType", dataType);
             // localStorage.setItem("remote2", remote2);
             // localStorage.setItem("remote3", remote3);
             this.props.history.push({pathname: '/'})
@@ -36,6 +34,4 @@ class Auth extends React.Component {
         return (null)
     }
 }
-
-
 export default withRouter(Auth)

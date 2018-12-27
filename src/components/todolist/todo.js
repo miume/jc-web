@@ -76,7 +76,7 @@ class Todo extends React.Component{
                     <span className='smallSize'>由您对</span>&nbsp;&nbsp;&nbsp;
                     <span className='bigSize'>{dataType[this.props.data.dataType.toString()]+'   '+this.props.data.batchNumber}</span>
                 </div>
-                <div className='wrap2'>初步审核，检查标准是否判断正确</div>
+                <div className='wrap2'>{this.props.contents?this.props.contents:'无'}</div>
                 <div className='wrap3'>
                    <span className='time'>{this.props.data.createTime}</span>
                    <span className='smallSize'><span className={this.props.data.isUrgent?'urgent':''}>{this.props.data.isUrgent?'紧急':'正常'}</span></span>

@@ -108,3 +108,69 @@ input::-webkit-input-placeholder{
 .userName>span{
     padding-right:20px
 }
+.drawer-div{
+    text-align: center;
+    color:#333333;
+    font-size: 22px;
+    font-weight: bold;
+    overflow: hidden;
+}
+.drawer-date-div .drawer-date{
+    font-size:14px;
+    color:#0069ff;
+    text-align: left;
+}
+.drawer-date-div .drawer-data{
+    font-size:13px;
+    color:#999999;
+    text-align: left;
+}
+.drawer-date-div{
+    height:550px;
+    padding:1px;
+    margin-top: 25px;
+    overflow-y:scroll;
+}
+.drawer-part{
+    height:120px;
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.35);
+    margin-bottom: 19px;
+}
+.drawer-flex{
+    display: flex;
+    font-size:13px;
+    flex-direction: row;
+    margin-top:28px;
+}
+.drawer-flex1{
+    flex-grow: 1;
+    color:#666666;
+    text-align: left;
+}
+.drawer-flex11{
+    flex-grow: 1;
+    color:red;
+    text-align: left;
+}
+.drawer-flex2{
+    flex-grow: 5;
+    color:#666666;
+    text-align: left;
+}
+.drawer-flex3{
+    flex-grow: 1;
+    color:#999999;
+    text-align: right;
+}
+.drawer-flex3:hover{
+    cursor: pointer;
+}
+.drawer-flex3 i{
+    font-weight: bolder;
+}
+
+.ant-drawer-wrapper-body{
+    overflow: hidden !important;
+}
