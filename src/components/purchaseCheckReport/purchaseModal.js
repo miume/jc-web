@@ -40,7 +40,7 @@ class PurchaseModal extends React.Component {
                                     <td>{this.props.data.topData.materialName}</td>
                                     <td>{this.props.data.topData.norm}</td>
                                     <td>{this.props.data.topData.quantity}</td>
-                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.sampleDeliveringDate}>{this.state.checkData.topData.sampleDeliveringDate.substring(0,10)}</abbr></td>
+                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.sampleDeliveringDate}>{this.props.data.topData.sampleDeliveringDate.substring(0,10)}</abbr></td>
                                     <td>{this.props.data.topData.deliveryFactory}</td>
                                 </tr>
                             ):(

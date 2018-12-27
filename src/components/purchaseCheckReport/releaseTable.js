@@ -79,6 +79,7 @@ class ReleaseTable extends React.Component {
                 <span>
                     {operationFlag?(
                         <CheckReleaseSpan
+                            url={this.props.url}
                             fetch={this.props.fetch}
                             state={2}
                             name='发布'

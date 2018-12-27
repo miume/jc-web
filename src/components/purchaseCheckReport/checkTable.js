@@ -26,8 +26,8 @@ class CheckTable extends React.Component {
         width: '6%',
     },{
         title: '原材料',
-        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName',
-        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName',
+        dataIndex: 'materialName',
+        key: 'materialName',
         align:'center',
         width: '6%',
     },{
