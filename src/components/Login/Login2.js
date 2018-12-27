@@ -20,9 +20,11 @@ class Login extends React.Component {
     // localStorage.setItem("remote", "http://127.0.0.1:8085");
   }
   keyPress(e){
-    if(e.keyCode === 13){
-      alert('enter')
-    }
+    // console.log('click')
+    // message.info('11')
+    // if(e.keyCode === 13){
+    //   alert('enter')
+    // }
   }
   /**实行记住密码 */
   remindLogin(value){
@@ -81,6 +83,13 @@ class Login extends React.Component {
         message.info('账号或密码有误，请重新输入！');
       }
     });
+  }
+  componentDidMount() {
+    /**实现enter键登陆 */
+    const f = (e) => {
+      if(e.keyCode===13){this.handleSubmit(); window.onkeydown = undefined}
+    }
+    window.onkeydown = f
   }
   render() {
     // this.keyPress();
