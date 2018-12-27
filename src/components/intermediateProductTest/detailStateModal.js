@@ -4,6 +4,7 @@ import {Divider} from "antd";
 
 class DetailStateModal extends React.Component {
     render() {
+        console.log(this.props.data.examineData)
         switch (this.props.data.examineStatus) {
             case -1: //待审核
                 return(

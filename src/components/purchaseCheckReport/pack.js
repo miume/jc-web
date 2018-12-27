@@ -99,7 +99,9 @@ class Pack extends React.Component {
             <div>
                 <div>
                     <PackGenerateModal
+                        fetch={this.fetch}
                         url={this.props.url}
+                        menuList={this.props.menuList}
                         selectedRowKeys={this.state.selectedRowKeys}
                     />
                     <div style={{float:'right'}}>
@@ -173,7 +175,6 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            console.log('data',data)
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
                 // const dataSource = this.dataAssemble(res);
@@ -182,6 +183,7 @@ class Pack extends React.Component {
                 }
                 this.setState({
                     dataSource: res.list,
+                    selectedRowKeys: [],
                 });
             }
         });

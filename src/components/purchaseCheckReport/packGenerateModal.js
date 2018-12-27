@@ -6,8 +6,6 @@ import Submit from "../BlockQuote/submit";
 import NewButton from "../BlockQuote/newButton";
 import PurchaseModal from './purchaseModal';
 import axios from 'axios';
-
-
 class PackGenerateModal extends React.Component {
     constructor(props){
         super(props);
@@ -15,13 +13,28 @@ class PackGenerateModal extends React.Component {
             subVisible: false,
             visible: false,
             process:-1,
-        }
+            urgent: 0,
+            checkData: {
+                headData: [],
+                tbodyData: [],
+                judgement: '',
+                judger: '',
+                topData: {},
+            },
+        };
+        this.modifyDetailData = this.modifyDetailData.bind(this);
+        this.handlePack = this.handlePack.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.urgentChange = this.urgentChange.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.clickSavaButton = this.clickSavaButton.bind(this);
+        this.useSavaFunction = this.useSavaFunction.bind(this);
+        this.applyReview = this.applyReview.bind(this);
+
     }
     render() {
         return(
@@ -40,7 +53,7 @@ class PackGenerateModal extends React.Component {
                             key='cancel'
                         />,
                         <SaveButton
-                            onClick={this.handleOk}
+                            handleSave={this.handleSave}
                             key='save'
                         />,
                         <Submit
@@ -58,60 +71,103 @@ class PackGenerateModal extends React.Component {
                 >
                 <div style={{height:500}}>
                         <PurchaseModal
+                            modifyDetailData={this.modifyDetailData}
                             clickState ={0}
+                            data={this.state.checkData}
                         />
                 </div>
             </Modal>
             </span>
         )
     }
+
+    /**修改detailData的数据 */
+    modifyDetailData = (data) => {
+        this.setState({
+            detailData:data
+        })
+    };
     handlePack = () => {
         const ids = this.props.selectedRowKeys;
         if(ids.length===0){
             message.info('请选择记录！')
         }else{
             axios({
-                url: `${this.props.url.purchaseCheckReport.check}`,
-                method:'put',
+                url: `${this.props.url.purchaseCheckReport.testReportRecords}/ids`,
+                method:'post',
                 headers:{
                     'Authorization':this.props.url.Authorization
                 },
                 data:ids,
-                type:'json',
+                type:'json'
             }).then((data)=>{
-                const code = data.data.code;
-                const res = data.data.data;
-                console.log(data)
-                if(code!==0){
-                    message.info(data.data.message);
-                }else{
-                    console.log('res',res)
+                const detail = data.data.data;
+                console.log('detail',detail)
+                var headData = [];
+                var tbodyData = [];
+                var judger = '';
+                var judgement = '';
+                var topData = {};
+                if(detail){
+                    topData = {
+                        materialName: '',
+                        norm: '',
+                        quantity: '',
+                        sampleDeliveringDate:'',
+                        deliveryFactory:''
+                        // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
+                        // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
+                    };
+                    let detailHead = detail[0].testReportRecordDTO.testItemResultRecordDTOList;
+                    for(let i=0; i<detailHead.length; i++){
+                        headData.push({
+                            id: detailHead[i].testItemResultRecord.id,
+                            testItem: detailHead[i].testItem.name,
+                            itemUnit: detailHead[i].testItem.unit,
+                            rawTestItemStandard: detailHead[i].rawTestItemStandard?detailHead[i].rawTestItemStandard.value:'',
+                        })
+                    }
+                    let detailTbody = detail;
+                    for(let j=0; j<detailTbody.length; j++){
+                        let testItemResultRecordDTOList = detailTbody[j].testReportRecordDTO.testItemResultRecordDTOList;
+                        let tbodyMiddleData = {};
+                        testItemResultRecordDTOList.map((e) => {
+                            tbodyMiddleData[e.testItem.name] = {
+                                'isValid':e.testItemResultRecord.isValid,
+                                'testResult':e.testItemResultRecord.testResult,
+                                'id':e.testItemResultRecord.id,
+                            }
+                        });
+                        tbodyData.push({
+                            index: `${j+1}`,
+                            id: detailTbody[j].testReportRecordDTO.testReportRecord.id,
+                            serialNumber: detailTbody[j].testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
+                            tbodyMiddleData: tbodyMiddleData,
+                            isQualified: detailTbody[j].testReportRecordDTO.testReportRecord.isQualified
+                        })
+                    }
+                    judger = this.props.menuList.username;
+                    judgement = '' ;
+                    this.setState({
+                        checkData: {
+                            headData: headData,
+                            tbodyData: tbodyData,
+                            judgement: judgement,
+                            judger: judger,
+                            topData: topData,
+                        },
+                        visible: true,
+                    })
                 }
-                // const res = data.data.data;
-                // this.pagination.total=res?res.total:0;
-                // if(res&&res.list){
-                //     // const dataSource = this.dataAssemble(res);
-                //     for(var i = 1; i<=res.list.length; i++){
-                //         res.list[i-1]['index']=res.prePage*10+i;
-                //     }
-                //     this.setState({
-                //         dataSource: res.list,
-                //     });
-                // }
-            }).catch((data)=>{
-                // message.info(data.data.message);
-                // message.info(error.data.message);
+
+            }).catch(()=>{
                 message.info('生成失败，请联系管理员！')
-            });
-            this.setState({
-                visible: true,
             });
         }
     };
     handleCancel() {
         this.setState({
             visible: false,
-            data : [1]
         });
     }
     /** 送审*/
@@ -141,76 +197,135 @@ class PackGenerateModal extends React.Component {
     }
     /**点击送审 */
     handleOkApply(){
-        this.applyOut(1);
+        this.clickSavaButton(1);
     }
     /**点击保存送审 */
     handleSave(){
-        this.applyOut(0);
+        this.clickSavaButton(0);
     }
-    applyOut(status){
-        const details = this.state.addApplyData;
-        console.log(details)
-        for(var i = 0; i < details.length; i++){
-            delete details[i].id;
-            var e = details[i].procedureTestRecord;
-            for(var j in e){
-                if( e[j]==='' || e[j] === -1 || e[j] === []){
-                    message.info('新增数据不能为空，请填写完整！');
-                    return
-                }
-            }
-        }
-        this.setState({
-            visible:false,
-            visible1:false
-        })
-        const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
-        const commonBatchNumber = {
-            createPersonId:createPersonId,
-            // status:status,
-            // isUrgent:this.state.urgent
-        }
-        axios.post(`${this.props.url.procedure.procedureTestRecord}`,{
-            commonBatchNumber:commonBatchNumber,
-            details:details
-        },{
-            headers:{
-                'Authorization':this.props.url.Authorization
+    /**实现保存按钮功能--实现保存的数据处理 */
+    clickSavaButton = (status) => {
+        //  实现保存的数据处理
+        var checkData = this.state.checkData;
+        var purchaseReportRecord = {
+            norm: checkData.topData.norm,
+            quantity: checkData.topData.quantity,
+            judgement: checkData.judgement,
+        };
+        var sampleDeliveringRecordDTO = {
+            deliveryFactory: {
+                name: checkData.topData.deliveryFactory
             },
-            // params:{
-            //     taskId:taskId
-            // }
+            repoBaseSerialNumber: {
+                materialName: checkData.topData.materialName
+            },
+            sampleDeliveringRecord: {
+                sampleDeliveringDate: checkData.topData.sampleDeliveringDate
+            }
+        };
+        var commonBatchNumberDTO = {
+            commonBatchNumber: {
+                createPersonId: this.props.menuList.userId
+            }
+        };
+        var testReportRecordDTOList = [];
+        for(let i=0; i<checkData.tbodyData.length; i++){
+            var ItemResultList = [];
+            for (let j in checkData.tbodyData[i].tbodyMiddleData) {
+                ItemResultList.push(checkData.tbodyData[i].tbodyMiddleData[j]); //属性
+            }
+            var testReportRecordDTOListObj = {
+                testReportRecord:{
+                    id: checkData.tbodyData[i].id,
+                    isQualified: checkData.tbodyData[i].isQualified
+                },
+                testItemResultRecordDTOList: ItemResultList
+            };
+            testReportRecordDTOList.push(testReportRecordDTOListObj)
+        }
+        var savaData = {
+            purchaseReportRecord: purchaseReportRecord,
+            sampleDeliveringRecordDTO: sampleDeliveringRecordDTO,
+            commonBatchNumberDTO: commonBatchNumberDTO,
+            testReportRecordDTOList: testReportRecordDTOList
+        };
+        // if(detailIsQualified === -1){
+        //     message.info('请点击合格或者不合格！');
+        //     return
+        // }
+        // if(detailTestDTOS){
+        //     for(var j=0; j<detailTestDTOS.length; j++){
+        //         if(detailTestDTOS[j].testResult === ''){
+        //             message.info('所有检测结果不能为空，请填写完整！');
+        //             return
+        //         }
+        //     }
+        // }
+        //  调用保存函数
+        this.useSavaFunction(savaData,status);
+
+    };
+    /**调用保存函数 */
+    useSavaFunction = (savaData,status) => {
+        console.log('savaData',savaData)
+        axios({
+            url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=-1`,
+            method:'put',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            data: savaData,
+            type:'json'
         }).then((data)=>{
             if(status){
-                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                console.log('此时commonBatchNumberDTO不存在，所以报错')
+                const dataId = data.data.data.commonBatchNumberDTO.commonBatchNumber?data.data.data.commonBatchNumberDTO.commonBatchNumber.id:null;
+                console.log('222')
                 this.applyReview(dataId);
+            }else{
+                this.setState({
+                    visible: false,
+                    subVisible: false,
+                },()=>{
+                    this.props.fetch();
+                    message.info(data.data.message);
+                });
             }
-            else{
-                message.info(data.data.message);
-                this.props.fetch();
-            }
-
         }).catch(()=>{
-            message.info('操作失败，请联系管理员！')
+            this.setState({
+                visible: false,
+                subVisible: false,
+            },()=>{
+                this.props.fetch();
+                message.info('保存失败，请联系管理员！')
+            });
         })
-    }
-    /**保存后送审送审 */
+    };
+    /**---------------------- */
+    /**送审 */
     applyReview(dataId){
-        //const taskId = this.state.process === -1?'':this.state.process;
-        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
+        axios({
+            url : `${this.props.url.toDoList}/${parseInt(this.state.process)}`,
+            method:'post',
             headers:{
-                'Authorization':this.props.url.Authorization
+                'Authorization': this.props.url.Authorization
             },
             params:{
                 dataId:dataId,
                 isUrgent:this.state.urgent
             }
         }).then((data)=>{
-            message.info(data.data.message);
+            this.setState({
+                visible: false,
+                subVisible: false,
+            });
             this.props.fetch();
+            console.log('pass')
+            message.info(data.data.message);
         }).catch(()=>{
-            message.info('审核失败，请联系管理员！')
-        })
+            console.log('nopass')
+            message.info('送审失败，请联系管理员！')
+        });
     }
 }
 

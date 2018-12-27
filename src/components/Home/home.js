@@ -288,8 +288,10 @@ class Home extends Component {
                  audit:`${server}/jc/common/purchaseReportRecords/audit`,
                  deploy:`${server}/jc/common/purchaseReportRecords/deploy`,
                  testReportRecord: `${server}/jc/common/testReportRecord`,
+                 testReportRecords: `${server}/jc/common/testReportRecords`,
                  purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
                  batchNumber:`${server}/jc/common/purchaseReportRecords/batchNumber`,
+
              },
              /**入库管理 */
              enterStorage: {

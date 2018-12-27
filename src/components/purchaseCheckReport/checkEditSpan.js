@@ -277,7 +277,6 @@ class CheckEditSpan extends React.Component {
                     // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
                     // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
                 };
-                console.log('1')
                 let detailHead = detail.testReportRecordDTOList;
                 for(let i=0; i<detailHead[0].testItemResultRecordDTOList.length; i++){
                     headData.push({
@@ -287,7 +286,6 @@ class CheckEditSpan extends React.Component {
                         rawTestItemStandard: detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard?detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard.value:'',
                     })
                 }
-                console.log('2')
                 let detailTbody = detail.testReportRecordDTOList;
                 for(let j=0; j<detailTbody.length; j++){
                     let testItemResultRecordDTOList = detailTbody[j].testItemResultRecordDTOList;

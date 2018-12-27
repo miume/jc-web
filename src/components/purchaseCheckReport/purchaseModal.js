@@ -6,9 +6,9 @@ import './purchaseCheckReport.css';
 class PurchaseModal extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            checkData: this.props.data,
-        };
+        // this.state = {
+        //     checkData: this.props.data,
+        // };
     }
 
     render() {
@@ -16,7 +16,7 @@ class PurchaseModal extends React.Component {
         const handleLeftClick = () => this.handleClick(-1);
         // 控制动态数据的长度headColumns--默认小于7
         var headColumnsLength = false;
-        if(this.state.checkData.headData.length>7){
+        if(this.props.data.headData.length>7){
             headColumnsLength = true;
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
@@ -37,32 +37,32 @@ class PurchaseModal extends React.Component {
                         {
                             this.props.clickState?(
                                 <tr style={{cursor:'default'}}>
-                                    <td>{this.state.checkData.topData.materialName}</td>
-                                    <td>{this.state.checkData.topData.norm}</td>
-                                    <td>{this.state.checkData.topData.quantity}</td>
-                                    <td><abbr style={{cursor:'default'}} title={this.state.checkData.topData.sampleDeliveringDate}>{this.state.checkData.topData.sampleDeliveringDate.substring(0,10)}</abbr></td>
-                                    <td>{this.state.checkData.topData.deliveryFactory}</td>
+                                    <td>{this.props.data.topData.materialName}</td>
+                                    <td>{this.props.data.topData.norm}</td>
+                                    <td>{this.props.data.topData.quantity}</td>
+                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.sampleDeliveringDate}>{this.state.checkData.topData.sampleDeliveringDate.substring(0,10)}</abbr></td>
+                                    <td>{this.props.data.topData.deliveryFactory}</td>
                                 </tr>
                             ):(
                                 <tr>
-                                    <td><Input name='materialName' placeholder="原材料名称" value={this.state.checkData.topData.materialName} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='norm' placeholder="请输入规格" value={this.state.checkData.topData.norm} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='quantity' placeholder="请输入数量" value={this.state.checkData.topData.quantity} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.state.checkData.topData.sampleDeliveringDate} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.state.checkData.topData.deliveryFactory} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='materialName' placeholder="原材料名称" value={this.props.data.topData.materialName} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='norm' placeholder="请输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='quantity' placeholder="请输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.sampleDeliveringDate} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.deliveryFactory} onChange={this.props.inputSave}/></td>
                                 </tr>
                             )
                         }
                         </tbody>
                     </table>
                     <PurchaseModalColor
-                        purchaseStatus={this.state.checkData.judgement}
+                        purchaseStatus={this.props.data.judgement}
                     />
                     <table className="purchaseTopJudger" >
                         <tbody>
                         <tr>
                             <td>检验人:</td>
-                            <td>{this.state.checkData.judger}</td>
+                            <td>{this.props.data.judger}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -80,7 +80,7 @@ class PurchaseModal extends React.Component {
                             <div className="theadMiddle">
                                 <div className="middleThead" ref={(ref) => this.middleTheadRef = ref} >
                                     {
-                                        this.state.checkData.headData.map((item) => {
+                                        this.props.data.headData.map((item) => {
                                             return (
                                                 <div
                                                     className={(headColumnsLength?'middleTheadDiv':'middleTheadDivLength')}
@@ -107,19 +107,19 @@ class PurchaseModal extends React.Component {
                         <div className="purchaseTbody">
                             <div className="tbodyLeft" >
                                 {
-                                    this.state.checkData.tbodyData.map((item,index) => {
-                                        if(index === this.state.checkData.tbodyData.length-1){
+                                    this.props.data.tbodyData.map((item,index) => {
+                                        if(index === this.props.data.tbodyData.length-1){
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
                                                     <div className="leftBorderRadius" key={item.index}>{item.index}</div>
-                                                    <div key={item.serialNumber}>{item.serialNumber}</div>
+                                                    <div key={item.serialNumber}><abbr style={{cursor:'default'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
                                                 </div>
                                             )
                                         }else{
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
                                                     <div key={item.index}>{item.index}</div>
-                                                    <div key={item.serialNumber}>{item.serialNumber}</div>
+                                                    <div key={item.serialNumber}><abbr style={{cursor:'default'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
                                                 </div>
                                             )
                                         }
@@ -130,7 +130,7 @@ class PurchaseModal extends React.Component {
                             <div className="tbodyMiddle" >
                                 <div className="middleTbody" ref={(ref) => this.middleTbody = ref}>
                                     {
-                                        this.state.checkData.tbodyData.map((item,index) => {
+                                        this.props.data.tbodyData.map((item,index) => {
                                             //  每一行数据
                                             const tbodyMiddleData = item.tbodyMiddleData;
                                             const tbodyRow = index;
@@ -140,7 +140,7 @@ class PurchaseModal extends React.Component {
                                                     key={index}
                                                 >
                                                     {
-                                                        this.state.checkData.headData.map((item,index) => {
+                                                        this.props.data.headData.map((item,index) => {
                                                             //  当确定同一批数据检测项目相同的情况下，这个外层的if可以删除
                                                             if(tbodyMiddleData[item.testItem]){
                                                                 if(headColumnsLength === false){
@@ -203,8 +203,8 @@ class PurchaseModal extends React.Component {
                             </div>
                             <div className="tbodyRight">
                                 {
-                                    this.state.checkData.tbodyData.map((item,index) => {
-                                        if(index === this.state.checkData.tbodyData.length-1){
+                                    this.props.data.tbodyData.map((item,index) => {
+                                        if(index === this.props.data.tbodyData.length-1){
                                             if(this.props.clickState === 0){
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
@@ -276,7 +276,7 @@ class PurchaseModal extends React.Component {
     }
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
-        var checkData = this.state.checkData;
+        var checkData = this.props.data;
         checkData.tbodyData[index].isQualified = 1;
         for(let i=0; i<checkData.headData.length; i++){
             const testItem = checkData.headData[i].testItem;
@@ -287,7 +287,7 @@ class PurchaseModal extends React.Component {
         let judgeNum = 0;
         for(let j=0; j<checkData.tbodyData.length; j++){
             if(checkData.tbodyData[j].isQualified===0){
-                checkData.judgement = 0
+                checkData.judgement = 0;
                 break;
             }else{
                 judgeNum += 1;
@@ -296,17 +296,18 @@ class PurchaseModal extends React.Component {
                 }
             }
         }
-        this.setState({
-            checkData: checkData
-        },()=>{
-            this.props.modifyDetailData(checkData);
-        })
+        this.props.modifyDetailData(checkData);
+        // this.setState({
+        //     checkData: checkData
+        // },()=>{
+        //     this.props.modifyDetailData(checkData);
+        // })
     };
     /**---------------------- */
     /**表格单元格按钮点击事件*/
     handleCellOnclick = (e) => {
         const id = e.target.id;
-        var checkData = this.state.checkData;
+        var checkData = this.props.data;
         // 当前单元格的行数
         const row = id.split('|')[0];
         // 当前单元格的内容
@@ -346,11 +347,12 @@ class PurchaseModal extends React.Component {
                 }
             }
         }
-        this.setState({
-            checkData: checkData
-        },()=>{
-            this.props.modifyDetailData(checkData);
-        })
+        this.props.modifyDetailData(checkData);
+        // this.setState({
+        //     checkData: checkData
+        // },()=>{
+        //     this.props.modifyDetailData(checkData);
+        // })
     };
     /**---------------------- */
     /**获取表头左右图标点击效果*/
