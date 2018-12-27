@@ -207,6 +207,9 @@ class Home extends Component {
                 getAllLikeByPage:`${server}/jc/common/RepoDiffRecord/getByMaterialNameLike`,
                 getAllByPage:`${server}/jc/common/RepoDiffRecord/pages`,
             },
+            process:{
+                process:`${server}/jc/common/batchAuditTask`
+            },
             /**流程管理 */
             processManagement:{
                 deleteByIds:`${server}/jc/common/batchAuditTask`,
