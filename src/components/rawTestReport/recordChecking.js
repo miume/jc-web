@@ -283,7 +283,7 @@ class RecordChecking extends React.Component{
     render(){
         return (
             <span>
-                <span className={this.props.status===0||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
+                <span className={this.props.status===-1||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 maskClosable={false} centered={true}
                 footer={[
@@ -312,7 +312,7 @@ class RecordChecking extends React.Component{
                 </div>
                 <div className="interDrSpanModalMiddle">
                        <div>
-                           样品名称：<span>{this.state.topData?this.state.topData.materialName+'样品':''}</span>
+                           样品名称：<span>{this.state.topData&&this.state.topData.materialName?this.state.topData.materialName+'样品':''}</span>
                        </div>
                        {/* <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button> */}
                        {/* <Button className='white-button' onClick={this.props.handleCancel}><i className="fa fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button> */}

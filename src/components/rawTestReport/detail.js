@@ -71,7 +71,7 @@ class Detail extends React.Component{
           }
         }).then(data=>{
           const res = data.data.data;
-          console.log(res)
+          //console.log(res)
           if(res){
             this.setState({
                 examineData : res
@@ -92,7 +92,7 @@ class Detail extends React.Component{
             var testData = {};
             // var examineData = {};
             var IsQualified = 0;
-            if(res)
+            if(res){
                 IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 topData={
                     batchNumber: res.serialNumber?res.serialNumber:'',
@@ -124,6 +124,7 @@ class Detail extends React.Component{
                         IsQualified:IsQualified,
                     }
                 })
+            }
         })
     }
     /**点击确定按钮 */
@@ -141,7 +142,7 @@ class Detail extends React.Component{
     render(){
         return (
             <span>
-                <span className={this.props.status===-1||this.props.status===1||this.props.status===2||this.props.status===3?'blue':'notClick'} onClick={this.handleDetail} >详情</span>
+                <span className={this.props.status===0||this.props.status===1||this.props.status===2||this.props.status===3?'blue':'notClick'} onClick={this.handleDetail} >详情</span>
                 <Modal title='详情' visible={this.state.visible} closable={false}
                 maskClosable={false} centered={true} style={{top:10}}
                  footer={[
