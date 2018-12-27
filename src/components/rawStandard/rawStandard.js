@@ -56,7 +56,7 @@ class RawStandard extends Component{
                <div>
                    <Blockquote menu='技术中心' name='原材料标准'/>
                   
-                   <div style={{padding:'20px'}}>
+                   {/* <div style={{padding:'20px'}}>
                      
                      <div className='rawStanstdardBlockQuo' >{this.state.content1}</div>
                      <div className='rawStanstdardBlockQuo' >{this.state.content2}</div>
@@ -71,7 +71,7 @@ class RawStandard extends Component{
                      <div className={this.state.flag===3?'show':'hide'}>
                           <Standard />
                       </div>
-                   </div >
+                   </div > */}
                    
                </div>
            );
