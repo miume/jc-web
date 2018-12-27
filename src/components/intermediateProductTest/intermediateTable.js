@@ -9,9 +9,9 @@ class InterTable extends React.Component{
         title: '序号',
         dataIndex: 'index',
         key: 'index',
-        sorter: (a, b) => a.key - b.key,
+        sorter: (a, b) => a.index - b.index,
         align:'center',
-        width: '6%',
+        width: '8%',
     },{
         title: '送检日期',
         dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
@@ -53,7 +53,7 @@ class InterTable extends React.Component{
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
-        width: '8%',
+        width: '14%',
         render: testItems => {
             return testItems?testItems:'无';
         }
@@ -93,15 +93,15 @@ class InterTable extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '17%',
+        width: '15%',
         render: (text,record) => {
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
             let checkSpanFlag = this.judgeCheckOperation(status);
             // let checkSpanFlag = true;
-            let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
-            // let releaseSpanFlag = true;
+            // let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
+            let releaseSpanFlag = true;
             return (
                 <span>
                     {detailSpanFlag?(

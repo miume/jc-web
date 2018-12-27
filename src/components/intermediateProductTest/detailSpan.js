@@ -74,9 +74,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     }
     /**通过id查询详情 */
     getDetailData(){
@@ -139,7 +139,7 @@ class DetailSpan extends React.Component {
                                 },
                                 isQualified: isQualified,
                             },
-                            // visible: true
+                            visible: true
                         });
                     })
                 }else{
@@ -154,7 +154,7 @@ class DetailSpan extends React.Component {
                             },
                             isQualified: isQualified,
                         },
-                        // visible: true
+                        visible: true
                     })
                 }
             }

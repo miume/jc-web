@@ -14,7 +14,7 @@ class DetailStateModal extends React.Component {
             case 0: //未申请
                 return(
                     <div className="interStateDefaultModal">
-                        已提交未未审核
+                        已提交未审核
                     </div>
                 );
             case 1: //审核中

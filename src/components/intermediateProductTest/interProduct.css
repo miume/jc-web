@@ -133,13 +133,11 @@
 .interCheckModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
-    padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
 .interCheckModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
-    padding-left: 10px;
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
