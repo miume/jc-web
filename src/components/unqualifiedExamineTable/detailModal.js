@@ -3,25 +3,25 @@ import React from 'react';
 class DetailModal extends React.Component{
     render() {
         switch (this.props.state) {
-            case '-1':
+            case -1:
                 return(
                     <div className="unDetailModal">
                         未申请
                     </div>
                 );
-            case '0':
+            case 0:
                 return(
                     <div className="unDetailModal">
                         待审核
                     </div>
                 );
-            case '1':
+            case 1:
                 return(
                     <div className="unDetailModal">
                         审核中
                     </div>
                 );
-            case '2':
+            case 2:
                 return(
                     <div className="unDetailModalPass">
                         <table>
@@ -78,10 +78,16 @@ class DetailModal extends React.Component{
                         </table>
                     </div>
                 );
-            case '3':
+            case 3:
                 return(
                     <div className="unDetailModal">
                         不通过
+                    </div>
+                );
+            default:
+                return(
+                    <div className="unDetailModal">
+
                     </div>
                 )
         }

@@ -2,22 +2,22 @@ import React from 'react';
 import SearchCell from "../BlockQuote/search";
 import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
-import axios from "axios";
+// import axios from "axios";
 
 
 const data =[];
 for (let i = 0; i < 20; i++) {
     data.push({
         index: i,
-        'purchaseReportRecord.id':i,
-        'commonBatchNumberDTO.commonBatchNumber.batchNumber': '测试',
-        'materialName': '测试',
-        'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName': '启东北新',
-        'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate': '2019年1月10号',
-        'commonBatchNumberDTO.createPersonName': '李小红',
-        'commonBatchNumberDTO.commonBatchNumber.createTime': '2018年11月27日',
-        'commonBatchNumberDTO.commonBatchNumber.status': 2,
-        'commonBatchNumberDTO.commonBatchNumber.isUrgent': 0,
+        id:i,
+        batchNumber: `SN/2A2EEA9064E${i}`,
+        materialName: '镍咕锰',
+        manufacturerName: '启东北新',
+        sampleDeliveringDate: '2019年1月10号',
+        createPersonName: '张小刚',
+        createTime: '2018年11月27日',
+        status: 2,
+        isUrgent: 0,
     });
 }
 
@@ -64,7 +64,7 @@ class UnqualifiedExamine extends React.Component{
                         name='请输入搜索内容'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
-                        // fetch={this.fetch}
+                        fetch={this.fetch}
                     />
                     <div className='clear' ></div>
                     <UnqualifiedTable
@@ -94,53 +94,53 @@ class UnqualifiedExamine extends React.Component{
         });
     };
     fetch = (params = {}) => {
-        axios({
-            url: `${this.props.url.purchaseCheckReport.audit}` ,
-            method: 'get',
-            headers:{
-                'Authorization': this.props.url.Authorization
-            },
-            params: params,
-        }).then((data) => {
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
-            if(res&&res.list){
-                // const dataSource = this.dataAssemble(res);
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=res.prePage*10+i;
-                }
-                this.setState({
-                    dataSource: res.list,
-                });
-            }
-        });
+        // axios({
+        //     url: `${this.props.url.purchaseCheckReport.audit}` ,
+        //     method: 'get',
+        //     headers:{
+        //         'Authorization': this.props.url.Authorization
+        //     },
+        //     params: params,
+        // }).then((data) => {
+        //     const res = data.data.data;
+        //     this.pagination.total=res?res.total:0;
+        //     if(res&&res.list){
+        //         // const dataSource = this.dataAssemble(res);
+        //         for(var i = 1; i<=res.list.length; i++){
+        //             res.list[i-1]['index']=res.prePage*10+i;
+        //         }
+        //         this.setState({
+        //             dataSource: res.list,
+        //         });
+        //     }
+        // });
     };
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const batchNumber = this.state.searchContent;
-        axios({
-            url: `${this.props.url.purchaseCheckReport.batchNumber}`,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-                batchNumber: batchNumber
-            },
-            type:'json',
-        }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
-            }
-            this.setState({
-                dataSource: res.list,
-            });
-        });
+        // const batchNumber = this.state.searchContent;
+        // axios({
+        //     url: `${this.props.url.purchaseCheckReport.batchNumber}`,
+        //     method:'get',
+        //     headers:{
+        //         'Authorization':this.props.url.Authorization
+        //     },
+        //     params:{
+        //         size: this.pagination.pageSize,
+        //         page: this.pagination.current,
+        //         batchNumber: batchNumber
+        //     },
+        //     type:'json',
+        // }).then((data)=>{
+        //     const res = data.data.data;
+        //     this.pagination.total=res?res.total:0;
+        //     for(var i = 1; i<=res.list.length; i++){
+        //         res.list[i-1]['index']=(res.prePage)*10+i;
+        //     }
+        //     this.setState({
+        //         dataSource: res.list,
+        //     });
+        // });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
