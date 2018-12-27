@@ -8,7 +8,7 @@ class ReleaseTable extends React.Component {
         title: '序号',
         dataIndex: 'index',
         key: 'index',
-        sorter: (a, b) => a.id - b.id,
+        sorter: (a, b) => a.index - b.index,
         align:'center',
         width: '5%',
     },{
@@ -25,8 +25,8 @@ class ReleaseTable extends React.Component {
         width: '6%',
     },{
         title: '生产厂家',
-        dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
-        key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
+        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
+        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
         align:'center',
         width: '6%',
     },{
@@ -45,18 +45,6 @@ class ReleaseTable extends React.Component {
         title: '创建日期',
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
-        align:'center',
-        width: '12%',
-    },{
-        title: '修改人',
-        dataIndex: 'g',
-        key: 'g',
-        align:'center',
-        width: '6%',
-    },{
-        title: '修改日期',
-        dataIndex: 'h',
-        key: 'h',
         align:'center',
         width: '12%',
     },{
@@ -81,8 +69,8 @@ class ReleaseTable extends React.Component {
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'purchaseReportRecord.id',
+        key: 'purchaseReportRecord.id',
         align:'center',
         width: '6%',
         render: (text,record) => {
@@ -91,8 +79,10 @@ class ReleaseTable extends React.Component {
                 <span>
                     {operationFlag?(
                         <CheckReleaseSpan
-                            state={'2'}
+                            fetch={this.props.fetch}
+                            state={2}
                             name='发布'
+                            id={text}
                         />
                     ):(
                         <span  className="notClick">发布</span>
@@ -112,10 +102,9 @@ class ReleaseTable extends React.Component {
         });
         return(
             <Table
-                rowKey={record => record.id}
+                rowKey={record => record.purchaseReportRecord.id}
                 dataSource={this.props.data}
                 columns={columns}
-                // rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
                 size="small"
                 bordered
@@ -130,14 +119,6 @@ class ReleaseTable extends React.Component {
         }else{
             return false;
         }
-    };
-    /**---------------------- */
-    /**单条记录删除 */
-    handleDelete = (key) => {
-        console.log("++++++");
-        console.log(key);
-        // const dataSource = this.state.dataSource;
-        // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     };
     /**---------------------- */
 }

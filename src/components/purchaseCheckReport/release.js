@@ -53,16 +53,11 @@ class Release extends React.Component {
         }
     }
     render() {
-        const {selectedRowKeys } = this.state;
-        // const rowSelection = {
-        //     selectedRowKeys,
-        //     onChange: this.onSelectChange,
-        // };
         return(
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell
-                            name='请输入搜索内容'
+                            name='请输入批号'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
@@ -76,7 +71,6 @@ class Release extends React.Component {
                     pagination={this.pagination}
                     // rowSelection={rowSelection}
                     fetch={this.fetch}
-                    handleTableChange={this.handleTableChange}
                 />
             </div>
         )
@@ -93,7 +87,7 @@ class Release extends React.Component {
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.props.url.purchaseCheckReport.deploy}` ,
+            url: `${this.props.url.purchaseCheckReport.audit}` ,
             method: 'get',
             headers:{
                 'Authorization': this.props.url.Authorization
@@ -116,7 +110,29 @@ class Release extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-
+        const batchNumber = this.state.searchContent;
+        axios({
+            url: `${this.props.url.purchaseCheckReport.batchNumber}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
+                batchNumber: batchNumber
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            this.pagination.total=res?res.total:0;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){
@@ -124,26 +140,10 @@ class Release extends React.Component {
         this.setState({searchContent:value});
     }
     /**---------------------- */
-    /**对应于批量删除时，确认取消删除 并实现checkbox选中为空 */
-    // confrimCancel(){
-    //     this.setState({
-    //         selectedRowKeys:[]
-    //     })
-    // }
-    /**批量删除 */
-    // deleteByIds(){
-    //     // const ids = this.state.selectedRowKeys;
-    // }
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
     }
-    /**---------------------- */
-    /**实现全选功能 */
-    // onSelectChange = (selectedRowKeys) => {
-    //     console.log('selectedRowKeys changed: ', selectedRowKeys);
-    //     this.setState({ selectedRowKeys });
-    // };
     /**---------------------- */
 }
 export default Release
