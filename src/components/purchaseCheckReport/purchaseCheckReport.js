@@ -28,6 +28,7 @@ class PurchaseCheckReport extends React.Component {
                         <Pack
                             url={this.url}
                             status={status}
+                            menuList={menuList}
                         />
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
