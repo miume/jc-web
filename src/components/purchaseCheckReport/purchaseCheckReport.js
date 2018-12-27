@@ -9,6 +9,11 @@ import './purchaseCheckReport.css';
 
 class PurchaseCheckReport extends React.Component {
     url;
+    // componentWillUnmount() {
+    //     this.setState = (state, callback) => {
+    //         return ;
+    //     }
+    // }
     constructor(props){
         super(props);
         this.returnDataEntry = this.returnDataEntry.bind(this);
