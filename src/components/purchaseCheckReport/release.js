@@ -1,7 +1,6 @@
 import React from 'react';
 import SearchCell from '../BlockQuote/search';
 import ReleaseTable from "./releaseTable";
-import DeleteByIds from "../BlockQuote/deleteByIds";
 import axios from "axios";
 
 

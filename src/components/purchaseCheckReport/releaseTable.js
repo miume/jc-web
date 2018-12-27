@@ -17,36 +17,54 @@ class ReleaseTable extends React.Component {
         key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         align:'center',
         width: '6%',
+        render: batchNumber => {
+            return batchNumber?batchNumber:'无';
+        }
     },{
         title: '原材料',
-        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName',
-        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName',
+        dataIndex: 'materialName',
+        key: 'materialName',
         align:'center',
         width: '6%',
+        render: materialName => {
+            return materialName?materialName:'无';
+        }
     },{
         title: '生产厂家',
-        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
-        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
+        dataIndex: 'manufacture',
+        key: 'manufacture',
         align:'center',
         width: '6%',
+        render: manufacture => {
+            return manufacture?manufacture:'无';
+        }
     },{
         title: '到货日期',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        dataIndex: 'receiveDate',
+        key: 'receiveDate',
         align:'center',
         width: '12%',
+        render: receiveDate => {
+            return receiveDate?receiveDate:'无';
+        }
     },{
         title: '创建人',
         dataIndex: 'commonBatchNumberDTO.createPersonName',
         key: 'commonBatchNumberDTO.createPersonName',
         align:'center',
         width: '6%',
+        render: createPersonName => {
+            return createPersonName?createPersonName:'无';
+        }
     },{
         title: '创建日期',
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         align:'center',
         width: '12%',
+        render: createTime => {
+            return createTime?createTime:'无';
+        }
     },{
         title: '发布状态',
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
