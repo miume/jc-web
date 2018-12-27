@@ -280,6 +280,7 @@ const CollectionCreateForm = Form.create()(
                     closable={false}
                     title="新增"
                     width="360px"
+                    style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
