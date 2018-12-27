@@ -7,7 +7,6 @@ import EdSpanModal from './edSpanModal';
 
 
 class EditSpan extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.state = {
@@ -15,15 +14,14 @@ class EditSpan extends React.Component {
             subVisible: false,
             process:-1,
         };
-        this.showModal = this.showModal.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
     render() {
         const { visible } = this.state;
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
-            <span type="primary" onClick={this.showModal} size="small"   scroll={{ y: 400 }}  >
+            <span>
+                <span className="blue" onClick={this.handleDetail} >详情</span>
                 <Modal
                     title="编辑数据"
                     visible={visible}
@@ -37,11 +35,6 @@ class EditSpan extends React.Component {
                             handleCancel = {this.handleCancel}
                             key='cancel'
                         />,
-                        <NewButton
-                            handleClick={this.handleClick}
-                            className="fa fa-check"
-                            name="提交"
-                        />
                     ]}
                 >
                     <div style={{height:400}}>
@@ -51,26 +44,20 @@ class EditSpan extends React.Component {
 
                     </div>
                 </Modal>
-                <span  className="unqualifiedTrackBlueSpan"><i className="fa fa-file-text-o" aria-hidden="true"></i>&nbsp;详情</span>
             </span>
         )
     }
 
-    showModal = () => {
+    handleDetail = () => {
         this.setState({
             visible: true,
         });
     };
     handleCancel = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
+        this.setState({
+            visible: false,
+        });
     };
-    handleClick = () => {
-        console.log("提交")
-    }
 
 }
 
