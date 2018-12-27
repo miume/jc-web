@@ -154,14 +154,16 @@ class Management extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            this.pagination.total=res.total;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
+            if(res&&res.list){
+                this.pagination.total=res.total;
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.prePage)*10+i;
+                }
+                this.setState({
+                    loading: false,
+                    dataSource: res.list,
+                });
             }
-            this.setState({
-                loading: false,
-                dataSource: res.list,
-            });
         })
     };
     componentDidMount() {
@@ -197,13 +199,15 @@ class Management extends React.Component{
         type:'json',
     }).then((data)=>{
         const res = data.data.data;
-        this.pagination.total=res.total;
-        for(var i = 1; i<=res.list.length; i++){
-            res.list[i-1]['index']=(res.prePage)*10+i;
+        if(res&&res.list){
+            this.pagination.total=res.total;
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
         }
-        this.setState({
-            dataSource: res.list,
-        });
     })
     };
     handleReset = clearFilters => () => {

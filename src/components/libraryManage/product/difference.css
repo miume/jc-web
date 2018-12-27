@@ -1,7 +1,7 @@
 .Mparent{
     /* line-height: 50px; */
     flex-direction: row;
-    max-height: 396px;
+    max-height: 342px;
     overflow-y: scroll;
 }
 .Mparent::-webkit-scrollbar{

@@ -66,9 +66,11 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                this.setState({
-                    person:res
-                  })
+                if(res){
+                    this.setState({
+                        person:res
+                      })
+                }
             })
 
             axios({
@@ -79,9 +81,12 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                this.setState({
-                    factor:res
-                  })
+                if(res){
+                    this.setState({
+                        factor:res
+                      })
+                }
+                
             })
 
             axios({
@@ -92,9 +97,12 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                this.setState({
-                    items:res
-                  })
+                if(res){
+                    this.setState({
+                        items:res
+                      })
+                }
+                
             })
 
             axios({
@@ -106,9 +114,12 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                this.setState({
-                    serialNumber:res
-                  })
+                if(res){
+                    this.setState({
+                        serialNumber:res
+                      })
+                }
+                
             })
 
             // axios({
@@ -134,9 +145,12 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data) =>{
                 const res = data.data.data;
-                this.setState({
-                    FinalserialNumber:res
-                  })
+                if(res){
+                    this.setState({
+                        FinalserialNumber:res
+                      })
+                }
+                
             })
 
             axios({
@@ -148,9 +162,12 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                this.setState({
-                    MiddleFactor:res
-                })
+                if(res){
+                    this.setState({
+                        MiddleFactor:res
+                    })
+                }
+                
             })
         }
         onChangeTime = (date, dateString) => {
@@ -167,10 +184,13 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                this.setState({
-                    sampling:res,
-                    procedureId:value
-                })
+                if(res){
+                    this.setState({
+                        sampling:res,
+                        procedureId:value
+                    })
+                }
+                
             })
         }
 
@@ -184,10 +204,13 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                this.setState({
-                    materials:res,
-                    samplingPoint:value
-                })
+                if(res){
+                    this.setState({
+                        materials:res,
+                        samplingPoint:value
+                    })
+                }
+                
             })
         }
 
@@ -201,10 +224,13 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                this.setState({
-                    process:res,
-                    factoryId:value
-                })
+                if(res){
+                    this.setState({
+                        process:res,
+                        factoryId:value
+                    })
+                }
+                
             })
         }
         getItems=(value)=>{
@@ -218,10 +244,13 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
-                this.props.onChange(res);
-                this.setState({
-                    testItems : res
-                })
+                if(res){
+                    this.props.onChange(res);
+                    this.setState({
+                        testItems : res
+                    })
+                }
+                
             })
         }
         selectChange= (value) =>{

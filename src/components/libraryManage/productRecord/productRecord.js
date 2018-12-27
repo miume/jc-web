@@ -64,12 +64,14 @@ class MaterialRecord extends React.Component{
             type:"json",
         }).then((data)=>{
             const res = data.data.data;
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
+            if(res){
+                for(var i = 1; i<=res.length; i++){
+                    res[i-1]['index']=i;
+                }
+                this.setState({
+                    dataSource:res
+                  })
             }
-            this.setState({
-                dataSource:res
-              })
         })
     }
 

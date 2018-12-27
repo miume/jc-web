@@ -1,6 +1,6 @@
 .LM-parent{
     flex-direction: row;
-    max-height: 408px;
+    max-height: 342px;
     overflow-y: auto;
 }
 .LM-parent::-webkit-scrollbar{

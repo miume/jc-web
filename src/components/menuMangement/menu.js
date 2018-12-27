@@ -12,6 +12,7 @@ import SearchCell from '../BlockQuote/search';
 
 class Menu extends React.Component{
     server
+    url
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -61,7 +62,7 @@ class Menu extends React.Component{
     searchFatherEvent(){
         const ope_name = this.state.searchContent1;
         axios({
-            url:`${this.server}/jc/auth/menu/findByParentNameLikeByPage`,
+            url:`${this.url.menu.findByParentNameLikeByPage}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -75,17 +76,20 @@ class Menu extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             this.pagination.total=res.total;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
+            if(res&&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.prePage)*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
             }
-            this.setState({
-                dataSource: res.list,
-            });
         }).catch((error)=>{
                 message.info(error.data.message)
             })
     };
   render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
        this.server = localStorage.getItem('remote');
        const current = JSON.parse(localStorage.getItem('current')) ;
       const { loading, selectedRowKeys } = this.state;
@@ -149,7 +153,7 @@ class Menu extends React.Component{
       this.getAllFatherMenu();
       this.setState({ loading: true });
       axios({
-          url: `${this.server}/jc/auth/menu/findAllByPage`,
+          url: `${this.url.menu.findAllByPage}`,
           method: 'get',
           headers:{
               'Authorization': this.Authorization
@@ -159,13 +163,15 @@ class Menu extends React.Component{
       }).then((data) => {
           const res = data.data.data;
           this.pagination.total=res.total;
-          for(var i = 1; i<=res.list.length; i++){
-              res.list[i-1]['index']=(res.prePage)*10+i;
+          if(res&&res.list){
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                loading: false,
+                dataSource: res.list,
+            });
           }
-          this.setState({
-              loading: false,
-              dataSource: res.list,
-          });
       })
   };
     componentDidMount() {
@@ -174,7 +180,7 @@ class Menu extends React.Component{
   /**获取所有父菜单 */
   getAllFatherMenu(){
     axios({
-      url:`${this.server}/jc/auth/menu/findByMenuType`,
+      url:`${this.url.menu.findByMenuType}`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -182,15 +188,17 @@ class Menu extends React.Component{
         params: {menuType:1},
     }).then((data)=>{
       const res = data.data.data;
-      this.setState({
-        fatherMenu:res
-      })
+      if(res){
+        this.setState({
+            fatherMenu:res
+          })
+      }
     })
   }
     start = () => {
       const ids = this.state.selectedRowKeys;
       axios({
-          url:`${this.server}/jc/auth/menu/deleteByIds`,
+          url:`${this.url.menu.deleteByIds}`,
           method:'post',
           headers:{
               'Authorization':this.Authorization
@@ -218,7 +226,7 @@ class Menu extends React.Component{
     searchEvent(){
       const ope_name = this.state.searchContent;
       axios({
-          url:`${this.server}/jc/auth/menu/findByNameLikeByPage`,
+          url:`${this.url.menu.findByNameLikeByPage}`,
           method:'get',
           headers:{
               'Authorization':this.Authorization
@@ -232,12 +240,14 @@ class Menu extends React.Component{
       }).then((data)=>{
           const res = data.data.data;
           this.pagination.total=res.total;
-          for(var i = 1; i<=res.list.length; i++){
-              res.list[i-1]['index']=(res.prePage)*10+i;
+          if(res&&res.list){
+            for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=(res.prePage)*10+i;
+            }
+            this.setState({
+                dataSource: res.list,
+            });
           }
-          this.setState({
-              dataSource: res.list,
-          });
       }).catch((error)=>{
               message.info(error.data.message)
           })

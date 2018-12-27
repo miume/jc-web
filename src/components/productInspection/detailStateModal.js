@@ -68,24 +68,24 @@ class DetailStateModal extends React.Component {
                 return(
                     <div className="productPassModal">
                         <div className="productPassExamineModal">
-                            <table>
-                                <tbody className="productPadding">
+                            <div>
+                                <div className="productPadding">
                                 {
                                     this.props.examine.examineData.map((item,index) => {
                                         return (
-                                            <div>
-                                                <tr key={`handler${index}`}>
-                                                    <td>审核人：</td>
-                                                    <td>{item?item.handler:''}</td>
-                                                </tr>
-                                                <tr key={`handleReply${index}`}>
-                                                    <td>审核意见：</td>
-                                                    <td>{item?item.handleReply:''}</td>
-                                                </tr>
-                                                <tr key={`handleTime${index}`}>
-                                                    <td>审核日期：</td>
-                                                    <td>{item?item.handleTime:''}</td>
-                                                </tr>
+                                            <div key={index}>
+                                                <div key={`handler${index}`}>
+                                                    <span>审核人：</span>
+                                                    <span>{item?item.handler:''}</span>
+                                                </div>
+                                                <div key={`handleReply${index}`}>
+                                                    <span>审核意见：</span>
+                                                    <span>{item?item.handleReply:''}</span>
+                                                </div>
+                                                <div key={`handleTime${index}`}>
+                                                    <span>审核日期：</span>
+                                                    <span>{item?item.handleTime:''}</span>
+                                                </div>
                                                 <Divider
                                                     className="productDrSpanDivider"
                                                 />
@@ -93,8 +93,8 @@ class DetailStateModal extends React.Component {
                                         )
                                     })
                                 }
-                                </tbody>
-                            </table>
+                                </div>
+                            </div>
                         </div>
                         <Divider
                             className="productDrSpanDivider"

@@ -72,9 +72,12 @@ class Editor extends React.Component{
             },
         }).then((data) =>{
             const res = data.data.data;
-            this.setState({
-                person:res
-              })
+            if(res){
+                this.setState({
+                    person:res
+                  })
+            }
+            
         })
 
         axios({
@@ -85,9 +88,12 @@ class Editor extends React.Component{
             },
         }).then((data) =>{
             const res = data.data.data;
-            this.setState({
-                factor:res
-              })
+            if(res){
+                this.setState({
+                    factor:res
+                  })
+            }
+            
         })
 
         axios({
@@ -98,9 +104,12 @@ class Editor extends React.Component{
             },
         }).then((data) =>{
             const res = data.data.data;
-            this.setState({
-                items:res
-              })
+            if(res){
+                this.setState({
+                    items:res
+                  })
+            }
+            
         })
 
         axios({
@@ -112,9 +121,12 @@ class Editor extends React.Component{
             },
         }).then((data) =>{
             const res = data.data.data;
-            this.setState({
-                serialNumber:res
-              })
+            if(res){
+                this.setState({
+                    serialNumber:res
+                  })
+            }
+            
         })
 
         axios({
@@ -126,9 +138,12 @@ class Editor extends React.Component{
             },
         }).then((data) =>{
             const res = data.data.data;
-            this.setState({
-                FinalserialNumber:res
-              })
+            if(res){
+                this.setState({
+                    FinalserialNumber:res
+                  })
+            }
+            
         })
 
         axios({
@@ -140,9 +155,12 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                MiddleFactor:res
-            })
+            if(res){
+                this.setState({
+                    MiddleFactor:res
+                })
+            }
+            
         })
     }
 
@@ -156,11 +174,14 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                process:res,
-                factoryId:value,
-                oldfactor:value
-            })
+            if(res){
+                this.setState({
+                    process:res,
+                    factoryId:value,
+                    oldfactor:value
+                })
+            }
+            
         })
     }
 
@@ -174,10 +195,13 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                sampling:res,
-                procedureId:value
-            })
+            if(res){
+                this.setState({
+                    sampling:res,
+                    procedureId:value
+                })
+            }
+            
         })
     }
 
@@ -191,10 +215,13 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                materials:res,
-                samplingPoint:value
-            })
+            if(res){
+                this.setState({
+                    materials:res,
+                    samplingPoint:value
+                })
+            }
+            
         })
     }
 
@@ -209,10 +236,13 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                testItems : res,
-                oldMaterials:value
-            })
+            if(res){
+                this.setState({
+                    oldTestItems : res,
+                    oldMaterials:value
+                })
+            }
+            
         })
     }
 
@@ -436,7 +466,7 @@ class Editor extends React.Component{
                                 </Select>
                                 </div>
                                     <div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
-                                        <Checkbox.Group style={{ width: '100%' }} value={this.state.testItems}>
+                                        <Checkbox.Group style={{ width: '100%' }} value={this.state.oldTestItems}>
                                         {
                                         this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
                                         }
