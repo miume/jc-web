@@ -9,8 +9,7 @@ import SaveButton from "../BlockQuote/saveButton";
 import './difference.css'
 
 const FormItem = Form.Item;
-const userId = localStorage.getItem('menuList')
-let ob = JSON.parse(userId)
+
 
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
@@ -73,6 +72,7 @@ const CollectionCreateForm = Form.create()(
 );
 
 class AddModal extends React.Component {
+    ob
     state = {
         visible: false,
         count: 1,
@@ -144,7 +144,7 @@ class AddModal extends React.Component {
         const taskPersonList = this.getData();
         form.validateFields((err, values) => {
             let data = {}
-            values['createPersonId'] = parseInt(ob.userId)
+            values['createPersonId'] = parseInt(this.ob.userId)
             values["isUrgent"] = 0
             values["status"] = 2
             data["commonBatchNumber"] = values
@@ -175,7 +175,7 @@ class AddModal extends React.Component {
         const taskPersonList = this.getData();
         form.validateFields((err, values) => {
             let data = {}
-            values['createPersonId'] = parseInt(ob.userId)
+            values['createPersonId'] = parseInt(this.ob.userId)
             values["isUrgent"] = 0
             values["status"] = -1
             data["commonBatchNumber"] = values
@@ -209,6 +209,7 @@ class AddModal extends React.Component {
     };
 
     render() {
+        this.ob = JSON.parse(localStorage.getItem('menuList'))
         return (
             <span>
                 <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />

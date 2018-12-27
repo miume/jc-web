@@ -206,6 +206,10 @@ class Home extends Component {
                 getAll:`${server}/jc/common/RepoDiffRecord`,
                 getAllLikeByPage:`${server}/jc/common/RepoDiffRecord/getByMaterialNameLike`,
                 getAllByPage:`${server}/jc/common/RepoDiffRecord/pages`,
+                getAllPage:`${server}/jc/common/RepoStock`,
+                getAllName:`${server}/jc/common/RepoStock/names`,
+                oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
+                getAllPages:`${server}/jc/common/RepoStock/pages`
             },
             /**流程管理 */
             processManagement:{

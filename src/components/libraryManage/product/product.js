@@ -5,10 +5,10 @@ import NewButton from "./button";
 import "../material/difference.css"
 
 const forkData = [1000,1200,1130,2000,11211,12110,20001,20100,20001,10001,201010,12002,2202,2023,1000,10001,1000,1000,1000,1000,10100,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
-const userId = localStorage.getItem('menuList')
-let ob = JSON.parse(userId)
 
 class Product extends React.Component{
+    ob
+    url
     server
     Authorization
     componentWillUnmount() {
@@ -35,7 +35,7 @@ class Product extends React.Component{
     /**获取所有父菜单 */
   getAllData(){
     axios({
-      url:`${this.server}/jc/common/RepoStock`,
+      url:`${this.url.libraryManage.getAllPage}`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -62,7 +62,7 @@ class Product extends React.Component{
     searchEvent(){
         const name=this.state.searchContent;
         axios({
-            url:`${this.server}/jc/common/RepoStock/pages`,
+            url:`${this.url.libraryManage.getAllPages}`,
             method:"get",
             headers:{
                 'Authorization':this.Authorization
@@ -96,14 +96,14 @@ class Product extends React.Component{
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
             if (current !== undefined) {
-                axios.post(`${this.server}/jc/common/RepoStock/oneKeyStock`,
+                axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},
                     {
                         params: {
                             'id': current.id,
                             'quantity': current.realNum,
                             'weight': current.realWeig,
-                            'creator': ob.userId
+                            'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
@@ -147,6 +147,8 @@ class Product extends React.Component{
         }, 1000);
     }
     render(){
+        this.ob = JSON.parse(localStorage.getItem('menuList'))
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (
