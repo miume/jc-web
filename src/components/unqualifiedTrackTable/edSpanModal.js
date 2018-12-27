@@ -109,7 +109,6 @@ class EdSpanModal extends React.Component {
     };
     /**监控发生工艺下拉框的变化 */
     procedureChange = (value) => {
-        console.log(value);
         // const {detail} = this.state;
         // detail.procedureTestRecord.deliveryFactoryId = value
         // this.setState({

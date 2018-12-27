@@ -217,7 +217,6 @@ class CheckSpan extends React.Component {
     /**点击清空按钮 */
     handleClearButton = () => {
         var detailData = this.state.detailData;
-        console.log('aaa');
         for(var i=0; i<detailData.testDTOS.length; i++){
             detailData.testDTOS[i].testResult = '';
         }
@@ -283,7 +282,6 @@ class CheckSpan extends React.Component {
     /**---------------------- */
     /**input框内容变化，实现自动保存数据 */
     inputSave(e){
-        console.log(e.target.value)
         const value = e.target.value;
         const name = e.target.name;
         const id = e.target.id;
@@ -294,8 +292,6 @@ class CheckSpan extends React.Component {
         detailData.testDTOS = newData;
         this.setState({
             detailData:detailData
-        },()=>{
-            console.log(this.state.detailData.testDTOS)
         })
     }
     /**---------------------- */
@@ -309,7 +305,6 @@ class CheckSpan extends React.Component {
     };
     /**实现保存按钮功能--实现保存的数据处理 */
     clickSavaButton = (status) => {
-        console.log(status)
         //  实现保存的数据处理
         var interCheckData = this.state.interCheckData;
         const detailTestDTOS = this.state.detailData.testDTOS;
@@ -328,7 +323,6 @@ class CheckSpan extends React.Component {
         interCheckData.testDTOS = interTestDTOS;
         interCheckData.testReportRecord.isQualified = detailIsQualified;
         interCheckData.sampleDeliveringRecord.id = id;
-        console.log('interCheckData',interCheckData);
         if(detailIsQualified === -1){
             message.info('请点击合格或者不合格！');
             return
@@ -347,8 +341,6 @@ class CheckSpan extends React.Component {
     };
     /**调用保存函数 */
     useSavaFunction = (interCheckData,status) => {
-        console.log(status)
-        console.log(interCheckData)
         axios({
             url : `${this.props.url.intermediateProduct}`,
             method:'put',
@@ -359,7 +351,6 @@ class CheckSpan extends React.Component {
             type:'json'
         }).then((data)=>{
             if(status){
-                console.log(data)
                 const dataId = data.data.data.commonBatchNumber?data.data.data.commonBatchNumber.id:null;
                 this.applyReview(dataId);
             }else{

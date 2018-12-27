@@ -73,7 +73,6 @@ class UnqualifiedTable extends React.Component {
         render: (text,record) => {
             // let operationCheckFlag = this.judgeCheckOperation(record.state);
             let operationCheckFlag = true;
-            console.log(record)
             return (
                 <span>
                     {operationCheckFlag?(

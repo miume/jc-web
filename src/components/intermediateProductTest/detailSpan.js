@@ -86,7 +86,6 @@ class DetailSpan extends React.Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            console.log('details',res)
             // this.setState({
             //     detailData:details,
             // });
@@ -96,7 +95,6 @@ class DetailSpan extends React.Component {
             var isQualified = 0;
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
-                console.log('isQualified',isQualified)
                 topData = {
                     serialNumber: res.serialNumber,
                     materialName: res.materialName,
@@ -130,7 +128,6 @@ class DetailSpan extends React.Component {
                         }
                     }).then((data)=>{
                         const res = data.data.data;
-                        console.log('pp',isQualified)
                         this.setState({
                             detailData:{
                                 topData: topData,
