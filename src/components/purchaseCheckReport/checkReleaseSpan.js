@@ -185,6 +185,7 @@ class CheckReleaseSpan extends React.Component {
                 >
                     <div style={{height:500}}>
                         <PurchaseModal
+
                             clickState ={1}
                             data={this.state.checkData}
                         />
@@ -304,6 +305,9 @@ class CheckReleaseSpan extends React.Component {
     };
     // 处理发布
     handleRelease = () => {
+        this.setState({
+            visible: false,
+        });
         console.log('handleRelease')
     };
     handleCancel = (e) => {
