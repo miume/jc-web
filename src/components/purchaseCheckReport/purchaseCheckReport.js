@@ -23,7 +23,7 @@ class PurchaseCheckReport extends React.Component {
         return(
             <div>
                 <BlockQuote name="进货检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <Tabs defaultActiveKey="2"  onChange={this.callback}  style={{paddingLeft:'15px',paddingRight:'15px'}}>
+                <Tabs defaultActiveKey="1"  onChange={this.callback}  style={{paddingLeft:'15px',paddingRight:'15px'}}>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;生成</span>} key="1" >
                         <Pack
                             url={this.url}
@@ -39,6 +39,7 @@ class PurchaseCheckReport extends React.Component {
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-bullhorn" aria-hidden="true"></i> &nbsp;发布</span>} key="3" >
                         <Release
+                            menuList={menuList}
                             url={this.url}
                             status={status}
                         />

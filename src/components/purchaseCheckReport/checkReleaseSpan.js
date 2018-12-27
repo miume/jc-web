@@ -163,9 +163,9 @@ class CheckReleaseSpan extends React.Component {
             },
         };
         this.handleReleaseNew = this.handleReleaseNew.bind(this);
-        this.handleClick = this.handleClick.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -196,25 +196,25 @@ class CheckReleaseSpan extends React.Component {
     judgeFooter = (state) => {
         var footer = [];
         switch (state) {
-            case '1': //审核中   --最好不用Input 用div
+            case 1: //审核中   --最好不用Input 用div
                 footer.push(<Button className='white-button' style={{float:'left',backgroundColor:'white'}} key="back"  onClick={this.handleCancel}>返回</Button>);
                 footer.push(<Input key="input" style={{width:300,color:'black',textAlign: 'center'}} disabled defaultValue="该数据审核中，审核通过后方可发布"/>);
                 return footer;
-            case '2': //已通过  未发布
+            case 2: //已通过  未发布
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
                     <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default'}} disabled defaultValue="该数据审核通过，请发布"/>,
                     <ReleaseNewButton  key="releaseNew" handleReleaseNew={this.handleReleaseNew}/>,
-                    <ReleaseButton key="releaseNew" handleRelease={this.handleRelease}/>
+                    <ReleaseButton key="release" handleRelease={this.handleRelease}/>
                 ];
                 return footer;
-            case '3': //不通过
+            case 3: //不通过
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
                     <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default',right:'6px'}} disabled defaultValue="该数据审核不通过，请改正后再次申请审核"/>,
                 ];
                 return footer;
-            case '0': //待审核
+            case 0: //待审核
                 footer = [
                     <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
                     <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default',right:'6px'}} disabled defaultValue="该数据待审核，审核通过后方可发布"/>,
@@ -227,45 +227,90 @@ class CheckReleaseSpan extends React.Component {
                 return footer;
         }
     };
-    handleClick = () => {
-        console.log('handleClick')
-    }
+    //  更新数据初恋
+    handleCheckData = () => {
+        //  实现保存的数据处理
+        var checkData = this.state.checkData;
+        var purchaseReportRecord = {
+            norm: checkData.topData.norm,
+            quantity: checkData.topData.quantity,
+            judgement: checkData.judgement,
+        };
+        var sampleDeliveringRecordDTO = {
+            deliveryFactory: {
+                name: checkData.topData.deliveryFactory
+            },
+            repoBaseSerialNumber: {
+                materialName: checkData.topData.materialName
+            },
+            sampleDeliveringRecord: {
+                sampleDeliveringDate: checkData.topData.sampleDeliveringDate
+            }
+        };
+        var commonBatchNumberDTO = {
+            commonBatchNumber: {
+                createPersonId: this.props.menuList.userId
+            }
+        };
+        var testReportRecordDTOList = [];
+        for(let i=0; i<checkData.tbodyData.length; i++){
+            var ItemResultList = [];
+            for (let j in checkData.tbodyData[i].tbodyMiddleData) {
+                ItemResultList.push(checkData.tbodyData[i].tbodyMiddleData[j]); //属性
+            }
+            var testReportRecordDTOListObj = {
+                testReportRecord:{
+                    id: checkData.tbodyData[i].id,
+                    isQualified: checkData.tbodyData[i].isQualified
+                },
+                testItemResultRecordDTOList: ItemResultList
+            };
+            testReportRecordDTOList.push(testReportRecordDTOListObj)
+        }
+        var handleData = {
+            purchaseReportRecord: purchaseReportRecord,
+            sampleDeliveringRecordDTO: sampleDeliveringRecordDTO,
+            commonBatchNumberDTO: commonBatchNumberDTO,
+            testReportRecordDTOList: testReportRecordDTOList
+        };
+        //  调用保存函数
+        this.handleReleaseNew(handleData);
+
+    };
     //  处理发布新材料
-    handleReleaseNew = () => {
-        console.log('releaseNew')
+    handleReleaseNew = (handleData) => {
+        axios({
+            url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=1`,
+            method:'put',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            data: {
+                purchaseReportRecordDTO: handleData,
+            },
+            type:'json'
+        }).then((data)=>{
+            this.setState({
+                visible: false,
+                subVisible: false,
+            });
+            this.props.fetch();
+            message.info(data.data.message);
+        }).catch(()=>{
+            message.info('发布失败，请联系管理员！')
+        })
+
+
     };
     // 处理发布
     handleRelease = () => {
         console.log('handleRelease')
     };
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
-    handleOk = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
     handleCancel = (e) => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
-    hide = () => {
         this.setState({
-            pvisivle: false,
+            visible: false,
         });
     };
-    handleVisibleChange = (pvisivle) => {
-        this.setState({ pvisivle });
-    };
-
     /**点击编辑 */
     handleDetail() {
         this.setState({

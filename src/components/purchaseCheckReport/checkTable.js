@@ -86,6 +86,7 @@ class CheckTable extends React.Component {
                 <span>
                     {operationCheckFlag?(
                         <CheckEditSpan
+                            fetch={this.props.fetch}
                             url={this.props.url}
                             id={record.purchaseReportRecord.id}
                             menuList={this.props.menuList}
@@ -124,7 +125,7 @@ class CheckTable extends React.Component {
         });
         return(
             <Table
-                rowKey={record => record.id}
+                rowKey={record => record.purchaseReportRecord.id}
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
