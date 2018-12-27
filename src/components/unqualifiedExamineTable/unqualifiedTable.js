@@ -14,10 +14,10 @@ class UnqualifiedTable extends React.Component {
         width: '5%',
     },{
         title: '批号',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
-        key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
+        dataIndex: 'batchNumber',
+        key: 'batchNumber',
         align:'center',
-        width: '6%',
+        width: '12%',
     },{
         title: '原材料',
         dataIndex: 'materialName',
@@ -26,32 +26,32 @@ class UnqualifiedTable extends React.Component {
         width: '6%',
     },{
         title: '生产厂家',
-        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
-        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
+        dataIndex: 'manufacturerName',
+        key: 'manufacturerName',
         align:'center',
         width: '6%',
     },{
         title: '到货日期',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        dataIndex: 'sampleDeliveringDate',
+        key: 'sampleDeliveringDate',
         align:'center',
         width: '10%',
     },{
         title: '创建人',
-        dataIndex: 'commonBatchNumberDTO.createPersonName',
-        key: 'commonBatchNumberDTO.createPersonName',
+        dataIndex: 'createPersonName',
+        key: 'createPersonName',
         align:'center',
         width: '6%',
     },{
         title: '创建日期',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
-        key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
+        dataIndex: 'createTime',
+        key: 'createTime',
         align:'center',
         width: '10%',
     },{
         title: '审核状态',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
-        key: 'commonBatchNumberDTO.commonBatchNumber.status',
+        dataIndex: 'status',
+        key: 'status',
         align:'center',
         width: '6%',
         render:state => {
@@ -59,20 +59,21 @@ class UnqualifiedTable extends React.Component {
         }
     },{
         title: '紧急',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
-        key: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
+        dataIndex: 'isUrgent',
+        key: 'isUrgent',
         align:'center',
         width: '6%',
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'purchaseReportRecord.id',
-        key: 'purchaseReportRecord.id',
+        dataIndex: 'id',
+        key: 'id',
         align:'center',
         width: '13%',
         render: (text,record) => {
             // let operationCheckFlag = this.judgeCheckOperation(record.state);
             let operationCheckFlag = true;
+            console.log(record)
             return (
                 <span>
                     {operationCheckFlag?(
@@ -86,10 +87,12 @@ class UnqualifiedTable extends React.Component {
                         <span  className="notClick"><i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;编辑</span>
                     )}
                     <Divider type="vertical" />
-                    {/*<DetailSpan*/}
-                        {/*state={record.state}*/}
-                        {/*name='详情'*/}
-                    {/*/>*/}
+                    <DetailSpan
+                        url={this.props.url}
+                        menuList={this.props.menuList}
+                        state={record.status}
+                        name='详情'
+                    />
                 </span>
             )
         }
@@ -111,12 +114,11 @@ class UnqualifiedTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ x: 1500,y: 400 }}
+                scroll={{ y: 400 }}
             />
         )
     }
     /**判断编辑、删除可否功能 */
-    // asdas
     judgeCheckOperation = (record) => {
         if(record==='0'||record==='3'){
             return true;
