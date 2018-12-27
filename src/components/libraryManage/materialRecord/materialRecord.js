@@ -3,6 +3,7 @@ import SearchCell from '../../BlockQuote/search';
 import axios from 'axios'
 
 class MaterialRecord extends React.Component{
+    url
     server
     Authorization
     componentWillUnmount() {
@@ -27,7 +28,7 @@ class MaterialRecord extends React.Component{
     /**获取所有父菜单 */
   getAllData(){
     axios({
-      url:`${this.server}/jc/common/RepoDiffRecord`,
+      url:`${this.url.libraryManage.getAll}`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -52,7 +53,7 @@ class MaterialRecord extends React.Component{
     searchEvent(){
         const name=this.state.searchContent;
         axios({
-            url:`${this.server}/jc/common/RepoDiffRecord/getByMaterialNameLike`,
+            url:`${this.url.libraryManage.getAllLikeByPage}`,
             method:"get",
             headers:{
                 'Authorization':this.Authorization
@@ -76,6 +77,7 @@ class MaterialRecord extends React.Component{
     }
 
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (

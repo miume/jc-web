@@ -5,12 +5,13 @@ import NewButton from "./button";
 import "../product/difference.css";
 
 const forkData = [1000,2000,2000,1001,2010,2010,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
-const userId = localStorage.getItem('menuList')
-let ob = JSON.parse(userId)
+
 
 class Material extends React.Component{
+    ob
     server
     Authorization
+    url
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -34,7 +35,7 @@ class Material extends React.Component{
     /**获取所有数据 */
   getAllData(){
     axios({
-      url:`${this.server}/jc/common/RepoStock`,
+      url:`${this.url.libraryManage.getAllPage}`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -57,7 +58,7 @@ class Material extends React.Component{
 
   getAllData1(){
     axios({
-      url:`${this.server}/jc/common/RepoStock`,
+      url:`${this.url.libraryManage.getAllPage}`,
       method:'get',
       headers:{
         'Authorization': this.Authorization
@@ -85,7 +86,7 @@ class Material extends React.Component{
     searchEvent(){
         const name=this.state.searchContent;
         axios({
-            url:`${this.server}/jc/common/RepoStock/pages`,
+            url:`${this.url.libraryManage.getAllPages}`,
             method:"get",
             headers:{
                 'Authorization':this.Authorization
@@ -119,14 +120,14 @@ class Material extends React.Component{
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
             if (current !== undefined) {
-                axios.post(`${this.server}/jc/common/RepoStock/oneKeyStock`,
+                axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},
                     {
                         params: {
                             'id': current.id,
                             'quantity': current.realNum,
                             'weight': current.realWeig,
-                            'creator': ob.userId
+                            'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
@@ -170,6 +171,8 @@ class Material extends React.Component{
         }, 1000);
     }
     render(){
+        this.ob = JSON.parse(localStorage.getItem('menuList'))
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem("remote")
         return (
