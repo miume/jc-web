@@ -211,6 +211,9 @@ class Home extends Component {
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`
             },
+            process:{
+                process:`${server}/jc/common/batchAuditTask`
+            },
             /**流程管理 */
             processManagement:{
                 deleteByIds:`${server}/jc/common/batchAuditTask`,

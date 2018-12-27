@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal} from 'antd';
 import '../redList.css'
-import NewButton from '../../BlockQuote/newButton';
+import CancleButton from '../../BlockQuote/cancleButton';
 
 class Note extends React.Component{
   constructor(props){
@@ -37,7 +37,7 @@ class Note extends React.Component{
             closable={false} maskClosable={false} centered={true}
             width='360px'
             footer={[
-                <NewButton key='cancel' handleClick={this.handleCancel} name='返回'  className='fa fa-times'/>,
+                <CancleButton key='cancel' handleCancel={this.handleCancel} flag={1}/>,
                 
             ]}
          >

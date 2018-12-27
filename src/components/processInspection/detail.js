@@ -247,12 +247,6 @@ class Detail extends React.Component{
             visible1:false
         })
     }
-   /**点击取消送审 */
-   handleCancelApply(){
-    this.setState({
-        visible1:false
-    })
-}
     /**获取数据 */
     getApplyData(data){
         //console.log(data)
@@ -339,31 +333,6 @@ applyReview(dataId){
         message.info('审核失败，请联系管理员！')
     })
 }
-
-     /**监控送审界面的visible */
-     handleVisibleChange(visible){
-        this.setState({
-            visible1:visible
-        })
-    }
-     /**监控是否紧急 */
-     urgentChange(checked){
-        this.setState({
-            urgent:checked?0:-1
-        })
-    }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
-    /**点击取消送审 */
-    handleCancelApply(){
-        this.setState({
-            visible1:false
-        })
-    }
     render() {
         const detail = !this.state.iteration?[
             <CancleButton key='cancle' handleCancel={this.cancel} flag={1} />, 

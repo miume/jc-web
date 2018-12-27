@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import {Table,Divider} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-
+import Edit from './edit';
+import Detail from './detail';
 const data=[];
 for(var i=0;i<20;i++){
   data.push({
-     id:i,
-     
+     id:i+1,
      batchNumber:'SN01',
      createTime:'2018-12-16 12:09:12',
-     createPerson:'浩浩',
-     status:'未申请'
+     createPerson:'李钦',
+     status:'已保存未提交'
     }
   );
 }
@@ -50,11 +50,15 @@ for(var i=0;i<20;i++){
             width:'10%',
             align:'center'
         },{
-            title:'状态',
+            title:'审核状态',
             dataIndex:'status',
             key:'status',      
             width:'10%',
-            align:'center'
+            align:'center',
+            // render:status=>{
+            //     return this.status[status.toString()];
+            // }
+
         },{
             title:'操作',
             dataIndex:'operation',
@@ -65,8 +69,9 @@ for(var i=0;i<20;i++){
                 let editFlag=this.judgeStatus(record.status);
                 return(
                     <span>
+                        <Edit editFlag={editFlag}/>
                         <Divider type='vertical'/>
-                        
+                        <Detail record={record}/>
                     </span>
                 );
             }
@@ -76,7 +81,13 @@ for(var i=0;i<20;i++){
      }
 
      judgeStatus=(record_status)=>{
-             
+             switch(`${record_status}`){
+                  case '已保存未提交':return true
+                  case '已提交待审核':return false
+                  case '审核中':return false
+                  case '已通过':return false
+                  case '不通过':return true
+             }
      }
      searchEvent(){
 

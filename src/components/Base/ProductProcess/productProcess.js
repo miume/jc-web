@@ -119,7 +119,7 @@ Authorization;
         key:'id',
        //sorter:true,//需要服务端排序
        //sorter:(a, b) => a.id-b.id,
-        width: '20%',
+        width: '26%',
         align:'center',
      },{
         title:'产品工序名称',
