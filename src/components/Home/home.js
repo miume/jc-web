@@ -340,6 +340,10 @@ class Home extends Component {
               /**产品检测 */
               productTestRecord:{
                 getByBatchNUmberId:`${server}/jc/common/productTestRecord/batchNumberId`,
+              },
+              /**不合格审评表 */
+              unqualifiedExamineTable:{
+
               }
         }
         localStorage.setItem('status',JSON.stringify(status));

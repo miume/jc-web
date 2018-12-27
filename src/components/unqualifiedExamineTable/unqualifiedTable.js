@@ -2,104 +2,85 @@ import React from 'react';
 import {Divider, Table} from 'antd';
 import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
+import CheckEditSpan from "../purchaseCheckReport/checkEditSpan";
 
 class UnqualifiedTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
         key: 'index',
-        sorter: (a, b) => a.id - b.id,
+        sorter: (a, b) => a.index - b.index,
         align:'center',
         width: '5%',
     },{
         title: '批号',
-        dataIndex: 'a',
-        key: 'a',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
+        key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         align:'center',
         width: '6%',
     },{
         title: '原材料',
-        dataIndex: 'b',
-        key: 'b',
+        dataIndex: 'materialName',
+        key: 'materialName',
         align:'center',
         width: '6%',
     },{
         title: '生产厂家',
-        dataIndex: 'c',
-        key: 'c',
+        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
+        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.manufacturerName',
         align:'center',
         width: '6%',
     },{
         title: '到货日期',
-        dataIndex: 'd',
-        key: 'd',
+        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '10%',
     },{
         title: '创建人',
-        dataIndex: 'e',
-        key: 'e',
+        dataIndex: 'commonBatchNumberDTO.createPersonName',
+        key: 'commonBatchNumberDTO.createPersonName',
         align:'center',
         width: '6%',
     },{
         title: '创建日期',
-        dataIndex: 'f',
-        key: 'f',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
+        key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         align:'center',
         width: '10%',
-    },{
-        title: '修改人',
-        dataIndex: 'g',
-        key: 'g',
-        align:'center',
-        width: '6%',
-    },{
-        title: '修改日期',
-        dataIndex: 'h',
-        key: 'h',
-        align:'center',
-        width: '10%',
-    },{
-        title: '类型',
-        dataIndex: 'type',
-        key: 'type',
-        align:'center',
-        width: '6%',
     },{
         title: '审核状态',
-        dataIndex: 'state',
-        key: 'state',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
+        key: 'commonBatchNumberDTO.commonBatchNumber.status',
         align:'center',
         width: '6%',
         render:state => {
-            switch(`${state}`) {
-                case '-1': return '未申请';
-                case '0': return '待审核';
-                case '1': return '审核中';
-                case '2': return '已通过';
-                case '3': return '不通过';
-                default: return '';
-            }
+            return this.props.status[state.toString()];
         }
     },{
         title: '紧急',
-        dataIndex: 'isUrgent',
-        key: 'isUrgent',
+        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
+        key: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'purchaseReportRecord.id',
+        key: 'purchaseReportRecord.id',
         align:'center',
         width: '13%',
         render: (text,record) => {
-            let operationCheckFlag = this.judgeCheckOperation(record.state);
+            // let operationCheckFlag = this.judgeCheckOperation(record.state);
+            let operationCheckFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
                         <EditSpan
+                            // fetch={this.props.fetch}
+                            url={this.props.url}
+                            // id={record.purchaseReportRecord.id}
+                            menuList={this.props.menuList}
                         />
                     ):(
                         <span  className="notClick"><i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;编辑</span>
