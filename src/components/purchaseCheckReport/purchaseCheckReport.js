@@ -19,7 +19,6 @@ class PurchaseCheckReport extends React.Component {
         const status = JSON.parse(localStorage.getItem('status')) ;
         this.url = JSON.parse(localStorage.getItem('url'));
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
-        console.log()
         return(
             <div>
                 <BlockQuote name="进货检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -50,7 +49,6 @@ class PurchaseCheckReport extends React.Component {
         )
     };
     callback= (key) => {
-        // console.log(key);
     }
     /**返回数据录入页面 */
     returnDataEntry(){

@@ -16,7 +16,7 @@ class ReleaseTable extends React.Component {
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         align:'center',
-        width: '6%',
+        width: '12%',
         render: batchNumber => {
             return batchNumber?batchNumber:'无';
         }

@@ -4,26 +4,6 @@ import ReleaseTable from "./releaseTable";
 import axios from "axios";
 
 
-const data =[];
-for (let i = 0; i < 20; i++) {
-    data.push({
-        index: i,
-        id:i,
-        a: '测试',
-        b: '测试',
-        c: '启东北新',
-        d: '2019年1月10号',
-        e: '李小红',
-        f: '2018年11月27日',
-        g: '李小红',
-        h: '2018年11月27日',
-        type: '进货检验',
-        state:'0',
-        isUrgent:'紧急',
-    });
-}
-
-
 class Release extends React.Component {
     componentDidMount() {
         this.fetch();
@@ -68,7 +48,6 @@ class Release extends React.Component {
                     status={this.props.status}
                     data={this.state.dataSource}
                     pagination={this.pagination}
-                    // rowSelection={rowSelection}
                     fetch={this.fetch}
                 />
             </div>

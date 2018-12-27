@@ -71,30 +71,32 @@ class Pack extends React.Component {
             total: this.state.dataSource.length,
             showSizeChanger: true,
             onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
             },
             onChange(current) {
-                // console.log('Current: ', current);
             }
         }
     };
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
-        if(unGenerateDate===true){
-            this.rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-            };
-        }else{
-            this.rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-                getCheckboxProps: record => ({
-                    disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
-                })
-
-            };
-        }
+        this.rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+        };
+        // if(unGenerateDate===true){
+        //     this.rowSelection = {
+        //         selectedRowKeys,
+        //         onChange: this.onSelectChange,
+        //     };
+        // }else{
+        //     this.rowSelection = {
+        //         selectedRowKeys,
+        //         onChange: this.onSelectChange,
+        //         getCheckboxProps: record => ({
+        //             disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
+        //         })
+        //
+        //     };
+        // }
         return(
             <div>
                 <div>
@@ -213,8 +215,6 @@ class Pack extends React.Component {
     /**---------------------- */
     /**实现全选功能 */
     onSelectChange = (selectedRowKeys) => {
-        // console.log('selectedRowKeys changed: ', selectedRowKeys);
-        console.log('selectedRowKeys',selectedRowKeys)
         this.setState({ selectedRowKeys });
     };
     /**---------------------- */
@@ -288,7 +288,6 @@ class Pack extends React.Component {
     /**---------------------- */
     /**实现选择是否只展现未生成的数据功能 */
     urgentChange = (checked) => {
-        console.log(`switch to ${checked}`);
         this.setState({
             unGenerateDate: checked
         },()=>{
