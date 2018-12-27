@@ -1,0 +1,16 @@
+/*原生表格样式*/
+.rawStandardTop{
+   width: 100%;
+}
+.rawStandardTop table{
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid #E9E9E9;
+}
+.rawStandardTop table thead{
+    color: white;
+    background-color: #0079FE;
+    border: 1px solid #E9E9E9;
+
+}
