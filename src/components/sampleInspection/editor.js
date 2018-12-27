@@ -388,6 +388,7 @@ class Editor extends React.Component{
                     closable={false}
                     width="360px"
                     maskClosable={false}
+                    style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.onCreate} style='button' className='fa fa-check' />,
