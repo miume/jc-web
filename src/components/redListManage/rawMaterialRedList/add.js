@@ -1,4 +1,5 @@
 import React from 'react';
+//import $ from 'jquery';
 import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
@@ -28,7 +29,7 @@ class Add extends React.Component{
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
-        
+        this.selectOnSelect=this.selectOnSelect.bind(this);
     }
   
     /**处理新增一条记录 */
@@ -79,13 +80,13 @@ class Add extends React.Component{
         this.formRef.resetField();
     }
     handleCancel() {//点击新增的取消
-        console.log(this.state);
+       // console.log(this.state);
         this.setState({
             visible: false,
             checkSelectData:-1,
             checkSwitch:0
         });
-        console.log(this.state);
+        //console.log(this.state);
          this.formRef.resetField();//重置表单
     }
 
@@ -96,14 +97,19 @@ class Add extends React.Component{
         //console.log(value);//得到的是id
         this.setState({checkSelectData:value});
     }
+    selectOnSelect(value){
+        console.log(value);
+        this.setState({checkSelectData:-1});
+    }
     hide(){//送审气泡的取消
      // console.log('hide')
-      console.log(document.getElementsByClassName('select'));
+     // console.log(document.getElementsByClassName('select'));
       this.setState({
             popVisible:false,//气泡取消
         
         });
-    
+       //$('.select').val(null).trigger('change');
+       
     }
 
     handleVisibleChange=(visible)=>{
@@ -172,8 +178,7 @@ class Add extends React.Component{
       this.setState({
         visible: false,//modal的取消
         popVisible:false,//送审的气泡取消
-        checkSelectData:-1,//流程下拉框重置
-        checkSwitch:0
+      
         });
         
       this.formRef.resetField();
@@ -207,7 +212,7 @@ class Add extends React.Component{
                          content={
                              <div style={{width:300 ,height:130}}>
                                 <div>
-                                    <Select className='select'  placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
+                                    <Select className='select'  allowclear='true'  placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange} >
                                       {
                                           this.props.process.map((pro)=>{
                                                   return(
