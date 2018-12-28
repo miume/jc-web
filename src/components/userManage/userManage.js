@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,Input,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
+import { Button,Input,Table,Popconfirm,Form,Divider,Modal,Select,message,InputNumber} from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../BlockQuote/blockquote';
@@ -21,7 +21,23 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  //  rex=()=>{
+  //       var rex=new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/);
+  //       if(rex.test($(this).val())){
+          
+  //       }
+  //  }
+  onChange = (e) => {
+    const { value } = e.target;
+    console.log(value);
+    const reg = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g");//要匹配的模板
+    console.log(reg.test(value));
+    if (!reg.test(value) ) {//格式是错误的
+       message.info('请输入11位正确的手机号!');
+    }
+  }
 
+ 
 
     getInput = () => {
       //  console.log(this.props.departmentchildren);//获取部门的data（getAll）
@@ -39,7 +55,7 @@ class EditableCell extends React.Component {
 
         </Select>;
         }
-        return <Input />;
+        return <Input />
     };
     render() {
         const {
@@ -58,14 +74,40 @@ class EditableCell extends React.Component {
                     this.form = form;
                     return (
                         <td {...restProps}>
-                            {editing ? (
+                            {editing ? (dataIndex==='phone'?
+                            <FormItem style={{ margin: 0 }}>
+                            {form.getFieldDecorator(dataIndex, {
+                                rules: [{
+                                    required: true,
+                                    message:'请输入11位正确的手机号',
+                                    pattern:new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g"),
+                                    len:11
+                                }],
+                                getValueFromEvent: ((event) => {
+                                  
+                                    return event.target.value.replace(/\D/g,'')
+                                  
+                                 
+                              }),
+                                // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
+                                initialValue:record[dataIndex],
+
+                            })(this.getInput())
+                            }
+                        </FormItem>:
                                 <FormItem style={{ margin: 0 }}>
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [{
                                             required: true,
-                                            message: `${title}不能为空`,
+                                            message: dataIndex==='phone'?'请输入11位正确的手机号':`${title}不能为空`,
+                                            
                                         }],
-
+                                        getValueFromEvent: ((event) => {
+                                          if(dataIndex==='phone'){
+                                            return event.target.value.replace(/\D/g,'')
+                                          }
+                                         
+                                      }),
                                         // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
                                         initialValue:record[dataIndex],
 
@@ -83,7 +125,6 @@ class EditableCell extends React.Component {
 
 class User extends React.Component{
   url;
-  server;
   Authorization;
   componentDidMount(){
     this.fetch();
@@ -381,6 +422,8 @@ class User extends React.Component{
       save(form, id) {
       //row代表修改后的数据,item代表原始数据
         form.validateFields((error, row) => {
+          console.log(row);
+          console.log(error);
           if (error) {
             return;
           }
@@ -402,10 +445,12 @@ class User extends React.Component{
             /**将id变成字符串,给data加id字段
              *
              */
+            console.log(row);
+            console.log(data);
             data['id']=id.toString();
             /**根据部门名称删选得到部门id */
 
-            //console.log(data);
+            console.log(data);
             axios({
               url:`${this.url.userManage.update}`,
               method:'post',
@@ -430,6 +475,7 @@ class User extends React.Component{
             this.setState({ dataSource: newData, editingKey: '' });
           }
         });
+        
       }
 
       cancel = () => {
@@ -484,7 +530,7 @@ class User extends React.Component{
       }
       /**获取所有部门 */
       getAllDepartment(){
-        console.log(this.url.department.getAll)
+        //console.log(this.url.department.getAll)
         axios({
           url:`${this.url.department.getAll}`,
           method:'get',

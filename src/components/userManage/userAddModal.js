@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input,Select} from 'antd';
+import { Form, Input,Select,message} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -10,7 +10,7 @@ class UserAddModal extends React.Component{
        this.state={
         confirmDirty: false,
        }
-
+      
     }
     //'username','password','departmentId','phone'
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
@@ -43,6 +43,7 @@ class UserAddModal extends React.Component{
      resetField=()=>{
       this.props.form.resetFields();
   }
+
 
     render(){
         const { form } = this.props;
@@ -109,14 +110,17 @@ class UserAddModal extends React.Component{
                </FormItem>
                <FormItem  wrapperCol={{ span: 24 }}>
                     {getFieldDecorator('phone',{
-                        initialValue: '',
-                        rules:[{required: true, message: '手机号必须是11位',len:11}]
-                    })( 
-                        <Input placeholder='请输入手机号' style={{height:'40px'}}></Input>
+                        
+                        rules:[{required: true, message: '请输入11位正确的手机号码',pattern:new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g"),
+                        len:11}],
+                        getValueFromEvent: (event) => {
+                          return event.target.value.replace(/\D/g,'')
+                      },
+                    },
+                  )( 
+                        <Input   placeholder='请输入手机号' style={{height:'40px'}}></Input>
                         )}
                </FormItem>
-
-
             </Form>
         );
     }

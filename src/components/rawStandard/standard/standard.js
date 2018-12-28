@@ -89,6 +89,11 @@ for(var i=0;i<20;i++){
                   case '不通过':return true
              }
      }
+     checkRaw(e){//点击重新选择原材料调用的函数
+        //    const name=this.props.returnRaw();
+        //    console.log(name);
+            this.props.onBlockChange(1,'生产厂家',false);//跳回原材料界面后，就不可以点击那个面板了
+        }
      searchEvent(){
 
      }
@@ -111,9 +116,11 @@ for(var i=0;i<20;i++){
                  rowKey={record=>record.id}
                  columns={this.columns}
                  dataSource={this.state.dataSource}
+                 pagination={{hideOnSinglePage:true,pageSize:100}}
                  size='small'
-                 scroll={{y:400}}
+                 scroll={{y:230}}
                />
+               <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
          </div>
          );
      }
