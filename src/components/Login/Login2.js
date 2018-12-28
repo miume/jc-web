@@ -52,6 +52,8 @@ class Login extends React.Component {
     let password = document.getElementById('password').value;
     axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
       //console.log(res.data)
+      /**如果登陆成功  则屏蔽enter键 */
+      window.onkeydown = undefined
       const quickAccess = [];
       var i = 1;
       if(res.data){
@@ -87,7 +89,7 @@ class Login extends React.Component {
   componentDidMount() {
     /**实现enter键登陆 */
     const f = (e) => {
-      if(e.keyCode===13){this.handleSubmit(); window.onkeydown = undefined}
+      if(e.keyCode===13){this.handleSubmit();}
     }
     window.onkeydown = f
   }
