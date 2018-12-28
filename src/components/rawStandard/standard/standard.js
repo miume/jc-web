@@ -78,6 +78,7 @@ for(var i=0;i<20;i++){
         }]
         this.searchEvent=this.searchEvent.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
+        this.checkRaw=this.checkRaw.bind(this);
      }
 
      judgeStatus=(record_status)=>{
@@ -89,10 +90,10 @@ for(var i=0;i<20;i++){
                   case '不通过':return true
              }
      }
-     checkRaw(e){//点击重新选择原材料调用的函数
+     checkRaw(e){//点击重新选择厂家调用的函数
         //    const name=this.props.returnRaw();
         //    console.log(name);
-            this.props.onBlockChange(1,'生产厂家',false);//跳回原材料界面后，就不可以点击那个面板了
+            this.props.onBlockChange(2,'设置标准',false);//跳回原材料界面后，就不可以点击那个面板了
         }
      searchEvent(){
 
@@ -120,7 +121,7 @@ for(var i=0;i<20;i++){
                  size='small'
                  scroll={{y:230}}
                />
-               <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
+               <div className='rawStandardPosition' onClick={this.checkRaw}>重新选择厂家</div>
          </div>
          );
      }
