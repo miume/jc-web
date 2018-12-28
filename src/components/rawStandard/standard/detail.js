@@ -29,7 +29,7 @@ class Detail extends Component{
                    visible={this.state.visible}
                    maskClosable={false}
                    closable={false}
-                   width='360px'
+                   width='440px'
                    footer={[
                       <CancleButton handleCancel={this.handleCancel} flag={1}/>
                    ]}
