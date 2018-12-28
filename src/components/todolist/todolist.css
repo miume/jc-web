@@ -33,6 +33,7 @@
 }
 .wrap1{
     flex-grow: 2;
+    min-width: 350px;
     height: 100%;
 }
 .wrap2{
