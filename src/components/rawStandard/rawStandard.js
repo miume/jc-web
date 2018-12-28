@@ -24,9 +24,10 @@ class RawStandard extends Component{
 
         }
         this.onBlockChange1=this.onBlockChange1.bind(this);
-        
         this.onBlockChange2=this.onBlockChange2.bind(this);
-        this.returnRaw=this.returnRaw.bind(this);
+        this.onBlockChange3=this.onBlockChange3.bind(this);
+        this.clickToRaw=this.clickToRaw.bind(this);
+        this.clickToFactory=this.clickToFactory.bind(this);
     }
  
   onBlockChange1(flag,content1,click1){//原材料那个块是否被选中，选中后发生的变化
@@ -46,32 +47,54 @@ class RawStandard extends Component{
              click2:click2,
          });
   }
-  returnRaw(){
-    const name=this.state.content1;
-    return name;
+  onBlockChange3(flag,content3,click3){
+    this.setState({
+        flag:flag,
+        content3:content3,
+        click3:click3,
+    });
 }
+    clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
+         this.setState({
+            flag:1,
+            content1:this.state.content1,
+            content2:'请选择生产厂家'
+         });
+    }
+    clickToFactory(){//在设置标准界面点击回到生产厂家
+        this.setState({
+            flag:2,
+            content2:this.state.content2,
+            
+         });
+    }
+
+    
+
    
        render(){
            return(
                <div>
                    <Blockquote menu='技术中心' name='原材料标准'/>
                   
-                   {/* <div style={{padding:'20px'}}>
+                   <div style={{padding:'20px'}}>
                      
-                     <div className='rawStanstdardBlockQuo' >{this.state.content1}</div>
-                     <div className='rawStanstdardBlockQuo' >{this.state.content2}</div>
-                     <div className='rawStanstdardBlockQuo' >{this.state.content3}</div>
-                   
+                     <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}>{this.state.content1}</div><span className='rawStanstdardBlockQuoTriggleBlue'></span>
+                     <div className={this.state.flag===2||this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.clickToFactory}>{this.state.content2}</div><span className={this.state.flag===2||this.state.flag===3?'rawStanstdardBlockQuoTriggleBlue':'rawStanstdardBlockQuoTriggleGrey'}></span>
+                     <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} >{this.state.content3}</div>
+
+                   <div >
                      <div  className={this.state.flag===1?'show':'hide'}>
                          <RawMaterial onBlockChange={this.onBlockChange1} />
                      </div>
                      <div   className={this.state.flag===2?'show':'hide'}  >
-                          <Manufacturer onBlockChange={this.onBlockChange2} returnRaw={this.returnRaw}/> 
+                          <Manufacturer onBlockChange={this.onBlockChange2} /> 
                       </div>
                      <div className={this.state.flag===3?'show':'hide'}>
-                          <Standard />
+                          <Standard onBlockChange={this.onBlockChange3}/>
                       </div>
-                   </div > */}
+                     </div>
+                   </div > 
                    
                </div>
            );

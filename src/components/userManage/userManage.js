@@ -21,23 +21,18 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
-  //  rex=()=>{
-  //       var rex=new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/);
-  //       if(rex.test($(this).val())){
-          
-  //       }
-  //  }
-  onChange = (e) => {
-    const { value } = e.target;
-    console.log(value);
-    const reg = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g");//要匹配的模板
-    console.log(reg.test(value));
-    if (!reg.test(value) ) {//格式是错误的
-       message.info('请输入11位正确的手机号!');
-    }
-  }
 
- 
+  // onChange = (e) => {
+  //   const { value } = e.target;
+  //   console.log(value);
+  //   const reg = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g");//要匹配的模板
+  //   console.log(reg.test(value));
+  //   if (!reg.test(value) ) {//格式是错误的
+  //      message.info('请输入11位正确的手机号!');
+  //   }
+  // }
+
+
 
     getInput = () => {
       //  console.log(this.props.departmentchildren);//获取部门的data（getAll）

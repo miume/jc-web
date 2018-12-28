@@ -80,9 +80,8 @@ class Manufacturer extends Component{
        });
     }
     checkRaw(e){//点击重新选择原材料调用的函数
-    //    const name=this.props.returnRaw();
-    //    console.log(name);
-        this.props.onBlockChange(1,'生产厂家',false);//跳回原材料界面后，就不可以点击那个面板了
+    
+        this.props.onBlockChange(1,'生产厂家',false);//跳回生产厂家界面后，就不可以点击那个面板了
     }
     render(){
         return(
