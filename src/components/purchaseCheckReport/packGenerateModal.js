@@ -34,9 +34,11 @@ class PackGenerateModal extends React.Component {
         this.clickSavaButton = this.clickSavaButton.bind(this);
         this.useSavaFunction = this.useSavaFunction.bind(this);
         this.applyReview = this.applyReview.bind(this);
+        this.inputSave = this.inputSave.bind(this);
 
     }
     render() {
+        console.log('selectedRowKeys',this.props.selectedRowKeys)
         return(
             <span>
                 <NewButton handleClick={this.handlePack} name='生成' className='fa fa-cube' />
@@ -71,6 +73,7 @@ class PackGenerateModal extends React.Component {
                 >
                 <div style={{height:500}}>
                         <PurchaseModal
+                            inputSave={this.inputSave}
                             modifyDetailData={this.modifyDetailData}
                             clickState ={0}
                             data={this.state.checkData}
@@ -80,11 +83,20 @@ class PackGenerateModal extends React.Component {
             </span>
         )
     }
-
+    /**input框内容变化，实现自动保存数据 */
+    inputSave(e){
+        const value = e.target.value;
+        const name = e.target.name;
+        var checkData = this.state.checkData;
+        checkData.topData[name] = value;
+        this.setState({
+            checkData:checkData
+        })
+    }
     /**修改detailData的数据 */
     modifyDetailData = (data) => {
         this.setState({
-            detailData:data
+            checkData:data
         })
     };
     handlePack = () => {
@@ -198,7 +210,7 @@ class PackGenerateModal extends React.Component {
     handleOkApply(){
         this.clickSavaButton(1);
     }
-    /**点击保存送审 */
+    /**点击保存 */
     handleSave(){
         this.clickSavaButton(0);
     }
@@ -266,9 +278,36 @@ class PackGenerateModal extends React.Component {
     };
     /**调用保存函数 */
     useSavaFunction = (savaData,status) => {
+        //  status:1 -送审  0-保存
+        if(status){
+            console.log('savaData',savaData)
+            //  送审
+            axios({
+                url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=-1`,
+                method:'put',
+                headers:{
+                    'Authorization': this.props.url.Authorization
+                },
+                data: savaData,
+                type:'json'
+            }).then((data)=>{
+                console.log('datadata',data)
+                console.log('此时commonBatchNumberDTO不存在，所以报错')
+                const dataId = data.data.data.commonBatchNumberDTO.commonBatchNumber?data.data.data.commonBatchNumberDTO.commonBatchNumber.id:null;
+                // this.applyReview(dataId);
+            }).catch(()=>{
+                this.setState({
+                    visible: false,
+                    subVisible: false,
+                },()=>{
+                    this.props.fetch();
+                    message.info('保存失败，请联系管理员！')
+                });
+            })
+        }
         axios({
             url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=-1`,
-            method:'put',
+            method:'post',
             headers:{
                 'Authorization': this.props.url.Authorization
             },

@@ -23,7 +23,7 @@ class CheckTable extends React.Component {
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
         align:'center',
-        width: '10%',
+        width: '12%',
         render: batchNumber => {
             return batchNumber?batchNumber:'无';
         }
@@ -50,9 +50,9 @@ class CheckTable extends React.Component {
         dataIndex: 'receiveDate',
         key: 'receiveDate',
         align:'center',
-        width: '10%',
+        width: '8%',
         render: receiveDate => {
-            return receiveDate?receiveDate:'无';
+            return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
         }
     },{
         title: '创建人',
@@ -68,16 +68,16 @@ class CheckTable extends React.Component {
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         align:'center',
-        width: '10%',
+        width: '8%',
         render: createTime => {
-            return createTime?createTime:'无';
+            return <abbr style={{cursor:'default'}} title={createTime?createTime:'无'}>{createTime?createTime.substring(0,10):'无'}</abbr>
         }
     },{
         title: '审核状态',
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
         key: 'commonBatchNumberDTO.commonBatchNumber.status',
         align:'center',
-        width: '6%',
+        width: '8%',
         render:status => {
             return this.props.status[status.toString()];
         }
@@ -149,7 +149,7 @@ class CheckTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ x: 1500,y: 600 }}
+                scroll={{ y: 600 }}
             />
         )
     }
