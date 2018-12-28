@@ -11,15 +11,15 @@ class InterTable extends React.Component{
         key: 'index',
         sorter: (a, b) => a.index - b.index,
         align:'center',
-        width: '8%',
+        width: '5%',
     },{
         title: '送检日期',
         dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
         key: 'sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
-        width: '15%',
+        width: '8%',
         render: sampleDeliveringDate => {
-            return sampleDeliveringDate?sampleDeliveringDate:'无';
+            return <abbr style={{cursor:'default'}} title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
         }
     },{
         title: '送检人',
@@ -35,7 +35,7 @@ class InterTable extends React.Component{
         dataIndex: 'deliveryFactoryName',
         key: 'deliveryFactoryName',
         align:'center',
-        width: '8%',
+        width: '10%',
         render: deliveryFactoryName => {
             return deliveryFactoryName?deliveryFactoryName:'无';
         }
@@ -44,7 +44,7 @@ class InterTable extends React.Component{
         dataIndex: 'sampleDeliveringRecord.serialNumberId',
         key: 'sampleDeliveringRecord.serialNumberId',
         align:'center',
-        width: '8%',
+        width: '12%',
         render: serialNumberId => {
             return serialNumberId?serialNumberId:'无';
         }
@@ -53,8 +53,12 @@ class InterTable extends React.Component{
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
-        width: '14%',
+        width: '10%',
         render: testItems => {
+            const length = testItems?testItems.length:0;
+            if(length > 9){
+                return <abbr style={{cursor:'default'}} title={testItems?testItems:'无'}>{testItems?testItems.substring(0,9):'无'}</abbr>
+            }
             return testItems?testItems:'无';
         }
     },{
@@ -62,7 +66,7 @@ class InterTable extends React.Component{
         dataIndex: 'sampleDeliveringRecord.exceptionComment',
         key: 'sampleDeliveringRecord.exceptionComment',
         align:'center',
-        width: '8%',
+        width: '6%',
         render: exceptionComment => {
             return exceptionComment?exceptionComment:'无';
         }
@@ -71,7 +75,7 @@ class InterTable extends React.Component{
         dataIndex: 'commonBatchNumber.isPublished',
         key: 'commonBatchNumber.isPublished',
         align:'center',
-        width: '8%',
+        width: '6%',
         render: isPublished => {
             switch(`${isPublished}`) {
                 case '0': return '未发布';
@@ -93,7 +97,7 @@ class InterTable extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '15%',
+        width: '11%',
         render: (text,record) => {
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';

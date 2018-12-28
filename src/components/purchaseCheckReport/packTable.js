@@ -18,7 +18,7 @@ class PackTable extends React.Component {
         align:'center',
         width: '15%',
         render: sampleDeliveringDate => {
-            return sampleDeliveringDate?sampleDeliveringDate:'无';
+            return <abbr style={{cursor:'default'}} title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
         }
     },{
         title: '送样人',
@@ -53,7 +53,14 @@ class PackTable extends React.Component {
         key: 'testReportRecordDTO.sampleDeliveringRecordDTO.testItemString',
         align:'center',
         width: '10%',
+        // render: testItems => {
+        //     return testItems?testItems:'无';
+        // }
         render: testItems => {
+            const length = testItems?testItems.length:0;
+            if(length > 9){
+                return <abbr style={{cursor:'default'}} title={testItems?testItems:'无'}>{testItems?testItems.substring(0,9):'无'}</abbr>
+            }
             return testItems?testItems:'无';
         }
     },{

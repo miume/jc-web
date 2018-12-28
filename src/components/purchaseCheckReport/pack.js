@@ -47,6 +47,9 @@ class Pack extends React.Component {
         this.rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+            getCheckboxProps: record => ({
+                disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
+            })
         };
         // if(unGenerateDate===true){
         //     this.rowSelection = {

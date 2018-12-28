@@ -43,9 +43,9 @@ class ReleaseTable extends React.Component {
         dataIndex: 'receiveDate',
         key: 'receiveDate',
         align:'center',
-        width: '12%',
+        width: '10%',
         render: receiveDate => {
-            return receiveDate?receiveDate:'无';
+            return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
         }
     },{
         title: '创建人',
@@ -61,9 +61,9 @@ class ReleaseTable extends React.Component {
         dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
         align:'center',
-        width: '12%',
+        width: '10%',
         render: createTime => {
-            return createTime?createTime:'无';
+            return <abbr style={{cursor:'default'}} title={createTime?createTime:'无'}>{createTime?createTime.substring(0,10):'无'}</abbr>
         }
     },{
         title: '发布状态',
