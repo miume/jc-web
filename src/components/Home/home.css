@@ -115,6 +115,9 @@ input::-webkit-input-placeholder{
     font-weight: bold;
     overflow: hidden;
 }
+.drawer-date-div{
+    clip: rect(0px 0px 0px 0px);
+}
 .drawer-date-div .drawer-date{
     font-size:14px;
     color:#0069ff;

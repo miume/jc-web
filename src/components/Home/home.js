@@ -35,7 +35,7 @@ import RedListManage from '../redListManage/redListManage';
 import LibraryManage from '../libraryManage/library'
 
 import RawStandard from '../rawStandard/rawStandard';
-
+import ProductStandard from '../productStandard/productStandard';
 import ProductInspection from '../productInspection/productInspection';
 import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
 import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
@@ -115,8 +115,7 @@ class Home extends Component {
         },{
             path:'/rawStandard',
             component:RawStandard
-        },
-        {
+        },{
             path:'/productInspection',
             component:ProductInspection
         },{
@@ -125,6 +124,9 @@ class Home extends Component {
         },{
             path:'/unqualifiedTrackTable',
             component:UnqualifiedTrack
+        },{
+            path:'/productStandard',
+            component:ProductStandard
         }]
         return data;
     }
