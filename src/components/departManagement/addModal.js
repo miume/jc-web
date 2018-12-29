@@ -48,7 +48,6 @@ const CollectionCreateForm = Form.create()(
 );
 
 class AddModal extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.handleCancel = this.handleCancel.bind(this);
@@ -72,10 +71,10 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${this.url.department.add}`,
+                url : `${this.props.url.department.add}`,
                 method:'post',
                 headers:{
-                    'Authorization': this.url.Authorization
+                    'Authorization': this.props.url.Authorization
                 },
                 data: values,
                 type:'json'
@@ -96,10 +95,13 @@ class AddModal extends React.Component {
     };
 
     render() {
-        this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <span>
-                <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp; 
+                <NewButton
+                    handleClick={this.showModal}
+                    name='新增'
+                    style='button'
+                    className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

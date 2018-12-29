@@ -12,12 +12,9 @@ class RawStandard extends Component{
         super(props);
         this.state={
             flag:1,//决定渲染那个界面
-           
-
             click1:false,//是否可以点击
             click2:false,
             click3:false,
-
             content1:'选择原材料',//最开始是这样，但是一旦选择之后会改成所选择的那个文字
             content2:'选择生产厂家',
             content3:'设置标准',
@@ -65,7 +62,6 @@ class RawStandard extends Component{
         this.setState({
             flag:2,
             content2:this.state.content2,
-            
          });
     }
        render(){
@@ -75,10 +71,9 @@ class RawStandard extends Component{
                   
                    <div style={{padding:'20px'}}>
                      
-                     <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}>{this.state.content1}</div><span className='rawStanstdardBlockQuoTriggleBlue'></span>
-                     <div className={this.state.flag===2||this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.clickToFactory}>{this.state.content2}</div><span className={this.state.flag===2||this.state.flag===3?'rawStanstdardBlockQuoTriggleBlue':'rawStanstdardBlockQuoTriggleGrey'}></span>
-                     <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} >{this.state.content3}</div>
-
+                     <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content1}</div><span className='rawStanstdardBlockQuoTriggleBlue'></span>
+                     <div className={this.state.flag===2||this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} style={{zIndex:'-1'}} onClick={this.clickToFactory}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div><span className={this.state.flag===2||this.state.flag===3?'rawStanstdardBlockQuoTriggleBlue':'rawStanstdardBlockQuoTriggleGrey'}></span>
+                     <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} ><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content3}</div> 
                    <div >
                      <div  className={this.state.flag===1?'show':'hide'}>
                          <RawMaterial onBlockChange={this.onBlockChange1} />

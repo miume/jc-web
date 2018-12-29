@@ -1,6 +1,7 @@
 import React from 'react';
 import './interProduct.css';
 import {Divider} from "antd";
+import AllTester from '../BlockQuote/allTester';
 
 class DetailStateModal extends React.Component {
     render() {
@@ -25,67 +26,20 @@ class DetailStateModal extends React.Component {
                 );
             case 2: //已通过
                 return(
-                    <div className="interStateModal">
-                        <table>
-                            <tbody className="interPadding">
-                            {
-                                this.props.data.examineData.map((item,index) => {
-                                    return (
-                                        <div>
-                                            <tr key={`handler${index}`}>
-                                                <td>审核人：</td>
-                                                <td>{item?item.handler:''}</td>
-                                            </tr>
-                                            <tr key={`handleReply${index}`}>
-                                                <td>审核意见：</td>
-                                                <td>{item?item.handleReply:''}</td>
-                                            </tr>
-                                            <tr key={`handleTime${index}`}>
-                                                <td>审核日期：</td>
-                                                <td>{item?item.handleTime:''}</td>
-                                            </tr>
-                                            <Divider
-                                                className="interDrSpanDivider"
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                    <AllTester
+                        hide={1}
+                        dataId={this.props.data.batchNumberId}
+                        examineData={this.props.data.examineData}
+                    />
                 );
+
             case 3: //不通过
                 return(
-                    <div className="interStateModal">
-                        <table>
-                            <tbody className="interPadding">
-                            {
-                                this.props.data.examineData.map((item,index) => {
-                                    return (
-                                        <div>
-                                            <tr key={`handler${index}`}>
-                                                <td>审核人：</td>
-                                                <td>{item?item.handler:''}</td>
-                                            </tr>
-                                            <tr key={`handleReply${index}`}>
-                                                <td>审核意见：</td>
-                                                <td>{item?item.handleReply:''}</td>
-                                            </tr>
-                                            <tr key={`handleTime${index}`}>
-                                                <td>审核日期：</td>
-                                                <td>{item?item.handleTime:''}</td>
-                                            </tr>
-                                            <Divider
-                                                className="interDrSpanDivider"
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                            </tbody>
-                        </table>
-                    </div>
+                    <AllTester
+                        hide={1}
+                        dataId={this.props.data.batchNumberId}
+                        examineData={this.props.data.examineData}
+                    />
                 );
             case 4: //发布
                 return(

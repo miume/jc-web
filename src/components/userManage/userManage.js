@@ -79,12 +79,8 @@ class EditableCell extends React.Component {
                                     len:11
                                 }],
                                 getValueFromEvent: ((event) => {
-                                  
                                     return event.target.value.replace(/\D/g,'')
-                                  
-                                 
                               }),
-                                // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
                                 initialValue:record[dataIndex],
                             })(this.getInput())
                             }
@@ -93,15 +89,9 @@ class EditableCell extends React.Component {
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [{
                                             required: true,
-                                            message: dataIndex==='phone'?'请输入11位正确的手机号':`${title}不能为空`,
+                                            message:`${title}不能为空`,
                                             
                                         }],
-                                        getValueFromEvent: ((event) => {
-                                          if(dataIndex==='phone'){
-                                            return event.target.value.replace(/\D/g,'')
-                                          }
-                                         
-                                      }),
                                         // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
                                         initialValue:record[dataIndex],
 
@@ -119,7 +109,6 @@ class EditableCell extends React.Component {
 
 class User extends React.Component{
   url;
-  Authorization;
   componentDidMount(){
     this.fetch();
     this.getAllDepartment();
@@ -139,22 +128,17 @@ class User extends React.Component{
         departmentchildren:[],
         editingKey:'',
         username:'',
-
         reset:false,
-        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
       this.deleteByIds=this.deleteByIds.bind(this);
       this.cancel = this.cancel.bind(this);
-
       this.isEditing=this.isEditing.bind(this);
-
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.getAllDepartment = this.getAllDepartment.bind(this);//获取所有部门
-
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -168,7 +152,6 @@ class User extends React.Component{
         }
       };
       this.columns=[{//表头
-
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -181,25 +164,22 @@ class User extends React.Component{
         dataIndex:'username',
         key:'username',
         editable:1,//?
-        width: '16%',
+        width: '17%',
         align:'center',
 
-    },
-    {
+    },{
       title:'用户名',
       dataIndex:'name',
       key:'name',
       editable:1,//?
-      width: '16%',
-      align:'center',
-
-  },
-     {
+      width: '17%',
+      align:'center'
+  },{
          title:'所属部门',
          dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
          key:'departmentId',
          editable:1,
-         width: '16%',
+         width: '17%',
          align:'center',
          render:(text,record) => {
           //console.log(text);//text是dataIndex对应的字段值
@@ -207,17 +187,14 @@ class User extends React.Component{
            return `${record.departmentName}`  //渲染此条记录的部门名称
 
           }
-     },
-     {
+     },{
          title:'手机号',
          dataIndex:'phone',
          key:'phone',
          editable:1,
-        width: '16%',
+        width: '16.5%',
          align:'center',
-
-     },
-     {
+     },{
       title: '操作',
       //dataIndex: 'type',
       key:'operation',
@@ -266,8 +243,6 @@ class User extends React.Component{
        });
     }
     fetch=(params = {})=>{
-     // console.log('params:', params);
-
       axios({
         url: `${this.url.userManage.getAllByPage}`,
         method:'get',
@@ -277,7 +252,6 @@ class User extends React.Component{
         params:{
           ...params,
         },
-        //type:'json',
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res.total?res.total:0;
@@ -312,7 +286,7 @@ class User extends React.Component{
           url:`${this.url.userManage.add}`,
           method:'post',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
           data:this.formRef.getItemsValue(),
           type:'json'
@@ -353,10 +327,7 @@ class User extends React.Component{
             this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
           }
         })
-
         .catch(()=>{
-          //console.log(error);
-          //console.log(error.data);
          message.info('删除失败，请联系管理员！');
         });
       }
@@ -439,10 +410,8 @@ class User extends React.Component{
             /**将id变成字符串,给data加id字段*/
             // console.log(row);
             // console.log(data);
-            // data['id']=id.toString();
-            /**根据部门名称删选得到部门id */
-
-            // console.log(data);
+            data['id']=id.toString();
+           // console.log(data);
             axios({
               url:`${this.url.userManage.update}`,
               method:'post',
@@ -455,10 +424,11 @@ class User extends React.Component{
             .then((data)=>{
               message.info(data.data.message);
               //this.fetch();
-              this.setState({ dataSource: newData});
+              if(data.data.code===0){//只有返回代码是0，即操作成功的时候，才会将数据改变
+                this.setState({ dataSource: newData});
+              }
             })
             .catch(()=>{
-
               message.info('编辑失败，请联系管理员！');
             });
             this.setState({editingKey: '' });
@@ -466,16 +436,11 @@ class User extends React.Component{
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
           }
-        });
-        
+        });  
       }
-
       cancel = () => {
         this.setState({ editingKey: '' });
       };
-
-
-
       /**---------------------- */
         //获取查询时用户名称的实时变化
         searchContentChange(e){

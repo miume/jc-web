@@ -91,7 +91,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'createPersonName',
             key:'createPersonName',
             align:'center',
-            width:'8%'
+            width:'7%'
         },{
             title:'申请日期',
             dataIndex:'commonBatchNumber.createTime',
@@ -103,7 +103,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.status',
             key:'commonBatchNumber.status',
             align:'center',
-            width:'8%',
+            width:'9%',
         //      render:(text,record)=>{
                  
         //          let status=record.commonBatchNumber.status;
@@ -121,9 +121,7 @@ class RawMaterialRedList extends Component{
             //console.log(status);
                  return this.status[status.toString()];
         }
-
-        },
-        {
+        },{
             title:'操作',
             dataIndex:'id',
             key:'id',
@@ -164,10 +162,7 @@ class RawMaterialRedList extends Component{
         this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
         this.fetch = this.fetch.bind(this);
-        
     }
-   
-  
     judgeStatus=(record_status)=>{
          //console.log(record_status);
          switch(`${record_status}`){
@@ -179,7 +174,6 @@ class RawMaterialRedList extends Component{
             default:return false
         }
     }
-
     handleTableChange(pagination){
         //console.log(pagination);
           this.fetch({
@@ -198,9 +192,7 @@ class RawMaterialRedList extends Component{
             },
             params:{
                 ...params,
-               
             },
-
         })
         .then((data)=>{
             // console.log(data);
@@ -215,17 +207,12 @@ class RawMaterialRedList extends Component{
             dataSource:res.list
             });
           }
-             
         });
     }
     onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
-        
         this.setState({selectedRowKeys:selectedRowKeys});
-     }
-    
+    }
     handleDelete(id){//处理单条记录删除
-        //   const dataSource=this.state.dataSource;
-        //   this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
            url:`${this.url.redList.redList1}/${id}`,
            method:'Delete',
@@ -236,7 +223,6 @@ class RawMaterialRedList extends Component{
            type:'json'
         })
         .then((data)=>{
-            
                message.info(data.data.message);
                this.fetch();
         })
@@ -257,21 +243,18 @@ class RawMaterialRedList extends Component{
              type:'json'
         })
         .then((data)=>{
-          
            message.info(data.data.message);
            this.fetch();
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
-        
       }
      cancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
        this.setState({
            selectedRowKeys:[]
        });
      }
-
        //监控搜索框的输入变化
     searchContentChange(e){
         //console.log(e.target.value);
@@ -293,10 +276,8 @@ class RawMaterialRedList extends Component{
           params:{
             serialNumber:serialNumber
           }
-        
       })
       .then((data)=>{
-         
               const res=data.data.data;
             // console.log(res.total);
               this.pagination.total=res?res.total:0;
@@ -307,16 +288,12 @@ class RawMaterialRedList extends Component{
               this.setState({
                 dataSource:res.list//list取到的是所有符合要求的数据
               });
-              }
-             
-             
-             
+              }    
       })
       .catch(()=>{
              message.info('搜索失败，请联系管理员！');
       });
     }
-  
     getAllProcess(){
         axios({
             url:`${this.url.process.process}/validTasks`,
@@ -324,7 +301,6 @@ class RawMaterialRedList extends Component{
             headers:{
                 'Authorizaion':this.url.Authorizaion
             },
-
         })
         .then((data)=>{
             //console.log(data);
@@ -335,24 +311,24 @@ class RawMaterialRedList extends Component{
               });
         });
  }
- getAllSerialNumber(){//获取所有编号
-      axios({
-            url:`${this.url.serialNumber.serialNumber}`,
-            method:'get',
-            headers:{
-                'Authorizaion':this.url.Authorizaion
-            },
-            params:{
-                materialClass:1
-            }
+    getAllSerialNumber(){//获取所有编号
+        axios({
+                url:`${this.url.serialNumber.serialNumber}`,
+                method:'get',
+                headers:{
+                    'Authorizaion':this.url.Authorizaion
+                },
+                params:{
+                    materialClass:1
+                }
 
-      }).then((data)=>{
-         //console.log(data);
-         const res=data.data.data;
-         this.setState({
-             serialNumberChildren:res
-         });
-      });
+        }).then((data)=>{
+            //console.log(data);
+            const res=data.data.data;
+            this.setState({
+                serialNumberChildren:res
+            });
+        });
  }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
@@ -365,7 +341,6 @@ class RawMaterialRedList extends Component{
             disabled: record.commonBatchNumber.status === 0|| record.commonBatchNumber.status === 1|| record.commonBatchNumber.status === 2, // Column configuration not to be checked
           }),
     };
-      
         return(
             <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
@@ -387,9 +362,8 @@ class RawMaterialRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400}}
+                        scroll={{y:300}}
                     >
-                
                 </Table>
             </div>
         );

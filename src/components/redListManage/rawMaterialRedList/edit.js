@@ -15,35 +15,27 @@ class Edit extends Component{
             checkSelectData:-1,//最开始下拉框是没选择数据的
             popVisible:false,//送检的气泡弹出
             checkSwitch:-1,//是否紧急那个开关最开始是关闭的
-            
         }
-        
         this.showModal=this.showModal.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
-        this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
-        
+        this.selectChange=this.selectChange.bind(this);//监听下拉框变化，  
     }
     showModal = () => {
-        
         this.setState({ visible: true });
       }
        notShowModal=()=>{
         this.setState({ visible: false });
        }
       handleCancel () {
-      
         this.setState({ visible: false });
-        
       }
       handleSave () {//编辑一条记录
        const  details=this.formRef.getItemsValue();
        // console.log(details);
        details['id']=this.props.record.repoRedTable.id;
-        
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const isUrgent=this.state.checkSwitch;
         const commonBatchNumber={

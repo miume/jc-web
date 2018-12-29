@@ -39,23 +39,17 @@ const CollectionCreateForm = Form.create()(//弹出层
   );
 
 class TestItemAddModal extends React.Component{
-  url;
- 
-  Authorization;
     state = {
         visible: false,
       };
-    
       showModal = () => {
         this.setState({ visible: true });
       }
-     
       handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
         form.resetFields();
       }
-    
       handleCreate = () => {//新增一条记录
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {//校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
@@ -68,10 +62,10 @@ class TestItemAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.url.testItems.testItems}`,
+            url:`${this.props.url.testItems.testItems}`,
             method:'post',
             headers:{
-              'Authorization':this.url.Authorization
+              'Authorization':this.props.url.Authorization
             },
             data:values,
             type:'json'
@@ -89,16 +83,11 @@ class TestItemAddModal extends React.Component{
           this.setState({ visible: false });
         });
       }
-    
       saveFormRef = (formRef) => {
         this.formRef = formRef;
       }
     
     render(){
-          //这是个令牌，每次调接口将其放在header里面
-      
-      //通过这个获取接口地址
-      this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <span>
               <NewButton handleClick={this.showModal} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
