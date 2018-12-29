@@ -86,7 +86,6 @@ class EditableCell extends React.Component {
                               }),
                                 // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
                                 initialValue:record[dataIndex],
-
                             })(this.getInput())
                             }
                         </FormItem>:
@@ -417,8 +416,6 @@ class User extends React.Component{
       save(form, id) {
       //row代表修改后的数据,item代表原始数据
         form.validateFields((error, row) => {
-          console.log(row);
-          console.log(error);
           if (error) {
             return;
           }
@@ -437,15 +434,13 @@ class User extends React.Component{
               item1, ..., itemX	可选。向数组添加的新项目。
               */
             const data=row;
-            /**将id变成字符串,给data加id字段
-             *
-             */
-            console.log(row);
-            console.log(data);
-            data['id']=id.toString();
+            /**将id变成字符串,给data加id字段*/
+            // console.log(row);
+            // console.log(data);
+            // data['id']=id.toString();
             /**根据部门名称删选得到部门id */
 
-            console.log(data);
+            // console.log(data);
             axios({
               url:`${this.url.userManage.update}`,
               method:'post',
@@ -456,15 +451,15 @@ class User extends React.Component{
               type:'json'
             })
             .then((data)=>{
-
               message.info(data.data.message);
-              this.fetch();
+              //this.fetch();
+              this.setState({ dataSource: newData});
             })
             .catch(()=>{
 
               message.info('编辑失败，请联系管理员！');
             });
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({editingKey: '' });
           } else {
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
