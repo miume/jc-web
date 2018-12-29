@@ -66,8 +66,6 @@ class EditableCell extends React.Component {
 
 class ProductLine extends React.Component{
   url;
-  
-  Authorization;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/productLine').style.color='#0079FE';
@@ -84,10 +82,7 @@ class ProductLine extends React.Component{
         pagination:[],
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
-        //visible:false,
         editingKey:'',
-        //reset:false,
-        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -95,12 +90,10 @@ class ProductLine extends React.Component{
       this.cancel = this.cancel.bind(this);
       //this.showIds = this.showIds.bind(this);
       this.isEditing=this.isEditing.bind(this);
-
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
-      
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -114,7 +107,6 @@ class ProductLine extends React.Component{
         }
       };
       this.columns=[{//表头
-
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -171,13 +163,11 @@ class ProductLine extends React.Component{
       returnBaseInfo(){
         this.props.history.push({pathname:'/baseInfo'});
        }
-
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
-         page:pagination.current,//当前页
-        
+         page:pagination.current,//当前页   
        });
     }
     fetch=(params = {})=>{
@@ -296,6 +286,8 @@ class ProductLine extends React.Component{
           const index = newData.findIndex(item => id === item.id);
           if (index > -1) {
             const item = newData[index];
+           // console.log(item);//item中id是整型，是未编辑的原始数据
+            //console.log(row);//row中id是字符串，且row是编辑后的数据
             newData.splice(index, 1, {
               ...item,
               ...row,
@@ -323,13 +315,15 @@ class ProductLine extends React.Component{
             .then((data)=>{
               // console.log(data);
               message.info(data.data.message);
-              this.fetch();
+              //this.fetch();
+              if(data.data.code===0){
+                    this.setState({dataSource: newData,});
+              }
             })
             .catch(()=>{
-             // console.log(error.data);
               message.info('编辑失败，请联系管理员！');
             });
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({dataSource: newData, editingKey: '' });
           } else {
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
@@ -340,9 +334,6 @@ class ProductLine extends React.Component{
       cancel = () => {
         this.setState({ editingKey: '' });
       };
-  
-    
-
       /**---------------------- */
         //获取查询时用户名称的实时变化
         searchContentChange(e){
@@ -379,7 +370,6 @@ class ProductLine extends React.Component{
             }
            })
            .catch(()=>{
-
             message.info('查询失败，请联系管理员！')
            });
       }
@@ -387,8 +377,6 @@ class ProductLine extends React.Component{
    render(){
      /** 通过localStorage可查到外网*/
         this.url=JSON.parse(localStorage.getItem('url'));
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization=localStorage.getItem('Authorization');
         const  current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
@@ -427,7 +415,7 @@ class ProductLine extends React.Component{
            <div>
                <BlockQuote name='产品线' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
-               <ProductLineAddModal fetch={this.fetch}/>
+               <ProductLineAddModal fetch={this.fetch} url={this.url}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入产品线' 
@@ -443,7 +431,7 @@ class ProductLine extends React.Component{
                     components={components} 
                     pagination={this.pagination} 
                     onChange={this.handleTableChange} 
-                    size="small" bordered  scroll={{ y: 400 }}/>
+                    size="small" bordered  scroll={{ y: 300 }}/>
                 </div>
            </div>
        );

@@ -289,7 +289,8 @@ class Home extends Component {
             /**检测项目 */
             testItems:{
                 testItems:`${server}/jc/common/testItem`,
-                getAllByPage:`${server}/jc/common/testItem/pages`
+                getAllByPage:`${server}/jc/common/testItem/pages`,
+                search:`${server}/jc/common/testItem/pagesNameLike`
             },
             /**产品工序 */
             productionProcess:{
@@ -350,6 +351,11 @@ class Home extends Component {
               /**不合格审评表 */
               unqualifiedExamineTable:{
 
+              },
+              /**原材料标准*/
+              rawStandard:{
+                 getRaw:`${server}/jc/common/techRawStandard/raw`,
+                 getFactory:`${server}/jc/common/techRawStandard/manufacturers`
               }
         }
         localStorage.setItem('status',JSON.stringify(status));

@@ -4,8 +4,8 @@ class DataPart extends Component{
   render(){
       
       return(
-          <div className='rawStanstdardBlock' onClick={this.props.onBlockChange}>
-                 <p id={`${this.props.id}-${this.props.name}`} >{this.props.name}</p>
+          <div className={this.props.flag?'rawStanstdardBlockAdd':'rawStanstdardBlock'} onClick={this.props.onBlockChange}>
+                 <p id={`${this.props.id}-${this.props.name}`} ><i className={this.props.flag?'fa fa-plus':'hide'}></i> {this.props.name}</p>
           </div>
       );
   }

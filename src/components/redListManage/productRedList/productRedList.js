@@ -10,7 +10,6 @@ import axios from 'axios';
 
 class ProductRedList extends Component{
     url;
-    Authorization;
     componentDidMount(){
         this.fetch();
         this.getAllSerialNumber();
@@ -29,7 +28,6 @@ class ProductRedList extends Component{
             searchContent:'',
             processChildren:[],//送审流程（对应那个下拉框）
             serialNumberChildren:[],//编号下拉框
-            Authorization:this.Authorization,
         };
         this.pagination={
             total:this.state.dataSource.length,
@@ -67,7 +65,6 @@ class ProductRedList extends Component{
                      case '1':return '原材料';
                      case '3':return '产品';
                      default:return '';
-
                 }
             },
             align:'center',
@@ -89,7 +86,7 @@ class ProductRedList extends Component{
             dataIndex:'createPersonName',
             key:'createPersonName',
             align:'center',
-            width:'8%'
+            width:'7%'
         },{
             title:'申请日期',
             dataIndex:'commonBatchNumber.createTime',
@@ -101,7 +98,7 @@ class ProductRedList extends Component{
             dataIndex:'commonBatchNumber.status',
             key:'commonBatchNumber.status',
             align:'center',
-            width:'8%',
+            width:'9%',
         //      render:(text,record)=>{
         //          let status=record.commonBatchNumber.status;
         //           switch(`${status}`){
@@ -117,9 +114,8 @@ class ProductRedList extends Component{
         //   }
         render:status=>{
             return this.status[status.toString()];
-        }
-        },
-        {
+         }
+        },{
             title:'操作',
             dataIndex:'repoRedTable.id',
             key:'repoRedTable.id',
@@ -146,7 +142,6 @@ class ProductRedList extends Component{
                      </span>
                      <Divider type='vertical'/>
                     <Note record={record}/>
-                    
                    </span>
                );
             }
@@ -162,8 +157,6 @@ class ProductRedList extends Component{
         this.cancel=this.cancel.bind(this);
         this.fetch = this.fetch.bind(this);
     }
-   
-  
     judgeStatus=(record_status)=>{
          //console.log(record_status);
          switch(`${record_status}`){
@@ -175,12 +168,10 @@ class ProductRedList extends Component{
             default:return false
         }
     }
-
     handleTableChange(pagination){
           this.fetch({
               size:pagination.pageSize,//当前页显示的记录数
               page:pagination.current,//当前是第几页
-            
           })
     }
     fetch=(params={})=>{
@@ -193,9 +184,7 @@ class ProductRedList extends Component{
             },
             params:{
                 ...params,
-               
             },
-
         })
         .then((data)=>{
             // console.log(data);
@@ -214,13 +203,9 @@ class ProductRedList extends Component{
         });
     }
     onSelectChange(selectedRowKeys){
-    
         this.setState({selectedRowKeys:selectedRowKeys});
      }
-    
     handleDelete(id){//处理单条记录删除
-        //   const dataSource=this.state.dataSource;
-        //   this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
         axios({
            url:`${this.url.redList.redList1}/${id}`,
            method:'Delete',
@@ -231,7 +216,6 @@ class ProductRedList extends Component{
            type:'json'
         })
         .then((data)=>{
-            
                message.info(data.data.message);
                this.fetch();
         })
@@ -268,7 +252,6 @@ class ProductRedList extends Component{
            selectedRowKeys:[]
        });
      }
-
        //监控搜索框的输入变化
     searchContentChange(e){
         //console.log(e.target.value);
@@ -290,12 +273,9 @@ class ProductRedList extends Component{
           params:{
               serialNumber:serialNumber
           }
-        
       })
       .then((data)=>{
-         // console.log(data);
               const res=data.data.data;
-             // console.log(res.total);
               if(res&&res.list){
                 this.pagination.total=res.total;
                 for(let i=1;i<=res.list.length;i++){
@@ -310,7 +290,6 @@ class ProductRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-  
     getAllProcess(){
         axios({
             url:`${this.url.process.process}/validTasks`,
@@ -318,38 +297,33 @@ class ProductRedList extends Component{
             headers:{
                 'Authorizaion':this.url.Authorizaion
             },
-
         })
         .then((data)=>{
-            //console.log(data);
              const res=data.data.data;
-             //  console.log(res);
               this.setState({
                   processChildren:res
               });
         });
  }
- getAllSerialNumber(){//获取所有编号
-      axios({
-            url:`${this.url.serialNumber.serialNumber}`,
-            method:'get',
-            headers:{
-                'Authorizaion':this.url.Authorizaion
-            },
-            params:{
-                materialClass:3
-            }
+    getAllSerialNumber(){//获取所有编号
+        axios({
+                url:`${this.url.serialNumber.serialNumber}`,
+                method:'get',
+                headers:{
+                    'Authorizaion':this.url.Authorizaion
+                },
+                params:{
+                    materialClass:3
+                }
 
-      }).then((data)=>{
-         //console.log(data);
-         const res=data.data.data;
-         this.setState({
-             serialNumberChildren:res
-         });
-      });
- }
+        }).then((data)=>{
+            const res=data.data.data;
+            this.setState({
+                serialNumberChildren:res
+            });
+        });
+    }
     render(){
-        
       this.url=JSON.parse(localStorage.getItem('url'));
       this.status=JSON.parse(localStorage.getItem('status'));
         const {selectedRowKeys}=this.state;

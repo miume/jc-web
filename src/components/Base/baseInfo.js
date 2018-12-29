@@ -44,15 +44,10 @@ class BaseInfo extends React.Component{
             clickButton:''
         }
         this.click=this.click.bind(this);
-        // this.nextStep=this.nextStep.bind(this);
-        // this.lastStep=this.lastStep.bind(this);
     }
     click(e){  
-       //console.log(e.target);
-  
        const path=e.target.id;
-     
-    this.props.history.push({pathname:path})
+       this.props.history.push({pathname:path})
     }
     // nextStep(){
         

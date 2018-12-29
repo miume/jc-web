@@ -22,11 +22,8 @@ const EditableRow = ({ form, index, ...props }) => (
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-
-
 class EditableCell extends React.Component {
     getInput = () => {
-    
         return <Input />;
     };
     render() {
@@ -70,8 +67,7 @@ class EditableCell extends React.Component {
 }
 
 class TestItem extends React.Component{
-  server;
-  Authorization;
+  url;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/testItem').style.color='#0079FE';
@@ -85,13 +81,10 @@ class TestItem extends React.Component{
       super(props);
       this.state={
         dataSource : [],
-        
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
         visible:false,
         editingKey:'',
-        reset:false,
-        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -99,12 +92,10 @@ class TestItem extends React.Component{
       this.cancel = this.cancel.bind(this);
       this.showIds = this.showIds.bind(this);
       this.isEditing=this.isEditing.bind(this);
-
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
-      
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -118,12 +109,10 @@ class TestItem extends React.Component{
         }
       };
       this.columns=[{//表头
-
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
-       //sorter:true,//需要服务端排序
-       sorter:(a, b) => a.id-b.id,
+        sorter:(a, b) => a.id-b.id,
         width: '26%',
         align:'center',
      },{
@@ -140,8 +129,6 @@ class TestItem extends React.Component{
       width: '33%',
       align:'center',
       render : (text, record) =>  {
-        //console.log(text);
-        //console.log(record);
         const editable = this.isEditing(record);
         return (
             <span>
@@ -172,7 +159,6 @@ class TestItem extends React.Component{
         }
      },];
     }
-
       /**返回基础数据页面 */
       returnBaseInfo(){
         this.props.history.push({pathname:'/baseInfo'});
@@ -187,8 +173,6 @@ class TestItem extends React.Component{
        });
     }
     fetch=(params = {})=>{
-      //console.log('params:', params);
-      
       axios({
         url: `${this.url.testItems.getAllByPage}`,
         method:'get',
@@ -199,12 +183,9 @@ class TestItem extends React.Component{
           ...params,
         },
       }).then((data)=>{
-        //console.log(data);
         const res=data.data.data;
-        //console.log(res.total);
         this.pagination.total=res?res.total:0;
         if(res&&res.list){
-          
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
          }
@@ -214,9 +195,6 @@ class TestItem extends React.Component{
         }
       });
     }
-
-
-
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
@@ -276,23 +254,18 @@ class TestItem extends React.Component{
           });
         })//处理成功
         .catch(()=>{
-         // console.log(error);
           message.info('删除失败，请联系管理员！')
         });//处理异常
-       
      }
     cancel(){
       this.setState({
         selectedRowKeys:[]
       });
     }
-   
-    //编辑
     //判断单元格是否可编辑
     isEditing (record)  {
         return record.id === this.state.editingKey;
       };
-    
       edit(id) {
         this.setState({ editingKey: id });
       }
@@ -320,7 +293,6 @@ class TestItem extends React.Component{
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();           
-            //console.log(data);
             axios({
               url:`${this.url.testItems.testItems}`,
               method:'put',
@@ -331,28 +303,27 @@ class TestItem extends React.Component{
               type:'json'
             })
             .then((data)=>{
-              // console.log(data);
               message.info(data.data.message);
-              this.fetch();
+              //this.fetch();
+              if(data.data.code===0){//操作成功才会改变数据
+                this.setState({
+                  dataSource: newData,
+                });
+              }
             })
             .catch(()=>{
-             // console.log(error.data);
               message.info('编辑失败，请联系管理员！');
             });
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({  editingKey: '' });
           } else {
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
           }
         });
       }
-    
       cancel = () => {
         this.setState({ editingKey: '' });
       };
-  
-    
-
       /**---------------------- */
         //获取查询时用户名称的实时变化
      searchContentChange(e){
@@ -380,7 +351,6 @@ class TestItem extends React.Component{
              const res=data.data.data;
              this.pagination.totlal=res.total?res.total:0;
              if(res&&res.list){
-             
               for(let i=1;i<=res.list.length;i++){
                   res.list[i-1]['index']=res.prePage*10+i;
              }
@@ -390,7 +360,6 @@ class TestItem extends React.Component{
             }
            })
            .catch(()=>{
-
             message.info('搜索失败，请联系管理员！')
            });
       }
@@ -408,14 +377,12 @@ class TestItem extends React.Component{
               // console.log(selected, selectedRows, changeRows);
             },
         };
-       
         const components={
             body:{
                 row:EditableFormRow,
                 cell:EditableCell,
             },
         };
-       
          const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
@@ -428,7 +395,6 @@ class TestItem extends React.Component{
                 dataIndex: col.dataIndex,
                 title: col.title,
                 editing: this.isEditing(record),
-                
               }),
             };
           });
@@ -437,7 +403,7 @@ class TestItem extends React.Component{
                <BlockQuote name='检测项目' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
-               <TestItemAddModal fetch={this.fetch}/>
+               <TestItemAddModal fetch={this.fetch} url={this.url}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入检测项目' 
