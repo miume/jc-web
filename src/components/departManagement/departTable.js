@@ -58,7 +58,6 @@ class EditableCell extends React.Component {
 }
 
 class DepartTable extends React.Component {
-    url;
     constructor(props){
         super(props);
         this.state = {
@@ -72,8 +71,8 @@ class DepartTable extends React.Component {
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
-        sorter: (a, b) => a.id - b.id,
+        key: 'index',
+        sorter: (a, b) => a.index - b.index,
         align:'center',
         width: '20%',
     },{
@@ -136,7 +135,6 @@ class DepartTable extends React.Component {
         }
     }];
     render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
         //  获取record的记录
         const columns = this.columns.map((col) => {
             if (!col.editable) {
@@ -207,20 +205,19 @@ class DepartTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString();
                 axios({
-                    url:`${this.url.department.update}`,
+                    url:`${this.props.url.department.update}`,
                     method:'post',
                     headers:{
-                        'Authorization':this.url.Authorization
+                        'Authorization':this.props.url.Authorization
                     },
                     data:data,
                     type:'json'
                 }).then((data)=>{
+                    this.props.modifyDataSource(newData);
                     message.info(data.data.message);
-                    this.props.fetch();
                 }).catch(()=>{
                     message.info('保存失败，请联系管理员！');
                 });
-                this.props.modifyDataSource(newData);
                 this.setState({ editingKey: '' });
             } else {
                 newData.push(row);
