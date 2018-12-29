@@ -37,22 +37,17 @@ const CollectionCreateForm = Form.create()(//弹出层
   );
 
 class  ProductProcessAddModal extends React.Component{
-  url;
-  Authorization;
     state = {
         visible: false,
       };
-    
       showModal = () => {
         this.setState({ visible: true });
       }
-     
       handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
         form.resetFields();
-      }
-    
+      } 
       handleCreate = () => {//新增一条记录
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {//校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
@@ -64,16 +59,15 @@ class  ProductProcessAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.url.productionProcess.productionProcess}`,
+            url:`${this.props.url.productionProcess.productionProcess}`,
             method:'post',
             headers:{
-              'Authorization':this.url.Authorization
+              'Authorization':this.props.url.Authorization
             },
             data:values,
             type:'json'
           })
           .then((data)=>{
-              //console.log(data);
               message.info(data.data.message);
               this.props.fetch();//
           })
@@ -85,16 +79,11 @@ class  ProductProcessAddModal extends React.Component{
           this.setState({ visible: false });
         });
       }
-    
       saveFormRef = (formRef) => {
         this.formRef = formRef;
       }
     
     render(){
-          //这是个令牌，每次调接口将其放在header里面
-      this.Authorization=localStorage.getItem('Authorization');
-      //通过这个获取接口地址
-      this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <span>
               <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;

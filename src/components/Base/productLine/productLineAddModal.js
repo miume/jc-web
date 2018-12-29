@@ -38,16 +38,12 @@ const CollectionCreateForm = Form.create()(//弹出层
   );
 
 class ProductLineAddModal extends React.Component{
-  url;
-  Authorization;
     state = {
         visible: false,
       };
-    
       showModal = () => {
         this.setState({ visible: true });
       }
-     
       handleCancel = () => {
         const form = this.formRef.props.form;
         this.setState({ visible: false });
@@ -65,10 +61,10 @@ class ProductLineAddModal extends React.Component{
             return
          }
           axios({
-            url:`${this.url.productLine.productLine}`,
+            url:`${this.props.url.productLine.productLine}`,
             method:'post',
             headers:{
-              'Authorization':this.url.Authorization
+              'Authorization':this.props.url.Authorization
             },
             data:values,
             type:'json'
@@ -92,10 +88,6 @@ class ProductLineAddModal extends React.Component{
       }
     
     render(){
-          //这是个令牌，每次调接口将其放在header里面
-      this.Authorization=localStorage.getItem('Authorization');
-      //通过这个获取接口地址
-     this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <span>
               <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;

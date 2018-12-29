@@ -64,9 +64,7 @@ class EditableCell extends React.Component {
 }
 
 class DeliveryFactory extends React.Component{
-  
   url;
-  Authorization;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/deliveryFactory').style.color='#0079FE';
@@ -84,7 +82,7 @@ class DeliveryFactory extends React.Component{
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
         editingKey:'',
-        Authorization:this.Authorization,
+        
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -175,7 +173,7 @@ class DeliveryFactory extends React.Component{
         url: `${this.url.deliveryFactory.getAllByPage}`,
         method:'get',
         headers:{
-          'Authorization':this.Authorization
+          'Authorization':this.url.Authorization
         },
         params:{
           ...params,
@@ -203,7 +201,7 @@ class DeliveryFactory extends React.Component{
           url:`${this.url.deliveryFactory.deliveryFactory}/${id}`,
           method:'Delete',
           headers:{
-            'Authorization':this.Authorization
+            'Authorization':this.url.Authorization
           },
          data:id,
          type:'json'
@@ -231,7 +229,7 @@ class DeliveryFactory extends React.Component{
           url:`${this.url.deliveryFactory.deliveryFactory}?ids=${ids}`,
           method:'Delete',
           headers:{
-                'Authorization' :this.Authorization
+                'Authorization' :this.url.Authorization
           },
           data:ids,//前端要传的参数放在data里面，
           type:'json'
@@ -294,13 +292,13 @@ class DeliveryFactory extends React.Component{
               */
             const data=row;
             /**将id变成字符串 */
-            data['id']=id.toString();           
+           data['id']=id.toString();           
             //console.log(data);
             axios({
               url:`${this.url.deliveryFactory.deliveryFactory}`,
               method:'put',
               headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
               },
               data:data,
               type:'json'
@@ -308,13 +306,14 @@ class DeliveryFactory extends React.Component{
             .then((data)=>{
               // console.log(data);
               message.info(data.data.message);
-              this.fetch();
+             // this.fetch();
+             this.setState({dataSource:newData});
             })
             .catch(()=>{
              // console.log(error.data);
               message.info('编辑失败，请联系管理员！');
             });
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({editingKey: '' });
           } else {
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
@@ -342,7 +341,7 @@ class DeliveryFactory extends React.Component{
              url:`${this.url.deliveryFactory.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
              headers:{
-               'Authorization':this.Authorization
+               'Authorization':this.url.Authorization
              },
              params:{
                size:this.pagination.pageSize,
@@ -371,7 +370,7 @@ class DeliveryFactory extends React.Component{
   
    render(){
      /**这是个令牌，每次调用接口都将其放在header里 */
-     this.Authorization = localStorage.getItem('Authorization');
+     //this.Authorization = localStorage.getItem('Authorization');
      /**这是服务器网址及端口 */
      
      this.url=JSON.parse(localStorage.getItem('url'));
@@ -414,7 +413,7 @@ class DeliveryFactory extends React.Component{
            <div>
                <BlockQuote name='送样工厂' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
-               <DeliveryFactoryAddModal fetch={this.fetch}/>
+               <DeliveryFactoryAddModal fetch={this.fetch} url={this.url}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入送样工厂' 

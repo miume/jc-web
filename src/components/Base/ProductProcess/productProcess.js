@@ -66,7 +66,6 @@ class EditableCell extends React.Component {
 
 class ProductProcess extends React.Component{
   url;
-Authorization;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/productProcess').style.color='#0079FE';
@@ -86,7 +85,6 @@ Authorization;
         visible:false,
         editingKey:'',
         reset:false,
-        Authorization:this.Authorization,
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -94,12 +92,10 @@ Authorization;
       this.cancel = this.cancel.bind(this);
       this.showIds = this.showIds.bind(this);
       this.isEditing=this.isEditing.bind(this);
-
       this.handleTableChange=this.handleTableChange.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
-      
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -172,21 +168,16 @@ Authorization;
      returnBaseInfo(){
       this.props.history.push({pathname:'/baseInfo'});
      }
-
-
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
-       
        });
     }
     fetch=(params = {})=>{
-      //console.log('params:', params);
-      
       axios({
-        url: `${this.url. productionProcess.getAllByPage}`,
+        url: `${this.url.productionProcess.getAllByPage}`,
         method:'get',
         headers:{
           'Authorization':this.url.Authorization
@@ -199,7 +190,6 @@ Authorization;
         const res=data.data.data;
         this.pagination.total=res.total?res.total:0;
         if(res&&res.list){
-          
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
          }
@@ -209,14 +199,12 @@ Authorization;
         }
       });
     }
-
-
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
       //console.log(id);
         //const dataSource = this.state.dataSource;
         axios({
-          url:`${this.url. productionProcess. productionProcess}/${id}`,
+          url:`${this.url.productionProcess.productionProcess}/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -229,7 +217,6 @@ Authorization;
           message.info(data.data.message);
           this.fetch();
         })
-        
         .catch(()=>{
          message.info('删除失败，请联系管理员！');
         });
@@ -280,8 +267,7 @@ Authorization;
         selectedRowKeys:[]
       });
     }
-   
-    //编辑
+
     //判断单元格是否可编辑
     isEditing (record)  {
         return record.id === this.state.editingKey;
@@ -304,21 +290,13 @@ Authorization;
             newData.splice(index, 1, {
               ...item,
               ...row,
-            });//splice() 方法向/从数组中添加/删除项目，然后返回被删除的项目。该方法会改变原始数组。
-              /**
-              * arrayObject.splice(index,howmany,item1,.....,itemX)
-              * index	必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
-               howmany	必需。要删除的项目数量。如果设置为 0，则不会删除项目。
-              item1, ..., itemX	可选。向数组添加的新项目。
-              */
-              //console.log(row);//修改后的数据（name）
-              //console.log(item);//修改前得数据
+            });
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();           
             //console.log(data);
             axios({
-              url:`${this.url. productionProcess. productionProcess}`,
+              url:`${this.url.productionProcess.productionProcess}`,
               method:'put',
               headers:{
                 'Authorization':this.url.Authorization
@@ -329,26 +307,24 @@ Authorization;
             .then((data)=>{
               // console.log(data);
               message.info(data.data.message);
-              this.fetch();
+              //this.fetch();
+              if(data.data.code===0){//仅当返回成功时，才改变数据
+                  this.setState({dataSource: newData,});
+              }
             })
             .catch(()=>{
-             // console.log(error.data);
               message.info('编辑失败，请联系管理员！');
             });
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({  editingKey: '' });
           } else {
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
           }
         });
       }
-    
       cancel = () => {
         this.setState({ editingKey: '' });
       };
-  
-    
-
       /**---------------------- */
         //获取查询时用户名称的实时变化
         searchContentChange(e){
@@ -376,7 +352,6 @@ Authorization;
              const res=data.data.data;
              this.pagination.totlal=res.total?res.total:0;
              if(res&&res.list){
-             
               for(let i=1;i<=res.list.length;i++){
                   res.list[i-1]['index']=res.prePage*10+i;
              }
@@ -386,7 +361,6 @@ Authorization;
             }
            })
            .catch(()=>{
-
             message.info('搜索失败，请联系管理员！')
            });
       }
@@ -394,8 +368,6 @@ Authorization;
    render(){
      //通过localStorage可查到
         this.url=JSON.parse(localStorage.getItem('url'));
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization=localStorage.getItem('Authorization');
         const current=JSON.parse(localStorage.getItem('current'));
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
@@ -406,14 +378,12 @@ Authorization;
               // console.log(selected, selectedRows, changeRows);
             },
         };
-       
         const components={
             body:{
                 row:EditableFormRow,
                 cell:EditableCell,
             },
         };
-       
          const table_column =this.columns.map((col) => {
             if (!col.editable) {
               return col;
@@ -425,8 +395,7 @@ Authorization;
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
-                editing: this.isEditing(record),
-                
+                editing: this.isEditing(record),               
               }),
             };
           });
@@ -435,7 +404,7 @@ Authorization;
                <BlockQuote name='产品工序' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
-               <ProductProcessAddModal fetch={this.fetch}/>
+               <ProductProcessAddModal fetch={this.fetch} url={this.url}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入产品工序' 
