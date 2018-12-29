@@ -103,9 +103,10 @@ class RawMaterial extends Component{
                        {
                            data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
+                        
                        }
-                    
                    </div>
+                   <div className='rawStanstdardParent'>新增</div>
               </div>
           );
       }
