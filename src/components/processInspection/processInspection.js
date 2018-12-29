@@ -49,7 +49,8 @@ class ProcessInspection extends React.Component{
             selectedRowKeys : [],     //存取所选中checkbox的ids
             searchContent:'',
             allProductionProcess:[],
-            detailData:[]
+            detailData:[],
+            pageChangeFlag:0,        //0表示getAllPage分页查询，
         }
         this.fetch = this.fetch.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -61,11 +62,9 @@ class ProcessInspection extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
         this.pagination = {
-          total: this.state.dataSource.length,
           showTotal(total) {
             return `共${total}条记录`
           } ,
-          showSizeChanger: true,
         }
         this.columns = [{
           title: '序号',
@@ -127,16 +126,6 @@ class ProcessInspection extends React.Component{
           key:'commonBatchNumber.status',
           render: state => {
                return this.status[state.toString()];
-            // switch(`${state}`) {
-            //   case '-1': return '已保存未提交';
-            //   case '0': return '已提交未审核';
-            //   case '1': return '审核中';
-            //   case '2': return '审核通过';
-            //   case '3': return '审核未通过';
-            //   case '4': return '合格';
-            //   case '5': return '不合格';
-            //   default:return '';
-            //}
           },
           width: '15%',
           align:'center',
@@ -166,14 +155,24 @@ class ProcessInspection extends React.Component{
     }
     /**table变化时 */
     handleTableChange(pagination){
-        this.fetch({
-            size:pagination.pageSize,
-            page:pagination.current,
-            personName:this.state.searchContent
-        })
+        this.pagination = pagination;
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+                personName:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+            })
+        }
     }
     /**分页查询 getAllByPage */
     fetch(params){
+        // if(flag)
         axios.get(`${this.url.procedure.getAllByPage}`,{
             headers:{
                'Authorization':this.url.Authorization
@@ -185,20 +184,18 @@ class ProcessInspection extends React.Component{
             if(res&&res.list)
             {
               for(var i = 1; i <= res.list.length;i++){
-                var e = res.list[i-1];
-                e['index'] = res.prePage*10+i
+                  var e = res.list[i-1];
+                  e['index'] = res.prePage*10+i
             }
             this.setState({
-                dataSource:res.list
+                dataSource:res.list,
             })
             }
-            
         })
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
       const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
           url:`${this.url.procedure.procedureTestRecord}`,
           method:'Delete',
@@ -208,8 +205,15 @@ class ProcessInspection extends React.Component{
           data:ids,
           type:'json'
         }).then((data)=>{
-          message.info(data.data.message);
-          this.fetch();
+            message.info(data.data.message);
+            if(data.data.code===0){
+                this.fetch({
+                  size: this.pagination.pageSize,
+                  page: this.pagination.current,
+                  orderField: 'id',
+                  orderType: 'desc',
+              });
+            }
         }).catch(()=>{
           message.info('删除错误，请联系管理员！')
         })
@@ -222,11 +226,10 @@ class ProcessInspection extends React.Component{
     }
    /**实现全选 */
    onSelectChange(selectedRowKeys) {
-    this.setState({ selectedRowKeys:selectedRowKeys }); 
+      this.setState({ selectedRowKeys:selectedRowKeys }); 
    } 
     /**处理单条记录删除 */
     handleDelete(key){
-      //console.log(key)
       axios({
           url:`${this.url.procedure.procedureTestRecord}/${key}`,
           method:'Delete',
@@ -235,7 +238,14 @@ class ProcessInspection extends React.Component{
           }
       }).then((data)=>{
           message.info(data.data.message);
-          this.fetch();
+          if(data.data.code===0){
+            this.fetch({
+              size: this.pagination.pageSize,
+              page: this.pagination.current,
+              orderField: 'id',
+              orderType: 'desc',
+          });
+        }
       }).catch(()=>{
           message.info('删除失败，请联系管理员！');
       })
@@ -256,7 +266,7 @@ class ProcessInspection extends React.Component{
   searchEvent(){
       this.fetch({
         personName:this.state.searchContent
-      });
+      },1);
   }
   /**获取所有产品线 productionProcess*/
   getAllProductionProcess(){
