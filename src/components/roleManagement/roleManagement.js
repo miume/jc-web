@@ -77,17 +77,22 @@ class Role extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            reset:false,
+            roleName: '',
             dataSource : [],
             searchText: '',
             editingKey: '',
             visible: false,
             visible1: false,
             roleDescription: '',
-            roleName: '',
             selectedRowKeys: [],
             searchContent:'',
-            reset:false
-
+            pagination:{
+              showTotal(total) {
+                    return `共${total}条记录`
+                  } 
+            },
+            pageChangeFlag:0,  //0表示getAllByPage分页  1 表示搜索分页
         };
         this.confrimCancel = this.confrimCancel.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -103,17 +108,18 @@ class Role extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        this.pagination = {
-          total: this.state.dataSource.length,
-          showTotal(total) {
-            return `共${total}条记录`
-          } ,
-          showSizeChanger: true,
-          onShowSizeChange() {
-          },
-          onChange() {
-          }
-        }
+        // this.pagination = {
+        //   total: this.state.dataSource.length,
+        //   defaultCurrent:1,
+        //   showTotal(total) {
+        //     return `共${total}条记录`
+        //   } ,
+        //   showSizeChanger: true,
+        //   // onShowSizeChange() {
+        //   // },
+        //   // onChange(page,pageSize) {
+        //   // }
+        // }
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
@@ -182,16 +188,28 @@ class Role extends React.Component {
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-      this.fetch({
-        size: pagination.pageSize,
-        page: pagination.current,
-        orderField: 'id',
-        orderType: 'desc',
-      });
+      this.setState({
+        pagination:pagination
+      })
+      const {pageChangeFlag} = this.state;
+      if(pageChangeFlag){
+        this.searchEvent({
+          size: pagination.pageSize,
+          page: pagination.current,
+          orderField: 'id',
+          orderType: 'desc',
+        });
+      }else{
+        this.fetch({
+          size: pagination.pageSize,
+          page: pagination.current,
+          orderField: 'id',
+          orderType: 'desc',
+        });
+      }
     }
     fetch = (params = {}) => {
       axios({
-        // url: `${this.server}/jc/auth/role/getRolesByPage`,
         url: `${this.url.role.getRolesByPage}` ,
         method: 'get',
         headers:{
@@ -199,15 +217,20 @@ class Role extends React.Component {
       },
        params: params,
       }).then((data) => {
-        const res = data.data.data;
-        this.pagination.total=res?res.total:0;
-        if(res&&res.list){
-          for(var i = 1; i<=res.list.length; i++){
-            res.list[i-1]['index']=res.prePage*10+i;
-          }
-          this.setState({
-            dataSource: res.list,
-          });
+          const res = data.data.data;
+          const pager = { ...this.state.pagination };
+          if(res&&res.list){
+            pager.total=res?res.total:0;
+            for(var i = 1; i<=res.list.length; i++){
+              res.list[i-1]['index']=res.prePage*10+i;
+            }
+            this.setState({
+              dataSource: res.list,
+              pagination:pager,
+              searchContent:'',
+              selectedRowKeys:[],
+              pageChangeFlag:0
+            });
         }
       });
     }
@@ -221,7 +244,6 @@ class Role extends React.Component {
     }
      /**根据id处理单条记录删除 */
      handleDelete(id){
-       //console.log(id)
         axios({
           url:`${this.url.role.deleteById}/${id}`,
           method:'Delete',
@@ -230,11 +252,20 @@ class Role extends React.Component {
           },
         }).then((data)=>{
           message.info(data.data.message);
-          this.fetch();
+          if(data.data.code===0){
+              const {pagination} = this.state;
+              // const dataSource = [...this.state.dataSource];
+              // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
+              this.fetch({
+                size: pagination.pageSize,
+                page: pagination.current,
+                orderField: 'id',
+                orderType: 'desc',
+            });
+          }
         }).catch(()=>{
           message.info('删除失败，请联系管理员！')
         })
-
       }
       /**判断单元格td是否可编辑 */
       isEditing = (record) => {
@@ -259,7 +290,8 @@ class Role extends React.Component {
               ...item,
               ...row,
             });
-            const data = row;
+            var data = row;
+            data['id']=id.toString();
             axios({
               url:`${this.url.role.update}`,
               method:'post',
@@ -269,15 +301,15 @@ class Role extends React.Component {
               data:data,
               type:'json'
             }).then((data)=>{
-              message.info(data.data.message);
-              this.setState({ dataSource: newData});
+                message.info(data.data.message);
+                this.setState({ dataSource: newData});
             }).catch(()=>{
-              message.info('保存失败，请联系管理员！');
+                message.info('保存失败，请联系管理员！');
             })
             this.setState({ editingKey: '' });
           } else {
-            newData.push(row);
-            this.setState({ dataSource: newData, editingKey: '' });
+              newData.push(row);
+              this.setState({ dataSource: newData, editingKey: '' });
           }
         });
       }
@@ -330,7 +362,6 @@ class Role extends React.Component {
       /**批量删除弹出框确认函数 */
       deleteByIds() {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
           url:`${this.url.role.deleteByIds}`,
           method:'Delete',
@@ -341,11 +372,18 @@ class Role extends React.Component {
           type:'json'
         }).then((data)=>{
           message.info(data.data.message);
-          this.fetch();
+          if(data.data.code===0){
+              const {pagination} = this.state;
+              this.fetch({
+                size: pagination.pageSize,
+                page: pagination.current,
+                orderField: 'id',
+                orderType: 'desc',
+            });
+          }
         }).catch(()=>{
           message.info('删除错误，请联系管理员！')
         })
-
      }
      /**对应于批量删除时，确认取消删除 并实现checkbox选中为空 */
      confrimCancel(){
@@ -353,7 +391,6 @@ class Role extends React.Component {
              selectedRowKeys:[]
          })
      }
-
       /**成员管理 */
       userManagement(){
           this.setState({
@@ -371,31 +408,30 @@ class Role extends React.Component {
         // console.log(this.state.searchContent)
       }
       /** 根据角色名称分页查询*/
-      searchEvent(){
+      searchEvent(params){
         const role_name = this.state.searchContent;
-        //console.log(role_name)
         axios({
-          url:`${this.url.role.search}`,
+          url:`${this.url.role.search}?roleName=${role_name}`,
           method:'get',
           headers:{
             'Authorization':this.url.Authorization
           },
-          params:{
-            size: this.pagination.pageSize,
-            page: this.pagination.current,
-            roleName:role_name
-          },
+          params:params,
           type:'json',
         }).then((data)=>{
           const res = data.data.data;
-          this.pagination.total=res.total;
-          for(var i = 1; i<=res.list.length; i++){
-            res.list[i-1]['index']=res.prePage*10+i;
+          if(res&&res.list){
+              const {pagination} = this.state;
+              pagination.total=res.total;
+              for(var i = 1; i<=res.list.length; i++){
+                res.list[i-1]['index']=res.prePage*10+i;
+              }
+              this.setState({
+                dataSource: res.list,
+                pagination:pagination,
+                pageChangeFlag:1,
+              });
           }
-          // console.log(res.list)
-          this.setState({
-            dataSource: res.list,
-          });
         })
 
       }
@@ -450,7 +486,7 @@ class Role extends React.Component {
                       <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
                   </span>
                   <div className='clear'></div>
-                  <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
+                  <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.state.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
                 </div>
             </div>
 
