@@ -5,8 +5,6 @@ import SearchCell from '../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
 import './purchaseCheckReport.css';
-// import axios from "axios";
-
 
 
 class Pack extends React.Component {

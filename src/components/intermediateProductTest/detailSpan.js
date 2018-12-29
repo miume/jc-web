@@ -26,6 +26,7 @@ class DetailSpan extends React.Component {
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
+                    batchNumberId: 0,
                     examineStatus: 1000,
                     examineData: []
                 },
@@ -36,11 +37,9 @@ class DetailSpan extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
     }
     handleCancel = (e) => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
+        this.setState({
+            visible: false,
+        });
     };
     render() {
         const { visible } = this.state;
@@ -53,7 +52,6 @@ class DetailSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    width="500px"
                     footer={[
                         <CancleButton
                             handleCancel={this.handleCancel}
@@ -134,6 +132,7 @@ class DetailSpan extends React.Component {
                                 testDTOS: testDTOS,
                                 testData: testData,
                                 examine: {
+                                    batchNumberId:batchNumberId,
                                     examineStatus: examineStatus,
                                     examineData: res
                                 },
@@ -149,6 +148,7 @@ class DetailSpan extends React.Component {
                             testDTOS: testDTOS,
                             testData: testData,
                             examine: {
+                                batchNumberId:batchNumberId,
                                 examineStatus: examineStatus,
                                 examineData: []
                             },
