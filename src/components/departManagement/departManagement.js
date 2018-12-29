@@ -61,6 +61,7 @@ class Depart extends React.Component {
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal
+                        url={this.url}
                         fetch={this.fetch}
                     />
                     <DeleteByIds
@@ -78,6 +79,7 @@ class Depart extends React.Component {
                     </span>
                 <div className='clear' ></div>
                 <DepartTable
+                    url={this.url}
                     data={this.state.dataSource}
                     pagination={this.pagination}
                     rowSelection={rowSelection}
@@ -123,6 +125,7 @@ class Depart extends React.Component {
             }
             this.setState({
                 dataSource: res.list,
+                searchContent: ''
             });
         });
     };
