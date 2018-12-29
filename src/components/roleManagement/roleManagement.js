@@ -260,8 +260,6 @@ class Role extends React.Component {
               ...row,
             });
             const data = row;
-            data['id'] = id.toString()
-            //console.log(data)
             axios({
               url:`${this.url.role.update}`,
               method:'post',
@@ -272,11 +270,11 @@ class Role extends React.Component {
               type:'json'
             }).then((data)=>{
               message.info(data.data.message);
-              this.fetch();
+              this.setState({ dataSource: newData});
             }).catch(()=>{
               message.info('保存失败，请联系管理员！');
             })
-            this.setState({ dataSource: newData, editingKey: '' });
+            this.setState({ editingKey: '' });
           } else {
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
