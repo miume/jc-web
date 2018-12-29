@@ -10,4 +10,4 @@ class DataPart extends Component{
       );
   }
 }
-export default DataPart;
+export default DataPart;//每个小块的组件

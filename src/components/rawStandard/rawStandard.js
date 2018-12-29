@@ -68,10 +68,6 @@ class RawStandard extends Component{
             
          });
     }
-
-    
-
-   
        render(){
            return(
                <div>
