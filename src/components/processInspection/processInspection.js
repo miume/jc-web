@@ -66,10 +66,6 @@ class ProcessInspection extends React.Component{
             return `共${total}条记录`
           } ,
           showSizeChanger: true,
-          onShowSizeChange() {
-          },
-          onChange() {
-          }
         }
         this.columns = [{
           title: '序号',
@@ -251,13 +247,13 @@ class ProcessInspection extends React.Component{
   /**实时跟踪搜索框内容的变化 */
   searchContentChange(e){
     const value = e.target.value;
+    //console.log(value)
       this.setState({
           searchContent:value
       })
   }
   /**绑定搜索事件 */
   searchEvent(){
-    //console.log(this.state.searchContent)
       this.fetch({
         personName:this.state.searchContent
       });
