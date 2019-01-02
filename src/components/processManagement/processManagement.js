@@ -156,12 +156,15 @@ class Management extends React.Component{
             const res = data.data.data;
             if(res&&res.list){
                 this.pagination.total=res.total;
+                this.pagination.current = res.pageNum;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
                 this.setState({
                     loading: false,
                     dataSource: res.list,
+                    searchContent:'',
+                    selectedRowKeys: [],
                 });
             }
         })

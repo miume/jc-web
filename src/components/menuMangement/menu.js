@@ -40,7 +40,8 @@ class Menu extends React.Component{
       this.getAllFatherMenu = this.getAllFatherMenu.bind(this);
       this.Authorization = localStorage.getItem('Authorization');
       this.searchContentChange1 = this.searchContentChange1.bind(this)
-      this.searchFatherEvent = this.searchFatherEvent.bind(this)
+      this.searchFatherEvent = this.searchFatherEvent.bind(this);
+      this.changePage = this.changePage.bind(this);
 
       this.pagination = {
         total: this.state.dataSource.length,
@@ -50,9 +51,10 @@ class Menu extends React.Component{
         showSizeChanger: true,
         onShowSizeChange(current, pageSize) {
         },
-        onChange(current) {
-        }
+        onChange:this.changePage,
     }
+  }
+  changePage = (page,pageSize) =>{
   }
   /**获取查询时菜单名称的实时变化 */
   searchContentChange1(e){
@@ -145,8 +147,8 @@ class Menu extends React.Component{
           page: pagination.current,
           orderField: 'id',
           orderType: 'desc',
-
       });
+    //   console.log(pagination)
   };
   
     fetch = (params = {}) => {
@@ -163,6 +165,7 @@ class Menu extends React.Component{
       }).then((data) => {
           const res = data.data.data;
           this.pagination.total=res.total;
+          this.pagination.current=res.pageNum;
           if(res&&res.list){
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
@@ -170,6 +173,8 @@ class Menu extends React.Component{
             this.setState({
                 loading: false,
                 dataSource: res.list,
+                searchContent:'',
+                selectedRowKeys: [],
             });
           }
       })
