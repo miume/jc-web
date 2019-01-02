@@ -8,7 +8,6 @@ import {message} from "antd";
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from "../BlockQuote/deleteByIds";
 
-/**这是个令牌，每次调用接口都将其放在header里 */
 class OperationManagement extends React.Component {
     url;
     componentDidMount() {
@@ -26,7 +25,7 @@ class OperationManagement extends React.Component {
             selectedRowKeys: [],
             searchContent:'',
             searchText: '',
-            pageChangeFlag: 0 //分页标志： 0为fetch 1为search
+            pageChangeFlag: 0, //分页标志： 0为fetch 1为search
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
@@ -43,7 +42,6 @@ class OperationManagement extends React.Component {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
-            // current:
         }
     }
     render() {
@@ -128,6 +126,7 @@ class OperationManagement extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
+            // this.pagination.current = params.page;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
