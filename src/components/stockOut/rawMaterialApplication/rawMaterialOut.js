@@ -21,16 +21,16 @@ import axios from 'axios';
 //     })
 // }
 class RawMaterialOut extends React.Component{
-    componentDidMount(){
-        //this.fetch();
-    }
+    status
     constructor(props){
         super(props);
         this.state = {
             dataSource : [],
             searchContent:'',
-            selectedRowKeys:[]
+            selectedRowKeys:[],
+            pageChangeFlag:0
         }
+        this.fetch = this.fetch.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancel = this.cancel.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
@@ -89,16 +89,17 @@ class RawMaterialOut extends React.Component{
             align:'center',
             width:'15%',
             render:status => {
-                switch(`${status}`) {
-                    case '-1': return '已保存未提交';
-                    case '0': return '已提交未审核';
-                    case '1': return '审核';
-                    case '2': return '审核通过';
-                    case '3': return '审核未通过';
-                    case '4': return '合格';
-                    case '5': return '不合格';
-                    default: return '';
-                }
+                return this.status[status.toString()];
+                // switch(`${status}`) {
+                //     case '-1': return '已保存未提交';
+                //     case '0': return '已提交未审核';
+                //     case '1': return '审核';
+                //     case '2': return '审核通过';
+                //     case '3': return '审核未通过';
+                //     case '4': return '合格';
+                //     case '5': return '不合格';
+                //     default: return '';
+                // }
             },
         },{
             title:'紧急',
@@ -125,59 +126,42 @@ class RawMaterialOut extends React.Component{
             }
         }]
         this.pagination = {
-            total: this.props.data.length,
             showTotal(total) {
               return `共${total}条记录`
             } ,
             showSizeChanger: true,
           }
-        // this.Authorization = localStorage.getItem('Authorization');
-        // this.server = localStorage.getItem('remote');
     }
     /**监控表格变化 */
     handleTableChange(pagination){
-        this.fetch({
-            size:pagination.pageSize,
-            page:pagination.current,
-        })
+        this.pagination = pagination;
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
+            this.props.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+                personName:this.state.searchContent
+            })
+        }else{
+            this.props.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+            })
+        }
     }
-    /**getAllByPage分页查询 */
-    // fetch=(params={})=>{
-    //     axios({
-    //         url:`${this.server}/jc/common/repoOutApply/getAllByNameLikeAndTypeByPage`,
-    //         method:'get',
-    //         headers:{
-    //             'Authorization':this.Authorization
-    //         },
-    //         params:{
-    //             ...params,
-    //             type:this.props.type
-    //         }
-    //     }).then((data)=>{
-    //         const res = data.data.data;
-    //         this.pagination.total = res.total;
-    //         var out = []
-    //         console.log(res)
-    //         for(var i = 1; i<=res.list.length; i++){
-    //             var li = res.list[i-1];
-    //             out.push({
-    //                 id:li.commonBatchNumber.id,
-    //                 index:res.prePage*10+i,
-    //                 batchNumber:li.commonBatchNumber.batchNumber,
-    //                 createPersonName:li.createPersonName,
-    //                 createTime:li.commonBatchNumber.createTime,
-    //                 status:li.commonBatchNumber.status,
-    //                 isUrgent:li.commonBatchNumber.isUrgent,
-    //             })
-    //         }
-    //       this.setState({
-    //         dataSource: out,
-    //       });
-    //     })
-    // }
+    /**搜索的重置调用的fetch函数 */
+    fetch({},flag){
+        /**如果flag为1 则将分页搜索标志位置为0 并将搜索内容置为空 */
+        if(flag){
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:''
+            })
+        }
+        this.props.fetch();
+    }
     /**单条记录删除 */
     handleDelete(id){
-        console.log(id)
         axios({ 
             url:`${this.props.url.stockOut.repoOut}/${id}`,
             method:'Delete',
@@ -186,7 +170,10 @@ class RawMaterialOut extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.fetch();
+            this.props.fetch({
+                size:this.pagination.pageSize,
+                page:this.pagination.current,
+            })
         }).catch(()=>{
             message.info('删除失败，请联系管理员！')
         })
@@ -202,7 +189,12 @@ class RawMaterialOut extends React.Component{
             data:this.state.selectedRowKeys
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.fetch();
+            if(data.data.code===0){
+                this.props.fetch({
+                  size: this.pagination.pageSize,
+                  page: this.pagination.current,
+              });
+            }
         }).catch(()=>{
             message.info('删除错误，请联系管理员！')
         })
@@ -222,6 +214,9 @@ class RawMaterialOut extends React.Component{
     }
     /**根据货物名称进行搜索 */
     searchEvent(){
+        this.setState({
+            pageChangeFlag:1
+        })
         this.props.fetch({
             personName:this.state.searchContent
         });
@@ -233,7 +228,8 @@ class RawMaterialOut extends React.Component{
         })
     }
     render(){
-        const {selectedRowKeys} = this.state
+        const {selectedRowKeys} = this.state;
+        this.status = JSON.parse(localStorage.getItem('status'))
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -243,7 +239,7 @@ class RawMaterialOut extends React.Component{
             <div style={{padding:'0 15px'}}>
                 <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel} selectedRowKeys={this.state.selectedRowKeys}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入申请人' type={this.props.index} fetch={this.props.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}></SearchCell>
+                    <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
                 <div className='clear'></div>
                 <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{y:380}} size='small' bordered></Table>
