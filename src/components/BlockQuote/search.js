@@ -35,7 +35,7 @@ class SearchCell extends React.Component{
         let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]        
         searchComponent.childNodes[0].value = ''
         //console.log(searchComponent.childNodes[0])
-        this.props.fetch();
+        this.props.fetch({},1);
     }
 }
 export default SearchCell;

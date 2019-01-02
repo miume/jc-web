@@ -62,10 +62,10 @@ class ProcessInspection extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
         this.pagination = {
-          showTotal(total) {
-            return `共${total}条记录`
-          } ,
-        }
+            showTotal(total) {
+                return `共${total}条记录`
+            } 
+          };
         this.columns = [{
           title: '序号',
           dataIndex: 'index',
@@ -138,9 +138,9 @@ class ProcessInspection extends React.Component{
               const status = record.commonBatchNumber.status;
               return (
                   <span>
-                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} fetch={this.fetch}/>
+                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} />
                       <Divider type="vertical" />
-                      <Editor value={text} status={status} url={this.url} fetch={this.fetch}/>
+                      <Editor value={text} status={status} url={this.url}/>
                       <Divider type="vertical" />
                       {
                         status === -1?
@@ -171,8 +171,12 @@ class ProcessInspection extends React.Component{
         }
     }
     /**分页查询 getAllByPage */
-    fetch(params){
-        // if(flag)
+    fetch(params,flag){
+        if(flag) 
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:''
+            })
         axios.get(`${this.url.procedure.getAllByPage}`,{
             headers:{
                'Authorization':this.url.Authorization
@@ -180,13 +184,13 @@ class ProcessInspection extends React.Component{
             params:params,
         }).then((data)=>{
             const res = data.data.data;
-            this.pagination.total = res?res.total:0;
             if(res&&res.list)
             {
               for(var i = 1; i <= res.list.length;i++){
                   var e = res.list[i-1];
                   e['index'] = res.prePage*10+i
             }
+            this.pagination.total = res?res.total:0;
             this.setState({
                 dataSource:res.list,
             })
@@ -264,9 +268,12 @@ class ProcessInspection extends React.Component{
   }
   /**绑定搜索事件 */
   searchEvent(){
+      this.setState({
+          pageChangeFlag:1
+      })
       this.fetch({
         personName:this.state.searchContent
-      },1);
+      });
   }
   /**获取所有产品线 productionProcess*/
   getAllProductionProcess(){

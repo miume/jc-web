@@ -145,7 +145,7 @@ class Tr extends React.Component{
       }).then(data=>{
         const res = data.data.data;
         const children = res.map(p =>
-            <Option key={p.id} value={p.id}>{p.roleName}</Option>
+            <Option key={p.id} value={p.id}>{p.description}</Option>
             )
         this.setState({
           allUser : children
