@@ -277,11 +277,14 @@ class SampleInspection extends React.Component{
             const res = data.data.data;
             if(res&&res.list){
                 this.pagination.total=res.total;
+                this.pagination.current = res.pageNum;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
                 }
                 this.setState({
                     dataSource: res.list,
+                    searchContent:'',
+                    selectedRowKeys: [],
                 });
             }
         })
@@ -346,7 +349,7 @@ class SampleInspection extends React.Component{
                            rowKey={record => record.sampleDeliveringRecord.id}
                            onChange={this.handleTableChange}
                            pagination={this.pagination}
-                           scroll={{ x: 1500}}></Table>
+></Table>
                 </div>
             </div>
         )
