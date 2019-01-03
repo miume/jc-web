@@ -321,7 +321,6 @@ class Home extends Component {
                  testReportRecords: `${server}/jc/common/testReportRecords`,
                  purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
                  batchNumber:`${server}/jc/common/purchaseReportRecords/batchNumber`,
-
              },
              /**入库管理 */
              enterStorage: {
@@ -361,6 +360,13 @@ class Home extends Component {
               rawStandard:{
                  getRaw:`${server}/jc/common/techRawStandard/raw`,
                  getFactory:`${server}/jc/common/techRawStandard/manufacturers`
+              },
+              /**产品标准 */
+              productStandard:{
+                  add:`${server}/jc/common/techProductStandard/newClasses`,
+                  productStandard:`${server}/jc/common/techProductStandard`,
+                  getAll:`${server}/jc/common/techProductStandard/allClasses`,
+                  
               }
         }
         localStorage.setItem('status',JSON.stringify(status));

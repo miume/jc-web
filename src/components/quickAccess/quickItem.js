@@ -26,7 +26,6 @@ class QuickItem extends React.Component{
         return (
             <div className='quick-tag-wrapper' onClick={this.click}>
                 <div className='quick-tag'>
-
                         <div className='quick-tag-text'>
                             <span>{this.props.name}</span>
                         </div>
