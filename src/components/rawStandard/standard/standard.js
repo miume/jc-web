@@ -103,24 +103,26 @@ for(var i=0;i<20;i++){
      }
      render(){
          return(
-         <div>
+         <div style={{position:'relative'}}>
              <div style={{padding:'15px'}}>
-             &nbsp;<h2 style={{display:'inline-block'}}>请设置标准</h2>
-             <span style={{float:'right'}}>
-               <SearchCell name='请输入搜索内容'
-                 searchEvent={this.searchEvent}
-                 searchContentChange={this.searchContentChange}
-               />
-             </span>
+                &nbsp;<h2 style={{display:'inline-block'}}>请设置标准</h2>
+                <span className='fr'>
+                <SearchCell name='请输入搜索内容'
+                    searchEvent={this.searchEvent}
+                    searchContentChange={this.searchContentChange}
+                />
+                </span>
              </div>
-             <Table 
-                 rowKey={record=>record.id}
-                 columns={this.columns}
-                 dataSource={this.state.dataSource}
-                 pagination={{hideOnSinglePage:true,pageSize:100}}
-                 size='small'
-                 scroll={{y:230}}
-               />
+             <div>
+                <Table 
+                    rowKey={record=>record.id}
+                    columns={this.columns}
+                    dataSource={this.state.dataSource}
+                    pagination={{hideOnSinglePage:true,pageSize:100}}
+                    size='small'
+                    scroll={{y:230}}
+                />
+             </div>
                <div className='rawStandardPosition' onClick={this.checkRaw}>重新选择厂家</div>
          </div>
          );

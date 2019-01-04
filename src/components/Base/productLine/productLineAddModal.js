@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Button,Modal,message} from 'antd';
+import {Form,Input,Modal,message} from 'antd';
 import axios from 'axios';
 import NewButton from '../../BlockQuote/newButton';
 import CancleButton from '../../BlockQuote/cancleButton';
@@ -17,8 +17,8 @@ const CollectionCreateForm = Form.create()(//弹出层
             closable={false} maskClosable={false} centered={true}
             width='360px'
             footer={[
-              <NewButton key='ok' handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
-              <CancleButton   key='cancel'     handleCancel={this.props.onCancel} />
+              <NewButton key='ok' handleClick={onCreate} name='确定'  className='fa fa-check'/>,
+              <CancleButton   key='cancel'     handleCancel={onCancel} />
             ]}
           >
             <Form horizontal='true' >
@@ -49,7 +49,6 @@ class ProductLineAddModal extends React.Component{
         this.setState({ visible: false });
         form.resetFields();
       }
-    
       handleCreate = () => {//新增一条记录
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {//校验并获取一组输入域的值与 Error，若 fieldNames 参数为空，则校验全部组件
@@ -82,11 +81,9 @@ class ProductLineAddModal extends React.Component{
           this.setState({ visible: false });
         });
       }
-    
       saveFormRef = (formRef) => {
         this.formRef = formRef;
       }
-    
     render(){
         return(
           <span>

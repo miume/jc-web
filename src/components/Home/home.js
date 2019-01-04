@@ -359,14 +359,15 @@ class Home extends Component {
               /**原材料标准*/
               rawStandard:{
                  getRaw:`${server}/jc/common/techRawStandard/raw`,
-                 getFactory:`${server}/jc/common/techRawStandard/manufacturers`
+                 addRaw:`${server}/jc/common/techRawStandard/newRaw`,
+                 getFactory:`${server}/jc/common/techRawStandard/manufacturers`,
+                 addFactory:`${server}/jc/common/techRawStandard/newManufacturer`
               },
               /**产品标准 */
               productStandard:{
                   add:`${server}/jc/common/techProductStandard/newClasses`,
                   productStandard:`${server}/jc/common/techProductStandard`,
                   getAll:`${server}/jc/common/techProductStandard/allClasses`,
-                  
               }
         }
         localStorage.setItem('status',JSON.stringify(status));

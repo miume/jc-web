@@ -28,7 +28,7 @@ class RawStandard extends Component{
     }
  
   onBlockChange1(flag,content1,click1){//原材料那个块是否被选中，选中后发生的变化
-      console.log(flag,content1,click1);
+      //console.log(flag,content1,click1);
     
       this.setState({
         flag:flag,

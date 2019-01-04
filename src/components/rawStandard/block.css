@@ -6,14 +6,14 @@
     width: 160px;
     line-height: 50px;  /*行高 */
     text-align:center;
-    border:1px solid #e4e4e4;
+    border:1px solid rgb(204,204,204);
     cursor: pointer;
     /* display:'inline-block'; */
     margin-left: 26px;
     margin-top: 15px;
 }
 .rawStanstdardBlockAdd{/**新增块的样式*/
-    border-radius:3px ;/*设置4个圆角，且为5像素*/
+    border-radius:3px ;/*设置4个圆角，且为3像素*/
     color:#1890ff;
     height: 50px;
     width: 160px;
@@ -89,8 +89,15 @@
 .rawStandardPosition{/*右下角重新选择的样式*/
     position: absolute;
     right: 20px;
-    margin-top:50px;
+    top:400px;
     /* font-size: 20px; */
     color: #1890ff;
     cursor: pointer;
+}
+/**输入框的样式*/
+.rawStandardInput{
+    
+    height: 48px !important;/**important的优先级最高*/
+    width: 158px !important;
+    
 }
