@@ -11,7 +11,6 @@
   .nav-card {
     width: 25%;
     padding: 10px 10px 10px 10px;
-   
     margin-bottom: 20px;
   }
   .card-parent {
@@ -20,7 +19,6 @@
     padding-right: 15px;
     text-align: left;
   }
-  
 }
 @media screen and (max-width: 1300px) {
   .nav-card {
@@ -40,7 +38,6 @@
   .nav-card {
     width: 50%;
     padding: 10px 10px 10px 10px;
-   
     margin-bottom: 20px;
   }
   .card-parent {

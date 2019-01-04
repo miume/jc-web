@@ -50,7 +50,8 @@ class Product extends React.Component{
             res[i-1]["realWeig"]=forkData[i-1]
         }
           this.setState({
-            dataSource:res
+            dataSource:res,
+            searchContent:'',
           })
       }
     })

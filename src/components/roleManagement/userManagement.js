@@ -154,7 +154,6 @@ class UserManagement extends React.Component {
         }
     }
     render() {
-    //   console.log(this.state)
       return (
         <span>
           <span  className='blue' onClick={this.showModal} value={this.state.value}>分配角色</span>

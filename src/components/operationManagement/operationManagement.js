@@ -8,7 +8,6 @@ import {message} from "antd";
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from "../BlockQuote/deleteByIds";
 
-/**这是个令牌，每次调用接口都将其放在header里 */
 class OperationManagement extends React.Component {
     url;
     componentDidMount() {
@@ -26,6 +25,7 @@ class OperationManagement extends React.Component {
             selectedRowKeys: [],
             searchContent:'',
             searchText: '',
+            pageChangeFlag: 0, //分页标志： 0为fetch 1为search
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
@@ -74,6 +74,7 @@ class OperationManagement extends React.Component {
                     </span>
                     <div className='clear' ></div>
                     <OperationTable
+                        url={this.url}
                         data={this.state.dataSource}
                         pagination={this.pagination}
                         rowSelection={rowSelection}
@@ -95,13 +96,24 @@ class OperationManagement extends React.Component {
     };
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
+        console.log('pagination',pagination);
+        const pageChangeFlag = this.state.pageChangeFlag;
+        if(pageChangeFlag===0){
+            this.fetch({
+                size: pagination.pageSize,
+                page: pagination.current,
+                orderField: 'id',
+                orderType: 'desc',
 
-        });
+            });
+        }else{
+            this.searchEvent({
+                size: pagination.pageSize,
+                page: pagination.current,
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }
     };
     fetch = (params = {}) => {
         axios({
@@ -114,11 +126,15 @@ class OperationManagement extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
+            // this.pagination.current = params.page;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
             this.setState({
                 dataSource: res.list,
+                searchContent: '',
+                selectedRowKeys: [],
+                pageChangeFlag: 0
             });
         })
     };
@@ -146,16 +162,14 @@ class OperationManagement extends React.Component {
         this.setState({ selectedRowKeys });
     };
     cancel() {
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-            });
-        }, 1000);
+        this.setState({
+            selectedRowKeys: [],
+        });
     }
     /**---------------------- */
     /**实现单条数据功能 */
     /** 根据角色名称分页查询*/
-    searchEvent(){
+    searchEvent(params = {}){
         const ope_name = this.state.searchContent;
         axios({
             url: `${this.url.operation.pagesByName}`,
@@ -164,11 +178,10 @@ class OperationManagement extends React.Component {
                 'Authorization':this.url.Authorization
             },
             params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
+                size: params.size,
+                page: params.page,
                 operationName:ope_name
             },
-            type:'json',
         }).then((data)=>{
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
@@ -177,8 +190,10 @@ class OperationManagement extends React.Component {
             }
             this.setState({
                 dataSource: res.list,
+                pageChangeFlag: 1
             });
         })
+
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){

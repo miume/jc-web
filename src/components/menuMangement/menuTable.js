@@ -258,11 +258,11 @@ class MenuTable extends React.Component{
                     type:'json'
                 }).then((data)=>{
                     message.info(data.data.message);
-                    this.props.fetch();
+                    this.props.modifyDataSource(newData);
                 }).catch((error)=>{
                     message.info(error.data.message);
                 });
-                this.props.modifyDataSource(newData);
+                
                 this.setState({ editingKey: '' });
             } else {
                 newData.push(row);

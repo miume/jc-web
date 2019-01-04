@@ -309,7 +309,7 @@ applyOut(status){
         }
         else{
             message.info(data.data.message);
-            this.props.fetch();
+            // this.props.fetch();
         }
     }).catch(()=>{
         message.info('操作失败，请联系管理员！')
@@ -328,7 +328,7 @@ applyReview(dataId){
         }
     }).then((data)=>{
         message.info(data.data.message);
-        this.props.fetch();
+        // this.props.fetch();
     }).catch(()=>{
         message.info('审核失败，请联系管理员！')
     })

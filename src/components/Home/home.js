@@ -39,6 +39,8 @@ import ProductStandard from '../productStandard/productStandard';
 import ProductInspection from '../productInspection/productInspection';
 import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
 import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
+
+import Equipment from "../equipmentGuidance/equipmentGuidance"
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
@@ -127,6 +129,9 @@ class Home extends Component {
         },{
             path:'/productStandard',
             component:ProductStandard
+        },{
+            path:'/equipmentGuidance',
+            component:Equipment
         }]
         return data;
     }
@@ -316,7 +321,6 @@ class Home extends Component {
                  testReportRecords: `${server}/jc/common/testReportRecords`,
                  purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
                  batchNumber:`${server}/jc/common/purchaseReportRecords/batchNumber`,
-
              },
              /**入库管理 */
              enterStorage: {
@@ -358,6 +362,12 @@ class Home extends Component {
                  addRaw:`${server}/jc/common/techRawStandard/newRaw`,
                  getFactory:`${server}/jc/common/techRawStandard/manufacturers`,
                  addFactory:`${server}/jc/common/techRawStandard/newManufacturer`
+              },
+              /**产品标准 */
+              productStandard:{
+                  add:`${server}/jc/common/techProductStandard/newClasses`,
+                  productStandard:`${server}/jc/common/techProductStandard`,
+                  getAll:`${server}/jc/common/techProductStandard/allClasses`,
               }
         }
         localStorage.setItem('status',JSON.stringify(status));

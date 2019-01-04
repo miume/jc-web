@@ -41,7 +41,8 @@ class MaterialRecord extends React.Component{
             res[i-1]['index']=i;
         }
           this.setState({
-            dataSource:res
+            dataSource:res,
+            searchContent:'',
           })
       }
     })

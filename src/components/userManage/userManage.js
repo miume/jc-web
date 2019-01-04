@@ -254,15 +254,15 @@ class User extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
-          this.pagination.total=res.total?res.total:0;
-          if(res&&res.list){
-           for(var i=1;i<=res.list.length;i++){
-             res.list[i-1]['index']=res.prePage*10+i;
-          }
-          this.setState({
-            dataSource:res.list//list取到的是所有符合要求的数据
-          });
-          }
+        this.pagination.total=res.total?res.total:0;
+        if(res&&res.list){
+          for(var i=1;i<=res.list.length;i++){
+            res.list[i-1]['index']=res.prePage*10+i;
+        }
+        this.setState({
+          dataSource:res.list//list取到的是所有符合要求的数据
+        });
+        }
 
       });
     }
@@ -319,9 +319,13 @@ class User extends React.Component{
          type:'json'
         })
         .then((data)=>{
-          //console.log(data);
           message.info(data.data.message);
-          this.fetch();
+          // this.fetch();
+          if(data.data.code===0){
+            this.pagination.total -= 1;
+            const dataSource = [...this.state.dataSource];
+            this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
+          }
         })
         .catch(()=>{
          message.info('删除失败，请联系管理员！');

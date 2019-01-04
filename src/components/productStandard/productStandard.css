@@ -3,4 +3,179 @@
     height:500px;
     margin:20px;
     border:1px solid #cccccc;
+    border-top: none;
+}
+/* .productStandard .img{
+    display: flex;
+    height:40px;
+    position: relative;
+}
+.productStandard img{
+    height:40px;
+    width: 105%;
+}
+.img1{
+    flex-grow: 1;
+    z-index: 10;
+    height:40px;
+    border-width: none;
+}
+.img2{
+    z-index: 5;
+    flex-grow: 1;
+    min-height:40px;
+    left:-10px;
+    position: relative;
+    border-width: none;
+}
+.img3{
+    z-index: 1;
+    left:-25px;
+    flex-grow: 1;
+    min-height:40px;
+    border-width: none;
+    position: relative;
+} */
+.product-standrad-top{
+    width:100%;
+    min-height:35px;
+    max-height:35px;
+    display: flex;
+}
+.product-standrad-top-click {
+    /* background-image: url('./head.svg');
+    background-size:100% 40px;
+    background-repeat:no-repeat;
+    border-width: none; */
+    background-color: #0091ff;
+}
+#product-0{
+    z-index: 30;
+    flex-grow: 1.5;
+    border-radius: 0 6px 6px 0;
+    border-right:1px solid #f2f2f2;
+}
+#product-1{
+    /* left:-5px; */
+    z-index: 5;
+    /* position: relative; */
+    border-radius: 0 6px 6px 0;
+    border-right:1px solid #f2f2f2;
+}
+#product-2{
+    /* position: relative; */
+    border-radius: 0 6px 6px 0;
+    border-right:1px solid #f2f2f2;
+}
+.product-standrad-top-notclick {
+    background-color: #f2f2f2; 
+    /* background-image: url('./head-white.svg');
+    background-size:100% 40px; */
+}
+.product-standrad-top-click i,.product-standrad-top-click span{
+    color: white;
+    font-weight: bold;
+}
+.product-standrad-top div{
+    flex-grow: 1;
+    line-height: 40px;
+    text-align: center;
+    
+}
+.product-standrad-middle{
+    padding:15px;
+}
+.product-standrad-middle-text{
+    font-size: 18px;
+    color: black;
+}
+.product-standrad-bottom{
+    /* display: inline-block; */
+    min-width: 600px;
+    height:359px;
+    overflow-y: auto;
+}
+.block-add{
+    height: 50px;
+    color:#0091ff;
+    cursor: pointer;
+    line-height: 50px;
+    text-align:center;
+    margin:20px 0 0 29px;
+    display: inline-block;
+    border:1px solid #0091ff;
+    border-radius:3px ;/*设置4个圆角，且为5像素*/
+}
+.block{
+    height: 50px;
+    color:black;
+    cursor: pointer;
+    line-height: 50px;
+    text-align:center;
+    margin:20px 0 0 29px;
+    display: inline-block;
+    border:1px solid #e4e4e4;
+    border-radius:3px ;/*设置4个圆角，且为5像素*/
+}
+.block-div{
+    position: relative;
+    left:3px;
+    top:3px;
+}
+.block:hover,.block-add:hover{
+    background-color: #0091ff;
+    color:white;
+    font-weight: bold;
+}
+@media screen and (min-width: 1300px){
+    .block-width{
+        width:14%;
+    }
+}
+@media screen and (max-width: 1300px){
+    .block-width{
+        width:22%;
+    }
+}
+@media screen and (max-width: 1200px){
+    .block-width{
+        width:28%;
+    }
+}
+.block-input{
+    width:100% !important;
+    height:48px !important;
+    border:none !important;
+}
+.block-input-i{
+    color:#0091ff;
+    font-weight: bold;
+}
+/**选择型号*/
+.product-modal{
+    width: 100%;
+    height:60px;
+    display: flex;
+}
+.product-modal-1{
+    flex:1;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+.product-modal-1 i:hover{
+    color:#0091ff;
+}
+.product-modal-2{
+    flex:10;
+    border:1px solid #cccccc;
+}
+.product-modal-2-scroll{
+    width:120%;
+    overflow-y: hidden;
+}
+.product-modal-middle{
+    min-width: 600px;
+    height:300px;
+    overflow-y: auto;
 }

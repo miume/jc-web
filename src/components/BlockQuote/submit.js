@@ -33,47 +33,7 @@ class Submit extends React.Component{
         this.state = {
             process : [],
         }
-        // this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        // this.handleCancel = this.handleCancel.bind(this);
-        // this.handleOk = this.handleOk.bind(this);
-        // this.urgentChange = this.urgentChange.bind(this);
-        // this.selectChange = this.selectChange.bind(this);
     }
-    // handleVisibleChange=(visible)=>{
-    //     console.log(this.props.data)
-    //     this.setState({
-    //         visible:visible
-    //     })
-    // }
-    /**监控是否紧急 */
-    // urgentChange(checked){
-    //     this.setState({
-    //         urgent:checked
-    //     })
-    // }
-    /**点击送审 */
-    // handleOk(){
-    //     this.setState({
-    //         visible:false
-    //     })
-    //     var data ={
-    //         process:this.state.process,
-    //         urgent:this.state.urgent
-    //     }
-    //     console.log(data)
-    // }
-    /**点击取消送审 */
-    // handleCancel(){
-    //     this.setState({
-    //         visible:false
-    //     })
-    // }
-    /**监听select变化事件 */
-    // selectChange(value){
-    //     this.setState({
-    //         process:value
-    //     })
-    // }
     /**渲染气泡卡片 Popover */
     render(){
         const Content = (

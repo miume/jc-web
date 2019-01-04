@@ -43,22 +43,22 @@ class RawTestReport extends React.Component{
         super(props);
         this.state ={
             dataSource:[],
-            searchContent : ''
+            searchContent : '',
+            pagination : {
+                showTotal(total) {
+                    return `共${total}条记录`
+                } 
+              },
+            pageChangeFlag : 0,   //0表示分页 1 表示查询
         }
         this.returnDataEntry = this.returnDataEntry.bind(this);
-        this.handleAdd = this.handleAdd.bind(this);
+        // this.handleAdd = this.handleAdd.bind(this);
         // this.deleteByIds = this.deleteByIds.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         // this.onSelectChange = this.onSelectChange.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.fetch = this.fetch.bind(this);
-        this.pagination = {
-            total: this.state.dataSource.length,
-            showTotal(total) {
-              return `共${total}条记录`
-            } ,
-          }
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -77,7 +77,7 @@ class RawTestReport extends React.Component{
             dataIndex:'sampleDeliveringDate',
             key:'sampleDeliveringDate',
             align:'center',
-            width:'15%'
+            width:'15%',
         },{
             title:'送样工厂',
             dataIndex:'deliveryFactoryName',
@@ -89,7 +89,7 @@ class RawTestReport extends React.Component{
             dataIndex:'batchNumber',
             key:'batchNumber',
             align:'center',
-            width:'13%'
+            width:'16%'
         },{
             title:'检测项目',
             dataIndex:'testItemString',
@@ -100,7 +100,7 @@ class RawTestReport extends React.Component{
                 const items = text.split(',');
                 var testItems = '';
                 if(items.length>2){
-                    testItems = items[0]+','+items[1]+','+items[2]+'...';
+                    testItems = items[0]+','+items[1]+','+items[2];
                     return <abbr title={text}>{testItems}</abbr>;
                 }else{
                   testItems = text;
@@ -168,21 +168,40 @@ class RawTestReport extends React.Component{
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId}/>
                         <Divider type='vertical' />
-                        <RecordChecking value={text} url={this.url} status={record.status} fetch={this.fetch}/>
+                        <RecordChecking value={text} url={this.url} status={record.status}/>
                     </span>
                 );
             }
         },]
     }
     handleTableChange(pagination){
-        this.fetch({
-            pageSize:pagination.pageSize,
-            pageNumber:pagination.current,
-            factoryName:this.state.searchContent
+        this.setState({
+            pagination:pagination
         })
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+                factoryName:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+            })
+        }
+        
     }
     /**?factoryName=${this.state.searchContent} */
-    fetch(params){
+    /**flag表示为1时重置pageChangeFlag */
+    fetch(params,flag){
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if(flag) 
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:''
+            })
         axios.get(`${this.url.rawTestReport.getAllByPage}`,{
             headers:{
                 'Authorization':this.url.Authorization
@@ -191,7 +210,9 @@ class RawTestReport extends React.Component{
         }).then((data)=>{
             const res = data.data.data?data.data.data.list:[];
             const da = [];
+            const {pagination} = this.state;
             if(res&&res.length>0){
+                pagination.total = res.length;
                 for(var i = 1; i <= res.length; i++){
                     var e = res[i-1];
                     da.push({
@@ -214,14 +235,15 @@ class RawTestReport extends React.Component{
                 }
             }
             this.setState({
-                dataSource:da
+                dataSource:da,
+                pagination:pagination
             })
         })
     }
     /**button新增 */
-    handleAdd(){
+    // handleAdd(){
 
-    }
+    // }
     /**删除一条记录 */
     // handleDelete(key){
     //     axios({
@@ -249,6 +271,9 @@ class RawTestReport extends React.Component{
     }
     /**搜索功能 */
     searchEvent(){
+        this.setState({
+            pageChangeFlag:1
+        })
         this.fetch({
             factoryName:this.state.searchContent
         })
@@ -271,7 +296,7 @@ class RawTestReport extends React.Component{
                         <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     </span>
                     <div className='clear'></div>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} pagination={this.pagination} scroll={{y:400}} size='small' bordered/> 
+                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} size='small' bordered/> 
                 </div>
             </div>
         );
