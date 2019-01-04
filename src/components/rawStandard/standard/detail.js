@@ -29,12 +29,12 @@ class Detail extends Component{
                    visible={this.state.visible}
                    maskClosable={false}
                    closable={false}
-                   width='440px'
+    
                    footer={[
                       <CancleButton handleCancel={this.handleCancel} flag={1}/>
                    ]}
                  >
-                 <DetailModal record={this.props.record}/>
+                 <DetailModal record={this.props.record} raw={this.props.raw} factory={this.props.factory}/>
                  </Modal>
             </span>
         );
