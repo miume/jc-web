@@ -10,99 +10,78 @@ class PackTable extends React.Component {
         key: 'index',
         // sorter: (a, b) => a.id - b.id,
         align:'center',
-        width: '6%',
+        width: '8%',
     },{
         title: '送检日期',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        dataIndex: 'deliveringDate',
+        key: 'deliveringDate',
         align:'center',
         width: '15%',
-        render: sampleDeliveringDate => {
-            return <abbr style={{cursor:'default'}} title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
+        render: deliveringDate => {
+            return <abbr style={{cursor:'default'}} title={deliveringDate?deliveringDate:'无'}>{deliveringDate?deliveringDate.substring(0,10):'无'}</abbr>
         }
     },{
         title: '送样人',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliverer.name',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliverer.name',
+        dataIndex: 'deliverName',
+        key: 'deliverName',
         align:'center',
-        width: '8%',
-        render: deliverer => {
-            return deliverer?deliverer:'无';
+        width: '10%',
+        render: deliverName => {
+            return deliverName?deliverName:'无';
         }
     },{
         title: '送样工厂',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliveryFactory.name',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.deliveryFactory.name',
+        dataIndex: 'manufacturerName',
+        key: 'manufacturerName',
         align:'center',
-        width: '8%',
-        render: deliveryFactoryName => {
-            return deliveryFactoryName?deliveryFactoryName:'无';
+        width: '10%',
+        render: manufacturerName => {
+            return manufacturerName?manufacturerName:'无';
         }
     },{
         title: '编号',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
+        dataIndex: 'serialNumber',
+        key: 'serialNumber',
         align:'center',
-        width: '15%',
-        render: serialNumberId => {
-            return serialNumberId?serialNumberId:'无';
+        width: '18%',
+        render: serialNumber => {
+            return serialNumber?serialNumber:'无';
         }
     },{
         title: '检测项目',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.testItemString',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.testItemString',
+        dataIndex: 'testItemString',
+        key: 'testItemString',
         align:'center',
-        width: '10%',
-        // render: testItems => {
-        //     return testItems?testItems:'无';
-        // }
-        render: testItems => {
-            const length = testItems?testItems.length:0;
-            if(length > 9){
-                return <abbr style={{cursor:'default'}} title={testItems?testItems:'无'}>{testItems?testItems.substring(0,9):'无'}</abbr>
+        width: '14%',
+        render: testItemString => {
+            const length = testItemString?testItemString.length:0;
+            if(length > 15){
+                return <abbr style={{cursor:'default'}} title={testItemString?testItemString:'无'}>{testItemString?testItemString.substring(0,15):'无'}</abbr>
             }
-            return testItems?testItems:'无';
+            return testItemString?testItemString:'无';
         }
     },{
         title: '异常备注',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
+        dataIndex: 'exceptionHandle',
+        key: 'exceptionHandle',
         align:'center',
-        width: '8%',
-        render: exceptionComment => {
-            return exceptionComment?exceptionComment:'无';
-        }
-    },{
-        title: '接受反馈',
-        dataIndex: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
-        key: 'testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.acceptStatus',
-        align:'center',
-        width: '8%',
-        render: acceptStatus => {
-            return acceptStatus?acceptStatus:'无';
-        }
-    },{
-        title: '审核状态',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
-        key: 'commonBatchNumberDTO.commonBatchNumber.status',
-        align:'center',
-        width: '8%',
-        render:state => {
-            return this.props.status[state.toString()];
+        width: '10%',
+        render: exceptionHandle => {
+            return exceptionHandle?exceptionHandle:'无';
         }
     },{
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '8%',
+        width: '10%',
         render: (text,record) => {
             // let operationFlag = this.judgeOperation(record.i);
             return (
                 <span>
                     <DetailSpan
                         url={this.props.url}
-                        id={record.testReportRecordDTO.testReportRecord.id}
+                        batchNumberId={record.batchNumberId}
                         modifySelectedRowKeysData={this.props.modifySelectedRowKeysData}
                     />
                 </span>
@@ -122,7 +101,7 @@ class PackTable extends React.Component {
         return(
             <Table
                 // className="purchasePackTable"
-                rowKey={record => record.testReportRecordDTO.testReportRecord.id}
+                rowKey={record => record.batchNumberId}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}
