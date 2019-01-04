@@ -368,6 +368,7 @@ class Home extends Component {
                   add:`${server}/jc/common/techProductStandard/newClasses`,
                   productStandard:`${server}/jc/common/techProductStandard`,
                   getAll:`${server}/jc/common/techProductStandard/allClasses`,
+                  addNewClass:`${server}/jc/common/techProductStandard/newClass`,
               }
         }
         localStorage.setItem('status',JSON.stringify(status));
