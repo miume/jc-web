@@ -355,7 +355,9 @@ class Home extends Component {
               /**原材料标准*/
               rawStandard:{
                  getRaw:`${server}/jc/common/techRawStandard/raw`,
-                 getFactory:`${server}/jc/common/techRawStandard/manufacturers`
+                 addRaw:`${server}/jc/common/techRawStandard/newRaw`,
+                 getFactory:`${server}/jc/common/techRawStandard/manufacturers`,
+                 addFactory:`${server}/jc/common/techRawStandard/newManufacturer`
               }
         }
         localStorage.setItem('status',JSON.stringify(status));
