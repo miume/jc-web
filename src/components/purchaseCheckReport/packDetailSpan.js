@@ -21,6 +21,7 @@ class DetailSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
+            // dataSource:{}
             detailData:{
                 topData: {},   //头部数据
                 testDTOS: [],   //中部项目
@@ -35,24 +36,10 @@ class DetailSpan extends React.Component {
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
-    handleOk = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
-    };
     handleCancel = (e) => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
+        this.setState({
+            visible: false,
+        });
     };
     render() {
         const { visible } = this.state;
@@ -87,7 +74,7 @@ class DetailSpan extends React.Component {
     }
     /**实现detailSpan里的选中功能 */
     selectionOnDetail = () => {
-        this.props.modifySelectedRowKeysData(this.props.id);
+        this.props.modifySelectedRowKeysData(this.props.batchNumberId);
         this.setState({
             visible: false,
         });
@@ -100,47 +87,60 @@ class DetailSpan extends React.Component {
     }
     /**获取该行的记录详情 */
     getDetailData(){
-        // const detail = this.props.record;
         axios({
-            url : `${this.props.url.purchaseCheckReport.testReportRecord}/${this.props.id}`,
+            url : `${this.props.url.rawTestReport.detailsByBatchNumberId}?id=${this.props.batchNumberId}`,
             method:'get',
             headers:{
                 'Authorization': this.props.url.Authorization
             },
         }).then((data)=>{
             const detail = data.data.data;
+            // if(res&&res.testDTOS) {
+            //     for(var i = 1; i<=res.testDTOS.length; i++){
+            //         var e = res.testDTOS[i-1];
+            //         e['index'] = i;
+            //     }
+            //     this.setState({
+            //         dataSource:res
+            //     })
+            // }else{
+            //     this.setState({
+            //         dataSource: []
+            //     })
+            // }
             var topData = {};  //头部数据
-            var testDTOS = [];  //中部项目
+            var middleTestDTOS = [];  //中部项目
             var testData = {};  //检验数据
             var isQualified = 0;
             if(detail){
                 //  子段没有
-                isQualified = detail.testReportRecordDTO.testReportRecord?detail.testReportRecordDTO.testReportRecord.isQualified:'';
+                isQualified = detail.testReportRecord?detail.testReportRecord.isQualified:'';
                 topData = {
-                    serialNumber: detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber:'',
-                    materialName: detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName:'',
-                    sampleDeliveringDate: detail.testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.testReportRecordDTO.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:''
+                    serialNumber: detail.serialNumber?detail.serialNumber:'无',
+                    materialName: detail.materialName?detail.materialName:'无',
+                    sampleDeliveringDate: detail.sampleDeliveringRecord?detail.sampleDeliveringRecord.sampleDeliveringDate:'无'
                 };
-                const testItemResultRecordDTOList = detail.testReportRecordDTO.testItemResultRecordDTOList;
-                if(testItemResultRecordDTOList) {
-                    for(var i=0; i<testItemResultRecordDTOList.length; i++){
-                        var e = testItemResultRecordDTOList[i];
-                        testDTOS.push({
+                const testDTOS = detail.testDTOS;
+                if(testDTOS) {
+                    for(var i=0; i<testDTOS.length; i++){
+                        var e = testDTOS[i];
+                        middleTestDTOS.push({
                             index:`${i+1}`,
                             id:e.testItemResultRecord.id,
                             testItemId:e.testItemResultRecord.testItemId,
-                            testItemName:e.testItem.name,
+                            testItemName:e.name,
                             testResult:e.testItemResultRecord.testResult,
-                            unit:e.testItem.unit
+                            unit:'g/mL'
                         })
                     }
                 }
                 testData = {
-                    tester: detail.testReportRecordDTO.judegrName?detail.testReportRecordDTO.judegrName:'',
-                    testTime: detail.testReportRecordDTO.testReportRecord?detail.testReportRecordDTO.testReportRecord.judgeDate:'',
+                    tester: detail.tester?detail.tester:'无',
+                    testTime: detail.testReportRecord?detail.testReportRecord.judgeDate:'无',
                 };
-                const examineStatus = detail.commonBatchNumberDTO.commonBatchNumber?detail.commonBatchNumberDTO.commonBatchNumber.status:'';
-                const batchNumberId = detail.commonBatchNumberDTO.commonBatchNumber?detail.commonBatchNumberDTO.commonBatchNumber.id:'';
+                console.log('11')
+                const examineStatus = detail.commonBatchNumber?detail.commonBatchNumber.status:'';
+                const batchNumberId = detail.commonBatchNumber?detail.commonBatchNumber.id:'';
                 if((examineStatus===2||examineStatus===3)&&batchNumberId){
                     axios({
                         url:`${this.props.url.toDoList}/${batchNumberId}/result`,
@@ -154,7 +154,7 @@ class DetailSpan extends React.Component {
                             this.setState({
                                 detailData:{
                                     topData: topData,
-                                    testDTOS: testDTOS,
+                                    testDTOS: middleTestDTOS,
                                     testData: testData,
                                     examine: {
                                         examineStatus: examineStatus,
@@ -168,7 +168,7 @@ class DetailSpan extends React.Component {
                             this.setState({
                                 detailData:{
                                     topData: topData,
-                                    testDTOS: testDTOS,
+                                    testDTOS: middleTestDTOS,
                                     testData: testData,
                                     examine: {
                                         examineStatus: examineStatus,
@@ -184,7 +184,7 @@ class DetailSpan extends React.Component {
                     this.setState({
                         detailData:{
                             topData: topData,
-                            testDTOS: testDTOS,
+                            testDTOS: middleTestDTOS,
                             testData: testData,
                             examine: {
                                 examineStatus: examineStatus,

@@ -311,6 +311,9 @@ class Home extends Component {
              },
              /**进货检验 */
              purchaseCheckReport:{
+                 rawPages:`${server}/jc/common/purchaseReportRecord/rawPages`,
+                 purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
+
                  unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
                  generated:`${server}/jc/common/purchaseReportRecords/generated`,
                  sampleDeliveringDate:`${server}/jc/common/purchaseReportRecords/sampleDeliveringDate`,
@@ -319,7 +322,7 @@ class Home extends Component {
                  deploy:`${server}/jc/common/purchaseReportRecords/deploy`,
                  testReportRecord: `${server}/jc/common/testReportRecord`,
                  testReportRecords: `${server}/jc/common/testReportRecords`,
-                 purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
+                 // purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
                  batchNumber:`${server}/jc/common/purchaseReportRecords/batchNumber`,
              },
              /**入库管理 */
@@ -340,7 +343,8 @@ class Home extends Component {
               rawTestReport:{
                   rawTestReport:`${server}/jc/common/rawTestReport`, 
                   getById:`${server}/jc/common/rawTestReport/details`, 
-                  getAllByPage:`${server}/jc/common/rawTestReport/pages`, 
+                  getAllByPage:`${server}/jc/common/rawTestReport/pages`,
+                  detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
               },
               /**中间品录检 */
               intermediateProduct:`${server}/jc/common/middleProductionDetection`,

@@ -10,7 +10,7 @@ import './purchaseCheckReport.css';
 class Pack extends React.Component {
     rowSelection;
     componentDidMount() {
-        this.fetch();
+        this.judgeGetAll();
     }
     constructor(props) {
         super(props);
@@ -29,7 +29,7 @@ class Pack extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
-        this.generateFetch = this.generateFetch.bind(this);
+        // this.generateFetch = this.generateFetch.bind(this);
         this.judgeGetAll = this.judgeGetAll.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
@@ -46,7 +46,7 @@ class Pack extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange,
             getCheckboxProps: record => ({
-                disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
+                disabled: record.isGenerate !== 0,
             })
         };
         // if(unGenerateDate===true){
@@ -79,7 +79,7 @@ class Pack extends React.Component {
                         <Divider type="vertical" style={{height:'35px'}}/>
                         <span style={{float:'right',paddingBottom:'8px'}}>
                             <SearchCell
-                                name='请输入送检日期'
+                                name='请输入送检人名称'
                                 searchContentChange={this.searchContentChange}
                                 searchEvent={this.searchEvent}
                                 fetch={this.judgeGetAll}
@@ -90,7 +90,7 @@ class Pack extends React.Component {
 
                 <div className='clear' ></div>
                 <PackTable
-                    fetch={this.fetch}
+                    fetch={this.judgeGetAll}
                     unGenerateDate={this.state.unGenerateDate}
                     url={this.props.url}
                     status={this.props.status}
@@ -129,14 +129,16 @@ class Pack extends React.Component {
     /**未生成和已生成的所有数据进行判断调用结构 */
     judgeGetAll = () => {
         if(this.state.unGenerateDate===true){
-            this.fetch();
+            this.fetch({
+                isGenerate: 0,
+            });
         }else{
-            this.generateFetch();
+            this.fetch();
         }
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.props.url.purchaseCheckReport.unGenerated}` ,
+            url: `${this.props.url.purchaseCheckReport.rawPages}` ,
             method: 'get',
             headers:{
                 'Authorization': this.props.url.Authorization
@@ -146,35 +148,12 @@ class Pack extends React.Component {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
-                // const dataSource = this.dataAssemble(res);
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
                 this.setState({
                     dataSource: res.list,
                     selectedRowKeys: [],
-                });
-            }
-        });
-    };
-    generateFetch = (params = {}) => {
-        axios({
-            url: `${this.props.url.purchaseCheckReport.generated}` ,
-            method: 'get',
-            headers:{
-                'Authorization': this.props.url.Authorization
-            },
-            params: params,
-        }).then((data) => {
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
-            if(res&&res.list){
-                // const dataSource = this.dataAssemble(res);
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=res.prePage*10+i;
-                }
-                this.setState({
-                    dataSource: res.list,
                 });
             }
         });
@@ -189,63 +168,17 @@ class Pack extends React.Component {
     /**---------------------- */
     /** 根据送样时间子段分页查询*/
     searchEvent(){
-        const sampleDeliveringDate = this.state.searchContent;
-        const unGenerateDate = this.state.unGenerateDate;
-        if(unGenerateDate===true){
-            //  未生成数据
-            axios({
-                url: `${this.props.url.purchaseCheckReport.sampleDeliveringDate}/unGenerated`,
-                method:'get',
-                headers:{
-                    'Authorization':this.props.url.Authorization
-                },
-                params:{
-                    size: this.pagination.pageSize,
-                    page: this.pagination.current,
-                    sampleDeliveringDate:sampleDeliveringDate
-                },
-                type:'json',
-            }).then((data)=>{
-                const res = data.data.data;
-                this.pagination.total=res?res.total:0;
-                if(res&&res.list){
-                    // const dataSource = this.dataAssemble(res);
-                    for(var i = 1; i<=res.list.length; i++){
-                        res.list[i-1]['index']=res.prePage*10+i;
-                    }
-                    this.setState({
-                        dataSource: res.list,
-                    });
-                }
+        if(this.state.unGenerateDate===true){
+            this.fetch({
+                personName:this.state.searchContent,
+                isGenerate: 0
             });
         }else{
-            //  已生成数据
-            axios({
-                url: `${this.props.url.purchaseCheckReport.sampleDeliveringDate}/generated`,
-                method:'get',
-                headers:{
-                    'Authorization':this.props.url.Authorization
-                },
-                params:{
-                    size: this.pagination.pageSize,
-                    page: this.pagination.current,
-                    sampleDeliveringDate:sampleDeliveringDate
-                },
-                type:'json',
-            }).then((data)=>{
-                const res = data.data.data;
-                this.pagination.total=res?res.total:0;
-                if(res&&res.list){
-                    // const dataSource = this.dataAssemble(res);
-                    for(var i = 1; i<=res.list.length; i++){
-                        res.list[i-1]['index']=res.prePage*10+i;
-                    }
-                    this.setState({
-                        dataSource: res.list,
-                    });
-                }
+            this.fetch({
+                personName:this.state.searchContent
             });
         }
+
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
@@ -258,26 +191,22 @@ class Pack extends React.Component {
         this.setState({
             unGenerateDate: checked
         },()=>{
-            if(this.state.unGenerateDate===true){
-                this.fetch()
-            }else{
-                this.generateFetch()
-            }
+            this.judgeGetAll();
         })
     };
     /**---------------------- */
     /**实现selectedRowKeys里的数据改变功能 */
-    modifySelectedRowKeysData = (recordId) => {
+    modifySelectedRowKeysData = (batchNumberId) => {
         var flag = 0;
         const selectedRowKeys = this.state.selectedRowKeys;
         for(var i=0; i<selectedRowKeys.length; i++){
-            if(selectedRowKeys[i]===recordId){
+            if(selectedRowKeys[i]===batchNumberId){
                 flag = 1;
             }
         }
         if(flag === 0){
             this.setState({
-                selectedRowKeys:[...this.state.selectedRowKeys,recordId]
+                selectedRowKeys:[...this.state.selectedRowKeys,batchNumberId]
             });
         }
 
