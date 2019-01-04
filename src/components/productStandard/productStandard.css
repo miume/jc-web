@@ -95,13 +95,19 @@
     height:359px;
     overflow-y: auto;
 }
+.modal-standrad-bottom{
+    /* display: inline-block; */
+    min-width: 600px;
+    height:359px;
+    overflow-y: hidden;
+}
 .block-add{
     height: 50px;
     color:#0091ff;
     cursor: pointer;
     line-height: 50px;
     text-align:center;
-    margin:20px 0 0 29px;
+    margin:21px 0 0 29px;
     display: inline-block;
     border:1px solid #0091ff;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
@@ -112,8 +118,15 @@
     cursor: pointer;
     line-height: 50px;
     text-align:center;
-    margin:20px 0 0 29px;
+    margin:21px 0 0 29px;
     display: inline-block;
+    border:1px solid #e4e4e4;
+    border-radius:3px ;/*设置4个圆角，且为5像素*/
+}
+.block-overlap{
+    height: 50px;
+    display: inline-block;
+    margin:21px 0 0 29px;
     border:1px solid #e4e4e4;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
 }
@@ -121,8 +134,18 @@
     position: relative;
     left:3px;
     top:3px;
+    z-index:11;
+    width:100%;
+    background-color:#ffffff;
+    color:black;
+    cursor: pointer;
+    height: 50px;
+    line-height: 50px;
+    text-align:center;
+    border:1px solid #e4e4e4;
+    border-radius:3px ;/*设置4个圆角，且为5像素*/
 }
-.block:hover,.block-add:hover{
+.block:hover,.block-add:hover,.block-div:hover{
     background-color: #0091ff;
     color:white;
     font-weight: bold;
@@ -178,4 +201,15 @@
     min-width: 600px;
     height:300px;
     overflow-y: auto;
+}
+/**新增型号弹出气泡*/
+.modal-popover{
+    height:80px;
+    width:200px;
+}
+.modal-popover span{
+    padding-right:8px;
+}
+.modal-popover button{
+    margin:7px 5px ;
 }
