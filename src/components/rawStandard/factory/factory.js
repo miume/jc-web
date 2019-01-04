@@ -17,10 +17,13 @@ class Manufacturer extends Component{
           searchContent:'',
           f:true,//用来判断是否显示新增的块,
           flag1:false,//用来判断新增框是否变为输入框
+          inputContent:'',
       }
       this.fetch=this.fetch.bind(this);
       this.onBlockChange=this.onBlockChange.bind(this);
-      this.add=this.add.bind(this);
+      this.addChange=this.addChange.bind(this);
+      this.addClick=this.addClick.bind(this);
+      this.addEvent=this.addEvent.bind(this);
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.checkRaw=this.checkRaw.bind(this);
@@ -37,7 +40,9 @@ class Manufacturer extends Component{
           const res=data.data.data;
           if(res){
             this.setState({
-                data:res
+                data:res,
+                flag1:false,
+                searchContent:''
             });
           }
       });
@@ -46,32 +51,38 @@ class Manufacturer extends Component{
        //console.log(e.target);
        const id=e.target.id.split('-')[0];
        const name=e.target.id.split('-')[1];
-       this.props.onBlockChange(3,name,true);
+       this.props.onBlockChange(3,name);
     }
-    add(e){//新增一个块块
+    addClick(e){//点击新增变为输入框
         this.setState({
             flag1:true
         });
-       // console.log(e.target.value);
-      
-        // axios({
-        //    url:`${this.url.rawStandard.addFactory}`,
-        //    method:'post',
-        //    headers:{
-        //        'Authorization':this.url.Authorization
-        //    },
-        //    params:{
-        //       name:
-        //    }
-        // }).then(data=>{
-
-        // }).catch(()=>{
-        //     message.info('新增失败，请联系管理员！');
-        // });
-      
-   }
-
-
+    }
+    addChange(e){//监听新增输入框的变化
+            this.setState({
+                inputContent:e.target.value
+            });
+    }
+    addEvent(){//新增事件
+         axios({
+           url:`${this.url.rawStandard.addFactory}`,
+           method:'post',
+           headers:{
+               'Authorization':this.url.Authorization
+           },
+           data:{
+              name:this.state.inputContent
+           },
+           type:'json'
+        }).then(data=>{
+             message.info(data.data.message);
+             this.fetch();
+        }).catch(()=>{
+            message.info('新增失败，请联系管理员！');
+        });
+    }
+    /**---------------------- */
+    //获取查询时用户名称的实时变化
     searchContentChange(e){
         const value=e.target.value;
         this.setState({
@@ -107,7 +118,7 @@ class Manufacturer extends Component{
     }
   
     checkRaw(e){//点击重新选择原材料调用的函数
-        this.props.onBlockChange(1,'生产厂家',false);//跳回生产厂家界面后，就不可以点击那个面板了
+        this.props.onBlockChange(1,'生产厂家');//跳回生产厂家界面后，就不可以点击那个面板了
     }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
@@ -116,9 +127,11 @@ class Manufacturer extends Component{
               <div style={{padding:'15px'}}>
                &nbsp; <h2 style={{display:'inline-block'}}>请选择生产厂家</h2>
                 <span  className='fr'>
-                 <SearchCell name='请输入搜索内容'
-                 searchEvent={this.searchEvent}
-                 searchContentChange={this.searchContentChange}
+                 <SearchCell name='请输入工厂名称'
+                    searchEvent={this.searchEvent}
+                    searchContentChange={this.searchContentChange}
+                    fetch={this.fetch}
+                    type={this.props.type}
                  />
                 </span>
               </div>
@@ -128,7 +141,7 @@ class Manufacturer extends Component{
                     <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
-                   <span className={this.state.f?'show':'hide'}><DataPart flag1={this.state.flag1}  flag={1} name='新增' onBlockChange={this.add}/></span>
+                   <span className={this.state.f?'show':'hide'}><DataPart flag1={this.state.flag1}  flag={1} name='新增' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/></span>
               </div>
               
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>

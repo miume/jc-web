@@ -94,10 +94,24 @@
     color: #1890ff;
     cursor: pointer;
 }
+@media screen and (min-width: 1300px){
+    .block-width{
+        width:14%;
+    }
+}
+@media screen and (max-width: 1300px){
+    .block-width{
+        width:22%;
+    }
+}
+@media screen and (max-width: 1200px){
+    .block-width{
+        width:28%;
+    }
+}
 /**输入框的样式*/
 .rawStandardInput{
-    
     height: 48px !important;/**important的优先级最高*/
-    width: 158px !important;
-    
+    width: 100% !important;
+    border:none !important;
 }

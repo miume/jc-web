@@ -12,9 +12,6 @@ class RawStandard extends Component{
         super(props);
         this.state={
             flag:1,//决定渲染那个界面
-            click1:false,//是否可以点击
-            click2:false,
-            click3:false,
             content1:'选择原材料',//最开始是这样，但是一旦选择之后会改成所选择的那个文字
             content2:'选择生产厂家',
             content3:'设置标准',
@@ -27,28 +24,23 @@ class RawStandard extends Component{
         this.clickToFactory=this.clickToFactory.bind(this);
     }
  
-  onBlockChange1(flag,content1,click1){//原材料那个块是否被选中，选中后发生的变化
-      //console.log(flag,content1,click1);
-    
+  onBlockChange1(flag,content1){//原材料那个块是否被选中，选中后发生的变化
+      //console.log(flag,content1);
       this.setState({
         flag:flag,
         content1:content1,
-        click1:click1//后面被选中的时候，就可以点击这个面板了
     });
   }
-
-  onBlockChange2(flag,content2,click2){
+  onBlockChange2(flag,content2){
          this.setState({
              flag:flag,
              content2:content2,
-             click2:click2,
          });
   }
-  onBlockChange3(flag,content3,click3){
+  onBlockChange3(flag,content3){
     this.setState({
         flag:flag,
         content3:content3,
-        click3:click3,
     });
 }
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
@@ -76,13 +68,13 @@ class RawStandard extends Component{
                      <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} ><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content3}</div> 
                    <div >
                      <div  className={this.state.flag===1?'show':'hide'}>
-                         <RawMaterial onBlockChange={this.onBlockChange1} />
+                         <RawMaterial onBlockChange={this.onBlockChange1} type={1}/>
                      </div>
                      <div   className={this.state.flag===2?'show':'hide'}  >
-                          <Manufacturer onBlockChange={this.onBlockChange2} /> 
+                          <Manufacturer onBlockChange={this.onBlockChange2} type={2}/> 
                       </div>
                      <div className={this.state.flag===3?'show':'hide'}>
-                          <Standard onBlockChange={this.onBlockChange3}/>
+                          <Standard onBlockChange={this.onBlockChange3} type={3} raw={this.state.content1} factory={this.state.content2}/>
                       </div>
                      </div>
                    </div > 

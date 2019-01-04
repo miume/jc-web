@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Table} from 'antd';
 import './detail.css';
 
 
@@ -6,7 +7,40 @@ class DetailModal extends Component{
     constructor(props){
         super(props);
     }
+    columns=[{
+         title:'序号',
+         dataIndex:'index',
+         key:'index',
+         align:'center',
+         width:'20%'
+    },{
+        title:'检测项目',
+        dataIndex:'',
+        key:'testName',
+        align:'center',
+        width:'25%'
+    },{
+        title:'检测标准',
+        dataIndex:'',
+        key:'testStandard',
+        align:'center',
+        width:'25%'
+    },{
+        title:'计量单位',
+        dataIndex:'',
+        key:'unit',
+        align:'center',
+        width:'25%'
+    }];
     render(){
+        const columns=this.columns.map((col)=>{
+             return{
+                 ...col,
+                 onCell:record=>({
+                     record,
+                 })
+             };
+        });
         return(
             <div>
                <div className='rawStandardTop'>
@@ -21,14 +55,29 @@ class DetailModal extends Component{
                        <tbody>
                            <tr>
                                <td>{this.props.record.batchNumber}</td>
-                               <td></td>
-                               <td></td>
+                               <td>{this.props.raw}</td>
+                               <td>{this.props.factory}</td>
                            </tr>
                        </tbody>
                    </table>
                </div>
-               <div></div>
-               <div></div>
+               <div style={{height:'15px'}}></div>
+               <div style={{height:'300px'}}>
+                   <Table className='rawStandardTable'
+                      rowKey={record=>record.index}
+                      columns={columns}
+                      size='small'
+                      scroll={{y:230}}
+                      bordered/>
+               </div>
+               <div style={{marginTop:'15px'}}>
+                       <div>
+                           施行时间：<span></span>
+                       </div>
+                       <div>
+                           编制日期：<span></span>
+                       </div>
+                </div>
             </div>
         );
     }

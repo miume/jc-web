@@ -14,8 +14,6 @@ for(var i=0;i<20;i++){
     }
   );
 }
-
-
   class Standard extends Component{
      constructor(props){
         super(props);
@@ -71,7 +69,7 @@ for(var i=0;i<20;i++){
                     <span>
                         <Edit editFlag={editFlag}/>
                         <Divider type='vertical'/>
-                        <Detail record={record}/>
+                        <Detail record={record} raw={this.props.raw} factory={this.props.factory}/>
                     </span>
                 );
             }
@@ -93,7 +91,7 @@ for(var i=0;i<20;i++){
      checkRaw(e){//点击重新选择厂家调用的函数
         //    const name=this.props.returnRaw();
         //    console.log(name);
-            this.props.onBlockChange(2,'设置标准',false);//跳回原材料界面后，就不可以点击那个面板了
+            this.props.onBlockChange(2,'设置标准');//跳回原材料界面后，就不可以点击那个面板了
         }
      searchEvent(){
 
@@ -110,6 +108,7 @@ for(var i=0;i<20;i++){
                 <SearchCell name='请输入搜索内容'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
+                    type={this.props.type}
                 />
                 </span>
              </div>

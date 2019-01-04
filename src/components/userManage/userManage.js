@@ -260,7 +260,8 @@ class User extends React.Component{
             res.list[i-1]['index']=res.prePage*10+i;
         }
         this.setState({
-          dataSource:res.list//list取到的是所有符合要求的数据
+          dataSource:res.list,//list取到的是所有符合要求的数据
+          searchContent:''
         });
         }
 
@@ -465,10 +466,6 @@ class User extends React.Component{
              type:'json'
            })
            .then((data)=>{
-             //console.log(data);
-            // console.log(this.pagination);
-            //  console.log(data.data);
-            //  console.log(data.data.data);
              const res=data.data.data;
              this.pagination.total=res?res.total:0;
              if(res&&res.list){
