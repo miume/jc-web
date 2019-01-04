@@ -96,7 +96,6 @@ class OperationManagement extends React.Component {
     };
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        console.log('pagination',pagination);
         const pageChangeFlag = this.state.pageChangeFlag;
         if(pageChangeFlag===0){
             this.fetch({
@@ -126,7 +125,6 @@ class OperationManagement extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
-            // this.pagination.current = params.page;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
@@ -134,7 +132,7 @@ class OperationManagement extends React.Component {
                 dataSource: res.list,
                 searchContent: '',
                 selectedRowKeys: [],
-                pageChangeFlag: 0
+                pageChangeFlag: 0,
             });
         })
     };
