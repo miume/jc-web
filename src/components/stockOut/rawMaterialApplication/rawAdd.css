@@ -2,7 +2,7 @@
     position: relative;
   }
   
-  .editable-cell-value-wrap {
+.editable-cell-value-wrap {
     padding: 5px;
     cursor: pointer;
     border:none;
@@ -35,7 +35,9 @@
   .stock-out .ant-table-body .ant-table-tbody>tr>td{
     padding : 0px 0px !important;
     height: 30px;
-    text-align: center;
+  }
+  .stock-out .ant-table-body .ant-table-tbody>tr>td input{
+    text-align: center !important;
   }
   /* .stock-out .ant-table-body {
     max-height: 200px !important;

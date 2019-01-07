@@ -228,14 +228,16 @@ class RecordChecking extends React.Component{
                 }
             })
         }
+        const judger = JSON.parse(localStorage.getItem('menuList')).userId;
         axios.put(`${this.props.url.rawTestReport.rawTestReport}`,{
             testDTOS:testDTOS,
             sampleDeliveringRecord:{
                 id:this.props.value
             },
             testReportRecord:{
-                isQualified:IsQualified
-            }
+                isQualified:IsQualified,
+                judger:judger
+            },
         },{
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -246,7 +248,7 @@ class RecordChecking extends React.Component{
                 this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
-                this.props.fetch();
+                // this.props.fetch();
             }
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
