@@ -45,9 +45,9 @@
     display:block;
 }
 
-#edit::-webkit-scrollbar{
+/* #edit::-webkit-scrollbar{
     display: none;
-}
+} */
 
 #edit tr td{
     border: 1px #E4E4E4 solid;

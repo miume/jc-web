@@ -137,7 +137,7 @@ class Material extends React.Component{
                     $this.setState({dataSource: newDataSource})
                     var row = "Mrow"+index
                     var Frow = "Mrow"+(index-1)
-                    if(index == 0){
+                    if(index === 0){
                         let col = document.getElementsByClassName(row)
                         for(var i=0;i<col.length;i++){
                             col[i].classList.add("MnowChange")
@@ -145,9 +145,9 @@ class Material extends React.Component{
                     }else if(index >=0){
                         let col = document.getElementsByClassName(row)
                         let Fcol = document.getElementsByClassName(Frow)
-                        for(var i=0;i<col.length;i++){
-                            col[i].classList.add("MnowChange")
-                            Fcol[i].classList.remove("MnowChange")
+                        for(var t=0;t<col.length;t++){
+                            col[t].classList.add("MnowChange")
+                            Fcol[t].classList.remove("MnowChange")
                         }
                     }
                     setTimeout(()=>{

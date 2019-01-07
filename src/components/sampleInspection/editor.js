@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Input,Select,DatePicker,TimePicker,Col,Checkbox,message  } from 'antd';
+import { Modal,Input,Select,DatePicker,TimePicker,Col,Checkbox,message  } from 'antd';
 import axios from "axios";
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
@@ -391,8 +391,8 @@ class Editor extends React.Component{
                     style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.onCreate} style='button' className='fa fa-check' />,
-                        <AddButton key="submit" handleClick={this.onCenter} name='提交' style='button' className='fa fa-check' />
+                        <SaveButton key="define" handleSave={this.onCreate} className='fa fa-check' />,
+                        <AddButton key="submit" handleClick={this.onCenter} name='提交' className='fa fa-check' />
                       ]}
                 >
                       <Select disabled onChange={this.selectChange} placeholder="请选择样品种类" defaultValue={this.state.type} style={{width:"320px"}}>

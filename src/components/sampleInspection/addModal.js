@@ -283,8 +283,8 @@ const CollectionCreateForm = Form.create()(
                     style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
-                        <SaveButton key="define" handleSave={onCreate} style='button' className='fa fa-check' />,
-                        <AddButton key="submit" handleClick={onCenter} name='提交' style='button' className='fa fa-check' />
+                        <SaveButton key="define" handleSave={onCreate} className='fa fa-check' />,
+                        <AddButton key="submit" handleClick={onCenter} name='提交' className='fa fa-check' />
                       ]}
                 >
                     <Form horizontal='true'>

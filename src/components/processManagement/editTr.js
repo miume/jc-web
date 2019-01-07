@@ -48,7 +48,7 @@ class EditTr extends React.Component{
             <tr className='tbody' key={i}>
                 <td style={{width:"170px"}}><select style={{border:"none"}} defaultValue={m.userId} id="sleID" name="sleID" className="sleID" placeholder="请选择负责人">{children}</select></td>
                 <td style={{width:"155px"}}><input name="input" onChange={this.onChange} style={{border:"none"}} className="proinputName" value={m.responsibility} placeholder="请输入职责"/></td>
-                <td style={{width:"146px"}}><span style={{width:'100%'}} className="blue" onClick={()=>this.props.deleteRow(m.id)} value={m.id}>删除</span></td>
+                <td style={{width:"122px"}}><span style={{width:'100%'}} className="blue" onClick={()=>this.props.deleteRow(m.id)} value={m.id}>删除</span></td>
             </tr>
         )})
         )
