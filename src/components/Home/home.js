@@ -314,6 +314,8 @@ class Home extends Component {
                  rawPages:`${server}/jc/common/purchaseReportRecord/rawPages`,
                  purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
                  generate:`${server}/jc/common/purchaseReportRecord/generate`,
+                 releasePages:`${server}/jc/common/purchaseReportRecord/releasePages`,
+                 purchasePages:`${server}/jc/common/purchaseReportRecord/purchasePages`,
 
                  unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
                  generated:`${server}/jc/common/purchaseReportRecords/generated`,

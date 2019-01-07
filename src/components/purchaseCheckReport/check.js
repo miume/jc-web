@@ -51,7 +51,7 @@ class Check extends React.Component {
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell
-                        name='请输入批号'
+                        name='请输入原材料名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
@@ -81,7 +81,7 @@ class Check extends React.Component {
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.props.url.purchaseCheckReport.audit}` ,
+            url: `${this.props.url.purchaseCheckReport.purchasePages}` ,
             method: 'get',
             headers:{
                 'Authorization': this.props.url.Authorization
@@ -98,34 +98,19 @@ class Check extends React.Component {
                 this.setState({
                     dataSource: res.list,
                 });
+            }else{
+                this.setState({
+                    dataSource: [],
+                });
             }
         });
     };
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const batchNumber = this.state.searchContent;
-        axios({
-            url: `${this.props.url.purchaseCheckReport.batchNumber}`,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-                batchNumber: batchNumber
-            },
-            type:'json',
-        }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
-            }
-            this.setState({
-                dataSource: res.list,
-            });
+        console.log(this.state.searchContent)
+        this.fetch({
+            materialName:this.state.searchContent,
         });
     };
     /**获取查询时角色名称的实时变化 */

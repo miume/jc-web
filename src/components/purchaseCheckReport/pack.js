@@ -68,7 +68,7 @@ class Pack extends React.Component {
             <div>
                 <div>
                     <PackGenerateModal
-                        fetch={this.fetch}
+                        fetch={this.judgeGetAll}
                         url={this.props.url}
                         menuList={this.props.menuList}
                         selectedRowKeys={this.state.selectedRowKeys}
