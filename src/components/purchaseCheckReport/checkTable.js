@@ -20,8 +20,8 @@ class CheckTable extends React.Component {
         width: '5%',
     },{
         title: '批号',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
-        key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
+        dataIndex: 'commonBatchNumber.batchNumber',
+        key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
         render: batchNumber => {
@@ -29,8 +29,8 @@ class CheckTable extends React.Component {
         }
     },{
         title: '原材料',
-        dataIndex: 'materialName',
-        key: 'materialName',
+        dataIndex: 'details.materialName',
+        key: 'details.materialName',
         align:'center',
         width: '6%',
         render: materialName => {
@@ -38,17 +38,17 @@ class CheckTable extends React.Component {
         }
     },{
         title: '生产厂家',
-        dataIndex: 'manufacture',
-        key: 'manufacture',
+        dataIndex: 'details.manufactureName',
+        key: 'details.manufactureName',
         align:'center',
         width: '6%',
-        render: manufacture => {
-            return manufacture?manufacture:'无';
+        render: manufactureName => {
+            return manufactureName?manufactureName:'无';
         }
     },{
         title: '到货日期',
-        dataIndex: 'receiveDate',
-        key: 'receiveDate',
+        dataIndex: 'details.receiveDate',
+        key: 'details.receiveDate',
         align:'center',
         width: '8%',
         render: receiveDate => {
@@ -56,8 +56,8 @@ class CheckTable extends React.Component {
         }
     },{
         title: '创建人',
-        dataIndex: 'commonBatchNumberDTO.createPersonName',
-        key: 'commonBatchNumberDTO.createPersonName',
+        dataIndex: 'createPersonName',
+        key: 'createPersonName',
         align:'center',
         width: '6%',
         render: createPersonName => {
@@ -65,8 +65,8 @@ class CheckTable extends React.Component {
         }
     },{
         title: '创建日期',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
-        key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
+        dataIndex: 'commonBatchNumber.createTime',
+        key: 'commonBatchNumber.createTime',
         align:'center',
         width: '8%',
         render: createTime => {
@@ -74,8 +74,8 @@ class CheckTable extends React.Component {
         }
     },{
         title: '审核状态',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
-        key: 'commonBatchNumberDTO.commonBatchNumber.status',
+        dataIndex: 'commonBatchNumber.status',
+        key: 'commonBatchNumber.status',
         align:'center',
         width: '8%',
         render:status => {
@@ -83,30 +83,32 @@ class CheckTable extends React.Component {
         }
     },{
         title: '紧急',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
-        key: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
+        dataIndex: 'commonBatchNumber.isUrgent',
+        key: 'commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
-        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+        render:isUrgent=>{
+            return isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>
+        },
     },{
         title: '操作',
-        dataIndex: 'purchaseReportRecord.id',
-        key: 'purchaseReportRecord,id',
+        dataIndex: 'commonBatchNumber.id',
+        key: 'commonBatchNumber,id',
         align:'center',
         width: '11%',
         render: (text,record) => {
-            const status = record.commonBatchNumberDTO.commonBatchNumber.status;
-            let operationCheckFlag = this.judgeCheckOperation(status);
-            // let operationCheckFlag = true;
-            let operationDeleteFlag = this.judgeDeleteOperation(status);
-            // let operationDeleteFlag = true;
+            const status = record.commonBatchNumber.status;
+            // let operationCheckFlag = this.judgeCheckOperation(status);
+            let operationCheckFlag = true;
+            // let operationDeleteFlag = this.judgeDeleteOperation(status);
+            let operationDeleteFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
                         <CheckEditSpan
                             fetch={this.props.fetch}
                             url={this.props.url}
-                            id={record.purchaseReportRecord.id}
+                            id={record.commonBatchNumber.id}
                             menuList={this.props.menuList}
                         />
                     ):(
@@ -115,7 +117,7 @@ class CheckTable extends React.Component {
                     <Divider type="vertical" />
                     <CheckReleaseSpan
                         url={this.props.url}
-                        id={record.purchaseReportRecord.id}
+                        id={record.commonBatchNumber.id}
                         menuList={this.props.menuList}
                         state={record.state}
                         name='详情'
@@ -143,7 +145,7 @@ class CheckTable extends React.Component {
         });
         return(
             <Table
-                rowKey={record => record.purchaseReportRecord.id}
+                rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
@@ -155,14 +157,14 @@ class CheckTable extends React.Component {
     }
     /**判断编辑、删除可否功能 */
     judgeCheckOperation = (record) => {
-        if(record===0||record===3){
+        if(record===-1||record===3){
             return true;
         }else{
             return false;
         }
     };
     judgeDeleteOperation = (record) => {
-        if(record===0){
+        if(record===-1){
             return true;
         }else{
             return false;
