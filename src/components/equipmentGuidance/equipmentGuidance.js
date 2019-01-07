@@ -116,6 +116,7 @@ class Equipment extends React.Component{
                 <div style={{padding:'15px'}}>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                 <SearchCell name='请输入指导书名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                <div className='clear'></div>
                 <Table size="small" dataSource={data} rowSelection={rowSelection} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
                 </div>
             </div>

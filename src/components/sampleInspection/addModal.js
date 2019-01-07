@@ -9,8 +9,6 @@ import moment from "moment";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-// const userId = localStorage.getItem('menuList')
-// let ob = JSON.parse(userId)
 
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
@@ -121,20 +119,6 @@ const CollectionCreateForm = Form.create()(
                 }
                 
             })
-
-            // axios({
-            //     url: `${this.server}/jc/common/repoBaseSerialNumber`,
-            //     method : 'get',
-            //     params : {materialClass:2},
-            //     headers:{
-            //         'Authorization': this.Authorization
-            //     },
-            // }).then((data) =>{
-            //     const res = data.data.data;
-            //     this.setState({
-            //         MiddleserialNumber:res
-            //       })
-            // })
 
             axios({
                 url: `${this.server}/jc/common/repoBaseSerialNumber`,
@@ -399,7 +383,7 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
                                             )
                                         })
                                     }
@@ -433,7 +417,7 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.serialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.materialName+" - "+pe.manufacturerName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName+" - "+pe.manufacturerName}</Option>
                                             )
                                         })
                                     }
@@ -447,7 +431,7 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.FinalserialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
                                             )
                                         })
                                     }
@@ -457,7 +441,7 @@ const CollectionCreateForm = Form.create()(
                         }
                         <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('exceptionComment', {
-                                rules: [{ required: true, message: '请输入异常备注' }],
+                              
                             })(
                                 <Input placeholder="请输入异常备注"/>
                             )}

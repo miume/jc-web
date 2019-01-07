@@ -63,6 +63,10 @@ class SampleInspection extends React.Component{
             key: 'sampleDeliveringRecord.sampleDeliveringDate',
             align:'center',
             width: '13%',
+            render:(text)=>{
+                const items = text.split(' ')
+                return <abbr title={text}>{items[0]}</abbr>
+            }
         },{
             title: '送检人',
             dataIndex: 'deliverer.name',
@@ -81,6 +85,13 @@ class SampleInspection extends React.Component{
             key: 'serialNumberName',
             align:'center',
             width: '11%',
+            render:(text)=>{
+                if(text.length>8){
+                    return <abbr title={text}>{text.substr(0,7)}</abbr>
+                }else{
+                    return text
+                }
+            }
         },{
             title: '异常备注',
             dataIndex: 'sampleDeliveringRecord.exceptionComment',
