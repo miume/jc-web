@@ -20,8 +20,7 @@ class RecordChecking extends React.Component{
         super(props);
         this.state = {
             visible:false,
-            // dataSource:data,
-            detail:[],
+            detail:[],    
             topData:{},
             visible1:false,  //用来控制送审弹出框
             process:-1,      //审核流程
@@ -64,7 +63,7 @@ class RecordChecking extends React.Component{
             width:'25%',
             render:(text,record)=>{
                 //<Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />
-                return <Input id={record.id} name='testResult' placeholder='请输入检测结果' defaultValue={text} style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} />
+                return <Input id={record.id} name='testResult' placeholder='请输入检测结果' defaultValue={text} style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} className='stock-out-input' />
             }
         },{
             title:'计量单位',
@@ -95,6 +94,7 @@ class RecordChecking extends React.Component{
             var topData = {};
             var {flag,fail} = this.state;
             if(res){
+                console.time('halo')
                 var IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 if(IsQualified) flag = 1; else fail = 1;
                 topData={
@@ -102,6 +102,9 @@ class RecordChecking extends React.Component{
                     materialName: res.materialName?res.materialName:'',
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
+                console.timeEnd('halo') 
+                console.log('%c halo end.', 'color:red;')  
+                console.time('halo2')
                 if(res.testDTOS){
                     for(var i = 0; i < res.testDTOS.length; i++){
                         var e = res.testDTOS[i];
@@ -115,22 +118,32 @@ class RecordChecking extends React.Component{
                             })
                     }   
                 }
-                //console.log(details)
+                console.timeEnd('halo2')
+                // console.log(details)
+                console.log(`%c halo2 end`, 'color:lightseagreen;')
                 this.setState({
                     detail:details,
+                    detailData:details,
                     topData:topData,
                     flag:flag,
                     fail:fail
                 })
+                console.log(this.state)
             }
         })
     }
     
-    /**点击取消按钮 */
+    /**点击取消按钮 要将input框的内容置空*/
     handleCancel(){
         this.setState({
             visible:false
         })
+        this.getEditorData();
+        // const docu = document.getElementsByClassName('stock-out-input');
+        // for(var i = 0; i < docu.length; i++){
+        //     docu[i].value='';
+        // }
+        
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){
@@ -181,7 +194,6 @@ class RecordChecking extends React.Component{
         this.setState({
             visible1:false,
         })
-        // this.props.cancle();
     }
     /**点击确定送审 */
     handleOkApply(){

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Block from './block';
 import {message} from 'antd';
+import Line from '../todolist/line';
 class SelectModal extends React.Component{
     constructor(props){
         super(props);
@@ -31,9 +32,8 @@ class SelectModal extends React.Component{
         }else if(ids[2]){
             this.props.getAllModal({
                 parentId:ids[0]
-            })
+            },ids)
         }else{
-            console.log(ids)
             this.props.getAllProductStandard({
                 classId:parseInt(ids[0]) 
             })
@@ -116,12 +116,27 @@ class SelectModal extends React.Component{
     //     })
     // }
     render(){
+        const count = this.props.modalArr?this.props.modalArr.length:0;
         return (
             <div className='modal-standrad-bottom'>
                 <div className='product-modal'>
                     <div className='product-modal-1'><i className='fa fa-2x fa-caret-left'></i></div>
                     <div className='product-modal-2'>
-                        <div className='product-modal-2-scroll'></div>
+                        <div className='product-modal-2-scroll'>
+                        {
+                            this.props.modalArr?
+                            this.props.modalArr.map((e,index)=>{
+                                return (
+                                    <div key={`${e.id}`} className='product-modal-2-div'>
+                                        <div style={{display:'flex'}}>
+                                            <div className='product-modal-2-circle'>{index+1}</div>
+                                            <div>{e.name}</div>
+                                        </div>
+                                        <Line index={index+1} count={count}/>
+                                    </div>)
+                            }): null
+                        }
+                        </div>
                     </div>
                     <div className='product-modal-1'><i className='fa fa-2x fa-caret-right'></i></div>
                 </div>

@@ -99,7 +99,7 @@ class RawTestReport extends React.Component{
             render:(text)=>{ 
                 const items = text.split(',');
                 var testItems = '';
-                if(items.length>2){
+                if(items.length>3){
                     testItems = items[0]+','+items[1]+','+items[2];
                     return <abbr title={text}>{testItems}</abbr>;
                 }else{
@@ -211,10 +211,12 @@ class RawTestReport extends React.Component{
             const res = data.data.data?data.data.data:[];
             const da = [];
             const {pagination} = this.state;
+            // console.time('hello')
             if(res&&res.list.length>0){
                 pagination.total = res.total;
                 for(var i = 1; i <= res.list.length; i++){
                     var e = res.list[i-1];
+                    
                     da.push({
                         index:i+res.prePage*10,
                         id:e.sampleDeliveringRecord.id,
@@ -234,6 +236,8 @@ class RawTestReport extends React.Component{
                     })
                 }
             }
+            // console.log('%c hello end.', 'font-size:20px; color:orange;')
+            // console.timeEnd('hello')
             this.setState({
                 dataSource:da,
                 pagination:pagination

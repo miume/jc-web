@@ -20,6 +20,7 @@ class ProductStandard extends React.Component{
             allProduct:[],  //选择产品界面的所有产品
             flag:1,//决定渲染那个界面 1表示选择产品界面product 2表示选择型号selectModal 3表示设置标准setStardand
             allProductStandard:[],  //保存所有标准
+            modalArr:[],    //用来存储选择型号 所点击的所有型号
         }
         this.fetch = this.fetch.bind(this);
         this.clickI = this.clickI.bind(this);
@@ -43,7 +44,10 @@ class ProductStandard extends React.Component{
     }
     /**点击选择产品、选择标准时对应的变化 */
     divCilck(e){
-        const id = e.target.id.split('-')[1];
+        var id = e.target.id ;
+        /**id不存在，则点击是子元素，则要找到父元素，然后找齐id */
+        if(!id) id = e.target.parentNode.id; 
+        id = id.split('-')[1];
         /**只能在flag为2，3时，点击选择产品  只有在flag为3时可以点击选择型号 */
         /**如果点击选则产品 则回到选择产品页面 以及将选择型号和设置标准置灰 */
         if(id==='1'){
@@ -78,7 +82,18 @@ class ProductStandard extends React.Component{
         })
     }
     /**获取所有型号 */
-    getAllSelectModal(params){
+    getAllSelectModal(params,ids){
+        if(ids){
+            var {modalArr} = this.state;
+            modalArr.push({
+                id:ids[0],
+                name:ids[1]
+            })
+            this.setState({
+                modalArr:modalArr
+            })
+            console.log(modalArr)
+        }
         axios.get(`${this.url.productStandard.getAll}`,{
             headers:{
                 Authorization:this.url.Authorization,
@@ -235,7 +250,7 @@ class ProductStandard extends React.Component{
                         }
                         </div>
                         <div  className={this.state.flag===2?'':'hide'}>
-                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} />
+                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} />
                         </div>
                         <div className={this.state.flag===3?'':'hide'}>
                             <SelectProductStandard data={this.state.allProductStandard} />
