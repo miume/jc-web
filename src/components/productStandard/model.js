@@ -17,18 +17,31 @@ class SelectModal extends React.Component{
         this.addModal = this.addModal.bind(this);
         this.blockClick = this.blockClick.bind(this);
         this.handleOk = this.handleOk.bind(this);
+        this.getSonModal = this.getSonModal.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
+    /**点击型号的block */
     blockClick(e){
         const id = e.target.id;
+        var ids = id.split('-');
         if(id==='-1'){
             this.setState({
                 add:1
             })
+        }else if(ids[2]){
+            this.props.getAllModal({
+                parentId:ids[0]
+            })
+        }else{
+            console.log(ids)
         }
         // const parentNode = e.target.parentNode;
         // parentNode.style.backgroundColor = '#0091ff';
         // console.log(e.target.parentNode.className)
+    }
+    /**根据父亲型号 查询其所有子型号 */
+    getSonModal(ids){
+        
     }
     /**点击型号新增 */
     clickI(e){
@@ -75,10 +88,11 @@ class SelectModal extends React.Component{
             isLeaf:flag
         })
     }
-    /**新增型号弹出气泡 取消按钮 */
+    /**新增型号弹出气泡 取消按钮 变成新增按钮 */
     handleCancel(){
         this.setState({
-            visible:false
+            visible:false,
+            add:0,
         })
     }
     /**新增型号弹出气泡 确定按钮 */

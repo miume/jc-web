@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {Input,Popover,Switch,Button} from 'antd';
 class Block extends Component{
   render(){
+      /**判断是否存在子型号 */
       if(this.props.isLeaf){
         return(
             <div className='block-overlap block-width'>
-                <div className='block-div' onClick={this.props.onBlockChange}>
-                  <span id={`${this.props.id}`}>{this.props.name}</span>
-            </div>
+                <div id={`${this.props.id}-${this.props.isLeaf?1:0}`} className='block-div' onClick={this.props.onBlockChange}>
+                  {this.props.name}
+                </div>
             </div>   
         );
       }else{
@@ -29,7 +30,7 @@ class Block extends Component{
                 >
                      <Input className='block-input' placeholder={`请输入${this.props.name}名称`} addonAfter={<i className='fa fa-check block-input-i' onClick={this.props.clickI}  id={`${this.props.id}`} />} />
                 </Popover>
-                :<p id={`${this.props.id}`}><i className={this.props.flag?'fa fa-plus':'hide'}></i> {this.props.name}</p>
+                :<div id={`${this.props.id}`}><i className={this.props.flag?'fa fa-plus':'hide'}></i> {this.props.name}</div>
             }
             </div>
                  

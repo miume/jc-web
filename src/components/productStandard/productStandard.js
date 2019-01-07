@@ -191,9 +191,9 @@ class ProductStandard extends React.Component{
                 <Blockquote name={current.menuName} menu={current.menuParent}  />
                 <div className='productStandard'>  
                     <div className='product-standrad-top'>
-                        <div onClick={this.state.flag===2||this.state.flag===3?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span>{this.state.flag===1?'选择产品':this.state.selectProduct}</span></div>
-                        <div onClick={this.state.flag===3?this.divCilck:null} id='product-2' className='product-standrad-top-notclick'><i className='fa fa-cubes'></i><span>选择型号</span></div>
-                        <div id='product-3' className='product-standrad-top-notclick'><i className='fa fa-stop'></i> <span>设置标准</span></div>
+                        <div onClick={this.state.flag===2||this.state.flag===3?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择产品':this.state.selectProduct}</span></div>
+                        <div onClick={this.state.flag===3?this.divCilck:null} id='product-2' className='product-standrad-top-notclick'><i className='fa fa-cubes'></i><span className='product-standrad-top-span'>选择型号</span></div>
+                        <div id='product-3' className='product-standrad-top-notclick'><i className='fa fa-stop'></i> <span className='product-standrad-top-span'>设置标准</span></div>
                     </div>
                     <div className='product-standrad-middle'>
                         <div>
