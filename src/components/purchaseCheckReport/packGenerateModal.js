@@ -100,76 +100,81 @@ class PackGenerateModal extends React.Component {
         })
     };
     handlePack = () => {
-        const ids = this.props.selectedRowKeys;
-        if(ids.length===0){
+        const batchNumberIds = this.props.selectedRowKeys.toString();
+        const params = {
+            batchNumberIds:batchNumberIds,
+            createPersonId:this.props.menuList.userId,
+        };
+        if(batchNumberIds.length===0){
             message.info('请选择记录！')
         }else{
             axios({
-                url: `${this.props.url.purchaseCheckReport.testReportRecords}/ids`,
+                url: `${this.props.url.purchaseCheckReport.generate}`,
                 method:'post',
                 headers:{
                     'Authorization':this.props.url.Authorization
                 },
-                data:ids,
-                type:'json'
+                params:params
+                // type:'json'
             }).then((data)=>{
-                const detail = data.data.data;
-                var headData = [];
-                var tbodyData = [];
-                var judger = '';
-                var judgement = '';
-                var topData = {};
-                if(detail){
-                    topData = {
-                        materialName: '',
-                        norm: '',
-                        quantity: '',
-                        sampleDeliveringDate:'',
-                        deliveryFactory:''
-                        // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
-                        // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
-                    };
-                    let detailHead = detail[0].testReportRecordDTO.testItemResultRecordDTOList;
-                    for(let i=0; i<detailHead.length; i++){
-                        headData.push({
-                            id: detailHead[i].testItemResultRecord.id,
-                            testItem: detailHead[i].testItem.name,
-                            itemUnit: detailHead[i].testItem.unit,
-                            rawTestItemStandard: detailHead[i].rawTestItemStandard?detailHead[i].rawTestItemStandard.value:'',
-                        })
-                    }
-                    let detailTbody = detail;
-                    for(let j=0; j<detailTbody.length; j++){
-                        let testItemResultRecordDTOList = detailTbody[j].testReportRecordDTO.testItemResultRecordDTOList;
-                        let tbodyMiddleData = {};
-                        testItemResultRecordDTOList.map((e) => {
-                            tbodyMiddleData[e.testItem.name] = {
-                                'isValid':e.testItemResultRecord.isValid,
-                                'testResult':e.testItemResultRecord.testResult,
-                                'id':e.testItemResultRecord.id,
-                            }
-                        });
-                        tbodyData.push({
-                            index: `${j+1}`,
-                            id: detailTbody[j].testReportRecordDTO.testReportRecord.id,
-                            serialNumber: detailTbody[j].testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
-                            tbodyMiddleData: tbodyMiddleData,
-                            isQualified: detailTbody[j].testReportRecordDTO.testReportRecord.isQualified
-                        })
-                    }
-                    judger = this.props.menuList.username;
-                    judgement = '' ;
-                    this.setState({
-                        checkData: {
-                            headData: headData,
-                            tbodyData: tbodyData,
-                            judgement: judgement,
-                            judger: judger,
-                            topData: topData,
-                        },
-                        visible: true,
-                    })
-                }
+                console.log(data)
+                // const detail = data.data.data;
+                // var headData = [];
+                // var tbodyData = [];
+                // var judger = '';
+                // var judgement = '';
+                // var topData = {};
+                // if(detail){
+                //     topData = {
+                //         materialName: '',
+                //         norm: '',
+                //         quantity: '',
+                //         sampleDeliveringDate:'',
+                //         deliveryFactory:''
+                //         // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
+                //         // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
+                //     };
+                //     let detailHead = detail[0].testReportRecordDTO.testItemResultRecordDTOList;
+                //     for(let i=0; i<detailHead.length; i++){
+                //         headData.push({
+                //             id: detailHead[i].testItemResultRecord.id,
+                //             testItem: detailHead[i].testItem.name,
+                //             itemUnit: detailHead[i].testItem.unit,
+                //             rawTestItemStandard: detailHead[i].rawTestItemStandard?detailHead[i].rawTestItemStandard.value:'',
+                //         })
+                //     }
+                //     let detailTbody = detail;
+                //     for(let j=0; j<detailTbody.length; j++){
+                //         let testItemResultRecordDTOList = detailTbody[j].testReportRecordDTO.testItemResultRecordDTOList;
+                //         let tbodyMiddleData = {};
+                //         testItemResultRecordDTOList.map((e) => {
+                //             tbodyMiddleData[e.testItem.name] = {
+                //                 'isValid':e.testItemResultRecord.isValid,
+                //                 'testResult':e.testItemResultRecord.testResult,
+                //                 'id':e.testItemResultRecord.id,
+                //             }
+                //         });
+                //         tbodyData.push({
+                //             index: `${j+1}`,
+                //             id: detailTbody[j].testReportRecordDTO.testReportRecord.id,
+                //             serialNumber: detailTbody[j].testReportRecordDTO.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
+                //             tbodyMiddleData: tbodyMiddleData,
+                //             isQualified: detailTbody[j].testReportRecordDTO.testReportRecord.isQualified
+                //         })
+                //     }
+                //     judger = this.props.menuList.username;
+                //     judgement = '' ;
+                //     this.setState({
+                //         checkData: {
+                //             headData: headData,
+                //             tbodyData: tbodyData,
+                //             judgement: judgement,
+                //             judger: judger,
+                //             topData: topData,
+                //         },
+                //         visible: true,
+                //     })
+                // }
 
             }).catch(()=>{
                 message.info('生成失败，请联系管理员！')

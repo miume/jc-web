@@ -8,7 +8,7 @@ class PackTable extends React.Component {
         title: '序号',
         dataIndex: 'index',
         key: 'index',
-        // sorter: (a, b) => a.id - b.id,
+        sorter: (a, b) => a.index - b.index,
         align:'center',
         width: '8%',
     },{

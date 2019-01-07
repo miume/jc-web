@@ -21,7 +21,6 @@ class DetailSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            // dataSource:{}
             detailData:{
                 topData: {},   //头部数据
                 testDTOS: [],   //中部项目
@@ -35,8 +34,9 @@ class DetailSpan extends React.Component {
         };
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.selectionOnDetail = this.selectionOnDetail.bind(this);
     }
-    handleCancel = (e) => {
+    handleCancel = () => {
         this.setState({
             visible: false,
         });
@@ -95,19 +95,6 @@ class DetailSpan extends React.Component {
             },
         }).then((data)=>{
             const detail = data.data.data;
-            // if(res&&res.testDTOS) {
-            //     for(var i = 1; i<=res.testDTOS.length; i++){
-            //         var e = res.testDTOS[i-1];
-            //         e['index'] = i;
-            //     }
-            //     this.setState({
-            //         dataSource:res
-            //     })
-            // }else{
-            //     this.setState({
-            //         dataSource: []
-            //     })
-            // }
             var topData = {};  //头部数据
             var middleTestDTOS = [];  //中部项目
             var testData = {};  //检验数据
@@ -138,7 +125,6 @@ class DetailSpan extends React.Component {
                     tester: detail.tester?detail.tester:'无',
                     testTime: detail.testReportRecord?detail.testReportRecord.judgeDate:'无',
                 };
-                console.log('11')
                 const examineStatus = detail.commonBatchNumber?detail.commonBatchNumber.status:'';
                 const batchNumberId = detail.commonBatchNumber?detail.commonBatchNumber.id:'';
                 if((examineStatus===2||examineStatus===3)&&batchNumberId){
