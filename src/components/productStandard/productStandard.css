@@ -200,3 +200,9 @@
 .modal-popover button{
     margin:7px 5px ;
 }
+/**设置标准*/
+.product-standrad-img{
+    margin:0 auto;
+    text-align: center;
+    padding-top:10%;
+}

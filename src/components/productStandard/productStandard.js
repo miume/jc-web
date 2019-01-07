@@ -6,6 +6,7 @@ import Product from './product';
 import SelectModal from './model';
 import SearchCell from '../BlockQuote/search';
 import Blockquote from '../BlockQuote/blockquote';
+import SelectProductStandard from './selectProductStandard';
 class ProductStandard extends React.Component{
     url
     componentDidMount(){
@@ -18,15 +19,18 @@ class ProductStandard extends React.Component{
             allModal:[],    //选择型号界面的所有型号
             allProduct:[],  //选择产品界面的所有产品
             flag:1,//决定渲染那个界面 1表示选择产品界面product 2表示选择型号selectModal 3表示设置标准setStardand
+            allProductStandard:[],  //保存所有标准
         }
         this.fetch = this.fetch.bind(this);
         this.clickI = this.clickI.bind(this);
         this.divCilck = this.divCilck.bind(this);
+        this.addClass = this.addClass.bind(this);
         this.blockClick = this.blockClick.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.showContent = this.showContent.bind(this);
         this.getAllProduct = this.getAllProduct.bind(this);
         this.getAllSelectModal = this.getAllSelectModal.bind(this);
+        this.getAllProductStandard = this.getAllProductStandard.bind(this);
     }
     /**根据flag显示content */
     showContent(){
@@ -39,7 +43,6 @@ class ProductStandard extends React.Component{
     }
     /**点击选择产品、选择标准时对应的变化 */
     divCilck(e){
-        const target = e.target;
         const id = e.target.id.split('-')[1];
         /**只能在flag为2，3时，点击选择产品  只有在flag为3时可以点击选择型号 */
         /**如果点击选则产品 则回到选择产品页面 以及将选择型号和设置标准置灰 */
@@ -47,22 +50,16 @@ class ProductStandard extends React.Component{
             this.setState({
                 flag:1
             })
-            var docu = document.getElementsByClassName('product-standrad-top-click');
-            for(var i = 1; i < docu.length; i++){
-                docu[i].classList.add('product-standrad-top-notclick');
-                docu[i].classList.remove('product-standrad-top-click');
-            }
+            /**点击选择产品 给选择型号，设置标准 加notclick类 */
+            this.addClass('product-2');
+            this.addClass('product-3');
             
         }else{
             this.setState({
                 flag:2
             })
-            if(target.className === 'product-standrad-top-click'){
-                target.className = 'product-standrad-top-notclick';
-            }else{
-                target.className = 'product-standrad-top-click';
-                // document.getElementsByClassName('img')[0].childNodes[id].src = require(`./head.svg`)
-            }
+            /**点击选择型号 给设置标准加notclick类，删click类 */
+            this.addClass('product-3');
         }
     }
     /**获取所有产品 */
@@ -104,18 +101,29 @@ class ProductStandard extends React.Component{
             })
         }else{
             const arr = id.split('-');
-            const docu = document.getElementById(`product-2`);
-            docu.classList.add('product-standrad-top-click')
-            docu.classList.remove('product-standrad-top-notclick')
+            this.addClass('product-2',1);
             this.setState({
                 add:0,
                 flag:2,
-                selectProduct:arr[1]
+                selectProduct:arr
             })
             this.getAllSelectModal({
                 parentId:-1
             });
         }
+    }
+    /**给dom添加类、删除类 */
+    addClass(id,flag){
+        const docu = document.getElementById(id);
+        /**flag为1 加click类，否则删除点击类 */
+        if(flag){
+            docu.classList.add('product-standrad-top-click');
+            docu.classList.remove('product-standrad-top-notclick');
+        }else{
+            docu.classList.add('product-standrad-top-notclick');
+            docu.classList.remove('product-standrad-top-click');
+        }
+        
     }
     /**点击产品新增 */
     clickI(e){
@@ -183,6 +191,26 @@ class ProductStandard extends React.Component{
             });
         }
     }
+    /**根据产品id */
+    getAllProductStandard(params){
+        const {selectProduct} = this.state;
+        /**给设置标准#product-3加点击类 */
+        this.addClass('product-3',1);
+        params['productId'] = parseInt(selectProduct[0]);
+        axios.get(`${this.url.productStandard.productStandard}`,{
+            headers:{
+                Authorization:this.url.Authorization
+            },
+            params:params
+        }).then((data)=>{
+            const res = data.data.data;
+            //console.log(res)
+            this.setState({
+                flag:3,
+                allProductStandard:res?res:[]
+            })
+        })
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
@@ -191,7 +219,7 @@ class ProductStandard extends React.Component{
                 <Blockquote name={current.menuName} menu={current.menuParent}  />
                 <div className='productStandard'>  
                     <div className='product-standrad-top'>
-                        <div onClick={this.state.flag===2||this.state.flag===3?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择产品':this.state.selectProduct}</span></div>
+                        <div onClick={this.state.flag===2||this.state.flag===3?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择产品':this.state.selectProduct[1]}</span></div>
                         <div onClick={this.state.flag===3?this.divCilck:null} id='product-2' className='product-standrad-top-notclick'><i className='fa fa-cubes'></i><span className='product-standrad-top-span'>选择型号</span></div>
                         <div id='product-3' className='product-standrad-top-notclick'><i className='fa fa-stop'></i> <span className='product-standrad-top-span'>设置标准</span></div>
                     </div>
@@ -207,7 +235,10 @@ class ProductStandard extends React.Component{
                         }
                         </div>
                         <div  className={this.state.flag===2?'':'hide'}>
-                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} />
+                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} />
+                        </div>
+                        <div className={this.state.flag===3?'':'hide'}>
+                            <SelectProductStandard data={this.state.allProductStandard} />
                         </div>
                     </div>
                 </div>

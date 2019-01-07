@@ -34,6 +34,9 @@ class SelectModal extends React.Component{
             })
         }else{
             console.log(ids)
+            this.props.getAllProductStandard({
+                classId:parseInt(ids[0]) 
+            })
         }
         // const parentNode = e.target.parentNode;
         // parentNode.style.backgroundColor = '#0091ff';
@@ -60,7 +63,6 @@ class SelectModal extends React.Component{
     }
     /**新增新型号 */
     addModal(params){
-        console.log(params)
         axios.post(`${this.props.url.productStandard.addNewClass}`,{
             isLeaf:params.isLeaf,
             name:params.name,
