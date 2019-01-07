@@ -204,5 +204,21 @@
 .product-standrad-img{
     margin:0 auto;
     text-align: center;
-    padding-top:10%;
+    padding-top:5%;
+}
+.product-standrad-img-p{
+    font-weight: 650;
+    font-style: normal;
+    font-size: 18px;
+    color: #666666;
+    text-align: center;
+    line-height: 24px;
+}
+.product-standrad-img-p1{
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14px;
+    color: #999999;
+    text-align: center;
+    line-height: 22px;
 }

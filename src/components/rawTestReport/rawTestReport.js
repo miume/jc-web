@@ -208,15 +208,15 @@ class RawTestReport extends React.Component{
             },
             params:params
         }).then((data)=>{
-            const res = data.data.data?data.data.data.list:[];
+            const res = data.data.data?data.data.data:[];
             const da = [];
             const {pagination} = this.state;
-            if(res&&res.length>0){
-                pagination.total = res.length;
-                for(var i = 1; i <= res.length; i++){
-                    var e = res[i-1];
+            if(res&&res.list.length>0){
+                pagination.total = res.total;
+                for(var i = 1; i <= res.list.length; i++){
+                    var e = res.list[i-1];
                     da.push({
-                        index:i,
+                        index:i+res.prePage*10,
                         id:e.sampleDeliveringRecord.id,
                         sampleDeliveringDate:e.sampleDeliveringRecord.sampleDeliveringDate,
                         deliverer:e.deliverer,
@@ -296,7 +296,7 @@ class RawTestReport extends React.Component{
                         <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     </span>
                     <div className='clear'></div>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} handleTableChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} size='small' bordered/> 
+                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} onChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} size='small' bordered/> 
                 </div>
             </div>
         );
