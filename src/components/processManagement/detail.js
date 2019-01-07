@@ -3,7 +3,6 @@ import {Modal,Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace'
 import axios from 'axios'
 import "./difference.css"
-import AddButton from '../BlockQuote/newButton'
 import CancleButton from "../BlockQuote/cancleButton";
 
 const columns = [{

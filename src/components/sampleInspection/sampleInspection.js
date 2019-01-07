@@ -1,7 +1,7 @@
 import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
 import axios from "axios";
-import {Table,Divider,message,Popconfirm,Popover,Input, Button} from "antd";
+import {Table,Divider,message,Popconfirm} from "antd";
 import '../Home/page.css';
 import SearchCell from '../BlockQuote/search'
 import AddModal from './addModal'
@@ -104,7 +104,8 @@ class SampleInspection extends React.Component{
                 switch(`${status}`){
                     case '1':return "原材料";
                     case "2":return "中间品";
-                    case "3":return "成品"
+                    case "3":return "成品";
+                    default : return null
                 }
             }
         },{
@@ -118,7 +119,8 @@ class SampleInspection extends React.Component{
                     case '-1':return "保存"
                     case '1':return "等待接受";
                     case "2":return "接受";
-                    case "3":return "拒绝"
+                    case "3":return "拒绝";
+                    default : return null;
                 }
             }
         },{
@@ -143,17 +145,17 @@ class SampleInspection extends React.Component{
             render : (text,record)=>{
                 return(
                     <span>
-                        {record.sampleDeliveringRecord.acceptStatus==-1?<Edit fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
+                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
                         <Divider type="vertical" />
-                        {record.sampleDeliveringRecord.acceptStatus==-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
+                        {record.sampleDeliveringRecord.acceptStatus===-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>删除</span>
                         </Popconfirm>:<span className="notClick">删除</span>}
                         <Divider type="vertical" />
-                        {record.sampleDeliveringRecord.acceptStatus==1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
+                        {record.sampleDeliveringRecord.acceptStatus===1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>接受</span>
                         </Popconfirm>:<span className="notClick">接受</span>}
                         <Divider type="vertical" />
-                        {record.sampleDeliveringRecord.acceptStatus==1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
+                        {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
                     </span>
                 );
             }

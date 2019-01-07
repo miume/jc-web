@@ -114,7 +114,7 @@ class Product extends React.Component{
                     $this.setState({dataSource: newDataSource})
                     var row = "row"+index
                     var Frow = "row"+(index-1)
-                    if(index == 0){
+                    if(index === 0){
                         let col = document.getElementsByClassName(row)
                         for(var i=0;i<col.length;i++){
                             col[i].classList.add("nowChange")
@@ -122,9 +122,9 @@ class Product extends React.Component{
                     }else if(index >=0){
                         let col = document.getElementsByClassName(row)
                         let Fcol = document.getElementsByClassName(Frow)
-                        for(var i=0;i<col.length;i++){
-                            col[i].classList.add("nowChange")
-                            Fcol[i].classList.remove("nowChange")
+                        for(var t=0;t<col.length;t++){
+                            col[t].classList.add("nowChange")
+                            Fcol[t].classList.remove("nowChange")
                         }
                     }
                     setTimeout(()=>{

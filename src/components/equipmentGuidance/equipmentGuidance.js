@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from "axios";
+import '../Home/page.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import { Table,Popconfirm,Divider,message } from 'antd';
 
 const data = [];
@@ -25,6 +27,8 @@ class Equipment extends React.Component{
             selectedRowKeys: [],
             searchContent:'',
         }
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
@@ -86,11 +90,19 @@ class Equipment extends React.Component{
             }
         }]
     }
+    /**获取查询时名称的实时变化 */
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    searchEvent(){
+        console.log(this.searchContentChange)
+    }
     onSelectChange(selectedRowKeys) {
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     render(){
-        const current = JSON.parse(localStorage.getItem('current')) ;
+        const current = JSON.parse(localStorage.getItem('current'));
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -98,15 +110,16 @@ class Equipment extends React.Component{
             onSelect() {},
             onSelectAll() {},
           };
-        return (<div>
-                    <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                    <div style={{padding:'15px'}}>
-                    <Table
-                    size="small"
-                    dataSource={data} rowSelection={rowSelection} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
-                    </div>
+        return (
+            <div>
+                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
+                <div style={{padding:'15px'}}>
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
+                <SearchCell name='请输入指导书名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                <Table size="small" dataSource={data} rowSelection={rowSelection} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
                 </div>
-    );
+            </div>
+        );
     }
 }
 
