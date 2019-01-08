@@ -98,10 +98,10 @@ class CheckTable extends React.Component {
         width: '11%',
         render: (text,record) => {
             const status = record.commonBatchNumber.status;
-            // let operationCheckFlag = this.judgeCheckOperation(status);
-            let operationCheckFlag = true;
-            // let operationDeleteFlag = this.judgeDeleteOperation(status);
-            let operationDeleteFlag = true;
+            let operationCheckFlag = this.judgeCheckOperation(status);
+            // let operationCheckFlag = true;
+            let operationDeleteFlag = this.judgeDeleteOperation(status);
+            // let operationDeleteFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
@@ -116,10 +116,11 @@ class CheckTable extends React.Component {
                     )}
                     <Divider type="vertical" />
                     <CheckReleaseSpan
+                        fetch={this.props.fetch}
                         url={this.props.url}
                         id={record.commonBatchNumber.id}
                         menuList={this.props.menuList}
-                        state={record.state}
+                        state={record.commonBatchNumber.status}
                         name='详情'
                     />
                     <Divider type="vertical" />

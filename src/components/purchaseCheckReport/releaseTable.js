@@ -13,8 +13,8 @@ class ReleaseTable extends React.Component {
         width: '5%',
     },{
         title: '批号',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
-        key: 'commonBatchNumberDTO.commonBatchNumber.batchNumber',
+        dataIndex: 'commonBatchNumber.batchNumber',
+        key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
         render: batchNumber => {
@@ -22,8 +22,8 @@ class ReleaseTable extends React.Component {
         }
     },{
         title: '原材料',
-        dataIndex: 'materialName',
-        key: 'materialName',
+        dataIndex: 'details.materialName',
+        key: 'details.materialName',
         align:'center',
         width: '6%',
         render: materialName => {
@@ -31,17 +31,17 @@ class ReleaseTable extends React.Component {
         }
     },{
         title: '生产厂家',
-        dataIndex: 'manufacture',
-        key: 'manufacture',
+        dataIndex: 'details.manufactureName',
+        key: 'details.manufactureName',
         align:'center',
         width: '6%',
-        render: manufacture => {
-            return manufacture?manufacture:'无';
+        render: manufactureName => {
+            return manufactureName?manufactureName:'无';
         }
     },{
         title: '到货日期',
-        dataIndex: 'receiveDate',
-        key: 'receiveDate',
+        dataIndex: 'details.receiveDate',
+        key: 'details.receiveDate',
         align:'center',
         width: '10%',
         render: receiveDate => {
@@ -49,8 +49,8 @@ class ReleaseTable extends React.Component {
         }
     },{
         title: '创建人',
-        dataIndex: 'commonBatchNumberDTO.createPersonName',
-        key: 'commonBatchNumberDTO.createPersonName',
+        dataIndex: 'createPersonName',
+        key: 'createPersonName',
         align:'center',
         width: '6%',
         render: createPersonName => {
@@ -58,8 +58,8 @@ class ReleaseTable extends React.Component {
         }
     },{
         title: '创建日期',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.createTime',
-        key: 'commonBatchNumberDTO.commonBatchNumber.createTime',
+        dataIndex: 'commonBatchNumber.createTime',
+        key: 'commonBatchNumber.createTime',
         align:'center',
         width: '10%',
         render: createTime => {
@@ -67,8 +67,8 @@ class ReleaseTable extends React.Component {
         }
     },{
         title: '发布状态',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
-        key: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
+        dataIndex: 'commonBatchNumber.isPublished',
+        key: 'commonBatchNumber.isPublished',
         align:'center',
         width: '6%',
         render:state => {
@@ -80,28 +80,30 @@ class ReleaseTable extends React.Component {
         },
     },{
         title: '紧急',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
-        key: 'commonBatchNumberDTO.commonBatchNumber.isUrgent',
+        dataIndex: 'commonBatchNumber.isUrgent',
+        key: 'commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'purchaseReportRecord.id',
-        key: 'purchaseReportRecord.id',
+        dataIndex: 'commonBatchNumber.id',
+        key: 'commonBatchNumber.id',
         align:'center',
         width: '6%',
         render: (text,record) => {
-            let operationFlag = this.judgeOperation(record.commonBatchNumberDTO.commonBatchNumber.isPublished);
+            let operationFlag = this.judgeOperation(record.commonBatchNumber.isPublished);
+            // let operationFlag = true;
             return (
                 <span>
                     {operationFlag?(
                         <CheckReleaseSpan
                             url={this.props.url}
                             fetch={this.props.fetch}
-                            state={2}
+                            menuList={this.props.menuList}
+                            state={record.commonBatchNumber.status}
                             name='发布'
-                            id={text}
+                            id={record.commonBatchNumber.id}
                         />
                     ):(
                         <span  className="notClick">发布</span>
@@ -121,7 +123,7 @@ class ReleaseTable extends React.Component {
         });
         return(
             <Table
-                rowKey={record => record.purchaseReportRecord.id}
+                rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
