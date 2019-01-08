@@ -4,13 +4,6 @@ import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 
 class PurchaseModal extends React.Component {
-    // constructor(props){
-    //     super(props);
-    //     // this.state = {
-    //     //     checkData: this.props.data,
-    //     // };
-    // }
-
     render() {
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
@@ -40,16 +33,16 @@ class PurchaseModal extends React.Component {
                                     <td>{this.props.data.topData.materialName}</td>
                                     <td>{this.props.data.topData.norm}</td>
                                     <td>{this.props.data.topData.quantity}</td>
-                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.sampleDeliveringDate}>{this.props.data.topData.sampleDeliveringDate.substring(0,10)}</abbr></td>
-                                    <td>{this.props.data.topData.deliveryFactory}</td>
+                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate.substring(0,10)}</abbr></td>
+                                    <td>{this.props.data.topData.manufactureName}</td>
                                 </tr>
                             ):(
                                 <tr>
                                     <td><Input name='materialName' placeholder="原材料名称" value={this.props.data.topData.materialName} onChange={this.props.inputSave}/></td>
                                     <td><Input name='norm' placeholder="请输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
                                     <td><Input name='quantity' placeholder="请输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.sampleDeliveringDate} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.deliveryFactory} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.receiveDate} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.manufactureName} onChange={this.props.inputSave}/></td>
                                 </tr>
                             )
                         }
@@ -72,7 +65,7 @@ class PurchaseModal extends React.Component {
                         <div className="purchaseThead">
                             <div className="theadLeft">
                                 <div className="leftThead borderRadius">序号</div>
-                                <div className="leftThead">批号</div>
+                                <div className="leftThead">编号</div>
                                 <div className="leftOnclick" onClick={handleLeftClick}>
                                     <i className="fa fa-caret-left"></i>
                                 </div>
@@ -132,9 +125,8 @@ class PurchaseModal extends React.Component {
                                     {
                                         this.props.data.tbodyData.map((item,index) => {
                                             //  每一行数据
-                                            const tbodyMiddleData = item.tbodyMiddleData;
+                                            const resultRecordList = item.resultRecordList;
                                             const tbodyRow = index;
-                                            console.log('tbodyMiddleData',tbodyMiddleData)
                                             return(
                                                 <div
                                                     className="middleTbodyDiv"
@@ -143,28 +135,28 @@ class PurchaseModal extends React.Component {
                                                     {
                                                         this.props.data.headData.map((item,index) => {
                                                             //  当确定同一批数据检测项目相同的情况下，这个外层的if可以删除
-                                                            if(tbodyMiddleData[item.id]){
+                                                            if(resultRecordList[item.id]){
                                                                 if(headColumnsLength === false){
                                                                     // 数据长度小于7
                                                                     if(this.props.clickState === 0){
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }
@@ -173,22 +165,22 @@ class PurchaseModal extends React.Component {
                                                                     if(this.props.clickState === 0){
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }
@@ -211,12 +203,12 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.isQualified? 'passJudge cursorPointer': 'isQualified cursorPointer')}
+                                                            className={(item.decision? 'passJudge cursorPointer': 'isQualified cursorPointer')}
                                                             ref={`pass${index}`}
                                                             onClick={this.handleJudgePass.bind(this,index)}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.isQualified? 'isQualified leftBorderRadius cursorDefault': 'nopassJudge leftBorderRadius cursorDefault')}
+                                                            className={(item.decision? 'isQualified leftBorderRadius cursorDefault': 'nopassJudge leftBorderRadius cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -225,11 +217,11 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.isQualified? 'passJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            className={(item.decision? 'passJudge cursorDefault': 'isQualified cursorDefault')}
                                                             ref={`pass${index}`}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.isQualified? 'isQualified leftBorderRadius cursorDefault': 'nopassJudge leftBorderRadius cursorDefault')}
+                                                            className={(item.decision? 'isQualified leftBorderRadius cursorDefault': 'nopassJudge leftBorderRadius cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -240,12 +232,12 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.isQualified? 'passJudge cursorPointer': 'isQualified cursorPointer')}
+                                                            className={(item.decision? 'passJudge cursorPointer': 'isQualified cursorPointer')}
                                                             ref={`pass${index}`}
                                                             onClick={this.handleJudgePass.bind(this,index)}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.isQualified? 'isQualified cursorDefault': 'nopassJudge cursorDefault')}
+                                                            className={(item.decision? 'isQualified cursorDefault': 'nopassJudge cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -254,11 +246,11 @@ class PurchaseModal extends React.Component {
                                                 return(
                                                     <div className="rightTbody" key={`right${index}`}>
                                                         <div
-                                                            className={(item.isQualified? 'passJudge cursorDefault': 'isQualified cursorDefault')}
+                                                            className={(item.decision? 'passJudge cursorDefault': 'isQualified cursorDefault')}
                                                             ref={`pass${index}`}
                                                         >合格</div>
                                                         <div
-                                                            className={(item.isQualified? 'isQualified cursorDefault': 'nopassJudge cursorDefault')}
+                                                            className={(item.decision? 'isQualified cursorDefault': 'nopassJudge cursorDefault')}
                                                             ref={`nopass${index}`}
                                                         >不合格</div>
                                                     </div>
@@ -279,16 +271,16 @@ class PurchaseModal extends React.Component {
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
         var checkData = this.props.data;
-        checkData.tbodyData[index].isQualified = 1;
+        checkData.tbodyData[index].decision = 1;
         for(let i=0; i<checkData.headData.length; i++){
-            const testItem = checkData.headData[i].testItem;
-            if(checkData.tbodyData[index].tbodyMiddleData[testItem]){
-                checkData.tbodyData[index].tbodyMiddleData[testItem].isValid = 1;
+            const testItemId = checkData.headData[i].id;
+            if(checkData.tbodyData[index].resultRecordList[testItemId]){
+                checkData.tbodyData[index].resultRecordList[testItemId].isValid = 1;
             }
         }
         let judgeNum = 0;
         for(let j=0; j<checkData.tbodyData.length; j++){
-            if(checkData.tbodyData[j].isQualified===0){
+            if(checkData.tbodyData[j].decision===0){
                 checkData.judgement = 0;
                 break;
             }else{
@@ -299,11 +291,6 @@ class PurchaseModal extends React.Component {
             }
         }
         this.props.modifyDetailData(checkData);
-        // this.setState({
-        //     checkData: checkData
-        // },()=>{
-        //     this.props.modifyDetailData(checkData);
-        // })
     };
     /**---------------------- */
     /**表格单元格按钮点击事件*/
@@ -315,32 +302,32 @@ class PurchaseModal extends React.Component {
         // 当前单元格的内容
         const item = id.split('|')[1];
         //  进行单元格变化的改变
-        if(checkData.tbodyData[row].tbodyMiddleData[item].isValid===0){
-            checkData.tbodyData[row].tbodyMiddleData[item].isValid = 1;
+        if(checkData.tbodyData[row].resultRecordList[item].isValid===0){
+            checkData.tbodyData[row].resultRecordList[item].isValid = 1;
         }else{
-            checkData.tbodyData[row].tbodyMiddleData[item].isValid = 0;
+            checkData.tbodyData[row].resultRecordList[item].isValid = 0;
         }
         //  进行每一行的改变
         let rowFlag = 1;    //合格
         for(let i=0; i<checkData.headData.length; i++){
-            const testItem = checkData.headData[i].testItem;
-            if(checkData.tbodyData[row].tbodyMiddleData[testItem]){
-                if(checkData.tbodyData[row].tbodyMiddleData[testItem].isValid===0){
+            const testItemId = checkData.headData[i].id;
+            if(checkData.tbodyData[row].resultRecordList[testItemId]){
+                if(checkData.tbodyData[row].resultRecordList[testItemId].isValid===0){
                     rowFlag = 0;    //不合格
                     break;
                 }
             }
         }
         if(rowFlag === 1){
-            checkData.tbodyData[row].isQualified = 1;
+            checkData.tbodyData[row].decision = 1;
         }else{
-            checkData.tbodyData[row].isQualified = 0;
+            checkData.tbodyData[row].decision = 0;
         }
         //  进行总状态的改变
         let judgeNum = 0;
         for(let j=0; j<checkData.tbodyData.length; j++){
-            if(checkData.tbodyData[j].isQualified===0){
-                checkData.judgement = 0
+            if(checkData.tbodyData[j].decision===0){
+                checkData.judgement = 0;
                 break;
             }else{
                 judgeNum += 1;
