@@ -28,4 +28,6 @@
 .rawStandardTable  tr  th{
     background-color: #f2f2f2 !important;
     cursor: default !important;
+    height: 30px !important;
+    font-size: 13px !important;
 }

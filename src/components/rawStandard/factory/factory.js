@@ -49,9 +49,32 @@ class Manufacturer extends Component{
     }
     onBlockChange(e){
        //console.log(e.target);
-       const id=e.target.id.split('-')[0];
-       const name=e.target.id.split('-')[1];
-       this.props.onBlockChange(3,name);
+       const factoryId=e.target.id.split('-')[0];
+       const factoryName=e.target.id.split('-')[1];
+       axios({
+           url:`${this.url.rawStandard.getStandard}`,
+           method:'get',
+           headers:{
+               'Authorization':this.url.Authorization
+           },
+           params:{
+                name:JSON.parse(localStorage.getItem('menuList')).userId,
+                materialId:this.props.rawMaterialId,
+                factoryId:factoryId
+           },
+           type:'json'
+       })
+       .then(data=>{
+           console.log(data);
+           const res=data.data.data;
+           if(res){
+            this.props.onBlockChange(3,factoryName,factoryId); 
+           }
+           else{
+            this.props.onBlockChange(4,factoryName,factoryId);
+           }
+       });
+       
     }
     addClick(e){//点击新增变为输入框
         this.setState({
