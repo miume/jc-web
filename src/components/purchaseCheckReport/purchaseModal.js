@@ -4,12 +4,12 @@ import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 
 class PurchaseModal extends React.Component {
-    constructor(props){
-        super(props);
-        // this.state = {
-        //     checkData: this.props.data,
-        // };
-    }
+    // constructor(props){
+    //     super(props);
+    //     // this.state = {
+    //     //     checkData: this.props.data,
+    //     // };
+    // }
 
     render() {
         const handleRightClick = () => this.handleClick(1);
@@ -134,6 +134,7 @@ class PurchaseModal extends React.Component {
                                             //  每一行数据
                                             const tbodyMiddleData = item.tbodyMiddleData;
                                             const tbodyRow = index;
+                                            console.log('tbodyMiddleData',tbodyMiddleData)
                                             return(
                                                 <div
                                                     className="middleTbodyDiv"
@@ -142,28 +143,28 @@ class PurchaseModal extends React.Component {
                                                     {
                                                         this.props.data.headData.map((item,index) => {
                                                             //  当确定同一批数据检测项目相同的情况下，这个外层的if可以删除
-                                                            if(tbodyMiddleData[item.testItem]){
+                                                            if(tbodyMiddleData[item.id]){
                                                                 if(headColumnsLength === false){
                                                                     // 数据长度小于7
                                                                     if(this.props.clickState === 0){
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
-                                                                                id={`${tbodyRow}|${item.testItem}`}
+                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
+                                                                                id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
                                                                             >
-                                                                                {tbodyMiddleData[item.testItem].testResult}
+                                                                                {tbodyMiddleData[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
-                                                                                id={`${tbodyRow}|${item.testItem}`}
+                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
-                                                                                {tbodyMiddleData[item.testItem].testResult}
+                                                                                {tbodyMiddleData[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }
@@ -172,27 +173,28 @@ class PurchaseModal extends React.Component {
                                                                     if(this.props.clickState === 0){
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
-                                                                                id={`${tbodyRow}|${item.testItem}`}
+                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
+                                                                                id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
                                                                             >
-                                                                                {tbodyMiddleData[item.testItem].testResult}
+                                                                                {tbodyMiddleData[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.testItem].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
-                                                                                id={`${tbodyRow}|${item.testItem}`}
+                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
-                                                                                {tbodyMiddleData[item.testItem].testResult}
+                                                                                {tbodyMiddleData[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }
                                                                 }
                                                             }
+
                                                         })
                                                     }
                                                 </div>

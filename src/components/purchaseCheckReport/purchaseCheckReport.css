@@ -272,10 +272,17 @@
     border-bottom: 1px solid #E9E9E9;
 }
 .middleTbodyDivWhiteLength {
+    min-width: 50px;
     flex-grow:1;
+    /*flex-shrink:1;*/
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    text-align:center
+}
+.middleTbodyDivWhiteLength div{
+    margin:0 auto;
+    width: 30px;
 }
 .middleTbodyDivRed {
     min-width: 100px;
@@ -287,11 +294,18 @@
     border-bottom: 1px solid #E9E9E9;
 }
 .middleTbodyDivRedLength {
+    min-width: 50px;
     flex-grow:1;
+    /*flex-shrink:1;*/
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
     background-color: #FF3B30;
+    text-align:center
+}
+.middleTbodyDivRedLength div{
+    margin:0 auto;
+    width: 30px;
 }
 .tbodyRight {
     min-width: 10%;

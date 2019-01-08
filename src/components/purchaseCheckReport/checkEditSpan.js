@@ -148,20 +148,20 @@ class CheckEditSpan extends React.Component {
             visible: false,
             subVisible: false,
             process:-1,
-            // checkData: {
-            //     headData: [],
-            //     tbodyData: [],
-            //     judgement: '',
-            //     judger: '',
-            //     topData: {},
-            // },
             checkData: {
-                headData: headData,
-                tbodyData: tbodyData,
-                judgement: judgement,
-                judger: judger,
-                topData: topData,
+                headData: [],
+                tbodyData: [],
+                judgement: '',
+                judger: '',
+                topData: {},
             },
+            // checkData: {
+            //     headData: headData,
+            //     tbodyData: tbodyData,
+            //     judgement: judgement,
+            //     judger: judger,
+            //     topData: topData,
+            // },
         };
         this.inputSave = this.inputSave.bind(this);
         this.modifyDetailData = this.modifyDetailData.bind(this);
@@ -244,7 +244,7 @@ class CheckEditSpan extends React.Component {
     }
     /**点击编辑 */
     handleEdit() {
-        // this.getDetailData();
+        this.getDetailData();
         this.setState({
             visible: true,
         })
@@ -253,7 +253,7 @@ class CheckEditSpan extends React.Component {
     getDetailData(){
         // let detail = this.props.record;
         axios({
-            url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.id}`,
+            url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}?batchNumberId=${this.props.id}`,
             method:'get',
             headers:{
                 'Authorization': this.props.url.Authorization
@@ -266,47 +266,46 @@ class CheckEditSpan extends React.Component {
             var judger = '';
             var judgement = '';
             var topData = {};
-            console.log('0')
             if(detail){
                 topData = {
-                    materialName: detail.materialName?detail.materialName:'',
+                    materialName: detail.materialName,
                     norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
                     quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'',
-                    sampleDeliveringDate:'暂定',
-                    deliveryFactory:'暂定'
-                    // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
-                    // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
+                    //  修改
+                    receiveDate:detail.receiveDate?detail.receiveDate:'无',
+                    manufactureName:detail.manufactureName?detail.manufactureName:'无'
                 };
-                let detailHead = detail.testReportRecordDTOList;
-                for(let i=0; i<detailHead[0].testItemResultRecordDTOList.length; i++){
+                let detailHead = detail.standardsMap;
+                for(var key in detailHead){
+                    var item = detailHead[key].split(",");
                     headData.push({
-                        id: detailHead[0].testItemResultRecordDTOList[i].testItemResultRecord.id,
-                        testItem: detailHead[0].testItemResultRecordDTOList[i].testItem.name,
-                        itemUnit: detailHead[0].testItemResultRecordDTOList[i].testItem.unit,
-                        rawTestItemStandard: detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard?detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard.value:'',
+                        id: key,
+                        testItem: item[0],
+                        itemUnit: item[1],
+                        rawTestItemStandard: item[2],
                     })
                 }
-                let detailTbody = detail.testReportRecordDTOList;
+                let detailTbody = detail.validTestRecords;
                 for(let j=0; j<detailTbody.length; j++){
-                    let testItemResultRecordDTOList = detailTbody[j].testItemResultRecordDTOList;
+                    let resultRecordList = detailTbody[j].resultRecordList;
                     let tbodyMiddleData = {};
-                    testItemResultRecordDTOList.map((e) => {
-                        tbodyMiddleData[e.testItem.name] = {
-                            'isValid':e.testItemResultRecord.isValid,
-                            'testResult':e.testItemResultRecord.testResult,
-                            'id':e.testItemResultRecord.id,
+                    resultRecordList.map((e) => {
+                        tbodyMiddleData[e.testItemId] = {
+                            'isValid':e.isValid,
+                            'testResult':e.testResult,
+                            'id':e.id,
                         }
                     });
                     tbodyData.push({
                         index: `${j+1}`,
-                        id: detailTbody[j].testReportRecord.id,
-                        serialNumber: detailTbody[j].sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
+                        id: detailTbody[j].id,
+                        serialNumber: detailTbody[j].serialNumber,
                         tbodyMiddleData: tbodyMiddleData,
-                        isQualified: detailTbody[j].testReportRecord.isQualified
+                        // 修改
+                        decision: detailTbody[j].decision
                     })
                 }
-                console.log('tbodyData',tbodyData)
-                judger = this.props.menuList.username;
+                judger = this.props.menuList.judger;
                 judgement = detail.purchaseReportRecord.judgement ;
                 this.setState({
                     checkData: {
@@ -316,10 +315,9 @@ class CheckEditSpan extends React.Component {
                         judger: judger,
                         topData: topData,
                     },
-                    visible: true,
+                    // visible: true,
                 })
             }
-
         }).catch(()=>{
             message.info('打开失败，请联系管理员！')
         })

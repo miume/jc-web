@@ -173,6 +173,7 @@ class CheckTable extends React.Component {
     /**---------------------- */
     /**单条记录删除 */
     handleDelete = (id) => {
+        console.log(id)
         axios({
             url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${id}`,
             method:'Delete',
@@ -180,9 +181,8 @@ class CheckTable extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-            message.info(data.data.message);
-            console.log('222')
             this.props.fetch();
+            message.info(data.data.message);
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
