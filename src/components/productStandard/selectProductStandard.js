@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Input,Table,DatePicker} from 'antd';
+import {Modal,Input,Table,DatePicker,message} from 'antd';
 import Submit from '../BlockQuote/submit';
 import NewButton from '../BlockQuote/newButton';
 import SaveButton from '../BlockQuote/saveButton';
@@ -9,6 +9,7 @@ class SelectProductStandard extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            date:'',          //监控新增标准 的生效日期
             visible:false,    //控制新增弹出框
             visible1:false,   //控制送审弹出框
             process:-1,       //监听送审流程
@@ -24,7 +25,9 @@ class SelectProductStandard extends React.Component{
         this.selectChange = this.selectChange.bind(this);
         this.urgentChange = this.urgentChange.bind(this);
         this.dateChange = this.dateChange.bind(this);
+        this.submitClick = this.submitClick.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
+        this.addDataProcessing = this.addDataProcessing.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -63,7 +66,7 @@ class SelectProductStandard extends React.Component{
     }
     /**点击保存按钮 */
     handleSave(){
-        this.handleCancel();
+        this.addDataProcessing(0);
     }
     /**点击取消按钮 */
     handleCancel(){
@@ -71,6 +74,12 @@ class SelectProductStandard extends React.Component{
             visible:false,
             visible1:false
         });
+    }
+    /**点击送审按钮 弹出送审界面 */
+    submitClick(){
+        this.setState({
+            visible1:true
+        })
     }
     /**点击取消送审 */
     handleCancelApply(){
@@ -80,7 +89,7 @@ class SelectProductStandard extends React.Component{
     }
     /**点击确定送审 */
     handleOkApply(){
-        this.handleCancel();
+        this.addDataProcessing(1);
     }
     /**监听送审界面 送审流程的变化 */
     selectChange(value){
@@ -100,11 +109,11 @@ class SelectProductStandard extends React.Component{
         const value = e.target.value;
         const name = e.target.name;
         const id = e.target.id
-        const newData = [...this.state.data];
+        const newData = [...this.state.allTestItem];
         const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
         newData[index][name] = value;
         this.setState({
-            data:newData
+            allTestItem:newData
         })
     }
     /**获取所有检测项目 */
@@ -134,8 +143,82 @@ class SelectProductStandard extends React.Component{
         })
     }
     /**监控新增标准 生效时间的选取 */
-    dateChange(value){
-
+    dateChange(date,dateString){
+        this.setState({
+            date:dateString
+        })
+    }
+    /**保存 */
+    applyOut(status,commonBatchNumber,details){
+        axios.post(`${this.props.url.productStandard.productStandard}`,{
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        },{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            if(status){
+                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                console.log(dataId)
+                // this.applyReview(dataId);
+            }else{
+                message.info(data.data.message);
+                this.handleCancel();
+            }
+        }).catch(()=>{
+            message.info('保存失败，请联系管理员！')
+        })
+    }
+    /**对保存或送审的数据进行处理 */
+    addDataProcessing(status){
+        const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const commonBatchNumber = {
+            createPersonId:createPersonId
+        }
+        var techniqueProductTestItemDTOs = [];
+        const {date} = this.state;
+        if(date===''){
+            message.info('生效日期不能为空！');
+            return 
+        }
+        const data = this.state.allTestItem;
+        for(var i=0; i<data.length;i++ )
+        {
+            techniqueProductTestItemDTOs.push({
+                techniqueProductTestItemStandard:{
+                    testItemId:data[i].id,
+                    value:data[i].testResult
+                }
+            })
+        }
+        const techniqueProductStandardRecord = {
+            effectiveTime:date,
+            productClassId:this.props.productName[0],
+            serialNumberId:this.props.modalName[0]
+        };
+        const details = {
+            techniqueProductStandardRecord:techniqueProductStandardRecord,
+            techniqueProductTestItemDTOs:techniqueProductTestItemDTOs
+        }
+        this.applyOut(status,commonBatchNumber,details);
+    }
+    /**送审 */
+    applyReview(dataId){
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                dataId:dataId,
+                isUrgent:this.state.urgent
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.handleCancel();
+        }).catch(()=>{
+            message.info('审核失败，请联系管理员！')
+        })
     }
     render(){
         return (
@@ -156,17 +239,36 @@ class SelectProductStandard extends React.Component{
                          footer={[
                             <CancleButton key='back' handleCancel={this.handleCancel}/>,
                             <SaveButton key='save' handleSave={this.handleSave} />,
-                            <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/> 
+                            <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} 
+                            process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} submitClick={this.submitClick}/> 
                         ]}>
                          <div>
-                             <div>
-                                 <div>{`产品`}</div>
-                                 <div>{`型号`}</div>
-                             </div>
-                            <div style={{height:'350px'}}>
-                                 <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.allTestItem} pagination={false} size='small' bordered scroll={{y:216}}></Table>
+                         <div className='rawStandardTop'>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>批号</th>
+                                    <th>产品</th>
+                                    <th>型号</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{this.props.batchNumber?this.props.batchNumber:''}</td>
+                                        <td>{this.props.productName[1]}</td>
+                                        <td>{this.props.modalName[1]}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                            <div className='modal-add-table' >
+                                 <Table className='stock-out' rowKey={record=>record.id} 
+                                 columns={this.columns} dataSource={this.state.allTestItem} 
+                                 pagination={false} size='small' bordered scroll={{y:250}}>
+                                 </Table>
                             </div>
-                            <DatePicker placeholder='请选择生效日期' onChange={this.dateChange}/>
+                            <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
+                            size='large' className='modal-add-date' />
                          </div>
                              
                          </Modal>
