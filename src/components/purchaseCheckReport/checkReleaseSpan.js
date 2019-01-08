@@ -147,20 +147,20 @@ class CheckReleaseSpan extends React.Component {
         this.state = {
             visible: false,
             pvisivle: false,
-            // checkData: {
-            //     headData: [],
-            //     tbodyData: [],
-            //     judgement: '',
-            //     judger: '',
-            //     topData: {},
-            // },
             checkData: {
-                headData: headData,
-                tbodyData: tbodyData,
-                judgement: judgement,
-                judger: judger,
-                topData: topData,
+                headData: [],
+                tbodyData: [],
+                judgement: '',
+                judger: '',
+                topData: {},
             },
+            // checkData: {
+            //     headData: headData,
+            //     tbodyData: tbodyData,
+            //     judgement: judgement,
+            //     judger: judger,
+            //     topData: topData,
+            // },
         };
         this.handleReleaseNew = this.handleReleaseNew.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
@@ -185,7 +185,6 @@ class CheckReleaseSpan extends React.Component {
                 >
                     <div style={{height:500}}>
                         <PurchaseModal
-
                             clickState ={1}
                             data={this.state.checkData}
                         />
@@ -229,55 +228,55 @@ class CheckReleaseSpan extends React.Component {
         }
     };
     //  更新数据初恋
-    handleCheckData = () => {
-        //  实现保存的数据处理
-        var checkData = this.state.checkData;
-        var purchaseReportRecord = {
-            norm: checkData.topData.norm,
-            quantity: checkData.topData.quantity,
-            judgement: checkData.judgement,
-        };
-        var sampleDeliveringRecordDTO = {
-            deliveryFactory: {
-                name: checkData.topData.deliveryFactory
-            },
-            repoBaseSerialNumber: {
-                materialName: checkData.topData.materialName
-            },
-            sampleDeliveringRecord: {
-                sampleDeliveringDate: checkData.topData.sampleDeliveringDate
-            }
-        };
-        var commonBatchNumberDTO = {
-            commonBatchNumber: {
-                createPersonId: this.props.menuList.userId
-            }
-        };
-        var testReportRecordDTOList = [];
-        for(let i=0; i<checkData.tbodyData.length; i++){
-            var ItemResultList = [];
-            for (let j in checkData.tbodyData[i].tbodyMiddleData) {
-                ItemResultList.push(checkData.tbodyData[i].tbodyMiddleData[j]); //属性
-            }
-            var testReportRecordDTOListObj = {
-                testReportRecord:{
-                    id: checkData.tbodyData[i].id,
-                    isQualified: checkData.tbodyData[i].isQualified
-                },
-                testItemResultRecordDTOList: ItemResultList
-            };
-            testReportRecordDTOList.push(testReportRecordDTOListObj)
-        }
-        var handleData = {
-            purchaseReportRecord: purchaseReportRecord,
-            sampleDeliveringRecordDTO: sampleDeliveringRecordDTO,
-            commonBatchNumberDTO: commonBatchNumberDTO,
-            testReportRecordDTOList: testReportRecordDTOList
-        };
-        //  调用保存函数
-        this.handleReleaseNew(handleData);
-
-    };
+    // handleCheckData = () => {
+    //     //  实现保存的数据处理
+    //     var checkData = this.state.checkData;
+    //     var purchaseReportRecord = {
+    //         norm: checkData.topData.norm,
+    //         quantity: checkData.topData.quantity,
+    //         judgement: checkData.judgement,
+    //     };
+    //     var sampleDeliveringRecordDTO = {
+    //         deliveryFactory: {
+    //             name: checkData.topData.deliveryFactory
+    //         },
+    //         repoBaseSerialNumber: {
+    //             materialName: checkData.topData.materialName
+    //         },
+    //         sampleDeliveringRecord: {
+    //             sampleDeliveringDate: checkData.topData.sampleDeliveringDate
+    //         }
+    //     };
+    //     var commonBatchNumberDTO = {
+    //         commonBatchNumber: {
+    //             createPersonId: this.props.menuList.userId
+    //         }
+    //     };
+    //     var testReportRecordDTOList = [];
+    //     for(let i=0; i<checkData.tbodyData.length; i++){
+    //         var ItemResultList = [];
+    //         for (let j in checkData.tbodyData[i].tbodyMiddleData) {
+    //             ItemResultList.push(checkData.tbodyData[i].tbodyMiddleData[j]); //属性
+    //         }
+    //         var testReportRecordDTOListObj = {
+    //             testReportRecord:{
+    //                 id: checkData.tbodyData[i].id,
+    //                 isQualified: checkData.tbodyData[i].isQualified
+    //             },
+    //             testItemResultRecordDTOList: ItemResultList
+    //         };
+    //         testReportRecordDTOList.push(testReportRecordDTOListObj)
+    //     }
+    //     var handleData = {
+    //         purchaseReportRecord: purchaseReportRecord,
+    //         sampleDeliveringRecordDTO: sampleDeliveringRecordDTO,
+    //         commonBatchNumberDTO: commonBatchNumberDTO,
+    //         testReportRecordDTOList: testReportRecordDTOList
+    //     };
+    //     //  调用保存函数
+    //     this.handleReleaseNew(handleData);
+    //
+    // };
     //  处理发布新材料
     handleReleaseNew = (handleData) => {
         axios({
@@ -315,18 +314,18 @@ class CheckReleaseSpan extends React.Component {
             visible: false,
         });
     };
-    /**点击编辑 */
+    /**点击详情 */
     handleDetail() {
+        this.getDetailData();
         this.setState({
             visible: true,
         })
-        // this.getDetailData();
     }
     /**获取该行的记录详情 */
     getDetailData(){
         // let detail = this.props.record;
         axios({
-            url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.id}`,
+            url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}?batchNumberId=${this.props.id}`,
             method:'get',
             headers:{
                 'Authorization': this.props.url.Authorization
@@ -340,43 +339,48 @@ class CheckReleaseSpan extends React.Component {
             var judgement = '';
             var topData = {};
             if(detail){
-                console.log('------')
                 topData = {
-                    materialName: detail.sampleDeliveringRecordDTO.repoBaseSerialNumber?detail.sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName:'',
+                    materialName: detail.materialName,
                     norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
                     quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'',
-                    sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
-                    deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
+                    //  修改
+                    receiveDate:detail.receiveDate?detail.receiveDate:'无',
+                    manufactureName:detail.manufactureName?detail.manufactureName:'无',
+                    //  增加一个重量子段-自己填
+                    weight:'',
+                    id:detail.purchaseReportRecord.id
                 };
-                let detailHead = detail.testReportRecordDTOList
-                for(let i=0; i<detailHead[0].testItemResultRecordDTOList.length; i++){
+                let detailHead = detail.standardsMap;
+                for(var key in detailHead){
+                    var item = detailHead[key].split(",");
                     headData.push({
-                        id: detailHead[0].testItemResultRecordDTOList[i].testItemResultRecord.id,
-                        testItem: detailHead[0].testItemResultRecordDTOList[i].testItem.name,
-                        itemUnit: detailHead[0].testItemResultRecordDTOList[i].testItem.unit,
-                        rawTestItemStandard: detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard,
+                        id: key,
+                        testItem: item[0],
+                        itemUnit: item[1],
+                        rawTestItemStandard: item[2],
                     })
                 }
-                let detailTbody = detail.testReportRecordDTOList;
+                let detailTbody = detail.validTestRecords;
                 for(let j=0; j<detailTbody.length; j++){
-                    let testItemResultRecordDTOList = detailTbody[j].testItemResultRecordDTOList;
+                    let resultRecordList = detailTbody[j].resultRecordList;
                     let tbodyMiddleData = {};
-                    testItemResultRecordDTOList.map((e) => {
-                        tbodyMiddleData[e.testItem.name] = {
-                            'isValid':e.testItemResultRecord.isValid,
-                            'testResult':e.testItemResultRecord.testResult,
-                            'id':e.testItemResultRecord.id,
+                    resultRecordList.map((e) => {
+                        tbodyMiddleData[e.testItemId] = {
+                            'isValid':e.isValid,
+                            'testResult':e.testResult,
+                            'id':e.id,
                         }
                     });
                     tbodyData.push({
                         index: `${j+1}`,
-                        id: detailTbody[j].testReportRecord.id,
-                        serialNumber: '暂定',
-                        tbodyMiddleData: tbodyMiddleData,
-                        isQualified: detailTbody[j].testReportRecord.isQualified
+                        id: detailTbody[j].id,
+                        serialNumber: detailTbody[j].serialNumber,
+                        resultRecordList: tbodyMiddleData,
+                        // 修改
+                        decision: detailTbody[j].decision
                     })
                 }
-                judger = this.props.menuList.username;
+                judger = this.props.menuList.name;
                 judgement = detail.purchaseReportRecord.judgement ;
                 this.setState({
                     checkData: {
@@ -386,9 +390,7 @@ class CheckReleaseSpan extends React.Component {
                         judger: judger,
                         topData: topData,
                     },
-                    visible: true,
-                },()=>{
-                    console.log(this.state.checkData)
+                    // visible: true,
                 })
             }
 
