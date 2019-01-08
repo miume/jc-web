@@ -21,7 +21,7 @@ class RawMaterial extends Component{
               data:[],
               searchContent:'',
               f:true,//用来判断是否显示新增的块,
-              flag1:false,
+              visible:false,
               inputContent:'',//新增输入框最开始没有内容
           }
           this.onBlockChange=this.onBlockChange.bind(this);
@@ -46,7 +46,6 @@ class RawMaterial extends Component{
           if(res){
             this.setState({
                 data:res,
-                flag1:false,
                 searchContent:''
         });
           }
@@ -60,16 +59,16 @@ class RawMaterial extends Component{
     //    console.log(name);
        this.props.onBlockChange(2,name,rawMaterialId);
     }
-    addClick(){//点击新增
-        this.setState({//设置为true会显示输入框
-            flag1:true
-        });
-    }
-    addChange(e){//监听新增输入框的变化
+    addClick(){//点击新增,弹出modal
         this.setState({
-            inputContent:e.target.value
+           visible:true
         });
     }
+    // addChange(e){//监听新增输入框的变化
+    //     this.setState({
+    //         inputContent:e.target.value
+    //     });
+    // }
     addEvent(){//新增事件
         //console.log(this.state.inputContent);
         axios({
