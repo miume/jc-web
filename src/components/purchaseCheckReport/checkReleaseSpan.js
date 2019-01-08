@@ -121,7 +121,6 @@ class CheckReleaseSpan extends React.Component {
         }).then((data)=>{
             console.log('11')
             this.props.fetch();
-            console.log('22')
             message.info(data.data.message);
         }).catch(()=>{
             message.info('发布失败，请联系管理员！');

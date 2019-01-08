@@ -3,24 +3,6 @@ import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
 
-const data =[];
-for (let i = 0; i < 20; i++) {
-    data.push({
-        index: i,
-        id:i,
-        a: '测试',
-        b: '测试',
-        c: '启东北新',
-        d: '2019年1月10号',
-        e: '李小红',
-        f: '2018年11月27日',
-        g: '李小红',
-        h: '2018年11月27日',
-        type: '进货检验',
-        state:'0',
-        isUrgent:'紧急',
-    });
-}
 
 
 class Check extends React.Component {
@@ -91,7 +73,6 @@ class Check extends React.Component {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
-                // const dataSource = this.dataAssemble(res);
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
@@ -108,7 +89,6 @@ class Check extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        console.log(this.state.searchContent)
         this.fetch({
             materialName:this.state.searchContent,
         });

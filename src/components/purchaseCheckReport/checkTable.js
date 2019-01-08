@@ -98,10 +98,10 @@ class CheckTable extends React.Component {
         width: '11%',
         render: (text,record) => {
             const status = record.commonBatchNumber.status;
-            // let operationCheckFlag = this.judgeCheckOperation(status);
-            let operationCheckFlag = true;
-            // let operationDeleteFlag = this.judgeDeleteOperation(status);
-            let operationDeleteFlag = true;
+            let operationCheckFlag = this.judgeCheckOperation(status);
+            // let operationCheckFlag = true;
+            let operationDeleteFlag = this.judgeDeleteOperation(status);
+            // let operationDeleteFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
