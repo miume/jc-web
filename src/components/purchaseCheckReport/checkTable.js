@@ -116,10 +116,11 @@ class CheckTable extends React.Component {
                     )}
                     <Divider type="vertical" />
                     <CheckReleaseSpan
+                        fetch={this.props.fetch}
                         url={this.props.url}
                         id={record.commonBatchNumber.id}
                         menuList={this.props.menuList}
-                        state={record.state}
+                        state={record.commonBatchNumber.status}
                         name='详情'
                     />
                     <Divider type="vertical" />
