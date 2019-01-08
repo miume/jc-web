@@ -54,11 +54,11 @@ class RawMaterial extends Component{
      }
     //监听原材料那个块块是否被选中
     onBlockChange(e){
-        const id = e.target.id.split('-')[0];
+        const rawMaterialId = e.target.id.split('-')[0];
         const name = e.target.id.split('-')[1];
     //    console.log(id);
     //    console.log(name);
-       this.props.onBlockChange(2,name);
+       this.props.onBlockChange(2,name,rawMaterialId);
     }
     addClick(){//点击新增
         this.setState({//设置为true会显示输入框

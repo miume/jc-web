@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Table} from 'antd';
 import './detail.css';
 
-
 class DetailModal extends Component{
     constructor(props){
         super(props);
@@ -15,19 +14,19 @@ class DetailModal extends Component{
          width:'20%'
     },{
         title:'检测项目',
-        dataIndex:'',
+        dataIndex:'testName',
         key:'testName',
         align:'center',
         width:'25%'
     },{
         title:'检测标准',
-        dataIndex:'',
+        dataIndex:'testStandard',
         key:'testStandard',
         align:'center',
         width:'25%'
     },{
         title:'计量单位',
-        dataIndex:'',
+        dataIndex:'unit',
         key:'unit',
         align:'center',
         width:'25%'
@@ -62,7 +61,7 @@ class DetailModal extends Component{
                    </table>
                </div>
                <div style={{height:'15px'}}></div>
-               <div style={{height:'300px'}}>
+               <div >
                    <Table className='rawStandardTable'
                       rowKey={record=>record.index}
                       columns={columns}

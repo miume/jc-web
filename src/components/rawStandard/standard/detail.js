@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Modal} from 'antd'; 
 import CancleButton from '../../BlockQuote/cancleButton';
+import NewButton from '../../BlockQuote/newButton';
 import DetailModal from './detailModal';
 
 class Detail extends Component{
@@ -29,9 +30,9 @@ class Detail extends Component{
                    visible={this.state.visible}
                    maskClosable={false}
                    closable={false}
-    
                    footer={[
-                      <CancleButton handleCancel={this.handleCancel} flag={1}/>
+                      <CancleButton key='cancel'  handleCancel={this.handleCancel} flag={1}/>,
+                      <NewButton key='interate' name='迭代'/>
                    ]}
                  >
                  <DetailModal record={this.props.record} raw={this.props.raw} factory={this.props.factory}/>

@@ -119,6 +119,7 @@ for(var i=0;i<20;i++){
                     dataSource={this.state.dataSource}
                     pagination={{hideOnSinglePage:true,pageSize:100}}
                     size='small'
+                    bordered
                     scroll={{y:230}}
                 />
              </div>

@@ -113,11 +113,9 @@ class Add extends React.Component{
     }
 
     handleVisibleChange=(visible)=>{
-      
        this.setState({
          popVisible:visible
        })
-
    }
    getCheck(dataId,taskId){//调用代办事项接口
     const isUrgent=this.state.checkSwitch;

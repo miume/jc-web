@@ -115,3 +115,33 @@
     width: 100% !important;
     border:none !important;
 }
+/**字体水平居中*/
+.rawStandardFontUp{
+    font-family: 'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC';
+    font-weight: 650;
+    font-size: 18px;
+    color: #666666;
+    text-align: center;
+    line-height: 24px;
+    margin-top:30px;
+}
+.rawStandardFontDown{
+    font-family: 'PingFangSC-Regular', 'PingFang SC';
+    font-weight: 400;
+    font-size: 14px;
+    color: #999999;
+    text-align: center;
+    line-height: 22px;
+    
+}
+.rawStandardImageDiv{
+    margin-top:70px;
+    vertical-align: middle;
+    text-align: center;
+    clear: both;
+}
+.rawStandardImage{
+    width: 134px;
+    height: 150px;
+   border-width: 0px;
+}
