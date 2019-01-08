@@ -29,7 +29,6 @@ class RawMaterial extends Component{
           this.searchEvent=this.searchEvent.bind(this);
           this.fetch=this.fetch.bind(this);
           this.addClick=this.addClick.bind(this);
-          this.addChange=this.addChange.bind(this);
           this.addEvent=this.addEvent.bind(this);
       }
      fetch=()=>{
