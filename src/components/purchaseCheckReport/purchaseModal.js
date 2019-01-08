@@ -33,7 +33,7 @@ class PurchaseModal extends React.Component {
                                     <td>{this.props.data.topData.materialName}</td>
                                     <td>{this.props.data.topData.norm}</td>
                                     <td>{this.props.data.topData.quantity}</td>
-                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate.substring(0,10)}</abbr></td>
+                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
                                     <td>{this.props.data.topData.manufactureName}</td>
                                 </tr>
                             ):(
@@ -152,7 +152,7 @@ class PurchaseModal extends React.Component {
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhiteLength cursorDefault':'middleTbodyDivRedLength cursorDefault')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
