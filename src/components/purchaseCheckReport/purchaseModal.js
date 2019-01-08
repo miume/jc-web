@@ -65,7 +65,7 @@ class PurchaseModal extends React.Component {
                         <div className="purchaseThead">
                             <div className="theadLeft">
                                 <div className="leftThead borderRadius">序号</div>
-                                <div className="leftThead">批号</div>
+                                <div className="leftThead">编号</div>
                                 <div className="leftOnclick" onClick={handleLeftClick}>
                                     <i className="fa fa-caret-left"></i>
                                 </div>
@@ -125,7 +125,7 @@ class PurchaseModal extends React.Component {
                                     {
                                         this.props.data.tbodyData.map((item,index) => {
                                             //  每一行数据
-                                            const tbodyMiddleData = item.tbodyMiddleData;
+                                            const resultRecordList = item.resultRecordList;
                                             const tbodyRow = index;
                                             return(
                                                 <div
@@ -135,28 +135,28 @@ class PurchaseModal extends React.Component {
                                                     {
                                                         this.props.data.headData.map((item,index) => {
                                                             //  当确定同一批数据检测项目相同的情况下，这个外层的if可以删除
-                                                            if(tbodyMiddleData[item.id]){
+                                                            if(resultRecordList[item.id]){
                                                                 if(headColumnsLength === false){
                                                                     // 数据长度小于7
                                                                     if(this.props.clickState === 0){
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhiteLength cursorPointer':'middleTbodyDivRedLength cursorPointer')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }
@@ -165,22 +165,22 @@ class PurchaseModal extends React.Component {
                                                                     if(this.props.clickState === 0){
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorPointer':'middleTbodyDivRed cursorPointer')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                                 onClick={this.handleCellOnclick.bind(this)}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }else{
                                                                         return(
                                                                             <div
-                                                                                className={(tbodyMiddleData[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
+                                                                                className={(resultRecordList[item.id].isValid? 'middleTbodyDivWhite cursorDefault':'middleTbodyDivRed cursorDefault')}
                                                                                 id={`${tbodyRow}|${item.id}`}
                                                                                 key={index}
                                                                             >
-                                                                                {tbodyMiddleData[item.id].testResult}
+                                                                                {resultRecordList[item.id].testResult}
                                                                             </div>
                                                                         )
                                                                     }
@@ -274,8 +274,8 @@ class PurchaseModal extends React.Component {
         checkData.tbodyData[index].decision = 1;
         for(let i=0; i<checkData.headData.length; i++){
             const testItemId = checkData.headData[i].id;
-            if(checkData.tbodyData[index].tbodyMiddleData[testItemId]){
-                checkData.tbodyData[index].tbodyMiddleData[testItemId].isValid = 1;
+            if(checkData.tbodyData[index].resultRecordList[testItemId]){
+                checkData.tbodyData[index].resultRecordList[testItemId].isValid = 1;
             }
         }
         let judgeNum = 0;
@@ -302,17 +302,17 @@ class PurchaseModal extends React.Component {
         // 当前单元格的内容
         const item = id.split('|')[1];
         //  进行单元格变化的改变
-        if(checkData.tbodyData[row].tbodyMiddleData[item].isValid===0){
-            checkData.tbodyData[row].tbodyMiddleData[item].isValid = 1;
+        if(checkData.tbodyData[row].resultRecordList[item].isValid===0){
+            checkData.tbodyData[row].resultRecordList[item].isValid = 1;
         }else{
-            checkData.tbodyData[row].tbodyMiddleData[item].isValid = 0;
+            checkData.tbodyData[row].resultRecordList[item].isValid = 0;
         }
         //  进行每一行的改变
         let rowFlag = 1;    //合格
         for(let i=0; i<checkData.headData.length; i++){
             const testItemId = checkData.headData[i].id;
-            if(checkData.tbodyData[row].tbodyMiddleData[testItemId]){
-                if(checkData.tbodyData[row].tbodyMiddleData[testItemId].isValid===0){
+            if(checkData.tbodyData[row].resultRecordList[testItemId]){
+                if(checkData.tbodyData[row].resultRecordList[testItemId].isValid===0){
                     rowFlag = 0;    //不合格
                     break;
                 }
