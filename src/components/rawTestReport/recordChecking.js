@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table, Input,message,Button} from 'antd';
+import {Modal,Table, Input,message} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CheckModal from '../BlockQuote/checkModal';
@@ -94,7 +94,6 @@ class RecordChecking extends React.Component{
             var topData = {};
             var {flag,fail} = this.state;
             if(res){
-                console.time('halo')
                 var IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 if(IsQualified) flag = 1; else fail = 1;
                 topData={
@@ -102,9 +101,6 @@ class RecordChecking extends React.Component{
                     materialName: res.materialName?res.materialName:'',
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
-                console.timeEnd('halo') 
-                console.log('%c halo end.', 'color:red;')  
-                console.time('halo2')
                 if(res.testDTOS){
                     for(var i = 0; i < res.testDTOS.length; i++){
                         var e = res.testDTOS[i];
@@ -118,7 +114,6 @@ class RecordChecking extends React.Component{
                             })
                     }   
                 }
-                console.timeEnd('halo2')
                 // console.log(details)
                 console.log(`%c halo2 end`, 'color:lightseagreen;')
                 this.setState({
@@ -128,7 +123,6 @@ class RecordChecking extends React.Component{
                     flag:flag,
                     fail:fail
                 })
-                console.log(this.state)
             }
         })
     }

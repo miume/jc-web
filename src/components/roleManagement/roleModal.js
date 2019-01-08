@@ -33,7 +33,7 @@ class RoleModal extends React.Component{
                     {getFieldDecorator('description',{
                         initialValue: '',
                     })(
-                        <Input placeholder='请输入角色名称' style={{height:40}}></Input>
+                        <Input placeholder='请输入角色描述' style={{height:40}}></Input>
                     )}
                 </FormItem>
             </Form>

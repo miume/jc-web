@@ -64,7 +64,6 @@ class EditableCell extends React.Component {
 const EditableFormRow = Form.create()(EditableRow);
 
 class Role extends React.Component {
-   Authorization
    url
     componentDidMount() {
       this.fetch();
@@ -87,13 +86,10 @@ class Role extends React.Component {
             roleDescription: '',
             selectedRowKeys: [],
             searchContent:'',
-            pagination:{
-              showTotal(total) {
-                    return `共${total}条记录`
-                  } 
-            },
             pageChangeFlag:0,  //0表示getAllByPage分页  1 表示搜索分页
         };
+        this.fetch = this.fetch.bind(this);
+        this.roleUpdate = this.roleUpdate.bind(this);
         this.confrimCancel = this.confrimCancel.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
@@ -108,24 +104,16 @@ class Role extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        // this.pagination = {
-        //   total: this.state.dataSource.length,
-        //   defaultCurrent:1,
-        //   showTotal(total) {
-        //     return `共${total}条记录`
-        //   } ,
-        //   showSizeChanger: true,
-        //   // onShowSizeChange() {
-        //   // },
-        //   // onChange(page,pageSize) {
-        //   // }
-        // }
+        this.pagination = {
+          showTotal(total) {
+            return `共${total}条记录`
+          } ,
+        }
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'id',
             sorter: (a, b) => a.index - b.index,
-            // render:id =>index },
             align:'center',
             width: '10%',
           }, {
@@ -188,9 +176,7 @@ class Role extends React.Component {
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-      this.setState({
-        pagination:pagination
-      })
+      this.pagination = pagination;
       const {pageChangeFlag} = this.state;
       if(pageChangeFlag){
         this.searchEvent({
@@ -208,7 +194,8 @@ class Role extends React.Component {
         });
       }
     }
-    fetch = (params = {}) => {
+    /**getAllByPage 获取分页数据 */
+    fetch(params){
       axios({
         url: `${this.url.role.getRolesByPage}` ,
         method: 'get',
@@ -218,15 +205,13 @@ class Role extends React.Component {
        params: params,
       }).then((data) => {
           const res = data.data.data;
-          const pager = { ...this.state.pagination };
           if(res&&res.list){
-            pager.total=res?res.total:0;
+            this.pagination.total=res?res.total:0;
             for(var i = 1; i<=res.list.length; i++){
               res.list[i-1]['index']=res.prePage*10+i;
             }
             this.setState({
               dataSource: res.list,
-              pagination:pager,
               searchContent:'',
               selectedRowKeys:[],
               pageChangeFlag:0
@@ -253,12 +238,9 @@ class Role extends React.Component {
         }).then((data)=>{
           message.info(data.data.message);
           if(data.data.code===0){
-              const {pagination} = this.state;
-              // const dataSource = [...this.state.dataSource];
-              // this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
               this.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
                 orderField: 'id',
                 orderType: 'desc',
             });
@@ -292,26 +274,29 @@ class Role extends React.Component {
             });
             var data = row;
             data['id']=id.toString();
-            axios({
-              url:`${this.url.role.update}`,
-              method:'post',
-              headers:{
-                'Authorization':this.url.Authorization
-              },
-              data:data,
-              type:'json'
-            }).then((data)=>{
-                message.info(data.data.message);
-                this.setState({ dataSource: newData});
-            }).catch(()=>{
-                message.info('保存失败，请联系管理员！');
-            })
+            this.roleUpdate(data,newData);
             this.setState({ editingKey: '' });
           } else {
               newData.push(row);
               this.setState({ dataSource: newData, editingKey: '' });
           }
         });
+      }
+      roleUpdate(data,newData){
+        axios({
+          url:`${this.url.role.update}`,
+          method:'post',
+          headers:{
+            'Authorization':this.url.Authorization
+          },
+          data:data,
+          type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.setState({ dataSource: newData});
+        }).catch(()=>{
+            message.info('保存失败，请联系管理员！');
+        })
       }
       /**编辑 确定取消 */
       cancel(){
@@ -345,6 +330,7 @@ class Role extends React.Component {
         }).then((data) => {
           message.info(data.data.message);
           this.fetch();
+          this.pagination.current = 1;  //新增之后到第一页，不然会保持新增之前的界面页数
         })
         .catch(function () {
           message.info('新增失败，请联系管理员！');
@@ -373,10 +359,9 @@ class Role extends React.Component {
         }).then((data)=>{
           message.info(data.data.message);
           if(data.data.code===0){
-              const {pagination} = this.state;
               this.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
                 orderField: 'id',
                 orderType: 'desc',
             });
@@ -421,14 +406,12 @@ class Role extends React.Component {
         }).then((data)=>{
           const res = data.data.data;
           if(res&&res.list){
-              const {pagination} = this.state;
-              pagination.total=res.total;
+              this.pagination.total=res.total;
               for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=res.prePage*10+i;
               }
               this.setState({
                 dataSource: res.list,
-                pagination:pagination,
                 pageChangeFlag:1,
               });
           }
@@ -486,7 +469,7 @@ class Role extends React.Component {
                       <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
                   </span>
                   <div className='clear'></div>
-                  <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.state.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
+                  <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
                 </div>
             </div>
 
