@@ -1,6 +1,6 @@
 .productStandard{
     width:97%;
-    height:500px;
+    height:540px;
     margin:20px;
     border:1px solid #cccccc;
     border-top: none;
@@ -278,4 +278,12 @@
     text-align: center;
     line-height: 22px;
     margin:10px;
+}
+/**型号新增*/
+.modal-add-table{
+    height:300px;
+    margin:20px 0;
+}
+.modal-add-date{
+    width:320px;
 }

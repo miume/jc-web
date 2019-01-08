@@ -279,7 +279,7 @@ class ProductStandard extends React.Component{
                             <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} />
                         </div>
                         <div className={this.state.flag===3?'':'hide'}>
-                            <SelectProductStandard data={this.state.allProductStandard} url={this.url} />
+                            <SelectProductStandard data={this.state.allProductStandard} url={this.url} productName={this.state.selectProduct} modalName={this.state.selectedModal} />
                         </div>
                     </div>
                 </div>
