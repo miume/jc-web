@@ -127,15 +127,15 @@ class RawTestReport extends React.Component{
             key:'acceptStatus',
             align:'center',
             width:'6%',
-            render: acceptStatus => {
-                switch(`${acceptStatus}`) {
-                  case '-1': return '保存';
-                  case '0': return '等待接受';
-                  case '1': return '接受';
-                  case '2': return '拒绝';
-                  default:return '';
-                }
-            }
+            // render: acceptStatus => {
+            //     switch(`${acceptStatus}`) {
+            //       case '-1': return '保存';
+            //       case '0': return '等待接受';
+            //       case '1': return '接受';
+            //       case '2': return '拒绝';
+            //       default:return '';
+            //     }
+            // }
         },{
             title:'接受反馈',
             dataIndex:'handleComment',
@@ -228,7 +228,8 @@ class RawTestReport extends React.Component{
                         testItemString:e.testItemString?e.testItemString:'',
                         exceptionComment:e.sampleDeliveringRecord.exceptionComment,
                         type:e.sampleDeliveringRecord.type,
-                        acceptStatus:e.sampleDeliveringRecord.acceptStatus,
+                        acceptStatus:'接受',
+                        // acceptStatus:e.sampleDeliveringRecord.acceptStatus,
                         handleComment:e.sampleDeliveringRecord.handleComment,
                         status:e.commonBatchNumber?e.commonBatchNumber.status:0,
                         isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
