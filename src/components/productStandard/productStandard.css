@@ -47,7 +47,7 @@
     background-size:100% 40px;
     background-repeat:no-repeat;
     border-width: none; */
-    background-color: #0091ff;
+    background-color: #0086ff;
 }
 .product-standrad-top-notclick {
     background-color: #f2f2f2; 
@@ -91,13 +91,13 @@
 }
 .block-add{
     height: 50px;
-    color:#0091ff;
+    color:#0086ff;
     cursor: pointer;
     line-height: 50px;
     text-align:center;
     margin:21px 0 0 29px;
     display: inline-block;
-    border:1px solid #0091ff;
+    border:1px solid #0086ff;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
 }
 .block{
@@ -134,7 +134,7 @@
     border-radius:3px ;/*设置4个圆角，且为5像素*/
 }
 .block:hover,.block-add:hover,.block-div:hover{
-    background-color: #0091ff;
+    background-color: #0086ff;
     color:white;
     font-weight: bold;
 }
@@ -159,7 +159,7 @@
     border:none !important;
 }
 .block-input-i{
-    color:#0091ff;
+    color:#0086ff;
     font-weight: bold;
 }
 /**选择型号*/
@@ -176,7 +176,7 @@
     cursor: pointer;
 }
 .product-modal-1 i:hover{
-    color:#0091ff;
+    color:#0086ff;
 }
 .product-modal-2{
     flex:10;
@@ -197,7 +197,7 @@
     border-radius: 50%;
     color:white;
     font-weight: 600;
-    background-color: #0088ff;
+    background-color: #0086ff;
     /* border:2px solid #CCCCCC; */
 }
 .product-modal-2-text{
@@ -268,7 +268,7 @@
     color: #666666;
     text-align: center;
     line-height: 24px;
-    margin:10px;
+    margin:20px;
 }
 .product-standrad-img-p1{
     font-weight: 400;
@@ -277,7 +277,7 @@
     color: #999999;
     text-align: center;
     line-height: 22px;
-    margin:10px;
+    margin:20px;
 }
 /**型号新增*/
 .modal-add-table{
@@ -286,4 +286,8 @@
 }
 .modal-add-date{
     width:320px;
+}
+/**型号编辑和详情*/
+.modal-detail-p p{
+    font-weight: 400;
 }

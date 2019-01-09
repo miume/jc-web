@@ -66,7 +66,7 @@ class SelectModal extends React.Component{
     /**新增新型号 */
     addModal(params){
         const {curParentId} = this.state;
-        console.log(curParentId)
+        //console.log(curParentId)
         axios.post(`${this.props.url.productStandard.addNewClass}`,{
             isLeaf:params.isLeaf,
             name:params.name,

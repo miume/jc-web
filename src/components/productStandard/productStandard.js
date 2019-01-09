@@ -88,6 +88,7 @@ class ProductStandard extends React.Component{
     }
     /**获取所有型号 并保存所有点击的型号*/
     getAllSelectModal(params,ids){
+        console.log(params)
         if(ids){
             /**modalArr保存型号的一个分支 父元素-子元素-子元素。。。 */
             var {modalArr} = this.state;
@@ -117,6 +118,7 @@ class ProductStandard extends React.Component{
     }
     /**跟踪最新一次点击的型号 */
     recentModal(ids){
+        ids[2] = '型号';
         this.setState({
             selectedModal:ids
         })
@@ -131,6 +133,7 @@ class ProductStandard extends React.Component{
             })
         }else{
             const arr = id.split('-');
+            arr[2]='产品';
             this.addClass('product-2',1);
             this.setState({
                 add:0,              //add置0 确保新增为是按钮不可编辑
@@ -200,10 +203,19 @@ class ProductStandard extends React.Component{
         const {flag} = this.state;
         if(flag===1){
             this.productSearch(value);
-        }else{
+        }else if(flag===2){
+            const {selectedModal} = this.state;
             this.getAllSelectModal({
-                name:value
+                name:value,
+                parentId:selectedModal[0]?selectedModal[0]:-1
             }); 
+        }else{
+            const {selectProduct,selectedModal} = this.state;
+            this.getAllProductStandard({
+                classId:parseInt(selectedModal[0]),
+                productId:parseInt(selectProduct[0]),
+                name:value
+            })
         }
     }
     /**根据产品名称进行搜索 */
@@ -219,15 +231,26 @@ class ProductStandard extends React.Component{
             })
         })
     }
-    /**搜索重置接口 */
+    /**搜索重置接口 
+     * flag:1 代表产品搜索
+     * flag:2 代表型号搜索
+     * flag:3 代表标准搜索
+    */
     fetch(){
         const {flag} = this.state;
         if(flag===1){
             this.getAllProduct();
         }else if(flag===2){
+            const {selectedModal} = this.state;
             this.getAllSelectModal({
-                parentId:-1
-            });
+                parentId:selectedModal[0]?selectedModal[0]:-1
+            }); 
+        }else{
+            const {selectProduct,selectedModal} = this.state;
+            this.getAllProductStandard({
+                classId:parseInt(selectedModal[0]),
+                productId:parseInt(selectProduct[0])
+            })
         }
     }
     /**根据产品id 型号id查询所对应的标准 */
@@ -246,9 +269,17 @@ class ProductStandard extends React.Component{
             params:params
         }).then((data)=>{
             const res = data.data.data;
+            var data = [];
+            if(res){
+                for(var i = 0; i < res.length; i++){
+                    res[i].commonBatchNumber['index'] = `${i+1}`;
+                    res[i].commonBatchNumber['name'] = res[i].createPersonName;
+                    data.push(res[i].commonBatchNumber)
+                }
+            }
             this.setState({
                 flag:3,
-                allProductStandard:res?res:[]
+                allProductStandard:data?data:[]
             })
         })
     }
@@ -279,7 +310,8 @@ class ProductStandard extends React.Component{
                             <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} />
                         </div>
                         <div className={this.state.flag===3?'':'hide'}>
-                            <SelectProductStandard data={this.state.allProductStandard} url={this.url} productName={this.state.selectProduct} modalName={this.state.selectedModal} />
+                            <SelectProductStandard dataSource={this.state.allProductStandard} url={this.url} productName={this.state.selectProduct} modalName={this.state.selectedModal}
+                             getAllProductStandard={this.getAllProductStandard} />
                         </div>
                     </div>
                 </div>
