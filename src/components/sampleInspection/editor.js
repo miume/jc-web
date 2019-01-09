@@ -275,7 +275,7 @@ class Editor extends React.Component{
             type:'json'
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.fetch();
+            this.props.handleTableChange(this.props.pagination);
         })
         this.setState({ visible: false });
     }
@@ -297,7 +297,7 @@ class Editor extends React.Component{
             type:'json'
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.fetch();
+            this.props.handleTableChange(this.props.pagination);
         })
         this.setState({ visible: false });
     }    
@@ -349,8 +349,21 @@ class Editor extends React.Component{
     }
 
     changeMaterials = (value) =>{
-        this.setState({
-            oldMaterials:value
+        axios({
+            url:`${this.server}/jc/common/sampleDeliveringRecord/rawStandard`,
+            method:'get',
+            params:{serialNumberId:value},
+            headers:{
+                'Authorization': this.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            if(res){
+                this.setState({
+                    oldTestItems:res,
+                    oldMaterials:value
+                })
+            }
         })
     }
 
@@ -460,7 +473,7 @@ class Editor extends React.Component{
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
                                             )
                                         })
                                     }
@@ -475,10 +488,15 @@ class Editor extends React.Component{
                                     </div>
                                 </div>}
 
-                        {(this.state.visible1===1||this.state.visible1===3)?<div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} >
+                        {this.state.visible1===3?<div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} >
                             <Checkbox.Group style={{ width: '100%' }} defaultValue={this.state.oldTestItems} onChange={this.changeItems}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
+                            }
+                        </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} >
+                            <Checkbox.Group style={{ width: '100%' }} value={this.state.oldTestItems} onChange={this.changeItems}>
+                            {
+                            this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
                             }
                         </Checkbox.Group></div>:null}
                         
@@ -486,7 +504,7 @@ class Editor extends React.Component{
                             {
                                 this.state.serialNumber.map(pe=>{
                                     return(
-                                        <Option key={pe.id} value={pe.id}>{pe.materialName+" - "+pe.manufacturerName}</Option>
+                                        <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName+" - "+pe.manufacturerName}</Option>
                                     )
                                 })
                             }
@@ -494,7 +512,7 @@ class Editor extends React.Component{
                             {
                                 this.state.FinalserialNumber.map(pe=>{
                                     return(
-                                        <Option key={pe.id} value={pe.id}>{pe.materialName}</Option>
+                                        <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
                                     )
                                 })
                             }

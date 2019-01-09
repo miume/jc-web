@@ -4,7 +4,9 @@ import '../Home/page.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from '../BlockQuote/deleteByIds';
+import AddModal from './addModal';
 import { Table,Popconfirm,Divider,message } from 'antd';
+import Edit from "./edit"
 
 const data = [];
 for(let i = 1;i<=10;i++){
@@ -80,7 +82,7 @@ class Equipment extends React.Component{
             render:()=>{
                 return (
                     <span>
-                        <span className='blue'>编辑</span>
+                        <Edit />
                         <Divider type="vertical" />
                         <span ref="#" className='blue'>详情</span>
                         <Divider type="vertical" />
@@ -114,6 +116,7 @@ class Equipment extends React.Component{
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
+                <AddModal />&nbsp;&nbsp;&nbsp;
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} />
                 <SearchCell name='请输入指导书名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                 <div className='clear'></div>
