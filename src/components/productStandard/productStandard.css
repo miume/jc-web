@@ -285,7 +285,7 @@
     margin:20px 0;
 }
 .modal-add-date{
-    width:320px;
+    width:320px !important;
 }
 /**型号编辑和详情*/
 .modal-detail-p p{

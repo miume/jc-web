@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import moment from 'moment';
 import {Modal,Input,Table,DatePicker,message} from 'antd';
 import HeadTable from './headTable';
 import Submit from '../BlockQuote/submit';
@@ -34,6 +35,9 @@ class AddProductStandard extends React.Component{
         this.addDataProcessing = this.addDataProcessing.bind(this);
         this.detailDataProcessing = this.detailDataProcessing.bind(this);
         this.getDataByBatchNumberId = this.getDataByBatchNumberId.bind(this);
+        this.disabledDateTime = this.disabledDateTime.bind(this);
+        this.disabledDate  = this.disabledDate.bind(this);
+        this.range = this.range.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -48,15 +52,15 @@ class AddProductStandard extends React.Component{
             width:'25%'
         },{
             title:'检测结果',
-            dataIndex:'testResult',
-            key:'testResult',
+            dataIndex:'value',
+            key:'value',
             align:'center',
             width:'25%',
             render:(text,record)=>{
-                if(record.flag){
+                if(this.props.flag===1){
                     return text;
                 }else 
-                    return <Input id={record.id} name='testResult' placeholder='请输入检测结果' style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} className='stock-out-input' />
+                    return <Input id={record.id} name='testResult' placeholder='请输入检测结果' style={{width:'100%',height:'30px',border:'none'}} defaultValue={text} onChange={this.save} className='stock-out-input' />
             }
         },{
             title:'计量单位',
@@ -218,15 +222,16 @@ class AddProductStandard extends React.Component{
         }).then((data)=>{
             if(status===1&&data.data.code===0){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-                // console.log(dataId)
                 this.applyReview(dataId,classId,productId);
             }else{
                 message.info(data.data.message);
                 this.handleCancel();
-                this.props.getAllProductStandard({
-                    classId:classId,
-                    productId:productId
-                })
+                if(!this.props.flag){
+                    this.props.getAllProductStandard({
+                        classId:classId,
+                        productId:productId
+                    })
+                }
             }
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
@@ -279,18 +284,38 @@ class AddProductStandard extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.getAllProductStandard({
-                classId:classId,
-                productId:productId
-            })
+            if(!this.props.flag){
+                this.props.getAllProductStandard({
+                    classId:classId,
+                    productId:productId
+                })
+            }
             this.handleCancel();
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
         })
     }
+    /**对编辑、详情的生效时间进行处理 只准选择当前时间之后的日期 */
+    range(start, end) {
+        const result = [];
+        for (let i = start; i < end; i++) {
+          result.push(i);
+        }
+        return result;
+      }
+    disabledDate(current){
+        return current && current < moment().endOf('day');
+    }
+    disabledDateTime(){
+        return {
+            disabledHours: () => this.range(0, 24).splice(4, 20),
+            disabledMinutes: () => this.range(30, 60),
+            disabledSeconds: () => [55, 56],
+          };
+    }
     render(){
         /**flag用来区分 是详情还是新增 默认为新增，编辑 1表示详情*/
-        const footer = this.props.flag?
+        const footer = this.props.flag===1?
            [<CancleButton key='back' flag={1} handleCancel={this.handleCancel}/>]:
            [
             <CancleButton key='back' handleCancel={this.handleCancel}/>,
@@ -299,6 +324,10 @@ class AddProductStandard extends React.Component{
             process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} submitClick={this.submitClick}/> 
            ];
         const flag = this.props.flag;
+        const format = "YYYY-MM-DD HH:mm:ss";
+        const effectiveTime = this.state.time.effectiveTime;
+        // const effectiveTime = '2019-10-10'
+        console.log(effectiveTime)
         return (
             <span>
                 {this.judge(flag)}
@@ -317,11 +346,24 @@ class AddProductStandard extends React.Component{
                     {
                         this.props.flag===1?
                         <div className='modal-detail-p'>
-                            <p>{`生效时间：${this.state.time.effectiveTime}`}</p>
-                            <p>{`编制日期：${this.state.time.createTime}`}</p>
+                            <p>{`生效时间：${this.state.time.effectiveTime?this.state.time.effectiveTime:''}`}</p>
+                            <p>{`编制日期：${this.state.time.createTime?this.state.time.createTime:''}`}</p>
                         </div>:
-                        <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
-                        size='large' className='modal-add-date' />
+                        <div>
+                        {
+                            effectiveTime?
+                            <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
+                                size='large' className='modal-add-date'
+                                disabledDate={this.disabledDate}
+                                // disabledTime={this.disabledDateTime}
+                                // defaultValue={effectiveTime ? moment(effectiveTime, format) : undefined}
+                                defaultValue={moment(effectiveTime,format)}
+                                showTime allowClear
+                                format={format}
+                        />:''
+                        }
+                        </div>
+                        
                     }
                     </div>
 
