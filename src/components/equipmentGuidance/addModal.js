@@ -3,7 +3,8 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 import AddButton from '../BlockQuote/newButton'
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
-import { Button, Modal, Form, Input,message } from 'antd';
+import { Button, Modal, Form, Input,message,DatePicker } from 'antd';
+import Tr from './tr';
 
 class AddModal extends React.Component{
     constructor(props){
@@ -77,13 +78,35 @@ class AddModal extends React.Component{
                       ]}
                 >
                       <div style={{height:'400px'}}>
-                            <Input placeholder='请输入指导书名称'/>
-                            <Input placeholder='请输入编号'/>
-                            <Input placeholder='请输入版次'/>
-                            <Input placeholder='请输入页次'/>
+                            <Input style={{width:"32%"}} placeholder='请输入指导书名称'/>
+                            <Input style={{width:"32%",marginLeft:'2%'}} placeholder='请输入编号'/>
+                            <Input style={{width:"32%",marginLeft:'2%'}} placeholder='请输入版次'/>
+                            <Input style={{width:'49%',marginTop:'10px'}} placeholder='请输入页次'/>
+                            <DatePicker style={{width:'49%',marginLeft:'2%',marginTop:'10px'}} placeholder='请选择生效日期' />
+                            <WhiteSpace />
+                            <table className='protable'>
+                                <thead className='prothead'>
+                                    <tr>
+                                        <td>点检内容</td>
+                                        <td>检查标准</td>
+                                        <td>频次</td>
+                                        <td>图片</td>
+                                        <td>操作</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="edit">
+                                    {
+                                        this.state.data.map((m)=>{return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}/>})
+                                    }
+                                </tbody>
+                            </table>
+                            <WhiteSpace />
+                            <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
                       </div>
                 </Modal>
             </span>
         )
     }
 }
+
+export default AddModal

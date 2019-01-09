@@ -43,18 +43,22 @@ class SampleInspection extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.handleRefuse = this.handleRefuse.bind(this);
         this.contentChange = this.contentChange.bind(this);
+        this.changePage = this.changePage.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            onShowSizeChange(current, pageSize) {
+            },
+            onChange:this.changePage,
         }
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
+            sorter: (a, b) => a.sampleDeliveringRecord.id - b.sampleDeliveringRecord.id,
             align:'center',
             width: '10%',
         },{
@@ -156,7 +160,7 @@ class SampleInspection extends React.Component{
             render : (text,record)=>{
                 return(
                     <span>
-                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
+                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit handleTableChange={this.handleTableChange} pagination={this.pagination} fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus===-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>删除</span>
@@ -171,6 +175,8 @@ class SampleInspection extends React.Component{
                 );
             }
         }];
+    }
+    changePage = (page,pageSize) =>{
     }
     contentChange(e){
         const value = e.target.value;
@@ -194,7 +200,7 @@ class SampleInspection extends React.Component{
             message.info(error.data)
         });
         setTimeout(() => {
-            this.fetch();
+            this.handleTableChange(this.pagination);
         }, 1000);
     }
     handleAccept = (id) =>{
@@ -214,7 +220,7 @@ class SampleInspection extends React.Component{
             message.info(error.data)
         });
         setTimeout(() => {
-            this.fetch();
+            this.handleTableChange(this.pagination);
         }, 1000);
     }
     handleDelete = (id) => {
@@ -230,7 +236,10 @@ class SampleInspection extends React.Component{
             message.info(error.data)
         });
         setTimeout(() => {
-            this.fetch();
+            if((this.pagination.total-1)%10===0){
+                this.pagination.current = this.pagination.current-1
+            }
+            this.handleTableChange(this.pagination);
         }, 1000);
     }
     /**返回数据录入页面 */
@@ -288,9 +297,9 @@ class SampleInspection extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
+            this.pagination.total=res.total;
+            this.pagination.current = res.pageNumber;
             if(res&&res.list){
-                this.pagination.total=res.total;
-                this.pagination.current = res.pageNum;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
                 }

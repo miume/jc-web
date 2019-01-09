@@ -25,6 +25,7 @@ const CollectionCreateForm = Form.create()(
                 serialNumber : [],
                 // MiddleserialNumber : [],
                 FinalserialNumber:[],
+                materialsItem:[],
 
                 process : [],
                 sampling : [],
@@ -198,6 +199,25 @@ const CollectionCreateForm = Form.create()(
             })
         }
 
+        materialsItem = (value)=>{
+            axios({
+                url:`${this.server}/jc/common/sampleDeliveringRecord/rawStandard`,
+                method:'get',
+                params:{serialNumberId:value},
+                headers:{
+                    'Authorization': this.Authorization
+                },
+            }).then((data)=>{
+                const res = data.data.data;
+                if(res){
+                    this.props.onChange(res);
+                    this.setState({
+                        materialsItem:res
+                    })
+                }
+            })
+        }
+
         getProcess=(value)=>{
             axios({
                 url:`${this.server}/jc/common/procedureTestRecord/testItems`,
@@ -209,6 +229,7 @@ const CollectionCreateForm = Form.create()(
             }).then((data)=>{
                 const res = data.data.data;
                 if(res){
+                    
                     this.setState({
                         process:res,
                         factoryId:value
@@ -400,20 +421,25 @@ const CollectionCreateForm = Form.create()(
                         )    
                         }
                         {
-                            (this.state.visible1===1||this.state.visible1===3)?
+                            this.state.visible1===3?
                         <div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px"}} >
                             <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
                             }
-                            </Checkbox.Group></div>: null
+                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px"}} >
+                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>
+                            {
+                            this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
+                            }
+                            </Checkbox.Group></div>:null
                         }
                         {
                             this.state.visible1 === 1 ?  <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
                                 rules: [{ required: true, message: '请选择受检物料' }],
                             })(
-                                <Select placeholder="请选择受检物料">
+                                <Select placeholder="请选择受检物料" onChange={this.materialsItem}>
                                     {
                                         this.state.serialNumber.map(pe=>{
                                             return(
@@ -499,6 +525,7 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
+            console.log(this.state.testItemIds)
             let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
