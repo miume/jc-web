@@ -46,13 +46,13 @@ class ProductStandardDetail extends React.Component{
             key:'id',
             width:'10%',
             align:'center',
-            render:(text)=>{
-                // let editFlag=this.judgeStatus(record.status);
+            render:(text,record)=>{
+                const status = record.status;
                 return(
                     <span>
-                        <AddProductStandard flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} />
+                        <AddProductStandard flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} />
                         <Divider type='vertical'/>
-                        <AddProductStandard flag={2} batchNumberId={text} url={this.props.url} data={this.props.topData}/>
+                        <AddProductStandard flag={2} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} />
                     </span>
                 );
             }
@@ -60,9 +60,10 @@ class ProductStandardDetail extends React.Component{
     }
     render(){
         return (
-            <div>
+            <div className='standard-table'>
                 <Table columns={this.columns} pagination={false} size='small' scroll={{y:300}}
                 rowKey={record=>record.id}  dataSource={this.props.data} bordered
+                rowClassName={(record,index)=>index===1?'table-implemention':''}
                 />
             </div>
         );

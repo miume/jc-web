@@ -8,15 +8,15 @@ class HeadTable extends React.Component{
                     <thead>
                     <tr>
                         <th>批号</th>
-                        <th>{data?data[1][2]:''}</th>
-                        <th>{data?data[2][2]:''}</th>
+                        <th>产品</th>
+                        <th>型号</th>
                     </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>{this.props.batchNumber}</td>
-                            <td>{data?data[1][1]:''}</td>
-                            <td>{data?data[2][1]:''}</td>
+                            <td>{data&&data[1]?data[1][1]:''}</td>
+                            <td>{data&&data[1]?data[2][1]:''}</td>
                         </tr>
                     </tbody>
                 </table>

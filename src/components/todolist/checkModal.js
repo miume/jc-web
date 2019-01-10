@@ -5,6 +5,7 @@ import Procedure from './procedure';
 import RedList from './redlist';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
+import AddProductStandard from '../productStandard/addProductStandard';
 import axios from 'axios';
 class CheckModal extends React.Component{
     constructor(props){
@@ -23,16 +24,17 @@ class CheckModal extends React.Component{
     /**根据dataType判断是那种类型产品送审 */
     judgeType(type){
         switch(type){
-            case 1:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 2:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 4:  return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 7:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
-            case 8:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; break;
+            case 1:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
+            case 2:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
+            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
+            case 4:  return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
+            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
+            case 7:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
+            case 8:  return <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/>; 
             case 5:  
             case 9:  
-            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag} type={type}/>; break;
+            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag} type={type}/>; 
+            case 12: return <AddProductStandard url={this.props.url} data={this.props.topData} flag={1} batchNumberId={this.props.dataId} />
             default: return null ; break;
         }
     }
@@ -44,6 +46,7 @@ class CheckModal extends React.Component{
     }
     /**根据batchNumberId 查询审核记录 */
     getReplyData(value){
+        // console.log(value.target.value)
         this.state.reply = value;
     }
     /**点击取消  */
@@ -102,10 +105,18 @@ class CheckModal extends React.Component{
                     
                 ]}
                 >
-                {
-                    this.judgeType(this.props.dataType)
-                }
-                {/* <Procedure url={this.props.url} dataId={this.props.dataId} getReplyData={this.getReplyData} flag={this.props.flag}/> */}
+            
+                    <div>
+                    {
+                        this.judgeType(this.props.dataType)
+                    }
+                    
+                    <div>
+                        <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
+                    </div>
+                    <div className='clear'></div>
+                    </div>
+                
                 </Modal>
             </span>
         );

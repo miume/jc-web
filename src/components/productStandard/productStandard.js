@@ -7,6 +7,7 @@ import SelectModal from './model';
 import SearchCell from '../BlockQuote/search';
 import Blockquote from '../BlockQuote/blockquote';
 import SelectProductStandard from './selectProductStandard';
+import ProductStandardDetail from './productStandardDetail';
 class ProductStandard extends React.Component{
     url
     componentDidMount(){
@@ -23,6 +24,7 @@ class ProductStandard extends React.Component{
             modalArr:[],            //用来存储选择型号 所点击的所有型号
             selectedModal:[],       //用来存取最后一次选择型号的id和name
             selectProduct:[],       //用来存取最后一次选择产品的id和name
+            standradFlag:0,            //用来存取设置标准页面来区分是搜索时为空1，还是getAllStandard为空0
         }
         this.fetch = this.fetch.bind(this);
         this.clickI = this.clickI.bind(this);
@@ -88,7 +90,6 @@ class ProductStandard extends React.Component{
     }
     /**获取所有型号 并保存所有点击的型号*/
     getAllSelectModal(params,ids){
-        console.log(params)
         if(ids){
             /**modalArr保存型号的一个分支 父元素-子元素-子元素。。。 */
             var {modalArr} = this.state;
@@ -211,6 +212,10 @@ class ProductStandard extends React.Component{
             }); 
         }else{
             const {selectProduct,selectedModal} = this.state;
+             /**设置设置标准 搜素标注位1 */
+             this.setState({
+                standradFlag:1
+            })
             this.getAllProductStandard({
                 classId:parseInt(selectedModal[0]),
                 productId:parseInt(selectProduct[0]),
@@ -247,6 +252,10 @@ class ProductStandard extends React.Component{
             }); 
         }else{
             const {selectProduct,selectedModal} = this.state;
+            /**设置设置标准 搜素标志位 置0 */
+            this.setState({
+                standradFlag:0
+            })
             this.getAllProductStandard({
                 classId:parseInt(selectedModal[0]),
                 productId:parseInt(selectProduct[0])
@@ -270,15 +279,17 @@ class ProductStandard extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             var data = [];
+            var flag = 3;
             if(res){
                 for(var i = 0; i < res.length; i++){
                     res[i].commonBatchNumber['index'] = `${i+1}`;
                     res[i].commonBatchNumber['name'] = res[i].createPersonName;
                     data.push(res[i].commonBatchNumber)
                 }
+                flag = 4;
             }
             this.setState({
-                flag:3,
+                flag:flag,
                 allProductStandard:data?data:[]
             })
         })
@@ -286,13 +297,14 @@ class ProductStandard extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
+        const data = [['','','批号'],this.state.selectProduct,this.state.selectedModal];
         return (
             <div>
                 <Blockquote name={current.menuName} menu={current.menuParent}  />
                 <div className='productStandard'>  
                     <div className='product-standrad-top'>
-                        <div onClick={this.state.flag===2||this.state.flag===3?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择产品':this.state.selectProduct[1]}</span></div>
-                        <div onClick={this.state.flag===3?this.divCilck:null} id='product-2' className='product-standrad-top-notclick'><i className='fa fa-cubes'></i><span className='product-standrad-top-span'>{this.state.flag===3?this.state.selectedModal[1]:'选择型号'}</span></div>
+                        <div onClick={this.state.flag===2||this.state.flag===3||this.state.flag===4?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择产品':this.state.selectProduct[1]}</span></div>
+                        <div onClick={this.state.flag===3||this.state.flag===4?this.divCilck:null} id='product-2' className='product-standrad-top-notclick'><i className='fa fa-cubes'></i><span className='product-standrad-top-span'>{this.state.flag===3||this.state.flag===4?this.state.selectedModal[1]:'选择型号'}</span></div>
                         <div id='product-3' className='product-standrad-top-notclick'><i className='fa fa-stop'></i> <span className='product-standrad-top-span'>设置标准</span></div>
                     </div>
                     <div className='product-standrad-middle'>
@@ -302,16 +314,19 @@ class ProductStandard extends React.Component{
                             <Divider type='horizontal' />
                         </div>
                         <div className={this.state.flag===1?'':'hide'}>
-                        {
                            <Product data={this.state.allProduct} blockClick={this.blockClick} add={this.state.add} clickI={this.clickI} />
-                        }
                         </div>
                         <div  className={this.state.flag===2?'':'hide'}>
                             <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} />
                         </div>
+                        {/**设置标准 flag===3 标准为空 表示新增界面 */}
                         <div className={this.state.flag===3?'':'hide'}>
-                            <SelectProductStandard dataSource={this.state.allProductStandard} url={this.url} productName={this.state.selectProduct} modalName={this.state.selectedModal}
-                             getAllProductStandard={this.getAllProductStandard} />
+                            <SelectProductStandard url={this.url}  data={data}
+                             getAllProductStandard={this.getAllProductStandard}/>
+                        </div>
+                        {/**设置标准 flag===4 标准不为空 表示标准显示 */}
+                        <div className={this.state.flag===4?'product-standrad-bottom':'hide'}>
+                            <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} />
                         </div>
                     </div>
                 </div>
