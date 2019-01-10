@@ -15,9 +15,10 @@ class RawStandard extends Component{
             content1:'选择原材料',//最开始是这样，但是一旦选择之后会改成所选择的那个文字
             content2:'选择生产厂家',
             content3:'设置标准',
-            rawMaterialId:0,
-            factoryId:0
-
+            rawMaterialId:0,//原材料id
+            factoryId:0,
+            detail:[],
+            standardData:[],//建立标准返回的数据作为标准界面表格的数据
         }
         this.onBlockChange1=this.onBlockChange1.bind(this);
         this.onBlockChange2=this.onBlockChange2.bind(this);
@@ -35,7 +36,7 @@ class RawStandard extends Component{
     });
   }
   onBlockChange2(flag,content2,id){
-    console.log(flag);
+    //console.log(flag);
          this.setState({
              flag:flag,
              content2:content2,
@@ -43,12 +44,13 @@ class RawStandard extends Component{
          });
   }
   onBlockChange3(flag,content3){
-      
+      console.log(flag,content3);
     this.setState({
         flag:flag,
         content3:content3,
     });
 }
+
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
          this.setState({
             flag:1,
@@ -79,10 +81,10 @@ class RawStandard extends Component{
                             <Manufacturer onBlockChange={this.onBlockChange2} rawMaterialId={this.state.rawMaterialId} type={2}/> 
                         </div>
                         <div className={this.state.flag===3?'show':'hide'}>
-                            <Standard onBlockChange={this.onBlockChange3} type={3} raw={this.state.content1} factory={this.state.content2}/>
+                            <Standard onBlockChange={this.onBlockChange3} type={3} raw={this.state.content1} factory={this.state.content2} factoryId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId}/>
                         </div>
                         <div className={this.state.flag===4?'show':'hide'}>
-                            <SetStandard onBlockChange={this.onBlockChange3} type={4} raw={this.state.content1} factory={this.state.content2}/>
+                            <SetStandard onBlockChange={this.onBlockChange3}  type={4} raw={this.state.content1} factory={this.state.content2} rawMaterialId={this.state.rawMaterialId}  rawManufacturerId={this.state.factoryId}/>
                         </div>
                     </div>
                    </div > 

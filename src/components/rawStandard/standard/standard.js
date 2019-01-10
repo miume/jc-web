@@ -1,32 +1,38 @@
 import React, { Component } from 'react';
 import {Table,Divider} from 'antd';
+import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import Edit from './edit';
 import Detail from './detail';
-const data=[];
-for(var i=0;i<20;i++){
-  data.push({
-     id:i+1,
-     batchNumber:'SN01',
-     createTime:'2018-12-16 12:09:12',
-     createPerson:'李钦',
-     status:'已保存未提交'
-    }
-  );
-}
+// const data=[];
+// for(var i=0;i<20;i++){
+//   data.push({
+//      id:i+1,
+//      batchNumber:'SN01',
+//      createTime:'2018-12-16 12:09:12',
+//      createPerson:'李钦',
+//      status:'已保存未提交'
+//     }
+//   );
+// }
   class Standard extends Component{
+      url;
+      componentDidMount(){
+          this.fetch()
+      }
      constructor(props){
         super(props);
         this.state={
             searchContent:'',
-            dataSource:data,
-            selectRowKeys:[]
+            dataSource:this.props.standardDataSource,
+            selectRowKeys:[],
+            
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id',
-            sorter:(a,b)=>a.id-b.id,
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b)=>a.index-b.index,
             width:'10%',
             align:'center'
         },{
@@ -43,8 +49,8 @@ for(var i=0;i<20;i++){
             align:'center'
         },{
             title:'创建人',
-            dataIndex:'createPerson',
-            key:'createPerson',
+            dataIndex:'createPersonName',
+            key:'createPersonName',
             width:'10%',
             align:'center'
         },{
@@ -69,7 +75,7 @@ for(var i=0;i<20;i++){
                     <span>
                         <Edit editFlag={editFlag}/>
                         <Divider type='vertical'/>
-                        <Detail record={record} raw={this.props.raw} factory={this.props.factory}/>
+                        <Detail record={record} raw={this.props.raw} factory={this.props.factory} />
                     </span>
                 );
             }
@@ -77,15 +83,32 @@ for(var i=0;i<20;i++){
         this.searchEvent=this.searchEvent.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.checkRaw=this.checkRaw.bind(this);
+        this.fetch=this.fetch.bind(this);
      }
-
+     fetch(){
+         axios({
+             url:`${this.url.rawStandard.getStandard}`,
+             method:'get',
+             headers:{
+                'Authorization':this.url.Authorization
+             },
+             params:{
+                name:JSON.parse(localStorage.getItem('menuList')).name,//创建人姓名即用户
+                materialId:this.props.rawMaterialId,
+                factoryId:this.props.factoryId
+           },
+             type:'json'
+         }).then(data=>{
+             console.log(data);
+         });
+     }
      judgeStatus=(record_status)=>{
              switch(`${record_status}`){
-                  case '已保存未提交':return true
-                  case '已提交待审核':return false
-                  case '审核中':return false
-                  case '已通过':return false
-                  case '不通过':return true
+                  case '-1':return true
+                  case '0':return false
+                  case '1':return false
+                  case '2':return false
+                  case '3':return true
              }
      }
      checkRaw(e){//点击重新选择厂家调用的函数
@@ -100,6 +123,7 @@ for(var i=0;i<20;i++){
        const value=e.target.value;
      }
      render(){
+         this.url=JSON.parse(localStorage.getItem('url'));
          return(
          <div style={{position:'relative'}}>
              <div style={{padding:'15px'}}>

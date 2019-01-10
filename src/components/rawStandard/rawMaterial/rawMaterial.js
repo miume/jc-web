@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import {message} from 'antd';
+import {message,Modal} from 'antd';
 import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
+import NewButton from '../../BlockQuote/newButton';
+import CancleButton from '../../BlockQuote/cancleButton';
+import RawMaterialAddModal from './addModal'; 
 import '../block.css';
 import DataPart from '../div';
 
@@ -9,6 +12,7 @@ class RawMaterial extends Component{
       url;
       componentDidMount(){
           this.fetch();
+          this.getAllTestItem();
       }
     //   componentWillMount(){
     //       this.setState=()=>{
@@ -23,13 +27,18 @@ class RawMaterial extends Component{
               f:true,//用来判断是否显示新增的块,
               visible:false,
               inputContent:'',//新增输入框最开始没有内容
+              items:[],
+              testItems:[]
           }
           this.onBlockChange=this.onBlockChange.bind(this);
           this.searchContentChange=this.searchContentChange.bind(this);
           this.searchEvent=this.searchEvent.bind(this);
           this.fetch=this.fetch.bind(this);
-          this.addClick=this.addClick.bind(this);
+           this.addClick=this.addClick.bind(this);
           this.addEvent=this.addEvent.bind(this);
+          this.handleCancel=this.handleCancel.bind(this);
+          this.getAllTestItem=this.getAllTestItem.bind(this);
+          this.checkboxChange=this.checkboxChange.bind(this);
       }
      fetch=()=>{
        axios({
@@ -54,32 +63,26 @@ class RawMaterial extends Component{
     onBlockChange(e){
         const rawMaterialId = e.target.id.split('-')[0];
         const name = e.target.id.split('-')[1];
-    //    console.log(id);
-    //    console.log(name);
        this.props.onBlockChange(2,name,rawMaterialId);
+    }
+    checkboxChange(value){
+         this.setState({testItems:value});
     }
     addClick(){//点击新增,弹出modal
         this.setState({
            visible:true
         });
     }
-    // addChange(e){//监听新增输入框的变化
-    //     this.setState({
-    //         inputContent:e.target.value
-    //     });
-    // }
     addEvent(){//新增事件
-        //console.log(this.state.inputContent);
+        const value=this.formRef.getItemsValue();
+        //console.log(value);
         axios({
-            url:`${this.url.rawStandard.addRaw}`,
+            url:`${this.url.rawStandard.addRaw}?testItemIds=${this.state.testItems.toString()}`,
             method:'post',
             headers:{
                 'Authorization':this.url.Authorization
             },
-            data:{
-               name:this.state.inputContent
-            },
-            type:'json'
+            data:value
         }).then(data=>{
             //console.log(data);
             message.info(data.data.message);
@@ -87,9 +90,15 @@ class RawMaterial extends Component{
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
+        this.setState({
+            visible:false
+        });
     }
-  
-    
+    handleCancel(){
+        this.setState({
+            visible:false
+        });
+    }
     /**---------------------- */
     //获取查询时用户名称的实时变化
     searchContentChange(e){
@@ -124,7 +133,23 @@ class RawMaterial extends Component{
        .catch(()=>{
            message.info('查询失败，请联系管理员！ ');
        });
-    }
+    }  
+    getAllTestItem(){
+        axios({
+           url:`${this.url.testItems.testItems}`,
+           method:'get',
+           headers:{
+               'Authorization':this.url.Authorization
+           }
+        }).then(data=>{
+            const res=data.data.data;
+            if(res){
+                this.setState({items:res});
+            }
+        }
+              
+        )
+      }
       render(){
          this.url=JSON.parse(localStorage.getItem('url'));
           return(
@@ -145,7 +170,19 @@ class RawMaterial extends Component{
                            this.state.data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
                        }
-                      <span className={this.state.f?'show':'hide'}> <DataPart  flag={1} flag1={this.state.flag1} onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent} name='新增' name1='原材料'/></span>
+                      <span className={this.state.f?'show':'hide'}> <DataPart  flag={1} onBlockChange={this.addClick}   name='新增' name1='原材料'/></span>
+                      <Modal
+                            visible={this.state.visible}
+                            title="新增"
+                            closable={false} maskClosable={false} centered={true}
+                            width='360px'
+                            footer={[
+                            <CancleButton   key='cancel' handleCancel={this.handleCancel} />,
+                            <NewButton key='ok' handleClick={this.addEvent} name='确定'  className='fa fa-check'/>,
+                            ]}
+                    >
+                      <RawMaterialAddModal items={this.state.items} checkboxChange={this.checkboxChange} wrappedComponentRef={(form) => this.formRef = form}/>
+                    </Modal>
                    </div>
                  
               </div>

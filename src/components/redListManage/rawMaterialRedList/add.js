@@ -90,8 +90,6 @@ class Add extends React.Component{
          this.formRef.resetField();//重置表单
     }
 
-
-   
     //监听流程下拉框变化
     selectChange=(value)=>{
         //console.log(value);//得到的是id
