@@ -291,3 +291,9 @@
 .modal-detail-p p{
     font-weight: 400;
 }
+.standard-table{
+    padding:20px;
+}
+.table-implemention{
+    border:2px solid #0086ff;
+}

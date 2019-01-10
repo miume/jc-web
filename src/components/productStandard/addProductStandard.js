@@ -36,6 +36,7 @@ class AddProductStandard extends React.Component{
         this.detailDataProcessing = this.detailDataProcessing.bind(this);
         this.getDataByBatchNumberId = this.getDataByBatchNumberId.bind(this);
         this.disabledDateTime = this.disabledDateTime.bind(this);
+        this.handleIteration = this.handleIteration.bind(this);
         this.disabledDate  = this.disabledDate.bind(this);
         this.range = this.range.bind(this);
         this.columns = [{
@@ -57,7 +58,7 @@ class AddProductStandard extends React.Component{
             align:'center',
             width:'25%',
             render:(text,record)=>{
-                if(this.props.flag===1){
+                if(this.state.flag===1){
                     return text;
                 }else 
                     return <Input id={record.id} name='testResult' placeholder='请输入检测结果' style={{width:'100%',height:'30px',border:'none'}} defaultValue={text} onChange={this.save} className='stock-out-input' />
@@ -73,9 +74,9 @@ class AddProductStandard extends React.Component{
     /**判断是新增 编辑 还是详情 */
     judge(flag){
         switch(flag){
-            case 1 : return <span className='blue' onClick={this.handleAdd}>详情</span>; break;
-            case 2 : return <span className='blue' onClick={this.handleAdd}>编辑</span>; break;
-            default: return <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />; break;
+            case 1 : return <span className='blue' onClick={this.handleAdd}>详情</span>; 
+            case 2 : return <span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null}>编辑</span>;
+            default: return <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
         }
     }
     /**点击新增标准 弹出新增标准弹出框 */
@@ -83,7 +84,8 @@ class AddProductStandard extends React.Component{
         const flag = this.props.flag;
         const id = this.props.batchNumberId;
         this.setState({
-            visible:true
+            visible:true,
+            flag:flag
         })
         if(flag) this.getDataByBatchNumberId(id);
         else this.getAllTestItem();
@@ -117,11 +119,18 @@ class AddProductStandard extends React.Component{
             testItems['value'] = e.techniqueProductTestItemStandard.value;
             data.push(testItems)
         }
-        console.log(data)
         this.setState({
             batchNumber:batchNumber,
             allTestItem:data,
-            time:time
+            time:time,
+            date:time.effectiveTime
+        })
+    }
+    /**点击详情-迭代 */
+    handleIteration(){
+        /**将详情置为编辑 */
+        this.setState({
+            flag:2
         })
     }
     /**点击保存按钮 */
@@ -198,8 +207,14 @@ class AddProductStandard extends React.Component{
             data[i]['index']=`${i+1}`;
             data[i]['testResult']=''
         }
+        var date = new Date();
+        var nowDate = date.toLocaleDateString().split('/').join('-');
+        var time = {
+            effectiveTime:nowDate
+        }
         this.setState({
-            allTestItem:data
+            allTestItem:data,
+            time:time
         })
     }
     /**监控新增标准 生效时间的选取 */
@@ -208,40 +223,12 @@ class AddProductStandard extends React.Component{
             date:dateString
         })
     }
-    /**保存 */
-    applyOut(status,commonBatchNumber,details){
-        const productId = this.props.data[1][0];
-        const classId = this.props.data[2][0];
-        axios.post(`${this.props.url.productStandard.productStandard}`,{
-            commonBatchNumber:commonBatchNumber,
-            details:details
-        },{
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-        }).then((data)=>{
-            if(status===1&&data.data.code===0){
-                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-                this.applyReview(dataId,classId,productId);
-            }else{
-                message.info(data.data.message);
-                this.handleCancel();
-                if(!this.props.flag){
-                    this.props.getAllProductStandard({
-                        classId:classId,
-                        productId:productId
-                    })
-                }
-            }
-        }).catch(()=>{
-            message.info('保存失败，请联系管理员！')
-        })
-    }
     /**对保存或送审的数据进行处理 */
     addDataProcessing(status){
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
-            createPersonId:createPersonId
+            id:this.props.batchNumberId,
+            createPersonId:createPersonId,
         }
         var techniqueProductTestItemDTOs = [];
         const {date} = this.state;
@@ -272,9 +259,38 @@ class AddProductStandard extends React.Component{
         }
         this.applyOut(status,commonBatchNumber,details);
     }
+    /**保存 */
+    applyOut(status,commonBatchNumber,details){
+        const productId = this.props.data[1][0];
+        const classId = this.props.data[2][0];
+        axios.post(`${this.props.url.productStandard.productStandard}`,{
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        },{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            if(status===1&&data.data.code===0){
+                const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+                this.applyReview(dataId,classId,productId);
+            }else{
+                message.info(data.data.message);
+                this.handleCancel();
+                if(!this.props.flag){
+                    this.props.getAllProductStandard({
+                        classId:classId,
+                        productId:productId
+                    })
+                }
+            }
+        }).catch(()=>{
+            message.info('保存失败，请联系管理员！')
+        })
+    }
     /**送审 */
     applyReview(dataId,classId,productId){
-        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
@@ -284,12 +300,10 @@ class AddProductStandard extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
-            if(!this.props.flag){
-                this.props.getAllProductStandard({
-                    classId:classId,
-                    productId:productId
-                })
-            }
+            this.props.getAllProductStandard({
+                classId:classId,
+                productId:productId
+            })
             this.handleCancel();
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
@@ -314,26 +328,30 @@ class AddProductStandard extends React.Component{
           };
     }
     render(){
-        /**flag用来区分 是详情还是新增 默认为新增，编辑 1表示详情*/
-        const footer = this.props.flag===1?
-           [<CancleButton key='back' flag={1} handleCancel={this.handleCancel}/>]:
-           [
+        const status = this.props.status;
+        /**详情  只有status===2 审核通过的数据可以迭代 */
+        const detail = status===2?[   
+            <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1} />, 
+            <NewButton key='submit' handleClick={this.handleIteration} name={'迭代'} className='fa fa-level-up'/>
+        ]:
+        [  
+           <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1} />,
+        ];
+        /**详情对应迭代后的按钮组合以及编辑、新增 */
+        const iteration = [
             <CancleButton key='back' handleCancel={this.handleCancel}/>,
             <SaveButton key='save' handleSave={this.handleSave} />,
             <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} 
             process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} submitClick={this.submitClick}/> 
-           ];
-        const flag = this.props.flag;
+        ]
         const format = "YYYY-MM-DD HH:mm:ss";
         const effectiveTime = this.state.time.effectiveTime;
-        // const effectiveTime = '2019-10-10'
-        console.log(effectiveTime)
         return (
             <span>
-                {this.judge(flag)}
+                {this.judge(this.props.flag)}
                 <Modal title='新增标准' visible={this.state.visible} closable={false}
                 maskClosable={false} 
-                footer={footer}>
+                footer={this.state.flag===1?detail:iteration}>
                 <div>
                     <HeadTable data={this.props.data} batchNumber={this.state.batchNumber} />
                     <div className='modal-add-table' >
@@ -342,31 +360,26 @@ class AddProductStandard extends React.Component{
                         pagination={false} size='small' bordered scroll={{y:250}}>
                         </Table>
                     </div>
-                    <div>
+                    <div style={{height:70}}>
                     {
-                        this.props.flag===1?
+                        this.state.flag===1?
                         <div className='modal-detail-p'>
                             <p>{`生效时间：${this.state.time.effectiveTime?this.state.time.effectiveTime:''}`}</p>
                             <p>{`编制日期：${this.state.time.createTime?this.state.time.createTime:''}`}</p>
                         </div>:
                         <div>
                         {
-                            effectiveTime?
+                            typeof(effectiveTime)!='undefined'?
                             <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
                                 size='large' className='modal-add-date'
                                 disabledDate={this.disabledDate}
-                                // disabledTime={this.disabledDateTime}
-                                // defaultValue={effectiveTime ? moment(effectiveTime, format) : undefined}
                                 defaultValue={moment(effectiveTime,format)}
                                 showTime allowClear
                                 format={format}
-                        />:''
-                        }
-                        </div>
-                        
+                        />:''}
+                        </div>   
                     }
                     </div>
-
                 </div> 
                 </Modal>
             </span>
