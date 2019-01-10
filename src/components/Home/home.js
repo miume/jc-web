@@ -370,6 +370,8 @@ class Home extends Component {
                  getFactory:`${server}/jc/common/techRawStandard/manufacturers`,
                  addFactory:`${server}/jc/common/techRawStandard/newManufacturer`,
                  getStandard:`${server}/jc/common/techRawStandard`,
+                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
+                 addStandard:`${server}/jc/common/techRawStandard`
               },
               /**产品标准 */
               productStandard:{

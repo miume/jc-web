@@ -49,6 +49,7 @@ class Manufacturer extends Component{
     }
     onBlockChange(e){
        //console.log(e.target);
+       //console.log(JSON.parse(localStorage.getItem('menuList')));
        const factoryId=e.target.id.split('-')[0];
        const factoryName=e.target.id.split('-')[1];
        axios({
@@ -58,15 +59,16 @@ class Manufacturer extends Component{
                'Authorization':this.url.Authorization
            },
            params:{
-                name:JSON.parse(localStorage.getItem('menuList')).userId,
+                name:JSON.parse(localStorage.getItem('menuList')).name,//创建人姓名即用户
                 materialId:this.props.rawMaterialId,
                 factoryId:factoryId
            },
            type:'json'
        })
        .then(data=>{
-           console.log(data);
+          // console.log(data);
            const res=data.data.data;
+           console.log(res);
            if(res){
             this.props.onBlockChange(3,factoryName,factoryId); 
            }

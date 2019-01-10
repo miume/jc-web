@@ -6,34 +6,50 @@ class SetStandardModal extends Component{
         super(props);
         this.columns=[{
             title:'序号',
-            dataIndex:'index',
-            key:'index',
-            sorter:(a,b)=>a.index-b.index,
+            dataIndex:'id',
+            key:'id',
+            sorter:(a,b)=>a.id-b.id,
             align:'center',
+            width:'18%'
           
         },{
             title:'检测项目',
-            dataIndex:'testItem',
-            key:'testItem',
+            dataIndex:'name',
+            key:'name',
             align:'center',
+            width:'22%'
         },{
             title:'检测标准',
             dataIndex:'value',
             key:'value',
             align:'center',
             render:(text,record)=>{
-                return(<Input id={record.id} name='value' placeholder='请输入检测标准' onChange={this.props.handleSave}/>)
-            }
+                return(<Input id={record.id} name='value' placeholder='请输入检测标准' size="small" style={{border:'none'}} onChange={this.inputChange}/>)
+            },
+            className:'rawStandardTd'
         },{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
             align:'center',
+            width:'22%'
         }];
         this.handleDateChange=this.handleDateChange.bind(this);
+        this.inputChange=this.inputChange.bind(this);
+    }
+    inputChange(e){
+       const value=e.target.value;//输入框输入的值(检测标准)
+       const id=e.target.id;//检测项目的id
+       const name=e.target.name;//value
+       const newData=[...this.props.data];
+       const index=newData.findIndex(item=>parseInt(id)===parseInt(item.id));
+       newData[index][name]=value;//加一个检测标准字段
+       //console.log(newData);
+       this.props.inputChange(newData);
     }
     handleDateChange(date, dateString){
-        console.log(date, dateString);
+        //console.log(dateString);
+        this.props.handleDate(dateString);
     }
       render(){
           return(
@@ -57,9 +73,13 @@ class SetStandardModal extends Component{
                   <div style={{height:'15px'}}></div>
                   <div >
                       <Table 
+                          rowKey={record=>record.id}
                           columns={this.columns}
+                          dataSource={this.props.data}
+                          pagination={{hideOnSinglePage:true,pageSize:100}}
                           size='small'
                           bordered
+                          scroll={{y:230}}
                         />
                   </div>
                   <div style={{marginTop:'15px'}}>

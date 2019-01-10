@@ -35,7 +35,7 @@ class Detail extends Component{
                       <NewButton key='interate' name='迭代'/>
                    ]}
                  >
-                 <DetailModal record={this.props.record} raw={this.props.raw} factory={this.props.factory}/>
+                 <DetailModal record={this.props.record} raw={this.props.raw} factory={this.props.factory} />
                  </Modal>
             </span>
         );

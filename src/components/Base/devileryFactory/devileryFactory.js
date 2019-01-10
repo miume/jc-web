@@ -224,7 +224,7 @@ class DeliveryFactory extends React.Component{
         /**批量删除弹出框确认函数 */
     deleteByIds(){
       const ids =this.state.selectedRowKeys;//删除的几行的id
-     // console.log(ids);
+     //console.log(ids);
       axios({
           url:`${this.url.deliveryFactory.deliveryFactory}?ids=${ids}`,
           method:'Delete',

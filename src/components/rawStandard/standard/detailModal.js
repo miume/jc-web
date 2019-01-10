@@ -14,14 +14,14 @@ class DetailModal extends Component{
          width:'20%'
     },{
         title:'检测项目',
-        dataIndex:'testName',
-        key:'testName',
+        dataIndex:'name',
+        key:'name',
         align:'center',
         width:'25%'
     },{
         title:'检测标准',
-        dataIndex:'testStandard',
-        key:'testStandard',
+        dataIndex:'value',
+        key:'value',
         align:'center',
         width:'25%'
     },{
@@ -53,7 +53,7 @@ class DetailModal extends Component{
                        </thead>
                        <tbody>
                            <tr>
-                               <td>{this.props.record.batchNumber}</td>
+                               <td>{this.props.commonBatchNumber}</td>
                                <td>{this.props.raw}</td>
                                <td>{this.props.factory}</td>
                            </tr>
@@ -65,6 +65,8 @@ class DetailModal extends Component{
                    <Table className='rawStandardTable'
                       rowKey={record=>record.index}
                       columns={columns}
+    
+                      pagination={{hideOnSinglePage:true,pageSize:100}}
                       size='small'
                       scroll={{y:230}}
                       bordered/>
