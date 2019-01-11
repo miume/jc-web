@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Icon,message} from 'antd';
+import {Modal,message} from 'antd';
 import './permissionManagement.css';
 import axios from 'axios';
 import NewButton from '../BlockQuote/newButton';

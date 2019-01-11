@@ -48,11 +48,14 @@ class ProductStandardDetail extends React.Component{
             align:'center',
             render:(text,record)=>{
                 const status = record.status;
+                const isPublished = record.isPublished;
+                //console.log(record)
                 return(
-                    <span>
+                    <span className={isPublished?'product-table-span':''}>
                         <AddProductStandard flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} />
                         <Divider type='vertical'/>
                         <AddProductStandard flag={2} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} />
+                        <span className={isPublished?'product-table-span-on':'hide'}><span>实施中</span></span>
                     </span>
                 );
             }

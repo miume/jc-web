@@ -30,11 +30,12 @@ class ProductStandard extends React.Component{
         this.clickI = this.clickI.bind(this);
         this.divCilck = this.divCilck.bind(this);
         this.addClass = this.addClass.bind(this);
+        this.addProduct = this.addProduct.bind(this);
+        this.returnBack = this.returnBack.bind(this);
         this.blockClick = this.blockClick.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.showContent = this.showContent.bind(this);
         this.recentModal = this.recentModal.bind(this);
-        this.addProduct = this.addProduct.bind(this);
         this.getAllProduct = this.getAllProduct.bind(this);
         this.getAllSelectModal = this.getAllSelectModal.bind(this);
         this.getAllProductStandard = this.getAllProductStandard.bind(this);
@@ -294,6 +295,23 @@ class ProductStandard extends React.Component{
             })
         })
     }
+    /**重新选择上一级 */
+    returnBack(e){
+        var id = e.target.id ;
+        var dom = 'product-3';
+        var flag = 2;
+        /**
+         * id===2表示在选择型号界面 则要删除选择型号界面的点击类，添加notClick类  然后将flag置1
+         * id===3或4表示在设置标准界面 则要删除设置标准界面的点击类，添加notClick类  然后将flag置2        */
+        if(parseInt(id)===2){
+            dom = 'product-2';
+            flag = 1;
+        }
+        this.setState({
+            flag : flag
+        })
+        this.addClass(dom);
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
@@ -328,6 +346,7 @@ class ProductStandard extends React.Component{
                         <div className={this.state.flag===4?'product-standrad-bottom':'hide'}>
                             <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} />
                         </div>
+                        <div className={this.state.flag===1?'hide':'product-footer'} onClick={this.returnBack} id={this.state.flag}>{`重新选择上一级`}</div>
                     </div>
                 </div>
             </div>

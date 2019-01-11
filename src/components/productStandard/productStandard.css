@@ -297,3 +297,25 @@
 .table-implemention{
     border:2px solid #0086ff;
 }
+.product-table-span{
+    position: relative;
+    left:20px;
+}
+.product-table-span-on{
+    background-color: #0086ff;
+    color: white;
+    font-weight: 800;
+    position: relative;
+    left:15px;
+}
+/**固定在footer的重新选择样式*/
+.product-footer{
+    color:#0086ff;
+    position: fixed;
+    right:40px;
+    bottom: 40px;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 14px;
+    cursor: pointer;
+}
