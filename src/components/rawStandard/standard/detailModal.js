@@ -53,7 +53,7 @@ class DetailModal extends Component{
                        </thead>
                        <tbody>
                            <tr>
-                               <td>{this.props.commonBatchNumber}</td>
+                               <td style={{width:'40%'}}>{this.props.record.batchNumber}</td>
                                <td>{this.props.raw}</td>
                                <td>{this.props.factory}</td>
                            </tr>
@@ -65,7 +65,7 @@ class DetailModal extends Component{
                    <Table className='rawStandardTable'
                       rowKey={record=>record.index}
                       columns={columns}
-    
+                      dataSource={this.props.data}
                       pagination={{hideOnSinglePage:true,pageSize:100}}
                       size='small'
                       scroll={{y:230}}
@@ -73,10 +73,10 @@ class DetailModal extends Component{
                </div>
                <div style={{marginTop:'15px'}}>
                        <div>
-                           施行时间：<span></span>
+                           施行时间：<span>{this.props.effectiveTime}</span>
                        </div>
                        <div>
-                           编制日期：<span></span>
+                           编制日期：<span>{this.props.createTime}</span>
                        </div>
                 </div>
             </div>

@@ -11,9 +11,6 @@ import '../block.css';
 import SetStandardModal from './setSandardModal';
 
 class SetStandard extends Component{
-    componentDidMount(){
-        this.fetch();
-    }
     constructor(props){
         super(props);
         this.state={
@@ -31,27 +28,28 @@ class SetStandard extends Component{
         this.handleVisibleChange=this.handleVisibleChange.bind(this);
         this.handleSongShenOk=this.handleSongShenOk.bind(this);
         this.handleHide=this.handleHide.bind(this);
-        this.fetch=this.fetch.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.handleDate=this.handleDate.bind(this);
-        this.selectChange=this.selectChange.bind(this);
+        this.selectChange=this.selectChange.bind(this);//监听送审流程变化
+        this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
     }
-    fetch(){
-     
-    }
+ 
     showModal(){
         // console.log(this.props.rawMaterialId);
         axios({
-            url:`${this.url.rawStandard.rawItems}?rawId=${this.props.rawMaterialId}`,
+            url:`${this.props.url.rawStandard.rawItems}?rawId=${this.props.rawMaterialId}`,
             method:'get',
             headers:{
-               'Authorization':this.url.Authorization
+               'Authorization':this.props.url.Authorization
             }
         }).then(data=>{
             // console.log(data);
             const res=data.data.data;
            // console.log(res);
             if(res){ 
+                for(var i=0;i<res.length;i++){
+                    res[i]['index']=i+1;
+                }
               this.setState({data:res});
             }
         });
@@ -91,10 +89,10 @@ class SetStandard extends Component{
             rawMaterialId: this.props.rawMaterialId 
         }
         axios({
-            url:`${this.url.rawStandard.addStandard}`,
+            url:`${this.props.url.rawStandard.getStandard}`,
             method:'post',
             headers:{
-               'Authorization':this.url.Authorization
+               'Authorization':this.props.url.Authorization
             },
             data:{
                 commonBatchNumber:commonBatchNumber,
@@ -106,7 +104,7 @@ class SetStandard extends Component{
             type:'json'
         })
         .then(data=>{
-            console.log(data);
+            //console.log(data);
             const res=data.data.data;
             if(res){
                 message.info(data.data.message);
@@ -126,7 +124,7 @@ class SetStandard extends Component{
         });
     }
     selectChange(value){//监听送审流程框的变化
-        this.selectChange({
+        this.setState({
             checkSelectData:value
         });
     }
@@ -138,19 +136,18 @@ class SetStandard extends Component{
     getCheck(dataId,taskId){//调用代办事项接口
         const isUrgent=this.state.checkSwitch;
         axios({
-            url:`${this.url.toDoList}`,
-            methpd:'',
+            url:`${this.props.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
+            methpd:'post',
             headers:{
-                'Authorization':this.url.Authorization
+                'Authorization':this.props.url.Authorization
             },
-            type:'json'
-
         })
         .then(data=>{
              message.info(data.data.message);
         })
         .catch(()=>{
-            });
+           message.info('新增失败，请联系管理员！');
+        });
 
     }
     handleSongShenOk(){//点击送审的确定
@@ -175,10 +172,10 @@ class SetStandard extends Component{
             rawMaterialId:this.props.rawMaterialId
         }
         axios({
-             url:`${this.url.rawStandard.addStandard}`,
+             url:`${this.props.url.rawStandard.getStandard}`,
              method:'post',
              headers:{
-                 'Authorization':this.url.Authorization
+                 'Authorization':this.props.url.Authorization
              },
              data:{
                 commonBatchNumber:commonBatchNumber,
@@ -190,17 +187,17 @@ class SetStandard extends Component{
              type:'json'
         }).then(data=>{
               const res=data.data.data;
+              //console.log(res);
               const taskId=res.commonBatchNumber.id;//返回的batchnumberId
               const dataId=this.state.checkSelectData;//选择的流程id'
               this.getCheck(dataId,taskId);
+              this.props.onBlockChange(3,this.props.factory);
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
-  
-
-
           this.setState({
-              popVisible:false
+              popVisible:false,
+              visible:false
           });
     }
     handleHide(){//送审气泡的取消
@@ -214,7 +211,6 @@ class SetStandard extends Component{
         })
     }
     render(){
-        this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div>
                 <div style={{padding:'15px'}}>
@@ -244,7 +240,7 @@ class SetStandard extends Component{
                         footer={[
                             <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                             <SaveButton key='save' handleSave={this.handleSave}/>,
-                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.url} urgentChange={this.urgentChange}/> 
+                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
                         ]}
                     >
                             <SetStandardModal data={this.state.data}  raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>

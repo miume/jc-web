@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {DatePicker,Input,Table} from 'antd';
-
-class SetStandardModal extends Component{
+import moment from 'moment';
+class EditStandardModal extends Component{
     constructor(props){
         super(props);
         this.columns=[{
@@ -24,7 +24,9 @@ class SetStandardModal extends Component{
             key:'value',
             align:'center',
             render:(text,record)=>{
-                return(<Input id={record.id} name='value' placeholder='请输入检测标准' size="small" style={{border:'none'}} onChange={this.inputChange}/>)
+                // console.log(text);
+                // console.log(record);
+                return(<Input id={record.id} name='value' defaultValue={text} placeholder='请输入检测标准' size="small" style={{border:'none',textAlign:'center'}} onChange={this.inputChange}/>)
             },
             className:'rawStandardTd'
         },{
@@ -41,17 +43,19 @@ class SetStandardModal extends Component{
        const value=e.target.value;//输入框输入的值(检测标准)
        const id=e.target.id;//检测项目的id
        const name=e.target.name;//value
-       const newData=[...this.props.data];
+       //console.log(value,id,name);
+       const newData=[...this.props.standardData];//未修改的数据
        const index=newData.findIndex(item=>parseInt(id)===parseInt(item.id));
        newData[index][name]=value;//加一个检测标准字段
        //console.log(newData);
-       this.props.inputChange(newData);
+       this.props.inputChange(newData);//修改后的数据
     }
     handleDateChange(date, dateString){
         //console.log(dateString);
         this.props.handleDate(dateString);
     }
       render(){
+          console.log(this.props.effectiveTime);
           return(
               <div>
                   <div className='rawStandardTop'>
@@ -73,9 +77,9 @@ class SetStandardModal extends Component{
                   <div style={{height:'15px'}}></div>
                   <div >
                       <Table 
-                          rowKey={record=>record.id}
+                          rowKey={record=>record.index}
                           columns={this.columns}
-                          dataSource={this.props.data}
+                          dataSource={this.props.standardData}
                           pagination={{hideOnSinglePage:true,pageSize:100}}
                           size='small'
                           bordered
@@ -83,11 +87,11 @@ class SetStandardModal extends Component{
                         />
                   </div>
                   <div style={{marginTop:'15px'}}>
-                      <DatePicker onChange={this.handleDateChange} placeholder='请选择施行日期' size='large' style={{width:'320px'}}/>
+                      <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')} onChange={this.handleDateChange} placeholder='请选择施行日期' size='large' style={{width:'320px'}}/>
                   </div>
                  
               </div>
           );
       }
 }
-export default SetStandardModal;
+export default EditStandardModal;
