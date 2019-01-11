@@ -41,6 +41,7 @@ import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
 import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
 
 import Equipment from "../equipmentGuidance/equipmentGuidance"
+import EquipmentRepair from "../equipmentRepair/equipmentRepair"
 class Home extends Component {
     /**将二级菜单的path和component添加到data数组*/
     getComponentArray() {
@@ -132,6 +133,9 @@ class Home extends Component {
         },{
             path:'/equipmentGuidance',
             component:Equipment
+        },{
+            path:'/equipmentRepair',
+            component:EquipmentRepair
         }]
         return data;
     }

@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input,message } from 'antd';
 import axios from 'axios';
 import Tr from './tr';
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import AddButton from '../BlockQuote/newButton'
+import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import './difference.css'
