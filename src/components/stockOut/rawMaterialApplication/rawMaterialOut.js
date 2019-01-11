@@ -150,7 +150,7 @@ class RawMaterialOut extends React.Component{
         }
     }
     /**搜索的重置调用的fetch函数 */
-    fetch({},flag){
+    fetch(status,flag){
         /**如果flag为1 则将分页搜索标志位置为0 并将搜索内容置为空 */
         if(flag){
             this.setState({

@@ -59,10 +59,10 @@ class Todo extends React.Component{
     /**判断status 1 审核中 2 审核通过 3 审核未通过 */
     judge(status){
         switch(status){
-            case 1: return <span className='check-status'><i className='fa fa-ellipsis-h'></i>{this.status[status.toString()]}</span>; break;
-            case 2: return <span className='check-status'><i className='fa fa-check'></i>{this.status[status.toString()]}</span>; break ;
-            case 3: return <span className='check-status'><i className='fa fa-times'></i>{this.status[status.toString()]}</span>; break;
-            default : return <span className='check-status'>{this.status[status.toString()]}</span>; break;
+            case 1: return <span className='check-status'><i className='fa fa-ellipsis-h'></i>{this.status[status.toString()]}</span>;
+            case 2: return <span className='check-status'><i className='fa fa-check'></i>{this.status[status.toString()]}</span>;
+            case 3: return <span className='check-status'><i className='fa fa-times'></i>{this.status[status.toString()]}</span>;
+            default : return <span className='check-status'>{this.status[status.toString()]}</span>;
         }
     }
     render(){
