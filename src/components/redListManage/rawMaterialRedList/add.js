@@ -124,7 +124,6 @@ class Add extends React.Component{
         headers:{
             'Authorization':this.url.Authorization
         },
-     
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);

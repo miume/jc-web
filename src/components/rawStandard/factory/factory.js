@@ -68,7 +68,7 @@ class Manufacturer extends Component{
        .then(data=>{
           // console.log(data);
            const res=data.data.data;
-           console.log(res);
+           //console.log(res);
            if(res){
             this.props.onBlockChange(3,factoryName,factoryId); 
            }
