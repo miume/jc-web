@@ -57,12 +57,14 @@ import EditStandard from './edit';
             width:'10%',
             align:'center',
             render:(text,record)=>{
+                console.log(record.status);
                 let editFlag=this.judgeStatus(record.status);
+
                 return(
                     <span>
-                        <EditStandard editFlag={editFlag} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawMaterialId={this.props.rawMaterialId}/>
+                        <EditStandard editFlag={editFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
                         <Divider type='vertical'/>
-                        <Detail url={this.props.url}  record={record} raw={this.props.raw} factory={this.props.factory}/>
+                        <EditStandard editFlag={editFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
                     </span>
                 );
             }
@@ -98,7 +100,7 @@ import EditStandard from './edit';
          return(
          <div style={{position:'relative'}}>
              <div style={{padding:'15px'}}>
-                &nbsp;<h2 style={{display:'inline-block'}}>请设置标准</h2>
+             <span className='product-standrad-middle-text'>请设置标准</span>
                 <span className='fr'>
                 <SearchCell name='请输入搜索内容'
                     searchEvent={this.searchEvent}
@@ -106,6 +108,7 @@ import EditStandard from './edit';
                     type={this.props.type}
                 />
                 </span>
+                <Divider type='horizonal'/>
              </div>
              <div>
                 <Table 

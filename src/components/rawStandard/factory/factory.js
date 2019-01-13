@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {message} from 'antd';
+import {message,Divider} from 'antd';
 import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import '../block.css';
@@ -150,7 +150,7 @@ class Manufacturer extends Component{
         return(
           <div style={{position:'relative'}}>
               <div style={{padding:'15px'}}>
-               &nbsp; <h2 style={{display:'inline-block'}}>请选择生产厂家</h2>
+              <span className='product-standrad-middle-text'>请选择生产厂家</span>
                 <span  className='fr'>
                  <SearchCell name='请输入工厂名称'
                     searchEvent={this.searchEvent}
@@ -159,6 +159,7 @@ class Manufacturer extends Component{
                     type={this.props.type}
                  />
                 </span>
+                <Divider type='horizontal'/>
               </div>
               <div className='rawStanstdardParent'>
                   {

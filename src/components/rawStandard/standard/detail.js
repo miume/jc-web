@@ -73,7 +73,7 @@ class Detail extends Component{
                    footer={[
                       <CancleButton key='cancel'  handleCancel={this.handleCancel} flag={1}/>,
                       <span key='text' style={{color:'#999999'}}>以此为基础迭代更新&nbsp;</span>,
-                      <NewButton key='interate' name='迭代'/>
+                      <NewButton key='interate' name='迭代' className='fa fa-level-up'/>
                    ]}
                  >
                  <DetailModal data={this.state.standardData}  effectiveTime={this.state.effectiveTime} createTime={this.state.createTime} record={this.props.record} raw={this.props.raw} factory={this.props.factory} />
