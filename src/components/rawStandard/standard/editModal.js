@@ -55,19 +55,20 @@ class EditStandardModal extends Component{
         this.props.handleDate(dateString);
     }
       render(){
-          console.log(this.props.effectiveTime);
           return(
               <div>
                   <div className='rawStandardTop'>
                      <table>
                          <thead>
                             <tr>
+                                <th>批号</th>
                                 <th>原材料</th>
                                 <th>厂家</th>
                             </tr>
                          </thead>
                          <tbody>
                              <tr>
+                                 <td style={{width:'40%'}}>{this.props.record.batchNumber}</td>
                                  <td>{this.props.raw}</td>
                                  <td>{this.props.factory}</td>
                              </tr>
@@ -87,7 +88,13 @@ class EditStandardModal extends Component{
                         />
                   </div>
                   <div style={{marginTop:'15px'}}>
-                      <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')} onChange={this.handleDateChange} placeholder='请选择施行日期' size='large' style={{width:'320px'}}/>
+                      {this.props.effectiveTime!=''?
+                        <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')} 
+                        onChange={this.handleDateChange} 
+                        placeholder='请选择施行日期' 
+                        size='large' style={{width:'320px'}}/>
+                      :''
+                      }
                   </div>
                  
               </div>

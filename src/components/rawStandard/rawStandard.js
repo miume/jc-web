@@ -86,10 +86,10 @@ class RawStandard extends Component{
 }
   onBlockChange3(flag,content3){
       console.log(flag,content3);
-    this.setState({
-        flag:flag,
-        content3:content3,
-    });
+        this.setState({
+            flag:flag,
+            content3:content3,
+        });
 }
 
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
@@ -111,8 +111,8 @@ class RawStandard extends Component{
             <div>
                    <Blockquote menu='技术中心' name='原材料标准'/>
                    <div style={{padding:'20px'}}>
-                     <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content1}</div><span className='rawStanstdardBlockQuoTriggleBlue'></span>
-                     <div className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.clickToFactory}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div><span className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoTriggleBlue':'rawStanstdardBlockQuoTriggleGrey'}></span>
+                     <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content1}</div>
+                     <div className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.clickToFactory}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div>
                      <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} ><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content3}</div> 
                      
                    <div>
@@ -123,7 +123,7 @@ class RawStandard extends Component{
                             <Manufacturer onBlockChange={this.onBlockChange1} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}/> 
                         </div>
                         <div className={this.state.flag===3?'show':'hide'}>
-                            <Standard dataSource={this.state.dataSource}  onBlockChange={this.onBlockChange3} type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url}/>
+                            <Standard dataSource={this.state.dataSource}  onBlockChange={this.onBlockChange3} type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard}/>
                         </div>
                         <div className={this.state.flag===4?'show':'hide'}>
                             <SetStandard onBlockChange={this.onBlockChange3}  type={4} raw={this.state.content1} factory={this.state.content2} rawMaterialId={this.state.rawMaterialId}  rawManufacturerId={this.state.factoryId} url={this.url}/>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {message,Modal} from 'antd';
+import {message,Modal,Divider} from 'antd';
 import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import NewButton from '../../BlockQuote/newButton';
@@ -155,7 +155,7 @@ class RawMaterial extends Component{
           return(
               <div>
                   <div style={{padding:'15px'}}>
-                    &nbsp; <h2 style={{display:'inline-block'}}><span style={{width:'24px',height:'90px'}}>请选择原材料</span></h2>
+                    <span className='product-standrad-middle-text'>请选择原材料</span>
                      <span style={{float:'right' }}>
                        <SearchCell name='请输入原材料名称'
                             searchEvent={this.searchEvent}
@@ -164,6 +164,7 @@ class RawMaterial extends Component{
                             type={this.props.type}
                         />
                      </span>
+                     <Divider type='horizontal' />
                    </div>
                    <div className='rawStanstdardParent'>
                        {

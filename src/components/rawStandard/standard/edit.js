@@ -7,7 +7,7 @@ import SaveButton from '../../BlockQuote/saveButton';
 import Submit from '../../BlockQuote/submit';
 import '../block.css';
 import EditStandardModal from './editModal';
-
+import DetailModal from './detailModal';
 class EditStandard extends Component{
    
     constructor(props){
@@ -20,9 +20,12 @@ class EditStandard extends Component{
             checkSwitch:0,//是否紧急那个开关最开始是关闭的
             effectiveTime:'',//施行日期
             standardData:[],//编辑显示的数据
+            flag:true,//为真的时候显示编辑界面，为假的时候显示详情界面
         }
+        this.getDetail=this.getDetail.bind(this);
         this.showModal=this.showModal.bind(this);
         this.notShowModal=this.notShowModal.bind(this);
+        this.showModalDetail=this.showModalDetail.bind(this);
         this.handleSave=this.handleSave.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.handleVisibleChange=this.handleVisibleChange.bind(this);
@@ -33,12 +36,11 @@ class EditStandard extends Component{
         this.selectChange=this.selectChange.bind(this);//监听送审流程变化
         this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
     }
-   
-    showModal(){
+    getDetail(){//获取标准详情
         const batchNumberId=this.props.record.batchNumberId;
         //console.log( batchNumberId);
         axios({
-            url:`${this.props.url.rawStandard.getStandard}/${batchNumberId}`,//调用标准详情接口
+            url:`${this.props.url.rawStandard.getStandard}/${batchNumberId}`,
             method:'get',
             headers:{
              'Authorization':this.props.url.Authorization
@@ -63,17 +65,28 @@ class EditStandard extends Component{
                 this.setState({
                     standardData:raw,
                     effectiveTime:effectiveTime,
-                  
+                    createTime:createTime
                 });
             }
         });
+     }
+    showModal(){
+       this.getDetail();
         this.setState({
-            visible:true
+            visible:true,
+            flag:true
         });
     }
     notShowModal(){
         this.setState({
             visible:false
+        });
+    }
+    showModalDetail(){
+        this.getDetail();
+        this.setState({
+            visible:true,
+            flag:false
         });
     }
     
@@ -91,7 +104,8 @@ class EditStandard extends Component{
         var data=this.state.standardData;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber={
-            createPersonId:createPersonId
+            createPersonId:createPersonId,
+            id:this.props.record.batchNumberId
         }
         var rawStandards=[];
         for(var i=0;i<data.length;i++){
@@ -110,7 +124,7 @@ class EditStandard extends Component{
         }
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
-            method:'post',
+            method:'put',
             headers:{
                'Authorization':this.props.url.Authorization
             },
@@ -124,11 +138,11 @@ class EditStandard extends Component{
             type:'json'
         })
         .then(data=>{
-            //console.log(data);
+           // console.log(data);
             const res=data.data.data;
             if(res){
                 message.info(data.data.message);
-                this.props.onBlockChange(3,this.props.factory);//如果返回的数据不为空，说明建立好标准了，就会渲染标准界面
+                //this.props.onBlockChange(3,this.props.factory);//如果返回的数据不为空，说明建立好标准了，就会渲染标准界面
             }
         })
         .catch(()=>{
@@ -171,10 +185,11 @@ class EditStandard extends Component{
 
     }
     handleSongShenOk(){//点击送审的确定
-        var {data}=this.state;
+        var data=this.state.standardData;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber={
-            createPersonId:createPersonId
+            createPersonId:createPersonId,
+            id:this.props.record.batchNumberId
          }
         var rawStandards=[];
         for(var i=0;i<data.length;i++){
@@ -193,7 +208,7 @@ class EditStandard extends Component{
         }
         axios({
              url:`${this.props.url.rawStandard.getStandard}`,
-             method:'post',
+             method:'put',
              headers:{
                  'Authorization':this.props.url.Authorization
              },
@@ -207,11 +222,12 @@ class EditStandard extends Component{
              type:'json'
         }).then(data=>{
               const res=data.data.data;
-              //console.log(res);
+              console.log(res);
               const taskId=res.commonBatchNumber.id;//返回的batchnumberId
               const dataId=this.state.checkSelectData;//选择的流程id'
               this.getCheck(dataId,taskId);
-              this.props.onBlockChange(3,this.props.factory);
+              this.props.getStandard(this.props.rawManufacturerId);
+              
         }).catch(()=>{
             message.info('编辑失败，请联系管理员！');
         });
@@ -233,19 +249,27 @@ class EditStandard extends Component{
     render(){
         return(
             <span>
-                    <span className={this.props.editFlag?'blue':'notClick'} onClick={this.props.editFlag?this.showModal:this.notShowModal}>编辑</span>
+                    {this.props.flag?(<span className='blue' onClick={this.showModalDetail}>详情</span>)
+                    :(<span className={this.props.editFlag?'blue':'notClick'} onClick={this.props.editFlag?this.showModal:this.notShowModal}>编辑</span>)
+                    }
                     <Modal
-                        title='编辑标准'
+                        title={this.state.flag?'编辑标准':'数据详情'}
                         visible={this.state.visible}
                         closable={false}
                         maskClosable={false}
-                        footer={[
+                        footer={this.state.flag?([
                             <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                             <SaveButton key='save' handleSave={this.handleSave}/>,
                             <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
-                        ]}
+                        ]):([
+                            <CancleButton key='cancel'  handleCancel={this.handleCancel} flag={1}/>,
+                            <span key='text' style={{color:'#999999'}}>以此为基础迭代更新&nbsp;</span>,
+                            <NewButton key='interate' name='迭代' className='fa fa-level-up' handleClick={this.showModal}/>
+                        ])}
                     >
-                        <EditStandardModal standardData={this.state.standardData} effectiveTime={this.state.effectiveTime} raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>
+                        {this.state.flag?(<EditStandardModal record={this.props.record} standardData={this.state.standardData} effectiveTime={this.state.effectiveTime} raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>):
+                        (<DetailModal data={this.state.standardData}  effectiveTime={this.state.effectiveTime} createTime={this.state.createTime} record={this.props.record} raw={this.props.raw} factory={this.props.factory} />)
+                        }
                     </Modal>
                 </span>
            
