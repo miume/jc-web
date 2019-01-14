@@ -100,12 +100,12 @@ class EditStandard extends Component{
            date:d
        });
     }
-    handleSave(){//点击新增保存，未申请状态
+    handleSave(){//点击编辑保存，未申请状态
         var data=this.state.standardData;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber={
             createPersonId:createPersonId,
-            id:this.props.record.batchNumberId
+            id:this.props.record.batchNumberId //编辑要多传一个批号id
         }
         var rawStandards=[];
         for(var i=0;i<data.length;i++){
@@ -124,7 +124,7 @@ class EditStandard extends Component{
         }
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
-            method:'put',
+            method:'post',
             headers:{
                'Authorization':this.props.url.Authorization
             },
@@ -146,13 +146,14 @@ class EditStandard extends Component{
             }
         })
         .catch(()=>{
-            message.info('编辑失败，请联系管理员！');
+            message.info('迭代失败，请联系管理员！');
         });
         this.setState({
             visible:false
         });
     }
-    handleCancel(){//点击新增的取消
+ 
+    handleCancel(){//点击Modal的取消
         this.setState({
             visible:false
         });
@@ -171,7 +172,7 @@ class EditStandard extends Component{
         const isUrgent=this.state.checkSwitch;
         axios({
             url:`${this.props.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
-            methpd:'post',
+            method:'post',
             headers:{
                 'Authorization':this.props.url.Authorization
             },
@@ -180,7 +181,7 @@ class EditStandard extends Component{
              message.info(data.data.message);
         })
         .catch(()=>{
-           message.info('编辑失败，请联系管理员！');
+           message.info('送审失败，请联系管理员！');
         });
 
     }
@@ -208,7 +209,7 @@ class EditStandard extends Component{
         }
         axios({
              url:`${this.props.url.rawStandard.getStandard}`,
-             method:'put',
+             method:'post',
              headers:{
                  'Authorization':this.props.url.Authorization
              },
@@ -229,7 +230,7 @@ class EditStandard extends Component{
               this.props.getStandard(this.props.rawManufacturerId);
               
         }).catch(()=>{
-            message.info('编辑失败，请联系管理员！');
+            message.info('送审失败，请联系管理员！');
         });
           this.setState({
               popVisible:false,

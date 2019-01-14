@@ -19,6 +19,7 @@ class RawStandard extends Component{
             rawMaterialId:0,//原材料id
             factoryId:0,
             dataSource:[],
+            name:''
            
         }
         this.onBlockChange1=this.onBlockChange1.bind(this);
@@ -47,10 +48,10 @@ class RawStandard extends Component{
             content2:content1,
             factoryId:id
         });
-       
-    }
+     }
   }
-  getStandard(id){//获取设置标准界面的表格数据
+  getStandard(id,value){//获取设置标准界面的表格数据
+    //console.log(value);
     axios({
         url:`${this.url.rawStandard.getStandard}`,
         method:'get',
@@ -58,7 +59,7 @@ class RawStandard extends Component{
            'Authorization':this.url.Authorization
         },
         params:{
-           name:JSON.parse(localStorage.getItem('menuList')).name,//创建人姓名即用户
+           name:value,
            materialId:this.state.rawMaterialId,
            factoryId:id
       },
@@ -66,8 +67,8 @@ class RawStandard extends Component{
     }).then(data=>{
         //console.log(data);
         const res=data.data.data;
+        var raw=[];
        if(res){
-           var raw=[];
            for(var i=res.length-1;i>=0;i--){
                   raw.push({
                       index:i+1,
@@ -77,21 +78,20 @@ class RawStandard extends Component{
                       status:res[i].commonBatchNumber.status,
                       batchNumberId:res[i].commonBatchNumber.id
                   });
-           }
-           this.setState({
-               dataSource:raw,
-           });
+            }
         }
+    this.setState({
+        dataSource:raw,
     });
+  });
 }
-  onBlockChange3(flag,content3){
+   onBlockChange3(flag,content3){
       console.log(flag,content3);
         this.setState({
             flag:flag,
             content3:content3,
         });
-}
-
+   }
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
          this.setState({
             flag:1,
@@ -123,7 +123,7 @@ class RawStandard extends Component{
                             <Manufacturer onBlockChange={this.onBlockChange1} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}/> 
                         </div>
                         <div className={this.state.flag===3?'show':'hide'}>
-                            <Standard dataSource={this.state.dataSource}  onBlockChange={this.onBlockChange3} type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard}/>
+                            <Standard dataSource={this.state.dataSource}  onBlockChange={this.onBlockChange3}  type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard}/>
                         </div>
                         <div className={this.state.flag===4?'show':'hide'}>
                             <SetStandard onBlockChange={this.onBlockChange3}  type={4} raw={this.state.content1} factory={this.state.content2} rawMaterialId={this.state.rawMaterialId}  rawManufacturerId={this.state.factoryId} url={this.url}/>

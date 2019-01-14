@@ -146,7 +146,7 @@ class SetStandard extends Component{
              message.info(data.data.message);
         })
         .catch(()=>{
-           message.info('新增失败，请联系管理员！');
+           message.info('送审失败，请联系管理员！');
         });
 
     }

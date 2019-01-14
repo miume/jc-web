@@ -75,6 +75,9 @@ import EditStandard from './edit';
         this.checkRaw=this.checkRaw.bind(this);
        
      }
+     fetch=()=>{
+         this.props.getStandard(this.props.rawManufacturerId);
+         }
      judgeStatus=(record_status)=>{
              switch(`${record_status}`){
                   case '-1':return true
@@ -89,12 +92,18 @@ import EditStandard from './edit';
         //    console.log(name);
             this.props.onBlockChange(2,'设置标准');//跳回原材料界面后，就不可以点击那个面板了
         }
+    searchContentChange(e){
+        const value=e.target.value;
+        this.setState({
+            searchContent:value
+            });
+          }
      searchEvent(){
-           
+           const value=this.state.searchContent;
+           console.log(value)
+          this.props.getStandard(this.props.rawManufacturerId,value);
      }
-     searchContentChange(e){
-       const value=e.target.value;
-     }
+   
      render(){
         this.status=JSON.parse(localStorage.getItem('status'));
          return(
@@ -106,6 +115,7 @@ import EditStandard from './edit';
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
                     type={this.props.type}
+                    fetch={this.fetch}
                 />
                 </span>
                 <Divider type='horizonal'/>
