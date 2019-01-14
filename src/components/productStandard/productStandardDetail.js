@@ -66,7 +66,7 @@ class ProductStandardDetail extends React.Component{
             <div className='standard-table'>
                 <Table columns={this.columns} pagination={false} size='small' scroll={{y:300}}
                 rowKey={record=>record.id}  dataSource={this.props.data} bordered
-                rowClassName={(record,index)=>index===1?'table-implemention':''}
+                rowClassName={(record)=>record.isPublished?'table-implemention':''}
                 />
             </div>
         );

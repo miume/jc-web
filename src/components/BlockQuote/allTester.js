@@ -82,7 +82,7 @@ class AllTester extends React.Component{
         const examineData = this.props.examineData;
         const count = examineData?examineData.length:0;
         return (
-            <div className='check-detail'>
+            <div className={examineData?'check-detail':'hide'}>
                 <div className={this.props.hide?'check-detail-div1':'check-detail-div'} id={`check-detail-div`+this.props.dataId}>
                     <div className='check-detail-div-hidden'>
                     {

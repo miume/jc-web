@@ -32,13 +32,10 @@ class Todo extends React.Component{
                 if(count < 5) {
                     count -= 1;
                     middle.scrollLeft += (number === 1 ? 1 : -1);
-                    // tbodyMiddleRef.scrollLeft += (number === 1 ? 1 : -1);
                 }
                 else {
                     count -= gap;
                     middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
-                    
-                    // tbodyMiddleRef.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
                 }
                 if(count <= 0 || pre === middle.scrollLeft) {
                     clearInterval(interval);

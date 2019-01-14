@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Table} from 'antd';
-import AllTester from '../BlockQuote/allTester';
+
 const columns = [{
     title: '产品线',
     dataIndex: 'deliveryFactory.name' ,
@@ -166,33 +166,12 @@ class Procedure extends React.Component{
                 <div className='checkModalDiv'>
                     <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
                 </div>
-                <div className={this.props.flag && this.state.examineData?'':'hide'}>
+                {/* <div className={this.props.flag && this.state.examineData?'':'hide'}>
                     <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />
-                </div>
-                {/* <div className={this.props.flag && this.state.examineData?"check-detail":'hide'}>
-                    <div className='check-detail-div' id={`check-detail-div`+this.props.dataId}>
-                        <div className='check-detail-div-hidden'>
-                       {
-                            this.state.examineData?
-                            this.state.examineData.map((e,index)=>(
-                                <div className='check-detail-div-hidden-part' key={index}>
-                                    <div className='part-demo' >
-                                        <div><span>审核人：<span>{e.name?e.name:''}</span></span></div>
-                                        <div><span>审核日期：<span>{e.detail?e.detail.handleTime:''}</span></span></div>
-                                        <div><span>审核意见：<span>{e.detail?e.detail.handleReply:''}</span></span></div>
-                                    </div>
-                                    <div className={index===count-1?'hide':'line-part'}>
-                                    </div>
-                                </div>
-                            )):null
-                        }
-                        </div>
-                    </div>
-                    <div className='check-detail-i' ><i className='fa fa-2x fa-caret-left' onClick={this.moveLeft}></i><i className='fa fa-2x fa-caret-right' onClick={this.moveRight}></i></div>
                 </div> */}
-                <div className={this.props.flag?'hide':''} >
+                {/* <div className={this.props.flag?'hide':''} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
-                </div>
+                </div> */}
             </div>
         );
     }

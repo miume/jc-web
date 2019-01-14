@@ -3,6 +3,7 @@ import {Modal,message} from 'antd';
 import RawTest from './rawTest';
 import Procedure from './procedure';
 import RedList from './redlist';
+import AllTester from '../BlockQuote/allTester';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import AddProductStandard from '../productStandard/addProductStandard';
@@ -61,6 +62,7 @@ class CheckModal extends React.Component{
     pass(){
         this.checkApply(1);
     }
+    /**通过、不通过 */
     checkApply(status){
         const {reply} = this.state;
         if(reply===''){
@@ -88,6 +90,24 @@ class CheckModal extends React.Component{
             visible:false
         })
     }
+    /**通过batchNumberId 查询审核人 */
+    getAllTester(dataId){
+        axios({
+          url:`${this.props.url.toDoList}/${dataId}/result`,
+          method:'get',
+          headers:{
+            'Authorization':this.props.url.Authorization
+          }
+        }).then(data=>{
+          const res = data.data.data;
+          //console.log(res)
+          if(res){
+            this.setState({
+                examineData : res
+            })
+          }
+      })   
+      }
     render(){
         const type = this.props.dataType.toString();
         const dataType = JSON.parse(localStorage.getItem('dataType'));
@@ -105,15 +125,21 @@ class CheckModal extends React.Component{
                     
                 ]}
                 >
-            
                     <div>
                     {
                         this.judgeType(this.props.dataType)
                     }
-                    
-                    <div>
+                    {
+                        this.props.flag?
+                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />:
                         <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
+                    }
+                    {/* <div className={this.props.flag && this.state.examineData?'':'hide'}>
+                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />
                     </div>
+                    <div className={this.props.flag?'hide':''}>
+                        <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
+                    </div> */}
                     <div className='clear'></div>
                     </div>
                 
