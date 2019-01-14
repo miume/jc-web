@@ -13,7 +13,7 @@ class RawTest extends React.Component{
             default: url = ''; break;
         }
         this.getData(url);
-        this.getAllTester(dataId);
+        // this.getAllTester(dataId);
     }
     constructor(props){
         super(props);
@@ -22,8 +22,8 @@ class RawTest extends React.Component{
             reply:'',
         }
         this.getData = this.getData.bind(this);
-        this.textChange = this.textChange.bind(this);
-        this.getAllTester = this.getAllTester.bind(this);
+        // this.textChange = this.textChange.bind(this);
+        // this.getAllTester = this.getAllTester.bind(this);
     }
     getData(url){
         axios.get(`${url}`,{
@@ -73,41 +73,34 @@ class RawTest extends React.Component{
         })
     }
     /**通过batchNumberId 查询审核人 */
-    getAllTester(dataId){
-        axios({
-          url:`${this.props.url.toDoList}/${dataId}/result`,
-          method:'get',
-          headers:{
-            'Authorization':this.props.url.Authorization
-          }
-        }).then(data=>{
-          const res = data.data.data;
-        //   console.log(res)
-          if(res){
-            this.setState({
-                examineData : res
-            })
-          }
-      })   
-      }
+    // getAllTester(dataId){
+    //     axios({
+    //       url:`${this.props.url.toDoList}/${dataId}/result`,
+    //       method:'get',
+    //       headers:{
+    //         'Authorization':this.props.url.Authorization
+    //       }
+    //     }).then(data=>{
+    //       const res = data.data.data;
+    //     //   console.log(res)
+    //       if(res){
+    //         this.setState({
+    //             examineData : res
+    //         })
+    //       }
+    //   })   
+    //   }
     /**监控审核意见的变化 */
-    textChange(e){
-        const value = e.target.value;
-        this.setState({
-            reply:value
-        })
-    }
+    // textChange(e){
+    //     const value = e.target.value;
+    //     this.setState({
+    //         reply:value
+    //     })
+    // }
     render(){
-        this.props.getReplyData(this.state.reply);
+        // this.props.getReplyData(this.state.reply);
         return (
             <DetailModal detail={this.state.data} dataId={this.props.dataId} examineData={this.state.examineData} />
-            // <div>
-            //      {/* 目前接口还没写好，所以没有数据，但可以输入审核意见，点击通过或者不通过按钮 */}
-
-            //     {/* <div className={this.props.flag?'hide':'interProduct-footer'} >
-            //         <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
-            //     </div> */}
-            // </div>
         );
     }
 }
