@@ -146,13 +146,20 @@ class DetailSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
+            // checkData: {
+            //     headData: headData,
+            //     tbodyData: tbodyData,
+            //     judgement: judgement,
+            //     judger: judger,
+            //     topData: topData,
+            // },
             checkData: {
-                headData: headData,
-                tbodyData: tbodyData,
+                headData: [],
+                tbodyData: [],
                 judgement: judgement,
                 judger: judger,
                 topData: topData,
-            },
+            }
         };
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
