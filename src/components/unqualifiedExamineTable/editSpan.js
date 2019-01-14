@@ -31,111 +31,6 @@ for(let j=0; j<20; j++){
         serialNumber: `SNS/${j}`,
         isQualified: 1,
         tbodyMiddleData: {
-            Ca0:{
-                isValid: 1,
-                testResult: j+100,
-                id: j
-            }
-            ,Ca1:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+1
-            }
-            ,Ca2:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+2
-            }
-            ,Ca3:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+3
-            }
-            ,Ca4:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+4
-            }
-            ,Ca5:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+5
-            }
-            ,Ca6:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+6
-            }
-            ,Ca7:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+7
-            }
-            ,Ca8:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+8
-            }
-            ,Ca9:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+9
-            }
-            ,Ca10:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+10
-            }
-            ,Ca11:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+11
-            }
-            ,Ca12:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+12
-            }
-            ,Ca13:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+13
-            }
-            ,Ca14:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+14
-            }
-            ,Ca15:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+15
-            }
-            ,Ca16:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+16
-            }
-            ,Ca17:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+17
-            }
-            ,Ca18:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+18
-            }
-            ,Ca19:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+19
-            }
-            ,Ca20:{
-                isValid: 1,
-                testResult: j+100,
-                id: j+20
-            }
         }
     })
 }
@@ -150,9 +45,16 @@ class EditSpan extends React.Component {
             visible: false,
             subVisible: false,
             process:-1,
+            // checkData: {
+            //     headData: headData,
+            //     tbodyData: tbodyData,
+            //     judgement: judgement,
+            //     judger: judger,
+            //     topData: topData,
+            // },
             checkData: {
-                headData: headData,
-                tbodyData: tbodyData,
+                headData: [],
+                tbodyData: [],
                 judgement: judgement,
                 judger: judger,
                 topData: topData,
@@ -246,7 +148,7 @@ class EditSpan extends React.Component {
     }
     /**获取该行的记录详情 */
     getDetailData(){
-        // let detail = this.props.record;
+        let detail = this.props.record;
         axios({
             url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.id}`,
             method:'get',
