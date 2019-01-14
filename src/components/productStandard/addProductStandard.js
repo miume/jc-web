@@ -207,14 +207,14 @@ class AddProductStandard extends React.Component{
             data[i]['index']=`${i+1}`;
             data[i]['testResult']=''
         }
-        var date = new Date();
-        var nowDate = date.toLocaleDateString().split('/').join('-');
-        var time = {
-            effectiveTime:nowDate
-        }
+        // var date = new Date();
+        // var nowDate = date.toLocaleDateString().split('/').join('-');
+        // var time = {
+        //     effectiveTime:nowDate
+        // }
         this.setState({
             allTestItem:data,
-            time:time
+            // time:time
         })
     }
     /**监控新增标准 生效时间的选取 */
@@ -282,12 +282,10 @@ class AddProductStandard extends React.Component{
             }else{
                 message.info(data.data.message);
                 this.handleCancel();
-                if(!this.props.flag){
-                    this.props.getAllProductStandard({
-                        classId:classId,
-                        productId:productId
-                    })
-                }
+                this.props.getAllProductStandard({
+                    classId:classId,
+                    productId:productId
+                })
             }
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
@@ -329,6 +327,7 @@ class AddProductStandard extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
+            // console.log(classId,productId)
             this.props.getAllProductStandard({
                 classId:classId,
                 productId:productId
@@ -373,7 +372,7 @@ class AddProductStandard extends React.Component{
             <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} 
             process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} submitClick={this.submitClick}/> 
         ]
-        const format = "YYYY-MM-DD HH:mm:ss";
+        const format = "YYYY-MM-DD";
         const effectiveTime = this.state.time.effectiveTime;
         return (
             <span>
@@ -403,9 +402,15 @@ class AddProductStandard extends React.Component{
                                 size='large' className='modal-add-date'
                                 disabledDate={this.disabledDate}
                                 defaultValue={moment(effectiveTime,format)}
-                                showTime allowClear
+                                allowClear
                                 format={format}
-                        />:''}
+                        />:
+                        <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
+                                size='large' className='modal-add-date'
+                                disabledDate={this.disabledDate}
+                                allowClear
+                                format={format}/>
+                        }
                         </div>   
                     }
                     </div>

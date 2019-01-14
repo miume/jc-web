@@ -300,6 +300,7 @@ class ProductStandard extends React.Component{
         var id = e.target.id ;
         var dom = 'product-3';
         var flag = 2;
+        var {modalArr} = this.state;
         /**
          * id===2表示在选择型号界面 则要删除选择型号界面的点击类，添加notClick类  然后将flag置1
          * id===3或4表示在设置标准界面 则要删除设置标准界面的点击类，添加notClick类  然后将flag置2        */
@@ -308,7 +309,8 @@ class ProductStandard extends React.Component{
             flag = 1;
         }
         this.setState({
-            flag : flag
+            flag : flag,
+            modalArr:flag===1?[]:modalArr
         })
         this.addClass(dom);
     }
@@ -344,7 +346,7 @@ class ProductStandard extends React.Component{
                         </div>
                         {/**设置标准 flag===4 标准不为空 表示标准显示 */}
                         <div className={this.state.flag===4?'product-standrad-bottom':'hide'}>
-                            <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} />
+                            <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} getAllProductStandard={this.getAllProductStandard}/>
                         </div>
                         <div className={this.state.flag===1?'hide':'product-footer'} onClick={this.returnBack} id={this.state.flag}>{`重新选择上一级`}</div>
                     </div>
