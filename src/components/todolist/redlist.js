@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Divider} from 'antd';
+// import {Divider} from 'antd';
 class RedList extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;
@@ -13,7 +13,7 @@ class RedList extends React.Component{
             data:{},
             reply:'',
         }
-        this.textChange = this.textChange.bind(this);
+        // this.textChange = this.textChange.bind(this);
         this.getData = this.getData.bind(this);
     }
     getData(url){
@@ -40,17 +40,17 @@ class RedList extends React.Component{
         })
     }
     /**监控审核意见的变化 */
-    textChange(e){
-        const value = e.target.value;
-        this.setState({
-            reply:value
-        })
-    }
+    // textChange(e){
+    //     const value = e.target.value;
+    //     this.setState({
+    //         reply:value
+    //     })
+    // }
     render(){
         this.props.getReplyData(this.state.reply);
         const {data} = this.state;
         return (
-            <div style={{height:300}}>
+            <div>
                  {/* 目前接口还没写好，所以没有数据，但可以输入审核意见，点击通过或者不通过按钮 */}
                  <div className="interDrSpanModalTop">
                     <table>
@@ -79,10 +79,10 @@ class RedList extends React.Component{
                            损失说明：<span>{data?data.note:''}</span>
                        </div>
                 </div>
-                <Divider  />
+                {/* <Divider  />
                 <div className={this.props.flag?'hide':'check-footer'} >
                     <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
-                </div>
+                </div> */}
             </div>
         );
     }

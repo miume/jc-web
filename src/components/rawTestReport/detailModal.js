@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table,Divider } from 'antd';
-import AllTester from '../BlockQuote/allTester';
+import { Table } from 'antd';
+// import AllTester from '../BlockQuote/allTester';
 import IsQualified from "../BlockQuote/isQualified";
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
@@ -68,7 +68,7 @@ class DetailModal extends React.Component {
                         bordered
                     />
                 </div>
-                <div className="interDrSpanModalBottom">
+                <div>
                     <div className="interDrSpanModalBottomFirst">
                         <table>
                             <tbody className="interPadding">
@@ -86,10 +86,10 @@ class DetailModal extends React.Component {
                             status={data.IsQualified?data.IsQualified:0}
                         />
                     </div>
-                <Divider />
+                {/* <Divider />
                 <div className={this.props.flag && this.props.examineData?'':'hide'}>
                     <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1}/>
-                </div>
+                </div> */}
                 {/* <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1} /> */}
             </div>
             </div>

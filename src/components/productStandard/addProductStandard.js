@@ -242,7 +242,7 @@ class AddProductStandard extends React.Component{
             techniqueProductTestItemDTOs.push({
                 techniqueProductTestItemStandard:{
                     testItemId:data[i].id,
-                    value:data[i].testResult
+                    value:data[i].testResult?data[i].testResult:'无'
                 }
             })
         }
@@ -257,19 +257,24 @@ class AddProductStandard extends React.Component{
             techniqueProductStandardRecord:techniqueProductStandardRecord,
             techniqueProductTestItemDTOs:techniqueProductTestItemDTOs
         }
+        // console.log(details)
         this.applyOut(status,commonBatchNumber,details);
     }
-    /**保存 */
+    /**保存  新增请求方法是post 编辑请求方法是put */
     applyOut(status,commonBatchNumber,details){
         const productId = this.props.data[1][0];
         const classId = this.props.data[2][0];
-        axios.post(`${this.props.url.productStandard.productStandard}`,{
-            commonBatchNumber:commonBatchNumber,
-            details:details
-        },{
+        axios({
+            type:'json',
+            method:this.state.flag?'put':'post',
+            url:this.props.url.productStandard.productStandard,
             headers:{
                 'Authorization':this.props.url.Authorization
             },
+            data:{
+                commonBatchNumber:commonBatchNumber,
+                details:details
+            }
         }).then((data)=>{
             if(status===1&&data.data.code===0){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
@@ -287,6 +292,30 @@ class AddProductStandard extends React.Component{
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
         })
+        // axios.post(`${this.props.url.productStandard.productStandard}`,{
+        //     commonBatchNumber:commonBatchNumber,
+        //     details:details
+        // },{
+        //     headers:{
+        //         'Authorization':this.props.url.Authorization
+        //     },
+        // }).then((data)=>{
+        //     if(status===1&&data.data.code===0){
+        //         const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
+        //         this.applyReview(dataId,classId,productId);
+        //     }else{
+        //         message.info(data.data.message);
+        //         this.handleCancel();
+        //         if(!this.props.flag){
+        //             this.props.getAllProductStandard({
+        //                 classId:classId,
+        //                 productId:productId
+        //             })
+        //         }
+        //     }
+        // }).catch(()=>{
+        //     message.info('保存失败，请联系管理员！')
+        // })
     }
     /**送审 */
     applyReview(dataId,classId,productId){
