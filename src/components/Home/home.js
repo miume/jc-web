@@ -322,17 +322,6 @@ class Home extends Component {
                  generate:`${server}/jc/common/purchaseReportRecord/generate`,
                  releasePages:`${server}/jc/common/purchaseReportRecord/releasePages`,
                  purchasePages:`${server}/jc/common/purchaseReportRecord/purchasePages`,
-
-                 unGenerated:`${server}/jc/common/purchaseReportRecords/unGenerated`,
-                 generated:`${server}/jc/common/purchaseReportRecords/generated`,
-                 sampleDeliveringDate:`${server}/jc/common/purchaseReportRecords/sampleDeliveringDate`,
-                 check:`${server}/jc/common/testReportRecord/check`,
-                 audit:`${server}/jc/common/purchaseReportRecords/audit`,
-                 deploy:`${server}/jc/common/purchaseReportRecords/deploy`,
-                 testReportRecord: `${server}/jc/common/testReportRecord`,
-                 testReportRecords: `${server}/jc/common/testReportRecords`,
-                 // purchaseReportRecord:`${server}/jc/common/purchaseReportRecord`,
-                 batchNumber:`${server}/jc/common/purchaseReportRecords/batchNumber`,
              },
              /**入库管理 */
              enterStorage: {

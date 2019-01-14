@@ -1,7 +1,9 @@
 import React from 'react';
-import {Input} from 'antd';
+import {Input,DatePicker} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
+
+//中文
 
 class PurchaseModal extends React.Component {
     render() {
@@ -22,6 +24,7 @@ class PurchaseModal extends React.Component {
                             <th>原材料</th>
                             <th>规格</th>
                             <th>数量</th>
+                            <th>重量</th>
                             <th>到货日期</th>
                             <th>生产厂家</th>
                         </tr>
@@ -33,15 +36,24 @@ class PurchaseModal extends React.Component {
                                     <td>{this.props.data.topData.materialName}</td>
                                     <td>{this.props.data.topData.norm}</td>
                                     <td>{this.props.data.topData.quantity}</td>
+                                    <td>{this.props.data.topData.weight}</td>
                                     <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
                                     <td>{this.props.data.topData.manufactureName}</td>
                                 </tr>
                             ):(
                                 <tr>
                                     <td><Input name='materialName' placeholder="原材料名称" value={this.props.data.topData.materialName} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='norm' placeholder="请输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='quantity' placeholder="请输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.receiveDate} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
+                                    <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
+                                    {/*<td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.receiveDate} onChange={this.props.inputSave}/></td>*/}
+                                    <td style={{width:'25%'}}>
+                                        <DatePicker
+                                            placeholder="选择时间"
+                                            onChange={this.onChange}
+                                            onOk={this.onOk}
+                                        />
+                                    </td>
                                     <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.manufactureName} onChange={this.props.inputSave}/></td>
                                 </tr>
                             )
@@ -267,6 +279,15 @@ class PurchaseModal extends React.Component {
                 </div>
             </div>
         )
+    }
+    /**表格合格判定点击事件*/
+    onChange(value, dateString) {
+        console.log('Selected Time: ', value);
+        console.log('Formatted Selected Time: ', dateString);
+    }
+
+    onOk(value) {
+        console.log('onOk: ', value);
     }
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
