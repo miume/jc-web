@@ -143,6 +143,7 @@ class SetStandard extends Component{
             },
         })
         .then(data=>{
+            //console.log(data.data.data);
              message.info(data.data.message);
         })
         .catch(()=>{
@@ -187,11 +188,14 @@ class SetStandard extends Component{
              type:'json'
         }).then(data=>{
               const res=data.data.data;
-              //console.log(res);
-              const taskId=res.commonBatchNumber.id;//返回的batchnumberId
-              const dataId=this.state.checkSelectData;//选择的流程id'
+             // console.log(res);
+              const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+              const taskId=this.state.checkSelectData;//选择的流程id'
               this.getCheck(dataId,taskId);
-              this.props.onBlockChange(3,this.props.factory);
+              if(res){
+                this.props.onBlockChange(3,this.props.factory);
+                this.props.getStandard(this.props.rawManufacturerId);
+              }
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });

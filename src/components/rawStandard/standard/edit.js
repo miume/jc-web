@@ -21,20 +21,24 @@ class EditStandard extends Component{
             effectiveTime:'',//施行日期
             standardData:[],//编辑显示的数据
             flag:true,//为真的时候显示编辑界面，为假的时候显示详情界面
+           
         }
         this.getDetail=this.getDetail.bind(this);
         this.showModal=this.showModal.bind(this);
         this.notShowModal=this.notShowModal.bind(this);
         this.showModalDetail=this.showModalDetail.bind(this);
         this.handleSave=this.handleSave.bind(this);
+        this.handleDetailSave=this.handleDetailSave.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.handleVisibleChange=this.handleVisibleChange.bind(this);
         this.handleSongShenOk=this.handleSongShenOk.bind(this);
+        this.handleDetailSongShenOk=this.handleDetailSongShenOk.bind(this);
         this.handleHide=this.handleHide.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.handleDate=this.handleDate.bind(this);
         this.selectChange=this.selectChange.bind(this);//监听送审流程变化
         this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
+        this.dataProcess=this.dataProcess.bind(this);
     }
     getDetail(){//获取标准详情
         const batchNumberId=this.props.record.batchNumberId;
@@ -50,7 +54,8 @@ class EditStandard extends Component{
             //console.log(data);
             const res= data.data.data.details.rawStandards;
             const createTime=data.data.data.commonBatchNumber.createTime;
-            const effectiveTime=data.data.data.details.techniqueRawStandardRecord.effectiveTime;            
+            const effectiveTime=data.data.data.details.techniqueRawStandardRecord.effectiveTime;
+            //console.log(effectiveTime);            
             if(res){
                 var raw=[];
                 for(var i=0;i<res.length;i++){
@@ -100,8 +105,8 @@ class EditStandard extends Component{
            date:d
        });
     }
-    handleSave(){//点击编辑保存，未申请状态
-        var data=this.state.standardData;
+    dataProcess(){//对新增，编辑的数据处理
+        const data=this.state.standardData;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber={
             createPersonId:createPersonId,
@@ -122,19 +127,25 @@ class EditStandard extends Component{
             rawManufacturerId:this.props.rawManufacturerId ,
             rawMaterialId: this.props.rawMaterialId 
         }
+        const details={
+            rawStandards:rawStandards,
+            techniqueRawStandardRecord:techniqueRawStandardRecord
+        }
+        const saveData={
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        }
+      return saveData;
+
+    }
+    handleSave(commonBatchNumber,details){//点击编辑保存，未申请状态
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
-            method:'post',
+            method:'put',
             headers:{
                'Authorization':this.props.url.Authorization
             },
-            data:{
-                commonBatchNumber:commonBatchNumber,
-                details:{
-                    rawStandards:rawStandards,
-                    techniqueRawStandardRecord:techniqueRawStandardRecord
-                }
-            },
+            data:this.dataProcess(),
             type:'json'
         })
         .then(data=>{
@@ -143,16 +154,37 @@ class EditStandard extends Component{
             if(res){
                 message.info(data.data.message);
                 //this.props.onBlockChange(3,this.props.factory);//如果返回的数据不为空，说明建立好标准了，就会渲染标准界面
+                this.props.getStandard(this.props.rawManufacturerId);
             }
         })
         .catch(()=>{
-            message.info('迭代失败，请联系管理员！');
+            message.info('编辑失败，请联系管理员！');
         });
         this.setState({
             visible:false
         });
     }
- 
+     handleDetailSave(commonBatchNumber,details){
+         console.log(12);
+         axios({
+               url:`${this.props.url.rawStandard.getStandard}`,
+               method:'post',
+               headers:{
+                   'Authorization':this.props.url.Authorization
+               },
+               data:{
+                   commonBatchNumber:commonBatchNumber,
+                   details:details
+               },
+               type:'json'
+         })
+         .then((data)=>{
+               console.log(data);
+         })
+         .catch(()=>{
+             message.info('迭代失败，请联系管理员');
+         });
+     }
     handleCancel(){//点击Modal的取消
         this.setState({
             visible:false
@@ -178,64 +210,41 @@ class EditStandard extends Component{
             },
         })
         .then(data=>{
+            //console.log(data);
              message.info(data.data.message);
+             this.props.getStandard(this.props.rawManufacturerId);//只有送审成功了才会调这个接口，获取表格数据
         })
         .catch(()=>{
-           message.info('送审失败，请联系管理员！');
+           message.info('编辑失败，请联系管理员！');
         });
 
     }
     handleSongShenOk(){//点击送审的确定
-        var data=this.state.standardData;
-        const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
-        const commonBatchNumber={
-            createPersonId:createPersonId,
-            id:this.props.record.batchNumberId
-         }
-        var rawStandards=[];
-        for(var i=0;i<data.length;i++){
-             var raw=data[i];
-             rawStandards.push({
-                techniqueRawTestItemStandard:{
-                    testItemId:raw.id,
-                    value:raw.value
-                 }
-             });
-        }
-        const techniqueRawStandardRecord={
-            effectiveTime:this.state.date,
-            rawManufacturerId:this.props.rawManufacturerId,
-            rawMaterialId:this.props.rawMaterialId
-        }
         axios({
              url:`${this.props.url.rawStandard.getStandard}`,
-             method:'post',
+             method:'put',
              headers:{
                  'Authorization':this.props.url.Authorization
              },
-             data:{
-                commonBatchNumber:commonBatchNumber,
-                details:{
-                    rawStandards:rawStandards,
-                    techniqueRawStandardRecord:techniqueRawStandardRecord
-                }
-             },
+             data:this.dataProcess(),
              type:'json'
         }).then(data=>{
               const res=data.data.data;
-              console.log(res);
-              const taskId=res.commonBatchNumber.id;//返回的batchnumberId
-              const dataId=this.state.checkSelectData;//选择的流程id'
-              this.getCheck(dataId,taskId);
-              this.props.getStandard(this.props.rawManufacturerId);
-              
+              //console.log(res);
+              const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+              const taskId=this.state.checkSelectData;//选择的流程id'
+              this.getCheck(dataId,taskId);   
         }).catch(()=>{
-            message.info('送审失败，请联系管理员！');
+            // message.info(error);
+            message.info('编辑失败，请联系管理员！');
         });
           this.setState({
               popVisible:false,
               visible:false
           });
+    }
+    handleDetailSongShenOk(commonBatchNumber,details){
+
     }
     handleHide(){//送审气泡的取消
         this.setState({
@@ -260,8 +269,8 @@ class EditStandard extends Component{
                         maskClosable={false}
                         footer={this.state.flag?([
                             <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
-                            <SaveButton key='save' handleSave={this.handleSave}/>,
-                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
+                            <SaveButton key='save' handleSave={this.state.flag?this.handleSave:this.handleDetailSave}/>,
+                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.state.flag?this.handleSongShenOk:this.handleDetailSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
                         ]):([
                             <CancleButton key='cancel'  handleCancel={this.handleCancel} flag={1}/>,
                             <span key='text' style={{color:'#999999'}}>以此为基础迭代更新&nbsp;</span>,

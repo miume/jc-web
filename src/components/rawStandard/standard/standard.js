@@ -57,9 +57,8 @@ import EditStandard from './edit';
             width:'10%',
             align:'center',
             render:(text,record)=>{
-                console.log(record.status);
+                //console.log(record.status);
                 let editFlag=this.judgeStatus(record.status);
-
                 return(
                     <span>
                         <EditStandard editFlag={editFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />

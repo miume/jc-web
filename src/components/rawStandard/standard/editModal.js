@@ -55,6 +55,7 @@ class EditStandardModal extends Component{
         this.props.handleDate(dateString);
     }
       render(){
+          
           return(
               <div>
                   <div className='rawStandardTop'>
