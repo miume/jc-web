@@ -74,17 +74,15 @@ class Procedure extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;
         this.getData(dataId);
-        this.getAllTester(dataId);
     }
     constructor(props){
         super(props);
         this.state = {
             data:[],
-            reply:''
         }
         this.getData = this.getData.bind(this);
-        this.textChange = this.textChange.bind(this);
-        this.getAllTester = this.getAllTester.bind(this);
+        // this.textChange = this.textChange.bind(this);
+        // this.getAllTester = this.getAllTester.bind(this);
     }
     /**通过batchNumberId查单条记录 */
     getData(dataId){
@@ -112,33 +110,7 @@ class Procedure extends React.Component{
             }
         })
     }
-     /**通过batchNumberId 查询审核人 */
-     getAllTester(dataId){
-        axios({
-          url:`${this.props.url.toDoList}/${dataId}/result`,
-          method:'get',
-          headers:{
-            'Authorization':this.props.url.Authorization
-          }
-        }).then(data=>{
-          const res = data.data.data;
-          //console.log(res)
-          if(res){
-            this.setState({
-                examineData : res
-            })
-          }
-      })   
-      }
-    /**监控审核意见的变化 */
-    textChange(e){
-        const value = e.target.value;
-        this.setState({
-            reply:value
-        })
-    }
     render(){
-        this.props.getReplyData(this.state.reply);
         return (
             <div className='checkModal'>
                 <div className="interDrSpanModalTop">

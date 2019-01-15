@@ -317,7 +317,7 @@ class ProductStandard extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
-        const data = [['','','批号'],this.state.selectProduct,this.state.selectedModal];
+        const data = [this.state.selectProduct[1],this.state.selectedModal[1]];
         return (
             <div>
                 <Blockquote name={current.menuName} menu={current.menuParent}  />

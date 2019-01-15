@@ -268,17 +268,17 @@
 }  
 .check-detail{
     width:100%;
-    height: 100px;
-    padding:10px;
+    /* height: 100px;
+    padding:10px; */
     display: flex;
     flex-direction: row;
-    margin-top:20px;
+    /* margin-top:20px; */
     /* border:1px solid grey;  */
 }
 
 .check-detail-div{
     flex-grow: 65;
-    width:800px;
+    width:400px;
     overflow: hidden;
 }
 /**用于原材料等*/
@@ -337,30 +337,7 @@
 #date-choose .time-search{
     border-radius: 0 4px 4px 0 !important;
 }
-/* .checkModal div:last-child{
-    width:100px;
-    height:70px;
-    text-align: right;
-} */
-
-/* .wrapxxx {
-    border: 1px solid black;
-    height: 100px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    min-width: 538px;
-    padding: 10px;
+/**用于大的div*/
+.big-div-todo{
+    width:1300px;
 }
-.quan {
-    height: 100%;
-    flex-grow: 1;
-    background-color: red;
-    border-radius: 50%;
-}
-.line2 {
-    height: 2%;
-    flex-grow: 1;
-    background-color: black;
-    z-index: 100;
-} */

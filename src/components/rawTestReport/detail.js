@@ -52,6 +52,7 @@ class Detail extends React.Component{
         this.handleOk = this.handleOk.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
         this.getAllTester = this.getAllTester.bind(this);
+        this.dataProcessing = this.dataProcessing.bind(this);
     }
     /**点击详情 */
     handleDetail(){
@@ -87,43 +88,46 @@ class Detail extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            var details  = [];
-            var topData = {};
-            var testData = {};
-            // var examineData = {};
-            var IsQualified = 0;
             if(res){
-                IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
-                topData={
-                    batchNumber: res.serialNumber?res.serialNumber:'',
-                    materialName: res.materialName?res.materialName:'',
-                    b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
-                };
-                testData={
-                    tester:res.tester?res.tester:'',
-                    testTime:res.testReportRecord?res.testReportRecord.judgeDate:'',
-                }
-                if(res.testDTOS){
-                    for(var i = 0; i < res.testDTOS.length; i++){
-                        var e = res.testDTOS[i];
-                            details.push({
-                                index:`${i+1}`,
-                                id:e.testItemResultRecord.id,
-                                testItemId:e.testItemResultRecord.testItemId,
-                                testItemName:e.name,
-                                testResult:e.testItemResultRecord.testResult,
-                                unit:'g/ml'
-                            })
-                    }   
-                }
-                this.setState({
-                    detail:{
-                        details:details,
-                        topData:topData,
-                        testData:testData,
-                        IsQualified:IsQualified,
-                    }
-                })
+                this.dataProcessing(res);
+            }
+        })
+    }
+    /**数据处理 */
+    dataProcessing(res){
+        var details  = [];
+        var topData = {};
+        var testData = {};
+        var IsQualified = 0;
+        IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
+        topData={
+            batchNumber: res.serialNumber?res.serialNumber:'',
+            materialName: res.materialName?res.materialName:'',
+            b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
+        };
+        testData={
+            tester:res.tester?res.tester:'',
+            testTime:res.testReportRecord?res.testReportRecord.judgeDate:'',
+        }
+        if(res.testDTOS){
+            for(var i = 0; i < res.testDTOS.length; i++){
+                var e = res.testDTOS[i];
+                    details.push({
+                        index:`${i+1}`,
+                        id:e.testItemResultRecord.id,
+                        testItemId:e.testItemResultRecord.testItemId,
+                        testItemName:e.name,
+                        testResult:e.testItemResultRecord.testResult,
+                        unit:'g/ml'
+                    })
+            }   
+        }
+        this.setState({
+            detail:{
+                details:details,
+                topData:topData,
+                testData:testData,
+                IsQualified:IsQualified,
             }
         })
     }

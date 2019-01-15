@@ -72,11 +72,11 @@ class AddProductStandard extends React.Component{
         },]
     }
     /**判断是新增 编辑 还是详情 */
-    judge(flag){
+    judge(flag,title){
         switch(flag){
-            case 1 : return <span className='blue' onClick={this.handleAdd}>详情</span>; 
-            case 2 : return <span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null}>编辑</span>;
-            default: return <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
+            case 1 : return title?'详情':<span className='blue' onClick={this.handleAdd}>详情</span>; 
+            case 2 : return title?'编辑':<span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null}>编辑</span>;
+            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
         }
     }
     /**点击新增标准 弹出新增标准弹出框 */
@@ -374,14 +374,15 @@ class AddProductStandard extends React.Component{
         ]
         const format = "YYYY-MM-DD";
         const effectiveTime = this.state.time.effectiveTime;
+        const flag = this.props.flag;
         return (
             <span>
-                {this.judge(this.props.flag)}
-                <Modal title='新增标准' visible={this.state.visible} closable={false}
+                {this.judge(flag)}
+                <Modal title={this.judge(flag,1)} visible={this.state.visible} closable={false}
                 maskClosable={false} 
                 footer={this.state.flag===1?detail:iteration}>
                 <div>
-                    <HeadTable data={this.props.data} batchNumber={this.state.batchNumber} />
+                    <HeadTable flag={this.props.flag} data={this.props.data} batchNumber={this.state.batchNumber} />
                     <div className='modal-add-table' >
                         <Table className='stock-out' rowKey={record=>record.id} 
                         columns={this.columns} dataSource={this.state.allTestItem} 
@@ -397,6 +398,7 @@ class AddProductStandard extends React.Component{
                         </div>:
                         <div>
                         {
+                            this.props.flag?
                             typeof(effectiveTime)!='undefined'?
                             <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
                                 size='large' className='modal-add-date'
@@ -404,7 +406,8 @@ class AddProductStandard extends React.Component{
                                 defaultValue={moment(effectiveTime,format)}
                                 allowClear
                                 format={format}
-                        />:
+                        />:''
+                        :
                         <DatePicker placeholder='请选择生效日期' onChange={this.dateChange} 
                                 size='large' className='modal-add-date'
                                 disabledDate={this.disabledDate}
