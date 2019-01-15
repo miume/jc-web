@@ -1,14 +1,3 @@
-/*
-#name{
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    size: 45px;
-    height: 30px;
-    border-radius:6px;
-}  */
-/* table tr:first-child th:first-child {
-    border-top-left-radius: 12px;
-} */
 .protable {
     display: block;
     /* overflow-x: auto; */
@@ -24,7 +13,7 @@
 
 #th{
     overflow-y:scroll;
-    display:block
+    display:block;
 }
 
 #th::-webkit-scrollbar{
@@ -33,7 +22,7 @@
 
 #thd{
     overflow-y:scroll;
-    display:block
+    display:block;
 }
 #thd::-webkit-scrollbar{
     display: none;
@@ -42,16 +31,32 @@
 #edit{
     max-height:200px;
     overflow-y:scroll;
+    overflow-x: hidden;
     display:block;
 }
 
-/* #edit::-webkit-scrollbar{
-    display: none;
-} */
-
 #edit tr td{
     border: 1px #E4E4E4 solid;
+    width: 159px;
+    max-width: 159px;
+    min-width: 159px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* #edit tr td:first-child{
+    border: 1px #E4E4E4 solid;
+    width: 165px;
+    max-width: 165px;
+    min-width: 165px;
+    box-sizing: border-box;
+} */
+
+#edit tr td:last-child{
+    border: 1px #E4E4E4 solid;
     width: 160px;
+    max-width: 160px;
+    min-width: 160px;
     box-sizing: border-box;
 }
 
@@ -81,7 +86,7 @@
     width: 100%;
     height: 35px;
     margin: 0%;
-    border-radius: 8px;
+    /* border-radius: 8px; */
     text-align: center;
 }
 
@@ -106,11 +111,11 @@
     color: #ffffff;
     text-align: center;
     list-style: none;
-    padding: 5px;
+    /* padding: 5px; */
     font-weight: 600;
     border: 1px #E4E4E4 solid;
     height: 40px;
-    width: 480px;
+    width: 160px;
     box-sizing: border-box;
 }
 
