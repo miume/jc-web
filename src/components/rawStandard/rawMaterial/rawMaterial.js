@@ -166,12 +166,13 @@ class RawMaterial extends Component{
                      </span>
                      <Divider type='horizontal' />
                    </div>
+                   <div className='rawStanstdardParent1'>
                    <div className='rawStanstdardParent'>
                        {
                            this.state.data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
                        }
-                      <span className={this.state.f?'show':'hide'}> <DataPart  flag={1} onBlockChange={this.addClick}   name='新增' name1='原材料'/></span>
+                      <span className={this.state.f?'':'hide'}> <DataPart  flag={1} onBlockChange={this.addClick}   name='新增' name1='原材料'/></span>
                       <Modal
                             visible={this.state.visible}
                             title="新增"
@@ -185,7 +186,7 @@ class RawMaterial extends Component{
                       <RawMaterialAddModal items={this.state.items} checkboxChange={this.checkboxChange} wrappedComponentRef={(form) => this.formRef = form}/>
                     </Modal>
                    </div>
-                 
+                   </div>
               </div>
           );
       }

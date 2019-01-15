@@ -1,3 +1,10 @@
+.rawMaterailStandard{
+    width:97%;
+    height:540px;
+    margin:20px;
+    border:1px solid #cccccc;
+    border-top: none;
+}
 
 .rawStanstdardBlock{/**块的样式*/
     border-radius:3px ;/*设置4个圆角，且为5像素*/
@@ -41,9 +48,16 @@
     display:flex ;
     flex-wrap: wrap;
     /* position:'absolute'; */
-    padding-left: 20px;
-    width: 100%;
-    overflow-y: scroll;/*总是显示纵向滚动条*/
+    /* padding-left: 20px; */
+    /* width: 100%; */
+/*    
+    min-width: 600px; */
+   
+}
+.rawStanstdardParent1
+{
+    height:350px ;
+    overflow-y: auto;/*如果溢出框，则应该提供滚动机制。*/
 }
 .rawStanstdardBlockQuoBlue{/*蓝色长方形*/
     font-weight: bold;
