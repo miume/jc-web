@@ -45,10 +45,10 @@ class Tr extends React.Component{
             <option className="option" id={p.id} key={p.id} value={p.id}>{p.name}</option>
         )
         return(
-            <tr className='tbody'>
-                <td style={{width:"170px",textAlign:"center"}}><select style={{border:"none"}} className="proselect" name="select" placeholder="请选择负责人">{children}</select></td>
+            <tr>
+                <td><select style={{border:"none"}} className="proselect" name="select" placeholder="请选择负责人">{children}</select></td>
                 <td><input name="input" id="input" className="proinput" style={{border:"none"}} placeholder="请输入职责"/></td>
-                <td style={{width:"143px",textAlign:"center"}}><span style={{width:'100%'}} href='#' className="blue" onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
+                <td><span style={{width:'100%'}} href='#' className="blue" onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
             </tr>
         )
     }

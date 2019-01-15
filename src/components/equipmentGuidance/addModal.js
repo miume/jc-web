@@ -5,6 +5,7 @@ import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import { Button, Modal, Form, Input,message,DatePicker } from 'antd';
 import Tr from './tr';
+import './equiptment.css'
 
 class AddModal extends React.Component{
     constructor(props){
@@ -84,8 +85,8 @@ class AddModal extends React.Component{
                             <Input style={{width:'49%',marginTop:'10px'}} placeholder='请输入页次'/>
                             <DatePicker style={{width:'49%',marginLeft:'2%',marginTop:'10px'}} placeholder='请选择生效日期' />
                             <WhiteSpace />
-                            <table className='protable'>
-                                <thead className='prothead'>
+                            <table className='equip-Table'>
+                                <thead className='equip-Head'>
                                     <tr>
                                         <td>点检内容</td>
                                         <td>检查标准</td>
@@ -94,7 +95,7 @@ class AddModal extends React.Component{
                                         <td>操作</td>
                                     </tr>
                                 </thead>
-                                <tbody id="edit">
+                                <tbody id="equpi-Tbody">
                                     {
                                         this.state.data.map((m)=>{return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}/>})
                                     }
