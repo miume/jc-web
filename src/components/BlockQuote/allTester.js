@@ -101,7 +101,10 @@ class AllTester extends React.Component{
                     }
                     </div>
                 </div>
-                <div className='check-detail-i' ><i className='fa fa-2x fa-caret-left' onClick={this.moveLeft}></i><i className='fa fa-2x fa-caret-right' onClick={this.moveRight}></i></div>
+                <div className='check-detail-i' >
+                    <i className='fa fa-2x fa-caret-left' onClick={this.moveLeft}></i>
+                    <i className='fa fa-2x fa-caret-right' onClick={this.moveRight}></i>
+                </div>
         </div>
         );
     }

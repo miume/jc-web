@@ -55,7 +55,7 @@ class RawTestReport extends React.Component{
         // this.handleAdd = this.handleAdd.bind(this);
         // this.deleteByIds = this.deleteByIds.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        // this.onSelectChange = this.onSelectChange.bind(this);
+        this.dataProcessing = this.dataProcessing.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.fetch = this.fetch.bind(this);
@@ -209,64 +209,43 @@ class RawTestReport extends React.Component{
             params:params
         }).then((data)=>{
             const res = data.data.data?data.data.data:[];
-            const da = [];
-            const {pagination} = this.state;
-            // console.time('hello')
             if(res&&res.list.length>0){
-                pagination.total = res.total;
-                for(var i = 1; i <= res.list.length; i++){
-                    var e = res.list[i-1];
-                    
-                    da.push({
-                        index:i+res.prePage*10,
-                        id:e.sampleDeliveringRecord.id,
-                        sampleDeliveringDate:e.sampleDeliveringRecord.sampleDeliveringDate,
-                        deliverer:e.deliverer,
-                        deliveryFactoryId:e.sampleDeliveringRecord.deliveryFactoryId,
-                        deliveryFactoryName:e.deliveryFactoryName,
-                        batchNumber:e.commonBatchNumber?e.commonBatchNumber.batchNumber:'',
-                        testItemString:e.testItemString?e.testItemString:'',
-                        exceptionComment:e.sampleDeliveringRecord.exceptionComment,
-                        type:e.sampleDeliveringRecord.type,
-                        acceptStatus:'接受',
-                        // acceptStatus:e.sampleDeliveringRecord.acceptStatus,
-                        handleComment:e.sampleDeliveringRecord.handleComment,
-                        status:e.commonBatchNumber?e.commonBatchNumber.status:0,
-                        isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
-                        batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'',
-                    })
-                }
+                this.dataProcessing(res)
             }
-            // console.log('%c hello end.', 'font-size:20px; color:orange;')
-            // console.timeEnd('hello')
-            this.setState({
-                dataSource:da,
-                pagination:pagination
-            })
+            
         })
     }
-    /**button新增 */
-    // handleAdd(){
-
-    // }
-    /**删除一条记录 */
-    // handleDelete(key){
-    //     axios({
-    //         url:`${this.url.rawTestReport.rawTestReport}/${key}`,
-    //         method:'Delete',
-    //         headers:{
-    //             'Authorization':this.url.Authorization
-    //         }
-    //     }).then((data)=>{
-    //         message.info(data.data.message);
-    //     }).catch(()=>{
-    //         message.info('删除失败，请联系管理员！')
-    //     })
-    // }
-    /**批量删除 */
-    // deleteByIds(){
-    //     const ids = this.state.selectedRowKeys;
-    // }
+    /**数据处理 */
+    dataProcessing(res){
+        var da = [];
+        const {pagination} = this.state;
+        pagination.total = res.total;
+        for(var i = 1; i <= res.list.length; i++){
+            var e = res.list[i-1];
+            da.push({
+                index:i+res.prePage*10,
+                id:e.sampleDeliveringRecord.id,
+                sampleDeliveringDate:e.sampleDeliveringRecord.sampleDeliveringDate,
+                deliverer:e.deliverer,
+                deliveryFactoryId:e.sampleDeliveringRecord.deliveryFactoryId,
+                deliveryFactoryName:e.deliveryFactoryName,
+                batchNumber:e.commonBatchNumber?e.commonBatchNumber.batchNumber:'',
+                testItemString:e.testItemString?e.testItemString:'',
+                exceptionComment:e.sampleDeliveringRecord.exceptionComment,
+                type:e.sampleDeliveringRecord.type,
+                acceptStatus:'接受',
+                // acceptStatus:e.sampleDeliveringRecord.acceptStatus,
+                handleComment:e.sampleDeliveringRecord.handleComment,
+                status:e.commonBatchNumber?e.commonBatchNumber.status:0,
+                isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
+                batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'',
+            })
+        }
+        this.setState({
+            dataSource:da,
+            pagination:pagination
+        })
+    }
     /**监控搜索框的实时变化 */
     searchContentChange(e){
         const value = e.target.value;

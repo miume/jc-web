@@ -1,9 +1,11 @@
 import React from 'react';
 class HeadTable extends React.Component{
     render(){
-        const data = this.props.data;
+        const {flag,data} = this.props;
         return (
             <div className='rawStandardTop'>
+            {
+                flag?
                 <table>
                     <thead>
                     <tr>
@@ -15,11 +17,26 @@ class HeadTable extends React.Component{
                     <tbody>
                         <tr>
                             <td>{this.props.batchNumber}</td>
-                            <td>{data&&data[1]?data[1][1]:''}</td>
-                            <td>{data&&data[1]?data[2][1]:''}</td>
+                            <td>{data&&data[0]?data[0]:''}</td>
+                            <td>{data&&data[1]?data[1]:''}</td>
                         </tr>
                     </tbody>
-                </table>
+                </table>:
+                <table>
+                <thead>
+                <tr>
+                    <th>产品</th>
+                    <th>型号</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{data&&data[0]?data[0]:''}</td>
+                        <td>{data&&data[1]?data[1]:''}</td>
+                    </tr>
+                </tbody>
+            </table>
+            }
                 </div>
         )
     }
