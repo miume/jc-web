@@ -2,7 +2,7 @@ import React from 'react';
 import SearchCell from "../BlockQuote/search";
 import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
-// import axios from "axios";
+import axios from "axios";
 
 
 const data =[];
@@ -94,53 +94,32 @@ class UnqualifiedExamine extends React.Component{
         });
     };
     fetch = (params = {}) => {
-        // axios({
-        //     url: `${this.props.url.purchaseCheckReport.audit}` ,
-        //     method: 'get',
-        //     headers:{
-        //         'Authorization': this.props.url.Authorization
-        //     },
-        //     params: params,
-        // }).then((data) => {
-        //     const res = data.data.data;
-        //     this.pagination.total=res?res.total:0;
-        //     if(res&&res.list){
-        //         // const dataSource = this.dataAssemble(res);
-        //         for(var i = 1; i<=res.list.length; i++){
-        //             res.list[i-1]['index']=res.prePage*10+i;
-        //         }
-        //         this.setState({
-        //             dataSource: res.list,
-        //         });
-        //     }
-        // });
+        axios({
+            url: `${this.props.url.unqualifiedExamineTable.pages}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data;
+            this.pagination.total=res?res.total:0;
+            if(res&&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=res.prePage*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
+            }
+        });
     };
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        // const batchNumber = this.state.searchContent;
-        // axios({
-        //     url: `${this.props.url.purchaseCheckReport.batchNumber}`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         batchNumber: batchNumber
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     const res = data.data.data;
-        //     this.pagination.total=res?res.total:0;
-        //     for(var i = 1; i<=res.list.length; i++){
-        //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     }
-        //     this.setState({
-        //         dataSource: res.list,
-        //     });
-        // });
+        this.fetch({
+            createPerson:this.state.searchContent,
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
