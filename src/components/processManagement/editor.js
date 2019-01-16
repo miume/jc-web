@@ -69,7 +69,7 @@ class Editor extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.handle();
+            this.props.handle(this.props.pagination);
         })
 
         this.setState({
@@ -108,7 +108,7 @@ class Editor extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.handle();
+            this.props.handle(this.props.pagination);
         })
 
         this.setState({
@@ -183,15 +183,15 @@ class Editor extends React.Component{
                       <input id="proname" defaultValue={this.state.name} placeholder="请输入名称"/>
                       <WhiteSpace />
                       <div style={{height:'400px'}}>
-                        <table className="protable">
-                            <thead className='prothead' id="th">
+                        <table className="processTable">
+                            <thead className='processThead'>
                                 <tr>
                                     <td>负责人</td>
                                     <td>职责</td>
                                     <td>操作</td>
                                 </tr>
                             </thead>
-                            <tbody id="edit">
+                            <tbody id="editPro">
                                 <EditTr dataSource={this.state.dataSource} detail = {this.state.detail} deleteRow={this.deleteRow}/>
                             </tbody>
                         </table>

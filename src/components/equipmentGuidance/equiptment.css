@@ -30,3 +30,36 @@
     box-sizing: border-box;
     text-align: center;
 }
+
+.edit-Table {
+    display: block;
+    white-space: nowrap;
+}
+.edit-Head tr td{
+    background: #1890ff;
+    color: #ffffff;
+    text-align: center;
+    list-style: none;
+    /* padding: 5px; */
+    font-weight: 600;
+    border: 1px #E4E4E4 solid;
+    height: 40px;
+    width: 95px;
+    box-sizing: border-box;
+}
+
+#edit-Tbody{
+    max-height:200px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+    display:block;
+}
+
+#edit-Tbody tr td{
+    border: 1px #E4E4E4 solid;
+    width: 95px;
+    max-width: 95px;
+    min-width: 95px;
+    box-sizing: border-box;
+    text-align: center;
+}

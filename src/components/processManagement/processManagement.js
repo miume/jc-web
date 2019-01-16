@@ -102,7 +102,7 @@ class Management extends React.Component{
                     <span>
                         <Detail value={record} />
                         <Divider type="vertical" />
-                        <Editor value={text} status={record.commonBatchNumber.status} handle={this.fetch}/>
+                        <Editor value={text} status={record.commonBatchNumber.status} pagination={this.pagination} handle={this.handleTableChange}/>
                         <Divider type="vertical" />
                         {record.commonBatchNumber.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>
@@ -129,7 +129,10 @@ class Management extends React.Component{
             message.info(error.data)
         });
         setTimeout(() => {
-            this.fetch();
+            if((this.pagination.total-1)%10===0){
+                this.pagination.current = this.pagination.current-1
+            }
+            this.handleTableChange(this.pagination);
         }, 1000);
     }
     /**获取所有数据 getAllByPage */
@@ -137,7 +140,7 @@ class Management extends React.Component{
         this.fetch({
             size: pagination.pageSize,
             page: pagination.current,
-            orderField: 'batchNumberId',
+            orderField: 'id',
             orderType: 'desc',
   
         });
@@ -229,7 +232,10 @@ class Management extends React.Component{
             type:'json'
         }).then((data)=>{
             message.info(data.data.message);
-            this.fetch();
+            if((this.pagination.total-1)%10===0){
+                this.pagination.current = this.pagination.current-1
+            }
+            this.handleTableChange(this.pagination);
         })
     };
     cancel() {

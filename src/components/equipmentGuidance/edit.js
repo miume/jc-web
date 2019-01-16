@@ -70,7 +70,7 @@ class Edit extends React.Component{
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    title="新增"
+                    title="编辑"
                     footer={[
                         <CancleButton key='back' handleCancel={this.onCancel}/>,
                         <SaveButton key="define" handleSave={this.onCreate} className='fa fa-check' />,
@@ -84,8 +84,8 @@ class Edit extends React.Component{
                             <Input style={{width:'49%',marginTop:'10px'}} placeholder='请输入页次' value="页次1"/>
                             <DatePicker style={{width:'49%',marginLeft:'2%',marginTop:'10px'}} placeholder='请选择生效日期' />
                             <WhiteSpace />
-                            <table className='protable'>
-                                <thead className='prothead'>
+                            <table className='edit-Table'>
+                                <thead className='edit-Head'>
                                     <tr>
                                         <td>点检内容</td>
                                         <td>检查标准</td>
@@ -94,7 +94,7 @@ class Edit extends React.Component{
                                         <td>操作</td>
                                     </tr>
                                 </thead>
-                                <tbody id="edit">
+                                <tbody id="edit-Tbody">
                                     {
                                         this.state.data.map((m)=>{return <Tr key={m.toString()} deleteRow={this.deleteRow} value={m.toString()}/>})
                                     }
