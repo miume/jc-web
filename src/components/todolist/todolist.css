@@ -1,5 +1,5 @@
 .container{
-    padding: 15px;
+    padding: 25px 15px 15px 15px;
     overflow: auto;
     height:510px;
 }

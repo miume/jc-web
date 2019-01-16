@@ -47,7 +47,7 @@ class RedList extends React.Component{
     //     })
     // }
     render(){
-        this.props.getReplyData(this.state.reply);
+        // this.props.getReplyData(this.state.reply);
         const {data} = this.state;
         return (
             <div>

@@ -6,7 +6,7 @@ import RedList from './redlist';
 import AllTester from '../BlockQuote/allTester';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
-import AddProductStandard from '../productStandard/addProductStandard';
+import CheckProductStandard from './checkProductStandard';
 import axios from 'axios';
 class CheckModal extends React.Component{
     constructor(props){
@@ -34,10 +34,10 @@ class CheckModal extends React.Component{
             case 7:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
             case 8:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
             case 5:  
-            case 9: 
-            case 13: 
+            case 9:  
             case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>; 
-            case 14: return <AddProductStandard url={this.props.url} data={this.props.topData} flag={1} batchNumberId={this.props.dataId} />
+            case 13: 
+            case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
             default: return null ;;
         }
     }

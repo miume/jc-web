@@ -1,13 +1,11 @@
 import React from 'react';
-import { Table, Divider} from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
-// import DeleteByIds from '../BlockQuote/deleteByIds';
-import SearchCell from '../BlockQuote/search';
-import Detail from './detail';
-import RecordChecking from './recordChecking';
-import './rawTestReport.css';
 import axios from 'axios';
-
+import './rawTestReport.css';
+import Detail from './detail';
+import { Table, Divider} from 'antd';
+import SearchCell from '../BlockQuote/search';
+import RecordChecking from './recordChecking';
+import BlockQuote from '../BlockQuote/blockquote';
 // const data = [];
 // for(var i = 1; i <= 20;i++){
 //     data.push({
@@ -166,7 +164,7 @@ class RawTestReport extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId}/>
+                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
                         <Divider type='vertical' />
                         <RecordChecking value={text} url={this.url} status={record.status}/>
                     </span>

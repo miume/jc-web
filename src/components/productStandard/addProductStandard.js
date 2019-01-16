@@ -74,6 +74,7 @@ class AddProductStandard extends React.Component{
     /**判断是新增 编辑 还是详情 */
     judge(flag,title){
         switch(flag){
+            case 'check' : return title?'审核':<NewButton name='审核' className='fa fa-check' handleClick={this.handleAdd} ></NewButton>;
             case 1 : return title?'详情':<span className='blue' onClick={this.handleAdd}>详情</span>; 
             case 2 : return title?'编辑':<span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null}>编辑</span>;
             default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
@@ -386,7 +387,7 @@ class AddProductStandard extends React.Component{
                     <div className='modal-add-table' >
                         <Table className='stock-out' rowKey={record=>record.id} 
                         columns={this.columns} dataSource={this.state.allTestItem} 
-                        pagination={false} size='small' bordered scroll={{y:250}}>
+                        pagination={false} size='small' bordered scroll={{y:240}}>
                         </Table>
                     </div>
                     <div style={{height:70}}>

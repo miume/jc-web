@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal} from 'antd';
-import DetailModal from './detailModal';
 import axios from 'axios';
+import DetailModal from './detailModal';
 import CancleButton from '../BlockQuote/cancleButton';
 // const columns1 = [{
 //     title:'序号',
@@ -72,7 +72,6 @@ class Detail extends React.Component{
           }
         }).then(data=>{
           const res = data.data.data;
-          //console.log(res)
           if(res){
             this.setState({
                 examineData : res
@@ -153,8 +152,8 @@ class Detail extends React.Component{
                     <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel}/>
                   ]}
                   >
-                  <div style={{height:580}}>
-                        <DetailModal detail={this.state.detail} examineData={this.state.examineData}  />
+                  <div>
+                        <DetailModal detail={this.state.detail} examineData={this.state.examineData} allStatus={this.props.allStatus} status={this.props.status}/>
                     </div>
                 </Modal>
             </span>

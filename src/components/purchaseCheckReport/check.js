@@ -2,9 +2,6 @@ import React from 'react';
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
-
-
-
 class Check extends React.Component {
     componentDidMount() {
         this.fetch();
