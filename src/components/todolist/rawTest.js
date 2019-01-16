@@ -101,7 +101,7 @@ class RawTest extends React.Component{
     render(){
         // this.props.getReplyData(this.state.reply);
         return (
-            <DetailModal detail={this.state.data} dataId={this.props.dataId} examineData={this.state.examineData} />
+            <DetailModal detail={this.state.data} dataId={this.props.dataId} checkFlag={1} />
         );
     }
 }

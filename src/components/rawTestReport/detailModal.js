@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table } from 'antd';
-// import AllTester from '../BlockQuote/allTester';
+import { Table ,Divider} from 'antd';
+import AllTester from '../BlockQuote/allTester';
 import IsQualified from "../BlockQuote/isQualified";
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
@@ -56,7 +56,6 @@ class DetailModal extends React.Component {
                            样品名称：<span>{data.topData?data.topData.materialName+'样品':''}</span>
                        </div>
                 </div>
-                <div style={{height:300}}>
                     <Table
                         className="interCursorDefault"
                         rowKey={record => record.id}
@@ -67,9 +66,7 @@ class DetailModal extends React.Component {
                         scroll={{ y: 190 }}
                         bordered
                     />
-                </div>
-                <div>
-                    <div className="interDrSpanModalBottomFirst">
+                    <div className="interDrSpanModalBottomFirst" style={{paddingTop:15}}>
                         <table>
                             <tbody className="interPadding">
                             <tr>
@@ -86,12 +83,18 @@ class DetailModal extends React.Component {
                             status={data.IsQualified?data.IsQualified:0}
                         />
                     </div>
-                {/* <Divider />
-                <div className={this.props.flag && this.props.examineData?'':'hide'}>
-                    <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1}/>
-                </div> */}
+                    {/* <Divider /> */}
+                    {   this.props.checkFlag?
+                        <div></div>:
+                        this.props.flag && this.props.examineData?
+                        <div>
+                            <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1}/>
+                        </div> : 
+                        <div className='statusDiv'>
+                        <p>{this.props.allStatus[this.props.status.toString()]}</p></div>        
+                    }
+                    
                 {/* <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1} /> */}
-            </div>
             </div>
         )
     }

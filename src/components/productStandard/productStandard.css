@@ -282,12 +282,15 @@
 /**型号新增*/
 .modal-add-table{
     height:300px;
-    margin:20px 0;
+    margin:20px 0 0 0;
 }
 .modal-add-date{
     width:320px !important;
 }
 /**型号编辑和详情*/
+.modal-detail-p{
+    padding-top:15px;
+}
 .modal-detail-p p{
     font-weight: 400;
 }

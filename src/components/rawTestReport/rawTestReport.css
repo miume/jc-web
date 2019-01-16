@@ -59,3 +59,12 @@
     font-size:25px;
     padding-top:4px;
 }
+.statusDiv{
+    height:80px;
+    text-align: center;
+    line-height: 80px;
+}
+.statusDiv p{
+    text-align: center;
+    padding-left:150px;
+}

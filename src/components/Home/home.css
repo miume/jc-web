@@ -177,3 +177,6 @@ input::-webkit-input-placeholder{
 .ant-drawer-wrapper-body{
     overflow: hidden !important;
 }
+.ant-drawer-body{
+    padding:24px 10px !important;
+}

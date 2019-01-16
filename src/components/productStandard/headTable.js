@@ -1,7 +1,7 @@
 import React from 'react';
 class HeadTable extends React.Component{
     render(){
-        const {flag,data} = this.props;
+        const {flag,data,rawProductFlag} = this.props;
         return (
             <div className='rawStandardTop'>
             {
@@ -10,8 +10,8 @@ class HeadTable extends React.Component{
                     <thead>
                     <tr>
                         <th>批号</th>
-                        <th>产品</th>
-                        <th>型号</th>
+                        <th>{rawProductFlag?'原材料':'产品'}</th>
+                        <th>{rawProductFlag?'生产厂家':'型号'}</th>
                     </tr>
                     </thead>
                     <tbody>
