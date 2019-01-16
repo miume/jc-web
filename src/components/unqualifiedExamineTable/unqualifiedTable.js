@@ -19,21 +19,21 @@ class UnqualifiedTable extends React.Component {
         align:'center',
         width: '12%',
     },{
-        title: '原材料',
-        dataIndex: 'materialName',
-        key: 'materialName',
+        title: '物料类型',
+        dataIndex: 'materialClass',
+        key: 'materialClass',
         align:'center',
         width: '6%',
     },{
-        title: '生产厂家',
-        dataIndex: 'manufacturerName',
-        key: 'manufacturerName',
+        title: '厂商名称',
+        dataIndex: 'manufactureName',
+        key: 'manufactureName',
         align:'center',
         width: '6%',
     },{
         title: '到货日期',
-        dataIndex: 'sampleDeliveringDate',
-        key: 'sampleDeliveringDate',
+        dataIndex: 'receivedDate',
+        key: 'receivedDate',
         align:'center',
         width: '10%',
     },{
@@ -66,8 +66,8 @@ class UnqualifiedTable extends React.Component {
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'id',
-        key: 'id',
+        dataIndex: 'batchNumberId',
+        key: 'batchNumberId',
         align:'center',
         width: '13%',
         render: (text,record) => {
