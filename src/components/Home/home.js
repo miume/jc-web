@@ -360,7 +360,7 @@ class Home extends Component {
               },
               /**不合格审评表 */
               unqualifiedExamineTable:{
-
+                  pages:`${server}/jc/common/unqualifiedTestReportRecord/pages`,
               },
               /**原材料标准*/
               rawStandard:{

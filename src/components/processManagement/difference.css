@@ -1,8 +1,11 @@
 .protable {
     display: block;
-    /* overflow-x: auto; */
     white-space: nowrap;
-    /* border-collapse: collapse */
+}
+
+.processTable {
+    display: block;
+    white-space: nowrap;
 }
 
 #data{
@@ -35,6 +38,13 @@
     display:block;
 }
 
+#editPro{
+    max-height:200px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+    display:block;
+}
+
 #edit tr td{
     border: 1px #E4E4E4 solid;
     width: 159px;
@@ -44,19 +54,28 @@
     text-align: center;
 }
 
-/* #edit tr td:first-child{
+#editPro tr td{
     border: 1px #E4E4E4 solid;
-    width: 165px;
-    max-width: 165px;
-    min-width: 165px;
+    width: 119px;
+    max-width: 119px;
+    min-width: 119px;
     box-sizing: border-box;
-} */
+    text-align: center;
+}
 
 #edit tr td:last-child{
     border: 1px #E4E4E4 solid;
     width: 160px;
     max-width: 160px;
     min-width: 160px;
+    box-sizing: border-box;
+}
+
+#editPro tr td:last-child{
+    border: 1px #E4E4E4 solid;
+    width: 119px;
+    max-width: 119px;
+    min-width: 119px;
     box-sizing: border-box;
 }
 
@@ -119,6 +138,32 @@
     box-sizing: border-box;
 }
 
+.processThead tr td{
+    background: #1890ff;
+    color: #ffffff;
+    text-align: center;
+    list-style: none;
+    /* padding: 5px; */
+    font-weight: 600;
+    border: 1px #E4E4E4 solid;
+    height: 40px;
+    width: 119px;
+    box-sizing: border-box;
+}
+
+.theadmanage tr td{
+    background: #1890ff;
+    color: #ffffff;
+    text-align: center;
+    list-style: none;
+    /* padding: 5px; */
+    font-weight: 600;
+    border: 1px #E4E4E4 solid;
+    height: 40px;
+    width: 480px;
+    box-sizing: border-box;
+}
+
 .protbody tr td{
     text-align: center;
     border: 1px #e8e8e8 solid;
@@ -129,3 +174,11 @@
     color: #CCCCCC;
     cursor: not-allowed;
 }
+
+.proinput:focus{
+    text-align: left;
+}
+
+.proinput::-webkit-input-placeholder {
+    padding-left:30px;
+     }

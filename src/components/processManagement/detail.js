@@ -17,7 +17,7 @@ const columns = [{
         key: 'responsibility',
         width: '30%',
         align:'center',
-}]
+    }]
 
 
 class Detail extends React.Component{
@@ -83,7 +83,7 @@ class Detail extends React.Component{
                     ]}>
                     <div>
                          <table className="custom_tb">
-                             <thead className='prothead'>
+                             <thead className='theadmanage'>
                                  <tr>
                                      <td>流程名称</td>
                                  </tr>
