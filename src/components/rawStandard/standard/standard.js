@@ -59,11 +59,13 @@ import EditStandard from './edit';
             render:(text,record)=>{
                 //console.log(record.status);
                 let editFlag=this.judgeStatus(record.status);
+                let iterateFlag=this.judgeStatusIterate(record.status);//只有通过才能迭代
+               // console.log(record.isPublished);
                 return(
                     <span>
-                        <EditStandard editFlag={editFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterate={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
                         <Divider type='vertical'/>
-                        <EditStandard editFlag={editFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterate={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
                     </span>
                 );
             }
@@ -86,6 +88,15 @@ import EditStandard from './edit';
                   case '3':return true
              }
      }
+     judgeStatusIterate(record_status){
+             switch(`${record_status}`){
+                 case '-1':return false
+                 case '0':return false
+                 case '1':return false
+                 case '2':return true //只有审核通过才能迭代
+                 case '3':return false
+             }
+     }
      checkRaw(e){//点击重新选择厂家调用的函数
         //    const name=this.props.returnRaw();
         //    console.log(name);
@@ -99,7 +110,7 @@ import EditStandard from './edit';
           }
      searchEvent(){
            const value=this.state.searchContent;
-           console.log(value)
+           //console.log(value)
           this.props.getStandard(this.props.rawManufacturerId,value);
      }
    
@@ -125,6 +136,7 @@ import EditStandard from './edit';
                     columns={this.columns}
                     dataSource={this.props.dataSource}
                     pagination={{hideOnSinglePage:true,pageSize:100}}
+                    rowClassName={(record)=>record.isPublished===1?'rawStandardTableRow':''}
                     size='small'
                     bordered
                     scroll={{y:230}}

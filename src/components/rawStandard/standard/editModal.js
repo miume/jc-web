@@ -38,6 +38,7 @@ class EditStandardModal extends Component{
         }];
         this.handleDateChange=this.handleDateChange.bind(this);
         this.inputChange=this.inputChange.bind(this);
+        this.disabledDate=this.disabledDate.bind(this);
     }
     inputChange(e){
        const value=e.target.value;//输入框输入的值(检测标准)
@@ -53,6 +54,12 @@ class EditStandardModal extends Component{
     handleDateChange(date, dateString){
         //console.log(dateString);
         this.props.handleDate(dateString);
+    }
+    disabledDate(current){
+        //  console.log(current);
+        // console.log(moment().endOf('day'));
+        //console.log(current < moment().endOf('day'));
+        return  current&&current< moment().endOf('day');//不可选择今天以前的日期
     }
       render(){
           
@@ -92,6 +99,7 @@ class EditStandardModal extends Component{
                       {this.props.effectiveTime!=''?
                         <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')} 
                         onChange={this.handleDateChange} 
+                        disabledDate={this.disabledDate}
                         placeholder='请选择施行日期' 
                         size='large' style={{width:'320px'}}/>
                       :''

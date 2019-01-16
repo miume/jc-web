@@ -61,8 +61,8 @@ class DetailModal extends Component{
                    </table>
                </div>
                <div style={{height:'15px'}}></div>
-               <div >
-                   <Table className='rawStandardTable'
+               <div style={{height:'250px'}}>
+                   <Table className='stock-out'
                       rowKey={record=>record.index}
                       columns={columns}
                       dataSource={this.props.data}
