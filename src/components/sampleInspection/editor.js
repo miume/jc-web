@@ -500,7 +500,7 @@ class Editor extends React.Component{
                             }
                         </Checkbox.Group></div>:null}
                         
-                        {this.state.visible1 === 1?<Select placeholder="请选择受检物料" onChange={this.changeMaterials} value={this.state.oldMaterials} style={{width:"320px",marginTop:"10px"}}>
+                        {this.state.visible1 === 1?<Select placeholder="请选择受检物料" onChange={this.changeMaterials} defaultValue={this.state.oldMaterials} style={{width:"320px",marginTop:"10px"}}>
                             {
                                 this.state.serialNumber.map(pe=>{
                                     return(
@@ -508,7 +508,7 @@ class Editor extends React.Component{
                                     )
                                 })
                             }
-                        </Select>:this.state.visible1 ===3?<Select placeholder="请选择受检物料" onChange={this.changeMaterials} value={this.state.oldMaterials} style={{width:"320px",marginTop:"10px"}}>
+                        </Select>:this.state.visible1 ===3?<Select placeholder="请选择受检物料" onChange={this.changeMaterials} defaultValue={this.state.oldMaterials} style={{width:"320px",marginTop:"10px"}}>
                             {
                                 this.state.FinalserialNumber.map(pe=>{
                                     return(

@@ -31,7 +31,8 @@ class SampleInspection extends React.Component{
             pagination:[],
             searchContent:'',
             clicked:false,
-            Contentvalue:''
+            Contentvalue:'',
+            pageChangeFlag:0 //0为fetch，1为search
         };
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
@@ -246,7 +247,7 @@ class SampleInspection extends React.Component{
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
     }
-    searchEvent(){
+    searchEvent(params = {}){
         const ope_name = this.state.searchContent;
         axios({
             url:`${this.server}/jc/common/sampleDeliveringRecord/pages`,
@@ -255,20 +256,23 @@ class SampleInspection extends React.Component{
                 'Authorization':this.Authorization
             },
             params:{
-                pageSize: this.pagination.pageSize,
-                pageNumber: this.pagination.current,
+                pageSize: params.pageSize,
+                pageNumber: params.pageNumber,
                 factoryName:ope_name
             },
             type:'json',
         }).then((data)=>{
             const res = data.data.data;
+            console.log(res)
             if(res&&res.list){
                 this.pagination.total=res.total;
+                this.pagination.current = res.pageNumber
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
                 this.setState({
                     dataSource: res.list,
+                    pageChangeFlag:1
                 });
             }
         })
@@ -282,12 +286,22 @@ class SampleInspection extends React.Component{
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        this.fetch({
-            pageSize: pagination.pageSize,
-            pageNumber: pagination.current,
-            // sortField: 'sample_Delivering_Date',
-            // sortType: 'desc',
-        });
+        const pageChangeFlag = this.state.pageChangeFlag;
+        console.log(pageChangeFlag)
+        if(pageChangeFlag===0){
+            this.fetch({
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
+                // sortField: 'sample_Delivering_Date',
+                // sortType: 'desc',
+            });
+        }else{
+            this.searchEvent({
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
+            })
+        }
+        
     };
     fetch = (params = {}) => {
         axios({
@@ -307,6 +321,7 @@ class SampleInspection extends React.Component{
                     dataSource: res.list,
                     searchContent:'',
                     selectedRowKeys: [],
+                    pageChangeFlag:0
                 });
             }
         })
