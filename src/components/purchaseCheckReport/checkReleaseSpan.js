@@ -143,7 +143,6 @@ class CheckReleaseSpan extends React.Component {
     }
     /**获取该行的记录详情 */
     getDetailData(){
-        // let detail = this.props.record;
         axios({
             url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}?batchNumberId=${this.props.id}`,
             method:'get',
@@ -215,7 +214,7 @@ class CheckReleaseSpan extends React.Component {
             }
 
         }).catch(()=>{
-            message.info('保存失败，请联系管理员！')
+            message.info('获取失败，请联系管理员！')
         })
 
     }
