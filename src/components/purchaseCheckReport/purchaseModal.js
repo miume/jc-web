@@ -16,7 +16,7 @@ class PurchaseModal extends React.Component {
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
         return(
-            <div style={{paddingTop:'10px'}}>
+            <div style={{paddingTop:'10px',width:1100}}>
                 <div>
                     <table className="purchaseTopTable">
                         <thead className="purchaseTopThead">

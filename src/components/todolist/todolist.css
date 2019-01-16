@@ -339,5 +339,5 @@
 }
 /**用于大的div*/
 .big-div-todo{
-    width:1300px;
+    width:1300px !important;
 }

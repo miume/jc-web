@@ -131,7 +131,7 @@ class CheckModal extends React.Component{
                 } */}
                 <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton>
                 <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
-                closable={false} maskClosable={false} className={this.props.dataType===2?'modal-xlg':'modal-md'}
+                closable={false} maskClosable={false} className={this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md'}
                 footer={[
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                     <span key='check' className={this.props.flag?'hide':''} >
@@ -141,7 +141,7 @@ class CheckModal extends React.Component{
                     
                 ]}
                 >
-                    <div className={this.state.divclassName}>
+                    <div>
                     {
                         this.judgeType(this.props.dataType)
                     }

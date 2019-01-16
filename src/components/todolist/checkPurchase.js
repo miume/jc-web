@@ -19,10 +19,12 @@ class CkeckPurchase extends React.Component{
     }
     render() {
         return(
-            <PurchaseModal
-                clickState ={1}
-                data={this.state.checkData}
-            />
+            <div style={{width:1100}}>
+                <PurchaseModal
+                    clickState ={1}
+                    data={this.state.checkData}
+                />
+            </div>
         )
     }
 
