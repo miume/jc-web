@@ -32,6 +32,7 @@ class SetStandard extends Component{
         this.handleDate=this.handleDate.bind(this);
         this.selectChange=this.selectChange.bind(this);//监听送审流程变化
         this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
+        this.dataProcess=this.dataProcess.bind(this);
     }
  
     showModal(){
@@ -67,7 +68,12 @@ class SetStandard extends Component{
            date:d
        });
     }
-    handleSave(){//点击新增保存，未申请状态
+    dataProcess(){//对保存和送审的数据进行处理
+        const {date}=this.state;
+        if(!date){
+            message.info('施行日期不能为空!');
+            return
+        }
         var {data}=this.state;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber={
@@ -88,23 +94,28 @@ class SetStandard extends Component{
             rawManufacturerId:this.props.rawManufacturerId ,
             rawMaterialId: this.props.rawMaterialId 
         }
+        const details={
+            rawStandards:rawStandards,
+            techniqueRawStandardRecord:techniqueRawStandardRecord
+        }
+        const saveData={
+            commonBatchNumber:commonBatchNumber,
+            details:details
+        }
+        return saveData;
+    }
+    handleSave(){//点击新增保存，未申请状态
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
             method:'post',
             headers:{
                'Authorization':this.props.url.Authorization
             },
-            data:{
-                commonBatchNumber:commonBatchNumber,
-                details:{
-                    rawStandards:rawStandards,
-                    techniqueRawStandardRecord:techniqueRawStandardRecord
-                }
-            },
+            data:this.dataProcess(),
             type:'json'
         })
         .then(data=>{
-            //console.log(data);
+           // console.log(data);
             const res=data.data.data;
             if(res){
                 message.info(data.data.message);
@@ -112,7 +123,7 @@ class SetStandard extends Component{
             }
         })
         .catch(()=>{
-            message.info('新增失败，请联系管理员！');
+            message.info('建立标准失败，请联系管理员!');
         });
         this.setState({
             visible:false
@@ -145,6 +156,7 @@ class SetStandard extends Component{
         .then(data=>{
             //console.log(data.data.data);
              message.info(data.data.message);
+             this.props.onBlockChange(3,this.props.factory);//只有送审成功了，才会跳到设置标准那个表格界面
         })
         .catch(()=>{
            message.info('送审失败，请联系管理员！');
@@ -152,50 +164,19 @@ class SetStandard extends Component{
 
     }
     handleSongShenOk(){//点击送审的确定
-        var {data}=this.state;
-        const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;
-        const commonBatchNumber={
-            createPersonId:createPersonId
-         }
-        var rawStandards=[];
-        for(var i=0;i<data.length;i++){
-             var raw=data[i];
-             rawStandards.push({
-                techniqueRawTestItemStandard:{
-                    testItemId:raw.id,
-                    value:raw.value
-                 }
-             });
-        }
-        const techniqueRawStandardRecord={
-            effectiveTime:this.state.date,
-            rawManufacturerId:this.props.rawManufacturerId,
-            rawMaterialId:this.props.rawMaterialId
-        }
         axios({
              url:`${this.props.url.rawStandard.getStandard}`,
              method:'post',
              headers:{
                  'Authorization':this.props.url.Authorization
              },
-             data:{
-                commonBatchNumber:commonBatchNumber,
-                details:{
-                    rawStandards:rawStandards,
-                    techniqueRawStandardRecord:techniqueRawStandardRecord
-                }
-             },
+             data:this.dataProcess(),
              type:'json'
         }).then(data=>{
               const res=data.data.data;
-             // console.log(res);
               const dataId=res.commonBatchNumber.id;//返回的batchnumberId
               const taskId=this.state.checkSelectData;//选择的流程id'
               this.getCheck(dataId,taskId);
-              if(res){
-                this.props.onBlockChange(3,this.props.factory);
-                this.props.getStandard(this.props.rawManufacturerId);
-              }
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });

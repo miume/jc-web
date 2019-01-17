@@ -77,7 +77,8 @@ class RawStandard extends Component{
                       createTime:res[i].commonBatchNumber.createTime,
                       createPersonName:res[i].createPersonName,
                       status:res[i].commonBatchNumber.status,
-                      batchNumberId:res[i].commonBatchNumber.id
+                      batchNumberId:res[i].commonBatchNumber.id,
+                      isPublished:res[i].commonBatchNumber.isPublished,//为1是实施中
                   });
             }
         }

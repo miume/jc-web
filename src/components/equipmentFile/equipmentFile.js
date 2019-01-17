@@ -94,7 +94,7 @@ class EquipmentArchive extends Component{//设备档案
                      <span>
                         <CheckManual/>
                         <Divider type='vertical'/>
-                        <Edit/>
+                        <Edit flag={true}/>
                         <Divider type='vertical'/>
                         <Delete/>
                     </span>
@@ -120,8 +120,7 @@ class EquipmentArchive extends Component{//设备档案
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>
                  <div style={{padding:'15px'}}>
-                     <NewButton className='fa fa-plus' name='新增'/>&nbsp;&nbsp;&nbsp;
-                     
+                     <Edit flag={false}/> &nbsp;&nbsp;&nbsp;
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
                      <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell 
