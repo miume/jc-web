@@ -11,11 +11,18 @@ class Delete extends Component{
             }
             this.showModal=this.showModal.bind(this);
             this.handleCancel=this.handleCancel.bind(this);
+            this.handleDelete=this.handleDelete.bind(this);
         }
         showModal(){
            this.setState({
                visible:true
            })
+        }
+        handleDelete(){
+            
+            this.setState({
+                visible:false
+            });
         }
         handleCancel(){
             this.setState({
@@ -34,8 +41,8 @@ class Delete extends Component{
                           maskClosable={false}
                           width='360px'
                           footer={[
-                              <CancleButton key='cancel'/>,
-                              <NewButton key='new' name='确定'/>
+                              <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
+                              <NewButton key='new' name='确定' handleClick={this.handleDelete}/>
                           ]}
                        >
                            <p className='equipmentFile-p'>该操作无法撤销，请确定是否删除所选择的数据</p>

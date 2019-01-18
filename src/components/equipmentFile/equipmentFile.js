@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Table,Divider} from 'antd';
+import axios from 'axios';
 import Blockquote from '../BlockQuote/blockquote';
 import NewButton from '../BlockQuote/newButton';
 import DeleteByIds from '../BlockQuote/deleteByIds';
@@ -7,26 +8,31 @@ import SearchCell from '../BlockQuote/search';
 import CheckManual from '../equipmentFile/checkShouCe/checkShouCe';
 import Edit from '../equipmentFile/Edit/edit';
 import Delete from '../equipmentFile/delete/delete';
-const data=[];
-for(var i=0;i<32;i++){
-   data.push({
-       index:i+1,
-       archiveName:'档案名称',
-       instrumentName:'设备名称',
-       installTime:'2019年1月15日',
-       warrantyPeriod:'10年',
-       supplyManufacture:'供货厂家',
-       supplyManufacturePhone:'0731-1234567',
-       repairManufacture:'维修厂家',
-       repairManufacturePhone:'0731-1234567'
-   });
-}
+// const data=[];
+// for(var i=0;i<32;i++){
+//    data.push({
+//        index:i+1,
+//        archiveName:'档案名称',
+//        instrumentName:'设备名称',
+//        installTime:'2019年1月15日',
+//        warrantyPeriod:'10年',
+//        supplyManufacture:'供货厂家',
+//        supplyManufacturePhone:'0731-1234567',
+//        repairManufacture:'维修厂家',
+//        repairManufacturePhone:'0731-1234567'
+//    });
+// }
 class EquipmentArchive extends Component{//设备档案
+    componentDidMount(){
+        this.fetch();
+        this.getAllRepairManufacturer();
+        this.getAllSupplyManufacturer();
+    }
     constructor(props){
         super(props);
         this.state={
             selectedRowKeys:[],
-            dataSource:data
+            dataSource:[]
         }
         this.columns=[{
             title:'序号',
@@ -94,22 +100,88 @@ class EquipmentArchive extends Component{//设备档案
                      <span>
                         <CheckManual/>
                         <Divider type='vertical'/>
-                        <Edit flag={true}/>
+                        <Edit flag={true} url={this.url}/>
                         <Divider type='vertical'/>
-                        <Delete/>
+                        <Delete selectedRowKeys={this.state.selectedRowKeys}/>
                     </span>
                  )
             }
         }
      ]
+     this.pagination={
+         total:this.state.dataSource.length,
+         showSizeChanger:true,//是否可以改变 pageSize
+         showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+         onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+            //console.log('Current: ', current, '; PageSize: ', pageSize);
+          },
+          onChange(current) {//跳转，页码改变
+            //console.log('Current: ', current);
+          }
+     }
      this.onSelectChange=this.onSelectChange.bind(this);
+     this.handleTableChange=this.handleTableChange.bind(this);
+     this.getAllRepairManufacturer=this.getAllRepairManufacturer.bind(this);
+     this.getAllSupplyManufacturer=this.getAllSupplyManufacturer.bind(this);
+    }
+    handleTableChange=(pagination)=>{
+          this.fetch({
+            pageSize: pagination.pageSize,//条目数
+            pageNumber: pagination.current,//当前页
+          });
+    }
+    fetch=(params={})=>{
+        axios({
+            url:`${this.url.equipmentArchiveRecord.getAllByPage}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:params
+        })
+        .then((data)=>{
+            //console.log(data);
+            const res=data.data.data;
+            this.pagination.total=res.total?res.total:0;
+            if(res&&res.list){
+                var data=[];
+                for(var i=0;i<res.list.length;i++){
+                    data.push({
+                        index:i+1,
+                        id:res.list[i].equipmentArchiveRecord.id,
+                        archiveName:res.list[i].equipmentArchiveRecord.name,
+                        instrumentName:res.list[i].baseInstrument.name,//设备名称
+                        installTime:res.list[i].equipmentArchiveRecord.installTime.split(" ")[0],
+                        warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
+                        supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
+                        supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
+                        repairManufacture:res.list[i].repairManufacturer.name,
+                        repairManufacturePhone:res.list[i].repairManufacturer.contact
+                    });
+                 }
+               this.setState({
+                   dataSource:data
+               });
+            }
+        });
     }
     onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
         this.setState({
                selectedRowKeys:selectedRowKeys
         });
     }
+    getAllRepairManufacturer(){
+            axios({
+               url:`${this.url.equipmentArchiveRecord.getAllManufactute}`,
+               
+            })
+            .then();
+    }
+    getAllSupplyManufacturer(){
+
+    }
     render(){
+        this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
         const {selectedRowKeys}=this.state;
         const rowSelection={
@@ -120,7 +192,7 @@ class EquipmentArchive extends Component{//设备档案
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>
                  <div style={{padding:'15px'}}>
-                     <Edit flag={false}/> &nbsp;&nbsp;&nbsp;
+                     <Edit flag={false} url={this.url}/> &nbsp;&nbsp;&nbsp;
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
                      <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell 
@@ -128,7 +200,7 @@ class EquipmentArchive extends Component{//设备档案
                         />
                      </span>
                    <Table
-                      rowKey={record=>record.index}
+                      rowKey={record=>record.id}
                       columns={this.columns}
                       dataSource={this.state.dataSource}
                       rowSelection={rowSelection}

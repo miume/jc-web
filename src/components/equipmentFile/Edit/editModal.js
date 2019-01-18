@@ -1,12 +1,53 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {Form,Col,Input,Select,DatePicker,Row,InputNumber} from 'antd';
+import {Form,Col,Input,Select,DatePicker,Row,InputNumber,Upload, message, Button, Icon} from 'antd';
+import axios from 'axios';
 const Option=Select.Option;
 const FormItem=Form.Item;
 
 
 class EditModal extends Component{
-        render(){
+    constructor(props){
+        super(props);
+        this.state={
+            fileList:[],
+            upLoading:false,
+        }
+    }
+    handleUpload = () => {
+        const { fileList } = this.state;
+        const formData = new FormData();
+        fileList.forEach((file) => {
+          formData.append('files[]', file);
+        });
+    
+        this.setState({
+          uploading: true,
+        });
+    
+        // You can use any AJAX library you like
+        axios({
+          url: `${this.props.url}`,
+          method: 'post',
+          data: formData,
+        })
+        .then((data)=>{
+            this.setState({
+                fileList: [],
+                uploading: false,
+              });
+              message.success('upload successfully.');
+        })
+        .catch(()=>{
+            this.setState({
+                uploading: false,
+              });
+              message.error('upload failed.');
+        })
+
+        ;
+      }
+     render(){
             const { form } = this.props;
             const { getFieldDecorator } = form; 
             return(
@@ -114,6 +155,26 @@ class EditModal extends Component{
                         </FormItem>
                      </Col>
                   </Row> 
+                  <Row>
+                        <Col span={10} style={{display:"block"}}>
+                            <FormItem wrapperCol={{span:24}}>
+                                {
+                                     <Upload >
+                                            <Button  className='equipmentFile-upload-button'>
+                                            <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
+                                            </Button>
+                                      </Upload>
+                                }
+                            </FormItem>
+                        </Col>
+                        <Col span={14} style={{display:"block"}}>
+                            <FormItem wrapperCol={{span:24}}>
+                                {
+                                    <span className='equipmentFile-upload-p'>支持文件格式: .pdf</span>
+                                }
+                            </FormItem>
+                       </Col>
+                   </Row> 
                 </Form>
             );
         }

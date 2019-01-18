@@ -4,5 +4,35 @@
     color: #999999;
     text-align: left;
     line-height: 24px;
+}
 
+.equipmentFile-upload-p{
+    font-weight: 400;
+    font-style: normal;
+    color: #999999;
+    text-align: left;
+}
+.equipmentFile-upload-button{
+    color: #999999 !important;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 13px;
+    text-align: left !important;
+    width: 190px;
+}
+.equipmentFile-upload-button:hover,active{
+    color: #1890ff !important;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 13px;
+    text-align: left !important;
+    width: 190px;
+}
+.equipmentFile-upload-icon{
+    color: #999999 ;
+    cursor: pointer;
+}
+.equipmentFile-upload-icon:hover,active{
+    color: #1890ff ;
+    cursor: pointer;
 }

@@ -82,7 +82,6 @@ class DeliveryFactory extends React.Component{
         selectedRowKeys : [],//最开始一条记录也没选
         searchContent:'',
         editingKey:'',
-        
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -93,7 +92,6 @@ class DeliveryFactory extends React.Component{
       this.cancel=this.cancel.bind(this);
       this.deleteByIds=this.deleteByIds.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
-
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -107,19 +105,17 @@ class DeliveryFactory extends React.Component{
         }
       };
       this.columns=[{//表头
-
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
-       // sorter:true,//需要服务端排序
-       sorter:(a, b) => a.id-b.id,
+        sorter:(a, b) => a.id-b.id,
         width: '26%',
         align:'center',
      },{
         title:'送样工厂名称',
         dataIndex:'name',
         key:'name',
-        editable:1,//?
+        editable:1,//?显示这个数据格是否可编辑
         width: '33%',
         align:'center',
     },{
@@ -154,7 +150,7 @@ class DeliveryFactory extends React.Component{
                 <span className='blue'>删除</span>
                 </Popconfirm>
             </span>
-        );
+          );
         }
      },];
     }
@@ -163,12 +159,9 @@ class DeliveryFactory extends React.Component{
        this.fetch({//前端需要传的参数
          size:pagination.pageSize,//条目数
          page:pagination.current,//当前页
-        
        });
     }
     fetch=(params = {})=>{
-      //console.log('params:', params);
-     
       axios({
         url: `${this.url.deliveryFactory.getAllByPage}`,
         method:'get',
@@ -211,20 +204,13 @@ class DeliveryFactory extends React.Component{
           message.info(data.data.message);
           this.fetch();
         })
-        
         .catch(()=>{
          message.info('删除失败，请联系管理员');
         });
       }
-    rowSelected(selectedRowKeys){//？
-        this.setState({
-          selectedIds: selectedRowKeys
-        });
-      }
-        /**批量删除弹出框确认函数 */
+    /**批量删除弹出框确认函数 */
     deleteByIds(){
       const ids =this.state.selectedRowKeys;//删除的几行的id
-     //console.log(ids);
       axios({
           url:`${this.url.deliveryFactory.deliveryFactory}?ids=${ids}`,
           method:'Delete',
@@ -248,10 +234,10 @@ class DeliveryFactory extends React.Component{
       });//处理异常
      
    }
-  cancel(){
-    this.setState({
-      selectedRowKeys:[]
-    });
+   cancel(){
+      this.setState({
+        selectedRowKeys:[]
+      });
   }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
@@ -369,32 +355,26 @@ class DeliveryFactory extends React.Component{
       }
   
    render(){
-     /**这是个令牌，每次调用接口都将其放在header里 */
-     //this.Authorization = localStorage.getItem('Authorization');
-     /**这是服务器网址及端口 */
-     
      this.url=JSON.parse(localStorage.getItem('url'));
      const current=JSON.parse(localStorage.getItem('current'));
-        const rowSelection = {//checkbox
-            onChange:this.onSelectChange,
-            onSelect() {
+     const rowSelection = {//checkbox
+          onChange:this.onSelectChange,
+          onSelect() {
               // console.log(record, selected, selectedRows);
             },
-            onSelectAll() {
+          onSelectAll() {
               // console.log(selected, selectedRows, changeRows);
             },
         };
-       
-        const components={
-            body:{
-                row:EditableFormRow,
-                cell:EditableCell,
+     const components={
+        body:{
+               row:EditableFormRow,
+               cell:EditableCell,
             },
         };
-       
-         const table_column =this.columns.map((col) => {
+    const table_column =this.columns.map((col) => {
             if (!col.editable) {
-              return col;
+               return col;
             }
             return {
               ...col,
@@ -403,12 +383,10 @@ class DeliveryFactory extends React.Component{
                 editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
-                editing: this.isEditing(record),
-                
+                editing: this.isEditing(record),              
               }),
             };
-          });
-      
+          });  
        return(
            <div>
                <BlockQuote name='送样工厂' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>

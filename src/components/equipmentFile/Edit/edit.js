@@ -59,7 +59,7 @@ class Edit extends Component{
                         <SaveButton key='save' handleSave={this.props.flag?this.handleEditSave:this.handleAddSave}/>
                     ]}
                  >
-                    <EditModal  wrappedComponentRef={(form) => this.formRef = form}/>
+                    <EditModal  wrappedComponentRef={(form) => this.formRef = form} url={this.props.url}/>
                 </Modal>
             </span>
         );
