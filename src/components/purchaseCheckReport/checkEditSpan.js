@@ -36,6 +36,8 @@ class CheckEditSpan extends React.Component {
         this.clickSavaButton = this.clickSavaButton.bind(this);
         this.useSavaFunction = this.useSavaFunction.bind(this);
         this.applyReview = this.applyReview.bind(this);
+
+        this.inputTimeSave = this.inputTimeSave.bind(this);
     }
     render() {
         const { visible } = this.state;
@@ -76,6 +78,7 @@ class CheckEditSpan extends React.Component {
                         <PurchaseModal
                             modifyDetailData={this.modifyDetailData}
                             inputSave={this.inputSave}
+                            inputTimeSave={this.inputTimeSave}
                             data={this.state.checkData}
                             clickState ={0} //是否可以点击 0:可以点红， 其余：不可以点红
                         />
@@ -84,11 +87,18 @@ class CheckEditSpan extends React.Component {
             </span>
         )
     }
-
+    inputTimeSave = (value) => {
+        var checkData = this.state.checkData;
+        checkData.topData['receiveDate'] = value;
+        this.setState({
+            checkData:checkData
+        })
+    };
     /**input框内容变化，实现自动保存数据 */
     inputSave(e){
         const value = e.target.value;
         const name = e.target.name;
+        // console.log(value)
         var checkData = this.state.checkData;
         checkData.topData[name] = value;
         this.setState({
@@ -297,7 +307,6 @@ class CheckEditSpan extends React.Component {
     /**---------------------- */
     /**送审 */
     applyReview(dataId){
-        console.log(this.state.urgent)
         axios({
             url : `${this.props.url.toDoList}/${parseInt(this.state.process)}`,
             method:'post',

@@ -191,7 +191,8 @@
 /*Bottom: 设置底部表格样式*/
 .productCheckModalBottom {
     padding-top: 50px;
-    padding-bottom: 20px
+    padding-bottom: 20px;
+    /*height: 400px;*/
 }
 .productCheckModalBottom table {
     cursor: default;

@@ -46,12 +46,11 @@ class PurchaseModal extends React.Component {
                                     <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
                                     <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
                                     <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
-                                    {/*<td><Input name='sampleDeliveringDate' placeholder="请输入到货日期" value={this.props.data.topData.receiveDate} onChange={this.props.inputSave}/></td>*/}
                                     <td style={{width:'25%'}}>
                                         <DatePicker
+                                            name='receiveDate'
                                             placeholder="选择时间"
-                                            onChange={this.onChange}
-                                            onOk={this.onOk}
+                                            onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
                                         />
                                     </td>
                                     <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.manufactureName} onChange={this.props.inputSave}/></td>
@@ -281,14 +280,6 @@ class PurchaseModal extends React.Component {
         )
     }
     /**表格合格判定点击事件*/
-    onChange(value, dateString) {
-        console.log('Selected Time: ', value);
-        console.log('Formatted Selected Time: ', dateString);
-    }
-
-    onOk(value) {
-        console.log('onOk: ', value);
-    }
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
         var checkData = this.props.data;

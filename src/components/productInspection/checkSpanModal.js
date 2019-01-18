@@ -5,42 +5,28 @@ import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import './productInspection.css';
 
 
-const topData = {
-    batchNumber: 'EcT/139',
-    materialName: '镍矿石',
-    b: '2018年11月11日',
-};
-const testData = {
-    tester: '检测人',
-    testTime: '2018年11月12日',
-};
-const examineData = {
-    examiner: '审核人',
-    examineView: '数据正常，审核通过',
-    examineTime: '2018年11月12日',
-}
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class CheckSpanModal extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            topData : topData,      //表头数据
-            testData: testData,   // 检验人数据
-            examineData: examineData,  //审核人数据
-            status : '', //0不合格，1合格
-        };
-    }
+    // constructor(props){
+    //     super(props);
+    //     this.state = {
+    //         topData : topData,      //表头数据
+    //         testData: testData,   // 检验人数据
+    //         examineData: examineData,  //审核人数据
+    //         status : '', //0不合格，1合格
+    //     };
+    // }
     columns = [{
         title: '序号',
         dataIndex: 'index',
-        key: 'id',
+        key: 'index',
         align:'center',
         width: '12%',
     },{
         title: '检测项目',
-        dataIndex: 'testItem',
-        key: 'testItem',
+        dataIndex: 'testItemName',
+        key: 'testItemName',
         align:'center',
         width: '20%',
     },{
@@ -48,24 +34,27 @@ class CheckSpanModal extends React.Component {
         dataIndex: 'testResult',
         key: 'testResult',
         align:'center',
-        render: (text,record) => {
+        render: (text,record,index) => {
             return(
                 <Input
                     placeholder='输入检测结果'
                     style={{border:'0',paddingLeft:'10px'}}
+                    onChange={this.props.inputSave}
+                    value={record.testResult}
+                    name={index}
                 />
             )
         }
     },{
         title: '行业标准',
-        dataIndex: 'a',
-        key: 'a',
+        dataIndex: 'rawTestItemStandard',
+        key: 'rawTestItemStandard',
         align:'center',
         width: '20%',
     },{
         title: '计量单位',
-        dataIndex: 'itemUnit',
-        key: 'itemUnit',
+        dataIndex: 'unit',
+        key: 'unit',
         align:'center',
         width: '20%',
     }];
@@ -91,16 +80,16 @@ class CheckSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.state.topData.batchNumber}</td>
-                            <td>{this.state.topData.materialName}</td>
-                            <td>{this.state.topData.b}</td>
+                            <td>{this.props.data.topData.serialNumber}</td>
+                            <td>{this.props.data.topData.materialName}</td>
+                            <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div className="productCheckModalMiddle">
                     <div>
-                           样品名称：<span>{this.state.topData.materialName+'样品'}</span>
+                           样品名称：<span>{this.props.data.topData.materialName+'样品'}</span>
                     </div>
                     <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                 </div>
@@ -108,10 +97,10 @@ class CheckSpanModal extends React.Component {
                     <Table
                         rowKey={record => record.id}
                         columns={columns}
-                        dataSource={this.props.data}
+                        dataSource={this.props.data.testDTOS}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 300 }}
+                        scroll={{ y: 400 }}
                         bordered
                     />
                 </div>

@@ -78,12 +78,12 @@ class ProductTable extends React.Component{
         align:'center',
         width: '16%',
         render: (text,record) => {
-            let detailSpanFlag = this.judgeDetailOperation(record.status);
-            let checkSpanFlag = this.judgeCheckOperation(record.status);
-            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
-            // let detailSpanFlag = true
-            // let checkSpanFlag = true
-            // let releaseSpanFlag = true
+            // let detailSpanFlag = this.judgeDetailOperation(record.status);
+            // let checkSpanFlag = this.judgeCheckOperation(record.status);
+            // let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            let detailSpanFlag = true
+            let checkSpanFlag = true
+            let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
@@ -100,6 +100,7 @@ class ProductTable extends React.Component{
                         <CheckSpan
                             // record={record}
                             batchNumberId={record.batchNumberId}
+                            url={this.props.url}
                         />
                     ):(
                         <span  className="notClick">录检</span>
