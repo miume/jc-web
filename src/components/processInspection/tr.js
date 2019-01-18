@@ -19,18 +19,13 @@ const Option = Select.Option;
 // )
 class Tr extends React.Component{
     componentDidMount(){
-        this.getAllProductLine();
-        this.getAllProductionProcess();
-        this.getAllTestItem();
-        this.getAllUser();
-        this.getAllTestMaterial();
-        this.getTrData();
+        // this.getTrData();
+        // this.getAllUser();
+        // this.getAllTestItem();
+        // this.getAllProductLine();
+        // this.getAllTestMaterial();
+        // this.getAllProductionProcess();
     }
-    // componentWillMount(){
-    //     this.setState = ()=>{
-    //       return;
-    //     }
-    // }
     constructor(props){
         super(props);
         this.state = {
@@ -199,12 +194,6 @@ class Tr extends React.Component{
         if(length>4){
             testItems = testItem[0]+' '+testItem[1]+' '+testItem[2]+' '+testItem[3]+'...';
         }
-        // else{
-        //     var items = '';
-        //     for(var i = 0; i < length; i++){
-        //         items += testItem[i] + ''
-        //     }
-        // }
         this.setState({
             detail:detail,
             testItems:testItems
@@ -317,7 +306,7 @@ class Tr extends React.Component{
 
     }
     render() {
-        this.props.getData(this.state.detail)
+        // this.props.getData(this.state.detail)
         const d = this.props.value;
         const {testItemIds} = this.state;
         const allTestItem = this.props.allTestItem?this.props.allTestItem:this.state.allTestItem;
