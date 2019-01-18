@@ -131,7 +131,7 @@ class ProductInspection extends React.Component {
         });
     };
     fetch = (params = {}) => {
-        axios.get(`${this.url.productInspection.getAllByPage}`,{
+        axios.get(`${this.url.productInspection.pages}`,{
             headers:{
                 'Authorization':this.url.Authorization
             },
@@ -158,7 +158,9 @@ class ProductInspection extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-
+        this.fetch({
+            factory:this.state.searchContent,
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){

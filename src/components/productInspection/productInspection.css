@@ -73,9 +73,9 @@
 /*Bottom:设置检验人、审核人等*/
 .productDrSpanModalBottom {
     position:absolute;
-    bottom: 170px;
+    bottom: 130px;
     height: 200px;
-    width: 460px;
+    width: 100%;
     cursor: default;
 }
 
@@ -97,16 +97,14 @@
 }
 .productDrSpanDivider {
     margin: 15px 0 !important;
+    left: -20px;
     /*z-index: 0 !important;*/
 }
 .productPadding tr td {
     padding-top: 4px;
     padding-bottom: 4px;
 }
-/*
-    详情中底部中detailStateModal
 
- */
 /*设置表格样式*/
 .productStateDefaultModal{
     /*border: 1px solid black;*/
@@ -199,3 +197,29 @@
     cursor: default;
 }
 
+.productOptional {
+    display: flex;
+    width: 95%;
+}
+
+.productOptionalPerson {
+    flex-grow: 2;
+    width:200px;
+}
+
+.productOptionalImag {
+    flex-grow: 2;
+    margin-top: -5px;
+    border: 5px solid #4BD863;
+    width: 100px;
+    right:100px;
+}
+.productOptionalImag span{
+    display: block;
+    text-align: center;
+    height: 50px;
+    border: 1px solid #4BD863;
+    color: #4BD863;
+    margin: 2px;
+    font-size: 30px;
+}
