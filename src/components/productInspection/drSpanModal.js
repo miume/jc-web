@@ -2,26 +2,9 @@ import React from 'react';
 import { Table,Divider } from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import DetailStateModal from "./detailStateModal";
+// import AllTester from '../BlockQuote/allTester';
 import './productInspection.css';
 
-const topData = {
-    batchNumber: 'EcT/139',
-    materialName: '镍矿石',
-    b: '2018年11月11日',
-};
-const testData = {
-    tester: '检测人',
-    testTime: '2018年11月12日',
-};
-const examineData = {
-    examiner: '审核人',
-    examineView: '数据正常，审核通过',
-    examineTime: '2018年11月12日',
-}
-const optionalPerson = {
-    personer: '审核人',
-    personTime: '2018年11月12日',
-}
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
@@ -97,7 +80,7 @@ class DrSpanModal extends React.Component {
                         dataSource={this.props.data.testDTOS}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 230 }}
+                        scroll={{ y: 150 }}
                         bordered
                     />
                 </div>
@@ -125,7 +108,7 @@ class DrSpanModal extends React.Component {
                     <DetailStateModal
                         // examine={this.props.data.examine}
                         examine = {{
-                            examineStatus:3,
+                            examineStatus:2,
                             examineData:[{
                                 handler:'a',
                                 handleReply:'b',
@@ -138,10 +121,13 @@ class DrSpanModal extends React.Component {
                         }}
                         // examineData={this.state.examineData}
                         //  择优人
-                        // optionalPerson={this.props.data.optionalPerson}
-                        optionalPerson = {{
-                            personer: 'lll',
-                            personTime: 'qqq'
+                        // optional={this.props.data.optional}
+                        optional = {{
+                            optionalStatus: 1000,
+                            optionalData: {
+                                personer:'暂定',
+                                personTime:'暂定'
+                            }
                         }}
                     />
                 </div>

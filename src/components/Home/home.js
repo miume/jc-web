@@ -350,9 +350,10 @@ class Home extends Component {
               },
               /**中间品录检 */
               intermediateProduct:`${server}/jc/common/middleProductionDetection`,
-              /**产品工序 */
+              /**成品检验 */
               productInspection:{
-                  getAllByPage:`${server}/jc/common/productTestRecords`,
+                  pages:`${server}/jc/common/productRecord/pages`,
+                  productRecord:`${server}/jc/common/productRecord`,
               },
               /**产品检测 */
               productTestRecord:{

@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal,Button } from 'antd';
 import DrSpanModal from './drSpanModal';
 import './productInspection.css';
+import CancleButton from '../BlockQuote/cancleButton'
 import axios from "axios";
 
 const data = [];
@@ -17,8 +18,6 @@ for (let i = 0; i < 50; i++) {
 }
 
 class DetailSpan extends React.Component {
-    server
-    Authorization
     constructor(props){
         super(props);
         this.state = {
@@ -31,13 +30,7 @@ class DetailSpan extends React.Component {
                     examineStatus: 1000,
                     examineData: []
                 },
-                optionalPerson:{
-                    optionalStatus: 1000,
-                    optionalData: {
-                        personer:'暂定',
-                        personTime:'暂定'
-                    }
-                },
+                optional: {},   //择优数据
                 isQualified: '', //不合格状态
             },
         };
@@ -47,15 +40,11 @@ class DetailSpan extends React.Component {
     }
 
     handleCancel = (e) => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
+        this.setState({
+            visible: false,
+        });
     };
     render() {
-        this.Authorization = localStorage.getItem("Authorization");
-        this.server = localStorage.getItem('remote');
         const { visible } = this.state;
         return (
             <span>
@@ -66,12 +55,15 @@ class DetailSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    width="500px"
+                    // width="500px"
                     footer={[
-                        <Button key="back" style={{right:'415px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <CancleButton
+                            handleCancel = {this.handleCancel}
+                            flag = {1}
+                        />
                     ]}
                 >
-                    <div style={{height:700}}>
+                    <div style={{height:550}}>
                         <DrSpanModal
                             // checkStatus:根据审核状态是否有审核及择优部分
                             // examine={this.state.examine}
@@ -90,13 +82,11 @@ class DetailSpan extends React.Component {
         });
     }
     getDetailData = () =>{
-        const res = this.props.record;
-        var id = res.commonBatchNumberDTO.commonBatchNumber.id
         axios({
-            url:`${this.server}/jc/common/productTestRecord/${id}`,
+            url:`${this.props.url.productInspection.productRecord}/${this.props.batchNumberId}`,
             method : 'get',
             headers:{
-                'Authorization': this.Authorization
+                'Authorization': this.props.url.Authorization
             },
         }).then((data)=>{
             const res = data.data.data
@@ -104,34 +94,43 @@ class DetailSpan extends React.Component {
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
             var isQualified = 0;
+            var optional = {};  //择优数据
             if(res){
-                isQualified = res.testReportRecordDTO.testReportRecord?res.testReportRecordDTO.testReportRecord.isQualified:'';
+                isQualified = res.isPublished;
                 topData = {
-                    serialNumber: res.sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
-                    materialName: res.sampleDeliveringRecordDTO.repoBaseSerialNumber.materialName,
-                    sampleDeliveringDate: res.sampleDeliveringRecordDTO.sampleDeliveringRecord?res.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:''
+                    serialNumber: res.repoBaseSerialNumber.serialNumber,
+                    materialName: res.repoBaseSerialNumber.materialName,
+                    sampleDeliveringDate: res.deliveringDate
                 };
-                const testItemResultRecordDTOList = res.testReportRecordDTO.testItemResultRecordDTOList
-                if(testItemResultRecordDTOList) {
-                    for(var i=0; i<testItemResultRecordDTOList.length; i++){
-                        var e = testItemResultRecordDTOList[i];
+                const testResultDTOList = res.testResultDTOList;
+                if(testResultDTOList) {
+                    for(var i=0; i<testResultDTOList.length; i++){
+                        var e = testResultDTOList[i];
                         testDTOS.push({
                             index:`${i+1}`,
                             id:e.testItemResultRecord.id,
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
-                            rawTestItemStandard:e.rawTestItemStandard,
+                            rawTestItemStandard:e.standardValue,
                             unit:e.testItem.unit
                         })
                     }
                 }
                 testData = {
-                    tester: res.testReportRecordDTO?res.testReportRecordDTO.judegrName:'',
-                    testTime: res.testReportRecordDTO.testReportRecord?res.testReportRecordDTO.testReportRecord.judgeDate:'',
+                    tester: res.testReportRecord?res.testReportRecord.judger:'',
+                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
+                };
+                // 择优数据
+                optional = {
+                    optionalStatus: 1000,
+                    optionalData: {
+                        personer:'暂定',
+                        personTime:'暂定'
+                    }
                 };
                 const examineStatus = this.props.checkStatus;
-                const batchNumberId = this.props.record.commonBatchNumberDTO.commonBatchNumber?this.props.record.commonBatchNumberDTO.commonBatchNumber.id:'';
+                const batchNumberId = res.testReportRecord?res.testReportRecord.batchNumberId:'';
                 if((examineStatus===2||examineStatus===3)&&batchNumberId){
                     axios({
                         url:`${this.props.url.toDoList}/${batchNumberId}/result`,
@@ -140,7 +139,7 @@ class DetailSpan extends React.Component {
                             'Authorization':this.props.url.Authorization
                         }
                     }).then((data)=>{
-                        const res = data.data.data;
+                        const examine = data.data.data;
                         this.setState({
                             detailData:{
                                 topData: topData,
@@ -148,11 +147,11 @@ class DetailSpan extends React.Component {
                                 testData: testData,
                                 examine: {
                                     examineStatus: examineStatus,
-                                    examineData: res
+                                    examineData: examine,
                                 },
+                                optional: optional,
                                 isQualified: isQualified,
                             },
-                            // visible: true
                         });
                     })
                 }else{
@@ -165,6 +164,7 @@ class DetailSpan extends React.Component {
                                 examineStatus: examineStatus,
                                 examineData: []
                             },
+                            optional: optional,
                             isQualified: isQualified,
                         },
                     })

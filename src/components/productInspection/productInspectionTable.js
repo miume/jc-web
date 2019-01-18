@@ -15,44 +15,44 @@ class ProductTable extends React.Component{
         width: '6%',
     },{
         title: '送检日期',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate',
+        dataIndex: 'deliveringDate',
+        key: 'deliveringDate',
         align:'center',
         width: '13%',
     },{
         title: '送检人',
-        dataIndex: 'sampleDeliveringRecordDTO.deliverer.name',
-        key: 'sampleDeliveringRecordDTO.deliverer.name',
+        dataIndex: 'deliver',
+        key: 'deliver',
         align:'center',
         width: '8%',
     },{
         title: '送检工厂(原材料)',
-        dataIndex: 'sampleDeliveringRecordDTO.deliveryFactory.name',
-        key: 'sampleDeliveringRecordDTO.deliveryFactory.name',
+        dataIndex: 'deliverFactory',
+        key: 'deliverFactory',
         align:'center',
         width: '10%',
     },{
         title: '编号',
-        dataIndex: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
-        key: 'sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber',
+        dataIndex: 'repoBaseSerialNumber.serialNumber',
+        key: 'repoBaseSerialNumber.serialNumber',
         align:'center',
         width: '10%',
     },{
         title: '检测项目',
-        dataIndex: 'testReportRecordDTO.testItemName',
-        key: 'testReportRecordDTO.testItemName',
+        dataIndex: 'testItemString',
+        key: 'testItemString',
         align:'center',
         width: '8%',
     },{
         title: '异常备注',
-        dataIndex: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
-        key: 'sampleDeliveringRecordDTO.sampleDeliveringRecord.exceptionComment',
+        dataIndex: 'exception',
+        key: 'exception',
         align:'center',
         width: '8%',
     },{
         title: '发布状态',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
-        key: 'commonBatchNumberDTO.commonBatchNumber.isPublished',
+        dataIndex: 'isPublished',
+        key: 'isPublished',
         align:'center',
         width: '8%',
         render:state => {
@@ -64,8 +64,8 @@ class ProductTable extends React.Component{
         },
     },{
         title: '审核状态',
-        dataIndex: 'commonBatchNumberDTO.commonBatchNumber.status',
-        key: 'commonBatchNumberDTO.commonBatchNumber.status',
+        dataIndex: 'status',
+        key: 'status',
         align:'center',
         width: '8%',
         render:state => {
@@ -73,14 +73,14 @@ class ProductTable extends React.Component{
         }
     },{
         title: '操作',
-        dataIndex: 'operation',
-        key: 'operation',
+        dataIndex: 'batchNumberId',
+        key: 'batchNumberId',
         align:'center',
         width: '16%',
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
-            let releaseSpanFlag = this.judgeReleaseOperation(record.h,record.status);
+            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
             // let detailSpanFlag = true
             // let checkSpanFlag = true
             // let releaseSpanFlag = true
@@ -89,8 +89,8 @@ class ProductTable extends React.Component{
                     {detailSpanFlag?(
                         <DetailSpan
                             url={this.props.url}
-                            record={record}
-                            checkStatus={record.commonBatchNumberDTO.commonBatchNumber.status}
+                            batchNumberId={record.batchNumberId}
+                            checkStatus={record.status}
                         />
                     ):(
                         <span  className="notClick">详情</span>
@@ -98,7 +98,8 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
-                            record={record}
+                            // record={record}
+                            batchNumberId={record.batchNumberId}
                         />
                     ):(
                         <span  className="notClick">录检</span>
@@ -106,7 +107,8 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {releaseSpanFlag?(
                         <ReleaseSpan
-                            record={record}
+                            // record={record}
+                            batchNumberId={record.batchNumberId}
                         />
                     ):(
                         <span  className="notClick">发布</span>
@@ -128,7 +130,7 @@ class ProductTable extends React.Component{
         return (
             <Table
                 className="productCursorDefault"
-                rowKey={record => record.commonBatchNumberDTO.commonBatchNumber.id}
+                rowKey={record => record.batchNumberId}
                 dataSource={this.props.data}
                 columns={columns}
                 rowSelection={this.props.rowSelection}

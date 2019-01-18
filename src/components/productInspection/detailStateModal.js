@@ -1,5 +1,6 @@
 import React from 'react';
 import './productInspection.css';
+import AllTester from '../BlockQuote/allTester';
 import {Divider} from "antd";
 
 class DetailStateModal extends React.Component {
@@ -20,48 +21,28 @@ class DetailStateModal extends React.Component {
             case 2: //已通过
                 return(
                     <div className="productPassModal">
-                        <div className="productPassExamineModal">
-                            <table>
-                                <tbody className="productPadding">
-                                {
-                                    this.props.examine.examineData.map((item,index) => {
-                                        return (
-                                            <div>
-                                                <tr key={`handler${index}`}>
-                                                    <td>审核人：</td>
-                                                    <td>{item?item.handler:''}</td>
-                                                </tr>
-                                                <tr key={`handleReply${index}`}>
-                                                    <td>审核意见：</td>
-                                                    <td>{item?item.handleReply:''}</td>
-                                                </tr>
-                                                <tr key={`handleTime${index}`}>
-                                                    <td>审核日期：</td>
-                                                    <td>{item?item.handleTime:''}</td>
-                                                </tr>
-                                                <Divider
-                                                    className="productDrSpanDivider"
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
-                                </tbody>
-                            </table>
+                        <AllTester
+                            hide={1}
+                            examineData={this.props.examine.examineData}
+                        />
+                        <Divider
+                            className="productDrSpanDivider"
+                        />
+                        <div
+                            className="productOptional"
+                        >
+                            <div
+                                className="productOptionalPerson"
+                            >
+                                <div><span>择优人：<span>{this.props.optional?this.props.optional.optionalData.personer:''}</span></span></div>
+                                <div><span>择优时间：<span>{this.props.optional?this.props.optional.optionalData.personTime:''}</span></span></div>
+                            </div>
+                            <div
+                                className="productOptionalImag"
+                            >
+                                <span>{this.props.optional.optionalStatus}</span>
+                            </div>
                         </div>
-                        <Divider />
-                        <table style={{marginBottom:'15px',marginTop:'-10px'}}>
-                            <tbody className="productPadding">
-                            <tr>
-                                <td>择优人：</td>
-                                <td>{this.props.optionalPerson.personer}</td>
-                            </tr>
-                            <tr>
-                                <td>择优时间：</td>
-                                <td>{this.props.optionalPerson.personTime}</td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
                 );
             case 3: //不通过
