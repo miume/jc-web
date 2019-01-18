@@ -380,7 +380,13 @@ class Home extends Component {
                   productStandard:`${server}/jc/common/techProductStandard`,
                   getAll:`${server}/jc/common/techProductStandard/allClasses`,
                   addNewClass:`${server}/jc/common/techProductStandard/newClass`,
-              }
+              },
+              /*设备档案*/
+              equipmentArchiveRecord:{
+                   getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
+                   get:`${server}/jc/common/equipmentArchiveRecord`,
+                   getAllManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
+               }
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
