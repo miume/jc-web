@@ -82,7 +82,7 @@ class CheckModal extends React.Component{
             message.info('请输入审核意见！');
             return
         }
-        console.log(`status=${status},reply=${reply}`)
+        // console.log(`status=${status},reply=${reply}`)
         const userId = JSON.parse(localStorage.getItem('menuList')).userId;
         axios.put(`${this.props.url.toDoList}/${this.props.dataId}`,{},{
             headers:{

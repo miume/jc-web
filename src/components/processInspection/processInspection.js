@@ -97,30 +97,7 @@ class ProcessInspection extends React.Component{
           align:'center',
           width:'10%',
           render:isUrgent=>!isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
-      },
-         //,{
-        //   title: '类型',
-        //   dataIndex: 'commonBatchNumber.dataType',
-        //   key: 'commonBatchNumber.dataType',
-        //   render: type => {
-        //       switch(`${type}`) {
-        //         case '1': return '流程管理数据';
-        //         case '2': return '制成检测数据';
-        //         case '3': return '样品检测数据';
-        //         case '4': return '原材料出库申请数据';
-        //         case '5': return '成品出库申请数据';
-        //         case '6': return '红单申请数据';
-        //         case '7': return '进货检验数据';
-        //         case '8': return '成品检验数据';
-        //         case '9': return '原材料检验数据';
-        //         case '10': return '中间品检验数据';
-        //         default: return '';
-        //       }
-        //   },
-        //   width: '12%',
-        //   align:'center',
-        // }, 
-        {
+      },{
           title: '状态',
           dataIndex: 'commonBatchNumber.status',
           key:'commonBatchNumber.status',
@@ -138,9 +115,11 @@ class ProcessInspection extends React.Component{
               const status = record.commonBatchNumber.status;
               return (
                   <span>
-                      <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} />
+                      {/* <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} /> */}
+                      <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={1} />
                       <Divider type="vertical" />
-                      <Editor value={text} status={status} url={this.url}/>
+                      <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={2}  />
+                      {/* <Editor value={text} status={status} url={this.url}/> */}
                       <Divider type="vertical" />
                       {
                         status === -1?
@@ -330,7 +309,7 @@ class ProcessInspection extends React.Component{
             <div>
                 <BlockQuote  name='制程检测' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
-                    <Add server={this.server} url={this.url} fetch={this.fetch}  />&nbsp;&nbsp;&nbsp;
+                    <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>

@@ -1,23 +1,12 @@
+/**
+ * flag===1 代表详情
+ * flag===2 代表编辑
+ * flag===undefined（即不传flag） 代表新增
+ */
 import React from 'react';
-import axios from 'axios';
-import {Modal,Table,message,Select} from 'antd';
-import NewButton from '../BlockQuote/newButton';
-import CancleButton from '../BlockQuote/cancleButton';
-import SaveButton from '../BlockQuote/saveButton';
+import {Table,Select} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
-import Submit from '../BlockQuote/submit';
-import EditorApply from './editorApply';
 const Option = Select.Option;
-// const approvalProcess = [{
-//     id:1,
-//     name:'流程1'
-// },{
-//     id:2,
-//     name:'流程2'
-// },{
-//     id:3,
-//     name:'流程3'
-// }]
   const columns = [{
     title: '产品线',
     dataIndex: 'deliveryFactory.name' ,
@@ -86,296 +75,35 @@ const Option = Select.Option;
     width: '9%',
     align:'center',
   }]
-/**存取 */
-
 class Detail extends React.Component{
-    componentWillUnmount(){
-        this.setState=()=>{
-            return;
-        }
-    }
     constructor(props){
         super(props);
         this.state = {
-            visible : false,
-            visible1:false,  //控制送审modal
-            process:-1,      //存取送审流程id 
-            urgent:0,        //存取送审紧急与否
-            clickId : 'all',
-            detailData:[],
-            data:[],
-            flag:0,          //用来控制迭代界面
-            allTestItem:[],
-            applyData:[],
-            iteration:1      //用来控制迭代按钮是否显示
+            data : this.props.data
         }
-        this.handleDetail = this.handleDetail.bind(this);
-        // this.handleOkApply = this.handleOkApply.bind(this);
-        this.click = this.click.bind(this);
-        this.cancel = this.cancel.bind(this);
-        this.applyOut = this.applyOut.bind(this);
-        this.checkData = this.checkData.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.urgentChange = this.urgentChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.getApplyData = this.getApplyData.bind(this);
-        this.getDetailData = this.getDetailData.bind(this);
-        this.getAllTestItem = this.getAllTestItem.bind(this);
-        this.handleIteration = this.handleIteration.bind(this);
-        this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        
-        this.handleCancelApply = this.handleCancelApply.bind(this);
-        this.handleOkApply = this.handleOkApply.bind(this);
-        
         this.selectionChange = this.selectionChange.bind(this);
     }
-    /**点击详情 */
-    handleDetail() {
-        this.getDetailData();
-        this.getAllTestItem();
-        this.setState({
-          visible: true,
-          flag:0
-        });
-      }
-    /**通过id查询详情 */
-    getDetailData(){
-       axios.get(`${this.props.url.procedure.procedureTestRecord}/${this.props.value}`,{
-           headers:{
-               'Authorization':this.props.url.Authorization
-           }
-       }).then((data)=>{
-           const details = data.data.data? data.data.data.details:[];
-           var iteration = 1;
-           //console.log(details)
-           if(details){
-            for(var i = 0; i < details.length; i++){
-                // console.log(details[i].commonBatchNumber.iteration)
-                iteration = details[i].procedureTestRecord.isIteration;
-                details[i].id = i+1;
-                details[i].procedureTestRecord.testItems = details[i].testItemString;
-             }
-             this.setState({
-                detailData:details,
-                data:details,
-                iteration:!iteration&&this.props.status===2?0:1
-            })
-           }
-       })
-    }
     selectionChange(value) {
-        var {detailData,data} = this.state;
-        detailData = data.filter(d => parseInt(d.deliveryFactory.id) === parseInt(value));
-        if(value === 'all'){
-            detailData = data;
-          }
+        var {data} = this.state;
+        if(value != 'all')
+            data = this.props.data.filter(d => parseInt(d.deliveryFactory.id) === parseInt(value));
+        else 
+            data = this.props.data;
           this.setState({
-            detailData:detailData
+            data:data
           })
     }
-    /**点击迭代 */
-    handleIteration(){
-      this.setState({
-        flag:1
-    });
-    }
-    /**确定取消 取消详情弹出框 */
-    cancel() {
-      this.setState({
-          visible: false
-      });
-   }
-    // handleCancel() {
-    //     this.setState({
-    //         visible: false
-    //     });
-    // }
-    /**点击button进行删选 根据产品线进行删选数据 */
-    click(e){
-      const id = e.target.id;
-      var {detailData,data} = this.state;
-      if(id!==this.state.clickId){
-        document.getElementById(this.state.clickId).style.backgroundColor='#ebebeb';
-        e.target.style.backgroundColor='#00b4f0';
-        detailData = data.filter(d => parseInt(d.productionProcess.id) === parseInt(id));
-        //console.log(detailData)
-      }
-      if(id === 'all'){
-        detailData = data;
-      }
-      this.setState({
-        clickId:id,
-        detailData:detailData
-      })
-    }
-    /**获取所有检测项目 */
-    getAllTestItem(){
-      axios({
-        url:`${this.props.url.testItems.testItems}`,
-        method:'get',
-        headers:{
-            'Authorization':this.props.url.Authorization
-        }
-        }).then(data=>{
-        const res = data.data.data;
-        this.setState({
-            allTestItem : res
-        })
-  })
-  }
-     /**监控送审界面的visible */
-    handleVisibleChange(visible){
-        this.setState({
-            visible1:visible
-        })
-    }
-     /**监控是否紧急 */
-     urgentChange(checked){
-        this.setState({
-            urgent:checked?1:0
-        })
-    }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
-    /**点击取消送审 */
-    handleCancelApply(){
-        this.setState({
-            visible1:false
-        })
-    }
-    /**获取数据 */
-    getApplyData(data){
-        //console.log(data)
-        this.state.applyData = data;
-    }
-    /**点击送审 */
-    handleOkApply(){
-      this.checkData(1);
-  }
-    /**点击保存 */
-    handleSave(){
-        this.checkData(0);
-    }
-     /**验证数据是否都不为空 */
-    checkData(status){
-        const details = this.state.applyData;
-        // console.log(this.state.applyData)
-        var flag = 1;
-        for(var i = 0; i < details.length; i++){
-            //delete details[i].id;
-            if(details[i].testItemIds.length===0){
-                message.info('检测项目不能为空，请填写完整！');
-                return 
-            }
-            var e = details[i].procedureTestRecord;
-            for(var j in e){
-                if( !e[j] || e[j] === -1 || e[j] === []){
-                    message.info('新增数据不能为空，请填写完整！');
-                    return
-                }
-            }
-    }
-    if(flag){
-        this.applyOut(status);
-    }
-}
-applyOut(status){
-    this.setState({
-        visible:false,
-        visible1:false
-    })
-    const details = this.state.applyData;
-    const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
-    const commonBatchNumber = {
-        id:this.props.value,
-        createPersonId:createPersonId,
-        memo:''
-    }
-    axios.post(`${this.props.url.procedure.iteration}`,{
-        commonBatchNumber:commonBatchNumber,
-        details:details
-    },{
-        headers:{
-            'Authorization':this.props.url.Authorization
-        },
-    }).then((data)=>{
-        if(status){
-            const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-            this.applyReview(dataId);
-        }
-        else{
-            message.info(data.data.message);
-            // this.props.fetch();
-        }
-    }).catch(()=>{
-        message.info('操作失败，请联系管理员！')
-    })
-}
-/**保存后送审送审 */
-applyReview(dataId){
-    //const taskId = this.state.process === -1?'':this.state.process;
-    axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
-        headers:{
-            'Authorization':this.props.url.Authorization
-        },
-        params:{
-            dataId:dataId,
-            isUrgent:this.state.urgent
-        }
-    }).then((data)=>{
-        message.info(data.data.message);
-        // this.props.fetch();
-    }).catch(()=>{
-        message.info('审核失败，请联系管理员！')
-    })
-}
     render() {
-        const detail = !this.state.iteration?[
-            <CancleButton key='cancle' handleCancel={this.cancel} flag={1} />, 
-            <NewButton key='submit' handleClick={this.handleIteration} name={'迭代'} className='fa fa-level-up'/>
-        ]:
-        [<CancleButton key='cancle' handleCancel={this.cancel} flag={1} />, 
-    ];
-        const iteration = [
-            <CancleButton key='back' handleCancel={this.cancel}/>,
-            <SaveButton key='save' handleSave={this.handleSave} />,
-            <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>                
-        ]
         return (
-            <span>
-                <span className='blue' onClick={this.handleDetail} >详情</span>
-                <Modal title="详情" visible={this.state.visible} closable={false} centered={true}
-                    maskClosable={false} className='modal-xxlg'
-                    width='1300px' maskClosable={false}
-                    footer={this.state.flag?iteration:detail} 
-                  >
-                    <div style={{height:'350px'}} className={this.state.flag?'hide':'show'}>
-                         <Select onChange={this.selectionChange} style={{width:'35%'}} placeholder='请选择工序'><Option value='all'>选择所有产品线</Option>
-                        {
-                            this.props.allProductionProcess?this.props.allProductionProcess.map(m=>{
-                                return <Option key={m.id} value={m.id}>{m.name}</Option>
-                            }):null
-                        }
-                         </Select>
-                         {/* <div>
-                         <button style={{width:'100px',height:'40px',backgroundColor:'#0086ff',marginRight:'10px',borderRadius:'3px'}} id='all' onClick={this.click}>全部</button>
-                           {
-                             this.props.allProductionProcess?this.props.allProductionProcess.map(b => <SmallButton key={b.id} id={b.id} name={b.name} click={this.click} />):null
-                           }
-                         </div> */}
-                         <WhiteSpace />
-                         <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.detailData} size='small' pagination={false} scroll={{y:200}} bordered></Table>
-                    </div>
-                    <div style={{height:'350px'}} className={this.state.flag?'show':'hide'}>
-                       <EditorApply data={this.state.data} url={this.props.url} allTestItem={this.state.allTestItem} getApplyData={this.getApplyData}/>
-                    </div>
-                </Modal>
-            </span>
-        );
+            <div style={{height:'350px'}} className={this.state.flag?'hide':'show'}>
+                    <Select onChange={this.selectionChange} style={{width:'35%'}} placeholder='请选择产品线'><Option value='all'>选择所有产品线</Option>
+                {
+                    this.props.allProductLine
+                }
+                    </Select>
+                    <WhiteSpace />
+                    <Table rowKey={record=>record.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:200}} bordered></Table>
+            </div>)
     }
 }
 export default Detail;

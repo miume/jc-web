@@ -3,17 +3,6 @@ import { Button } from 'antd';
 import Tr from './tr';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 class EditorApply extends React.Component{
-    // componentDidMount(){
-    //     this.setState({
-    //         editorData:this.props.editorData?this.props.editorData:[],
-    //         count: this.props.editorData?this.props.editorData.length:0
-    //     })
-    // }
-    // componentWillUnmount(){
-    //     this.setState=()=>{
-    //         return;
-    //     }
-    // }
     constructor(props){
         super(props);
         this.state = {

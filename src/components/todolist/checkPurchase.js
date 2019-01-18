@@ -38,7 +38,7 @@ class CkeckPurchase extends React.Component{
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log('detail',detail)
+            // console.log('detail',detail)
             var headData = [];
             var tbodyData = [];
             var judger = '';

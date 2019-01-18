@@ -88,6 +88,7 @@ class Role extends React.Component {
             searchContent:'',
             pageChangeFlag:0,  //0表示getAllByPage分页  1 表示搜索分页
         };
+        this.reset = this.reset.bind(this);
         this.fetch = this.fetch.bind(this);
         this.roleUpdate = this.roleUpdate.bind(this);
         this.confrimCancel = this.confrimCancel.bind(this);
@@ -173,6 +174,11 @@ class Role extends React.Component {
                 );
               }
           }]
+    }
+    /**重置 */
+    reset(){
+        this.pagination.current = 1;
+        this.fetch();
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
@@ -466,7 +472,7 @@ class Role extends React.Component {
                   </Modal>
                   <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} />
                   <span style={{float:'right',paddingBottom:'8px'}}>
-                      <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} />
+                      <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} />
                   </span>
                   <div className='clear'></div>
                   <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
