@@ -212,9 +212,6 @@ class ApplyStockOut extends React.Component{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
-            // params:{
-            //     taskId:taskId
-            // }
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;

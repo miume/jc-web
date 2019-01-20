@@ -178,9 +178,9 @@ class ProcessInspection extends React.Component{
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
-      const ids = this.state.selectedRowKeys;
+      const ids = this.state.selectedRowKeys.toString();
         axios({
-          url:`${this.url.procedure.procedureTestRecord}`,
+          url:`${this.url.procedure.procedureTestRecord}/batchNumberIds=${ids}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -314,7 +314,7 @@ class ProcessInspection extends React.Component{
                     <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
                     </span>
-                  <Table rowKey={record => record.index} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
+                  <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
                 </div> 
             </div>
 

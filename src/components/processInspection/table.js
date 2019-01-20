@@ -7,46 +7,46 @@ const Option = Select.Option;
 class ProcessTable extends React.Component{
     componentDidMount(){
         this.getAllUser();
-        this.getAllProductLine();
+        // this.getAllProductLine();
         this.getAllTestMaterial();
         this.getAllProductionProcess();
     }
     constructor(props){
         super(props);
         this.state = {
-            count : 1,
+            count : this.props.data?this.props.data.length:1,
             addApplyData:[],                             //存取每行的数据
             flag : this.props.flag,
             data : this.props.data?this.props.data:[{id:1}], //用已知数据来渲染有多少行
         }
-        this.editor = this.editor.bind(this);
+        this.editorRow = this.editorRow.bind(this);
         this.addData = this.addData.bind(this);
         this.getData = this.getData.bind(this);
         this.deleteRow = this.deleteRow.bind(this);
         this.getAllUser = this.getAllUser.bind(this);
         // this.getAllTestItem = this.getAllTestItem.bind(this);
-        this.getAllProductLine = this.getAllProductLine.bind(this);
+        // this.getAllProductLine = this.getAllProductLine.bind(this);
         this.getAllTestMaterial = this.getAllTestMaterial.bind(this);
         this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
     }
     /**获取所有送样工厂 */
-    getAllProductLine(){
-        axios({
-          url:`${this.props.url.deliveryFactory.deliveryFactory}`,
-          method:'get',
-          headers:{
-            'Authorization':this.props.url.Authorization
-          }
-        }).then(data=>{
-          const res = data.data.data;
-          const children = res.map(e=>{
-              return <Option key={e.id} value={e.id}>{e.name}</Option>
-          })
-          this.setState({
-              allProductLine : children
-          })
-      })
-    }
+    // getAllProductLine(){
+    //     axios({
+    //       url:`${this.props.url.deliveryFactory.deliveryFactory}`,
+    //       method:'get',
+    //       headers:{
+    //         'Authorization':this.props.url.Authorization
+    //       }
+    //     }).then(data=>{
+    //       const res = data.data.data;
+    //       const children = res.map(e=>{
+    //           return <Option key={e.id} value={e.id}>{e.name}</Option>
+    //       })
+    //       this.setState({
+    //           allProductLine : children
+    //       })
+    //   })
+    // }
     /**获取所有产品工序 */
     getAllProductionProcess(){
       axios({
@@ -102,15 +102,27 @@ class ProcessTable extends React.Component{
         })
     }
     /**编辑数据 */
-    editor(value){
+    editorRow(value){
+        var {data} = this.state;
+        for(var i = 0; i < data.length; i++){
+            if(data[i].id.toString()===value)
+                data[i].mode = 2;
+        }
+        // console.log(data)
         this.setState({
-            flag:2
+            data:data,
         })
     }
     /**新增一条数据 */
     addData() {
         const {count,data} = this.state;
+        /**点击新增 前面已知数据全部变成不可编辑 */
+        for(var i = 0; i < data.length; i++){
+            data[i].mode = 1;
+        }
+        //console.log(data)
         data.push({
+            mode:3,
             id:count+1,
             procedureTestRecord:{}
         })
@@ -170,7 +182,7 @@ class ProcessTable extends React.Component{
                              {
                                 this.state.data.map((m,index) => { 
                                     return <Tr1 key={index} deleteRow={this.deleteRow} id={m.id?m.id.toString():m} url={this.props.url} getData={this.getData}
-                                           value={m} flag={this.props.flag}
+                                           value={m} flag={this.props.flag} mode={m.mode} editorRow={this.editorRow}
                                            allProductLine={this.props.allProductLine} allProductionProcess={this.state.allProductionProcess} allUser={this.state.allUser}
                                            allTestItem={this.props.allTestItem} allTestMaterial={this.state.allTestMaterial}
                                            /> })

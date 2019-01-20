@@ -1,5 +1,5 @@
 import React from 'react';
-import {Select,Input,Popover,Button,Checkbox,Col} from 'antd';
+import {Select,Input,Popover,Button,Checkbox,Col, Divider} from 'antd';
 import './editor.css';
 class Tr1 extends React.Component{
     componentDidMount(){
@@ -8,6 +8,7 @@ class Tr1 extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            // detail:{},
             detail:{
                 id:this.props.id,
                 procedureTestRecord:{
@@ -19,6 +20,13 @@ class Tr1 extends React.Component{
                     testFrequency:'',
                     serialNumberId:-1,
                     tester:-1,
+                },
+                detail:{
+                    deliveryFactory:'',
+                    productionProcess:'',
+                    sampler:'',
+                    tester:'',
+                    testMaterialName:'',
                 },
                 testItemIds:[]
             },
@@ -39,6 +47,7 @@ class Tr1 extends React.Component{
         this.serialNumberId = this.serialNumberId.bind(this);
         this.comment = this.comment.bind(this);
         this.getTrData = this.getTrData.bind(this);
+        this.testItemsProcessing = this.testItemsProcessing.bind(this);
     }
     hide(){
         this.setState({
@@ -79,7 +88,9 @@ class Tr1 extends React.Component{
     /**监控产品线下拉框的变化 */
     productLineChange(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.deliveryFactoryId = value
+        const {allProductLine} = this.props;
+        detail.procedureTestRecord.deliveryFactoryId = value;
+        detail.detail.deliveryFactory = allProductLine.filter(e=>e.props.value===value)[0].props.children;
         this.setState({
             detail:detail
         })
@@ -87,7 +98,9 @@ class Tr1 extends React.Component{
     /**监控工序下拉框的变化 */
     productionProcessChange(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.procedureId = value
+        const {allProductionProcess} = this.props;
+        detail.procedureTestRecord.procedureId = value;
+        detail.detail.productionProcess = allProductionProcess.filter(e=>e.props.value===value)[0].props.children;
         this.setState({
             detail:detail
         })
@@ -104,7 +117,9 @@ class Tr1 extends React.Component{
     /**监控下拉框取样人的变化 */
     sampler(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.sampler = value
+        const {allUser} = this.props;
+        detail.procedureTestRecord.sampler = value;
+        detail.detail.sampler = allUser.filter(e=>e.props.value===value)[0].props.children;
         this.setState({
             detail:detail
         })
@@ -112,7 +127,9 @@ class Tr1 extends React.Component{
     /**监控检测人下拉框的变化 */
     tester(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.tester = value
+        const {allUser} = this.props;
+        detail.procedureTestRecord.tester = value;
+        detail.detail.tester = allUser.filter(e=>e.props.value===value)[0].props.children;
         this.setState({
             detail:detail
         })
@@ -129,7 +146,9 @@ class Tr1 extends React.Component{
     /**监控受检物料下拉框的变化 */
     serialNumberId(value){
         const {detail} = this.state;
-        detail.procedureTestRecord.serialNumberId = value
+        const {allTestMaterial} = this.props;
+        detail.procedureTestRecord.serialNumberId = value;
+        detail.detail.testMaterialName = allTestMaterial.filter(e=>e.props.value===value)[0].props.children;
         this.setState({
             detail:detail
         })
@@ -148,7 +167,8 @@ class Tr1 extends React.Component{
         var {detail} = this.state;
         const allTestItem = this.props.allTestItem;
         if(allTestItem){
-            const d = this.props.value.procedureTestRecord;
+            const details = this.props.value;
+            const d = details.procedureTestRecord;
             const items = d.testItems?d.testItems.split(','):[];
             var testItemIds = [];
             /**将查到的testItems字符串转换为id数组 */
@@ -171,34 +191,63 @@ class Tr1 extends React.Component{
                 serialNumberId:d.serialNumberId,
                 tester:d.tester,
             },
+            detail:{
+                deliveryFactory:details.deliveryFactory?details.deliveryFactory.name:'',
+                productionProcess:details.productionProcess?details.productionProcess.name:'',
+                sampler:details.sampler?details.sampler:'',
+                tester:details.tester?details.tester:'',
+                testMaterialName:details.testMaterialName?details.testMaterialName:'',
+            },
             testItemIds:testItemIds
         }
+        // console.log(detail)
         this.setState({
             detail:detail,
             testItems:d.testItems,
             testItemIds:testItemIds
         })
         }
-
+    }
+    /**处理检测项目数量过多 */
+    testItemsProcessing(text){
+        const items = text.split(',');
+        var testItems = '';
+        if(items.length>4){
+            testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
+            return <abbr title={text}>{testItems}</abbr>;
+        }else{
+          testItems = text;
+          return text;
+        }
     }
     render() {
         this.props.getData(this.state.detail)
-        const d = this.props.value.procedureTestRecord;
+        const details = this.state.detail;
+        const detail = details.detail?details.detail:{};
+        const d = details.procedureTestRecord?details.procedureTestRecord:{};
         const {testItemIds} = this.state;
         // const allTestItem = this.props.allTestItem?this.props.allTestItem:[];
-        switch(this.props.flag){
+        /**mode===1表示不可编辑显示行
+         * mode====2表示编辑时的可编辑行
+         * mode===3表示新增时新增一行
+         */
+        switch(this.props.mode){
             case 1 : return (
                         <tr id={this.props.id}>
-                            <td>{d.deliveryFactoryId}</td>
-                            <td>{d.procedureId}</td>
+                            <td>{detail.deliveryFactory}</td>
+                            <td>{detail.productionProcess}</td>
                             <td>{d.samplePointName}</td>
-                            <td>{d.sampler}</td>
-                            <td>{d.tester}</td>
-                            <td>{testItemIds}</td>
+                            <td>{detail.sampler}</td>
+                            <td>{detail.tester}</td>
+                            <td>{this.testItemsProcessing(this.state.testItems)}</td>
                             <td>{d.testFrequency}</td>
-                            <td>{d.serialNumberId}</td>
+                            <td>{detail.testMaterialName}</td>
                             <td>{d.comment}</td>
-                            <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span></td>
+                            <td>
+                                <span className='blue' onClick={()=>this.props.editorRow(this.props.id)} value={this.props.value}>编辑</span>
+                                <Divider type='vertical' />
+                                <span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span>        
+                            </td>
                         </tr>
                        );
             case 2 : 
@@ -226,7 +275,7 @@ class Tr1 extends React.Component{
                         visible={this.state.clicked}
                         onVisibleChange={this.handleClickChange}>
                         {
-                            this.state.testItems?<Button>{this.state.testItems}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
+                            this.state.testItems?<Button>{this.testItemsProcessing(this.state.testItems)}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
                         }
                         </Popover></td>
     
@@ -234,7 +283,8 @@ class Tr1 extends React.Component{
                     <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.serialNumberId} defaultValue={d.serialNumberId?d.serialNumberId:''}>{this.props.allTestMaterial}</Select></td>
                     <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment} defaultValue={d.comment?d.comment:''}/></td>
                     <td>
-                        <span className='blue' onClick={()=>this.props.editor(this.props.id)} value={this.props.value}>编辑</span>
+                        <span className='blue' onClick={()=>this.props.editorRow(this.props.id)} value={this.props.value}>编辑</span>
+                        <Divider type='vertical' />
                         <span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span>
                     </td>
                 </tr>)
@@ -269,7 +319,11 @@ class Tr1 extends React.Component{
                         <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} /></td>
                         <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.serialNumberId}>{this.props.allTestMaterial}</Select></td>
                         <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment}/></td>
-                        <td><span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span></td>
+                        <td>
+                            <span className='blue' onClick={()=>this.props.editorRow(this.props.id)} value={this.props.value}>编辑</span>
+                            <Divider type='vertical' />
+                            <span className='blue' onClick={()=>this.props.deleteRow(this.props.id)} value={this.props.value}>删除</span>    
+                        </td>
                     </tr>)
         }
     }
