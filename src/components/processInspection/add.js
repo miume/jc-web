@@ -21,11 +21,10 @@ class Add extends React.Component{
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        // this.addData = this.addData.bind(this);
         // this.deleteRow = this.deleteRow.bind(this);
         // this.handleVisibleChange = this.handleVisibleChange.bind(this);
         // this.handleCancelApply = this.handleCancelApply.bind(this);
-        // this.handleOkApply = this.handleOkApply.bind(this);
+        this.sucessProcessing = this.sucessProcessing.bind(this);
         this.getAllTestItem = this.getAllTestItem.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.applyOut = this.applyOut.bind(this);
@@ -46,10 +45,10 @@ class Add extends React.Component{
             default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
         }
     }
-    /**判断弹出框 footer 对应的按钮组合 */
-    judgeFooter(flag){
-        const detail = !this.state.iteration?[
-            <CancleButton key='back' handleCancel={this.handleCancel}/>,
+    /**判断弹出框 footer 对应的按钮组合 只有status===2才可以迭代*/
+    judgeFooter(flag,status){
+        const detail = status===2?[
+            <CancleButton key='back' handleCancel={this.handleCancel} flag={1} />,
             <NewButton key='submit' handleClick={this.handleIteration} name={'迭代'} className='fa fa-level-up'/>
            ]:
            [<CancleButton key='back' handleCancel={this.handleCancel} flag={1} />, 
@@ -65,7 +64,7 @@ class Add extends React.Component{
             default: return iteration;
         }
     }
-    /**处理新增一条记录 */
+    /**处理新增一条记录 flag存在表示编辑或详情 不存在表示新增 */
     handleAdd(){
         const {flag,value} = this.props;
         this.getAllTestItem();
@@ -74,30 +73,30 @@ class Add extends React.Component{
         else 
             this.setState({
                 visible: true,
-                data:[1]
+                data:[{id:1,mode:3}]
             });
       }
     /**通过id查询详情 */
-    getByBatchNumberId(value){
+    getByBatchNumberId(value,flag){
         axios.get(`${this.props.url.procedure.procedureTestRecord}/${value}`,{
             headers:{
                 'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const details = data.data.data? data.data.data.details:[];
-            var iteration = 1;
+            // var iteration = 1;
             if(details){
              for(var i = 0; i < details.length; i++){
                  // console.log(details[i].commonBatchNumber.iteration)
-                 iteration = details[i].procedureTestRecord.isIteration;
+                //  iteration = details[i].procedureTestRecord.isIteration;
                  details[i].id = i+1;
+                 details[i].mode = 1;
                  details[i].procedureTestRecord.testItems = details[i].testItemString;
               }
               this.setState({
-                 visible:true,
-                 detailData:details,
+                 visible:flag?false:true,
+                //  iteration:iteration,
                  data:details,
-                 iteration:!iteration&&this.props.status===2?0:1
              })
             }
         })
@@ -149,11 +148,20 @@ class Add extends React.Component{
     }
     /**点击取消按钮 以及保存或送审确定按钮 */
     handleCancel() {
-        this.setState({
-            count:1,
-            data : [1],
-            visible: false,
-        });
+        /**新增的取消和编辑以及详情的取消有些许不一样 */
+        if(this.props.flag){
+            this.setState({
+                visible: false,
+                flag : this.props.flag
+            });
+        }
+        else{
+            this.setState({
+                count:1,
+                data : [{id:1,mode:3}],
+                visible: false,
+            });
+        }
     }
     /**点击保存 */
     handleSave(){
@@ -162,19 +170,23 @@ class Add extends React.Component{
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
         const details = this.state.saveData;
-        // console.log(details)
+        console.log(details)
         for(var i = 0; i < details.length; i++){
             var e = details[i].procedureTestRecord;
+            // delete details[i].detail;
             for(var j in e){
-                if( e[j]==='' || e[j] === -1 || e[j] === []){
+                if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
                     message.info('新增数据不能为空，请填写完整！');
                     return
                 }
             }
-            this.applyOut(status,details,process,urgent);
         }
+        this.applyOut(status,details,process,urgent);
     }
-    /**对数据进行保存操作 */
+    /**对数据进行保存操作 不管是编辑、新增还是迭代数据格式按照编辑的数据格式，因为多传参数不影响后台的处理
+     * 但是少传参数有影响 所以按参数最多的传
+     * 只有审核通过的数据可以迭代 即status===2
+    */
     applyOut(status,details,process,urgent){
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
@@ -182,18 +194,12 @@ class Add extends React.Component{
             id:this.props.value,
             createPersonId:createPersonId,
         }
-        // axios.post(`${this.props.url.procedure.procedureTestRecord}`,{
-        //     commonBatchNumber:commonBatchNumber,
-        //     details:details
-        // },{
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     },
-        // }).
+        const url = this.props.status===2?`${this.props.url.procedure.procedureTestRecord}/iteration`:this.props.url.procedure.procedureTestRecord;
+        /**flag存在则是编辑 请求方法为put 若不存在则是新增或迭代 请求方法为post */
         axios({
             type:'json',
-            method:this.state.flag?'put':'post',
-            url:this.props.url.procedure.procedureTestRecord,
+            method:!this.state.flag||this.props.status===2?'post':'put',
+            url:url,
             headers:{
                 'Authorization':this.props.url.Authorization
             },
@@ -202,17 +208,14 @@ class Add extends React.Component{
                 details:details
             }
         }).then((data)=>{
+            // console.log(`status=${status?'送审':'保存'}`)
             /**status===1代表送审 若保存成功 则进行送审操作 */
-            if(status===1&&data.data.code===0){
+            if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
                 this.applyReview(dataId,process,urgent);
             }
             /**否则进行保存后续操作 */
-            else{
-                message.info(data.data.message);
-                this.handleCancel();
-                this.props.fetch();
-            }
+            else this.sucessProcessing(data);
         }).catch(()=>{
             message.info('操作失败，请联系管理员！')
         })
@@ -228,12 +231,21 @@ class Add extends React.Component{
                 isUrgent:urgent
             }
         }).then((data)=>{
-            message.info(data.data.message);
-            this.handleCancel();
-            this.props.fetch();
+            this.sucessProcessing(data);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
         })
+    }
+    /**保存以及送审成功后进行的操作判断 */
+    sucessProcessing(data){
+        if(data.data.code===0){
+            message.info('保存成功');
+            this.props.fetch();
+            this.getByBatchNumberId(this.props.value,1);
+        }else{
+            message.info(data.data.message);
+        }
+        this.handleCancel();
     }
     /**获取每个Tr的值 从组件ProcessTable中实时获取 */
     getData(data){
@@ -241,6 +253,7 @@ class Add extends React.Component{
     }
     /**监控送审气泡的送审按钮 对应的事件 */
     applySaveAndReview(process,urgent){
+        // console.log('送审')
         this.dataProcessing(1,process,urgent);
     }
     render() {
@@ -248,10 +261,10 @@ class Add extends React.Component{
         return (
             <span>
                 {/* <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' /> */}
-                {this.judge(flag)}
+                {this.judge(this.props.flag)}
                 <Modal title={this.judge(this.props.flag,1)} visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel} maskClosable={false} className='modal-xxlg'
-                    footer = {this.judgeFooter(flag)}
+                    footer = {this.judgeFooter(flag,this.props.status)}
                     // footer={[
                     //     <CancleButton key='back' handleCancel={this.handleCancel}/>,
                     //     <SaveButton key='save' handleSave={this.handleSave} />,
