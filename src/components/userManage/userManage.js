@@ -21,19 +21,6 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
-
-  // onChange = (e) => {
-  //   const { value } = e.target;
-  //   console.log(value);
-  //   const reg = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g");//要匹配的模板
-  //   console.log(reg.test(value));
-  //   if (!reg.test(value) ) {//格式是错误的
-  //      message.info('请输入11位正确的手机号!');
-  //   }
-  // }
-
-
-
     getInput = () => {
       //  console.log(this.props.departmentchildren);//获取部门的data（getAll）
         if (this.props.inputType === 'select') {
@@ -288,7 +275,7 @@ class User extends React.Component{
       handleOk(){//处理新增一条记录
        const value=this.formRef.getItemsValue();//获取新增的表单内容
         //value.splice(4,1);
-       if(!value['username'] || !value['name'] || !value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
+       if(!value['username'] ||!value['name'] ||!value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
                message.info('信息填写不完整！');
                return
        }
@@ -360,7 +347,7 @@ class User extends React.Component{
             type:'json'
         })
         .then((data)=>{
-          console.log(data);
+          //console.log(data);
           message.info(data.data.message);
           if(data.data.code===0){
             //console.log(this.pagination);

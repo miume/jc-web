@@ -385,8 +385,16 @@ class Home extends Component {
               equipmentArchiveRecord:{
                    getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
                    get:`${server}/jc/common/equipmentArchiveRecord`,
-                   getAllManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
-               }
+                   
+               },
+               /**设备基本厂商*/
+              equipmentManufacture:{
+                 getAllEquipmentManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
+               },
+               /**设备基本设备*/
+               equipmentBaseInstrument:{
+                 getAllEquipmentBaseInstrument:`${server}/jc/common/equipmentBaseInstrument`
+              }
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

@@ -6,29 +6,32 @@ const Option=Select.Option;
 const FormItem=Form.Item;
 
 
-class EditModal extends Component{
+class AddModal extends Component{
     constructor(props){
         super(props);
         this.state={
-            fileList:[],
-           
-            dateString:'',
+            fileList:[],//上传的文件列表
+            upLoading:false,
+            dateString:''
         }
         this.dateChange=this.dateChange.bind(this);
         this.dateOk=this.dateOk.bind(this);
         this.beforeUploadHandle=this.beforeUploadHandle.bind(this);
         this.fileRemove=this.fileRemove.bind(this);
     }
-    dateChange(value, dateString) {
-       this.setState({
-           dateString:dateString
-       });
+    dateChange(value,dateString){
+        console.log(dateString); 
+        this.setState({
+            dateString:dateString //格式化后的时间，带时分秒
+        });
       }
       
     dateOk(value) {
         //console.log('onOk: ', value);
       }
-     // 拦截文件上传
+    
+
+    // 拦截文件上传
     /**上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。*/
     beforeUploadHandle=(file)=>{
         this.setState(state => ({
@@ -47,20 +50,21 @@ class EditModal extends Component{
             };
           });
     }
-      getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）,4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
+    getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）,4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         const values= this.props.form.getFieldsValue();
         values['installTime']=this.state.dateString;
-        console.log(values);
+        //console.log(values);
         const { fileList } = this.state;
         const formData = new FormData();//文件信息和其他表单信息一起提交，这个时候需要用到formData()；通过append方法将数据逐条添加到formData中（tips:formData数据在console后只有一个空的对象，但是数据都在里面，要想获取数据需要调用formData.get()方法）；
         fileList.forEach((file) => {
           formData.append('file', file);
         });
-        console.log(formData.get('file'));
+        //console.log(formData.get('file'));
         // values为表单其他项的数据,在antd-pro中是values.f
         Object.keys(values).map((item)=>{
             //console.log(item);
             formData.append(item,values[item]);//FormData 对象用来保存key/value结构的数据
+           
         })
         return formData;
     }
@@ -72,8 +76,8 @@ class EditModal extends Component{
                   <Row>
                      <Col span={12} style={{display:"block"}}>
                         <FormItem wrapperCol={{span:24}}>
-                             {getFieldDecorator('archiveName',{
-                                 initialValue:this.props.record.archiveName,
+                             {getFieldDecorator('name',{
+                                 
                                  rules:[{required:true,message:'档案名称不能为空'}],
                               })(
                                  <Input placeholder='请输入档案名称' style={{width:'230px'}}/>
@@ -84,11 +88,10 @@ class EditModal extends Component{
                      <Col span={12} style={{display:"block"}}>
                         <FormItem wrapperCol={{span:24}}>
                                 { getFieldDecorator('instrumentId',{
-                                    initialValue:this.props.record.instrumentName,
                                     rules:[{required:true,message:'设备名称不能为空'}]
                                 })(
                                     <Select placeholder='请选择设备名称' style={{width:'230px'}}>
-                                       {
+                                    {
                                         this.props.equipmentBaseInstrument.map((item)=>{
                                             return(
                                                 <Option key={item.id} value={item.id}>{item.name}</Option>
@@ -103,7 +106,6 @@ class EditModal extends Component{
                   </Row> 
                       <FormItem wrapperCol={{span:24}}>
                          { getFieldDecorator('installTime1',{
-                                initialValue:moment(this.props.record.installTime,'YYYY-MM-DD HH:mm:ss'),
                                 rules:[{required:true,message:'安装日期不能为空'}]
                                 })(
                                  <DatePicker 
@@ -113,7 +115,6 @@ class EditModal extends Component{
                                    onOk={this.dateOk}
                                    placeholder='请选择安装日期' 
                                    style={{width:'300px'}}
-                                  
                                   />
                                 )
                                 }
@@ -121,8 +122,7 @@ class EditModal extends Component{
                     <Row>
                         <Col span={12} style={{display:"block"}}>
                             <FormItem wrapperCol={{span:24}}>
-                                {getFieldDecorator('warrantyPeriod',{
-                                        initialValue:this.props.record.warrantyPeriod,
+                                {getFieldDecorator('warrantyPeriod',{    
                                         rules:[{required:true,message:'保修期限不能为空'}]
                                     })(
                                         <InputNumber min={1} placeholder='请输入保修期限' style={{width:'230px'}}/>
@@ -142,7 +142,7 @@ class EditModal extends Component{
                      <Col span={12} style={{display:"block"}}>
                        <FormItem wrapperCol={{span:24}}>
                             {getFieldDecorator('supplyManufacturerId',{
-                                initialValue:this.props.record.supplyManufacture,
+                               
                                 rules:[{required:true,message:'供货厂家不能为空'}],
                             })(
                                 <Select placeholder='请选择供货厂家' style={{width:'230px'}}>
@@ -161,7 +161,7 @@ class EditModal extends Component{
                      <Col span={12} style={{display:"block"}}>
                         <FormItem wrapperCol={{span:24}}>
                             { getFieldDecorator('supplyManufacturePhone',{
-                                    initialValue:this.props.record.supplyManufacturePhone,
+                                   
                                     rules:[{required:true,message:'供货厂家电话不能为空'}]
                                 })(
                                     <Input placeholder='请输入供货厂家电话' style={{width:'230px'}}/>
@@ -174,11 +174,11 @@ class EditModal extends Component{
                      <Col span={12} style={{display:"block"}}>
                        <FormItem wrapperCol={{span:24}}>
                             {getFieldDecorator('repairManufacturerId',{
-                                initialValue:this.props.record.repairManufacture,
+                              
                                 rules:[{required:true,message:'维修厂家不能为空'}],
                             })(
                                 <Select placeholder='请选择维修厂家' style={{width:'230px'}}>
-                                    {
+                                   {
                                        this.props.repairManufacture.map((item)=>{
                                             return(
                                                 <Option key={item.id} value={item.id}>{item.name}</Option>     
@@ -193,7 +193,7 @@ class EditModal extends Component{
                      <Col span={12} style={{display:"block"}}>
                         <FormItem wrapperCol={{span:24}}>
                             { getFieldDecorator('repairManufacturePhone',{
-                                    initialValue:this.props.record.repairManufacturePhone,
+                                    
                                     rules:[{required:true,message:'维修厂家电话不能为空'}]
                                 })(
                                     <Input placeholder='请输入维修厂家电话' style={{width:'230px'}}/>
@@ -206,12 +206,12 @@ class EditModal extends Component{
                   <Row>
                         <Col span={10} style={{display:"block"}}>
                             <FormItem wrapperCol={{span:24}}>
-                                {
+                                { 
                                     <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove} fileList={this.state.fileList}>
                                         <Button className='equipmentFile-upload-button'>
                                          <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
                                         </Button>
-                                    </Upload>
+                                   </Upload>
                                 }
                             </FormItem>
                         </Col>
@@ -223,8 +223,9 @@ class EditModal extends Component{
                             </FormItem>
                        </Col>
                    </Row> 
+                  
                 </Form>
             );
         }
 }
-export default Form.create()(EditModal);
+export default Form.create()(AddModal);
