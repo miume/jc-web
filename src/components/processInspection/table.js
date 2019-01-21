@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Tr1 from './tr1';
-import {Button,Select} from 'antd';
+import {Button,Select,message} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 const Option = Select.Option;
 class ProcessTable extends React.Component{
@@ -25,7 +25,7 @@ class ProcessTable extends React.Component{
         this.deleteRow = this.deleteRow.bind(this);
         this.getAllUser = this.getAllUser.bind(this);
         // this.getAllTestItem = this.getAllTestItem.bind(this);
-        // this.getAllProductLine = this.getAllProductLine.bind(this);
+        this.checkAddRowData = this.checkAddRowData.bind(this);
         this.getAllTestMaterial = this.getAllTestMaterial.bind(this);
         this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
     }
@@ -115,21 +115,46 @@ class ProcessTable extends React.Component{
     }
     /**新增一条数据 */
     addData() {
-        const {count,data} = this.state;
+        const {count,data,addApplyData} = this.state;
         /**点击新增 前面已知数据全部变成不可编辑 */
-        for(var i = 0; i < data.length; i++){
+        var flag = true;  //表示能否新增一行数据
+        for(var i = 0; i < addApplyData.length; i++){
+            var e = addApplyData[i];
+            if(e.testItemIds.length < 1){
+                message.info('请将数据填写完整，再新增！');
+                return false;
+            } 
+            flag = this.checkAddRowData(e);
             data[i].mode = 1;
         }
         //console.log(data)
-        data.push({
-            mode:3,
-            id:count+1,
-            procedureTestRecord:{}
-        })
-        this.setState({
-            count: count+1,
-            data: data,
-        })
+        if(flag){
+            data.push({
+                mode:3,
+                id:count+1,
+                procedureTestRecord:{}
+            })
+            this.setState({
+                count: count+1,
+                data: data,
+            })
+        }
+    }
+    /**新增前对前面数据进行判断 必须填写完整才能新增下一条数据 */
+    checkAddRowData(data){
+        var e = data.procedureTestRecord;
+        if(e==={}||e===undefined){
+            message.info('请将数据填写完整，再新增！');
+                    return false;
+        }else{
+            for(var j in e){
+                if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
+                    message.info('请将数据填写完整，再新增！');
+                    return false;
+                }
+            }
+            return true;
+        }
     }
     /**删除一条数据 不仅要删除渲染table的数据，还要删除实时存取table数据的数组中对应数据*/
     deleteRow(value){

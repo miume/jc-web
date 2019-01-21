@@ -40,13 +40,13 @@ class ProductStandard extends React.Component{
         this.getAllSelectModal = this.getAllSelectModal.bind(this);
         this.getAllProductStandard = this.getAllProductStandard.bind(this);
     }
-    /**根据flag显示content */
-    showContent(){
+    /**根据flag显示content mode存在就代表输出placeholder里面的数据*/
+    showContent(mode){
         const {flag} = this.state;
         var content = '';
-        if(flag===1) content = '选择产品';
-        else if(flag===2) content='选择型号';
-        else content='设置标准';
+        if(flag===1) content = mode?'请输入产品名称':'选择产品';
+        else if(flag===2) content= mode?'请输入型号名称':'选择型号';
+        else content= mode?'请输入创建人名称':'设置标准';
         return content;
     }
     /**点击选择产品、选择标准时对应的变化 */
@@ -221,7 +221,7 @@ class ProductStandard extends React.Component{
                 classId:parseInt(selectedModal[0]),
                 productId:parseInt(selectProduct[0]),
                 name:value
-            })
+            },0,1)
         }
     }
     /**根据产品名称进行搜索 */
@@ -264,8 +264,9 @@ class ProductStandard extends React.Component{
         }
     }
     /**根据产品id 型号id查询所对应的标准 */
-    getAllProductStandard(params,ids){
+    getAllProductStandard(params,ids,mode){
         if(ids){
+            console.log('id')
             this.recentModal(ids);
         }
         const {selectProduct} = this.state;
@@ -280,14 +281,14 @@ class ProductStandard extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             var data = [];
-            var flag = 3;
+            var flag = mode?4:3;  //代表新增
             if(res){
                 for(var i = 0; i < res.length; i++){
                     res[i].commonBatchNumber['index'] = `${i+1}`;
                     res[i].commonBatchNumber['name'] = res[i].createPersonName;
                     data.push(res[i].commonBatchNumber)
                 }
-                flag = 4;
+                flag = 4; //代表标准界面
             }
             this.setState({
                 flag:flag,
@@ -330,7 +331,7 @@ class ProductStandard extends React.Component{
                     <div className='product-standrad-middle'>
                         <div>
                             <span className='product-standrad-middle-text'>{this.showContent()}</span>
-                            <SearchCell name='请输入搜索内容' searchEvent={this.searchEvent} fetch={this.fetch} />
+                            <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch} />
                             <Divider type='horizontal' />
                         </div>
                         <div className={this.state.flag===1?'':'hide'}>
