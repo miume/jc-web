@@ -23,7 +23,7 @@ class DeletaSpan extends React.Component {
             url:`${this.url.menu.deleteById}/${id}`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
         }).then((data)=>{
             message.info(data.data.message);

@@ -38,7 +38,7 @@ class Product extends React.Component{
       url:`${this.url.libraryManage.getAllPage}`,
       method:'get',
       headers:{
-        'Authorization': this.Authorization
+        'Authorization': this.url.Authorization
         },
         params: {materialClass:3},
     }).then((data)=>{
@@ -66,7 +66,7 @@ class Product extends React.Component{
             url:`${this.url.libraryManage.getAllPages}`,
             method:"get",
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 materialName:name,

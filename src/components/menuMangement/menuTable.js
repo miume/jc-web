@@ -252,7 +252,7 @@ class MenuTable extends React.Component{
                     url:`${this.url.menu.update}`,
                     method:'post',
                     headers:{
-                        'Authorization':this.Authorization
+                        'Authorization':this.url.Authorization
                     },
                     data:data,
                     type:'json'
