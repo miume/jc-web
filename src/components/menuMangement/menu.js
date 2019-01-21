@@ -41,7 +41,7 @@ class Menu extends React.Component{
       this.Authorization = localStorage.getItem('Authorization');
       this.searchContentChange1 = this.searchContentChange1.bind(this)
       this.searchFatherEvent = this.searchFatherEvent.bind(this);
-      this.changePage = this.changePage.bind(this);
+    //   this.changePage = this.changePage.bind(this);
 
       this.pagination = {
         total: this.state.dataSource.length,
@@ -49,13 +49,13 @@ class Menu extends React.Component{
             return `共${total}条记录`
         },
         showSizeChanger: true,
-        onShowSizeChange(current, pageSize) {
-        },
+        // onShowSizeChange(current, pageSize) {
+        // },
         onChange:this.changePage,
     }
   }
-  changePage = (page,pageSize) =>{
-  }
+//   changePage = (page,pageSize) =>{
+//   }
   /**获取查询时菜单名称的实时变化 */
   searchContentChange1(e){
     const value = e.target.value;
@@ -77,8 +77,8 @@ class Menu extends React.Component{
             type:'json',
         }).then((data)=>{
             const res = data.data.data;
-            this.pagination.total=res.total;
             if(res&&res.list){
+                this.pagination.total=res.total;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
@@ -158,15 +158,15 @@ class Menu extends React.Component{
           url: `${this.url.menu.findAllByPage}`,
           method: 'get',
           headers:{
-              'Authorization': this.Authorization
+              'Authorization': this.url.Authorization
           },
           params: params,
           // type: 'json',
       }).then((data) => {
           const res = data.data.data;
-          this.pagination.total=res.total;
-          this.pagination.current=res.pageNum;
           if(res&&res.list){
+            this.pagination.total=res.total;
+            this.pagination.current=res.pageNum;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
