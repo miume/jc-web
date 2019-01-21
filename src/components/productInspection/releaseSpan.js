@@ -4,6 +4,7 @@ import DrSpanModal from './drSpanModal';
 import './productInspection.css';
 import axios from "axios";
 import CancleButton from '../BlockQuote/cancleButton';
+<<<<<<< HEAD
 const data = [];
 for (let i = 0; i < 50; i++) {
     data.push({
@@ -15,31 +16,33 @@ for (let i = 0; i < 50; i++) {
         itemUnit: `g/mL`,
     });
 }
+=======
+
+>>>>>>> ce81f1fdc8a64eaf25311684a3fdde015a32ce12
 
 class ReleaseSpan extends React.Component {
-    Authorization;
-    server;
     constructor(props){
         super(props);
         this.state = {
             visible: false,
             subVisible: false,
-            process:-1,
+            checkData:{
+                topData: {},   //头部数据
+                testDTOS: [],   //中部项目
+                testData: {},   //检验数据
+                isQualified: '', //不合格状态
+            },
         };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
         this.handleRelease = this.handleRelease.bind(this);
-        this.showModal = this.showModal.bind(this);
     }
     render() {
         const { visible } = this.state;
-        /**这是个令牌，每次调用接口都将其放在header里 */
-        this.Authorization = localStorage.getItem('Authorization');
-        /**这是服务器网址及端口 */
-        this.server = localStorage.getItem('remote');
         return (
-            <span type="primary" onClick={this.showModal} size="small"    >
+            <span>
+                <span className="blue"  onClick={this.handleDetail}>发布</span>
                 <Modal
                     title="数据发布"
                     visible={visible}
@@ -58,13 +61,10 @@ class ReleaseSpan extends React.Component {
                 >
                     <div style={{height:640}}>
                         <DrSpanModal
-                            checkStatus={'4'}
-                            data={data}
-                            record={this.props.record}
+                            data={this.state.checkData}
                         />
                     </div>
                 </Modal>
-                <span className="productBlueSpan"><i className="fa fa-bullhorn" aria-hidden="true"></i>&nbsp;发布</span>
             </span>
         )
     }
@@ -89,17 +89,64 @@ class ReleaseSpan extends React.Component {
     handleDetail() {
         this.getDetailData();
     }
+<<<<<<< HEAD
     showModal = () => {
+=======
+    getDetailData = () =>{
+        axios({
+            url:`${this.props.url.productInspection.productRecord}/${this.props.batchNumberId}`,
+            method : 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            var topData = {};  //头部数据
+            var testDTOS = [];  //中部项目
+            var testData = {};  //检验数据
+            var isQualified = 0;
+            if(res){
+                isQualified = res.isPublished;
+                topData = {
+                    serialNumber: res.repoBaseSerialNumber.serialNumber,
+                    materialName: res.repoBaseSerialNumber.materialName,
+                    sampleDeliveringDate: res.deliveringDate
+                };
+                const testResultDTOList = res.testResultDTOList;
+                if(testResultDTOList) {
+                    for(var i=0; i<testResultDTOList.length; i++){
+                        var e = testResultDTOList[i];
+                        testDTOS.push({
+                            index:`${i+1}`,
+                            id:e.testItemResultRecord.id,
+                            testItemId:e.testItemResultRecord.testItemId,
+                            testItemName:e.testItem.name,
+                            testResult:e.testItemResultRecord.testResult,
+                            rawTestItemStandard:e.standardValue,
+                            unit:e.testItem.unit
+                        })
+                    }
+                }
+                testData = {
+                    tester: res.testReportRecord?res.testReportRecord.judger:'',
+                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
+                };
+                this.setState({
+                    checkData:{
+                        topData: topData,
+                        testDTOS: testDTOS,
+                        testData: testData,
+                        isQualified: isQualified,
+                    },
+                });
+            }
+        })
+    }
+    handleCancel = () => {
+>>>>>>> ce81f1fdc8a64eaf25311684a3fdde015a32ce12
         this.setState({
-            visible: true,
+            visible: false,
         });
-    };
-    handleCancel = (e) => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
     };
 
 }
