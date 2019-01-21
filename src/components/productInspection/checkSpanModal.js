@@ -8,15 +8,10 @@ import './productInspection.css';
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class CheckSpanModal extends React.Component {
-    // constructor(props){
-    //     super(props);
-    //     this.state = {
-    //         topData : topData,      //表头数据
-    //         testData: testData,   // 检验人数据
-    //         examineData: examineData,  //审核人数据
-    //         status : '', //0不合格，1合格
-    //     };
-    // }
+    constructor(props){
+        super(props);
+        this.clickIsQualified = this.clickIsQualified.bind(this);
+    }
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -105,13 +100,18 @@ class CheckSpanModal extends React.Component {
                     />
                 </div>
                 <CheckQualifiedModal
-
+                    status={this.props.data.isQualified}
+                    clickIsQualified={this.clickIsQualified}
                 />
             </div>
         )
     }
     /**实现选择合格:1与不合格:0功能 */
-
+    clickIsQualified = (isQualified) => {
+        var checkData = this.props.data;
+        checkData.isQualified = isQualified;
+        this.modifyDetailData(checkData);
+    };
     /**---------------------- */
     /**实现字段搜索功能 */
     /**---------------------- */

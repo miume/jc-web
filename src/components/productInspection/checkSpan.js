@@ -224,17 +224,32 @@ class CheckSpan extends React.Component {
             };
             validTestRecords.push(validTestRecordsObj)
         }
+        //组装testResultDTOList格式
+        var testResultDTOLists = [];
+        for(var j=0; j<checkData.testDTOS.length; j++){
+            const e = checkData.testDTOS[j];
+            var testResultDTOList = {
+                testItemResultRecord: {
+                    id: e.id,
+                    testResult: e.testResult
+                }
+            }
+            testResultDTOLists.push(testResultDTOList)
+        }
+
         //  需要知道保存的格式
         var saveData = {
-            purchaseReportRecord: {
-                id: checkData.topData.id,
-                norm: checkData.topData.norm,
-                quantity: checkData.topData.quantity,
-                receiveDate: checkData.topData.receiveDate,
-                // receiveDate: '2018-01-08 14:58:12',
-                weight: checkData.topData.weight
+            batchNumberId: this.props.batchNumberId,
+            deliveringDate: checkData.topData.sampleDeliveringDate,
+            repoBaseSerialNumber: {
+                serialNumber: checkData.topData.serialNumber,
+                materialName: checkData.topData.materialName
             },
-            validTestRecords: validTestRecords
+            testResultDTOLists: testResultDTOLists,
+            testReportRecord: {
+                isQualified: checkData.isQualified
+            },
+
         };
         console.log('saveData',saveData)
 

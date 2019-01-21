@@ -1,7 +1,10 @@
 import React from 'react';
-import { Modal,Button } from 'antd';
+import {Modal, Button, message} from 'antd';
 import DrSpanModal from './drSpanModal';
 import './productInspection.css';
+import axios from "axios";
+import CancleButton from '../BlockQuote/cancleButton';
+
 
 
 const data = [];
@@ -27,6 +30,9 @@ class ReleaseSpan extends React.Component {
             process:-1,
         };
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleDetail = this.handleDetail.bind(this);
+        this.getDetailData = this.getDetailData.bind(this);
+        this.handleRelease = this.handleRelease.bind(this);
         this.showModal = this.showModal.bind(this);
     }
     render() {
@@ -45,8 +51,12 @@ class ReleaseSpan extends React.Component {
                     maskClosable={false}
                     width="500px"
                     footer={[
-                        <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
-                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleReleaseNew} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
+                        <CancleButton
+                            key="back"
+                            flag = {1}
+                            handleCancel={this.handleCancel}
+                        />,
+                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleRelease} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
                     <div style={{height:640}}>
@@ -61,6 +71,26 @@ class ReleaseSpan extends React.Component {
             </span>
         )
     }
+    handleRelease = () => {
+        axios({
+            url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.batchNumberId}`,
+            method:'put',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            this.props.fetch();
+            message.info(data.data.message);
+        }).catch(()=>{
+            message.info('发布失败，请联系管理员！');
+        });
+        this.setState({
+            visible: false,
+        });
+    };
+    /**点击详情 */
+    handleDetail() {
+        this.getDetailData();
     showModal = () => {
         this.setState({
             visible: true,

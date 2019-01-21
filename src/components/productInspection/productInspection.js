@@ -4,54 +4,7 @@ import SearchCell from "../BlockQuote/search";
 import ProductTable from "./productInspectionTable";
 import axios from "axios";
 
-const data =[];
-for(let i=0; i<20; i++){
-    if(i%2===0){
-        data.push({
-            index:i,
-            id: i,
-            sampleDeliveringDate: '2018年10月11日',
-            deliverer: '测试',
-            deliveryFactory: '测试',
-            batchNumber: '测试',
-            testItems: '测试',
-            urgentComment: '测试',
-            type: '测试',
-            h: '0',
-            status: 3
-        });
-        continue;
-    };
-    if(i%3===0){
-        data.push({
-            index:i,
-            id: i,
-            sampleDeliveringDate: '2018年10月11日',
-            deliverer: '测试',
-            deliveryFactory: '测试',
-            batchNumber: '测试',
-            testItems: '测试',
-            urgentComment: '测试',
-            type: '测试',
-            h: '0',
-            status: 0
-        });
-        continue;
-    };
-    data.push({
-        index:i,
-        id: i,
-        sampleDeliveringDate: '2018年10月11日',
-        deliverer: '测试',
-        deliveryFactory: '测试',
-        batchNumber: '测试',
-        testItems: '测试',
-        urgentComment: '测试',
-        type: '测试',
-        h: '1',
-        status: 2
-    })
-}
+
 class ProductInspection extends React.Component {
     url;
     status;
@@ -91,17 +44,17 @@ class ProductInspection extends React.Component {
                 <BlockQuote name="成品检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
-                        name='请输入搜索内容'
+                        name='请输入送检工厂名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
                     />
                     <div className='clear' ></div>
                     <ProductTable
+                        fetch={this.fetch}
                         url = {this.url}
                         data={this.state.dataSource}
                         status={this.status}
-                        // rowSelection={rowSelection}
                         pagination={this.pagination}
                         fetch={this.fetch}
                         modifyDataSource={this.modifyDataSource}
