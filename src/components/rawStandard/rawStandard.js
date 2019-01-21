@@ -43,6 +43,9 @@ class RawStandard extends Component{
             content2:content2,
             factoryId:id
         });
+        if(flag===3){
+             this.getStandard(id);
+        }
   }
   getStandard(id){//获取设置标准界面的表格数据
     //console.log(value);
