@@ -23,8 +23,6 @@ class Add extends Component{
     } 
     handleAddSave(){
         const value=this.formRef.getItemsValue();//获取新增的表单内容
-        //console.log(value);
-        //console.log(value.get('file'));
         if(!value.get('name')||!value.get('instrumentId')||!value.get('installTime')||!value.get('warrantyPeriod')||!value.get('supplyManufacturerId')||!value.get('supplyManufacturePhone')||!value.get('supplyManufacturePhone')||!value.get('repairManufacturerId')||!value.get('repairManufacturePhone')||!value.get('file')){
             message.info('信息填写不完整!');
             return

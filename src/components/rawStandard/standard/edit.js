@@ -308,6 +308,7 @@ class EditStandard extends Component{
         })
     }
     render(){
+        console.log(this.props.iterateFlag);
         return(
             <span>
                     {this.props.flag?(<span className='blue' onClick={this.showModalDetail}>详情</span>):
