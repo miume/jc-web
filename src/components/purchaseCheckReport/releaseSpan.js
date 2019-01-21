@@ -6,8 +6,6 @@ import PurchaseModal from './purchaseModal';
 
 
 class ReleaseSpan extends React.Component {
-    Authorization;
-    server;
     constructor(props){
         super(props);
         this.state = {
@@ -79,5 +77,4 @@ class ReleaseSpan extends React.Component {
         this.setState({ pvisivle });
     };
 }
-
 export default ReleaseSpan;
