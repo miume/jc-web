@@ -9,8 +9,6 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import PopRefuse from "./confuse"
 import "./sample.css"
 import Edit from "./editor"
-
-
 class SampleInspection extends React.Component{
     server
     Authorization
@@ -51,8 +49,6 @@ class SampleInspection extends React.Component{
                 return `共${total}条记录`
             },
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
             onChange:this.changePage,
         }
         this.columns = [{
@@ -311,12 +307,12 @@ class SampleInspection extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            this.pagination.total=res.total;
-            this.pagination.current = res.pageNumber;
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
                 }
+                this.pagination.total=res.total;
+                this.pagination.current = res.pageNumber;
                 this.setState({
                     dataSource: res.list,
                     searchContent:'',
@@ -327,7 +323,7 @@ class SampleInspection extends React.Component{
         })
     };
     onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
     cancel() {

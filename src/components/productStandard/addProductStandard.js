@@ -111,6 +111,7 @@ class AddProductStandard extends React.Component{
             effectiveTime:res.details.techniqueProductStandardRecord.effectiveTime
         }
         var details = res.details.techniqueProductTestItemDTOs;
+        console.log(details)
         var data = [];
         for(var i = 0; i < details.length; i++){
             var e = details[i];
@@ -204,7 +205,7 @@ class AddProductStandard extends React.Component{
     dataProcessing(data){
         for(var i = 0; i < data.length; i++){
             data[i].unit = 'kg';
-            data[i]['index']=`${i+1}`;
+            data[i]['index']=i+1;
             data[i]['testResult']=''
         }
         // var date = new Date();

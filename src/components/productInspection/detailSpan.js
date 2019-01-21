@@ -39,7 +39,7 @@ class DetailSpan extends React.Component {
         this.getDetailData = this.getDetailData.bind(this);
     }
 
-    handleCancel = () => {
+    handleCancel = (e) => {
         this.setState({
             visible: false,
         });

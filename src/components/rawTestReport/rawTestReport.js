@@ -207,10 +207,9 @@ class RawTestReport extends React.Component{
             params:params
         }).then((data)=>{
             const res = data.data.data?data.data.data:[];
-            if(res&&res.list.length>0){
+            if(res&&res.list){
                 this.dataProcessing(res)
             }
-            
         })
     }
     /**数据处理 */

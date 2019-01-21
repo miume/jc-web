@@ -25,6 +25,10 @@ class Add extends Component{
         const value=this.formRef.getItemsValue();//获取新增的表单内容
         //console.log(value);
         //console.log(value.get('file'));
+        if(!value.get('name')||!value.get('instrumentId')||!value.get('installTime')||!value.get('warrantyPeriod')||!value.get('supplyManufacturerId')||!value.get('supplyManufacturePhone')||!value.get('supplyManufacturePhone')||!value.get('repairManufacturerId')||!value.get('repairManufacturePhone')||!value.get('file')){
+            message.info('信息填写不完整!');
+            return
+    }
         axios({
              url:`${this.props.url.equipmentArchiveRecord.get}`,
              method:'post',
@@ -47,13 +51,13 @@ class Add extends Component{
             visible:false
         }); 
         /**清空新增form组件的内容*/
-        //this.formRef.resetField();
+        this.formRef.resetField()
     } 
   
     handleCancel(){
        this.setState({visible:false})
        /**清空新增form组件的内容*/
-     // this.formRef.resetField();
+       this.formRef.resetField()
     }
     render(){
         return(
