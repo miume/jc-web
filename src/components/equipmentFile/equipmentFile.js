@@ -122,6 +122,7 @@ class EquipmentArchive extends Component{//设备档案
      this.getAllEquipmentBaseInstrument=this.getAllEquipmentBaseInstrument.bind(this);
      this.searchEvent=this.searchEvent.bind(this);
      this.searchContentChange=this.searchContentChange.bind(this);
+     this.reset=this.reset.bind(this);
     }
     handleTableChange=(pagination)=>{
           this.pagination=pagination;
@@ -177,7 +178,11 @@ class EquipmentArchive extends Component{//设备档案
             }
         });
     }
-
+     /**重置 */
+     reset(){
+        this.pagination.current = 1;
+        this.fetch();
+    }
     onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
         this.setState({
                selectedRowKeys:selectedRowKeys
