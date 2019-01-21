@@ -30,7 +30,7 @@ class Delete extends Component{
                }
             })
             .then((data)=>{
-                console.log(data);
+                //console.log(data);
                 message.info(data.data.message);
                 if(data.data.code===0){
                       this.props.fetch({

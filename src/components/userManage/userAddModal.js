@@ -43,8 +43,6 @@ class UserAddModal extends React.Component{
      resetField=()=>{
       this.props.form.resetFields();
   }
-
-
     render(){
         const { form } = this.props;
         const { getFieldDecorator } = form;    //1、将getFieldDecorator 解构出来，用于和表单进行双向绑定

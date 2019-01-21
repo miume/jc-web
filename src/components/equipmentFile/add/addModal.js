@@ -20,7 +20,7 @@ class AddModal extends Component{
         this.fileRemove=this.fileRemove.bind(this);
     }
     dateChange(value,dateString){
-        console.log(dateString); 
+        //console.log(dateString); 
         this.setState({
             dateString:dateString //格式化后的时间，带时分秒
         });
@@ -68,6 +68,9 @@ class AddModal extends Component{
         })
         return formData;
     }
+     /**重置组件的值 */
+     resetField=()=>{
+        this.props.form.resetFields();}
      render(){
             const { form } = this.props;
             const { getFieldDecorator } = form; 
@@ -206,7 +209,7 @@ class AddModal extends Component{
                   <Row>
                         <Col span={10} style={{display:"block"}}>
                             <FormItem wrapperCol={{span:24}}>
-                                { 
+                                {
                                     <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove} fileList={this.state.fileList}>
                                         <Button className='equipmentFile-upload-button'>
                                          <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
