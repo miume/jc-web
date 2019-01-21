@@ -98,7 +98,6 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
-                            // record={record}
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
                         />
@@ -108,8 +107,8 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {releaseSpanFlag?(
                         <ReleaseSpan
-                            // record={record}
                             batchNumberId={record.batchNumberId}
+                            url={this.props.url}
                         />
                     ):(
                         <span  className="notClick">发布</span>
