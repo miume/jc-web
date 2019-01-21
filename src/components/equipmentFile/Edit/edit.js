@@ -8,33 +8,16 @@ class Edit extends Component{
     constructor(props){
          super(props);
          this.state={
-            title:'',
             visible:false,
         }
         this.showModal=this.showModal.bind(this);
-        this.handleAddSave=this.handleAddSave.bind(this);
         this.handleEditSave=this.handleEditSave.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
     }
     showModal(){
         this.setState({visible:true});
-        if(this.props.flag){//为真的话显示编辑
-            this.setState({
-                title:'编辑数据'
-            })
-        }
-        else{
-            this.setState({
-                title:'新增数据'
-            })
-        }
     } 
-    handleAddSave(){
-        this.setState({
-            visible:false
-        });   
-        
-    } 
+  
     handleEditSave(){
         this.setState({
             visible:false
@@ -47,8 +30,7 @@ class Edit extends Component{
     render(){
         return(
             <span>
-                {this.props.flag?(<span className='blue' onClick={this.showModal}>编辑</span>)
-                :(<NewButton className='fa fa-plus' name='新增' handleClick={this.showModal}/>)}
+                <span className='blue' onClick={this.showModal}>编辑</span>
                 <Modal
                     title={this.state.title}
                     visible={this.state.visible}
@@ -56,10 +38,11 @@ class Edit extends Component{
                     maskClosable={false}
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
-                        <SaveButton key='save' handleSave={this.props.flag?this.handleEditSave:this.handleAddSave}/>
+                        <SaveButton key='save' handleSave={this.handleEditSave}/>
                     ]}
                  >
-                    <EditModal  wrappedComponentRef={(form) => this.formRef = form} url={this.props.url}/>
+                   <EditModal  wrappedComponentRef={(form) => this.formRef = form} url={this.props.url} record={this.props.record} supplyManufacture={this.props.supplyManufacture} repairManufacture={this.props.repairManufacture} equipmentBaseInstrument={this.props.equipmentBaseInstrument}/>
+                    
                 </Modal>
             </span>
         );

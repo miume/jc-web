@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Modal} from 'antd';
+import {Modal,message} from 'antd';
+import axios from 'axios';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
 import '../equipmentFile.css'
@@ -19,7 +20,28 @@ class Delete extends Component{
            })
         }
         handleDelete(){
-            
+            const id=this.props.record.id;
+            //console.log(id);
+            axios({
+               url:`${this.props.url.equipmentArchiveRecord.get}/${id}`,
+               method:'delete',
+               headers:{
+                   'Authorization':this.props.url.Authorization
+               }
+            })
+            .then((data)=>{
+                console.log(data);
+                message.info(data.data.message);
+                if(data.data.code===0){
+                      this.props.fetch({
+                        pageSize:this.props.pagination.pageSize,//条目数
+                        pageNumber:this.props.pagination.current,//当前是第几页
+                      });
+                }
+            })
+            .catch(()=>{
+                message.info('删除失败，请联系管理员!');
+                });
             this.setState({
                 visible:false
             });

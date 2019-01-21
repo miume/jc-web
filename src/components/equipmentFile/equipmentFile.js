@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table,Divider} from 'antd';
+import {Table,Divider,message} from 'antd';
 import axios from 'axios';
 import Blockquote from '../BlockQuote/blockquote';
 import NewButton from '../BlockQuote/newButton';
@@ -8,31 +8,27 @@ import SearchCell from '../BlockQuote/search';
 import CheckManual from '../equipmentFile/checkShouCe/checkShouCe';
 import Edit from '../equipmentFile/Edit/edit';
 import Delete from '../equipmentFile/delete/delete';
-// const data=[];
-// for(var i=0;i<32;i++){
-//    data.push({
-//        index:i+1,
-//        archiveName:'档案名称',
-//        instrumentName:'设备名称',
-//        installTime:'2019年1月15日',
-//        warrantyPeriod:'10年',
-//        supplyManufacture:'供货厂家',
-//        supplyManufacturePhone:'0731-1234567',
-//        repairManufacture:'维修厂家',
-//        repairManufacturePhone:'0731-1234567'
-//    });
-// }
+import Add from '../equipmentFile/add/add';
+import { locale } from 'moment';
 class EquipmentArchive extends Component{//设备档案
     componentDidMount(){
         this.fetch();
         this.getAllRepairManufacturer();
         this.getAllSupplyManufacturer();
+        this.getAllEquipmentBaseInstrument();
+        
     }
     constructor(props){
         super(props);
         this.state={
             selectedRowKeys:[],
-            dataSource:[]
+            dataSource:[],
+            searchContent:'',
+            supplyManufacturer:[],
+            repairManufacturer:[],
+            equipmentBaseInstrument:[],
+            pageChangeFlag:0,//0表示getAllByPage分页，1表示搜索分页
+            
         }
         this.columns=[{
             title:'序号',
@@ -58,7 +54,7 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'installTime',
             key:'installTime',
             align:'center',
-            width:'10%'
+            width:'15%'
         },{
             title:'保修期限',
             dataIndex:'warrantyPeriod',
@@ -76,7 +72,7 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'supplyManufacturePhone',
             key:'supplyManufacturePhone',
             align:'center',
-            width:'10%'
+            width:'9.5%'
         },{
             title:'维修厂家',
             dataIndex:'repairManufacture',
@@ -88,21 +84,21 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'repairManufacturePhone',
             key:'repairManufacturePhone',
             align:'center',
-            width:'10%'
+            width:'9.5%'
         },{
             title:'操作',
-            dataIndex:'id',
-            key:'id',
+            dataIndex:'operation',
+            key:'operation',
             align:'center',
-            width:'18%',
+            width:'15%',
             render:(text,record)=>{
                  return(
                      <span>
-                        <CheckManual/>
+                        <CheckManual record={record} url={this.url}/>
                         <Divider type='vertical'/>
-                        <Edit flag={true} url={this.url}/>
+                        <Edit  url={this.url} record={record} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument}/>
                         <Divider type='vertical'/>
-                        <Delete selectedRowKeys={this.state.selectedRowKeys}/>
+                        <Delete record={record} url={this.url} fetch={this.fetch} pagination={this.pagination}/>
                     </span>
                  )
             }
@@ -123,12 +119,25 @@ class EquipmentArchive extends Component{//设备档案
      this.handleTableChange=this.handleTableChange.bind(this);
      this.getAllRepairManufacturer=this.getAllRepairManufacturer.bind(this);
      this.getAllSupplyManufacturer=this.getAllSupplyManufacturer.bind(this);
+     this.getAllEquipmentBaseInstrument=this.getAllEquipmentBaseInstrument.bind(this);
+     this.searchEvent=this.searchEvent.bind(this);
+     this.searchContentChange=this.searchContentChange.bind(this);
     }
     handleTableChange=(pagination)=>{
-          this.fetch({
-            pageSize: pagination.pageSize,//条目数
-            pageNumber: pagination.current,//当前页
-          });
+          this.pagination=pagination;
+          const {pageChangeFlag}=this.state;
+          if(pageChangeFlag){//为1代表搜索分页
+                 this.searchEvent({
+                    pageSize: pagination.pageSize,
+                    pageNumber: pagination.current,  
+                 });
+          }
+          else{
+           this.fetch({
+             pageSize:pagination.pageSize,//条目数
+             pageNumber:pagination.current,//当前是第几页
+           });
+          }
     }
     fetch=(params={})=>{
         axios({
@@ -151,7 +160,7 @@ class EquipmentArchive extends Component{//设备档案
                         id:res.list[i].equipmentArchiveRecord.id,
                         archiveName:res.list[i].equipmentArchiveRecord.name,
                         instrumentName:res.list[i].baseInstrument.name,//设备名称
-                        installTime:res.list[i].equipmentArchiveRecord.installTime.split(" ")[0],
+                        installTime:res.list[i].equipmentArchiveRecord.installTime,
                         warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
                         supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
                         supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
@@ -160,26 +169,131 @@ class EquipmentArchive extends Component{//设备档案
                     });
                  }
                this.setState({
-                   dataSource:data
+                   dataSource:data,
+                   searchContent:'',
+                   selectedRowKeys:[],
+                   pageChangeFlag:0
                });
             }
         });
     }
+
     onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
         this.setState({
                selectedRowKeys:selectedRowKeys
         });
     }
-    getAllRepairManufacturer(){
-            axios({
-               url:`${this.url.equipmentArchiveRecord.getAllManufactute}`,
-               
+    searchContentChange(e){
+       const value=e.target.value;
+    //    console.log(value);
+       this.setState({
+           searchContent:value
+       });
+    }
+    searchEvent(params){
+       const name=this.state.searchContent;
+       //console.log(name);
+       axios({
+            url:`${this.url.equipmentArchiveRecord.getAllByPage}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{
+                pageSize:this.pagination.pageSize,
+                pageNumber:this.pagination.current,
+                name:name
+            },
+            type:'json'
+       })
+       .then((data)=>{
+           //console.log(data);
+           const res=data.data.data;
+           this.pagination.total=res.total?res.total:0;
+            if(res&&res.list){
+                var searchData=[];
+                for(var i=0;i<res.list.length;i++){
+                    searchData.push({
+                        index:i+1,
+                        id:res.list[i].equipmentArchiveRecord.id,
+                        archiveName:res.list[i].equipmentArchiveRecord.name,
+                        instrumentName:res.list[i].baseInstrument.name,//设备名称
+                        installTime:res.list[i].equipmentArchiveRecord.installTime,
+                        warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
+                        supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
+                        supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
+                        repairManufacture:res.list[i].repairManufacturer.name,
+                        repairManufacturePhone:res.list[i].repairManufacturer.contact
+                    });
+                }
+                //console.log(searchData);
+                this.setState({
+                    dataSource:searchData,
+                    pageChangeFlag:1
+                });
+            }
+           })
+       .catch(()=>{
+           message.info('搜索失败，请联系管理员！');
+       })
+    }
+   
+    getAllRepairManufacturer(){//获取所有维修厂家
+        const type=2;
+        axios({
+            url:`${this.url.equipmentManufacture.getAllEquipmentManufactute}/${type}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
             })
-            .then();
+        .then((data)=>{
+            const res=data.data.data;
+            if(res){
+                this.setState({
+                    repairManufacture:res
+                });
+            }
+        });
     }
-    getAllSupplyManufacturer(){
+    getAllSupplyManufacturer(){//获取所有供货厂家
+        const type=1;
+        axios({
+            url:`${this.url.equipmentManufacture.getAllEquipmentManufactute}/${type}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+         })
+         .then((data)=>{
+            // console.log(data);
+            const res=data.data.data;
+            if(res){
+                this.setState({
+                    supplyManufacture:res
+                });
+            }
+         });
+    }
+    getAllEquipmentBaseInstrument(){//获取所有设备名称
+        axios({
+            url:`${this.url.equipmentBaseInstrument.getAllEquipmentBaseInstrument}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+         })
+         .then((data)=>{
+             //console.log(data);
+             const res=data.data.data;
+             if(res){
+                this.setState({
+                    equipmentBaseInstrument:res
+                });
+             }
+         });
+    }
 
-    }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
@@ -192,11 +306,14 @@ class EquipmentArchive extends Component{//设备档案
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>
                  <div style={{padding:'15px'}}>
-                     <Edit flag={false} url={this.url}/> &nbsp;&nbsp;&nbsp;
+                     <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument}/> &nbsp;&nbsp;&nbsp;
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
                      <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell 
                            name='请输入搜索内容'
+                           searchEvent={this.searchEvent}
+                           searchContentChange={this.searchContentChange}
+                           fetch={this.fetch}
                         />
                      </span>
                    <Table
