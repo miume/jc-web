@@ -72,17 +72,42 @@ class DrSpanModal extends React.Component {
                            样品名称：<span>{this.props.data.topData.materialName+'样品'}</span>
                        </div>
                 </div>
-                <div>
-                    <Table
-                        className="productCursorDefault"
-                        rowKey={record => record.id}
-                        columns={columns}
-                        dataSource={this.props.data.testDTOS}
-                        pagination={{hideOnSinglePage:true,pageSize:100}}
-                        size="small"
-                        scroll={{ y: 150 }}
-                        bordered
-                    />
+                <div className="productSpanModal">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>检测项目</th>
+                                <th>检测结果</th>
+                                <th>行业标准</th>
+                                <th>计量单位</th>
+                                <th colSpan="2">判定</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            this.props.data.testDTOS.map((item,index) => {
+                                return(
+                                    <tr key={index}>
+                                        <td>{item.index}</td>
+                                        <td>{item.testItemName}</td>
+                                        <td>{item.testResult}</td>
+                                        <td>{item.rawTestItemStandard}</td>
+                                        <td>{item.unit}</td>
+                                        <td
+                                            className={(item.isValid)?'productPassValidPointer':'productDefaultPointer'}
+                                            onClick={this.handleJudgePass.bind(this,index,1)}
+                                        >合格</td>
+                                        <td
+                                            className={(item.isValid)?'productDefaultPointer':'productNoPassValidPointer'}
+                                            onClick={this.handleJudgePass.bind(this,index,0)}
+                                        >不合格</td>
+                                    </tr>
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>
                 </div>
                 <div className="productDrSpanModalBottom">
                     <div className="productDrSpanModalBottomFirst">
@@ -133,6 +158,17 @@ class DrSpanModal extends React.Component {
                 </div>
             </div>
         )
+    }
+    handleJudgePass = (index,flag) => {
+        var detailData = this.props.data;
+        detailData.testDTOS[index].isValid = flag;
+
+        // if(detailData.testDTOS[index].isValid===1){
+        //     detailData.testDTOS[index].isValid = 0;
+        // }else{
+        //     detailData.testDTOS[index].isValid = 1;
+        // }
+        this.props.modifyDetailData(detailData);
     }
 }
 

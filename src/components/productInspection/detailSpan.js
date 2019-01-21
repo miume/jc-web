@@ -37,6 +37,7 @@ class DetailSpan extends React.Component {
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
+        this.modifyDetailData = this.modifyDetailData.bind(this);
     }
 
     handleCancel = (e) => {
@@ -58,6 +59,7 @@ class DetailSpan extends React.Component {
                     // width="500px"
                     footer={[
                         <CancleButton
+                            key="back"
                             handleCancel = {this.handleCancel}
                             flag = {1}
                         />
@@ -67,6 +69,7 @@ class DetailSpan extends React.Component {
                         <DrSpanModal
                             // checkStatus:根据审核状态是否有审核及择优部分
                             // examine={this.state.examine}
+                            modifyDetailData={this.modifyDetailData}
                             data={this.state.detailData}
                         />
                     </div>
@@ -74,6 +77,10 @@ class DetailSpan extends React.Component {
             </span>
         )
     }
+    /**实现修改state功能 */
+    modifyDetailData = (data) => {
+        this.setState({detailData:data});
+    };
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
@@ -113,7 +120,8 @@ class DetailSpan extends React.Component {
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
                             rawTestItemStandard:e.standardValue,
-                            unit:e.testItem.unit
+                            unit:e.testItem.unit,
+                            isValid: e.testItemResultRecord.isValid
                         })
                     }
                 }
@@ -131,6 +139,7 @@ class DetailSpan extends React.Component {
                 };
                 const examineStatus = this.props.checkStatus;
                 const batchNumberId = res.testReportRecord?res.testReportRecord.batchNumberId:'';
+                console.log(batchNumberId)
                 if((examineStatus===2||examineStatus===3)&&batchNumberId){
                     axios({
                         url:`${this.props.url.toDoList}/${batchNumberId}/result`,
@@ -140,6 +149,7 @@ class DetailSpan extends React.Component {
                         }
                     }).then((data)=>{
                         const examine = data.data.data;
+                        console.log(examine)
                         this.setState({
                             detailData:{
                                 topData: topData,

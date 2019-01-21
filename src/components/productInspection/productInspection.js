@@ -56,7 +56,6 @@ class ProductInspection extends React.Component {
                         data={this.state.dataSource}
                         status={this.status}
                         pagination={this.pagination}
-                        fetch={this.fetch}
                         modifyDataSource={this.modifyDataSource}
                         handleTableChange={this.handleTableChange}
                     />
