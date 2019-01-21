@@ -4,7 +4,6 @@ import DrSpanModal from './drSpanModal';
 import './productInspection.css';
 import axios from "axios";
 import CancleButton from '../BlockQuote/cancleButton';
-<<<<<<< HEAD
 const data = [];
 for (let i = 0; i < 50; i++) {
     data.push({
@@ -16,10 +15,6 @@ for (let i = 0; i < 50; i++) {
         itemUnit: `g/mL`,
     });
 }
-=======
-
->>>>>>> ce81f1fdc8a64eaf25311684a3fdde015a32ce12
-
 class ReleaseSpan extends React.Component {
     constructor(props){
         super(props);
@@ -89,9 +84,7 @@ class ReleaseSpan extends React.Component {
     handleDetail() {
         this.getDetailData();
     }
-<<<<<<< HEAD
-    showModal = () => {
-=======
+    // showModal = () => {
     getDetailData = () =>{
         axios({
             url:`${this.props.url.productInspection.productRecord}/${this.props.batchNumberId}`,
@@ -143,7 +136,6 @@ class ReleaseSpan extends React.Component {
         })
     }
     handleCancel = () => {
->>>>>>> ce81f1fdc8a64eaf25311684a3fdde015a32ce12
         this.setState({
             visible: false,
         });
