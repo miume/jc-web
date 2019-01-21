@@ -11,6 +11,7 @@ const dateFormat = 'YYYY-MM-DD';
 const timeFormat = "HH:mm:ss";
 
 class Editor extends React.Component{
+    url
     server
     Authorization
     constructor(props){
@@ -65,7 +66,7 @@ class Editor extends React.Component{
 
     fetch = () =>{
         axios({
-            url: `${this.server}/jc/common/authUser/getAll`,
+            url: `${this.url.authUser.getAll}`,
             method : 'get',
             headers:{
                 'Authorization': this.Authorization
@@ -81,7 +82,7 @@ class Editor extends React.Component{
         })
 
         axios({
-            url: `${this.server}/jc/common/deliveryFactory`,
+            url: `${this.url.deliveryFactory.deliveryFactory}`,
             method : 'get',
             headers:{
                 'Authorization': this.Authorization
@@ -97,7 +98,7 @@ class Editor extends React.Component{
         })
 
         axios({
-            url: `${this.server}/jc/common/testItem`,
+            url: `${this.url.testItems.testItems}`,
             method : 'get',
             headers:{
                 'Authorization': this.Authorization
@@ -113,7 +114,7 @@ class Editor extends React.Component{
         })
 
         axios({
-            url: `${this.server}/jc/common/repoBaseSerialNumber`,
+            url: `${this.url.serialNumber.serialNumber}`,
             method : 'get',
             params : {materialClass:1},
             headers:{
@@ -130,7 +131,7 @@ class Editor extends React.Component{
         })
 
         axios({
-            url: `${this.server}/jc/common/repoBaseSerialNumber`,
+            url: `${this.url.serialNumber.serialNumber}`,
             method : 'get',
             params : {materialClass:3},
             headers:{
@@ -147,7 +148,7 @@ class Editor extends React.Component{
         })
 
         axios({
-            url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+            url:`${this.url.procedure.testItems}`,
             method:'get',
             params:{},
             headers:{
@@ -166,7 +167,7 @@ class Editor extends React.Component{
 
     getProcess=(value)=>{
         axios({
-            url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+            url:`${this.url.procedure.testItems}`,
             method:'get',
             params:{factoryId:value},
             headers:{
@@ -187,7 +188,7 @@ class Editor extends React.Component{
 
     getSampling=(value)=>{
         axios({
-            url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+            url:`${this.url.procedure.testItems}`,
             method:'get',
             params:{factoryId:this.state.factoryId,procedureId:value},
             headers:{
@@ -207,7 +208,7 @@ class Editor extends React.Component{
 
     getMaterials = (value)=>{
         axios({
-            url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+            url:`${this.url.procedure.testItems}`,
             method:'get',
             params:{factoryId:this.state.factoryId,procedureId:this.state.procedureId,samplePointName:value},
             headers:{
@@ -227,7 +228,7 @@ class Editor extends React.Component{
 
     getItems=(value)=>{
         axios({
-            url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+            url:`${this.url.procedure.testItems}`,
             method:'get',
             params:{factoryId:this.state.factoryId,procedureId:this.state.procedureId,
                 samplePointName:this.state.samplingPoint,materialId:value},
@@ -266,7 +267,7 @@ class Editor extends React.Component{
             },testItemIds:this.state.oldTestItems
         }
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord`,
+            url:`${this.url.sampleInspection.getAll}`,
             method:'put',
             headers:{
                 'Authorization': this.state.Authorization
@@ -288,7 +289,7 @@ class Editor extends React.Component{
             },testItemIds:this.state.oldTestItems
         }
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord`,
+            url:`${this.url.sampleInspection.getAll}`,
             method:'put',
             headers:{
                 'Authorization': this.state.Authorization
@@ -304,7 +305,7 @@ class Editor extends React.Component{
 
     showModal = () => {
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord/${this.props.id}`,
+            url:`${this.url.sampleInspection.getAll}/${this.props.id}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -350,7 +351,7 @@ class Editor extends React.Component{
 
     changeMaterials = (value) =>{
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord/rawStandard`,
+            url:`${this.url.sampleInspection.rawStandard}`,
             method:'get',
             params:{serialNumberId:value},
             headers:{
@@ -392,6 +393,7 @@ class Editor extends React.Component{
         }
     }
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem("Authorization");
         this.server = localStorage.getItem('remote');
         return(

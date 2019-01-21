@@ -231,6 +231,11 @@ class Home extends Component {
             process:{
                 process:`${server}/jc/common/batchAuditTask`
             },
+            /**权限模块，用户 */
+            authUser:{
+                getAll:`${server}/jc/common/authUser/getAll`,
+                getAllById:`${server}/jc/common/authUser/getById`
+            },
             /**流程管理 */
             processManagement:{
                 deleteByIds:`${server}/jc/common/batchAuditTask`,
@@ -243,6 +248,7 @@ class Home extends Component {
                 getAll:`${server}/jc/common/sampleDeliveringRecord`,
                 accept:`${server}/jc/common/sampleDeliveringRecord/accept`,
                 getAllBypages:`${server}/jc/common/sampleDeliveringRecord/pages`,
+                rawStandard:`${server}/jc/common/sampleDeliveringRecord/rawStandard`
             },
             /**操作管理 */
             operation:{

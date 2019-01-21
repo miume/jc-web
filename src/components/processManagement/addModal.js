@@ -73,6 +73,7 @@ const CollectionCreateForm = Form.create()(
 
 class AddModal extends React.Component {
     ob
+    url
     state = {
         visible: false,
         count: 1,
@@ -153,7 +154,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${this.server}/jc/common/batchAuditTask`,
+                url : `${this.url.processManagement.deleteByIds}`,
                 method:'post',
                 data: data,
                 type:'json'
@@ -186,7 +187,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${this.server}/jc/common/batchAuditTask`,
+                url : `${this.url.processManagement.deleteByIds}`,
                 method:'post',
                 data: data,
                 type:'json'
@@ -209,6 +210,7 @@ class AddModal extends React.Component {
     };
 
     render() {
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'))
         return (
             <span>
