@@ -60,12 +60,12 @@ import EditStandard from './edit';
                 //console.log(record.status);
                 let editFlag=this.judgeStatus(record.status);
                 let iterateFlag=this.judgeStatusIterate(record.status);//只有通过才能迭代
-               // console.log(record.isPublished);
+               //console.log(record.isPublished);
                 return(
                     <span>
-                        <EditStandard editFlag={editFlag} iterate={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
                         <Divider type='vertical'/>
-                        <EditStandard editFlag={editFlag} iterate={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
                     </span>
                 );
             }

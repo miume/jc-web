@@ -23,34 +23,28 @@ class RawStandard extends Component{
            
         }
         this.onBlockChange1=this.onBlockChange1.bind(this);
-        //this.onBlockChange2=this.onBlockChange2.bind(this);
+        this.onBlockChange2=this.onBlockChange2.bind(this);
         this.onBlockChange3=this.onBlockChange3.bind(this);
         this.clickToRaw=this.clickToRaw.bind(this);
         this.clickToFactory=this.clickToFactory.bind(this);
         this.getStandard=this.getStandard.bind(this);
     }
- 
   onBlockChange1(flag,content1,id){//原材料那个块是否被选中，选中后发生的变化
     //  console.log(flag,content1,id);
-    if(flag===2){
         this.setState({
             flag:flag,
             content1:content1,
             rawMaterialId:id
         });
-    }
-    else {
-        if(flag===3){
-            this.getStandard(id);
-      }
+  }
+  onBlockChange2(flag,content2,id){//原材料那个块是否被选中，选中后发生的变化
         this.setState({
             flag:flag,
-            content2:content1,
+            content2:content2,
             factoryId:id
         });
-     }
   }
-  getStandard(id,value){//获取设置标准界面的表格数据
+  getStandard(id){//获取设置标准界面的表格数据
     //console.log(value);
     axios({
         url:`${this.url.rawStandard.getStandard}`,
@@ -59,7 +53,6 @@ class RawStandard extends Component{
            'Authorization':this.url.Authorization
         },
         params:{
-           name:value,
            materialId:this.state.rawMaterialId,
            factoryId:id
       },
@@ -82,17 +75,19 @@ class RawStandard extends Component{
                   });
             }
         }
+       console.log(raw);
     this.setState({
         dataSource:raw,
     });
   });
 }
    onBlockChange3(flag,content3){
-      //console.log(flag,content3);
         this.setState({
             flag:flag,
-            content3:content3,
         });
+        if(flag===3){
+            this.getStandard(this.state.factoryId);
+        }
    }
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
          this.setState({
@@ -124,7 +119,7 @@ class RawStandard extends Component{
                             <RawMaterial onBlockChange={this.onBlockChange1} type={1} url={this.url}/>
                         </div>
                         <div className={this.state.flag===2?'':'hide'}  >
-                            <Manufacturer onBlockChange={this.onBlockChange1} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}/> 
+                            <Manufacturer onBlockChange={this.onBlockChange2} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}/> 
                         </div>
                         <div className={this.state.flag===3?'':'hide'}>
                             <Standard dataSource={this.state.dataSource}  onBlockChange={this.onBlockChange3}  type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard}/>

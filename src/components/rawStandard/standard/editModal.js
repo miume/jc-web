@@ -56,10 +56,7 @@ class EditStandardModal extends Component{
         this.props.handleDate(dateString);
     }
     disabledDate(current){
-        //  console.log(current);
-        // console.log(moment().endOf('day'));
-        //console.log(current < moment().endOf('day'));
-        return  current&&current< moment().endOf('day');//不可选择今天以前的日期
+        return  current < moment().startOf('day');//不可选择今天以前的日期
     }
       render(){
           
