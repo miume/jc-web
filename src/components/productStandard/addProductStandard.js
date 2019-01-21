@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
-import {Modal,Input,Table,DatePicker,message} from 'antd';
 import HeadTable from './headTable';
 import Submit from '../BlockQuote/submit';
 import NewButton from '../BlockQuote/newButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CancleButton from '../BlockQuote/cancleButton';
+import {Modal,Input,Table,DatePicker,message} from 'antd';
 class AddProductStandard extends React.Component{
     constructor(props){
         super(props);
@@ -35,7 +35,7 @@ class AddProductStandard extends React.Component{
         this.addDataProcessing = this.addDataProcessing.bind(this);
         this.detailDataProcessing = this.detailDataProcessing.bind(this);
         this.getDataByBatchNumberId = this.getDataByBatchNumberId.bind(this);
-        this.disabledDateTime = this.disabledDateTime.bind(this);
+        // this.disabledDateTime = this.disabledDateTime.bind(this);
         this.handleIteration = this.handleIteration.bind(this);
         this.disabledDate  = this.disabledDate.bind(this);
         this.range = this.range.bind(this);
@@ -115,7 +115,7 @@ class AddProductStandard extends React.Component{
         for(var i = 0; i < details.length; i++){
             var e = details[i];
             var testItems = e.testItem;
-            console.log(details)
+            //console.log(details)
             testItems['index'] = i+1;
             testItems['value'] = e.techniqueProductTestItemStandard.value;
             data.push(testItems)
@@ -178,10 +178,12 @@ class AddProductStandard extends React.Component{
     save(e){
         const value = e.target.value;
         const name = e.target.name;
-        const id = e.target.id
+        const id = e.target.id;
         const newData = [...this.state.allTestItem];
+        //console.log(`name=${name},value=${value}`)
         const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
-        newData[index][name] = value;
+        newData[index]['value'] = value;
+        //console.log(newData)
         this.setState({
             allTestItem:newData
         })
@@ -208,14 +210,8 @@ class AddProductStandard extends React.Component{
             data[i]['index']=i+1;
             data[i]['testResult']=''
         }
-        // var date = new Date();
-        // var nowDate = date.toLocaleDateString().split('/').join('-');
-        // var time = {
-        //     effectiveTime:nowDate
-        // }
         this.setState({
             allTestItem:data,
-            // time:time
         })
     }
     /**监控新增标准 生效时间的选取 */
@@ -238,17 +234,18 @@ class AddProductStandard extends React.Component{
             return 
         }
         const data = this.state.allTestItem;
+        //console.log(data)
         for(var i=0; i<data.length;i++ )
         {
             techniqueProductTestItemDTOs.push({
                 techniqueProductTestItemStandard:{
                     testItemId:data[i].id,
-                    value:data[i].testResult?data[i].testResult:'无'
+                    value:data[i].value?data[i].value:'无'
                 }
             })
         }
-        const productId = this.props.data[0];
-        const classId = this.props.data[1];
+        const productId = this.props.data[0][0];
+        const classId = this.props.data[1][0];
         const techniqueProductStandardRecord = {
             effectiveTime:date,
             productClassId:classId,
@@ -258,13 +255,13 @@ class AddProductStandard extends React.Component{
             techniqueProductStandardRecord:techniqueProductStandardRecord,
             techniqueProductTestItemDTOs:techniqueProductTestItemDTOs
         }
-        // console.log(details)
+        console.log(details)
         this.applyOut(status,commonBatchNumber,details);
     }
     /**保存  新增请求方法是post 编辑请求方法是put */
     applyOut(status,commonBatchNumber,details){
-        const productId = this.props.data[0];
-        const classId = this.props.data[1];
+        const productId = this.props.data[0][0];
+        const classId = this.props.data[1][0];
         axios({
             type:'json',
             method:this.state.flag?'put':'post',
@@ -347,15 +344,15 @@ class AddProductStandard extends React.Component{
         return result;
       }
     disabledDate(current){
-        return current && current < moment().endOf('day');
+        return  current < moment().startOf('day');
     }
-    disabledDateTime(){
-        return {
-            disabledHours: () => this.range(0, 24).splice(4, 20),
-            disabledMinutes: () => this.range(30, 60),
-            disabledSeconds: () => [55, 56],
-          };
-    }
+    // disabledDateTime(){
+    //     return {
+    //         disabledHours: () => this.range(0, 24).splice(4, 20),
+    //         disabledMinutes: () => this.range(30, 60),
+    //         disabledSeconds: () => [55, 56],
+    //       };
+    // }
     render(){
         const status = this.props.status;
         /**详情  只有status===2 审核通过的数据可以迭代 */
@@ -376,6 +373,7 @@ class AddProductStandard extends React.Component{
         const format = "YYYY-MM-DD";
         const effectiveTime = this.state.time.effectiveTime;
         const flag = this.props.flag;
+        const data = [this.props.data[0][1],this.props.data[1][1]] ;
         return (
             <span>
                 {this.judge(flag)}
@@ -383,7 +381,7 @@ class AddProductStandard extends React.Component{
                 maskClosable={false} 
                 footer={this.state.flag===1?detail:iteration}>
                 <div>
-                    <HeadTable flag={this.props.flag} data={this.props.data} batchNumber={this.state.batchNumber} />
+                    <HeadTable flag={this.props.flag} data={data} batchNumber={this.state.batchNumber} />
                     <div className='modal-add-table' >
                         <Table className='stock-out' rowKey={record=>record.id} 
                         columns={this.columns} dataSource={this.state.allTestItem} 
