@@ -11,7 +11,7 @@ class Submit extends React.Component{
         this.state = {
             urgent:0,        //用来监控送审紧急还是正常
             process:-1,      //用来监控下拉框送审流程的变化
-            visible:false,   //用来控制送审界面显示与否
+            visible:this.props.visible?this.props.visible:false,   //用来控制送审界面显示与否
             allProcess : [], //用来存取所有送审流程
         }
         this.handleOk = this.handleOk.bind(this);

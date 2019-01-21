@@ -255,7 +255,7 @@ class AddProductStandard extends React.Component{
             techniqueProductStandardRecord:techniqueProductStandardRecord,
             techniqueProductTestItemDTOs:techniqueProductTestItemDTOs
         }
-        console.log(details)
+        //console.log(details)
         this.applyOut(status,commonBatchNumber,details);
     }
     /**保存  新增请求方法是post 编辑请求方法是put */
