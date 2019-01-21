@@ -119,7 +119,6 @@ class CheckReleaseSpan extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-            console.log('11')
             this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{

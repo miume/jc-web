@@ -18,7 +18,10 @@ class ProductTable extends React.Component{
         dataIndex: 'deliveringDate',
         key: 'deliveringDate',
         align:'center',
-        width: '13%',
+        width: '10%',
+        render: deliveringDate => {
+            return <abbr style={{cursor:'default'}} title={deliveringDate?deliveringDate:'无'}>{deliveringDate?deliveringDate.substring(0,10):'无'}</abbr>
+        }
     },{
         title: '送检人',
         dataIndex: 'deliver',
@@ -36,13 +39,20 @@ class ProductTable extends React.Component{
         dataIndex: 'repoBaseSerialNumber.serialNumber',
         key: 'repoBaseSerialNumber.serialNumber',
         align:'center',
-        width: '10%',
+        width: '15%',
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
         width: '8%',
+        render: testItemString => {
+            const length = testItemString?testItemString.length:0;
+            if(length > 15){
+                return <abbr style={{cursor:'default'}} title={testItemString?testItemString:'无'}>{testItemString?testItemString.substring(0,15):'无'}</abbr>
+            }
+            return testItemString?testItemString:'无';
+        }
     },{
         title: '异常备注',
         dataIndex: 'exception',
@@ -78,12 +88,12 @@ class ProductTable extends React.Component{
         align:'center',
         width: '16%',
         render: (text,record) => {
-            // let detailSpanFlag = this.judgeDetailOperation(record.status);
-            // let checkSpanFlag = this.judgeCheckOperation(record.status);
-            // let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
-            let detailSpanFlag = true
-            let checkSpanFlag = true
-            let releaseSpanFlag = true
+            let detailSpanFlag = this.judgeDetailOperation(record.status);
+            let checkSpanFlag = this.judgeCheckOperation(record.status);
+            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            // let detailSpanFlag = true
+            // let checkSpanFlag = true
+            // let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
@@ -109,6 +119,7 @@ class ProductTable extends React.Component{
                         <ReleaseSpan
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
+                            fetch={this.props.fetch}
                         />
                     ):(
                         <span  className="notClick">发布</span>
