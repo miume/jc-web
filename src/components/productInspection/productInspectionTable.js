@@ -39,13 +39,13 @@ class ProductTable extends React.Component{
         dataIndex: 'repoBaseSerialNumber.serialNumber',
         key: 'repoBaseSerialNumber.serialNumber',
         align:'center',
-        width: '15%',
+        width: '13%',
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
-        width: '8%',
+        width: '10%',
         render: testItemString => {
             const length = testItemString?testItemString.length:0;
             if(length > 15){
@@ -90,10 +90,10 @@ class ProductTable extends React.Component{
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
-            // let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
             // let detailSpanFlag = true
             // let checkSpanFlag = true
-            let releaseSpanFlag = true
+            // let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
@@ -108,7 +108,6 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
-                            // record={record}
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
                         />
@@ -118,7 +117,6 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {releaseSpanFlag?(
                         <ReleaseSpan
-                            // record={record}
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
                             fetch={this.props.fetch}

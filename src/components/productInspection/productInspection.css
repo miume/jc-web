@@ -224,3 +224,43 @@
     margin: 2px;
     font-size: 30px;
 }
+
+.productSpanModal {
+    min-width: 100%;
+    max-width: 100%;
+    height: 190px;
+    overflow-y: scroll;
+    cursor: default;
+}
+.productSpanModal table {
+    width: 100%;
+    border: 1px solid #E9E9E9;
+    text-align: center;
+    height: 150px;
+    /*font-size: 14px;*/
+}
+.productSpanModal table thead tr th {
+    height: 30px;
+    border: 1px solid #E9E9E9;
+}
+.productSpanModal table tbody tr td{
+    height: 30px;
+    border: 1px solid #E9E9E9;
+    /*height: 20px;*/
+    /*overflow-y: scroll;*/
+}
+.productPassValidPointer {
+    background-color: #4BD863;
+    cursor: pointer;
+    width: 50px;
+}
+.productNoPassValidPointer {
+    background-color: #FF3B30;
+    cursor: pointer;
+    width: 50px;
+}
+.productDefaultPointer {
+    background-color: #999999;
+    cursor: pointer;
+    width: 50px;
+}
