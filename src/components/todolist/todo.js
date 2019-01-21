@@ -87,7 +87,7 @@ class Todo extends React.Component{
                        this.props.details.map((e,index)=>{
                            if(e.visible) this.state.flag=1;
                            return (
-                                <div key={`${e.userId}-${this.props.flag?1:0}`} style={{display:'flex',textAlign:'center'}}>
+                                <div key={index} style={{display:'flex',textAlign:'center'}}>
                                     <Part index={index+1} data={e} id={this.props.curId} count={count} visible={e.visible} flag={this.state.flag}/>
                                     <Line index={index+1} count={count} flag={this.state.flag}/>
                                 </div>)
