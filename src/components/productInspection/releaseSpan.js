@@ -4,9 +4,6 @@ import DrSpanModal from './drSpanModal';
 import './productInspection.css';
 import axios from "axios";
 import CancleButton from '../BlockQuote/cancleButton';
-
-
-
 const data = [];
 for (let i = 0; i < 50; i++) {
     data.push({
@@ -91,6 +88,7 @@ class ReleaseSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
+    }
     showModal = () => {
         this.setState({
             visible: true,
@@ -105,5 +103,4 @@ class ReleaseSpan extends React.Component {
     };
 
 }
-
-export default ReleaseSpan;
+export default ReleaseSpan
