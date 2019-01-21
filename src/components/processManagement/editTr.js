@@ -7,6 +7,7 @@ const Option = Select.Option;
 
 
 class EditTr extends React.Component{
+    url
     constructor(props){
         super(props);
         this.state = {
@@ -18,7 +19,7 @@ class EditTr extends React.Component{
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/common/authUser/getAll`,
+            url: `${this.url.authUser.getAll}`,
             method:'get',
             params: params,
         }).then((data)=>{
@@ -39,6 +40,7 @@ class EditTr extends React.Component{
     }
 
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         const children = this.state.approvalProcess.map(p => 
             <option id={p.id} key={p.id} value={p.id}>{p.name}</option>
         )

@@ -12,6 +12,7 @@ const FormItem = Form.Item;
 
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
+        url
         userId
         server
         Authorization
@@ -58,10 +59,10 @@ const CollectionCreateForm = Form.create()(
         // }
         fetch = () =>{
             axios({
-                url: `${this.server}/jc/common/authUser/getAll`,
+                url: `${this.url.authUser.getAll}`,
                 method : 'get',
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data) =>{
                 const res = data.data.data;
@@ -73,10 +74,10 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/deliveryFactory`,
+                url: `${this.url.deliveryFactory.deliveryFactory}`,
                 method : 'get',
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data) =>{
                 const res = data.data.data;
@@ -89,10 +90,10 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/testItem`,
+                url: `${this.url.testItems.testItems}`,
                 method : 'get',
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data) =>{
                 const res = data.data.data;
@@ -105,11 +106,11 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/repoBaseSerialNumber`,
+                url: `${this.url.serialNumber.serialNumber}`,
                 method : 'get',
                 params : {materialClass:1},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data) =>{
                 const res = data.data.data;
@@ -122,11 +123,11 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.server}/jc/common/repoBaseSerialNumber`,
+                url: `${this.url.serialNumber.serialNumber}`,
                 method : 'get',
                 params : {materialClass:3},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data) =>{
                 const res = data.data.data;
@@ -139,11 +140,11 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                url:`${this.url.procedure.testItems}`,
                 method:'get',
                 params:{},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
@@ -161,11 +162,11 @@ const CollectionCreateForm = Form.create()(
 
         getSampling=(value)=>{
             axios({
-                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                url:`${this.url.procedure.testItems}`,
                 method:'get',
                 params:{factoryId:this.state.factoryId,procedureId:value},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
@@ -181,11 +182,11 @@ const CollectionCreateForm = Form.create()(
 
         getMaterials = (value)=>{
             axios({
-                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                url:`${this.url.procedure.testItems}`,
                 method:'get',
                 params:{factoryId:this.state.factoryId,procedureId:this.state.procedureId,samplePointName:value},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
@@ -201,11 +202,11 @@ const CollectionCreateForm = Form.create()(
 
         materialsItem = (value)=>{
             axios({
-                url:`${this.server}/jc/common/sampleDeliveringRecord/rawStandard`,
+                url:`${this.url.sampleInspection.rawStandard}`,
                 method:'get',
                 params:{serialNumberId:value},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
@@ -220,11 +221,11 @@ const CollectionCreateForm = Form.create()(
 
         getProcess=(value)=>{
             axios({
-                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                url:`${this.url.procedure.testItems}`,
                 method:'get',
                 params:{factoryId:value},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
@@ -240,12 +241,12 @@ const CollectionCreateForm = Form.create()(
         }
         getItems=(value)=>{
             axios({
-                url:`${this.server}/jc/common/procedureTestRecord/testItems`,
+                url:`${this.url.procedure.testItems}`,
                 method:'get',
                 params:{factoryId:this.state.factoryId,procedureId:this.state.procedureId,
                     samplePointName:this.state.samplingPoint,materialId:value},
                 headers:{
-                    'Authorization': this.Authorization
+                    'Authorization': this.url.Authorization
                 },
             }).then((data)=>{
                 const res = data.data.data;
@@ -275,6 +276,7 @@ const CollectionCreateForm = Form.create()(
         }
 
         render(){
+            this.url = JSON.parse(localStorage.getItem('url'));
             this.Authorization = localStorage.getItem("Authorization");
             this.server = localStorage.getItem('remote');
             const {visible,form,onCancel,onCreate,onChange,onCenter} = this.props;
@@ -480,6 +482,7 @@ const CollectionCreateForm = Form.create()(
 );
 
 class AddModal extends React.Component{
+    url
     server
     Authorization
     state = {
@@ -529,10 +532,10 @@ class AddModal extends React.Component{
             let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
-                url:`${this.server}/jc/common/sampleDeliveringRecord`,
+                url:`${this.url.sampleInspection.getAll}`,
                 method:'post',
                 headers:{
-                    'Authorization': this.state.Authorization
+                    'Authorization': this.url.Authorization
                 },
                 data: data,
                 type:'json'
@@ -557,10 +560,10 @@ class AddModal extends React.Component{
             let data = {sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
-                url:`${this.server}/jc/common/sampleDeliveringRecord`,
+                url:`${this.url.sampleInspection.getAll}`,
                 method:'post',
                 headers:{
-                    'Authorization': this.state.Authorization
+                    'Authorization': this.url.Authorization
                 },
                 data: data,
                 type:'json'
@@ -574,6 +577,7 @@ class AddModal extends React.Component{
     }
 
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem("Authorization");
         this.server = localStorage.getItem('remote');
         return(

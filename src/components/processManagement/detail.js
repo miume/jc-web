@@ -21,6 +21,7 @@ const columns = [{
 
 
 class Detail extends React.Component{
+    url
     constructor(props){
         super(props);
         this.state = {
@@ -36,7 +37,7 @@ class Detail extends React.Component{
     }
     fetch = (id) => {
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/`+parseInt(id),
+            url:`${this.url.processManagement.deleteByIds}/`+parseInt(id),
             method:"GET",
         }).then((data) => {
             const res = data.data.data;
@@ -68,6 +69,7 @@ class Detail extends React.Component{
         });
     }
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         const td = this.state.data1.map(p=>
             <td key={p.description.toString()}>{p.description}</td>
         )

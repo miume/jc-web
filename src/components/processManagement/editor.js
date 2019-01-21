@@ -9,6 +9,7 @@ import "./difference.css";
 import EditTr from "./editTr";
 
 class Editor extends React.Component{
+    url
     constructor(props){
         super(props);
         this.state = {
@@ -60,7 +61,7 @@ class Editor extends React.Component{
         data.commonBatchNumber["status"] = -1
 
         axios({
-            url:`${this.server}/jc/common/batchAuditTask`,
+            url:`${this.url.processManagement.deleteByIds}`,
             method:"put",
             data:data,
             type:"json",
@@ -99,7 +100,7 @@ class Editor extends React.Component{
         data.commonBatchNumber["status"] = 2
 
         axios({
-            url:`${this.server}/jc/common/batchAuditTask`,
+            url:`${this.url.processManagement.deleteByIds}`,
             method:"put",
             data:data,
             type:"json",
@@ -130,7 +131,7 @@ class Editor extends React.Component{
     /**通过id获取数据 */
     fetch = ()=>{
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/${this.state.id}`,
+            url:`${this.url.processManagement.deleteByIds}/${this.state.id}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -168,6 +169,7 @@ class Editor extends React.Component{
         })
     }
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
                 {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="notClick">编辑</span>}

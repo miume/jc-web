@@ -6,6 +6,7 @@ import { Select } from 'antd';
 const Option = Select.Option;
 
 class Tr extends React.Component{
+    url
     constructor(props){
         super(props);
         this.state = {
@@ -19,7 +20,7 @@ class Tr extends React.Component{
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/common/authUser/getAll`,
+            url: `${this.url.authUser.getAll}`,
             method:'get',
             params: params,
         }).then((data)=>{
@@ -41,6 +42,7 @@ class Tr extends React.Component{
     //     this.setState({searchContent:value});
     // }
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         const children = this.state.approvalProcess.map(p => 
             <option className="option" id={p.id} key={p.id} value={p.id}>{p.name}</option>
         )

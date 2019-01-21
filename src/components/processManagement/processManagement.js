@@ -12,6 +12,7 @@ import axios from "axios";
 // const FormItem = Form.Item;
 
 class Management extends React.Component{
+    url
     Authorization
     server
     constructor(props){
@@ -118,7 +119,7 @@ class Management extends React.Component{
     }
     handleDelete = (id) => {
         axios({
-            url:`${this.server}/jc/common/batchAuditTask/${id}`,
+            url:`${this.url.processManagement.deleteByIds}/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.Authorization
@@ -148,7 +149,7 @@ class Management extends React.Component{
     fetch = (params = {}) => {
         this.setState({ loading: true });
         axios({
-            url: `${this.server}/jc/common/batchAuditTask/pages`,
+            url: `${this.url.processManagement.getAllByPage}`,
             method: 'get',
             headers:{
                 'Authorization': this.Authorization
@@ -192,7 +193,7 @@ class Management extends React.Component{
     searchEvent(){
     const ope_name = this.state.searchContent;
     axios({
-        url:`${this.server}/jc/common/batchAuditTask/pages`,
+        url:`${this.url.processManagement.getAllByPage}`,
         method:'get',
         headers:{
             'Authorization':this.Authorization
@@ -223,7 +224,7 @@ class Management extends React.Component{
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${this.server}/jc/common/batchAuditTask`,
+            url:`${this.url.processManagement.deleteByIds}`,
             method:'delete',
             headers:{
                 'Authorization':this.Authorization
@@ -256,6 +257,7 @@ class Management extends React.Component{
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.Authorization = localStorage.getItem("Authorization")
         this.server = localStorage.getItem("remote")

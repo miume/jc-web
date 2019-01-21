@@ -10,6 +10,7 @@ import PopRefuse from "./confuse"
 import "./sample.css"
 import Edit from "./editor"
 class SampleInspection extends React.Component{
+    url
     server
     Authorization
     componentDidMount() {
@@ -181,7 +182,7 @@ class SampleInspection extends React.Component{
     }
     handleRefuse(id){
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord/accept`,
+            url:`${this.url.sampleInspection.accept}`,
             method:'Post',
             headers:{
                 'Authorization':this.Authorization
@@ -202,7 +203,7 @@ class SampleInspection extends React.Component{
     }
     handleAccept = (id) =>{
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord/accept`,
+            url:`${this.url.sampleInspection.accept}`,
             method:'Post',
             headers:{
                 'Authorization':this.Authorization
@@ -222,7 +223,7 @@ class SampleInspection extends React.Component{
     }
     handleDelete = (id) => {
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord/${id}`,
+            url:`${this.url.sampleInspection.getAll}/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.Authorization
@@ -246,7 +247,7 @@ class SampleInspection extends React.Component{
     searchEvent(params = {}){
         const ope_name = this.state.searchContent;
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord/pages`,
+            url:`${this.url.sampleInspection.getAllBypages}`,
             method:'get',
             headers:{
                 'Authorization':this.Authorization
@@ -301,7 +302,7 @@ class SampleInspection extends React.Component{
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.server}/jc/common/sampleDeliveringRecord/pages`,
+            url: `${this.url.sampleInspection.getAllBypages}`,
             method: 'get',
             params: params,
             // type: 'json',
@@ -337,7 +338,7 @@ class SampleInspection extends React.Component{
     deleteByIds(){
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${this.server}/jc/common/sampleDeliveringRecord`,
+            url:`${this.url.sampleInspection.getAll}`,
             method:'delete',
             headers:{
                 'Authorization':this.Authorization
@@ -351,6 +352,7 @@ class SampleInspection extends React.Component{
     }
     render(){
         const { selectedRowKeys } = this.state;
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.server = localStorage.getItem('remote');
         this.Authorization = localStorage.getItem("Authorization")
