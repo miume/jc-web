@@ -111,12 +111,12 @@ class AddProductStandard extends React.Component{
             effectiveTime:res.details.techniqueProductStandardRecord.effectiveTime
         }
         var details = res.details.techniqueProductTestItemDTOs;
-        console.log(details)
         var data = [];
         for(var i = 0; i < details.length; i++){
             var e = details[i];
             var testItems = e.testItem;
-            testItems['index'] = `${i+1}`;
+            console.log(details)
+            testItems['index'] = i+1;
             testItems['value'] = e.techniqueProductTestItemStandard.value;
             data.push(testItems)
         }
@@ -247,8 +247,8 @@ class AddProductStandard extends React.Component{
                 }
             })
         }
-        const productId = this.props.data[1][0];
-        const classId = this.props.data[2][0];
+        const productId = this.props.data[0];
+        const classId = this.props.data[1];
         const techniqueProductStandardRecord = {
             effectiveTime:date,
             productClassId:classId,
@@ -263,8 +263,8 @@ class AddProductStandard extends React.Component{
     }
     /**保存  新增请求方法是post 编辑请求方法是put */
     applyOut(status,commonBatchNumber,details){
-        const productId = this.props.data[1][0];
-        const classId = this.props.data[2][0];
+        const productId = this.props.data[0];
+        const classId = this.props.data[1];
         axios({
             type:'json',
             method:this.state.flag?'put':'post',
