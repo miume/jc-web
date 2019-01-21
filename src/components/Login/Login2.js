@@ -15,7 +15,7 @@ class Login extends React.Component {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
     localStorage.setItem("remote1", "http://192.168.1.105:8080");     //模块二的局域网
     localStorage.setItem("remote2", "http://192.168.1.105:8081");      //模块一的局域网
-    localStorage.setItem("remote", "http://2p277534k9.iok.la:58718");//模块二的外网
+    localStorage.setItem("server", "http://2p277534k9.iok.la:58718");//模块二的外网
     localStorage.setItem("remote3", "http://218.77.105.241:40080");
     // localStorage.setItem("remote", "http://127.0.0.1:8085");
   }
@@ -47,7 +47,7 @@ class Login extends React.Component {
   }
   handleSubmit(){
     const history = this.props.history;
-    const server = localStorage.getItem("remote");  
+    const server = localStorage.getItem("server");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
     axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
@@ -74,7 +74,7 @@ class Login extends React.Component {
       // console.log(quickAccess)
       localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
-      localStorage.setItem('Authorization',res.headers.authorization);
+      localStorage.setItem('authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));
       history.push({pathname:'/home'});
     })

@@ -186,8 +186,8 @@ class Home extends Component {
             '13':'原材料标准',
             '14':'成品标准'
         }
-        const server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem('Authorization');
+        const server = localStorage.getItem('server');
+        this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
             /**角色管理 */
