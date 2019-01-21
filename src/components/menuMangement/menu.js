@@ -38,7 +38,7 @@ class Menu extends React.Component{
       this.searchContentChange = this.searchContentChange.bind(this);
       this.searchEvent = this.searchEvent.bind(this);
       this.getAllFatherMenu = this.getAllFatherMenu.bind(this);
-      this.Authorization = localStorage.getItem('Authorization');
+    //   this.Authorization = localStorage.getItem('Authorization');
       this.searchContentChange1 = this.searchContentChange1.bind(this)
       this.searchFatherEvent = this.searchFatherEvent.bind(this);
     //   this.changePage = this.changePage.bind(this);
@@ -67,7 +67,7 @@ class Menu extends React.Component{
             url:`${this.url.menu.findByParentNameLikeByPage}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 size: this.pagination.pageSize,
@@ -188,7 +188,7 @@ class Menu extends React.Component{
       url:`${this.url.menu.findByMenuType}`,
       method:'get',
       headers:{
-        'Authorization': this.Authorization
+        'Authorization': this.url.Authorization
         },
         params: {menuType:1},
     }).then((data)=>{
@@ -206,7 +206,7 @@ class Menu extends React.Component{
           url:`${this.url.menu.deleteByIds}`,
           method:'post',
           headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
           },
           data:ids,
           type:'json'
@@ -234,7 +234,7 @@ class Menu extends React.Component{
           url:`${this.url.menu.findByNameLikeByPage}`,
           method:'get',
           headers:{
-              'Authorization':this.Authorization
+              'Authorization':this.url.Authorization
           },
           params:{
               size: this.pagination.pageSize,
@@ -244,8 +244,8 @@ class Menu extends React.Component{
           type:'json',
       }).then((data)=>{
           const res = data.data.data;
-          this.pagination.total=res.total;
           if(res&&res.list){
+            this.pagination.total=res.total;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }

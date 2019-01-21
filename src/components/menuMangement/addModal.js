@@ -110,7 +110,7 @@ class AddModal extends React.Component {
                 url : `${this.url.menu.add}`,
                 method:'post',
                 headers:{
-                    'Authorization': this.state.Authorization
+                    'Authorization': this.url.Authorization
                 },
                 data: values,
                 type:'json'

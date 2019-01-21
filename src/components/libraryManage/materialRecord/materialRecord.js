@@ -31,7 +31,7 @@ class MaterialRecord extends React.Component{
       url:`${this.url.libraryManage.getAll}`,
       method:'get',
       headers:{
-        'Authorization': this.Authorization
+        'Authorization': this.url.Authorization
         },
         params: {materialClass:1},
     }).then((data)=>{
@@ -57,7 +57,7 @@ class MaterialRecord extends React.Component{
             url:`${this.url.libraryManage.getAllLikeByPage}`,
             method:"get",
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 materialName:name,
