@@ -69,7 +69,6 @@ class DetailSpan extends React.Component {
                         <DrSpanModal
                             // checkStatus:根据审核状态是否有审核及择优部分
                             // examine={this.state.examine}
-                            modifyDetailData={this.modifyDetailData}
                             data={this.state.detailData}
                         />
                     </div>

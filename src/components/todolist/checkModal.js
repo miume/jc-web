@@ -7,7 +7,8 @@ import AllTester from '../BlockQuote/allTester';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import CheckProductStandard from './checkProductStandard';
-import CkeckPurchase from './checkPurchase';
+import CheckPurchase from './checkPurchase';
+import CkeckProductInspection from './checkProductInspection';
 import axios from 'axios';
 class CheckModal extends React.Component{
     constructor(props){
@@ -32,8 +33,8 @@ class CheckModal extends React.Component{
             case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
             case 4:  return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
             case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
-            case 7:  return <CkeckPurchase url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
-            case 8:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
+            case 7:  return <CheckPurchase url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
+            case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 5:  
             case 9:  
             case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>; 

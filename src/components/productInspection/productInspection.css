@@ -110,11 +110,11 @@
 /*设置表格样式*/
 .productStateDefaultModal{
     /*border: 1px solid black;*/
-    width: 100%;
+    width: 480px;
     height: 100px;
     color: #999999;
     text-align: center;
-    line-height: 110px;
+    line-height: 150px;
 }
 .productPassModal {
     width: 100%;
@@ -310,7 +310,7 @@
 
 /*check表格*/
 .productSpanTableModal {
-    max-height: 350px;
+    max-height: 330px;
     /*max-height: 250px;*/
     /*border: 1px solid red ;*/
 }
@@ -336,7 +336,7 @@
 }
 
 .productSpanTbodyModal {
-    height: 320px;
+    height: 300px;
     line-height: 30px;
     /*height: 200px;*/
     /*border: 1px solid green;*/
@@ -376,5 +376,5 @@
 }
 .productTdInput input{
     border: none;
-    height: 28px !important;
+    height: 26px !important;
 }

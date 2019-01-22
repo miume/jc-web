@@ -3,7 +3,7 @@ import axios from 'axios';
 import {message } from 'antd';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 
-class CkeckPurchase extends React.Component{
+class CheckPurchase extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -106,4 +106,4 @@ class CkeckPurchase extends React.Component{
 
     }
 }
-export default CkeckPurchase;
+export default CheckPurchase;
