@@ -20,13 +20,10 @@ class SetStandard extends Component{
             date:'',//最开始没有选择施行日期
             checkSelectData:-1,//最开始下拉框是没选择数据的
             checkSwitch:0,//是否紧急那个开关最开始是关闭的
-            
         }
         this.showModal=this.showModal.bind(this);
-        this.handleSave=this.handleSave.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.handleVisibleChange=this.handleVisibleChange.bind(this);
-        this.handleSongShenOk=this.handleSongShenOk.bind(this);
         this.handleHide=this.handleHide.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.handleDate=this.handleDate.bind(this);
@@ -35,6 +32,10 @@ class SetStandard extends Component{
         this.dataProcess=this.dataProcess.bind(this);
         this.getCheck=this.getCheck.bind(this);
         this.checkRaw=this.checkRaw.bind(this);
+        this.fetch=this.fetch.bind(this);
+        this.clickCheck=this.clickCheck.bind(this);
+        this.clickSave=this.clickSave.bind(this);
+        this.handleSaveCheck=this.handleSaveCheck.bind(this);
     }
  
     showModal(){
@@ -61,7 +62,7 @@ class SetStandard extends Component{
         });
     }
     inputChange(da){
-      //  console.log(da);
+         //console.log(da);
           this.setState({data:da});
     }
     handleDate(d){
@@ -70,9 +71,9 @@ class SetStandard extends Component{
            date:d
        });
     }
-    dataProcess(){//对保存和送审的数据进行处理
+    dataProcess(status){//对保存和送审的数据进行处理
         const {date}=this.state;
-        if(!date){
+        if(date===''){
             message.info('施行日期不能为空!');
             return
         }
@@ -84,6 +85,10 @@ class SetStandard extends Component{
         var rawStandards=[];
         for(var i=0;i<data.length;i++){
               var raw=data[i];
+              if(typeof(raw.value)==='undefined') {
+                  message.info('输入框填写不全!');
+                  return
+              }
               rawStandards.push({
                 techniqueRawTestItemStandard:{
                     testItemId:raw.id,
@@ -104,27 +109,45 @@ class SetStandard extends Component{
             commonBatchNumber:commonBatchNumber,
             details:details
         }
-        return saveData;
+        //console.log(saveData)
+       // this.handleSaveCheck(saveData,status);//根据status调用保存或送审接口
+        // return saveData;
     }
-    handleSave(){//点击新增保存，未申请状态
+    clickSave(){//点击保存
+        this.dataProcess(0);
+    }
+    clickCheck(){//点击送审
+        this.dataProcess(1);
+    }
+    handleSaveCheck(saveData,status){//保存接口 
+        this.setState({visible:false,popVisible:false});
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
             method:'post',
             headers:{
                'Authorization':this.props.url.Authorization
             },
-            data:this.dataProcess(),
+            data:saveData,
             type:'json'
         })
         .then(data=>{
            // console.log(data);
             const res=data.data.data;
             if(res){
-                message.info(data.data.message);
-                if(data.data.code===0){
-                    this.props.getStandard(this.props.rawManufacturerId);
-                    //this.props.onBlockChange(3,);
-                }
+               if(status===0){
+                    message.info(data.data.message);
+                    if(data.data.code===0){
+                        this.props.getStandard(this.props.rawManufacturerId);
+                    }
+               }
+               else{
+                const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+                const taskId=this.state.checkSelectData;//选择的流程id'
+                this.getCheck(dataId,taskId);
+                // this.setState({
+                //     popVisible:false,
+                // });
+               }
             }
         })
         .catch(()=>{
@@ -171,32 +194,32 @@ class SetStandard extends Component{
         });
 
     }
-    handleSongShenOk(){//点击送审的确定
-        axios({
-             url:`${this.props.url.rawStandard.getStandard}`,
-             method:'post',
-             headers:{
-                 'Authorization':this.props.url.Authorization
-             },
-             data:this.dataProcess(),
-             type:'json'
-        }).then(data=>{
-            //console.log(data);
-            const res=data.data.data;
-             if(res){
-                const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-                const taskId=this.state.checkSelectData;//选择的流程id'
-                this.getCheck(dataId,taskId);
-                this.setState({
-                    popVisible:false,
-                    visible:false
-                });
-             }
-        }).catch(()=>{
-            message.info('新增失败，请联系管理员！');
-        });
+    // handleSongShenOk(){//点击送审的确定
+    //     axios({
+    //          url:`${this.props.url.rawStandard.getStandard}`,
+    //          method:'post',
+    //          headers:{
+    //              'Authorization':this.props.url.Authorization
+    //          },
+    //          data:this.dataProcess(),
+    //          type:'json'
+    //     }).then(data=>{
+    //         //console.log(data);
+    //         const res=data.data.data;
+    //          if(res){
+    //             const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+    //             const taskId=this.state.checkSelectData;//选择的流程id'
+    //             this.getCheck(dataId,taskId);
+    //             this.setState({
+    //                 popVisible:false,
+    //                 visible:false
+    //             });
+    //          }
+    //     }).catch(()=>{
+    //         message.info('新增失败，请联系管理员！');
+    //     });
         
-    }
+    // }
     handleHide(){//送审气泡的取消
         this.setState({
             popVisible:false,//气泡取消
@@ -212,14 +235,17 @@ class SetStandard extends Component{
         //    console.log(name);
             this.props.onBlockChange(2,'设置标准');//跳回原材料界面后，就不可以点击那个面板了
         }
+    fetch(){
+
+    }
     render(){
         return(
             <div>
                 <div style={{padding:'15px'}}>
                      &nbsp;<h2 style={{display:'inline-block'}}>请设置标准</h2>
                      <span className='fr'>
-                      <SearchCell name='请输入搜索内容'
-                        
+                      <SearchCell name='请输入创建人名称'
+                        fetch={this.fetch}
                       />
                      </span>
                 </div>
@@ -241,8 +267,8 @@ class SetStandard extends Component{
                         maskClosable={false}
                         footer={[
                             <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
-                            <SaveButton key='save' handleSave={this.handleSave}/>,
-                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
+                            <SaveButton key='save' handleSave={this.clickSave}/>,
+                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.clickCheck} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
                         ]}
                     >
                             <SetStandardModal data={this.state.data}  raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>

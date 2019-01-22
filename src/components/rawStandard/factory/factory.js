@@ -88,6 +88,10 @@ class Manufacturer extends Component{
             });
     }
     addEvent(){//新增事件
+        if(!this.state.inputContent){
+            message.info('工厂名称不能为空!');
+            return
+        }
          axios({
            url:`${this.props.url.rawStandard.addFactory}`,
            method:'post',

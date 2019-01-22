@@ -46,7 +46,7 @@ class SetStandardModal extends Component{
        const newData=[...this.props.data];
        const index=newData.findIndex(item=>parseInt(id)===parseInt(item.id));
        newData[index][name]=value;//加一个检测标准字段
-       //console.log(newData);
+    //    console.log(newData);
        this.props.inputChange(newData);
     }
     handleDateChange(date, dateString){
