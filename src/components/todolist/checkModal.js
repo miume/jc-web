@@ -97,7 +97,11 @@ class CheckModal extends React.Component{
         }).then((data)=>{
             this.props.fetch()
             this.props.getHistory()
-            message.info(data.data.message);
+            if(data.data.code===0){
+                message.info(data.data.message);
+            }else{
+                message.info('操作失败，请联系管理员！')
+            }
         }).catch(()=>{
             message.info('操作失败，请联系管理员！')
         })

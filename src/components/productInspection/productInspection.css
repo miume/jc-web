@@ -317,7 +317,7 @@
 
 .productSpanTheadModal {
     display: flex;
-    text-align: center;
+    /*text-align: center;*/
     line-height: 30px;
     font-size: 16px;
 }
@@ -326,6 +326,7 @@
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
     width: 80px;
+    padding-left: 5px;
 }
 .productSpanTheadModal div:first-child{
     width: 60px;
@@ -343,7 +344,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     white-space: nowrap;
-    text-align: center;
+    /*text-align: center;*/
 }
 .productSpanTbodyModal>div {
     font-size: 16px;
@@ -356,6 +357,8 @@
 }
 .productSpanTbodyModal>div>div{
     width: 80px;
+    padding-left: 5px;
+    /*text-align: left;*/
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
 }
@@ -365,9 +368,11 @@
 .productSpanTbodyModal>div>div:last-child {
     width: 120px;
     display: flex;
+    padding-left: 0px;
 }
 .productSpanTbodyModal>div>div:last-child div{
     width: 50%;
+    padding-left: 5px;
 }
 
 
