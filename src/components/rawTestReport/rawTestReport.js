@@ -62,38 +62,35 @@ class RawTestReport extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=> a.index-b.index,
-            align:'center',
-            width:'70px'
+            width:'5%'
         },{
             title:'送样人',
             dataIndex:'deliverer',
             key:'deliverer',
-            align:'center',
-            width:'100px'
+            width:'9%'
         },{
             title:'送样日期',
             dataIndex:'sampleDeliveringDate',
             key:'sampleDeliveringDate',
-            align:'center',
-            width:'15%',
+            width:'9%',
+            render:(text)=>{
+                return <abbr title={text}>{text.substring(0,10)}</abbr>
+            }
         },{
             title:'送样工厂',
             dataIndex:'deliveryFactoryName',
             key:'deliveryFactoryName',
-            align:'center',
-            width:'6%'
+            width:'10%'
         },{
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
-            align:'center',
-            width:'16%'
+            width:'15%'
         },{
             title:'检测项目',
             dataIndex:'testItemString',
             key:'testItemString',
-            align:'center',
-            width:'8%',
+            width:'7%',
             render:(text)=>{ 
                 const items = text.split(',');
                 var testItems = '';
@@ -110,7 +107,7 @@ class RawTestReport extends React.Component{
             dataIndex:'exceptionComment',
             key:'exceptionComment',
             align:'center',
-            width:'6%'
+            width:'7%'
         },
         // {
         //     title:'类型',
@@ -124,7 +121,7 @@ class RawTestReport extends React.Component{
             dataIndex:'acceptStatus',
             key:'acceptStatus',
             align:'center',
-            width:'6%',
+            width:'7%',
             // render: acceptStatus => {
             //     switch(`${acceptStatus}`) {
             //       case '-1': return '保存';
@@ -139,7 +136,7 @@ class RawTestReport extends React.Component{
             dataIndex:'handleComment',
             key:'handleComment',
             align:'center',
-            width:'6%'
+            width:'7%'
         },{
             title:'审核状态',
             dataIndex:'status',
@@ -177,6 +174,7 @@ class RawTestReport extends React.Component{
             pagination:pagination
         })
         const {pageChangeFlag} = this.state;
+        /**分页查询 */
         if(pageChangeFlag){
             this.fetch({
                 pageSize:pagination.pageSize,
@@ -209,6 +207,10 @@ class RawTestReport extends React.Component{
             const res = data.data.data?data.data.data:[];
             if(res&&res.list){
                 this.dataProcessing(res)
+            }else{
+                this.setState({
+                    dataSource:[]
+                })
             }
         })
     }

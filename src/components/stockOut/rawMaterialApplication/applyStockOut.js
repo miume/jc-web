@@ -33,19 +33,16 @@ class ApplyStockOut extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            align:'center',
             width:'9%'
         },{
             title:'货物名称',
             dataIndex:'materialName',
             key:'materialName',
-            align:'center',
             width:'12%'
         },{
             title:'货物类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            align:'center',
             width:'13%',
             render:(text,record)=>{
                 switch(text){
@@ -59,25 +56,21 @@ class ApplyStockOut extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            align:'center',
             width:'15%'
         },{
             title:'库存数量',
             dataIndex:'quantity',
             key:'quantity',
-            align:'center',
             width:'10%'
         },{
             title:'库存重量',
             dataIndex:'weight',
             key:'weight',
-            align:'center',
             width:'10%'
         },{
             title:'出库数量',
             dataIndex:'outQuantity',
             key:'outQuantity',
-            align:'center',
             width:'15%',
             render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
             className:'tdStyle'
@@ -85,7 +78,6 @@ class ApplyStockOut extends React.Component{
             title:'出库重量',
             dataIndex:'outWeight',
             key:'outWeight',
-            align:'center',
             width:'15%',
             render:(text,record)=>{return <Input id={record.id} name='outWeight' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库重量' onChange={this.save} />},
             className:'tdStyle'
@@ -262,7 +254,7 @@ class ApplyStockOut extends React.Component{
                     ]}
                 >
                 <div style={{height:'250px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:216}} pagination={false} rowClassName={() => 'editable-row'}></Table>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:200}} pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>

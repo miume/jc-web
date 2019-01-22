@@ -257,3 +257,9 @@ table .ant-select-selection,table .ant-input{
 .time-search .ant-btn{
     border-radius: 0 4px 4px 0 !important;
 }
+.ant-table-tbody .ant-table-row td{
+    text-align: left !important;
+}
+.ant-table-align-center,.ant-table-selection-column{
+    text-align: left !important;
+}

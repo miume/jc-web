@@ -16,37 +16,31 @@ class Detail extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            align:'center',
             width:'15%',
         },{
             title:'货物名称',
             dataIndex:'materialName',
             key:'materialName',
-            align:'center',
             width:'15%',
         },{
             title:'货物类型',
             dataIndex:'meterialClass',
             key:'meterialClass',
-            align:'center',
             width:'15%',
         },{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            align:'center',
             width:'20%',
         },{
             title:'出库数量',
             dataIndex:'quantity',
             key:'quantity',
-            align:'center',
             width:'15%',
         },{
             title:'出库重量',
             dataIndex:'weight',
             key:'weight',
-            align:'center',
             width:'15%',
         }]
     }

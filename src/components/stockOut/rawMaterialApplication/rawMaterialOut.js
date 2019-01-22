@@ -42,51 +42,46 @@ class RawMaterialOut extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.id-b.id,
-            align:'center',
             width:'10%'
         },{
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
-            align:'center',
             width:'15%'
         }
         // ,{
         //     title:'货物名称',
         //     dataIndex:'materialName',
         //     key:'materialName',
-        //     align:'center',
+        //     
         //     width:'8%'
         // },{
         //     title:'货物数量',
         //     dataIndex:'quantity',
         //     key:'quantity',
-        //     align:'center',
+        //     
         //     width:'8%'
         // },{
         //     title:'获取重量',
         //     dataIndex:'weight',
         //     key:'weight',
-        //     align:'center',
+        //     
         //     width:'10%'
         // }
         ,{
             title:'申请人',
             dataIndex:'createPersonName',
             key:'createPersonName',
-            align:'center',
             width:'15%'
         },{
             title:'申请日期',
             dataIndex:'createTime',
             key:'createTime',
-            align:'center',
             width:'16%'
         },{
             title:'审核状态',
             dataIndex:'status',
             key:'status',
-            align:'center',
             width:'15%',
             render:status => {
                 return this.status[status.toString()];
@@ -105,14 +100,12 @@ class RawMaterialOut extends React.Component{
             title:'紧急',
             dataIndex:'isUrgent',
             key:'isUrgent',
-            align:'center',
             width:'10%',
             render:isUrgent=>isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
         },{
             title:'操作',
             dataIndex:'id',
             key:'id',
-            align:'center',
             render:(text,record)=>{
                 return (
                     <span>

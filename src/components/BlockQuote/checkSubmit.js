@@ -11,20 +11,20 @@ class Submit extends React.Component{
         this.state = {
             urgent:0,        //用来监控送审紧急还是正常
             process:-1,      //用来监控下拉框送审流程的变化
-            visible:this.props.visible?this.props.visible:false,   //用来控制送审界面显示与否
+            visible:false,   //用来控制送审界面显示与否
             allProcess : [], //用来存取所有送审流程
         }
         this.handleOk = this.handleOk.bind(this);
-        this.submitClick = this.submitClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.urgentChange = this.urgentChange.bind(this);
         this.getAllProcess = this.getAllProcess.bind(this);
+        this.handleVisibleChange = this.handleVisibleChange.bind(this);
     }
     /**点击送审按钮 弹出送审气泡 */
-    submitClick(){
+    handleVisibleChange(visible){
         this.setState({
-            visible:true
+            visible:visible
         })
     }
     /**获取所有送审流程 */
@@ -94,8 +94,9 @@ class Submit extends React.Component{
             content = {Content}
             trigger="click"
             visible={this.state.visible}
+            onVisibleChange={this.handleVisibleChange}
             >
-                <Button type='primary' size='default' className='button' onClick={this.submitClick}><i className="fa fa-check"></i><span> 送审</span></Button>
+                <Button type='primary' size='default' className='button'><i className="fa fa-check"></i><span> 送审</span></Button>
             </Popover>
         );
     }

@@ -4,21 +4,23 @@ html, body, .parent {
     overflow-x: hidden;
 }
 .top {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 55px;
+    z-index: 999;
     border-bottom:1px solid #cccccc;
     /* background-color:  #333333; */
 }
 .left {
-    position: absolute;
+    position: fixed;
     top: 54px;
     left: 0;
     width: 130px;
     height: 100%;
     font-weight: 400;
+    overflow: auto;
     /* background-color: #20232b; */
 }
 .menu1 {
@@ -30,7 +32,8 @@ html, body, .parent {
 }
 .rightDiv {
     position: absolute;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     left: 130px;
     right: 0;
     top: 60px;

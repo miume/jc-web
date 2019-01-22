@@ -255,7 +255,7 @@ class Tr1 extends React.Component{
                 <tr id={this.props.id}>
                     <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange} defaultValue={d.deliveryFactoryId?d.deliveryFactoryId:''}>{this.props.allProductLine}</Select></td>
                     <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange} defaultValue={d.procedureId?d.procedureId:''}>{this.props.allProductionProcess}</Select></td>
-                    <td><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} defaultValue={d.samplePointName?d.samplePointName:''}/></td>
+                    <td><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'left'}} onChange={this.samplePointName} defaultValue={d.samplePointName?d.samplePointName:''}/></td>
                     <td><Select style={{width:'100%'}} placeholder='请选择取样人' onChange={this.sampler} defaultValue={d.sampler?d.sampler:''}>{this.props.allUser}</Select></td>
                     <td><Select style={{width:'100%'}} placeholder='请选择检测人' onChange={this.tester} defaultValue={d.tester?d.tester:''}>{this.props.allUser}</Select></td>
                     <td><Popover
@@ -279,9 +279,9 @@ class Tr1 extends React.Component{
                         }
                         </Popover></td>
     
-                    <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} defaultValue={d.testFrequency?d.testFrequency:''}/></td>
+                    <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'left',width:'100%'}} onChange={this.testFrequency} defaultValue={d.testFrequency?d.testFrequency:''}/></td>
                     <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.serialNumberId} defaultValue={d.serialNumberId?d.serialNumberId:''}>{this.props.allTestMaterial}</Select></td>
-                    <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment} defaultValue={d.comment?d.comment:''}/></td>
+                    <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'left',width:'100%'}} onChange={this.comment} defaultValue={d.comment?d.comment:''}/></td>
                     <td>
                         <span className='blue' onClick={()=>this.props.editorRow(this.props.id)} value={this.props.value}>编辑</span>
                         <Divider type='vertical' />
@@ -292,7 +292,7 @@ class Tr1 extends React.Component{
                     <tr id={this.props.id}>
                         <td><Select style={{width:'100%'}} placeholder='请选择产品线' onChange={this.productLineChange}>{this.props.allProductLine}</Select></td>
                         <td><Select style={{width:'100%'}} placeholder='请选择工序' onChange={this.productionProcessChange}>{this.props.allProductionProcess}</Select></td>
-                        <td><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'center'}} onChange={this.samplePointName} /></td>
+                        <td><Input style={{width:'100%'}} placeholder='请输入取样点' style={{border:'none',textAlign:'left'}} onChange={this.samplePointName} /></td>
                         <td><Select style={{width:'100%'}} placeholder='请选择取样人' onChange={this.sampler}>{this.props.allUser}</Select></td>
                         <td><Select style={{width:'100%'}} placeholder='请选择检测人' onChange={this.tester}>{this.props.allUser}</Select></td>
                         <td><Popover
@@ -316,9 +316,9 @@ class Tr1 extends React.Component{
                             }
                             </Popover></td>
 
-                        <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.testFrequency} /></td>
+                        <td><Input placeholder='请输入频次' style={{border:'none',textAlign:'left',width:'100%'}} onChange={this.testFrequency} /></td>
                         <td><Select style={{width:'100%',border:'none'}} placeholder='受检物料' onChange={this.serialNumberId}>{this.props.allTestMaterial}</Select></td>
-                        <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'center',width:'100%'}} onChange={this.comment}/></td>
+                        <td><Input placeholder='请输入备注' style={{border:'none',textAlign:'left',width:'100%'}} onChange={this.comment}/></td>
                         <td>
                             <span className='blue' onClick={()=>this.props.editorRow(this.props.id)} value={this.props.value}>编辑</span>
                             <Divider type='vertical' />

@@ -12,31 +12,31 @@ const Option = Select.Option;
     dataIndex: 'deliveryFactory.name' ,
     key: 'deliveryFactory.name',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '工序',
     dataIndex: 'productionProcess.name' ,
     key: 'productionProcess.name',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '取样点',
     dataIndex: 'procedureTestRecord.samplePointName' ,
     key: 'procedureTestRecord.samplePointName',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '取样人',
     dataIndex: 'sampler' ,
     key: 'sampler',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '检测人',
     dataIndex: 'tester' ,
     key: 'tester',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '检测项目',
     dataIndex: 'testItemString' ,
@@ -55,31 +55,32 @@ const Option = Select.Option;
       }
      },
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '频次',
     dataIndex: 'procedureTestRecord.testFrequency' ,
     key: 'procedureTestRecord.testFrequency',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '受检物料',
     dataIndex: 'testMaterialName' ,
     key: 'testMaterialName',
     width: '9%',
-    align:'center',
+    align:'left',
   },{
     title: '备注',
     dataIndex: 'procedureTestRecord.comment' ,
     key: 'procedureTestRecord.comment',
     width: '9%',
-    align:'center',
+    align:'left',
   }]
 class Detail extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            data : this.props.data
+            dataFlag : 0,               //用来区分是否是触发下拉框删选  1是 0不是
+            data : this.props.data,
         }
         this.selectionChange = this.selectionChange.bind(this);
     }
@@ -90,7 +91,8 @@ class Detail extends React.Component{
         else 
             data = this.props.data;
           this.setState({
-            data:data
+            data:data,
+            dataFlag:1
           })
     }
     render() {
@@ -102,7 +104,7 @@ class Detail extends React.Component{
                 }
                     </Select>
                     <WhiteSpace />
-                    <Table rowKey={record=>record.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:200}} bordered></Table>
+                    <Table rowKey={record=>record.id} columns={columns} dataSource={this.state.dataFlag?this.state.data:this.props.data} size='small' pagination={false} scroll={{y:200}} bordered></Table>
             </div>)
     }
 }

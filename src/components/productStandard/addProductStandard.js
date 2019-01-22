@@ -43,19 +43,19 @@ class AddProductStandard extends React.Component{
             title:'序号',
             dataIndex:'index',
             key:'index',
-            align:'center',
+            align:'left',
             width:'25%'
         },{
             title:'检测项目',
             dataIndex:'name',
             key:'name',
-            align:'center',
+            align:'left',
             width:'25%'
         },{
             title:'检测结果',
             dataIndex:'value',
             key:'value',
-            align:'center',
+            align:'left',
             width:'25%',
             render:(text,record)=>{
                 if(this.state.flag===1){
@@ -67,7 +67,7 @@ class AddProductStandard extends React.Component{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
-            align:'center',
+            align:'left',
             width:'25%'
         },]
     }

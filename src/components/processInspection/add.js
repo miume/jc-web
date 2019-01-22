@@ -23,7 +23,7 @@ class Add extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         // this.deleteRow = this.deleteRow.bind(this);
         // this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        this.handleCancelApply = this.handleCancelApply.bind(this);
+        // this.handleCancelApply = this.handleCancelApply.bind(this);
         this.sucessProcessing = this.sucessProcessing.bind(this);
         this.getAllTestItem = this.getAllTestItem.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -56,8 +56,7 @@ class Add extends React.Component{
         const iteration = [
             <CancleButton key='back' handleCancel={this.handleCancel}/>,
             <SaveButton key='save' handleSave={this.handleSave} />,
-            <Submit key='submit' url={this.props.url}  applySaveAndReview={this.applySaveAndReview} 
-            visible={this.state.visible1}/>
+            <Submit key='submit' url={this.props.url}  applySaveAndReview={this.applySaveAndReview}/>
         ]
         switch(flag){
             case 1 : return detail;
@@ -163,14 +162,13 @@ class Add extends React.Component{
                 data : [{id:1,mode:3}],
             });
         }
-        // this.handleCancelApply();
     }
     /**控制送审皮泡的visible */
-    handleCancelApply(){
-        this.setState({
-            visible1:false
-        })
-    }
+    // handleCancelApply(){
+    //     this.setState({
+    //         visible1:false
+    //     })
+    // }
     /**点击保存 */
     handleSave(){
         this.dataProcessing(0);
@@ -178,7 +176,7 @@ class Add extends React.Component{
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
         const details = this.state.saveData;
-        //console.log(details)
+        console.log(details)
         for(var i = 0; i < details.length; i++){
             var e = details[i].procedureTestRecord;
             if(details[i].testItemIds===[]){
@@ -187,7 +185,7 @@ class Add extends React.Component{
             } 
             for(var j in e){
                 if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
-                    message.info('新据不能为空，请填写完整！');
+                    message.info('请将数据填写完整，再新增！');
                     return
                 }
             }
@@ -276,11 +274,6 @@ class Add extends React.Component{
                 <Modal title={this.judge(this.props.flag,1)} visible={this.state.visible} closable={false} centered={true}
                     onCancel={this.handleCancel} maskClosable={false} className='modal-xxlg'
                     footer = {this.judgeFooter(flag,this.props.status)}
-                    // footer={[
-                    //     <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                    //     <SaveButton key='save' handleSave={this.handleSave} />,
-                    //     <Submit key='submit' url={this.props.url}  applySaveAndReview={this.applySaveAndReview}/>
-                    // ]}
                     >
                     {
                        flag===1?<Detail data={this.state.data} allProductLine={this.state.allProductLine}/>
