@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
-import axios from 'axios';
+// import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import './rawAdd.css';
 import ApplyStockOut from './applyStockOut';
@@ -33,19 +33,16 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            align:'center',
             width:'15%'
         },{
             title:'物料名称',
             dataIndex:'materialName',
             key:'materialName',
-            align:'center',
             width:'15%'
         },{
             title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            align:'center',
             width:'15%',
             render:(text,record)=>{
                 switch(text){
@@ -59,18 +56,15 @@ class RawMaterialApplication extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            align:'center',
         },{
             title:'数量',
             dataIndex:'quantity',
             key:'quantity',
-            align:'center',
             width:'15%'
         },{
             title:'重量',
             dataIndex:'weight',
             key:'weight',
-            align:'center',
             width:'15%'
         }]
         // this.pagination = {

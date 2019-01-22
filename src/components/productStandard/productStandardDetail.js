@@ -12,31 +12,26 @@ class ProductStandardDetail extends React.Component{
             key:'index',
             sorter:(a,b)=>a.index-b.index,
             width:'5%',
-            align:'center'
         },{
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
             width:'15%',
-            align:'center'
         },{
             title:'创建时间',
             dataIndex:'createTime',
             key:'createTime',
             width:'15%',
-            align:'center'
         },{
             title:'创建人',
             dataIndex:'name',
             key:'name',
             width:'10%',
-            align:'center'
         },{
             title:'审核状态',
             dataIndex:'status',
             key:'status',      
             width:'10%',
-            align:'center',
             render:status=>{
                 return this.status[status.toString()];
             }
@@ -45,7 +40,6 @@ class ProductStandardDetail extends React.Component{
             dataIndex:'id',
             key:'id',
             width:'10%',
-            align:'center',
             render:(text,record)=>{
                 const status = record.status;
                 const isPublished = record.isPublished;

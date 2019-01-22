@@ -71,30 +71,30 @@ class ProcessInspection extends React.Component{
           dataIndex: 'index',
           key: 'index',
           width: '8%',
-          align:'center',
+          align:'left',
         }, {
           title: '批号',
           dataIndex: 'commonBatchNumber.batchNumber' ,
           key: 'commonBatchNumber.batchNumber',
           width: '15%',
-          align:'center',
+          align:'left',
         }, {
           title: '创建人',
           dataIndex: 'createPersonName',
           key:  'createPersonName',
           width: '15%',
-          align:'center',
+          align:'left',
         }, {
           title: '创建时间',
           dataIndex: 'commonBatchNumber.createTime',
           key: 'commonBatchNumber.createTime',
           width: '15%',
-          align:'center',
+          align:'left',
          },{
           title:'紧急',
           dataIndex:'commonBatchNumber.isUrgent',
           key:'commonBatchNumber.isUrgent',
-          align:'center',
+          align:'left',
           width:'10%',
           render:isUrgent=>!isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
       },{
@@ -105,12 +105,12 @@ class ProcessInspection extends React.Component{
                return this.status[state.toString()];
           },
           width: '15%',
-          align:'center',
+          align:'left',
         }, {
           title: '操作',
           dataIndex: 'commonBatchNumber.id',
           key:'commonBatchNumber.id',
-          align:'center',
+          align:'left',
           render: (text,record) => {
               const status = record.commonBatchNumber.status;
               return (

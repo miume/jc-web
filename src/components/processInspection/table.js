@@ -166,6 +166,7 @@ class ProcessTable extends React.Component{
             data:data.filter(d=>d.id.toString()!==value),
             addApplyData:addApplyData
         })
+        this.props.getData(addApplyData);//将数据传给父元素
     }
     /**获取每个Tr的值 */
     getData(data){

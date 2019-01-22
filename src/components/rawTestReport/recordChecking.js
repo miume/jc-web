@@ -69,7 +69,7 @@ class RecordChecking extends React.Component{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
-            align:'center',
+            align:'left',
             width:'25%'
         },]
     }
