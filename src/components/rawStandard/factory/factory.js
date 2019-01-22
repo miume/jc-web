@@ -15,7 +15,6 @@ class Manufacturer extends Component{
       this.state={
           data:[],
           searchContent:'',
-          f:true,//用来判断是否显示新增的块,
           flag1:false,//用来判断新增框是否变为输入框
           inputContent:'',
       }
@@ -30,10 +29,10 @@ class Manufacturer extends Component{
     }
     fetch=()=>{
       axios({
-         url:`${this.url.rawStandard.getFactory}`,
+         url:`${this.props.url.rawStandard.getFactory}`,
          method:'get',
          headers:{
-             'Authorization':this.url.Authorization
+             'Authorization':this.props.url.Authorization
          }
       }).then(data=>{
           //console.log(data);
@@ -53,13 +52,13 @@ class Manufacturer extends Component{
        const factoryId=e.target.id.split('-')[0];
        const factoryName=e.target.id.split('-')[1];
        axios({
-           url:`${this.url.rawStandard.getStandard}`,
+           url:`${this.props.url.rawStandard.getStandard}`,
            method:'get',
            headers:{
-               'Authorization':this.url.Authorization
+               'Authorization':this.props.url.Authorization
            },
            params:{
-                name:JSON.parse(localStorage.getItem('menuList')).name,//创建人姓名即用户
+               // name:JSON.parse(localStorage.getItem('menuList')).name,//创建人姓名即用户
                 materialId:this.props.rawMaterialId,
                 factoryId:factoryId
            },
@@ -90,10 +89,10 @@ class Manufacturer extends Component{
     }
     addEvent(){//新增事件
          axios({
-           url:`${this.url.rawStandard.addFactory}`,
+           url:`${this.props.url.rawStandard.addFactory}`,
            method:'post',
            headers:{
-               'Authorization':this.url.Authorization
+               'Authorization':this.props.url.Authorization
            },
            data:{
               name:this.state.inputContent
@@ -117,10 +116,10 @@ class Manufacturer extends Component{
     searchEvent(){
         const name=this.state.searchContent;
         axios({
-            url:`${this.url.rawStandard.getFactory}`,
+            url:`${this.props.url.rawStandard.getFactory}`,
             method:'get',
             headers:{
-                'Authorization':this.url.Authorization
+                'Authorization':this.props.url.Authorization
             },
             params:{
               name:name
@@ -133,7 +132,7 @@ class Manufacturer extends Component{
             if(res){
                this.setState({
                    data:res,
-                   f:false
+                   
                });
             }
         })
@@ -143,7 +142,7 @@ class Manufacturer extends Component{
     }
   
     checkRaw(e){//点击重新选择原材料调用的函数
-        this.props.onBlockChange(1,'生产厂家');//跳回生产厂家界面后，就不可以点击那个面板了
+        this.props.onBlockChange(1,'选择生产厂家',this.props.rawMaterialId);//跳回生产厂家界面后，就不可以点击那个面板了
     }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
@@ -167,7 +166,7 @@ class Manufacturer extends Component{
                     <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
-                   <span className={this.state.f?'show':'hide'}><DataPart flag1={this.state.flag1}  flag={1} name='新增' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/></span>
+                   <span ><DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/></span>
               </div>
               
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>

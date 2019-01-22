@@ -77,6 +77,9 @@ import EditStandard from './edit';
        
      }
      fetch=()=>{
+         this.setState({
+             searchContent:''
+         });
          this.props.getStandard(this.props.rawManufacturerId);
          }
      judgeStatus=(record_status)=>{
@@ -121,7 +124,7 @@ import EditStandard from './edit';
              <div style={{padding:'15px'}}>
              <span className='product-standrad-middle-text'>请设置标准</span>
                 <span className='fr'>
-                <SearchCell name='请输入搜索内容'
+                <SearchCell name='请输入创建人'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
                     type={this.props.type}

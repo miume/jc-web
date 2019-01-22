@@ -24,7 +24,6 @@ class RawMaterial extends Component{
           this.state={
               data:[],
               searchContent:'',
-              f:true,//用来判断是否显示新增的块,
               visible:false,
               inputContent:'',//新增输入框最开始没有内容
               items:[],
@@ -126,7 +125,6 @@ class RawMaterial extends Component{
            if(res){
                 this.setState({
                     data:res,
-                    f:false
                 });
             }
        })
@@ -172,7 +170,7 @@ class RawMaterial extends Component{
                            this.state.data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
                        }
-                      <span className={this.state.f?'':'hide'}> <DataPart  flag={1} onBlockChange={this.addClick}   name='新增' name1='原材料'/></span>
+                      <span > <DataPart  flag={1} onBlockChange={this.addClick}   name='新增原材料' name1='原材料'/></span>
                       <Modal
                             visible={this.state.visible}
                             title="新增"

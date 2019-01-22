@@ -5,7 +5,6 @@ const FormItem = Form.Item;
 class RawMaterialAddModal extends React.Component{
     constructor(props){
         super(props);
-       
         this.checkboxChange=this.checkboxChange.bind(this);
     }
     checkboxChange(value){//获取选择复选框的id
@@ -24,12 +23,10 @@ class RawMaterialAddModal extends React.Component{
     render(){
         const { form } = this.props;
         const { getFieldDecorator } = form;   
-
         return(
             <Form horizontal='true' >
                <FormItem wrapperCol={{ span: 24 }} required>
                   {getFieldDecorator('name',{
-                        initialValue: '',
                         rules: [{required: true, message: '原材料名称不能为空'}],
                      })( 
                             <Input placeholder='请输入原材料名称' style={{height:'40px' }}></Input>

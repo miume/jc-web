@@ -41,6 +41,7 @@ class EditStandard extends Component{
         this.selectChange=this.selectChange.bind(this);//监听送审流程变化
         this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
         this.dataProcess=this.dataProcess.bind(this);
+        this.getCheck=this.getCheck.bind(this);
 
     }
     getDetail(){//获取标准详情
@@ -280,7 +281,7 @@ class EditStandard extends Component{
              type:'json'
          })
          .then(data=>{
-             console.log(data);
+             //console.log(data);
              const res=data.data.data;
              if(res){
                 const dataId=res.commonBatchNumber.id;//返回的batchnumberId
@@ -308,7 +309,7 @@ class EditStandard extends Component{
         })
     }
     render(){
-        console.log(this.props.iterateFlag);
+       // console.log(this.props.iterateFlag);
         return(
             <span>
                     {this.props.flag?(<span className='blue' onClick={this.showModalDetail}>详情</span>):

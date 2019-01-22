@@ -33,6 +33,8 @@ class SetStandard extends Component{
         this.selectChange=this.selectChange.bind(this);//监听送审流程变化
         this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
         this.dataProcess=this.dataProcess.bind(this);
+        this.getCheck=this.getCheck.bind(this);
+        this.checkRaw=this.checkRaw.bind(this);
     }
  
     showModal(){
@@ -119,7 +121,10 @@ class SetStandard extends Component{
             const res=data.data.data;
             if(res){
                 message.info(data.data.message);
-                this.props.onBlockChange(3,this.props.factory);//如果返回的数据不为空，说明建立好标准了，就会渲染标准界面
+                if(data.data.code===0){
+                    this.props.getStandard(this.props.rawManufacturerId);
+                    //this.props.onBlockChange(3,);
+                }
             }
         })
         .catch(()=>{
@@ -148,15 +153,18 @@ class SetStandard extends Component{
         const isUrgent=this.state.checkSwitch;
         axios({
             url:`${this.props.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
-            methpd:'post',
+            method:'post',
             headers:{
                 'Authorization':this.props.url.Authorization
             },
         })
         .then(data=>{
-            //console.log(data.data.data);
+            //console.log(data);
              message.info(data.data.message);
-             this.props.onBlockChange(3,this.props.factory);//只有送审成功了，才会跳到设置标准那个表格界面
+            if(data.data.code===0){
+                this.props.getStandard(this.props.rawManufacturerId);
+                //this.props.onBlockChange(3,this.props.factory);//只有送审成功了，才会跳到设置标准那个表格界面
+            }
         })
         .catch(()=>{
            message.info('送审失败，请联系管理员！');
@@ -173,17 +181,21 @@ class SetStandard extends Component{
              data:this.dataProcess(),
              type:'json'
         }).then(data=>{
-              const res=data.data.data;
-              const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-              const taskId=this.state.checkSelectData;//选择的流程id'
-              this.getCheck(dataId,taskId);
+            //console.log(data);
+            const res=data.data.data;
+             if(res){
+                const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+                const taskId=this.state.checkSelectData;//选择的流程id'
+                this.getCheck(dataId,taskId);
+                this.setState({
+                    popVisible:false,
+                    visible:false
+                });
+             }
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
-          this.setState({
-              popVisible:false,
-              visible:false
-          });
+        
     }
     handleHide(){//送审气泡的取消
         this.setState({
@@ -195,6 +207,11 @@ class SetStandard extends Component{
           popVisible:visible
         })
     }
+    checkRaw(e){//点击重新选择厂家调用的函数
+        //    const name=this.props.returnRaw();
+        //    console.log(name);
+            this.props.onBlockChange(2,'设置标准');//跳回原材料界面后，就不可以点击那个面板了
+        }
     render(){
         return(
             <div>
@@ -231,6 +248,7 @@ class SetStandard extends Component{
                             <SetStandardModal data={this.state.data}  raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>
                     </Modal>
                 </div>
+                <div className='rawStandardPosition' onClick={this.checkRaw}>重新选择厂家</div>
             </div>
         );
     }
