@@ -229,9 +229,6 @@
 }
 
 
-
-
-
 .productPassValidPointer {
     background-color: #4BD863;
     cursor: pointer;
@@ -248,12 +245,6 @@
     background-color: #999999;
     cursor: pointer;
 
-}
-.productTdInput {
-    width: 100px;
-}
-.productTdInput input{
-    border: none;
 }
 
 
@@ -327,6 +318,7 @@
 .productSpanTheadModal {
     display: flex;
     text-align: center;
+    line-height: 30px;
     font-size: 16px;
 }
 
@@ -345,6 +337,7 @@
 
 .productSpanTbodyModal {
     height: 320px;
+    line-height: 30px;
     /*height: 200px;*/
     /*border: 1px solid green;*/
     overflow-y: scroll;
@@ -355,6 +348,7 @@
 .productSpanTbodyModal>div {
     font-size: 16px;
     display: flex;
+    height: 30px;
 
 }
 .productSpanTbodyModal>div:last-child{
@@ -374,4 +368,13 @@
 }
 .productSpanTbodyModal>div>div:last-child div{
     width: 50%;
+}
+
+
+.productTdInput {
+    width: 80px;
+}
+.productTdInput input{
+    border: none;
+    height: 28px !important;
 }

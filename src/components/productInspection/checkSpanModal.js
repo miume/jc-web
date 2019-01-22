@@ -107,20 +107,21 @@ class CheckSpanModal extends React.Component {
                         {
                             this.props.data.testDTOS.map((item,index) => {
                                 return(
-                                    <div>
+                                    <div key={index}>
                                         <div>{item.index}</div>
                                         <div>{item.testItemName}</div>
-                                        <div>{item.testResult}</div>
+                                        <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                        {/*<div>{item.testResult}</div>*/}
                                         <div>{item.rawTestItemStandard}</div>
                                         <div>{item.unit}</div>
                                         <div>
                                             <div
                                                 className={(item.isValid)?'productPassValidPointer':'productDefaultPointer'}
-                                                // onClick={this.handleJudgePass.bind(this,index,1)}
+                                                onClick={this.handleJudgePass.bind(this,index,1)}
                                             >合格</div>
                                             <div
                                                 className={(item.isValid)?'productDefaultPointer':'productNoPassValidPointer'}
-                                                // onClick={this.handleJudgePass.bind(this,index,0)}
+                                                onClick={this.handleJudgePass.bind(this,index,0)}
                                             >不合格</div>
                                         </div>
                                     </div>

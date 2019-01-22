@@ -91,7 +91,7 @@ class DrSpanModal extends React.Component {
                         {
                             this.props.data.testDTOS.map((item,index) => {
                                 return(
-                                    <div>
+                                    <div key={index}>
                                         <div>{item.index}</div>
                                         <div>{item.testItemName}</div>
                                         <div>{item.testResult}</div>
