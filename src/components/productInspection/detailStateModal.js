@@ -48,35 +48,10 @@ class DetailStateModal extends React.Component {
             case 3: //不通过
                 return(
                     <div className="productPassModal">
-                        <div className="productPassExamineModal">
-                            <div>
-                                <div className="productPadding">
-                                {
-                                    this.props.examine.examineData.map((item,index) => {
-                                        return (
-                                            <div key={index}>
-                                                <div key={`handler${index}`}>
-                                                    <span>审核人：</span>
-                                                    <span>{item?item.handler:''}</span>
-                                                </div>
-                                                <div key={`handleReply${index}`}>
-                                                    <span>审核意见：</span>
-                                                    <span>{item?item.handleReply:''}</span>
-                                                </div>
-                                                <div key={`handleTime${index}`}>
-                                                    <span>审核日期：</span>
-                                                    <span>{item?item.handleTime:''}</span>
-                                                </div>
-                                                <Divider
-                                                    className="productDrSpanDivider"
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
-                                </div>
-                            </div>
-                        </div>
+                        <AllTester
+                            hide={1}
+                            examineData={this.props.examine.examineData}
+                        />
                         <Divider
                             className="productDrSpanDivider"
                         />

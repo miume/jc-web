@@ -11,57 +11,9 @@ class CheckSpanModal extends React.Component {
     constructor(props){
         super(props);
         this.clickIsQualified = this.clickIsQualified.bind(this);
+        this.clearData = this.clearData.bind(this);
     }
-    // columns = [{
-    //     title: '序号',
-    //     dataIndex: 'index',
-    //     key: 'index',
-    //     align:'center',
-    //     width: '12%',
-    // },{
-    //     title: '检测项目',
-    //     dataIndex: 'testItemName',
-    //     key: 'testItemName',
-    //     align:'center',
-    //     width: '20%',
-    // },{
-    //     title: '检测结果',
-    //     dataIndex: 'testResult',
-    //     key: 'testResult',
-    //     align:'center',
-    //     render: (text,record,index) => {
-    //         return(
-    //             <Input
-    //                 placeholder='输入检测结果'
-    //                 style={{border:'0',paddingLeft:'10px'}}
-    //                 onChange={this.props.inputSave}
-    //                 value={record.testResult}
-    //                 name={index}
-    //             />
-    //         )
-    //     }
-    // },{
-    //     title: '行业标准',
-    //     dataIndex: 'rawTestItemStandard',
-    //     key: 'rawTestItemStandard',
-    //     align:'center',
-    //     width: '20%',
-    // },{
-    //     title: '计量单位',
-    //     dataIndex: 'unit',
-    //     key: 'unit',
-    //     align:'center',
-    //     width: '20%',
-    // }];
     render() {
-        // const columns = this.columns.map((col) => {
-        //     return {
-        //         ...col,
-        //         onCell: record => ({
-        //             record,
-        //         }),
-        //     };
-        // });
         return(
             <div >
                 <div className="productDrSpanModalTop">
@@ -86,7 +38,7 @@ class CheckSpanModal extends React.Component {
                     <div>
                            样品名称：<span>{this.props.data.topData.materialName+'样品'}</span>
                     </div>
-                    <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                    <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                 </div>
                 <div
                     className="productSpanTableModal"
@@ -131,7 +83,7 @@ class CheckSpanModal extends React.Component {
                     </div>
                 </div>
                 <CheckQualifiedModal
-                    status={this.props.data.isQualified}
+                    isQualified={this.props.data.isQualified}
                     clickIsQualified={this.clickIsQualified}
                 />
             </div>
@@ -141,15 +93,22 @@ class CheckSpanModal extends React.Component {
     clickIsQualified = (isQualified) => {
         var checkData = this.props.data;
         checkData.isQualified = isQualified;
-        this.modifyDetailData(checkData);
+        this.props.modifyDetailData(checkData);
     };
     /**---------------------- */
     handleJudgePass = (index,flag) => {
-        var detailData = this.props.data;
-        detailData.testDTOS[index].isValid = flag;
-        this.props.modifyDetailData(detailData);
-    }
-    /**实现字段搜索功能 */
+        var checkData = this.props.data;
+        checkData.testDTOS[index].isValid = flag;
+        this.props.modifyDetailData(checkData);
+    };
+    /**实现清空功能 */
+    clearData = () => {
+        var checkData = this.props.data;
+        for(var i=0; i<checkData.testDTOS.length; i++){
+            checkData.testDTOS[i].testResult = null;
+        }
+        this.props.modifyDetailData(checkData);
+    };
     /**---------------------- */
 }
 

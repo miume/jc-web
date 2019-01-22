@@ -5,7 +5,6 @@ import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import Submit from '../BlockQuote/submit';
 import axios from "axios";
-import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 
 const data = [];
 for (let i = 0; i < 50; i++) {
@@ -26,6 +25,7 @@ class CheckSpan extends React.Component {
             visible: false,
             subVisible: false,
             process:-1,
+            urgent: 0,
             checkData:{
                 topData: {},   //头部数据
                 testDTOS: [],   //中部项目
@@ -132,7 +132,7 @@ class CheckSpan extends React.Component {
             var testData = {};  //检验数据
             var isQualified = 0;
             if(res){
-                isQualified = res.isPublished;
+                isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
                     serialNumber: res.repoBaseSerialNumber.serialNumber,
                     materialName: res.repoBaseSerialNumber.materialName,
@@ -148,14 +148,14 @@ class CheckSpan extends React.Component {
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
-                            rawTestItemStandard:e.standardValue,
+                            rawTestItemStandard:e.standardValue?e.standardValue:'无',
                             unit:e.testItem.unit
                         })
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord?res.testReportRecord.judger:'',
-                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
+                    tester: res.testReportRecord?res.testReportRecord.judger:'无',
+                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'无',
                 };
                 this.setState({
                     checkData:{
@@ -212,18 +212,6 @@ class CheckSpan extends React.Component {
     clickSavaButton = (status) => {
         //  实现保存的数据处理
         var checkData = this.state.checkData;
-        var validTestRecords = [];
-        for(let i=0; i<checkData.tbodyData.length; i++){
-            var resultRecordList = [];
-            for (let j in checkData.tbodyData[i].resultRecordList) {
-                resultRecordList.push(checkData.tbodyData[i].resultRecordList[j]); //属性
-            }
-            var validTestRecordsObj = {
-                id: checkData.tbodyData[i].id,
-                resultRecordList: resultRecordList
-            };
-            validTestRecords.push(validTestRecordsObj)
-        }
         //组装testResultDTOList格式
         var testResultDTOLists = [];
         for(var j=0; j<checkData.testDTOS.length; j++){
@@ -231,28 +219,22 @@ class CheckSpan extends React.Component {
             var testResultDTOList = {
                 testItemResultRecord: {
                     id: e.id,
-                    testResult: e.testResult
+                    testResult: e.testResult,
+                    isValid: e.isValid
                 }
-            }
+            };
             testResultDTOLists.push(testResultDTOList)
         }
 
         //  需要知道保存的格式
         var saveData = {
             batchNumberId: this.props.batchNumberId,
-            deliveringDate: checkData.topData.sampleDeliveringDate,
-            repoBaseSerialNumber: {
-                serialNumber: checkData.topData.serialNumber,
-                materialName: checkData.topData.materialName
-            },
-            testResultDTOLists: testResultDTOLists,
+            testResultDTOList: testResultDTOLists,
             testReportRecord: {
                 isQualified: checkData.isQualified
             },
 
         };
-        console.log('saveData',saveData)
-
         // if(detailTestDTOS){
         //     for(var j=0; j<detailTestDTOS.length; j++){
         //         if(detailTestDTOS[j].testResult === ''){
@@ -278,7 +260,8 @@ class CheckSpan extends React.Component {
         }).then((data)=>{
             console.log('data',data.data.data)
             if(status){
-                const dataId = data.data.data;
+                const dataId = data.data.data.batchNumberId;
+                // console.log('dataId',dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({

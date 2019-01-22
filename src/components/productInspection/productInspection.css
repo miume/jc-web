@@ -110,11 +110,11 @@
 /*设置表格样式*/
 .productStateDefaultModal{
     /*border: 1px solid black;*/
-    width: 100%;
+    width: 480px;
     height: 100px;
     color: #999999;
     text-align: center;
-    line-height: 110px;
+    line-height: 150px;
 }
 .productPassModal {
     width: 100%;
@@ -310,14 +310,14 @@
 
 /*check表格*/
 .productSpanTableModal {
-    max-height: 350px;
+    max-height: 330px;
     /*max-height: 250px;*/
     /*border: 1px solid red ;*/
 }
 
 .productSpanTheadModal {
     display: flex;
-    text-align: center;
+    /*text-align: center;*/
     line-height: 30px;
     font-size: 16px;
 }
@@ -326,6 +326,7 @@
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
     width: 80px;
+    padding-left: 5px;
 }
 .productSpanTheadModal div:first-child{
     width: 60px;
@@ -336,14 +337,14 @@
 }
 
 .productSpanTbodyModal {
-    height: 320px;
+    height: 300px;
     line-height: 30px;
     /*height: 200px;*/
     /*border: 1px solid green;*/
     overflow-y: scroll;
     overflow-x: hidden;
     white-space: nowrap;
-    text-align: center;
+    /*text-align: center;*/
 }
 .productSpanTbodyModal>div {
     font-size: 16px;
@@ -356,6 +357,8 @@
 }
 .productSpanTbodyModal>div>div{
     width: 80px;
+    padding-left: 5px;
+    /*text-align: left;*/
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
 }
@@ -365,9 +368,11 @@
 .productSpanTbodyModal>div>div:last-child {
     width: 120px;
     display: flex;
+    padding-left: 0px;
 }
 .productSpanTbodyModal>div>div:last-child div{
     width: 50%;
+    padding-left: 5px;
 }
 
 
@@ -376,5 +381,5 @@
 }
 .productTdInput input{
     border: none;
-    height: 28px !important;
+    height: 26px !important;
 }

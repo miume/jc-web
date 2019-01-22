@@ -88,12 +88,12 @@ class ProductTable extends React.Component{
         align:'center',
         width: '16%',
         render: (text,record) => {
-            // let detailSpanFlag = this.judgeDetailOperation(record.status);
-            // let checkSpanFlag = this.judgeCheckOperation(record.status);
-            // let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
-            let detailSpanFlag = true
-            let checkSpanFlag = true
-            let releaseSpanFlag = true
+            let detailSpanFlag = this.judgeDetailOperation(record.status);
+            let checkSpanFlag = this.judgeCheckOperation(record.status);
+            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            // let detailSpanFlag = true
+            // let checkSpanFlag = true
+            // let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
@@ -108,6 +108,7 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
+                            fetch={this.props.fetch}
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
                         />
@@ -154,21 +155,21 @@ class ProductTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
-        if(status===0){
+        if(status===-1){
             return false;
         }else{
             return true;
         }
     };
     judgeCheckOperation = (status) => {
-        if(status===0||status===3){
+        if(status===-1||status===3){
             return true;
         }else{
             return false;
         }
     };
     judgeReleaseOperation = (h,status) => {
-        if(h===0&&status===3){
+        if(h===2&&status===3){
             return true;
         }else{
             return false;
