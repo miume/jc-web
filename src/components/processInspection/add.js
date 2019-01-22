@@ -23,7 +23,7 @@ class Add extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         // this.deleteRow = this.deleteRow.bind(this);
         // this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        // this.handleCancelApply = this.handleCancelApply.bind(this);
+        this.handleCancelApply = this.handleCancelApply.bind(this);
         this.sucessProcessing = this.sucessProcessing.bind(this);
         this.getAllTestItem = this.getAllTestItem.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -56,7 +56,8 @@ class Add extends React.Component{
         const iteration = [
             <CancleButton key='back' handleCancel={this.handleCancel}/>,
             <SaveButton key='save' handleSave={this.handleSave} />,
-            <Submit key='submit' url={this.props.url}  applySaveAndReview={this.applySaveAndReview}/>
+            <Submit key='submit' url={this.props.url}  applySaveAndReview={this.applySaveAndReview} 
+            visible={this.state.visible1}/>
         ]
         switch(flag){
             case 1 : return detail;
@@ -158,10 +159,17 @@ class Add extends React.Component{
         else{
             this.setState({
                 count:1,
-                data : [{id:1,mode:3}],
                 visible: false,
+                data : [{id:1,mode:3}],
             });
         }
+        // this.handleCancelApply();
+    }
+    /**控制送审皮泡的visible */
+    handleCancelApply(){
+        this.setState({
+            visible1:false
+        })
     }
     /**点击保存 */
     handleSave(){
@@ -170,17 +178,21 @@ class Add extends React.Component{
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
         const details = this.state.saveData;
-        console.log(details)
+        //console.log(details)
         for(var i = 0; i < details.length; i++){
             var e = details[i].procedureTestRecord;
-            // delete details[i].detail;
+            if(details[i].testItemIds===[]){
+                message.info('请将数据填写完整，再新增！');
+                return false;
+            } 
             for(var j in e){
                 if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
-                    message.info('新增数据不能为空，请填写完整！');
+                    message.info('新据不能为空，请填写完整！');
                     return
                 }
             }
         }
+        this.handleCancel(); //取消弹出框
         this.applyOut(status,details,process,urgent);
     }
     /**对数据进行保存操作 不管是编辑、新增还是迭代数据格式按照编辑的数据格式，因为多传参数不影响后台的处理
@@ -245,7 +257,6 @@ class Add extends React.Component{
         }else{
             message.info(data.data.message);
         }
-        this.handleCancel();
     }
     /**获取每个Tr的值 从组件ProcessTable中实时获取 */
     getData(data){
