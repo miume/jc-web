@@ -355,7 +355,8 @@ class TestItem extends React.Component{
                   res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
-              dataSource:res.list
+                dataSource:res.list,
+                searchContent:''
                });
             }
            })

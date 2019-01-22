@@ -344,7 +344,8 @@ class DeliveryFactory extends React.Component{
                 res.list[i-1]['index']=res.prePage*10+i;
              }
              this.setState({
-               dataSource:res.list//list取到的是所有符合要求的数据
+               dataSource:res.list,//list取到的是所有符合要求的数据
+               searchContent:''
              });
              }
            })

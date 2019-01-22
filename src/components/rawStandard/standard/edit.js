@@ -29,11 +29,10 @@ class EditStandard extends Component{
         this.notShowModal=this.notShowModal.bind(this);
         this.showModalDetail=this.showModalDetail.bind(this);
         this.clickIterate=this.clickIterate.bind(this);
-        this.handleSave=this.handleSave.bind(this);
+        this.handleSaveCheck=this.handleSaveCheck.bind(this);
         this.handleDetailSave=this.handleDetailSave.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.handleVisibleChange=this.handleVisibleChange.bind(this);
-        this.handleSongShenOk=this.handleSongShenOk.bind(this);
         this.handleDetailSongShenOk=this.handleDetailSongShenOk.bind(this);
         this.handleHide=this.handleHide.bind(this);
         this.inputChange=this.inputChange.bind(this);
@@ -42,6 +41,8 @@ class EditStandard extends Component{
         this.urgentChange=this.urgentChange.bind(this);//监听是否紧急
         this.dataProcess=this.dataProcess.bind(this);
         this.getCheck=this.getCheck.bind(this);
+        this.clickCheck=this.clickCheck.bind(this);
+        this.clickSave=this.clickSave.bind(this);
 
     }
     getDetail(){//获取标准详情
@@ -73,6 +74,7 @@ class EditStandard extends Component{
                 }
                 this.setState({
                     standardData:raw,
+                    date:effectiveTime,
                     effectiveTime:effectiveTime,
                     createTime:createTime
                 });
@@ -122,7 +124,7 @@ class EditStandard extends Component{
            date:d
        });
     }
-    dataProcess(){//对新增，编辑的数据处理
+    dataProcess(status){//对新增，编辑的数据处理
         const {date}=this.state;
         if(!date){
             message.info('施行日期不能为空!');
@@ -137,6 +139,10 @@ class EditStandard extends Component{
         var rawStandards=[];
         for(var i=0;i<data.length;i++){
               var raw=data[i];
+              if(typeof(raw.value)==='undefined'){
+                  message.info('输入框填写不全');
+                  return
+              }
               rawStandards.push({
                 techniqueRawTestItemStandard:{
                     testItemId:raw.id,
@@ -157,36 +163,48 @@ class EditStandard extends Component{
             commonBatchNumber:commonBatchNumber,
             details:details
         }
-      return saveData;
+       this.handleSaveCheck(saveData,status);//根据status调用保存或送审接口
+      //return saveData;
 
     }
-    handleSave(){//点击编辑保存，未申请状态
-       // console.log('wewdeef');
+    clickSave(){//点击保存
+          this.dataProcess(0);
+    }
+    clickCheck(){//点击送审
+        this.dataProcess(1);
+    }
+    handleSaveCheck(saveData,status){//点击编辑保存，未申请状态
+        this.setState({visible:false,popVisible:false});
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
             method:'put',
             headers:{
                'Authorization':this.props.url.Authorization
             },
-            data:this.dataProcess(),
+            data:saveData,
             type:'json'
         })
         .then(data=>{
             //console.log(data);
             const res=data.data.data;
             if(res){
-                message.info(data.data.message);
-                if(data.data.code===0){
-                    this.props.getStandard(this.props.rawManufacturerId);
+                if(status===0){
+                    message.info(data.data.message);
+                    if(data.data.code===0){
+                        this.props.getStandard(this.props.rawManufacturerId);
+                    }
+                }
+                else{
+                    const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+                    const taskId=this.state.checkSelectData;//选择的流程id'
+                    this.getCheck(dataId,taskId);
                 }
             }
         })
         .catch(()=>{
             message.info('编辑失败，请联系管理员！');
         });
-        this.setState({
-            visible:false
-        });
+     
     }
      handleDetailSave(){//点击迭代的保存
          //console.log(12);
@@ -246,30 +264,30 @@ class EditStandard extends Component{
         });
 
     }
-    handleSongShenOk(){//点击送审的确定
-        axios({
-             url:`${this.props.url.rawStandard.getStandard}`,
-             method:'put',
-             headers:{
-                 'Authorization':this.props.url.Authorization
-             },
-             data:this.dataProcess(),
-             type:'json'
-        }).then(data=>{
-              const res=data.data.data;
-              if(res){
-                const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-                const taskId=this.state.checkSelectData;//选择的流程id'
-                this.getCheck(dataId,taskId);
-                this.setState({
-                    popVisible:false,
-                    visible:false
-                });
-             }  
-        }).catch(()=>{
-            message.info('编辑送审失败，请联系管理员!');
-        });
-    }
+    // handleSongShenOk(){//点击送审的确定
+    //     axios({
+    //          url:`${this.props.url.rawStandard.getStandard}`,
+    //          method:'put',
+    //          headers:{
+    //              'Authorization':this.props.url.Authorization
+    //          },
+    //          data:this.dataProcess(),
+    //          type:'json'
+    //     }).then(data=>{
+    //           const res=data.data.data;
+    //           if(res){
+    //             const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+    //             const taskId=this.state.checkSelectData;//选择的流程id'
+    //             this.getCheck(dataId,taskId);
+    //             this.setState({
+    //                 popVisible:false,
+    //                 visible:false
+    //             });
+    //          }  
+    //     }).catch(()=>{
+    //         message.info('编辑送审失败，请联系管理员!');
+    //     });
+    // }
     handleDetailSongShenOk(){//点击迭代的送审
          axios({
              url:`${this.props.url.rawStandard.getStandard}`,
@@ -322,8 +340,8 @@ class EditStandard extends Component{
                         maskClosable={false}
                         footer={this.state.flag?([
                             <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
-                            <SaveButton key='save' handleSave={this.state.flag1?this.handleSave:this.handleDetailSave}/>,
-                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.state.flag1?this.handleSongShenOk:this.handleDetailSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
+                            <SaveButton key='save' handleSave={this.state.flag1?this.clickSave:this.handleDetailSave}/>,
+                            <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.state.flag1?this.clickCheck:this.handleDetailSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/> 
                         ]):([
                             <CancleButton key='cancel'  handleCancel={this.handleCancel} flag={1}/>,
                             <span key='span' className={this.props.iterateFlag?'':'hide'}>
