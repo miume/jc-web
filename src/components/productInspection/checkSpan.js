@@ -60,7 +60,7 @@ class CheckSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    // width="500px"
+                    // width="520px"
                     footer={[
                         <CancleButton
                             handleCancel = {this.handleCancel}
@@ -97,9 +97,9 @@ class CheckSpan extends React.Component {
     /**input框内容变化，实现自动保存数据 */
     inputSave(e){
         const value = e.target.value;
-        const name = e.target.name;
+        const index = e.target.name;
         var checkData = this.state.checkData;
-        checkData.testDTOS[name].testResult = value;
+        checkData.testDTOS[index].testResult = value;
         this.setState({
             checkData:checkData
         })

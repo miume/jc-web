@@ -12,59 +12,59 @@ class CheckSpanModal extends React.Component {
         super(props);
         this.clickIsQualified = this.clickIsQualified.bind(this);
     }
-    columns = [{
-        title: '序号',
-        dataIndex: 'index',
-        key: 'index',
-        align:'center',
-        width: '12%',
-    },{
-        title: '检测项目',
-        dataIndex: 'testItemName',
-        key: 'testItemName',
-        align:'center',
-        width: '20%',
-    },{
-        title: '检测结果',
-        dataIndex: 'testResult',
-        key: 'testResult',
-        align:'center',
-        render: (text,record,index) => {
-            return(
-                <Input
-                    placeholder='输入检测结果'
-                    style={{border:'0',paddingLeft:'10px'}}
-                    onChange={this.props.inputSave}
-                    value={record.testResult}
-                    name={index}
-                />
-            )
-        }
-    },{
-        title: '行业标准',
-        dataIndex: 'rawTestItemStandard',
-        key: 'rawTestItemStandard',
-        align:'center',
-        width: '20%',
-    },{
-        title: '计量单位',
-        dataIndex: 'unit',
-        key: 'unit',
-        align:'center',
-        width: '20%',
-    }];
+    // columns = [{
+    //     title: '序号',
+    //     dataIndex: 'index',
+    //     key: 'index',
+    //     align:'center',
+    //     width: '12%',
+    // },{
+    //     title: '检测项目',
+    //     dataIndex: 'testItemName',
+    //     key: 'testItemName',
+    //     align:'center',
+    //     width: '20%',
+    // },{
+    //     title: '检测结果',
+    //     dataIndex: 'testResult',
+    //     key: 'testResult',
+    //     align:'center',
+    //     render: (text,record,index) => {
+    //         return(
+    //             <Input
+    //                 placeholder='输入检测结果'
+    //                 style={{border:'0',paddingLeft:'10px'}}
+    //                 onChange={this.props.inputSave}
+    //                 value={record.testResult}
+    //                 name={index}
+    //             />
+    //         )
+    //     }
+    // },{
+    //     title: '行业标准',
+    //     dataIndex: 'rawTestItemStandard',
+    //     key: 'rawTestItemStandard',
+    //     align:'center',
+    //     width: '20%',
+    // },{
+    //     title: '计量单位',
+    //     dataIndex: 'unit',
+    //     key: 'unit',
+    //     align:'center',
+    //     width: '20%',
+    // }];
     render() {
-        const columns = this.columns.map((col) => {
-            return {
-                ...col,
-                onCell: record => ({
-                    record,
-                }),
-            };
-        });
+        // const columns = this.columns.map((col) => {
+        //     return {
+        //         ...col,
+        //         onCell: record => ({
+        //             record,
+        //         }),
+        //     };
+        // });
         return(
             <div >
-                <div className="productCheckModalTop">
+                <div className="productDrSpanModalTop">
                     <table>
                         <thead>
                         <tr>
@@ -88,16 +88,47 @@ class CheckSpanModal extends React.Component {
                     </div>
                     <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                 </div>
-                <div className="productCheckModalBottom">
-                    <Table
-                        rowKey={record => record.id}
-                        columns={columns}
-                        dataSource={this.props.data.testDTOS}
-                        pagination={{hideOnSinglePage:true,pageSize:100}}
-                        size="small"
-                        scroll={{ y: 400 }}
-                        bordered
-                    />
+                <div
+                    className="productSpanTableModal"
+                >
+                    <div
+                        className="productSpanTheadModal"
+                    >
+                        <div>序号</div>
+                        <div>检测项目</div>
+                        <div>检测结果</div>
+                        <div>行业标准</div>
+                        <div>计量单位</div>
+                        <div>判定</div>
+                    </div>
+                    <div
+                        className="productSpanTbodyModal"
+                    >
+                        {
+                            this.props.data.testDTOS.map((item,index) => {
+                                return(
+                                    <div key={index}>
+                                        <div>{item.index}</div>
+                                        <div>{item.testItemName}</div>
+                                        <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                        {/*<div>{item.testResult}</div>*/}
+                                        <div>{item.rawTestItemStandard}</div>
+                                        <div>{item.unit}</div>
+                                        <div>
+                                            <div
+                                                className={(item.isValid)?'productPassValidPointer':'productDefaultPointer'}
+                                                onClick={this.handleJudgePass.bind(this,index,1)}
+                                            >合格</div>
+                                            <div
+                                                className={(item.isValid)?'productDefaultPointer':'productNoPassValidPointer'}
+                                                onClick={this.handleJudgePass.bind(this,index,0)}
+                                            >不合格</div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
                 <CheckQualifiedModal
                     status={this.props.data.isQualified}
@@ -113,6 +144,11 @@ class CheckSpanModal extends React.Component {
         this.modifyDetailData(checkData);
     };
     /**---------------------- */
+    handleJudgePass = (index,flag) => {
+        var detailData = this.props.data;
+        detailData.testDTOS[index].isValid = flag;
+        this.props.modifyDetailData(detailData);
+    }
     /**实现字段搜索功能 */
     /**---------------------- */
 }
