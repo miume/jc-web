@@ -64,6 +64,8 @@
     width: 100%;
     padding-top: 5px;
     cursor: default;
+    margin-bottom: 45px;
+
 }
 .productDrSpanModalMiddle div{
     float: left;
@@ -173,6 +175,7 @@
     width: 100%;
     padding-top: 5px;
     cursor: default;
+    margin-bottom: 50px;
 }
 .productCheckModalMiddle div{
     float: left;
@@ -225,42 +228,150 @@
     font-size: 30px;
 }
 
-.productSpanModal {
-    min-width: 100%;
-    max-width: 100%;
-    height: 190px;
-    overflow-y: scroll;
-    cursor: default;
-}
-.productSpanModal table {
-    width: 100%;
-    border: 1px solid #E9E9E9;
-    text-align: center;
-    height: 150px;
-    /*font-size: 14px;*/
-}
-.productSpanModal table thead tr th {
-    height: 30px;
-    border: 1px solid #E9E9E9;
-}
-.productSpanModal table tbody tr td{
-    height: 30px;
-    border: 1px solid #E9E9E9;
-    /*height: 20px;*/
-    /*overflow-y: scroll;*/
-}
+
+
+
+
 .productPassValidPointer {
     background-color: #4BD863;
     cursor: pointer;
-    width: 50px;
+    /*width: 50%;*/
+    height: 100%;
 }
 .productNoPassValidPointer {
     background-color: #FF3B30;
     cursor: pointer;
-    width: 50px;
+    /*width: 50%;*/
+    height: 100%;
 }
 .productDefaultPointer {
     background-color: #999999;
     cursor: pointer;
-    width: 50px;
+
+}
+.productTdInput {
+    width: 100px;
+}
+.productTdInput input{
+    border: none;
+}
+
+
+/*drspan表格*/
+.productDrSpanTableModal {
+    max-height: 180px;
+    /*max-height: 250px;*/
+    /*border: 1px solid red ;*/
+}
+
+.productDrSpanTheadModal {
+    display: flex;
+    text-align: center;
+    font-size: 16px;
+}
+
+.productDrSpanTheadModal div{
+    border-left: 1px solid #E9E9E9;
+    border-top: 1px solid #E9E9E9;
+    width: 80px;
+}
+.productDrSpanTheadModal div:first-child{
+    width: 60px;
+}
+.productDrSpanTheadModal div:last-child{
+    width: 120px;
+    border-right: 1px solid #E9E9E9;
+}
+
+.productDrSpanTbodyModal {
+    height: 160px;
+    /*height: 200px;*/
+    /*border: 1px solid green;*/
+    overflow-y: scroll;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-align: center;
+}
+.productDrSpanTbodyModal>div {
+    font-size: 16px;
+    display: flex;
+
+}
+.productDrSpanTbodyModal>div:last-child{
+    border-bottom: 1px solid #E9E9E9;
+}
+.productDrSpanTbodyModal>div>div{
+    width: 80px;
+    border-left: 1px solid #E9E9E9;
+    border-top: 1px solid #E9E9E9;
+}
+.productDrSpanTbodyModal>div>div:first-child{
+    width: 60px;
+}
+.productDrSpanTbodyModal>div>div:last-child {
+    width: 120px;
+    display: flex;
+}
+.productDrSpanTbodyModal>div>div:last-child div{
+    width: 50%;
+}
+
+
+/*check表格*/
+.productSpanTableModal {
+    max-height: 350px;
+    /*max-height: 250px;*/
+    /*border: 1px solid red ;*/
+}
+
+.productSpanTheadModal {
+    display: flex;
+    text-align: center;
+    font-size: 16px;
+}
+
+.productSpanTheadModal div{
+    border-left: 1px solid #E9E9E9;
+    border-top: 1px solid #E9E9E9;
+    width: 80px;
+}
+.productSpanTheadModal div:first-child{
+    width: 60px;
+}
+.productSpanTheadModal div:last-child{
+    width: 120px;
+    border-right: 1px solid #E9E9E9;
+}
+
+.productSpanTbodyModal {
+    height: 320px;
+    /*height: 200px;*/
+    /*border: 1px solid green;*/
+    overflow-y: scroll;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-align: center;
+}
+.productSpanTbodyModal>div {
+    font-size: 16px;
+    display: flex;
+
+}
+.productSpanTbodyModal>div:last-child{
+    border-bottom: 1px solid #E9E9E9;
+}
+.productSpanTbodyModal>div>div{
+    width: 80px;
+    border-left: 1px solid #E9E9E9;
+    border-top: 1px solid #E9E9E9;
+}
+.productSpanTbodyModal>div>div:first-child{
+    width: 60px;
+}
+.productSpanTbodyModal>div>div:last-child {
+    width: 120px;
+    display: flex;
+}
+.productSpanTbodyModal>div>div:last-child div{
+    width: 50%;
 }
