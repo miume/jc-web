@@ -33,7 +33,7 @@ class CheckReleaseSpan extends React.Component {
                 <Modal
                     title="数据详情"
                     visible={visible}
-                    width="1050px"
+                    width="1035px"
                     centered={true}
                     closable={false}
                     maskClosable={false}

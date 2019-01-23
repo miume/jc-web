@@ -33,7 +33,7 @@ class PackGenerateModal extends React.Component {
                 <Modal
                     title="打包数据"
                     visible={this.state.visible}
-                    width="1030px"
+                    width="1035px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
