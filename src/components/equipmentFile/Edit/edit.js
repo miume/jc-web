@@ -3,7 +3,7 @@ import {Modal} from 'antd';
 import EditModal from './editModal';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
-import NewButton from '../../BlockQuote/newButton';
+//import NewButton from '../../BlockQuote/newButton';
 class Edit extends Component{
     constructor(props){
          super(props);

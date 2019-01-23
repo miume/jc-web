@@ -3,9 +3,7 @@ import {Table} from 'antd';
 import './detail.css';
 
 class DetailModal extends Component{
-    constructor(props){
-        super(props);
-    }
+   
     columns=[{
          title:'序号',
          dataIndex:'index',
@@ -71,7 +69,7 @@ class DetailModal extends Component{
                       scroll={{y:230}}
                       bordered/>
                </div>
-               <div style={{marginTop:'15px'}}>
+               <div style={{marginTop:'21px'}}>
                        <div>
                            施行时间：<span>{this.props.effectiveTime}</span>
                        </div>

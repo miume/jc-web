@@ -13,6 +13,7 @@ class RawMaterial extends Component{
       componentDidMount(){
           this.fetch();
           this.getAllTestItem();
+          this.getAllRawMatarial();
       }
     //   componentWillMount(){
     //       this.setState=()=>{
@@ -27,7 +28,8 @@ class RawMaterial extends Component{
               visible:false,
               inputContent:'',//新增输入框最开始没有内容
               items:[],
-              testItems:[]
+              testItems:[],
+              rawData:[],//新增获取所有原材料
           }
           this.onBlockChange=this.onBlockChange.bind(this);
           this.searchContentChange=this.searchContentChange.bind(this);
@@ -38,13 +40,14 @@ class RawMaterial extends Component{
           this.handleCancel=this.handleCancel.bind(this);
           this.getAllTestItem=this.getAllTestItem.bind(this);
           this.checkboxChange=this.checkboxChange.bind(this);
+          this.getAllRawMatarial=this.getAllRawMatarial.bind(this);
       }
      fetch=()=>{
        axios({
-         url:`${this.url.rawStandard.getRaw}`,
+         url:`${this.props.url.rawStandard.getRaw}`,
          method:'get',
          headers:{
-             'Authorization':this.url.Authorization
+             'Authorization':this.props.url.Authorization
          }
        })
        .then((data)=>{
@@ -58,6 +61,28 @@ class RawMaterial extends Component{
           }
        });
      }
+     getAllRawMatarial(){//新增下拉框获取所有原材料
+        const materialClass=1;
+        const isManufacturer=0;
+        axios({
+           url:`${this.props.url.serialNumber.getRaw}?materialClass=${materialClass}&isManufacturer=${isManufacturer}`,
+           method:'get',
+           headers:{
+               'Authorization':this.props.url.Authorization
+           }
+
+        })
+        .then((data)=>{
+            console.log(data);
+            const res=data.data.data;
+            if(res){
+                this.setState({
+                    rawData:res
+                });
+            }
+        });
+   }
+
     //监听原材料那个块块是否被选中
     onBlockChange(e){
         const rawMaterialId = e.target.id.split('-')[0];
@@ -81,10 +106,10 @@ class RawMaterial extends Component{
             return
         }
         axios({
-            url:`${this.url.rawStandard.addRaw}?testItemIds=${this.state.testItems.toString()}`,
+            url:`${this.props.url.rawStandard.addRaw}?testItemIds=${this.state.testItems.toString()}`,
             method:'post',
             headers:{
-                'Authorization':this.url.Authorization
+                'Authorization':this.props.url.Authorization
             },
             data:value
         }).then(data=>{
@@ -114,10 +139,10 @@ class RawMaterial extends Component{
     searchEvent(){
        const name=this.state.searchContent;
        axios({
-          url:`${this.url.rawStandard.getRaw}`,
+          url:`${this.props.url.rawStandard.getRaw}`,
           method:'get',
           headers:{
-               'Authorization':this.url.Authorization
+               'Authorization':this.props.url.Authorization
           },
           params:{
               name:name
@@ -139,22 +164,21 @@ class RawMaterial extends Component{
     }  
     getAllTestItem(){
         axios({
-           url:`${this.url.testItems.testItems}`,
+           url:`${this.props.url.testItems.testItems}`,
            method:'get',
            headers:{
-               'Authorization':this.url.Authorization
+               'Authorization':this.props.url.Authorization
            }
         }).then(data=>{
             const res=data.data.data;
             if(res){
                 this.setState({items:res});
             }
-        }
-              
+          }            
         )
       }
       render(){
-         this.url=JSON.parse(localStorage.getItem('url'));
+        //  this.url=JSON.parse(localStorage.getItem('url'));
           return(
               <div>
                   <div style={{padding:'15px'}}>
@@ -186,7 +210,7 @@ class RawMaterial extends Component{
                             <NewButton key='ok' handleClick={this.addEvent} name='确定'  className='fa fa-check'/>,
                             ]}
                     >
-                      <RawMaterialAddModal items={this.state.items} checkboxChange={this.checkboxChange} wrappedComponentRef={(form) => this.formRef = form}/>
+                      <RawMaterialAddModal rawData={this.state.rawData} items={this.state.items} checkboxChange={this.checkboxChange} wrappedComponentRef={(form) => this.formRef = form}/>
                     </Modal>
                    </div>
                    </div>

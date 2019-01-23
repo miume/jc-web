@@ -92,8 +92,8 @@ class EditStandardModal extends Component{
                           scroll={{y:230}}
                         />
                   </div>
-                  <div style={{marginTop:'15px'}}>
-                      {this.props.effectiveTime!=''?
+                  <div style={{marginTop:'21px'}}>
+                      {this.props.effectiveTime!==''?
                         <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')} 
                         onChange={this.handleDateChange} 
                         disabledDate={this.disabledDate}

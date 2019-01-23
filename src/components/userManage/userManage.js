@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button,Input,Table,Popconfirm,Form,Divider,Modal,Select,message,InputNumber} from 'antd';
+import { Input,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
 import '../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../BlockQuote/blockquote';
@@ -528,7 +528,7 @@ class User extends React.Component{
            <div>
                <BlockQuote name={current.menuName} menu={current.menuParent}/>
                <div style={{padding:'15px'}}>
-               <NewButton handleClick={this.handleAdd} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
+               <NewButton handleClick={this.handleAdd} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                     <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} centered={true} className='modal-sm'
                           footer={[
                             <CancleButton  key='cancel' handleCancel={() => this.handleCancel()} />,

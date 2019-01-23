@@ -86,7 +86,7 @@ class  ProductProcessAddModal extends React.Component{
     render(){
         return(
           <span>
-              <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
+              <NewButton handleClick={this.showModal} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}
                 visible={this.state.visible}

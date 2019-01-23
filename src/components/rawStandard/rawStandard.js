@@ -1,7 +1,5 @@
 import React,{Component} from 'react';
 import Blockquote from '../BlockQuote/blockquote';
-import SearchCell from '../BlockQuote/search';
-import {Tabs} from 'antd';
 import axios from 'axios';
 import './block.css';
 import RawMaterial from './rawMaterial/rawMaterial';
@@ -9,6 +7,7 @@ import Manufacturer from './factory/factory';
 import Standard  from './standard/standard';
 import SetStandard from './setStandard/setStandard';
 class RawStandard extends Component{
+   
     constructor(props){
         super(props);
         this.state={
@@ -21,13 +20,11 @@ class RawStandard extends Component{
             dataSource:[],
             name:''
         }
-        // this.onBlockChange1=this.onBlockChange1.bind(this);
         this.onBlockChange=this.onBlockChange.bind(this);
         this.clickToRaw=this.clickToRaw.bind(this);
         this.clickToFactory=this.clickToFactory.bind(this);
         this.getStandard=this.getStandard.bind(this);
     }
- 
   onBlockChange(flag,content,id){//原材料那个块是否被选中，选中后发生的变化
     //console.log(flag,content);
         if(flag===1){
@@ -99,6 +96,8 @@ class RawStandard extends Component{
         });
     }
 
+  
+
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
          this.setState({
             flag:1,
@@ -121,7 +120,7 @@ class RawStandard extends Component{
                    <Blockquote menu={current.menuParent} name={current.menuName}/>
                    <div  className='rawMaterailStandard'>
                      <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content1}</div>
-                     <div className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.clickToFactory}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div>
+                     <div className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.state.flag!==1?this.clickToFactory:null}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div>
                      <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} ><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content3}</div> 
                      
                    <div>

@@ -4,7 +4,7 @@ import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
-import Submit from '../../BlockQuote/submit'
+//import Submit from '../../BlockQuote/submit'
 import RawMaterialRedListAddModal from './addModal';
 import axios from 'axios';
 const Option=Select.Option;
@@ -67,7 +67,7 @@ class Add extends React.Component{
            type:'json'
         }).then((data)=>{
            // console.log(data);
-            const res=data.data.data;
+            //const res=data.data.data;
             message.info(data.data.message);
             this.props.fetch();
         })
@@ -96,7 +96,7 @@ class Add extends React.Component{
         this.setState({checkSelectData:value});
     }
     selectOnSelect(value){
-        console.log(value);
+       // console.log(value);
         this.setState({checkSelectData:-1});
     }
     hide(){//送审气泡的取消

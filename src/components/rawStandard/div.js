@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Input,Icon} from 'antd';
+import {Input} from 'antd';
 import './block.css';
 class DataPart extends Component{
   render(){
