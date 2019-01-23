@@ -131,7 +131,7 @@ class DetailSpan extends React.Component {
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord.judger?res.testReportRecord.judger:'无',
+                    tester: res.tester?res.tester:'无',
                     testTime: res.testReportRecord.judgeDate?res.testReportRecord.judgeDate:'无',
                 };
                 // 择优数据

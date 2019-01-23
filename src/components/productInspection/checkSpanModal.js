@@ -98,6 +98,18 @@ class CheckSpanModal extends React.Component {
     handleJudgePass = (index,flag) => {
         var checkData = this.props.data;
         checkData.testDTOS[index].isValid = flag;
+        if(flag === 0 ){
+            checkData.isQualified = 0;
+        }else{
+            for(var i=0; i<checkData.testDTOS.length; i++){
+                if(checkData.testDTOS[i].isValid===0){
+                    checkData.isQualified = 0;
+                    break;
+                }else{
+                    checkData.isQualified = 1;
+                }
+            }
+        }
         this.props.modifyDetailData(checkData);
     };
     /**实现清空功能 */
