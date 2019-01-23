@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {message,Divider} from 'antd';
+import {message,Divider,Popover} from 'antd';
 import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import '../block.css';
@@ -18,7 +18,8 @@ class Manufacturer extends Component{
           searchContent:'',
           flag1:false,//用来判断新增框是否变为输入框
           inputContent:'',
-          factoryData:[]
+          factoryData:[],
+          checkSelectData:-1,//下拉框最开始没选，
       }
       this.fetch=this.fetch.bind(this);
       this.onBlockChange=this.onBlockChange.bind(this);
@@ -29,6 +30,7 @@ class Manufacturer extends Component{
       this.searchEvent=this.searchEvent.bind(this);
       this.checkRaw=this.checkRaw.bind(this);
       this.getAllFactory=this.getAllFactory.bind(this);
+      this.selectChange=this.selectChange.bind(this);
     }
     fetch=()=>{
       axios({
@@ -98,7 +100,11 @@ class Manufacturer extends Component{
             this.props.onBlockChange(4,factoryName,factoryId);
            }
        });
-       
+    }
+      //监听厂家下拉框变化
+      selectChange=(value)=>{
+        //console.log(value);//得到的是id
+        this.setState({checkSelectData:value});
     }
     addClick(e){//点击新增变为输入框
         this.setState({
@@ -170,6 +176,7 @@ class Manufacturer extends Component{
     checkRaw(e){//点击重新选择原材料调用的函数
         this.props.onBlockChange(1,'选择生产厂家',this.props.rawMaterialId);//跳回生产厂家界面后，就不可以点击那个面板了
     }
+
     render(){
         // this.url=JSON.parse(localStorage.getItem('url'));
         return(
@@ -192,7 +199,11 @@ class Manufacturer extends Component{
                     <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
-                   <span ><DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/></span>
+                   <span>
+                    
+                       <DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
+                      
+                   </span>
               </div>
               
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
