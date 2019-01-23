@@ -9,7 +9,7 @@ class Manufacturer extends Component{
     
     componentDidMount(){
       this.fetch();
-      this.getAllFactory();
+    //   this.getAllFactory();
     }
     constructor(props){
       super(props);
@@ -29,7 +29,7 @@ class Manufacturer extends Component{
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.checkRaw=this.checkRaw.bind(this);
-      this.getAllFactory=this.getAllFactory.bind(this);
+    //   this.getAllFactory=this.getAllFactory.bind(this);
       this.selectChange=this.selectChange.bind(this);
     }
     fetch=()=>{
@@ -51,26 +51,7 @@ class Manufacturer extends Component{
           }
       });
     }
-    getAllFactory(){//新增下拉框获取所有生产厂家
-        const materialClass=1;
-        const isManufacturer=1;
-        axios({
-           url:`${this.props.url.serialNumber.getRaw}?materialClass=${materialClass}&isManufacturer=${isManufacturer}`,
-           method:'get',
-           headers:{
-               'Authorization':this.props.url.Authorization
-           }
-        })
-        .then((data)=>{
-            //console.log(data);
-            const res=data.data.data;
-            if(res){
-                this.setState({
-                    factoryData:res
-                });
-            }
-        });
-    }
+
     onBlockChange(e){
        //console.log(e.target);
        //console.log(JSON.parse(localStorage.getItem('menuList')));

@@ -119,7 +119,8 @@ class SetStandard extends Component{
     clickCheck(){//点击送审
         this.dataProcess(1);
     }
-    handleSaveCheck(saveData,status){//保存接口 
+    handleSaveCheck(saveData,status){//保存接口
+        //console.log(saveData); 
         this.setState({visible:false,popVisible:false});
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
@@ -131,7 +132,7 @@ class SetStandard extends Component{
             type:'json'
         })
         .then(data=>{
-           // console.log(data);
+           //console.log(data);
             const res=data.data.data;
             if(res){
                if(status===0){
