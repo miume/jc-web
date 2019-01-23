@@ -90,10 +90,10 @@ class ProductTable extends React.Component{
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
-            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            // let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
             // let detailSpanFlag = true
             // let checkSpanFlag = true
-            // let releaseSpanFlag = true
+            let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
@@ -108,6 +108,7 @@ class ProductTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
+                            menuList={this.props.menuList}
                             fetch={this.props.fetch}
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
@@ -121,6 +122,7 @@ class ProductTable extends React.Component{
                             batchNumberId={record.batchNumberId}
                             url={this.props.url}
                             fetch={this.props.fetch}
+                            checkStatus={record.status}
                         />
                     ):(
                         <span  className="notClick">发布</span>

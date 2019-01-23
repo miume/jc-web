@@ -4,27 +4,22 @@ import DrSpanModal from './drSpanModal';
 import './productInspection.css';
 import axios from "axios";
 import CancleButton from '../BlockQuote/cancleButton';
-const data = [];
-for (let i = 0; i < 50; i++) {
-    data.push({
-        index:i,
-        id: i,
-        testItem: `测试`,
-        testResult: '0.001',
-        a: '0.002',
-        itemUnit: `g/mL`,
-    });
-}
+
 class ReleaseSpan extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             visible: false,
             subVisible: false,
-            checkData:{
+            detailData:{
                 topData: {},   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
+                examine: {       //审核数据
+                    examineStatus: '',
+                    examineData: []
+                },
+                optional: {},   //择优数据
                 isQualified: '', //不合格状态
             },
         };
@@ -44,25 +39,26 @@ class ReleaseSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    width="500px"
+                    // width="500px"
                     footer={[
                         <CancleButton
                             key="back"
                             flag = {1}
                             handleCancel={this.handleCancel}
                         />,
-                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.props.handleRelease} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
+                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleRelease} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
-                    <div style={{height:640}}>
+                    <div style={{height:570}}>
                         <DrSpanModal
-                            data={this.state.checkData}
+                            data={this.state.detailData}
                         />
                     </div>
                 </Modal>
             </span>
         )
     }
+    //  处理发布按钮功能
     handleRelease = () => {
         axios({
             url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.batchNumberId}`,
@@ -83,8 +79,10 @@ class ReleaseSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
+        this.setState({
+            visible: true,
+        });
     }
-    // showModal = () => {
     getDetailData = () =>{
         axios({
             url:`${this.props.url.productInspection.productRecord}/${this.props.batchNumberId}`,
@@ -94,12 +92,14 @@ class ReleaseSpan extends React.Component {
             },
         }).then((data)=>{
             const res = data.data.data;
+            console.log('res',res)
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
             var isQualified = 0;
+            var optional = {};  //择优数据
             if(res){
-                isQualified = res.isPublished;
+                isQualified =  res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
                     serialNumber: res.repoBaseSerialNumber.serialNumber,
                     materialName: res.repoBaseSerialNumber.materialName,
@@ -116,7 +116,8 @@ class ReleaseSpan extends React.Component {
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
                             rawTestItemStandard:e.standardValue,
-                            unit:e.testItem.unit
+                            unit:e.testItem.unit,
+                            isValid: e.testItemResultRecord.isValid
                         })
                     }
                 }
@@ -124,14 +125,55 @@ class ReleaseSpan extends React.Component {
                     tester: res.testReportRecord?res.testReportRecord.judger:'',
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
-                this.setState({
-                    checkData:{
-                        topData: topData,
-                        testDTOS: testDTOS,
-                        testData: testData,
-                        isQualified: isQualified,
-                    },
-                });
+                // 择优数据
+                optional = {
+                    optionalStatus: '',
+                    optionalData: {
+                        personer:'',
+                        personTime:''
+                    }
+                };
+                const examineStatus = this.props.checkStatus;
+                const batchNumberId = res.testReportRecord?res.testReportRecord.batchNumberId:'';
+                if((examineStatus===2||examineStatus===3)&&batchNumberId){
+                    axios({
+                        url:`${this.props.url.toDoList}/${batchNumberId}/result`,
+                        method:'get',
+                        headers:{
+                            'Authorization':this.props.url.Authorization
+                        }
+                    }).then((data)=>{
+                        const examine = data.data.data;
+                        console.log(examine)
+                        this.setState({
+                            detailData:{
+                                topData: topData,
+                                testDTOS: testDTOS,
+                                testData: testData,
+                                examine: {
+                                    examineStatus: examineStatus,
+                                    examineData: examine,
+                                },
+                                optional: optional,
+                                isQualified: isQualified,
+                            },
+                        });
+                    })
+                }else{
+                    this.setState({
+                        detailData:{
+                            topData: topData,
+                            testDTOS: testDTOS,
+                            testData: testData,
+                            examine: {
+                                examineStatus: examineStatus,
+                                examineData: []
+                            },
+                            optional: optional,
+                            isQualified: isQualified,
+                        },
+                    })
+                }
             }
         })
     }

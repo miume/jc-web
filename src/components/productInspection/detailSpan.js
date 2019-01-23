@@ -27,7 +27,7 @@ class DetailSpan extends React.Component {
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
-                    examineStatus: 1000,
+                    examineStatus: '',
                     examineData: []
                 },
                 optional: {},   //择优数据
@@ -65,7 +65,7 @@ class DetailSpan extends React.Component {
                         />
                     ]}
                 >
-                    <div style={{height:550}}>
+                    <div style={{height:570}}>
                         <DrSpanModal
                             // checkStatus:根据审核状态是否有审核及择优部分
                             // examine={this.state.examine}
@@ -99,10 +99,10 @@ class DetailSpan extends React.Component {
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
-            var isQualified = 0;
+            var isQualified = '';
             var optional = {};  //择优数据
             if(res){
-                isQualified = res.isPublished;
+                isQualified =  res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
                     serialNumber: res.repoBaseSerialNumber.serialNumber,
                     materialName: res.repoBaseSerialNumber.materialName,
@@ -138,7 +138,6 @@ class DetailSpan extends React.Component {
                 };
                 const examineStatus = this.props.checkStatus;
                 const batchNumberId = res.testReportRecord?res.testReportRecord.batchNumberId:'';
-                console.log(batchNumberId)
                 if((examineStatus===2||examineStatus===3)&&batchNumberId){
                     axios({
                         url:`${this.props.url.toDoList}/${batchNumberId}/result`,
