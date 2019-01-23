@@ -127,10 +127,11 @@ class CheckSpan extends React.Component {
             },
         }).then((data)=>{
             const res = data.data.data;
+            console.log('res',res)
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
-            var isQualified = 0;
+            var isQualified = '';
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
@@ -149,12 +150,13 @@ class CheckSpan extends React.Component {
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
                             rawTestItemStandard:e.standardValue?e.standardValue:'无',
-                            unit:e.testItem.unit
+                            unit:e.testItem.unit,
+                            isValid: e.testItemResultRecord.isValid?e.testItemResultRecord.isValid:1
                         })
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord?res.testReportRecord.judger:'无',
+                    tester: this.props.menuList.name,
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'无',
                 };
                 this.setState({
@@ -227,14 +229,19 @@ class CheckSpan extends React.Component {
         }
 
         //  需要知道保存的格式
+        var judgeDate = new Date();
+        console.log(judgeDate)
         var saveData = {
             batchNumberId: this.props.batchNumberId,
             testResultDTOList: testResultDTOLists,
             testReportRecord: {
-                isQualified: checkData.isQualified
+                isQualified: checkData.isQualified,
+                judger: this.props.menuList.userId,
+                // judgeDate:
             },
 
         };
+        console.log(saveData)
         // if(detailTestDTOS){
         //     for(var j=0; j<detailTestDTOS.length; j++){
         //         if(detailTestDTOS[j].testResult === ''){
@@ -244,7 +251,7 @@ class CheckSpan extends React.Component {
         //     }
         // }
         //  调用保存函数
-        this.useSavaFunction(saveData,status);
+        // this.useSavaFunction(saveData,status);
 
     };
     /**调用保存函数 */

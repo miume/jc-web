@@ -74,24 +74,25 @@
 }
 /*Bottom:设置检验人、审核人等*/
 .productDrSpanModalBottom {
-    position:absolute;
-    bottom: 130px;
-    height: 200px;
+    /*position:absolute;*/
+    /*bottom: 80px;*/
+    height: 250px;
     width: 100%;
     cursor: default;
 }
 
 .productDrSpanModalBottom .productDrSpanModalBottomFirst {
-    padding-top: 20px;
-    padding-bottom: 55px;
-    height: 50px;
-    /*margin-top: -7px;*/
+    margin-top: 20px;
+    /*padding-bottom: 55px;*/
+    height: 80px;
+    width: 100%;
     cursor: default;
+    /*margin-bottom: 10px;*/
 }
 .productDrSpanModalBottom .productDrSpanModalBottomFirst table {
     float: left;
-    /*margin-top: 5px;*/
 }
+
 .productStateModal {
     overflow-y: auto;
     width: 100%;
@@ -99,8 +100,11 @@
 }
 .productDrSpanDivider {
     margin: 15px 0 !important;
+    width: 520px !important;
     left: -20px;
-    /*z-index: 0 !important;*/
+
+    /*bottom: 20px;*/
+
 }
 .productPadding tr td {
     padding-top: 4px;
@@ -111,7 +115,7 @@
 .productStateDefaultModal{
     /*border: 1px solid black;*/
     width: 480px;
-    height: 100px;
+    height: 200px;
     color: #999999;
     text-align: center;
     line-height: 150px;
@@ -205,6 +209,9 @@
     display: flex;
     width: 95%;
 }
+.productNoneOptional {
+    display: none;
+}
 
 .productOptionalPerson {
     flex-grow: 2;
@@ -214,9 +221,11 @@
 .productOptionalImag {
     flex-grow: 2;
     margin-top: -5px;
-    border: 5px solid #4BD863;
-    width: 100px;
-    right:100px;
+    border: 3px solid #4BD863;
+    width: 120px;
+    margin-right: -25px;
+    /*left: 50px;*/
+    /*right:500px !important;*/
 }
 .productOptionalImag span{
     display: block;
@@ -229,28 +238,12 @@
 }
 
 
-.productPassValidPointer {
-    background-color: #4BD863;
-    cursor: pointer;
-    /*width: 50%;*/
-    height: 100%;
-}
-.productNoPassValidPointer {
-    background-color: #FF3B30;
-    cursor: pointer;
-    /*width: 50%;*/
-    height: 100%;
-}
-.productDefaultPointer {
-    background-color: #999999;
-    cursor: pointer;
-
-}
 
 
 /*drspan表格*/
 .productDrSpanTableModal {
     max-height: 180px;
+    cursor: default ;
     /*max-height: 250px;*/
     /*border: 1px solid red ;*/
 }
@@ -382,4 +375,40 @@
 .productTdInput input{
     border: none;
     height: 26px !important;
+}
+
+.productPassValidPointer {
+    background-color: #4BD863;
+    cursor: pointer;
+    /*width: 50%;*/
+    height: 100%;
+}
+.productNoPassValidPointer {
+    background-color: #FF3B30;
+    cursor: pointer;
+    /*width: 50%;*/
+    height: 100%;
+}
+.productDefaultPointer {
+    background-color: #999999;
+    cursor: pointer;
+
+}
+
+.productPassValidDefault {
+    background-color: #4BD863;
+    cursor: default;
+    /*width: 50%;*/
+    height: 100%;
+}
+.productNoPassValidDefault {
+    background-color: #FF3B30;
+    cursor: default;
+    /*width: 50%;*/
+    height: 100%;
+}
+.productDefaultDefault {
+    background-color: #999999;
+    cursor: default;
+
 }

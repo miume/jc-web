@@ -2,6 +2,7 @@ import React from 'react';
 import './productInspection.css';
 import AllTester from '../BlockQuote/allTester';
 import {Divider} from "antd";
+import ProductOptional from './productOptional';
 
 class DetailStateModal extends React.Component {
     render() {
@@ -37,11 +38,9 @@ class DetailStateModal extends React.Component {
                                 <div><span>择优人：<span>{this.props.optional?this.props.optional.optionalData.personer:''}</span></span></div>
                                 <div><span>择优时间：<span>{this.props.optional?this.props.optional.optionalData.personTime:''}</span></span></div>
                             </div>
-                            <div
-                                className="productOptionalImag"
-                            >
-                                <span>{this.props.optional.optionalStatus}</span>
-                            </div>
+                            <ProductOptional
+                                optionalStatus = {this.props.optional.optionalStatus}
+                            />
                         </div>
                     </div>
                 );

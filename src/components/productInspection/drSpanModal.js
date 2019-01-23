@@ -99,11 +99,11 @@ class DrSpanModal extends React.Component {
                                         <div>{item.unit}</div>
                                         <div>
                                             <div
-                                                className={(item.isValid)?'productPassValidPointer':'productDefaultPointer'}
+                                                className={(item.isValid)?'productPassValidDefault':'productDefaultDefault'}
                                                 // onClick={this.handleJudgePass.bind(this,index,1)}
                                             >合格</div>
                                             <div
-                                                className={(item.isValid)?'productDefaultPointer':'productNoPassValidPointer'}
+                                                className={(item.isValid)?'productDefaultDefault':'productNoPassValidDefault'}
                                                 // onClick={this.handleJudgePass.bind(this,index,0)}
                                             >不合格</div>
                                         </div>
@@ -113,8 +113,6 @@ class DrSpanModal extends React.Component {
                         }
                     </div>
                 </div>
-
-
                 <div className="productDrSpanModalBottom">
                     <div className="productDrSpanModalBottomFirst">
                         <table>
@@ -137,29 +135,29 @@ class DrSpanModal extends React.Component {
                         className="productDrSpanDivider"
                     />
                     <DetailStateModal
-                        examine={this.props.data.examine}
-                        // examine = {{
-                        //     examineStatus:'',
-                        //     examineData:[{x
-                        //         handler:'a',
-                        //         handleReply:'b',
-                        //         handleTime:'c'
-                        //     },{
-                        //         handler:'aa',
-                        //         handleReply:'bb',
-                        //         handleTime:'cc'
-                        //     }]
-                        // }}
+                        // examine={this.props.data.examine}
+                        examine = {{
+                            examineStatus:2,
+                            examineData:[{
+                                handler:'a',
+                                handleReply:'b',
+                                handleTime:'c'
+                            },{
+                                handler:'aa',
+                                handleReply:'bb',
+                                handleTime:'cc'
+                            }]
+                        }}
                         // examineData={this.state.examineData}
                         //  择优人
-                        optional={this.props.data.optional?this.props.data.optional:''}
-                        // optional = {{
-                        //     optionalStatus: 1000,
-                        //     optionalData: {
-                        //         personer:'暂定',
-                        //         personTime:'暂定'
-                        //     }
-                        // }}
+                        // optional={this.props.data.optional?this.props.data.optional:''}
+                        optional = {{
+                            optionalStatus: 12,
+                            optionalData: {
+                                personer:'',
+                                personTime:''
+                            }
+                        }}
                     />
                 </div>
             </div>

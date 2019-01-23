@@ -39,6 +39,7 @@ class ProductInspection extends React.Component {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.status = JSON.parse(localStorage.getItem('status')) ;
         const current = JSON.parse(localStorage.getItem('current')) ;
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
         return(
             <div>
                 <BlockQuote name="成品检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -51,6 +52,7 @@ class ProductInspection extends React.Component {
                     />
                     <div className='clear' ></div>
                     <ProductTable
+                        menuList={menuList}
                         fetch={this.fetch}
                         url = {this.url}
                         data={this.state.dataSource}

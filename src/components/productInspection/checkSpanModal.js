@@ -67,6 +67,7 @@ class CheckSpanModal extends React.Component {
                                         <div>{item.rawTestItemStandard}</div>
                                         <div>{item.unit}</div>
                                         <div>
+
                                             <div
                                                 className={(item.isValid)?'productPassValidPointer':'productDefaultPointer'}
                                                 onClick={this.handleJudgePass.bind(this,index,1)}
