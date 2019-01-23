@@ -33,16 +33,14 @@ class Edit extends Component{
         this.setState({ visible: false });
        }
       handleCancel () {
-      
         this.setState({ visible: false });
-        
       }
       handleSave () {//编辑一条记录
         const  details=this.formRef.getItemsValue();
          //console.log(details);
         details['id']=this.props.record.repoRedTable.id;
          const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-         const isUrgent=this.state.checkSwitch;
+         //const isUrgent=this.state.checkSwitch;
          const commonBatchNumber={
              id:this.props.record.commonBatchNumber.id,
              batchNumber:this.props.record.commonBatchNumber.batchNumber,
@@ -104,7 +102,7 @@ class Edit extends Component{
    // console.log(details);
     details['id']=this.props.record.repoRedTable.id;
     const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-    const isUrgent=this.state.checkSwitch;
+    //const isUrgent=this.state.checkSwitch;
     const commonBatchNumber={
         id:this.props.record.commonBatchNumber.id,
         batchNumber:this.props.record.commonBatchNumber.batchNumber,
