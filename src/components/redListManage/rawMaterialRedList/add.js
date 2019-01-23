@@ -11,7 +11,6 @@ const Option=Select.Option;
 
 class Add extends React.Component{
     url;
-    
     constructor(props){
         super(props);
         this.state = {
@@ -19,13 +18,10 @@ class Add extends React.Component{
             checkSelectData:-1,//最开始下拉框是没选择数据的
             popVisible:false,//送检的气泡弹出
             checkSwitch:0,//是否紧急那个开关最开始是关闭的
-            
         }
-        
         this.showModal=this.showModal.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
@@ -39,7 +35,6 @@ class Add extends React.Component{
         });
       }
     handleSave() {//点击新增保存，未申请状态
-        
         const value=this.formRef.getItemsValue();
         //console.log(value);
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
@@ -106,8 +101,6 @@ class Add extends React.Component{
             popVisible:false,//气泡取消
         
         });
-       //$('.select').val(null).trigger('change');
-       
     }
 
     handleVisibleChange=(visible)=>{
@@ -134,10 +127,8 @@ class Add extends React.Component{
    }
     handleSongShenOk(){//送审事件的确认按钮(先保存，在送审)
         const value=this.formRef.getItemsValue();
-        //console.log(value);
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-        const commonBatchNumber={
-           
+        const commonBatchNumber={         
             createPersonId:createPersonId,
             status:-1,
             //isUrgent:this.state.checkSwitch,
