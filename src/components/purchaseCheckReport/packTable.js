@@ -79,6 +79,7 @@ class PackTable extends React.Component {
             return (
                 <span>
                     <DetailSpan
+                        unGenerateDate={this.props.unGenerateDate}
                         url={this.props.url}
                         batchNumberId={record.batchNumberId}
                         modifySelectedRowKeysData={this.props.modifySelectedRowKeysData}

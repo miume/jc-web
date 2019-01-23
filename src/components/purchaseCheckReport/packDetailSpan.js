@@ -43,6 +43,24 @@ class DetailSpan extends React.Component {
     };
     render() {
         const { visible } = this.state;
+        var footer;
+        if(this.props.unGenerateDate === false){
+            footer = [
+                <CancleButton
+                    handleCancel={this.handleCancel}
+                    flag = {true}
+                    key="back"
+                />
+            ]
+        }else{
+            footer = [
+                    <CancleButton
+                        handleCancel={this.handleCancel}
+                        flag = {true}
+                        key="back"
+                    />,
+                    <Button key="publish" type="primary"  onClick={this.selectionOnDetail}><i className="fa fa-check-square-o" aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>&nbsp;选中</Button>
+            ]}
         return (
             <span>
                 <span className="blue" onClick={this.handleDetail} >详情</span>
@@ -53,14 +71,7 @@ class DetailSpan extends React.Component {
                     centered={true}
                     maskClosable={false}
                     width="500px"
-                    footer={[
-                        <CancleButton
-                            handleCancel={this.handleCancel}
-                            flag = {true}
-                            key="back"
-                        />,
-                        <Button key="publish" type="primary"  onClick={this.selectionOnDetail}><i className="fa fa-check-square-o" aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>&nbsp;选中</Button>
-                    ]}
+                    footer={footer}
                 >
                     <div style={{height:580}}>
                         <DrSpanModal

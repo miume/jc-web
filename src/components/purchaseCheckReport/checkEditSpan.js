@@ -47,7 +47,7 @@ class CheckEditSpan extends React.Component {
                 <Modal
                     title="编辑数据"
                     visible={visible}
-                    width="1030px"
+                    width="1035px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
