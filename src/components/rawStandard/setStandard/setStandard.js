@@ -110,7 +110,7 @@ class SetStandard extends Component{
             details:details
         }
         //console.log(saveData)
-       // this.handleSaveCheck(saveData,status);//根据status调用保存或送审接口
+       this.handleSaveCheck(saveData,status);//根据status调用保存或送审接口
         // return saveData;
     }
     clickSave(){//点击保存
