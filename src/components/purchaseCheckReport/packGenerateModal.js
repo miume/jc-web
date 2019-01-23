@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,message} from 'antd';
+import {Modal,message,Button} from 'antd';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import Submit from "../BlockQuote/submit";
@@ -10,10 +10,7 @@ class PackGenerateModal extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            subVisible: false,
             visible: false,
-            process:-1,
-            urgent: 0,
             checkData: {
                 headData: [],
                 tbodyData: [],
@@ -25,20 +22,11 @@ class PackGenerateModal extends React.Component {
         this.modifyDetailData = this.modifyDetailData.bind(this);
         this.handlePack = this.handlePack.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        this.urgentChange = this.urgentChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.handleCancelApply = this.handleCancelApply.bind(this);
-        this.handleOkApply = this.handleOkApply.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.clickSavaButton = this.clickSavaButton.bind(this);
-        this.useSavaFunction = this.useSavaFunction.bind(this);
-        this.applyReview = this.applyReview.bind(this);
-        this.inputSave = this.inputSave.bind(this);
+
+        this.handleGenerate = this.handleGenerate.bind(this);
 
     }
     render() {
-        console.log('selectedRowKeys',this.props.selectedRowKeys)
         return(
             <span>
                 <NewButton handleClick={this.handlePack} name='生成' className='fa fa-cube' />
@@ -53,29 +41,18 @@ class PackGenerateModal extends React.Component {
                         <CancleButton
                             handleCancel = {this.handleCancel}
                             key='cancel'
+                            flag={1}
                         />,
-                        <SaveButton
-                            handleSave={this.handleSave}
-                            key='save'
-                        />,
-                        <Submit
-                            key='submit'
-                            visible={this.state.subVisible}
-                            handleVisibleChange={this.handleVisibleChange}
-                            selectChange={this.selectChange}
-                            urgentChange={this.urgentChange}
-                            url={this.props.url}
-                            process={this.state.process}
-                            handleCancel={this.handleCancelApply}
-                            handleOk={this.handleOkApply}
-                        />
+                        <Button
+                            key='generate'
+                            onClick={this.handleGenerate}
+                            style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}}
+                        ><i className="fa fa-cubes" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;生成</Button>
                     ]}
                 >
                 <div style={{height:500}}>
                         <PurchaseModal
-                            inputSave={this.inputSave}
-                            modifyDetailData={this.modifyDetailData}
-                            clickState ={0}
+                            clickState ={1}
                             data={this.state.checkData}
                         />
                 </div>
@@ -83,16 +60,34 @@ class PackGenerateModal extends React.Component {
             </span>
         )
     }
-    /**input框内容变化，实现自动保存数据 */
-    inputSave(e){
-        const value = e.target.value;
-        const name = e.target.name;
-        var checkData = this.state.checkData;
-        checkData.topData[name] = value;
-        this.setState({
-            checkData:checkData
+    handleGenerate = () => {
+        const batchNumberIds = this.props.selectedRowKeys.toString();
+        console.log(batchNumberIds)
+        const params = {
+            batchNumberIds:batchNumberIds,
+            createPersonId:this.props.menuList.userId,
+        };
+        axios({
+            url: `${this.props.url.purchaseCheckReport.generate}`,
+            method:'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:params
+        }).then((data)=>{
+            const res = data.data.data;
+            message.info(res);
+            this.setState({
+                visible: false
+            })
+        }).catch(()=>{
+            message.info('操作失败，请联系管理员')
+            this.setState({
+                visible: false
+            })
         })
-    }
+    };
+
     /**修改detailData的数据 */
     modifyDetailData = (data) => {
         this.setState({
@@ -101,210 +96,95 @@ class PackGenerateModal extends React.Component {
     };
     handlePack = () => {
         const batchNumberIds = this.props.selectedRowKeys.toString();
+        console.log(batchNumberIds)
         const params = {
             batchNumberIds:batchNumberIds,
-            createPersonId:this.props.menuList.userId,
         };
         if(batchNumberIds.length===0){
             message.info('请选择记录！')
         }else{
             axios({
-                url: `${this.props.url.purchaseCheckReport.generate}`,
+                url: `${this.props.url.purchaseCheckReport.preview}`,
                 method:'post',
                 headers:{
                     'Authorization':this.props.url.Authorization
                 },
                 params:params
             }).then((data)=>{
-                this.props.fetch();
-                console.log(data)
-                message.info(data.data.data);
+                if(data.data.code===0){
+                    const detail = data.data.data;
+                    var headData = [];
+                    var tbodyData = [];
+                    var judger = '';
+                    var judgement = '';
+                    var topData = {};
+                    if(detail){
+                        topData = {
+                            materialName: detail.materialName?detail.materialName:'无',
+                            norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'无',
+                            quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'无',
+                            receiveDate:detail.receiveDate?detail.receiveDate:'无',
+                            manufactureName:detail.manufactureName?detail.manufactureName:'无',
+                            weight: detail.weight?detail.weight:'无',
+                            id:detail.purchaseReportRecord?detail.purchaseReportRecord.id:''
+                        };
+                        let detailHead = detail.standard;
+                        for(var i=0; i<detailHead.length; i++){
+                            var item = detailHead[i].split(',');
+                            headData.push({
+                                id: i+1,
+                                testItem: item[0],
+                                itemUnit: item[1],
+                                rawTestItemStandard: item[2],
+                            })
+                        }
+                        let detailTbody = detail.value;
+                        var index ;
+                        for(var key in detailTbody){
+                            index = 1;
+                            var tbodyItem = detailTbody[key].split(',');
+                            var tbodyMiddleData = {};
+                            for(var j=1; j<tbodyItem.length; j++){
+                                tbodyMiddleData[j] = {
+                                    'isValid':1,
+                                    'testResult':tbodyItem[j],
+                                    'id':j,
+                                }
+                            }
+                            tbodyData.push({
+                                index: index,
+                                id: key,
+                                serialNumber: tbodyItem[0],
+                                resultRecordList: tbodyMiddleData,
+                                decision: 1
+                            });
+                            index = index + 1;
+                        }
+                        // judger = this.props.menuList.name;
+                        judger = '无';
+                        judgement = '无' ;
+                        this.setState({
+                            checkData: {
+                                headData: headData,
+                                tbodyData: tbodyData,
+                                judgement: judgement,
+                                judger: judger,
+                                topData: topData,
+                            },
+                            visible: true,
+                        })
+                    }else{
+                        message.info('数据为空，请联系管理员')
+                    }
+                }else {
+                    message.info(data.data.message)
+                }
             });
         }
     };
     handleCancel() {
         this.setState({
             visible: false,
-        });
-    }
-    /** 送审*/
-    /**监控送审界面的visible */
-    handleVisibleChange(visible){
-        this.setState({
-            subVisible:visible
-        })
-    }
-    /**监控是否紧急 */
-    urgentChange(checked){
-        this.setState({
-            urgent:checked?0:-1
-        })
-    }
-    /**监听送审select变化事件 */
-    selectChange(value){
-        this.setState({
-            process:value
-        })
-    }
-    /**点击取消送审 */
-    handleCancelApply(){
-        this.setState({
-            subVisible:false
-        })
-    }
-    /**点击送审 */
-    handleOkApply(){
-        this.clickSavaButton(1);
-    }
-    /**点击保存 */
-    handleSave(){
-        this.clickSavaButton(0);
-    }
-    /**实现保存按钮功能--实现保存的数据处理 */
-    clickSavaButton = (status) => {
-        //  实现保存的数据处理
-        var checkData = this.state.checkData;
-        var purchaseReportRecord = {
-            norm: checkData.topData.norm,
-            quantity: checkData.topData.quantity,
-            judgement: checkData.judgement,
-        };
-        var sampleDeliveringRecordDTO = {
-            deliveryFactory: {
-                name: checkData.topData.deliveryFactory
-            },
-            repoBaseSerialNumber: {
-                materialName: checkData.topData.materialName
-            },
-            sampleDeliveringRecord: {
-                sampleDeliveringDate: checkData.topData.sampleDeliveringDate
-            }
-        };
-        var commonBatchNumberDTO = {
-            commonBatchNumber: {
-                createPersonId: this.props.menuList.userId
-            }
-        };
-        var testReportRecordDTOList = [];
-        for(let i=0; i<checkData.tbodyData.length; i++){
-            var ItemResultList = [];
-            for (let j in checkData.tbodyData[i].tbodyMiddleData) {
-                ItemResultList.push(checkData.tbodyData[i].tbodyMiddleData[j]); //属性
-            }
-            var testReportRecordDTOListObj = {
-                testReportRecord:{
-                    id: checkData.tbodyData[i].id,
-                    isQualified: checkData.tbodyData[i].isQualified
-                },
-                testItemResultRecordDTOList: ItemResultList
-            };
-            testReportRecordDTOList.push(testReportRecordDTOListObj)
-        }
-        var savaData = {
-            purchaseReportRecord: purchaseReportRecord,
-            sampleDeliveringRecordDTO: sampleDeliveringRecordDTO,
-            commonBatchNumberDTO: commonBatchNumberDTO,
-            testReportRecordDTOList: testReportRecordDTOList
-        };
-        // if(detailIsQualified === -1){
-        //     message.info('请点击合格或者不合格！');
-        //     return
-        // }
-        // if(detailTestDTOS){
-        //     for(var j=0; j<detailTestDTOS.length; j++){
-        //         if(detailTestDTOS[j].testResult === ''){
-        //             message.info('所有检测结果不能为空，请填写完整！');
-        //             return
-        //         }
-        //     }
-        // }
-        //  调用保存函数
-        this.useSavaFunction(savaData,status);
-
-    };
-    /**调用保存函数 */
-    useSavaFunction = (savaData,status) => {
-        //  status:1 -送审  0-保存
-        if(status){
-            console.log('savaData',savaData)
-            //  送审
-            axios({
-                url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=-1`,
-                method:'put',
-                headers:{
-                    'Authorization': this.props.url.Authorization
-                },
-                data: savaData,
-                type:'json'
-            }).then((data)=>{
-                console.log('datadata',data)
-                console.log('此时commonBatchNumberDTO不存在，所以报错')
-                const dataId = data.data.data.commonBatchNumberDTO.commonBatchNumber?data.data.data.commonBatchNumberDTO.commonBatchNumber.id:null;
-                // this.applyReview(dataId);
-            }).catch(()=>{
-                this.setState({
-                    visible: false,
-                    subVisible: false,
-                },()=>{
-                    this.props.fetch();
-                    message.info('保存失败，请联系管理员！')
-                });
-            })
-        }
-        axios({
-            url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=-1`,
-            method:'post',
-            headers:{
-                'Authorization': this.props.url.Authorization
-            },
-            data: savaData,
-            type:'json'
-        }).then((data)=>{
-            if(status){
-                console.log('此时commonBatchNumberDTO不存在，所以报错')
-                const dataId = data.data.data.commonBatchNumberDTO.commonBatchNumber?data.data.data.commonBatchNumberDTO.commonBatchNumber.id:null;
-                this.applyReview(dataId);
-            }else{
-                this.setState({
-                    visible: false,
-                    subVisible: false,
-                },()=>{
-                    this.props.fetch();
-                    message.info(data.data.message);
-                });
-            }
-        }).catch(()=>{
-            this.setState({
-                visible: false,
-                subVisible: false,
-            },()=>{
-                this.props.fetch();
-                message.info('保存失败，请联系管理员！')
-            });
-        })
-    };
-    /**---------------------- */
-    /**送审 */
-    applyReview(dataId){
-        axios({
-            url : `${this.props.url.toDoList}/${parseInt(this.state.process)}`,
-            method:'post',
-            headers:{
-                'Authorization': this.props.url.Authorization
-            },
-            params:{
-                dataId:dataId,
-                isUrgent:this.state.urgent
-            }
-        }).then((data)=>{
-            this.setState({
-                visible: false,
-                subVisible: false,
-            });
-            this.props.fetch();
-            message.info(data.data.message);
-        }).catch(()=>{
-            message.info('送审失败，请联系管理员！')
         });
     }
 }
