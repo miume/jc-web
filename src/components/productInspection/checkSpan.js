@@ -51,7 +51,6 @@ class CheckSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
-        console.log(this.props.menuList)
         return (
             <span>
                 <span  className="blue" onClick={this.handleCheck}>录检</span>
@@ -128,7 +127,6 @@ class CheckSpan extends React.Component {
             },
         }).then((data)=>{
             const res = data.data.data;
-            console.log('res',res)
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
@@ -215,6 +213,7 @@ class CheckSpan extends React.Component {
     clickSavaButton = (status) => {
         //  实现保存的数据处理
         var checkData = this.state.checkData;
+        console.log(checkData.testDTOS)
         //组装testResultDTOList格式
         var testResultDTOLists = [];
         for(var j=0; j<checkData.testDTOS.length; j++){
@@ -230,27 +229,31 @@ class CheckSpan extends React.Component {
         }
 
         //  需要知道保存的格式
-        var judgeDate = new Date();
-        console.log(judgeDate)
+        var nowDate = new Date().toLocaleDateString().split('/');
+        if(nowDate[1] < '10'){
+            nowDate[1] = '0'+ nowDate[1];
+        }
+        var judgeDate = nowDate[0]+ '-' + nowDate[1] + '-' +nowDate[2];
+
+        // console.log('judgeDate',judgeDate);
         var saveData = {
             batchNumberId: this.props.batchNumberId,
             testResultDTOList: testResultDTOLists,
             testReportRecord: {
                 isQualified: checkData.isQualified,
                 judger: this.props.menuList.userId,
-                // judgeDate:
+                judgeDate: judgeDate
             },
 
         };
         console.log(saveData)
-        // if(detailTestDTOS){
-        //     for(var j=0; j<detailTestDTOS.length; j++){
-        //         if(detailTestDTOS[j].testResult === ''){
-        //             message.info('所有检测结果不能为空，请填写完整！');
-        //             return
-        //         }
-        //     }
-        // }
+        for(var i=0; i<testResultDTOLists.length; i++){
+            console.log(testResultDTOLists[i].testResult)
+            if(testResultDTOLists[i].testResult === undefined){
+                message.info('所有检测结果不能为空，请填写完整！');
+                return
+            }
+        }
         //  调用保存函数
         // this.useSavaFunction(saveData,status);
 

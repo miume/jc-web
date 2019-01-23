@@ -19,7 +19,13 @@ class ReleaseSpan extends React.Component {
                     examineStatus: '',
                     examineData: []
                 },
-                optional: {},   //择优数据
+                optional: {
+                    optionalStatus: '',
+                    optionalData: {
+                        personer: '',
+                        personTime:'',
+                    }
+                },
                 isQualified: '', //不合格状态
             },
         };
@@ -96,7 +102,7 @@ class ReleaseSpan extends React.Component {
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
-            var isQualified = 0;
+            var isQualified = '';
             var optional = {};  //择优数据
             if(res){
                 isQualified =  res.testReportRecord?res.testReportRecord.isQualified:'';
@@ -122,15 +128,15 @@ class ReleaseSpan extends React.Component {
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord?res.testReportRecord.judger:'',
-                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
+                    tester: res.testReportRecord.judger?res.testReportRecord.judger:'无',
+                    testTime: res.testReportRecord.judgeDate?res.testReportRecord.judgeDate:'无',
                 };
                 // 择优数据
                 optional = {
-                    optionalStatus: '',
+                    optionalStatus: res.testReportRecord.qualityLevel?res.testReportRecord.qualityLevel:'',
                     optionalData: {
-                        personer:'',
-                        personTime:''
+                        personer: res.testReportRecord.ratePersonId?res.testReportRecord.ratePersonId:'无',
+                        personTime:res.testReportRecord.rateDate?res.testReportRecord.rateDate:'无',
                     }
                 };
                 const examineStatus = this.props.checkStatus;

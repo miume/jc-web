@@ -90,10 +90,10 @@ class ProductTable extends React.Component{
         render: (text,record) => {
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
-            // let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
             // let detailSpanFlag = true
             // let checkSpanFlag = true
-            let releaseSpanFlag = true
+            // let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(

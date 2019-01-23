@@ -38,7 +38,7 @@
 }
 .productDrSpanModalTop table{
     width:100%;
-    text-align: center;
+    /*text-align: center;*/
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -48,12 +48,14 @@
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table thead tr th{
+    padding-left: 5px;
     height: 30px;
     font-size: 13px;
     /*padding-left: 10px;*/
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table tbody tr td {
+    padding-left: 5px;
     height: 30px;
     font-size: 13px;
     /*padding-left: 10px;*/
@@ -248,13 +250,13 @@
 
 .productDrSpanTheadModal {
     display: flex;
-    text-align: center;
     font-size: 16px;
 }
 
 .productDrSpanTheadModal div{
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
+    padding-left: 5px;
     width: 80px;
 }
 .productDrSpanTheadModal div:first-child{
@@ -272,7 +274,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
     white-space: nowrap;
-    text-align: center;
 }
 .productDrSpanTbodyModal>div {
     font-size: 16px;
@@ -286,6 +287,7 @@
     width: 80px;
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .productDrSpanTbodyModal>div>div:first-child{
     width: 60px;
@@ -293,9 +295,11 @@
 .productDrSpanTbodyModal>div>div:last-child {
     width: 120px;
     display: flex;
+    padding-left: 0px;
 }
 .productDrSpanTbodyModal>div>div:last-child div{
     width: 50%;
+    padding-left: 5px;
 }
 
 
