@@ -110,7 +110,6 @@ class CheckSpanModal extends React.Component {
         }
         this.props.modifyDetailData(checkData);
     };
-    /**---------------------- */
 }
 
 export default CheckSpanModal;
