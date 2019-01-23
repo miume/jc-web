@@ -144,7 +144,6 @@ class ReleaseSpan extends React.Component {
                         }
                     }).then((data)=>{
                         const examine = data.data.data;
-                        console.log(examine)
                         this.setState({
                             detailData:{
                                 topData: topData,
@@ -176,7 +175,7 @@ class ReleaseSpan extends React.Component {
                 }
             }
         })
-    }
+    };
     handleCancel = () => {
         this.setState({
             visible: false,
