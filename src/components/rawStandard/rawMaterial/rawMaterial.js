@@ -13,7 +13,7 @@ class RawMaterial extends Component{
       componentDidMount(){
           this.fetch();
           this.getAllTestItem();
-          this.getAllRawMatarial();
+          
       }
     //   componentWillMount(){
     //       this.setState=()=>{
@@ -40,7 +40,7 @@ class RawMaterial extends Component{
           this.handleCancel=this.handleCancel.bind(this);
           this.getAllTestItem=this.getAllTestItem.bind(this);
           this.checkboxChange=this.checkboxChange.bind(this);
-          this.getAllRawMatarial=this.getAllRawMatarial.bind(this);
+     
       }
      fetch=()=>{
        axios({
@@ -61,27 +61,6 @@ class RawMaterial extends Component{
           }
        });
      }
-     getAllRawMatarial(){//新增下拉框获取所有原材料
-        const materialClass=1;
-        const isManufacturer=0;
-        axios({
-           url:`${this.props.url.serialNumber.getRaw}?materialClass=${materialClass}&isManufacturer=${isManufacturer}`,
-           method:'get',
-           headers:{
-               'Authorization':this.props.url.Authorization
-           }
-
-        })
-        .then((data)=>{
-            console.log(data);
-            const res=data.data.data;
-            if(res){
-                this.setState({
-                    rawData:res
-                });
-            }
-        });
-   }
 
     //监听原材料那个块块是否被选中
     onBlockChange(e){
