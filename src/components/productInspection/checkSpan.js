@@ -100,6 +100,7 @@ class CheckSpan extends React.Component {
         const index = e.target.name;
         var checkData = this.state.checkData;
         checkData.testDTOS[index].testResult = value;
+        console.log(checkData.testDTOS[index].testResult )
         this.setState({
             checkData:checkData
         })
@@ -113,9 +114,9 @@ class CheckSpan extends React.Component {
     /**点击编辑 */
     handleCheck = () => {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     };
 
     getDetailData = () =>{
@@ -127,12 +128,13 @@ class CheckSpan extends React.Component {
             },
         }).then((data)=>{
             const res = data.data.data;
+            console.log(res)
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
             var isQualified = '';
             if(res){
-                isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
+                isQualified = res.testReportRecord?res.testReportRecord.isQualified:1;
                 topData = {
                     serialNumber: res.repoBaseSerialNumber.serialNumber,
                     materialName: res.repoBaseSerialNumber.materialName,
@@ -165,8 +167,13 @@ class CheckSpan extends React.Component {
                         testData: testData,
                         isQualified: isQualified,
                     },
+                    visible: true,
                 });
+            }else{
+                message.info('查询失败，请联系管理员')
             }
+        }).catch(()=>{
+            message.info('查询失败，请联系管理员')
         })
     }
     /**监听送审select变化事件 */
@@ -213,7 +220,20 @@ class CheckSpan extends React.Component {
     clickSavaButton = (status) => {
         //  实现保存的数据处理
         var checkData = this.state.checkData;
-        console.log(checkData.testDTOS)
+
+        var flag = 0;
+        for(var i=0; i<checkData.testDTOS.length; i++){
+            console.log(`${i}----`,checkData.testDTOS[i].testResult)
+            if(checkData.testDTOS[i].testResult === null){
+                flag=1;
+                break;
+            }
+        }
+        if(flag === 1){
+            message.info('所有检测结果不能为空，请填写完整！');
+            return;
+        }
+
         //组装testResultDTOList格式
         var testResultDTOLists = [];
         for(var j=0; j<checkData.testDTOS.length; j++){
@@ -235,7 +255,6 @@ class CheckSpan extends React.Component {
         }
         var judgeDate = nowDate[0]+ '-' + nowDate[1] + '-' +nowDate[2];
 
-        // console.log('judgeDate',judgeDate);
         var saveData = {
             batchNumberId: this.props.batchNumberId,
             testResultDTOList: testResultDTOLists,
@@ -246,16 +265,9 @@ class CheckSpan extends React.Component {
             },
 
         };
-        console.log(saveData)
-        for(var i=0; i<testResultDTOLists.length; i++){
-            console.log(testResultDTOLists[i].testResult)
-            if(testResultDTOLists[i].testResult === undefined){
-                message.info('所有检测结果不能为空，请填写完整！');
-                return
-            }
-        }
+        // console.log(saveData)
         //  调用保存函数
-        // this.useSavaFunction(saveData,status);
+        this.useSavaFunction(saveData,status);
 
     };
     /**调用保存函数 */
