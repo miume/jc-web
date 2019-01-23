@@ -29,7 +29,7 @@ class Submit extends React.Component{
     }
     /**获取所有送审流程 */
     getAllProcess(){
-        axios.get(`${this.props.url.process.getAllUseManage}`,{
+        axios.get(`${this.props.url.process.process}`,{
             headers:{
                 'Authorization':this.props.url.Authorization
             }

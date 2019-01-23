@@ -229,7 +229,7 @@ class Home extends Component {
                 getAllPages:`${server}/jc/common/RepoStock/pages`
             },
             process:{
-                process:`${server}/jc/common/batchAuditTask`
+                process:`${server}/jc/common/batchAuditTask/validTasks`
             },
             /**权限模块，用户 */
             authUser:{
