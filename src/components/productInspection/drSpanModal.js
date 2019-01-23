@@ -135,19 +135,19 @@ class DrSpanModal extends React.Component {
                         className="productDrSpanDivider"
                     />
                     <DetailStateModal
-                        // examine={this.props.data.examine}
-                        examine = {{
-                            examineStatus:2,
-                            examineData:[{
-                                handler:'a',
-                                handleReply:'b',
-                                handleTime:'c'
-                            },{
-                                handler:'aa',
-                                handleReply:'bb',
-                                handleTime:'cc'
-                            }]
-                        }}
+                        examine={this.props.data.examine}
+                        // examine = {{
+                        //     examineStatus:2,
+                        //     examineData:[{
+                        //         handler:'a',
+                        //         handleReply:'b',
+                        //         handleTime:'c'
+                        //     },{
+                        //         handler:'aa',
+                        //         handleReply:'bb',
+                        //         handleTime:'cc'
+                        //     }]
+                        // }}
                         // examineData={this.state.examineData}
                         //  择优人
                         optional={this.props.data.optional}

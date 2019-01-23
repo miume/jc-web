@@ -169,8 +169,8 @@ class ProductTable extends React.Component{
             return false;
         }
     };
-    judgeReleaseOperation = (h,status) => {
-        if(h===2&&status===3){
+    judgeReleaseOperation = (isPublished,status) => {
+        if(isPublished===0&&(status===2||status===3)){
             return true;
         }else{
             return false;
