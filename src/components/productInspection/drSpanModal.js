@@ -154,8 +154,8 @@ class DrSpanModal extends React.Component {
                         optional = {{
                             optionalStatus: 12,
                             optionalData: {
-                                personer:'',
-                                personTime:''
+                                personer:'123',
+                                personTime:'132'
                             }
                         }}
                     />
