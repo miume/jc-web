@@ -2,13 +2,14 @@ import React from 'react';
 
 class ProductOptional extends React.Component{
     render() {
+        console.log(this.props.optionalStatus)
         switch (this.props.optionalStatus) {
             case 0:
                 return(
                     <div
                         className="productOptionalImag"
                     >
-                        <span>{this.props.optional.optionalStatus}</span>
+                        <span>{this.props.optionalStatus}</span>
                     </div>
                 );
             case 1:
@@ -16,7 +17,7 @@ class ProductOptional extends React.Component{
                     <div
                         className="productOptionalImag"
                     >
-                        <span>{this.props.optional.optionalStatus}</span>
+                        <span>{this.props.optionalStatus}</span>
                     </div>
                 );
             case 2:
@@ -24,7 +25,7 @@ class ProductOptional extends React.Component{
                     <div
                         className="productOptionalImag"
                     >
-                        <span>{this.props.optional.optionalStatus}</span>
+                        <span>{this.props.optionalStatus}</span>
                     </div>
                 );
             default:

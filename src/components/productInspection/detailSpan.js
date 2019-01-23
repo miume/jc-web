@@ -30,7 +30,13 @@ class DetailSpan extends React.Component {
                     examineStatus: '',
                     examineData: []
                 },
-                optional: {},   //择优数据
+                optional: {
+                    optionalStatus: '',
+                    optionalData: {
+                        personer: '',
+                        personTime:'',
+                    }
+                },   //择优数据
                 isQualified: '', //不合格状态
             },
         };
@@ -65,7 +71,7 @@ class DetailSpan extends React.Component {
                         />
                     ]}
                 >
-                    <div style={{height:570}}>
+                    <div style={{height:580}}>
                         <DrSpanModal
                             // checkStatus:根据审核状态是否有审核及择优部分
                             // examine={this.state.examine}
@@ -95,7 +101,7 @@ class DetailSpan extends React.Component {
                 'Authorization': this.props.url.Authorization
             },
         }).then((data)=>{
-            const res = data.data.data
+            const res = data.data.data;
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
@@ -125,15 +131,15 @@ class DetailSpan extends React.Component {
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord?res.testReportRecord.judger:'',
-                    testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
+                    tester: res.testReportRecord.judger?res.testReportRecord.judger:'无',
+                    testTime: res.testReportRecord.judgeDate?res.testReportRecord.judgeDate:'无',
                 };
                 // 择优数据
                 optional = {
-                    optionalStatus: 1000,
+                    optionalStatus: res.testReportRecord.qualityLevel?res.testReportRecord.qualityLevel:'',
                     optionalData: {
-                        personer:'暂定',
-                        personTime:'暂定'
+                        personer: res.testReportRecord.ratePersonId?res.testReportRecord.ratePersonId:'无',
+                        personTime:res.testReportRecord.rateDate?res.testReportRecord.rateDate:'无',
                     }
                 };
                 const examineStatus = this.props.checkStatus;
@@ -147,7 +153,6 @@ class DetailSpan extends React.Component {
                         }
                     }).then((data)=>{
                         const examine = data.data.data;
-                        console.log(examine)
                         this.setState({
                             detailData:{
                                 topData: topData,

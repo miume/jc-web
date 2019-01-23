@@ -49,7 +49,7 @@ class ReleaseSpan extends React.Component {
                         <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleRelease} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
-                    <div style={{height:570}}>
+                    <div style={{height:580}}>
                         <DrSpanModal
                             data={this.state.detailData}
                         />

@@ -150,14 +150,14 @@ class DrSpanModal extends React.Component {
                         }}
                         // examineData={this.state.examineData}
                         //  择优人
-                        // optional={this.props.data.optional?this.props.data.optional:''}
-                        optional = {{
-                            optionalStatus: 12,
-                            optionalData: {
-                                personer:'123',
-                                personTime:'132'
-                            }
-                        }}
+                        optional={this.props.data.optional}
+                        // optional = {{
+                        //     optionalStatus: 12,
+                        //     optionalData: {
+                        //         personer:'123',
+                        //         personTime:'132'
+                        //     }
+                        // }}
                     />
                 </div>
             </div>
