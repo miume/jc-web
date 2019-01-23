@@ -173,6 +173,8 @@ class ReleaseSpan extends React.Component {
                         visible: true
                     })
                 }
+            }else{
+                message.info('查询数据为空，请联系管理员')
             }
         })
     }
