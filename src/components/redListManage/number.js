@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Input,Button,Icon} from 'antd';
+import {Input,Icon} from 'antd';
 
 
 class Number extends Component{
@@ -11,7 +11,7 @@ class Number extends Component{
         //console.log(e.target.value);
         const value=e.target.value;
         const number=value.subString(5);
-        console.log(number);
+       // console.log(number);
     }
    render(){
    

@@ -32,7 +32,8 @@ const FormItem=Form.Item;
                             let  type=res[i].materialClass;
                               switch(type){
                                  case 1: {type='原材料';break;} 
-                                 case 3: {type='产品';break;} 
+                                 case 3: {type='产品';break;}
+                                 default: {type='';break;}  
                               }
                             this.props.form.setFieldsValue({
                              // serialNumber:'请输入编号',
