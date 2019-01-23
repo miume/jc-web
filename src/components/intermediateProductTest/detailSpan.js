@@ -151,7 +151,7 @@ class DetailSpan extends React.Component {
                             },
                             isQualified: isQualified,
                         },
-                        // visible: true
+                        visible: true
                     })
                 }
             }else{
