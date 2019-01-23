@@ -132,7 +132,6 @@ class ProductTable extends React.Component{
         }
     }];
     render() {
-        //  获取record的记录
         const columns = this.columns.map((col) => {
             return {
                 ...col,

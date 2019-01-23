@@ -51,6 +51,7 @@ class CheckSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
+        console.log(this.props.menuList)
         return (
             <span>
                 <span  className="blue" onClick={this.handleCheck}>录检</span>
