@@ -13,9 +13,9 @@ import Login from '../src/components/Login/Login2';
 ReactDOM.render(
     <BrowserRouter>
         <div>
-            {/**用于验证localStorage中的数据是否为空 */}
             <Auth/>
             <Switch>
+
                 <Route exact path="/" component={Login}/> {/* 路由下有子路又那么就不用path */}
                 <Route component={Home}/> {/* 这是home页面,其下有很多子路由 */}
             </Switch>

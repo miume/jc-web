@@ -177,7 +177,7 @@ class AddProductStandard extends React.Component{
     /**input框内容变化，实现自动保存数据 */
     save(e){
         const value = e.target.value;
-        const name = e.target.name;
+        // const name = e.target.name;
         const id = e.target.id;
         const newData = [...this.state.allTestItem];
         //console.log(`name=${name},value=${value}`)
@@ -256,6 +256,7 @@ class AddProductStandard extends React.Component{
             techniqueProductTestItemDTOs:techniqueProductTestItemDTOs
         }
         //console.log(details)
+        this.handleCancel();
         this.applyOut(status,commonBatchNumber,details);
     }
     /**保存  新增请求方法是post 编辑请求方法是put */
@@ -279,7 +280,6 @@ class AddProductStandard extends React.Component{
                 this.applyReview(dataId,classId,productId);
             }else{
                 message.info(data.data.message);
-                this.handleCancel();
                 this.props.getAllProductStandard({
                     classId:classId,
                     productId:productId

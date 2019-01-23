@@ -9,7 +9,10 @@ class TopIcon extends React.Component{
                 <div onClick={ this.props.drawerEvent} className='iconHover'>
                     <i className="fa fa-bell-o" aria-hidden="true" style={{padding:'10px'}}></i>
                 </div>
-                <div onClick={ this.props.exitEvent} className='iconHover'>
+                {/* <a href='../../instruction/guide.html' target='_blank' className='iconHover'>
+                    <i className="fa fa-info" aria-hidden="true" style={{padding:'10px'}}></i>
+                </a> */}
+                <div onClick={ this.props.userInstruction} className='iconHover'>
                     <i className="fa fa-info" aria-hidden="true" style={{padding:'10px'}}></i>
                 </div>
             </div>

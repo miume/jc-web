@@ -5,7 +5,6 @@ import Auth from '../auth/Auth';
 import {Drawer} from 'antd';
 import axios from 'axios';
 import TodoPart from './todopart';
-
 class Exit extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +16,7 @@ class Exit extends Component {
         this.drawerEvent = this.drawerEvent.bind(this);
         this.state = {
             visible:false,
-            content : <TopIcon exitEvent={this.exitEvent} drawerEvent={this.drawerEvent} />
+            content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} />
         }
     }
     /**退出事件 */
@@ -34,6 +33,10 @@ class Exit extends Component {
                 clearInterval(showFrame);
             }
         },100)
+    }
+    /**查看用户手册 */
+    userInstruction(){
+        window.open('../../../instruction/guide.html','_blank');
     }
     /**点击弹出待办事项 */
     drawerEvent(){
