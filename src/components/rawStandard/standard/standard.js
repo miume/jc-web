@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import {Table,Divider} from 'antd';
-import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
-// import Edit from './edit';
-import Detail from './detail';
 import EditStandard from './edit';
   class Standard extends Component{
-     
-    //   componentDidMount(){
-    //       this.fetch()
-    //   }
      constructor(props){
         super(props);
         this.state={
@@ -89,6 +82,7 @@ import EditStandard from './edit';
                   case '1':return false
                   case '2':return false
                   case '3':return true
+                  default:return false
              }
      }
      judgeStatusIterate(record_status){
@@ -98,6 +92,7 @@ import EditStandard from './edit';
                  case '1':return false
                  case '2':return true //只有审核通过才能迭代
                  case '3':return false
+                 default: return false
              }
      }
      checkRaw(e){//点击重新选择厂家调用的函数

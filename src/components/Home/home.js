@@ -306,6 +306,7 @@ class Home extends Component {
             /**基础编号 */
             serialNumber:{
                 serialNumber:`${server}/jc/common/repoBaseSerialNumber`,
+                getRaw:`${server}/jc/common/repoBaseSerialNumber/allName`,//查询物料、厂商
             },
             /**检测项目 */
             testItems:{

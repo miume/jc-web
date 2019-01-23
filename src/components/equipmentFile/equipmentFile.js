@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import {Table,Divider,message} from 'antd';
 import axios from 'axios';
 import Blockquote from '../BlockQuote/blockquote';
-import NewButton from '../BlockQuote/newButton';
+//import NewButton from '../BlockQuote/newButton';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
 import CheckManual from '../equipmentFile/checkShouCe/checkShouCe';
 import Edit from '../equipmentFile/Edit/edit';
 import Delete from '../equipmentFile/delete/delete';
 import Add from '../equipmentFile/add/add';
-import { locale } from 'moment';
 class EquipmentArchive extends Component{//设备档案
     componentDidMount(){
         this.fetch();
@@ -154,9 +153,9 @@ class EquipmentArchive extends Component{//设备档案
             const res=data.data.data;
             this.pagination.total=res.total?res.total:0;
             if(res&&res.list){
-                var data=[];
+                var data1=[];
                 for(var i=0;i<res.list.length;i++){
-                    data.push({
+                    data1.push({
                         index:i+1,
                         id:res.list[i].equipmentArchiveRecord.id,
                         archiveName:res.list[i].equipmentArchiveRecord.name,
@@ -170,7 +169,7 @@ class EquipmentArchive extends Component{//设备档案
                     });
                  }
                this.setState({
-                   dataSource:data,
+                   dataSource:data1,
                    searchContent:'',
                    selectedRowKeys:[],
                    pageChangeFlag:0

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Form, Input,message, Checkbox, Col,} from 'antd';
+import { Form, Input,message, Checkbox, Col,Select} from 'antd';
 const FormItem = Form.Item;
-
+const Option=Select.Option;
 class RawMaterialAddModal extends React.Component{
     constructor(props){
         super(props);
@@ -29,7 +29,16 @@ class RawMaterialAddModal extends React.Component{
                   {getFieldDecorator('name',{
                         rules: [{required: true, message: '原材料名称不能为空'}],
                      })( 
-                            <Input placeholder='请输入原材料名称' style={{height:'40px' }}></Input>
+                            <Select placeholder='请选择原材料'>
+                                {
+                                  this.props.rawData.map((item,index)=>{//item指的是数组值，a[0],a[1],,,a[i]
+                                      return(
+                                         <Option key={index} value={item}>{item}</Option>
+                                      )
+                                  })
+
+                                }
+                            </Select>
                         )}
                </FormItem>
               <FormItem wrapperCol={{span:24}} >

@@ -3,7 +3,7 @@ import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
-import Submit from '../../BlockQuote/submit';
+//import Submit from '../../BlockQuote/submit';
 import ProductRedListAddModal from './paddModal';
 import axios from 'axios';
 const Option=Select.Option;
@@ -63,7 +63,7 @@ class Add extends React.Component{
            type:'json'
         }).then((data)=>{
             //console.log(data);
-            const res=data.data.data;
+            //const res=data.data.data;
             message.info(data.data.message);
             this.props.fetch();
         })

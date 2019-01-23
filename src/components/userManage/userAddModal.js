@@ -1,16 +1,13 @@
 import React from 'react';
-import { Form, Input,Select,message} from 'antd';
+import { Form, Input,Select} from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
-
-
 class UserAddModal extends React.Component{
     constructor(props){
         super(props);
        this.state={
         confirmDirty: false,
        }
-      
     }
     //'username','password','departmentId','phone'
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
@@ -18,7 +15,6 @@ class UserAddModal extends React.Component{
         const values= this.props.form.getFieldsValue();
         return values;//用来得到新增框中填写的新值
     }
-
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({ confirmDirty: this.state.confirmDirty || !!value });

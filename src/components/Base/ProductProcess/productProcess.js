@@ -240,10 +240,10 @@ class ProductProcess extends React.Component{
         const ids = this.state.selectedRowKeys;//删除的几行的id
        // console.log(ids);
         axios({
-            url:`${this.url. productionProcess. productionProcess}?ids=${ids}`,
+            url:`${this.url.productionProcess.productionProcess}?ids=${ids}`,
             method:'Delete',
             headers:{
-                  'Authorization' :this.url.Authorization
+                  'Authorization':this.url.Authorization
             },
             data:ids,//前端要传的参数放在data里面，
             type:'json'

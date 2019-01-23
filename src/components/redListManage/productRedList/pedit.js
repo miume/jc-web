@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import {Form,Input,Button,Modal,Popconfirm,Select,Popover,Switch,InputNumber,message} from 'antd';
+import {Button,Modal,Select,Popover,Switch,message} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
 import ProductRedListEditModal from './peditModal';
@@ -18,7 +18,6 @@ class Edit extends Component{
             checkSwitch:-1,//是否紧急那个开关最开始是关闭的
             
         }
-        
         this.showModal=this.showModal.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -26,10 +25,8 @@ class Edit extends Component{
         this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
         this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
-        
     }
     showModal = () => {
-        
         this.setState({ visible: true });
       }
        notShowModal=()=>{
@@ -42,9 +39,8 @@ class Edit extends Component{
       }
       handleSave () {//编辑一条记录
         const  details=this.formRef.getItemsValue();
-         console.log(details);
+         //console.log(details);
         details['id']=this.props.record.repoRedTable.id;
-         
          const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
          const isUrgent=this.state.checkSwitch;
          const commonBatchNumber={
@@ -75,17 +71,14 @@ class Edit extends Component{
          this.setState({ visible: false });
          this.formRef.resetField();
          }
-
            //监听流程下拉框变化
     selectChange=(value)=>{
         this.setState({checkSelectData:value});
     }
     hide(){//送审气泡的取消
-      
       this.setState({popVisible:false});
     }
     handleVisibleChange=(visible)=>{
-      
        this.setState({
          popVisible:visible
        })
@@ -98,7 +91,6 @@ class Edit extends Component{
         headers:{
             'Authorization':this.url.Authorization
         },
-  
         type:'json'
      }).then((data)=>{
          message.info(data.data.message);
@@ -111,7 +103,6 @@ class Edit extends Component{
     const details=this.formRef.getItemsValue();
    // console.log(details);
     details['id']=this.props.record.repoRedTable.id;
-    
     const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
     const isUrgent=this.state.checkSwitch;
     const commonBatchNumber={

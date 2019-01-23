@@ -6,9 +6,10 @@ import '../block.css';
 import DataPart from '../div'
 
 class Manufacturer extends Component{
-    url;
+    
     componentDidMount(){
       this.fetch();
+      this.getAllFactory();
     }
     constructor(props){
       super(props);
@@ -17,6 +18,7 @@ class Manufacturer extends Component{
           searchContent:'',
           flag1:false,//用来判断新增框是否变为输入框
           inputContent:'',
+          factoryData:[]
       }
       this.fetch=this.fetch.bind(this);
       this.onBlockChange=this.onBlockChange.bind(this);
@@ -26,6 +28,7 @@ class Manufacturer extends Component{
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.checkRaw=this.checkRaw.bind(this);
+      this.getAllFactory=this.getAllFactory.bind(this);
     }
     fetch=()=>{
       axios({
@@ -45,6 +48,26 @@ class Manufacturer extends Component{
             });
           }
       });
+    }
+    getAllFactory(){//新增下拉框获取所有生产厂家
+        const materialClass=1;
+        const isManufacturer=1;
+        axios({
+           url:`${this.props.url.serialNumber.getRaw}?materialClass=${materialClass}&isManufacturer=${isManufacturer}`,
+           method:'get',
+           headers:{
+               'Authorization':this.props.url.Authorization
+           }
+        })
+        .then((data)=>{
+            //console.log(data);
+            const res=data.data.data;
+            if(res){
+                this.setState({
+                    factoryData:res
+                });
+            }
+        });
     }
     onBlockChange(e){
        //console.log(e.target);
@@ -136,7 +159,6 @@ class Manufacturer extends Component{
             if(res){
                this.setState({
                    data:res,
-                   
                });
             }
         })
@@ -149,7 +171,7 @@ class Manufacturer extends Component{
         this.props.onBlockChange(1,'选择生产厂家',this.props.rawMaterialId);//跳回生产厂家界面后，就不可以点击那个面板了
     }
     render(){
-        this.url=JSON.parse(localStorage.getItem('url'));
+        // this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <div style={{position:'relative'}}>
               <div style={{padding:'15px'}}>
