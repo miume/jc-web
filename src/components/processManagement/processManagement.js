@@ -13,8 +13,7 @@ import axios from "axios";
 
 class Management extends React.Component{
     url
-    Authorization
-    server
+    status
     constructor(props){
         super(props)
         this.state = {
@@ -26,7 +25,6 @@ class Management extends React.Component{
             searchText: '',
         }
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.cancle = this.cancle.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.start=this.start.bind(this);
@@ -38,10 +36,6 @@ class Management extends React.Component{
                 return `共${total}条记录`
             },
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
           };
         this.columns = [{
             title: '序号',
@@ -68,30 +62,32 @@ class Management extends React.Component{
             key: 'createTime',
             align:'center',
             width: '15%',
+            render:(text)=>{
+                const items = text.split(' ')
+                return <abbr title={text}>{items[0]}</abbr>
+            }
         },{
             title: '保存状态',
             dataIndex: 'commonBatchNumber.status',
             key: 'status',
             align:'center',
             width: '14%',
-            render(text,record){
-                switch(record.commonBatchNumber.status){
-                    case -1 : return "已保存未提交";
-                    case 0 : return "已审核未提交";
-                    case 1 : return "审核";
-                    case 2 : return "已提交";
-                    case 3 : return "审核未通过";
-                    case 4 : return "合格";
-                    case 5 : return "不合格";
-                    default : return '';
-                }
-            }
+            render: state => {
+                return this.status[state.toString()];
+           },
         },{
             title: '批号',
             dataIndex: 'commonBatchNumber.batchNumber',
             key: 'batchNumber',
             align:'center',
             width: '13%',
+            render:(text)=>{
+                if(text.length>8){
+                    return <abbr title={text}>{text.substr(0,7)}</abbr>
+                }else{
+                    return text
+                }
+            }
         },{
             title: '操作',
             dataIndex: 'commonBatchNumber.id',
@@ -113,9 +109,6 @@ class Management extends React.Component{
                 );
             }
         }]
-    }
-    cancle() {
-
     }
     handleDelete = (id) => {
         axios({
@@ -258,9 +251,8 @@ class Management extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        this.status = JSON.parse(localStorage.getItem('status'));
         const current = JSON.parse(localStorage.getItem('current')) ;
-        this.Authorization = localStorage.getItem("Authorization")
-        this.server = localStorage.getItem("remote")
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -284,7 +276,10 @@ class Management extends React.Component{
                         loading={loading}
                         cancel={this.cancel}
                     />
+                    <span style={{float:'right',paddingBottom:'8px'}}>
                 <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
+                </span>                
+                <div className='clear' ></div>
                 <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
                     </div>
                 </div>

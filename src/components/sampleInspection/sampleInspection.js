@@ -58,7 +58,7 @@ class SampleInspection extends React.Component{
             key: 'index',
             sorter: (a, b) => a.sampleDeliveringRecord.id - b.sampleDeliveringRecord.id,
             align:'center',
-            width: '10%',
+            width: '8%',
         },{
             title: '送检时间',
             dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
@@ -82,7 +82,7 @@ class SampleInspection extends React.Component{
             align:'center',
             width: '7%',
         },{
-            title: '批号',
+            title: '编号',
             dataIndex: 'serialNumberName',
             key: 'serialNumberName',
             align:'center',
@@ -154,7 +154,7 @@ class SampleInspection extends React.Component{
             dataIndex: 'sampleDeliveringRecord.id',
             key: 'id',
             align:'center',
-            width: '18%',
+            width: '20%',
             render : (text,record)=>{
                 return(
                     <span>
@@ -376,7 +376,7 @@ class SampleInspection extends React.Component{
 
                     <span style={{float:'right',paddingBottom:'8px'}}>
 
-                        <SearchCell name='请输入搜索内容'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
+                        <SearchCell name='请输入工厂名'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
                     </span>
                     <div className='clear' ></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"

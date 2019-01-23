@@ -70,8 +70,8 @@ class Detail extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const td = this.state.data1.map(p=>
-            <td key={p.description.toString()}>{p.description}</td>
+        const td = this.state.data1.map((p,index)=>
+            <td key={index}>{p.description?p.description:'无'}</td>
         )
         return(
             <span>
