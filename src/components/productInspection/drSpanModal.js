@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table,Divider } from 'antd';
+import { Divider } from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import DetailStateModal from "./detailStateModal";
 // import AllTester from '../BlockQuote/allTester';
