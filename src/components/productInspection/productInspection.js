@@ -121,7 +121,6 @@ class ProductInspection extends React.Component {
         const value = e.target.value;
         this.setState({searchContent:value});
     }
-    /**---------------------- */
 }
 
 export default ProductInspection;
