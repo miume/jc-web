@@ -19,7 +19,7 @@ class DetailStateModal extends React.Component {
                         审核中
                     </div>
                 );
-            case 2: //已通过
+            case 2: //已通过--
                 return(
                     <div className="productPassModal">
                         <AllTester
