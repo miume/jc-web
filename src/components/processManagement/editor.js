@@ -174,7 +174,7 @@ class Editor extends React.Component{
             <span>
                 {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="notClick">编辑</span>}
                 <Modal title='编辑' visible={this.state.visible}
-                width="400px"
+                className='modal-md'
                     closable={false} centered={true}
                     maskClosable={false}
                     footer={[
@@ -184,7 +184,7 @@ class Editor extends React.Component{
                       ]}>
                       <input id="proname" defaultValue={this.state.name} placeholder="请输入名称"/>
                       <WhiteSpace />
-                      <div style={{height:'400px'}}>
+                      <div style={{height:'360px'}}>
                         <table className="processTable">
                             <thead className='processThead'>
                                 <tr>

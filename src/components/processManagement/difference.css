@@ -56,9 +56,9 @@
 
 #editPro tr td{
     border: 1px #E4E4E4 solid;
-    width: 119px;
-    max-width: 119px;
-    min-width: 119px;
+    width: 159px;
+    max-width: 159px;
+    min-width: 159px;
     box-sizing: border-box;
     text-align: center;
 }
@@ -73,9 +73,9 @@
 
 #editPro tr td:last-child{
     border: 1px #E4E4E4 solid;
-    width: 119px;
-    max-width: 119px;
-    min-width: 119px;
+    width: 160px;
+    max-width: 160px;
+    min-width: 160px;
     box-sizing: border-box;
 }
 
@@ -86,7 +86,7 @@
     width: 100%;
     height: 35px;
     text-align: center;
-    border: 1px #1a1a1a solid;
+    border: none !important;
     border-radius: 20px;
 }
 
@@ -121,7 +121,7 @@
     padding: 6px 0px;
     border-radius: 3px;
     padding-left:5px;
-    width: 360px;
+    width: 480px;
     height: 40px;
 }
 
@@ -147,7 +147,7 @@
     font-weight: 600;
     border: 1px #E4E4E4 solid;
     height: 40px;
-    width: 119px;
+    width: 160px;
     box-sizing: border-box;
 }
 
@@ -182,3 +182,10 @@
 .proinput::-webkit-input-placeholder {
     padding-left:30px;
      }
+
+.proselect .ant-select-selection{
+    border: none !important;
+}
+.sleID .ant-select-selection{
+    border: none !important;
+}

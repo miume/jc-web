@@ -215,6 +215,8 @@ const CollectionCreateForm = Form.create()(
                     this.setState({
                         materialsItem:res
                     })
+                }else{
+                    message.info("此物料没有建立标准，请去技术中心建立标准")
                 }
             })
         }
@@ -259,6 +261,11 @@ const CollectionCreateForm = Form.create()(
                 
             })
         }
+
+        disabledDate = (current)=>{
+            return current&&current<moment().startOf('day')
+        }
+
         selectChange= (value) =>{
             if(value==='1'){
                 this.setState({
@@ -309,14 +316,14 @@ const CollectionCreateForm = Form.create()(
                         <Col span={12} style={{display:"block"}}>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('date', {
-                                    rules: [{ required: true, message: '请选择送样日期' }],
+                               
                                 })(
-                                    <DatePicker  style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
+                                    <DatePicker disabledDate={this.disabledDate} style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                                 )}
                             </FormItem>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('time', {
-                                    rules: [{ required: true, message: '请选择送样时间' }],
+                              
                                 })(
                                     <TimePicker style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                                 )}
@@ -523,12 +530,11 @@ class AddModal extends React.Component{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
             if(err){
-                return;
+                return message.info("新增失败，请正确输入数据");
             }
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            console.log(this.state.testItemIds)
             let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
@@ -552,7 +558,7 @@ class AddModal extends React.Component{
         const form = this.formRef.props.form;
         form.validateFields((err,value)=>{
             if(err){
-                return;
+                return message.info("新增失败，请正确输入数据");
             }
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
