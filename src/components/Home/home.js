@@ -333,6 +333,7 @@ class Home extends Component {
                  generate:`${server}/jc/common/purchaseReportRecord/generate`,
                  releasePages:`${server}/jc/common/purchaseReportRecord/releasePages`,
                  purchasePages:`${server}/jc/common/purchaseReportRecord/purchasePages`,
+                 preview:`${server}/jc/common/purchaseReportRecord/preview`,
              },
              /**入库管理 */
              enterStorage: {
