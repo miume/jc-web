@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input,message, Checkbox, Col,Select} from 'antd';
+import { Form,Checkbox,Col,Select} from 'antd';
 const FormItem = Form.Item;
 const Option=Select.Option;
 class RawMaterialAddModal extends React.Component{

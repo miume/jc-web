@@ -1,13 +1,10 @@
 import React from 'react';
-import {Form,Input,Select,InputNumber,Icon,Button} from 'antd';
+import {Form,Input,Select,Icon} from 'antd';
 import '../redList.css'
-import Number from '../number';
 import '../number.css'
 const Option=Select.Option;
 const FormItem=Form.Item;
 const { TextArea } = Input;
-
-
 class RawMaterialRedListEditModal extends React.Component{
   constructor(props){
       super(props);
@@ -71,7 +68,8 @@ class RawMaterialRedListEditModal extends React.Component{
             //console.log(type);
               switch(type){
                  case 1: {type='原材料';break;} 
-                 case 3: {type='产品';break;} 
+                 case 3: {type='产品';break;}
+                 default:{ type1='';break;}
               }
               //console.log(type);
                 this.props.form.setFieldsValue({
@@ -120,6 +118,7 @@ class RawMaterialRedListEditModal extends React.Component{
        switch(type1){
           case 1:{ type1= '原材料';break;}
           case 3:{ type1='产品';break;}
+          default:{ type1='';break;}
        }
         return(
          

@@ -1,14 +1,11 @@
 import React,{Component} from 'react';
-import {Table,Popconfirm,Divider,message,Modal} from 'antd';
+import {Table,Popconfirm,Divider,message} from 'antd';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import Add from './add';
 import Edit from './edit';
 import SearchCell from '../../BlockQuote/search';
 import Note from './note';
 import axios from 'axios';
-
-
-const status=localStorage.getItem('status');
 class RawMaterialRedList extends Component{
     url;
     Authorization;
