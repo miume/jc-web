@@ -27,10 +27,10 @@ const FormItem=Form.Item;
                 for(var i=0;i<res.length;i++){
                        if(res[i].id===id){
                           let  type=res[i].materialClass;
-                          
                             switch(type){
                                case 1: {type='原材料';break;} 
-                               case 3: {type='产品';break;} 
+                               case 3: {type='产品';break;}
+                               default: {type='';break;}
                             }
                             
                         //console.log(type);
@@ -61,8 +61,8 @@ const FormItem=Form.Item;
        
         const { form } = this.props;
         const { getFieldDecorator } = form;
-        const quantityLoss= this.props.form.getFieldsValue(['quantityLoss']);
-        const weightLoss= this.props.form.getFieldsValue(['weightLoss']); 
+        // const quantityLoss= this.props.form.getFieldsValue(['quantityLoss']);
+        // const weightLoss= this.props.form.getFieldsValue(['weightLoss']); 
         return (
          
             <Form horizontal='true' >

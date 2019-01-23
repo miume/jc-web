@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Button,Modal,message} from 'antd';
+import {Form,Input,Modal,message} from 'antd';
 import axios from 'axios';
 import NewButton from '../../BlockQuote/newButton';
 import CancleButton from '../../BlockQuote/cancleButton';
@@ -16,8 +16,8 @@ const CollectionCreateForm = Form.create()(//弹出层
             closable={false} maskClosable={false} centered={true}
            width='360px'
             footer={[
-              <NewButton key='ok' handleClick={this.props.onCreate} name='确定'  className='fa fa-check'/>,
-              <CancleButton  key='cancel'  handleCancel={this.props.onCancel} />
+              <NewButton key='ok' handleClick={onCreate} name='确定'  className='fa fa-check'/>,
+              <CancleButton  key='cancel'  handleCancel={onCancel} />
             ]}
           >
             <Form horizontal='true' >

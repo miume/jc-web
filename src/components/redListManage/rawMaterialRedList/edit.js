@@ -1,5 +1,5 @@
 import React ,{Component}from 'react';
-import {Form,Input,Button,Modal,Select,Popover,Switch,InputNumber,message} from 'antd';
+import {Button,Modal,Select,Popover,Switch,message} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
 import RawMaterialRedListEditModal from './EditModal';
@@ -37,7 +37,7 @@ class Edit extends Component{
        // console.log(details);
        details['id']=this.props.record.repoRedTable.id;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-        const isUrgent=this.state.checkSwitch;
+       // const isUrgent=this.state.checkSwitch;
         const commonBatchNumber={
             id:this.props.record.commonBatchNumber.id,
             batchNumber:this.props.record.commonBatchNumber.batchNumber,
@@ -104,7 +104,7 @@ class Edit extends Component{
         details['id']=this.props.record.repoRedTable.id;
         
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
-        const isUrgent=this.state.checkSwitch;
+        //const isUrgent=this.state.checkSwitch;
         const commonBatchNumber={
             id:this.props.record.commonBatchNumber.id,
             batchNumber:this.props.record.commonBatchNumber.batchNumber,

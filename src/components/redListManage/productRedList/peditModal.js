@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form,Input,Select,InputNumber,Icon} from 'antd';
+import {Form,Input,Select,Icon} from 'antd';
 import '../redList.css'
 const Option=Select.Option;
 const FormItem=Form.Item;
@@ -73,6 +73,7 @@ class ProductRedListEditModal extends React.Component{
               switch(type){
                  case 1: {type='原材料';break;} 
                  case 3: {type='产品';break;} 
+                 default:{ type='';break;}
               }
                 this.props.form.setFieldsValue({
                   materialName: res[i].materialName,
@@ -119,6 +120,7 @@ class ProductRedListEditModal extends React.Component{
       switch(type1){
          case 1:{ type1= '原材料';break;}
          case 3:{ type1='产品';break;}
+         default:{ type1='';break;}
       }
     
         return(

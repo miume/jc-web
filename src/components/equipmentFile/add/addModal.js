@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import {Form,Col,Input,Select,DatePicker,Row,InputNumber,Upload, message, Button, Icon} from 'antd';
-import axios from 'axios';
+// import moment from 'moment';
+import {Form,Col,Input,Select,DatePicker,Row,InputNumber,Upload,  Button, Icon} from 'antd';
+// import axios from 'axios';
 const Option=Select.Option;
 const FormItem=Form.Item;
 
@@ -64,7 +64,6 @@ class AddModal extends Component{
         Object.keys(values).map((item)=>{
             //console.log(item);
             formData.append(item,values[item]);//FormData 对象用来保存key/value结构的数据
-           
         })
         return formData;
     }
