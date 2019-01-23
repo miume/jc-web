@@ -69,7 +69,7 @@ class RawMaterialRedListEditModal extends React.Component{
               switch(type){
                  case 1: {type='原材料';break;} 
                  case 3: {type='产品';break;}
-                 default:{ type1='';break;}
+                 default:{type='';break;}
               }
               //console.log(type);
                 this.props.form.setFieldsValue({
