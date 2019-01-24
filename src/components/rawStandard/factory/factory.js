@@ -115,6 +115,9 @@ class Manufacturer extends Component{
         }).then(data=>{
              message.info(data.data.message);
              this.fetch();
+             this.setState({
+                 flag1:false
+             });
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
