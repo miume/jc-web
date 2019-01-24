@@ -51,9 +51,12 @@ class CheckTable extends React.Component {
         key: 'details.receiveDate',
         align:'center',
         width: '8%',
-        render: receiveDate => {
-            return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
+        render: receiveDate=>{
+            return receiveDate?receiveDate:'无'
         }
+        // render: receiveDate => {
+        //     return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
+        // }
     },{
         title: '创建人',
         dataIndex: 'createPersonName',
@@ -123,14 +126,6 @@ class CheckTable extends React.Component {
                         state={record.commonBatchNumber.status}
                         name='详情'
                     />
-                    {/*<Divider type="vertical" />*/}
-                    {/*{operationDeleteFlag?(*/}
-                        {/*<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >*/}
-                            {/*<span className='blue'>删除</span>*/}
-                        {/*</Popconfirm>*/}
-                    {/*):(*/}
-                        {/*<span  className="notClick">删除</span>*/}
-                    {/*)}*/}
                 </span>
             )
         }

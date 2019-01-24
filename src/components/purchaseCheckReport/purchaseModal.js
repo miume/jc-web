@@ -43,7 +43,7 @@ class PurchaseModal extends React.Component {
                                 </tr>
                             ):(
                                 <tr>
-                                    <td><Input name='materialName' placeholder="原材料名称" value={this.props.data.topData.materialName} onChange={this.props.inputSave}/></td>
+                                    <td>{this.props.data.topData.materialName}</td>
                                     <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
                                     <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
                                     <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
@@ -55,7 +55,7 @@ class PurchaseModal extends React.Component {
                                             onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
                                         />
                                     </td>
-                                    <td><Input name='deliveryFactory' placeholder="请输入生产厂家" value={this.props.data.topData.manufactureName} onChange={this.props.inputSave}/></td>
+                                    <td>{this.props.data.topData.manufactureName}</td>
                                 </tr>
                             )
                         }
