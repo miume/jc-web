@@ -4,8 +4,8 @@ import BlockQuote from '../BlockQuote/blockquote'
 import {Table,Popconfirm,Divider,message } from 'antd';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
-import Detail from './detail';
-import Editor from './editor';
+// import Detail from './detail';
+// import Editor from './editor';
 import './editor.css';
 import SearchCell from '../BlockQuote/search';
 // const data = [];
@@ -178,15 +178,18 @@ class ProcessInspection extends React.Component{
     }
     /**批量删除弹出框确认函数 */
     deleteByIds() {
-      const ids = this.state.selectedRowKeys.toString();
+      const ids = this.state.selectedRowKeys;
         axios({
-          url:`${this.url.procedure.procedureTestRecord}/batchNumberIds=${ids}`,
+          url:`${this.url.procedure.procedureTestRecord}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
           },
-          data:ids,
-          type:'json'
+          params:{
+            batchNumberIds:ids.toString()
+          }
+        //   data:ids,
+        //   type:'json'
         }).then((data)=>{
             message.info(data.data.message);
             if(data.data.code===0){

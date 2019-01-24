@@ -85,10 +85,8 @@
     text-align: center;
     line-height: 110px;
 }
-.interStateModal{
-    overflow-y: auto;
-    width: 100%;
-    height: 100px;
+.interStateNoModal{
+    display: none;
 }
 .interDrSpanModalBottomSecond {
     margin-top: -7px;

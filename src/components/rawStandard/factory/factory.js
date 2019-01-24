@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {message,Divider,Popover} from 'antd';
+import {message,Divider} from 'antd';
 import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import '../block.css';

@@ -9,16 +9,14 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 const Option = Select.Option;
   const columns = [{
     title: '产品线',
-    dataIndex: 'deliveryFactory.name' ,
-    key: 'deliveryFactory.name',
+    dataIndex: 'detail.deliveryFactory' ,
+    key: 'detail.deliveryFactory',
     width: '9%',
-    align:'left',
   },{
     title: '工序',
-    dataIndex: 'productionProcess.name' ,
-    key: 'productionProcess.name',
+    dataIndex: 'detail.productionProcess' ,
+    key: 'detail.productionProcess',
     width: '9%',
-    align:'left',
   },{
     title: '取样点',
     dataIndex: 'procedureTestRecord.samplePointName' ,
@@ -27,20 +25,18 @@ const Option = Select.Option;
     align:'left',
   },{
     title: '取样人',
-    dataIndex: 'sampler' ,
-    key: 'sampler',
+    dataIndex: 'detail.sampler' ,
+    key: 'detail.sampler',
     width: '9%',
-    align:'left',
   },{
     title: '检测人',
-    dataIndex: 'tester' ,
-    key: 'tester',
+    dataIndex: 'detail.tester' ,
+    key: 'detail.tester',
     width: '9%',
-    align:'left',
   },{
     title: '检测项目',
-    dataIndex: 'testItemString' ,
-    key: 'testItemString',
+    dataIndex: 'detail.testItems' ,
+    key: 'detail.testItems',
     render:(text)=>{
       if(text){
         const items = text.split(',');
@@ -55,25 +51,21 @@ const Option = Select.Option;
       }
      },
     width: '9%',
-    align:'left',
   },{
     title: '频次',
     dataIndex: 'procedureTestRecord.testFrequency' ,
     key: 'procedureTestRecord.testFrequency',
     width: '9%',
-    align:'left',
   },{
     title: '受检物料',
-    dataIndex: 'testMaterialName' ,
-    key: 'testMaterialName',
+    dataIndex: 'detail.testMaterialName' ,
+    key: 'detail.testMaterialName',
     width: '9%',
-    align:'left',
   },{
     title: '备注',
     dataIndex: 'procedureTestRecord.comment' ,
     key: 'procedureTestRecord.comment',
     width: '9%',
-    align:'left',
   }]
 class Detail extends React.Component{
     constructor(props){
@@ -86,7 +78,7 @@ class Detail extends React.Component{
     }
     selectionChange(value) {
         var {data} = this.state;
-        if(value != 'all')
+        if(value !== 'all')
             data = this.props.data.filter(d => parseInt(d.deliveryFactory.id) === parseInt(value));
         else 
             data = this.props.data;

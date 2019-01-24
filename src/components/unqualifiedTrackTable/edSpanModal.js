@@ -1,6 +1,8 @@
 import React from 'react';
 import {Input, Select} from "antd";
 import './unqualifiedTrack.css';
+import PurchaseModal from '../purchaseCheckReport/purchaseModal';
+
 
 const topData = {
     materialName: '镍矿石',
@@ -62,6 +64,11 @@ class EdSpanModal extends React.Component {
                     </table>
                 </div>
                 <div className="unTrackEditModalMiddle">
+                    {/*<PurchaseModal*/}
+                        {/*data={this.props.checkData}*/}
+                        {/*clickState ={1}*/}
+                        {/*unqualifiedType={true}*/}
+                    {/*/>*/}
                     <table>
                         <tbody>
                             <tr>
