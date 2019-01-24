@@ -5,7 +5,7 @@ import HeadTable from '../productStandard/headTable';
 class CheckProductStandard extends React.Component{
     componentDidMount(){
         const {flag} = this.props;
-        console.log(flag)
+        // console.log(flag)
         var url = `${this.props.url.productStandard.productStandard}`;
         if(flag===13) url = `${this.props.url.rawStandard.getStandard}`;
         this.getDataByBatchNumberId(this.props.batchNumberId,url);
@@ -46,14 +46,13 @@ class CheckProductStandard extends React.Component{
     }
 
     getDataByBatchNumberId(id,url){
-        console.log(url)
         axios.get(`${url}/${id}`,{
             headers:{
                 'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res)
+            // console.log(res)
             if(res){
                 this.detailDataProcessing(res);
             }
