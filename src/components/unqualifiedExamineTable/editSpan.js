@@ -144,7 +144,7 @@ class EditSpan extends React.Component {
                         <div style={{height:550}}>
                             <CheckSpanModal
                                 data={this.state.detailData}
-                                modifyDetailData={this.inputProInsSave}
+                                modifyDetailData={this.modifyProInsData}
                                 unClickCheck={1}  //中间内容数据不课修改
                                 // inputSave={this.inputSave}
                             />
@@ -273,7 +273,7 @@ class EditSpan extends React.Component {
                     var testData = {};  //检验数据
                     var isQualified = '';
                     var optional = {};  //择优数据
-
+                    console.log('1111')
                     isQualified =  detail.isQualified?detail.isQualified:0;
                     topData = {
                         serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
@@ -281,35 +281,47 @@ class EditSpan extends React.Component {
                         sampleDeliveringDate: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无'
                     };
                     const testItemResults = detail.unqualifiedDetail[0].testItemResults;
+                    console.log('2222')
+                    console.log(testItemResults)
                     if(testItemResults) {
                         for(var i=0; i<testItemResults.length; i++){
                             var e = testItemResults[i];
+                            console.log('55555')
+                            var standard = detail.standard[i].split(',');
+                            console.log('77777')
                             testDTOS.push({
                                 index:`${i+1}`,
                                 id:e.id,
                                 testItemId:e.testItemId,
-                                testItemName:e.testItem.name?e.testItem.name:'无',
-                                testResult:e.testItemResultRecord.testResult,
-                                rawTestItemStandard:e.standardValue?e.standardValue:'无',
-                                unit:e.testItem.unit?e.testItem.unit:'无',
-                                isValid: e.testItemResultRecord.isValid
+                                testItemName:standard[0],
+                                testResult:e.testResult,
+                                rawTestItemStandard:standard[2],
+                                unit:standard[1],
+                                isValid: e.isValid
                             })
                         }
                     }
+                    console.log('3333')
                     testData = {
-                        tester: detail.tester?detail.tester:'无',
-                        testTime: detail.testReportRecord.judgeDate?detail.testReportRecord.judgeDate:'无',
+                        tester: detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无',
+                        testTime: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无',
                     };
                     // 择优数据
                     optional = {
-                        optionalStatus: detail.testReportRecord.qualityLevel?detail.testReportRecord.qualityLevel:'',
+                        // optionalStatus: detail.testReportRecord.qualityLevel?detail.testReportRecord.qualityLevel:'',
+                        // optionalData: {
+                        //     personer: detail.testReportRecord.ratePersonId?detail.testReportRecord.ratePersonId:'无',
+                        //     personTime:detail.testReportRecord.rateDate?detail.testReportRecord.rateDate:'无',
+                        // }
+                        optionalStatus: '',
                         optionalData: {
-                            personer: detail.testReportRecord.ratePersonId?detail.testReportRecord.ratePersonId:'无',
-                            personTime:detail.testReportRecord.rateDate?detail.testReportRecord.rateDate:'无',
+                            personer: '无',
+                            personTime:'无',
                         }
                     };
+                    console.log('4444')
                     const examineStatus = this.props.checkStatus;
-                    const batchNumberId = detail.testReportRecord?detail.testReportRecord.batchNumberId:'';
+                    const batchNumberId = detail.batchNumberId?detail.batchNumberId:'';
                     if((examineStatus===2||examineStatus===3)&&batchNumberId){
                         axios({
                             url:`${this.props.url.toDoList}/${batchNumberId}/result`,
