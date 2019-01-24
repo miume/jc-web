@@ -153,7 +153,7 @@ class CheckModal extends React.Component{
                     <div>
                     {
                         this.props.flag?
-                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />:
+                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} hide={this.props.dataType===2||this.props.dataType===7?0:1} />:
                         <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                     }
                     </div> 

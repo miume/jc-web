@@ -48,19 +48,19 @@ class RecordChecking extends React.Component{
             dataIndex:'index',
             key:'index',
             align:'center',
-            width:'25%'
+            width:'20%'
         },{
             title:'检测项目',
             dataIndex:'testItemName',
             key:'testItemName',
             align:'center',
-            width:'25%'
+            width:'20%'
         },{
             title:'检测结果',
             dataIndex:'testResult',
             key:'testResult',
             align:'center',
-            width:'25%',
+            width:'30%',
             render:(text,record)=>{
                 //<Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />
                 return <Input id={record.id} name='testResult' placeholder='请输入检测结果' defaultValue={text} style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} className='stock-out-input' />
@@ -70,7 +70,7 @@ class RecordChecking extends React.Component{
             dataIndex:'unit',
             key:'unit',
             align:'left',
-            width:'25%'
+            width:'30%'
         },]
     }
     /**点击录检 弹出框显示 */
@@ -115,7 +115,7 @@ class RecordChecking extends React.Component{
                     }   
                 }
                 // console.log(details)
-                console.log(`%c halo2 end`, 'color:lightseagreen;')
+                //console.log(`%c halo2 end`, 'color:lightseagreen;')
                 this.setState({
                     detail:details,
                     detailData:details,
