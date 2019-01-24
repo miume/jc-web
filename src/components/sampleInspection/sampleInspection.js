@@ -14,7 +14,8 @@ class SampleInspection extends React.Component{
     server
     Authorization
     componentDidMount() {
-        this.fetch();
+        this.fetch({sortField: 'sample_Delivering_Date',
+        sortType: 'desc',});
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -58,7 +59,7 @@ class SampleInspection extends React.Component{
             key: 'index',
             sorter: (a, b) => a.sampleDeliveringRecord.id - b.sampleDeliveringRecord.id,
             align:'center',
-            width: '8%',
+            width: '6%',
         },{
             title: '送检时间',
             dataIndex: 'sampleDeliveringRecord.sampleDeliveringDate',
@@ -126,7 +127,7 @@ class SampleInspection extends React.Component{
             dataIndex: 'sampleDeliveringRecord.acceptStatus',
             key: 'status',
             align:'center',
-            width: '6%',
+            width: '8%',
             render:status=>{
                 switch(`${status}`){
                     case '-1':return "保存"
@@ -289,8 +290,8 @@ class SampleInspection extends React.Component{
             this.fetch({
                 pageSize: pagination.pageSize,
                 pageNumber: pagination.current,
-                // sortField: 'sample_Delivering_Date',
-                // sortType: 'desc',
+                sortField: 'sample_Delivering_Date',
+                sortType: 'asc',
             });
         }else{
             this.searchEvent({
@@ -308,6 +309,7 @@ class SampleInspection extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
+            console.log(res)
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
