@@ -42,21 +42,33 @@ class PurchaseModal extends React.Component {
                                     <td>{this.props.data.topData.manufactureName}</td>
                                 </tr>
                             ):(
-                                <tr>
-                                    <td>{this.props.data.topData.materialName}</td>
-                                    <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
-                                    <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
-                                    <td style={{width:'25%'}}>
-                                        <DatePicker
-                                            name='receiveDate'
-                                            placeholder="选择时间"
-                                            defaultValue={moment(this.props.data.topData.receiveDate)}
-                                            onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
-                                        />
-                                    </td>
-                                    <td>{this.props.data.topData.manufactureName}</td>
-                                </tr>
+                                this.props.unClickType?(
+                                    <tr style={{cursor:'default'}}>
+                                        <td>{this.props.data.topData.materialName}</td>
+                                        <td>{this.props.data.topData.norm}</td>
+                                        <td>{this.props.data.topData.quantity}</td>
+                                        <td>{this.props.data.topData.weight}</td>
+                                        <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                        <td>{this.props.data.topData.manufactureName}</td>
+                                    </tr>
+                                ):(
+                                    <tr>
+                                        <td>{this.props.data.topData.materialName}</td>
+                                        <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
+                                        <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
+                                        <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
+                                        <td style={{width:'25%'}}>
+                                            <DatePicker
+                                                name='receiveDate'
+                                                placeholder="选择时间"
+                                                defaultValue={moment(this.props.data.topData.receiveDate)}
+                                                onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
+                                            />
+                                        </td>
+                                        <td>{this.props.data.topData.manufactureName}</td>
+                                    </tr>
+                                )
+
                             )
                         }
                         </tbody>

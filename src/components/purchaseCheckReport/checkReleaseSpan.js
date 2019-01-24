@@ -161,10 +161,8 @@ class CheckReleaseSpan extends React.Component {
                     materialName: detail.materialName,
                     norm: detail.purchaseReportRecord.norm?detail.purchaseReportRecord.norm:'无',
                     quantity: detail.purchaseReportRecord.quantity?detail.purchaseReportRecord.quantity:'无',
-                    //  修改
                     receiveDate:detail.purchaseReportRecord?detail.purchaseReportRecord.receiveDate:'无',
                     manufactureName:detail.manufactureName?detail.manufactureName:'无',
-                    //  增加一个重量子段-自己填
                     weight:detail.purchaseReportRecord.weight?detail.purchaseReportRecord.weight:'无',
                     id:detail.purchaseReportRecord.id
                 };
@@ -178,7 +176,6 @@ class CheckReleaseSpan extends React.Component {
                         rawTestItemStandard: item[2],
                     })
                 }
-                console.log('33333')
                 let detailTbody = detail.validTestRecords;
                 for(let j=0; j<detailTbody.length; j++){
                     let resultRecordList = detailTbody[j].resultRecordList;
