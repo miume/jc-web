@@ -80,6 +80,7 @@ class UnqualifiedTable extends React.Component {
                             // fetch={this.props.fetch}
                             url={this.props.url}
                             // id={record.purchaseReportRecord.id}
+                            batchNumberId={1440}
                             menuList={this.props.menuList}
                         />
                     ):(

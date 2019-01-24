@@ -6,6 +6,7 @@ import SaveButton from '../BlockQuote/saveButton';
 import Submit from '../BlockQuote/submit';
 import './unqualifiedExamine.css';
 import axios from "axios";
+import CheckSpanModal from "../productInspection/checkSpanModal";
 
 const topData = {
     materialName: '硫酸钴',
@@ -45,23 +46,33 @@ class EditSpan extends React.Component {
             visible: false,
             subVisible: false,
             process:-1,
-            // checkData: {
-            //     headData: headData,
-            //     tbodyData: tbodyData,
-            //     judgement: judgement,
-            //     judger: judger,
-            //     topData: topData,
-            // },
-            checkData: {
+            type:'',    //判断是进货1,还是成品0
+            checkData: {    //进货数据格式
                 headData: [],
                 tbodyData: [],
                 judgement: judgement,
                 judger: judger,
                 topData: topData,
             },
+            detailData:{    //成品数据格式
+                topData: {},   //头部数据
+                testDTOS: [],   //中部项目
+                testData: {},   //检验数据
+                examine: {       //审核数据
+                    examineStatus: '',
+                    examineData: []
+                },
+                optional: {
+                    optionalStatus: '',
+                    optionalData: {
+                        personer: '',
+                        personTime:'',
+                    }
+                },   //择优数据
+                isQualified: '', //不合格状态
+            },
         };
-        this.inputSave = this.inputSave.bind(this);
-        this.modifyDetailData = this.modifyDetailData.bind(this);
+        this.modifyPurchaseData = this.modifyPurchaseData.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
@@ -74,16 +85,26 @@ class EditSpan extends React.Component {
         this.clickSavaButton = this.clickSavaButton.bind(this);
         this.useSavaFunction = this.useSavaFunction.bind(this);
         this.applyReview = this.applyReview.bind(this);
+
+        this.modifyProInsData = this.modifyProInsData.bind(this);
     }
     render() {
         const { visible } = this.state;
+        const type = this.state.type;
+        var modalWidth;
+        if(type===0){
+            modalWidth='520px'
+        }else{
+            modalWidth='1035px'
+        }
+
         return(
             <span>
                 <span className="blue" onClick={this.handleEdit} >编辑</span>
                 <Modal
                     title="编辑数据"
                     visible={visible}
-                    width="1030px"
+                    width={modalWidth}
                     centered={true}
                     closable={false}
                     maskClosable={false}
@@ -109,43 +130,66 @@ class EditSpan extends React.Component {
                             handleOk={this.handleOkApply}
                         />
                     ]}
-                >
-                    <div style={{height:500}}>
-
-                        <PurchaseModal
-                            modifyDetailData={this.modifyDetailData}
-                            inputSave={this.inputSave}
-                            data={this.state.checkData}
-                            clickState ={0} //是否可以点击 0:可以点红， 其余：不可以点红
-                        />
-
-                    </div>
+                >{
+                    this.state.type?(
+                        <div style={{height:500}}>
+                            <PurchaseModal
+                                modifyDetailData={this.modifyPurchaseData}
+                                data={this.state.checkData}
+                                clickState ={0} //是否可以点击 0:可以点红， 其余：不可以点红
+                                unClickType={1} //表示头部数据不可点击
+                            />
+                        </div>
+                    ):(
+                        <div style={{height:550}}>
+                            <CheckSpanModal
+                                data={this.state.detailData}
+                                modifyDetailData={this.inputProInsSave}
+                                unClickCheck={1}  //中间内容数据不课修改
+                                // inputSave={this.inputSave}
+                            />
+                        </div>
+                    )
+                }
                 </Modal>
             </span>
         )
     }
-    /**input框内容变化，实现自动保存数据 */
-    inputSave(e){
-        const value = e.target.value;
-        const name = e.target.name;
-        var detailData = this.state.detailData;
-        detailData.topData[name] = value;
+
+    /**
+     * 进货相关函数部分
+     * type = 1
+     * 头部数据不能修改
+     */
+    /**1。  修改进货的数据 */
+    modifyPurchaseData = (data) => {
         this.setState({
-            detailData:detailData
+            checkData:data
         })
-    }
-    /**修改detailData的数据 */
-    modifyDetailData = (data) => {
+    };
+
+    /**
+     * 成品相关函数部分
+     * type = 0
+     */
+    /**1. 修改进货的数据 */
+    modifyProInsData = (data) => {
         this.setState({
             detailData:data
         })
-    }
-    /**点击编辑 */
+    };
+
+
+
+    /**
+     * ----------------------公共接口部分----------------------
+     */
+    /**1.点击编辑 */
     handleEdit() {
-        // this.getDetailData();
-        this.setState({
-            visible: true,
-        })
+        this.getDetailData();
+        // this.setState({
+        //     visible: true,
+        // })
     }
     /**
      * 详情 区分进货和成品   根据某子段，对数据进行组装
@@ -155,68 +199,163 @@ class EditSpan extends React.Component {
      */
     getDetailData(){
         axios({
-            url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.id}`,
+            url: `${this.props.url.unqualifiedExamineTable.unqualifiedTestReportRecord}/${this.props.batchNumberId}`,
             method:'get',
             headers:{
                 'Authorization': this.props.url.Authorization
             },
         }).then((data)=>{
             const detail = data.data.data;
-            var headData = [];
-            var tbodyData = [];
-            var judger = '';
-            var judgement = '';
-            var topData = {};
             if(detail){
-                topData = {
-                    materialName: detail.materialName?detail.materialName:'',
-                    norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
-                    quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'',
-                    sampleDeliveringDate:'',
-                    deliveryFactory:''
-                    // sampleDeliveringDate: detail.sampleDeliveringRecordDTO.sampleDeliveringRecord?detail.sampleDeliveringRecordDTO.sampleDeliveringRecord.sampleDeliveringDate:'',
-                    // deliveryFactory: detail.sampleDeliveringRecordDTO.deliveryFactory?detail.sampleDeliveringRecordDTO.deliveryFactory.name:'',
-                };
-                let detailHead = detail.testReportRecordDTOList;
-                for(let i=0; i<detailHead[0].testItemResultRecordDTOList.length; i++){
-                    headData.push({
-                        id: detailHead[0].testItemResultRecordDTOList[i].testItemResultRecord.id,
-                        testItem: detailHead[0].testItemResultRecordDTOList[i].testItem.name,
-                        itemUnit: detailHead[0].testItemResultRecordDTOList[i].testItem.unit,
-                        rawTestItemStandard: detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard?detailHead[0].testItemResultRecordDTOList[i].rawTestItemStandard.value:'',
+                const type = detail.type;   //根据类型type来进行判断
+                if(type===1){
+                    //  进货数据组装
+                    var headData = [];
+                    var tbodyData = [];
+                    var judger = '';
+                    var judgement = '';
+                    var topData = {};
+                    topData = {
+                        materialName: detail.unqualifiedHead.materialName,
+                        norm: detail.unqualifiedHead.norm?detail.unqualifiedHead.norm:'无',
+                        quantity: detail.unqualifiedHead.quantity?detail.unqualifiedHead.quantity:'无',
+                        receiveDate:detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无',
+                        manufactureName:detail.unqualifiedHead.factory?detail.unqualifiedHead.factory:'无',
+                        weight:detail.unqualifiedHead.weight?detail.unqualifiedHead.weight:'无',
+                    };
+                    let detailHead = detail.standard;
+                    for(var key in detailHead){
+                        var item = detailHead[key].split(",");
+                        headData.push({
+                            id: key,
+                            testItem: item[0],
+                            itemUnit: item[1],
+                            rawTestItemStandard: item[2],
+                        })
+                    }
+
+                    let detailTbody = detail.unqualifiedDetail;
+                    for(let j=0; j<detailTbody.length; j++){
+                        let testItemResults = detailTbody[j].testItemResults;
+                        let tbodyMiddleData = {};
+                        testItemResults.map((e,index) => {
+                            tbodyMiddleData[index] = {
+                                'isValid':e.isValid,
+                                'testResult':e.testResult,
+                                'id':e.id,
+                            }
+                        });
+                        tbodyData.push({
+                            index: `${j+1}`,
+                            id: detailTbody[j].id,
+                            serialNumber: detailTbody[j].serialNumber,
+                            resultRecordList: tbodyMiddleData,
+                            decision: detailTbody[j].decision
+                        })
+                    }
+                    judger = detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无';
+                    judgement = detail.isQualified ;
+                    this.setState({
+                        checkData: {
+                            headData: headData,
+                            tbodyData: tbodyData,
+                            judgement: judgement,
+                            judger: judger,
+                            topData: topData,
+                        },
+                        type:type,
+                        visible: true,
                     })
-                }
-                let detailTbody = detail.testReportRecordDTOList;
-                for(let j=0; j<detailTbody.length; j++){
-                    let testItemResultRecordDTOList = detailTbody[j].testItemResultRecordDTOList;
-                    let tbodyMiddleData = {};
-                    testItemResultRecordDTOList.map((e) => {
-                        tbodyMiddleData[e.testItem.name] = {
-                            'isValid':e.testItemResultRecord.isValid,
-                            'testResult':e.testItemResultRecord.testResult,
-                            'id':e.testItemResultRecord.id,
+                }else{
+                    //成品数据组装
+                    var topData = {};  //头部数据
+                    var testDTOS = [];  //中部项目
+                    var testData = {};  //检验数据
+                    var isQualified = '';
+                    var optional = {};  //择优数据
+
+                    isQualified =  detail.isQualified?detail.isQualified:0;
+                    topData = {
+                        serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
+                        materialName: detail.unqualifiedHead.materialName,
+                        sampleDeliveringDate: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无'
+                    };
+                    const testItemResults = detail.unqualifiedDetail[0].testItemResults;
+                    if(testItemResults) {
+                        for(var i=0; i<testItemResults.length; i++){
+                            var e = testItemResults[i];
+                            testDTOS.push({
+                                index:`${i+1}`,
+                                id:e.id,
+                                testItemId:e.testItemId,
+                                testItemName:e.testItem.name?e.testItem.name:'无',
+                                testResult:e.testItemResultRecord.testResult,
+                                rawTestItemStandard:e.standardValue?e.standardValue:'无',
+                                unit:e.testItem.unit?e.testItem.unit:'无',
+                                isValid: e.testItemResultRecord.isValid
+                            })
                         }
-                    });
-                    tbodyData.push({
-                        index: `${j+1}`,
-                        id: detailTbody[j].testReportRecord.id,
-                        serialNumber: detailTbody[j].sampleDeliveringRecordDTO.repoBaseSerialNumber.serialNumber,
-                        tbodyMiddleData: tbodyMiddleData,
-                        isQualified: detailTbody[j].testReportRecord.isQualified
-                    })
+                    }
+                    testData = {
+                        tester: detail.tester?detail.tester:'无',
+                        testTime: detail.testReportRecord.judgeDate?detail.testReportRecord.judgeDate:'无',
+                    };
+                    // 择优数据
+                    optional = {
+                        optionalStatus: detail.testReportRecord.qualityLevel?detail.testReportRecord.qualityLevel:'',
+                        optionalData: {
+                            personer: detail.testReportRecord.ratePersonId?detail.testReportRecord.ratePersonId:'无',
+                            personTime:detail.testReportRecord.rateDate?detail.testReportRecord.rateDate:'无',
+                        }
+                    };
+                    const examineStatus = this.props.checkStatus;
+                    const batchNumberId = detail.testReportRecord?detail.testReportRecord.batchNumberId:'';
+                    if((examineStatus===2||examineStatus===3)&&batchNumberId){
+                        axios({
+                            url:`${this.props.url.toDoList}/${batchNumberId}/result`,
+                            method:'get',
+                            headers:{
+                                'Authorization':this.props.url.Authorization
+                            }
+                        }).then((data)=>{
+                            const examine = data.data.data;
+                            this.setState({
+                                detailData:{
+                                    topData: topData,
+                                    testDTOS: testDTOS,
+                                    testData: testData,
+                                    examine: {
+                                        examineStatus: examineStatus,
+                                        examineData: examine,
+                                    },
+                                    optional: optional,
+                                    isQualified: isQualified,
+                                },
+                                type:type,
+                                visible: true,
+                            });
+                        })
+                    }else{
+                        this.setState({
+                            detailData:{
+                                topData: topData,
+                                testDTOS: testDTOS,
+                                testData: testData,
+                                examine: {
+                                    examineStatus: examineStatus,
+                                    examineData: []
+                                },
+                                optional: optional,
+                                isQualified: isQualified,
+                            },
+                            type:type,
+                            visible: true,
+                        })
+                    }
                 }
-                judger = this.props.menuList.username;
-                judgement = detail.purchaseReportRecord.judgement ;
-                this.setState({
-                    checkData: {
-                        headData: headData,
-                        tbodyData: tbodyData,
-                        judgement: judgement,
-                        judger: judger,
-                        topData: topData,
-                    },
-                    visible: true,
-                })
+
+            }else{
+                message.info('查询数据为空，请联系管理员')
             }
 
         }).catch(()=>{

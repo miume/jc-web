@@ -61,7 +61,13 @@ class CheckSpanModal extends React.Component {
                                     <div key={index}>
                                         <div>{item.index}</div>
                                         <div>{item.testItemName}</div>
-                                        <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                        {
+                                            this.props.unClickCheck?(
+                                                <div>{item.testResult}</div>
+                                            ):(
+                                                <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                            )
+                                        }
                                         <div>{item.rawTestItemStandard}</div>
                                         <div>{item.unit}</div>
                                         <div>
