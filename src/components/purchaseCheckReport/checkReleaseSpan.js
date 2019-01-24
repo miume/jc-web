@@ -159,16 +159,16 @@ class CheckReleaseSpan extends React.Component {
             if(detail){
                 topData = {
                     materialName: detail.materialName,
-                    norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
-                    quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'',
+                    norm: detail.purchaseReportRecord.norm?detail.purchaseReportRecord.norm:'无',
+                    quantity: detail.purchaseReportRecord.quantity?detail.purchaseReportRecord.quantity:'无',
                     //  修改
-                    receiveDate:detail.receiveDate?detail.receiveDate:'无',
+                    receiveDate:detail.purchaseReportRecord?detail.purchaseReportRecord.receiveDate:'无',
                     manufactureName:detail.manufactureName?detail.manufactureName:'无',
                     //  增加一个重量子段-自己填
-                    weight:'',
+                    weight:detail.purchaseReportRecord.weight?detail.purchaseReportRecord.weight:'无',
                     id:detail.purchaseReportRecord.id
                 };
-                let detailHead = detail.standardsMap;
+                let detailHead = detail.standards;
                 for(var key in detailHead){
                     var item = detailHead[key].split(",");
                     headData.push({
@@ -178,12 +178,13 @@ class CheckReleaseSpan extends React.Component {
                         rawTestItemStandard: item[2],
                     })
                 }
+                console.log('33333')
                 let detailTbody = detail.validTestRecords;
                 for(let j=0; j<detailTbody.length; j++){
                     let resultRecordList = detailTbody[j].resultRecordList;
                     let tbodyMiddleData = {};
-                    resultRecordList.map((e) => {
-                        tbodyMiddleData[e.testItemId] = {
+                    resultRecordList.map((e,index) => {
+                        tbodyMiddleData[index] = {
                             'isValid':e.isValid,
                             'testResult':e.testResult,
                             'id':e.id,
@@ -198,7 +199,7 @@ class CheckReleaseSpan extends React.Component {
                         decision: detailTbody[j].decision
                     })
                 }
-                judger = this.props.menuList.name;
+                judger = detail.tester;
                 judgement = detail.purchaseReportRecord.judgement ;
                 this.setState({
                     checkData: {

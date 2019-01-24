@@ -2,6 +2,7 @@ import React from 'react';
 import {Input,DatePicker} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
+import moment from "moment";
 
 //中文
 
@@ -50,6 +51,7 @@ class PurchaseModal extends React.Component {
                                         <DatePicker
                                             name='receiveDate'
                                             placeholder="选择时间"
+                                            defaultValue={moment(this.props.data.topData.receiveDate)}
                                             onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
                                         />
                                     </td>
