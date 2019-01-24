@@ -2,9 +2,8 @@ import React from 'react';
 import {Modal, Button, Input, message} from 'antd';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 import './unqualifiedExamine.css';
-import DetailModal from './detailModal';
 import CancleButton from '../BlockQuote/cancleButton';
-import CheckSpanModal from "../productInspection/checkSpanModal";
+import DrSpanModal from '../productInspection/drSpanModal';
 import axios from "axios";
 
 
@@ -80,7 +79,7 @@ class DetailSpan extends React.Component {
                             </div>
                         ):(
                             <div style={{height:550}}>
-                                <CheckSpanModal
+                                <DrSpanModal
                                     data={this.state.detailData}
                                     // unClickCheck={1}  //中间内容数据不课修改
                                     // inputSave={this.inputSave}
