@@ -8,36 +8,6 @@ import './unqualifiedExamine.css';
 import axios from "axios";
 import CheckSpanModal from "../productInspection/checkSpanModal";
 
-const topData = {
-    materialName: '硫酸钴',
-    norm: '25Kg/袋',
-    quantity: '32',
-    sampleDeliveringDate: '2018-12-27 12：20：20',
-    deliveryFactory: '启东北新'
-};
-const headData = [];
-for(let i=0; i<20; i++){
-    headData.push({
-        id: i,
-        testItem: `Ca${i}`,
-        itemUnit: '%',
-        rawTestItemStandard: '>= 20.00'
-    })
-}
-const tbodyData = [];
-for(let j=0; j<20; j++){
-    tbodyData.push({
-        index: j+1,
-        id: j,
-        serialNumber: `SNS/${j}`,
-        isQualified: 1,
-        tbodyMiddleData: {
-        }
-    })
-}
-const judgement = 1;
-const judger = '周小伟';
-
 
 class EditSpan extends React.Component {
     constructor(props){
@@ -50,9 +20,9 @@ class EditSpan extends React.Component {
             checkData: {    //进货数据格式
                 headData: [],
                 tbodyData: [],
-                judgement: judgement,
-                judger: judger,
-                topData: topData,
+                judgement: '',
+                judger: '',
+                topData: {},
             },
             detailData:{    //成品数据格式
                 topData: {},   //头部数据
@@ -130,27 +100,28 @@ class EditSpan extends React.Component {
                             handleOk={this.handleOkApply}
                         />
                     ]}
-                >{
-                    this.state.type?(
-                        <div style={{height:500}}>
-                            <PurchaseModal
-                                modifyDetailData={this.modifyPurchaseData}
-                                data={this.state.checkData}
-                                clickState ={0} //是否可以点击 0:可以点红， 其余：不可以点红
-                                unClickType={1} //表示头部数据不可点击
-                            />
-                        </div>
-                    ):(
-                        <div style={{height:550}}>
-                            <CheckSpanModal
-                                data={this.state.detailData}
-                                modifyDetailData={this.modifyProInsData}
-                                unClickCheck={1}  //中间内容数据不课修改
-                                // inputSave={this.inputSave}
-                            />
-                        </div>
-                    )
-                }
+                >
+                    {
+                        this.state.type?(
+                            <div style={{height:500}}>
+                                <PurchaseModal
+                                    modifyDetailData={this.modifyPurchaseData}
+                                    data={this.state.checkData}
+                                    clickState ={0} //是否可以点击 0:可以点红， 其余：不可以点红
+                                    unClickType={1} //表示头部数据不可点击
+                                />
+                            </div>
+                        ):(
+                            <div style={{height:550}}>
+                                <CheckSpanModal
+                                    data={this.state.detailData}
+                                    modifyDetailData={this.modifyProInsData}
+                                    unClickCheck={1}  //中间内容数据不课修改
+                                    // inputSave={this.inputSave}
+                                />
+                            </div>
+                        )
+                    }
                 </Modal>
             </span>
         )
@@ -278,7 +249,8 @@ class EditSpan extends React.Component {
                     topData = {
                         serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
                         materialName: detail.unqualifiedHead.materialName,
-                        sampleDeliveringDate: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无'
+                        sampleDeliveringDate: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无',
+                        id: detail.unqualifiedDetail[0].id
                     };
                     const testItemResults = detail.unqualifiedDetail[0].testItemResults;
                     console.log('2222')
@@ -403,18 +375,11 @@ class EditSpan extends React.Component {
     }
     /**点击确定送审 */
     handleOkApply(){
-        this.setState({
-            subVisible: false,
-            visible:false
-        })
-        // this.clickSavaButton(1);
+        this.clickSavaButton(1);
     }
     /**点击保存按钮 */
     handleSave(){
-        this.setState({
-            visible:false
-        })
-        // this.clickSavaButton(0);
+        this.clickSavaButton(0);
     }
     /**点击取消按钮 */
     handleCancel(){
@@ -426,49 +391,49 @@ class EditSpan extends React.Component {
     /**实现保存按钮功能--实现保存的数据处理 */
     clickSavaButton = (status) => {
         //  实现保存的数据处理
-        var checkData = this.state.checkData;
-        var purchaseReportRecord = {
-            norm: checkData.topData.norm,
-            quantity: checkData.topData.quantity,
-            judgement: checkData.judgement,
-        };
-        var sampleDeliveringRecordDTO = {
-            deliveryFactory: {
-                name: checkData.topData.deliveryFactory
-            },
-            repoBaseSerialNumber: {
-                materialName: checkData.topData.materialName
-            },
-            sampleDeliveringRecord: {
-                sampleDeliveringDate: checkData.topData.sampleDeliveringDate
+        const type =  this.state.type;
+        var saveData = {};
+        if(type===1){
+            /**
+             *实现进货数据保存
+             */
+            var checkData = this.state.checkData;
+            var resultDTOList = [];
+            for(var i=0; i<checkData.tbodyData.length; i++){
+                var result = {
+                    decision: checkData.judgement,
+                    id: checkData.tbodyData.id,
+                    serialNumber: checkData.tbodyData.serialNumber,
+                    testItemResults: checkData.tbodyData.resultRecordList
+                };
+                resultDTOList.push(result);
             }
-        };
-        var commonBatchNumberDTO = {
-            commonBatchNumber: {
-                createPersonId: this.props.menuList.userId
-            }
-        };
-        var testReportRecordDTOList = [];
-        for(let i=0; i<checkData.tbodyData.length; i++){
-            var ItemResultList = [];
-            for (let j in checkData.tbodyData[i].tbodyMiddleData) {
-                ItemResultList.push(checkData.tbodyData[i].tbodyMiddleData[j]); //属性
-            }
-            var testReportRecordDTOListObj = {
-                testReportRecord:{
-                    id: checkData.tbodyData[i].id,
-                    isQualified: checkData.tbodyData[i].isQualified
-                },
-                testItemResultRecordDTOList: ItemResultList
+            saveData = {
+                resultDTOList:resultDTOList,
+                testerId: this.props.menuList.userId
             };
-            testReportRecordDTOList.push(testReportRecordDTOListObj)
+        }else{
+            /**
+             *实现成品数据保存
+             */
+            var detailData = this.state.detailData;
+            var resultDTOList = [];
+            for(var i=0; i<detailData.testDTOS.length; i++){
+                var result = {
+                    decision: detailData.isQualified,
+                    id: detailData.topData.id,
+                    serialNumber: detailData.tbodyData.serialNumber,
+                    testItemResults: detailData.testDTOS
+                };
+                resultDTOList.push(result);
+            }
+            saveData = {
+                resultDTOList:resultDTOList,
+                testerId: this.props.menuList.userId
+            };
+
         }
-        var savaData = {
-            purchaseReportRecord: purchaseReportRecord,
-            sampleDeliveringRecordDTO: sampleDeliveringRecordDTO,
-            commonBatchNumberDTO: commonBatchNumberDTO,
-            testReportRecordDTOList: testReportRecordDTOList
-        };
+
         // if(detailIsQualified === -1){
         //     message.info('请点击合格或者不合格！');
         //     return
@@ -482,18 +447,18 @@ class EditSpan extends React.Component {
         //     }
         // }
         //  调用保存函数
-        this.useSavaFunction(savaData,status);
+        this.useSavaFunction(saveData,status);
 
     };
     /**调用保存函数 */
-    useSavaFunction = (savaData,status) => {
+    useSavaFunction = (saveData,status) => {
         axios({
-            url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}`,
+            url : `${this.props.url.unqualifiedExamineTable.unqualifiedTestReportRecord}`,
             method:'put',
             headers:{
                 'Authorization': this.props.url.Authorization
             },
-            data: savaData,
+            data: saveData,
             type:'json'
         }).then((data)=>{
             if(status){

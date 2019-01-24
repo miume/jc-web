@@ -24,7 +24,7 @@ for (let i = 0; i < 20; i++) {
 class UnqualifiedExamine extends React.Component{
     url;
     componentDidMount() {
-        // this.fetch();
+        this.fetch();
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -34,7 +34,7 @@ class UnqualifiedExamine extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             searchContent:'',
             searchText: '',
         };
@@ -73,7 +73,7 @@ class UnqualifiedExamine extends React.Component{
                         menuList={menuList}
                         data={this.state.dataSource}
                         pagination={this.pagination}
-                        // fetch={this.fetch}
+                        fetch={this.fetch}
                     />
                 </div>
             </div>
@@ -95,14 +95,15 @@ class UnqualifiedExamine extends React.Component{
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.props.url.unqualifiedExamineTable.pages}` ,
+            url: `${this.url.unqualifiedExamineTable.pages}` ,
             method: 'get',
             headers:{
-                'Authorization': this.props.url.Authorization
+                'Authorization': this.url.Authorization
             },
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            console.log(res)
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){

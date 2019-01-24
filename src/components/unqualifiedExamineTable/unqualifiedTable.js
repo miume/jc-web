@@ -14,44 +14,59 @@ class UnqualifiedTable extends React.Component {
         width: '5%',
     },{
         title: '批号',
-        dataIndex: 'batchNumber',
-        key: 'batchNumber',
+        dataIndex: 'commonBatchNumber.batchNumber',
+        key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
     },{
         title: '物料类型',
-        dataIndex: 'materialClass',
-        key: 'materialClass',
+        dataIndex: 'details.materialName',
+        key: 'details.materialName',
         align:'center',
         width: '6%',
+        render: materialName => {
+            return materialName?materialName:'无'
+        }
     },{
         title: '厂商名称',
-        dataIndex: 'manufactureName',
-        key: 'manufactureName',
+        dataIndex: 'details.factory',
+        key: 'details.factory',
         align:'center',
         width: '6%',
+        render: factory => {
+            return factory?factory:'无'
+        }
     },{
         title: '到货日期',
-        dataIndex: 'receivedDate',
-        key: 'receivedDate',
+        dataIndex: 'details.date',
+        key: 'details.date',
         align:'center',
         width: '10%',
+        render: date => {
+            return date?date:'无'
+        }
     },{
         title: '创建人',
         dataIndex: 'createPersonName',
         key: 'createPersonName',
         align:'center',
         width: '6%',
+        render: createPersonName => {
+            return createPersonName?createPersonName:'无'
+        }
     },{
         title: '创建日期',
-        dataIndex: 'createTime',
-        key: 'createTime',
+        dataIndex: 'commonBatchNumber.createTime',
+        key: 'commonBatchNumber.createTime',
         align:'center',
         width: '10%',
+        render: createTime => {
+            return createTime?createTime:'无'
+        }
     },{
         title: '审核状态',
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'commonBatchNumber.status',
+        key: 'commonBatchNumber.status',
         align:'center',
         width: '6%',
         render:state => {
@@ -59,15 +74,15 @@ class UnqualifiedTable extends React.Component {
         }
     },{
         title: '紧急',
-        dataIndex: 'isUrgent',
-        key: 'isUrgent',
+        dataIndex: 'commonBatchNumber.isUrgent',
+        key: 'commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
         render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
     },{
         title: '操作',
-        dataIndex: 'batchNumberId',
-        key: 'batchNumberId',
+        dataIndex: 'commonBatchNumber.id',
+        key: 'commonBatchNumber.id',
         align:'center',
         width: '13%',
         render: (text,record) => {
@@ -77,11 +92,10 @@ class UnqualifiedTable extends React.Component {
                 <span>
                     {operationCheckFlag?(
                         <EditSpan
-                            // fetch={this.props.fetch}
+                            fetch={this.props.fetch}
                             url={this.props.url}
-                            // id={record.purchaseReportRecord.id}
-                            checkStatus={record.status}
-                            batchNumberId={1455}
+                            checkStatus={record.commonBatchNumber.status}
+                            batchNumberId={record.commonBatchNumber.id}
                             menuList={this.props.menuList}
                         />
                     ):(
@@ -91,7 +105,8 @@ class UnqualifiedTable extends React.Component {
                     <DetailSpan
                         url={this.props.url}
                         menuList={this.props.menuList}
-                        state={record.status}
+                        checkStatus={record.commonBatchNumber.status}
+                        batchNumberId={record.commonBatchNumber.id}
                         name='详情'
                     />
                 </span>
@@ -109,7 +124,7 @@ class UnqualifiedTable extends React.Component {
         });
         return(
             <Table
-                rowKey={record => record.id}
+                rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
@@ -126,12 +141,6 @@ class UnqualifiedTable extends React.Component {
         }else{
             return false;
         }
-    };
-    /**---------------------- */
-    /**单条记录删除 */
-    handleDelete = (key) => {
-        // const dataSource = this.state.dataSource;
-        // this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     };
     /**---------------------- */
 }
