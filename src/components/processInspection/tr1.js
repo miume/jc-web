@@ -10,7 +10,7 @@ class Tr1 extends React.Component{
         this.state = {
             // detail:{},
             detail:{
-                id:this.props.id,
+                id:parseInt(this.props.id),
                 procedureTestRecord:{
                     comment:'',
                     procedureId:-1,
@@ -79,6 +79,7 @@ class Tr1 extends React.Component{
         if(length>4){
             testItems = testItem[0]+','+testItem[1]+','+testItem[2]+','+testItem[3]+'...';
         }
+        this.props.getData(detail)
         this.setState({
             detail:detail,
             testItems:testItems
@@ -91,6 +92,7 @@ class Tr1 extends React.Component{
         const {allProductLine} = this.props;
         detail.procedureTestRecord.deliveryFactoryId = value;
         detail.detail.deliveryFactory = allProductLine.filter(e=>e.props.value===value)[0].props.children;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -101,6 +103,7 @@ class Tr1 extends React.Component{
         const {allProductionProcess} = this.props;
         detail.procedureTestRecord.procedureId = value;
         detail.detail.productionProcess = allProductionProcess.filter(e=>e.props.value===value)[0].props.children;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -109,7 +112,8 @@ class Tr1 extends React.Component{
     samplePointName(e){
         const value = e.target.value;
         const {detail} = this.state;
-        detail.procedureTestRecord.samplePointName = value
+        detail.procedureTestRecord.samplePointName = value;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -120,6 +124,7 @@ class Tr1 extends React.Component{
         const {allUser} = this.props;
         detail.procedureTestRecord.sampler = value;
         detail.detail.sampler = allUser.filter(e=>e.props.value===value)[0].props.children;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -130,6 +135,7 @@ class Tr1 extends React.Component{
         const {allUser} = this.props;
         detail.procedureTestRecord.tester = value;
         detail.detail.tester = allUser.filter(e=>e.props.value===value)[0].props.children;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -138,7 +144,8 @@ class Tr1 extends React.Component{
     testFrequency(e){
         const value = e.target.value;
         const {detail} = this.state;
-        detail.procedureTestRecord.testFrequency = value
+        detail.procedureTestRecord.testFrequency = value;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -149,6 +156,7 @@ class Tr1 extends React.Component{
         const {allTestMaterial} = this.props;
         detail.procedureTestRecord.serialNumberId = value;
         detail.detail.testMaterialName = allTestMaterial.filter(e=>e.props.value===value)[0].props.children;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -157,7 +165,8 @@ class Tr1 extends React.Component{
     comment(e){
         const value = e.target.value;
         const {detail} = this.state;
-        detail.procedureTestRecord.comment = value
+        detail.procedureTestRecord.comment = value;
+        this.props.getData(detail)
         this.setState({
             detail:detail
         })
@@ -179,8 +188,9 @@ class Tr1 extends React.Component{
                     }
                 }
         }
+        console.log(details)
         detail = {
-            id:this.props.id,
+            id:parseInt(this.props.id),
             procedureTestRecord:{
                 comment:d.comment,
                 procedureId:d.procedureId,
@@ -200,7 +210,7 @@ class Tr1 extends React.Component{
             },
             testItemIds:testItemIds
         }
-        // console.log(detail)
+        this.props.getData(detail)
         this.setState({
             detail:detail,
             testItems:d.testItems,
@@ -221,7 +231,6 @@ class Tr1 extends React.Component{
         }
     }
     render() {
-        this.props.getData(this.state.detail)
         const details = this.state.detail;
         const detail = details.detail?details.detail:{};
         const d = details.procedureTestRecord?details.procedureTestRecord:{};

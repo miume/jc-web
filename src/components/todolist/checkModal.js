@@ -40,7 +40,7 @@ class CheckModal extends React.Component{
             case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>; 
             case 13: 
             case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
-            default: return null ;;
+            default: return '' ;
         }
     }
     setClassName(){
