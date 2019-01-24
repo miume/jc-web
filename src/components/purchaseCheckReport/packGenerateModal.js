@@ -118,6 +118,7 @@ class PackGenerateModal extends React.Component {
                     var judger = '';
                     var judgement = '';
                     var topData = {};
+                    var isQualified = '';
                     if(detail){
                         topData = {
                             materialName: detail.materialName?detail.materialName:'无',
@@ -162,7 +163,7 @@ class PackGenerateModal extends React.Component {
                         }
                         // judger = this.props.menuList.name;
                         judger = '无';
-                        judgement = '无' ;
+                        judgement = 1 ;
                         this.setState({
                             checkData: {
                                 headData: headData,
