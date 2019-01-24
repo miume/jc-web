@@ -38,7 +38,7 @@
 }
 .productDrSpanModalTop table{
     width:100%;
-    /*text-align: center;*/
+    text-align: center;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -48,14 +48,14 @@
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table thead tr th{
-    padding-left: 5px;
+    /*padding-left: 5px;*/
     height: 30px;
     font-size: 13px;
     /*padding-left: 10px;*/
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table tbody tr td {
-    padding-left: 5px;
+    /*padding-left: 5px;*/
     height: 30px;
     font-size: 13px;
     /*padding-left: 10px;*/
@@ -223,7 +223,7 @@
 .productOptionalImag {
     flex-grow: 2;
     margin-top: -5px;
-    border: 3px solid #4BD863;
+    border: 3px solid #F2F2F2;
     width: 120px;
     margin-right: -25px;
     /*left: 50px;*/
@@ -233,10 +233,31 @@
     display: block;
     text-align: center;
     height: 50px;
-    border: 1px solid #4BD863;
-    color: #4BD863;
+    border: 1px solid #F2F2F2;
+    color: #999999;
     margin: 2px;
     font-size: 30px;
+}
+.productBorderNoPass {
+    border-color: #FF3B30;
+}
+.productBorderNoPass span{
+    border-color: #FF3B30;
+    color: #FF3B30;
+}
+.productBorderCommon {
+    border-color: #FE9400;
+}
+.productBorderCommon span{
+    border-color: #FE9400;
+    color: #FE9400;
+}
+.productBorderPass {
+    border-color: #4BD863;
+}
+.productBorderPass span{
+    border-color: #4BD863;
+    color: #4BD863;
 }
 
 

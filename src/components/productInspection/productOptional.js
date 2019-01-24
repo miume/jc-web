@@ -4,28 +4,28 @@ class ProductOptional extends React.Component{
     render() {
         console.log(this.props.optionalStatus)
         switch (this.props.optionalStatus) {
-            case 0:
+            case 0://不合格品
                 return(
                     <div
-                        className="productOptionalImag"
+                        className="productOptionalImag productBorderNoPass"
                     >
-                        <span>{this.props.optionalStatus}</span>
+                        <span>不合格品</span>
                     </div>
                 );
-            case 1:
+            case 1: //普通品
                 return(
                     <div
-                        className="productOptionalImag"
+                        className="productOptionalImag productBorderCommon"
                     >
-                        <span>{this.props.optionalStatus}</span>
+                        <span>普通品</span>
                     </div>
                 );
-            case 2:
+            case 2: //优品
                 return(
                     <div
-                        className="productOptionalImag"
+                        className="productOptionalImag productBorderPass"
                     >
-                        <span>{this.props.optionalStatus}</span>
+                        <span>优品</span>
                     </div>
                 );
             default:
