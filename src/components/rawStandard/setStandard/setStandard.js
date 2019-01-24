@@ -160,7 +160,7 @@ class SetStandard extends Component{
     }
     handleCancel(){//点击新增的取消
         this.setState({
-            visible:false
+            visible:false,
         });
     }
     selectChange(value){//监听送审流程框的变化
