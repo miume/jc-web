@@ -86,8 +86,8 @@ class UnqualifiedTable extends React.Component {
         align:'center',
         width: '13%',
         render: (text,record) => {
-            // let operationCheckFlag = this.judgeCheckOperation(record.state);
-            let operationCheckFlag = true;
+            let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
+            // let operationCheckFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
@@ -99,7 +99,7 @@ class UnqualifiedTable extends React.Component {
                             menuList={this.props.menuList}
                         />
                     ):(
-                        <span  className="notClick"><i className="fa fa-pencil" aria-hidden="true"></i>&nbsp;编辑</span>
+                        <span  className="notClick">编辑</span>
                     )}
                     <Divider type="vertical" />
                     <DetailSpan
@@ -136,7 +136,7 @@ class UnqualifiedTable extends React.Component {
     }
     /**判断编辑、删除可否功能 */
     judgeCheckOperation = (record) => {
-        if(record==='0'||record==='3'){
+        if(record===-1||record===3){
             return true;
         }else{
             return false;

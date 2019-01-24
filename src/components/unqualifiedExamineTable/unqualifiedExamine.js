@@ -61,7 +61,7 @@ class UnqualifiedExamine extends React.Component{
                 <BlockQuote name="不合格审评表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
-                        name='请输入搜索内容'
+                        name='请输入创建人名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
@@ -103,7 +103,6 @@ class UnqualifiedExamine extends React.Component{
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
