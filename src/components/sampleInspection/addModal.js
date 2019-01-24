@@ -548,10 +548,10 @@ class AddModal extends React.Component{
             }).then((data)=>{
                 message.info(data.data.message);
                 this.props.fetch();
+                this.setState({ visible: false });
+                form.resetFields();
             })
         })
-        this.setState({ visible: false });
-        form.resetFields();
     }
 
     onCenter = () =>{
