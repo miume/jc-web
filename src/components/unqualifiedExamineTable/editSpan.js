@@ -253,14 +253,10 @@ class EditSpan extends React.Component {
                         id: detail.unqualifiedDetail[0].id
                     };
                     const testItemResults = detail.unqualifiedDetail[0].testItemResults;
-                    console.log('2222')
-                    console.log(testItemResults)
                     if(testItemResults) {
                         for(var i=0; i<testItemResults.length; i++){
                             var e = testItemResults[i];
-                            console.log('55555')
                             var standard = detail.standard[i].split(',');
-                            console.log('77777')
                             testDTOS.push({
                                 index:`${i+1}`,
                                 id:e.id,
@@ -273,7 +269,6 @@ class EditSpan extends React.Component {
                             })
                         }
                     }
-                    console.log('3333')
                     testData = {
                         tester: detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无',
                         testTime: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无',
@@ -291,7 +286,6 @@ class EditSpan extends React.Component {
                             personTime:'无',
                         }
                     };
-                    console.log('4444')
                     const examineStatus = this.props.checkStatus;
                     const batchNumberId = detail.batchNumberId?detail.batchNumberId:'';
                     if((examineStatus===2||examineStatus===3)&&batchNumberId){
@@ -401,10 +395,10 @@ class EditSpan extends React.Component {
             var resultDTOList = [];
             for(var i=0; i<checkData.tbodyData.length; i++){
                 var result = {
-                    decision: checkData.judgement,
-                    id: checkData.tbodyData.id,
-                    serialNumber: checkData.tbodyData.serialNumber,
-                    testItemResults: checkData.tbodyData.resultRecordList
+                    decision: checkData.tbodyData[i].decision,
+                    id: checkData.tbodyData[i].id,
+                    serialNumber: checkData.tbodyData[i].serialNumber,
+                    testItemResults: checkData.tbodyData[i].resultRecordList
                 };
                 resultDTOList.push(result);
             }
@@ -418,11 +412,11 @@ class EditSpan extends React.Component {
              */
             var detailData = this.state.detailData;
             var resultDTOList = [];
-            for(var i=0; i<detailData.testDTOS.length; i++){
+            for(var j=0; j<detailData.testDTOS.length; j++){
                 var result = {
                     decision: detailData.isQualified,
                     id: detailData.topData.id,
-                    serialNumber: detailData.tbodyData.serialNumber,
+                    serialNumber: detailData.topData.serialNumber,
                     testItemResults: detailData.testDTOS
                 };
                 resultDTOList.push(result);
