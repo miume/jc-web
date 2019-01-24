@@ -114,9 +114,9 @@ class CheckEditSpan extends React.Component {
     /**点击编辑 */
     handleEdit() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        })
+        // this.setState({
+        //     visible: true,
+        // })
     }
     /**获取该行的记录详情 */
     getDetailData(){
@@ -136,12 +136,27 @@ class CheckEditSpan extends React.Component {
             var judgement = '';
             var topData = {};
             if(detail){
-                console.log(detail.receiveDate)
+                var nowDate = new Date().toLocaleDateString().split('/');
+                var nowFormDate='';
+                if(nowDate[1]<10){
+                    if(nowDate[2]<10){
+                        nowFormDate = nowDate[0]+'-0'+nowDate[1]+ '-0' +nowDate[2]
+                    }else{
+                        nowFormDate = nowDate[0]+'-0'+nowDate[1]+ '-' +nowDate[2]
+                    }
+                }else{
+                    if(nowDate[2]<10){
+                        nowFormDate = nowDate[0]+'-'+nowDate[1]+ '-0' +nowDate[2]
+                    }else{
+                        nowFormDate = nowDate[0]+'-'+nowDate[1]+ '-' +nowDate[2]
+                    }
+                }
+                console.log(nowFormDate)
                 topData = {
                     materialName: detail.materialName,
                     norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
                     quantity: detail.purchaseReportRecord?detail.purchaseReportRecord.quantity:'',
-                    receiveDate:detail.purchaseReportRecord?detail.purchaseReportRecord.receiveDate:'',
+                    receiveDate:nowFormDate,
                     manufactureName:detail.manufactureName?detail.manufactureName:'无',
                     weight:detail.purchaseReportRecord?detail.purchaseReportRecord.weight:'',
                     id:detail.purchaseReportRecord.id
@@ -186,8 +201,10 @@ class CheckEditSpan extends React.Component {
                         judger: judger,
                         topData: topData,
                     },
-                    // visible: true,
+                    visible: true,
                 })
+            }else{
+                message.info('获取数据为空，请联系管理员')
             }
         }).catch(()=>{
             message.info('打开失败，请联系管理员！')
@@ -251,6 +268,7 @@ class CheckEditSpan extends React.Component {
             };
             validTestRecords.push(validTestRecordsObj)
         }
+        console.log(this.props.menuList.userId)
         var saveData = {
             purchaseReportRecord: {
                 id: checkData.topData.id,
@@ -270,7 +288,7 @@ class CheckEditSpan extends React.Component {
         //         }
         //     }
         // }
-        console.log(saveData)
+        // console.log(saveData)
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
