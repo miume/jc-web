@@ -12,13 +12,11 @@ const Option = Select.Option;
     dataIndex: 'deliveryFactory.name' ,
     key: 'deliveryFactory.name',
     width: '9%',
-    align:'left',
   },{
     title: '工序',
     dataIndex: 'productionProcess.name' ,
     key: 'productionProcess.name',
     width: '9%',
-    align:'left',
   },{
     title: '取样点',
     dataIndex: 'procedureTestRecord.samplePointName' ,
@@ -30,13 +28,11 @@ const Option = Select.Option;
     dataIndex: 'sampler' ,
     key: 'sampler',
     width: '9%',
-    align:'left',
   },{
     title: '检测人',
     dataIndex: 'tester' ,
     key: 'tester',
     width: '9%',
-    align:'left',
   },{
     title: '检测项目',
     dataIndex: 'testItemString' ,
@@ -55,25 +51,21 @@ const Option = Select.Option;
       }
      },
     width: '9%',
-    align:'left',
   },{
     title: '频次',
     dataIndex: 'procedureTestRecord.testFrequency' ,
     key: 'procedureTestRecord.testFrequency',
     width: '9%',
-    align:'left',
   },{
     title: '受检物料',
     dataIndex: 'testMaterialName' ,
     key: 'testMaterialName',
     width: '9%',
-    align:'left',
   },{
     title: '备注',
     dataIndex: 'procedureTestRecord.comment' ,
     key: 'procedureTestRecord.comment',
     width: '9%',
-    align:'left',
   }]
 class Detail extends React.Component{
     constructor(props){
@@ -86,7 +78,7 @@ class Detail extends React.Component{
     }
     selectionChange(value) {
         var {data} = this.state;
-        if(value != 'all')
+        if(value !== 'all')
             data = this.props.data.filter(d => parseInt(d.deliveryFactory.id) === parseInt(value));
         else 
             data = this.props.data;

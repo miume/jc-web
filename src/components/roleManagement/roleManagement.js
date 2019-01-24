@@ -174,7 +174,7 @@ class Role extends React.Component {
                 );
               }
           }]
-    }
+        }
     /**重置 */
     reset(){
         this.pagination.current = 1;

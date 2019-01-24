@@ -54,6 +54,7 @@ class Exit extends Component {
             case 4: week='星期四';break;
             case 5: week='星期五';break;
             case 6: week='星期六';break;
+            default:week='';break;
         }
         this.fetch();
         this.setState({

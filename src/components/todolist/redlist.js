@@ -21,8 +21,8 @@ class RedList extends React.Component{
             headers:{
                 'Authorization':this.props.url.Authorization
             }
-        }).then((data)=>{
-            const res = data.data.data[0];
+        }).then((data1)=>{
+            const res = data1.data.data[0];
             if(res){
                 var {data} = this.state;
                 data={

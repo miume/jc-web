@@ -2,7 +2,7 @@ import React from 'react';
 import {Modal,message} from 'antd';
 import './permissionManagement.css';
 import axios from 'axios';
-import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 class PermissionManagement extends React.Component {
     constructor(props){
         super(props);
@@ -158,7 +158,8 @@ class PermissionManagement extends React.Component {
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
                 closable={false} maskClosable={false} destroyOnClose='true' className='modal-lg'
                 footer={[
-                    <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
+                    // <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
+                    <CancleButton key='back' handleCancel={this.handleOk} flag={1}/>
                   ]}
                    >
                 <div style={{height:'460px'}}>
