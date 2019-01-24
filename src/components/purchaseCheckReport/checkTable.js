@@ -51,9 +51,12 @@ class CheckTable extends React.Component {
         key: 'details.receiveDate',
         align:'center',
         width: '8%',
-        render: receiveDate => {
-            return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
+        render: receiveDate=>{
+            return receiveDate?receiveDate:'无'
         }
+        // render: receiveDate => {
+        //     return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
+        // }
     },{
         title: '创建人',
         dataIndex: 'createPersonName',

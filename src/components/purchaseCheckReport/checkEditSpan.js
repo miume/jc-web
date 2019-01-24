@@ -176,7 +176,7 @@ class CheckEditSpan extends React.Component {
                         decision: detailTbody[j].decision
                     })
                 }
-                judger = this.props.menuList.userId;
+                judger = this.props.menuList.name;
                 judgement = detail.purchaseReportRecord.judgement ;
                 this.setState({
                     checkData: {
@@ -257,7 +257,7 @@ class CheckEditSpan extends React.Component {
                 norm: checkData.topData.norm,
                 quantity: checkData.topData.quantity,
                 receiveDate: checkData.topData.receiveDate,
-                // receiveDate: '2018-01-08 14:58:12',
+                judger: this.props.menuList.userId,
                 weight: checkData.topData.weight
             },
             validTestRecords: validTestRecords

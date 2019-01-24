@@ -70,7 +70,6 @@ class DetailSpan extends React.Component {
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    width="500px"
                     footer={footer}
                 >
                     <div style={{height:580}}>
