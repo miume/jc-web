@@ -1,5 +1,5 @@
 import React from 'react';
-
+import AllTester from '../BlockQuote/allTester';
 class DetailModal extends React.Component{
     render() {
         switch (this.props.state) {
@@ -23,60 +23,45 @@ class DetailModal extends React.Component{
                 );
             case 2:
                 return(
-                    <div className="unDetailModalPass">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div>{'审核意见：不错不错啊啊啊啊啊啊啊啊啊啊啊啊啊啊'}</div>
-                                        <div className="unDetailModalPassLast">
-                                            <div>
-                                                {'审核人：周脂肪'}
-                                            </div>
-                                            <div>
-                                                {'审核日期：2018年11月12日'}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>{'接收意见：不错不错'}</div>
-                                        <div className="unDetailModalPassLast">
-                                            <div>
-                                                {'接收人：周脂肪'}
-                                            </div>
-                                            <div>
-                                                {'审核日期：2018年11月12日'}
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>{'审批结论：不错不错'}</div>
-                                        <div className="unDetailModalPassLast">
-                                            <div>
-                                                {'结论人：周脂肪'}
-                                            </div>
-                                            <div>
-                                                {'审核日期：2018年11月12日'}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>{'批准：不错不错'}</div>
-                                        <div className="unDetailModalPassLast">
-                                            <div>
-                                                {'批准人：周脂肪'}
-                                            </div>
-                                            <div>
-                                                {'审核日期：2018年11月12日'}
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <AllTester
+                        hide={0}
+                        examineData = {[{
+                            name:'王大大',
+                            detail:{
+                                id: 100,
+                                handler: 1,
+                                handleTime: "2018-12-20 09:34:23",
+                                handleReply: "我没意见我没意见我没意见",
+                            }
+                        },{
+                            name:'兰亚戈',
+                            detail:{
+                                id: 101,
+                                handler: 2,
+                                handleTime: "2018-12-23 09:34:23",
+                                handleReply: "同意",
+                            }
+                        },{
+                            name:'方乐',
+                            detail:{
+                                id: 103,
+                                handler: 3,
+                                handleTime: "2018-12-23 09:34:23",
+                                handleReply: "可以",
+                            }
+                        },{
+                            name:'兰亚戈',
+                            detail:{
+                                id: 106,
+                                handler: 4,
+                                handleTime: "2018-12-24 09:34:23",
+                                handleReply: "good",
+                            }
+                        },]}
+                        // examineData={[]}
+                        dataId={0}
+
+                    />
                 );
             case 3:
                 return(
