@@ -11,20 +11,19 @@ const Option = Select.Option;
 const rowData = {
     procedureTestRecord:{
         comment:'',
-        procedureId:'',
-        deliveryFactoryId:'',
+        procedureId:-1,
+        deliveryFactoryId:-1,
         samplePointName:'',
-        sampler:'',
+        sampler:-1,
         testFrequency:'',
-        serialNumberId:'',
-        tester:'',
+        serialNumberId:-1,
+        tester:-1,
     },
     detail:{
         deliveryFactory:'',
         productionProcess:'',
         sampler:'',
         tester:'',
-        testItems:'',
         testMaterialName:'',
     },
     testItemIds:[]
@@ -98,13 +97,7 @@ class Add extends React.Component{
         this.getAllProductLine();
         if(flag) this.getByBatchNumberId(value);
         else {
-            var data = [{
-                id:1,
-                mode:3,
-                detail:rowData.detail,
-                testItemIds:rowData.testItemIds,
-                procedureTestRecord:rowData.procedureTestRecord,
-            }]
+            var data = [{id:1,mode:3,rowData}]
             this.setState({
                 visible: true,
                 data:data,
@@ -133,7 +126,7 @@ class Add extends React.Component{
         var data = [];
         for(var i = 0; i < details.length; i++){
             var e = details[i];
-            // e.procedureTestRecord.testItems = e.testItemString;
+            e.procedureTestRecord.testItems = e.testItemString;
             const items = e.testItemString.split(',');
             data.push({
                 id:i+1,
@@ -144,7 +137,6 @@ class Add extends React.Component{
                     productionProcess:e.productionProcess?e.productionProcess.name:'',
                     sampler:e.sampler?e.sampler:'',
                     tester:e.tester?e.tester:'',
-                    testItems:e.testItemString,
                     testMaterialName:e.testMaterialName?e.testMaterialName:'',
                 },
                 testItemIds:this.itemsToIds(items)
@@ -240,7 +232,7 @@ class Add extends React.Component{
     }
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
-        const details = this.state.data;
+        const details = this.state.saveData;
         console.log(details)
         if(details.length===0) {
             message.info('必须新增一条数据！');
@@ -259,8 +251,8 @@ class Add extends React.Component{
                 }
             }
         }
-        this.handleCancel(); //取消弹出框
-        this.applyOut(status,details,process,urgent);
+        //this.handleCancel(); //取消弹出框
+        //this.applyOut(status,details,process,urgent);
     }
     /**对数据进行保存操作 不管是编辑、新增还是迭代数据格式按照编辑的数据格式，因为多传参数不影响后台的处理
      * 但是少传参数有影响 所以按参数最多的传
@@ -351,8 +343,7 @@ class Add extends React.Component{
     }
     /**新增一条数据 */
     addData() {
-        const {count,data,maxCount} = this.state;
-        console.log(data)
+        const {count,data,saveData,maxCount} = this.state;
         // console.log(`maxCount=${this.state.maxCount},count=${this.state.count}`)
         /**点击新增 前面已知数据全部变成不可编辑 */
         var flag = true;  //表示能否新增一行数据
@@ -369,25 +360,7 @@ class Add extends React.Component{
             data.push({
                 mode:3,
                 id:maxCount+1,
-                testItemIds:[],
-                procedureTestRecord:{
-                    comment:'',
-                    procedureId:'',
-                    deliveryFactoryId:'',
-                    samplePointName:'',
-                    sampler:'',
-                    testFrequency:'',
-                    serialNumberId:'',
-                    tester:'',
-                },
-                detail:{
-                    deliveryFactory:'',
-                    productionProcess:'',
-                    sampler:'',
-                    tester:'',
-                    testItems:'',
-                    testMaterialName:'',
-                }
+                rowData
             })
             console.log(data)
             this.setState({
@@ -415,37 +388,35 @@ class Add extends React.Component{
     }
     /**删除一条数据 不仅要删除渲染table的数据，还要删除实时存取table数据的数组中对应数据*/
     deleteRow(value){
-        var {count,data} = this.state;
+        var {count,data,saveData} = this.state;
+        saveData = saveData.filter(e=>parseInt(e.id) !== parseInt(value));  //删除存取的每行数据
         data = data.filter(e=>parseInt(e.id) !== parseInt(value));
-        // for(var i = 0; i < data.length; i++){
-        //     var e = data[i];
-        //     e.mode = 2;
-        // }
-        data[data.length-1].mode=2;
-        console.log(data)
+        // this.props.getData(saveData);//将数据传给父元素
         this.setState({
             count:count-1,
-            data:data,
+            data:saveData,
+            saveData:saveData
         })
+        console.log(data)
     }
     /**获取每个Tr的值 */
-    getData(detail){
-        const {data} = this.state;
-        if(data.length === 0) { data.push(detail)};
+    getData(data){
+        const {saveData} = this.state;
+        if(saveData.length === 0) { saveData.push(data)};
         var flag = 0;
-        for(var i = 0; i < data.length; i++){
-            if(data[i].id === detail.id && data[i].mode!==1){
-                data[i] = detail;
+        for(var i = 0; i < saveData.length; i++){
+            if(saveData[i].id === data.id){
+                saveData[i] = data;
                 flag = 1;
             }
         }
         if(!flag){
-            data.push(detail)
+            saveData.push(data)
         }
-       //console.log(data);
+       console.log(saveData);
         this.setState({
-            data:data,
-            // saveData:saveData,
+            data:saveData,
+            saveData:saveData,
         })
     }
     render() {

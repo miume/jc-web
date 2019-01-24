@@ -9,13 +9,13 @@ import WhiteSpace from '../BlockQuote/whiteSpace';
 const Option = Select.Option;
   const columns = [{
     title: '产品线',
-    dataIndex: 'deliveryFactory.name' ,
-    key: 'deliveryFactory.name',
+    dataIndex: 'detail.deliveryFactory' ,
+    key: 'detail.deliveryFactory',
     width: '9%',
   },{
     title: '工序',
-    dataIndex: 'productionProcess.name' ,
-    key: 'productionProcess.name',
+    dataIndex: 'detail.productionProcess' ,
+    key: 'detail.productionProcess',
     width: '9%',
   },{
     title: '取样点',
@@ -25,18 +25,18 @@ const Option = Select.Option;
     align:'left',
   },{
     title: '取样人',
-    dataIndex: 'sampler' ,
-    key: 'sampler',
+    dataIndex: 'detail.sampler' ,
+    key: 'detail.sampler',
     width: '9%',
   },{
     title: '检测人',
-    dataIndex: 'tester' ,
-    key: 'tester',
+    dataIndex: 'detail.tester' ,
+    key: 'detail.tester',
     width: '9%',
   },{
     title: '检测项目',
-    dataIndex: 'testItemString' ,
-    key: 'testItemString',
+    dataIndex: 'detail.testItems' ,
+    key: 'detail.testItems',
     render:(text)=>{
       if(text){
         const items = text.split(',');
@@ -58,8 +58,8 @@ const Option = Select.Option;
     width: '9%',
   },{
     title: '受检物料',
-    dataIndex: 'testMaterialName' ,
-    key: 'testMaterialName',
+    dataIndex: 'detail.testMaterialName' ,
+    key: 'detail.testMaterialName',
     width: '9%',
   },{
     title: '备注',

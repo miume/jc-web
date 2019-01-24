@@ -99,7 +99,7 @@ class ProcessTable extends React.Component{
                              {
                                 this.props.data.map((m,index) => { 
                                     return <Tr1 key={index} deleteRow={this.props.deleteRow} id={m.id?m.id:m} url={this.props.url} getData={this.props.getData}
-                                           value={m} flag={this.props.flag} mode={m.mode} editorRow={this.props.editorRow}
+                                           detail={m} flag={this.props.flag} mode={m.mode} editorRow={this.props.editorRow}
                                            allProductLine={this.props.allProductLine} allProductionProcess={this.state.allProductionProcess} allUser={this.state.allUser}
                                            allTestItem={this.props.allTestItem} allTestMaterial={this.state.allTestMaterial}
                                            /> })
