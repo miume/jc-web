@@ -59,6 +59,9 @@ class ProductTable extends React.Component{
         key: 'exception',
         align:'center',
         width: '8%',
+        render: exception => {
+            return exception?exception:'无'
+        }
     },{
         title: '发布状态',
         dataIndex: 'isPublished',

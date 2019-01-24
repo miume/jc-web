@@ -123,7 +123,7 @@ class DetailSpan extends React.Component {
                             id:e.testItemResultRecord.id,
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.testItem.name?e.testItem.name:'无',
-                            testResult:e.testItemResultRecord.testResult?e.testItemResultRecord.testResult:'无',
+                            testResult:e.testItemResultRecord.testResult,
                             rawTestItemStandard:e.standardValue?e.standardValue:'无',
                             unit:e.testItem.unit?e.testItem.unit:'无',
                             isValid: e.testItemResultRecord.isValid

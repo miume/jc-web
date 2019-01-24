@@ -33,7 +33,7 @@ class ProductOptional extends React.Component{
                     <div
                         className="productOptionalImag"
                     >
-                        <span>还未择优</span>
+                        <span>未择优</span>
                     </div>
                 );
         }
