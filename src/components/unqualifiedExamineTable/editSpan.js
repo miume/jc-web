@@ -447,7 +447,7 @@ class EditSpan extends React.Component {
         //     }
         // }
         //  调用保存函数
-        this.useSavaFunction(saveData,status);
+        // this.useSavaFunction(saveData,status);
 
     };
     /**调用保存函数 */
