@@ -112,7 +112,7 @@ class DetailSpan extends React.Component {
                     tester: res.tester?res.tester:'',
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
-                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
+                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:'';
                 const batchNumberId = res.commonBatchNumber?res.commonBatchNumber.id:'';
                 if(examineStatus===2||examineStatus===3){
                     axios({
