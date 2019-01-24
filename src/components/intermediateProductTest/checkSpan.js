@@ -27,7 +27,7 @@ class CheckSpan extends React.Component {
                 topData: {},   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
-                isQualified: -1, //不合格状态
+                isQualified: '', //不合格状态
             },
             interCheckData:{
                 testDTOS: [],
@@ -167,7 +167,7 @@ class CheckSpan extends React.Component {
                             />
                         </div>
                         <CheckQualifiedModal
-                            status={this.state.detailData.isQualified}
+                            isQualified={this.state.detailData.isQualified}
                             clickIsQualified = {this.clickIsQualified}
                         />
                     </div>
@@ -325,18 +325,20 @@ class CheckSpan extends React.Component {
         interCheckData.testDTOS = interTestDTOS;
         interCheckData.testReportRecord.isQualified = detailIsQualified;
         interCheckData.sampleDeliveringRecord.id = id;
-        if(detailIsQualified === -1){
-            message.info('请点击合格或者不合格！');
-            return
-        }
+
         if(detailTestDTOS){
             for(var j=0; j<detailTestDTOS.length; j++){
-                if(detailTestDTOS[j].testResult === ''){
+                if(detailTestDTOS[j].testResult === ''||detailTestDTOS[j].testResult === null||detailTestDTOS[j].testResult === undefined){
                     message.info('所有检测结果不能为空，请填写完整！');
                     return
                 }
             }
         }
+        if(detailIsQualified !== 0&&detailIsQualified !== 1){
+            message.info('请点击合格或者不合格！');
+            return
+        }
+
         //  调用保存函数
         this.useSavaFunction(interCheckData,status);
 

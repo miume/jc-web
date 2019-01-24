@@ -111,6 +111,7 @@ class EditSpan extends React.Component {
                     ]}
                 >
                     <div style={{height:500}}>
+
                         <PurchaseModal
                             modifyDetailData={this.modifyDetailData}
                             inputSave={this.inputSave}
@@ -146,9 +147,13 @@ class EditSpan extends React.Component {
             visible: true,
         })
     }
-    /**获取该行的记录详情 */
+    /**
+     * 详情 区分进货和成品   根据某子段，对数据进行组装
+     * 进货：调用进货的PurchaseModal，数据进行组装
+     * 成品：调用成品的组件，数据进行组装
+     * 同时要在<div>中进行子段判断，来调用哪个组件
+     */
     getDetailData(){
-        let detail = this.props.record;
         axios({
             url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.id}`,
             method:'get',

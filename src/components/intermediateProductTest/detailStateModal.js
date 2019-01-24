@@ -41,36 +41,9 @@ class DetailStateModal extends React.Component {
                         examineData={this.props.data.examineData}
                     />
                 );
-            case 4: //发布
+            case 4: //代办事项中显示
                 return(
-                    <div className="interStateModal">
-                        <table>
-                            <tbody className="interPadding">
-                            {
-                                this.props.data.examineData.map((item,index) => {
-                                    return (
-                                        <div>
-                                            <tr key={`handler${index}`}>
-                                                <td>审核人：</td>
-                                                <td>{item?item.handler:''}</td>
-                                            </tr>
-                                            <tr key={`handleReply${index}`}>
-                                                <td>审核意见：</td>
-                                                <td>{item?item.handleReply:''}</td>
-                                            </tr>
-                                            <tr key={`handleTime${index}`}>
-                                                <td>审核日期：</td>
-                                                <td>{item?item.handleTime:''}</td>
-                                            </tr>
-                                            <Divider
-                                                className="interDrSpanDivider"
-                                            />
-                                        </div>
-                                    )
-                                })
-                            }
-                            </tbody>
-                        </table>
+                    <div className="interStateNoModal">
                     </div>
                 );
             default:

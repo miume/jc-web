@@ -41,12 +41,12 @@ class InterTable extends React.Component{
         }
     },{
         title: '编号',
-        dataIndex: 'sampleDeliveringRecord.serialNumberId',
-        key: 'sampleDeliveringRecord.serialNumberId',
+        dataIndex: 'commonBatchNumber.batchNumber',
+        key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
-        render: serialNumberId => {
-            return serialNumberId?serialNumberId:'无';
+        render: batchNumber => {
+            return batchNumber?batchNumber:'无';
         }
     },{
         title: '检测项目',

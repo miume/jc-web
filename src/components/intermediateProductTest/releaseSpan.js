@@ -112,7 +112,7 @@ class ReleaseSpan extends React.Component {
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
-                    serialNumberId: res.sampleDeliveringRecord?res.sampleDeliveringRecord.serialNumberId:'',
+                    serialNumber: res.serialNumber,
                     materialName: res.materialName,
                     sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
@@ -133,14 +133,14 @@ class ReleaseSpan extends React.Component {
                     tester: res.tester?res.tester:'',
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
-                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
-                const batchNumber = res.commonBatchNumber?res.commonBatchNumber.batchNumber:'';
-                if(examineStatus==='2'||examineStatus==='3'){
+                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:'';
+                const batchNumberId = res.commonBatchNumber?res.commonBatchNumber.id:'';
+                if(examineStatus===2||examineStatus===3){
                     axios({
-                        url:`${this.url.toDoList}/${batchNumber}/result`,
+                        url:`${this.props.url.toDoList}/${batchNumberId}/result`,
                         method:'get',
                         headers:{
-                            'Authorization':this.url.Authorization
+                            'Authorization':this.props.url.Authorization
                         }
                     }).then((data)=>{
                         const res = data.data.data;
@@ -150,6 +150,7 @@ class ReleaseSpan extends React.Component {
                                 testDTOS: testDTOS,
                                 testData: testData,
                                 examine: {
+                                    batchNumberId: batchNumberId,
                                     examineStatus: examineStatus,
                                     examineData: res
                                 },
@@ -165,6 +166,7 @@ class ReleaseSpan extends React.Component {
                             testDTOS: testDTOS,
                             testData: testData,
                             examine: {
+                                batchNumberId:batchNumberId,
                                 examineStatus: examineStatus,
                                 examineData: []
                             },

@@ -5,6 +5,7 @@ import './unqualifiedExamine.css';
 import DetailModal from './detailModal';
 import CancleButton from '../BlockQuote/cancleButton';
 
+
 const topData = {
     materialName: '硫酸钴',
     norm: '25Kg/袋',
@@ -182,14 +183,16 @@ class DetailSpan extends React.Component {
                     // footer下的每个组件都要有唯一的key
                     footer={footer}
                 >
-                    <div style={{maxHeight:600}}>
+                    <div style={{height:500}}>
                         <PurchaseModal
                             data={this.state.checkData}
                             clickState ={1}
                             unqualifiedType={true}
                         />
+
                         <DetailModal
-                            state={this.props.state}
+                            // state={this.props.state}
+                            state={1}
                         />
                     </div>
                 </Modal>
