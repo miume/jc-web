@@ -12,11 +12,17 @@ import CkeckProductInspection from './checkProductInspection';
 import CheckUnqualified from './checkUnqualified';
 import axios from 'axios';
 class CheckModal extends React.Component{
+    componentDidMount(){
+        if(this.props.dataType===11){
+            this.judgeUnqualifiedArea();
+        }
+    }
     constructor(props){
         super(props);
         this.state = {
             visible:false,
-            reply:''
+            reply:'',
+            unType:0
         }
         this.fail = this.fail.bind(this);
         this.pass = this.pass.bind(this);
@@ -25,6 +31,7 @@ class CheckModal extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         this.getReplyData = this.getReplyData.bind(this);
         this.setClassName = this.setClassName.bind(this);
+        this.judgeUnqualifiedArea = this.judgeUnqualifiedArea.bind(this);
     }
     /**根据dataType判断是那种类型产品送审 */
     judgeType(type){
@@ -51,7 +58,14 @@ class CheckModal extends React.Component{
          * flag为1 代表小容器
         */
         if(dataType===11){
-            
+            var type = this.state.unType;
+            if(type===1){
+                dataType = 2;
+                flag = flag?1:0;
+            }else{
+                dataType = 4;
+                flag = flag?0:1;
+            }
         }
         switch(dataType){  
             case 2: 
@@ -59,6 +73,28 @@ class CheckModal extends React.Component{
             default: return flag?1:'modal-md' ;
         }
     }
+    judgeUnqualifiedArea = () => {
+        axios({
+            url: `${this.props.url.unqualifiedExamineTable.unqualifiedTestReportRecord}/${this.props.dataId}`,
+            method:'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data)=>{
+            const detail = data.data.data;
+            if(detail){
+                const type = detail.type;   //根据类型type来进行判断
+                this.setState({
+                    unType:type
+                })
+            }else{
+                message.info('查询数据为空，请联系管理员')
+            }
+
+        }).catch(()=>{
+            message.info('打开失败，请联系管理员！')
+        })
+    };
     /**点击审核 */
     handleCheck(){
         const {flag,dataId} = this.props;
