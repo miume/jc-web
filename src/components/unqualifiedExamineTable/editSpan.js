@@ -16,6 +16,7 @@ class EditSpan extends React.Component {
             visible: false,
             subVisible: false,
             process:-1,
+            urgent:0,
             type:'',    //判断是进货1,还是成品0
             checkData: {    //进货数据格式
                 headData: [],
@@ -114,10 +115,10 @@ class EditSpan extends React.Component {
                         ):(
                             <div style={{height:550}}>
                                 <CheckSpanModal
+                                    clearButton={1}
                                     data={this.state.detailData}
                                     modifyDetailData={this.modifyProInsData}
                                     unClickCheck={1}  //中间内容数据不课修改
-                                    // inputSave={this.inputSave}
                                 />
                             </div>
                         )
@@ -394,11 +395,16 @@ class EditSpan extends React.Component {
             var checkData = this.state.checkData;
             var resultDTOList = [];
             for(var i=0; i<checkData.tbodyData.length; i++){
+                var testItemResults = [];
+                let resultRecordList = checkData.tbodyData[i].resultRecordList
+                for(var key in resultRecordList){
+                    var item = resultRecordList[key];
+                    testItemResults.push(item);
+                }
                 var result = {
                     decision: checkData.tbodyData[i].decision,
                     id: checkData.tbodyData[i].id,
-                    serialNumber: checkData.tbodyData[i].serialNumber,
-                    testItemResults: checkData.tbodyData[i].resultRecordList
+                    testItemResults: testItemResults
                 };
                 resultDTOList.push(result);
             }
@@ -412,15 +418,12 @@ class EditSpan extends React.Component {
              */
             var detailData = this.state.detailData;
             var resultDTOList = [];
-            for(var j=0; j<detailData.testDTOS.length; j++){
-                var result = {
-                    decision: detailData.isQualified,
-                    id: detailData.topData.id,
-                    serialNumber: detailData.topData.serialNumber,
-                    testItemResults: detailData.testDTOS
-                };
-                resultDTOList.push(result);
-            }
+            var result = {
+                decision: detailData.isQualified,
+                id: detailData.topData.id,
+                testItemResults: detailData.testDTOS
+            };
+            resultDTOList.push(result);
             saveData = {
                 resultDTOList:resultDTOList,
                 testerId: this.props.menuList.userId
@@ -440,8 +443,9 @@ class EditSpan extends React.Component {
         //         }
         //     }
         // }
+        console.log('saveData',saveData)
         //  调用保存函数
-        // this.useSavaFunction(saveData,status);
+        this.useSavaFunction(saveData,status);
 
     };
     /**调用保存函数 */
@@ -456,7 +460,8 @@ class EditSpan extends React.Component {
             type:'json'
         }).then((data)=>{
             if(status){
-                const dataId = data.data.data.commonBatchNumber?data.data.data.commonBatchNumber.id:null;
+                const dataId = this.props.batchNumberId;
+                console.log(dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({
