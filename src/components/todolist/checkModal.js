@@ -9,6 +9,7 @@ import CancleButton from '../BlockQuote/cancleButton';
 import CheckProductStandard from './checkProductStandard';
 import CheckPurchase from './checkPurchase';
 import CkeckProductInspection from './checkProductInspection';
+import CheckUnqualified from './checkUnqualified';
 import axios from 'axios';
 class CheckModal extends React.Component{
     constructor(props){
@@ -37,7 +38,8 @@ class CheckModal extends React.Component{
             case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 5:  
             case 9:  
-            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>; 
+            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>;
+            case 11: return <CheckUnqualified url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 13: 
             case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
             default: return '' ;
