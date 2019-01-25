@@ -43,13 +43,13 @@ class Management extends React.Component{
             key: 'commonBatchNumber.id',
             // sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
-            width: '13%',
+            width: '6%',
         },{
             title: '流程名称',
             dataIndex: 'commonBatchNumber.description',
             key: 'description',
             align:'center',
-            width: '13%',
+            width: '15%',
         },{
             title: '创建人',
             dataIndex: 'createPersonName',
@@ -61,11 +61,11 @@ class Management extends React.Component{
             dataIndex: 'commonBatchNumber.createTime',
             key: 'createTime',
             align:'center',
-            width: '15%',
-            render:(text)=>{
-                const items = text.split(' ')
-                return <abbr title={text}>{items[0]}</abbr>
-            }
+            width: '18%',
+            // render:(text)=>{
+            //     const items = text.split(' ')
+            //     return <abbr title={text}>{items[0]}</abbr>
+            // }
         },{
             title: '保存状态',
             dataIndex: 'commonBatchNumber.status',
@@ -80,14 +80,14 @@ class Management extends React.Component{
             dataIndex: 'commonBatchNumber.batchNumber',
             key: 'batchNumber',
             align:'center',
-            width: '13%',
-            render:(text)=>{
-                if(text.length>8){
-                    return <abbr title={text}>{text.substr(0,7)}</abbr>
-                }else{
-                    return text
-                }
-            }
+            width: '18%',
+            // render:(text)=>{
+            //     if(text.length>8){
+            //         return <abbr title={text}>{text.substr(0,7)}</abbr>
+            //     }else{
+            //         return text
+            //     }
+            // }
         },{
             title: '操作',
             dataIndex: 'commonBatchNumber.id',

@@ -547,7 +547,8 @@ class AddModal extends React.Component{
                 type:'json'
             }).then((data)=>{
                 message.info(data.data.message);
-                this.props.fetch();
+                this.props.fetch({sortField: 'sample_Delivering_Date',
+                sortType: 'desc',});
                 this.setState({ visible: false });
                 form.resetFields();
             })
@@ -575,7 +576,8 @@ class AddModal extends React.Component{
                 type:'json'
             }).then((data)=>{
                 message.info(data.data.message);
-                this.props.fetch();
+                this.props.fetch({sortField: 'sample_Delivering_Date',
+                sortType: 'desc',});
             })
         })
         this.setState({ visible: false });
