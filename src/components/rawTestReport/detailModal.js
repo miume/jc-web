@@ -70,7 +70,7 @@ class DetailModal extends React.Component {
                     <div style={{display:'flex',flexDirection:'row',marginTop:20}}>
                         <div style={{flexGrow:2}}>
                             <p>检验人：{data.testData?data.testData.tester:'无'}</p>
-                            <p>检验时间：{data.testData?data.testData.tester:'无'}</p>
+                            <p>检验时间：{data.testData?data.testData.testTime:'无'}</p>
                         </div>
                         <div style={{flexGrow:4}}>
                             <IsQualified
