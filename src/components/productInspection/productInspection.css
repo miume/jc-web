@@ -33,7 +33,7 @@
  */
 /*Top:设置表格样式*/
 .productDrSpanModalTop {
-    width: 100%;
+    width: 480px;
     cursor: default;
 }
 .productDrSpanModalTop table{
@@ -79,7 +79,7 @@
     /*position:absolute;*/
     /*bottom: 80px;*/
     height: 250px;
-    width: 100%;
+    width: 480px;
     cursor: default;
 }
 
@@ -265,6 +265,7 @@
 
 /*drspan表格*/
 .productDrSpanTableModal {
+    width: 480px;
     max-height: 180px;
     cursor: default ;
 }
