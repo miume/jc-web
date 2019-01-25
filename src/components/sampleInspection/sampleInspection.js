@@ -14,7 +14,7 @@ class SampleInspection extends React.Component{
     server
     Authorization
     componentDidMount() {
-        this.fetch({sortField: 'sample_Delivering_Date',
+        this.fetch({sortField: 'id',
         sortType: 'desc',});
     }
     componentWillUnmount() {
@@ -290,7 +290,7 @@ class SampleInspection extends React.Component{
             this.fetch({
                 pageSize: pagination.pageSize,
                 pageNumber: pagination.current,
-                sortField: 'sample_Delivering_Date',
+                sortField: 'id',
                 sortType: 'desc',
             });
         }else{
@@ -309,7 +309,6 @@ class SampleInspection extends React.Component{
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
