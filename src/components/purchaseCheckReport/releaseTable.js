@@ -99,7 +99,6 @@ class ReleaseTable extends React.Component {
                     {operationFlag?(
                         <CheckReleaseSpan
                             url={this.props.url}
-                            fetch={this.props.fetch}
                             menuList={this.props.menuList}
                             state={record.commonBatchNumber.status}
                             name='发布'
@@ -110,7 +109,6 @@ class ReleaseTable extends React.Component {
                     )}
                     <Divider type="vertical" />
                     <CheckReleaseSpan
-                        fetch={this.props.fetch}
                         url={this.props.url}
                         id={record.commonBatchNumber.id}
                         menuList={this.props.menuList}

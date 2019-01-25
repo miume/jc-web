@@ -77,14 +77,15 @@ class PackGenerateModal extends React.Component {
         }).then((data)=>{
             const res = data.data.data;
             message.info(res);
+            this.props.fetch();
             this.setState({
                 visible: false
             })
         }).catch(()=>{
             message.info('操作失败，请联系管理员')
-            this.setState({
-                visible: false
-            })
+            // this.setState({
+            //     visible: false
+            // })
         })
     };
 
