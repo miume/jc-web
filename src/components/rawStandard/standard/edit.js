@@ -345,7 +345,7 @@ class EditStandard extends Component{
                         ]):([
                             <CancleButton key='cancel'  handleCancel={this.handleCancel} flag={1}/>,
                             <span key='span' className={this.props.iterateFlag?'':'hide'}>
-                                 <span key='text' style={{color:'#999999'}}>以此为基础迭代更新&nbsp;</span>,
+                                 <span key='text' style={{color:'#999999'}}>以此为基础迭代更新&nbsp;</span>
                                  <NewButton key='interate' name='迭代' className={'fa fa-level-up'} handleClick={this.clickIterate}/>         
                             </span>
                         ])}
