@@ -4,6 +4,7 @@ import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
 import './unqualifiedTrack.css';
 
+
 class UnqualifiedTrackTable extends React.Component {
     columns = [{
         title: '序号',

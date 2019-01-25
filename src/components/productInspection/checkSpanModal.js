@@ -37,7 +37,14 @@ class CheckSpanModal extends React.Component {
                     <div>
                            样品名称：<span>{this.props.data.topData.materialName+'样品'}</span>
                     </div>
-                    <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                    {
+                        this.props.clearButton?(
+                            ''
+                        ):(
+                            <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                        )
+                    }
+                    {/*<Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>*/}
                 </div>
                 <div
                     className="productSpanTableModal"

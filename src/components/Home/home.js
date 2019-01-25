@@ -403,7 +403,13 @@ class Home extends Component {
                /**设备基本设备*/
                equipmentBaseInstrument:{
                  getAllEquipmentBaseInstrument:`${server}/jc/common/equipmentBaseInstrument`
-              }
+              },
+                /**不合格追踪*/
+                unqualifiedTrack:{
+                    pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
+                    unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
+                }
+
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
