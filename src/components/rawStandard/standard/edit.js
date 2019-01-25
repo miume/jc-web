@@ -43,7 +43,7 @@ class EditStandard extends Component{
         this.getCheck=this.getCheck.bind(this);
         this.clickCheck=this.clickCheck.bind(this);
         this.clickSave=this.clickSave.bind(this);
-
+        this.handleDetailSaveCheck=this.handleDetailSaveCheck.bind(this);
     }
     getDetail(){//获取标准详情
         const batchNumberId=this.props.record.batchNumberId;
@@ -163,14 +163,23 @@ class EditStandard extends Component{
             commonBatchNumber:commonBatchNumber,
             details:details
         }
-       this.handleSaveCheck(saveData,status);//根据status调用保存或送审接口
-      //return saveData;
-
+       if(this.state.flag1){
+        this.handleSaveCheck(saveData,status);//根据status调用编辑保存或送审接口
+       }
+       else{
+           this.handleDetailSaveCheck(saveData,status);//根据status调用迭代（新增）保存或送审接口
+       }
     }
-    clickSave(){//点击保存
+    clickSave(){//点击编辑保存
           this.dataProcess(0);
     }
-    clickCheck(){//点击送审
+    clickCheck(){//点击编辑送审
+        this.dataProcess(1);
+    }
+    handleDetailSave(){//点击迭代保存
+        this.dataProcess(0);
+    }
+    handleDetailSongShenOk(){//点击迭代送审
         this.dataProcess(1);
     }
     handleSaveCheck(saveData,status){//点击编辑保存，未申请状态
@@ -203,26 +212,38 @@ class EditStandard extends Component{
         })
         .catch(()=>{
             message.info('编辑失败，请联系管理员！');
-        });
-     
+        });   
     }
-     handleDetailSave(){//点击迭代的保存
-         //console.log(12);
+    handleDetailSaveCheck(saveData,status){//点击迭代的保存或送审
+        // console.log('yeirw');
+        this.setState({
+            visible:false,
+            popVisible:false
+        });
          axios({
                url:`${this.props.url.rawStandard.getStandard}`,
                method:'post',
                headers:{
                    'Authorization':this.props.url.Authorization
                },
-               data:this.dataProcess(),
+               data:saveData,
                type:'json'
          })
          .then((data)=>{
-              // console.log(data);
-               message.info(data.data.message);
-              if(data.data.code===0){
-                this.props.getStandard(this.props.rawManufacturerId);//因为迭代就是新增，所以要调用一次获取所有标准接口
-              }
+             const res=data.data.data;
+            if(res){
+                if(status===0){
+                    message.info(data.data.message);
+                    if(data.data.code===0){
+                        this.props.getStandard(this.props.rawManufacturerId);
+                    }
+                }
+                else{
+                    const dataId=res.commonBatchNumber.id;//返回的batchnumberId
+                    const taskId=this.state.checkSelectData;//选择的流程id'
+                    this.getCheck(dataId,taskId);
+                }
+            }
          })
          .catch(()=>{
              message.info('迭代保存失败，请联系管理员');
@@ -264,58 +285,6 @@ class EditStandard extends Component{
         });
 
     }
-    // handleSongShenOk(){//点击送审的确定
-    //     axios({
-    //          url:`${this.props.url.rawStandard.getStandard}`,
-    //          method:'put',
-    //          headers:{
-    //              'Authorization':this.props.url.Authorization
-    //          },
-    //          data:this.dataProcess(),
-    //          type:'json'
-    //     }).then(data=>{
-    //           const res=data.data.data;
-    //           if(res){
-    //             const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-    //             const taskId=this.state.checkSelectData;//选择的流程id'
-    //             this.getCheck(dataId,taskId);
-    //             this.setState({
-    //                 popVisible:false,
-    //                 visible:false
-    //             });
-    //          }  
-    //     }).catch(()=>{
-    //         message.info('编辑送审失败，请联系管理员!');
-    //     });
-    // }
-    handleDetailSongShenOk(){//点击迭代的送审
-         axios({
-             url:`${this.props.url.rawStandard.getStandard}`,
-             method:'post',
-             headers:{
-                 'Authorization':this.props.url.Authorization
-             },
-             data:this.dataProcess(),
-             type:'json'
-         })
-         .then(data=>{
-             //console.log(data);
-             const res=data.data.data;
-             if(res){
-                const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-                const taskId=this.state.checkSelectData;//选择的流程id'
-                this.getCheck(dataId,taskId);
-                this.setState({
-                    popVisible:false,
-                    visible:false
-                });
-             }
-         })
-         .catch(()=>{
-              message.info('迭代送审失败，请联系管理员!');
-         });
-         
-    }
     handleHide(){//送审气泡的取消
         this.setState({
             popVisible:false,//气泡取消
@@ -327,7 +296,6 @@ class EditStandard extends Component{
         })
     }
     render(){
-       // console.log(this.props.iterateFlag);
         return(
             <span>
                     {this.props.flag?(<span className='blue' onClick={this.showModalDetail}>详情</span>):
