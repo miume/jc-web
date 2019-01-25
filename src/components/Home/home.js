@@ -370,6 +370,7 @@ class Home extends Component {
               },
               /**不合格审评表 */
               unqualifiedExamineTable:{
+                  unqualifiedTestReportRecord:`${server}/jc/common/unqualifiedTestReportRecord`,
                   pages:`${server}/jc/common/unqualifiedTestReportRecord/pages`,
               },
               /**原材料标准*/
@@ -402,7 +403,13 @@ class Home extends Component {
                /**设备基本设备*/
                equipmentBaseInstrument:{
                  getAllEquipmentBaseInstrument:`${server}/jc/common/equipmentBaseInstrument`
-              }
+              },
+                /**不合格追踪*/
+                unqualifiedTrack:{
+                    pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
+                    unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
+                }
+
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

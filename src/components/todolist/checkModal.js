@@ -43,10 +43,19 @@ class CheckModal extends React.Component{
             default: return '' ;
         }
     }
-    setClassName(){
-        this.setState({
-            divclassName:'big-div-todo'
-        })
+    setClassName(dataType,flag){
+        /**如果是不合格需要进行判断 若规格为1080 则将dataType置为2 若规格为520 dataType置为4
+         * flag为0 代表大容器 
+         * flag为1 代表小容器
+        */
+        if(dataType===11){
+            
+        }
+        switch(dataType){  
+            case 2: 
+            case 7:  return flag?0:'modal-xlg'; 
+            default: return flag?1:'modal-md' ;
+        }
     }
     /**点击审核 */
     handleCheck(){
@@ -126,7 +135,7 @@ class CheckModal extends React.Component{
       })   
       }
     render(){
-        const type = this.props.dataType.toString();
+        const type = this.props.dataType;
         const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <span>
@@ -136,7 +145,8 @@ class CheckModal extends React.Component{
                 } */}
                 <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton>
                 <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
-                closable={false} maskClosable={false} className={this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md'}
+                closable={false} maskClosable={false} className={this.setClassName(type)}
+                /**this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md' */
                 footer={[
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                     <span key='check' className={this.props.flag?'hide':''} >
@@ -153,7 +163,8 @@ class CheckModal extends React.Component{
                     <div>
                     {
                         this.props.flag?
-                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />:
+                        /**this.props.dataType===2||this.props.dataType===7?0:1 */
+                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} hide={this.setClassName(type,1)} />:
                         <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                     }
                     </div> 

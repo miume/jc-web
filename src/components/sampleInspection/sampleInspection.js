@@ -291,7 +291,7 @@ class SampleInspection extends React.Component{
                 pageSize: pagination.pageSize,
                 pageNumber: pagination.current,
                 sortField: 'sample_Delivering_Date',
-                sortType: 'asc',
+                sortType: 'desc',
             });
         }else{
             this.searchEvent({

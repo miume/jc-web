@@ -37,7 +37,14 @@ class CheckSpanModal extends React.Component {
                     <div>
                            样品名称：<span>{this.props.data.topData.materialName+'样品'}</span>
                     </div>
-                    <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                    {
+                        this.props.clearButton?(
+                            ''
+                        ):(
+                            <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                        )
+                    }
+                    {/*<Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>*/}
                 </div>
                 <div
                     className="productSpanTableModal"
@@ -61,7 +68,13 @@ class CheckSpanModal extends React.Component {
                                     <div key={index}>
                                         <div>{item.index}</div>
                                         <div>{item.testItemName}</div>
-                                        <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                        {
+                                            this.props.unClickCheck?(
+                                                <div>{item.testResult}</div>
+                                            ):(
+                                                <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                            )
+                                        }
                                         <div>{item.rawTestItemStandard}</div>
                                         <div>{item.unit}</div>
                                         <div>
