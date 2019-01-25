@@ -65,13 +65,16 @@ class ProductStandard extends React.Component{
             /**点击选择产品 给选择型号，设置标准 加notclick类 */
             this.addClass('product-2');
             this.addClass('product-3');
-            
+            this.getAllProduct();
         }else{
             this.setState({
                 flag:2
             })
             /**点击选择型号 给设置标准加notclick类，删click类 */
             this.addClass('product-3');
+            this.getAllSelectModal({
+                parentId:-1
+            });
         }
     }
     /**获取所有产品 */

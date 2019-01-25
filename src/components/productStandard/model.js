@@ -34,6 +34,7 @@ class SelectModal extends React.Component{
             })
         }else if(ids[2]){
             this.setState({
+                add : 0,
                 curParentId:ids[0],
             })
             this.props.getAllModal({
