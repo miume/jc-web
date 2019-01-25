@@ -47,7 +47,6 @@ class Release extends React.Component {
                     status={this.props.status}
                     data={this.state.dataSource}
                     pagination={this.pagination}
-                    fetch={this.fetch}
                 />
             </div>
         )

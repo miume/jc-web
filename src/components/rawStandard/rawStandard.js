@@ -59,6 +59,7 @@ class RawStandard extends Component{
   }
   getStandard(id,value){//获取设置标准界面的表格数据
     this.setState({flag:3});
+    //console.log('hdifhdi');
     axios({
         url:`${this.url.rawStandard.getStandard}`,
         method:'get',
@@ -72,7 +73,7 @@ class RawStandard extends Component{
       },
         type:'json'
     }).then(data=>{
-        //console.log(data);
+       // console.log(data);
         const res=data.data.data;
         var raw=[];
         var j=1;

@@ -52,8 +52,13 @@ import SearchCell from '../BlockQuote/search';
 class TodoProcessed extends React.Component{
     constructor(props){
         super(props);
+        this.fetch = this.fetch.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
+    }
+    /**点击重置 */
+    fetch(){
+        this.props.getHistory('');
     }
     /**获取时间的实时变化 */
     searchContentChange(date, dateString){
@@ -66,7 +71,7 @@ class TodoProcessed extends React.Component{
     render(){
         return (
             <div className={this.props.flag?'historyContianer':'container'} >
-                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.props.getHistory} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/></div>
+                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/></div>
                 <div>
                     {
                         this.props.data?this.props.data.map(e=>{

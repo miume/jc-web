@@ -9,13 +9,20 @@ import CancleButton from '../BlockQuote/cancleButton';
 import CheckProductStandard from './checkProductStandard';
 import CheckPurchase from './checkPurchase';
 import CkeckProductInspection from './checkProductInspection';
+import CheckUnqualified from './checkUnqualified';
 import axios from 'axios';
 class CheckModal extends React.Component{
+    componentDidMount(){
+        if(this.props.dataType===11){
+            this.judgeUnqualifiedArea();
+        }
+    }
     constructor(props){
         super(props);
         this.state = {
             visible:false,
-            reply:''
+            reply:'',
+            unType:0
         }
         this.fail = this.fail.bind(this);
         this.pass = this.pass.bind(this);
@@ -24,6 +31,7 @@ class CheckModal extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         this.getReplyData = this.getReplyData.bind(this);
         this.setClassName = this.setClassName.bind(this);
+        this.judgeUnqualifiedArea = this.judgeUnqualifiedArea.bind(this);
     }
     /**根据dataType判断是那种类型产品送审 */
     judgeType(type){
@@ -37,17 +45,56 @@ class CheckModal extends React.Component{
             case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 5:  
             case 9:  
-            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>; 
+            case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>;
+            case 11: return <CheckUnqualified url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 13: 
             case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
             default: return '' ;
         }
     }
-    setClassName(){
-        this.setState({
-            divclassName:'big-div-todo'
-        })
+    setClassName(dataType,flag){
+        /**如果是不合格需要进行判断 若规格为1080 则将dataType置为2 若规格为520 dataType置为4
+         * flag为0 代表大容器 
+         * flag为1 代表小容器
+        */
+        if(dataType===11){
+            var type = this.state.unType;
+            if(type===1){
+                dataType = 2;
+                flag = flag?1:0;
+            }else{
+                dataType = 4;
+                flag = flag?0:1;
+            }
+        }
+        switch(dataType){  
+            case 2: 
+            case 7:  return flag?0:'modal-xlg'; 
+            default: return flag?1:'modal-md' ;
+        }
     }
+    judgeUnqualifiedArea = () => {
+        axios({
+            url: `${this.props.url.unqualifiedExamineTable.unqualifiedTestReportRecord}/${this.props.dataId}`,
+            method:'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data)=>{
+            const detail = data.data.data;
+            if(detail){
+                const type = detail.type;   //根据类型type来进行判断
+                this.setState({
+                    unType:type
+                })
+            }else{
+                message.info('查询数据为空，请联系管理员')
+            }
+
+        }).catch(()=>{
+            message.info('打开失败，请联系管理员！')
+        })
+    };
     /**点击审核 */
     handleCheck(){
         const {flag,dataId} = this.props;
@@ -126,7 +173,7 @@ class CheckModal extends React.Component{
       })   
       }
     render(){
-        const type = this.props.dataType.toString();
+        const type = this.props.dataType;
         const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <span>
@@ -136,7 +183,8 @@ class CheckModal extends React.Component{
                 } */}
                 <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton>
                 <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
-                closable={false} maskClosable={false} className={this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md'}
+                closable={false} maskClosable={false} className={this.setClassName(type)}
+                /**this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md' */
                 footer={[
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                     <span key='check' className={this.props.flag?'hide':''} >
@@ -153,7 +201,8 @@ class CheckModal extends React.Component{
                     <div>
                     {
                         this.props.flag?
-                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} hide={this.props.dataType===2||this.props.dataType===7?0:1} />:
+                        /**this.props.dataType===2||this.props.dataType===7?0:1 */
+                        <AllTester examineData={this.state.examineData} dataId={this.props.dataId} hide={this.setClassName(type,1)} />:
                         <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                     }
                     </div> 
