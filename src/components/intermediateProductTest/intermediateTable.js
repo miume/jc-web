@@ -117,6 +117,7 @@ class InterTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
+                            menuList={this.props.menuList}
                             url={this.props.url}
                             id={record.sampleDeliveringRecord.id}
                             fetch={this.props.fetch}

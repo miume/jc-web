@@ -1,12 +1,31 @@
 import React from 'react';
-import {Input,DatePicker} from 'antd';
+import {Input, DatePicker, Select, message} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 import moment from "moment";
+import axios from "axios";
 
-//中文
-
+//
+const Option = Select.Option;
 class PurchaseModal extends React.Component {
+    componentDidMount(){
+        if(this.props.unTrackModifyThead===1){
+            this.getAllProcedure();
+            this.getAllUser();
+        }
+
+    }
+    constructor(props){
+        super(props);
+        this.state = {
+            //不合格最终所需
+            allProcedure: [],   //获得所有工序
+            allUser:[]  //获得所有用户
+        };
+        this.getAllProcedure = this.getAllProcedure.bind(this);
+        this.getAllUser = this.getAllUser.bind(this);
+    }
+
     render() {
         const handleRightClick = () => this.handleClick(1);
         const handleLeftClick = () => this.handleClick(-1);
@@ -16,75 +35,128 @@ class PurchaseModal extends React.Component {
             headColumnsLength = true;
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
+        console.log('handle',this.props.data.topData)
         return(
-            <div style={{paddingTop:'10px',width:1200}}>
-                <div>
-                    <table className="purchaseTopTable">
-                        <thead className="purchaseTopThead">
-                        <tr>
-                            <th>原材料</th>
-                            <th>规格</th>
-                            <th>数量</th>
-                            <th>重量</th>
-                            <th>到货日期</th>
-                            <th>生产厂家</th>
-                        </tr>
-                        </thead>
-                        <tbody className="purchaseTopTbody">
-                        {
-                            this.props.clickState?(
-                                <tr style={{cursor:'default'}}>
-                                    <td>{this.props.data.topData.materialName}</td>
-                                    <td>{this.props.data.topData.norm}</td>
-                                    <td>{this.props.data.topData.quantity}</td>
-                                    <td>{this.props.data.topData.weight}</td>
-                                    <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
-                                    <td>{this.props.data.topData.manufactureName}</td>
+            <div style={{width:1200}}>
+                {
+                    this.props.unTrackType?(
+                        <div className="unTrackTopModal">
+                            <table className="unTrackTopTable">
+                                <thead className="unTrackTopThead">
+                                <tr>
+                                    <th>样品名称</th>
+                                    <th>发生工序</th>
+                                    <th>发生时间</th>
+                                    <th>处理负责人</th>
                                 </tr>
-                            ):(
-                                this.props.unClickType?(
-                                    <tr style={{cursor:'default'}}>
-                                        <td>{this.props.data.topData.materialName}</td>
-                                        <td>{this.props.data.topData.norm}</td>
-                                        <td>{this.props.data.topData.quantity}</td>
-                                        <td>{this.props.data.topData.weight}</td>
-                                        <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
-                                        <td>{this.props.data.topData.manufactureName}</td>
-                                    </tr>
-                                ):(
-                                    <tr>
-                                        <td>{this.props.data.topData.materialName}</td>
-                                        <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
-                                        <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
-                                        <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
-                                        <td style={{width:'25%'}}>
-                                            <DatePicker
-                                                name='receiveDate'
-                                                placeholder="选择时间"
-                                                defaultValue={moment(this.props.data.topData.receiveDate)}
-                                                onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
-                                            />
-                                        </td>
-                                        <td>{this.props.data.topData.manufactureName}</td>
-                                    </tr>
-                                )
+                                </thead>
+                                <tbody className='unTrackTopTbody'>
+                                {
+                                    this.props.unTrackModifyThead?(
+                                        <tr>
+                                            <td>{this.props.data.topData.materialName}</td>
+                                            <td>
+                                                <Select value={this.props.data.topData.process}  className="unTrackSelect" placeholder='请选择发生工序' onChange={this.props.procedureChange}>
+                                                    {this.state.allProcedure}
+                                                </Select>
+                                            </td>
+                                            <td>
+                                                <DatePicker
+                                                    name='createTime'
+                                                    placeholder="选择时间"
+                                                    value={moment(this.props.data.topData.createTime)}
+                                                    onChange={(value,dateString) => this.props.inputUnTrackTimeSave(dateString)}
+                                                />
+                                            </td>
+                                            <td>
+                                                <Select  value={this.props.data.topData.handle}  className="unTrackSelect" placeholder='请选择处理负责人' onChange={this.props.userChange}>
+                                                    {this.state.allUser}
+                                                </Select>
+                                            </td>
+                                        </tr>
+                                    ):(
+                                        <tr className='cursorDefault'>
+                                            <td>{this.props.data.topData.materialName}</td>
+                                            <td>{this.props.data.topData.process}</td>
+                                            <td>{this.props.data.topData.createTime}</td>
+                                            <td>{this.props.data.topData.handle}</td>
 
-                            )
-                        }
-                        </tbody>
-                    </table>
-                    <PurchaseModalColor
-                        purchaseStatus={this.props.data.judgement}
-                    />
-                    <table className="purchaseTopJudger" >
-                        <tbody>
-                        <tr>
-                            <td>检验人:</td>
-                            <td>{this.props.data.judger}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                        </tr>
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    ):(
+                        <div>
+                            <table className="purchaseTopTable">
+                                <thead className="purchaseTopThead">
+                                <tr>
+                                    <th>原材料</th>
+                                    <th>规格</th>
+                                    <th>数量</th>
+                                    <th>重量</th>
+                                    <th>到货日期</th>
+                                    <th>生产厂家</th>
+                                </tr>
+                                </thead>
+                                <tbody className="purchaseTopTbody">
+                                {
+                                    this.props.clickState?(
+                                        <tr style={{cursor:'default'}}>
+                                            <td>{this.props.data.topData.materialName}</td>
+                                            <td>{this.props.data.topData.norm}</td>
+                                            <td>{this.props.data.topData.quantity}</td>
+                                            <td>{this.props.data.topData.weight}</td>
+                                            <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                            <td>{this.props.data.topData.manufactureName}</td>
+                                        </tr>
+                                    ):(
+                                        this.props.unClickType?(
+                                            <tr style={{cursor:'default'}}>
+                                                <td>{this.props.data.topData.materialName}</td>
+                                                <td>{this.props.data.topData.norm}</td>
+                                                <td>{this.props.data.topData.quantity}</td>
+                                                <td>{this.props.data.topData.weight}</td>
+                                                <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                                <td>{this.props.data.topData.manufactureName}</td>
+                                            </tr>
+                                        ):(
+                                            <tr>
+                                                <td>{this.props.data.topData.materialName}</td>
+                                                <td><Input name='norm' placeholder="输入规格" value={this.props.data.topData.norm} onChange={this.props.inputSave}/></td>
+                                                <td><Input name='quantity' placeholder="输入数量" value={this.props.data.topData.quantity} onChange={this.props.inputSave}/></td>
+                                                <td><Input name='weight' placeholder="输入重量" value={this.props.data.topData.weight} onChange={this.props.inputSave}/></td>
+                                                <td style={{width:'25%'}}>
+                                                    <DatePicker
+                                                        name='receiveDate'
+                                                        placeholder="选择时间"
+                                                        defaultValue={moment(this.props.data.topData.receiveDate)}
+                                                        onChange={(value,dateString) => this.props.inputTimeSave(dateString)}
+                                                    />
+                                                </td>
+                                                <td>{this.props.data.topData.manufactureName}</td>
+                                            </tr>
+                                        )
+
+                                    )
+                                }
+                                </tbody>
+                            </table>
+                            <PurchaseModalColor
+                                purchaseStatus={this.props.data.judgement}
+                            />
+                            <table className="purchaseTopJudger" >
+                                <tbody>
+                                <tr>
+                                    <td>检验人:</td>
+                                    <td>{this.props.data.judger}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    )
+                }
                 <div style={{paddingTop:'80px'}}>
                     <div id={unqualifiedType?'unqualfiedModalTable':'modalTable'}>
                         <div className="purchaseThead">
@@ -293,7 +365,52 @@ class PurchaseModal extends React.Component {
             </div>
         )
     }
-    /**表格合格判定点击事件*/
+
+    /**
+     * 不合格追踪
+     */
+    /**获取所有发生工艺 */
+    getAllProcedure = () => {
+        axios({
+            url: `${this.props.url.productionProcess.productionProcess}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data) => {
+            const res = data.data.data;
+            console.log(res)
+
+            const children = res.map(e => {
+                return <Option key={e.id} value={e.id+'-'+e.name}>{e.name}</Option>
+            });
+            this.setState({
+                allProcedure:children
+            })
+        });
+
+    };
+    /**获取所有用户 */
+    getAllUser = () => {
+        axios({
+            url: `${this.props.url.authUser.getAll}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data) => {
+            const res = data.data.data;
+            console.log(res)
+
+            const children = res.map(e => {
+                return <Option key={e.id} value={e.id+'-'+e.name}>{e.name}</Option>
+            });
+            this.setState({
+                allUser:children
+            })
+        });
+
+    };
     /**表格合格判定点击事件*/
     handleJudgePass = (index) => {
         var checkData = this.props.data;

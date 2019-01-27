@@ -18,7 +18,7 @@ for (let i = 0; i < 20; i++) {
 class UnqualifiedTrack extends React.Component{
     url;
     componentDidMount() {
-        // this.fetch();
+        this.fetch();
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -28,7 +28,7 @@ class UnqualifiedTrack extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             searchContent:'',
             searchText: '',
         };
@@ -48,6 +48,7 @@ class UnqualifiedTrack extends React.Component{
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
         return(
             <div>
                 <BlockQuote name="不合格跟踪表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -60,6 +61,8 @@ class UnqualifiedTrack extends React.Component{
                     />
                     <div className='clear' ></div>
                     <UnqualifiedTrackTable
+                        url={this.url}
+                        menuList={menuList}
                         data={this.state.dataSource}
                         pagination={this.pagination}
                         // fetch={this.fetch}

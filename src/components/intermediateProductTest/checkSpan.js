@@ -326,6 +326,15 @@ class CheckSpan extends React.Component {
         interCheckData.testReportRecord.isQualified = detailIsQualified;
         interCheckData.sampleDeliveringRecord.id = id;
 
+        // var nowDate = new Date().toLocaleDateString().split('/');
+        // if(nowDate[1] < '10'){
+        //     nowDate[1] = '0'+ nowDate[1];
+        // }
+        // var judgeDate = nowDate[0]+ '-' + nowDate[1] + '-' +nowDate[2];
+        // judger: this.props.menuList.userId,
+
+
+
         if(detailTestDTOS){
             for(var j=0; j<detailTestDTOS.length; j++){
                 if(detailTestDTOS[j].testResult === ''||detailTestDTOS[j].testResult === null||detailTestDTOS[j].testResult === undefined){
