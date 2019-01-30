@@ -78,7 +78,7 @@ class DetailSpan extends React.Component {
                                 />
                             </div>
                         ):(
-                            <div style={{height:550}}>
+                            <div style={{height:580}}>
                                 <DrSpanModal
                                     data={this.state.detailData}
                                     // unClickCheck={1}  //中间内容数据不课修改

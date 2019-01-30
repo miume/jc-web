@@ -1,12 +1,8 @@
 import React from 'react';
 import {message, Modal} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
-import NewButton from '../BlockQuote/newButton';
 import './unqualifiedTrack.css';
-import EdSpanModal from './edSpanModal';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
-import CheckSpanModal from "../productInspection/checkSpanModal";
-import DrSpanModal from "../productInspection/drSpanModal";
 import axios from "axios";
 import SaveButton from "../BlockQuote/saveButton";
 import Submit from "../BlockQuote/submit";
@@ -147,9 +143,9 @@ class EditSpan extends React.Component {
     /**点击编辑 */
     handleEdit() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
+        this.setState({
+            visible: true,
+        })
     }
     /**
      * 详情 区分进货和成品   根据某子段，对数据进行组装
@@ -174,6 +170,7 @@ class EditSpan extends React.Component {
                 var judgement = '';
                 var topData = {};
                 topData = this.props.record.details;
+                console.log(topData)
                 let detailHead = detail.details.standard;
                 for(var i=0; i<detailHead.length; i++){
                     var item = detailHead[i].split(',');
@@ -221,12 +218,10 @@ class EditSpan extends React.Component {
                             createTime: detail.commonBatchNumber.createTime?detail.commonBatchNumber.createTime:'',
                             handler: detail.commonBatchNumber.createPersonId?detail.commonBatchNumber.createPersonId:'',
                             //如何知道id多少
-                            productionProcessId: ''
+                            productionProcessId: this.props.record.details.process.id
                         }
                     },
                     visible: true,
-                },()=>{
-                    console.log(this.state.checkData)
                 })
             }else{
                 message.info('查询数据为空，请联系管理员')
