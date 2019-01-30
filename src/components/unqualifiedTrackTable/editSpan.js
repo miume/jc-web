@@ -108,7 +108,6 @@ class EditSpan extends React.Component {
 
     /**监控发生工艺下拉框的变化 */
     procedureChange = (e) => {
-        console.log('value',e)
         var checkData = this.state.checkData;
         checkData.topData.process.name = e.split('-')[1];
         var saveData = this.state.saveData;
@@ -127,7 +126,7 @@ class EditSpan extends React.Component {
             checkData:checkData,
             saveData:saveData
         })
-    }
+    };
     userChange = (e) => {
         console.log('value',e)
         var checkData = this.state.checkData;
