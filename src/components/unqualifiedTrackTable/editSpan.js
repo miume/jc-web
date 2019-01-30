@@ -110,9 +110,9 @@ class EditSpan extends React.Component {
     procedureChange = (e) => {
         console.log('value',e)
         var checkData = this.state.checkData;
-        checkData.topData.process = e.split('-')[1];
+        checkData.topData.process.name = e.split('-')[1];
         var saveData = this.state.saveData;
-        saveData.details.productionProcessId = e.split('-')[0];
+        saveData.details.productionProcessId = parseInt(e.split('-')[0]);
         this.setState({
             checkData:checkData,
             saveData:saveData
@@ -285,7 +285,7 @@ class EditSpan extends React.Component {
         }
         console.log('saveData',saveData)
         //  调用保存函数
-        // this.useSavaFunction(saveData,status);
+        this.useSavaFunction(saveData,status);
 
     };
     /**调用保存函数 */
