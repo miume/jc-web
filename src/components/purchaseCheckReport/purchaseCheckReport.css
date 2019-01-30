@@ -425,9 +425,9 @@
     height: 35px !important;
     /*padding-left: 5px;*/
 }
-.unTrackTopTbody tr td:first-child{
-    padding-left: 5px;
-}
+/*.unTrackTopTbody tr td:first-child{*/
+    /*padding-left: 5px;*/
+/*}*/
 .unTrackTopTbody tr td .ant-select-selection{
     /*height: 20px !important;*/
     /*text-align: center;*/
@@ -440,4 +440,13 @@
 .unTrackTopTable tbody tr td .ant-calendar-picker-input{
     border: none ;
 }
+.paddingTop td{
+    padding-left: 5px;
+}
 
+.unTrackTr .ant-select-selection__rendered{
+    margin-left: 5px;
+}
+.unTrackTr td:first-child{
+    padding-left: 5px;
+}

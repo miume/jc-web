@@ -3,18 +3,6 @@ import SearchCell from "../BlockQuote/search";
 import BlockQuote from "../BlockQuote/blockquote";
 import UnqualifiedTrackTable from './unqualifiedTrackTable';
 import axios from "axios";
-const data =[];
-for (let i = 0; i < 20; i++) {
-    data.push({
-        index: i,
-        id:i,
-        a: '镍咕锰',
-        b: '发生工序',
-        c: '2018年12月27日',
-        d: '周小伟',
-    });
-}
-
 class UnqualifiedTrack extends React.Component{
     url;
     componentDidMount() {
@@ -103,6 +91,10 @@ class UnqualifiedTrack extends React.Component{
                 }
                 this.setState({
                     dataSource: res.list,
+                });
+            }else{
+                this.setState({
+                    dataSource: [],
                 });
             }
         });

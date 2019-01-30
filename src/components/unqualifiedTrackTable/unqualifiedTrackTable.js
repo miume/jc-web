@@ -25,7 +25,7 @@ class UnqualifiedTrackTable extends React.Component {
         width: '15%',
     },{
         title: '发生工序',
-        dataIndex: 'details.process',
+        dataIndex: 'details.process.name',
         key: 'details.process',
         align:'center',
         width: '20%',

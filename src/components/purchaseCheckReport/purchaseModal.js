@@ -35,7 +35,7 @@ class PurchaseModal extends React.Component {
             headColumnsLength = true;
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
-        console.log('handle',this.props.data.topData)
+        console.log('data',this.props.data)
         return(
             <div style={{width:1200}}>
                 {
@@ -53,10 +53,10 @@ class PurchaseModal extends React.Component {
                                 <tbody className='unTrackTopTbody'>
                                 {
                                     this.props.unTrackModifyThead?(
-                                        <tr>
+                                        <tr className="unTrackTr">
                                             <td>{this.props.data.topData.materialName}</td>
                                             <td>
-                                                <Select value={this.props.data.topData.process}  className="unTrackSelect" placeholder='请选择发生工序' onChange={this.props.procedureChange}>
+                                                <Select value={this.props.data.topData.process?this.props.data.topData.process.name:''}  className="unTrackSelect" placeholder='请选择发生工序' onChange={this.props.procedureChange}>
                                                     {this.state.allProcedure}
                                                 </Select>
                                             </td>
@@ -75,9 +75,9 @@ class PurchaseModal extends React.Component {
                                             </td>
                                         </tr>
                                     ):(
-                                        <tr className='cursorDefault'>
+                                        <tr className='cursorDefault paddingTop'>
                                             <td>{this.props.data.topData.materialName}</td>
-                                            <td>{this.props.data.topData.process}</td>
+                                            <td>{this.props.data.topData.process.name}</td>
                                             <td>{this.props.data.topData.createTime}</td>
                                             <td>{this.props.data.topData.handle}</td>
 
