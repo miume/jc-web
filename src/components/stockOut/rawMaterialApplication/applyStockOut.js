@@ -48,7 +48,7 @@ class ApplyStockOut extends React.Component{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
-                    case 3: return '产品';
+                    case 3: return '成品';
                     default:return '';
                 }
             }
@@ -56,7 +56,10 @@ class ApplyStockOut extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'15%'
+            width:'15%',
+            render:(text)=>{
+                return <abbr title={text}>{text.substring(0,10)}</abbr>
+            }
         },{
             title:'库存数量',
             dataIndex:'quantity',
@@ -83,7 +86,7 @@ class ApplyStockOut extends React.Component{
             className:'tdStyle'
         }]
         this.apply = this.apply.bind(this);
-        this.handleOk = this.handleOk.bind(this);
+        // this.handleOk = this.handleOk.bind(this);
         this.handleCancel =this.handleCancel.bind(this);
         this.save = this.save.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -103,16 +106,13 @@ class ApplyStockOut extends React.Component{
         this.props.cancle();
     }
     /**申请出库弹出框 点击送审按钮 */
-    handleOk(){
-        // this.setState({
-        //     visible:false
-        // })
-    }
+    // handleOk(){
+    //     this.setState({
+    //         visible:false
+    //     })
+    // }
     /**点击申请按钮，弹出弹出框 */
     apply(){
-        this.setState({
-            visible:true
-        })
         const keys = this.props.selectedRowKeys;
         var outData = [];
         this.props.data.forEach(d=>{
@@ -126,8 +126,10 @@ class ApplyStockOut extends React.Component{
                 }
             }
         })
-        
-        this.state.dataSource = outData;
+        this.setState({
+            visible:true,
+            dataSource:outData
+        })
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){

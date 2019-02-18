@@ -48,7 +48,7 @@ class RawMaterialApplication extends React.Component{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
-                    case 3: return '产品';
+                    case 3: return '成品';
                     default:return '';
                 }
             }

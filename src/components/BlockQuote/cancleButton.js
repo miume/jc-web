@@ -20,7 +20,7 @@ class CancleButton extends React.Component{
                 onConfirm={this.props.handleCancel}
                 okText='确定' cancelText='再想想'
                 >
-                    <Button className='white-button' style={{float:'left'}}><i className="fa fa-times" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 取消</span></Button>
+                    <Button className='white-button' style={{float:'left'}}><i className="fa fa-times" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}} onClick={this.props.handleCancel}> 取消</span></Button>
                 </Popconfirm>
             }
             </span>

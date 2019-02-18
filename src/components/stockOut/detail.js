@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal,Table} from 'antd';
 import axios from 'axios';
-import NewButton from '../BlockQuote/newButton';
+import CancleButton from '../BlockQuote/cancleButton';
 class Detail extends React.Component{
     constructor(props){
         super(props);
@@ -27,11 +27,22 @@ class Detail extends React.Component{
             dataIndex:'meterialClass',
             key:'meterialClass',
             width:'15%',
+            render:(text)=>{
+                switch(text){
+                    case 1 : return '原材料';
+                    case 2 : return '中间件';
+                    case 3 : return '成品';
+                    default: return '';
+                }
+            }
         },{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'20%',
+            render:(text)=>{
+                return <abbr title={text}>{text.substring(0,10)}</abbr>
+            }
         },{
             title:'出库数量',
             dataIndex:'quantity',
@@ -86,7 +97,7 @@ class Detail extends React.Component{
                 <Modal visible={this.state.visible} closable={false} maskCloseable={false}
                 width={800} title='出库详情' centered={true}
                 footer={[
-                    <NewButton key='back' name='确定' className='fa fa-check' handleClick={this.handleClick}/>
+                    <CancleButton key='back' flag={1} handleCancel={this.handleClick}/>
                 ]}
                 >
                 <div style={{height:'300px'}}>
