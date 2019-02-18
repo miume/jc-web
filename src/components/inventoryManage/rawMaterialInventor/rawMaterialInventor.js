@@ -44,7 +44,7 @@ class RowMaterialInventor extends Component{
             width:'18%',
             align:'center',
             render:(text,record)=>{
-                     console.log(text);
+                     //console.log(text);
                      switch(`${record.materialClass}`){
                               case '1':return '原材料';
                               case '3':return '产品';
@@ -103,16 +103,16 @@ class RowMaterialInventor extends Component{
             },
             params:{
                 ...params,
-               
             },
         })
         .then((data)=>{
                //console.log(data.data.data);
                const res=data.data.data;
                this.pagination.total=res.total;
+               console.log(res);
                //res.list是传过来的记录
               for(var i=1;i<=res.list.length;i++){
-                   res.list[i-1]['index']=(res.pages-1)*10+i;
+                   res.list[i-1]['index']=res.prePage*10+i;
               }//使序号从1开始
               this.setState({
                   dataSource:res.list
