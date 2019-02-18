@@ -22,9 +22,7 @@ class ProductInStorage extends Component{
              searchContent:'',
              dataSource:[],
              pagination:[],
-             Authorization:this.Authorization,
          }
-         
          this.columns=[{
             title:'序号',
             dataIndex:'index',

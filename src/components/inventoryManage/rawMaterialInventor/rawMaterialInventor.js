@@ -3,11 +3,8 @@ import React,{Component} from 'react';
 import {Table,message} from 'antd';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
-
-
 class RowMaterialInventor extends Component{
     url;
-    Authorization;
     componentDidMount(){
       this.fetch();
     }
@@ -21,7 +18,6 @@ class RowMaterialInventor extends Component{
          this.state={
              searchContent:'',
              dataSource:[],
-             Authorization:this.Authorization,
          }
          
          this.columns=[{
@@ -89,8 +85,7 @@ class RowMaterialInventor extends Component{
         //console.log(this.pagination);
           this.fetch({
               size:pagination.pageSize,//当前页显示了几条记录
-              page:pagination.current,//当前是第几页
-             
+              page:pagination.current,//当前是第几页             
           });
     }
     fetch=(params={})=>{
@@ -109,7 +104,7 @@ class RowMaterialInventor extends Component{
                //console.log(data.data.data);
                const res=data.data.data;
                this.pagination.total=res.total;
-               console.log(res);
+               //console.log(res);
                //res.list是传过来的记录
               for(var i=1;i<=res.list.length;i++){
                    res.list[i-1]['index']=res.prePage*10+i;
@@ -155,12 +150,11 @@ class RowMaterialInventor extends Component{
      });
     }
     render(){
-        this.Authorization=localStorage.getItem('Authorization');
         this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入货物名称'
+                    <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         type={this.props.type}

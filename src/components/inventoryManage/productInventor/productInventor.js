@@ -7,7 +7,6 @@ import axios from 'axios';
 
 class ProductInventor extends Component{
     url;
-    Authorization;
     componentDidMount(){
       this.fetch();
     }
@@ -21,9 +20,7 @@ class ProductInventor extends Component{
          this.state={
              searchContent:'',
              dataSource:[],
-             Authorization:this.Authorization,
          }
-         
          this.columns=[{
             title:'序号',
             dataIndex:'index',
@@ -85,11 +82,9 @@ class ProductInventor extends Component{
         this.searchEvent=this.searchEvent.bind(this);
     }
     handleTableChange=(pagination)=>{//页切换时调用
-        
           this.fetch({
               size:pagination.pageSize,//当前页显示了几条记录
               page:pagination.current,//当前是第几页
-              
           });
     }
     fetch=(params={})=>{
@@ -102,7 +97,6 @@ class ProductInventor extends Component{
             },
             params:{
                 ...params,
-                
             },
         })
         .then((data)=>{
@@ -156,12 +150,11 @@ class ProductInventor extends Component{
      });
     }
     render(){
-        //this.Authorization=localStorage.getItem('Authorization');
         this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入货物名称'
+                    <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         type={this.props.type}
