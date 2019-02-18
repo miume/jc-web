@@ -387,3 +387,66 @@
     width: 100%;
 }
 
+.unTrackTopModal {
+    padding-bottom: 15px;
+}
+
+.unTrackTopTable{
+    float: left;
+    margin-right: 20px;
+    margin-top: 5px;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+    border-radius: 3px;
+    width: 60%;
+}
+.unTrackTopThead {
+    color: white;
+    background: #0079FE;
+}
+.unTrackTopThead tr th {
+    height: 35px;
+    /*text-align: center;*/
+    padding-left: 5px;
+    font-size: 15px;
+    border: 1px solid #E9E9E9;
+}
+.unTrackTopThead tr th:last-child{
+    border-right: none;
+}
+
+.unTrackTopTbody tr {
+    /*height: 20px !important;*/
+}
+.unTrackTopTbody tr td{
+    width: 20%;
+    /*text-align: center;*/
+    border: 1px solid #E9E9E9;
+    height: 35px !important;
+    /*padding-left: 5px;*/
+}
+/*.unTrackTopTbody tr td:first-child{*/
+    /*padding-left: 5px;*/
+/*}*/
+.unTrackTopTbody tr td .ant-select-selection{
+    /*height: 20px !important;*/
+    /*text-align: center;*/
+    border: none;
+}
+/*.unTrackSelect .ant-select .ant-select-enabled{*/
+    /*height: 20px !important;*/
+/*}*/
+
+.unTrackTopTable tbody tr td .ant-calendar-picker-input{
+    border: none ;
+}
+.paddingTop td{
+    padding-left: 5px;
+}
+
+.unTrackTr .ant-select-selection__rendered{
+    margin-left: 5px;
+}
+.unTrackTr td:first-child{
+    padding-left: 5px;
+}
