@@ -18,6 +18,7 @@ class RowMaterialInventor extends Component{
          this.state={
              searchContent:'',
              dataSource:[],
+             pageChangeFlag:0,//0表示getAllByPage分页  1 表示搜索分页
          }
          
          this.columns=[{
@@ -83,12 +84,26 @@ class RowMaterialInventor extends Component{
     }
     handleTableChange=(pagination)=>{//页切换时调用
         //console.log(this.pagination);
-          this.fetch({
-              size:pagination.pageSize,//当前页显示了几条记录
-              page:pagination.current,//当前是第几页             
-          });
+         this.pagination=pagination;
+         const {pageChangeFlag}=this.state;
+         if(pageChangeFlag){
+             this.searchEvent({
+                 size:pagination.pageSize,//每页几条数据
+                 page:pagination.current,//当前页是几
+                 orderField: 'id',
+                 orderType: 'desc',
+             });
+         }
+         else{
+            this.fetch({
+                size:pagination.pageSize,//当前页显示了几条记录
+                page:pagination.current,//当前是第几页
+                orderField: 'id',
+                orderType: 'desc',             
+            });
+         }
     }
-    fetch=(params={})=>{
+    fetch=(params)=>{
         const materialClass=1;
         axios({
             url:`${this.url.inventorManage.inventorManage}?materialClass=${materialClass}`,
@@ -103,35 +118,36 @@ class RowMaterialInventor extends Component{
         .then((data)=>{
                //console.log(data.data.data);
                const res=data.data.data;
-               this.pagination.total=res.total;
-               //console.log(res);
-               //res.list是传过来的记录
-              for(var i=1;i<=res.list.length;i++){
-                   res.list[i-1]['index']=res.prePage*10+i;
-              }//使序号从1开始
-              this.setState({
-                  dataSource:res.list
-              });
-             });
+               if(res&&res.list){
+                    this.pagination.total=res.total;
+                    for(var i=1;i<=res.list.length;i++){
+                        res.list[i-1]['index']=res.prePage*10+i;
+                  }//使序号从1开始
+                  this.setState({
+                    dataSource:res.list,
+                    searchContent:'',
+                    pageChangeFlag:0
+                });
+            }
+        });
     }
 
     searchContentChange(e){
        const  value=e.target.value;//此处显示的是我搜索框填的内容
          this.setState({searchContent:value});
     }
-    searchEvent(){
+    searchEvent(params){
       const materialName=this.state.searchContent;
+      const materialClass=1;
      //console.log(name);//此处显示的是我搜索框填的内容
      axios({
-        url:`${this.url.inventorManage.inventorManage}`,
+        url:`${this.url.inventorManage.inventorManage}?materialName=${materialName}&materialClass=${materialClass}`,
         method:'get',
         headers:{
             'Authorization':this.url.Authorization
         },
-        params:{
-            materialName:materialName,
-            materialClass:1
-        }
+        params:params,
+        type:'json'
      })
      .then((data)=>{
          const res=data.data.data;
@@ -141,7 +157,8 @@ class RowMaterialInventor extends Component{
             res.list[i-1]['index']=res.prePage*10+i;
          }
          this.setState({
-           dataSource:res.list//list取到的是所有符合要求的数据
+           dataSource:res.list,//list取到的是所有符合要求的数据
+           pageChangeFlag:1
          });
          } 
      })
