@@ -218,7 +218,7 @@ class Material extends React.Component{
                         }
                         return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"Mborder-down Mrow"+index} key={index}>
                                     {string}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>

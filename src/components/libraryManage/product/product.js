@@ -168,7 +168,7 @@ class Product extends React.Component{
                 <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
                 <div className="LM-tableHead">编号</div>
                 <div className="LM-tableHead">货品名称</div>
-                <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
+                <div className="LM-tableHead" style={{width:"13%"}}>货品型号</div>
                 <div className="LM-blueTableHead LM-tableHead">记录数量</div>
                 <div className="LM-blueTableHead LM-tableHead">实际数量</div>
                 <div className="LM-blueTableHead LM-tableHead">记录重量</div>
