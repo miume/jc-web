@@ -263,3 +263,7 @@ table .ant-select-selection,table .ant-input{
 .ant-table-align-center,.ant-table-selection-column{
     text-align: left !important;
 }
+.text-decoration{
+    text-decoration:underline;
+    cursor: default;
+}

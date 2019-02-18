@@ -44,7 +44,7 @@ class ApplyStockOut extends React.Component{
             dataIndex:'materialClass',
             key:'materialClass',
             width:'13%',
-            render:(text,record)=>{
+            render:(text)=>{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
@@ -58,7 +58,11 @@ class ApplyStockOut extends React.Component{
             key:'serialNumber',
             width:'15%',
             render:(text)=>{
-                return <abbr title={text}>{text.substring(0,10)}</abbr>
+                if(text.length>13){
+                    return <span className='text-decoration' title={text}>{text.substring(0,13)}</span>
+                }else{
+                    return <span className='text-decoration'>{text}</span>
+                }
             }
         },{
             title:'库存数量',

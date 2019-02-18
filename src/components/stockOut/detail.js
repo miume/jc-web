@@ -41,7 +41,11 @@ class Detail extends React.Component{
             key:'serialNumber',
             width:'20%',
             render:(text)=>{
-                return <abbr title={text}>{text.substring(0,10)}</abbr>
+                if(text.length>13){
+                    return <span className='text-decoration' title={text}>{text.substring(0,13)}</span>
+                }else{
+                    return <span className='text-decoration'>{text}</span>
+                } 
             }
         },{
             title:'出库数量',
