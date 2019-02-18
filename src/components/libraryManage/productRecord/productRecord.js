@@ -93,16 +93,16 @@ class MaterialRecord extends React.Component{
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"8.9%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"9.85%"}}>编号</div>
-                <div className="LM-tableHead" style={{width:"9.9%"}}>货品名称</div>
-                <div className="LM-tableHead" style={{width:"9.9%"}}>货品型号</div>
-                <div className="LM-tableHead" style={{width:"9.85%"}}>盘库日期</div>
-                <div className="LM-tableHead" style={{width:"9.9%"}}>盘库人</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"9.85%"}}>记录数量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"9.85%"}}>实际数量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"9.85%"}}>记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"9.85%"}}>实际重量</div>
+                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>货品型号</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>盘库日期</div>
+                <div className="LM-tableHead" style={{width:"9.95%"}}>盘库人</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际数量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际重量</div>
                 </div>
                 <div className="MRparent">
                     <div className="MRone">

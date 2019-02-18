@@ -4,6 +4,10 @@
     max-height: 396px;
     overflow-y: scroll;
 }
+.MRparent::-webkit-scrollbar{
+    width: 1px;
+    height: 0px;
+}
 .MRone{
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
