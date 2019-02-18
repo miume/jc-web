@@ -2,6 +2,8 @@
     flex-direction: row;
     max-height: 342px;
     overflow-y: auto;
+    position: relative;
+    top: -4px;
 }
 .LM-parent::-webkit-scrollbar{
     width: 1px;
@@ -157,6 +159,7 @@
   vertical-align: middle;
   line-height: 18px;
   font-weight: bold;
+  z-index: 999;
 }
 .LM-blueTableHead::before {
   content: "";
