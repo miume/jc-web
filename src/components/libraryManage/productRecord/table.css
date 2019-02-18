@@ -3,6 +3,8 @@
     flex-direction: row;
     max-height: 396px;
     overflow-y: scroll;
+    position: relative;
+    top: -4px;
 }
 .MRparent::-webkit-scrollbar{
     width: 1px;

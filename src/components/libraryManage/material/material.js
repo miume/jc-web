@@ -189,8 +189,8 @@ class Material extends React.Component{
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
                 <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
-                <div className="LM-tableHead">编号</div>
-                <div className="LM-tableHead">货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.95%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"13.05%"}}>货品名称</div>
                 <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
                 <div className="LM-blueTableHead LM-tableHead">记录数量</div>
                 <div className="LM-blueTableHead LM-tableHead">实际数量</div>
