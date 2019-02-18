@@ -79,7 +79,6 @@ class AddModal extends React.Component {
         count: 1,
         data : [1],
     };
-    server = localStorage.getItem("remote")
 
     /**新增一条数据 */
     addData = ()=>{

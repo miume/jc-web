@@ -210,8 +210,14 @@ class Material extends React.Component{
                     <div className="Mtwo Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"Mborder-down Mrow"+index} key={index}>
-                                    {m.serialNumber}
+                        var string = null
+                        if(m.serialNumber.length>13){
+                            string = m.serialNumber.substring(0,13)
+                        }else{
+                            string = m.serialNumber
+                        }
+                        return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"Mborder-down Mrow"+index} key={index}>
+                                    {string}
                                 </div>    
                     })
                 }

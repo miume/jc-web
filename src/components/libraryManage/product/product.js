@@ -189,8 +189,14 @@ class Product extends React.Component{
 
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index} key={index}>
-                                    {m.serialNumber}
+                        var string = null
+                        if(m.serialNumber.length>13){
+                            string = m.serialNumber.substring(0,13)
+                        }else{
+                            string = m.serialNumber
+                        }
+                        return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"border-down row"+index} key={index}>
+                                    {string}
                                 </div>
                     })
                 }

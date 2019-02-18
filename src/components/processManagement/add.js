@@ -10,6 +10,11 @@ import SaveButton from "../BlockQuote/saveButton";
 let id = 0;
 
 class DynamicFieldSet extends React.Component{
+    url
+    ob
+    state = {
+      visible: false,
+    };
     remove = (k) =>{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
@@ -41,6 +46,8 @@ class DynamicFieldSet extends React.Component{
       }
 
       render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
+        this.ob = JSON.parse(localStorage.getItem('menuList'))
         const { getFieldDecorator, getFieldValue } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -88,6 +95,8 @@ class DynamicFieldSet extends React.Component{
             </Form.Item>
           ));
           return (
+            <span>
+            <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
             <Form onSubmit={this.handleSubmit}>
               {formItems}
               <Form.Item {...formItemLayoutWithOutLabel}>
@@ -99,6 +108,7 @@ class DynamicFieldSet extends React.Component{
                 <Button type="primary" htmlType="submit">Submit</Button>
               </Form.Item>
             </Form>
+            </span>
           );
       }
 }
