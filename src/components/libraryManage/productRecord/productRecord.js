@@ -84,7 +84,7 @@ class MaterialRecord extends React.Component{
         return (
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入搜索内容'
+                    <SearchCell name='请输入货品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
@@ -150,8 +150,9 @@ class MaterialRecord extends React.Component{
                     <div className="MRfour">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className="MRborder-down" key={index}>
-                                    {m.repoDiffRecord.createTime}
+                        var string = m.repoDiffRecord.createTime.substring(0,10)
+                        return <div title={m.repoDiffRecord.createTime} style={{textDecoration:'underline'}} className="MRborder-down" key={index}>
+                                    {string}
                                 </div>    
                     })
                 }
