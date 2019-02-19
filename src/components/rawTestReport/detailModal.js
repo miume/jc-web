@@ -32,8 +32,10 @@ const columns = [{
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;
+        const sty = [{height:550},{height:480}]
+        const divheight = this.props.checkFlag?sty[1]:sty[0];
         return(
-            <div>
+            <div style={divheight}>
                 <div className="interDrSpanModalTop">
                     <table>
                         <thead>
