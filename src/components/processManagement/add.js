@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Modal, Form, Input,message,Icon } from 'antd';
+import { Button, Modal, Form, Input,message,Icon,Col } from 'antd';
 import axios from 'axios';
-import Tr from './tr';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
@@ -43,7 +42,17 @@ class DynamicFieldSet extends React.Component{
             console.log('Received values of form: ', values);
           }
         });
-      }
+    }
+
+    showModal = () => {
+      this.setState({ visible: true });
+    };
+
+    handleCancel = () => {
+      // const form = this.formRef.props.form;
+      this.setState({ visible: false });
+      // form.resetFields();
+    };
 
       render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -65,24 +74,34 @@ class DynamicFieldSet extends React.Component{
               sm: { span: 20, offset: 4 },
             },
           };
-          getFieldDecorator('keys', { initialValue: [] });
+          getFieldDecorator('keys', { initialValue: [0] });
           const keys = getFieldValue('keys');
           const formItems = keys.map((k, index) => (
+            <div key={index}>
             <Form.Item
-              {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-              label={index === 0 ? 'Passengers' : ''}
-              required={false}
-              key={k}
+              // wrapperCol={{ span: 15 }}
             >
               {getFieldDecorator(`names[${k}]`, {
                 validateTrigger: ['onChange', 'onBlur'],
                 rules: [{
                   required: true,
-                  whitespace: true,
-                  message: "Please input passenger's name or delete this field.",
+                  message: "请选择负责人",
                 }],
               })(
-                <Input placeholder="passenger name" style={{ width: '60%', marginRight: 8 }} />
+                <Input placeholder="请选择负责人" style={{ width: '60%'}} />
+              )}
+            </Form.Item>
+            <Form.Item
+                // wrapperCol={{ span: 15 }}
+                >
+              {getFieldDecorator(`description[${k}]`,{
+                validateTrigger: ['onChange', 'onBlur'],
+                rules: [{
+                  required: true,
+                  message: "请输入职责",
+                }],
+              })(
+                <Input placeholder="请输入职责" style={{ width: '60%', marginRight: 4 }} />
               )}
               {keys.length > 1 ? (
                 <Icon
@@ -93,21 +112,34 @@ class DynamicFieldSet extends React.Component{
                 />
               ) : null}
             </Form.Item>
+            </div>
           ));
           return (
             <span>
             <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
-            <Form onSubmit={this.handleSubmit}>
-              {formItems}
-              <Form.Item {...formItemLayoutWithOutLabel}>
-                <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
-                  <Icon type="plus" /> Add field
-                </Button>
-              </Form.Item>
-              <Form.Item {...formItemLayoutWithOutLabel}>
-                <Button type="primary" htmlType="submit">Submit</Button>
-              </Form.Item>
-            </Form>
+            <Modal
+              visible={this.state.visible}
+              closable={false}
+              centered={true}
+              maskClosable={false}
+              width="360px"
+              title="新增"
+              // className='modal-md'
+              footer={[
+                <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                <SaveButton key="define" handleSave={this.handleSubmit} className='fa fa-check' />,
+                <AddButton key="submit" handleClick={this.handleSubmit} name='提交' className='fa fa-check' />
+              ]}
+            >
+              <Form horizontal='true'>
+                  {formItems}
+                  <Form.Item {...formItemLayoutWithOutLabel}>
+                    <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
+                      <Icon type="plus" /> 添加一行
+                    </Button>
+                  </Form.Item>
+              </Form>
+            </Modal>
             </span>
           );
       }

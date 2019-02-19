@@ -151,7 +151,7 @@ class Material extends React.Component{
                         }
                     }
                     setTimeout(()=>{
-                        parent.scrollTop = 37.8*index+54.8;
+                        parent.scrollTop = 37.8*index;
                     },500)
                     index++;
                 });
