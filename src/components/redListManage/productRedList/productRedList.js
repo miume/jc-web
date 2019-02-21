@@ -46,7 +46,7 @@ class ProductRedList extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'12%'
+            width:'15%'
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -74,13 +74,13 @@ class ProductRedList extends Component{
             dataIndex:'repoRedTable.quantityLoss',
             key:'repoRedTable.quantityLoss',
             align:'center',
-            width:'8%'
+            width:'7%'
         },{
             title:'损失重量',
             dataIndex:'repoRedTable.weightLoss',
             key:'repoRedTable.weightLoss',
             align:'center',
-            width:'8%'
+            width:'7%'
         },{
             title:'申请人',
             dataIndex:'createPersonName',
@@ -92,7 +92,7 @@ class ProductRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'14%'
+            width:'13%'
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -187,17 +187,17 @@ class ProductRedList extends Component{
             },
         })
         .then((data)=>{
-            // console.log(data);
              const res=data.data.data;
-            
              this.pagination.total=res?res.total:0;
+             this.pagination.current=res.pageNum;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
              if(res&&res.list){
                 
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
                this.setState({
-                dataSource:res.list
+                dataSource:res.list,
+                searchContent:''
                  });
               }
         });
@@ -278,6 +278,7 @@ class ProductRedList extends Component{
               const res=data.data.data;
               if(res&&res.list){
                 this.pagination.total=res.total;
+                this.pagination.current=res.pageNum;
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }

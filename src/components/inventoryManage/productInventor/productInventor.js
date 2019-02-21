@@ -55,18 +55,12 @@ class ProductInventor extends Component{
            width:'20%',
            align:'center'
         },{
-           title:'数量',
-           dataIndex:'quantity',
-           key:'quantity',
-           width:'18%',
-           align:'center'
-        },{
            title:'重量',
            dataIndex:'weight',
            key:'weight',
            width:'18%',
            align:'center'
-        },];
+        }];
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
@@ -117,17 +111,20 @@ class ProductInventor extends Component{
         .then((data)=>{
               //console.log(data.data.data);
                const res=data.data.data;
-               // console.log(res.total);
+               //console.log(data);
                this.pagination.total=res?res.total:0;
+               this.pagination.current=res.pageNum;
                if(res&&res.list){
-                for(var i=1;i<=res.list.length;i++){
-                  res.list[i-1]['index']=res.prePage*10+i;
-               }
-               this.setState({
-                 dataSource:res.list,//list取到的是所有符合要求的数据
-                 pageChangeFlag:0,
-                 searchContent:''
-               });
+                    for(var i=1;i<=res.list.length;i++){
+                        res.list[i-1]['index']=res.prePage*10+i;
+                      
+                    }
+                  
+                    this.setState({
+                        dataSource:res.list,//list取到的是所有符合要求的数据
+                        pageChangeFlag:0,
+                        searchContent:''
+                    });
                }
              });
     }
@@ -152,6 +149,7 @@ class ProductInventor extends Component{
      .then((data)=>{
          const res=data.data.data;
          this.pagination.total=res.total?res.total:0;
+         this.pagination.current=res.pageNum;
          if(res&&res.list){
           for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=res.prePage*10+i;

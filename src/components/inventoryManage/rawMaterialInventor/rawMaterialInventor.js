@@ -55,12 +55,6 @@ class RowMaterialInventor extends Component{
            width:'20%',
            align:'center'
         },{
-           title:'数量',
-           dataIndex:'quantity',
-           key:'quantity',
-           width:'18%',
-           align:'center'
-        },{
            title:'重量',
            dataIndex:'weight',
            key:'weight',
@@ -120,6 +114,7 @@ class RowMaterialInventor extends Component{
                const res=data.data.data;
                if(res&&res.list){
                     this.pagination.total=res.total;
+                    this.pagination.current=res.pageNum;
                     for(var i=1;i<=res.list.length;i++){
                         res.list[i-1]['index']=res.prePage*10+i;
                   }//使序号从1开始
@@ -152,6 +147,7 @@ class RowMaterialInventor extends Component{
      .then((data)=>{
          const res=data.data.data;
          this.pagination.total=res.total?res.total:0;
+         this.pagination.current=res.pageNum;
          if(res&&res.list){
           for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=res.prePage*10+i;
@@ -188,7 +184,7 @@ class RowMaterialInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:600}}
+                scroll={{y:330}}
                 ></Table>
             </div>
         );

@@ -17,7 +17,7 @@ class EnterStorage extends React.Component{
                  <TabPane tab={<span><i className='fa fa-tint'></i>&nbsp; 原材料入库</span>} key='1'>
                    <RowMaterialStorage type={1}/>
                  </TabPane>
-                 <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 产品入库</span>} key='2'>
+                 <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 成品入库</span>} key='2'>
                     <ProductInStorage type={3}/>
                  </TabPane>
                </Tabs>

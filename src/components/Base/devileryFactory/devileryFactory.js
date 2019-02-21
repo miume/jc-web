@@ -174,7 +174,9 @@ class DeliveryFactory extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
+        //console.log(res);
         this.pagination.total=res.total?res.total:0;
+        this.pagination.current=res.pageNum;
      if(res&&res.list){
       for(var i = 1; i<=res.list.length; i++){
         res.list[i-1]['index']=res.prePage*10+i;
@@ -332,7 +334,7 @@ class DeliveryFactory extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                name:name
              },
              type:'json'
@@ -340,6 +342,7 @@ class DeliveryFactory extends React.Component{
            .then((data)=>{
              const res=data.data.data;
              this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;

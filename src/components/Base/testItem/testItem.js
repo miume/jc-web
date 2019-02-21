@@ -186,6 +186,7 @@ class TestItem extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res?res.total:0;
+        this.pagination.current=res.pageNum;
         if(res&&res.list){
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
@@ -198,8 +199,6 @@ class TestItem extends React.Component{
     }
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
-      //console.log(id);
-        //const dataSource = this.state.dataSource;
         axios({
           url:`${this.url.testItems.testItems}/{id}?id=${id}`,
           method:'Delete',
@@ -343,14 +342,15 @@ class TestItem extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                testItemName:testItemName
              },
              type:'json'
            })
            .then((data)=>{
              const res=data.data.data;
-             this.pagination.totlal=res.total?res.total:0;
+             this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               for(let i=1;i<=res.list.length;i++){
                   res.list[i-1]['index']=res.prePage*10+i;

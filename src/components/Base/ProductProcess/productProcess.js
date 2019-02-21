@@ -110,12 +110,10 @@ class ProductProcess extends React.Component{
         }
       };
       this.columns=[{//表头
-
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
-       //sorter:true,//需要服务端排序
-       //sorter:(a, b) => a.id-b.id,
+       sorter:(a, b) => a.id-b.id,
         width: '26%',
         align:'center',
      },{
@@ -132,8 +130,6 @@ class ProductProcess extends React.Component{
       width: '33%',
       align:'center',
       render : (text, record) =>  {
-        //console.log(text);
-        //console.log(record);
         const editable = this.isEditing(record);
         return (
             <span>
@@ -190,6 +186,7 @@ class ProductProcess extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res.total?res.total:0;
+        this.pagination.current=res.pageNum;
         if(res&&res.list){
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
@@ -344,14 +341,15 @@ class ProductProcess extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                name:name
              },
              type:'json'
            })
            .then((data)=>{
              const res=data.data.data;
-             this.pagination.totlal=res.total?res.total:0;
+             this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               for(let i=1;i<=res.list.length;i++){
                   res.list[i-1]['index']=res.prePage*10+i;
