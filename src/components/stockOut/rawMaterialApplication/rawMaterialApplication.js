@@ -33,17 +33,17 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'15%'
+            width:'20%'
         },{
             title:'物料名称',
             dataIndex:'materialName',
             key:'materialName',
-            width:'15%'
+            width:'20%'
         },{
             title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            width:'15%',
+            width:'20%',
             render:(text,record)=>{
                 switch(text){
                     case 1: return '原材料';
@@ -53,19 +53,22 @@ class RawMaterialApplication extends React.Component{
                 }
             }
         },{
-            title:'编号',
+            title:'批号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-        },{
-            title:'数量',
-            dataIndex:'quantity',
-            key:'quantity',
-            width:'15%'
-        },{
+            width:'20%'
+        }
+        // ,{
+        //     title:'数量',
+        //     dataIndex:'quantity',
+        //     key:'quantity',
+        //     width:'15%'
+        // }
+        ,{
             title:'重量',
             dataIndex:'weight',
             key:'weight',
-            width:'15%'
+            width:'20%'
         }]
         // this.pagination = {
         //     total: this.props.data.total,

@@ -32,12 +32,11 @@ html, body, .parent {
 }
 .rightDiv {
     position: absolute;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: auto;
     left: 130px;
     right: 0;
     top: 60px;
-    height: 100%;
+    /* height: 100%; */
     background: #ffffff;
     border-top:#e9e9e9;
     /* padding: 10px; */

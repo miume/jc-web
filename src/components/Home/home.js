@@ -430,6 +430,9 @@ class Home extends Component {
         const path2Component = this.getComponentArray(); 
         const userName = JSON.parse(localStorage.getItem('menuList')).name;
         const userId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const sty = {
+            height:document.body.clientHeight-55
+        }
         return (
                 <div className="parent" >
                     <div className="top">
@@ -451,12 +454,12 @@ class Home extends Component {
                             <Divider type='vertical' />
                         </div>     
                     </div>
-                    <div className="left">
+                    <div className="left" style={sty}>
                         <div className="menu1" >
                         <Menu1List/>
                         </div>
                     </div>
-                    <div className="rightDiv">
+                    <div className="rightDiv" style={sty}>
                     <Switch>
                         {/**默认选中快速访问界面 */}
                         <Route exact path="/home" component={QuickAccess}/>
