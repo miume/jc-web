@@ -26,6 +26,13 @@ class Check extends React.Component {
         }
     };
     render() {
+        if(this.props.tabFlag === 2){
+            console.log('222222')
+            this.fetch();
+            this.props.modifyTabFlag();
+        }
+
+
         return(
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
@@ -68,6 +75,7 @@ class Check extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            console.log('220000000')
             this.pagination.total=res?res.total:0;
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
