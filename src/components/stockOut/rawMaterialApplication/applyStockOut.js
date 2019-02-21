@@ -53,7 +53,7 @@ class ApplyStockOut extends React.Component{
                 }
             }
         },{
-            title:'编号',
+            title:'批号',
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'15%',
@@ -64,23 +64,23 @@ class ApplyStockOut extends React.Component{
                     return <span className='text-decoration'>{text}</span>
                 }
             }
-        },{
-            title:'库存数量',
-            dataIndex:'quantity',
-            key:'quantity',
-            width:'10%'
+        // },{
+        //     title:'库存数量',
+        //     dataIndex:'quantity',
+        //     key:'quantity',
+        //     width:'10%'
         },{
             title:'库存重量',
             dataIndex:'weight',
             key:'weight',
             width:'10%'
-        },{
-            title:'出库数量',
-            dataIndex:'outQuantity',
-            key:'outQuantity',
-            width:'15%',
-            render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
-            className:'tdStyle'
+        // },{
+        //     title:'出库数量',
+        //     dataIndex:'outQuantity',
+        //     key:'outQuantity',
+        //     width:'15%',
+        //     render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
+        //     className:'tdStyle'
         },{
             title:'出库重量',
             dataIndex:'outWeight',
