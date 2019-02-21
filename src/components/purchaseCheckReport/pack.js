@@ -45,6 +45,13 @@ class Pack extends React.Component {
     };
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
+        if(this.props.tabFlag === 1){
+            console.log('1111111')
+            this.judgeGetAll();
+            this.props.modifyTabFlag();
+        }
+
+
         this.rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -150,6 +157,7 @@ class Pack extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
+            console.log('11000000')
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;

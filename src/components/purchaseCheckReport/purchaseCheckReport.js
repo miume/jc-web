@@ -16,7 +16,11 @@ class PurchaseCheckReport extends React.Component {
     // }
     constructor(props){
         super(props);
+        this.state={
+            tabFlag: ''
+        }
         this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.modifyTabFlag = this.modifyTabFlag.bind(this);
     }
     render() {
         const TabPane = Tabs.TabPane;
@@ -30,6 +34,8 @@ class PurchaseCheckReport extends React.Component {
                 <Tabs defaultActiveKey="1"  onChange={this.callback}  style={{paddingLeft:'15px',paddingRight:'15px'}}>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-cube" aria-hidden="true"></i> &nbsp;生成</span>} key="1" >
                         <Pack
+                            tabFlag={this.state.tabFlag}
+                            modifyTabFlag={this.modifyTabFlag}
                             url={this.url}
                             status={status}
                             menuList={menuList}
@@ -37,6 +43,8 @@ class PurchaseCheckReport extends React.Component {
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
                         <Check
+                            tabFlag={this.state.tabFlag}
+                            modifyTabFlag={this.modifyTabFlag}
                             menuList={menuList}
                             url={this.url}
                             status={status}
@@ -54,6 +62,30 @@ class PurchaseCheckReport extends React.Component {
         )
     };
     callback= (key) => {
+        switch (key) {
+            case '1':
+                this.setState({
+                    tabFlag: 1,
+                });
+                break;
+            case '2':
+                this.setState({
+                    tabFlag: 2,
+                })
+                break;
+            case '3':
+                this.setState({
+                    tabFlag: 3,
+                })
+                break;
+            default:break;
+
+        }
+    }
+    modifyTabFlag = () => {
+        this.setState({
+            tabFlag: '',
+        })
     }
     /**返回数据录入页面 */
     returnDataEntry(){
