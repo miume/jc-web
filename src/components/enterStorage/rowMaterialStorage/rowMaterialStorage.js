@@ -7,7 +7,6 @@ import axios from 'axios';
 
 class RowMaterialStorage extends Component{
     url;
-    Authorization;
     componentDidMount(){
         this.fetch();
     }
@@ -22,7 +21,7 @@ class RowMaterialStorage extends Component{
              searchContent:'',
              dataSource:[],
              pagination:[],
-             Authorization:this.Authorization,
+             pageChangeFlag:0,
          }
          
          this.columns=[{
@@ -30,43 +29,96 @@ class RowMaterialStorage extends Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'10%',
             align:'center'
         },{
            title:'原材料名称',
            dataIndex:'repoBaseSerialNumber.materialName',
            key:'repoBaseSerialNumber.materialName',
-           width:'15%',
+
            align:'center'
         },{
-           title:'编号',
+            title:'编号',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'物料编码',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'批次',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'车间',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'物料类别',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+           title:'物料名称',
            dataIndex:'repoBaseSerialNumber.serialNumber',
            key:'repoBaseSerialNumber.serialNumber',
-           width:'15%',
+  
            align:'center'
         },{
+            title:'袋号',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'重量',
+            dataIndex:'repoInRecord.weight',
+            key:'repoInRecord.weight',
+
+            align:'center'
+         },{
+            title:'厂商',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'物料名称',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
+            title:'操作员',
+            dataIndex:'repoBaseSerialNumber.serialNumber',
+            key:'repoBaseSerialNumber.serialNumber',
+   
+            align:'center'
+         },{
            title:'数量',
            dataIndex:'repoInRecord.quantity',
            key:'repoInRecord.quantity',
-           width:'15%',
-           align:'center'
-        },{
-           title:'重量',
-           dataIndex:'repoInRecord.weight',
-           key:'repoInRecord.weight',
-           width:'15%',
+ 
            align:'center'
         },{
            title:'入库时间',
            dataIndex:'repoInRecord.createTime',
            key:'repoInRecord.createTime',
-           width:'16%',
+           
            align:'center'
         },{
            title:'入库人',
            dataIndex:'repoInRecord.createPerson',
            key:'repoInRecord.createPerson',
-           width:'15%',
+
            align:'center'
         }];
         this.pagination={
@@ -88,14 +140,25 @@ class RowMaterialStorage extends Component{
     
     handleTableChange=(pagination)=>{//当点击第二页，第三页的时候，调用
        //console.log(pagination);
+       const {pageChangeFlag}=this.state;
+       if(pageChangeFlag){//用于区分点击分页时是搜索分页哈市getAllByPage分页,搜索符合要求的可能有很多页，这时也要分页，
+        this.searchEvent({
+            size:pagination.pageSize,//每页几条数据
+            page:pagination.current,//当前页是几
+            orderField: 'id',
+            orderType: 'desc',
+        });
+       }
+       else{
         this.fetch({
             size:pagination.pageSize,//每页条目数
             page:pagination.current,//当前是第几页
-          
+            orderField: 'id',
+            orderType: 'desc', 
         });
+       }
     }
-
-    fetch=(params={})=>{
+    fetch=(params)=>{
         //console.log(params)//空
         axios({
             url:`${this.url.enterStorage.enterStorage}`,
@@ -111,17 +174,19 @@ class RowMaterialStorage extends Component{
         })
         .then((data)=>{
             const res=data.data.data;
-           // console.log(res.list);
-           // console.log(res.list[0].repoInRecord);
+            //console.log(res);
             this.pagination.total=res.total;
+            this.pagination.current=res.pageNum;//当前在第几页
+          if(res&&res.list){
             for(var i=1;i<=res.list.length;i++){
-                 res.list[i-1]['index']=(res.pages-1)*10+i;
-            }
-           
-            this.setState({
-                dataSource:res.list
-              
-            });
+                res.list[i-1]['index']=res.prePage*10+i;
+                res.list[i-1].repoInRecord.quantity=1;//将数量写死为1
+           }
+           this.setState({
+               dataSource:res.list,
+               pageChangeFlag:1
+           });
+          }
 
         });
     }
@@ -130,34 +195,30 @@ class RowMaterialStorage extends Component{
        const  value=e.target.value;//此处显示的是我搜索框填的内容
          this.setState({searchContent:value});
     }
-    searchEvent(){
+    searchEvent(params){
       const materialName=this.state.searchContent;
+      const materialType=1;
     //  console.log(this.pagination);
       axios({
-         url:`${this.url.enterStorage.enterStorage}`,
+         url:`${this.url.enterStorage.enterStorage}?materialName=${materialName}&materialType=${materialType}`,
          method:'get',
          headers:{
              'Authorization':this.url.Authorization
          },
-         params:{
-            //  size:this.pagination.pageSize,
-            //  page:this.pagination.current,
-             materialName:materialName,
-             materialType:1
-         },
-        //type:'json'
-
+         params:params
       })
       .then((data)=>{
-         //console.log(data.data);
          const res=data.data.data;
-         this.pagination.total=res.total;
-         for(var i=1;i<=res.list.length;i++){
-               res.list[i-1]['index']=(res.pages-1)*10+i;
-         }
-         this.setState({
-             dataSource:res.list
-         });
+         this.pagination.total=res.total?res.total:0;
+         this.pagination.current=res.pageNum;
+       if(res){
+        for(var i=1;i<=res.list.length;i++){
+            res.list[i-1]['index']=(res.pages-1)*10+i;
+        }
+        this.setState({
+            dataSource:res.list
+        });
+       }
       })
       .catch(()=>{
           message.info('搜索失败，请联系管理员！');
@@ -165,7 +226,6 @@ class RowMaterialStorage extends Component{
     }
     render(){
       this.url=JSON.parse(localStorage.getItem('url'));
-       this.Authorization=localStorage.getItem('Authorization');
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>

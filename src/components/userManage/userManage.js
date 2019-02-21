@@ -253,7 +253,9 @@ class User extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
+        //console.log(res);
         this.pagination.total=res.total?res.total:0;
+        this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
         if(res&&res.list){
           for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=res.prePage*10+i;
@@ -443,7 +445,7 @@ class User extends React.Component{
           this.setState({searchContent:value});
         }
       //根据用户名称分页查询
-      searchEvent(params){
+      searchEvent(params={}){
            const username=this.state.searchContent;
            //console.log(username);
            axios({
@@ -452,14 +454,14 @@ class User extends React.Component{
              headers:{
                'Authorization':this.url.Authorization
              },
-             params:{
+             params:{//最开始搜索的时候不用传当前页
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+              //  page:this.pagination.current,
                name:username
              },
-             type:'json'
            })
            .then((data)=>{
+             //console.log(data);
              const res=data.data.data;
              this.pagination.total=res?res.total:0;
              if(res&&res.list){

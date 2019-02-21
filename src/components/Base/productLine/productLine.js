@@ -187,8 +187,8 @@ class ProductLine extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res?res.total:0;
+        this.pagination.current=res.pageNum;
         if(res&&res.list){
-          
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
          }
@@ -352,14 +352,16 @@ class ProductLine extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                productLineName:productLineName
              },
              type:'json'
            })
            .then((data)=>{
              const res=data.data.data;
+             //console.log(res);
              this.pagination.totlal=res?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               
               for(let i=1;i<=res.list.length;i++){
@@ -435,7 +437,7 @@ class ProductLine extends React.Component{
                     components={components} 
                     pagination={this.pagination} 
                     onChange={this.handleTableChange} 
-                    size="small" bordered  scroll={{ y: 300 }}/>
+                    size="small" bordered  scroll={{ y: 400 }}/>
                 </div>
            </div>
        );

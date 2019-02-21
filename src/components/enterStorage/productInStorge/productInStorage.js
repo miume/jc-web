@@ -7,7 +7,6 @@ import axios from 'axios';
 
 class ProductInStorage extends Component{
     url;
-    Authorization;
     componentDidMount(){
       this.fetch();
     }
@@ -22,6 +21,7 @@ class ProductInStorage extends Component{
              searchContent:'',
              dataSource:[],
              pagination:[],
+             pageChangeFlag:0,//1是搜索分页，0是getAllByPAge
          }
          this.columns=[{
             title:'序号',
@@ -44,8 +44,8 @@ class ProductInStorage extends Component{
            align:'center'
         },{
            title:'数量',
-           dataIndex:'repoInRecord.quantity',
-           key:'repoInRecord.quantity',
+           dataIndex:'quantity',
+           key:'quantity',
            width:'15%',
            align:'center'
         },{
@@ -83,11 +83,24 @@ class ProductInStorage extends Component{
         this.searchEvent=this.searchEvent.bind(this);
     }
     handleTableChange=(pagination)=>{//页码发生改变时调用
-         this.fetch({
-             size:pagination.pageSize,//此页显示了几条
-             page:pagination.current,//当是第几页
-           
-         });
+        const {pageChangeFlag}=this.state;
+        if(pageChangeFlag){
+            this.searchEvent({
+                size:pagination.pageSize,//此页显示了几条
+                page:pagination.current,//当是第几页
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }
+        else{
+            this.fetch({
+                size:pagination.pageSize,//此页显示了几条
+                page:pagination.current,//当是第几页
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }
+         
     }
     fetch=(params={})=>{
       axios({
@@ -100,7 +113,6 @@ class ProductInStorage extends Component{
             ...params,
             materialType:3
         }
-      
     })
       .then((data)=>{
           const res=data.data.data;
@@ -109,8 +121,11 @@ class ProductInStorage extends Component{
               res.list[i-1]['index']=(res.pages-1)*10+i;
           }//使序号从1开始
           this.setState({
-              dataSource:res.list
+              dataSource:res.list,
+              pageChangeFlag:0,
+              searchContent:''
           });
+          
       });
     
     }
@@ -136,11 +151,15 @@ class ProductInStorage extends Component{
      .then((data)=>{
         //console.log(data);
         const res =data.data.data;
+        //console.log(res);
+        this.pagination.total=res.total?res.total:0;
+        this.pagination.current=res.pageNum;
         for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=(res.pages-1)*10+i;
         }
         this.setState({
-            dataSource:res.list
+            dataSource:res.list,
+            pageChangeFlag:1,
         });
      })
      .catch(()=>{
@@ -149,7 +168,6 @@ class ProductInStorage extends Component{
      
     }
     render(){
-       this.Authorization=localStorage.getItem('Authorization');
        this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>

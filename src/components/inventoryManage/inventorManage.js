@@ -17,7 +17,7 @@ class InventorManage extends React.Component{
                 <TabPane tab={<span><i className='fa fa-tint'></i>&nbsp; 原材料库存</span>} key='1'> 
                    <RowMaterialInventor type={1}/>
                  </TabPane>
-                 <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 产品库存</span>} key='2'>
+                 <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 成品库存</span>} key='2'>
                     <ProductInventor type={3}/>
                  </TabPane>
                </Tabs>
