@@ -13,8 +13,9 @@ class Product extends React.Component{
         this.props.blockClick(id);
     }
     render(){
+        var height1 = document.body.clientHeight-330;
         return (
-            <div className='product-standrad-bottom'>
+            <div className='product-standrad-bottom' style={{height:height1}}>
             {
                 this.props.data?this.props.data.map(e=>{
                     return (

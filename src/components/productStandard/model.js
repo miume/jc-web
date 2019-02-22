@@ -172,6 +172,7 @@ class SelectModal extends React.Component{
                 name:`基本型号${i+1}`
             })
         */
+       var height1 = document.body.clientHeight-400;
         return (
             <div className='modal-standrad-bottom'>
                 <div className='product-modal'>
@@ -195,7 +196,7 @@ class SelectModal extends React.Component{
                     </div>
                     <div className='product-modal-1' onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                 </div>
-                <div className='product-modal-middle'>
+                <div className='product-modal-middle' style={{height:height1}}>
                 {
                     this.props.data?this.props.data.map(e=>{
                         return (

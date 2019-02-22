@@ -6,8 +6,9 @@ class SelectProductStandard extends React.Component{
     }
     render(){
         // const data = [['','','批号'],this.props.productName,this.props.modalName];
+        var height1 = document.body.clientHeight-350;
         return (
-            <div className='product-standrad-bottom'>
+            <div className='product-standrad-bottom' style={{height:height1}}>
             {
                 // this.props.dataSource.length||this.props.standradFlag?
                 // <div>
