@@ -22,6 +22,8 @@ class Pack extends React.Component {
             searchText: '',
             generateVisible: false,
             unGenerateDate: true, //未生成数据--true为显示未生成数据，false为显示所有数据
+
+            pageChangeFlag:0 //0为fetch，1为search
         };
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -31,16 +33,15 @@ class Pack extends React.Component {
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
         // this.generateFetch = this.generateFetch.bind(this);
         this.judgeGetAll = this.judgeGetAll.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
+        this.changePage = this.changePage.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,
             showTotal(total){
                 return `共${total}条记录`
             },
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
+            onChange:this.changePage,
         }
     };
     render() {
@@ -49,20 +50,27 @@ class Pack extends React.Component {
             this.judgeGetAll();
             this.props.modifyTabFlag();
         }
-        if(unGenerateDate===true){
-            this.rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-            };
-        }else{
-            this.rowSelection = {
-                selectedRowKeys,
-                onChange: this.onSelectChange,
-                getCheckboxProps: record => ({
-                    disabled: record.isGenerate !== 0,
-                })
-            };
-        }
+        this.rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+            getCheckboxProps: record => ({
+                disabled: record.isGenerate !== 0,
+            })
+        };
+        // if(unGenerateDate===true){
+        //     this.rowSelection = {
+        //         selectedRowKeys,
+        //         onChange: this.onSelectChange,
+        //     };
+        // }else{
+        //     this.rowSelection = {
+        //         selectedRowKeys,
+        //         onChange: this.onSelectChange,
+        //         getCheckboxProps: record => ({
+        //             disabled: record.isGenerate !== 0,
+        //         })
+        //     };
+        // }
         return(
             <div>
                 <div>
@@ -97,10 +105,14 @@ class Pack extends React.Component {
                     rowSelection={this.rowSelection}
                     pagination={this.pagination}
                     modifySelectedRowKeysData={this.modifySelectedRowKeysData}
+                    handleTableChange={this.handleTableChange}
                 />
             </div>
         )
     };
+    changePage = (page,pageSize) =>{
+    }
+
     /**展示生成按钮Modal */
     handleGenerateModal = () => {
         this.setState({
@@ -109,21 +121,42 @@ class Pack extends React.Component {
     };
     /**获取未生成的所有数据 unGenerated */
     handleTableChange = (pagination) => {
-        if(this.state.unGenerateDate===true){
+        const pageChangeFlag = this.state.pageChangeFlag;
+        if(pageChangeFlag===0){
             this.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
                 orderField: 'id',
                 orderType: 'desc',
             });
         }else{
-            this.generateFetch({
-                size: pagination.pageSize,
-                page: pagination.current,
-                orderField: 'id',
-                orderType: 'desc',
-            });
+            this.searchEvent({
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
+            })
         }
+        // if(this.state.unGenerateDate===true){
+        //     this.fetch({
+        //         size: pagination.pageSize,
+        //         page: pagination.current,
+        //         orderField: 'id',
+        //         orderType: 'desc',
+        //     });
+        // }else{
+        //     this.fetch({
+        //         isGenerate: 0,
+        //         size: pagination.pageSize,
+        //         page: pagination.current,
+        //         orderField: 'id',
+        //         orderType: 'desc',
+        //     });
+        //     // this.generateFetch({
+        //     //     size: pagination.pageSize,
+        //     //     page: pagination.current,
+        //     //     orderField: 'id',
+        //     //     orderType: 'desc',
+        //     // });
+        // }
     };
     /**未生成和已生成的所有数据进行判断调用结构 */
     judgeGetAll = () => {
@@ -136,6 +169,12 @@ class Pack extends React.Component {
         }
     };
     fetch = (params = {}) => {
+        const unGenerateDate = this.state.unGenerateDate;
+        if(unGenerateDate === true){
+            var newParam = 'isGenerate';
+            params[newParam] = 0;
+        }
+        console.log(params);
         axios({
             url: `${this.props.url.purchaseCheckReport.rawPages}` ,
             method: 'get',
@@ -146,13 +185,16 @@ class Pack extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
+            this.pagination.current = res.pageNumber;
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=res.prePage*10+i;
+                    res.list[i-1]['index']=(res.pageNumber-1)*10+i;
                 }
                 this.setState({
                     dataSource: res.list,
                     selectedRowKeys: [],
+                    pageChangeFlag:0,
+                    searchContent:'',
                 });
             }
         });
@@ -166,18 +208,12 @@ class Pack extends React.Component {
     /**实现生成功能 */
     /**---------------------- */
     /** 根据送样时间子段分页查询*/
-    searchEvent(){
-        if(this.state.unGenerateDate===true){
-            this.fetch({
-                personName:this.state.searchContent,
-                isGenerate: 0
-            });
-        }else{
-            this.fetch({
-                personName:this.state.searchContent
-            });
-        }
-
+    searchEvent(params = {}){
+        this.fetch({
+            personName:this.state.searchContent,
+            pageSize: params.pageSize,
+            pageNumber: params.pageNumber,
+        });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {

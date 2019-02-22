@@ -106,6 +106,7 @@ class PackTable extends React.Component {
                 columns={columns}
                 rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{ y: 400 }}
