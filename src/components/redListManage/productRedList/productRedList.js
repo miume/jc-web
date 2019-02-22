@@ -52,7 +52,7 @@ class ProductRedList extends Component{
             dataIndex:'repoBaseSerialNumber.materialName',
             key:'repoBaseSerialNumber.materialName',
             align:'center',
-            width:'8%'
+            width:'10%'
         },{
             title:'物料类型',
             dataIndex:'repoBaseSerialNumber.materialClass',
@@ -68,25 +68,19 @@ class ProductRedList extends Component{
                 }
             },
             align:'center',
-            width:'8%'
-        },{
-            title:'损失数量',
-            dataIndex:'repoRedTable.quantityLoss',
-            key:'repoRedTable.quantityLoss',
-            align:'center',
-            width:'7%'
+            width:'10%'
         },{
             title:'损失重量',
             dataIndex:'repoRedTable.weightLoss',
             key:'repoRedTable.weightLoss',
             align:'center',
-            width:'7%'
+            width:'8%'
         },{
             title:'申请人',
             dataIndex:'createPersonName',
             key:'createPersonName',
             align:'center',
-            width:'7%'
+            width:'8%'
         },{
             title:'申请日期',
             dataIndex:'commonBatchNumber.createTime',
@@ -98,7 +92,7 @@ class ProductRedList extends Component{
             dataIndex:'commonBatchNumber.status',
             key:'commonBatchNumber.status',
             align:'center',
-            width:'9%',
+            width:'11%',
         //      render:(text,record)=>{
         //          let status=record.commonBatchNumber.status;
         //           switch(`${status}`){
@@ -154,7 +148,7 @@ class ProductRedList extends Component{
         this.getAllProcess=this.getAllProcess.bind(this);
         this.getAllSerialNumber=this.getAllSerialNumber.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
-        this.cancel=this.cancel.bind(this);
+        this.deleteCancel=this.deleteCancel.bind(this);
         this.fetch = this.fetch.bind(this);
     }
     judgeStatus=(record_status)=>{
@@ -188,8 +182,9 @@ class ProductRedList extends Component{
         })
         .then((data)=>{
              const res=data.data.data;
+             //console.log(res);
              this.pagination.total=res?res.total:0;
-             this.pagination.current=res.pageNum;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
+             this.pagination.current=res.pageNumber;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
              if(res&&res.list){
                 
                 for(let i=1;i<=res.list.length;i++){
@@ -238,7 +233,20 @@ class ProductRedList extends Component{
         .then((data)=>{
            // console.log(data);
            message.info(data.data.message);
-           this.fetch();
+           if(data.data.code===0){
+            this.fetch({
+               size:this.pagination.pageSize,
+               page:this.pagination.current,
+               orderField:'id',
+               orderType:'desc'
+            });
+           }
+           else{
+              this.setState({
+                  selectedRowKeys:[]
+              });
+           }
+          
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -247,7 +255,7 @@ class ProductRedList extends Component{
             selectedRowKeys:[]
         });
       }
-     cancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
+     deleteCancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
        this.setState({
            selectedRowKeys:[]
        });
@@ -278,7 +286,7 @@ class ProductRedList extends Component{
               const res=data.data.data;
               if(res&&res.list){
                 this.pagination.total=res.total;
-                this.pagination.current=res.pageNum;
+                this.pagination.current=res.pageNumber;
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
@@ -339,7 +347,7 @@ class ProductRedList extends Component{
         return(
             <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
-                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入编号' 
                       searchEvent={this.searchEvent}

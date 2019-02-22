@@ -46,7 +46,7 @@ class Add extends React.Component{
             status:-1,
             //isUrgent:this.state.checkSwitch,
         }
-        if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
+        if(!value['serialNumberId']||!value['weightLoss']){
             message.info('信息填写不完整！');
             return
         }

@@ -17,7 +17,7 @@ class RedListManage extends React.Component{
                 <TabPane tab={<span><i className='fa fa-tint'></i>&nbsp; 原材料红单</span>} key='1'> 
                    <RawMaterialRedList type={1}/>
                  </TabPane>
-                 <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 产品红单</span>} key='2'>
+                 <TabPane tab={<span><i className='fa fa-industry'></i>&nbsp; 成品红单</span>} key='2'>
                     <ProductRedList type={3}/>
                  </TabPane>
                </Tabs>

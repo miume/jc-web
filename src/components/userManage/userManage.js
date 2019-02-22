@@ -332,7 +332,7 @@ class User extends React.Component{
          message.info('删除失败，请联系管理员！');
         });
       }
-    //实现checkbox全选
+    //实现checkbox选择
     onSelectChange(selectedRowKeys) {
         this.setState({ selectedRowKeys:selectedRowKeys });
      }
@@ -351,9 +351,9 @@ class User extends React.Component{
         .then((data)=>{
           //console.log(data);
           message.info(data.data.message);
-          if(data.data.code===0){
+          if(data.data.code===0){//即操作成功
             //console.log(this.pagination);
-              this.fetch({
+              this.fetch({//在其他页删除应该留在当前页
                 size:this.pagination.pageSize,//条目数
                 page:this.pagination.current,//当前是第几页
                 orderField: 'id',
