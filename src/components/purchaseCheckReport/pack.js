@@ -157,7 +157,6 @@ class Pack extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
-            console.log('11000000')
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;

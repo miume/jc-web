@@ -24,8 +24,10 @@ class EditSpan extends React.Component {
             },
             // 保存的数据
             saveData : {
+                commonBatchNumber:{
+                    id:''
+                },
                 details:{
-                    batchNumberId:'',
                     createTime: '',
                     handler: '',
                     productionProcessId: ''
@@ -128,7 +130,6 @@ class EditSpan extends React.Component {
         })
     };
     userChange = (e) => {
-        console.log('value',e)
         var checkData = this.state.checkData;
         checkData.topData.handle = e.split('-')[1];
         var saveData = this.state.saveData;
@@ -169,7 +170,6 @@ class EditSpan extends React.Component {
                 var judgement = '';
                 var topData = {};
                 topData = this.props.record.details;
-                console.log(topData)
                 let detailHead = detail.details.standard;
                 for(var i=0; i<detailHead.length; i++){
                     var item = detailHead[i].split(',');
@@ -181,7 +181,7 @@ class EditSpan extends React.Component {
                     })
                 }
                 let detailTbody = detail.details.unqualifiedData;
-                var index = 0
+                var index = 0;
                 for(var key in detailTbody){
                     var items = detailTbody[key];
                     var tbodyMiddleData = {};
@@ -212,11 +212,12 @@ class EditSpan extends React.Component {
                         topData: topData,
                     },
                     saveData : {
+                        commonBatchNumber:{
+                            id: detail.commonBatchNumber.id
+                        },
                         details:{
-                            batchNumberId: detail.commonBatchNumber.id,
                             createTime: detail.commonBatchNumber.createTime?detail.commonBatchNumber.createTime:'',
                             handler: detail.commonBatchNumber.createPersonId?detail.commonBatchNumber.createPersonId:'',
-                            //如何知道id多少
                             productionProcessId: this.props.record.details.process.id
                         }
                     },
@@ -282,7 +283,6 @@ class EditSpan extends React.Component {
             message.info('数据不能为空')
             return ;
         }
-        console.log('saveData',saveData)
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
@@ -300,7 +300,6 @@ class EditSpan extends React.Component {
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data;
-                console.log('dataId',dataId)
                 // this.applyReview(dataId);
             }else{
                 this.setState({
