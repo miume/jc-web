@@ -80,8 +80,8 @@ class Material extends React.Component{
   }
 
     searchContentChange(e){
-        const  value=e.target.value;//此处显示的是我搜索框填的内容
-          this.setState({searchContent:value});
+        const value=e.target.value;//此处显示的是我搜索框填的内容
+        this.setState({searchContent:value});
      }
     searchEvent(){
         const name=this.state.searchContent;
@@ -183,6 +183,7 @@ class Material extends React.Component{
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
+                        type={this.props.type}
                     >
                     </SearchCell>
                 </span>
@@ -192,8 +193,8 @@ class Material extends React.Component{
                 <div className="LM-tableHead" style={{width:"12.95%"}}>编号</div>
                 <div className="LM-tableHead" style={{width:"13.05%"}}>货品名称</div>
                 <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
-                <div className="LM-blueTableHead LM-tableHead">记录数量</div>
-                <div className="LM-blueTableHead LM-tableHead">实际数量</div>
+                {/* <div className="LM-blueTableHead LM-tableHead">记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际数量</div> */}
                 <div className="LM-blueTableHead LM-tableHead">记录重量</div>
                 <div className="LM-blueTableHead LM-tableHead">实际重量</div>
                 </div>
@@ -240,10 +241,10 @@ class Material extends React.Component{
                     })
                 }
                     </div>
-                    <div className="Mfive Mcol">
+                    {/* <div className="Mfive Mcol"> */}
 
-                            <div className="Mhead-shadow">
-                                {/* <div className="fa fa-balance-scale"></div> */}
+                            {/* <div className="Mhead-shadow">
+                      
                             </div>
 
 
@@ -257,17 +258,17 @@ class Material extends React.Component{
                             {m.quantity}  </div>  
                         }
                     })
-                }
-                    </div>
-                    <div className="Msix Mcol">
-                {
+                } */}
+                    {/* </div> */}
+                    {/* <div className="Msix Mcol"> */}
+                {/* {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.realNum}
                                 </div>    
                     })
-                }
-                    </div>
+                } */}
+                    {/* </div> */}
                     <div className="Mseven Mcol">
                         <div className='white-space space-left'></div>
                 {

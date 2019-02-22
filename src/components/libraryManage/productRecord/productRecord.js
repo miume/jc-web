@@ -88,6 +88,7 @@ class MaterialRecord extends React.Component{
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
+                        type={this.props.type}
                     >
                     </SearchCell>
                 </span>

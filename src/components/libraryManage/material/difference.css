@@ -176,7 +176,7 @@
 .LM-blueTableHead:nth-child(5)::before {
   border-top-left-radius: 3px;
 }
-.LM-blueTableHead:nth-child(6)::after{
+/* .LM-blueTableHead:nth-child(6)::after{
   content: "";
   display: block;
   position: absolute;
@@ -186,7 +186,7 @@
   right: -1px;
   top: -5px;
   z-index: 999;
-}
+} */
 /* .LM-blueTableHead:nth-child(6)::before{
   width: calc(100%);
   left: -1px;

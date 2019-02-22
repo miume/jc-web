@@ -75,7 +75,7 @@
     border: 1px solid #0079FE;
     border-bottom: 2px solid #0079FE;
     border-right: none;
-    border-left: none;
+    border-left: 2px solid #0079FE;
     display: inline-block;
     width: 13%;
     text-align: left;
