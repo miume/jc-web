@@ -332,7 +332,7 @@ class ProductStandard extends React.Component{
                         <div id='product-3' className='product-standrad-top-notclick'><i className='fa fa-stop'></i> <span className='product-standrad-top-span'>设置标准</span></div>
                     </div>
                     <div className='product-standrad-middle'>
-                        <div>
+                        <div className='product-standrad-middle-top'>
                             <span className='product-standrad-middle-text'>{this.showContent()}</span>
                             <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch} />
                             <Divider type='horizontal' />

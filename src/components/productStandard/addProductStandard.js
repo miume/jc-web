@@ -385,7 +385,7 @@ class AddProductStandard extends React.Component{
                     <div className='modal-add-table' >
                         <Table className='stock-out' rowKey={record=>record.id} 
                         columns={this.columns} dataSource={this.state.allTestItem} 
-                        pagination={false} size='small' bordered scroll={{y:240}}>
+                        pagination={false} size='small' bordered scroll={{y:252}}>
                         </Table>
                     </div>
                     <div style={{height:70}}>
