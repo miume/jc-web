@@ -235,7 +235,9 @@ class RawMaterialOut extends React.Component{
                     <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
                 <div className='clear'></div>
-                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{y:380}} size='small' bordered></Table>
+                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns}
+                       rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} 
+                       size='small' bordered></Table>
             </div>
         );
     }

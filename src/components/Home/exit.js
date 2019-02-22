@@ -6,6 +6,10 @@ import {Drawer} from 'antd';
 import axios from 'axios';
 import TodoPart from './todopart';
 class Exit extends Component {
+    componentWillMount(){
+        this.fetch();
+        // console.log(this.getToDoCount());
+    }
     constructor(props) {
         super(props);
         this.fetch = this.fetch.bind(this);
@@ -14,9 +18,11 @@ class Exit extends Component {
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
+        this.getToDoCount = this.getToDoCount.bind(this);
         this.state = {
             visible:false,
-            content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} />
+            count:0,
+            // content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.fetch} />
         }
     }
     /**退出事件 */
@@ -56,7 +62,6 @@ class Exit extends Component {
             case 6: week='星期六';break;
             default:week='';break;
         }
-        this.fetch();
         this.setState({
             visible:true,
             date:time,
@@ -70,7 +75,7 @@ class Exit extends Component {
         })
     }
     /**根据当前登陆用户id获取待办事项 */
-    fetch(){
+    fetch(flag){
         const url = JSON.parse(localStorage.getItem('url'));
         axios.get(`${url.toDoList}/${this.props.userId}`,{
             headers:{
@@ -79,6 +84,7 @@ class Exit extends Component {
         }).then((data)=>{
             const res = data.data.data;
             const count = res? res.length : 0;
+            if(flag) return count;
             this.setState({
                 data:res,
                 count:count
@@ -102,17 +108,22 @@ class Exit extends Component {
             visible:false
         })
     }
+    getToDoCount(){
+        return this.state.count;
+    }
     render() {
+        var height1 = document.body.clientHeight - 150;
         return (
             <div id='exit'>
-                {this.state.content}
+                {/* {this.state.content} */}
+                <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
                 onClose={this.onClose} maskClosable={false} mask={false} width={400}
                 >
                 <div className='drawer-div'>
                     <div>{this.state.date}</div>
                     <div>{this.state.week}</div>
-                    <div className='drawer-date-div'>
+                    <div className='drawer-date-div' style={{height:height1}}>
                     {
                         this.state.data?this.state.data.map((e,index)=>{
                             var contents = '';

@@ -84,7 +84,7 @@
 .product-standrad-bottom{
     /* display: inline-block; */
     min-width: 600px;
-    height:359px;
+    /* height:359px; */
     overflow-y: auto;
 }
 .modal-standrad-bottom{
@@ -290,7 +290,7 @@
 }
 .product-modal-middle{
     min-width: 715px;
-    height:300px;
+    /* height:300px; */
     overflow: auto;
 }
 /**新增型号弹出气泡*/

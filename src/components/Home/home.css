@@ -32,7 +32,8 @@ html, body, .parent {
 }
 .rightDiv {
     position: absolute;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     left: 130px;
     right: 0;
     top: 60px;
@@ -131,7 +132,7 @@ input::-webkit-input-placeholder{
     text-align: left;
 }
 .drawer-date-div{
-    height:550px;
+    /* height:550px; */
     padding:1px;
     margin-top: 25px;
     overflow-y:scroll;
