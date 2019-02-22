@@ -145,7 +145,7 @@ class RawMaterialRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoBaseSerialNumber.materialName,
                     
                 })(
-                    <Input placeholder='请输入物料名称'/>
+                    <Input disabled placeholder='请输入物料名称'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
@@ -153,10 +153,10 @@ class RawMaterialRedListEditModal extends React.Component{
                     initialValue: type1,
                     
                 })(
-                    <Input placeholder='请输入物料类型'/>
+                    <Input  disabled placeholder='请输入物料类型'/>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:24}} required>
+                {/* <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('quantityLoss',{
                     initialValue: `损失数量${this.state.num}`,
                     rules:[{required:true,message:'损失货品数量不能为空'}]
@@ -172,7 +172,7 @@ class RawMaterialRedListEditModal extends React.Component{
                         style={{width:'320px'}}
                   />
                 )}
-                </FormItem>
+                </FormItem> */}
                 <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('weightLoss',{
                     initialValue:  `损失重量${this.state.weight}`,
