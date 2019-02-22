@@ -61,8 +61,7 @@ class PurchaseModal extends React.Component {
                                             </td>
                                             <td>
                                                 <DatePicker
-                                                    // showTime
-                                                    // name='createTime'
+                                                    name='createTime'
                                                     placeholder="选择时间"
                                                     value={moment(this.props.data.topData.createTime)}
                                                     onChange={(value,dateString) => this.props.inputUnTrackTimeSave(dateString)}

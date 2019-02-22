@@ -216,7 +216,7 @@ class EditSpan extends React.Component {
                             id: detail.commonBatchNumber.id
                         },
                         details:{
-                            createTime: detail.commonBatchNumber.createTime?detail.commonBatchNumber.createTime:'',
+                            createTime: this.props.record.details.createTime?this.props.record.details.createTime:'',
                             handler: detail.commonBatchNumber.createPersonId?detail.commonBatchNumber.createPersonId:'',
                             productionProcessId: this.props.record.details.process.id
                         }
@@ -289,6 +289,7 @@ class EditSpan extends React.Component {
     };
     /**调用保存函数 */
     useSavaFunction = (saveData,status) => {
+        console.log('saveData',saveData)
         axios({
             url : `${this.props.url.unqualifiedTrack.unqualifiedTracingRecord}`,
             method:'put',
@@ -298,9 +299,10 @@ class EditSpan extends React.Component {
             data: saveData,
             type:'json'
         }).then((data)=>{
+            console.log(data.data.data.commonBatchNumber.id)
             if(status){
-                const dataId = data.data.data;
-                // this.applyReview(dataId);
+                const dataId = data.data.data.commonBatchNumber.id;
+                this.applyReview(dataId);
             }else{
                 this.setState({
                     visible: false,
