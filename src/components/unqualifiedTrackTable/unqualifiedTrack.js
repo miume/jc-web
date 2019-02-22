@@ -53,7 +53,7 @@ class UnqualifiedTrack extends React.Component{
                         menuList={menuList}
                         data={this.state.dataSource}
                         pagination={this.pagination}
-                        // fetch={this.fetch}
+                        fetch={this.fetch}
                     />
                 </div>
             </div>

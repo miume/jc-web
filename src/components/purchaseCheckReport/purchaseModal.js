@@ -35,7 +35,6 @@ class PurchaseModal extends React.Component {
             headColumnsLength = true;
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
-        console.log('data',this.props.data)
         return(
             <div style={{width:1200}}>
                 {
@@ -62,7 +61,8 @@ class PurchaseModal extends React.Component {
                                             </td>
                                             <td>
                                                 <DatePicker
-                                                    name='createTime'
+                                                    // showTime
+                                                    // name='createTime'
                                                     placeholder="选择时间"
                                                     value={moment(this.props.data.topData.createTime)}
                                                     onChange={(value,dateString) => this.props.inputUnTrackTimeSave(dateString)}
@@ -379,8 +379,6 @@ class PurchaseModal extends React.Component {
             },
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
-
             const children = res.map(e => {
                 return <Option key={e.id} value={e.id+'-'+e.name}>{e.name}</Option>
             });
@@ -400,8 +398,6 @@ class PurchaseModal extends React.Component {
             },
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
-
             const children = res.map(e => {
                 return <Option key={e.id} value={e.id+'-'+e.name}>{e.name}</Option>
             });
