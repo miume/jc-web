@@ -1,7 +1,6 @@
 .productStandard{
     width:97%;
     height:540px;
-    margin:20px;
     /* border:1px solid #cccccc; */
     border-top: none;
 }
@@ -41,6 +40,7 @@
     display: flex;
     min-height:35px;
     max-height:35px;
+    margin:20px;
 }
 .product-standrad-top-click {
     /* background-image: url('./head.svg');
@@ -70,8 +70,12 @@
     display: inline-block;
 }
 .product-standrad-middle{
-    padding:15px 0;
+    /* padding:15px 0; */
     min-width: 715px;
+    width: 103.2%;
+}
+.product-standrad-middle-top{
+    margin:20px;
 }
 .product-standrad-middle-text{
     font-size: 18px;
@@ -95,7 +99,7 @@
     cursor: pointer;
     line-height: 50px;
     text-align:center;
-    margin:21px 30px 0 0;
+    margin:20px;
     display: inline-block;
     border:1px solid #0086ff;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
@@ -106,7 +110,7 @@
     cursor: pointer;
     line-height: 50px;
     text-align:center;
-    margin:20px 33px 0 0;
+    margin:20px;
     display: inline-block;
     border:1px solid #e4e4e4;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
@@ -114,7 +118,7 @@
 .block-overlap{
     height: 50px;
     display: inline-block;
-    margin:20px 33px 0 0;
+    margin:20px;
     border:1px solid #e4e4e4;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
 }
@@ -138,29 +142,64 @@
     color:white;
     font-weight: bold;
 }
-@media screen and (min-width: 1410px){
+@media screen and (min-width: 1420px){
     .block-width{
-        width:14%;
+        width:13.57%;
     }
 }
-@media screen and (max-width: 1410px){
+@media screen and (max-width: 1420px){
     .block-width{
-        width:17.3%;
+        width:16.7%;
     }
 }
-@media screen and (max-width: 1390px){
+ @media screen and (max-width: 1343px){
     .block-width{
-        width:22%;
+        width:16.55%;
     }
 }
-@media screen and (max-width: 1270px){
+@media screen and (max-width: 1290px){
     .block-width{
-        width:30%;
+        width:16.4%;
     }
 }
-@media screen and (max-width: 1170px){
+@media screen and (max-width: 1240px){
     .block-width{
-        width:43%;
+        width:16.3%;
+    }
+} 
+@media screen and (max-width: 1210px){
+    .block-width{
+        width:16.14%;
+    }
+}
+@media screen and (max-width: 1166px){
+    .block-width{
+        width:21%;
+    }
+}
+ @media screen and (max-width: 1128px){
+    .block-width{
+        width:20.9%;
+    }
+}
+@media screen and (max-width: 1104px){
+    .block-width{
+        width:20.75%;
+    }
+}
+@media screen and (max-width: 1070px){
+    .block-width{
+        width:20.5%;
+    }
+}
+@media screen and (max-width: 1015px){
+    .block-width{
+        width:20%;
+    }
+}
+@media screen and (max-width: 930px){
+    .block-width{
+        width:19.3%;
     }
 }
 .block-input{
@@ -305,7 +344,7 @@
     font-weight: 400;
 }
 .standard-table{
-    padding:20px 0;
+    padding:20px;
 }
 .table-implemention{
     border:2px solid #0086ff;
@@ -327,7 +366,7 @@
     float: right;
     position: relative;
     top:15px;
-    right:5px;
+    right:25px;
     /* bottom: 40px; */
     font-weight: 500;
     font-style: normal;

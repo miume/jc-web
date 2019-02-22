@@ -36,7 +36,7 @@ class Detail extends React.Component{
                 }
             }
         },{
-            title:'编号',
+            title:'批号',
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'20%',
@@ -47,11 +47,11 @@ class Detail extends React.Component{
                     return <span className='text-decoration'>{text}</span>
                 } 
             }
-        },{
-            title:'出库数量',
-            dataIndex:'quantity',
-            key:'quantity',
-            width:'15%',
+        // },{
+        //     title:'出库数量',
+        //     dataIndex:'quantity',
+        //     key:'quantity',
+        //     width:'15%',
         },{
             title:'出库重量',
             dataIndex:'weight',
