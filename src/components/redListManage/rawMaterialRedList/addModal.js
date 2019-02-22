@@ -88,7 +88,7 @@ const FormItem=Form.Item;
                     initialValue: '',
                     
                 })(
-                    <Input disabled placeholder='物料名称'/>
+                    <Input  placeholder='物料名称'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
@@ -96,17 +96,17 @@ const FormItem=Form.Item;
                     initialValue: '',
                     
                 })(
-                    <Input disabled placeholder='物料类型'/>
+                    <Input placeholder='物料类型'/>
                 )}
                 </FormItem>
-                {/* <FormItem   wrapperCol={{span:24}} required>
+                <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('quantityLoss',{
                     initialValue: '',
                     rules:[{required:true,message:'损失货品数量不能为空'}]
                 })(
                     <InputNumber min={1} placeholder='请输入损失货品数量' style={{width:'320px'}}></InputNumber>
                 )}
-                </FormItem> */}
+                </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('weightLoss',{
                   
