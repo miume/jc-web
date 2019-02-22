@@ -40,13 +40,23 @@ class ProductRedList extends Component{
           key:'index',
           sorter:(a,b)=>a.index-b.index,
           align:'center',
-          width:'5%'
+          width:'5%',
         },{
             title:'编号',
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'15%'
+            width:'15%',
+            render:(text,record)=>{
+                  //console.log(text);
+                  if(text.length>13){
+                    return <div title={text} style={{textDecoration:'underline'}}>{text.substring(0,13)}</div>
+                  }
+                  else{
+                      return text
+                  }
+                  
+            }
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -86,7 +96,15 @@ class ProductRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'13%'
+            width:'13%',
+            render:(text)=>{
+                if(text.length>10){
+                    return <div title={text} style={{textDecoration:'underline'}}>{text.substring(0,10)}</div>
+                }
+                else{
+                    return text
+                }
+            }
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -212,7 +230,17 @@ class ProductRedList extends Component{
         })
         .then((data)=>{
                message.info(data.data.message);
-               this.fetch();
+               if(data.data.code===0){
+                if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                      this.pagination.current=this.pagination.current-1;
+                }
+             this.fetch({
+                 size:this.pagination.pageSize,
+                 page:this.pagination.current,
+                 orderField:'id',
+                 orderType:'desc'
+             });
+            }
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');

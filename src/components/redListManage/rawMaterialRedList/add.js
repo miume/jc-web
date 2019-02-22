@@ -39,7 +39,6 @@ class Add extends React.Component{
         //console.log(value);
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
-           
             createPersonId:createPersonId,
             status:-1,
             //isUrgent:this.state.checkSwitch,

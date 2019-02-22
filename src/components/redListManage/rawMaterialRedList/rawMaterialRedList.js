@@ -51,7 +51,15 @@ class RawMaterialRedList extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'15%'
+            width:'15%',
+            render:(text)=>{
+                if(text.length>13){
+                    return <div title={text} style={{textDecoration:'underline'}}>{text.substring(0,13)}</div>
+                }
+                else{
+                    return text
+                }
+            }
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
@@ -92,7 +100,15 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'13%'
+            width:'13%',
+            render:(text)=>{
+                if(text.length>10){//给元素设置title属性会在鼠标悬停时显示
+                    return <div title={text}style={{textDecoration:'underline'}} >{text.substring(0,10)}</div>
+                }
+                else{
+                    return text
+                }
+            }
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
@@ -220,7 +236,18 @@ class RawMaterialRedList extends Component{
         })
         .then((data)=>{
                message.info(data.data.message);
-               this.fetch();
+               //console.log(data.data.code);
+               if(data.data.code===0){
+                   if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                         this.pagination.current=this.pagination.current-1;
+                   }
+                this.fetch({
+                    size:this.pagination.pageSize,
+                    page:this.pagination.current,
+                    orderField:'id',
+                    orderType:'desc'
+                });
+               }
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -244,6 +271,9 @@ class RawMaterialRedList extends Component{
         .then((data)=>{
            message.info(data.data.message);
            if(data.data.code===0){//操作成功返回0
+            if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                this.pagination.current=this.pagination.current-1;
+          }
             this.fetch({//在其他页删除应该留在当前页
                 size:this.pagination.pageSize,
                 page:this.pagination.current,
