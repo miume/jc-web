@@ -57,11 +57,12 @@ class Product extends React.Component{
     })
   }
     searchContentChange(e){
-        const  value=e.target.value;//此处显示的是我搜索框填的内容
+        const value=e.target.value;//此处显示的是我搜索框填的内容
           this.setState({searchContent:value});
      }
     searchEvent(){
         const name=this.state.searchContent;
+        console.log(name)
         axios({
             url:`${this.url.libraryManage.getAllPages}`,
             method:"get",
@@ -160,6 +161,7 @@ class Product extends React.Component{
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
+                        type={this.props.type}
                     >
                     </SearchCell>
                 </span>

@@ -4,7 +4,7 @@ import { Table,Popconfirm,Divider,message } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';
-import Add from './addModal';
+import Add from './add';
 import Detail from './detail';
 import Editor from './editor';
 import axios from "axios";

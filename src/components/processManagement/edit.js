@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal,Select,Form, Input,message,Icon } from 'antd';
+import { Button, Modal,Select,Form, Input,message,Icon,Col } from 'antd';
 import axios from 'axios';
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
@@ -14,6 +14,8 @@ class DynamicFieldSet extends React.Component{
     state = {
       approvalProcess:[],
       visible: false,
+      id:this.props.value,
+      dataSource:[],
     };
     remove = (k) =>{
         const {form} = this.props;
@@ -128,8 +130,27 @@ class DynamicFieldSet extends React.Component{
   }
 
     showModal = () => {
+        this.fetch()
       this.setState({ visible: true });
     };
+
+    /**通过id获取数据 */
+    fetch = ()=>{
+        axios({
+            url:`${this.url.processManagement.deleteByIds}/${this.state.id}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            if(res){
+                this.setState({
+                    dataSource:res,
+                })
+            }
+        })
+    }
 
     handleCancel = () => {
       // const form = this.formRef.props.form;
@@ -139,19 +160,23 @@ class DynamicFieldSet extends React.Component{
     };
 
       render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
-        this.ob = JSON.parse(localStorage.getItem('menuList'))
-        const children = this.state.approvalProcess.map(p => 
-          <Option className="option" id={p.id} key={p.id} value={p.id}>{p.name}</Option>
-      )
-        const { getFieldDecorator, getFieldValue } = this.props.form;
-          const formItemLayoutWithOutLabel = {
-            wrapperCol: {
-              xs: { span: 24, offset: 0 },
-              sm: { span: 20, offset: 4 },
-            },
-          };
-          getFieldDecorator('keys', { initialValue: [0] });
+            this.url = JSON.parse(localStorage.getItem('url'));
+            this.ob = JSON.parse(localStorage.getItem('menuList'))
+            const children = this.state.approvalProcess.map(p => 
+            <Option className="option" id={p.id} key={p.id} value={p.id}>{p.name}</Option>
+        )
+            const { getFieldDecorator, getFieldValue } = this.props.form;
+            const formItemLayoutWithOutLabel = {
+                wrapperCol: {
+                    xs: { span: 24, offset: 0 },
+                    sm: { span: 20, offset: 4 },
+                },
+            };
+            var array = [];
+            for(var i=0;i<this.state.dataSource.details.length;i++){
+                array.append(i)
+            }
+          getFieldDecorator('keys', { initialValue: array });
           const keys = getFieldValue('keys');
           const formItems = keys.map((k, index) => (
             <div key={index}>
@@ -161,6 +186,7 @@ class DynamicFieldSet extends React.Component{
             >
               {getFieldDecorator(`persons[${k}]`, {
                 validateTrigger: ['onChange', 'onBlur'],
+                initialValue:this.state.dataSource.details[k].userId
                 // rules: [{
                 //   required: true,
                 //   message: "请选择负责人",
@@ -176,6 +202,7 @@ class DynamicFieldSet extends React.Component{
                 >
               {getFieldDecorator(`description[${k}]`,{
                 validateTrigger: ['onChange', 'onBlur'],
+                initialValue:this.state.dataSource.details[k].responsibility
                 // rules: [{
                 //   required: true,
                 //   message: "请输入职责",
@@ -196,13 +223,13 @@ class DynamicFieldSet extends React.Component{
           ));
           return (
             <span>
-            <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
+            {this.props.status === -1?<span className='blue' onClick={this.showModal}>编辑</span>:<span className="notClick">编辑</span>}
             <Modal
               visible={this.state.visible}
               closable={false}
               centered={true}
               maskClosable={false}
-              title="新增"
+              title="编辑"
               width='360px'
               footer={[
                 <CancleButton key='back' handleCancel={this.handleCancel}/>,
@@ -214,6 +241,7 @@ class DynamicFieldSet extends React.Component{
                   <Form.Item wrapperCol={{ span: 24 }}>
                       {getFieldDecorator('name',{
                         // rules: [{ required: true, message: '请输入流程名称' }],
+                        initialValue:this.state.dataSource.commonBatchNumber.description
                       })(
                         <Input placeholder='请输入流程名称'/>
                       )
