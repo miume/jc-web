@@ -10,6 +10,7 @@ import CheckProductStandard from './checkProductStandard';
 import CheckPurchase from './checkPurchase';
 import CkeckProductInspection from './checkProductInspection';
 import CheckUnqualified from './checkUnqualified';
+import CheckUnqualifiedTrack from './checkUnqualifiedTrack';
 import axios from 'axios';
 class CheckModal extends React.Component{
     componentDidMount(){
@@ -47,6 +48,7 @@ class CheckModal extends React.Component{
             case 9:  
             case 10: return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag} type={type}/>;
             case 11: return <CheckUnqualified url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
+            case 12: return <CheckUnqualifiedTrack url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 13: 
             case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
             default: return '' ;
@@ -69,7 +71,8 @@ class CheckModal extends React.Component{
         }
         switch(dataType){  
             case 2: 
-            case 7:  return flag?0:'modal-xlg'; 
+            case 7:
+            case 12: return flag?0:'modal-xlg';
             default: return flag?1:'modal-md' ;
         }
     }
