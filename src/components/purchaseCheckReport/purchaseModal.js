@@ -61,6 +61,8 @@ class PurchaseModal extends React.Component {
                                             </td>
                                             <td>
                                                 <DatePicker
+                                                    showTime
+                                                    format="YYYY-MM-DD HH:mm:ss"
                                                     name='createTime'
                                                     placeholder="选择时间"
                                                     value={moment(this.props.data.topData.createTime)}
