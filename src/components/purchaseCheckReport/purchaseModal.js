@@ -76,7 +76,7 @@ class PurchaseModal extends React.Component {
                                     ):(
                                         <tr className='cursorDefault paddingTop'>
                                             <td>{this.props.data.topData.materialName}</td>
-                                            <td>{this.props.data.topData.process.name}</td>
+                                            <td>{this.props.data.topData.process?this.props.data.topData.process.name:''}</td>
                                             <td>{this.props.data.topData.createTime}</td>
                                             <td>{this.props.data.topData.handle}</td>
 

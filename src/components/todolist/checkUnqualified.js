@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import {message } from 'antd';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
-import CheckSpanModal from "../productInspection/checkSpanModal";
 import DrSpanModal from '../productInspection/drSpanModal';
 
 class CheckUnqualified extends React.Component{
