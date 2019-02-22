@@ -46,34 +46,23 @@ class Pack extends React.Component {
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
         if(this.props.tabFlag === 1){
-            console.log('1111111')
             this.judgeGetAll();
             this.props.modifyTabFlag();
         }
-
-
-        this.rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-            getCheckboxProps: record => ({
-                disabled: record.isGenerate !== 0,
-            })
-        };
-        // if(unGenerateDate===true){
-        //     this.rowSelection = {
-        //         selectedRowKeys,
-        //         onChange: this.onSelectChange,
-        //     };
-        // }else{
-        //     this.rowSelection = {
-        //         selectedRowKeys,
-        //         onChange: this.onSelectChange,
-        //         getCheckboxProps: record => ({
-        //             disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
-        //         })
-        //
-        //     };
-        // }
+        if(unGenerateDate===true){
+            this.rowSelection = {
+                selectedRowKeys,
+                onChange: this.onSelectChange,
+            };
+        }else{
+            this.rowSelection = {
+                selectedRowKeys,
+                onChange: this.onSelectChange,
+                getCheckboxProps: record => ({
+                    disabled: record.isGenerate !== 0,
+                })
+            };
+        }
         return(
             <div>
                 <div>
