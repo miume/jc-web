@@ -78,7 +78,6 @@ class RawMaterialRedList extends Component{
                      case '1':return '原材料';
                      case '3':return '产品';
                      default:return '';
-
                 }
             },
             align:'center',
@@ -337,7 +336,7 @@ class RawMaterialRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-    getAllProcess(){
+    getAllProcess(){//获取所有流程
         axios({
             url:`${this.url.process.process}/validTasks`,
             method:'get',
@@ -405,7 +404,7 @@ class RawMaterialRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:350}}
+                  
                     >
                 </Table>
             </div>

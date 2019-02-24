@@ -2,8 +2,8 @@
 import React,{Component} from 'react';
 import {Table,message} from 'antd';
 import SearchCell from '../../BlockQuote/search';
+import Detail from '../detail';
 import axios from 'axios';
-
 
 class ProductInStorage extends Component{
     url;
@@ -28,44 +28,86 @@ class ProductInStorage extends Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'10%',
+            width:'6%',
             align:'center'
         },{
            title:'产品名称',
            dataIndex:'repoBaseSerialNumber.materialName',
            key:'repoBaseSerialNumber.materialName',
-           width:'15%',
+           width:'8%',
            align:'center'
         },{
-           title:'编号',
+           title:'物料编码',
            dataIndex:'repoBaseSerialNumber.serialNumber',
            key:'repoBaseSerialNumber.serialNumber',
            width:'15%',
-           align:'center'
+           align:'center',
+           render:(text,record)=>{
+            if(text.length>13){
+                return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
+            }
+            else{
+                return(<div>{text}</div>)
+            }
+          }
         },{
            title:'数量',
            dataIndex:'quantity',
            key:'quantity',
-           width:'15%',
+           width:'8%',
            align:'center'
         },{
            title:'重量',
            dataIndex:'repoInRecord.weight',
            key:'repoInRecord.weight',
-           width:'15%',
+           width:'8%',
            align:'center'
         },{
            title:'入库时间',
            dataIndex:'repoInRecord.createTime',
            key:'repoInRecord.createTime',
-           width:'16%',
-           align:'center'
+           width:'13%',
+           align:'center',
+           render:(text,record)=>{
+            if(text.length>10){
+               return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
+            }
+            else{
+                return(<div>{text}</div>)
+            }
+          }
         },{
+            title:'操作时间',
+            dataIndex:'repoInRecord.operationTime',
+            key:'repoInRecord.operationTime',
+            width:'13%',
+            align:'center',
+            render:(text,record)=>{
+                if(text.length>10){
+                   return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
+                }
+                else{
+                    return(<div>{text}</div>)
+                }
+              }
+         },{
            title:'入库人',
            dataIndex:'repoInRecord.createPerson',
            key:'repoInRecord.createPerson',
            width:'15%',
            align:'center'
+        },{
+            title:'',
+            dataIndex:'operation',
+            key:'operation',
+            align:'center',
+            render:(text,record)=>{
+               return(
+                   <span>
+                       <Detail record={record}/>
+                   </span>
+               )
+            }
         }];
         this.pagination={
             total:this.state.dataSource.length,
@@ -189,7 +231,7 @@ class ProductInStorage extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:600}}
+                scroll={{y:400}}
                 ></Table>
             </div>
         );

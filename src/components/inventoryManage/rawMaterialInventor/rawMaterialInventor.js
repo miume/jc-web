@@ -184,7 +184,7 @@ class RowMaterialInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:330}}
+                
                 ></Table>
             </div>
         );
