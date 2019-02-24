@@ -3,7 +3,7 @@ import React,{Component} from 'react';
 import {Table,message} from 'antd';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
-
+import Detail from '../detail';
 
 class RowMaterialStorage extends Component{
     url;
@@ -29,98 +29,79 @@ class RowMaterialStorage extends Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            align:'center'
+            align:'center',
+            width:'6%'
         },{
            title:'原材料名称',
            dataIndex:'repoBaseSerialNumber.materialName',
            key:'repoBaseSerialNumber.materialName',
-
-           align:'center'
+           align:'center',
+           width:'8%',
         },{
-            title:'编号',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
             title:'物料编码',
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
-            title:'批次',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
-            title:'车间',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
-            title:'物料类别',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
-           title:'物料名称',
-           dataIndex:'repoBaseSerialNumber.serialNumber',
-           key:'repoBaseSerialNumber.serialNumber',
-  
-           align:'center'
-        },{
-            title:'袋号',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
+            align:'center',
+            width:'18%',
+            render:(text,record)=>{
+              if(text.length>13){
+                  return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
+              }
+              else{
+                  return(<div>{text}</div>)
+              }
+            }
          },{
             title:'重量',
             dataIndex:'repoInRecord.weight',
             key:'repoInRecord.weight',
-
-            align:'center'
-         },{
-            title:'厂商',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
-            title:'物料名称',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
-         },{
-            title:'操作员',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
-   
-            align:'center'
+            align:'center',
+            width:'8%'
          },{
            title:'数量',
            dataIndex:'repoInRecord.quantity',
            key:'repoInRecord.quantity',
- 
-           align:'center'
+           align:'center',
+           width:'8%'
         },{
            title:'入库时间',
            dataIndex:'repoInRecord.createTime',
            key:'repoInRecord.createTime',
-           
-           align:'center'
+           align:'center',
+           width:'13%',
+           render:(text,record)=>{
+             if(text.length>10){
+                return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
+             }
+             else{
+                 return(<div>{text}</div>)
+             }
+           }
         },{
+            title:'操作时间',
+            dataIndex:'operationTime',
+            key:'operationTime',
+            align:'center',
+            width:'13%'
+         },{
            title:'入库人',
            dataIndex:'repoInRecord.createPerson',
            key:'repoInRecord.createPerson',
-
-           align:'center'
-        }];
+           align:'center',
+           width:'8%'
+        },{
+            title:'操作',
+            dataIndex:'operation',
+            key:'operation',
+            align:'center',
+            render:(text,record)=>{
+               return(
+                   <span>
+                       <Detail record={record}/>
+                   </span>
+               )
+            }
+         }];
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
@@ -174,7 +155,7 @@ class RowMaterialStorage extends Component{
         })
         .then((data)=>{
             const res=data.data.data;
-            //console.log(res);
+            console.log(res);
             this.pagination.total=res.total;
             this.pagination.current=res.pageNum;//当前在第几页
           if(res&&res.list){
@@ -246,7 +227,7 @@ class RowMaterialStorage extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:600}}
+                scroll={{y:400}}
                 ></Table>
             </div>
         );

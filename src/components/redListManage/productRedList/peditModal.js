@@ -148,7 +148,7 @@ class ProductRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoBaseSerialNumber.materialName,
                     
                 })(
-                    <Input placeholder='物料名称'/>
+                    <Input disabled placeholder='物料名称'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
@@ -156,7 +156,7 @@ class ProductRedListEditModal extends React.Component{
                     initialValue: type1,
                     
                 })(
-                    <Input placeholder='物料类型'/>
+                    <Input disabled placeholder='物料类型'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
