@@ -36,6 +36,7 @@ class Edit extends Component{
       handleSave () {//编辑一条记录
        const  details=this.formRef.getItemsValue();
        details['id']=this.props.record.repoRedTable.id;
+       details['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
        // const isUrgent=this.state.checkSwitch;
         const commonBatchNumber={
@@ -66,19 +67,7 @@ class Edit extends Component{
         this.setState({ visible: false });
         this.formRef.resetField();
         }
- 
-           //监听流程下拉框变化
-//     selectChange=(value)=>{
-//         this.setState({checkSelectData:value});
-//     }
-//     hide(){//送审气泡的取消
-//       this.setState({popVisible:false});
-//     }
-//     handleVisibleChange=(visible)=>{
-//        this.setState({
-//          popVisible:visible
-//        })
-//    }
+
    getCheck(dataId,taskId,urgent){//调用代办事项接口
     axios({
         url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${urgent}`,
@@ -98,6 +87,7 @@ class Edit extends Component{
     handleSongShenOk(process,urgent){//送审事件的确认按钮
         const details=this.formRef.getItemsValue();
         details['id']=this.props.record.repoRedTable.id;
+        details['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         //const isUrgent=this.state.checkSwitch;
         const commonBatchNumber={
@@ -133,16 +123,9 @@ class Edit extends Component{
         this.formRef.resetField();
       
     }
-    //红单是否紧急
-   urgentChange=(checked)=>{//checked指定当前是否选中
-    //console.log(`switch to ${checked}`);//选中的话checked为true
-    this.setState({
-        checkSwitch:checked?1:0
-    });
-  }
+
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
-        //console.log(this.props.record);
         return(
             <span>
             <span className={this.props.editFlag?'blue':'notClick'} onClick={this.props.editFlag?this.showModal:this.notShowModal}>编辑</span>

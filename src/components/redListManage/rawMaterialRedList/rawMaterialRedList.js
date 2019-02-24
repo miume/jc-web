@@ -11,7 +11,6 @@ class RawMaterialRedList extends Component{
     componentDidMount(){
         this.fetch();
         this.getAllSerialNumber();
-        this.getAllProcess();
     }
     componentWillUnmount(){
         this.setState=(state,callback)=>{
@@ -167,7 +166,6 @@ class RawMaterialRedList extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
-        this.getAllProcess=this.getAllProcess.bind(this);
         this.getAllSerialNumber=this.getAllSerialNumber.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
         this.fetch = this.fetch.bind(this);
@@ -336,23 +334,23 @@ class RawMaterialRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-    getAllProcess(){//获取所有流程
-        axios({
-            url:`${this.url.process.process}/validTasks`,
-            method:'get',
-            headers:{
-                'Authorizaion':this.url.Authorizaion
-            },
-        })
-        .then((data)=>{
-            //console.log(data);
-             const res=data.data.data;
-             //  console.log(res);
-              this.setState({
-                  processChildren:res
-              });
-        });
- }
+//     getAllProcess(){//获取所有流程
+//         axios({
+//             url:`${this.url.process.process}/validTasks`,
+//             method:'get',
+//             headers:{
+//                 'Authorizaion':this.url.Authorizaion
+//             },
+//         })
+//         .then((data)=>{
+//             //console.log(data);
+//              const res=data.data.data;
+//              //  console.log(res);
+//               this.setState({
+//                   processChildren:res
+//               });
+//         });
+//  }
     getAllSerialNumber(){//获取所有编号
         axios({
                 url:`${this.url.serialNumber.serialNumber}`,

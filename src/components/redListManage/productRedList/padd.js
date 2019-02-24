@@ -1,12 +1,11 @@
 import React from 'react';
-import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
+import {Button,Modal,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
 import Submit from '../../BlockQuote/checkSubmit';
 import ProductRedListAddModal from './paddModal';
 import axios from 'axios';
-const Option=Select.Option;
 
 class Add extends React.Component{
     url;
@@ -36,6 +35,7 @@ class Add extends React.Component{
       }
     handleSave() {//点击新增保存，未申请状态
         const value=this.formRef.getItemsValue();
+        value['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
             createPersonId:createPersonId,
@@ -95,6 +95,7 @@ class Add extends React.Component{
    }
     handleSongShenOk(process,urgent){//送审事件的确认按钮(先保存，在送审)
         const value=this.formRef.getItemsValue();
+        value['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
             createPersonId:createPersonId,
