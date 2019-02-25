@@ -3,7 +3,6 @@ import React,{Component} from 'react';
 import {Table,message} from 'antd';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
-import Detail from '../detail';
 
 class RowMaterialStorage extends Component{
     url;
@@ -30,7 +29,7 @@ class RowMaterialStorage extends Component{
             key:'index',
             sorter:(a,b)=>a.index-b.index,
             align:'center',
-            width:'6%'
+            width:'5%'
         },{
            title:'原材料名称',
            dataIndex:'repoBaseSerialNumber.materialName',
@@ -42,7 +41,7 @@ class RowMaterialStorage extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'18%',
+            width:'11%',
             render:(text,record)=>{
               if(text.length>13){
                   return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
@@ -52,23 +51,47 @@ class RowMaterialStorage extends Component{
               }
             }
          },{
+            title:'袋号',
+            dataIndex:'bagNumber',
+            key:'bagNumber',
+            align:'center',
+            width:'11%'
+         },{
+             title:'批次',
+             dataIndex:'batch',
+             key:'batch',
+             align:'center',
+             width:'8%'
+         },{
+             title:'车间',
+             dataIndex:'workshop',
+             key:'workshop',
+             align:'center',
+             width:'8%'
+         },{
+             title:'厂商',
+             dataIndex:'repoBaseSerialNumber.manufacturerName',
+             key:'manufacturerName',
+             align:'center',
+             width:'8%'
+         },{
             title:'重量',
             dataIndex:'repoInRecord.weight',
             key:'repoInRecord.weight',
             align:'center',
-            width:'8%'
+            width:'6%'
          },{
            title:'数量',
            dataIndex:'repoInRecord.quantity',
            key:'repoInRecord.quantity',
            align:'center',
-           width:'8%'
+           width:'6%'
         },{
            title:'入库时间',
            dataIndex:'repoInRecord.createTime',
            key:'repoInRecord.createTime',
            align:'center',
-           width:'13%',
+           width:'9%',
            render:(text,record)=>{
              if(text.length>10){
                 return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
@@ -82,26 +105,14 @@ class RowMaterialStorage extends Component{
             dataIndex:'operationTime',
             key:'operationTime',
             align:'center',
-            width:'13%'
+            width:'9%'
          },{
            title:'入库人',
            dataIndex:'repoInRecord.createPerson',
            key:'repoInRecord.createPerson',
            align:'center',
-           width:'8%'
-        },{
-            title:'操作',
-            dataIndex:'operation',
-            key:'operation',
-            align:'center',
-            render:(text,record)=>{
-               return(
-                   <span>
-                       <Detail record={record}/>
-                   </span>
-               )
-            }
-         }];
+           width:'7%'
+        }];
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
