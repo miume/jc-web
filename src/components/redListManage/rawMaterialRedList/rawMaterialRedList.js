@@ -188,6 +188,7 @@ class RawMaterialRedList extends Component{
           this.fetch({
               size:pagination.pageSize,//当前页显示的记录数
               page:pagination.current,//当前是第几页
+              orderType:'asc'
           })
     }
     fetch=(params={})=>{
