@@ -55,8 +55,8 @@ class ProductInventor extends Component{
            width:'20%',
            align:'center',
            render:(text)=>{
-               if(text.length>13){
-                    return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
+               if(text.length>24){
+                    return(<div title={text} className='text-decoration'>{text.substring(0,24)}</div>)
                }
                else{
                     return(<div className='text-decoration'>{text}</div>)
@@ -194,7 +194,7 @@ class ProductInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:600}}
+                scroll={{y:400}}
                 ></Table>
             </div>
         );

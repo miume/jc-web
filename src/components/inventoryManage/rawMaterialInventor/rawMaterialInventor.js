@@ -55,9 +55,9 @@ class RowMaterialInventor extends Component{
            width:'20%',
            align:'center',
            render:(text)=>{
-              if(text.length>13){
+              if(text.length>24){
                   return(
-                      <div title={text} className='text-decoration'>{text.substring(0,13)}</div>
+                      <div title={text} className='text-decoration'>{text.substring(0,24)}</div>
                   )
               }
               else{
@@ -194,7 +194,7 @@ class RowMaterialInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                
+                scroll={{y:400}}
                 ></Table>
             </div>
         );
