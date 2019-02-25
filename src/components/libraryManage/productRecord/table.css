@@ -14,7 +14,7 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 9%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -22,7 +22,7 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -30,7 +30,7 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -38,7 +38,7 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -49,7 +49,7 @@
     border-left: 3px solid #0079FE;
     border-bottom: 2px solid #0079FE;
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -60,7 +60,7 @@
     border-bottom: 2px solid #0079FE;
     border-right: 2px solid #0079FE;
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -69,9 +69,9 @@
     border: 1px solid #0079FE;
     border-bottom: 2px solid #0079FE;
     border-right: none;
-    border-left: none;
+    border-left: 2px solid #0079FE;
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }
@@ -82,7 +82,7 @@
     border-left: none;
     border-right: 2px solid #0079FE;
     display: inline-block;
-    width: 10%;
+    width: 12.5%;
     text-align: left;
     text-overflow: ellipsis
 }

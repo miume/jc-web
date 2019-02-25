@@ -167,14 +167,14 @@ class Product extends React.Component{
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
-                <div className="LM-tableHead">编号</div>
-                <div className="LM-tableHead">货品名称</div>
-                <div className="LM-tableHead" style={{width:"13%"}}>货品型号</div>
-                <div className="LM-blueTableHead LM-tableHead">记录数量</div>
-                <div className="LM-blueTableHead LM-tableHead">实际数量</div>
-                <div className="LM-blueTableHead LM-tableHead">记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead">实际重量</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>货品型号</div>
+                {/* <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>实际数量</div> */}
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>实际重量</div>
                 </div>
                 <div className="LM-parent" id="parent">
                     <div className="one col">
@@ -223,7 +223,7 @@ class Product extends React.Component{
                     })
                 }
                     </div>
-                    <div className="five col">
+                    {/* <div className="five col">
 
                 {
                     this.state.dataSource.map((m,index)=>{
@@ -236,8 +236,8 @@ class Product extends React.Component{
                         }
                     })
                 }
-                    </div>
-                    <div className="six col">
+                    </div> */}
+                    {/* <div className="six col">
 
                 {
                     this.state.dataSource.map((m,index)=>{
@@ -246,7 +246,7 @@ class Product extends React.Component{
                                 </div>
                     })
                 }
-                    </div>
+                    </div> */}
                     <div className="seven col">
 
 

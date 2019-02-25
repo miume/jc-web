@@ -189,14 +189,14 @@ class Material extends React.Component{
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"12.95%"}}>编号</div>
-                <div className="LM-tableHead" style={{width:"13.05%"}}>货品名称</div>
-                <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"17.95%"}}>货品型号</div>
                 {/* <div className="LM-blueTableHead LM-tableHead">记录数量</div>
                 <div className="LM-blueTableHead LM-tableHead">实际数量</div> */}
-                <div className="LM-blueTableHead LM-tableHead">记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead">实际重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>实际重量</div>
                 </div>
                 <div className="Mparent" id="Mparent">
                     <div className="Mone Mcol">
