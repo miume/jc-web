@@ -2,7 +2,6 @@
 import React,{Component} from 'react';
 import {Table,message} from 'antd';
 import SearchCell from '../../BlockQuote/search';
-import Detail from '../detail';
 import axios from 'axios';
 
 class ProductInStorage extends Component{
@@ -28,7 +27,7 @@ class ProductInStorage extends Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'6%',
+            width:'5%',
             align:'center'
         },{
            title:'产品名称',
@@ -40,7 +39,7 @@ class ProductInStorage extends Component{
            title:'物料编码',
            dataIndex:'repoBaseSerialNumber.serialNumber',
            key:'repoBaseSerialNumber.serialNumber',
-           width:'15%',
+           width:'11%',
            align:'center',
            render:(text,record)=>{
             if(text.length>13){
@@ -51,22 +50,46 @@ class ProductInStorage extends Component{
             }
           }
         },{
+            title:'袋号',
+            dataIndex:'bagNumber',
+            key:'bagNumber',
+            align:'center',
+            width:'11%'
+         },{
+             title:'批次',
+             dataIndex:'batch',
+             key:'batch',
+             align:'center',
+             width:'8%'
+         },{
+             title:'车间',
+             dataIndex:'workshop',
+             key:'workshop',
+             align:'center',
+             width:'8%'
+         },{
+             title:'厂商',
+             dataIndex:'repoBaseSerialNumber.manufacturerName',
+             key:'manufacturerName',
+             align:'center',
+             width:'8%'
+         },{
            title:'数量',
            dataIndex:'quantity',
            key:'quantity',
-           width:'8%',
+           width:'6%',
            align:'center'
         },{
            title:'重量',
            dataIndex:'repoInRecord.weight',
            key:'repoInRecord.weight',
-           width:'8%',
+           width:'6%',
            align:'center'
         },{
            title:'入库时间',
            dataIndex:'repoInRecord.createTime',
            key:'repoInRecord.createTime',
-           width:'13%',
+           width:'9%',
            align:'center',
            render:(text,record)=>{
             if(text.length>10){
@@ -80,7 +103,7 @@ class ProductInStorage extends Component{
             title:'操作时间',
             dataIndex:'repoInRecord.operationTime',
             key:'repoInRecord.operationTime',
-            width:'13%',
+            width:'9%',
             align:'center',
             render:(text,record)=>{
                 if(text.length>10){
@@ -94,20 +117,8 @@ class ProductInStorage extends Component{
            title:'入库人',
            dataIndex:'repoInRecord.createPerson',
            key:'repoInRecord.createPerson',
-           width:'15%',
+           width:'7%',
            align:'center'
-        },{
-            title:'',
-            dataIndex:'operation',
-            key:'operation',
-            align:'center',
-            render:(text,record)=>{
-               return(
-                   <span>
-                       <Detail record={record}/>
-                   </span>
-               )
-            }
         }];
         this.pagination={
             total:this.state.dataSource.length,
@@ -214,7 +225,7 @@ class ProductInStorage extends Component{
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入产品名称'
+                    <SearchCell name='请输入成品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.fetch}
