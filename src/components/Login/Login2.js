@@ -24,17 +24,17 @@ class Login extends React.Component {
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
     /**点击记住密码 将登陆名和密码存入localStorage中   取消记住密码，则从localStorage中删除 */
-    console.log(e.target.checked)
     if(e.target.checked){
         if(username === '' && password === ''){
             message.info('请先填写用户名和密码！')
         }else{
-          localStorage.setItem('username',username);
-          localStorage.setItem('password',password);
+             document.cookie = `${username}-${password}`;
+            //  document.cookie = 'password'+password;
+          // localStorage.setItem('username',username);
+          // localStorage.setItem('password',password);
         }
     }else{
-        localStorage.removeItem('username');
-        localStorage.removeItem('password');
+      document.cookie = '';
     }
     
 
@@ -80,14 +80,11 @@ class Login extends React.Component {
       }
     });
   }
-  getDefault(){
-    let username = localStorage.getItem('username');
-    let password = localStorage.getItem('password');
-    if(username&&password){
-      console.log('qqq')
-      return username;
+  getDefault(flag){
+    var text = document.cookie.split('-');
+    if(text[flag]){
+      return text[flag];
     }else{
-      console.log('111')
       return '';
     }
   }
@@ -107,11 +104,11 @@ class Login extends React.Component {
                 <img src={require(`../Login/logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
                 <div style={{height:'10%'}}></div>
                 <div style={{padding: '0px 28px 0px 28px', height:'50%'}}>
-                  <Input className='login-input' size='large' id='userName' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称" defaultValue={this.getDefault()}/>
+                  <Input className='login-input' size='large' id='userName' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称" defaultValue={this.getDefault(0)}/>
                   <div style={{height:'10%'}}></div>
-                  <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录"  defaultValue={localStorage.getItem('password')!==null&&localStorage.getItem('password')!==null?localStorage.getItem('password'):''} />
+                  <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录"  defaultValue={this.getDefault(1)} />
                   <div style={{height:'10%'}}></div>
-                  <Checkbox style={{float:'left'}} onChange={this.remindLogin} defaultChecked={localStorage.getItem('username')?true:false}>记住登录状态</Checkbox>
+                  <Checkbox style={{float:'left'}} onChange={this.remindLogin} defaultChecked={document.cookie?true:false}>记住登录状态</Checkbox>
                   <div style={{height:'20%'}}></div>
                   <Button size='large' type="primary" style={{width:'100%', fontSize:'14px'}} onClick={this.handleSubmit}>
                     登录

@@ -30,7 +30,7 @@ class Exit extends Component {
     }
     /**退出事件 */
     exitEvent() {
-        // localStorage.clear();
+        localStorage.clear();
         let newState = {...this.state, flag : 1}
         this.setState(newState);
         /**登出时，使登陆背景动图显示 */
