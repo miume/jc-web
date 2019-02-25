@@ -5,24 +5,7 @@ import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
 import DetailStateModal from "./detailStateModal";
 
-// const testData = [];
-// for (let i = 0; i < 50; i++) {
-//     testData.push({
-//         index:i,
-//         id: i,
-//         testItem: `测试`,
-//         testResult: '0.001',
-//         itemUnit: `g/mL`,
-//     });
-// }
-// const examineData = [];
-// for (let i = 0; i < 50; i++) {
-//     examineData.push({
-//         handler: `测试`,
-//         handleReply: '0.001',
-//         handleTime: `g/mL`,
-//     });
-// }
+
 //判断类型，如果为新增,则data为空
 //如果为详情和编辑，则通过id查询该条数据
 class DrSpanModal extends React.Component {
@@ -73,7 +56,7 @@ class DrSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.props.data.topData.serialNumber}</td>
+                            <td><span title={this.props.data.topData.serialNumber} className="text-decoration">{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
