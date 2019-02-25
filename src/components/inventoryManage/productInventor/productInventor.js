@@ -53,7 +53,15 @@ class ProductInventor extends Component{
            dataIndex:'serialNumber',
            key:'serialNumber',
            width:'20%',
-           align:'center'
+           align:'center',
+           render:(text)=>{
+               if(text.length>13){
+                    return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
+               }
+               else{
+                    return(<div className='text-decoration'>{text}</div>)
+               }
+           }
         },{
            title:'重量',
            dataIndex:'weight',
