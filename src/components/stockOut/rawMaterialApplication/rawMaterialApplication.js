@@ -53,7 +53,7 @@ class RawMaterialApplication extends React.Component{
                 }
             }
         },{
-            title:'批号',
+            title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'20%'

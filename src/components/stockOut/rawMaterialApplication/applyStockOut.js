@@ -53,7 +53,7 @@ class ApplyStockOut extends React.Component{
                 }
             }
         },{
-            title:'批号',
+            title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'15%',
@@ -123,7 +123,7 @@ class ApplyStockOut extends React.Component{
             var newD = d;
             for(var i = 0; i < keys.length;i++){
                 if(keys[i]===d.id){
-                    newD['outQuantity']='';
+                    // newD['outQuantity']='';
                     newD['outWeight']='';
                     newD['index']=i+1;
                     outData.push(newD)
@@ -191,13 +191,13 @@ class ApplyStockOut extends React.Component{
         for(var i=0; i<data.length;i++ )
         {
             var e = data[i];
-            if(!e.outQuantity || !e.outWeight){
-                message.info('出库数量和出库重量都不能为空！');
+            if(!e.outWeight){
+                message.info('出库重量不能为空！');
                 return 
             }
             details.push({
                 stockId:parseInt(e.id),
-                quantity:parseInt(e.outQuantity),
+                quantity:1,
                 weight:parseInt(e.outWeight)
             })
         }
