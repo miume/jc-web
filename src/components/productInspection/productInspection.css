@@ -38,7 +38,7 @@
 }
 .productDrSpanModalTop table{
     width:100%;
-    text-align: center;
+    /*text-align: center;*/
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -48,14 +48,14 @@
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table thead tr th{
-    /*padding-left: 5px;*/
+    padding-left: 5px;
     height: 30px;
     font-size: 13px;
     /*padding-left: 10px;*/
     border: 1px solid  #E9E9E9;
 }
 .productDrSpanModalTop table tbody tr td {
-    /*padding-left: 5px;*/
+    padding-left: 5px;
     height: 30px;
     font-size: 13px;
     /*padding-left: 10px;*/
@@ -337,6 +337,7 @@
     /*text-align: center;*/
     line-height: 30px;
     font-size: 16px;
+    border-collapse:collapse;
 }
 
 .productSpanTheadModal div{
@@ -346,7 +347,7 @@
     padding-left: 5px;
 }
 .productSpanTheadModal div:first-child{
-    width: 60px;
+    width: 59px;
 }
 .productSpanTheadModal div:last-child{
     width: 120px;
@@ -361,31 +362,34 @@
     overflow-y: scroll;
     overflow-x: hidden;
     white-space: nowrap;
+    /*border-collapse:collapse;*/
     /*text-align: center;*/
+    border-collapse:collapse;
 }
 .productSpanTbodyModal>div {
     font-size: 16px;
     display: flex;
     height: 30px;
+    /*border-collapse:collapse;*/
 
 }
 .productSpanTbodyModal>div:last-child{
     border-bottom: 1px solid #E9E9E9;
 }
 .productSpanTbodyModal>div>div{
-    width: 80px;
+    width: 80px ;
     padding-left: 5px;
     /*text-align: left;*/
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
 }
 .productSpanTbodyModal>div>div:first-child{
-    width: 60px;
+    width: 59px !important;
 }
 .productSpanTbodyModal>div>div:last-child {
     width: 120px;
     display: flex;
-    padding-left: 0px;
+    padding-left: 0;
 }
 .productSpanTbodyModal>div>div:last-child div{
     width: 50%;
@@ -394,11 +398,13 @@
 
 
 .productTdInput {
-    width: 80px;
+    width: 80px !important;
 }
 .productTdInput input{
     border: none;
-    height: 26px !important;
+    height: 25px !important;
+    width: 66px !important;
+    padding-bottom: 1px;
 }
 
 .productPassValidPointer {
