@@ -40,7 +40,7 @@ class RawTest extends React.Component{
             if(res){
                 IsQualified = res.testReportRecord?res.testReportRecord.isQualified:0;
                 topData={
-                    batchNumber: res.serialNumber?res.serialNumber:'',
+                    batchNumber: res.commonBatchNumber.batchNumber?res.commonBatchNumber.batchNumber:'',
                     materialName: res.materialName?res.materialName:'',
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
