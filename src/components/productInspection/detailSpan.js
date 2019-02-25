@@ -23,7 +23,11 @@ class DetailSpan extends React.Component {
         this.state = {
             visible: false,
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -89,9 +93,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     }
     getDetailData = () =>{
         axios({
@@ -165,6 +169,7 @@ class DetailSpan extends React.Component {
                                 optional: optional,
                                 isQualified: isQualified,
                             },
+                            visible: true,
                         });
                     })
                 }else{
@@ -180,6 +185,7 @@ class DetailSpan extends React.Component {
                             optional: optional,
                             isQualified: isQualified,
                         },
+                        visible: true,
                     })
                 }
             }

@@ -60,7 +60,7 @@ class DrSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.props.data.topData.serialNumber}</td>
+                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>

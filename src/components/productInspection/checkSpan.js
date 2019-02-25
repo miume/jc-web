@@ -6,17 +6,6 @@ import SaveButton from '../BlockQuote/saveButton';
 import Submit from '../BlockQuote/submit';
 import axios from "axios";
 
-const data = [];
-for (let i = 0; i < 50; i++) {
-    data.push({
-        index:i,
-        id: i,
-        testItem: `测试`,
-        testResult: '0.001',
-        a: '0.002',
-        itemUnit: `kg`,
-    });
-}
 
 class CheckSpan extends React.Component {
     constructor(props){
@@ -27,7 +16,11 @@ class CheckSpan extends React.Component {
             process:-1,
             urgent: 0,
             checkData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 isQualified: '', //不合格状态
@@ -114,9 +107,6 @@ class CheckSpan extends React.Component {
     /**点击编辑 */
     handleCheck = () => {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     };
 
     getDetailData = () =>{
@@ -291,7 +281,7 @@ class CheckSpan extends React.Component {
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
+                // this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -316,7 +306,7 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
-            this.props.fetch();
+            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
