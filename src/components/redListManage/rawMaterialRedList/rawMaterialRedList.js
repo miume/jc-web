@@ -402,8 +402,9 @@ class RawMaterialRedList extends Component{
                         pagination={this.pagination}
                         onChange={this.handleTableChange}
                         bordered
+                        scroll={{y:400}}
                         size='small'
-                  
+                   
                     >
                 </Table>
             </div>
