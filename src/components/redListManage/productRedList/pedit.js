@@ -29,8 +29,8 @@ class Edit extends Component{
       }
       handleSave () {//编辑一条记录
         const  details=this.formRef.getItemsValue();
-         //console.log(details);
         details['id']=this.props.record.repoRedTable.id;
+        details['quantityLoss']=1;
          const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
          //const isUrgent=this.state.checkSwitch;
          const commonBatchNumber={
@@ -80,8 +80,8 @@ class Edit extends Component{
    }
    handleSongShenOk(process,urgent){//送审事件的确认按钮
     const details=this.formRef.getItemsValue();
-   // console.log(details);
     details['id']=this.props.record.repoRedTable.id;
+    details['quantityLoss']=1;
     const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
     //const isUrgent=this.state.checkSwitch;
     const commonBatchNumber={

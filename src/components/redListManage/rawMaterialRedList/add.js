@@ -1,13 +1,13 @@
 import React from 'react';
 //import $ from 'jquery';
-import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
+import {Button,Modal,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
 import Submit from '../../BlockQuote/checkSubmit';
 import RawMaterialRedListAddModal from './addModal';
 import axios from 'axios';
-const Option=Select.Option;
+
 
 class Add extends React.Component{
     url;
@@ -22,10 +22,7 @@ class Add extends React.Component{
         this.showModal=this.showModal.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        //this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
-        //this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
-       // this.selectOnSelect=this.selectOnSelect.bind(this);
     }
   
     /**处理新增一条记录 */
@@ -36,6 +33,7 @@ class Add extends React.Component{
       }
     handleSave() {//点击新增保存，未申请状态
         const value=this.formRef.getItemsValue();
+        value['quantityLoss']=1;
         //console.log(value);
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
@@ -116,6 +114,7 @@ class Add extends React.Component{
    }
     handleSongShenOk(process,urgent){//送审事件的确认按钮(先保存，在送审)
         const value=this.formRef.getItemsValue();
+        value['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={         
             createPersonId:createPersonId,
@@ -204,7 +203,7 @@ class Add extends React.Component{
                         //  visible={this.state.popVisible}
                         //  onVisibleChange={this.handleVisibleChange}
                         // >
-                        // <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
+                        // <Button key='submit' type='primary'> type='check'/>送审</Button>
                         // </Popover>
                          <Submit  key='submit'   applySaveAndReview={this.handleSongShenOk}  url={this.url} />
                     ]}>
