@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Modal, Button, message} from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
+import CancleButton from '../BlockQuote/cancleButton';
 
 
 const data = [];
@@ -47,9 +48,14 @@ class ReleaseSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    width="500px"
+                    // width="500px"
                     footer={[
-                        <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <CancleButton
+                            key="back"
+                            flag = {1}
+                            handleCancel={this.handleCancel}
+                        />,
+                        // <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
                         <Button key="release" style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleReleaseButton} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
@@ -84,7 +90,7 @@ class ReleaseSpan extends React.Component {
             this.setState({
                 visible: false
             });
-            this.props.fetch();
+            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
@@ -93,9 +99,6 @@ class ReleaseSpan extends React.Component {
     /**点击发布-打开Modal */
     handleRelease() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     }
     /**通过id查询详情 */
     getDetailData(){

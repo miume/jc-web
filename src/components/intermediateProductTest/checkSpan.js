@@ -24,7 +24,11 @@ class CheckSpan extends React.Component {
             visible: false,
             subVisible: false,
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 isQualified: '', //不合格状态
@@ -32,10 +36,11 @@ class CheckSpan extends React.Component {
             interCheckData:{
                 testDTOS: [],
                 sampleDeliveringRecord: {
-                    id: -1,
+                    id: '',
                 },
                 testReportRecord:{
-                    isQualified: -1,
+                    isQualified: '',
+                    judger: ''
                 }
 
             },
@@ -142,7 +147,7 @@ class CheckSpan extends React.Component {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{this.state.detailData.topData.serialNumberId}</td>
+                                        <td><span title={this.state.detailData.topData.serialNumber} className="text-decoration">{this.state.detailData.topData.serialNumber.substring(0,15)}</span></td>
                                         <td>{this.state.detailData.topData.materialName}</td>
                                         <td>{this.state.detailData.topData.sampleDeliveringDate}</td>
                                     </tr>
@@ -247,7 +252,7 @@ class CheckSpan extends React.Component {
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
-                    serialNumberId: res.sampleDeliveringRecord?res.sampleDeliveringRecord.serialNumberId:'',
+                    serialNumber: res.serialNumber?res.serialNumber:'',
                     materialName: res.materialName,
                     sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
@@ -325,6 +330,7 @@ class CheckSpan extends React.Component {
         }
         interCheckData.testDTOS = interTestDTOS;
         interCheckData.testReportRecord.isQualified = detailIsQualified;
+        interCheckData.testReportRecord.judger = this.props.menuList.userId;
         interCheckData.sampleDeliveringRecord.id = id;
         if(detailTestDTOS){
             for(var j=0; j<detailTestDTOS.length; j++){
@@ -338,7 +344,7 @@ class CheckSpan extends React.Component {
             message.info('请点击合格或者不合格！');
             return
         }
-
+        console.log(interCheckData)
         //  调用保存函数
         this.useSavaFunction(interCheckData,status);
 
