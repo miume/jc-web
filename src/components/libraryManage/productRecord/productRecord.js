@@ -94,16 +94,16 @@ class MaterialRecord extends React.Component{
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"12.5%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"12.5%"}}>编号</div>
-                <div className="LM-tableHead" style={{width:"12.5%"}}>货品名称</div>
-                <div className="LM-tableHead" style={{width:"12.5%"}}>货品型号</div>
-                <div className="LM-tableHead" style={{width:"12.5%"}}>盘库日期</div>
-                <div className="LM-tableHead" style={{width:"12.5%"}}>盘库人</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>货品型号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>盘库日期</div>
+                <div className="LM-tableHead" style={{width:"12.75%"}}>盘库人</div>
                 {/* <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录数量</div>
                 <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际数量</div> */}
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.5%"}}>记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.5%"}}>实际重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>实际重量</div>
                 </div>
                 <div className="MRparent">
                     <div className="MRone">
