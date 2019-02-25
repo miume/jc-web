@@ -68,7 +68,7 @@ class RawMaterialApplication extends React.Component{
             title:'重量',
             dataIndex:'weight',
             key:'weight',
-            width:'20%'
+            // width:'20%'
         }]
         // this.pagination = {
         //     total: this.props.data.total,

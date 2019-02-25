@@ -15,14 +15,17 @@ class Exit extends Component {
         this.fetch = this.fetch.bind(this);
         this.logout = this.logout.bind(this);
         this.onClose = this.onClose.bind(this);
+        this.getCount = this.getCount.bind(this);
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
         this.getToDoCount = this.getToDoCount.bind(this);
+        this.count = 0;
         this.state = {
             visible:false,
             count:0,
-            // content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.fetch} />
+            flag:0,
+            content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} getCount={this.getCount} />
         }
     }
     /**退出事件 */
@@ -75,7 +78,7 @@ class Exit extends Component {
         })
     }
     /**根据当前登陆用户id获取待办事项 */
-    fetch(flag){
+    fetch(){
         const url = JSON.parse(localStorage.getItem('url'));
         axios.get(`${url.toDoList}/${this.props.userId}`,{
             headers:{
@@ -83,13 +86,18 @@ class Exit extends Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            const count = res? res.length : 0;
-            if(flag) return count;
+            var count = res? res.length : 0;
             this.setState({
                 data:res,
                 count:count
             })
+            this.getCount();
         })
+    }
+    getCount(){
+        const {count} = this.state;
+        console.log(count)
+        return count;
     }
     logout() {
         /**登出时，使登陆背景动图显示 */
@@ -115,8 +123,8 @@ class Exit extends Component {
         var height1 = document.body.clientHeight - 150;
         return (
             <div id='exit'>
-                {/* {this.state.content} */}
-                <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />
+                {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
+                {/* <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} /> */}
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
                 onClose={this.onClose} maskClosable={false} mask={false} width={400}
                 >
