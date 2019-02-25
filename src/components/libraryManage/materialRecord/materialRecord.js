@@ -94,16 +94,16 @@ class MaterialRecord extends React.Component{
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"10%"}}>编号</div>
-                <div className="LM-tableHead" style={{width:"10%"}}>货品名称</div>
-                <div className="LM-tableHead" style={{width:"10%"}}>货品型号</div>
-                <div className="LM-tableHead" style={{width:"10%"}}>盘库日期</div>
-                <div className="LM-tableHead" style={{width:"9.95%"}}>盘库人</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录数量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际数量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际重量</div>
+                <div className="LM-tableHead" style={{width:"12.5%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"12.5%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"12.5%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.5%"}}>货品型号</div>
+                <div className="LM-tableHead" style={{width:"12.5%"}}>盘库日期</div>
+                <div className="LM-tableHead" style={{width:"12.5%"}}>盘库人</div>
+                {/* <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际数量</div> */}
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.5%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.5%"}}>实际重量</div>
                 </div>
                 <div className="MRparent">
                     <div className="MRone">
@@ -167,11 +167,9 @@ class MaterialRecord extends React.Component{
                     })
                 }
                     </div>
-                    <div className="MRfive">
+                    {/* <div className="MRfive">
 
                             <div className="head-shadow">
-                                {/* <div className="MRborder-down3">记录数量</div> */}
-                                {/* <div className="fa fa-balance-scale"></div> */}
                             </div>
 
 
@@ -186,9 +184,8 @@ class MaterialRecord extends React.Component{
                         }
                     })
                 }
-                    </div>
-                    <div className="MRsix">
-                        {/* <div className="MRborder-down1">实际数量</div> */}
+                    </div> */}
+                    {/* <div className="MRsix">
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -196,7 +193,7 @@ class MaterialRecord extends React.Component{
                                 </div>    
                     })
                 }
-                    </div>
+                    </div> */}
                     <div className="MRseven">
                         {/* <div className="MRborder-down2">记录重量</div> */}
                         <div className='white-space space-left'></div>
