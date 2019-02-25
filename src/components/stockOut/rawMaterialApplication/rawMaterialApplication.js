@@ -56,7 +56,13 @@ class RawMaterialApplication extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'20%'
+            width:'20%',
+            render:(text)=>{
+                if(text.length>24)
+                    return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
+                else 
+                    return <span className='text-decoration' title={text}>{text}</span>
+            }
         }
         // ,{
         //     title:'数量',

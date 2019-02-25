@@ -16,7 +16,7 @@ class Detail extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'15%',
+            width:'10%',
         },{
             title:'货物名称',
             dataIndex:'materialName',
@@ -39,10 +39,10 @@ class Detail extends React.Component{
             title:'批号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'20%',
+            width:'25%',
             render:(text)=>{
-                if(text.length>13){
-                    return <span className='text-decoration' title={text}>{text.substring(0,13)}</span>
+                if(text.length>24){
+                    return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
                 }else{
                     return <span className='text-decoration'>{text}</span>
                 } 

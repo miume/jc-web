@@ -15,7 +15,7 @@ class Exit extends Component {
         this.fetch = this.fetch.bind(this);
         this.logout = this.logout.bind(this);
         this.onClose = this.onClose.bind(this);
-        this.getCount = this.getCount.bind(this);
+        // this.getCount = this.getCount.bind(this);
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
@@ -25,13 +25,13 @@ class Exit extends Component {
             visible:false,
             count:0,
             flag:0,
-            content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} getCount={this.getCount} />
+            // content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} getCount={this.getCount} />
         }
     }
     /**退出事件 */
     exitEvent() {
         localStorage.clear();
-        let newState = {...this.state, content : <Auth/>}
+        let newState = {...this.state, flag : 1}
         this.setState(newState);
         /**登出时，使登陆背景动图显示 */
         document.getElementById('defaultCanvas0').style.visibility='visible'; 
@@ -91,14 +91,13 @@ class Exit extends Component {
                 data:res,
                 count:count
             })
-            this.getCount();
         })
     }
-    getCount(){
-        const {count} = this.state;
-        console.log(count)
-        return count;
-    }
+    // getCount(){
+    //     const {count} = this.state;
+    //     console.log(count)
+    //     return count;
+    // }
     logout() {
         /**登出时，使登陆背景动图显示 */
         document.getElementById('defaultCanvas0').style.visibility='visible'; 

@@ -47,7 +47,7 @@ class RawMaterialOut extends React.Component{
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
-            width:'15%'
+            width:'15%',
         }
         // ,{
         //     title:'货物名称',

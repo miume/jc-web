@@ -33,7 +33,7 @@ class ApplyStockOut extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'9%'
+            width:'5%'
         },{
             title:'货物名称',
             dataIndex:'materialName',
@@ -56,10 +56,10 @@ class ApplyStockOut extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'15%',
+            width:'19%',
             render:(text)=>{
-                if(text.length>13){
-                    return <span className='text-decoration' title={text}>{text.substring(0,13)}</span>
+                if(text.length>24){
+                    return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
                 }else{
                     return <span className='text-decoration'>{text}</span>
                 }
@@ -197,7 +197,7 @@ class ApplyStockOut extends React.Component{
             }
             details.push({
                 stockId:parseInt(e.id),
-                quantity:1,
+                // quantity:1,
                 weight:parseInt(e.outWeight)
             })
         }
