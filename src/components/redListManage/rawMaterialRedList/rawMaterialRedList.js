@@ -75,7 +75,7 @@ class RawMaterialRedList extends Component{
                 let type=record.repoBaseSerialNumber.materialClass;
                 switch(`${type}`){
                      case '1':return '原材料';
-                     case '3':return '产品';
+                     case '3':return '成品';
                      default:return '';
                 }
             },

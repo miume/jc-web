@@ -13,8 +13,9 @@ class RedList extends React.Component{
             data:{},
             reply:'',
         }
-        // this.textChange = this.textChange.bind(this);
         this.getData = this.getData.bind(this);
+        this.textProcessing = this.textProcessing.bind(this);
+        this.toMaterialClass = this.toMaterialClass.bind(this);
     }
     getData(url){
         axios.get(`${url}`,{
@@ -29,7 +30,7 @@ class RedList extends React.Component{
                     serialNumber: res.repoBaseSerialNumber?res.repoBaseSerialNumber.serialNumber:'',
                     materialName: res.repoBaseSerialNumber?res.repoBaseSerialNumber.materialName:'',
                     materialClass: res.repoBaseSerialNumber?res.repoBaseSerialNumber.materialClass:'',
-                    quantityLoss: res.repoRedTable?res.repoRedTable.quantityLoss:'',
+                    // quantityLoss: res.repoRedTable?res.repoRedTable.quantityLoss:'',
                     weightLoss: res.repoRedTable?res.repoRedTable.weightLoss:'',
                     note: res.repoRedTable?res.repoRedTable.note:'',
                 };
@@ -39,13 +40,24 @@ class RedList extends React.Component{
             }
         })
     }
-    /**监控审核意见的变化 */
-    // textChange(e){
-    //     const value = e.target.value;
-    //     this.setState({
-    //         reply:value
-    //     })
-    // }
+    /**处理编号的缩写 */
+    textProcessing(text){
+        if(text){
+            if(text.length>24) return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
+            else return <span className='text-decoration' title={text}>{text}</span>
+        }
+    }
+    /**识别materialClass */
+    toMaterialClass(text){
+        if(text){
+            switch(text){
+                case 1: return '原材料';
+                case 2: return '中间件';
+                case 3: return '成品';
+                default:return '';
+            }
+        }
+    }
     render(){
         // this.props.getReplyData(this.state.reply);
         const {data} = this.state;
@@ -59,16 +71,16 @@ class RedList extends React.Component{
                             <th className='red-min-width'>编号</th>
                             <th>物料名称</th>
                             <th>物料类型</th>
-                            <th>损失数量</th>
+                            {/* <th>损失数量</th> */}
                             <th>损失重量</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{data?data.serialNumber:''}</td>
+                            <td>{data?this.textProcessing(data.serialNumber):''}</td>
                             <td>{data?data.materialName:''}</td>
-                            <td>{data?data.materialClass:''}</td>
-                            <td>{data?data.quantityLoss:''}</td>
+                            <td>{data?this.toMaterialClass(data.materialClass):''}</td>
+                            {/* <td>{data?data.quantityLoss:''}</td> */}
                             <td>{data?data.weightLoss:''}</td>
                         </tr>
                         </tbody>
