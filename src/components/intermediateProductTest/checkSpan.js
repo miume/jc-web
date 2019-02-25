@@ -157,6 +157,7 @@ class CheckSpan extends React.Component {
                         </div>
                         <div className="interCheckModalBottom">
                             <Table
+                                className="stock-out"
                                 rowKey={record => record.index}
                                 columns={this.columns}
                                 dataSource={this.state.detailData.testDTOS}
@@ -325,16 +326,6 @@ class CheckSpan extends React.Component {
         interCheckData.testDTOS = interTestDTOS;
         interCheckData.testReportRecord.isQualified = detailIsQualified;
         interCheckData.sampleDeliveringRecord.id = id;
-
-        // var nowDate = new Date().toLocaleDateString().split('/');
-        // if(nowDate[1] < '10'){
-        //     nowDate[1] = '0'+ nowDate[1];
-        // }
-        // var judgeDate = nowDate[0]+ '-' + nowDate[1] + '-' +nowDate[2];
-        // judger: this.props.menuList.userId,
-
-
-
         if(detailTestDTOS){
             for(var j=0; j<detailTestDTOS.length; j++){
                 if(detailTestDTOS[j].testResult === ''||detailTestDTOS[j].testResult === null||detailTestDTOS[j].testResult === undefined){
@@ -371,7 +362,6 @@ class CheckSpan extends React.Component {
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -396,7 +386,6 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
-            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')

@@ -121,7 +121,7 @@
 }
 .interCheckModalTop table{
     width:100%;
-    text-align: center;
+    /*text-align: center;*/
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -134,8 +134,10 @@
     height: 30px;
     font-size: 13px;
     border: 1px solid  #E9E9E9;
+    padding-left: 5px;
 }
 .interCheckModalTop table tbody tr td {
+    padding-left: 5px;
     height: 30px;
     font-size: 13px;
     border: 1px solid  #E9E9E9;
