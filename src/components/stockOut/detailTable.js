@@ -8,12 +8,12 @@ class StockTable extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'10%',
+            width:'6%',
         },{
             title:'货物名称',
             dataIndex:'materialName',
             key:'materialName',
-            width:'15%',
+            width:'10%',
         },{
             title:'货物类型',
             dataIndex:'meterialClass',
@@ -31,22 +31,22 @@ class StockTable extends React.Component{
             title:'物料编码',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'25%',
-            render:(text)=>{
-                if(this.props.flag) return <span className='text-decoration' title={text}>{text.split('-')[0]+'...'}</span>
-                else{
-                    if(text.length>24){
-                        return <span className='text-decoration' title={text}>{text.substring(0,24)+'...'}</span>
-                    }else{
-                        return <span className='text-decoration'>{text}</span>
-                    } 
-                }
-            }
+            width:'40%',
+            // render:(text)=>{
+            //     if(this.props.flag) return <span className='text-decoration' title={text}>{text.split('-')[0]+'...'}</span>
+            //     else{
+            //         if(text.length>24){
+            //             return <span className='text-decoration' title={text}>{text.substring(0,24)+'...'}</span>
+            //         }else{
+            //             return <span className='text-decoration'>{text}</span>
+            //         } 
+            //     }
+            // }
         },{
             title:'出库重量',
             dataIndex:'weight',
             key:'weight',
-            width:'15%',
+            width:'10%',
         }]
     }
     render(){

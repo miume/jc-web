@@ -107,13 +107,19 @@ class RawMaterialOut extends React.Component{
             dataIndex:'id',
             key:'id',
             render:(text,record)=>{
+                const status = record.status;
                 return (
                     <span>
-                        <Detail id={record.id} url={this.props.url} status={record.status}></Detail>
+                        <Detail id={record.id} url={this.props.url}></Detail>
                         <Divider type='vertical'></Divider>
-                        <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
-                            <span className='blue' id={record.id}>删除</span>
-                        </Popconfirm> 
+                        {
+                            status===0||status===1||status===2||status===3?
+                                <span className={status===0||status===1||status===2||status===3?'notClick':'blue'} id={record.id}>删除</span>
+                                :
+                                <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
+                                    <span className={status===0||status===1||status===2||status===3?'notClick':'blue'} id={record.id}>删除</span>
+                                </Popconfirm> 
+                        }
                    </span>
                 );
             }
