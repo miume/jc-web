@@ -188,10 +188,11 @@ class RawMaterialRedList extends Component{
           this.fetch({
               size:pagination.pageSize,//当前页显示的记录数
               page:pagination.current,//当前是第几页
-              orderType:'asc'
+              orderType:'desc'
           })
     }
     fetch=(params={})=>{
+       // console.log(this.pagination);
         const materialType=1;
         axios({
             url:`${this.url.redList.redList}/?materialType=${materialType}`,
@@ -335,23 +336,7 @@ class RawMaterialRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-//     getAllProcess(){//获取所有流程
-//         axios({
-//             url:`${this.url.process.process}/validTasks`,
-//             method:'get',
-//             headers:{
-//                 'Authorizaion':this.url.Authorizaion
-//             },
-//         })
-//         .then((data)=>{
-//             //console.log(data);
-//              const res=data.data.data;
-//              //  console.log(res);
-//               this.setState({
-//                   processChildren:res
-//               });
-//         });
-//  }
+
     getAllSerialNumber(){//获取所有编号
         axios({
                 url:`${this.url.serialNumber.serialNumber}`,

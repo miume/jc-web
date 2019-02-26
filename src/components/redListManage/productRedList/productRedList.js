@@ -179,6 +179,7 @@ class ProductRedList extends Component{
         }
     }
     handleTableChange(pagination){
+         
           this.fetch({
               size:pagination.pageSize,//当前页显示的记录数
               page:pagination.current,//当前是第几页
@@ -260,6 +261,9 @@ class ProductRedList extends Component{
            // console.log(data);
            message.info(data.data.message);
            if(data.data.code===0){
+               if(this.pagination.total%10===1){
+                this.pagination.current=this.pagination.current-1;
+               }
             this.fetch({
                size:this.pagination.pageSize,
                page:this.pagination.current,

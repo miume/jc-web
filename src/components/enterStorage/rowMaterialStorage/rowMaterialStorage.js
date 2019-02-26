@@ -43,7 +43,7 @@ class RowMaterialStorage extends Component{
             align:'center',
             width:'11%',
             render:(text,record)=>{
-              if(text.length>13){
+              if(text&&text.length>13){
                   return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
               }
               else{
@@ -82,8 +82,8 @@ class RowMaterialStorage extends Component{
             width:'6%'
          },{
            title:'数量',
-           dataIndex:'repoInRecord.quantity',
-           key:'repoInRecord.quantity',
+           dataIndex:'quantity',
+           key:'quantity',
            align:'center',
            width:'6%'
         },{
@@ -93,7 +93,8 @@ class RowMaterialStorage extends Component{
            align:'center',
            width:'9%',
            render:(text,record)=>{
-             if(text.length>10){
+              // console.log(text);
+             if(text&&text.length>10){
                 return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
              }
              else{
@@ -162,18 +163,17 @@ class RowMaterialStorage extends Component{
                 ...params,
                 materialType:1
             }
-                
         })
         .then((data)=>{
             const res=data.data.data;
-            console.log(res);
+          if(res&&res.list){
             this.pagination.total=res.total;
             this.pagination.current=res.pageNum;//当前在第几页
-          if(res&&res.list){
             for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
-                res.list[i-1].repoInRecord.quantity=1;//将数量写死为1
+                res.list[i-1]['quantity']=1;//将数量写死为1
            }
+           //console.log(res.list);
            this.setState({
                dataSource:res.list,
                pageChangeFlag:1
@@ -201,11 +201,12 @@ class RowMaterialStorage extends Component{
       })
       .then((data)=>{
          const res=data.data.data;
-         this.pagination.total=res.total?res.total:0;
-         this.pagination.current=res.pageNum;
        if(res){
+        this.pagination.total=res.total;
+        this.pagination.current=res.pageNum;
         for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=(res.pages-1)*10+i;
+            res.list[i-1]['quantity']=1;
         }
         this.setState({
             dataSource:res.list
@@ -231,7 +232,7 @@ class RowMaterialStorage extends Component{
                 </span>
                 <div className='clear'  ></div>
                 <Table
-                rowKey={record=>record.repoInRecord.id}
+                rowKey={record=>record.index}
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 pagination={this.pagination}

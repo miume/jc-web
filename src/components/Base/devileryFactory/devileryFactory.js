@@ -226,7 +226,18 @@ class DeliveryFactory extends React.Component{
       .then((data)=>{
        // console.log(data);
         message.info(data.data.message);
-        this.fetch();//调用getAllByPage,渲染删除后的表格
+        if(data.data.code===0){
+          if(this.pagination.total%10===1){
+             this.pagination.current=this.pagination.current-1;
+          }
+          this.fetch({
+            size:this.pagination.pageSize,
+            page:this.pagination.current,
+            orderField:'id',
+            orderType:'desc'
+          });//调用getAllByPage,渲染删除后的表格
+        }
+        
         this.setState({
           selectedRowKeys:[]
         });
