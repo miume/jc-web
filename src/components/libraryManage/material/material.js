@@ -219,7 +219,7 @@ class Material extends React.Component{
                         // }else{
                         //     string = m.serialNumber
                         // }
-                        return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"Mborder-down Mrow"+index} key={index}>
+                        return <div title={m.serialNumber} className={"Mborder-down Mrow"+index} key={index}>
                                     {/* {string} */}
                                     {m.serialNumber}
                                 </div>
