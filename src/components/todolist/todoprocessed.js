@@ -86,7 +86,7 @@ class TodoProcessed extends React.Component{
                                 else {details[i]['flag'] = 1; }      
                             }
                             return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} contents={contents} data={e.commonBatchNumber} details={details} curId={curId} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag}/>
-                        }):null
+                        }):<div className='divAuto'>暂无</div>
                     }
                     </div>
             </div>
