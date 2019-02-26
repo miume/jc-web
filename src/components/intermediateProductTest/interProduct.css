@@ -18,7 +18,7 @@
 }
 .interDrSpanModalTop table{
     width:100%;
-    text-align: center;
+    text-align: left;
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -30,11 +30,13 @@
 .interDrSpanModalTop table thead tr th{
     height: 30px;
     font-size: 13px;
+    padding:5px;
     border: 1px solid  #E9E9E9;
 }
 .interDrSpanModalTop table tbody tr td {
     height: 30px;
     font-size: 13px;
+    padding:5px;
     border: 1px solid  #E9E9E9;
 }
 /*Middle:设置样品名称和清空按钮样式*/
@@ -54,7 +56,7 @@
     position:absolute;
     bottom: 70px;
     height: 200px;
-    width: 460px;
+    width: 480px;
     cursor: default;
 }
 .interDrSpanModalBottom .interDrSpanModalBottomFirst {
@@ -85,10 +87,8 @@
     text-align: center;
     line-height: 110px;
 }
-.interStateModal{
-    overflow-y: auto;
-    width: 100%;
-    height: 100px;
+.interStateNoModal{
+    display: none;
 }
 .interDrSpanModalBottomSecond {
     margin-top: -7px;
@@ -121,7 +121,7 @@
 }
 .interCheckModalTop table{
     width:100%;
-    text-align: center;
+    /*text-align: center;*/
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
 }
@@ -134,8 +134,10 @@
     height: 30px;
     font-size: 13px;
     border: 1px solid  #E9E9E9;
+    padding-left: 5px;
 }
 .interCheckModalTop table tbody tr td {
+    padding-left: 5px;
     height: 30px;
     font-size: 13px;
     border: 1px solid  #E9E9E9;

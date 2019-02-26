@@ -6,23 +6,32 @@ import {Drawer} from 'antd';
 import axios from 'axios';
 import TodoPart from './todopart';
 class Exit extends Component {
+    componentWillMount(){
+        this.fetch();
+        // console.log(this.getToDoCount());
+    }
     constructor(props) {
         super(props);
         this.fetch = this.fetch.bind(this);
         this.logout = this.logout.bind(this);
         this.onClose = this.onClose.bind(this);
+        // this.getCount = this.getCount.bind(this);
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
+        this.getToDoCount = this.getToDoCount.bind(this);
+        this.count = 0;
         this.state = {
             visible:false,
-            content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} />
+            count:0,
+            flag:0,
+            // content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} getCount={this.getCount} />
         }
     }
     /**退出事件 */
     exitEvent() {
         localStorage.clear();
-        let newState = {...this.state, content : <Auth/>}
+        let newState = {...this.state, flag : 1}
         this.setState(newState);
         /**登出时，使登陆背景动图显示 */
         document.getElementById('defaultCanvas0').style.visibility='visible'; 
@@ -54,8 +63,8 @@ class Exit extends Component {
             case 4: week='星期四';break;
             case 5: week='星期五';break;
             case 6: week='星期六';break;
+            default:week='';break;
         }
-        this.fetch();
         this.setState({
             visible:true,
             date:time,
@@ -77,13 +86,18 @@ class Exit extends Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            const count = res? res.length : 0;
+            var count = res? res.length : 0;
             this.setState({
                 data:res,
                 count:count
             })
         })
     }
+    // getCount(){
+    //     const {count} = this.state;
+    //     console.log(count)
+    //     return count;
+    // }
     logout() {
         /**登出时，使登陆背景动图显示 */
         document.getElementById('defaultCanvas0').style.visibility='visible'; 
@@ -101,17 +115,22 @@ class Exit extends Component {
             visible:false
         })
     }
+    getToDoCount(){
+        return this.state.count;
+    }
     render() {
+        var height1 = document.body.clientHeight - 150;
         return (
             <div id='exit'>
-                {this.state.content}
+                {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
+                {/* <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} /> */}
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
                 onClose={this.onClose} maskClosable={false} mask={false} width={400}
                 >
                 <div className='drawer-div'>
                     <div>{this.state.date}</div>
                     <div>{this.state.week}</div>
-                    <div className='drawer-date-div'>
+                    <div className='drawer-date-div' style={{height:height1}}>
                     {
                         this.state.data?this.state.data.map((e,index)=>{
                             var contents = '';
@@ -122,7 +141,7 @@ class Exit extends Component {
                             return (
                                 <TodoPart key={index} data={e.commonBatchNumber} contents={contents} gotodolist={this.gotodolist} />
                             )
-                        }):null
+                        }):<div className='divAuto'>暂无</div>
                     }
                     </div>
                 </div>

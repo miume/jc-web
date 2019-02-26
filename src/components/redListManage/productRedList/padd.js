@@ -1,33 +1,29 @@
 import React from 'react';
-import {Button,Modal,Select,Popover,Switch,Icon,message} from 'antd';
+import {Button,Modal,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
-//import Submit from '../../BlockQuote/submit';
+import Submit from '../../BlockQuote/checkSubmit';
 import ProductRedListAddModal from './paddModal';
 import axios from 'axios';
-const Option=Select.Option;
 
 class Add extends React.Component{
     url;
-    
     constructor(props){
         super(props);
         this.state = {
             visible : false,
-            checkSelectData:-1,//最开始下拉框是没选择数据的
-            popVisible:false,//送检的气泡弹出
-            checkSwitch:0,//是否紧急那个开关最开始是关闭的
-            
+           // checkSelectData:-1,//最开始下拉框是没选择数据的
+            //popVisible:false,//送检的气泡弹出
+            //checkSwitch:0,//是否紧急那个开关最开始是关闭的 
         }
         
         this.showModal=this.showModal.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-
-        this.hide=this.hide.bind(this);//送审气泡的取消
+        //this.hide=this.hide.bind(this);//送审气泡的取消
         this.handleSongShenOk=this.handleSongShenOk.bind(this);//送审事件点击确认按钮
-        this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
+        //this.selectChange=this.selectChange.bind(this);//监听下拉框变化，
         
     }
   
@@ -39,14 +35,14 @@ class Add extends React.Component{
       }
     handleSave() {//点击新增保存，未申请状态
         const value=this.formRef.getItemsValue();
+        value['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
-           
             createPersonId:createPersonId,
             status:-1,
             //isUrgent:this.state.checkSwitch,
         }
-        if(!value['serialNumberId']||!value['quantityLoss']||!value['weightLoss']){
+        if(!value['serialNumberId']||!value['weightLoss']){
             message.info('信息填写不完整！');
             return
         }
@@ -81,30 +77,9 @@ class Add extends React.Component{
         });
         this.formRef.resetField();
     }
-
-
-   
-    //监听流程下拉框变化
-    selectChange=(value)=>{
-        //console.log(value);//得到的是id
-        this.setState({checkSelectData:value});
-    }
-    hide(){//送审气泡的取消
-      //console.log('hide')
-      //console.log(this.state.popVisible)
-      this.setState({popVisible:false});
-    }
-
-    handleVisibleChange=(visible)=>{
-      
-       this.setState({
-         popVisible:visible
-       })
-   }
-   getCheck(dataId,taskId){//调用代办事项接口
-    const isUrgent=this.state.checkSwitch;
+   getCheck(dataId,taskId,urgent){//调用代办事项接口
     axios({
-        url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${isUrgent}`,
+        url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${urgent}`,
         method:'post',
         headers:{
             'Authorization':this.url.Authorization
@@ -115,14 +90,14 @@ class Add extends React.Component{
          message.info(data.data.message);
          this.props.fetch();
      }).catch(()=>{
-         message.info('新增失败，请联系管理员！');
+         message.info('审核失败，请联系管理员！');
      });
    }
-    handleSongShenOk(){//送审事件的确认按钮(先保存，在送审)
+    handleSongShenOk(process,urgent){//送审事件的确认按钮(先保存，在送审)
         const value=this.formRef.getItemsValue();
+        value['quantityLoss']=1;
         const createPersonId=JSON.parse(localStorage.getItem('menuList')).userId;//取出来的时候要将json格式转成对象，存进去的时候要转成json
         const commonBatchNumber={
-           
             createPersonId:createPersonId,
             status:-1,
             //isUrgent:this.state.checkSwitch,
@@ -147,15 +122,15 @@ class Add extends React.Component{
             //console.log(data);
             const res=data.data.data;
             const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-            const taskId=this.state.checkSelectData;//选择的流程id
-            this.getCheck(dataId,taskId);//调用待办事项的送审
+            const taskId=process;//选择的流程id
+            this.getCheck(dataId,taskId,urgent);//调用待办事项的送审
             //message.info(data.data.message);
             this.props.fetch();
         })
         .catch(()=>{
             message.info('新增失败，请联系管理员！');
         });
-      this.setState({popVisible:false});
+
       this.setState({
         visible: false
         });
@@ -163,12 +138,12 @@ class Add extends React.Component{
     }
 
    //红单是否紧急
-   urgentChange=(checked)=>{//checked指定当前是否选中
-      //console.log(`switch to ${checked}`);//选中的话checked为true
-      this.setState({
-          checkSwitch:checked?0:-1
-      });
-    }
+//    urgentChange=(checked)=>{//checked指定当前是否选中
+//       //console.log(`switch to ${checked}`);//选中的话checked为true
+//       this.setState({
+//           checkSwitch:checked?0:-1
+//       });
+//     }
 
     render() {
         this.url=JSON.parse(localStorage.getItem('url'));
@@ -183,38 +158,37 @@ class Add extends React.Component{
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,
-                        <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
-                        
-                         content={
-                             <div style={{width:250 ,height:150}}>
-                                <div>
-                                    <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
-                                      {
-                                          this.props.process.map((pro)=>{
-                                                  return(
-                                                    <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
+                        // <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
+                        //  content={
+                        //      <div style={{width:250 ,height:150}}>
+                        //         <div>
+                        //             <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
+                        //               {
+                        //                   this.props.process.map((pro)=>{
+                        //                           return(
+                        //                             <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
         
-                                                  );
-                                          })
-                                      }
-                                    </Select>
-                                </div>
-                                <div style={{paddingTop:'10px'}}>
-                                  <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
-                                </div>
-                                <div style={{paddingTop:'10px' ,float:'right'}}>
-                                <Button type='ghost'size='small' onClick={this.hide} className='button'>取消</Button>
-                                <Button type='primary' size='small'   className={this.state.checkSelectData>-1?'button':'grey-button'}   disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
-                                </div>
-                             </div>
-                         }
-                         trigger='click'
-                         visible={this.state.popVisible}
-                         onVisibleChange={this.handleVisibleChange}
-                        >
-                        <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
-                        </Popover>
-                        // <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.hide} handleOk={this.handleSongShenOk} process={this.state.checkSelectData} defaultChecked={false} url={this.url} urgentChange={this.urgentChange}/>
+                        //                           );
+                        //                   })
+                        //               }
+                        //             </Select>
+                        //         </div>
+                        //         <div style={{paddingTop:'10px'}}>
+                        //           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
+                        //         </div>
+                        //         <div style={{paddingTop:'10px' ,float:'right'}}>
+                        //         <Button type='ghost'size='small' onClick={this.hide} className='button'>取消</Button>
+                        //         <Button type='primary' size='small'   className={this.state.checkSelectData>-1?'button':'grey-button'}   disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
+                        //         </div>
+                        //      </div>
+                        //  }
+                        //  trigger='click'
+                        //  visible={this.state.popVisible}
+                        //  onVisibleChange={this.handleVisibleChange}
+                        // >
+                        // <Button key='submit' type='primary'><Icon type='check'/>送审</Button>
+                        // </Popover>
+                         <Submit  key='submit'  applySaveAndReview={this.handleSongShenOk}  url={this.url} />
                     ]}>
                     <ProductRedListAddModal serialNumber={this.props.serialNumber}  wrappedComponentRef={(form)=>this.formRef=form}></ProductRedListAddModal>
                     

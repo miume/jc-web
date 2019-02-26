@@ -74,7 +74,7 @@ class RawTestReport extends React.Component{
             key:'sampleDeliveringDate',
             width:'9%',
             render:(text)=>{
-                return <abbr title={text}>{text.substring(0,10)}</abbr>
+                return <span title={text} className='text-decoration'>{text.substring(0,10)}</span>
             }
         },{
             title:'送样工厂',
@@ -96,10 +96,10 @@ class RawTestReport extends React.Component{
                 var testItems = '';
                 if(items.length>3){
                     testItems = items[0]+','+items[1]+','+items[2];
-                    return <abbr title={text}>{testItems}</abbr>;
+                    return <span title={text} className='text-decoration'>{testItems}</span>;
                 }else{
                   testItems = text;
-                  return text;
+                  return <span className='text-decoration'>{testItems}</span>
                 }
                },
         },{
@@ -193,11 +193,16 @@ class RawTestReport extends React.Component{
     /**flag表示为1时重置pageChangeFlag */
     fetch(params,flag){
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) 
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
             this.setState({
                 pageChangeFlag:0,
-                searchContent:''
+                searchContent:'',
+                pagination:pagination
             })
+        }
         axios.get(`${this.url.rawTestReport.getAllByPage}`,{
             headers:{
                 'Authorization':this.url.Authorization

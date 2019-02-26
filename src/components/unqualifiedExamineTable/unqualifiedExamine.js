@@ -24,7 +24,7 @@ for (let i = 0; i < 20; i++) {
 class UnqualifiedExamine extends React.Component{
     url;
     componentDidMount() {
-        // this.fetch();
+        this.fetch();
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -34,7 +34,7 @@ class UnqualifiedExamine extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource: data,
+            dataSource: [],
             searchContent:'',
             searchText: '',
         };
@@ -61,7 +61,7 @@ class UnqualifiedExamine extends React.Component{
                 <BlockQuote name="不合格审评表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
-                        name='请输入搜索内容'
+                        name='请输入创建人名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
@@ -73,7 +73,7 @@ class UnqualifiedExamine extends React.Component{
                         menuList={menuList}
                         data={this.state.dataSource}
                         pagination={this.pagination}
-                        // fetch={this.fetch}
+                        fetch={this.fetch}
                     />
                 </div>
             </div>
@@ -95,10 +95,10 @@ class UnqualifiedExamine extends React.Component{
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.props.url.unqualifiedExamineTable.pages}` ,
+            url: `${this.url.unqualifiedExamineTable.pages}` ,
             method: 'get',
             headers:{
-                'Authorization': this.props.url.Authorization
+                'Authorization': this.url.Authorization
             },
             params: params,
         }).then((data) => {

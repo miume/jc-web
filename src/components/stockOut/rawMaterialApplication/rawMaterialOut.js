@@ -47,7 +47,7 @@ class RawMaterialOut extends React.Component{
             title:'批号',
             dataIndex:'batchNumber',
             key:'batchNumber',
-            width:'15%'
+            width:'15%',
         }
         // ,{
         //     title:'货物名称',
@@ -107,13 +107,19 @@ class RawMaterialOut extends React.Component{
             dataIndex:'id',
             key:'id',
             render:(text,record)=>{
+                const status = record.status;
                 return (
                     <span>
                         <Detail id={record.id} url={this.props.url}></Detail>
                         <Divider type='vertical'></Divider>
-                        <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
-                            <span className='blue' id={record.id}>删除</span>
-                        </Popconfirm> 
+                        {
+                            status===0||status===1||status===2||status===3?
+                                <span className={status===0||status===1||status===2||status===3?'notClick':'blue'} id={record.id}>删除</span>
+                                :
+                                <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
+                                    <span className={status===0||status===1||status===2||status===3?'notClick':'blue'} id={record.id}>删除</span>
+                                </Popconfirm> 
+                        }
                    </span>
                 );
             }
@@ -226,6 +232,9 @@ class RawMaterialOut extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+            getCheckboxProps: record => ({
+                disabled: record.status === 0||record.status === 1||record.status === 2|| record.status === 3
+              }),
           };
         this.pagination.total = this.props.data.total;
         return (
@@ -235,7 +244,9 @@ class RawMaterialOut extends React.Component{
                     <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
                 <div className='clear'></div>
-                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} scroll={{y:380}} size='small' bordered></Table>
+                <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns}
+                       rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} 
+                       size='small' bordered></Table>
             </div>
         );
     }

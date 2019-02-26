@@ -15,24 +15,27 @@ const columns = [{
     dataIndex: 'testItemName',
     key: 'testItemName',
     align:'center',
-    width: '25%',
+    width: '20%',
 },{
     title: '检测结果',
     dataIndex: 'testResult',
     key: 'testResult',
     align:'center',
+    width: '30%',
 },{
     title: '计量单位',
     dataIndex: 'unit',
     key: 'unit',
     align:'center',
-    width: '25%',
+    width: '30%',
 }];
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;
+        const sty = [{height:550},{height:480}]
+        const divheight = this.props.checkFlag?sty[1]:sty[0];
         return(
-            <div>
+            <div style={divheight}>
                 <div className="interDrSpanModalTop">
                     <table>
                         <thead>
@@ -66,27 +69,21 @@ class DetailModal extends React.Component {
                         scroll={{ y: 190 }}
                         bordered
                     />
-                    <div className="interDrSpanModalBottomFirst" style={{paddingTop:15}}>
-                        <table>
-                            <tbody className="interPadding">
-                            <tr>
-                                <td>检验人：</td>
-                                <td>{data.testData?data.testData.tester:''}</td>
-                            </tr>
-                            <tr>
-                                <td>检验时间：</td>
-                                <td>{data.testData?data.testData.testTime:''}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <IsQualified
-                            status={data.IsQualified?data.IsQualified:0}
+                    <div style={{display:'flex',flexDirection:'row',marginTop:20}}>
+                        <div style={{flexGrow:2}}>
+                            <p>检验人：{data.testData?data.testData.tester:'无'}</p>
+                            <p>检验时间：{data.testData?data.testData.testTime:'无'}</p>
+                        </div>
+                        <div style={{flexGrow:4}}>
+                            <IsQualified
+                                status={data.IsQualified?data.IsQualified:0}
                         />
+                        </div>
                     </div>
-                    {/* <Divider /> */}
+                    <Divider />
                     {   this.props.checkFlag?
                         <div></div>:
-                        this.props.flag && this.props.examineData?
+                        this.props.flag || this.props.examineData.length>0?
                         <div>
                             <AllTester examineData={this.props.examineData} dataId={this.props.dataId} hide={1}/>
                         </div> : 

@@ -316,14 +316,14 @@ const CollectionCreateForm = Form.create()(
                         <Col span={12} style={{display:"block"}}>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('date', {
-                               
+                                    rules: [{ required: true, message: '请选择日期' }],
                                 })(
                                     <DatePicker disabledDate={this.disabledDate} style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                                 )}
                             </FormItem>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('time', {
-                              
+                                    rules: [{ required: true, message: '请选择时间' }],
                                 })(
                                     <TimePicker style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                                 )}
@@ -507,7 +507,6 @@ class AddModal extends React.Component{
     };
 
     onChange = (checkedValues) =>{
-        console.log(checkedValues)
         this.setState({
             testItemIds:checkedValues
         })
@@ -547,11 +546,12 @@ class AddModal extends React.Component{
                 type:'json'
             }).then((data)=>{
                 message.info(data.data.message);
-                this.props.fetch();
+                this.props.fetch({sortField: 'id',
+                sortType: 'desc',});
+                this.setState({ visible: false });
+                form.resetFields();
             })
         })
-        this.setState({ visible: false });
-        form.resetFields();
     }
 
     onCenter = () =>{
@@ -575,7 +575,8 @@ class AddModal extends React.Component{
                 type:'json'
             }).then((data)=>{
                 message.info(data.data.message);
-                this.props.fetch();
+                this.props.fetch({sortField: 'id',
+                sortType: 'desc',});
             })
         })
         this.setState({ visible: false });

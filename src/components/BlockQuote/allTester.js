@@ -49,7 +49,7 @@ class AllTester extends React.Component{
         /**滚动区域范围 */
         var middle = document.getElementById(`check-detail-div`+this.props.dataId);    
         /**每次滚动的长度 */
-        let count = this.props.hide?380.5:364.5;
+        let count = this.props.hide?417:364.5;
         let gap = (count / 100);
         gap = gap.toFixed(0);
         if(gap >= 1) {

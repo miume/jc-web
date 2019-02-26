@@ -16,14 +16,14 @@ class ProductStandard extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            add:0,                  //add为0显示产品显示 为1表示新增显示
+            add:0,                  //add为0显示成品显示 为1表示新增显示
             allModal:[],            //选择型号界面的所有型号
-            allProduct:[],          //选择产品界面的所有产品
-            flag:1,                 //决定渲染那个界面 1表示选择产品界面product 2表示选择型号selectModal 3表示设置标准setStardand
+            allProduct:[],          //选择成品界面的所有成品
+            flag:1,                 //决定渲染那个界面 1表示选择成品界面product 2表示选择型号selectModal 3表示设置标准setStardand
             allProductStandard:[],  //保存所有标准
             modalArr:[],            //用来存储选择型号 所点击的所有型号
             selectedModal:[],       //用来存取最后一次选择型号的id和name
-            selectProduct:[],       //用来存取最后一次选择产品的id和name
+            selectProduct:[],       //用来存取最后一次选择成品的id和name
             standradFlag:0,            //用来存取设置标准页面来区分是搜索时为空1，还是getAllStandard为空0
         }
         this.fetch = this.fetch.bind(this);
@@ -44,37 +44,40 @@ class ProductStandard extends React.Component{
     showContent(mode){
         const {flag} = this.state;
         var content = '';
-        if(flag===1) content = mode?'请输入产品名称':'选择产品';
+        if(flag===1) content = mode?'请输入成品名称':'选择成品';
         else if(flag===2) content= mode?'请输入型号名称':'选择型号';
         else content= mode?'请输入创建人名称':'设置标准';
         return content;
     }
-    /**点击选择产品、选择标准时对应的变化 */
+    /**点击选择成品、选择标准时对应的变化 */
     divCilck(e){
         var id = e.target.id ;
         /**id不存在，则点击是子元素，则要找到父元素，然后找齐id */
         if(!id) id = e.target.parentNode.id; 
         id = id.split('-')[1];
-        /**只能在flag为2，3时，点击选择产品  只有在flag为3时可以点击选择型号 */
-        /**如果点击选则产品 则回到选择产品页面 以及将选择型号和设置标准置灰 */
+        /**只能在flag为2，3时，点击选择成品  只有在flag为3时可以点击选择型号 */
+        /**如果点击选则成品 则回到选择成品页面 以及将选择型号和设置标准置灰 */
         if(id==='1'){
             this.setState({
                 flag:1,
                 modalArr:[]
             })
-            /**点击选择产品 给选择型号，设置标准 加notclick类 */
+            /**点击选择成品 给选择型号，设置标准 加notclick类 */
             this.addClass('product-2');
             this.addClass('product-3');
-            
+            this.getAllProduct();
         }else{
             this.setState({
                 flag:2
             })
             /**点击选择型号 给设置标准加notclick类，删click类 */
             this.addClass('product-3');
+            this.getAllSelectModal({
+                parentId:-1
+            });
         }
     }
-    /**获取所有产品 */
+    /**获取所有成品 */
     getAllProduct(){
         axios.get(`${this.url.serialNumber.serialNumber}?materialClass=3`,{
             headers:{
@@ -125,9 +128,9 @@ class ProductStandard extends React.Component{
             selectedModal:ids
         })
     }
-    /**点击产品block 
+    /**点击成品block 
      * id=-1表示点击了新增 则将add置1 切换为输入框进行可编辑
-     * 其它则表示点击了任意产品 则*/
+     * 其它则表示点击了任意成品 则*/
     blockClick(id){
         if(id==='-1'){
             this.setState({
@@ -135,14 +138,14 @@ class ProductStandard extends React.Component{
             })
         }else{
             const arr = id.split('-');
-            arr[2]='产品';
+            arr[2]='成品';
             this.addClass('product-2',1);
             this.setState({
                 add:0,              //add置0 确保新增为是按钮不可编辑
                 flag:2,             //flag置2 确保界面跳转为选择型号
-                selectProduct:arr   //保存点击产品的id和name
+                selectProduct:arr   //保存点击成品的id和name
             })
-            /**点击产品后，查询所有型号，进行界面渲染 */
+            /**点击成品后，查询所有型号，进行界面渲染 */
             this.getAllSelectModal({
                 parentId:-1
             });
@@ -161,19 +164,19 @@ class ProductStandard extends React.Component{
         }
         
     }
-    /**点击产品新增 */
+    /**点击成品新增 */
     clickI(e){
         /**通过点击新增确定 找到input value值 */
         const value = e.target.parentNode.parentNode.firstElementChild.value;
         if(value===''){
-            message.info('请输入产品名称！');
+            message.info('请输入成品名称！');
             return
         }
         else{
             this.addProduct(value);
         }
     }
-    /**产品新增事件 */
+    /**成品新增事件 */
     addProduct(value){
         axios.post(`${this.url.serialNumber.serialNumber}`,{
             materialName:value,
@@ -197,7 +200,7 @@ class ProductStandard extends React.Component{
         })
     }
     /**搜索事件 
-     * flag=1 表示产品搜索
+     * flag=1 表示成品搜索
      * flag=2 表示型号搜索
      * flag=3 表示标准搜索
     */
@@ -224,7 +227,7 @@ class ProductStandard extends React.Component{
             },0,1)
         }
     }
-    /**根据产品名称进行搜索 */
+    /**根据成品名称进行搜索 */
     productSearch(value){
         axios.get(`${this.url.serialNumber.serialNumber}/factors?materialClass=3&materialName=${value}`,{
             headers:{
@@ -238,7 +241,7 @@ class ProductStandard extends React.Component{
         })
     }
     /**搜索重置接口 
-     * flag:1 代表产品搜索
+     * flag:1 代表成品搜索
      * flag:2 代表型号搜索
      * flag:3 代表标准搜索
     */
@@ -263,7 +266,7 @@ class ProductStandard extends React.Component{
             })
         }
     }
-    /**根据产品id 型号id查询所对应的标准 */
+    /**根据成品id 型号id查询所对应的标准 */
     getAllProductStandard(params,ids,mode){
         if(ids){
             console.log('id')
@@ -324,12 +327,12 @@ class ProductStandard extends React.Component{
                 <Blockquote name={current.menuName} menu={current.menuParent}  />
                 <div className='productStandard'>  
                     <div className='product-standrad-top'>
-                        <div onClick={this.state.flag===2||this.state.flag===3||this.state.flag===4?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择产品':this.state.selectProduct[1]}</span></div>
+                        <div onClick={this.state.flag===2||this.state.flag===3||this.state.flag===4?this.divCilck:null} id='product-1' className='product-standrad-top-click'><i className='fa fa-leaf'></i> <span className='product-standrad-top-span'>{this.state.flag===1?'选择成品':this.state.selectProduct[1]}</span></div>
                         <div onClick={this.state.flag===3||this.state.flag===4?this.divCilck:null} id='product-2' className='product-standrad-top-notclick'><i className='fa fa-cubes'></i><span className='product-standrad-top-span'>{this.state.flag===3||this.state.flag===4?this.state.selectedModal[1]:'选择型号'}</span></div>
                         <div id='product-3' className='product-standrad-top-notclick'><i className='fa fa-stop'></i> <span className='product-standrad-top-span'>设置标准</span></div>
                     </div>
                     <div className='product-standrad-middle'>
-                        <div>
+                        <div className='product-standrad-middle-top'>
                             <span className='product-standrad-middle-text'>{this.showContent()}</span>
                             <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch} />
                             <Divider type='horizontal' />

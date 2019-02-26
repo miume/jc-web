@@ -96,6 +96,7 @@ class TestItem extends React.Component{
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
+      this.deleteCancel=this.deleteCancel.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -185,6 +186,7 @@ class TestItem extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res?res.total:0;
+        this.pagination.current=res.pageNum;
         if(res&&res.list){
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
@@ -197,8 +199,6 @@ class TestItem extends React.Component{
     }
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
-      //console.log(id);
-        //const dataSource = this.state.dataSource;
         axios({
           url:`${this.url.testItems.testItems}/{id}?id=${id}`,
           method:'Delete',
@@ -257,7 +257,7 @@ class TestItem extends React.Component{
           message.info('删除失败，请联系管理员！')
         });//处理异常
      }
-    cancel(){
+    deleteCancel(){
       this.setState({
         selectedRowKeys:[]
       });
@@ -321,7 +321,7 @@ class TestItem extends React.Component{
           }
         });
       }
-      cancel = () => {
+      cancel(){
         this.setState({ editingKey: '' });
       };
       /**---------------------- */
@@ -342,14 +342,15 @@ class TestItem extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                testItemName:testItemName
              },
              type:'json'
            })
            .then((data)=>{
              const res=data.data.data;
-             this.pagination.totlal=res.total?res.total:0;
+             this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               for(let i=1;i<=res.list.length;i++){
                   res.list[i-1]['index']=res.prePage*10+i;
@@ -369,8 +370,10 @@ class TestItem extends React.Component{
      /** 通过localStorage可查到http://218.77.105.241:40080*/
         this.url=JSON.parse(localStorage.getItem('url'));
        const current=JSON.parse(localStorage.getItem('current'));
+       const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
+            selectedRowKeys,
             onSelect() {
               // console.log(record, selected, selectedRows);
             },
@@ -405,7 +408,7 @@ class TestItem extends React.Component{
                <div style={{padding:'15px'}}>
                
                <TestItemAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入检测项目' 
                       searchEvent={this.searchEvent}

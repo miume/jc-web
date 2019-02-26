@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Modal, Button, message} from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
+import CancleButton from '../BlockQuote/cancleButton';
 
 
 const data = [];
@@ -47,9 +48,14 @@ class ReleaseSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    width="500px"
+                    // width="500px"
                     footer={[
-                        <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
+                        <CancleButton
+                            key="back"
+                            flag = {1}
+                            handleCancel={this.handleCancel}
+                        />,
+                        // <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
                         <Button key="release" style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleReleaseButton} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
@@ -84,7 +90,7 @@ class ReleaseSpan extends React.Component {
             this.setState({
                 visible: false
             });
-            this.props.fetch();
+            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
@@ -93,9 +99,6 @@ class ReleaseSpan extends React.Component {
     /**点击发布-打开Modal */
     handleRelease() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     }
     /**通过id查询详情 */
     getDetailData(){
@@ -112,7 +115,7 @@ class ReleaseSpan extends React.Component {
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
-                    serialNumberId: res.sampleDeliveringRecord?res.sampleDeliveringRecord.serialNumberId:'',
+                    serialNumber: res.serialNumber,
                     materialName: res.materialName,
                     sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
@@ -133,14 +136,14 @@ class ReleaseSpan extends React.Component {
                     tester: res.tester?res.tester:'',
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
-                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
-                const batchNumber = res.commonBatchNumber?res.commonBatchNumber.batchNumber:'';
-                if(examineStatus==='2'||examineStatus==='3'){
+                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:'';
+                const batchNumberId = res.commonBatchNumber?res.commonBatchNumber.id:'';
+                if(examineStatus===2||examineStatus===3){
                     axios({
-                        url:`${this.url.toDoList}/${batchNumber}/result`,
+                        url:`${this.props.url.toDoList}/${batchNumberId}/result`,
                         method:'get',
                         headers:{
-                            'Authorization':this.url.Authorization
+                            'Authorization':this.props.url.Authorization
                         }
                     }).then((data)=>{
                         const res = data.data.data;
@@ -150,6 +153,7 @@ class ReleaseSpan extends React.Component {
                                 testDTOS: testDTOS,
                                 testData: testData,
                                 examine: {
+                                    batchNumberId: batchNumberId,
                                     examineStatus: examineStatus,
                                     examineData: res
                                 },
@@ -165,6 +169,7 @@ class ReleaseSpan extends React.Component {
                             testDTOS: testDTOS,
                             testData: testData,
                             examine: {
+                                batchNumberId:batchNumberId,
                                 examineStatus: examineStatus,
                                 examineData: []
                             },
@@ -173,6 +178,8 @@ class ReleaseSpan extends React.Component {
                         visible: true
                     })
                 }
+            }else{
+                message.info('查询数据为空，请联系管理员')
             }
         })
     }

@@ -84,17 +84,7 @@ class ProductRedListEditModal extends React.Component{
        }
   }
   getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）
-    const values= this.props.form.getFieldsValue(['serialNumberId','quantityLoss','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
-    //console.log(values);
-    let v1=values.quantityLoss;
-    for(let i=0;i<v1.length;i++){
-          if(v1[i]>=0&&v1[i]<=9){//判断是否为数字
-                   v1=v1.substr(i);
-                   break;
-          }
-    }
-   
-    values.quantityLoss=parseInt(v1);
+    const values= this.props.form.getFieldsValue(['serialNumberId','weightLoss','note']);       //4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
     
     let v2=values.weightLoss;
     for(let i=0;i<v2.length;i++){
@@ -104,7 +94,6 @@ class ProductRedListEditModal extends React.Component{
          }
      }
      values.weightLoss=parseInt(v2);
-    
     return values;//
 }
     /**重置组件的值 */
@@ -129,9 +118,9 @@ class ProductRedListEditModal extends React.Component{
                 <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('serialNumberId',{
                     initialValue: this.props.record.repoBaseSerialNumber.id,
-                    rules:[{required:true,message:'编号不能为空'}]
+                    rules:[{required:true,message:'物料编码不能为空'}]
                 })(
-                  <Select onChange={this.serialNumberSelectChange} placeholder='请选择编号'>
+                  <Select onChange={this.serialNumberSelectChange} placeholder='请选择物料编码'>
                   {
                       this.props.serialNumber.map((bat)=>{
                           return(
@@ -148,7 +137,7 @@ class ProductRedListEditModal extends React.Component{
                     initialValue: this.props.record.repoBaseSerialNumber.materialName,
                     
                 })(
-                    <Input placeholder='物料名称'/>
+                    <Input disabled placeholder='物料名称'/>
                 )}
                 </FormItem>
                 <FormItem   wrapperCol={{span:24}} required>
@@ -156,26 +145,10 @@ class ProductRedListEditModal extends React.Component{
                     initialValue: type1,
                     
                 })(
-                    <Input placeholder='物料类型'/>
+                    <Input disabled placeholder='物料类型'/>
                 )}
                 </FormItem>
-                <FormItem   wrapperCol={{span:24}} required>
-                {getFieldDecorator('quantityLoss',{
-                    initialValue: `损失数量${this.state.num}`,
-                    rules:[{required:true,message:'损失货品数量不能为空'}]
-                })(
-                         
-                    <Input   onChange={this.inputOnchange}
-                    suffix={
-                        <div  className='reDiv'>
-                            <div  className='redListNum' id='add' onClick={this.add}> <Icon type="up" /></div>
-                            <div   className='redListNum1'id='subtract' onClick={this.subtract}> <Icon type="down" /></div>
-                        </div>
-                      }
-                    style={{width:'320px'}}
-              />
-                )}
-                </FormItem>
+            
                 <FormItem  wrapperCol={{span:24}} required>
                 {getFieldDecorator('weightLoss',{
                     initialValue: `损失重量${this.state.weight}`,

@@ -3,6 +3,8 @@
     flex-direction: row;
     max-height: 342px;
     overflow-y: scroll;
+    position: relative;
+    top: -4px;
 }
 .Mparent::-webkit-scrollbar{
     width: 1px;
@@ -12,8 +14,8 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 9%;
-    text-align: center;
+    width: 10%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -21,8 +23,8 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -30,8 +32,8 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -39,8 +41,8 @@
     line-height: 36.8px;
     /* border-top: 1px solid #E4E4E4; */
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -51,8 +53,8 @@
     border-left: 3px solid #0079FE;
     border-bottom: 2px solid #0079FE;
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -63,8 +65,8 @@
     border-bottom: 2px solid #0079FE;
     border-right: 2px solid #0079FE;
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -73,10 +75,10 @@
     border: 1px solid #0079FE;
     border-bottom: 2px solid #0079FE;
     border-right: none;
-    border-left: none;
+    border-left: 2px solid #0079FE;
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -87,8 +89,8 @@
     border-left: none;
     border-right: 2px solid #0079FE;
     display: inline-block;
-    width: 13%;
-    text-align: center;
+    width: 18%;
+    text-align: left;
     text-overflow: ellipsis;
     min-width: 0;
 }
@@ -99,6 +101,7 @@
     white-space: nowrap; 
     overflow: hidden;
     position: relative;
+    padding-left: 5px;
   }
 .Mborder-down1 {
     /* border-bottom: 1px solid #E4E4E4; */
@@ -106,7 +109,7 @@
     border-right: 2px solid #0079FE;
     border-top: 12px solid #0079FE;
     border-bottom: 6px solid #0079FE;
-    text-align: center;
+    text-align: left;
     background: #0079FE;
     color: #ffffff;
     text-overflow: ellipsis;

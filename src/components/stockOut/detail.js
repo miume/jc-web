@@ -1,7 +1,8 @@
 import React from 'react';
-import {Modal,Table} from 'antd';
 import axios from 'axios';
-import NewButton from '../BlockQuote/newButton';
+import {Modal} from 'antd';
+import StockTable from './detailTable';
+import CancleButton from '../BlockQuote/cancleButton';
 class Detail extends React.Component{
     constructor(props){
         super(props);
@@ -11,38 +12,6 @@ class Detail extends React.Component{
         }
         this.handleDetial = this.handleDetial.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.columns = [{
-            title:'序号',
-            dataIndex:'index',
-            key:'index',
-            sorter:(a,b)=>a.index-b.index,
-            width:'15%',
-        },{
-            title:'货物名称',
-            dataIndex:'materialName',
-            key:'materialName',
-            width:'15%',
-        },{
-            title:'货物类型',
-            dataIndex:'meterialClass',
-            key:'meterialClass',
-            width:'15%',
-        },{
-            title:'编号',
-            dataIndex:'serialNumber',
-            key:'serialNumber',
-            width:'20%',
-        },{
-            title:'出库数量',
-            dataIndex:'quantity',
-            key:'quantity',
-            width:'15%',
-        },{
-            title:'出库重量',
-            dataIndex:'weight',
-            key:'weight',
-            width:'15%',
-        }]
     }
     /**点击详情 显示弹出框 */
     handleDetial(){
@@ -55,16 +24,18 @@ class Detail extends React.Component{
         }).then((data)=>{
             const res = data.data.data?data.data.data.details:[];
             var detail = [];
-            for(var i = 0; i < res.length; i++){
-                var e = res[i];
-                detail.push({
-                    index:`${i+1}`,
-                    serialNumber:e.repoBaseSerialNumber.serialNumber,
-                    materialName:e.repoBaseSerialNumber.materialName,
-                    meterialClass:e.repoBaseSerialNumber.materialClass,
-                    quantity:e.repoOutApply.quantity,
-                    weight:e.repoOutApply.weight
-                })
+            if(res){
+                for(var i = 0; i < res.length; i++){
+                    var e = res[i];
+                    detail.push({
+                        index:`${i+1}`,
+                        serialNumber:e.repoBaseSerialNumber.serialNumber,
+                        materialName:e.repoBaseSerialNumber.materialName,
+                        meterialClass:e.repoBaseSerialNumber.materialClass,
+                        quantity:e.repoOutApply.quantity,
+                        weight:e.repoOutApply.weight
+                    })
+                }
             }
             // console.log(detail)
             this.setState({
@@ -86,12 +57,13 @@ class Detail extends React.Component{
                 <Modal visible={this.state.visible} closable={false} maskCloseable={false}
                 width={800} title='出库详情' centered={true}
                 footer={[
-                    <NewButton key='back' name='确定' className='fa fa-check' handleClick={this.handleClick}/>
+                    <CancleButton key='back' flag={1} handleCancel={this.handleClick}/>
                 ]}
                 >
-                <div style={{height:'300px'}}>
+                <StockTable dataSource={this.state.dataSource}/>
+                {/* <div style={{height:'300px'}}>
                     <Table rowKey={record=>record.index} dataSource={this.state.dataSource} columns={this.columns} pagination={false} bordered size='small' scroll={{y:200}}></Table>
-                </div>
+                </div> */}
                 </Modal>
             </span>
         );

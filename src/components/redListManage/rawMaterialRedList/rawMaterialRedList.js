@@ -8,11 +8,9 @@ import Note from './note';
 import axios from 'axios';
 class RawMaterialRedList extends Component{
     url;
-    Authorization;
     componentDidMount(){
         this.fetch();
         this.getAllSerialNumber();
-        this.getAllProcess();
     }
     componentWillUnmount(){
         this.setState=(state,callback)=>{
@@ -26,34 +24,44 @@ class RawMaterialRedList extends Component{
             selectedRowKeys:[],
             searchContent:'',
             processChildren:[],//送审流程（对应那个下拉框）
-            serialNumberChildren:[],//编号下拉框
-            Authorization:this.Authorization,
-            
+            serialNumberChildren:[],//编号下拉框      
         };
-        this.pagination={
-            total:this.state.dataSource.length,
-            showTotal:(total)=>`共${total}条记录`,
-            showSizeChanger:true,
-        }
+        this.pagination = {
+            total: this.state.dataSource.length,
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+            //改变每页条目数
+            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+              //console.log('Current: ', current, '; PageSize: ', pageSize);
+            },
+            onChange(current) {//跳转，页码改变
+              //console.log('Current: ', current);
+            }
+          };
         this.columns=[{
           title:'序号',
           dataIndex:'index',
-          key:'index',
+          key:'id',
           sorter:(a,b)=>a.index-b.index,
           align:'center',
           width:'5%'
         },{
-            title:'编号',
+            title:'物料编码',
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'12%'
+            width:'20%',
+            render:(text)=>{
+                return(
+                    <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
+                )
+            }
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
             key:'repoBaseSerialNumber.materialName',
             align:'center',
-            width:'8%'
+            width:'10%'
         },{
             title:'物料类型',
             dataIndex:'repoBaseSerialNumber.materialClass',
@@ -64,17 +72,10 @@ class RawMaterialRedList extends Component{
                 let type=record.repoBaseSerialNumber.materialClass;
                 switch(`${type}`){
                      case '1':return '原材料';
-                     case '3':return '产品';
+                     case '3':return '成品';
                      default:return '';
-
                 }
             },
-            align:'center',
-            width:'8%'
-        },{
-            title:'损失数量',
-            dataIndex:'repoRedTable.quantityLoss',
-            key:'repoRedTable.quantityLoss',
             align:'center',
             width:'8%'
         },{
@@ -88,19 +89,27 @@ class RawMaterialRedList extends Component{
             dataIndex:'createPersonName',
             key:'createPersonName',
             align:'center',
-            width:'7%'
+            width:'8%'
         },{
             title:'申请日期',
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'14%'
+            width:'10%',
+            render:(text)=>{
+                if(text.length>10){//给元素设置title属性会在鼠标悬停时显示
+                    return <div title={text}style={{textDecoration:'underline'}} >{text.substring(0,10)}</div>
+                }
+                else{
+                    return text
+                }
+            }
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
             key:'commonBatchNumber.status',
             align:'center',
-            width:'9%',
+            width:'11%',
         //      render:(text,record)=>{
                  
         //          let status=record.commonBatchNumber.status;
@@ -120,10 +129,10 @@ class RawMaterialRedList extends Component{
         }
         },{
             title:'操作',
-            dataIndex:'id',
-            key:'id',
+            dataIndex:'operation',
+            key:'operation',
             align:'center',
-            //width:'',
+            width:'16%',
             render:(text,record)=>{
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
                 //console.log(editFlag);
@@ -154,11 +163,10 @@ class RawMaterialRedList extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
-        this.getAllProcess=this.getAllProcess.bind(this);
         this.getAllSerialNumber=this.getAllSerialNumber.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
-        this.cancel=this.cancel.bind(this);
         this.fetch = this.fetch.bind(this);
+        this.deleteCancel=this.deleteCancel.bind(this);
     }
     judgeStatus=(record_status)=>{
          //console.log(record_status);
@@ -166,20 +174,22 @@ class RawMaterialRedList extends Component{
             case '-1':return true   //'未申请'新增时点击了保存没有点送审
             case '0':return  false      //'待审核'
             case '1':return  false     // '审核中'
-            case '2':return   true     //'已通过'
+            case '2':return   false     //'已通过'
             case '3':return  true      //未通过，
             default:return false
         }
     }
     handleTableChange(pagination){
         //console.log(pagination);
+        this.pagination=pagination;
           this.fetch({
               size:pagination.pageSize,//当前页显示的记录数
               page:pagination.current,//当前是第几页
-             
+              orderType:'desc'
           })
     }
     fetch=(params={})=>{
+       // console.log(this.pagination);
         const materialType=1;
         axios({
             url:`${this.url.redList.redList}/?materialType=${materialType}`,
@@ -194,21 +204,22 @@ class RawMaterialRedList extends Component{
         .then((data)=>{
             // console.log(data);
              const res=data.data.data;
-             this.pagination.total=res?res.total:0;
+             //console.log(res);
+             this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNumber;
           if(res&&res.list){
-            
             for(let i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
            }
            this.setState({
-            dataSource:res.list
+            dataSource:res.list,
+            searchContent:'',
+            selectedRowKeys:[]
             });
           }
         });
     }
-    onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
-        this.setState({selectedRowKeys:selectedRowKeys});
-    }
+   
     handleDelete(id){//处理单条记录删除
         axios({
            url:`${this.url.redList.redList1}/${id}`,
@@ -221,11 +232,25 @@ class RawMaterialRedList extends Component{
         })
         .then((data)=>{
                message.info(data.data.message);
-               this.fetch();
+               //console.log(data.data.code);
+               if(data.data.code===0){
+                   if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                         this.pagination.current=this.pagination.current-1;
+                   }
+                this.fetch({
+                    size:this.pagination.pageSize,
+                    page:this.pagination.current,
+                    orderField:'id',
+                    orderType:'desc'
+                });
+               }
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
+    }
+    onSelectChange(selectedRowKeys){//checkbox变化时调用的函数
+        this.setState({selectedRowKeys:selectedRowKeys});
     }
       /**批量删除弹出框确认函数 */
       deleteByIds(){
@@ -241,13 +266,29 @@ class RawMaterialRedList extends Component{
         })
         .then((data)=>{
            message.info(data.data.message);
-           this.fetch();
+           if(data.data.code===0){//操作成功返回0
+            if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                this.pagination.current=this.pagination.current-1;
+          }
+            this.fetch({//在其他页删除应该留在当前页
+                size:this.pagination.pageSize,
+                page:this.pagination.current,
+                orderField:'id',
+                orderType:'desc'
+            });
+           }
+           else{
+               this.setState({
+                   selectedRowKeys:[]
+               });
+           }
+         
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
       }
-     cancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
+     deleteCancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
        this.setState({
            selectedRowKeys:[]
        });
@@ -278,6 +319,7 @@ class RawMaterialRedList extends Component{
               const res=data.data.data;
             // console.log(res.total);
               this.pagination.total=res?res.total:0;
+              this.pagination.current=res.pageNumber;
               if(res&&res.list){
                for(var i=1;i<=res.list.length;i++){
                  res.list[i-1]['index']=res.prePage*10+i;
@@ -291,23 +333,7 @@ class RawMaterialRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-    getAllProcess(){
-        axios({
-            url:`${this.url.process.process}/validTasks`,
-            method:'get',
-            headers:{
-                'Authorizaion':this.url.Authorizaion
-            },
-        })
-        .then((data)=>{
-            //console.log(data);
-             const res=data.data.data;
-             //  console.log(res);
-              this.setState({
-                  processChildren:res
-              });
-        });
- }
+
     getAllSerialNumber(){//获取所有编号
         axios({
                 url:`${this.url.serialNumber.serialNumber}`,
@@ -322,9 +348,11 @@ class RawMaterialRedList extends Component{
         }).then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            this.setState({
-                serialNumberChildren:res
-            });
+            if(res){
+                this.setState({
+                    serialNumberChildren:res
+                });
+            }
         });
  }
     render(){
@@ -341,7 +369,7 @@ class RawMaterialRedList extends Component{
         return(
             <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
-                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入编号' 
                       searchEvent={this.searchEvent}
@@ -358,8 +386,9 @@ class RawMaterialRedList extends Component{
                         pagination={this.pagination}
                         onChange={this.handleTableChange}
                         bordered
+                        scroll={{y:400}}
                         size='small'
-                        scroll={{y:300}}
+                   
                     >
                 </Table>
             </div>

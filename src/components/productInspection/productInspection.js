@@ -8,8 +8,14 @@ import axios from "axios";
 class ProductInspection extends React.Component {
     url;
     status;
+    componentDidMount() {
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
+        });
+    }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
             return ;
         }
     }
@@ -17,6 +23,13 @@ class ProductInspection extends React.Component {
         super(props);
         this.state = {
             dataSource: [],
+            searchContent : '',
+            pagination : {
+                showTotal(total) {
+                    return `共${total}条记录`
+                }
+            },
+            pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.fetch=this.fetch.bind(this);
@@ -24,16 +37,19 @@ class ProductInspection extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
-        this.pagination = {
-            total: this.state.dataSource.length,
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-                // console.log('Current: ', current, '; PageSize: ', pageSize);
-            },
-            onChange(current) {
-                // console.log('Current: ', current);
-            }
-        };
+        // this.pagination = {
+        //     total: this.state.dataSource.length,
+        //     showSizeChanger: true,
+        //     showTotal(total) {
+        //         return `共${total}条记录`
+        //     },
+        //     onShowSizeChange(current, pageSize) {
+        //         // console.log('Current: ', current, '; PageSize: ', pageSize);
+        //     },
+        //     onChange(current) {
+        //         // console.log('Current: ', current);
+        //     }
+        // };
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -57,7 +73,7 @@ class ProductInspection extends React.Component {
                         url = {this.url}
                         data={this.state.dataSource}
                         status={this.status}
-                        pagination={this.pagination}
+                        pagination={this.state.pagination}
                         modifyDataSource={this.modifyDataSource}
                         handleTableChange={this.handleTableChange}
                     />
@@ -76,23 +92,46 @@ class ProductInspection extends React.Component {
     /**---------------------- */
     /**获取所有数据功能 */
     handleTableChange = (pagination) => {
-        this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
-
+        this.setState({
+            pagination:pagination
         });
+        const {pageChangeFlag} = this.state;
+        /**分页查询 */
+        if(pageChangeFlag){
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+                factory:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+            })
+        }
+
     };
-    fetch = (params = {}) => {
+    fetch = (params,flag) => {
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:'',
+                pagination:pagination
+            })
+        }
         axios.get(`${this.url.productInspection.pages}`,{
             headers:{
                 'Authorization':this.url.Authorization
             },
             params:params,
         }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total = res?res.total:0;
+            const res = data.data.data?data.data.data:[];
+            const {pagination} = this.state;
+            pagination.total = res.total;
             if(res&&res.list)
             {
                 for(var i = 1; i <= res.list.length;i++){
@@ -100,21 +139,27 @@ class ProductInspection extends React.Component {
                     e['index'] = res.prePage*10+i
                 }
                 this.setState({
-                    dataSource:res.list
+                    dataSource:res.list,
+                    pagination:pagination
+                })
+            }else{
+                this.setState({
+                    dataSource:[]
                 })
             }
 
         })
     };
-    componentDidMount() {
-        this.fetch();
-    }
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        this.fetch({
-            factory:this.state.searchContent,
+        this.setState({
+            pageChangeFlag:1
         });
+        this.fetch({
+            factory:this.state.searchContent
+        });
+
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){

@@ -84,17 +84,29 @@ class MaterialRecord extends React.Component{
         return (
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入搜索内容'
+                    <SearchCell name='请输入货品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
+                        type={this.props.type}
                     >
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
+                <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
+                <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>批次号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>货品型号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>盘库日期</div>
+                <div className="LM-tableHead" style={{width:"12.75%"}}>盘库人</div>
+                {/* <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"10%"}}>实际数量</div> */}
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"12.8%"}}>实际重量</div>
+                </div>
                 <div className="MRparent">
                     <div className="MRone">
-                        <div className="MRborder-down">序号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -104,17 +116,21 @@ class MaterialRecord extends React.Component{
                 }
                     </div>
                     <div className="MRtwo">
-                        <div className="MRborder-down">编号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className="MRborder-down" key={index}>
+                        // var string = m.serialNumber.split('-')[0]+'...'
+                        // if(m.serialNumber.length>13){
+                        //     string = m.serialNumber.substring(0,13)
+                        // }else{
+                        //     string = m.serialNumber
+                        // }
+                        return <div title={m.serialNumber} className="MRborder-down" key={index}>
                                     {m.serialNumber}
                                 </div>    
                     })
                 }
                     </div>
                     <div className="MRthree">
-                        <div className="MRborder-down">货品名称</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -124,7 +140,6 @@ class MaterialRecord extends React.Component{
                 }
                     </div>
                     <div className="MRfour">
-                        <div className="MRborder-down">货品型号</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -134,17 +149,16 @@ class MaterialRecord extends React.Component{
                 }
                     </div>
                     <div className="MRfour">
-                        <div className="MRborder-down">盘库日期</div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className="MRborder-down" key={index}>
-                                    {m.repoDiffRecord.createTime}
+                        var string = m.repoDiffRecord.createTime.substring(0,10)
+                        return <div title={m.repoDiffRecord.createTime} style={{textDecoration:'underline'}} className="MRborder-down" key={index}>
+                                    {string}
                                 </div>    
                     })
                 }
                     </div>
                     <div className="MRfour">
-                        <div className="MRborder-down">盘库人</div>
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -153,11 +167,9 @@ class MaterialRecord extends React.Component{
                     })
                 }
                     </div>
-                    <div className="MRfive">
+                    {/* <div className="MRfive">
 
                             <div className="head-shadow">
-                                <div className="MRborder-down3">记录数量</div>
-                                {/* <div className="fa fa-balance-scale"></div> */}
                             </div>
 
 
@@ -172,9 +184,9 @@ class MaterialRecord extends React.Component{
                         }
                     })
                 }
-                    </div>
-                    <div className="MRsix">
-                        <div className="MRborder-down1">实际数量</div>
+                    </div> */}
+                    {/* <div className="MRsix">
+            
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
@@ -182,9 +194,9 @@ class MaterialRecord extends React.Component{
                                 </div>    
                     })
                 }
-                    </div>
+                    </div> */}
                     <div className="MRseven">
-                        <div className="MRborder-down2">记录重量</div>
+                        {/* <div className="MRborder-down2">记录重量</div> */}
                         <div className='white-space space-left'></div>
                 {
                     this.state.dataSource.map((m,index)=>{
@@ -200,7 +212,7 @@ class MaterialRecord extends React.Component{
                 }
                     </div>
                     <div className="MReight">
-                        <div className="MRborder-down4">实际重量</div>
+                        {/* <div className="MRborder-down4">实际重量</div> */}
                 {
                     this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>

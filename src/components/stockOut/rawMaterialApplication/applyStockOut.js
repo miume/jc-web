@@ -2,7 +2,7 @@ import React from 'react';
 import {Button,Modal,Table,Input,message} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import Submit from '../../BlockQuote/submit';
-import SaveButton from '../../BlockQuote/saveButton';
+// import SaveButton from '../../BlockQuote/saveButton';
 import './rawAdd.css';
 import axios from 'axios';
 // const data = [];
@@ -33,7 +33,7 @@ class ApplyStockOut extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'9%'
+            width:'5%'
         },{
             title:'货物名称',
             dataIndex:'materialName',
@@ -44,11 +44,11 @@ class ApplyStockOut extends React.Component{
             dataIndex:'materialClass',
             key:'materialClass',
             width:'13%',
-            render:(text,record)=>{
+            render:(text)=>{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
-                    case 3: return '产品';
+                    case 3: return '成品';
                     default:return '';
                 }
             }
@@ -56,24 +56,31 @@ class ApplyStockOut extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'15%'
-        },{
-            title:'库存数量',
-            dataIndex:'quantity',
-            key:'quantity',
-            width:'10%'
+            width:'19%',
+            render:(text)=>{
+                if(text.length>24){
+                    return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
+                }else{
+                    return <span className='text-decoration'>{text}</span>
+                }
+            }
+        // },{
+        //     title:'库存数量',
+        //     dataIndex:'quantity',
+        //     key:'quantity',
+        //     width:'10%'
         },{
             title:'库存重量',
             dataIndex:'weight',
             key:'weight',
             width:'10%'
-        },{
-            title:'出库数量',
-            dataIndex:'outQuantity',
-            key:'outQuantity',
-            width:'15%',
-            render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
-            className:'tdStyle'
+        // },{
+        //     title:'出库数量',
+        //     dataIndex:'outQuantity',
+        //     key:'outQuantity',
+        //     width:'15%',
+        //     render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
+        //     className:'tdStyle'
         },{
             title:'出库重量',
             dataIndex:'outWeight',
@@ -83,7 +90,7 @@ class ApplyStockOut extends React.Component{
             className:'tdStyle'
         }]
         this.apply = this.apply.bind(this);
-        this.handleOk = this.handleOk.bind(this);
+        // this.handleOk = this.handleOk.bind(this);
         this.handleCancel =this.handleCancel.bind(this);
         this.save = this.save.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -103,31 +110,30 @@ class ApplyStockOut extends React.Component{
         this.props.cancle();
     }
     /**申请出库弹出框 点击送审按钮 */
-    handleOk(){
-        // this.setState({
-        //     visible:false
-        // })
-    }
+    // handleOk(){
+    //     this.setState({
+    //         visible:false
+    //     })
+    // }
     /**点击申请按钮，弹出弹出框 */
     apply(){
-        this.setState({
-            visible:true
-        })
         const keys = this.props.selectedRowKeys;
         var outData = [];
         this.props.data.forEach(d=>{
             var newD = d;
             for(var i = 0; i < keys.length;i++){
                 if(keys[i]===d.id){
-                    newD['outQuantity']='';
+                    // newD['outQuantity']='';
                     newD['outWeight']='';
                     newD['index']=i+1;
                     outData.push(newD)
                 }
             }
         })
-        
-        this.state.dataSource = outData;
+        this.setState({
+            visible:true,
+            dataSource:outData
+        })
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){
@@ -185,13 +191,13 @@ class ApplyStockOut extends React.Component{
         for(var i=0; i<data.length;i++ )
         {
             var e = data[i];
-            if(!e.outQuantity || !e.outWeight){
-                message.info('出库数量和出库重量都不能为空！');
+            if(!e.outWeight){
+                message.info('出库重量不能为空！');
                 return 
             }
             details.push({
                 stockId:parseInt(e.id),
-                quantity:parseInt(e.outQuantity),
+                // quantity:1,
                 weight:parseInt(e.outWeight)
             })
         }
@@ -249,7 +255,7 @@ class ApplyStockOut extends React.Component{
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key='save' handleSave={this.handleSave} />,
+                        // <SaveButton key='save' handleSave={this.handleSave} />,
                         <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} defaultChecked={false}/>                       
                     ]}
                 >

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal,Button } from 'antd';
+import { Modal,Button,message } from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
 import CancleButton from '../BlockQuote/cancleButton';
@@ -26,8 +26,8 @@ class DetailSpan extends React.Component {
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
-                    batchNumberId: 0,
-                    examineStatus: 1000,
+                    batchNumberId: '',
+                    examineStatus: '',
                     examineData: []
                 },
                 isQualified: '', //不合格状态
@@ -72,9 +72,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     }
     /**通过id查询详情 */
     getDetailData(){
@@ -84,9 +84,6 @@ class DetailSpan extends React.Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            // this.setState({
-            //     detailData:details,
-            // });
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
@@ -115,7 +112,7 @@ class DetailSpan extends React.Component {
                     tester: res.tester?res.tester:'',
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
-                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:1000;
+                const examineStatus = res.commonBatchNumber?res.commonBatchNumber.status:'';
                 const batchNumberId = res.commonBatchNumber?res.commonBatchNumber.id:'';
                 if(examineStatus===2||examineStatus===3){
                     axios({
@@ -138,7 +135,7 @@ class DetailSpan extends React.Component {
                                 },
                                 isQualified: isQualified,
                             },
-                            // visible: true
+                            visible: true
                         });
                     })
                 }else{
@@ -154,9 +151,11 @@ class DetailSpan extends React.Component {
                             },
                             isQualified: isQualified,
                         },
-                        // visible: true
+                        visible: true
                     })
                 }
+            }else{
+                message.info('查询数据为空，请联系管理员')
             }
         })
     }

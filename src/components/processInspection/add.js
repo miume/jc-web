@@ -8,10 +8,33 @@ import NewButton from '../BlockQuote/newButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CancleButton from '../BlockQuote/cancleButton';
 const Option = Select.Option;
+const rowData = {
+    procedureTestRecord:{
+        comment:'',
+        procedureId:'',
+        deliveryFactoryId:'',
+        samplePointName:'',
+        sampler:'',
+        testFrequency:'',
+        serialNumberId:'',
+        tester:'',
+    },
+    detail:{
+        deliveryFactory:'',
+        productionProcess:'',
+        sampler:'',
+        tester:'',
+        testItems:'',
+        testMaterialName:'',
+    },
+    testItemIds:[]
+}
 class Add extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            count:1,
+            maxCount:1,
             visible : false,
             data : [],
             saveData:[],       //用来table新增的真实数据
@@ -21,14 +44,13 @@ class Add extends React.Component{
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        // this.deleteRow = this.deleteRow.bind(this);
+        this.itemsToIds = this.itemsToIds.bind(this);
         // this.handleVisibleChange = this.handleVisibleChange.bind(this);
-        // this.handleCancelApply = this.handleCancelApply.bind(this);
+        this.detailDataProcessing = this.detailDataProcessing.bind(this);
         this.sucessProcessing = this.sucessProcessing.bind(this);
         this.getAllTestItem = this.getAllTestItem.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.applyOut = this.applyOut.bind(this);
-        this.getData = this.getData.bind(this);
         this.applyReview = this.applyReview.bind(this);
         this.judgeFooter = this.judgeFooter.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
@@ -36,6 +58,11 @@ class Add extends React.Component{
         this.getByBatchNumberId = this.getByBatchNumberId.bind(this);
         this.applySaveAndReview = this.applySaveAndReview.bind(this);
         this.getAllProductLine = this.getAllProductLine.bind(this);
+        this.editorRow = this.editorRow.bind(this);
+        this.addData = this.addData.bind(this);
+        this.getData = this.getData.bind(this);
+        this.deleteRow = this.deleteRow.bind(this);
+        this.checkAddRowData = this.checkAddRowData.bind(this);
     }
     /**判断是新增 编辑 还是详情 */
     judge(flag,title){
@@ -70,11 +97,21 @@ class Add extends React.Component{
         this.getAllTestItem();
         this.getAllProductLine();
         if(flag) this.getByBatchNumberId(value);
-        else 
+        else {
+            var data = [{
+                id:1,
+                mode:3,
+                detail:rowData.detail,
+                testItemIds:rowData.testItemIds,
+                procedureTestRecord:rowData.procedureTestRecord,
+            }]
             this.setState({
                 visible: true,
-                data:[{id:1,mode:3}]
+                data:data,
+                maxCount:1,
+                count:1
             });
+        }
       }
     /**通过id查询详情 */
     getByBatchNumberId(value,flag){
@@ -85,22 +122,55 @@ class Add extends React.Component{
         }).then((data)=>{
             const details = data.data.data? data.data.data.details:[];
             // var iteration = 1;
-            if(details){
-             for(var i = 0; i < details.length; i++){
-                 // console.log(details[i].commonBatchNumber.iteration)
-                //  iteration = details[i].procedureTestRecord.isIteration;
-                 details[i].id = i+1;
-                 details[i].mode = 1;
-                 details[i].procedureTestRecord.testItems = details[i].testItemString;
-              }
-              this.setState({
-                 visible:flag?false:true,
-                //  iteration:iteration,
-                 data:details,
-             })
+            if(details.length>0){
+               this.detailDataProcessing(details,flag);
             }
         })
      }
+    /**对详情和编辑的数据进行处理 */
+    detailDataProcessing(details,flag){
+        var length = details.length;
+        var data = [];
+        for(var i = 0; i < details.length; i++){
+            var e = details[i];
+            // e.procedureTestRecord.testItems = e.testItemString;
+            const items = e.testItemString.split(',');
+            data.push({
+                id:i+1,
+                mode:1,
+                procedureTestRecord:e.procedureTestRecord,
+                detail:{
+                    deliveryFactory:e.deliveryFactory?e.deliveryFactory.name:'',
+                    productionProcess:e.productionProcess?e.productionProcess.name:'',
+                    sampler:e.sampler?e.sampler:'',
+                    tester:e.tester?e.tester:'',
+                    testItems:e.testItemString,
+                    testMaterialName:e.testMaterialName?e.testMaterialName:'',
+                },
+                testItemIds:this.itemsToIds(items)
+            })
+        }
+        // console.log(data)
+        this.setState({
+            visible:flag?false:true,
+            data:data,
+            count:length,
+            maxCount:length,
+        })
+    }
+            /**将查到的testItems字符串转换为id数组 */
+    itemsToIds(items){
+        var testItemIds = [];
+        const {allTestItem} = this.state;
+        for(var i = 0; i < allTestItem.length; i++){
+            for(var j = 0; j < items.length; j++){
+                if(items[j] === allTestItem[i].name ){
+                    testItemIds.push(allTestItem[i].id)
+                }
+            }
+        }
+        return testItemIds;
+    }
      /**获取所有送样工厂 */
     getAllProductLine(){
         axios({
@@ -160,23 +230,22 @@ class Add extends React.Component{
                 count:1,
                 visible: false,
                 data : [{id:1,mode:3}],
+                maxCount:1,
             });
         }
     }
-    /**控制送审皮泡的visible */
-    // handleCancelApply(){
-    //     this.setState({
-    //         visible1:false
-    //     })
-    // }
     /**点击保存 */
     handleSave(){
         this.dataProcessing(0);
     }
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
-        const details = this.state.saveData;
+        const details = this.state.data;
         console.log(details)
+        if(details.length===0) {
+            message.info('必须新增一条数据！');
+            return false;
+        }
         for(var i = 0; i < details.length; i++){
             var e = details[i].procedureTestRecord;
             if(details[i].testItemIds===[]){
@@ -257,13 +326,127 @@ class Add extends React.Component{
         }
     }
     /**获取每个Tr的值 从组件ProcessTable中实时获取 */
-    getData(data){
-        this.state.saveData = data;
-    }
+    // getData(data){
+    //     // console.log(data)
+    //     this.setState({
+    //         saveData:data,
+    //     })
+    // }
     /**监控送审气泡的送审按钮 对应的事件 */
     applySaveAndReview(process,urgent){
         // console.log('送审')
         this.dataProcessing(1,process,urgent);
+    }
+
+     /**编辑数据 */
+     editorRow(value){
+        var {data} = this.state;
+        for(var i = 0; i < data.length; i++){
+            if(data[i].id===value)
+                data[i].mode = 2;
+        }
+        this.setState({
+            data:data,
+        })
+    }
+    /**新增一条数据 */
+    addData() {
+        const {count,data,maxCount} = this.state;
+        // console.log(data)
+        // console.log(`maxCount=${this.state.maxCount},count=${this.state.count}`)
+        /**点击新增 前面已知数据全部变成不可编辑 */
+        var flag = true;  //表示能否新增一行数据
+        for(var i = 0; i < data.length; i++){
+            var e = data[i];
+            if(e.testItemIds.length < 1){
+                message.info('请将数据填写完整，再新增！');
+                return false;
+            } 
+            flag = this.checkAddRowData(e);
+            e.mode = 1;
+        }
+        if(flag){
+            data.push({
+                mode:3,
+                id:maxCount+1,
+                testItemIds:[],
+                procedureTestRecord:{
+                    comment:'',
+                    procedureId:'',
+                    deliveryFactoryId:'',
+                    samplePointName:'',
+                    sampler:'',
+                    testFrequency:'',
+                    serialNumberId:'',
+                    tester:'',
+                },
+                detail:{
+                    deliveryFactory:'',
+                    productionProcess:'',
+                    sampler:'',
+                    tester:'',
+                    testItems:'',
+                    testMaterialName:'',
+                }
+            })
+            // console.log(data)
+            this.setState({
+                data: data,
+                count: count+1,
+                maxCount:maxCount+1
+            })
+        }
+    }
+    /**新增前对前面数据进行判断 必须填写完整才能新增下一条数据 */
+    checkAddRowData(data){
+        var e = data.procedureTestRecord;
+        if(e==={}||e===undefined){
+            message.info('请将数据填写完整，再新增！');
+                    return false;
+        }else{
+            for(var j in e){
+                if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
+                    message.info('请将数据填写完整，再新增！');
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+    /**删除一条数据 不仅要删除渲染table的数据，还要删除实时存取table数据的数组中对应数据*/
+    deleteRow(value){
+        var {count,data} = this.state;
+        data = data.filter(e=>parseInt(e.id) !== parseInt(value));
+        // for(var i = 0; i < data.length; i++){
+        //     var e = data[i];
+        //     e.mode = 2;
+        // }
+        data[data.length-1].mode=2;
+        // console.log(data)
+        this.setState({
+            count:count-1,
+            data:data,
+        })
+    }
+    /**获取每个Tr的值 */
+    getData(detail){
+        const {data} = this.state;
+        if(data.length === 0) { data.push(detail)};
+        var flag = 0;
+        for(var i = 0; i < data.length; i++){
+            if(data[i].id === detail.id && data[i].mode!==1){
+                data[i] = detail;
+                flag = 1;
+            }
+        }
+        if(!flag){
+            data.push(detail)
+        }
+       //console.log(data);
+        this.setState({
+            data:data,
+            // saveData:saveData,
+        })
     }
     render() {
         const {flag} = this.state;
@@ -278,7 +461,8 @@ class Add extends React.Component{
                     {
                        flag===1?<Detail data={this.state.data} allProductLine={this.state.allProductLine}/>
                        :<ProcessTable url={this.props.url} getData={this.getData} data={this.state.data} 
-                         flag={this.state.flag} allProductLine={this.state.allProductLine} allTestItem={this.state.allTestItem} />
+                         flag={this.state.flag} allProductLine={this.state.allProductLine} allTestItem={this.state.allTestItem} 
+                         editorRow={this.editorRow} deleteRow={this.deleteRow} addData={this.addData} count={this.state.count} />
                     }
                     
                 </Modal>

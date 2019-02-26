@@ -20,7 +20,7 @@ class ProductTable extends React.Component{
         align:'center',
         width: '10%',
         render: deliveringDate => {
-            return <abbr style={{cursor:'default'}} title={deliveringDate?deliveringDate:'无'}>{deliveringDate?deliveringDate.substring(0,10):'无'}</abbr>
+            return <span title={deliveringDate} className='text-decoration'>{deliveringDate.substring(0,10)}</span>
         }
     },{
         title: '送检人',
@@ -40,6 +40,9 @@ class ProductTable extends React.Component{
         key: 'repoBaseSerialNumber.serialNumber',
         align:'center',
         width: '13%',
+        render:(serialNumber)=>{
+            return <span title={serialNumber} className='text-decoration'>{serialNumber.substring(0,15)}</span>
+        }
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
@@ -59,6 +62,9 @@ class ProductTable extends React.Component{
         key: 'exception',
         align:'center',
         width: '8%',
+        render: exception => {
+            return exception?exception:'无'
+        }
     },{
         title: '发布状态',
         dataIndex: 'isPublished',
@@ -91,9 +97,6 @@ class ProductTable extends React.Component{
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
             let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
-            // let detailSpanFlag = true
-            // let checkSpanFlag = true
-            // let releaseSpanFlag = true
             return (
                 <span>
                     {detailSpanFlag?(
@@ -148,9 +151,10 @@ class ProductTable extends React.Component{
                 columns={columns}
                 rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
-                scroll={{ y: 380 }}
+                scroll={{ y: 400 }}
             />
         );
     }
@@ -169,8 +173,8 @@ class ProductTable extends React.Component{
             return false;
         }
     };
-    judgeReleaseOperation = (h,status) => {
-        if(h===2&&status===3){
+    judgeReleaseOperation = (isPublished,status) => {
+        if(isPublished===0&&(status===2||status===3)){
             return true;
         }else{
             return false;

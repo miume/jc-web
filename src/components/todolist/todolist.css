@@ -307,11 +307,11 @@
 } */
 .part-demo{
     flex-grow: 2;
-    width:230px;
+    width:232px;
 }
 .part-demo1{
     flex-grow: 2;
-    width:380px;
+    width:417px;
 }
 .check-detail-div-hidden-part .line-part{
     flex-grow: 1;
@@ -340,4 +340,13 @@
 /**用于大的div*/
 .big-div-todo{
     width:1300px !important;
+}
+/**暂无两个字垂直水平居中*/
+.divAuto{
+    margin : 0 auto;
+    text-align: center;
+    font-size : 20px;
+    font-weight: bolder;
+    line-height:400px;
+    height:400px;
 }

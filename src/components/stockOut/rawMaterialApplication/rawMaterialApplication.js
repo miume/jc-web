@@ -33,22 +33,22 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'15%'
+            width:'6%'
         },{
             title:'物料名称',
             dataIndex:'materialName',
             key:'materialName',
-            width:'15%'
+            width:'20%'
         },{
             title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            width:'15%',
+            width:'20%',
             render:(text,record)=>{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
-                    case 3: return '产品';
+                    case 3: return '成品';
                     default:return '';
                 }
             }
@@ -56,16 +56,25 @@ class RawMaterialApplication extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-        },{
-            title:'数量',
-            dataIndex:'quantity',
-            key:'quantity',
-            width:'15%'
-        },{
+            width:'34%',
+            // render:(text)=>{
+            //     if(text.length>24)
+            //         return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
+            //     else 
+            //         return <span className='text-decoration' title={text}>{text}</span>
+            // }
+        }
+        // ,{
+        //     title:'数量',
+        //     dataIndex:'quantity',
+        //     key:'quantity',
+        //     width:'15%'
+        // }
+        ,{
             title:'重量',
             dataIndex:'weight',
             key:'weight',
-            width:'15%'
+            // width:'20%'
         }]
         // this.pagination = {
         //     total: this.props.data.total,
@@ -118,7 +127,7 @@ class RawMaterialApplication extends React.Component{
             <div style={{padding:'0 15px'}}>
                 <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url} />
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入货物名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
+                    <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 </span>
                 <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={false} scroll={{ y: 398 }} bordered size='small'></Table>
             </div>

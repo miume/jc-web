@@ -7,46 +7,22 @@ const Option = Select.Option;
 class ProcessTable extends React.Component{
     componentDidMount(){
         this.getAllUser();
-        // this.getAllProductLine();
         this.getAllTestMaterial();
         this.getAllProductionProcess();
     }
     constructor(props){
         super(props);
         this.state = {
-            count : this.props.data?this.props.data.length:1,
-            addApplyData:[],                             //存取每行的数据
-            flag : this.props.flag,
-            data : this.props.data?this.props.data:[{id:1}], //用已知数据来渲染有多少行
+            // count : this.props.data?this.props.data.length:1,
+            // addApplyData:[],                             //存取每行的数据
+            // flag : this.props.flag,
+            // maxCount : this.props.data?this.props.data.length:1,
+            // data : this.props.data?this.props.data:[{id:1}], //用已知数据来渲染有多少行
         }
-        this.editorRow = this.editorRow.bind(this);
-        this.addData = this.addData.bind(this);
-        this.getData = this.getData.bind(this);
-        this.deleteRow = this.deleteRow.bind(this);
         this.getAllUser = this.getAllUser.bind(this);
-        // this.getAllTestItem = this.getAllTestItem.bind(this);
-        this.checkAddRowData = this.checkAddRowData.bind(this);
         this.getAllTestMaterial = this.getAllTestMaterial.bind(this);
         this.getAllProductionProcess = this.getAllProductionProcess.bind(this);
     }
-    /**获取所有送样工厂 */
-    // getAllProductLine(){
-    //     axios({
-    //       url:`${this.props.url.deliveryFactory.deliveryFactory}`,
-    //       method:'get',
-    //       headers:{
-    //         'Authorization':this.props.url.Authorization
-    //       }
-    //     }).then(data=>{
-    //       const res = data.data.data;
-    //       const children = res.map(e=>{
-    //           return <Option key={e.id} value={e.id}>{e.name}</Option>
-    //       })
-    //       this.setState({
-    //           allProductLine : children
-    //       })
-    //   })
-    // }
     /**获取所有产品工序 */
     getAllProductionProcess(){
       axios({
@@ -101,95 +77,10 @@ class ProcessTable extends React.Component{
             })
         })
     }
-    /**编辑数据 */
-    editorRow(value){
-        var {data} = this.state;
-        for(var i = 0; i < data.length; i++){
-            if(data[i].id.toString()===value)
-                data[i].mode = 2;
-        }
-        // console.log(data)
-        this.setState({
-            data:data,
-        })
-    }
-    /**新增一条数据 */
-    addData() {
-        const {count,data,addApplyData} = this.state;
-        /**点击新增 前面已知数据全部变成不可编辑 */
-        var flag = true;  //表示能否新增一行数据
-        for(var i = 0; i < addApplyData.length; i++){
-            var e = addApplyData[i];
-            if(e.testItemIds.length < 1){
-                message.info('请将数据填写完整，再新增！');
-                return false;
-            } 
-            flag = this.checkAddRowData(e);
-            data[i].mode = 1;
-        }
-        //console.log(data)
-        if(flag){
-            data.push({
-                mode:3,
-                id:count+1,
-                procedureTestRecord:{}
-            })
-            this.setState({
-                count: count+1,
-                data: data,
-            })
-        }
-    }
-    /**新增前对前面数据进行判断 必须填写完整才能新增下一条数据 */
-    checkAddRowData(data){
-        var e = data.procedureTestRecord;
-        if(e==={}||e===undefined){
-            message.info('请将数据填写完整，再新增！');
-                    return false;
-        }else{
-            for(var j in e){
-                if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
-                    message.info('请将数据填写完整，再新增！');
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-    /**删除一条数据 不仅要删除渲染table的数据，还要删除实时存取table数据的数组中对应数据*/
-    deleteRow(value){
-        var {count,data,addApplyData} = this.state;
-        // console.log(addApplyData)
-        addApplyData = addApplyData.filter(e=>e.id.toString()!==value);  //删除存取的每行数据
-        this.setState({
-            count:count-1,
-            data:data.filter(d=>d.id.toString()!==value),
-            addApplyData:addApplyData
-        })
-        this.props.getData(addApplyData);//将数据传给父元素
-    }
-    /**获取每个Tr的值 */
-    getData(data){
-        //console.log(data)
-        const {addApplyData} = this.state;
-        if(addApplyData.length === 0) { addApplyData.push(data)};
-        var flag = 0;
-        for(var i = 0; i < addApplyData.length; i++){
-            if(addApplyData[i].id === data.id){
-                addApplyData[i] = data;
-                flag = 1;
-            }
-        }
-        if(!flag){
-            addApplyData.push(data)
-        }
-        this.state.addApplyData = addApplyData;
-        this.props.getData(addApplyData);//将数据传给父元素
-    }
     render(){
         return (
             <div style={{height:'400px'}}>
-                    <div className='fr'>已录入{this.state.count}条数据</div><br/>
+                    <div className='fr'>已录入{this.props.count}条数据</div><br/>
                          <table id='process-table'>
                              <thead className='thead'>
                              <tr>
@@ -206,9 +97,9 @@ class ProcessTable extends React.Component{
                              </thead>
                              <tbody className='tbody'>
                              {
-                                this.state.data.map((m,index) => { 
-                                    return <Tr1 key={index} deleteRow={this.deleteRow} id={m.id?m.id.toString():m} url={this.props.url} getData={this.getData}
-                                           value={m} flag={this.props.flag} mode={m.mode} editorRow={this.editorRow}
+                                this.props.data.map((m,index) => { 
+                                    return <Tr1 key={index} deleteRow={this.props.deleteRow} id={m.id?m.id:m} url={this.props.url} getData={this.props.getData}
+                                           detail={m} flag={this.props.flag} mode={m.mode} editorRow={this.props.editorRow}
                                            allProductLine={this.props.allProductLine} allProductionProcess={this.state.allProductionProcess} allUser={this.state.allUser}
                                            allTestItem={this.props.allTestItem} allTestMaterial={this.state.allTestMaterial}
                                            /> })
@@ -216,7 +107,7 @@ class ProcessTable extends React.Component{
                              </tbody>
                          </table>
                          <WhiteSpace />
-                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.addData}/>
+                         <Button type="primary" icon="plus" size='large' style={{width:'100%',fontSize:'15px'}} onClick={this.props.addData}/>
              </div>
         )
     }

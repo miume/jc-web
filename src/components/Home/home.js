@@ -226,7 +226,9 @@ class Home extends Component {
                 getAllPage:`${server}/jc/common/RepoStock`,
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
-                getAllPages:`${server}/jc/common/RepoStock/pages`
+                getAllPages:`${server}/jc/common/RepoStock/pages`,
+                realStock:`${server}/jc/common/sortout/realStock`,
+                stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
             process:{
                 process:`${server}/jc/common/batchAuditTask/validTasks`
@@ -333,6 +335,7 @@ class Home extends Component {
                  generate:`${server}/jc/common/purchaseReportRecord/generate`,
                  releasePages:`${server}/jc/common/purchaseReportRecord/releasePages`,
                  purchasePages:`${server}/jc/common/purchaseReportRecord/purchasePages`,
+                 preview:`${server}/jc/common/purchaseReportRecord/preview`,
              },
              /**入库管理 */
              enterStorage: {
@@ -369,6 +372,7 @@ class Home extends Component {
               },
               /**不合格审评表 */
               unqualifiedExamineTable:{
+                  unqualifiedTestReportRecord:`${server}/jc/common/unqualifiedTestReportRecord`,
                   pages:`${server}/jc/common/unqualifiedTestReportRecord/pages`,
               },
               /**原材料标准*/
@@ -401,7 +405,13 @@ class Home extends Component {
                /**设备基本设备*/
                equipmentBaseInstrument:{
                  getAllEquipmentBaseInstrument:`${server}/jc/common/equipmentBaseInstrument`
-              }
+              },
+                /**不合格追踪*/
+                unqualifiedTrack:{
+                    pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
+                    unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
+                },
+
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
@@ -422,6 +432,9 @@ class Home extends Component {
         const path2Component = this.getComponentArray(); 
         const userName = JSON.parse(localStorage.getItem('menuList')).name;
         const userId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const sty = {
+            height:document.body.clientHeight-55
+        }
         return (
                 <div className="parent" >
                     <div className="top">
@@ -443,12 +456,12 @@ class Home extends Component {
                             <Divider type='vertical' />
                         </div>     
                     </div>
-                    <div className="left">
+                    <div className="left" style={sty}>
                         <div className="menu1" >
                         <Menu1List/>
                         </div>
                     </div>
-                    <div className="rightDiv">
+                    <div className="rightDiv" style={sty}>
                     <Switch>
                         {/**默认选中快速访问界面 */}
                         <Route exact path="/home" component={QuickAccess}/>

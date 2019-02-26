@@ -19,7 +19,7 @@ class InterTable extends React.Component{
         align:'center',
         width: '8%',
         render: sampleDeliveringDate => {
-            return <abbr style={{cursor:'default'}} title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
+            return <abbr className="text-decoration" title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
         }
     },{
         title: '送检人',
@@ -41,12 +41,13 @@ class InterTable extends React.Component{
         }
     },{
         title: '编号',
-        dataIndex: 'sampleDeliveringRecord.serialNumberId',
-        key: 'sampleDeliveringRecord.serialNumberId',
+        dataIndex: 'commonBatchNumber.batchNumber',
+        key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
-        render: serialNumberId => {
-            return serialNumberId?serialNumberId:'无';
+        render: batchNumber => {
+            return <abbr className="text-decoration" title={batchNumber?batchNumber:'无'}>{batchNumber?batchNumber.substring(0,15):'无'}</abbr>
+            // return batchNumber?batchNumber:'无';
         }
     },{
         title: '检测项目',
@@ -57,7 +58,7 @@ class InterTable extends React.Component{
         render: testItems => {
             const length = testItems?testItems.length:0;
             if(length > 9){
-                return <abbr style={{cursor:'default'}} title={testItems?testItems:'无'}>{testItems?testItems.substring(0,9):'无'}</abbr>
+                return <abbr className="text-decoration" title={testItems?testItems:'无'}>{testItems?testItems.substring(0,9):'无'}</abbr>
             }
             return testItems?testItems:'无';
         }
@@ -117,6 +118,7 @@ class InterTable extends React.Component{
                     <Divider type="vertical" />
                     {checkSpanFlag?(
                         <CheckSpan
+                            menuList={this.props.menuList}
                             url={this.props.url}
                             id={record.sampleDeliveringRecord.id}
                             fetch={this.props.fetch}
@@ -156,9 +158,10 @@ class InterTable extends React.Component{
                 columns={columns}
                 rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
-                scroll={{ y: 380 }}
+                scroll={{ y: 400 }}
             />
         );
     }

@@ -13,7 +13,6 @@ class ProductRedList extends Component{
     componentDidMount(){
         this.fetch();
         this.getAllSerialNumber();
-        this.getAllProcess();
     }
     componentWillUnmount(){
         this.setState=(state,callback)=>{
@@ -40,19 +39,24 @@ class ProductRedList extends Component{
           key:'index',
           sorter:(a,b)=>a.index-b.index,
           align:'center',
-          width:'5%'
+          width:'5%',
         },{
-            title:'编号',
+            title:'物料编码',
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'12%'
+            width:'20%',
+            render:(text)=>{
+                return(
+                    <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
+                )
+            }
         },{
             title:'物料名称',
             dataIndex:'repoBaseSerialNumber.materialName',
             key:'repoBaseSerialNumber.materialName',
             align:'center',
-            width:'8%'
+            width:'10%'
         },{
             title:'物料类型',
             dataIndex:'repoBaseSerialNumber.materialClass',
@@ -70,12 +74,6 @@ class ProductRedList extends Component{
             align:'center',
             width:'8%'
         },{
-            title:'损失数量',
-            dataIndex:'repoRedTable.quantityLoss',
-            key:'repoRedTable.quantityLoss',
-            align:'center',
-            width:'8%'
-        },{
             title:'损失重量',
             dataIndex:'repoRedTable.weightLoss',
             key:'repoRedTable.weightLoss',
@@ -86,19 +84,27 @@ class ProductRedList extends Component{
             dataIndex:'createPersonName',
             key:'createPersonName',
             align:'center',
-            width:'7%'
+            width:'8%'
         },{
             title:'申请日期',
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'14%'
+            width:'10%',
+            render:(text)=>{
+                if(text.length>10){
+                    return <div title={text} style={{textDecoration:'underline'}}>{text.substring(0,10)}</div>
+                }
+                else{
+                    return text
+                }
+            }
         },{
             title:'审核状态',
             dataIndex:'commonBatchNumber.status',
             key:'commonBatchNumber.status',
             align:'center',
-            width:'9%',
+            width:'11%',
         //      render:(text,record)=>{
         //          let status=record.commonBatchNumber.status;
         //           switch(`${status}`){
@@ -120,7 +126,7 @@ class ProductRedList extends Component{
             dataIndex:'repoRedTable.id',
             key:'repoRedTable.id',
             align:'center',
-            //width:'',
+            width:'16%',
             render:(text,record)=>{
                 //console.log(record.commonBatchNumber.status);
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
@@ -151,10 +157,9 @@ class ProductRedList extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
-        this.getAllProcess=this.getAllProcess.bind(this);
         this.getAllSerialNumber=this.getAllSerialNumber.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
-        this.cancel=this.cancel.bind(this);
+        this.deleteCancel=this.deleteCancel.bind(this);
         this.fetch = this.fetch.bind(this);
     }
     judgeStatus=(record_status)=>{
@@ -163,12 +168,13 @@ class ProductRedList extends Component{
             case '-1':return true   //'未申请'
             case '0':return  false      //'待审核'
             case '1':return  false     // '审核中'
-            case '2':return   true     //'已通过'
+            case '2':return  false     //'已通过'
             case '3':return  true      //未通过，新增时点击了保存没有点送审
             default:return false
         }
     }
     handleTableChange(pagination){
+         
           this.fetch({
               size:pagination.pageSize,//当前页显示的记录数
               page:pagination.current,//当前是第几页
@@ -187,17 +193,18 @@ class ProductRedList extends Component{
             },
         })
         .then((data)=>{
-            // console.log(data);
              const res=data.data.data;
-            
+             //console.log(res);
              this.pagination.total=res?res.total:0;
+             this.pagination.current=res.pageNumber;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
              if(res&&res.list){
                 
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
                this.setState({
-                dataSource:res.list
+                dataSource:res.list,
+                searchContent:''
                  });
               }
         });
@@ -217,7 +224,17 @@ class ProductRedList extends Component{
         })
         .then((data)=>{
                message.info(data.data.message);
-               this.fetch();
+               if(data.data.code===0){
+                if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                      this.pagination.current=this.pagination.current-1;
+                }
+             this.fetch({
+                 size:this.pagination.pageSize,
+                 page:this.pagination.current,
+                 orderField:'id',
+                 orderType:'desc'
+             });
+            }
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -238,7 +255,23 @@ class ProductRedList extends Component{
         .then((data)=>{
            // console.log(data);
            message.info(data.data.message);
-           this.fetch();
+           if(data.data.code===0){
+               if(this.pagination.total%10===1){
+                this.pagination.current=this.pagination.current-1;
+               }
+            this.fetch({
+               size:this.pagination.pageSize,
+               page:this.pagination.current,
+               orderField:'id',
+               orderType:'desc'
+            });
+           }
+           else{
+              this.setState({
+                  selectedRowKeys:[]
+              });
+           }
+          
         })
         .catch(()=>{
             message.info('删除失败，请联系管理员！');
@@ -247,7 +280,7 @@ class ProductRedList extends Component{
             selectedRowKeys:[]
         });
       }
-     cancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
+     deleteCancel(){//批量删除点击取消的时候，checkbox的勾勾也要没，所以调用父组件的函数
        this.setState({
            selectedRowKeys:[]
        });
@@ -278,6 +311,7 @@ class ProductRedList extends Component{
               const res=data.data.data;
               if(res&&res.list){
                 this.pagination.total=res.total;
+                this.pagination.current=res.pageNumber;
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
@@ -290,21 +324,7 @@ class ProductRedList extends Component{
              message.info('搜索失败，请联系管理员！');
       });
     }
-    getAllProcess(){
-        axios({
-            url:`${this.url.process.process}/validTasks`,
-            method:'get',
-            headers:{
-                'Authorizaion':this.url.Authorizaion
-            },
-        })
-        .then((data)=>{
-             const res=data.data.data;
-              this.setState({
-                  processChildren:res
-              });
-        });
- }
+
     getAllSerialNumber(){//获取所有编号
         axios({
                 url:`${this.url.serialNumber.serialNumber}`,
@@ -338,7 +358,7 @@ class ProductRedList extends Component{
         return(
             <div style={{paddingLeft:'15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
-                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} />
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入编号' 
                       searchEvent={this.searchEvent}

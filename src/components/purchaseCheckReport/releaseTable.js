@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from 'antd';
+import {Divider, Table} from 'antd';
 import CheckReleaseSpan from './checkReleaseSpan';
 
 
@@ -99,7 +99,6 @@ class ReleaseTable extends React.Component {
                     {operationFlag?(
                         <CheckReleaseSpan
                             url={this.props.url}
-                            fetch={this.props.fetch}
                             menuList={this.props.menuList}
                             state={record.commonBatchNumber.status}
                             name='发布'
@@ -108,6 +107,14 @@ class ReleaseTable extends React.Component {
                     ):(
                         <span  className="notClick">发布</span>
                     )}
+                    <Divider type="vertical" />
+                    <CheckReleaseSpan
+                        url={this.props.url}
+                        id={record.commonBatchNumber.id}
+                        menuList={this.props.menuList}
+                        state={record.commonBatchNumber.status}
+                        name='详情'
+                    />
                 </span>
             )
         }

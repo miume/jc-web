@@ -67,7 +67,7 @@ class CkeckProductInspection extends React.Component{
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord?res.testReportRecord.judger:'',
+                    tester: res.tester?res.tester:'无',
                     testTime: res.testReportRecord?res.testReportRecord.judgeDate:'',
                 };
                 this.setState({

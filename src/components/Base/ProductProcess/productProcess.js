@@ -96,6 +96,7 @@ class ProductProcess extends React.Component{
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
+      this.deleteCancel=this.deleteCancel.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -109,12 +110,10 @@ class ProductProcess extends React.Component{
         }
       };
       this.columns=[{//表头
-
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
-       //sorter:true,//需要服务端排序
-       //sorter:(a, b) => a.id-b.id,
+       sorter:(a, b) => a.id-b.id,
         width: '26%',
         align:'center',
      },{
@@ -131,8 +130,6 @@ class ProductProcess extends React.Component{
       width: '33%',
       align:'center',
       render : (text, record) =>  {
-        //console.log(text);
-        //console.log(record);
         const editable = this.isEditing(record);
         return (
             <span>
@@ -189,6 +186,7 @@ class ProductProcess extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res.total?res.total:0;
+        this.pagination.current=res.pageNum;
         if(res&&res.list){
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
@@ -262,7 +260,7 @@ class ProductProcess extends React.Component{
         });//处理异常
        
      }
-    cancel(){
+    deleteCancel(){
       this.setState({
         selectedRowKeys:[]
       });
@@ -322,7 +320,7 @@ class ProductProcess extends React.Component{
           }
         });
       }
-      cancel = () => {
+      cancel(){
         this.setState({ editingKey: '' });
       };
       /**---------------------- */
@@ -343,14 +341,15 @@ class ProductProcess extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                name:name
              },
              type:'json'
            })
            .then((data)=>{
              const res=data.data.data;
-             this.pagination.totlal=res.total?res.total:0;
+             this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               for(let i=1;i<=res.list.length;i++){
                   res.list[i-1]['index']=res.prePage*10+i;
@@ -370,8 +369,10 @@ class ProductProcess extends React.Component{
      //通过localStorage可查到
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
+        const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
+            selectedRowKeys,
             onSelect() {
               // console.log(record, selected, selectedRows);
             },
@@ -406,7 +407,7 @@ class ProductProcess extends React.Component{
                <div style={{padding:'15px'}}>
                
                <ProductProcessAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入产品工序' 
                       searchEvent={this.searchEvent}

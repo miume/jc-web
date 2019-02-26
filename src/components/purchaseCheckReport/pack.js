@@ -10,7 +10,10 @@ import './purchaseCheckReport.css';
 class Pack extends React.Component {
     rowSelection;
     componentDidMount() {
-        this.judgeGetAll();
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
+        });
     }
     constructor(props) {
         super(props);
@@ -22,6 +25,13 @@ class Pack extends React.Component {
             searchText: '',
             generateVisible: false,
             unGenerateDate: true, //未生成数据--true为显示未生成数据，false为显示所有数据
+
+            pagination : {
+                showTotal(total) {
+                    return `共${total}条记录`
+                }
+            },
+            pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -30,18 +40,27 @@ class Pack extends React.Component {
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
         // this.generateFetch = this.generateFetch.bind(this);
-        this.judgeGetAll = this.judgeGetAll.bind(this);
-        this.pagination = {
-            total: this.state.dataSource.length,
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
-        }
+        // this.judgeGetAll = this.judgeGetAll.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
+        // this.changePage = this.changePage.bind(this);
+        // this.pagination = {
+        //     total: this.state.dataSource.length,
+        //     showSizeChanger: true,
+        //     showTotal(total){
+        //         return `共${total}条记录`
+        //     },
+        //     onChange:this.changePage,
+        // }
     };
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
+        if(this.props.tabFlag === 1){
+            this.fetch({
+                pageSize:10,
+                pageNumber:1,
+            });
+            this.props.modifyTabFlag();
+        }
         this.rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -59,16 +78,15 @@ class Pack extends React.Component {
         //         selectedRowKeys,
         //         onChange: this.onSelectChange,
         //         getCheckboxProps: record => ({
-        //             disabled: record.testReportRecordDTO.testReportRecord.purchaseReportRecordId !== null,
+        //             disabled: record.isGenerate !== 0,
         //         })
-        //
         //     };
         // }
         return(
             <div>
                 <div>
                     <PackGenerateModal
-                        fetch={this.judgeGetAll}
+                        fetch={this.fetch}
                         url={this.props.url}
                         menuList={this.props.menuList}
                         selectedRowKeys={this.state.selectedRowKeys}
@@ -98,10 +116,12 @@ class Pack extends React.Component {
                     rowSelection={this.rowSelection}
                     pagination={this.pagination}
                     modifySelectedRowKeysData={this.modifySelectedRowKeysData}
+                    handleTableChange={this.handleTableChange}
                 />
             </div>
         )
     };
+
     /**展示生成按钮Modal */
     handleGenerateModal = () => {
         this.setState({
@@ -110,33 +130,43 @@ class Pack extends React.Component {
     };
     /**获取未生成的所有数据 unGenerated */
     handleTableChange = (pagination) => {
-        if(this.state.unGenerateDate===true){
+        const pageChangeFlag = this.state.pageChangeFlag;
+        if(pageChangeFlag===0){
             this.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
                 orderField: 'id',
                 orderType: 'desc',
             });
         }else{
-            this.generateFetch({
-                size: pagination.pageSize,
-                page: pagination.current,
-                orderField: 'id',
-                orderType: 'desc',
-            });
+            this.searchEvent({
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
+            })
         }
     };
     /**未生成和已生成的所有数据进行判断调用结构 */
-    judgeGetAll = () => {
-        if(this.state.unGenerateDate===true){
-            this.fetch({
-                isGenerate: 0,
-            });
-        }else{
-            this.fetch();
-        }
-    };
+    // judgeGetAll = () => {
+    //     if(this.state.unGenerateDate===true){
+    //         this.fetch({
+    //             isGenerate: 0,
+    //             pageSize:10,
+    //             pageNumber:1,
+    //         });
+    //     }else{
+    //         this.fetch({
+    //             pageSize:10,
+    //             pageNumber:1,
+    //         });
+    //     }
+    // };
     fetch = (params = {}) => {
+        const unGenerateDate = this.state.unGenerateDate;
+        if(unGenerateDate === true){
+            var newParam = 'isGenerate';
+            params[newParam] = 0;
+        }
+        console.log(params);
         axios({
             url: `${this.props.url.purchaseCheckReport.rawPages}` ,
             method: 'get',
@@ -146,15 +176,33 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            this.pagination.total=res?res.total:0;
             if(res&&res.list){
+                const {pagination} = this.state;
+                pagination.total=res.total;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
+                // const searchFlag = this.state.searchFlag;
                 this.setState({
                     dataSource: res.list,
                     selectedRowKeys: [],
+                    pagination:pagination,
+                    // searchContent:'',
                 });
+                // if(searchFlag === 0){
+                //     this.setState({
+                //         dataSource: res.list,
+                //         selectedRowKeys: [],
+                //         pageChangeFlag:1,
+                //     });
+                // }else{
+                //     this.setState({
+                //         dataSource: res.list,
+                //         selectedRowKeys: [],
+                //         pageChangeFlag:0,
+                //         searchContent:'',
+                //     });
+                // }
             }
         });
     };
@@ -168,17 +216,26 @@ class Pack extends React.Component {
     /**---------------------- */
     /** 根据送样时间子段分页查询*/
     searchEvent(){
-        if(this.state.unGenerateDate===true){
-            this.fetch({
-                personName:this.state.searchContent,
-                isGenerate: 0
-            });
-        }else{
-            this.fetch({
-                personName:this.state.searchContent
-            });
-        }
-
+        this.setState({
+            pageChangeFlag:1
+        });
+        this.fetch({
+            personName:this.state.searchContent
+        });
+        // this.fetch({
+        //     personName:this.state.searchContent,
+        //     pageSize: params.pageSize,
+        //     pageNumber: params.pageNumber,
+        // });
+        // this.setState({
+        //     searchFlag:0,
+        // },()=>{
+        //     this.fetch({
+        //         personName:this.state.searchContent,
+        //         pageSize: params.pageSize,
+        //         pageNumber: params.pageNumber,
+        //     });
+        // })
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
@@ -191,7 +248,7 @@ class Pack extends React.Component {
         this.setState({
             unGenerateDate: checked
         },()=>{
-            this.judgeGetAll();
+            this.fetch();
         })
     };
     /**---------------------- */

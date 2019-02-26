@@ -7,7 +7,6 @@ import axios from 'axios';
 
 class ProductInventor extends Component{
     url;
-    Authorization;
     componentDidMount(){
       this.fetch();
     }
@@ -21,9 +20,8 @@ class ProductInventor extends Component{
          this.state={
              searchContent:'',
              dataSource:[],
-             Authorization:this.Authorization,
+             pageChangeFlag:0,//0表示getAllByPage分页  1 表示搜索分页
          }
-         
          this.columns=[{
             title:'序号',
             dataIndex:'index',
@@ -35,13 +33,13 @@ class ProductInventor extends Component{
            title:'物料名称',
            dataIndex:'materialName',
            key:'materialName',
-           width:'18%',
+           width:'10%',
            align:'center'
         },{
             title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            width:'18%',
+            width:'10%',
             align:'center',
             render:(text,record)=>{
                switch(`${record.materialClass}`){
@@ -51,24 +49,23 @@ class ProductInventor extends Component{
                }
             }
         },{
-           title:'编号',
+           title:'物料编码',
            dataIndex:'serialNumber',
            key:'serialNumber',
-           width:'20%',
-           align:'center'
-        },{
-           title:'数量',
-           dataIndex:'quantity',
-           key:'quantity',
-           width:'18%',
-           align:'center'
+           width:'35%',
+           align:'center',
+           render:(text)=>{
+            return(
+                <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
+            )
+           }
         },{
            title:'重量',
            dataIndex:'weight',
            key:'weight',
-           width:'18%',
+           width:'10%',
            align:'center'
-        },];
+        }];
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
@@ -85,14 +82,26 @@ class ProductInventor extends Component{
         this.searchEvent=this.searchEvent.bind(this);
     }
     handleTableChange=(pagination)=>{//页切换时调用
-        
-          this.fetch({
-              size:pagination.pageSize,//当前页显示了几条记录
-              page:pagination.current,//当前是第几页
-              
-          });
+         const {pageChangeFlag}=this.state;
+         if(pageChangeFlag){
+            this.searchEvent({
+                size:pagination.pageSize,//当前页显示了几条记录
+                page:pagination.current,//当前是第几页
+                orderField: 'id',
+                orderType: 'desc',
+            });
+         }
+         else{
+            this.fetch({
+                size:pagination.pageSize,//当前页显示了几条记录
+                page:pagination.current,//当前是第几页
+                orderField: 'id',
+                orderType: 'desc',
+            });
+         }
+         
     }
-    fetch=(params={})=>{
+    fetch=(params)=>{
         const materialClass=3;
         axios({
             url:`${this.url.inventorManage.inventorManage}?materialClass=${materialClass}`,
@@ -102,21 +111,25 @@ class ProductInventor extends Component{
             },
             params:{
                 ...params,
-                
             },
         })
         .then((data)=>{
               //console.log(data.data.data);
                const res=data.data.data;
-               // console.log(res.total);
+               //console.log(data);
                this.pagination.total=res?res.total:0;
+               this.pagination.current=res.pageNum;
                if(res&&res.list){
-                for(var i=1;i<=res.list.length;i++){
-                  res.list[i-1]['index']=res.prePage*10+i;
-               }
-               this.setState({
-                 dataSource:res.list//list取到的是所有符合要求的数据
-               });
+                    for(var i=1;i<=res.list.length;i++){
+                        res.list[i-1]['index']=res.prePage*10+i;
+                      
+                    }
+                  
+                    this.setState({
+                        dataSource:res.list,//list取到的是所有符合要求的数据
+                        pageChangeFlag:0,
+                        searchContent:''
+                    });
                }
              });
     }
@@ -125,29 +138,30 @@ class ProductInventor extends Component{
        const  value=e.target.value;//此处显示的是我搜索框填的内容
          this.setState({searchContent:value});
     }
-    searchEvent(){
+    searchEvent(params){
       const materialName=this.state.searchContent;
+      const materialClass=3;
      //console.log(name);//此处显示的是我搜索框填的内容
      axios({
-        url:`${this.url.inventorManage.inventorManage}`,
+        url:`${this.url.inventorManage.inventorManage}?materialName=${materialName}&materialClass=${materialClass}`,
         method:'get',
         headers:{
             'Authorization':this.url.Authorization
         },
-        params:{
-            materialName:materialName,
-            materialClass:3
-        }
+        params:params,
+        type:'json'
      })
      .then((data)=>{
          const res=data.data.data;
          this.pagination.total=res.total?res.total:0;
+         this.pagination.current=res.pageNum;
          if(res&&res.list){
           for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=res.prePage*10+i;
          }
          this.setState({
-           dataSource:res.list//list取到的是所有符合要求的数据
+           dataSource:res.list,//list取到的是所有符合要求的数据
+           pageChangeFlag:1,
          });
          }  
      })
@@ -156,12 +170,11 @@ class ProductInventor extends Component{
      });
     }
     render(){
-        //this.Authorization=localStorage.getItem('Authorization');
         this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入货物名称'
+                    <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         type={this.props.type}
@@ -178,7 +191,7 @@ class ProductInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:600}}
+                scroll={{y:400}}
                 ></Table>
             </div>
         );

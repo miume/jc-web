@@ -23,7 +23,11 @@ class DetailSpan extends React.Component {
         this.state = {
             visible: false,
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -89,9 +93,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     }
     getDetailData = () =>{
         axios({
@@ -122,16 +126,16 @@ class DetailSpan extends React.Component {
                             index:`${i+1}`,
                             id:e.testItemResultRecord.id,
                             testItemId:e.testItemResultRecord.testItemId,
-                            testItemName:e.testItem.name,
+                            testItemName:e.testItem.name?e.testItem.name:'无',
                             testResult:e.testItemResultRecord.testResult,
-                            rawTestItemStandard:e.standardValue,
-                            unit:e.testItem.unit,
+                            rawTestItemStandard:e.standardValue?e.standardValue:'无',
+                            unit:e.testItem.unit?e.testItem.unit:'无',
                             isValid: e.testItemResultRecord.isValid
                         })
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord.judger?res.testReportRecord.judger:'无',
+                    tester: res.tester?res.tester:'无',
                     testTime: res.testReportRecord.judgeDate?res.testReportRecord.judgeDate:'无',
                 };
                 // 择优数据
@@ -165,6 +169,7 @@ class DetailSpan extends React.Component {
                                 optional: optional,
                                 isQualified: isQualified,
                             },
+                            visible: true,
                         });
                     })
                 }else{
@@ -180,6 +185,7 @@ class DetailSpan extends React.Component {
                             optional: optional,
                             isQualified: isQualified,
                         },
+                        visible: true,
                     })
                 }
             }

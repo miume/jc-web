@@ -160,7 +160,7 @@ class SetStandard extends Component{
     }
     handleCancel(){//点击新增的取消
         this.setState({
-            visible:false
+            visible:false,
         });
     }
     selectChange(value){//监听送审流程框的变化
@@ -195,32 +195,7 @@ class SetStandard extends Component{
         });
 
     }
-    // handleSongShenOk(){//点击送审的确定
-    //     axios({
-    //          url:`${this.props.url.rawStandard.getStandard}`,
-    //          method:'post',
-    //          headers:{
-    //              'Authorization':this.props.url.Authorization
-    //          },
-    //          data:this.dataProcess(),
-    //          type:'json'
-    //     }).then(data=>{
-    //         //console.log(data);
-    //         const res=data.data.data;
-    //          if(res){
-    //             const dataId=res.commonBatchNumber.id;//返回的batchnumberId
-    //             const taskId=this.state.checkSelectData;//选择的流程id'
-    //             this.getCheck(dataId,taskId);
-    //             this.setState({
-    //                 popVisible:false,
-    //                 visible:false
-    //             });
-    //          }
-    //     }).catch(()=>{
-    //         message.info('新增失败，请联系管理员！');
-    //     });
-        
-    // }
+
     handleHide(){//送审气泡的取消
         this.setState({
             popVisible:false,//气泡取消

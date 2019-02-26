@@ -4,10 +4,8 @@ import {Table,message} from 'antd';
 import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 
-
 class ProductInStorage extends Component{
     url;
-    Authorization;
     componentDidMount(){
       this.fetch();
     }
@@ -22,52 +20,107 @@ class ProductInStorage extends Component{
              searchContent:'',
              dataSource:[],
              pagination:[],
-             Authorization:this.Authorization,
+             pageChangeFlag:0,//1是搜索分页，0是getAllByPAge
          }
-         
          this.columns=[{
             title:'序号',
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'10%',
-            align:'center'
+            align:'center',
+            width:'5%'
         },{
-           title:'产品名称',
-           dataIndex:'repoBaseSerialNumber.materialName',
-           key:'repoBaseSerialNumber.materialName',
-           width:'15%',
-           align:'center'
+           title:'成品名称',
+           dataIndex:'materialName',
+           key:'materialName',
+           align:'center',
+           width:'8%',
         },{
-           title:'编号',
-           dataIndex:'repoBaseSerialNumber.serialNumber',
-           key:'repoBaseSerialNumber.serialNumber',
-           width:'15%',
-           align:'center'
-        },{
+            title:'物料编码',
+            dataIndex:'itemCode',
+            key:'itemCode',
+            align:'center',
+            width:'11%',
+            render:(text,record)=>{
+                return(
+                    <div title={text} className='text-decoration'>{text.split("-")[0]+'...'}</div>
+                )
+            }
+         },{
+            title:'袋号',
+            dataIndex:'bagNumber',
+            key:'bagNumber',
+            align:'center',
+            width:'11%'
+         },{
+             title:'批次',
+             dataIndex:'batch',
+             key:'batch',
+             align:'center',
+             width:'8%'
+         },{
+             title:'车间',
+             dataIndex:'workShop',
+             key:'workShop',
+             align:'center',
+             width:'8%'
+         },{
+             title:'厂商',
+             dataIndex:'manufacturer',
+             key:'manufacturer',
+             align:'center',
+             width:'8%'
+         },{
+            title:'重量',
+            dataIndex:'weight',
+            key:'weight',
+            align:'center',
+            width:'6%'
+         },{
            title:'数量',
-           dataIndex:'repoInRecord.quantity',
-           key:'repoInRecord.quantity',
-           width:'15%',
-           align:'center'
-        },{
-           title:'重量',
-           dataIndex:'repoInRecord.weight',
-           key:'repoInRecord.weight',
-           width:'15%',
-           align:'center'
+           dataIndex:'quantity',
+           key:'quantity',
+           align:'center',
+           width:'6%'
         },{
            title:'入库时间',
-           dataIndex:'repoInRecord.createTime',
-           key:'repoInRecord.createTime',
-           width:'16%',
-           align:'center'
+           dataIndex:'inTime',
+           key:'inTime',
+           align:'center',
+           width:'9%',
+           render:(text,record)=>{
+              // console.log(text);
+             if(text&&text.length>10){
+                return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
+             }
+             else{
+                 return(<div>{text}</div>)
+             }
+           }
         },{
+            title:'操作时间',
+            dataIndex:'createTime',
+            key:'createTime',
+            align:'center',
+            width:'9%',
+            render:(text)=>{
+               if(text&&text.length>10){
+                    return(
+                        <div title={text} className='text-decoration'>{text.substring(0,10)}</div>
+                    )
+               }
+               else{
+                   return(
+                       <div className='text-decoration'>{text}</div>
+                   )
+               }
+            }
+         },{
            title:'入库人',
-           dataIndex:'repoInRecord.createPerson',
-           key:'repoInRecord.createPerson',
-           width:'15%',
-           align:'center'
+           dataIndex:'operator',
+           key:'operator',
+           align:'center',
+           width:'7%'
         }];
         this.pagination={
             total:this.state.dataSource.length,
@@ -85,11 +138,24 @@ class ProductInStorage extends Component{
         this.searchEvent=this.searchEvent.bind(this);
     }
     handleTableChange=(pagination)=>{//页码发生改变时调用
-         this.fetch({
-             size:pagination.pageSize,//此页显示了几条
-             page:pagination.current,//当是第几页
-           
-         });
+        const {pageChangeFlag}=this.state;
+        if(pageChangeFlag){
+            this.searchEvent({
+                size:pagination.pageSize,//此页显示了几条
+                page:pagination.current,//当是第几页
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }
+        else{
+            this.fetch({
+                size:pagination.pageSize,//此页显示了几条
+                page:pagination.current,//当是第几页
+                orderField: 'id',
+                orderType: 'desc',
+            });
+        }
+         
     }
     fetch=(params={})=>{
       axios({
@@ -102,17 +168,24 @@ class ProductInStorage extends Component{
             ...params,
             materialType:3
         }
-      
     })
       .then((data)=>{
           const res=data.data.data;
-          this.pagination.total=res.total;//切换页的时候会用到
-          for(var i=1;i<=res.list.length;i++){
-              res.list[i-1]['index']=(res.pages-1)*10+i;
-          }//使序号从1开始
-          this.setState({
-              dataSource:res.list
-          });
+      if(res&&res.list){
+        this.pagination.total=res.total;//切换页的时候会用到
+        this.pagination.current=res.pageNum;
+        for(var i=1;i<=res.list.length;i++){
+            res.list[i-1]['index']=(res.pages-1)*10+i;
+            res.list[i-1]['quantity']=1;
+            
+        }//使序号从1开始
+        this.setState({
+            dataSource:res.list,
+            pageChangeFlag:0,
+            searchContent:''
+        });
+      }
+          
       });
     
     }
@@ -133,17 +206,21 @@ class ProductInStorage extends Component{
            materialName:materialName,
            materialType:3
         }
-
      })
      .then((data)=>{
-        //console.log(data);
         const res =data.data.data;
-        for(var i=1;i<=res.list.length;i++){
-            res.list[i-1]['index']=(res.pages-1)*10+i;
-        }
-        this.setState({
-            dataSource:res.list
-        });
+       if(res&&res.list){
+            this.pagination.total=res.total?res.total:0;
+            this.pagination.current=res.pageNum;
+            for(var i=1;i<=res.list.length;i++){
+                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['quantity']=1;
+            }
+            this.setState({
+                dataSource:res.list,
+                pageChangeFlag:1,
+            });
+       }
      })
      .catch(()=>{
          message.info('搜索失败，请联系管理员！');
@@ -151,12 +228,11 @@ class ProductInStorage extends Component{
      
     }
     render(){
-       this.Authorization=localStorage.getItem('Authorization');
        this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入产品名称'
+                    <SearchCell name='请输入成品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.fetch}
@@ -166,14 +242,14 @@ class ProductInStorage extends Component{
                 </span>
                 <div className='clear'  ></div>
                 <Table
-                rowKey={record=>record.repoInRecord.id}
+                rowKey={record=>record.id}
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 pagination={this.pagination}
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:600}}
+                scroll={{y:400}}
                 ></Table>
             </div>
         );

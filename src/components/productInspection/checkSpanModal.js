@@ -26,7 +26,7 @@ class CheckSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.props.data.topData.serialNumber}</td>
+                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
@@ -37,7 +37,14 @@ class CheckSpanModal extends React.Component {
                     <div>
                            样品名称：<span>{this.props.data.topData.materialName+'样品'}</span>
                     </div>
-                    <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                    {
+                        this.props.clearButton?(
+                            ''
+                        ):(
+                            <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
+                        )
+                    }
+                    {/*<Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>*/}
                 </div>
                 <div
                     className="productSpanTableModal"
@@ -61,7 +68,13 @@ class CheckSpanModal extends React.Component {
                                     <div key={index}>
                                         <div>{item.index}</div>
                                         <div>{item.testItemName}</div>
-                                        <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                        {
+                                            this.props.unClickCheck?(
+                                                <div>{item.testResult}</div>
+                                            ):(
+                                                <div className="productTdInput"><Input name={index} value={item.testResult} placeholder="请输入"  onChange={this.props.inputSave}/></div>
+                                            )
+                                        }
                                         <div>{item.rawTestItemStandard}</div>
                                         <div>{item.unit}</div>
                                         <div>
@@ -98,6 +111,18 @@ class CheckSpanModal extends React.Component {
     handleJudgePass = (index,flag) => {
         var checkData = this.props.data;
         checkData.testDTOS[index].isValid = flag;
+        if(flag === 0 ){
+            checkData.isQualified = 0;
+        }else{
+            for(var i=0; i<checkData.testDTOS.length; i++){
+                if(checkData.testDTOS[i].isValid===0){
+                    checkData.isQualified = 0;
+                    break;
+                }else{
+                    checkData.isQualified = 1;
+                }
+            }
+        }
         this.props.modifyDetailData(checkData);
     };
     /**实现清空功能 */

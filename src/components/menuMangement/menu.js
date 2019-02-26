@@ -48,14 +48,9 @@ class Menu extends React.Component{
         showTotal(total){
             return `共${total}条记录`
         },
-        showSizeChanger: true,
-        // onShowSizeChange(current, pageSize) {
-        // },
-        onChange:this.changePage,
     }
   }
-//   changePage = (page,pageSize) =>{
-//   }
+
   /**获取查询时菜单名称的实时变化 */
   searchContentChange1(e){
     const value = e.target.value;
@@ -238,7 +233,7 @@ class Menu extends React.Component{
           },
           params:{
               size: this.pagination.pageSize,
-              page: this.pagination.current,
+            //   page: this.pagination.current,
               menuName:ope_name
           },
           type:'json',

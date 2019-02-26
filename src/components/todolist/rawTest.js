@@ -10,7 +10,7 @@ class RawTest extends React.Component{
             case 5:  url = `${this.props.url.productTestRecord.getByBatchNUmberId}?batchNumberId=${dataId}`; break;
             case 9:  url = `${this.props.url.rawTestReport.rawTestReport}/detailsByBatchNumberId?id=${dataId}`; break;
             case 10: url =  `${this.props.url.intermediateProduct}/detailsByBatchNumberId/${dataId}`; break;
-            case 13: url = `${this.props.url.rawStandard.getStandard}/${dataId}`
+            case 13: url = `${this.props.url.rawStandard.getStandard}/${dataId}`; break;
             default: url = ''; break;
         }
         this.getData(url);
@@ -40,7 +40,7 @@ class RawTest extends React.Component{
             if(res){
                 IsQualified = res.testReportRecord?res.testReportRecord.isQualified:0;
                 topData={
-                    batchNumber: res.serialNumber?res.serialNumber:'',
+                    batchNumber: res.commonBatchNumber.batchNumber?res.commonBatchNumber.batchNumber:'',
                     materialName: res.materialName?res.materialName:'',
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };

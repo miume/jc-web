@@ -92,6 +92,7 @@ class DeliveryFactory extends React.Component{
       this.cancel=this.cancel.bind(this);
       this.deleteByIds=this.deleteByIds.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
+      this.deleteCancel=this.deleteCancel.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -173,7 +174,9 @@ class DeliveryFactory extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
+        //console.log(res);
         this.pagination.total=res.total?res.total:0;
+        this.pagination.current=res.pageNum;
      if(res&&res.list){
       for(var i = 1; i<=res.list.length; i++){
         res.list[i-1]['index']=res.prePage*10+i;
@@ -223,7 +226,18 @@ class DeliveryFactory extends React.Component{
       .then((data)=>{
        // console.log(data);
         message.info(data.data.message);
-        this.fetch();//调用getAllByPage,渲染删除后的表格
+        if(data.data.code===0){
+          if(this.pagination.total%10===1){
+             this.pagination.current=this.pagination.current-1;
+          }
+          this.fetch({
+            size:this.pagination.pageSize,
+            page:this.pagination.current,
+            orderField:'id',
+            orderType:'desc'
+          });//调用getAllByPage,渲染删除后的表格
+        }
+        
         this.setState({
           selectedRowKeys:[]
         });
@@ -232,12 +246,11 @@ class DeliveryFactory extends React.Component{
        // console.log(error);
         message.info('删除失败，请联系管理员！')
       });//处理异常
-     
    }
-   cancel(){
-      this.setState({
-        selectedRowKeys:[]
-      });
+   deleteCancel(){//批量删除的取消，要将那个checkbox置空
+    this.setState({
+      selectedRowKeys:[]
+    });
   }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
@@ -307,6 +320,7 @@ class DeliveryFactory extends React.Component{
         });
       }
     
+      /**编辑的取消*/
       cancel = () => {
         this.setState({ editingKey: '' });
       };
@@ -331,7 +345,7 @@ class DeliveryFactory extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                name:name
              },
              type:'json'
@@ -339,6 +353,7 @@ class DeliveryFactory extends React.Component{
            .then((data)=>{
              const res=data.data.data;
              this.pagination.total=res.total?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
@@ -350,7 +365,6 @@ class DeliveryFactory extends React.Component{
              }
            })
            .catch(()=>{
-
             message.info('查询失败，请联系管理员！')
            });
       }
@@ -358,8 +372,10 @@ class DeliveryFactory extends React.Component{
    render(){
      this.url=JSON.parse(localStorage.getItem('url'));
      const current=JSON.parse(localStorage.getItem('current'));
+     const {selectedRowKeys}=this.state; 
      const rowSelection = {//checkbox
           onChange:this.onSelectChange,
+          selectedRowKeys,
           onSelect() {
               // console.log(record, selected, selectedRows);
             },
@@ -393,7 +409,7 @@ class DeliveryFactory extends React.Component{
                <BlockQuote name='送样工厂' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
                <DeliveryFactoryAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入送样工厂' 
                       searchEvent={this.searchEvent}

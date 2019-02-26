@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {message,Divider,Popover} from 'antd';
+import {message,Divider} from 'antd';
 import axios from 'axios';
 import SearchCell from '../../BlockQuote/search';
 import '../block.css';
@@ -115,6 +115,9 @@ class Manufacturer extends Component{
         }).then(data=>{
              message.info(data.data.message);
              this.fetch();
+             this.setState({
+                 flag1:false
+             });
         }).catch(()=>{
             message.info('新增失败，请联系管理员！');
         });

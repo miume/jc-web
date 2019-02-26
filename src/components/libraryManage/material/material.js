@@ -34,7 +34,7 @@ class Material extends React.Component{
     /**获取所有数据 */
   getAllData(){
     axios({
-      url:`${this.url.libraryManage.getAllPage}`,
+      url:`${this.url.libraryManage.stock}`,
       method:'get',
       headers:{
         'Authorization': this.url.Authorization
@@ -42,11 +42,12 @@ class Material extends React.Component{
         params: {materialClass:1},
     }).then((data)=>{
       const res = data.data.data;
+    //   console.log(res)
       if(res){
         for(var i = 1; i<=res.length; i++){
             res[i-1]['index']=i;
             res[i-1]["realNum"]=forkData[i-1]
-            res[i-1]["realWeig"]=forkData[i-1]
+            // res[i-1]["realWeig"]= -1
         }
           this.setState({
             dataSource:res,
@@ -56,37 +57,37 @@ class Material extends React.Component{
     })
   }
 
-  getAllData1(){
-    axios({
-      url:`${this.url.libraryManage.getAllPage}`,
-      method:'get',
-      headers:{
-        'Authorization': this.url.Authorization
-        },
-        params: {materialClass:1},
-    }).then((data)=>{
-      const res = data.data.data;
-      if(res){
-        for(var i = 1; i<=res.length; i++){
-            res[i-1]['index']=i;
-            res[i-1]["realNum"]=forkData[i-1]
-            res[i-1]["realWeig"]=forkData[i-1]
-        }
-          this.setState({
-            dataSource:res
-          })
-      }
-    })
-  }
+//   getAllData1(){
+//     axios({
+//       url:`${this.url.libraryManage.getAllPage}`,
+//       method:'get',
+//       headers:{
+//         'Authorization': this.url.Authorization
+//         },
+//         params: {materialClass:1},
+//     }).then((data)=>{
+//       const res = data.data.data;
+//       if(res){
+//         for(var i = 1; i<=res.length; i++){
+//             res[i-1]['index']=i;
+//             res[i-1]["realNum"]=forkData[i-1]
+//             res[i-1]["realWeig"]=forkData[i-1]
+//         }
+//           this.setState({
+//             dataSource:res
+//           })
+//       }
+//     })
+//   }
 
     searchContentChange(e){
-        const  value=e.target.value;//此处显示的是我搜索框填的内容
-          this.setState({searchContent:value});
+        const value=e.target.value;//此处显示的是我搜索框填的内容
+        this.setState({searchContent:value});
      }
     searchEvent(){
         const name=this.state.searchContent;
         axios({
-            url:`${this.url.libraryManage.getAllPages}`,
+            url:`${this.url.libraryManage.stock}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
@@ -98,11 +99,12 @@ class Material extends React.Component{
             type:"json",
         }).then((data)=>{
             const res = data.data.data.list;
+            // console.log(res)
             if(res){
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
                     res[i-1]["realNum"]=forkData[i-1]
-                    res[i-1]["realWeig"]=forkData[i-1]
+                    // res[i-1]["realWeig"]=-1
                 }
                 this.setState({
                     dataSource:res,
@@ -119,21 +121,23 @@ class Material extends React.Component{
         var index = 0;
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
+            console.log(current)
             if (current !== undefined) {
                 axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},
                     {
                         params: {
                             'id': current.id,
-                            'quantity': current.realNum,
-                            'weight': current.realWeig,
+                            // 'materialName': current.materialName,
+                            // 'weight': current.realWeig,
                             'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
                     let newDataSource = [...$this.state.dataSource]
-                    newDataSource[index]['quantity'] = res.data.data.realQuantity;
+                    // newDataSource[index]['quantity'] = res.data.data.realQuantity;
                     newDataSource[index]['weight'] = res.data.data.realWeight;
+                    newDataSource[index]['realWeig'] = res.data.data.realWeight;
                     $this.setState({dataSource: newDataSource})
                     var row = "Mrow"+index
                     var Frow = "Mrow"+(index-1)
@@ -151,7 +155,7 @@ class Material extends React.Component{
                         }
                     }
                     setTimeout(()=>{
-                        parent.scrollTop = 37.8*index+54.8;
+                        parent.scrollTop = 37.8*index;
                     },500)
                     index++;
                 });
@@ -174,28 +178,29 @@ class Material extends React.Component{
         this.ob = JSON.parse(localStorage.getItem('menuList'))
         this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem("remote")
+        this.server = localStorage.getItem("remote");
         return (
             <div style={{padding:'0 15px'}}>
                 <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入搜索内容'
+                    <SearchCell name='请输入货品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
+                        type={this.props.type}
                     >
                     </SearchCell>
                 </span>
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
-                <div className="LM-tableHead" style={{width:"9%"}}>序号</div>
-                <div className="LM-tableHead">编号</div>
-                <div className="LM-tableHead">货品名称</div>
-                <div className="LM-tableHead" style={{width:"12.95%"}}>货品型号</div>
-                <div className="LM-blueTableHead LM-tableHead">记录数量</div>
-                <div className="LM-blueTableHead LM-tableHead">实际数量</div>
-                <div className="LM-blueTableHead LM-tableHead">记录重量</div>
-                <div className="LM-blueTableHead LM-tableHead">实际重量</div>
+                <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>批次号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>货品名称</div>
+                <div className="LM-tableHead" style={{width:"17.95%"}}>货品型号</div>
+                {/* <div className="LM-blueTableHead LM-tableHead">记录数量</div>
+                <div className="LM-blueTableHead LM-tableHead">实际数量</div> */}
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>记录重量</div>
+                <div className="LM-blueTableHead LM-tableHead" style={{width:"18%"}}>实际重量</div>
                 </div>
                 <div className="Mparent" id="Mparent">
                     <div className="Mone Mcol">
@@ -210,9 +215,16 @@ class Material extends React.Component{
                     <div className="Mtwo Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"Mborder-down Mrow"+index} key={index}>
+                        // var string = m.serialNumber.split('-')[0]+'...'
+                        // if(m.serialNumber.length>13){
+                        //     string = m.serialNumber.substring(0,13)+'...'
+                        // }else{
+                        //     string = m.serialNumber
+                        // }
+                        return <div title={m.serialNumber} className={"Mborder-down Mrow"+index} key={index}>
+                                    {/* {string} */}
                                     {m.serialNumber}
-                                </div>    
+                                </div>
                     })
                 }
                     </div>
@@ -234,10 +246,10 @@ class Material extends React.Component{
                     })
                 }
                     </div>
-                    <div className="Mfive Mcol">
+                    {/* <div className="Mfive Mcol"> */}
 
-                            <div className="Mhead-shadow">
-                                {/* <div className="fa fa-balance-scale"></div> */}
+                            {/* <div className="Mhead-shadow">
+                      
                             </div>
 
 
@@ -251,38 +263,39 @@ class Material extends React.Component{
                             {m.quantity}  </div>  
                         }
                     })
-                }
-                    </div>
-                    <div className="Msix Mcol">
-                {
+                } */}
+                    {/* </div> */}
+                    {/* <div className="Msix Mcol"> */}
+                {/* {
                     this.state.dataSource.map((m,index)=>{
                         return <div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.realNum}
                                 </div>    
                     })
-                }
-                    </div>
+                } */}
+                    {/* </div> */}
                     <div className="Mseven Mcol">
                         <div className='white-space space-left'></div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        if(m.weight !== m.realWeig){
+                        if(m.weight !== m.realWeight){
                             return <div className={"Mborder-down Mrow"+index} key={index} style={{color:"red"}}>
                             {m.weight}
                         </div>
                         }else{ return <div className={"Mborder-down Mrow"+index} key={index}>
                         {m.weight}
                     </div>}
-                       
                     })
                 }
                     </div>
                     <div className="Meight Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"Mborder-down Mrow"+index} key={index}>
-                                    {m.realWeig}
-                                </div>    
+                        return m.realWeight>0?<div className={"Mborder-down Mrow"+index} key={index}>
+                                    {m.realWeight}
+                                </div>:<div style={{color:'white'}} className={"Mborder-down Mrow"+index} key={index}>
+                                    {m.realWeight}
+                                </div>
                     })
                 }
                     </div>

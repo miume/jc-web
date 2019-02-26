@@ -94,6 +94,7 @@ class ProductLine extends React.Component{
       this.searchContentChange=this.searchContentChange.bind(this);
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
+      this.deleteCancel=this.deleteCancel.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -186,8 +187,8 @@ class ProductLine extends React.Component{
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res?res.total:0;
+        this.pagination.current=res.pageNum;
         if(res&&res.list){
-          
           for(let i=1;i<=res.list.length;i++){
               res.list[i-1]['index']=res.prePage*10+i;
          }
@@ -260,7 +261,7 @@ class ProductLine extends React.Component{
         });//处理异常
        
      }
-    cancel(){
+    deleteCancel(){
       this.setState({
         selectedRowKeys:[]
       });
@@ -331,7 +332,7 @@ class ProductLine extends React.Component{
         });
       }
     
-      cancel = () => {
+      cancel(){
         this.setState({ editingKey: '' });
       };
       /**---------------------- */
@@ -351,14 +352,16 @@ class ProductLine extends React.Component{
              },
              params:{
                size:this.pagination.pageSize,
-               page:this.pagination.current,
+               //page:this.pagination.current,
                productLineName:productLineName
              },
              type:'json'
            })
            .then((data)=>{
              const res=data.data.data;
+             //console.log(res);
              this.pagination.totlal=res?res.total:0;
+             this.pagination.current=res.pageNum;
              if(res&&res.list){
               
               for(let i=1;i<=res.list.length;i++){
@@ -379,8 +382,10 @@ class ProductLine extends React.Component{
      /** 通过localStorage可查到外网*/
         this.url=JSON.parse(localStorage.getItem('url'));
         const  current=JSON.parse(localStorage.getItem('current'));
+        const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
+            selectedRowKeys,
             onSelect() {
               // console.log(record, selected, selectedRows);
             },
@@ -417,7 +422,7 @@ class ProductLine extends React.Component{
                <BlockQuote name='产品线' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
                <ProductLineAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                       <SearchCell name='请输入产品线' 
                       searchEvent={this.searchEvent}
@@ -432,7 +437,7 @@ class ProductLine extends React.Component{
                     components={components} 
                     pagination={this.pagination} 
                     onChange={this.handleTableChange} 
-                    size="small" bordered  scroll={{ y: 300 }}/>
+                    size="small" bordered  scroll={{ y: 400 }}/>
                 </div>
            </div>
        );

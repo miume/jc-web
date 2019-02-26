@@ -174,7 +174,7 @@ class Role extends React.Component {
                 );
               }
           }]
-    }
+        }
     /**重置 */
     reset(){
         this.pagination.current = 1;
@@ -184,6 +184,7 @@ class Role extends React.Component {
     handleTableChange = (pagination) => {
       this.pagination = pagination;
       const {pageChangeFlag} = this.state;
+      /**区分是否是 搜索分页内容 */
       if(pageChangeFlag){
         this.searchEvent({
           size: pagination.pageSize,

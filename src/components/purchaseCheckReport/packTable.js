@@ -79,6 +79,7 @@ class PackTable extends React.Component {
             return (
                 <span>
                     <DetailSpan
+                        unGenerateDate={this.props.unGenerateDate}
                         url={this.props.url}
                         batchNumberId={record.batchNumberId}
                         modifySelectedRowKeysData={this.props.modifySelectedRowKeysData}
@@ -105,6 +106,7 @@ class PackTable extends React.Component {
                 columns={columns}
                 rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{ y: 400 }}

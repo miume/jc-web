@@ -12,7 +12,11 @@ class ReleaseSpan extends React.Component {
             visible: false,
             subVisible: false,
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -73,7 +77,7 @@ class ReleaseSpan extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-            this.props.fetch();
+            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('发布失败，请联系管理员！');
@@ -85,9 +89,9 @@ class ReleaseSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        // this.setState({
+        //     visible: true,
+        // });
     }
     getDetailData = () =>{
         axios({
@@ -121,14 +125,14 @@ class ReleaseSpan extends React.Component {
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
-                            rawTestItemStandard:e.standardValue,
+                            rawTestItemStandard:e.standardValue?e.standardValue:'无',
                             unit:e.testItem.unit,
                             isValid: e.testItemResultRecord.isValid
                         })
                     }
                 }
                 testData = {
-                    tester: res.testReportRecord.judger?res.testReportRecord.judger:'无',
+                    tester: res.tester?res.tester:'无',
                     testTime: res.testReportRecord.judgeDate?res.testReportRecord.judgeDate:'无',
                 };
                 // 择优数据
@@ -162,6 +166,7 @@ class ReleaseSpan extends React.Component {
                                 optional: optional,
                                 isQualified: isQualified,
                             },
+                            visible: true,
                         });
                     })
                 }else{
@@ -177,6 +182,7 @@ class ReleaseSpan extends React.Component {
                             optional: optional,
                             isQualified: isQualified,
                         },
+                        visible: true,
                     })
                 }
             }
