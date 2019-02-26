@@ -21,7 +21,6 @@ class DynamicFieldSet extends React.Component{
         if(keys.length === 1){
             return;
         }
-
         form.setFieldsValue({
             keys:keys.filter(key => key!==k),
         })
