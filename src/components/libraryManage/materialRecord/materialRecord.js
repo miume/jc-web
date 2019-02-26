@@ -95,7 +95,7 @@ class MaterialRecord extends React.Component{
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
                 <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"12.8%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"12.8%"}}>批次号</div>
                 <div className="LM-tableHead" style={{width:"12.8%"}}>货品名称</div>
                 <div className="LM-tableHead" style={{width:"12.8%"}}>货品型号</div>
                 <div className="LM-tableHead" style={{width:"12.8%"}}>盘库日期</div>
@@ -118,12 +118,12 @@ class MaterialRecord extends React.Component{
                     <div className="MRtwo">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        var string = null
-                        if(m.serialNumber.length>13){
-                            string = m.serialNumber.substring(0,13)
-                        }else{
-                            string = m.serialNumber
-                        }
+                        var string = m.serialNumber.split('-')[0]+'...'
+                        // if(m.serialNumber.length>13){
+                        //     string = m.serialNumber.substring(0,13)
+                        // }else{
+                        //     string = m.serialNumber
+                        // }
                         return <div title={m.serialNumber} style={{textDecoration:'underline'}} className="MRborder-down" key={index}>
                                     {string}
                                 </div>    

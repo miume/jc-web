@@ -119,21 +119,23 @@ class Material extends React.Component{
         var index = 0;
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
+            // console.log(current)
             if (current !== undefined) {
-                axios.post(`${this.url.libraryManage.oneKeyStock}`,
+                axios.get(`${this.url.libraryManage.realStock}`,
                     {},
                     {
                         params: {
-                            'id': current.id,
-                            'quantity': current.realNum,
-                            'weight': current.realWeig,
-                            'creator': this.ob.userId
+                            'batch': current.serialNumber,
+                            'materialName': current.materialName,
+                            // 'weight': current.realWeig,
+                            // 'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
                     let newDataSource = [...$this.state.dataSource]
-                    newDataSource[index]['quantity'] = res.data.data.realQuantity;
+                    // newDataSource[index]['quantity'] = res.data.data.realQuantity;
                     newDataSource[index]['weight'] = res.data.data.realWeight;
+                    newDataSource[index]['realWeig'] = res.data.data.realWeight;
                     $this.setState({dataSource: newDataSource})
                     var row = "Mrow"+index
                     var Frow = "Mrow"+(index-1)
@@ -174,7 +176,7 @@ class Material extends React.Component{
         this.ob = JSON.parse(localStorage.getItem('menuList'))
         this.url = JSON.parse(localStorage.getItem('url'));
         this.Authorization = localStorage.getItem('Authorization');
-        this.server = localStorage.getItem("remote")
+        this.server = localStorage.getItem("remote");
         return (
             <div style={{padding:'0 15px'}}>
                 <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>
@@ -190,7 +192,7 @@ class Material extends React.Component{
                 <div className='clear'></div>
                 <div className='LM-tableHeadContainer' style={{verticalAlign:"baseline"}}>
                 <div className="LM-tableHead" style={{width:"10%"}}>序号</div>
-                <div className="LM-tableHead" style={{width:"18%"}}>编号</div>
+                <div className="LM-tableHead" style={{width:"18%"}}>批次号</div>
                 <div className="LM-tableHead" style={{width:"18%"}}>货品名称</div>
                 <div className="LM-tableHead" style={{width:"17.95%"}}>货品型号</div>
                 {/* <div className="LM-blueTableHead LM-tableHead">记录数量</div>
@@ -211,12 +213,12 @@ class Material extends React.Component{
                     <div className="Mtwo Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        var string = null
-                        if(m.serialNumber.length>13){
-                            string = m.serialNumber.substring(0,13)
-                        }else{
-                            string = m.serialNumber
-                        }
+                        var string = m.serialNumber.split('-')[0]+'...'
+                        // if(m.serialNumber.length>13){
+                        //     string = m.serialNumber.substring(0,13)+'...'
+                        // }else{
+                        //     string = m.serialNumber
+                        // }
                         return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"Mborder-down Mrow"+index} key={index}>
                                     {string}
                                 </div>

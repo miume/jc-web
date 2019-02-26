@@ -226,7 +226,8 @@ class Home extends Component {
                 getAllPage:`${server}/jc/common/RepoStock`,
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
-                getAllPages:`${server}/jc/common/RepoStock/pages`
+                getAllPages:`${server}/jc/common/RepoStock/pages`,
+                realStock:`${server}/jc/common/sortout/realStock`
             },
             process:{
                 process:`${server}/jc/common/batchAuditTask/validTasks`
