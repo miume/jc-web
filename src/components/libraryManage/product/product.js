@@ -62,9 +62,9 @@ class Product extends React.Component{
      }
     searchEvent(){
         const name=this.state.searchContent;
-        console.log(name)
+        // console.log(name)
         axios({
-            url:`${this.url.libraryManage.getAllPages}`,
+            url:`${this.url.libraryManage.stock}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
@@ -80,7 +80,7 @@ class Product extends React.Component{
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
                     res[i-1]["realNum"]=forkData[i-1]
-                    res[i-1]["realWeig"]= -1
+                    // res[i-1]["realWeig"]= -1
                 }
                 this.setState({
                     dataSource:res
@@ -99,14 +99,14 @@ class Product extends React.Component{
             let current = this.state.dataSource[index];
             // console.log(current)
             if (current !== undefined) {
-                axios.get(`${this.url.libraryManage.realStock}`,
+                axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},
                     {
                         params: {
-                            'batch': current.serialNumber,
-                            'materialName': current.materialName,
+                            'id': current.id,
+                            // 'materialName': current.materialName,
                             // 'weight': current.realWeig,
-                            // 'creator': this.ob.userId
+                            'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
@@ -255,7 +255,7 @@ class Product extends React.Component{
 
                 {
                     this.state.dataSource.map((m,index)=>{
-                        if(m.weight !== m.realWeig){
+                        if(m.weight !== m.realWeight){
                             return <div className={"border-down row"+index} style={{color:"red"}} key={index}>
                             {m.weight}
                         </div>
@@ -270,10 +270,10 @@ class Product extends React.Component{
 
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return m.realWeig>0?<div className={"border-down row"+index} key={index}>
-                                    {m.realWeig}
+                        return m.realWeight>0?<div className={"border-down row"+index} key={index}>
+                                    {m.realWeight}
                                 </div>:<div style={{color:'white'}} className={"border-down row"+index} key={index}>
-                                    {m.realWeig}
+                                    {m.realWeight}
                                 </div>
                     })
                 }

@@ -42,11 +42,12 @@ class Material extends React.Component{
         params: {materialClass:1},
     }).then((data)=>{
       const res = data.data.data;
+    //   console.log(res)
       if(res){
         for(var i = 1; i<=res.length; i++){
             res[i-1]['index']=i;
             res[i-1]["realNum"]=forkData[i-1]
-            res[i-1]["realWeig"]= -1
+            // res[i-1]["realWeig"]= -1
         }
           this.setState({
             dataSource:res,
@@ -86,7 +87,7 @@ class Material extends React.Component{
     searchEvent(){
         const name=this.state.searchContent;
         axios({
-            url:`${this.url.libraryManage.getAllPages}`,
+            url:`${this.url.libraryManage.stock}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
@@ -98,11 +99,12 @@ class Material extends React.Component{
             type:"json",
         }).then((data)=>{
             const res = data.data.data.list;
+            // console.log(res)
             if(res){
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
                     res[i-1]["realNum"]=forkData[i-1]
-                    res[i-1]["realWeig"]=-1
+                    // res[i-1]["realWeig"]=-1
                 }
                 this.setState({
                     dataSource:res,
@@ -119,16 +121,16 @@ class Material extends React.Component{
         var index = 0;
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
-            // console.log(current)
+            console.log(current)
             if (current !== undefined) {
-                axios.get(`${this.url.libraryManage.realStock}`,
+                axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},
                     {
                         params: {
-                            'batch': current.serialNumber,
-                            'materialName': current.materialName,
+                            'id': current.id,
+                            // 'materialName': current.materialName,
                             // 'weight': current.realWeig,
-                            // 'creator': this.ob.userId
+                            'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
@@ -276,24 +278,23 @@ class Material extends React.Component{
                         <div className='white-space space-left'></div>
                 {
                     this.state.dataSource.map((m,index)=>{
-                        if(m.weight !== m.realWeig){
+                        if(m.weight !== m.realWeight){
                             return <div className={"Mborder-down Mrow"+index} key={index} style={{color:"red"}}>
                             {m.weight}
                         </div>
                         }else{ return <div className={"Mborder-down Mrow"+index} key={index}>
                         {m.weight}
                     </div>}
-                       
                     })
                 }
                     </div>
                     <div className="Meight Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return m.realWeig>0?<div className={"Mborder-down Mrow"+index} key={index}>
-                                    {m.realWeig}
+                        return m.realWeight>0?<div className={"Mborder-down Mrow"+index} key={index}>
+                                    {m.realWeight}
                                 </div>:<div style={{color:'white'}} className={"Mborder-down Mrow"+index} key={index}>
-                                    {m.realWeig}
+                                    {m.realWeight}
                                 </div>
                     })
                 }
