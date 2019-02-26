@@ -36,7 +36,7 @@ class Detail extends React.Component{
                 }
             }
         },{
-            title:'批号',
+            title:'物料编码',
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'25%',
