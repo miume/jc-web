@@ -118,9 +118,9 @@ class ProductRedListEditModal extends React.Component{
                 <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('serialNumberId',{
                     initialValue: this.props.record.repoBaseSerialNumber.id,
-                    rules:[{required:true,message:'编号不能为空'}]
+                    rules:[{required:true,message:'物料编码不能为空'}]
                 })(
-                  <Select onChange={this.serialNumberSelectChange} placeholder='请选择编号'>
+                  <Select onChange={this.serialNumberSelectChange} placeholder='请选择物料编码'>
                   {
                       this.props.serialNumber.map((bat)=>{
                           return(

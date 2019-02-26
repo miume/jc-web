@@ -41,7 +41,7 @@ class ProductRedList extends Component{
           align:'center',
           width:'5%',
         },{
-            title:'编号',
+            title:'物料编码',
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',

@@ -49,7 +49,7 @@ class RowMaterialInventor extends Component{
                      }
             }
         },{
-           title:'编号',
+           title:'物料编码',
            dataIndex:'serialNumber',
            key:'serialNumber',
            width:'20%',

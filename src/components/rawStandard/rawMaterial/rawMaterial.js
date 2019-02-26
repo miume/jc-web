@@ -61,6 +61,9 @@ class RawMaterial extends Component{
           }
        });
      }
+     getAllRawMaterial(){
+         
+     }
 
     //监听原材料那个块块是否被选中
     onBlockChange(e){

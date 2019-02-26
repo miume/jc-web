@@ -64,9 +64,9 @@ const FormItem=Form.Item;
                 <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('serialNumberId',{
                     
-                    rules:[{required:true,message:'请选择编号'}]
+                    rules:[{required:true,message:'请选择物料编码'}]
                 })( 
-                    <Select   onChange={this.serialNumberSelectChange} placeholder='请选择编号'>
+                    <Select   onChange={this.serialNumberSelectChange} placeholder='请选择物料编码'>
                     {
                         this.props.serialNumber.map((bat)=>{
                             return(
