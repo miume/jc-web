@@ -150,7 +150,7 @@ class Add extends React.Component{
                 testItemIds:this.itemsToIds(items)
             })
         }
-        console.log(data)
+        // console.log(data)
         this.setState({
             visible:flag?false:true,
             data:data,
@@ -352,7 +352,7 @@ class Add extends React.Component{
     /**新增一条数据 */
     addData() {
         const {count,data,maxCount} = this.state;
-        console.log(data)
+        // console.log(data)
         // console.log(`maxCount=${this.state.maxCount},count=${this.state.count}`)
         /**点击新增 前面已知数据全部变成不可编辑 */
         var flag = true;  //表示能否新增一行数据
@@ -389,7 +389,7 @@ class Add extends React.Component{
                     testMaterialName:'',
                 }
             })
-            console.log(data)
+            // console.log(data)
             this.setState({
                 data: data,
                 count: count+1,
@@ -422,7 +422,7 @@ class Add extends React.Component{
         //     e.mode = 2;
         // }
         data[data.length-1].mode=2;
-        console.log(data)
+        // console.log(data)
         this.setState({
             count:count-1,
             data:data,

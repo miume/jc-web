@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Input,Popover,Switch,Button} from 'antd';
+import {Input,Popover,Switch,Button,Select} from 'antd';
+const Option = Select.Option;
 class Block extends Component{
   render(){
       /**判断是否存在子型号 */
@@ -27,8 +28,11 @@ class Block extends Component{
                     </div>
                 } 
                     placement='bottomRight' visible={this.props.visible} 
-                >
-                     <Input className='block-input' placeholder={`请输入${this.props.name}名称`} addonAfter={<i className='fa fa-check block-input-i' onClick={this.props.clickI}  id={`${this.props.id}`} />} />
+                >   <div>
+                    <Select size='large' className='block-input'showArrow={false} placeholder={`请选择${this.props.name}名称`}><Option value='12'>12</Option></Select>
+                    <Button type="default" size='large' icon='check' onClick={this.props.searchEvent} className='block-button'></Button>
+                    </div>
+                     {/* <Input className='block-input' placeholder={`请输入${this.props.name}名称`} addonAfter={<i className='fa fa-check block-input-i' onClick={this.props.clickI}  id={`${this.props.id}`} />} /> */}
                 </Popover>
                 :<div id={`${this.props.id}`}><i className={this.props.flag?'fa fa-plus':'hide'}></i> {this.props.name}</div>
             }

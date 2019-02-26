@@ -24,16 +24,18 @@ class Detail extends React.Component{
         }).then((data)=>{
             const res = data.data.data?data.data.data.details:[];
             var detail = [];
-            for(var i = 0; i < res.length; i++){
-                var e = res[i];
-                detail.push({
-                    index:`${i+1}`,
-                    serialNumber:e.repoBaseSerialNumber.serialNumber,
-                    materialName:e.repoBaseSerialNumber.materialName,
-                    meterialClass:e.repoBaseSerialNumber.materialClass,
-                    quantity:e.repoOutApply.quantity,
-                    weight:e.repoOutApply.weight
-                })
+            if(res){
+                for(var i = 0; i < res.length; i++){
+                    var e = res[i];
+                    detail.push({
+                        index:`${i+1}`,
+                        serialNumber:e.repoBaseSerialNumber.serialNumber,
+                        materialName:e.repoBaseSerialNumber.materialName,
+                        meterialClass:e.repoBaseSerialNumber.materialClass,
+                        quantity:e.repoOutApply.quantity,
+                        weight:e.repoOutApply.weight
+                    })
+                }
             }
             // console.log(detail)
             this.setState({
@@ -51,7 +53,7 @@ class Detail extends React.Component{
     render(){
         return (
             <span>
-                <span className='blue' onClick={this.handleDetial}>详情</span>
+                <span className={this.props.status===2||this.props.status===3?'notClick':'blue'} onClick={this.handleDetial}>详情</span>
                 <Modal visible={this.state.visible} closable={false} maskCloseable={false}
                 width={800} title='出库详情' centered={true}
                 footer={[
