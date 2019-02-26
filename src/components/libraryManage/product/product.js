@@ -35,7 +35,7 @@ class Product extends React.Component{
     /**获取所有父菜单 */
   getAllData(){
     axios({
-      url:`${this.url.libraryManage.getAllPage}`,
+      url:`${this.url.libraryManage.stock}`,
       method:'get',
       headers:{
         'Authorization': this.url.Authorization
@@ -47,7 +47,7 @@ class Product extends React.Component{
         for(var i = 1; i<=res.length; i++){
             res[i-1]['index']=i;
             res[i-1]["realNum"]=forkData[i-1]
-            res[i-1]["realWeig"]=forkData[i-1]
+            res[i-1]["realWeig"]= -1
         }
           this.setState({
             dataSource:res,
@@ -80,7 +80,7 @@ class Product extends React.Component{
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
                     res[i-1]["realNum"]=forkData[i-1]
-                    res[i-1]["realWeig"]=forkData[i-1]
+                    res[i-1]["realWeig"]= -1
                 }
                 this.setState({
                     dataSource:res
@@ -110,7 +110,7 @@ class Product extends React.Component{
                         }
                     }
                 ).then((res) => {
-                    console.log(res)
+                    // console.log(res)
                     let newDataSource = [...$this.state.dataSource]
                     // newDataSource[index]['quantity'] = res.data.data.realQuantity;
                     newDataSource[index]['weight'] = res.data.data.realWeight;
@@ -194,14 +194,14 @@ class Product extends React.Component{
 
                 {
                     this.state.dataSource.map((m,index)=>{
-                        var string = m.serialNumber.split('-')[0]+'...'
+                        // var string = m.serialNumber.split('-')[0]+'...'
                         // if(m.serialNumber.length>13){
                         //     string = m.serialNumber.substring(0,13)
                         // }else{
                         //     string = m.serialNumber
                         // }
                         return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"border-down row"+index} key={index}>
-                                    {string}
+                                    {m.serialNumber}
                                 </div>
                     })
                 }
@@ -270,7 +270,9 @@ class Product extends React.Component{
 
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index} key={index}>
+                        return m.realWeig>0?<div className={"border-down row"+index} key={index}>
+                                    {m.realWeig}
+                                </div>:<div style={{color:'white'}} className={"border-down row"+index} key={index}>
                                     {m.realWeig}
                                 </div>
                     })

@@ -34,7 +34,7 @@ class Material extends React.Component{
     /**获取所有数据 */
   getAllData(){
     axios({
-      url:`${this.url.libraryManage.getAllPage}`,
+      url:`${this.url.libraryManage.stock}`,
       method:'get',
       headers:{
         'Authorization': this.url.Authorization
@@ -46,7 +46,7 @@ class Material extends React.Component{
         for(var i = 1; i<=res.length; i++){
             res[i-1]['index']=i;
             res[i-1]["realNum"]=forkData[i-1]
-            res[i-1]["realWeig"]=forkData[i-1]
+            res[i-1]["realWeig"]= -1
         }
           this.setState({
             dataSource:res,
@@ -56,28 +56,28 @@ class Material extends React.Component{
     })
   }
 
-  getAllData1(){
-    axios({
-      url:`${this.url.libraryManage.getAllPage}`,
-      method:'get',
-      headers:{
-        'Authorization': this.url.Authorization
-        },
-        params: {materialClass:1},
-    }).then((data)=>{
-      const res = data.data.data;
-      if(res){
-        for(var i = 1; i<=res.length; i++){
-            res[i-1]['index']=i;
-            res[i-1]["realNum"]=forkData[i-1]
-            res[i-1]["realWeig"]=forkData[i-1]
-        }
-          this.setState({
-            dataSource:res
-          })
-      }
-    })
-  }
+//   getAllData1(){
+//     axios({
+//       url:`${this.url.libraryManage.getAllPage}`,
+//       method:'get',
+//       headers:{
+//         'Authorization': this.url.Authorization
+//         },
+//         params: {materialClass:1},
+//     }).then((data)=>{
+//       const res = data.data.data;
+//       if(res){
+//         for(var i = 1; i<=res.length; i++){
+//             res[i-1]['index']=i;
+//             res[i-1]["realNum"]=forkData[i-1]
+//             res[i-1]["realWeig"]=forkData[i-1]
+//         }
+//           this.setState({
+//             dataSource:res
+//           })
+//       }
+//     })
+//   }
 
     searchContentChange(e){
         const value=e.target.value;//此处显示的是我搜索框填的内容
@@ -102,7 +102,7 @@ class Material extends React.Component{
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
                     res[i-1]["realNum"]=forkData[i-1]
-                    res[i-1]["realWeig"]=forkData[i-1]
+                    res[i-1]["realWeig"]=-1
                 }
                 this.setState({
                     dataSource:res,
@@ -213,14 +213,15 @@ class Material extends React.Component{
                     <div className="Mtwo Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        var string = m.serialNumber.split('-')[0]+'...'
+                        // var string = m.serialNumber.split('-')[0]+'...'
                         // if(m.serialNumber.length>13){
                         //     string = m.serialNumber.substring(0,13)+'...'
                         // }else{
                         //     string = m.serialNumber
                         // }
                         return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"Mborder-down Mrow"+index} key={index}>
-                                    {string}
+                                    {/* {string} */}
+                                    {m.serialNumber}
                                 </div>
                     })
                 }
@@ -289,9 +290,11 @@ class Material extends React.Component{
                     <div className="Meight Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        return <div className={"Mborder-down Mrow"+index} key={index}>
+                        return m.realWeig>0?<div className={"Mborder-down Mrow"+index} key={index}>
                                     {m.realWeig}
-                                </div>    
+                                </div>:<div style={{color:'white'}} className={"Mborder-down Mrow"+index} key={index}>
+                                    {m.realWeig}
+                                </div>
                     })
                 }
                     </div>
