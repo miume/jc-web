@@ -32,14 +32,14 @@ class RowMaterialStorage extends Component{
             width:'5%'
         },{
            title:'原材料名称',
-           dataIndex:'repoBaseSerialNumber.materialName',
-           key:'repoBaseSerialNumber.materialName',
+           dataIndex:'materialName',
+           key:'materialName',
            align:'center',
            width:'8%',
         },{
             title:'物料编码',
-            dataIndex:'repoBaseSerialNumber.serialNumber',
-            key:'repoBaseSerialNumber.serialNumber',
+            dataIndex:'itemCode',
+            key:'itemCode',
             align:'center',
             width:'11%',
             render:(text,record)=>{
@@ -64,20 +64,20 @@ class RowMaterialStorage extends Component{
              width:'8%'
          },{
              title:'车间',
-             dataIndex:'workshop',
-             key:'workshop',
+             dataIndex:'workShop',
+             key:'workShop',
              align:'center',
              width:'8%'
          },{
              title:'厂商',
-             dataIndex:'repoBaseSerialNumber.manufacturerName',
-             key:'manufacturerName',
+             dataIndex:'manufacturer',
+             key:'manufacturer',
              align:'center',
              width:'8%'
          },{
             title:'重量',
-            dataIndex:'repoInRecord.weight',
-            key:'repoInRecord.weight',
+            dataIndex:'weight',
+            key:'weight',
             align:'center',
             width:'6%'
          },{
@@ -88,8 +88,8 @@ class RowMaterialStorage extends Component{
            width:'6%'
         },{
            title:'入库时间',
-           dataIndex:'repoInRecord.createTime',
-           key:'repoInRecord.createTime',
+           dataIndex:'inTime',
+           key:'inTime',
            align:'center',
            width:'9%',
            render:(text,record)=>{
@@ -103,14 +103,26 @@ class RowMaterialStorage extends Component{
            }
         },{
             title:'操作时间',
-            dataIndex:'operationTime',
-            key:'operationTime',
+            dataIndex:'createTime',
+            key:'createTime',
             align:'center',
-            width:'9%'
+            width:'9%',
+            render:(text)=>{
+               if(text&&text.length>10){
+                    return(
+                        <div title={text} className='text-decoration'>{text.substring(0,10)}</div>
+                    )
+               }
+               else{
+                   return(
+                       <div className='text-decoration'>{text}</div>
+                   )
+               }
+            }
          },{
            title:'入库人',
-           dataIndex:'repoInRecord.createPerson',
-           key:'repoInRecord.createPerson',
+           dataIndex:'operator',
+           key:'operator',
            align:'center',
            width:'7%'
         }];
@@ -166,12 +178,12 @@ class RowMaterialStorage extends Component{
         })
         .then((data)=>{
             const res=data.data.data;
+           // console.log(res);
           if(res&&res.list){
             this.pagination.total=res.total;
             this.pagination.current=res.pageNum;//当前在第几页
             for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
-                res.list[i-1]['quantity']=1;//将数量写死为1
            }
            //console.log(res.list);
            this.setState({
@@ -201,12 +213,12 @@ class RowMaterialStorage extends Component{
       })
       .then((data)=>{
          const res=data.data.data;
+         console.log(res);
        if(res){
         this.pagination.total=res.total;
         this.pagination.current=res.pageNum;
         for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=(res.pages-1)*10+i;
-            res.list[i-1]['quantity']=1;
         }
         this.setState({
             dataSource:res.list
@@ -232,7 +244,7 @@ class RowMaterialStorage extends Component{
                 </span>
                 <div className='clear'  ></div>
                 <Table
-                rowKey={record=>record.index}
+                rowKey={record=>record.id}
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 pagination={this.pagination}

@@ -27,29 +27,29 @@ class ProductInStorage extends Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'5%',
-            align:'center'
+            align:'center',
+            width:'5%'
         },{
-           title:'产品名称',
-           dataIndex:'repoBaseSerialNumber.materialName',
-           key:'repoBaseSerialNumber.materialName',
-           width:'8%',
-           align:'center'
-        },{
-           title:'物料编码',
-           dataIndex:'repoBaseSerialNumber.serialNumber',
-           key:'repoBaseSerialNumber.serialNumber',
-           width:'11%',
+           title:'成品名称',
+           dataIndex:'materialName',
+           key:'materialName',
            align:'center',
-           render:(text,record)=>{
-            if(text.length>13){
-                return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
-            }
-            else{
-                return(<div>{text}</div>)
-            }
-          }
+           width:'8%',
         },{
+            title:'物料编码',
+            dataIndex:'itemCode',
+            key:'itemCode',
+            align:'center',
+            width:'11%',
+            render:(text,record)=>{
+              if(text&&text.length>13){
+                  return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
+              }
+              else{
+                  return(<div>{text}</div>)
+              }
+            }
+         },{
             title:'袋号',
             dataIndex:'bagNumber',
             key:'bagNumber',
@@ -63,62 +63,67 @@ class ProductInStorage extends Component{
              width:'8%'
          },{
              title:'车间',
-             dataIndex:'workshop',
-             key:'workshop',
+             dataIndex:'workShop',
+             key:'workShop',
              align:'center',
              width:'8%'
          },{
              title:'厂商',
-             dataIndex:'repoBaseSerialNumber.manufacturerName',
-             key:'manufacturerName',
+             dataIndex:'manufacturer',
+             key:'manufacturer',
              align:'center',
              width:'8%'
+         },{
+            title:'重量',
+            dataIndex:'weight',
+            key:'weight',
+            align:'center',
+            width:'6%'
          },{
            title:'数量',
            dataIndex:'quantity',
            key:'quantity',
-           width:'6%',
-           align:'center'
-        },{
-           title:'重量',
-           dataIndex:'repoInRecord.weight',
-           key:'repoInRecord.weight',
-           width:'6%',
-           align:'center'
+           align:'center',
+           width:'6%'
         },{
            title:'入库时间',
-           dataIndex:'repoInRecord.createTime',
-           key:'repoInRecord.createTime',
-           width:'9%',
+           dataIndex:'inTime',
+           key:'inTime',
            align:'center',
+           width:'9%',
            render:(text,record)=>{
-            if(text&&text.length>10){
-               return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
-            }
-            else{
-                return(<div>{text}</div>)
-            }
-          }
+              // console.log(text);
+             if(text&&text.length>10){
+                return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
+             }
+             else{
+                 return(<div>{text}</div>)
+             }
+           }
         },{
             title:'操作时间',
-            dataIndex:'repoInRecord.operationTime',
-            key:'repoInRecord.operationTime',
-            width:'9%',
+            dataIndex:'createTime',
+            key:'createTime',
             align:'center',
-            render:(text,record)=>{
-                if(text&&text.length>10){
-                   return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
-                }
-                else{
-                    return(<div>{text}</div>)
-                }
-              }
+            width:'9%',
+            render:(text)=>{
+               if(text&&text.length>10){
+                    return(
+                        <div title={text} className='text-decoration'>{text.substring(0,10)}</div>
+                    )
+               }
+               else{
+                   return(
+                       <div className='text-decoration'>{text}</div>
+                   )
+               }
+            }
          },{
            title:'入库人',
-           dataIndex:'repoInRecord.createPerson',
-           key:'repoInRecord.createPerson',
-           width:'7%',
-           align:'center'
+           dataIndex:'operator',
+           key:'operator',
+           align:'center',
+           width:'7%'
         }];
         this.pagination={
             total:this.state.dataSource.length,
@@ -174,7 +179,7 @@ class ProductInStorage extends Component{
         this.pagination.current=res.pageNum;
         for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=(res.pages-1)*10+i;
-            res.list[i-1]['quantity']=1;
+            
         }//使序号从1开始
         this.setState({
             dataSource:res.list,
@@ -212,7 +217,7 @@ class ProductInStorage extends Component{
         this.pagination.current=res.pageNum;
         for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=(res.pages-1)*10+i;
-            res.list[i-1]['quantity']=res.pageNum;
+            
         }
         this.setState({
             dataSource:res.list,
@@ -240,7 +245,7 @@ class ProductInStorage extends Component{
                 </span>
                 <div className='clear'  ></div>
                 <Table
-                rowKey={record=>record.index}
+                rowKey={record=>record.id}
                 columns={this.columns}
                 dataSource={this.state.dataSource}
                 pagination={this.pagination}
