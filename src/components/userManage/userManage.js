@@ -133,12 +133,12 @@ class User extends React.Component{
         showSizeChanger: true,//是否可以改变 pageSize
         showTotal:(total)=>`共${total}条记录`,//显示共几条记录
         //改变每页条目数
-        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-          //console.log('Current: ', current, '; PageSize: ', pageSize);
-        },
-        onChange(current) {//跳转，页码改变
-          //console.log('Current: ', current);
-        }
+        // onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+        //   //console.log('Current: ', current, '; PageSize: ', pageSize);
+        // },
+        // onChange(current) {//跳转，页码改变
+        //   //console.log('Current: ', current);
+        // }
       };
       this.columns=[{//表头
         title:'序号',
@@ -319,7 +319,11 @@ class User extends React.Component{
         })
         .then((data)=>{
           message.info(data.data.message);
+          //console.log(this.pagination);
           if(data.data.code===0){
+            if(this.pagination.total%10===1){
+               this.pagination.current=this.pagination.current-1;
+            }
             this.fetch({
               size:this.pagination.pageSize,//条目数
               page:this.pagination.current,//当前是第几页
@@ -352,7 +356,9 @@ class User extends React.Component{
           //console.log(data);
           message.info(data.data.message);
           if(data.data.code===0){//即操作成功
-            //console.log(this.pagination);
+            if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页
+                this.pagination.current=this.pagination.current-1;
+            }
               this.fetch({//在其他页删除应该留在当前页
                 size:this.pagination.pageSize,//条目数
                 page:this.pagination.current,//当前是第几页
