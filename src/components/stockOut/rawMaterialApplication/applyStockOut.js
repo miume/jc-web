@@ -2,7 +2,7 @@ import React from 'react';
 import {Button,Modal,Table,Input,message} from 'antd';
 import CancleButton from '../../BlockQuote/cancleButton';
 import Submit from '../../BlockQuote/submit';
-import SaveButton from '../../BlockQuote/saveButton';
+// import SaveButton from '../../BlockQuote/saveButton';
 import './rawAdd.css';
 import axios from 'axios';
 // const data = [];
@@ -255,7 +255,7 @@ class ApplyStockOut extends React.Component{
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key='save' handleSave={this.handleSave} />,
+                        // <SaveButton key='save' handleSave={this.handleSave} />,
                         <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} defaultChecked={false}/>                       
                     ]}
                 >

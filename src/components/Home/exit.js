@@ -141,7 +141,7 @@ class Exit extends Component {
                             return (
                                 <TodoPart key={index} data={e.commonBatchNumber} contents={contents} gotodolist={this.gotodolist} />
                             )
-                        }):null
+                        }):<div className='divAuto'>暂无</div>
                     }
                     </div>
                 </div>

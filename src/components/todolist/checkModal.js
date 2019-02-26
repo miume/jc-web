@@ -1,21 +1,25 @@
 import React from 'react';
-import {Modal,message} from 'antd';
 import RawTest from './rawTest';
-import Procedure from './procedure';
 import RedList from './redlist';
+import {Modal,message} from 'antd';
+import Procedure from './procedure';
+import CheckPurchase from './checkPurchase';
 import AllTester from '../BlockQuote/allTester';
 import NewButton from '../BlockQuote/newButton';
+import StockTable from '../stockOut/detailTable';
+import CheckUnqualified from './checkUnqualified';
 import CancleButton from '../BlockQuote/cancleButton';
 import CheckProductStandard from './checkProductStandard';
-import CheckPurchase from './checkPurchase';
-import CkeckProductInspection from './checkProductInspection';
-import CheckUnqualified from './checkUnqualified';
 import CheckUnqualifiedTrack from './checkUnqualifiedTrack';
+import CkeckProductInspection from './checkProductInspection';
 import axios from 'axios';
 class CheckModal extends React.Component{
     componentDidMount(){
         if(this.props.dataType===11){
             this.judgeUnqualifiedArea();
+        }
+        if(this.props.dataType===4){
+            this.getStockOutDetailData();
         }
     }
     constructor(props){
@@ -33,6 +37,7 @@ class CheckModal extends React.Component{
         this.getReplyData = this.getReplyData.bind(this);
         this.setClassName = this.setClassName.bind(this);
         this.judgeUnqualifiedArea = this.judgeUnqualifiedArea.bind(this);
+        this.getStockOutDetailData = this.getStockOutDetailData.bind(this);
     }
     /**根据dataType判断是那种类型产品送审 */
     judgeType(type){
@@ -40,7 +45,7 @@ class CheckModal extends React.Component{
             case 1:  
             case 2:  
             case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
-            case 4:  return <RawTest url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
+            case 4:  return<StockTable dataSource={this.state.dataSource} flag={1}/>
             case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
             case 7:  return <CheckPurchase url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
@@ -98,6 +103,33 @@ class CheckModal extends React.Component{
             message.info('打开失败，请联系管理员！')
         })
     };
+    getStockOutDetailData(){
+        axios({
+            url:`${this.props.url.stockOut.repoOut}/${this.props.dataId}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            const res = data.data.data?data.data.data.details:[];
+            var detail = [];
+            for(var i = 0; i < res.length; i++){
+                var e = res[i];
+                detail.push({
+                    index:`${i+1}`,
+                    serialNumber:e.repoBaseSerialNumber.serialNumber,
+                    materialName:e.repoBaseSerialNumber.materialName,
+                    meterialClass:e.repoBaseSerialNumber.materialClass,
+                    quantity:e.repoOutApply.quantity,
+                    weight:e.repoOutApply.weight
+                })
+            }
+            console.log(detail)
+            this.setState({
+                dataSource:detail
+            })
+        })
+    }
     /**点击审核 */
     handleCheck(){
         const {flag,dataId} = this.props;

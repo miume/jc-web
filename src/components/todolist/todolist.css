@@ -341,3 +341,12 @@
 .big-div-todo{
     width:1300px !important;
 }
+/**暂无两个字垂直水平居中*/
+.divAuto{
+    margin : 0 auto;
+    text-align: center;
+    font-size : 20px;
+    font-weight: bolder;
+    line-height:400px;
+    height:400px;
+}

@@ -33,7 +33,7 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'20%'
+            width:'6%'
         },{
             title:'物料名称',
             dataIndex:'materialName',
@@ -56,13 +56,13 @@ class RawMaterialApplication extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'20%',
-            render:(text)=>{
-                if(text.length>24)
-                    return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
-                else 
-                    return <span className='text-decoration' title={text}>{text}</span>
-            }
+            width:'34%',
+            // render:(text)=>{
+            //     if(text.length>24)
+            //         return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
+            //     else 
+            //         return <span className='text-decoration' title={text}>{text}</span>
+            // }
         }
         // ,{
         //     title:'数量',
