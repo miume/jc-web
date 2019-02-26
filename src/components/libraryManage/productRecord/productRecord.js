@@ -118,14 +118,14 @@ class MaterialRecord extends React.Component{
                     <div className="MRtwo">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        var string = m.serialNumber.split('-')[0]+'...'
+                        // var string = m.serialNumber.split('-')[0]+'...'
                         // if(m.serialNumber.length>13){
                         //     string = m.serialNumber.substring(0,13)
                         // }else{
                         //     string = m.serialNumber
                         // }
-                        return <div title={m.serialNumber} style={{textDecoration:'underline'}} className="MRborder-down" key={index}>
-                                    {string}
+                        return <div title={m.serialNumber} className="MRborder-down" key={index}>
+                                    {m.serialNumber}
                                 </div>    
                     })
                 }

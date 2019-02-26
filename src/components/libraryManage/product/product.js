@@ -200,7 +200,7 @@ class Product extends React.Component{
                         // }else{
                         //     string = m.serialNumber
                         // }
-                        return <div title={m.serialNumber} style={{textDecoration:'underline'}} className={"border-down row"+index} key={index}>
+                        return <div title={m.serialNumber} className={"border-down row"+index} key={index}>
                                     {m.serialNumber}
                                 </div>
                     })
