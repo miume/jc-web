@@ -6,7 +6,7 @@ import SearchCell from '../BlockQuote/search';
 import DeleteByIds from './deleteByIds';
 import Add from './add';
 import Detail from './detail';
-import Editor from './editor';
+import Editor from './edit';
 import axios from "axios";
 
 // const FormItem = Form.Item;

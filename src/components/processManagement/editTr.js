@@ -14,7 +14,7 @@ class EditTr extends React.Component{
             approvalProcess:[],
             loading : false,
         }
-        this.server = localStorage.getItem("remote")
+        // this.server = localStorage.getItem("remote")
     }
     getAllUser = (params = {})=>{
         this.setState({ loading: true });
