@@ -408,6 +408,10 @@ class Home extends Component {
                 unqualifiedTrack:{
                     pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
                     unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
+                },
+                /*基础编号*/
+                baseSerialNumber:{
+                    getAllSerialNumber:`${server}/jc/common/repoBaseSerialNumber`
                 }
 
         }

@@ -55,14 +55,9 @@ class RowMaterialInventor extends Component{
            width:'20%',
            align:'center',
            render:(text)=>{
-              if(text.length>24){
-                  return(
-                      <div title={text} className='text-decoration'>{text.substring(0,24)}</div>
-                  )
-              }
-              else{
-                 return(<div className='text-decoration'>{text}</div>)
-              }
+            return(
+                <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
+            )
            }
         },{
            title:'重量',

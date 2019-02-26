@@ -467,10 +467,12 @@ class User extends React.Component{
              },
            })
            .then((data)=>{
-             //console.log(data);
+             
              const res=data.data.data;
              this.pagination.total=res?res.total:0;
              if(res&&res.list){
+             // console.log(res&&res.list);
+              this.pagination.current=res.pageNum;
               for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
              }

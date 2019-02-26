@@ -42,12 +42,9 @@ class ProductInStorage extends Component{
             align:'center',
             width:'11%',
             render:(text,record)=>{
-              if(text&&text.length>13){
-                  return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
-              }
-              else{
-                  return(<div>{text}</div>)
-              }
+                return(
+                    <div title={text} className='text-decoration'>{text.split("-")[0]+'...'}</div>
+                )
             }
          },{
             title:'袋号',
@@ -179,6 +176,7 @@ class ProductInStorage extends Component{
         this.pagination.current=res.pageNum;
         for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=(res.pages-1)*10+i;
+            res.list[i-1]['quantity']=1;
             
         }//使序号从1开始
         this.setState({
@@ -208,21 +206,20 @@ class ProductInStorage extends Component{
            materialName:materialName,
            materialType:3
         }
-
      })
      .then((data)=>{
         const res =data.data.data;
        if(res&&res.list){
-        this.pagination.total=res.total?res.total:0;
-        this.pagination.current=res.pageNum;
-        for(var i=1;i<=res.list.length;i++){
-            res.list[i-1]['index']=(res.pages-1)*10+i;
-            
-        }
-        this.setState({
-            dataSource:res.list,
-            pageChangeFlag:1,
-        });
+            this.pagination.total=res.total?res.total:0;
+            this.pagination.current=res.pageNum;
+            for(var i=1;i<=res.list.length;i++){
+                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['quantity']=1;
+            }
+            this.setState({
+                dataSource:res.list,
+                pageChangeFlag:1,
+            });
        }
      })
      .catch(()=>{

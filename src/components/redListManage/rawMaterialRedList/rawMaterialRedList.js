@@ -50,14 +50,11 @@ class RawMaterialRedList extends Component{
             dataIndex:'repoBaseSerialNumber.serialNumber',
             key:'repoBaseSerialNumber.serialNumber',
             align:'center',
-            width:'15%',
+            width:'20%',
             render:(text)=>{
-                if(text.length>13){
-                    return <div title={text} style={{textDecoration:'underline'}}>{text.substring(0,13)}</div>
-                }
-                else{
-                    return text
-                }
+                return(
+                    <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
+                )
             }
         },{
             title:'物料名称',
@@ -80,7 +77,7 @@ class RawMaterialRedList extends Component{
                 }
             },
             align:'center',
-            width:'10%'
+            width:'8%'
         },{
             title:'损失重量',
             dataIndex:'repoRedTable.weightLoss',
@@ -98,7 +95,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'commonBatchNumber.createTime',
             key:'commonBatchNumber.createTime',
             align:'center',
-            width:'13%',
+            width:'10%',
             render:(text)=>{
                 if(text.length>10){//给元素设置title属性会在鼠标悬停时显示
                     return <div title={text}style={{textDecoration:'underline'}} >{text.substring(0,10)}</div>
@@ -135,7 +132,7 @@ class RawMaterialRedList extends Component{
             dataIndex:'operation',
             key:'operation',
             align:'center',
-            //width:'',
+            width:'16%',
             render:(text,record)=>{
                 let editFlag=this.judgeStatus(record.commonBatchNumber.status);
                 //console.log(editFlag);
@@ -177,7 +174,7 @@ class RawMaterialRedList extends Component{
             case '-1':return true   //'未申请'新增时点击了保存没有点送审
             case '0':return  false      //'待审核'
             case '1':return  false     // '审核中'
-            case '2':return   true     //'已通过'
+            case '2':return   false     //'已通过'
             case '3':return  true      //未通过，
             default:return false
         }

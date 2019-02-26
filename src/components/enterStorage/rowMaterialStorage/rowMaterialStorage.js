@@ -43,12 +43,9 @@ class RowMaterialStorage extends Component{
             align:'center',
             width:'11%',
             render:(text,record)=>{
-              if(text&&text.length>13){
-                  return(<div title={text} className='text-decoration'>{text.substring(0,13)}</div>)
-              }
-              else{
-                  return(<div>{text}</div>)
-              }
+                return(
+                    <div title={text} className='text-decoration'>{text.split("-")[0]+'...'}</div>
+                )
             }
          },{
             title:'袋号',
@@ -178,12 +175,13 @@ class RowMaterialStorage extends Component{
         })
         .then((data)=>{
             const res=data.data.data;
-           // console.log(res);
+           console.log(res);
           if(res&&res.list){
             this.pagination.total=res.total;
             this.pagination.current=res.pageNum;//当前在第几页
             for(var i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
+                res.list[i-1]['quantity']=1;
            }
            //console.log(res.list);
            this.setState({
@@ -202,27 +200,29 @@ class RowMaterialStorage extends Component{
     searchEvent(params){
       const materialName=this.state.searchContent;
       const materialType=1;
-    //  console.log(this.pagination);
       axios({
          url:`${this.url.enterStorage.enterStorage}?materialName=${materialName}&materialType=${materialType}`,
          method:'get',
          headers:{
              'Authorization':this.url.Authorization
          },
-         params:params
+         params:{
+             size:this.pagination.pageSize,
+         }
       })
       .then((data)=>{
          const res=data.data.data;
-         console.log(res);
-       if(res){
-        this.pagination.total=res.total;
-        this.pagination.current=res.pageNum;
-        for(var i=1;i<=res.list.length;i++){
-            res.list[i-1]['index']=(res.pages-1)*10+i;
-        }
-        this.setState({
-            dataSource:res.list
-        });
+       if(res&&res.list){
+            this.pagination.total=res.total;
+            this.pagination.current=res.pageNum;
+            for(var i=1;i<=res.list.length;i++){
+                res.list[i-1]['index']=(res.pages-1)*10+i;
+                res.list[i-1]['quantity']=1;
+            }
+            this.setState({
+                dataSource:res.list,
+                pageChangeFlag:1
+            });
        }
       })
       .catch(()=>{
