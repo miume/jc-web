@@ -33,13 +33,13 @@ class ProductInventor extends Component{
            title:'物料名称',
            dataIndex:'materialName',
            key:'materialName',
-           width:'18%',
+           width:'10%',
            align:'center'
         },{
             title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            width:'18%',
+            width:'10%',
             align:'center',
             render:(text,record)=>{
                switch(`${record.materialClass}`){
@@ -52,7 +52,7 @@ class ProductInventor extends Component{
            title:'物料编码',
            dataIndex:'serialNumber',
            key:'serialNumber',
-           width:'20%',
+           width:'35%',
            align:'center',
            render:(text)=>{
             return(
@@ -63,7 +63,7 @@ class ProductInventor extends Component{
            title:'重量',
            dataIndex:'weight',
            key:'weight',
-           width:'18%',
+           width:'10%',
            align:'center'
         }];
         this.pagination={
