@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form,Checkbox,Col,Input} from 'antd';
+import { Form,Checkbox,Col,Select} from 'antd';
 const FormItem = Form.Item;
+const Option=Select.Option;
 class RawMaterialAddModal extends React.Component{
     constructor(props){
         super(props);
@@ -10,6 +11,7 @@ class RawMaterialAddModal extends React.Component{
         // console.log(value);
         this.props.checkboxChange(value);
     }
+  
     getItemsValue = ()=>{ 
         const values= this.props.form.getFieldsValue();
         return values;//用来得到新增框中填写的新值
@@ -20,15 +22,24 @@ class RawMaterialAddModal extends React.Component{
   }
 
     render(){
+        //console.log(this.props.rawData);
         const { form } = this.props;
         const { getFieldDecorator } = form;   
         return(
             <Form horizontal='true' >
                <FormItem wrapperCol={{ span: 24 }} required>
-                  {getFieldDecorator('name',{
-                        rules: [{required: true, message: '原材料名称不能为空'}],
+                  {getFieldDecorator('serialNumberId',{
+                        rules: [{required: true, message: '请选择原材料'}],
                      })( 
-                         <Input placeholder='请输入原材料'/>
+                         <Select placeholder='请选择原材料'>
+                             {
+                                 this.props.rawData.map((data)=>{
+                                     return(
+                                         <Option key={data} value={data.key}>{data.materialName}</Option>
+                                     )
+                                 })
+                             }
+                         </Select>
                         )}
                </FormItem>
               <FormItem wrapperCol={{span:24}} >

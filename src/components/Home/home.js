@@ -409,10 +409,6 @@ class Home extends Component {
                     pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
                     unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
                 },
-                /*基础编号*/
-                baseSerialNumber:{
-                    getAllSerialNumber:`${server}/jc/common/repoBaseSerialNumber`
-                }
 
         }
         localStorage.setItem('status',JSON.stringify(status));

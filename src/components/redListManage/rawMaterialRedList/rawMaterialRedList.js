@@ -348,9 +348,11 @@ class RawMaterialRedList extends Component{
         }).then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            this.setState({
-                serialNumberChildren:res
-            });
+            if(res){
+                this.setState({
+                    serialNumberChildren:res
+                });
+            }
         });
  }
     render(){

@@ -13,7 +13,7 @@ class RawMaterial extends Component{
       componentDidMount(){
           this.fetch();
           this.getAllTestItem();
-          
+          this.getAllRawMaterial();
       }
     //   componentWillMount(){
     //       this.setState=()=>{
@@ -40,7 +40,7 @@ class RawMaterial extends Component{
           this.handleCancel=this.handleCancel.bind(this);
           this.getAllTestItem=this.getAllTestItem.bind(this);
           this.checkboxChange=this.checkboxChange.bind(this);
-     
+          this.getAllRawMaterial=this.getAllRawMaterial.bind(this);
       }
      fetch=()=>{
        axios({
@@ -53,6 +53,7 @@ class RawMaterial extends Component{
        .then((data)=>{
           //console.log(data);
           const res=data.data.data;
+      
           if(res){
             this.setState({
                 data:res,
@@ -62,7 +63,23 @@ class RawMaterial extends Component{
        });
      }
      getAllRawMaterial(){
-         
+         const materialClass=1;
+         const isManufacturer=0;
+        axios({
+            url:`${this.props.url.serialNumber.getRaw}?materialClass=${materialClass}&isManufacturer=${isManufacturer}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+        
+             const res=data.data.data;
+            console.log(res);
+             if(res){
+                this.setState({rawData:res});
+             }
+        });
+
      }
 
     //监听原材料那个块块是否被选中
@@ -81,9 +98,9 @@ class RawMaterial extends Component{
     }
     addEvent(){//新增事件
         const value=this.formRef.getItemsValue();
-        //console.log(value);
-        //console.log(this.state.testItems.length);
-        if(!value['name']||this.state.testItems.length===0){
+        console.log(value);
+        //console.log(this.state.testItems);
+        if(!value['serialNumberId']||this.state.testItems.length===0){
             message.info('信息填写不完整!');
             return
         }
@@ -136,7 +153,7 @@ class RawMaterial extends Component{
            const res=data.data.data;
            if(res){
                 this.setState({
-                    data:res,
+                    data:res
                 });
             }
        })
@@ -153,12 +170,14 @@ class RawMaterial extends Component{
            }
         }).then(data=>{
             const res=data.data.data;
+            //console.log(res);
             if(res){
                 this.setState({items:res});
             }
           }            
         )
       }
+     
       render(){
         //  this.url=JSON.parse(localStorage.getItem('url'));
           return(
