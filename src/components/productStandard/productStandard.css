@@ -137,7 +137,7 @@
     border:1px solid #e4e4e4;
     border-radius:3px ;/*设置4个圆角，且为5像素*/
 }
-.block:hover,.block-add:hover,.block-div:hover{
+.block:hover,.block-div:hover{
     background-color: #0086ff;
     color:white;
     font-weight: bold;
@@ -203,9 +203,22 @@
     }
 }
 .block-input{
-    width:100% !important;
+    width:80% !important;
+    position: relative;
+    top:-2.5px;
+}
+.block-input .ant-select-selection .ant-select-selection--single{
     height:48px !important;
-    border:none !important;
+    line-height:48px !important;
+}
+.ant-select-lg .ant-select-selection--single, 
+.ant-select-selection--single{
+    height:43px !important;
+    border:none;
+}
+.block-button{
+    height: 48px;
+    width:20%;
 }
 .block-input-i{
     color:#0086ff;

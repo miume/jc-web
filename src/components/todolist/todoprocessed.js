@@ -71,7 +71,10 @@ class TodoProcessed extends React.Component{
     render(){
         return (
             <div className={this.props.flag?'historyContianer':'container'} >
-                <div className={this.props.flag?'historySearch':'hide'} ><SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/></div>
+                <div className={this.props.flag?'historySearch':'hide'} >
+                    <SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.fetch} 
+                    searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                </div>
                 <div>
                     {
                         this.props.data?this.props.data.map(e=>{

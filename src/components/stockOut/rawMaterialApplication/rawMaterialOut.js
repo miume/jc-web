@@ -109,7 +109,7 @@ class RawMaterialOut extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <Detail id={record.id} url={this.props.url}></Detail>
+                        <Detail id={record.id} url={this.props.url} status={record.status}></Detail>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='取消'>
                             <span className='blue' id={record.id}>删除</span>
@@ -226,6 +226,9 @@ class RawMaterialOut extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
+            getCheckboxProps: record => ({
+                disabled: record.status === 0||record.status === 1||record.status === 2|| record.status === 3
+              }),
           };
         this.pagination.total = this.props.data.total;
         return (

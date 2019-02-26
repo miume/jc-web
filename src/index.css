@@ -79,7 +79,8 @@ i {
 .ant-btn-primary {
   text-shadow: none !important;
   box-shadow: none !important;
-      font-weight: bolder !important;
+  font-weight: bolder !important;
+  height: 35px !important;
 }
 .ant-btn-primary:nth-last-child(1){
   margin-right: 0 !important;
@@ -125,8 +126,8 @@ button span {
     border: none !important;
     font-weight: bolder !important;
 }
-.ant-btn:not(.ant-btn-sm) {
-    height: 35px !important;
+.ant-btn-lg {
+    height: 48px !important;
 }
 .ant-btn.ant-btn-sm {
     border: none !important;
@@ -228,14 +229,14 @@ button span {
    height: 24px !important;
 }
 
-.ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{
+/* .ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{
   height: 33px !important;
   line-height: 33px !important;
 }
 .ant-select-sm .ant-select-selection__rendered {
   height: 22px !important;
   line-height: 22px !important;
-}
+} */
 .particles-js-canvas-el {
   position: absolute;
   left: 50%;
