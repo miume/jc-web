@@ -56,7 +56,7 @@ class DrSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span title={this.props.data.topData.serialNumber} className="text-decoration">{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
+                            <td><span title={this.props.data.topData.serialNumber} className="text-decoration">{this.props.data.topData.serialNumber.substring(0,15)+'...'}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
@@ -70,7 +70,7 @@ class DrSpanModal extends React.Component {
                 </div>
                 <div>
                     <Table
-                        className="interCursorDefault"
+                        className="interCursorDefault stock-out"
                         rowKey={record => record.index}
                         columns={columns}
                         dataSource={this.props.data.testDTOS}

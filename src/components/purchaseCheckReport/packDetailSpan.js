@@ -15,14 +15,46 @@ import CancleButton from '../BlockQuote/cancleButton';
 //         itemUnit: `g/mL`,
 //     });
 // }
+// const detailData = {
+//     topData:{
+//         serialNumber:'aaaaaaaaaaa',
+//         materialName:'bb',
+//         sampleDeliveringDate:'2019-02-02 22:33:$4'
+//     },
+//     testDTOS:[{
+//         index:1,
+//         testItemName:'22',
+//         testResult:'33',
+//         unit:'%'
+//     },{
+//         index:2,
+//         testItemName:'22',
+//         testResult:'33',
+//         unit:'%'
+//     }],
+//     testData:{
+//         tester:'aaa',
+//         testTime:'aaaa'
+//     },
+//     examine: {       //审核数据
+//         examineStatus: -1,
+//         examineData: []
+//     },
+//     isQualified: 1
+// }
 
 class DetailSpan extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             visible: false,
+            // detailData:detailData
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -94,6 +126,9 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
+        // this.setState({
+        //     visible: true,
+        // });
     }
     /**获取该行的记录详情 */
     getDetailData(){

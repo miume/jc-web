@@ -93,6 +93,7 @@ class UnqualifiedTrackTable extends React.Component {
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{y: 400 }}
