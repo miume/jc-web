@@ -175,7 +175,7 @@ class RowMaterialStorage extends Component{
         })
         .then((data)=>{
             const res=data.data.data;
-           console.log(res);
+          // console.log(res);
           if(res&&res.list){
             this.pagination.total=res.total;
             this.pagination.current=res.pageNum;//当前在第几页

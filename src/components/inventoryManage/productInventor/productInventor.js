@@ -54,11 +54,6 @@ class ProductInventor extends Component{
            key:'serialNumber',
            width:'35%',
            align:'center',
-           render:(text)=>{
-            return(
-                <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
-            )
-           }
         },{
            title:'重量',
            dataIndex:'weight',

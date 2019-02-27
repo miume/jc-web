@@ -22,26 +22,26 @@ class RawMaterialAddModal extends React.Component{
   }
 
     render(){
-        //console.log(this.props.rawData);
+        console.log(this.props.rawData);
+        console.log(this.props.items);
         const { form } = this.props;
         const { getFieldDecorator } = form;   
         return(
             <Form horizontal='true' >
-               <FormItem wrapperCol={{ span: 24 }} required>
-                  {getFieldDecorator('serialNumberId',{
-                        rules: [{required: true, message: '请选择原材料'}],
-                     })( 
-                         <Select placeholder='请选择原材料'>
-                             {
-                                 this.props.rawData.map((data)=>{
-                                     return(
-                                         <Option key={data} value={data.key}>{data.materialName}</Option>
-                                     )
-                                 })
-                             }
-                         </Select>
-                        )}
-               </FormItem>
+                        <FormItem   wrapperCol={{span:24}} required>
+                {getFieldDecorator('serialNumberId',{
+                    
+                    rules:[{required:true,message:'请选择原材料'}]
+                })( 
+                    <Select   placeholder='请选择原材料'>
+                        {
+                            this.props.rawData.map((bat)=>{
+                                
+                            })
+                        }
+                    </Select>
+                )}
+                </FormItem>
               <FormItem wrapperCol={{span:24}} >
                 <div className='rawStandardCheckBox'>
                     <Checkbox.Group style={{ width: "100%" }} onChange={this.checkboxChange}>

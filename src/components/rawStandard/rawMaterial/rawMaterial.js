@@ -72,9 +72,8 @@ class RawMaterial extends Component{
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-        
              const res=data.data.data;
-            console.log(res);
+           // console.log(res);
              if(res){
                 this.setState({rawData:res});
              }
