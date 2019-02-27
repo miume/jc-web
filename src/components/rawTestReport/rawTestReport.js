@@ -32,11 +32,11 @@ class RawTestReport extends React.Component{
             pageNumber:1,
         });
     }
-    componentWillUnmount(){
-        this.setState = () => {
-            return ;
-          }
-    }
+    // componentWillUnmount(){
+    //     this.setState = () => {
+    //         return ;
+    //       }
+    // }
     constructor(props){
         super(props);
         this.state ={

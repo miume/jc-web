@@ -18,6 +18,9 @@ class UnqualifiedTable extends React.Component {
         key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
+        render:(batchNumber)=>{
+            return <span title={batchNumber} className='text-decoration'>{batchNumber.substring(0,15)}</span>
+        }
     },{
         title: '物料类型',
         dataIndex: 'details.materialName',
@@ -124,6 +127,7 @@ class UnqualifiedTable extends React.Component {
         });
         return(
             <Table
+                onChange={this.props.handleTableChange}
                 rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}

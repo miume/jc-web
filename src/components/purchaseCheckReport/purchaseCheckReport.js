@@ -52,6 +52,8 @@ class PurchaseCheckReport extends React.Component {
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-bullhorn" aria-hidden="true"></i> &nbsp;发布</span>} key="3" >
                         <Release
+                            tabFlag={this.state.tabFlag}
+                            modifyTabFlag={this.modifyTabFlag}
                             menuList={menuList}
                             url={this.url}
                             status={status}

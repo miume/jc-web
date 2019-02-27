@@ -245,7 +245,6 @@ class EditSpan extends React.Component {
                     var testData = {};  //检验数据
                     var isQualified = '';
                     var optional = {};  //择优数据
-                    console.log('1111')
                     isQualified =  detail.isQualified?detail.isQualified:0;
                     topData = {
                         serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
@@ -443,7 +442,6 @@ class EditSpan extends React.Component {
         //         }
         //     }
         // }
-        console.log('saveData',saveData)
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
@@ -461,14 +459,13 @@ class EditSpan extends React.Component {
         }).then((data)=>{
             if(status){
                 const dataId = this.props.batchNumberId;
-                console.log(dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
+                // this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -493,7 +490,7 @@ class EditSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
-            this.props.fetch();
+            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')

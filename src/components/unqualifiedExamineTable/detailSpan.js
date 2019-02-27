@@ -174,7 +174,6 @@ class DetailSpan extends React.Component {
                     var testData = {};  //检验数据
                     var isQualified = '';
                     var optional = {};  //择优数据
-                    console.log('1111')
                     isQualified =  detail.isQualified?detail.isQualified:0;
                     topData = {
                         serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
@@ -183,14 +182,10 @@ class DetailSpan extends React.Component {
                         id: detail.unqualifiedDetail[0].id
                     };
                     const testItemResults = detail.unqualifiedDetail[0].testItemResults;
-                    console.log('2222')
-                    console.log(testItemResults)
                     if(testItemResults) {
                         for(var i=0; i<testItemResults.length; i++){
                             var e = testItemResults[i];
-                            console.log('55555')
                             var standard = detail.standard[i].split(',');
-                            console.log('77777')
                             testDTOS.push({
                                 index:`${i+1}`,
                                 id:e.id,
@@ -203,7 +198,6 @@ class DetailSpan extends React.Component {
                             })
                         }
                     }
-                    console.log('3333')
                     testData = {
                         tester: detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无',
                         testTime: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无',
@@ -221,7 +215,6 @@ class DetailSpan extends React.Component {
                             personTime:'无',
                         }
                     };
-                    console.log('4444')
                     const examineStatus = this.props.checkStatus;
                     const batchNumberId = detail.batchNumberId?detail.batchNumberId:'';
                     if((examineStatus===2||examineStatus===3)&&batchNumberId){

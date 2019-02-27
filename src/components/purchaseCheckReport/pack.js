@@ -6,6 +6,19 @@ import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
 import './purchaseCheckReport.css';
 
+// const data = [];
+// for(var i=0;i<20;i++){
+//     data.push({
+//         index:i,
+//         deliveringDate:'2',
+//         deliverName:'3',
+//         manufacturerName:'4',
+//         serialNumber:'5',
+//         testItemString:'6',
+//         exceptionHandle:'7',
+//     })
+// }
+
 
 class Pack extends React.Component {
     rowSelection;
@@ -18,6 +31,7 @@ class Pack extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            // dataSource: data,
             dataSource: [],
             selectedRowKeys: [],    //多选框key
             loading: false,
@@ -39,18 +53,7 @@ class Pack extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
-        // this.generateFetch = this.generateFetch.bind(this);
-        // this.judgeGetAll = this.judgeGetAll.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        // this.changePage = this.changePage.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showSizeChanger: true,
-        //     showTotal(total){
-        //         return `共${total}条记录`
-        //     },
-        //     onChange:this.changePage,
-        // }
     };
     render() {
         const { selectedRowKeys,unGenerateDate } = this.state;
@@ -100,7 +103,7 @@ class Pack extends React.Component {
                                 name='请输入送检人名称'
                                 searchContentChange={this.searchContentChange}
                                 searchEvent={this.searchEvent}
-                                fetch={this.judgeGetAll}
+                                fetch={this.fetch}
                             />
                         </span>
                     </div>
@@ -108,7 +111,7 @@ class Pack extends React.Component {
 
                 <div className='clear' ></div>
                 <PackTable
-                    fetch={this.judgeGetAll}
+                    fetch={this.fetch}
                     unGenerateDate={this.state.unGenerateDate}
                     url={this.props.url}
                     status={this.props.status}

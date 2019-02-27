@@ -4,30 +4,16 @@ import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
 import axios from "axios";
 
-
-const data =[];
-for (let i = 0; i < 20; i++) {
-    data.push({
-        index: i,
-        id:i,
-        batchNumber: `SN/2A2EEA9064E${i}`,
-        materialName: '镍咕锰',
-        manufacturerName: '启东北新',
-        sampleDeliveringDate: '2019年1月10号',
-        createPersonName: '张小刚',
-        createTime: '2018年11月27日',
-        status: 2,
-        isUrgent: 0,
-    });
-}
-
 class UnqualifiedExamine extends React.Component{
     url;
     componentDidMount() {
-        this.fetch();
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
+        });
     }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
             return ;
         }
     }
@@ -37,19 +23,26 @@ class UnqualifiedExamine extends React.Component{
             dataSource: [],
             searchContent:'',
             searchText: '',
+
+            pagination : {
+                showTotal(total) {
+                    return `共${total}条记录`
+                }
+            },
+            pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        this.pagination = {
-            total: this.state.dataSource.length,
-            showTotal(total) {
-                return `共${total}条记录`
-            },
-            showSizeChanger: true,
-        }
+        // this.pagination = {
+        //     total: this.state.dataSource.length,
+        //     showTotal(total) {
+        //         return `共${total}条记录`
+        //     },
+        //     showSizeChanger: true,
+        // }
     }
     render() {
         const current = JSON.parse(localStorage.getItem('current')) ;
@@ -72,8 +65,9 @@ class UnqualifiedExamine extends React.Component{
                         url={this.url}
                         menuList={menuList}
                         data={this.state.dataSource}
-                        pagination={this.pagination}
+                        pagination={this.state.pagination}
                         fetch={this.fetch}
+                        handleTableChange={this.handleTableChange}
                     />
                 </div>
             </div>
@@ -85,15 +79,35 @@ class UnqualifiedExamine extends React.Component{
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
-
-        });
+        this.setState({
+            pagination:pagination
+        })
+        const {pageChangeFlag} = this.state;
+        /**分页查询 */
+        if(pageChangeFlag){
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+                personName:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+            })
+        }
     };
-    fetch = (params = {}) => {
+    fetch = (params,flag) => {
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:'',
+                pagination:pagination
+            })
+        }
         axios({
             url: `${this.url.unqualifiedExamineTable.pages}` ,
             method: 'get',
@@ -103,8 +117,9 @@ class UnqualifiedExamine extends React.Component{
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            this.pagination.total=res?res.total:0;
             if(res&&res.list){
+                const {pagination} = this.state;
+                pagination.total = res.total;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
@@ -117,8 +132,11 @@ class UnqualifiedExamine extends React.Component{
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
+        this.setState({
+            pageChangeFlag:1
+        });
         this.fetch({
-            createPerson:this.state.searchContent,
+            createPerson:this.state.searchContent
         });
     };
     /**获取查询时角色名称的实时变化 */
