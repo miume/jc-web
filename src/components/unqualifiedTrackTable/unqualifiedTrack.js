@@ -3,13 +3,34 @@ import SearchCell from "../BlockQuote/search";
 import BlockQuote from "../BlockQuote/blockquote";
 import UnqualifiedTrackTable from './unqualifiedTrackTable';
 import axios from "axios";
+
+
+
+
+const data = [];
+for(var i=0;i<30;i++){
+    data.push({
+        index:i,
+        commonBatchNumber:{
+            id:i
+        },
+        details:{
+            materialName:'aa',
+            process:{
+                name:'aaa'
+            },
+            createTime:'aa',
+            handle:'aaa'
+        },
+    })
+}
 class UnqualifiedTrack extends React.Component{
     url;
     componentDidMount() {
-        this.fetch({
-            pageSize:10,
-            pageNumber:1,
-        });
+        // this.fetch({
+        //     pageSize:10,
+        //     pageNumber:1,
+        // });
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -19,7 +40,8 @@ class UnqualifiedTrack extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource: [],
+            dataSource: data,
+            // dataSource: [],
             searchContent:'',
             searchText: '',
             pagination : {
@@ -122,10 +144,6 @@ class UnqualifiedTrack extends React.Component{
                 this.setState({
                     dataSource: res.list,
                     pagination:pagination
-                });
-            }else{
-                this.setState({
-                    dataSource: [],
                 });
             }
         });
