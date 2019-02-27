@@ -3,6 +3,27 @@ import SearchCell from "../BlockQuote/search";
 import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
 import axios from "axios";
+//
+// const data = [];
+// for(var i=0;i<30;i++){
+//     data.push({
+//         index:i,
+//         commonBatchNumber:{
+//             batchNumber:'aaaa',
+//             createTime:'aa',
+//             status:1,
+//             isUrgent:0,
+//             id:i
+//         },
+//         details:{
+//             materialName:'aa',
+//             factory:'bb',
+//             date:'aa'
+//         },
+//         createPersonName:'aa'
+//     })
+// }
+
 
 class UnqualifiedExamine extends React.Component{
     url;
@@ -20,6 +41,7 @@ class UnqualifiedExamine extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            // dataSource: data,
             dataSource: [],
             searchContent:'',
             searchText: '',
@@ -36,13 +58,6 @@ class UnqualifiedExamine extends React.Component{
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showTotal(total) {
-        //         return `共${total}条记录`
-        //     },
-        //     showSizeChanger: true,
-        // }
     }
     render() {
         const current = JSON.parse(localStorage.getItem('current')) ;
