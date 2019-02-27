@@ -97,19 +97,17 @@ class RawMaterial extends Component{
     }
     addEvent(){//新增事件
         const value=this.formRef.getItemsValue();
-        console.log(value);
-        //console.log(this.state.testItems);
         if(!value['serialNumberId']||this.state.testItems.length===0){
             message.info('信息填写不完整!');
             return
         }
         axios({
-            url:`${this.props.url.rawStandard.addRaw}?testItemIds=${this.state.testItems.toString()}`,
+            url:`${this.props.url.rawStandard.addRaw}?serialNumberId=${value['serialNumberId']}&testItemIds=${this.state.testItems.toString()}`,
             method:'post',
             headers:{
                 'Authorization':this.props.url.Authorization
             },
-            data:value
+         
         }).then(data=>{
             //console.log(data);
             message.info(data.data.message);
@@ -181,7 +179,7 @@ class RawMaterial extends Component{
         //  this.url=JSON.parse(localStorage.getItem('url'));
           return(
               <div>
-                  <div style={{padding:'15px'}}>
+                  <div style={{paddingTop:'15px'}}>
                     <span className='product-standrad-middle-text'>请选择原材料</span>
                      <span style={{float:'right' }}>
                        <SearchCell name='请输入原材料名称'
@@ -199,7 +197,7 @@ class RawMaterial extends Component{
                            this.state.data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
                        }
-                      <span > <DataPart  flag={1} onBlockChange={this.addClick}   name='新增原材料' name1='原材料'/></span>
+                       <DataPart  flag={1} onBlockChange={this.addClick}   name='新增原材料' name1='原材料'/>
                       <Modal
                             visible={this.state.visible}
                             title="新增"
