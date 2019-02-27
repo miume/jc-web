@@ -22,21 +22,23 @@ class RawMaterialAddModal extends React.Component{
   }
 
     render(){
-        console.log(this.props.rawData);
-        console.log(this.props.items);
         const { form } = this.props;
         const { getFieldDecorator } = form;   
         return(
             <Form horizontal='true' >
-                        <FormItem   wrapperCol={{span:24}} required>
+              <FormItem   wrapperCol={{span:24}} required>
                 {getFieldDecorator('serialNumberId',{
                     
                     rules:[{required:true,message:'请选择原材料'}]
                 })( 
-                    <Select   placeholder='请选择原材料'>
+                    <Select  placeholder='请选择原材料' style={{height:'24px'}}>
                         {
-                            this.props.rawData.map((bat)=>{
-                                
+                            this.props.rawData.map((data)=>{
+                               
+                                // <Option key={Object.keys(data)[0]} value={Object.keys(data)[0]}>{data[Object.keys(data)[0]]}</Option> 
+                                return(
+                                    <Option key={data.id} value={data.id}>{data.manufacturer}</Option>
+                                )                               
                             })
                         }
                     </Select>

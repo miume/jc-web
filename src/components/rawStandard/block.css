@@ -9,7 +9,7 @@
     border-radius:3px ;/*设置4个圆角，且为5像素*/
     color:black;
     height: 50px;
-    width: 160px;
+    /* width: 160px; */
     line-height: 50px;  /*行高 */
     text-align:center;
     border:1px solid rgb(204,204,204);
@@ -107,19 +107,64 @@
     color: #1890ff;
     cursor: pointer;
 }
-@media screen and (min-width: 1300px){
+@media screen and (min-width: 1420px){
     .block-width{
-        width:14%;
+        width:13.57%;
     }
 }
-@media screen and (max-width: 1300px){
+@media screen and (max-width: 1420px){
     .block-width{
-        width:22%;
+        width:16.6%;
     }
 }
-@media screen and (max-width: 1200px){
+ @media screen and (max-width: 1343px){
     .block-width{
-        width:28%;
+        width:16.55%;
+    }
+}
+@media screen and (max-width: 1290px){
+    .block-width{
+        width:16.4%;
+    }
+}
+@media screen and (max-width: 1240px){
+    .block-width{
+        width:16.3%;
+    }
+} 
+@media screen and (max-width: 1210px){
+    .block-width{
+        width:16%;
+    }
+}
+@media screen and (max-width: 1166px){
+    .block-width{
+        width:21%;
+    }
+}
+ @media screen and (max-width: 1128px){
+    .block-width{
+        width:20.9%;
+    }
+}
+@media screen and (max-width: 1104px){
+    .block-width{
+        width:20.75%;
+    }
+}
+@media screen and (max-width: 1070px){
+    .block-width{
+        width:20.5%;
+    }
+}
+@media screen and (max-width: 1015px){
+    .block-width{
+        width:20%;
+    }
+}
+@media screen and (max-width: 930px){
+    .block-width{
+        width:19.3%;
     }
 }
 /**输入框的样式*/
