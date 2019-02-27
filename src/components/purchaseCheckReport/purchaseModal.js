@@ -36,7 +36,7 @@ class PurchaseModal extends React.Component {
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
         return(
-            <div style={{width:1200}}>
+            <div style={{width:1200,paddingLeft:'19px'}}>
                 {
                     this.props.unTrackType?(
                         <div className="unTrackTopModal">
@@ -158,7 +158,7 @@ class PurchaseModal extends React.Component {
                         </div>
                     )
                 }
-                <div style={{paddingTop:'80px'}}>
+                <div style={{paddingTop:'15px'}}>
                     <div id={unqualifiedType?'unqualfiedModalTable':'modalTable'}>
                         <div className="purchaseThead">
                             <div className="theadLeft">
@@ -203,14 +203,14 @@ class PurchaseModal extends React.Component {
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
                                                     <div className="leftBorderRadius" key={item.index}>{item.index}</div>
-                                                    <div key={item.serialNumber}><abbr style={{cursor:'default'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
+                                                    <div key={item.serialNumber}><abbr style={{cursor:'default',textDecoration:'underline'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
                                                 </div>
                                             )
                                         }else{
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
                                                     <div key={item.index}>{item.index}</div>
-                                                    <div key={item.serialNumber}><abbr style={{cursor:'default'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
+                                                    <div key={item.serialNumber}><abbr style={{cursor:'default',textDecoration:'underline'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
                                                 </div>
                                             )
                                         }
