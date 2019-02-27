@@ -75,7 +75,7 @@ class Product extends React.Component{
             },
             type:"json",
         }).then((data)=>{
-            const res = data.data.data.list;
+            const res = data.data.data;
             if(res){
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
