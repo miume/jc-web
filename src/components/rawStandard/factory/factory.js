@@ -183,11 +183,8 @@ class Manufacturer extends Component{
                     <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
-                   <span>
                     
                        <DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
-                      
-                   </span>
               </div>
               
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
