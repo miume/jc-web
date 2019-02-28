@@ -481,7 +481,7 @@ class Edit extends React.Component{
     };
 
     onChange = (checkedValues) =>{
-        console.log(checkedValues)
+        // console.log(checkedValues)
         this.setState({
             testItemIds:checkedValues
         })

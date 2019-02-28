@@ -203,12 +203,14 @@ class Edit extends React.Component{
                         )
                         }
                     </Form.Item>
+                    <div id='edit'>
                       <Edtr approvalProcess={this.state.approvalProcess} details={this.state.detail} remove={this.remove} form={this.props.form}/>
                     <Form.Item {...formItemLayoutWithOutLabel}>
                       <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
                         <Icon type="plus" /> 添加一行
                       </Button>
                     </Form.Item>
+                    </div>
                 </Form>
           </Modal>
         </span>

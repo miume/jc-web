@@ -68,7 +68,7 @@ class SampleInspection extends React.Component{
             width: '13%',
             render:(text)=>{
                 const items = text.split(' ')
-                return <abbr title={text}>{items[0]}</abbr>
+                return <div className='text-decoration' title={text}>{items[0]}</div>
             }
         },{
             title: '送检人',
@@ -89,11 +89,8 @@ class SampleInspection extends React.Component{
             align:'center',
             width: '11%',
             render:(text)=>{
-                if(text.length>8){
-                    return <abbr title={text}>{text.substr(0,7)}</abbr>
-                }else{
-                    return text
-                }
+                    var value = text.split('-')
+                    return <div className='text-decoration' title={text}>{value[0]}</div>
             }
         },{
             title: '异常备注',
@@ -261,7 +258,7 @@ class SampleInspection extends React.Component{
             type:'json',
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res)
+            // console.log(res)
             if(res&&res.list){
                 this.pagination.total=res.total;
                 this.pagination.current = res.pageNumber
@@ -272,6 +269,11 @@ class SampleInspection extends React.Component{
                     dataSource: res.list,
                     pageChangeFlag:1
                 });
+            }else{
+                this.setState({
+                    dataSource:null,
+                    pageChangeFlag:1
+                })
             }
         })
 
@@ -285,7 +287,7 @@ class SampleInspection extends React.Component{
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
         const pageChangeFlag = this.state.pageChangeFlag;
-        console.log(pageChangeFlag)
+        // console.log(pageChangeFlag)
         if(pageChangeFlag===0){
             this.fetch({
                 pageSize: pagination.pageSize,
