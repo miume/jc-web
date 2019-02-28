@@ -7,6 +7,44 @@ import axios from "axios";
 import SaveButton from "../BlockQuote/saveButton";
 import Submit from "../BlockQuote/submit";
 
+
+const checkData = {
+    headData:[{
+        id: 1,
+        testItem: 'aa',
+        itemUnit: 'bb',
+        rawTestItemStandard: 'cc',
+    }],
+    tbodyData:[{
+        index: 1,
+        id: 1,
+        serialNumber: 'aaaaa',
+        resultRecordList: {
+            0:{
+                isValid:1,
+                testResult:'aa',
+                id:1
+            },
+            1:{
+                isValid:2,
+                testResult:'aa',
+                id:2
+            }
+        },
+        decision: 0
+    }],
+    judgement:'aaa',
+    judger:'aa',
+    topData:{
+        materialName:'aaa',
+        process:{
+            name:'aa',
+        },
+        createTime:'aaa',
+        handle:'aaa'
+    }
+}
+
 class EditSpan extends React.Component {
     constructor(props){
         super(props);
@@ -15,13 +53,14 @@ class EditSpan extends React.Component {
             subVisible: false,
             process:-1,
             urgent:0,
-            checkData: {    //进货数据格式
-                headData: [],
-                tbodyData: [],
-                judgement: '',
-                judger: '',
-                topData: {},
-            },
+            checkData:checkData,
+            // checkData: {    //进货数据格式
+            //     headData: [],
+            //     tbodyData: [],
+            //     judgement: '',
+            //     judger: '',
+            //     topData: {},
+            // },
             // 保存的数据
             saveData : {
                 commonBatchNumber:{
@@ -142,7 +181,7 @@ class EditSpan extends React.Component {
 
     /**点击编辑 */
     handleEdit() {
-        this.getDetailData();
+        // this.getDetailData();
         this.setState({
             visible: true,
         })
