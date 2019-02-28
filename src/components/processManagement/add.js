@@ -209,6 +209,7 @@ class DynamicFieldSet extends React.Component{
                 <AddButton key="submit" handleClick={this.handleSubmit} name='提交' className='fa fa-check' />
               ]}
             >
+            
               <Form horizontal='true'>
                   <Form.Item wrapperCol={{ span: 24 }}>
                       {getFieldDecorator('name',{
@@ -218,12 +219,14 @@ class DynamicFieldSet extends React.Component{
                       )
                       }
                   </Form.Item>
+                  <div id="edit">
                   {formItems}
                   <Form.Item {...formItemLayoutWithOutLabel}>
                     <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
                       <Icon type="plus" /> 添加一行
                     </Button>
                   </Form.Item>
+                  </div>
               </Form>
             </Modal>
             </span>

@@ -27,7 +27,7 @@
     overflow-y:scroll;
     display:block;
 }
-#thd::-webkit-scrollbar{
+#edit::-webkit-scrollbar{
     display: none;
 }
 

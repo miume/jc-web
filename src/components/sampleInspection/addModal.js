@@ -27,7 +27,6 @@ const CollectionCreateForm = Form.create()(
                 // MiddleserialNumber : [],
                 FinalserialNumber:[],
                 materialsItem:[],
-
                 process : [],
                 sampling : [],
                 MiddleFactor : [],
@@ -37,7 +36,6 @@ const CollectionCreateForm = Form.create()(
                 procedureId : null,
                 samplingPoint:null,
                 materialsId : null,
-
                 clicked: false,
                 visible1: 1
             }
@@ -72,7 +70,6 @@ const CollectionCreateForm = Form.create()(
                       })
                 }
             })
-
             axios({
                 url: `${this.url.deliveryFactory.deliveryFactory}`,
                 method : 'get',
@@ -86,7 +83,6 @@ const CollectionCreateForm = Form.create()(
                         factor:res
                       })
                 }
-                
             })
 
             axios({
