@@ -63,11 +63,9 @@ class Edit extends React.Component{
             keys: nextKeys,
           });
       }
-      componentDidMount() {
-        this.getAllUser();
-      };
       handleDetail() {
         this.fetch()
+        this.getAllUser();
         this.setState({
           visible: true
         });

@@ -573,10 +573,10 @@ class AddModal extends React.Component{
                 message.info(data.data.message);
                 this.props.fetch({sortField: 'id',
                 sortType: 'desc',});
+                this.setState({ visible: false });
+                form.resetFields();
             })
         })
-        this.setState({ visible: false });
-        form.resetFields();
     }
 
     render(){
