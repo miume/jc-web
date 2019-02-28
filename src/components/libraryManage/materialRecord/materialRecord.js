@@ -150,6 +150,7 @@ class MaterialRecord extends React.Component{
                     </div>
                     <div className="MRfour">
                 {
+
                     this.state.dataSource?this.state.dataSource.map((m,index)=>{
                         var string = m.repoDiffRecord.createTime?m.repoDiffRecord.createTime.substring(0,10):'无'
                         return <div title={m.repoDiffRecord.createTime} style={{textDecoration:'underline'}} className="MRborder-down" key={index}>
