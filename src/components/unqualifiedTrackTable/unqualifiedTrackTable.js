@@ -49,6 +49,7 @@ class UnqualifiedTrackTable extends React.Component {
         width: '20%',
         render: (text,record) => {
             let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
+            // let operationCheckFlag = true
             return (
                 <span>
                     {operationCheckFlag?(
@@ -93,6 +94,7 @@ class UnqualifiedTrackTable extends React.Component {
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{y: 400 }}

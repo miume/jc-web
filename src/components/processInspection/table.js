@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Tr1 from './tr1';
-import {Button,Select,message} from 'antd';
+import {Button,Select} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 const Option = Select.Option;
 class ProcessTable extends React.Component{
@@ -69,12 +69,14 @@ class ProcessTable extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            const children = res.map(e=>{
-                return <Option key={e.id} value={e.id}>{e.materialName}</Option>
-            })
-            this.setState({
-                allTestMaterial:children
-            })
+            if(res){
+                const children = res.map(e=>{
+                    return <Option key={e.id} value={e.id}>{e.materialName}</Option>
+                })
+                this.setState({
+                    allTestMaterial:children
+                })
+            }
         })
     }
     render(){

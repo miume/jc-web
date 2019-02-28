@@ -130,6 +130,7 @@ class ReleaseTable extends React.Component {
         });
         return(
             <Table
+                onChange={this.props.handleTableChange}
                 rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}

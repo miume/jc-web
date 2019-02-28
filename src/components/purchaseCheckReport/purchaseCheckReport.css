@@ -388,7 +388,10 @@
 }
 
 .unTrackTopModal {
-    padding-bottom: 15px;
+    /*padding-bottom: 80px ;*/
+
+    height: 70px;
+    width: 750px;
 }
 
 .unTrackTopTable{
@@ -398,14 +401,14 @@
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
     border-radius: 3px;
-    width: 60%;
+    width: 100%;
 }
 .unTrackTopThead {
     color: white;
     background: #0079FE;
 }
 .unTrackTopThead tr th {
-    height: 35px;
+    height: 30px;
     /*text-align: center;*/
     padding-left: 5px;
     font-size: 15px;
@@ -422,7 +425,7 @@
     width: 20%;
     /*text-align: center;*/
     border: 1px solid #E9E9E9;
-    height: 35px !important;
+    height: 30px ;
     /*padding-left: 5px;*/
 }
 /*.unTrackTopTbody tr td:first-child{*/
@@ -443,10 +446,31 @@
 .paddingTop td{
     padding-left: 5px;
 }
+.unTrackTopTable .unTrackTr {
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td{
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td div{
+    height: 30px;
+}
 
-.unTrackTr .ant-select-selection__rendered{
+.unTrackTopTable .unTrackTr td div div {
+    height: 29px !important;
+}
+.unTrackTopTable .unTrackTr .ant-select-selection__rendered{
     margin-left: 5px;
 }
 .unTrackTr td:first-child{
     padding-left: 5px;
+}
+.unTrackTopTable .unTrackTr td span{
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td span div{
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td span div input{
+    height: 30px !important;
 }

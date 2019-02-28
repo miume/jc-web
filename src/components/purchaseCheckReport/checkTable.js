@@ -147,7 +147,8 @@ class CheckTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 600 }}
+                scroll={{ y: 400 }}
+                onChange={this.props.handleTableChange}
             />
         )
     }

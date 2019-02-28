@@ -125,8 +125,10 @@ class OperationManagement extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
+            if(res&&res.list) {
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.prePage)*10+i;
+                }
             }
             this.setState({
                 dataSource: res.list,

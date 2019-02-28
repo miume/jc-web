@@ -126,9 +126,9 @@ button span {
     border: none !important;
     font-weight: bolder !important;
 }
-.ant-btn-lg {
+/* .ant-btn-lg {
     height: 48px !important;
-}
+} */
 .ant-btn.ant-btn-sm {
     border: none !important;
 }
@@ -212,21 +212,21 @@ button span {
 /* 输入框样式 */
 .ant-input {
     height: 35px !important;
-
 }
 .ant-input-lg {
   font-size: inherit !important;
+  height: 48px;
 }
 .ant-input-number {
   height: 35px!important;
   line-height: 35px!important;
 }
 /* 下拉选择器样式 */
-.ant-select-lg .ant-select-selection--single, .ant-select-selection--single{
+.ant-select-lg .ant-select-selection--single{
     height: 35px !important;
 }
 .ant-select-sm .ant-select-selection--single{
-   height: 24px !important;
+   height: 35px !important;
 }
 
 /* .ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{

@@ -1,6 +1,6 @@
 import React from 'react';
 //import $ from 'jquery';
-import {Button,Modal,message} from 'antd';
+import {Modal,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
