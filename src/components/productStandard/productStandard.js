@@ -167,14 +167,14 @@ class ProductStandard extends React.Component{
     /**点击成品新增 */
     clickI(e){
         /**通过点击新增确定 找到input value值 */
-        const value = e.target.parentNode.parentNode.firstElementChild.value;
-        if(value===''){
-            message.info('请输入成品名称！');
-            return
-        }
-        else{
-            this.addProduct(value);
-        }
+        // const value = e.target.parentNode.parentNode.firstElementChild.value;
+        // if(value===''){
+        //     message.info('请输入成品名称！');
+        //     return
+        // }
+        // else{
+        //     this.addProduct(value);
+        // }
     }
     /**成品新增事件 */
     addProduct(value){
@@ -269,7 +269,7 @@ class ProductStandard extends React.Component{
     /**根据成品id 型号id查询所对应的标准 */
     getAllProductStandard(params,ids,mode){
         if(ids){
-            console.log('id')
+            //console.log('id')
             this.recentModal(ids);
         }
         const {selectProduct} = this.state;
@@ -338,7 +338,7 @@ class ProductStandard extends React.Component{
                             <Divider type='horizontal' />
                         </div>
                         <div className={this.state.flag===1?'':'hide'}>
-                           <Product data={this.state.allProduct} blockClick={this.blockClick} add={this.state.add} clickI={this.clickI} />
+                           <Product data={this.state.allProduct} blockClick={this.blockClick} add={this.state.add} clickI={this.clickI} url={this.url} />
                         </div>
                         <div  className={this.state.flag===2?'':'hide'}>
                             <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} />
