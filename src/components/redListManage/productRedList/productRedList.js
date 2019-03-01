@@ -195,10 +195,10 @@ class ProductRedList extends Component{
         .then((data)=>{
              const res=data.data.data;
              //console.log(res);
-             this.pagination.total=res?res.total:0;
-             this.pagination.current=res.pageNumber;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
+             
              if(res&&res.list){
-                
+                this.pagination.total=res?res.total:0;
+                this.pagination.current=res.pageNumber;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }

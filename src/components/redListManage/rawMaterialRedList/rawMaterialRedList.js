@@ -205,9 +205,10 @@ class RawMaterialRedList extends Component{
             // console.log(data);
              const res=data.data.data;
              //console.log(res);
-             this.pagination.total=res.total?res.total:0;
-             this.pagination.current=res.pageNumber;
+             
           if(res&&res.list){
+            this.pagination.total=res.total?res.total:0;
+            this.pagination.current=res.pageNumber;
             for(let i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
            }
@@ -318,9 +319,10 @@ class RawMaterialRedList extends Component{
       .then((data)=>{
               const res=data.data.data;
             // console.log(res.total);
-              this.pagination.total=res?res.total:0;
-              this.pagination.current=res.pageNumber;
+             
               if(res&&res.list){
+                this.pagination.total=res?res.total:0;
+                this.pagination.current=res.pageNumber;
                for(var i=1;i<=res.list.length;i++){
                  res.list[i-1]['index']=res.prePage*10+i;
               }

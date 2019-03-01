@@ -398,6 +398,7 @@ class Home extends Component {
               equipmentArchiveRecord:{
                    getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
                    get:`${server}/jc/common/equipmentArchiveRecord`,
+                   getPdf:`${server}/jc/common/equipmentArchiveRecord/pdf`
                    
                },
                /**设备基本厂商*/

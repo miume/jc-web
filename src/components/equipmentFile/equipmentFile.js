@@ -165,7 +165,8 @@ class EquipmentArchive extends Component{//设备档案
                         supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
                         supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
                         repairManufacture:res.list[i].repairManufacturer.name,
-                        repairManufacturePhone:res.list[i].repairManufacturer.contact
+                        repairManufacturePhone:res.list[i].repairManufacturer.contact,
+                        manualName:res.list[i].equipmentArchiveRecord.manualName
                     });
                  }
                this.setState({
