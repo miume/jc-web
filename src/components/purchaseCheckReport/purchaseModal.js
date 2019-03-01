@@ -191,7 +191,7 @@ class PurchaseModal extends React.Component {
                                 <div className="rightOnclick" onClick={handleRightClick}>
                                     <i className="fa fa-caret-right"></i>
                                 </div>
-                                <div>判定</div>
+                                <div style={{paddingLeft:'25px'}}>判定</div>
                             </div>
                         </div>
                         <div style={{clear: 'both'}}></div>

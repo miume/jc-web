@@ -65,13 +65,6 @@ class PackTable extends React.Component {
                 return <span className='text-decoration'>{testItems}</span>
             }
         },
-        // render: testItemString => {
-        //     const length = testItemString?testItemString.length:0;
-        //     if(length > 15){
-        //         return <span title={testItemString} className='text-decoration'>{testItemString.substring(0,15)+'...'}</span>
-        //     }
-        //     return testItemString?testItemString:'无';
-        // }
     },{
         title: '异常备注',
         dataIndex: 'exceptionHandle',

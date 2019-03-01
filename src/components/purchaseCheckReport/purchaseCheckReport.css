@@ -21,7 +21,8 @@
     background: #0079FE;
 }
 .purchaseTopThead tr th {
-    text-align: center;
+    /*text-align: center;*/
+    padding-left: 5px;
     font-size: 15px;
     border: 1px solid #E9E9E9;
 }
@@ -36,12 +37,14 @@
 /*}*/
 .purchaseTopTbody tr td {
     width: 15%;
-    text-align: center;
+    /*text-align: center;*/
+    padding-left: 5px;
     border: 1px solid #E9E9E9;
 }
 .purchaseTopTbody tr td .ant-input{
     height: 20px !important;
-    text-align: center;
+    padding-left: 0;
+    /*text-align: center;*/
     border: none;
 }
 .purchaseTopJudger {
@@ -102,7 +105,11 @@
     border-radius: 3px 0 0 0;
     display: flex;
     line-height: 90px;
-    text-align: center;
+    /*text-align: center;*/
+    /*padding-left: 5px;*/
+}
+.theadLeft div{
+    padding-left: 5px;
 }
 .leftThead {
     min-width: 49.9%;
@@ -168,7 +175,7 @@
     min-width: 100px;
     max-width: 100px;
     line-height: 29px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     color:black;
     /*border-left: 1px solid #E9E9E9;*/
@@ -178,6 +185,7 @@
 }
 .middleTheadDiv div{
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .middleTheadDivLength {
     flex-grow:1;
@@ -200,7 +208,7 @@
     height: 90px;
     background-color: #F2F2F2;
     line-height: 90px;
-    text-align: center;
+    /*text-align: center;*/
     cursor: default;
     font-size: 13px;
     border-left: 1px solid #E9E9E9;
@@ -228,13 +236,14 @@
     max-width: 100%;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    /*text-align: center;*/
     cursor: default;
     font-size: 13px;
     display: flex;
 
 }
 .leftTbody div{
+    padding-left: 5px;
     height: 30px;
     min-width: 49.9%;
     max-width: 49.9%;
@@ -259,7 +268,7 @@
     max-width: 100%;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     white-space: nowrap;
     display: flex;
@@ -271,6 +280,7 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .middleTbodyDivWhiteLength {
     min-width: 50px;
@@ -279,7 +289,8 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
-    text-align:center
+    /*text-align:center*/
+    padding-left: 5px;
 }
 .middleTbodyDivWhiteLength div{
     margin:0 auto;
@@ -293,6 +304,7 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .middleTbodyDivRedLength {
     min-width: 50px;
@@ -302,7 +314,8 @@
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
     background-color: #FF3B30;
-    text-align:center
+    /*text-align:center*/
+    padding-left: 5px;
 }
 .middleTbodyDivRedLength div{
     margin:0 auto;
@@ -318,7 +331,7 @@
     max-width: 100%;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     display: flex;
 }
@@ -328,6 +341,7 @@
     max-width: 49.9%;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 
 .isQualified {
