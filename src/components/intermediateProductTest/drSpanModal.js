@@ -42,6 +42,7 @@ class DrSpanModal extends React.Component {
                 }),
             };
         });
+
         const arr = this.props.data.topData.serialNumber.split('-');
         return(
             <div>
@@ -49,7 +50,7 @@ class DrSpanModal extends React.Component {
                     <table>
                         <thead>
                         <tr>
-                            <th>编号</th>
+                            <th>物料编码</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>

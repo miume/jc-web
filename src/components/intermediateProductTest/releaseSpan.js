@@ -72,11 +72,9 @@ class ReleaseSpan extends React.Component {
         )
     }
     handleCancel = () => {
-        setTimeout(() => {
-            this.setState({
-                visible: false,
-            });
-        }, 500);
+        this.setState({
+            visible: false,
+        });
     };
     /**点击发布按钮 */
     handleReleaseButton = () => {
@@ -90,7 +88,7 @@ class ReleaseSpan extends React.Component {
             this.setState({
                 visible: false
             });
-            // this.props.fetch();
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
