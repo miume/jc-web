@@ -288,7 +288,7 @@ const CollectionCreateForm = Form.create()(
                     visible={visible}
                     closable={false}
                     title="新增"
-                    width="360px"
+                    width="500px"
                     style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
@@ -313,14 +313,14 @@ const CollectionCreateForm = Form.create()(
                                 {getFieldDecorator('date', {
                                     rules: [{ required: true, message: '请选择日期' }],
                                 })(
-                                    <DatePicker disabledDate={this.disabledDate} style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
+                                    <DatePicker disabledDate={this.disabledDate} style={{width:"220px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                                 )}
                             </FormItem>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('time', {
                                     rules: [{ required: true, message: '请选择时间' }],
                                 })(
-                                    <TimePicker style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
+                                    <TimePicker style={{width:"220px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                                 )}
                             </FormItem>
                         </Col>
@@ -328,7 +328,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('id', {
                                 rules: [{ required: true, message: '请选择送样人' }],
                             })(
-                                <Select placeholder="请选择送样人" style={{width:"153px"}}>
+                                <Select placeholder="请选择送样人" style={{width:"220px"}}>
                                     {
                                         this.state.person.map(pe=>{
                                             return(
@@ -343,7 +343,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
-                                <Select placeholder="请选择送样工厂" style={{width:"153px"}}>
+                                <Select placeholder="请选择送样工厂" style={{width:"220px"}}>
                                     {
                                         this.state.factor.map(pe=>{
                                             return(
@@ -353,13 +353,13 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem> : (
+                        </FormItem> :(
                         <div>
                         <FormItem wrapperCol={{ span: 22 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
-                                <Select placeholder="请选择送样工厂" onChange={this.getProcess}  style={{width:"153px"}}>
+                                <Select placeholder="请选择送样工厂" onChange={this.getProcess}  style={{width:"220px"}}>
                                     {
                                         this.state.MiddleFactor.map(pe=>{
                                             return(
@@ -414,7 +414,7 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                            <div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
+                            <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
                             <Checkbox.Group style={{ width: '100%' }} value={this.state.testItems}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
@@ -426,12 +426,12 @@ const CollectionCreateForm = Form.create()(
                         }
                         {
                             this.state.visible1===3?
-                        <div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px"}} >
+                        <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} >
                             <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
                             }
-                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px"}} >
+                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} >
                             <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)

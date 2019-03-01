@@ -1,8 +1,8 @@
 import React from 'react';
 import {Modal,Table} from 'antd';
-import WhiteSpace from '../BlockQuote/whiteSpace'
-import axios from 'axios'
-import "./difference.css"
+import WhiteSpace from '../BlockQuote/whiteSpace';
+import axios from 'axios';
+import "./difference.css";
 import CancleButton from "../BlockQuote/cancleButton";
 
 const columns = [{
@@ -13,7 +13,7 @@ const columns = [{
         align:'center',
       },{
         title: '职责',
-        dataIndex: 'responsibility' ,
+        dataIndex: 'responsibility',
         key: 'responsibility',
         width: '30%',
         align:'center',
@@ -27,12 +27,11 @@ class Detail extends React.Component{
         this.state = {
             visible : false,
             data : [],
-            data1 : []
+            data1 : ''
         }
-        this.server = localStorage.getItem("remote")
-        this.handleDetail = this.handleDetail.bind(this)
-        this.handleOk = this.handleOk.bind(this)
-        this.handleCancel = this.handleCancel.bind(this)
+        this.server = localStorage.getItem("remote");
+        this.handleDetail = this.handleDetail.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
         this.fetch = this.fetch.bind(this);
     }
     fetch = (id) => {
@@ -42,11 +41,11 @@ class Detail extends React.Component{
         }).then((data) => {
             const res = data.data.data;
             if(res){
-                var dataName = [{}]
-                dataName[0].description = res.commonBatchNumber.description
+                // var dataName = [{}]
+                // dataName[0].description = res.commonBatchNumber.description
                 this.setState({
                     data : res.details,
-                    data1 : dataName
+                    data1 : res.commonBatchNumber.description
                 })
             }
         })
@@ -58,11 +57,6 @@ class Detail extends React.Component{
           visible: true
         });
     }
-    handleOk() {
-        this.setState({
-        visible: false
-        });
-    }
     handleCancel() {
         this.setState({
         visible: false
@@ -70,9 +64,9 @@ class Detail extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const td = this.state.data1.map((p,index)=>
-            <td key={index}>{p.description?p.description:'无'}</td>
-        )
+        // const td = this.state.data1.map((p,index)=>
+        //     <td key={index}>{p.description?p.description:'无'}</td>
+        // )
         return(
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
@@ -85,7 +79,7 @@ class Detail extends React.Component{
                         <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
                     ]}>
                     <div>
-                         <table className="custom_tb">
+                         {/* <table className="custom_tb">
                              <thead className='theadmanage'>
                                  <tr>
                                      <td>流程名称</td>
@@ -96,9 +90,17 @@ class Detail extends React.Component{
                                 {td}
                                 </tr>
                              </tbody>
-                         </table>
+                         </table> */}
+                         <div className='Pdescription'>{this.state.data1}</div>
                          <WhiteSpace />
-                         <Table columns={columns} rowKey={record => record.responsibility} size='small' pagination={false} bordered dataSource={this.state.data} scroll={{ y: 240 }}></Table>
+                         <div id="edit" style={{height:'360px'}}>
+                         {this.state.data.map( e =>
+                             <div>
+                                 <span className='Pname'>{e.personName}</span>
+                                 <span className='Pres'>{e.responsibility}</span>
+                             </div>
+                         )}
+                         </div>
                     </div>
                 </Modal>
             </span>
