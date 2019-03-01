@@ -1,8 +1,18 @@
 .rawMaterailStandard{
     width:97%;
-    height:540px;
-    /* margin:20px; */
+    
+    margin:20px ;
     border-top: none;
+}
+.rawMaterailStandard1{
+    width:97%;
+    margin:20px 20px 20px 0;
+    border-top: none;
+}
+.rawMaterailStandardMiddle{
+    
+    margin:0 20px 0 20px;
+    
 }
 
 .rawStanstdardBlock{/**块的样式*/
@@ -15,7 +25,7 @@
     border:1px solid rgb(204,204,204);
     cursor: pointer;
     /* display:'inline-block'; */
-    margin:20px 33px 0 0;
+    margin:20px;
 }
 .rawStanstdardBlockAdd{/**新增块的样式*/
     border-radius:3px ;/*设置4个圆角，且为3像素*/
@@ -27,7 +37,7 @@
     border:1px solid #1890ff;
     cursor: pointer;
     /* display:'inline-block'; */
-    margin:20px 33px 0 0;
+    margin:20px;
 }
 .rawStanstdardBlock:hover{/**块覆上的时候会显示为蓝色*/
       background-color: #1890ff;

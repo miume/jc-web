@@ -118,13 +118,13 @@ class RawStandard extends Component{
         //console.log(current.menuName,current.menuParent);
            return(
             <div>
-                   <Blockquote menu={current.menuParent} name={current.menuName}/>
-                   <div  className='rawMaterailStandard'>
-                     <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content1}</div>
-                     <div className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.state.flag!==1?this.clickToFactory:null}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div>
-                     <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} ><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content3}</div> 
-                     
-                   <div>
+                <Blockquote menu={current.menuParent} name={current.menuName}/>
+                  <div  className='rawMaterailStandard'>
+                        <div className='rawStanstdardBlockQuoBlue' onClick={this.clickToRaw}><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content1}</div>
+                        <div className={this.state.flag===2||this.state.flag===3||this.state.flag===4?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} onClick={this.state.flag!==1?this.clickToFactory:null}><span><i className='fa fa-industry'></i></span>&nbsp;{this.state.content2}</div>
+                        <div className={this.state.flag===3?'rawStanstdardBlockQuoBlue':'rawStanstdardBlockQuoGrey'} ><span><i className='fa fa-leaf'></i></span>&nbsp;{this.state.content3}</div> 
+                  </div>   
+                     <div>
                         <div className={this.state.flag===1?'':'hide'}>
                             <RawMaterial onBlockChange={this.onBlockChange} type={1} url={this.url}/>
                         </div>
@@ -137,9 +137,8 @@ class RawStandard extends Component{
                         <div className={this.state.flag===4?'':'hide'}>
                             <SetStandard  type={4} raw={this.state.content1} onBlockChange={this.onBlockChange} factory={this.state.content2} rawMaterialId={this.state.rawMaterialId}  rawManufacturerId={this.state.factoryId} url={this.url} getStandard={this.getStandard}/>
                         </div>
-                    </div>
-                   </div > 
-                   
+                      </div>
+                    
                </div>
            );
        }

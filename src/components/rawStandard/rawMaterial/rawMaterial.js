@@ -179,7 +179,7 @@ class RawMaterial extends Component{
         //  this.url=JSON.parse(localStorage.getItem('url'));
           return(
               <div>
-                  <div style={{paddingTop:'15px'}}>
+                  <div  className='rawMaterailStandardMiddle'>
                     <span className='product-standrad-middle-text'>请选择原材料</span>
                      <span style={{float:'right' }}>
                        <SearchCell name='请输入原材料名称'
