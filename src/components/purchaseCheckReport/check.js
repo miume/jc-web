@@ -38,8 +38,6 @@ class Check extends React.Component {
             });
             this.props.modifyTabFlag();
         }
-
-
         return(
             <div>
                 <span style={{float:'right',paddingBottom:'8px'}}>
@@ -48,6 +46,7 @@ class Check extends React.Component {
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
+                        type={2}
                     />
                 </span>
                 <div className='clear' ></div>
@@ -84,6 +83,7 @@ class Check extends React.Component {
         }
     };
     fetch = (params,flag) => {
+        console.log(flag)
         if(flag) {
             var {pagination} = this.state;
             pagination.current = 1;
@@ -111,11 +111,13 @@ class Check extends React.Component {
                 }
                 this.setState({
                     dataSource: res.list,
-                    pagination:pagination
+                    pagination:pagination,
+                    // searchContent:''
                 });
             }else{
                 this.setState({
                     dataSource: [],
+                    // searchContent:''
                 });
             }
         });
