@@ -70,7 +70,7 @@ class DrSpanModal extends React.Component {
                 </div>
                 <div>
                     <Table
-                        className="interCursorDefault stock-out"
+                        className="interCursorDefault"
                         rowKey={record => record.index}
                         columns={columns}
                         dataSource={this.props.data.testDTOS}

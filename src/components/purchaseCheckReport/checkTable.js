@@ -72,8 +72,8 @@ class CheckTable extends React.Component {
         key: 'commonBatchNumber.createTime',
         align:'center',
         width: '8%',
-        render: createTime => {
-            return <abbr style={{cursor:'default'}} title={createTime?createTime:'无'}>{createTime?createTime.substring(0,10):'无'}</abbr>
+        render:(createTime)=>{
+            return <span title={createTime} className='text-decoration'>{createTime.substring(0,10)+'...'}</span>
         }
     },{
         title: '审核状态',
