@@ -75,7 +75,7 @@ class Block extends Component{
                     </Select>
                     <Button type="default" size='large' icon='check' onClick={this.props.searchEvent} className='block-button' onClick={this.props.clickI}></Button>
                     </div> */}
-                    <Input className='block-input' size='large' placeholder={`请输入${this.props.name}名称`} addonAfter={<i className='fa fa-check block-input-i' onClick={this.props.clickI}  id={`${this.props.id}`} />} />
+                    <Input className='block-input' placeholder={`请输入${this.props.name}名称`} addonAfter={<i className='fa fa-check block-input-i' onClick={this.props.clickI}  id={`${this.props.id}`} />} />
                 </Popover>
                 :<div id={`${this.props.id}`}><i className={this.props.flag?'fa fa-plus':'hide'}></i> {this.props.name}</div>
             }

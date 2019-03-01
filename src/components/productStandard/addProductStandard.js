@@ -383,9 +383,9 @@ class AddProductStandard extends React.Component{
                 <div>
                     <HeadTable flag={this.props.flag} data={data} batchNumber={this.state.batchNumber} />
                     <div className='modal-add-table' >
-                        <Table className='stock-out' rowKey={record=>record.id} 
+                        <Table className={this.props.flag===1?'':'stock-out'} rowKey={record=>record.id} 
                         columns={this.columns} dataSource={this.state.allTestItem} 
-                        pagination={false} size='small' bordered scroll={{y:252}}>
+                        pagination={false} size='small' bordered scroll={{y:this.props.flag===1?228:251}}>
                         </Table>
                     </div>
                     <div style={{height:70}}>

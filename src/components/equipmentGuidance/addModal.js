@@ -80,7 +80,7 @@ class AddModal extends React.Component{
                 >
                       <div style={{height:'400px'}}>
                             <Input style={{width:"32%"}} placeholder='请输入指导书名称'/>
-                            <Input style={{width:"32%",marginLeft:'2%'}} placeholder='请输入编号'/>
+                            <Input style={{width:"32%",marginLeft:'2%'}} placeholder='请输入物料编码'/>
                             <Input style={{width:"32%",marginLeft:'2%'}} placeholder='请输入版次'/>
                             <Input style={{width:'49%',marginTop:'10px'}} placeholder='请输入页次'/>
                             <DatePicker style={{width:'49%',marginLeft:'2%',marginTop:'10px'}} placeholder='请选择生效日期' />

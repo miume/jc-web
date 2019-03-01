@@ -1,7 +1,6 @@
 import React from 'react';
-import {Modal,Input} from 'antd';
+import {Modal} from 'antd';
 import CancleButton from "../BlockQuote/cancleButton";
-
 class Loss extends React.Component{
     constructor(props){
         super(props);

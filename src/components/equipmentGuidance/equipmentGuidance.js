@@ -50,7 +50,7 @@ class Equipment extends React.Component{
             align:'center',
             width: '15%',
         },{
-            title: '编号',
+            title: '物料编码',
             dataIndex: 'serial',
             key: 'serial',
             align:'center',

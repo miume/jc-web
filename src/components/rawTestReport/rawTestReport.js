@@ -6,6 +6,7 @@ import { Table, Divider} from 'antd';
 import SearchCell from '../BlockQuote/search';
 import RecordChecking from './recordChecking';
 import BlockQuote from '../BlockQuote/blockquote';
+import Loss from '../BlockQuote/lossStatement';
 // const data = [];
 // for(var i = 1; i <= 20;i++){
 //     data.push({
@@ -50,14 +51,14 @@ class RawTestReport extends React.Component{
               },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         }
-        this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.fetch = this.fetch.bind(this);
         // this.handleAdd = this.handleAdd.bind(this);
         this.tableRecord = this.tableRecord.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
-        this.fetch = this.fetch.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -75,13 +76,13 @@ class RawTestReport extends React.Component{
             key:'sampleDeliveringDate',
             width:'9%',
             render:(text)=>{
-                return <span title={text} className='text-decoration'>{text.substring(0,10)}</span>
+                return <span title={text} className='text-decoration'>{text.substring(0,10)+'...'}</span>
             }
         },{
             title:'送样工厂',
             dataIndex:'deliveryFactoryName',
             key:'deliveryFactoryName',
-            width:'10%'
+            width:'9%'
         },{
             title:'批号',
             dataIndex:'batchNumber',
@@ -91,24 +92,24 @@ class RawTestReport extends React.Component{
             title:'检测项目',
             dataIndex:'testItemString',
             key:'testItemString',
-            width:'7%',
+            width:'11%',
             render:(text)=>{ 
                 const items = text.split(',');
                 var testItems = '';
-                if(items.length>3){
-                    testItems = items[0]+','+items[1]+','+items[2];
+                if(items.length>5){
+                    testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+','+items[4]+'...';
                     return <span title={text} className='text-decoration'>{testItems}</span>;
                 }else{
                   testItems = text;
-                  return <span className='text-decoration'>{testItems}</span>
+                  return <span>{testItems}</span>
                 }
                },
-        },{
-            title:'异常备注',
-            dataIndex:'exceptionComment',
-            key:'exceptionComment',
-            align:'center',
-            width:'7%'
+        // },{
+        //     title:'异常备注',
+        //     dataIndex:'exceptionComment',
+        //     key:'exceptionComment',
+        //     align:'center',
+        //     width:'7%'
         },
         // {
         //     title:'类型',
@@ -132,12 +133,12 @@ class RawTestReport extends React.Component{
             //       default:return '';
             //     }
             // }
-        },{
-            title:'接受反馈',
-            dataIndex:'handleComment',
-            key:'handleComment',
-            align:'center',
-            width:'7%'
+        // },{
+        //     title:'接受反馈',
+        //     dataIndex:'handleComment',
+        //     key:'handleComment',
+        //     align:'center',
+        //     width:'7%'
         },{
             title:'审核状态',
             dataIndex:'status',
@@ -165,6 +166,10 @@ class RawTestReport extends React.Component{
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
                         <Divider type='vertical' />
                         <RecordChecking value={text} url={this.url} status={record.status} tableRecord={this.tableRecord}/>
+                        <Divider type='vertical' />
+                        <Loss statement={record.exceptionComment} name='异常备注' />
+                        <Divider type='vertical' />
+                        <Loss statement={record.handleComment} name='接受反馈' />
                     </span>
                 );
             }
