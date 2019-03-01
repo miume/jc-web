@@ -165,7 +165,7 @@ class Manufacturer extends Component{
         // this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <div style={{position:'relative'}}>
-              <div style={{padding:'15px'}}>
+              <div style={{paddingTop:'15px'}}>
               <span className='product-standrad-middle-text'>请选择生产厂家</span>
                 <span  className='fr'>
                  <SearchCell name='请输入工厂名称'

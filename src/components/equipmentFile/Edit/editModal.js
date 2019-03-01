@@ -67,6 +67,7 @@ class EditModal extends Component{
      render(){
             const { form } = this.props;
             const { getFieldDecorator } = form; 
+            console.log(this.props.record);
             return(
                 <Form horizontal='true' >
                   <Row>
@@ -206,12 +207,15 @@ class EditModal extends Component{
                   <Row>
                         <Col span={10} style={{display:"block"}}>
                             <FormItem wrapperCol={{span:24}}>
-                                {
+                                {   getFieldDecorator('file',{
+                                        initialValue:this.props.record.manualName
+                                })(
                                     <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove} fileList={this.state.fileList}>
                                         <Button className='equipmentFile-upload-button'>
-                                         <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
+                                        <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
                                         </Button>
                                     </Upload>
+                                 )
                                 }
                             </FormItem>
                         </Col>
