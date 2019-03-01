@@ -164,7 +164,7 @@ class AddModal extends Component{
                         <FormItem wrapperCol={{span:24}}>
                             { getFieldDecorator('supplyManufacturePhone',{
                                    
-                                    rules:[{required:true,message:'供货厂家电话不能为空'}]
+                                    rules:[{required:true,message:'请输入11位正确的供货厂家电话',pattern:new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g")}]
                                 })(
                                     <Input placeholder='请输入供货厂家电话' style={{width:'230px'}}/>
                                 )
@@ -196,7 +196,7 @@ class AddModal extends Component{
                         <FormItem wrapperCol={{span:24}}>
                             { getFieldDecorator('repairManufacturePhone',{
                                     
-                                    rules:[{required:true,message:'维修厂家电话不能为空'}]
+                                    rules:[{required:true,message:'请输入11位正确的维修厂家电话',pattern:new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g")}]
                                 })(
                                     <Input placeholder='请输入维修厂家电话' style={{width:'230px'}}/>
                                    

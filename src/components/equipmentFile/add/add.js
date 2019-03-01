@@ -39,8 +39,9 @@ class Add extends Component{
         .then((data)=>{
            //console.log(data);
            message.info(data.data.message);
-           this.fetch();
-           this.pagination.current=1;//新增的记录要显示在第一页，
+        //    this.fetch();
+           //this.pagination.current=1;//新增的记录要显示在第一页，
+           this.props.reset();
         })
         .catch(()=>{
             message.info('新增失败，请联系管理员!')

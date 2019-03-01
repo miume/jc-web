@@ -34,7 +34,7 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'index',
             key:'index',
             align:'center',
-            width:'5%'
+            width:'6%'
         },{
             title:'文档名称',
             dataIndex:'archiveName',
@@ -53,7 +53,7 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'installTime',
             key:'installTime',
             align:'center',
-            width:'15%'
+            width:'14%'
         },{
             title:'保修期限',
             dataIndex:'warrantyPeriod',
@@ -139,7 +139,7 @@ class EquipmentArchive extends Component{//设备档案
            });
           }
     }
-    fetch=(params={})=>{
+    fetch=(params)=>{
         axios({
             url:`${this.url.equipmentArchiveRecord.getAllByPage}`,
             method:'get',
@@ -194,52 +194,56 @@ class EquipmentArchive extends Component{//设备档案
            searchContent:value
        });
     }
-    searchEvent(params){
+    searchEvent(){
        const name=this.state.searchContent;
-       //console.log(name);
-       axios({
-            url:`${this.url.equipmentArchiveRecord.getAllByPage}`,
-            method:'get',
-            headers:{
-                'Authorization':this.url.Authorization
-            },
-            params:{
-                pageSize:this.pagination.pageSize,
-                pageNumber:this.pagination.current,
-                name:name
-            },
-            type:'json'
-       })
-       .then((data)=>{
-           //console.log(data);
-           const res=data.data.data;
-           this.pagination.total=res.total?res.total:0;
-            if(res&&res.list){
-                var searchData=[];
-                for(var i=0;i<res.list.length;i++){
-                    searchData.push({
-                        index:i+1,
-                        id:res.list[i].equipmentArchiveRecord.id,
-                        archiveName:res.list[i].equipmentArchiveRecord.name,
-                        instrumentName:res.list[i].baseInstrument.name,//设备名称
-                        installTime:res.list[i].equipmentArchiveRecord.installTime,
-                        warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
-                        supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
-                        supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
-                        repairManufacture:res.list[i].repairManufacturer.name,
-                        repairManufacturePhone:res.list[i].repairManufacturer.contact
-                    });
-                }
-                //console.log(searchData);
-                this.setState({
-                    dataSource:searchData,
-                    pageChangeFlag:1
-                });
-            }
-           })
-       .catch(()=>{
-           message.info('搜索失败，请联系管理员！');
-       })
+       this.setState({
+           pageChangeFlag:1
+       });
+       this.fetch({name:name});
+    //    //console.log(name);
+    //    axios({
+    //         url:`${this.url.equipmentArchiveRecord.getAllByPage}`,
+    //         method:'get',
+    //         headers:{
+    //             'Authorization':this.url.Authorization
+    //         },
+    //         params:{
+    //             pageSize:this.pagination.pageSize,
+    //             pageNumber:this.pagination.current,
+    //             name:name
+    //         },
+    //         type:'json'
+    //    })
+    //    .then((data)=>{
+    //        //console.log(data);
+    //        const res=data.data.data;
+    //        this.pagination.total=res.total?res.total:0;
+    //         if(res&&res.list){
+    //             var searchData=[];
+    //             for(var i=0;i<res.list.length;i++){
+    //                 searchData.push({
+    //                     index:i+1,
+    //                     id:res.list[i].equipmentArchiveRecord.id,
+    //                     archiveName:res.list[i].equipmentArchiveRecord.name,
+    //                     instrumentName:res.list[i].baseInstrument.name,//设备名称
+    //                     installTime:res.list[i].equipmentArchiveRecord.installTime,
+    //                     warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
+    //                     supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
+    //                     supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
+    //                     repairManufacture:res.list[i].repairManufacturer.name,
+    //                     repairManufacturePhone:res.list[i].repairManufacturer.contact
+    //                 });
+    //             }
+    //             //console.log(searchData);
+    //             this.setState({
+    //                 dataSource:searchData,
+    //                 pageChangeFlag:1
+    //             });
+    //         }
+    //        })
+    //    .catch(()=>{
+    //        message.info('搜索失败，请联系管理员！');
+    //    })
     }
    
     getAllRepairManufacturer(){//获取所有维修厂家
@@ -310,7 +314,7 @@ class EquipmentArchive extends Component{//设备档案
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>
                  <div style={{padding:'15px'}}>
-                     <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument}/> &nbsp;&nbsp;&nbsp;
+                     <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} reset={this.reset}/> &nbsp;&nbsp;&nbsp;
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
                      <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell 
@@ -325,8 +329,11 @@ class EquipmentArchive extends Component{//设备档案
                       columns={this.columns}
                       dataSource={this.state.dataSource}
                       rowSelection={rowSelection}
+                      pagination={this.pagination}
+                      onChange={this.handleTableChange}
                       size='small'
                       bordered
+                      scroll={{y:400}}
                       >
                     </Table>
                  </div>

@@ -4,6 +4,7 @@ import EditModal from './editModal';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
 //import NewButton from '../../BlockQuote/newButton';
+import axios from 'axios';
 class Edit extends Component{
     constructor(props){
          super(props);
@@ -22,6 +23,19 @@ class Edit extends Component{
         this.setState({
             visible:false
         });
+        const value=this.formRef.getItemsValue();
+        value['id']=this.props.record.id;
+        axios({
+            url:`${this.props.url.equipmentArchiveRecord.get}`,
+            method:'put',
+            headers:{
+                'Authorization' :this.props.url.Authorization
+            },
+            data:value,
+            type:'json'
+        }).then((data)=>{
+             console.log(data);
+        }).catch();
     }
     handleCancel(){
        this.setState({visible:false})
