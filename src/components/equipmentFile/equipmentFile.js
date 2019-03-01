@@ -34,26 +34,38 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'index',
             key:'index',
             align:'center',
-            width:'6%'
+            width:'5%'
         },{
             title:'文档名称',
             dataIndex:'archiveName',
             key:'archiveName',
             align:'center',
-            width:'9.5%'
+            width:'9%'
         },{
             title:'设备名称',
             dataIndex:'instrumentName',
             key:'instrumentName',
             align:'center',
-            width:'9.5%'
+            width:'9%'
             
         },{
             title:'安装日期',
             dataIndex:'installTime',
             key:'installTime',
             align:'center',
-            width:'14%'
+            width:'10%',
+            render:(text)=>{
+                if(text.length>10){
+                    return(
+                        <div title={text} className='text-decoration'>{text.substring(0,10)}</div>
+                    )
+                }
+                else{
+                    return(
+                        <div>{text}</div>
+                    )
+                }
+            }
         },{
             title:'保修期限',
             dataIndex:'warrantyPeriod',
@@ -71,7 +83,7 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'supplyManufacturePhone',
             key:'supplyManufacturePhone',
             align:'center',
-            width:'9.5%'
+            width:'10%'
         },{
             title:'维修厂家',
             dataIndex:'repairManufacture',
@@ -83,7 +95,7 @@ class EquipmentArchive extends Component{//设备档案
             dataIndex:'repairManufacturePhone',
             key:'repairManufacturePhone',
             align:'center',
-            width:'9.5%'
+            width:'10%'
         },{
             title:'操作',
             dataIndex:'operation',
@@ -123,7 +135,7 @@ class EquipmentArchive extends Component{//设备档案
      this.searchContentChange=this.searchContentChange.bind(this);
      this.reset=this.reset.bind(this);
     }
-    handleTableChange=(pagination)=>{
+    handleTableChange=(pagination)=>{//页数变化时调用
           this.pagination=pagination;
           const {pageChangeFlag}=this.state;
           if(pageChangeFlag){//为1代表搜索分页
@@ -151,8 +163,10 @@ class EquipmentArchive extends Component{//设备档案
         .then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            this.pagination.total=res.total?res.total:0;
+            
             if(res&&res.list){
+                this.pagination.total=res.total?res.total:0;
+                this.pagination.current=res.pageNumber;
                 var data1=[];
                 for(var i=0;i<res.list.length;i++){
                     data1.push({
