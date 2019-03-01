@@ -4,6 +4,7 @@ import { Modal,Button,Input,message } from 'antd';
 import PurchaseModal from "./purchaseModal";
 import ReleaseNewButton from './releaseNew';
 import ReleaseButton from './releaseButton';
+import CancleButton from '../BlockQuote/cancleButton';
 
 class CheckReleaseSpan extends React.Component {
     constructor(props){
@@ -33,7 +34,7 @@ class CheckReleaseSpan extends React.Component {
                 <Modal
                     title="数据详情"
                     visible={visible}
-                    width="1035px"
+                    width="1080px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
@@ -77,9 +78,9 @@ class CheckReleaseSpan extends React.Component {
                     <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default',right:'6px'}} disabled defaultValue="该数据待审核，审核通过后方可发布"/>,
                 ];
                 return footer;
-            default:
+            default:    //返回
                 footer = [
-                    <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
+                    <CancleButton flag={1} handleCancel={this.handleCancel}/>
                 ];
                 return footer;
         }
@@ -119,7 +120,7 @@ class CheckReleaseSpan extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-            // this.props.fetch();
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('发布失败，请联系管理员！');
