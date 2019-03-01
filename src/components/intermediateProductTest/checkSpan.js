@@ -102,6 +102,8 @@ class CheckSpan extends React.Component {
     }
     render() {
         const { visible } = this.state;
+        const arr = this.state.detailData.topData.serialNumber.split('-');
+
         return (
             <span>
                 <span className="blue" onClick={this.handleCheck}>录检</span>
@@ -140,14 +142,14 @@ class CheckSpan extends React.Component {
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>编号</th>
+                                        <th>物料编码</th>
                                         <th>原材料</th>
                                         <th>送样日期</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><span title={this.state.detailData.topData.serialNumber} className="text-decoration">{this.state.detailData.topData.serialNumber.substring(0,15)}</span></td>
+                                        <td><span title={this.state.detailData.topData.serialNumber} className="text-decoration">{arr[0]+'-'+arr[1]+'...'}</span></td>
                                         <td>{this.state.detailData.topData.materialName}</td>
                                         <td>{this.state.detailData.topData.sampleDeliveringDate}</td>
                                     </tr>
@@ -344,7 +346,6 @@ class CheckSpan extends React.Component {
             message.info('请点击合格或者不合格！');
             return
         }
-        console.log(interCheckData)
         //  调用保存函数
         this.useSavaFunction(interCheckData,status);
 
@@ -368,6 +369,7 @@ class CheckSpan extends React.Component {
                     visible: false,
                     subVisible: false,
                 });
+                this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -392,6 +394,7 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
