@@ -77,7 +77,8 @@ class Detail extends React.Component{
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
-                className='modal-md'
+                // className='modal-md'
+                width="360px"
                 closable={false} centered={true}
                 maskClosable={false}
                     footer={[

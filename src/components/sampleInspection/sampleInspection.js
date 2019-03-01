@@ -9,6 +9,7 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import PopRefuse from "./confuse"
 import "./sample.css"
 import Edit from "./editor"
+import Loss from '../BlockQuote/lossStatement'
 class SampleInspection extends React.Component{
     url
     server
@@ -75,13 +76,13 @@ class SampleInspection extends React.Component{
             dataIndex: 'deliverer.name',
             key: 'deliverer.name',
             align:'center',
-            width: '7%',
+            width: '11%',
         },{
             title: '送检工厂',
             dataIndex: 'deliveryFactory.name',
             key: 'deliveryFactory.name',
             align:'center',
-            width: '7%',
+            width: '11%',
         },{
             title: '编号',
             dataIndex: 'serialNumberName',
@@ -91,19 +92,6 @@ class SampleInspection extends React.Component{
             render:(text)=>{
                     var value = text.split('-')
                     return <div className='text-decoration' title={text}>{value[0]}</div>
-            }
-        },{
-            title: '异常备注',
-            dataIndex: 'sampleDeliveringRecord.exceptionComment',
-            key: 'sampleDeliveringRecord.exceptionComment',
-            align:'center',
-            width: '9%',
-            render:(text,record)=>{
-                if(record.sampleDeliveringRecord.exceptionComment === null){
-                    return "无"
-                }else{
-                    return record.sampleDeliveringRecord.exceptionComment
-                }
             }
         },{
             title: '类型',
@@ -139,7 +127,7 @@ class SampleInspection extends React.Component{
             dataIndex: 'sampleDeliveringRecord.handleComment',
             key: 'sampleDeliveringRecord.handleComment',
             align:'center',
-            width: '7%',
+            width: '9%',
             render : (text,record)=>{
                 if(record.sampleDeliveringRecord.handleComment === null){
                     return "无"
@@ -152,7 +140,7 @@ class SampleInspection extends React.Component{
             dataIndex: 'sampleDeliveringRecord.id',
             key: 'id',
             align:'center',
-            width: '20%',
+            width: '22%',
             render : (text,record)=>{
                 return(
                     <span>
@@ -167,6 +155,8 @@ class SampleInspection extends React.Component{
                         </Popconfirm>:<span className="notClick">接受</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
+                        <Divider type="vertical" />
+                        <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                     </span>
                 );
             }
@@ -253,7 +243,9 @@ class SampleInspection extends React.Component{
             params:{
                 pageSize: params.pageSize,
                 pageNumber: params.pageNumber,
-                factoryName:ope_name
+                factoryName:ope_name,
+                sortField: 'id',
+                sortType: 'desc',
             },
             type:'json',
         }).then((data)=>{
