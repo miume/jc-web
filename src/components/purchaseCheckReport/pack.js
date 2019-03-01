@@ -117,7 +117,7 @@ class Pack extends React.Component {
                     status={this.props.status}
                     data={this.state.dataSource}
                     rowSelection={this.rowSelection}
-                    pagination={this.pagination}
+                    pagination={this.state.pagination}
                     modifySelectedRowKeysData={this.modifySelectedRowKeysData}
                     handleTableChange={this.handleTableChange}
                 />
@@ -169,7 +169,7 @@ class Pack extends React.Component {
             var newParam = 'isGenerate';
             params[newParam] = 0;
         }
-        console.log(params);
+        console.log('params',params);
         axios({
             url: `${this.props.url.purchaseCheckReport.rawPages}` ,
             method: 'get',
@@ -179,6 +179,7 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            console.log('res',res)
             if(res&&res.list){
                 const {pagination} = this.state;
                 pagination.total=res.total;
@@ -206,6 +207,12 @@ class Pack extends React.Component {
                 //         searchContent:'',
                 //     });
                 // }
+            }else{
+                this.setState({
+                    dataSource: [],
+                    selectedRowKeys: [],
+                    // searchContent:'',
+                });
             }
         });
     };

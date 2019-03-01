@@ -84,7 +84,9 @@ class ReleaseTable extends React.Component {
         key: 'commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
-        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+        render:isUrgent=>{
+            return isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>
+        },
     },{
         title: '操作',
         dataIndex: 'commonBatchNumber.id',
@@ -93,7 +95,6 @@ class ReleaseTable extends React.Component {
         width: '6%',
         render: (text,record) => {
             let operationFlag = this.judgeOperation(record.commonBatchNumber.isPublished);
-            // let operationFlag = true;
             return (
                 <span>
                     {operationFlag?(
@@ -112,7 +113,7 @@ class ReleaseTable extends React.Component {
                         url={this.props.url}
                         id={record.commonBatchNumber.id}
                         menuList={this.props.menuList}
-                        state={record.commonBatchNumber.status}
+                        state={-1}
                         name='详情'
                     />
                 </span>

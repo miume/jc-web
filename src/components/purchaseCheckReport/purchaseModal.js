@@ -109,7 +109,7 @@ class PurchaseModal extends React.Component {
                                             <td>{this.props.data.topData.norm}</td>
                                             <td>{this.props.data.topData.quantity}</td>
                                             <td>{this.props.data.topData.weight}</td>
-                                            <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                            <td>{this.props.data.topData.receiveDate}</td>
                                             <td>{this.props.data.topData.manufactureName}</td>
                                         </tr>
                                     ):(
@@ -119,7 +119,7 @@ class PurchaseModal extends React.Component {
                                                 <td>{this.props.data.topData.norm}</td>
                                                 <td>{this.props.data.topData.quantity}</td>
                                                 <td>{this.props.data.topData.weight}</td>
-                                                <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                                <td>{this.props.data.topData.receiveDate}</td>
                                                 <td>{this.props.data.topData.manufactureName}</td>
                                             </tr>
                                         ):(
@@ -158,7 +158,7 @@ class PurchaseModal extends React.Component {
                         </div>
                     )
                 }
-                <div style={{paddingTop:'15px'}}>
+                <div style={{paddingTop:'75px'}}>
                     <div id={unqualifiedType?'unqualfiedModalTable':'modalTable'}>
                         <div className="purchaseThead">
                             <div className="theadLeft">

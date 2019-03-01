@@ -17,8 +17,11 @@ class PackTable extends React.Component {
         key: 'deliveringDate',
         align:'center',
         width: '15%',
+        // render: deliveringDate => {
+        //     return <abbr style={{cursor:'default'}} title={deliveringDate?deliveringDate:'无'}>{deliveringDate?deliveringDate.substring(0,10):'无'}</abbr>
+        // }
         render: deliveringDate => {
-            return <abbr style={{cursor:'default'}} title={deliveringDate?deliveringDate:'无'}>{deliveringDate?deliveringDate.substring(0,10):'无'}</abbr>
+            return deliveringDate?deliveringDate:'无';
         }
     },{
         title: '送样人',
@@ -44,8 +47,8 @@ class PackTable extends React.Component {
         key: 'serialNumber',
         align:'center',
         width: '18%',
-        render: serialNumber => {
-            return serialNumber?serialNumber:'无';
+        render:(serialNumber)=>{
+            return <span title={serialNumber} className='text-decoration'>{serialNumber.substring(0,15)+'...'}</span>
         }
     },{
         title: '检测项目',
@@ -56,7 +59,7 @@ class PackTable extends React.Component {
         render: testItemString => {
             const length = testItemString?testItemString.length:0;
             if(length > 15){
-                return <abbr style={{cursor:'default'}} title={testItemString?testItemString:'无'}>{testItemString?testItemString.substring(0,15):'无'}</abbr>
+                return <span title={testItemString} className='text-decoration'>{testItemString.substring(0,15)+'...'}</span>
             }
             return testItemString?testItemString:'无';
         }
