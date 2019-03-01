@@ -100,7 +100,7 @@ const FormItem=Form.Item;
                     initialValue: '',
                     rules:[{required:true,message:'损失货品重量不能为空'}]
                 })(
-                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'320px'}}></InputNumber>
+                    <InputNumber min={1} placeholder='请输入损失货品重量' style={{width:'410px'}}></InputNumber>
                 )}
                 </FormItem>
                 <FormItem  wrapperCol={{span:24}} required>
