@@ -35,13 +35,18 @@ class ProductTable extends React.Component{
         align:'center',
         width: '10%',
     },{
-        title: '编号',
+        title: '物料编码',
         dataIndex: 'repoBaseSerialNumber.serialNumber',
         key: 'repoBaseSerialNumber.serialNumber',
         align:'center',
         width: '13%',
-        render:(serialNumber)=>{
-            return <span title={serialNumber} className='text-decoration'>{serialNumber.substring(0,15)}</span>
+        render:(batchNumber)=>{
+            const arr = batchNumber.split('-');
+            if(arr.length>2){
+                return <span title={batchNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span>
+            }else{
+                return <span>{batchNumber}</span>
+            }
         }
     },{
         title: '检测项目',
@@ -49,36 +54,33 @@ class ProductTable extends React.Component{
         key: 'testItemString',
         align:'center',
         width: '10%',
-        render: testItemString => {
-            const length = testItemString?testItemString.length:0;
-            if(length > 15){
-                return <abbr style={{cursor:'default'}} title={testItemString?testItemString:'无'}>{testItemString?testItemString.substring(0,15):'无'}</abbr>
+        render:(text)=>{
+            const items = text.split(',');
+            var testItems = '';
+            if(items.length>5){
+                testItems = items[0]+','+items[1]+','+items[2];
+                return <span title={text} className='text-decoration'>{testItems}</span>;
+            }else{
+                testItems = text;
+                return <span>{testItems}</span>
             }
-            return testItemString?testItemString:'无';
         }
-    },{
-        title: '异常备注',
-        dataIndex: 'exception',
-        key: 'exception',
-        align:'center',
-        width: '8%',
-        render: exception => {
-            return exception?exception:'无'
-        }
-    },{
-        title: '发布状态',
-        dataIndex: 'isPublished',
-        key: 'isPublished',
-        align:'center',
-        width: '8%',
-        render:state => {
-            switch(state) {
-                case 0: return '未发布';
-                case 1: return '已发布';
-                default: return '';
-            }
-        },
-    },{
+    },
+    //     {
+    //     title: '发布状态',
+    //     dataIndex: 'isPublished',
+    //     key: 'isPublished',
+    //     align:'center',
+    //     width: '8%',
+    //     render:state => {
+    //         switch(state) {
+    //             case 0: return '未发布';
+    //             case 1: return '已发布';
+    //             default: return '';
+    //         }
+    //     },
+    // },
+        {
         title: '审核状态',
         dataIndex: 'status',
         key: 'status',

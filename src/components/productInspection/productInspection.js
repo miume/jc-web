@@ -27,7 +27,8 @@ class ProductInspection extends React.Component {
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -37,19 +38,6 @@ class ProductInspection extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showSizeChanger: true,
-        //     showTotal(total) {
-        //         return `共${total}条记录`
-        //     },
-        //     onShowSizeChange(current, pageSize) {
-        //         // console.log('Current: ', current, '; PageSize: ', pageSize);
-        //     },
-        //     onChange(current) {
-        //         // console.log('Current: ', current);
-        //     }
-        // };
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));

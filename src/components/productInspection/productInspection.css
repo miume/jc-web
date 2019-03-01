@@ -265,7 +265,7 @@
 
 /*drspan表格*/
 .productDrSpanTableModal {
-    width: 480px;
+    width: 481px;
     max-height: 180px;
     cursor: default ;
 }
@@ -273,6 +273,7 @@
 .productDrSpanTheadModal {
     display: flex;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .productDrSpanTheadModal div{
@@ -280,6 +281,8 @@
     border-top: 1px solid #E9E9E9;
     padding-left: 5px;
     width: 80px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .productDrSpanTheadModal div:first-child{
     width: 60px;
@@ -298,7 +301,7 @@
     white-space: nowrap;
 }
 .productDrSpanTbodyModal>div {
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
 
 }
@@ -310,6 +313,8 @@
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
     padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .productDrSpanTbodyModal>div>div:first-child{
     width: 60px;
@@ -317,11 +322,15 @@
 .productDrSpanTbodyModal>div>div:last-child {
     width: 120px;
     display: flex;
-    padding-left: 0px;
+    padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 .productDrSpanTbodyModal>div>div:last-child div{
     width: 50%;
     padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 
@@ -338,6 +347,7 @@
     line-height: 30px;
     font-size: 16px;
     border-collapse:collapse;
+    font-weight: 500;
 }
 
 .productSpanTheadModal div{
@@ -345,6 +355,8 @@
     border-top: 1px solid #E9E9E9;
     width: 80px;
     padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 .productSpanTheadModal div:first-child{
     width: 59px;
@@ -356,7 +368,7 @@
 
 .productSpanTbodyModal {
     height: 300px;
-    line-height: 30px;
+    /*line-height: 30px;*/
     /*height: 200px;*/
     /*border: 1px solid green;*/
     overflow-y: scroll;
@@ -367,7 +379,7 @@
     border-collapse:collapse;
 }
 .productSpanTbodyModal>div {
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
     height: 30px;
     /*border-collapse:collapse;*/
@@ -382,6 +394,9 @@
     /*text-align: left;*/
     border-left: 1px solid #E9E9E9;
     border-top: 1px solid #E9E9E9;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
 }
 .productSpanTbodyModal>div>div:first-child{
     width: 59px !important;
@@ -390,10 +405,14 @@
     width: 120px;
     display: flex;
     padding-left: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 .productSpanTbodyModal>div>div:last-child div{
     width: 50%;
     padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 
@@ -402,26 +421,29 @@
 }
 .productTdInput input{
     border: none;
-    height: 25px !important;
+    height: 20px !important;
     width: 66px !important;
-    padding-bottom: 1px;
+    /*padding-bottom: 1px;*/
 }
 
 .productPassValidPointer {
     background-color: #4BD863;
     cursor: pointer;
     /*width: 50%;*/
-    height: 100%;
+    /*height: 100%;*/
+    height: 29px;
 }
 .productNoPassValidPointer {
     background-color: #FF3B30;
     cursor: pointer;
     /*width: 50%;*/
-    height: 100%;
+    /*height: 100%;*/
+    height: 29px;
 }
 .productDefaultPointer {
     background-color: #999999;
     cursor: pointer;
+    height: 29px;
 
 }
 
@@ -429,16 +451,19 @@
     background-color: #4BD863;
     cursor: default;
     /*width: 50%;*/
-    height: 100%;
+    /*height: 100%;*/
+    height: 29px;
 }
 .productNoPassValidDefault {
     background-color: #FF3B30;
     cursor: default;
     /*width: 50%;*/
-    height: 100%;
+    /*height: 100%;*/
+    height: 29px;
 }
 .productDefaultDefault {
     background-color: #999999;
     cursor: default;
+    height: 29px;
 
 }

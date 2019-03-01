@@ -39,28 +39,29 @@ class DrSpanModal extends React.Component {
         width: '20%',
     }];
     render() {
-        const columns = this.columns.map((col) => {
-            return {
-                ...col,
-                onCell: record => ({
-                    record,
-                }),
-            };
-        });
+        // const columns = this.columns.map((col) => {
+        //     return {
+        //         ...col,
+        //         onCell: record => ({
+        //             record,
+        //         }),
+        //     };
+        // });
+        const arr = this.props.data.topData.serialNumber.split('-');
         return(
             <div >
                 <div className="productDrSpanModalTop">
                     <table>
                         <thead>
                         <tr>
-                            <th>编号</th>
+                            <th>物料编码</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
+                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>

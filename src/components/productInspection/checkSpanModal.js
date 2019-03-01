@@ -13,6 +13,7 @@ class CheckSpanModal extends React.Component {
         this.clearData = this.clearData.bind(this);
     }
     render() {
+        const arr = this.props.data.topData.serialNumber.split('-');
         return(
             <div >
                 <div className="productDrSpanModalTop">
@@ -26,7 +27,7 @@ class CheckSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
+                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
