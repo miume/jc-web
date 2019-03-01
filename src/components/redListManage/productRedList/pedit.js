@@ -126,7 +126,7 @@ class Edit extends Component{
                 maskClosable={false}
                 closable={false}
                 title="编辑红单"
-                width='360px'
+                width='450px'
             
              // footer下的每个组件都要有唯一的key
             footer={[

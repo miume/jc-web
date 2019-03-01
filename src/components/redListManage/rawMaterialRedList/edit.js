@@ -134,44 +134,13 @@ class Edit extends Component{
                 maskClosable={false}
                 closable={false}
                 title="编辑红单"
-                width='360px'
+                width='450px'
             
              // footer下的每个组件都要有唯一的key
             footer={[
                 <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                 <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,
-                // <Popover key='songshen' title='设置审批细节' width='50%' height='40%'
-                // maskClosable={false}
-                //  content={
-                //      <div style={{width:250 ,height:150}}>
-                //         <div>
-                //         <Select placeholder='选择送审流程' style={{width:150}} onChange={this.selectChange}>
-                //         {
-                //             this.props.process.map((pro)=>{
-                //                     return(
-                //                       <Option key={pro.commonBatchNumber.id} value={pro.commonBatchNumber.id}>{pro.commonBatchNumber.description}</Option>
-
-                //                     );
-                //             })
-                //         }
-                //       </Select>
-                //         </div>
-                //         <div style={{paddingTop:'10px'}}>
-                //           <span>是否紧急</span>&nbsp;&nbsp;<Switch onChange={this.urgentChange}/>
-                //         </div>
-                //         <div style={{paddingTop:'10px' ,float:'right'}}>
-                //         <Button type='ghost'size='small' onClick={this.hide} className='button'>取消</Button>
-                //         <Button type='primary' size='small'   className={this.state.checkSelectData>-1?'button':'grey-button'}   disabled={this.state.checkSelectData>-1?false:true} onClick={this.handleSongShenOk}>确认</Button>
-                //         </div>
-                //      </div>
-                //  }
-                //  trigger='click'
-                //  visible={this.state.popVisible}
-                //  onVisibleChange={this.handleVisibleChange}
-                // >
-                //   <Button key='submit' type='primary'>送审</Button>
-                // </Popover>
-                <Submit applySaveAndReview={this.handleSongShenOk} url={this.url}/>
+                <Submit key='submit' applySaveAndReview={this.handleSongShenOk} url={this.url}/>
             ]}
           >
           <RawMaterialRedListEditModal 
