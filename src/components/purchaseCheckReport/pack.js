@@ -43,7 +43,8 @@ class Pack extends React.Component {
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -56,7 +57,7 @@ class Pack extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
     };
     render() {
-        const { selectedRowKeys,unGenerateDate } = this.state;
+        const { selectedRowKeys } = this.state;
         if(this.props.tabFlag === 1){
             this.fetch({
                 pageSize:10,
@@ -71,20 +72,6 @@ class Pack extends React.Component {
                 disabled: record.isGenerate !== 0,
             })
         };
-        // if(unGenerateDate===true){
-        //     this.rowSelection = {
-        //         selectedRowKeys,
-        //         onChange: this.onSelectChange,
-        //     };
-        // }else{
-        //     this.rowSelection = {
-        //         selectedRowKeys,
-        //         onChange: this.onSelectChange,
-        //         getCheckboxProps: record => ({
-        //             disabled: record.isGenerate !== 0,
-        //         })
-        //     };
-        // }
         return(
             <div>
                 <div>
@@ -149,20 +136,6 @@ class Pack extends React.Component {
         }
     };
     /**未生成和已生成的所有数据进行判断调用结构 */
-    // judgeGetAll = () => {
-    //     if(this.state.unGenerateDate===true){
-    //         this.fetch({
-    //             isGenerate: 0,
-    //             pageSize:10,
-    //             pageNumber:1,
-    //         });
-    //     }else{
-    //         this.fetch({
-    //             pageSize:10,
-    //             pageNumber:1,
-    //         });
-    //     }
-    // };
     fetch = (params = {}) => {
         const unGenerateDate = this.state.unGenerateDate;
         if(unGenerateDate === true){

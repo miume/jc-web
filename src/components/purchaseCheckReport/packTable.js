@@ -17,9 +17,6 @@ class PackTable extends React.Component {
         key: 'deliveringDate',
         align:'center',
         width: '15%',
-        // render: deliveringDate => {
-        //     return <abbr style={{cursor:'default'}} title={deliveringDate?deliveringDate:'无'}>{deliveringDate?deliveringDate.substring(0,10):'无'}</abbr>
-        // }
         render: deliveringDate => {
             return deliveringDate?deliveringDate:'无';
         }
@@ -42,13 +39,14 @@ class PackTable extends React.Component {
             return manufacturerName?manufacturerName:'无';
         }
     },{
-        title: '编号',
+        title: '物料编码',
         dataIndex: 'serialNumber',
         key: 'serialNumber',
         align:'center',
         width: '18%',
         render:(serialNumber)=>{
-            return <span title={serialNumber} className='text-decoration'>{serialNumber.substring(0,15)+'...'}</span>
+            var arr = serialNumber.split('-');
+            return <span title={serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span>
         }
     },{
         title: '检测项目',
@@ -56,13 +54,24 @@ class PackTable extends React.Component {
         key: 'testItemString',
         align:'center',
         width: '14%',
-        render: testItemString => {
-            const length = testItemString?testItemString.length:0;
-            if(length > 15){
-                return <span title={testItemString} className='text-decoration'>{testItemString.substring(0,15)+'...'}</span>
+        render:(text)=>{
+            const items = text.split(',');
+            var testItems = '';
+            if(items.length>5){
+                testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+','+items[4];
+                return <span title={text} className='text-decoration'>{testItems+'...'}</span>;
+            }else{
+                testItems = text;
+                return <span className='text-decoration'>{testItems}</span>
             }
-            return testItemString?testItemString:'无';
-        }
+        },
+        // render: testItemString => {
+        //     const length = testItemString?testItemString.length:0;
+        //     if(length > 15){
+        //         return <span title={testItemString} className='text-decoration'>{testItemString.substring(0,15)+'...'}</span>
+        //     }
+        //     return testItemString?testItemString:'无';
+        // }
     },{
         title: '异常备注',
         dataIndex: 'exceptionHandle',

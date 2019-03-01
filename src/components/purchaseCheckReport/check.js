@@ -3,28 +3,6 @@ import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
 
-// const data = [];
-// for(var i=0;i<20;i++){
-//     data.push({
-//         index:i,
-//         commonBatchNumber:{
-//             batchNumber:'2',
-//             createTime:'7',
-//             status:1,
-//             isUrgent:0,
-//             id:123
-//         },
-//         details:{
-//             materialName:'3',
-//             manufactureName:'4',
-//             receiveDate:'5'
-//         },
-//         createPersonName:'6',
-//         serialNumber:'5',
-//         testItemString:'6',
-//         exceptionHandle:'7',
-//     })
-// }
 class Check extends React.Component {
     componentDidMount() {
         this.fetch({
@@ -35,14 +13,14 @@ class Check extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // dataSource: data,
             dataSource: [],
             searchContent:'',
             searchText: '',
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
