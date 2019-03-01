@@ -64,7 +64,8 @@ class ProcessInspection extends React.Component{
         this.pagination = {
             showTotal(total) {
                 return `共${total}条记录`
-            } 
+            } ,
+            showSizeChanger:true
           };
         this.columns = [{
           title: '序号',

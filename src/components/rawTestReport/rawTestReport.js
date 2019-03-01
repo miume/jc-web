@@ -32,11 +32,11 @@ class RawTestReport extends React.Component{
             pageNumber:1,
         });
     }
-    // componentWillUnmount(){
-    //     this.setState = () => {
-    //         return ;
-    //       }
-    // }
+    componentWillUnmount(){
+        this.setState = () => {
+            return ;
+          }
+    }
     constructor(props){
         super(props);
         this.state ={
@@ -45,13 +45,14 @@ class RawTestReport extends React.Component{
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                } 
+                } ,
+                showSizeChanger:true
               },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         }
         this.returnDataEntry = this.returnDataEntry.bind(this);
         // this.handleAdd = this.handleAdd.bind(this);
-        // this.deleteByIds = this.deleteByIds.bind(this);
+        this.tableRecord = this.tableRecord.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -163,7 +164,7 @@ class RawTestReport extends React.Component{
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
                         <Divider type='vertical' />
-                        <RecordChecking value={text} url={this.url} status={record.status}/>
+                        <RecordChecking value={text} url={this.url} status={record.status} tableRecord={this.tableRecord}/>
                     </span>
                 );
             }
@@ -233,8 +234,8 @@ class RawTestReport extends React.Component{
                 deliverer:e.deliverer,
                 deliveryFactoryId:e.sampleDeliveringRecord.deliveryFactoryId,
                 deliveryFactoryName:e.deliveryFactoryName,
-                batchNumber:e.commonBatchNumber?e.commonBatchNumber.batchNumber:'',
-                testItemString:e.testItemString?e.testItemString:'',
+                batchNumber:e.commonBatchNumber?e.commonBatchNumber.batchNumber:'无',
+                testItemString:e.testItemString?e.testItemString:'无',
                 exceptionComment:e.sampleDeliveringRecord.exceptionComment,
                 type:e.sampleDeliveringRecord.type,
                 acceptStatus:'接受',
@@ -242,7 +243,7 @@ class RawTestReport extends React.Component{
                 handleComment:e.sampleDeliveringRecord.handleComment,
                 status:e.commonBatchNumber?e.commonBatchNumber.status:0,
                 isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,
-                batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'',
+                batchNumberId:e.commonBatchNumber?e.commonBatchNumber.id:'无',
             })
         }
         this.setState({
@@ -269,7 +270,37 @@ class RawTestReport extends React.Component{
    /**返回数据录入页面 */
    returnDataEntry(){
     this.props.history.push({pathname:'/dataEntry'});
-}
+    }
+   /**录检完成后，提示用户刚才录检的数据 */
+   tableRecord(id){
+       var {dataSource} = this.state;
+       var data = dataSource.map(m=>{
+           if(m.id===id) m['flag']=1;
+           else m['flag']=0;
+           return m;
+       })
+       var $this = this;
+       /**实现录检数据显示，并在一秒之后消失 */
+       new Promise((resolve, reject) => {
+            $this.setState({
+                dataSource:data
+            });
+            setTimeout(() => {
+                var data = dataSource.map(m=>{
+                    m['flag']=0;
+                    return m;
+                })
+                $this.setState({
+                    dataSource:data
+                });     
+                resolve("done!");
+            }, 1000)
+            
+       })
+    //    .then((response) => {
+    //        console.log(response);
+    //    })
+   }
     render(){
         const current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url')); 
@@ -284,7 +315,9 @@ class RawTestReport extends React.Component{
                         <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     </span>
                     <div className='clear'></div>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} onChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} size='small' bordered/> 
+                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} 
+                onChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} 
+                size='small' bordered rowClassName={(record)=>record.flag?'table-recorcd':''}/> 
                 </div>
             </div>
         );

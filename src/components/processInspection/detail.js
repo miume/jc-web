@@ -76,16 +76,17 @@ class Detail extends React.Component{
         }
         this.selectionChange = this.selectionChange.bind(this);
     }
+    /**详情按照产品线进行搜索 */
     selectionChange(value) {
         var {data} = this.state;
         if(value !== 'all')
-            data = this.props.data.filter(d => parseInt(d.deliveryFactory.id) === parseInt(value));
+            data = this.props.data.filter(d => parseInt(d.procedureTestRecord.deliveryFactoryId) === parseInt(value));
         else 
             data = this.props.data;
-          this.setState({
-            data:data,
-            dataFlag:1
-          })
+        this.setState({
+          data:data,
+          dataFlag:1
+        })
     }
     render() {
         return (

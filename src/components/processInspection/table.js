@@ -51,9 +51,9 @@ class ProcessTable extends React.Component{
         }
       }).then(data=>{
         const res = data.data.data;
-        const children = res.map(p =>
+        const children = res?res.map(p =>
             <Option key={p.id} value={p.id}>{p.description}</Option>
-            )
+            ):null
         this.setState({
           allUser : children
       })
@@ -99,12 +99,13 @@ class ProcessTable extends React.Component{
                              </thead>
                              <tbody className='tbody'>
                              {
-                                this.props.data.map((m,index) => { 
+                                this.props.data?this.props.data.map((m,index) => { 
                                     return <Tr1 key={index} deleteRow={this.props.deleteRow} id={m.id?m.id:m} url={this.props.url} getData={this.props.getData}
                                            detail={m} flag={this.props.flag} mode={m.mode} editorRow={this.props.editorRow}
                                            allProductLine={this.props.allProductLine} allProductionProcess={this.state.allProductionProcess} allUser={this.state.allUser}
                                            allTestItem={this.props.allTestItem} allTestMaterial={this.state.allTestMaterial}
                                            /> })
+                                   : null
                              }
                              </tbody>
                          </table>

@@ -29,18 +29,19 @@ class RecordChecking extends React.Component{
         }
         this.save = this.save.bind(this);
         this.failed = this.failed.bind(this);
+        this.headData = this.headData.bind(this);
         this.applyOut = this.applyOut.bind(this);
         this.checkData = this.checkData.bind(this);
         this.qualified = this.qualified.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.getEditorData = this.getEditorData.bind(this);
-        this.recordChecking = this.recordChecking.bind(this);
         this.applyReview = this.applyReview.bind(this);
         this.urgentChange = this.urgentChange.bind(this);
         this.selectChange = this.selectChange.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.getEditorData = this.getEditorData.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
+        this.recordChecking = this.recordChecking.bind(this);
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.columns = [{
@@ -254,7 +255,7 @@ class RecordChecking extends React.Component{
                 this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
-                // this.props.fetch();
+                this.props.tableRecord(this.props.value);
             }
         }).catch(()=>{
             message.info('保存失败，请联系管理员！')
@@ -288,6 +289,19 @@ class RecordChecking extends React.Component{
             visible:false
         })
     }
+    /**数据太长，对数据进行处理 
+     * flag===1 表示对日期进行处理
+     * 否则 对编号进行处理
+    */
+    headData(text,flag){
+        if(text!==undefined){
+            if(flag) return <span className='text-decoration' title={text}>{text.substring(0,10)}</span>;
+            else {
+                var te = text.split('-');
+                return <span className='text-decoration' title={text}>{te[0]+'-'+te[1]+'-'+te[2]+'-'+te[3]}</span>;
+            }
+        }
+    }
     render(){
         return (
             <span>
@@ -304,16 +318,16 @@ class RecordChecking extends React.Component{
                     <table>
                         <thead>
                         <tr>
-                            <th>批号</th>
+                            <th>物料编码</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{this.state.topData?this.state.topData.batchNumber:''}</td>
+                            <td>{this.state.topData?this.headData(this.state.topData.batchNumber):''}</td>
                             <td>{this.state.topData?this.state.topData.materialName:''}</td>
-                            <td>{this.state.topData?this.state.topData.b:''}</td>
+                            <td>{this.state.topData?this.headData(this.state.topData.b,1):''}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -325,7 +339,6 @@ class RecordChecking extends React.Component{
                        {/* <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button> */}
                        {/* <Button className='white-button' onClick={this.props.handleCancel}><i className="fa fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button> */}
                 </div>
-                
                 <div style={{height:'350px'}}>
                     <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:216}}></Table>
                 </div>

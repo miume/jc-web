@@ -237,7 +237,7 @@ class Tr1 extends React.Component{
          */
         switch(this.props.mode){
             case 1 : return (
-                        <tr id={this.props.id}>
+                        <tr id={this.props.id} className='detail-text'>
                             <td>{detail.deliveryFactory}</td>
                             <td>{detail.productionProcess}</td>
                             <td>{d.samplePointName}</td>

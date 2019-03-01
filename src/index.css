@@ -222,21 +222,21 @@ button span {
   line-height: 35px!important;
 }
 /* 下拉选择器样式 */
-.ant-select-lg .ant-select-selection--single{
+.ant-select-lg .ant-select-selection--single,.ant-select-selection--single{
     height: 35px !important;
 }
 .ant-select-sm .ant-select-selection--single{
-   height: 35px !important;
+   height: 30px !important;
 }
 
-/* .ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{
+.ant-select-lg .ant-select-selection__rendered, .ant-select-selection__rendered{
   height: 33px !important;
   line-height: 33px !important;
 }
 .ant-select-sm .ant-select-selection__rendered {
-  height: 22px !important;
-  line-height: 22px !important;
-} */
+  height: 25px !important;
+  line-height: 25px !important;
+}
 .particles-js-canvas-el {
   position: absolute;
   left: 50%;
