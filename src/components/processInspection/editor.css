@@ -55,6 +55,9 @@
     max-width: 130px;
     min-width: 130px;
 }
+.detail-text td{
+    padding:0 5px;
+}
 #process-table  .tbody tr td:last-child{
     width: 88px;
     max-width: 88px;
