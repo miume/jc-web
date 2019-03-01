@@ -102,6 +102,7 @@ class ReleaseTable extends React.Component {
                             url={this.props.url}
                             menuList={this.props.menuList}
                             state={record.commonBatchNumber.status}
+                            fetch={this.props.fetch}
                             name='发布'
                             id={record.commonBatchNumber.id}
                         />

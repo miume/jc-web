@@ -98,7 +98,6 @@ class CheckEditSpan extends React.Component {
     inputSave(e){
         const value = e.target.value;
         const name = e.target.name;
-        // console.log(value)
         var checkData = this.state.checkData;
         checkData.topData[name] = value;
         this.setState({
@@ -268,7 +267,6 @@ class CheckEditSpan extends React.Component {
             };
             validTestRecords.push(validTestRecordsObj)
         }
-        console.log(this.props.menuList.userId)
         var saveData = {
             purchaseReportRecord: {
                 id: checkData.topData.id,
@@ -280,15 +278,11 @@ class CheckEditSpan extends React.Component {
             },
             validTestRecords: validTestRecords
         };
-        // if(detailTestDTOS){
-        //     for(var j=0; j<detailTestDTOS.length; j++){
-        //         if(detailTestDTOS[j].testResult === ''){
-        //             message.info('所有检测结果不能为空，请填写完整！');
-        //             return
-        //         }
-        //     }
-        // }
-        // console.log(saveData)
+        const dataCheck = saveData.purchaseReportRecord;
+        if(dataCheck&&(dataCheck.norm===null||dataCheck.quantity===null||dataCheck.receiveDate===null||dataCheck.weight===null)){
+            message.info('规格、重量、日期和数量不能为空，请填写完整！');
+            return
+        }
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
