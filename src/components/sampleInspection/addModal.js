@@ -9,7 +9,6 @@ import moment from "moment";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
         url
@@ -474,7 +473,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('exceptionComment', {
                               
                             })(
-                                <Input placeholder="请输入异常备注"/>
+                                <Input.TextArea autosize={{minRows:2}} placeholder="请输入异常备注"/>
                             )}
                         </FormItem>
                     </Form>

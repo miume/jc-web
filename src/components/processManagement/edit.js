@@ -201,7 +201,7 @@ class Edit extends React.Component{
                         )
                         }
                     </Form.Item>
-                    <div id='edit'>
+                    <div id='edit' style={{height:'360px'}}>
                       <Edtr approvalProcess={this.state.approvalProcess} details={this.state.detail} remove={this.remove} form={this.props.form}/>
                     <Form.Item {...formItemLayoutWithOutLabel}>
                       <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>

@@ -370,7 +370,7 @@ class Editor extends React.Component{
 
     changeMemo = (value) =>{
         this.setState({
-            oldMemo:value
+            oldMemo:value.target.value
         })
     }
 
@@ -519,7 +519,7 @@ class Editor extends React.Component{
                                 })
                             }
                         </Select>:null}
-                        <Input placeholder="请输入异常备注" onChange={this.changeMemo} defaultValue={this.state.oldMemo} style={{marginTop:"10px"}}/>
+                        <Input.TextArea autosize={{minRows:2}} placeholder="请输入异常备注" onChange={this.changeMemo} defaultValue={this.state.oldMemo} style={{marginTop:"10px"}}/>
                 </Modal>
             </span>
         )

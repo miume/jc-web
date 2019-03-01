@@ -219,7 +219,7 @@ class DynamicFieldSet extends React.Component{
                       )
                       }
                   </Form.Item>
-                  <div id="edit">
+                  <div id="edit" style={{height:'360px'}}>
                   {formItems}
                   <Form.Item {...formItemLayoutWithOutLabel}>
                     <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
