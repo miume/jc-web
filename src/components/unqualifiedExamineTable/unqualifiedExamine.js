@@ -3,26 +3,7 @@ import SearchCell from "../BlockQuote/search";
 import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
 import axios from "axios";
-//
-// const data = [];
-// for(var i=0;i<30;i++){
-//     data.push({
-//         index:i,
-//         commonBatchNumber:{
-//             batchNumber:'aaaa',
-//             createTime:'aa',
-//             status:1,
-//             isUrgent:0,
-//             id:i
-//         },
-//         details:{
-//             materialName:'aa',
-//             factory:'bb',
-//             date:'aa'
-//         },
-//         createPersonName:'aa'
-//     })
-// }
+
 
 
 class UnqualifiedExamine extends React.Component{
@@ -45,11 +26,11 @@ class UnqualifiedExamine extends React.Component{
             dataSource: [],
             searchContent:'',
             searchText: '',
-
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -140,6 +121,10 @@ class UnqualifiedExamine extends React.Component{
                 }
                 this.setState({
                     dataSource: res.list,
+                });
+            }else{
+                this.setState({
+                    dataSource: [],
                 });
             }
         });

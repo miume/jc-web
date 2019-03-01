@@ -66,7 +66,7 @@ class EditSpan extends React.Component {
         if(type===0){
             modalWidth='520px'
         }else{
-            modalWidth='1035px'
+            modalWidth='1080px'
         }
 
         return(
@@ -225,7 +225,8 @@ class EditSpan extends React.Component {
                             decision: detailTbody[j].decision
                         })
                     }
-                    judger = detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无';
+                    // judger = detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无';
+                    judger = this.props.menuList.name;
                     judgement = detail.isQualified ;
                     this.setState({
                         checkData: {

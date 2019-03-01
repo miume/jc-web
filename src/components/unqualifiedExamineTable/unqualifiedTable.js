@@ -18,8 +18,8 @@ class UnqualifiedTable extends React.Component {
         key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
-        render:(batchNumber)=>{
-            return <span title={batchNumber} className='text-decoration'>{batchNumber.substring(0,15)}</span>
+        render: batchNumber => {
+            return batchNumber?batchNumber:'无'
         }
     },{
         title: '物料类型',
@@ -63,8 +63,8 @@ class UnqualifiedTable extends React.Component {
         key: 'commonBatchNumber.createTime',
         align:'center',
         width: '10%',
-        render: createTime => {
-            return createTime?createTime:'无'
+        render:(createTime)=>{
+            return <span title={createTime} className='text-decoration'>{createTime.substring(0,10)+'...'}</span>
         }
     },{
         title: '审核状态',
@@ -81,7 +81,9 @@ class UnqualifiedTable extends React.Component {
         key: 'commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
-        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+        render:isUrgent=>{
+            return isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>
+        },
     },{
         title: '操作',
         dataIndex: 'commonBatchNumber.id',

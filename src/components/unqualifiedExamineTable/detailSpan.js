@@ -52,7 +52,7 @@ class DetailSpan extends React.Component {
         if(type===0){
             modalWidth='520px'
         }else{
-            modalWidth='1035px'
+            modalWidth='1080px'
         }
         // const footer = this.judgeFooter(2);
         return(
