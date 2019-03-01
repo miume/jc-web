@@ -18,8 +18,8 @@ class InterTable extends React.Component{
         key: 'sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '8%',
-        render: sampleDeliveringDate => {
-            return <abbr className="text-decoration" title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
+        render:(sampleDeliveringDate)=>{
+            return <span title={sampleDeliveringDate} className='text-decoration'>{sampleDeliveringDate.substring(0,10)}</span>
         }
     },{
         title: '送检人',

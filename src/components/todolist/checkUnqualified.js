@@ -17,10 +17,17 @@ class CheckUnqualified extends React.Component{
                 tbodyData: [],
                 judgement: '',
                 judger: '',
-                topData: {},
+                topData: {
+
+                },
             },
             detailData:{    //成品数据格式
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:'',
+                    id:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
