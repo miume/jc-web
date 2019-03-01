@@ -102,9 +102,7 @@ class CheckTable extends React.Component {
         render: (text,record) => {
             const status = record.commonBatchNumber.status;
             let operationCheckFlag = this.judgeCheckOperation(status);
-            // let operationCheckFlag = true;
             let operationDeleteFlag = this.judgeDeleteOperation(status);
-            // let operationDeleteFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(

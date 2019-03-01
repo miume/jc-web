@@ -76,6 +76,7 @@ class Release extends React.Component {
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
+                        type={3}
                     />
                 </span>
                 <div className='clear' ></div>

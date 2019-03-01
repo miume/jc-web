@@ -6,20 +6,6 @@ import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
 import './purchaseCheckReport.css';
 
-// const data = [];
-// for(var i=0;i<20;i++){
-//     data.push({
-//         index:i,
-//         deliveringDate:'2',
-//         deliverName:'3',
-//         manufacturerName:'4',
-//         serialNumber:'5',
-//         testItemString:'6',
-//         exceptionHandle:'7',
-//     })
-// }
-
-
 class Pack extends React.Component {
     rowSelection;
     componentDidMount() {
@@ -31,12 +17,10 @@ class Pack extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // dataSource: data,
             dataSource: [],
             selectedRowKeys: [],    //多选框key
             loading: false,
             searchContent:'',
-            searchText: '',
             generateVisible: false,
             unGenerateDate: true, //未生成数据--true为显示未生成数据，false为显示所有数据
 
@@ -91,6 +75,7 @@ class Pack extends React.Component {
                                 searchContentChange={this.searchContentChange}
                                 searchEvent={this.searchEvent}
                                 fetch={this.fetch}
+                                type={1}
                             />
                         </span>
                     </div>
@@ -142,7 +127,6 @@ class Pack extends React.Component {
             var newParam = 'isGenerate';
             params[newParam] = 0;
         }
-        console.log('params',params);
         axios({
             url: `${this.props.url.purchaseCheckReport.rawPages}` ,
             method: 'get',
@@ -166,20 +150,6 @@ class Pack extends React.Component {
                     pagination:pagination,
                     // searchContent:'',
                 });
-                // if(searchFlag === 0){
-                //     this.setState({
-                //         dataSource: res.list,
-                //         selectedRowKeys: [],
-                //         pageChangeFlag:1,
-                //     });
-                // }else{
-                //     this.setState({
-                //         dataSource: res.list,
-                //         selectedRowKeys: [],
-                //         pageChangeFlag:0,
-                //         searchContent:'',
-                //     });
-                // }
             }else{
                 this.setState({
                     dataSource: [],
