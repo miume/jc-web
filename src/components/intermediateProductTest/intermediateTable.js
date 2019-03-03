@@ -3,6 +3,7 @@ import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
+import Loss from '../BlockQuote/lossStatement'
 
 class InterTable extends React.Component{
     columns = [{
@@ -72,15 +73,6 @@ class InterTable extends React.Component{
             }
         }
     },{
-        title: '异常备注',
-        dataIndex: 'sampleDeliveringRecord.exceptionComment',
-        key: 'sampleDeliveringRecord.exceptionComment',
-        align:'center',
-        width: '6%',
-        render: exceptionComment => {
-            return exceptionComment?exceptionComment:'无';
-        }
-    },{
         title: '发布状态',
         dataIndex: 'commonBatchNumber.isPublished',
         key: 'commonBatchNumber.isPublished',
@@ -107,7 +99,7 @@ class InterTable extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '11%',
+        width: '18%',
         render: (text,record) => {
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
@@ -145,6 +137,8 @@ class InterTable extends React.Component{
                     ):(
                         <span  className="notClick">发布</span>
                     )}
+                    <Divider type="vertical" />
+                        <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                 </span>
             )
         }

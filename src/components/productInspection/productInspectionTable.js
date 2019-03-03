@@ -39,11 +39,11 @@ class ProductTable extends React.Component{
         dataIndex: 'repoBaseSerialNumber.serialNumber',
         key: 'repoBaseSerialNumber.serialNumber',
         align:'center',
-        width: '13%',
+        width: '20%',
         render:(batchNumber)=>{
             const arr = batchNumber.split('-');
-            if(arr.length>2){
-                return <span title={batchNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span>
+            if(arr.length>4){
+                return <span title={batchNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'-'+arr[2]+'-'+arr[3]+'...'}</span>
             }else{
                 return <span>{batchNumber}</span>
             }
@@ -65,22 +65,7 @@ class ProductTable extends React.Component{
                 return <span>{testItems}</span>
             }
         }
-    },
-    //     {
-    //     title: '发布状态',
-    //     dataIndex: 'isPublished',
-    //     key: 'isPublished',
-    //     align:'center',
-    //     width: '8%',
-    //     render:state => {
-    //         switch(state) {
-    //             case 0: return '未发布';
-    //             case 1: return '已发布';
-    //             default: return '';
-    //         }
-    //     },
-    // },
-        {
+    }, {
         title: '审核状态',
         dataIndex: 'status',
         key: 'status',
