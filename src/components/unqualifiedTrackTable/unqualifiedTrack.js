@@ -4,33 +4,13 @@ import BlockQuote from "../BlockQuote/blockquote";
 import UnqualifiedTrackTable from './unqualifiedTrackTable';
 import axios from "axios";
 
-
-
-
-const data = [];
-for(var i=0;i<30;i++){
-    data.push({
-        index:i,
-        commonBatchNumber:{
-            id:i
-        },
-        details:{
-            materialName:'aa',
-            process:{
-                name:'aaa'
-            },
-            createTime:'aa',
-            handle:'aaa'
-        },
-    })
-}
 class UnqualifiedTrack extends React.Component{
     url;
     componentDidMount() {
-        // this.fetch({
-        //     pageSize:10,
-        //     pageNumber:1,
-        // });
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
+        });
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -40,14 +20,14 @@ class UnqualifiedTrack extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            dataSource: data,
-            // dataSource: [],
+            dataSource: [],
             searchContent:'',
             searchText: '',
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -56,13 +36,6 @@ class UnqualifiedTrack extends React.Component{
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showTotal(total) {
-        //         return `共${total}条记录`
-        //     },
-        //     showSizeChanger: true,
-        // }
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -83,7 +56,7 @@ class UnqualifiedTrack extends React.Component{
                         url={this.url}
                         menuList={menuList}
                         data={this.state.dataSource}
-                        pagination={this.pagination}
+                        pagination={this.state.pagination}
                         fetch={this.fetch}
                         handleTableChange={this.handleTableChange}
                     />
@@ -144,6 +117,10 @@ class UnqualifiedTrack extends React.Component{
                 this.setState({
                     dataSource: res.list,
                     pagination:pagination
+                });
+            }else{
+                this.setState({
+                    dataSource: [],
                 });
             }
         });

@@ -73,6 +73,7 @@
     width: 1000px;
     height: 470px;
     white-space: nowrap;
+    padding-top: 60px;
     /*display: flex;*/
     font-size: 0;
 

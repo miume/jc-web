@@ -158,7 +158,7 @@ class PurchaseModal extends React.Component {
                         </div>
                     )
                 }
-                <div style={{paddingTop:'75px'}}>
+                <div style={{paddingTop:'10px'}}>
                     <div id={unqualifiedType?'unqualfiedModalTable':'modalTable'}>
                         <div className="purchaseThead">
                             <div className="theadLeft">
