@@ -36,7 +36,11 @@ const CollectionCreateForm = Form.create()(
                 samplingPoint:null,
                 materialsId : null,
                 clicked: false,
-                visible1: 1
+                visible1: 1,
+                processVis : 0,
+                pointVis : 0,
+                materialVis : 0,
+                oldMaterial : undefined
             }
             // this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
@@ -168,7 +172,8 @@ const CollectionCreateForm = Form.create()(
                 if(res){
                     this.setState({
                         sampling:res,
-                        procedureId:value
+                        procedureId:value,
+                        pointVis:1,
                     })
                 }
                 
@@ -188,7 +193,8 @@ const CollectionCreateForm = Form.create()(
                 if(res){
                     this.setState({
                         materials:res,
-                        samplingPoint:value
+                        samplingPoint:value,
+                        materialVis:1
                     })
                 }
                 
@@ -230,7 +236,8 @@ const CollectionCreateForm = Form.create()(
                     
                     this.setState({
                         process:res,
-                        factoryId:value
+                        factoryId:value,
+                        processVis:1
                     })
                 }
                 
@@ -250,10 +257,17 @@ const CollectionCreateForm = Form.create()(
                 if(res){
                     this.props.onChange(res);
                     this.setState({
-                        testItems : res
+                        testItems : res,
+                        oldMaterial:value
                     })
                 }
                 
+            })
+        }
+
+        onMouseEnter = ()=>{
+            this.props.form.setFieldsValue({
+                serialNumberId:null
             })
         }
 
@@ -370,7 +384,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        <FormItem wrapperCol={{ span: 24 }}>
+                        {this.state.processVis === 0?null:<FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('process', {
                                 rules: [{ required: true, message: '请选择工序' }],
                             })(
@@ -384,8 +398,9 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem>
-                        <FormItem wrapperCol={{ span: 24 }}>
+                        </FormItem>}
+                        
+                        {this.state.pointVis === 0?null:<FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('samplePointName', {
                                 rules: [{ required: true, message: '请选择取样点' }],
                             })(
@@ -399,12 +414,12 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem>
-                        <FormItem wrapperCol={{ span: 24 }}>
+                        </FormItem>}
+                        {this.state.materialVis === 0?null:<FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
                                 rules: [{ required: true, message: '请选择受检物料' }],
                             })(
-                                <Select placeholder="请选择受检物料" onChange={this.getItems}>
+                                <Select placeholder="请选择受检物料" onMouseEnter={this.onMouseEnter} onChange={this.getItems}>
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
@@ -420,7 +435,7 @@ const CollectionCreateForm = Form.create()(
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
                             }
                             </Checkbox.Group></div>
-                        </FormItem>
+                        </FormItem>}
                         </div>
                         )    
                         }

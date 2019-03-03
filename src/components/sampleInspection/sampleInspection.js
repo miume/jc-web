@@ -91,7 +91,7 @@ class SampleInspection extends React.Component{
             width: '11%',
             render:(text)=>{
                     var value = text.split('-')
-                    return <div className='text-decoration' title={text}>{value[0]}</div>
+                    return <div className='text-decoration' title={text}>{value[0]+"..."}</div>
             }
         },{
             title: '类型',
