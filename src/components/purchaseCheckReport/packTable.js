@@ -1,7 +1,8 @@
 import React from 'react';
-import {Table} from 'antd';
+import {Divider, Table} from 'antd';
 import DetailSpan from './packDetailSpan';
 import './purchaseCheckReport.css'
+import Loss from '../BlockQuote/lossStatement'
 
 class PackTable extends React.Component {
     columns = [{
@@ -10,7 +11,7 @@ class PackTable extends React.Component {
         key: 'index',
         sorter: (a, b) => a.index - b.index,
         align:'center',
-        width: '8%',
+        width: '5%',
     },{
         title: '送检日期',
         dataIndex: 'deliveringDate',
@@ -43,43 +44,38 @@ class PackTable extends React.Component {
         dataIndex: 'serialNumber',
         key: 'serialNumber',
         align:'center',
-        width: '18%',
+        width: '24%',
         render:(serialNumber)=>{
             var arr = serialNumber.split('-');
-            return <span title={serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span>
+            if(arr.length>4){
+                return <span title={serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'-'+arr[2]+'-'+arr[3]+'...'}</span>
+            }else{
+                return serialNumber
+            }
         }
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
-        width: '14%',
+        width: '17%',
         render:(text)=>{
             const items = text.split(',');
             var testItems = '';
-            if(items.length>5){
-                testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+','+items[4];
+            if(items.length>7){
+                testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+','+items[4]+','+items[5]+','+items[6];
                 return <span title={text} className='text-decoration'>{testItems+'...'}</span>;
             }else{
                 testItems = text;
-                return <span className='text-decoration'>{testItems}</span>
+                return testItems
             }
         },
-    },{
-        title: '异常备注',
-        dataIndex: 'exceptionHandle',
-        key: 'exceptionHandle',
-        align:'center',
-        width: '10%',
-        render: exceptionHandle => {
-            return exceptionHandle?exceptionHandle:'无';
-        }
     },{
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '10%',
+        width: '14%',
         render: (text,record) => {
             return (
                 <span>
@@ -89,6 +85,8 @@ class PackTable extends React.Component {
                         batchNumberId={record.batchNumberId}
                         modifySelectedRowKeysData={this.props.modifySelectedRowKeysData}
                     />
+                    <Divider type="vertical" />
+                        <Loss statement={record.exceptionHandle} name='异常备注'/>
                 </span>
             )
         }
