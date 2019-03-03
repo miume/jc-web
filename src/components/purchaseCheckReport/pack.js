@@ -105,23 +105,36 @@ class Pack extends React.Component {
     };
     /**获取未生成的所有数据 unGenerated */
     handleTableChange = (pagination) => {
-        const pageChangeFlag = this.state.pageChangeFlag;
-        if(pageChangeFlag===0){
+        this.setState({
+            pagination:pagination
+        });
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
             this.fetch({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-                orderField: 'id',
-                orderType: 'desc',
-            });
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+                personName:this.state.searchContent
+            })
         }else{
-            this.searchEvent({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
             })
         }
+
     };
     /**未生成和已生成的所有数据进行判断调用结构 */
-    fetch = (params = {}) => {
+    fetch = (params ,flag) => {
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:'',
+                pagination:pagination
+            })
+        }
         const unGenerateDate = this.state.unGenerateDate;
         if(unGenerateDate === true){
             var newParam = 'isGenerate';
@@ -143,7 +156,6 @@ class Pack extends React.Component {
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
-                // const searchFlag = this.state.searchFlag;
                 this.setState({
                     dataSource: res.list,
                     selectedRowKeys: [],
@@ -201,7 +213,22 @@ class Pack extends React.Component {
         this.setState({
             unGenerateDate: checked
         },()=>{
-            this.fetch();
+            if(checked===true){
+                this.fetch({
+                    pageSize:10,
+                    pageNumber:1,
+                });
+            }else{
+                var flag = 1
+                this.fetch({
+                    pageSize:10,
+                    pageNumber:1,
+                },flag);
+            }
+            // this.fetch({
+            //     pageSize:10,
+            //     pageNumber:1,
+            // });
         })
     };
     /**---------------------- */
