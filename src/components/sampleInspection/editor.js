@@ -50,6 +50,9 @@ class Editor extends React.Component{
             visible1: this.props.type,
 
             oldData:[],
+            processVis : 0,
+            pointVis : 0,
+            materialVis : 0,
         }
         this.onChangeTime = this.onChangeTime.bind(this);
         this.selectChange = this.selectChange.bind(this);
@@ -166,6 +169,7 @@ class Editor extends React.Component{
     }
 
     getProcess=(value)=>{
+        console.log(value)
         axios({
             url:`${this.url.procedure.testItems}`,
             method:'get',
@@ -179,7 +183,8 @@ class Editor extends React.Component{
                 this.setState({
                     process:res,
                     factoryId:value,
-                    oldfactor:value
+                    oldfactor:value,
+                    processVis:1
                 })
             }
             
@@ -199,7 +204,8 @@ class Editor extends React.Component{
             if(res){
                 this.setState({
                     sampling:res,
-                    procedureId:value
+                    procedureId:value,
+                    pointVis:1
                 })
             }
             
@@ -219,7 +225,8 @@ class Editor extends React.Component{
             if(res){
                 this.setState({
                     materials:res,
-                    samplingPoint:value
+                    samplingPoint:value,
+                    materialVis:1
                 })
             }
             
@@ -322,7 +329,7 @@ class Editor extends React.Component{
                 oldTestItems:res.sampleDeliveringRecord.testItems.split(',').map(Number),
                 oldMaterials:res.sampleDeliveringRecord.serialNumberId,
                 oldMemo:res.sampleDeliveringRecord.exceptionComment,
-                visible: true
+                visible: true,
             })
         })
     };
@@ -340,6 +347,20 @@ class Editor extends React.Component{
     changeFactor = (value) =>{
         this.setState({
             oldfactor:value
+        })
+    }
+
+    onFocus = ()=>{
+        console.log(this.state.oldfactor)
+        this.setState({
+            oldfactor:null
+        })
+    }
+
+    onMouseEnter = ()=>{
+        console.log(this.state.oldMaterials)
+        this.setState({
+            oldMaterials:null
         })
     }
 
@@ -415,9 +436,11 @@ class Editor extends React.Component{
                             <Option key="2" value={2}>中间品</Option>
                             <Option key="3" value={3}>成品</Option>
                       </Select>
-                      <DatePicker  style={{width:"220px",marginTop:"10px"}} onChange={this.onChangeDate} defaultValue={moment(this.state.date,dateFormat)} placeholder="请选择送样日期"/>
-                      <TimePicker style={{width:"220px",marginTop:"10px",marginLeft:"20px"}} onChange={this.onChangeTime} defaultValue={moment(this.state.time,timeFormat)} placeholder="请选择时间"/>
-                      {(this.state.visible1===1||this.state.visible1===3)?<Select placeholder="请选择送样人" style={{width:"220px",marginTop:"10px"}} onChange={this.changePerson} defaultValue={this.state.oldperson}>
+                      <Col span={12} style={{display:"block"}}>
+                      <DatePicker size='large' style={{width:"220px",marginTop:"10px"}} onChange={this.onChangeDate} defaultValue={moment(this.state.date,dateFormat)} placeholder="请选择送样日期"/>
+                      <TimePicker style={{width:"220px",marginTop:"10px"}} onChange={this.onChangeTime} defaultValue={moment(this.state.time,timeFormat)} placeholder="请选择时间"/>
+                      </Col>
+                      {(this.state.visible1===1||this.state.visible1===3)?<Select placeholder="请选择送样人" style={{width:"220px",marginTop:"10px",marginLeft:"10px"}} onChange={this.changePerson} defaultValue={this.state.oldperson}>
                             {
                                 this.state.person.map(pe=>{
                                     return(
@@ -425,7 +448,7 @@ class Editor extends React.Component{
                                     )
                                 })
                             }
-                        </Select>:<Select placeholder="请选择送样人" style={{width:"460px",marginTop:"10px"}} onChange={this.changePerson} defaultValue={this.state.oldperson}>
+                        </Select>:<Select placeholder="请选择送样人" style={{width:"220px",marginTop:"10px",marginLeft:"10px"}} onChange={this.changePerson} defaultValue={this.state.oldperson}>
                             {
                                 this.state.person.map(pe=>{
                                     return(
@@ -434,8 +457,7 @@ class Editor extends React.Component{
                                 })
                             }
                         </Select>}
-                      
-                        {(this.state.visible1===1||this.state.visible1===3)?<Select placeholder="请选择送样工厂" defaultValue={this.state.oldfactor} onChange={this.changeFactor} style={{width:"220px",marginTop:"10px",marginLeft:"20px"}}>
+                        {(this.state.visible1===1||this.state.visible1===3)?<Select placeholder="请选择送样工厂" defaultValue={this.state.oldfactor} onChange={this.changeFactor} style={{width:"220px",marginTop:"10px",marginLeft:"10px"}}>
                                     {
                                         this.state.factor.map(pe=>{
                                             return(
@@ -443,7 +465,7 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                        </Select>:<div><Select placeholder="请选择送样工厂" onChange={this.getProcess}  style={{width:"220px",marginTop:"10px"}}>
+                        </Select>:<div><Select placeholder="请选择送样工厂" onChange={this.getProcess} value={this.state.oldfactor} onMouseEnter={this.onFocus} defaultValue={this.state.oldfactor} style={{width:"220px",marginTop:"10px",marginLeft:"10px"}}>
                                     {
                                         this.state.MiddleFactor.map(pe=>{
                                             return(
@@ -452,7 +474,7 @@ class Editor extends React.Component{
                                         })
                                     }
                                 </Select>
-                                <Select placeholder="请选择工序" onChange={this.getSampling} style={{width:"220px",marginTop:"10px",marginLeft:"20px"}}>
+                                {this.state.processVis === 0?null:<Select placeholder="请选择工序" onChange={this.getSampling} style={{width:"460px",marginTop:"10px"}}>
                                     {
                                         this.state.process.map(pe=>{
                                             return(
@@ -460,9 +482,10 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                                </Select>
+                                </Select>}
+                                
                                 <div>
-                                <Select placeholder="请选择取样点" onChange={this.getMaterials} style={{width:"220px",marginTop:"10px"}}>
+                                    {this.state.pointVis===0?null:<Select placeholder="请选择取样点" onChange={this.getMaterials} style={{width:"460px",marginTop:"10px"}}>
                                     {
                                         this.state.sampling.map(pe=>{
                                             return(
@@ -470,8 +493,8 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                                </Select>
-                                <Select placeholder="请选择受检物料" onChange={this.getItems} style={{width:"220px",marginTop:"10px",marginLeft:"20px"}}>
+                                </Select>}
+                                {this.state.materialVis===0?null:<Select placeholder="请选择受检物料" onChange={this.getItems} value={this.state.oldMaterials} onMouseEnter={this.onMouseEnter} style={{width:"460px",marginTop:"10px"}}>
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
@@ -479,7 +502,7 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                                </Select>
+                                </Select>}
                                 </div>
                                     <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
                                         <Checkbox.Group style={{ width: '100%' }} value={this.state.oldTestItems}>
