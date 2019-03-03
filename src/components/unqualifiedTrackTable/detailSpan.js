@@ -7,56 +7,20 @@ import EdSpanModal from './edSpanModal';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 import axios from "axios";
 
-const checkData = {
-    headData:[{
-        id: 1,
-        testItem: 'aa',
-        itemUnit: 'bb',
-        rawTestItemStandard: 'cc',
-    }],
-    tbodyData:[{
-        index: 1,
-        id: 1,
-        serialNumber: 'aaaaa',
-        resultRecordList: {
-            0:{
-                isValid:1,
-                testResult:'aa',
-                id:1
-            },
-            1:{
-                isValid:2,
-                testResult:'aa',
-                id:2
-            }
-        },
-        decision: 0
-    }],
-    judgement:'aaa',
-    judger:'aa',
-    topData:{
-        materialName:'aaa',
-        process:{
-            name:'aa',
-        },
-        createTime:'aaa',
-        handle:'aaa'
-    }
-}
 
 class EditSpan extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             visible: false,
-            checkData:checkData
-            // checkData: {    //进货数据格式
-            //     headData: [],
-            //     tbodyData: [],
-            //     judgement: '',
-            //     judger: '',
-            //     topData: {},
-            // },
+            // checkData:checkData
+            checkData: {    //进货数据格式
+                headData: [],
+                tbodyData: [],
+                judgement: '',
+                judger: '',
+                topData: {},
+            },
         };
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -88,6 +52,7 @@ class EditSpan extends React.Component {
                             clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
                             unTrackType={1} //追踪类型
                             unTrackModifyThead={0}  //追踪头部可修改
+                            unqualifiedType={1}
                         />
                     </div>
                 </Modal>
@@ -96,10 +61,10 @@ class EditSpan extends React.Component {
     }
 
     handleDetail = () => {
-        // this.getDetailData();
-        this.setState({
-            visible: true,
-        });
+        this.getDetailData();
+        // this.setState({
+        //     visible: true,
+        // });
     };
     getDetailData(){
         axios({

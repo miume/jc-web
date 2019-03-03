@@ -8,43 +8,6 @@ import SaveButton from "../BlockQuote/saveButton";
 import Submit from "../BlockQuote/submit";
 
 
-const checkData = {
-    headData:[{
-        id: 1,
-        testItem: 'aa',
-        itemUnit: 'bb',
-        rawTestItemStandard: 'cc',
-    }],
-    tbodyData:[{
-        index: 1,
-        id: 1,
-        serialNumber: 'aaaaa',
-        resultRecordList: {
-            0:{
-                isValid:1,
-                testResult:'aa',
-                id:1
-            },
-            1:{
-                isValid:2,
-                testResult:'aa',
-                id:2
-            }
-        },
-        decision: 0
-    }],
-    judgement:'aaa',
-    judger:'aa',
-    topData:{
-        materialName:'aaa',
-        process:{
-            name:'aa',
-        },
-        createTime:'aaa',
-        handle:'aaa'
-    }
-}
-
 class EditSpan extends React.Component {
     constructor(props){
         super(props);
@@ -53,14 +16,13 @@ class EditSpan extends React.Component {
             subVisible: false,
             process:-1,
             urgent:0,
-            checkData:checkData,
-            // checkData: {    //进货数据格式
-            //     headData: [],
-            //     tbodyData: [],
-            //     judgement: '',
-            //     judger: '',
-            //     topData: {},
-            // },
+            checkData: {    //进货数据格式
+                headData: [],
+                tbodyData: [],
+                judgement: '',
+                judger: '',
+                topData: {},
+            },
             // 保存的数据
             saveData : {
                 commonBatchNumber:{
@@ -136,6 +98,7 @@ class EditSpan extends React.Component {
                             clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
                             // unClickType={1} //表示头部数据不可点击
                             unTrackType={1} //追踪类型
+                            unqualifiedType={1}
                             unTrackModifyThead={1}  //追踪头部可修改
                         />
                     </div>
@@ -150,7 +113,16 @@ class EditSpan extends React.Component {
     /**监控发生工艺下拉框的变化 */
     procedureChange = (e) => {
         var checkData = this.state.checkData;
-        checkData.topData.process.name = e.split('-')[1];
+        console.log(checkData)
+        if(checkData.topData.process === null){
+            var process = {
+                name : e.split('-')[1]
+            };
+            checkData.topData.process = process;
+        }else{
+            checkData.topData.process.name = e.split('-')[1];
+        }
+        console.log(checkData)
         var saveData = this.state.saveData;
         saveData.details.productionProcessId = parseInt(e.split('-')[0]);
         this.setState({
@@ -181,17 +153,11 @@ class EditSpan extends React.Component {
 
     /**点击编辑 */
     handleEdit() {
-        // this.getDetailData();
-        this.setState({
-            visible: true,
-        })
+        this.getDetailData();
+        // this.setState({
+        //     visible: true,
+        // })
     }
-    /**
-     * 详情 区分进货和成品   根据某子段，对数据进行组装
-     * 进货：调用进货的PurchaseModal，数据进行组装
-     * 成品：调用成品的组件，数据进行组装
-     * 同时要在<div>中进行子段判断，来调用哪个组件
-     */
     getDetailData(){
         axios({
             url: `${this.props.url.unqualifiedTrack.unqualifiedTracingRecord}/${this.props.batchNumberId}`,
@@ -257,13 +223,13 @@ class EditSpan extends React.Component {
                         details:{
                             createTime: this.props.record.details.createTime?this.props.record.details.createTime:'',
                             handler: detail.commonBatchNumber.createPersonId?detail.commonBatchNumber.createPersonId:'',
-                            productionProcessId: this.props.record.details.process.id
+                            productionProcessId: this.props.record.details.process?this.props.record.details.process.id:''
                         }
                     },
                     visible: true,
                 })
             }else{
-                message.info('查询数据为空，请联系管理员')
+                message.info(data.data.message)
             }
 
         }).catch(()=>{
