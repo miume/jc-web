@@ -1,9 +1,7 @@
 import React from 'react';
 import {message, Modal} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
-import NewButton from '../BlockQuote/newButton';
 import './unqualifiedTrack.css';
-import EdSpanModal from './edSpanModal';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 import axios from "axios";
 
@@ -13,7 +11,6 @@ class EditSpan extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            // checkData:checkData
             checkData: {    //进货数据格式
                 headData: [],
                 tbodyData: [],
@@ -62,9 +59,6 @@ class EditSpan extends React.Component {
 
     handleDetail = () => {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     };
     getDetailData(){
         axios({
@@ -125,8 +119,6 @@ class EditSpan extends React.Component {
                         topData: topData,
                     },
                     visible: true,
-                },()=>{
-                    console.log(this.state.checkData)
                 })
             }else{
                 message.info('查询数据为空，请联系管理员')

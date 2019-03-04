@@ -54,7 +54,6 @@ class DetailSpan extends React.Component {
         }else{
             modalWidth='1080px'
         }
-        // const footer = this.judgeFooter(2);
         return(
             <span>
                 <span className="blue" onClick={this.handleDetail} >{this.props.name}</span>
@@ -74,15 +73,12 @@ class DetailSpan extends React.Component {
                                 <PurchaseModal
                                     data={this.state.checkData}
                                     clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
-                                    // unClickType={1} //表示头部数据不可点击
                                 />
                             </div>
                         ):(
                             <div style={{height:580}}>
                                 <DrSpanModal
                                     data={this.state.detailData}
-                                    // unClickCheck={1}  //中间内容数据不课修改
-                                    // inputSave={this.inputSave}
                                 />
                             </div>
                         )
@@ -94,9 +90,6 @@ class DetailSpan extends React.Component {
     /**点击编辑 */
     handleDetail() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
     }
     getDetailData(){
         axios({
@@ -185,17 +178,45 @@ class DetailSpan extends React.Component {
                     if(testItemResults) {
                         for(var i=0; i<testItemResults.length; i++){
                             var e = testItemResults[i];
-                            var standard = detail.standard[i].split(',');
-                            testDTOS.push({
-                                index:`${i+1}`,
-                                id:e.id,
-                                testItemId:e.testItemId,
-                                testItemName:standard[0],
-                                testResult:e.testResult,
-                                rawTestItemStandard:standard[2],
-                                unit:standard[1],
-                                isValid: e.isValid
-                            })
+                            if(detail.standard!==null){
+                                var standard = detail.standard[i].split(',');
+                                console.log(standard)
+                                testDTOS.push({
+                                    index:`${i+1}`,
+                                    id:e.id,
+                                    testItemId:e.testItemId,
+                                    testItemName:standard[0],
+                                    testResult:e.testResult,
+                                    rawTestItemStandard:standard[2],
+                                    unit:standard[1],
+                                    isValid: e.isValid
+                                })
+                            }else{
+                                message.info('查询数据对象没有建立标准，请联系管理员')
+                                return ;
+                                // testDTOS.push({
+                                //     index:`${i+1}`,
+                                //     id:e.id,
+                                //     testItemId:e.testItemId,
+                                //     testItemName:'无',
+                                //     testResult:e.testResult,
+                                //     rawTestItemStandard:'无',
+                                //     unit:'无',
+                                //     isValid: e.isValid
+                                // })
+                            }
+
+                            // var standard = detail.standard[i].split(',');
+                            // testDTOS.push({
+                            //     index:`${i+1}`,
+                            //     id:e.id,
+                            //     testItemId:e.testItemId,
+                            //     testItemName:standard[0],
+                            //     testResult:e.testResult,
+                            //     rawTestItemStandard:standard[2],
+                            //     unit:standard[1],
+                            //     isValid: e.isValid
+                            // })
                         }
                     }
                     testData = {
@@ -204,11 +225,6 @@ class DetailSpan extends React.Component {
                     };
                     // 择优数据
                     optional = {
-                        // optionalStatus: detail.testReportRecord.qualityLevel?detail.testReportRecord.qualityLevel:'',
-                        // optionalData: {
-                        //     personer: detail.testReportRecord.ratePersonId?detail.testReportRecord.ratePersonId:'无',
-                        //     personTime:detail.testReportRecord.rateDate?detail.testReportRecord.rateDate:'无',
-                        // }
                         optionalStatus: '',
                         optionalData: {
                             personer: '无',

@@ -2,7 +2,6 @@ import React from 'react';
 import {Divider, Table} from 'antd';
 import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
-import CheckEditSpan from "../purchaseCheckReport/checkEditSpan";
 
 class UnqualifiedTable extends React.Component {
     columns = [{
