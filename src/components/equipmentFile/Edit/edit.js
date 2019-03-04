@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Modal} from 'antd';
+import {Modal,message} from 'antd';
 import EditModal from './editModal';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
@@ -19,12 +19,15 @@ class Edit extends Component{
         this.setState({visible:true});
     } 
   
-    handleEditSave(){
+    handleEditSave(){//点击编辑的保存事件
         this.setState({
             visible:false
         });
         const value=this.formRef.getItemsValue();
-        value['id']=this.props.record.id;
+        console.log(this.props.record.id);
+        console.log(value.get('id'));
+       console.log(value.get('file'));
+        //console.log(fromData.get(archiveName));
         axios({
             url:`${this.props.url.equipmentArchiveRecord.get}`,
             method:'put',
@@ -35,6 +38,7 @@ class Edit extends Component{
             type:'json'
         }).then((data)=>{
              console.log(data);
+             message.info(data.data.message);
         }).catch();
     }
     handleCancel(){

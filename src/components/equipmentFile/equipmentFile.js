@@ -163,7 +163,7 @@ class EquipmentArchive extends Component{//设备档案
         .then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            
+            console.log(res);
             if(res&&res.list){
                 this.pagination.total=res.total?res.total:0;
                 this.pagination.current=res.pageNumber;
@@ -174,11 +174,14 @@ class EquipmentArchive extends Component{//设备档案
                         id:res.list[i].equipmentArchiveRecord.id,
                         archiveName:res.list[i].equipmentArchiveRecord.name,
                         instrumentName:res.list[i].baseInstrument.name,//设备名称
+                        instrumentId:res.list[i].baseInstrument.id,//设备名称
                         installTime:res.list[i].equipmentArchiveRecord.installTime,
                         warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
                         supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
+                        supplyManufacturerId:res.list[i].supplyManufacturer.id,//供货厂家名称
                         supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
                         repairManufacture:res.list[i].repairManufacturer.name,
+                        repairManufacturerId:res.list[i].repairManufacturer.id,
                         repairManufacturePhone:res.list[i].repairManufacturer.contact,
                         manualName:res.list[i].equipmentArchiveRecord.manualName
                     });
