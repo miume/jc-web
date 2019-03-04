@@ -6,7 +6,6 @@ import ProductOptional from './productOptional';
 
 class DetailStateModal extends React.Component {
     render() {
-        console.log(this.props.optional)
         switch (this.props.examine.examineStatus) {
             case -1: //已保存未提交
                 return(

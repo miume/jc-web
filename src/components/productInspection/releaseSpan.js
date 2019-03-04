@@ -56,7 +56,7 @@ class ReleaseSpan extends React.Component {
                             flag = {1}
                             handleCancel={this.handleCancel}
                         />,
-                        <Button style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleRelease} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
+                        <Button key="release" style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleRelease} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
                     <div style={{height:580}}>
@@ -77,7 +77,6 @@ class ReleaseSpan extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('发布失败，请联系管理员！');
@@ -89,9 +88,6 @@ class ReleaseSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     }
     getDetailData = () =>{
         axios({
@@ -102,7 +98,6 @@ class ReleaseSpan extends React.Component {
             },
         }).then((data)=>{
             const res = data.data.data;
-            console.log('res',res)
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal,Button } from 'antd';
+import { Modal } from 'antd';
 import DrSpanModal from './drSpanModal';
 import './productInspection.css';
 import CancleButton from '../BlockQuote/cancleButton'
@@ -50,7 +50,7 @@ class DetailSpan extends React.Component {
         this.modifyDetailData = this.modifyDetailData.bind(this);
     }
 
-    handleCancel = (e) => {
+    handleCancel = () => {
         this.setState({
             visible: false,
         });
@@ -66,7 +66,6 @@ class DetailSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    // width="500px"
                     footer={[
                         <CancleButton
                             key="back"
@@ -77,8 +76,6 @@ class DetailSpan extends React.Component {
                 >
                     <div style={{height:580}}>
                         <DrSpanModal
-                            // checkStatus:根据审核状态是否有审核及择优部分
-                            // examine={this.state.examine}
                             data={this.state.detailData}
                         />
                     </div>
@@ -93,9 +90,6 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     }
     getDetailData = () =>{
         axios({

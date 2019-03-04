@@ -53,7 +53,6 @@ class CheckSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    // width="520px"
                     footer={[
                         <CancleButton
                             handleCancel = {this.handleCancel}
@@ -93,7 +92,6 @@ class CheckSpan extends React.Component {
         const index = e.target.name;
         var checkData = this.state.checkData;
         checkData.testDTOS[index].testResult = value;
-        console.log(checkData.testDTOS[index].testResult )
         this.setState({
             checkData:checkData
         })
@@ -118,7 +116,6 @@ class CheckSpan extends React.Component {
             },
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res)
             var topData = {};  //头部数据
             var testDTOS = [];  //中部项目
             var testData = {};  //检验数据
@@ -189,7 +186,6 @@ class CheckSpan extends React.Component {
         this.setState({
             subVisible:false,
         })
-        // this.props.cancle();
     }
     /**点击确定送审 */
     handleOkApply(){
@@ -213,7 +209,6 @@ class CheckSpan extends React.Component {
 
         var flag = 0;
         for(var i=0; i<checkData.testDTOS.length; i++){
-            console.log(`${i}----`,checkData.testDTOS[i].testResult)
             if(checkData.testDTOS[i].testResult === null){
                 flag=1;
                 break;
@@ -255,7 +250,6 @@ class CheckSpan extends React.Component {
             },
 
         };
-        // console.log(saveData)
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
@@ -271,17 +265,14 @@ class CheckSpan extends React.Component {
             data: saveData,
             type:'json'
         }).then((data)=>{
-            console.log('data',data.data.data)
             if(status){
                 const dataId = data.data.data.batchNumberId;
-                // console.log('dataId',dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({
                     visible: false,
                     subVisible: false,
                 });
-                // this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -306,7 +297,6 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
-            // this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
