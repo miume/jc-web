@@ -48,14 +48,12 @@ class ReleaseSpan extends React.Component {
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    // width="500px"
                     footer={[
                         <CancleButton
                             key="back"
                             flag = {1}
                             handleCancel={this.handleCancel}
                         />,
-                        // <Button key="back" style={{right:'330px'}}  onClick={this.handleCancel}>返回</Button>,
                         <Button key="release" style={{width:'80px',height:'35px',background:'#0079FE',color:'white'}} onClick={this.handleReleaseButton} ><i className="fa fa-paper-plane" style={{fontWeight:'bolder',color:'white'}}></i>&nbsp;发布</Button>
                     ]}
                 >
@@ -64,7 +62,6 @@ class ReleaseSpan extends React.Component {
                             url={this.props.url}
                             data={this.state.detailData}
                             record={this.props.record}
-                            // spanStatus={0}
                         />
                     </div>
                 </Modal>

@@ -100,12 +100,6 @@ class InterProduct extends React.Component {
                 pageNumber:pagination.current,
             })
         }
-        // this.fetch({
-        //     size: pagination.pageSize,
-        //     page: pagination.current,
-        //     factoryName:this.state.searchContent
-        //
-        // });
     };
     fetch = (params,flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
@@ -122,7 +116,6 @@ class InterProduct extends React.Component {
             params:params,
         }).then((data)=>{
             const res = data.data.data?data.data.data:[];
-            // this.pagination.total = res?res.total:0;
             if(res&&res.list)
             {
                 for(var i = 1; i <= res.list.length;i++){
@@ -130,12 +123,9 @@ class InterProduct extends React.Component {
                 }
                 const {pagination} = this.state;
                 pagination.total=res.total;
-                // this.pagination.current = res.pageNumber;
                 this.setState({
                     dataSource:res.list,
                     pagination:pagination,
-                    // searchContent:'',
-                    // pageChangeFlag:1
                 })
             }else{
                 this.setState({
@@ -154,18 +144,6 @@ class InterProduct extends React.Component {
         this.fetch({
             factoryName:this.state.searchContent
         })
-        // this.setState({
-        //     searchFlag:0,
-        // },()=>{
-        //     this.fetch({
-        //         factoryName:this.state.searchContent,
-        //         pageSize: params.pageSize,
-        //         pageNumber: params.pageNumber,
-        //     });
-        // })
-        // this.fetch({
-        //     factoryName:this.state.searchContent
-        // });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){
