@@ -1,7 +1,7 @@
 import React from 'react';
-import {Modal,Button,message} from 'antd';
-import './userManagement.css';
 import axios from 'axios';
+import './userManagement.css';
+import {Modal,Button,message} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import CancleButton from '../BlockQuote/cancleButton';
 /**测试假数据 */

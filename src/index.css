@@ -268,3 +268,15 @@ table .ant-select-selection,table .ant-input{
     text-decoration:underline;
     cursor: default;
 }
+.addButton{
+    margin:0 8px 8px 0;
+    display: inline-block;
+}
+.deleteByIds{
+    padding-bottom:8px;
+    display: inline-block;
+}
+.searchCell{
+    float:right;
+    padding-bottom:8px;
+}

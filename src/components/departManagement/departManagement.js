@@ -14,6 +14,7 @@ import DeleteByIds from "../BlockQuote/deleteByIds";
 
 class Depart extends React.Component {
     url;
+    operation
     componentDidMount() {
         this.fetch();
     }
@@ -40,6 +41,7 @@ class Depart extends React.Component {
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total) {
@@ -51,6 +53,8 @@ class Depart extends React.Component {
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList;
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -91,6 +95,11 @@ class Depart extends React.Component {
             </div>
         )
     }
+    /**用来判断该菜单有哪些操作权限 */
+    judgeOperation(operation,operationName){
+        var flag = operation.filter(e=>e.operationName===operationName);
+        return flag.length>0?true:false
+    }
     /**修改父组件的数据 */
     modifyDataSource = (data) => {
         this.setState({dataSource:data});
@@ -120,13 +129,15 @@ class Depart extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
+            if(res&&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.prePage)*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                    searchContent: ''
+                });
             }
-            this.setState({
-                dataSource: res.list,
-                searchContent: ''
-            });
         });
     };
     /**---------------------- */

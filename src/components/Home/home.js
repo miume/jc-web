@@ -343,77 +343,77 @@ class Home extends Component {
              enterStorage: {
                 enterStorage:`${server}/jc/common/repoInRecord/pages`
               },
-              /** 库存管理*/
-              inventorManage:{
-                  inventorManage:`${server}/jc/common/RepoStock/pages`
-              },
-              /**红单管理 */
-              redList:{
-                  redList:`${server}/jc/common/repoRedTables`,
-                  redList1:`${server}/jc/common/repoRedTable`,
-                  search:`${server}/jc/common/repoRedTables/serialNumber`
-              },
-              /**原材料检验 */
-              rawTestReport:{
-                  rawTestReport:`${server}/jc/common/rawTestReport`, 
-                  getById:`${server}/jc/common/rawTestReport/details`, 
-                  getAllByPage:`${server}/jc/common/rawTestReport/pages`,
-                  detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
-              },
-              /**中间品录检 */
-              intermediateProduct:`${server}/jc/common/middleProductionDetection`,
-              /**成品检验 */
-              productInspection:{
-                  pages:`${server}/jc/common/productRecord/pages`,
-                  productRecord:`${server}/jc/common/productRecord`,
+            /** 库存管理*/
+            inventorManage:{
+                inventorManage:`${server}/jc/common/RepoStock/pages`
+            },
+            /**红单管理 */
+            redList:{
+                redList:`${server}/jc/common/repoRedTables`,
+                redList1:`${server}/jc/common/repoRedTable`,
+                search:`${server}/jc/common/repoRedTables/serialNumber`
+            },
+            /**原材料检验 */
+            rawTestReport:{
+                rawTestReport:`${server}/jc/common/rawTestReport`, 
+                getById:`${server}/jc/common/rawTestReport/details`, 
+                getAllByPage:`${server}/jc/common/rawTestReport/pages`,
+                detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
+            },
+            /**中间品录检 */
+            intermediateProduct:`${server}/jc/common/middleProductionDetection`,
+            /**成品检验 */
+            productInspection:{
+                pages:`${server}/jc/common/productRecord/pages`,
+                productRecord:`${server}/jc/common/productRecord`,
 
-              },
-              /**产品检测 */
-              productTestRecord:{
-                getByBatchNUmberId:`${server}/jc/common/productTestRecord/batchNumberId`,
-              },
-              /**不合格审评表 */
-              unqualifiedExamineTable:{
-                  unqualifiedTestReportRecord:`${server}/jc/common/unqualifiedTestReportRecord`,
-                  pages:`${server}/jc/common/unqualifiedTestReportRecord/pages`,
-              },
-              /**原材料标准*/
-              rawStandard:{
-                 getRaw:`${server}/jc/common/techRawStandard/raw`,
-                 addRaw:`${server}/jc/common/techRawStandard/newRaw`,
-                 getFactory:`${server}/jc/common/techRawStandard/manufacturers`,
-                 addFactory:`${server}/jc/common/techRawStandard/newManufacturer`,
-                 getStandard:`${server}/jc/common/techRawStandard`,
-                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
-                 
-              },
-              /**产品标准 */
-              productStandard:{
-                  add:`${server}/jc/common/techProductStandard/newClasses`,
-                  productStandard:`${server}/jc/common/techProductStandard`,
-                  getAll:`${server}/jc/common/techProductStandard/allClasses`,
-                  addNewClass:`${server}/jc/common/techProductStandard/newClass`,
-              },
-              /*设备档案*/
-              equipmentArchiveRecord:{
-                   getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
-                   get:`${server}/jc/common/equipmentArchiveRecord`,
-                   getPdf:`${server}/jc/common/equipmentArchiveRecord/pdf`
-                   
-               },
-               /**设备基本厂商*/
-              equipmentManufacture:{
-                 getAllEquipmentManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
-               },
-               /**设备基本设备*/
-               equipmentBaseInstrument:{
-                 getAllEquipmentBaseInstrument:`${server}/jc/common/equipmentBaseInstrument`
-              },
-                /**不合格追踪*/
-                unqualifiedTrack:{
-                    pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
-                    unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
-                },
+            },
+            /**产品检测 */
+            productTestRecord:{
+            getByBatchNUmberId:`${server}/jc/common/productTestRecord/batchNumberId`,
+            },
+            /**不合格审评表 */
+            unqualifiedExamineTable:{
+                unqualifiedTestReportRecord:`${server}/jc/common/unqualifiedTestReportRecord`,
+                pages:`${server}/jc/common/unqualifiedTestReportRecord/pages`,
+            },
+            /**原材料标准*/
+            rawStandard:{
+                getRaw:`${server}/jc/common/techRawStandard/raw`,
+                addRaw:`${server}/jc/common/techRawStandard/newRaw`,
+                getFactory:`${server}/jc/common/techRawStandard/manufacturers`,
+                addFactory:`${server}/jc/common/techRawStandard/newManufacturer`,
+                getStandard:`${server}/jc/common/techRawStandard`,
+                rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
+                
+            },
+            /**产品标准 */
+            productStandard:{
+                add:`${server}/jc/common/techProductStandard/newClasses`,
+                productStandard:`${server}/jc/common/techProductStandard`,
+                getAll:`${server}/jc/common/techProductStandard/allClasses`,
+                addNewClass:`${server}/jc/common/techProductStandard/newClass`,
+            },
+            /*设备档案*/
+            equipmentArchiveRecord:{
+                getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
+                get:`${server}/jc/common/equipmentArchiveRecord`,
+                getPdf:`${server}/jc/common/equipmentArchiveRecord/pdf`
+                
+            },
+            /**设备基本厂商*/
+            equipmentManufacture:{
+                getAllEquipmentManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
+            },
+            /**设备基本设备*/
+            equipmentBaseInstrument:{
+                getAllEquipmentBaseInstrument:`${server}/jc/common/equipmentBaseInstrument`
+            },
+            /**不合格追踪*/
+            unqualifiedTrack:{
+                pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
+                unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
+            },
 
         }
         localStorage.setItem('status',JSON.stringify(status));

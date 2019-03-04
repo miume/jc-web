@@ -8,8 +8,9 @@ class Login extends React.Component {
   constructor(props){
     super(props);
     this.getDefault = this.getDefault.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.remindLogin = this.remindLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.dataProcessing = this.dataProcessing.bind(this);
   }
   componentWillMount() {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
@@ -29,44 +30,25 @@ class Login extends React.Component {
             message.info('请先填写用户名和密码！')
         }else{
              document.cookie = `${username}-${password}`;
-            //  document.cookie = 'password'+password;
-          // localStorage.setItem('username',username);
-          // localStorage.setItem('password',password);
         }
     }else{
       document.cookie = '';
     }
-    
-
   }
+  /**登陆接口调用 */
   handleSubmit(){
     const history = this.props.history;
     const server = localStorage.getItem("server");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
+    axios.post(`${server}/jc/auth/login`,{username:username,password:password})
+      .then(res => {
       //console.log(res.data)
       /**如果登陆成功  则屏蔽enter键 */
       window.onkeydown = undefined
-      const quickAccess = [];
-      var i = 1;
       if(res.data){
-          res.data.menuList.forEach(e=>{
-              e.menuList.forEach(e1=>{
-                if(i <= 6){
-                  quickAccess.push({
-                    openKeys:e.menuId,
-                    menuParent:e.menuName,
-                    menuName:e1.menuName,
-                    path:e1.path
-                  }) 
-                  i++; 
-                }
-              })
-          })
+          this.dataProcessing(res.data)
       }
-      // console.log(quickAccess)
-      localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));
@@ -80,6 +62,28 @@ class Login extends React.Component {
       }
     });
   }
+  /**登陆成功后对返回的数据进行处理 */
+  dataProcessing(data){
+    var i = 1;
+    var quickAccess = [],menus=[];
+    data.menuList.forEach(e=>{
+      e.menuList.forEach(e1=>{
+        menus.push(e1)
+        if(i <= 6){
+          quickAccess.push({
+            openKeys:e.menuId,
+            menuParent:e.menuName,
+            menuName:e1.menuName,
+            path:e1.path
+          }) 
+          i++; 
+        }
+      })
+    })
+  localStorage.setItem('menus',JSON.stringify(menus));
+  localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
+  }
+  /**实现记录密码和用户名 */
   getDefault(flag){
     var text = document.cookie.split('-');
     if(text[flag]){
