@@ -49,7 +49,6 @@ class UnqualifiedTrackTable extends React.Component {
         width: '20%',
         render: (text,record) => {
             let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
-            // let operationCheckFlag = true
             return (
                 <span>
                     {operationCheckFlag?(

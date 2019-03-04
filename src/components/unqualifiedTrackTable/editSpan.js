@@ -96,7 +96,6 @@ class EditSpan extends React.Component {
                             url={this.props.url}
                             data={this.state.checkData}
                             clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
-                            // unClickType={1} //表示头部数据不可点击
                             unTrackType={1} //追踪类型
                             unqualifiedType={1}
                             unTrackModifyThead={1}  //追踪头部可修改
@@ -113,7 +112,6 @@ class EditSpan extends React.Component {
     /**监控发生工艺下拉框的变化 */
     procedureChange = (e) => {
         var checkData = this.state.checkData;
-        console.log(checkData)
         if(checkData.topData.process === null){
             var process = {
                 name : e.split('-')[1]
@@ -122,7 +120,6 @@ class EditSpan extends React.Component {
         }else{
             checkData.topData.process.name = e.split('-')[1];
         }
-        console.log(checkData)
         var saveData = this.state.saveData;
         saveData.details.productionProcessId = parseInt(e.split('-')[0]);
         this.setState({
@@ -154,9 +151,6 @@ class EditSpan extends React.Component {
     /**点击编辑 */
     handleEdit() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
     }
     getDetailData(){
         axios({
@@ -294,7 +288,6 @@ class EditSpan extends React.Component {
     };
     /**调用保存函数 */
     useSavaFunction = (saveData,status) => {
-        console.log('saveData',saveData)
         axios({
             url : `${this.props.url.unqualifiedTrack.unqualifiedTracingRecord}`,
             method:'put',
@@ -304,7 +297,6 @@ class EditSpan extends React.Component {
             data: saveData,
             type:'json'
         }).then((data)=>{
-            console.log(data.data.data.commonBatchNumber.id)
             if(status){
                 const dataId = data.data.data.commonBatchNumber.id;
                 this.applyReview(dataId);
@@ -323,7 +315,6 @@ class EditSpan extends React.Component {
     /**---------------------- */
     /**送审 */
     applyReview(dataId){
-        console.log(this.state.process)
         axios({
             url : `${this.props.url.toDoList}/${parseInt(this.state.process)}`,
             method:'post',
