@@ -54,6 +54,7 @@ class Release extends React.Component {
                 </span>
                 <div className='clear' ></div>
                 <ReleaseTable
+                    fetch={this.fetch}
                     menuList={this.props.menuList}
                     url={this.props.url}
                     status={this.props.status}

@@ -113,9 +113,6 @@ class CheckEditSpan extends React.Component {
     /**点击编辑 */
     handleEdit() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
     }
     /**获取该行的记录详情 */
     getDetailData(){
@@ -303,7 +300,6 @@ class CheckEditSpan extends React.Component {
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
