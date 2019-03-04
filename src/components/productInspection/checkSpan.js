@@ -297,6 +297,7 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')

@@ -368,7 +368,7 @@ class CheckSpan extends React.Component {
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
+                // this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{

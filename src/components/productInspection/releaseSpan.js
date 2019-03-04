@@ -77,6 +77,7 @@ class ReleaseSpan extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('发布失败，请联系管理员！');

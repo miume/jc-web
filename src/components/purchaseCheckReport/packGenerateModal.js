@@ -20,7 +20,6 @@ class PackGenerateModal extends React.Component {
         this.modifyDetailData = this.modifyDetailData.bind(this);
         this.handlePack = this.handlePack.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-
         this.handleGenerate = this.handleGenerate.bind(this);
 
     }
@@ -73,11 +72,14 @@ class PackGenerateModal extends React.Component {
             params:params
         }).then((data)=>{
             const res = data.data.data;
-            message.info(res);
-            this.props.fetch();
             this.setState({
                 visible: false
-            })
+            });
+            message.info(res);
+            this.props.fetch({
+                pageSize:10,
+                pageNumber:1,
+            });
         }).catch(()=>{
             message.info('操作失败，请联系管理员')
         })
