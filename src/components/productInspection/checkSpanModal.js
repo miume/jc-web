@@ -1,6 +1,5 @@
 import React from 'react';
-import { Input,Button,Table } from 'antd';
-import './aePopModal.css';
+import { Input,Button } from 'antd';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import './productInspection.css';
 
@@ -45,7 +44,6 @@ class CheckSpanModal extends React.Component {
                             <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                         )
                     }
-                    {/*<Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>*/}
                 </div>
                 <div
                     className="productSpanTableModal"
