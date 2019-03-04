@@ -88,28 +88,6 @@ class CheckReleaseSpan extends React.Component {
     //  处理发布新材料
     handleReleaseNew = (handleData) => {
         message.info('暂无此功能')
-        // axios({
-        //     url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=1`,
-        //     method:'put',
-        //     headers:{
-        //         'Authorization': this.props.url.Authorization
-        //     },
-        //     data: {
-        //         purchaseReportRecordDTO: handleData,
-        //     },
-        //     type:'json'
-        // }).then((data)=>{
-        //     this.setState({
-        //         visible: false,
-        //         subVisible: false,
-        //     });
-        //     this.props.fetch();
-        //     message.info(data.data.message);
-        // }).catch(()=>{
-        //     message.info('发布失败，请联系管理员！')
-        // })
-
-
     };
     // 处理发布
     handleRelease = () => {
@@ -137,9 +115,6 @@ class CheckReleaseSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        })
     }
     /**获取该行的记录详情 */
     getDetailData(){
@@ -151,7 +126,6 @@ class CheckReleaseSpan extends React.Component {
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log('detail',detail)
             var headData = [];
             var tbodyData = [];
             var judger = '';
@@ -207,7 +181,7 @@ class CheckReleaseSpan extends React.Component {
                         judger: judger,
                         topData: topData,
                     },
-                    // visible: true,
+                    visible: true,
                 })
             }
 

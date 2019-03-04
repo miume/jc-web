@@ -149,7 +149,6 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            console.log('res',res)
             if(res&&res.list){
                 const {pagination} = this.state;
                 pagination.total=res.total;
@@ -160,13 +159,11 @@ class Pack extends React.Component {
                     dataSource: res.list,
                     selectedRowKeys: [],
                     pagination:pagination,
-                    // searchContent:'',
                 });
             }else{
                 this.setState({
                     dataSource: [],
                     selectedRowKeys: [],
-                    // searchContent:'',
                 });
             }
         });
@@ -187,20 +184,6 @@ class Pack extends React.Component {
         this.fetch({
             personName:this.state.searchContent
         });
-        // this.fetch({
-        //     personName:this.state.searchContent,
-        //     pageSize: params.pageSize,
-        //     pageNumber: params.pageNumber,
-        // });
-        // this.setState({
-        //     searchFlag:0,
-        // },()=>{
-        //     this.fetch({
-        //         personName:this.state.searchContent,
-        //         pageSize: params.pageSize,
-        //         pageNumber: params.pageNumber,
-        //     });
-        // })
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
@@ -219,16 +202,12 @@ class Pack extends React.Component {
                     pageNumber:1,
                 });
             }else{
-                var flag = 1
+                var flag = 1;
                 this.fetch({
                     pageSize:10,
                     pageNumber:1,
                 },flag);
             }
-            // this.fetch({
-            //     pageSize:10,
-            //     pageNumber:1,
-            // });
         })
     };
     /**---------------------- */

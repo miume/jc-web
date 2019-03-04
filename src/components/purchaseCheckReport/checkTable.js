@@ -2,7 +2,6 @@ import React from 'react';
 import {Divider, message, Popconfirm, Table} from 'antd';
 import CheckEditSpan from './checkEditSpan';
 import CheckReleaseSpan from './checkReleaseSpan';
-// import DeleteById from '../BlockQuote/deleteById';
 import axios from "axios";
 
 class CheckTable extends React.Component {
@@ -168,7 +167,6 @@ class CheckTable extends React.Component {
     /**---------------------- */
     /**单条记录删除 */
     handleDelete = (id) => {
-        console.log(id)
         axios({
             url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${id}`,
             method:'Delete',

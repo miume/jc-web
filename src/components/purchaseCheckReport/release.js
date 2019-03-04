@@ -3,25 +3,6 @@ import SearchCell from '../BlockQuote/search';
 import ReleaseTable from "./releaseTable";
 import axios from "axios";
 
-// const data = [];
-// for(var i=0;i<30;i++){
-//     data.push({
-//         index:i,
-//         commonBatchNumber:{
-//             batchNumber:'aaaaaaaaaaaaa',
-//             createTime:'aaa',
-//             isPublished:1,
-//             isUrgent:0,
-//             id:i
-//         },
-//         details:{
-//             materialName:'aa',
-//             manufactureName:'bb',
-//             receiveDate:'cc'
-//         },
-//         createPersonName:'aaa'
-//     })
-// }
 
 class Release extends React.Component {
     componentDidMount() {
@@ -33,7 +14,6 @@ class Release extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // dataSource: data,
             dataSource: [],
             selectedRowKeys: [],    //多选框key
             searchContent:'',
@@ -52,13 +32,6 @@ class Release extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showTotal(total) {
-        //         return `共${total}条记录`
-        //     },
-        //     showSizeChanger: true,
-        // }
     }
     render() {
         if(this.props.tabFlag === 3){
@@ -141,12 +114,11 @@ class Release extends React.Component {
                     dataSource: res.list,
                     pagination:pagination
                 });
+            }else{
+                this.setState({
+                    dataSource: [],
+                });
             }
-            // else{
-            //     this.setState({
-            //         dataSource: [],
-            //     });
-            // }
         });
     };
     /**---------------------- */
