@@ -129,13 +129,17 @@ class OperationManagement extends React.Component {
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
+                this.setState({
+                    dataSource: res.list,
+                    searchContent: '',
+                    selectedRowKeys: [],
+                    pageChangeFlag: 0,
+                });
+            }else{
+                this.setState({
+                    dataSource: [],
+                });
             }
-            this.setState({
-                dataSource: res.list,
-                searchContent: '',
-                selectedRowKeys: [],
-                pageChangeFlag: 0,
-            });
         })
     };
     /**---------------------- */
