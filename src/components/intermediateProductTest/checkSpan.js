@@ -206,7 +206,6 @@ class CheckSpan extends React.Component {
         this.setState({
             subVisible:false,
         })
-        // this.props.cancle();
     }
     /**点击确定送审 */
     handleOkApply(){

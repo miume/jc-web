@@ -1,6 +1,5 @@
 import React from 'react';
 import './interProduct.css';
-import {Divider} from "antd";
 import AllTester from '../BlockQuote/allTester';
 
 class DetailStateModal extends React.Component {

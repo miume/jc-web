@@ -75,7 +75,6 @@ class DrSpanModal extends React.Component {
                         rowKey={record => record.index}
                         columns={columns}
                         dataSource={this.props.data.testDTOS}
-                        // dataSource={testData}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
                         scroll={{ y: 225 }}
