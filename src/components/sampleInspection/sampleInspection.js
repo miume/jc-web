@@ -10,6 +10,7 @@ import PopRefuse from "./confuse"
 import "./sample.css"
 import Edit from "./editor"
 import Loss from '../BlockQuote/lossStatement'
+import Reason from '../BlockQuote/lossStatement'
 class SampleInspection extends React.Component{
     url
     server
@@ -123,24 +124,11 @@ class SampleInspection extends React.Component{
                 }
             }
         },{
-            title: '拒绝原因',
-            dataIndex: 'sampleDeliveringRecord.handleComment',
-            key: 'sampleDeliveringRecord.handleComment',
-            align:'center',
-            width: '9%',
-            render : (text,record)=>{
-                if(record.sampleDeliveringRecord.handleComment === null){
-                    return "无"
-                }else{
-                    return record.sampleDeliveringRecord.handleComment
-                }
-            }
-        },{
             title:'操作',
             dataIndex: 'sampleDeliveringRecord.id',
             key: 'id',
             align:'center',
-            width: '22%',
+            width: '28%',
             render : (text,record)=>{
                 return(
                     <span>
@@ -157,6 +145,8 @@ class SampleInspection extends React.Component{
                         {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
                         <Divider type="vertical" />
                         <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
+                        <Divider type="vertical" />
+                        <Reason statement={record.sampleDeliveringRecord.handleComment} name='拒绝原因'/>
                     </span>
                 );
             }

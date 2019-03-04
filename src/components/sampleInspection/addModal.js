@@ -152,7 +152,6 @@ const CollectionCreateForm = Form.create()(
                         MiddleFactor:res
                     })
                 }
-                
             })
         }
         onChangeTime = (date, dateString) => {
@@ -233,11 +232,15 @@ const CollectionCreateForm = Form.create()(
             }).then((data)=>{
                 const res = data.data.data;
                 if(res){
-                    
+                    this.props.form.setFieldsValue({
+                        serialNumberId:undefined,
+                        process:undefined,
+                        samplePointName:undefined
+                    })
                     this.setState({
                         process:res,
                         factoryId:value,
-                        processVis:1
+                        processVis:1,
                     })
                 }
                 
@@ -265,11 +268,11 @@ const CollectionCreateForm = Form.create()(
             })
         }
 
-        onMouseEnter = ()=>{
-            this.props.form.setFieldsValue({
-                serialNumberId:null
-            })
-        }
+        // onMouseEnter = ()=>{
+        //     this.props.form.setFieldsValue({
+        //         serialNumberId:null
+        //     })
+        // }
 
         disabledDate = (current)=>{
             return current&&current<moment().startOf('day')
@@ -384,7 +387,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        {this.state.processVis === 0?null:<FormItem wrapperCol={{ span: 24 }}>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('process', {
                                 rules: [{ required: true, message: '请选择工序' }],
                             })(
@@ -398,9 +401,9 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem>}
+                        </FormItem>
                         
-                        {this.state.pointVis === 0?null:<FormItem wrapperCol={{ span: 24 }}>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('samplePointName', {
                                 rules: [{ required: true, message: '请选择取样点' }],
                             })(
@@ -414,12 +417,12 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem>}
-                        {this.state.materialVis === 0?null:<FormItem wrapperCol={{ span: 24 }}>
+                        </FormItem>
+                        <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
                                 rules: [{ required: true, message: '请选择受检物料' }],
                             })(
-                                <Select placeholder="请选择受检物料" onMouseEnter={this.onMouseEnter} onChange={this.getItems}>
+                                <Select placeholder="请选择受检物料" onChange={this.getItems}>
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
@@ -435,7 +438,7 @@ const CollectionCreateForm = Form.create()(
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
                             }
                             </Checkbox.Group></div>
-                        </FormItem>}
+                        </FormItem>
                         </div>
                         )    
                         }
