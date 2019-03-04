@@ -280,16 +280,31 @@ const CollectionCreateForm = Form.create()(
 
         selectChange= (value) =>{
             if(value==='1'){
+                this.props.form.setFieldsValue({
+                    deliveryFactoryId:undefined,
+                    serialNumberId:undefined
+                })
                 this.setState({
-                    visible1 : 1
+                    visible1 : 1,
+                    materialsItem:[]
                 })
             }else if(value==='2'){
+                this.props.form.setFieldsValue({
+                    deliveryFactoryId:undefined,
+                    serialNumberId:undefined
+                })
                 this.setState({
-                    visible1 : 2
+                    visible1 : 2,
+                    materialsItem:[]
                 })
             }else if(value==="3"){
+                this.props.form.setFieldsValue({
+                    deliveryFactoryId:undefined,
+                    serialNumberId:undefined
+                })
                 this.setState({
-                    visible1 : 3
+                    visible1 : 3,
+                    materialsItem:[]
                 })
             }
         }
