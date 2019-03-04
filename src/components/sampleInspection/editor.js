@@ -42,8 +42,8 @@ class Editor extends React.Component{
             materials : [],
             testItems :[],
             factoryId:null,
-            procedureId : null,
-            samplingPoint:null,
+            procedureId : undefined,
+            samplingPoint:undefined,
             materialsId : null,
 
             clicked: false,
@@ -169,7 +169,6 @@ class Editor extends React.Component{
     }
 
     getProcess=(value)=>{
-        console.log(value)
         axios({
             url:`${this.url.procedure.testItems}`,
             method:'get',
@@ -184,7 +183,10 @@ class Editor extends React.Component{
                     process:res,
                     factoryId:value,
                     oldfactor:value,
-                    processVis:1
+                    processVis:1,
+                    procedureId:undefined,
+                    samplingPoint:undefined,
+                    oldMaterials:undefined
                 })
             }
             
@@ -319,18 +321,33 @@ class Editor extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            this.setState({
-                oldData:res,
-                type:res.sampleDeliveringRecord.type,
-                date:res.sampleDeliveringRecord.sampleDeliveringDate.substring(0,10),
-                time:res.sampleDeliveringRecord.sampleDeliveringDate.substring(11),
-                oldperson:res.sampleDeliveringRecord.delivererId,
-                oldfactor:res.sampleDeliveringRecord.deliveryFactoryId,
-                oldTestItems:res.sampleDeliveringRecord.testItems.split(',').map(Number),
-                oldMaterials:res.sampleDeliveringRecord.serialNumberId,
-                oldMemo:res.sampleDeliveringRecord.exceptionComment,
-                visible: true,
-            })
+            if(res.sampleDeliveringRecord.type === 2){
+                this.setState({
+                    oldData:res,
+                    type:res.sampleDeliveringRecord.type,
+                    date:res.sampleDeliveringRecord.sampleDeliveringDate.substring(0,10),
+                    time:res.sampleDeliveringRecord.sampleDeliveringDate.substring(11),
+                    oldperson:res.sampleDeliveringRecord.delivererId,
+                    oldfactor:res.sampleDeliveringRecord.deliveryFactoryId,
+                    oldTestItems:res.sampleDeliveringRecord.testItems.split(',').map(Number),
+                    oldMaterials:undefined,
+                    oldMemo:res.sampleDeliveringRecord.exceptionComment,
+                    visible: true,
+                })
+            }else{
+                this.setState({
+                    oldData:res,
+                    type:res.sampleDeliveringRecord.type,
+                    date:res.sampleDeliveringRecord.sampleDeliveringDate.substring(0,10),
+                    time:res.sampleDeliveringRecord.sampleDeliveringDate.substring(11),
+                    oldperson:res.sampleDeliveringRecord.delivererId,
+                    oldfactor:res.sampleDeliveringRecord.deliveryFactoryId,
+                    oldTestItems:res.sampleDeliveringRecord.testItems.split(',').map(Number),
+                    oldMaterials:res.sampleDeliveringRecord.serialNumberId,
+                    oldMemo:res.sampleDeliveringRecord.exceptionComment,
+                    visible: true,
+                })
+            }
         })
     };
 
@@ -350,19 +367,17 @@ class Editor extends React.Component{
         })
     }
 
-    onFocus = ()=>{
-        console.log(this.state.oldfactor)
-        this.setState({
-            oldfactor:null
-        })
-    }
+    // onFocus = ()=>{
+    //     this.setState({
+    //         oldfactor:null
+    //     })
+    // }
 
-    onMouseEnter = ()=>{
-        console.log(this.state.oldMaterials)
-        this.setState({
-            oldMaterials:null
-        })
-    }
+    // onMouseEnter = ()=>{
+    //     this.setState({
+    //         oldMaterials:null
+    //     })
+    // }
 
     changeItems = (value) =>{
         this.setState({
@@ -399,17 +414,17 @@ class Editor extends React.Component{
         if(value===1){
             this.setState({
                 visible1 : 1,
-                oldMaterials:null
+                oldMaterials:undefined
             })
         }else if(value===2){
             this.setState({
                 visible1 : 2,
-                oldMaterials:null
+                oldMaterials:undefined
             })
         }else if(value===3){
             this.setState({
                 visible1 : 3,
-                oldMaterials:null
+                oldMaterials:undefined
             })
         }
     }
@@ -465,7 +480,7 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                        </Select>:<div><Select placeholder="请选择送样工厂" onChange={this.getProcess} value={this.state.oldfactor} onMouseEnter={this.onFocus} defaultValue={this.state.oldfactor} style={{width:"220px",marginTop:"10px",marginLeft:"10px"}}>
+                        </Select>:<div><Select placeholder="请选择送样工厂" onChange={this.getProcess} value={this.state.oldfactor} defaultValue={this.state.oldfactor} style={{width:"220px",marginTop:"10px",marginLeft:"10px"}}>
                                     {
                                         this.state.MiddleFactor.map(pe=>{
                                             return(
@@ -474,7 +489,7 @@ class Editor extends React.Component{
                                         })
                                     }
                                 </Select>
-                                {this.state.processVis === 0?null:<Select placeholder="请选择工序" onChange={this.getSampling} style={{width:"460px",marginTop:"10px"}}>
+                                <Select placeholder="请选择工序" onChange={this.getSampling} value={this.state.procedureId} style={{width:"460px",marginTop:"10px"}}>
                                     {
                                         this.state.process.map(pe=>{
                                             return(
@@ -482,10 +497,10 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                                </Select>}
+                                </Select>
                                 
                                 <div>
-                                    {this.state.pointVis===0?null:<Select placeholder="请选择取样点" onChange={this.getMaterials} style={{width:"460px",marginTop:"10px"}}>
+                                    <Select placeholder="请选择取样点" onChange={this.getMaterials} value={this.state.samplingPoint} style={{width:"460px",marginTop:"10px"}}>
                                     {
                                         this.state.sampling.map(pe=>{
                                             return(
@@ -493,8 +508,8 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                                </Select>}
-                                {this.state.materialVis===0?null:<Select placeholder="请选择受检物料" onChange={this.getItems} value={this.state.oldMaterials} onMouseEnter={this.onMouseEnter} style={{width:"460px",marginTop:"10px"}}>
+                                </Select>
+                                <Select placeholder="请选择受检物料" onChange={this.getItems} value={this.state.oldMaterials} style={{width:"460px",marginTop:"10px"}}>
                                     {
                                         this.state.materials.map(pe=>{
                                             return(
@@ -502,7 +517,7 @@ class Editor extends React.Component{
                                             )
                                         })
                                     }
-                                </Select>}
+                                </Select>
                                 </div>
                                     <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
                                         <Checkbox.Group style={{ width: '100%' }} value={this.state.oldTestItems}>
