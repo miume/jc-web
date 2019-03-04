@@ -82,11 +82,18 @@ class DynamicFieldSet extends React.Component{
                 data: data,
                 type:'json'
             }).then((data) => {
-                message.info(data.data.message);
-                this.props.fetch(); // 重新调用分页函数
+                if(data.data.code !== 0){
+                  message.info('新增失败');
+                  this.setState({
+                    visible:true
+                  })
+                }else{
+                  message.info(data.data.message);
+                  this.props.fetch(); // 重新调用分页函数
+                  this.props.form.resetFields();
+                  this.setState({ visible: false});
+                }
           })
-          this.props.form.resetFields();
-          this.setState({ visible: false});
         });
     }
 
@@ -118,11 +125,18 @@ class DynamicFieldSet extends React.Component{
               data: data,
               type:'json'
           }).then((data) => {
-              message.info(data.data.message);
-              this.props.fetch(); // 重新调用分页函数
+              if(data.data.code !== 0){
+                message.info('新增失败')
+                this.setState({
+                  visible:true
+                })
+              }else{
+                message.info(data.data.message);
+                this.props.fetch(); // 重新调用分页函数
+                this.props.form.resetFields();
+                this.setState({ visible: false});
+              }
         })
-        this.props.form.resetFields();
-        this.setState({ visible: false});
       });
   }
 
