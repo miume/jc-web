@@ -83,6 +83,9 @@ class RawMaterial extends Component{
 
     //监听原材料那个块块是否被选中
     onBlockChange(e){
+        // console.log( e.target);
+        // console.log(e.target.id);
+       
         const rawMaterialId = e.target.id.split('-')[0];
         const name = e.target.id.split('-')[1];
        this.props.onBlockChange(2,name,rawMaterialId);

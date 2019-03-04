@@ -53,7 +53,7 @@ class AddModal extends Component{
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）,4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         const values= this.props.form.getFieldsValue();
         values['installTime']=this.state.dateString;
-        //console.log(values);
+        console.log(values);
         const { fileList } = this.state;
         const formData = new FormData();//文件信息和其他表单信息一起提交，这个时候需要用到formData()；通过append方法将数据逐条添加到formData中（tips:formData数据在console后只有一个空的对象，但是数据都在里面，要想获取数据需要调用formData.get()方法）；
         fileList.forEach((file) => {

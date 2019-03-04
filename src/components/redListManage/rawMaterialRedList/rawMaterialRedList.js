@@ -369,7 +369,7 @@ class RawMaterialRedList extends Component{
           }),
     };
         return(
-            <div style={{paddingLeft:'15px'}}>
+            <div style={{padding:'0 15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
                 <span style={{float:'right',paddingBottom:'8px'}}>

@@ -53,7 +53,8 @@ class Manufacturer extends Component{
     }
 
     onBlockChange(e){
-       //console.log(e.target);
+        console.log(e.target);
+       console.log(e.target.id);
        //console.log(JSON.parse(localStorage.getItem('menuList')));
        const factoryId=e.target.id.split('-')[0];
        const factoryName=e.target.id.split('-')[1];
@@ -165,7 +166,7 @@ class Manufacturer extends Component{
         // this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <div style={{position:'relative'}}>
-              <div style={{paddingTop:'15px'}}>
+              <div className='rawMaterailStandardMiddle'>
               <span className='product-standrad-middle-text'>请选择生产厂家</span>
                 <span  className='fr'>
                  <SearchCell name='请输入工厂名称'
@@ -177,6 +178,7 @@ class Manufacturer extends Component{
                 </span>
                 <Divider type='horizontal'/>
               </div>
+              <div className='rawStanstdardParent1'>
               <div className='rawStanstdardParent'>
                   {
                       this.state.data.map(d=>
@@ -186,7 +188,7 @@ class Manufacturer extends Component{
                     
                        <DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
               </div>
-              
+              </div>
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
               
           </div>

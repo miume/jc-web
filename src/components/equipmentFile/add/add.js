@@ -27,6 +27,7 @@ class Add extends Component{
             message.info('信息填写不完整!');
             return
     }
+    //console.log(value.get('file'));
         axios({
              url:`${this.props.url.equipmentArchiveRecord.get}`,
              method:'post',
