@@ -103,7 +103,6 @@ class PackTable extends React.Component {
         });
         return(
             <Table
-                // className="purchasePackTable"
                 rowKey={record => record.batchNumberId}
                 dataSource={this.props.data}
                 columns={columns}

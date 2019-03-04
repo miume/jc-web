@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, DatePicker, Select, message} from 'antd';
+import {Input, DatePicker, Select} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 import moment from "moment";

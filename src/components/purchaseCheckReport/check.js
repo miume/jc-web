@@ -83,7 +83,6 @@ class Check extends React.Component {
         }
     };
     fetch = (params,flag) => {
-        console.log(flag)
         if(flag) {
             var {pagination} = this.state;
             pagination.current = 1;
@@ -112,12 +111,10 @@ class Check extends React.Component {
                 this.setState({
                     dataSource: res.list,
                     pagination:pagination,
-                    // searchContent:''
                 });
             }else{
                 this.setState({
                     dataSource: [],
-                    // searchContent:''
                 });
             }
         });

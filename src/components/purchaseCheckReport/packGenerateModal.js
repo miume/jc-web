@@ -1,8 +1,6 @@
 import React from 'react';
 import {Modal,message,Button} from 'antd';
 import CancleButton from "../BlockQuote/cancleButton";
-import SaveButton from "../BlockQuote/saveButton";
-import Submit from "../BlockQuote/submit";
 import NewButton from "../BlockQuote/newButton";
 import PurchaseModal from './purchaseModal';
 import axios from 'axios';
@@ -62,7 +60,6 @@ class PackGenerateModal extends React.Component {
     }
     handleGenerate = () => {
         const batchNumberIds = this.props.selectedRowKeys.toString();
-        console.log(batchNumberIds)
         const params = {
             batchNumberIds:batchNumberIds,
             createPersonId:this.props.menuList.userId,
@@ -83,9 +80,6 @@ class PackGenerateModal extends React.Component {
             })
         }).catch(()=>{
             message.info('操作失败，请联系管理员')
-            // this.setState({
-            //     visible: false
-            // })
         })
     };
 
@@ -97,7 +91,6 @@ class PackGenerateModal extends React.Component {
     };
     handlePack = () => {
         const batchNumberIds = this.props.selectedRowKeys.toString();
-        console.log(batchNumberIds)
         const params = {
             batchNumberIds:batchNumberIds,
         };

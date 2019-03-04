@@ -119,7 +119,6 @@ class CheckEditSpan extends React.Component {
     }
     /**获取该行的记录详情 */
     getDetailData(){
-        // let detail = this.props.record;
         axios({
             url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}?batchNumberId=${this.props.id}`,
             method:'get',
@@ -128,7 +127,6 @@ class CheckEditSpan extends React.Component {
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log('detail',detail)
             var headData = [];
             var tbodyData = [];
             var judger = '';
@@ -150,7 +148,6 @@ class CheckEditSpan extends React.Component {
                         nowFormDate = nowDate[0]+'-'+nowDate[1]+ '-' +nowDate[2]
                     }
                 }
-                console.log(nowFormDate)
                 topData = {
                     materialName: detail.materialName,
                     norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
@@ -300,7 +297,6 @@ class CheckEditSpan extends React.Component {
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data;
-                console.log('dataId',dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({
@@ -317,7 +313,6 @@ class CheckEditSpan extends React.Component {
     /**---------------------- */
     /**送审 */
     applyReview(dataId){
-        console.log(this.state.process)
         axios({
             url : `${this.props.url.toDoList}/${parseInt(this.state.process)}`,
             method:'post',
