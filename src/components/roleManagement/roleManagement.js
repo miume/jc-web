@@ -64,7 +64,8 @@ class EditableCell extends React.Component {
 const EditableFormRow = Form.create()(EditableRow);
 
 class Role extends React.Component {
-   url
+    url
+    operation
     componentDidMount() {
       this.fetch();
     }
@@ -90,21 +91,24 @@ class Role extends React.Component {
         };
         this.reset = this.reset.bind(this);
         this.fetch = this.fetch.bind(this);
-        this.roleUpdate = this.roleUpdate.bind(this);
-        this.confrimCancel = this.confrimCancel.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleAdd = this.handleAdd.bind(this);
-        this.handleOk = this.handleOk.bind(this);
         this.cancel = this.cancel.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
+        this.roleUpdate = this.roleUpdate.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
-        this.userManagement = this.userManagement.bind(this);
-        this.handleRoleNameChange = this.handleRoleNameChange.bind(this);
-        this.handleRoleDescriptionChange = this.handleRoleDescriptionChange.bind(this);
-        this.onSelectChange = this.onSelectChange.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.confrimCancel = this.confrimCancel.bind(this);
+        this.userManagement = this.userManagement.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.userManagement = this.userManagement.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
-        this.searchEvent = this.searchEvent.bind(this);
+        this.handleRoleNameChange = this.handleRoleNameChange.bind(this);
+        this.handleRoleDescriptionChange = this.handleRoleDescriptionChange.bind(this);
         this.pagination = {
           showTotal(total) {
             return `共${total}条记录`
@@ -140,7 +144,7 @@ class Role extends React.Component {
               const editable = this.isEditing(record);
                 return (
                     <span>
-                        <span>
+                        <span className={this.judgeOperation(this.operation,'修改')?'':'hide'}>
                         {editable ? (
                           <span>
                             <EditableContext.Consumer>
@@ -157,12 +161,14 @@ class Role extends React.Component {
                         ) : (
                           <span  className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
+                      <Divider type="vertical" />
                       </span>
-                      <Divider type="vertical" />
-                      <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消" >
-                          <span className='blue'>删除</span>
-                      </Popconfirm>
-                      <Divider type="vertical" />
+                      <span className={this.judgeOperation(this.operation,'删除')?'':'hide'}>
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+                            <span className='blue'>删除</span>
+                        </Popconfirm>
+                        <Divider type="vertical" />
+                      </span>             
                       <span>
                           <UserManagement value={record.id} Authorization={this.url.Authorization} url={this.url}/>  {/**实现给成员分配角色的功能*/}
                       </span>
@@ -423,7 +429,11 @@ class Role extends React.Component {
               });
           }
         })
-
+      }
+      /**用来判断该菜单有哪些操作权限 */
+      judgeOperation(operation,operationName){
+          var flag = operation.filter(e=>e.operationName===operationName);
+          return flag.length>0?true:false
       }
       render() {
           /**这是个令牌，每次调用接口都将其放在header里 */
@@ -431,52 +441,53 @@ class Role extends React.Component {
           /**这是服务器网址及端口 */
           this.url = JSON.parse(localStorage.getItem('url')); 
           const current = JSON.parse(localStorage.getItem('current')) ;
+          /**获取当前菜单的所有操作权限 */
+          this.operation = JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList;
           const {selectedRowKeys} = this.state;
           const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
           };
-        const components = {
-          body: {
-            row: EditableFormRow,
-            cell: EditableCell,
-          },
-        };
-        const columns = this.columns.map((col) => {
-          if (!col.editable) {
-            return col;
-          }
-          return {
-            ...col,
-            onCell: record => ({
-              record,
-              editable: col.editable,
-              dataIndex: col.dataIndex,
-              title: col.title,
-              editing: this.isEditing(record),
-            }),
+          const components = {
+            body: {
+              row: EditableFormRow,
+              cell: EditableCell,
+            },
           };
-        });
+          const columns = this.columns.map((col) => {
+            if (!col.editable) {
+              return col;
+            }
+            return {
+              ...col,
+              onCell: record => ({
+                record,
+                editable: col.editable,
+                dataIndex: col.dataIndex,
+                title: col.title,
+                editing: this.isEditing(record),
+              }),
+            };
+          });
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
-                  {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={() => this.handleAdd()} >新增</Button> */}
-                  <Modal title="新增" visible={this.state.visible} closable={false} className='modal modal-sm' maskClosable={false} 
-                        centered={true}
-                        footer={[
-                          <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                          <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
-                        ]}>
-                        <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
-                  </Modal>
-                  <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} />
-                  <span style={{float:'right',paddingBottom:'8px'}}>
-                      <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} />
-                  </span>
-                  <div className='clear'></div>
-                  <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
+                    <span className={this.judgeOperation(this.operation,'新增')?'':'hide'}>
+                        <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
+                        <Modal title="新增" visible={this.state.visible} closable={false} className='modal modal-sm' maskClosable={false} 
+                            centered={true}
+                            footer={[
+                              <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                              <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
+                            ]}>
+                            <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
+                        </Modal>
+                    </span>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={this.judgeOperation(this.operation,'删除')} />
+                    <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} flag={this.judgeOperation(this.operation,'查询')} />
+                    <div className='clear'></div>
+                    <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
                 </div>
             </div>
 

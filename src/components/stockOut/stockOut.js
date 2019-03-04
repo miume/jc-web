@@ -6,11 +6,10 @@ import RawMaterialApplication from './rawMaterialApplication/rawMaterialApplicat
 import RawMaterialOut from './rawMaterialApplication/rawMaterialOut';
 const TabPane = Tabs.TabPane;
 class StockOut extends React.Component{
-    // Authorization
-    // server
     url
     componentDidMount(){
         this.apply(1);
+        this.testApply();
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -30,6 +29,7 @@ class StockOut extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.apply = this.apply.bind(this);
         this.outCheck = this.outCheck.bind(this);
+        this.testApply = this.testApply.bind(this);
     }
     handleChange(key){
         const outClass = key.split('-')[0];
@@ -71,6 +71,11 @@ class StockOut extends React.Component{
                 });
             }
           });
+    }
+    testApply(){
+        axios({
+            
+        })
     }
     /**出库记录 */
     outCheck(params){
