@@ -10,7 +10,10 @@
     border-top: none;
 }
 .rawMaterailStandardMiddle{
-    
+    margin:0 20px 0 20px;
+}
+.rawMaterailStandardMiddleDown{
+    height: 350px;
     margin:0 20px 0 20px;
     
 }

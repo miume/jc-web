@@ -116,7 +116,7 @@ import EditStandard from './edit';
         this.status=JSON.parse(localStorage.getItem('status'));
          return(
          <div style={{position:'relative'}}>
-             <div style={{padding:'15px'}}>
+             <div  className='rawMaterailStandardMiddle'>
              <span className='product-standrad-middle-text'>请设置标准</span>
                 <span className='fr'>
                 <SearchCell name='请输入创建人'
@@ -128,18 +128,20 @@ import EditStandard from './edit';
                 </span>
                 <Divider type='horizonal'/>
              </div>
-             <div>
-                <Table 
-                    rowKey={record=>record.index}
-                    columns={this.columns}
-                    dataSource={this.props.dataSource}
-                    pagination={{hideOnSinglePage:true,pageSize:100}}
-                    rowClassName={(record)=>record.isPublished===1?'rawStandardTableRow':''}
-                    size='small'
-                    bordered
-                    scroll={{y:230}}
-                />
-             </div>
+           <div className='rawMaterailStandardMiddleDown'>
+              <div>
+                    <Table 
+                        rowKey={record=>record.index}
+                        columns={this.columns}
+                        dataSource={this.props.dataSource}
+                        pagination={{hideOnSinglePage:true,pageSize:100}}
+                        rowClassName={(record)=>record.isPublished===1?'rawStandardTableRow':''}
+                        size='small'
+                        bordered
+                        scroll={{y:230}}
+                    />
+                </div>
+           </div>
                <div className='rawStandardPosition' onClick={this.checkRaw}>重新选择厂家</div>
          </div>
          );
