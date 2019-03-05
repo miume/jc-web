@@ -217,8 +217,8 @@ class SetStandard extends Component{
     render(){
         return(
             <div>
-                <div style={{padding:'15px'}}>
-                     &nbsp;<h2 style={{display:'inline-block'}}>请设置标准</h2>
+                <div  className='rawMaterailStandardMiddle'>
+                     <span className='product-standrad-middle-text'>请设置标准</span>
                      <span className='fr'>
                       <SearchCell name='请输入创建人名称'
                         fetch={this.fetch}
