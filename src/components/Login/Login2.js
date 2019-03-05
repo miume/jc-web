@@ -86,7 +86,7 @@ class Login extends React.Component {
   /**实现记录密码和用户名 */
   getDefault(flag){
     var text = document.cookie.split('-');
-    if(text[flag]){
+    if(text.length>1&&text[flag]){
       return text[flag];
     }else{
       return '';
