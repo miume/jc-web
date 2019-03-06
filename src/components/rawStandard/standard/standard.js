@@ -126,7 +126,7 @@ import EditStandard from './edit';
                     fetch={this.fetch}
                 />
                 </span>
-                <Divider type='horizonal'/>
+                <Divider type='horizontal'/>
              </div>
            <div className='rawMaterailStandardMiddleDown'>
               <div>

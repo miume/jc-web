@@ -53,8 +53,8 @@ class Manufacturer extends Component{
     }
 
     onBlockChange(e){
-        console.log(e.target);
-       console.log(e.target.id);
+    //     console.log(e.target);
+    //    console.log(e.target.id);
        //console.log(JSON.parse(localStorage.getItem('menuList')));
        const factoryId=e.target.id.split('-')[0];
        const factoryName=e.target.id.split('-')[1];
