@@ -107,7 +107,7 @@ class EquipmentArchive extends Component{//设备档案
                      <span>
                         <CheckManual record={record} url={this.url}/>
                         <Divider type='vertical'/>
-                        <Edit  url={this.url} record={record} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument}/>
+                        <Edit  url={this.url} record={record} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} fetch={this.fetch}/>
                         <Divider type='vertical'/>
                         <Delete record={record} url={this.url} fetch={this.fetch} pagination={this.pagination}/>
                     </span>
@@ -163,7 +163,7 @@ class EquipmentArchive extends Component{//设备档案
         .then((data)=>{
             //console.log(data);
             const res=data.data.data;
-            console.log(res);
+            //console.log(res);
             if(res&&res.list){
                 this.pagination.total=res.total?res.total:0;
                 this.pagination.current=res.pageNumber;

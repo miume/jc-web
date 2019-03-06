@@ -24,10 +24,7 @@ class Edit extends Component{
             visible:false
         });
         const value=this.formRef.getItemsValue();
-        console.log(this.props.record.id);
-        console.log(value.get('id'));
        console.log(value.get('file'));
-        //console.log(fromData.get(archiveName));
         axios({
             url:`${this.props.url.equipmentArchiveRecord.get}`,
             method:'put',
@@ -37,9 +34,12 @@ class Edit extends Component{
             data:value,
             type:'json'
         }).then((data)=>{
-             console.log(data);
+             //console.log(data);
              message.info(data.data.message);
-        }).catch();
+             this.props.fetch();
+        }).catch(()=>{
+            message.info('编辑失败，请联系管理员！');
+        });
     }
     handleCancel(){
        this.setState({visible:false})

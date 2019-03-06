@@ -29,13 +29,14 @@ class AddModal extends Component{
     dateOk(value) {
         //console.log('onOk: ', value);
       }
-    
 
     // 拦截文件上传
     /**上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。*/
     beforeUploadHandle=(file)=>{
+        //console.log(file);
         this.setState(state => ({
-          fileList: [...state.fileList, file],
+            fileList:[file]
+        //   fileList: [...state.fileList, file],//数组
         }));
         return false;
       }
@@ -53,7 +54,7 @@ class AddModal extends Component{
     getItemsValue = ()=>{    //3、自定义方法，用来传递数据（需要在父组件中调用获取数据）,4、getFieldsValue：获取一组输入控件的值，如不传入参数，则获取全部组件的值
         const values= this.props.form.getFieldsValue();
         values['installTime']=this.state.dateString;
-        console.log(values);
+        //console.log(values);
         const { fileList } = this.state;
         const formData = new FormData();//文件信息和其他表单信息一起提交，这个时候需要用到formData()；通过append方法将数据逐条添加到formData中（tips:formData数据在console后只有一个空的对象，但是数据都在里面，要想获取数据需要调用formData.get()方法）；
         fileList.forEach((file) => {
@@ -209,7 +210,7 @@ class AddModal extends Component{
                         <Col span={10} style={{display:"block"}}>
                             <FormItem wrapperCol={{span:24}}>
                                 {
-                                    <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove} fileList={this.state.fileList}>
+                                    <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove}  fileList={this.state.fileList}>
                                         <Button className='equipmentFile-upload-button'>
                                          <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
                                         </Button>
