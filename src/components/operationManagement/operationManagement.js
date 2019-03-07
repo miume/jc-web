@@ -73,7 +73,7 @@ class OperationManagement extends React.Component {
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
-                        flag={this.judgeOperation(this.operation,'查询')}
+                        // flag={this.judgeOperation(this.operation,'查询')}
                     />
                     <div className='clear' ></div>
                     <OperationTable
