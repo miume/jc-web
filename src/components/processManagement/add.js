@@ -153,7 +153,7 @@ class DynamicFieldSet extends React.Component{
 
       render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        this.ob = JSON.parse(localStorage.getItem('menuList'))
+        this.ob = JSON.parse(localStorage.getItem('menuList'));
         const children = this.state.approvalProcess.map(p => 
           <Option className="option" id={p.id} key={p.id} value={p.id}>{p.name}</Option>
       )
@@ -223,7 +223,6 @@ class DynamicFieldSet extends React.Component{
                 <AddButton key="submit" handleClick={this.handleSubmit} name='提交' className='fa fa-check' />
               ]}
             >
-            
               <Form horizontal='true'>
                   <Form.Item wrapperCol={{ span: 24 }}>
                       {getFieldDecorator('name',{

@@ -254,6 +254,12 @@ class Home extends Component {
                 getAllBypages:`${server}/jc/common/sampleDeliveringRecord/pages`,
                 rawStandard:`${server}/jc/common/sampleDeliveringRecord/rawStandard`
             },
+            /**设备指导 */
+            instructor:{
+                deletePic:`${server}/jc/common/instructor/deletePic`,
+                uploadPic:`${server}/jc/common/instructor/uploadPic`,
+                instructorAll:`${server}/jc/common/instructor`
+            },
             /**操作管理 */
             operation:{
                 getOperationsByPage:`${server}/jc/auth/operation/getOperationsByPage`,
