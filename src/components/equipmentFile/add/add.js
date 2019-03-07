@@ -27,7 +27,6 @@ class Add extends Component{
             message.info('信息填写不完整!');
             return
     }
-    //console.log(value.get('file'));
         axios({
              url:`${this.props.url.equipmentArchiveRecord.get}`,
              method:'post',
@@ -38,10 +37,7 @@ class Add extends Component{
              type:'json'
         })
         .then((data)=>{
-           //console.log(data);
            message.info(data.data.message);
-        //    this.fetch();
-           //this.pagination.current=1;//新增的记录要显示在第一页，
            this.props.reset();
         })
         .catch(()=>{
@@ -74,7 +70,7 @@ class Add extends Component{
                     ]}
                  >
                     {
-                        <AddModal  wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset} url={this.props.url} supplyManufacture={this.props.supplyManufacture} repairManufacture={this.props.repairManufacture} equipmentBaseInstrument={this.props.equipmentBaseInstrument}/>
+                        <AddModal  wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset} url={this.props.url} supplyManufacture={this.props.supplyManufacture} repairManufacture={this.props.repairManufacture} equipmentBaseInstrument={this.props.equipmentBaseInstrument} resetFile={this.resetFile}/>
                     }
                 </Modal>
             </span>

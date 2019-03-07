@@ -31,7 +31,7 @@ class EditModal extends Component{
      // 拦截文件上传
     /**上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。*/
     beforeUploadHandle=(file)=>{
-        console.log(file);//最后一次选择的文件
+        //console.log(file);//最后一次选择的文件
         this.setState(state => ({
             fileList:[file]
         //   fileList: [...state.fileList, file],//将选择的上传的文件放到上传文件列表fileList中
@@ -56,7 +56,7 @@ class EditModal extends Component{
         const { fileList } = this.state;
         const formData = new FormData();//将文件转换成二进制数据，这个时候需要用到formData()；通过append方法将数据逐条添加到formData中（tips:formData数据在console后只有一个空的对象，但是数据都在里面，要想获取数据需要调用formData.get()方法）；
         fileList.forEach((file) => {//将所有上传的文件都添加进数组
-            console.log(file)
+           // console.log(file)
           formData.append('file', file);
         });
         //formData.append('file', JSON.stringify(fileList[0]));

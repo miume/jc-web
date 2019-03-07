@@ -164,10 +164,11 @@ class EquipmentArchive extends Component{//设备档案
             //console.log(data);
             const res=data.data.data;
             //console.log(res);
+            var data1=[];
             if(res&&res.list){
+                //console.log('11')
                 this.pagination.total=res.total?res.total:0;
                 this.pagination.current=res.pageNumber;
-                var data1=[];
                 for(var i=0;i<res.list.length;i++){
                     data1.push({
                         index:i+1,
@@ -186,13 +187,13 @@ class EquipmentArchive extends Component{//设备档案
                         manualName:res.list[i].equipmentArchiveRecord.manualName
                     });
                  }
-               this.setState({
-                   dataSource:data1,
-                   searchContent:'',
-                   selectedRowKeys:[],
-                   pageChangeFlag:0
-               });
             }
+            this.setState({
+                dataSource:data1,
+                searchContent:'',
+                selectedRowKeys:[],
+                pageChangeFlag:0
+            });
         });
     }
      /**重置 */
@@ -336,7 +337,7 @@ class EquipmentArchive extends Component{//设备档案
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
                      <span style={{float:'right',paddingBottom:'8px'}}>
                         <SearchCell 
-                           name='请输入搜索内容'
+                           name='请输入文档名称'
                            searchEvent={this.searchEvent}
                            searchContentChange={this.searchContentChange}
                            fetch={this.fetch}
