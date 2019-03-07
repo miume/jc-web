@@ -174,10 +174,10 @@ class Management extends React.Component{
           return ;
         }
       }
-    handleSearch = (selectedKeys, confirm) => () => {
-        confirm();
-        this.setState({ searchText: selectedKeys[0] });
-      }
+    // handleSearch = (selectedKeys, confirm) => () => {
+    //     confirm();
+    //     this.setState({ searchText: selectedKeys[0] });
+    //   }
     /**获取查询时菜单名称的实时变化 */
     searchContentChange(e){
         const value = e.target.value;

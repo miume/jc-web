@@ -5,7 +5,8 @@ import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import { Button, Modal, Form, Input,message,DatePicker } from 'antd';
 import Tr from './tr';
-import './equiptment.css'
+import './equiptment.css';
+
 
 class AddModal extends React.Component{
     constructor(props){

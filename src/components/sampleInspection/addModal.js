@@ -280,6 +280,7 @@ const CollectionCreateForm = Form.create()(
 
         selectChange= (value) =>{
             if(value==='1'){
+                // this.props.onChangeItem()
                 this.props.form.setFieldsValue({
                     deliveryFactoryId:undefined,
                     serialNumberId:undefined
@@ -298,6 +299,7 @@ const CollectionCreateForm = Form.create()(
                     materialsItem:[]
                 })
             }else if(value==="3"){
+                // this.props.onChangeItem()
                 this.props.form.setFieldsValue({
                     deliveryFactoryId:undefined,
                     serialNumberId:undefined
@@ -313,7 +315,7 @@ const CollectionCreateForm = Form.create()(
             this.url = JSON.parse(localStorage.getItem('url'));
             this.Authorization = localStorage.getItem("Authorization");
             this.server = localStorage.getItem('remote');
-            const {visible,form,onCancel,onCreate,onChange,onCenter} = this.props;
+            const {visible,form,onCancel,onCreate,onChange,onCenter,} = this.props;
             const { getFieldDecorator } = form;
             return(
                 <Modal
@@ -455,7 +457,7 @@ const CollectionCreateForm = Form.create()(
                             </Checkbox.Group></div>
                         </FormItem>
                         </div>
-                        )    
+                        )
                         }
                         {
                             this.state.visible1===3?
@@ -539,6 +541,12 @@ class AddModal extends React.Component{
             testItemIds:checkedValues
         })
       }
+
+    // onChangeItem = ()=>{
+    //     this.setState({
+    //         testItemIds:[]
+    //     })
+    // }
     showModal = () => {
         this.setState({ visible: true });
     };
@@ -625,6 +633,7 @@ class AddModal extends React.Component{
                     onCreate={this.onCreate}
                     onChange={this.onChange}
                     onCenter={this.onCenter}
+                    // onChangeItem={this.onChangeItem}
                 />
             </span>
         )
