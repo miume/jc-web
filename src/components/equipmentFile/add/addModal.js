@@ -70,7 +70,11 @@ class AddModal extends Component{
     }
      /**重置组件的值 */
      resetField=()=>{
-        this.props.form.resetFields();}
+        this.props.form.resetFields();
+        this.setState({
+            fileList:[]
+        });
+    }
      render(){
             const { form } = this.props;
             const { getFieldDecorator } = form; 
