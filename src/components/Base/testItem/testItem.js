@@ -68,6 +68,7 @@ class EditableCell extends React.Component {
 
 class TestItem extends React.Component{
   url;
+  operation;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/testItem').style.color='#0079FE';
@@ -97,6 +98,7 @@ class TestItem extends React.Component{
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
       this.deleteCancel=this.deleteCancel.bind(this);
+      this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -133,7 +135,7 @@ class TestItem extends React.Component{
         const editable = this.isEditing(record);
         return (
             <span>
-                <span>
+                <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
                 {editable ? (
                   <span>
                     <EditableContext.Consumer>
@@ -152,9 +154,11 @@ class TestItem extends React.Component{
                 )}
               </span>
               <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
-                <span className='blue'>删除</span>
-                </Popconfirm>
+              <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
+                  <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
+                  <span className='blue'>删除</span>
+                  </Popconfirm>
+                </span>
             </span>
         );
         }
@@ -365,11 +369,16 @@ class TestItem extends React.Component{
             message.info('搜索失败，请联系管理员！')
            });
       }
-  
+      judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
    render(){
      /** 通过localStorage可查到http://218.77.105.241:40080*/
         this.url=JSON.parse(localStorage.getItem('url'));
        const current=JSON.parse(localStorage.getItem('current'));
+       //获取该菜单所有权限
+       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null
        const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
@@ -407,13 +416,15 @@ class TestItem extends React.Component{
                <BlockQuote name='检测项目' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
-               <TestItemAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
+               <TestItemAddModal fetch={this.fetch} url={this.url} flag={this.judgeOperation(this.operation,'SAVE')}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
                
                       <SearchCell name='请输入检测项目' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
-                      fetch={this.fetch}/>
+                      fetch={this.fetch}
+                      flag={this.judgeOperation(this.operation,'QUERY')}
+                      />
               
                <div className='clear'  ></div>
                 <Table rowKey={record => record.id} 

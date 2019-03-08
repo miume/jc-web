@@ -127,7 +127,7 @@ class Edit extends Component{
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
         return(
-            <span>
+            <span className={this.props.flag?'':'hide'}>
             <span className={this.props.editFlag?'blue':'notClick'} onClick={this.props.editFlag?this.showModal:this.notShowModal}>编辑</span>
             <Modal
                 visible={this.state.visible}

@@ -148,7 +148,7 @@ class Add extends React.Component{
     render() {
         this.url=JSON.parse(localStorage.getItem('url'));
         return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <NewButton   handleClick={this.showModal} className='fa fa-plus'  name='新增' />&nbsp;&nbsp;&nbsp;
                 <Modal  visible={this.state.visible}
                         maskClosable={false}
