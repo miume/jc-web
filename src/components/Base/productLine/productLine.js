@@ -423,12 +423,12 @@ class ProductLine extends React.Component{
                <div style={{padding:'15px'}}>  
                <ProductLineAddModal fetch={this.fetch} url={this.url}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                
                       <SearchCell name='请输入产品线' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
                       fetch={this.fetch}/>
-               </span>
+               
                <div className='clear'  ></div>
                 <Table rowKey={record => record.id} 
                     rowSelection={rowSelection} 

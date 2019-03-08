@@ -108,9 +108,9 @@ class Menu extends React.Component{
                 loading={loading}
                 cancel={this.cancel}
             />
-            <span style={{float:'right',paddingBottom:'8px'}}>
+            {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
                 <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-            </span>
+            {/* </span> */}
         <div className='clear' ></div>
         <MenuTable
             data={this.state.dataSource}

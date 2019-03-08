@@ -49,14 +49,12 @@ class InterProduct extends React.Component {
             <div>
                 <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell
-                            name='请输入送检工厂名称'
-                            searchEvent={this.searchEvent}
-                            searchContentChange={this.searchContentChange}
-                            fetch={this.fetch}
-                        />
-                    </span>
+                    <SearchCell
+                        name='请输入送检工厂名称'
+                        searchEvent={this.searchEvent}
+                        searchContentChange={this.searchContentChange}
+                        fetch={this.fetch}
+                    />
                     <div className='clear' ></div>
                     <InterTable
                         menuList={menuList}
