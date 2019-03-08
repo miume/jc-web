@@ -14,9 +14,23 @@ class DynamicFieldSet extends React.Component{
     url
     ob
     state = {
-    approvalProcess:[],
-    visible: false,
+        approvalProcess:[],
+        visible: false,
+        previewVisible:false,
+        previewImage: '',
+        fileList:[],
     };
+
+    previewCancel = (file) =>{
+        this.setState({
+            previewImage: file.url || file.thumbUrl,
+            previewVisible: true,
+        })
+    }
+
+    handleChange = ({fileList}) =>{
+        this.setState({ fileList })
+    }
 
     remove = (k) =>{
         const {form} = this.props;
@@ -66,6 +80,12 @@ class DynamicFieldSet extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
         const { getFieldDecorator, getFieldValue } = this.props.form;
+        const { previewVisible, previewImage, fileList } = this.state;
+        const uploadButton = (
+            <div>
+              <div className="ant-upload-text">Upload</div>
+            </div>
+          );
         const formItemLayoutWithOutLabel = {
             wrapperCol: {
             xs: { span: 24, offset: 0 },
@@ -136,7 +156,7 @@ class DynamicFieldSet extends React.Component{
                     width='600px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <SaveButton key="define" handleSave={this.handleCreate}/>,
                         <AddButton key="submit" handleClick={this.handleCreate} name='提交' className='fa fa-check' />
                     ]}
                 >
@@ -153,7 +173,7 @@ class DynamicFieldSet extends React.Component{
                             {getFieldDecorator('date',{
                                 // rules: [{ required: true, message: '请选择时间' }],
                             })(
-                                <DatePicker locale={locale} showTime={true} style={{width:'275px'}} onChange={this.onChange} placeholder="请选择时间"/>
+                                <DatePicker format="YYYY-MM-DD HH:mm:ss" locale={locale} showTime={true} style={{width:'275px'}} onChange={this.onChange} placeholder="请选择时间"/>
                             )}
                         </Form.Item>
                         <div id="edit" style={{height:'360px'}}>

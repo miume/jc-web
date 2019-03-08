@@ -148,7 +148,9 @@ class equipmentRepair extends React.Component{
                         <Option value={2}>已维修</Option>
                         <Option value={3}>已评价</Option>
                     </Select>
+                    {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
                     <SearchCell name='请输入设备名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                    {/* </span> */}
                     <div className='clear'></div>
                     <Table size="small" rowKey={record => record.index} dataSource={data} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
                 </div>

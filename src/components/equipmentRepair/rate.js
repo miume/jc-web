@@ -29,6 +29,9 @@ class RateNum extends React.Component{
         visible: false
         });
     }
+    onRate = (e) =>{
+        console.log(e)
+    }
     render(){
         const { TextArea } = Input;
         return(
@@ -45,7 +48,7 @@ class RateNum extends React.Component{
                         <AddButton key="submit" handleClick={this.handleOk} name="确定" className='fa fa-check'/>
                     ]}>
                         <div style={{height:'400px'}}>
-                            设备维修完好性 <Rate />
+                            设备维修完好性 <Rate onChange={this.onRate}/>
                             维修及时性 <Rate />
                             维修后现场清理 <Rate />
                             维修服务态度 <Rate />
