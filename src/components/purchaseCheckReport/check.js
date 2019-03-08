@@ -40,15 +40,13 @@ class Check extends React.Component {
         }
         return(
             <div>
-                <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell
-                        name='请输入原材料名称'
-                        searchEvent={this.searchEvent}
-                        searchContentChange={this.searchContentChange}
-                        fetch={this.fetch}
-                        type={2}
-                    />
-                </span>
+                <SearchCell
+                    name='请输入原材料名称'
+                    searchEvent={this.searchEvent}
+                    searchContentChange={this.searchContentChange}
+                    fetch={this.fetch}
+                    type={2}
+                />
                 <div className='clear' ></div>
                 <CheckTable
                     menuList={this.props.menuList}
