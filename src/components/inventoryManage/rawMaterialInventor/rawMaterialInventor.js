@@ -5,6 +5,7 @@ import SearchCell from '../../BlockQuote/search';
 import axios from 'axios';
 class RowMaterialInventor extends Component{
     url;
+    operation;
     componentDidMount(){
       this.fetch();
     }
@@ -80,6 +81,7 @@ class RowMaterialInventor extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
+        this.judgeOperation=this.judgeOperation.bind(this);
     }
     handleTableChange=(pagination)=>{//页切换时调用
         //console.log(this.pagination);
@@ -167,8 +169,15 @@ class RowMaterialInventor extends Component{
          message.info('搜索失败，请联系管理员！');
      });
     }
+    judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
+        const current=JSON.parse(localStorage.getItem('current'));
+        //获取该菜单所有权限
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null
         return(
             <div style={{padding:'0 15px'}}>
                 
@@ -177,6 +186,7 @@ class RowMaterialInventor extends Component{
                         searchEvent={this.searchEvent}
                         type={this.props.type}
                         fetch={this.fetch}
+                        flag={this.judgeOperation(this.operation,'QUERY')}
                     >
                     </SearchCell>
             

@@ -6,6 +6,7 @@ import axios from 'axios';
 
 class RowMaterialStorage extends Component{
     url;
+    operation;
     componentDidMount(){
         this.fetch();
     }
@@ -138,6 +139,7 @@ class RowMaterialStorage extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
+        this.judgeOperation=this.judgeOperation.bind(this);
     }
     
     handleTableChange=(pagination)=>{//当点击第二页，第三页的时候，调用
@@ -229,8 +231,15 @@ class RowMaterialStorage extends Component{
           message.info('搜索失败，请联系管理员！');
       });
     }
+    judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
     render(){
       this.url=JSON.parse(localStorage.getItem('url'));
+      const current=JSON.parse(localStorage.getItem('current'));
+      //获取该菜单所有权限
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null
         return(
             <div style={{padding:'0 15px'}}>
                 
@@ -239,6 +248,7 @@ class RowMaterialStorage extends Component{
                         searchEvent={this.searchEvent}
                         fetch={this.fetch}
                         type={this.props.type}
+                        flag={this.judgeOperation(this.operation,'QUERY')}
                     >
                     </SearchCell>
                
