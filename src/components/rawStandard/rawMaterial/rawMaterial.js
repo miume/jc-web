@@ -184,14 +184,14 @@ class RawMaterial extends Component{
               <div>
                   <div  className='rawMaterailStandardMiddle'>
                     <span className='product-standrad-middle-text'>请选择原材料</span>
-                     <span style={{float:'right' }}>
+                     
                        <SearchCell name='请输入原材料名称'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
                             type={this.props.type}
                         />
-                     </span>
+                    
                      <Divider type='horizontal' />
                    </div>
                    <div className='rawStanstdardParent1'>

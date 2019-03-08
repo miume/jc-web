@@ -168,7 +168,7 @@ class ProductInventor extends Component{
         this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                
                     <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
@@ -176,7 +176,7 @@ class ProductInventor extends Component{
                         fetch={this.fetch}
                     >
                     </SearchCell>
-                </span>
+               
                 <div className='clear'  ></div>
                 <Table
                 rowKey={record=>record.id}

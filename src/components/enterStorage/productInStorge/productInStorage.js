@@ -231,7 +231,7 @@ class ProductInStorage extends Component{
        this.url=JSON.parse(localStorage.getItem('url'));
         return(
             <div style={{padding:'0 15px'}}>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                
                     <SearchCell name='请输入成品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
@@ -239,7 +239,7 @@ class ProductInStorage extends Component{
                         type={this.props.type}
                     >
                     </SearchCell>
-                </span>
+               
                 <div className='clear'  ></div>
                 <Table
                 rowKey={record=>record.id}
