@@ -219,50 +219,6 @@ class EquipmentArchive extends Component{//设备档案
            pageChangeFlag:1
        });
        this.fetch({name:name});
-    //    //console.log(name);
-    //    axios({
-    //         url:`${this.url.equipmentArchiveRecord.getAllByPage}`,
-    //         method:'get',
-    //         headers:{
-    //             'Authorization':this.url.Authorization
-    //         },
-    //         params:{
-    //             pageSize:this.pagination.pageSize,
-    //             pageNumber:this.pagination.current,
-    //             name:name
-    //         },
-    //         type:'json'
-    //    })
-    //    .then((data)=>{
-    //        //console.log(data);
-    //        const res=data.data.data;
-    //        this.pagination.total=res.total?res.total:0;
-    //         if(res&&res.list){
-    //             var searchData=[];
-    //             for(var i=0;i<res.list.length;i++){
-    //                 searchData.push({
-    //                     index:i+1,
-    //                     id:res.list[i].equipmentArchiveRecord.id,
-    //                     archiveName:res.list[i].equipmentArchiveRecord.name,
-    //                     instrumentName:res.list[i].baseInstrument.name,//设备名称
-    //                     installTime:res.list[i].equipmentArchiveRecord.installTime,
-    //                     warrantyPeriod:res.list[i].equipmentArchiveRecord.warrantyPeriod,//保修期限
-    //                     supplyManufacture:res.list[i].supplyManufacturer.name,//供货厂家名称
-    //                     supplyManufacturePhone:res.list[i].supplyManufacturer.contact,
-    //                     repairManufacture:res.list[i].repairManufacturer.name,
-    //                     repairManufacturePhone:res.list[i].repairManufacturer.contact
-    //                 });
-    //             }
-    //             //console.log(searchData);
-    //             this.setState({
-    //                 dataSource:searchData,
-    //                 pageChangeFlag:1
-    //             });
-    //         }
-    //        })
-    //    .catch(()=>{
-    //        message.info('搜索失败，请联系管理员！');
-    //    })
     }
    
     getAllRepairManufacturer(){//获取所有维修厂家
