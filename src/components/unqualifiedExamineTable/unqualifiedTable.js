@@ -91,7 +91,6 @@ class UnqualifiedTable extends React.Component {
         width: '13%',
         render: (text,record) => {
             let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
-            // let operationCheckFlag = true;
             return (
                 <span>
                     {operationCheckFlag?(
