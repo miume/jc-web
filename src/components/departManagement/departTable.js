@@ -128,7 +128,9 @@ class DepartTable extends React.Component {
                     <Divider type="vertical" />
                     <DeletaSpan
                         record={record}
-                        getFetch={this.getFetch.bind(this)}
+                        fetch={this.props.fetch}
+                        pagination={this.props.pagination}
+                        handleDelete={this.props.handleDelete}
                     />
                 </span>
             )
@@ -175,9 +177,6 @@ class DepartTable extends React.Component {
         );
     };
     /**实现初始化页面功能 */
-    getFetch = () => {
-        this.props.fetch();
-    };
     /**---------------------- */
     /**实现字段搜索功能 */
     isEditing = (record) => {
@@ -205,8 +204,8 @@ class DepartTable extends React.Component {
                 const data = row;
                 data['id'] = id.toString();
                 axios({
-                    url:`${this.props.url.department.update}`,
-                    method:'post',
+                    url:`${this.props.url.department.department}`,
+                    method:'put',
                     headers:{
                         'Authorization':this.props.url.Authorization
                     },

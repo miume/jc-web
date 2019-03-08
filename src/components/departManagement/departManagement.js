@@ -16,10 +16,13 @@ class Depart extends React.Component {
     url;
     operation
     componentDidMount() {
-        this.fetch();
+        this.fetch({
+            pageSize:10,
+            pageNumber:1,
+        });
     }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
       }
@@ -29,9 +32,15 @@ class Depart extends React.Component {
             dataSource: [],
             selectedRowKeys: [],
             editingKey: '',
-            pagination:{},
             searchContent:'',
             searchText: '',
+            pagination : {
+                showTotal(total) {
+                    return `共${total}条记录`
+                },
+                showSizeChanger:true
+            },
+            pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
@@ -42,13 +51,7 @@ class Depart extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.judgeOperation = this.judgeOperation.bind(this);
-        this.pagination = {
-            total: this.state.dataSource.length,
-            showTotal(total) {
-                return `共${total}条记录`
-            },
-            showSizeChanger: true,
-        }
+        this.handleDelete = this.handleDelete.bind(this);
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -86,11 +89,12 @@ class Depart extends React.Component {
                 <DepartTable
                     url={this.url}
                     data={this.state.dataSource}
-                    pagination={this.pagination}
+                    pagination={this.state.pagination}
                     rowSelection={rowSelection}
                     fetch={this.fetch}
                     modifyDataSource={this.modifyDataSource}
                     handleTableChange={this.handleTableChange}
+                    handleDelete={this.handleDelete}
                 />
                 </div>
             </div>
@@ -111,33 +115,59 @@ class Depart extends React.Component {
     /**---------------------- */
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
-
+        this.setState({
+            pagination:pagination
         });
+        const {pageChangeFlag} = this.state;
+        /**分页查询 */
+        if(pageChangeFlag){
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+                departmentName:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+            })
+        }
     };
-    fetch = (params = {}) => {
+    fetch = (params ,flag) => {
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:'',
+                pagination:pagination
+            })
+        }
         axios({
-            url: `${this.url.department.getDepartmentsByPage}` ,
+            url: `${this.url.department.byNameLikeByPage}` ,
             method: 'get',
             headers:{
                 'Authorization': this.url.Authorization
             },
             params: params,
         }).then((data) => {
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
+            const res = data.data.data?data.data.data:[];
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
+                const {pagination} = this.state;
+                pagination.total=res.total;
                 this.setState({
                     dataSource: res.list,
-                    searchContent: ''
+                    pagination:pagination,
                 });
+            }else{
+                this.setState({
+                    dataSource: []
+                })
             }
         });
     };
@@ -146,7 +176,7 @@ class Depart extends React.Component {
     deleteByIds = () => {
         const ids = this.state.selectedRowKeys;
         axios({
-            url: `${this.url.department.deleteByIds}`,
+            url: `${this.url.department.department.batchDelete}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
@@ -174,31 +204,12 @@ class Depart extends React.Component {
     /**---------------------- */
     /** 根据角色名称分页查询*/
     searchEvent(){
-        const dep_name = this.state.searchContent;
-        axios({
-            url: `${this.url.department.getDepartmentsByNameLikeByPage}`,
-            method:'get',
-            headers:{
-                'Authorization':this.url.Authorization
-            },
-            params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-                departmentName:dep_name
-            },
-            type:'json',
-        }).then((data)=>{
-            const res = data.data.data;
-            this.pagination.total=res?res.total:0;
-            if(res&res.list){
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i;
-                }
-            }
-            this.setState({
-                dataSource: res&res.list?res.list:[],
-            });
+        this.setState({
+            pageChangeFlag:1
         });
+        this.fetch({
+            departmentName:this.state.searchContent
+        })
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){
@@ -206,6 +217,24 @@ class Depart extends React.Component {
         this.setState({searchContent:value});
     }
     /**---------------------- */
+
+    handleDelete = (id) => {
+        axios({
+            url:`${this.url.department.department}/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch({
+                pageSize:this.state.pagination.pageSize,
+                pageNumber:this.state.pagination.current,
+            })
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
+    }
 
 }
 

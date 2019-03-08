@@ -283,13 +283,13 @@ class Home extends Component {
             },
             /**部门管理 */
             department:{
-                getDepartmentsByPage:`${server}/jc/auth/department/getDepartmentsByPage`,
-                deleteByIds:`${server}/jc/auth/department/deleteByIds`,
-                getDepartmentsByNameLikeByPage:`${server}/jc/auth/department/getDepartmentsByNameLikeByPage`,
-                update:`${server}/jc/auth/department/update`,
-                add:`${server}/jc/auth/department/add`,
-                deleteById:`${server}/jc/auth/department`,
-                getAll:`${server}/jc/auth/department/getAll`,
+                byNameLikeByPage:`${server}/jc/auth/department/byNameLikeByPage`,
+                department:`${server}/jc/auth/department`,
+                batchDelete:`${server}/jc/auth/department/batchDelete`,
+                // update:`${server}/jc/auth/department/update`,
+                // add:`${server}/jc/auth/department/add`,
+                // deleteById:`${server}/jc/auth/department`,
+                getAll:`${server}/jc/auth/department`,
             },
             /**出库管理 */
             stockOut:{

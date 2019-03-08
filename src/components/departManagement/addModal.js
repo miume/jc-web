@@ -71,7 +71,7 @@ class AddModal extends React.Component {
                 return;
             }
             axios({
-                url : `${this.props.url.department.add}`,
+                url : `${this.props.url.department.department}`,
                 method:'post',
                 headers:{
                     'Authorization': this.props.url.Authorization
@@ -80,7 +80,7 @@ class AddModal extends React.Component {
                 type:'json'
             }).then((data) => {
                 message.info(data.data.message);
-                this.props.fetch(); // 重新调用分页函数
+                this.props.fetch({},1); // 重新调用分页函数
             }).catch(function () {
                 message.info('新增失败，请联系管理员！');
             });
