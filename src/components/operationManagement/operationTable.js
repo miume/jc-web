@@ -68,7 +68,7 @@ class OperationTable extends React.Component {
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
     }
-    columns = this.props.judgeOperation(this.props.operation,'删除')||this.props.judgeOperation(this.props.operation,'修改')?
+    columns = this.props.judgeOperation(this.props.operation,'DELETE')||this.props.judgeOperation(this.props.operation,'UPDATE')?
     [{
         title: '序号',
         dataIndex: 'index',
@@ -99,7 +99,7 @@ class OperationTable extends React.Component {
             const editable = this.isEditing(record);
             return (
                 <span>
-                    <span className={this.props.judgeOperation(this.props.operation,'修改')?'':'hide'}>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         {editable ? (
                             <span>
                                 <EditableContext.Consumer>
@@ -129,7 +129,7 @@ class OperationTable extends React.Component {
                     <DeletaSpan
                         record={record}
                         getFetch={this.getFetch.bind(this)}
-                        flag={this.props.judgeOperation(this.props.operation,'删除')}
+                        flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                     />
                 </span>
             )

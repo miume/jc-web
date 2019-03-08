@@ -61,12 +61,12 @@ class OperationManagement extends React.Component {
                 <div style={{padding:'15px'}}>
                     <AddModal
                         fetch={this.fetch}
-                        flag={this.judgeOperation(this.operation,'新增')}
+                        flag={this.judgeOperation(this.operation,'SAVE')}
                     />
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.deleteByIds}
-                        cancel={this.cancel} flag={this.judgeOperation(this.operation,'删除')}
+                        cancel={this.cancel} flag={this.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell
                         name='请输入操作名称'
@@ -92,9 +92,9 @@ class OperationManagement extends React.Component {
         )
     }
     /**用来判断该菜单有哪些操作权限 */
-    judgeOperation(operation,operationName){
-        if(operation===null) return false
-        var flag = operation.filter(e=>e.operationName===operationName);
+    judgeOperation(operation,operationCode){
+        // if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
         return flag.length>0?true:false
     }
     /**修改父组件的数据 */

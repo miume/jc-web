@@ -144,7 +144,7 @@ class Role extends React.Component {
               const editable = this.isEditing(record);
                 return (
                     <span>
-                        <span className={this.judgeOperation(this.operation,'修改')?'':'hide'}>
+                        <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
                         {editable ? (
                           <span>
                             <EditableContext.Consumer>
@@ -163,7 +163,7 @@ class Role extends React.Component {
                         )}
                       <Divider type="vertical" />
                       </span>
-                      <span className={this.judgeOperation(this.operation,'删除')?'':'hide'}>
+                      <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                         <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
                         </Popconfirm>
@@ -431,8 +431,8 @@ class Role extends React.Component {
         })
       }
       /**用来判断该菜单有哪些操作权限 */
-      judgeOperation(operation,operationName){
-          var flag = operation.filter(e=>e.operationName===operationName);
+      judgeOperation(operation,operationCode){
+          var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
           return flag.length>0?true:false
       }
       render() {
@@ -473,7 +473,7 @@ class Role extends React.Component {
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <span className={this.judgeOperation(this.operation,'新增')?'':'hide'}>
+                    <span className={this.judgeOperation(this.operation,'SAVE')?'':'hide'}>
                         <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
                         <Modal title="新增" visible={this.state.visible} closable={false} className='modal modal-sm' maskClosable={false} 
                             centered={true}
@@ -484,7 +484,7 @@ class Role extends React.Component {
                             <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
                         </Modal>
                     </span>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={this.judgeOperation(this.operation,'删除')} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={this.judgeOperation(this.operation,'DELETE')} />
                     <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset}/>
                     <div className='clear'></div>
                     <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
