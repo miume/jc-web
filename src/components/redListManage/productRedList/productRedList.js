@@ -359,14 +359,14 @@ class ProductRedList extends Component{
             <div style={{padding:'0 15px'}}>
                 <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                
                       <SearchCell name='请输入编号' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
                           fetch={this.fetch}
                           type={this.props.type}
                     />
-                    </span>
+                   
                 <Table
                         rowKey={record => record.repoRedTable.id}
                         dataSource={this.state.dataSource}

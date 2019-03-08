@@ -118,14 +118,14 @@ import EditStandard from './edit';
          <div style={{position:'relative'}}>
              <div  className='rawMaterailStandardMiddle'>
              <span className='product-standrad-middle-text'>请设置标准</span>
-                <span className='fr'>
+                
                 <SearchCell name='请输入创建人'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
                     type={this.props.type}
                     fetch={this.fetch}
                 />
-                </span>
+               
                 <Divider type='horizontal'/>
              </div>
            <div className='rawMaterailStandardMiddleDown'>

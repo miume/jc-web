@@ -96,6 +96,7 @@ class EditableCell extends React.Component {
 
 class User extends React.Component{
   url;
+  operation;
   componentDidMount(){
     this.fetch();
     this.getAllDepartment();
@@ -505,9 +506,17 @@ class User extends React.Component{
           })
         })
       }
+      /*用来判断该菜单有哪些操作权限*/
+      judgeOperation(operation,operationName){
+         
+      }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'))
         const current=JSON.parse(localStorage.getItem('current'));
+        /*获取当前菜单所有权限*/
+       // this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[3].operationList:null;
+       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+      // console.log(this.operation);
         const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             selectedRowKeys,
@@ -549,12 +558,12 @@ class User extends React.Component{
                           <UserAddModal  key='user' deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
                     </Modal>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                    <span style={{float:'right',paddingBottom:'8px'}}>
+                   
                       <SearchCell name='请输入用户名称'
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange}
                       fetch={this.fetch}/>
-                    </span>
+                    
                 <div className='clear'  ></div>
                 <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 418 }}/>
                 </div>

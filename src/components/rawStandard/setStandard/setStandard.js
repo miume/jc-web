@@ -219,11 +219,11 @@ class SetStandard extends Component{
             <div>
                 <div  className='rawMaterailStandardMiddle'>
                      <span className='product-standrad-middle-text'>请设置标准</span>
-                     <span className='fr'>
+                     
                       <SearchCell name='请输入创建人名称'
                         fetch={this.fetch}
                       />
-                     </span>
+                    
                 </div>
                 <div className='rawStandardImageDiv'>
                    <img src={require(`../standard.png`)} alt='图片加载失败' className='rawStandardImage'  />

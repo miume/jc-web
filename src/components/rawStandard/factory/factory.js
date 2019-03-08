@@ -168,14 +168,14 @@ class Manufacturer extends Component{
           <div style={{position:'relative'}}>
               <div className='rawMaterailStandardMiddle'>
               <span className='product-standrad-middle-text'>请选择生产厂家</span>
-                <span  className='fr'>
+                
                  <SearchCell name='请输入工厂名称'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
                     fetch={this.fetch}
                     type={this.props.type}
                  />
-                </span>
+               
                 <Divider type='horizontal'/>
               </div>
               <div className='rawStanstdardParent1'>

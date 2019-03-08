@@ -291,14 +291,14 @@ class EquipmentArchive extends Component{//设备档案
                  <div style={{padding:'15px'}}>
                      <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} reset={this.reset}/> &nbsp;&nbsp;&nbsp;
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
-                     <span style={{float:'right',paddingBottom:'8px'}}>
+                     
                         <SearchCell 
                            name='请输入文档名称'
                            searchEvent={this.searchEvent}
                            searchContentChange={this.searchContentChange}
                            fetch={this.fetch}
                         />
-                     </span>
+                    
                    <Table
                       rowKey={record=>record.id}
                       columns={this.columns}
