@@ -316,9 +316,7 @@ class RawTestReport extends React.Component{
                 <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     {/* <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/> */}
-                    <span style={{float:'right',paddingBottom:'8px'}} >
-                        <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
-                    </span>
+                    <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
                     <div className='clear'></div>
                 <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} 
                 onChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} 

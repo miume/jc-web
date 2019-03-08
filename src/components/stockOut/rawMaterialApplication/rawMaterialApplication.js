@@ -126,9 +126,7 @@ class RawMaterialApplication extends React.Component{
         return (
             <div style={{padding:'0 15px'}}>
                 <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url} />
-                <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
-                </span>
+                <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
                 <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={false} scroll={{ y: 398 }} bordered size='small'></Table>
             </div>
         );
