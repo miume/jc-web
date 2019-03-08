@@ -69,15 +69,13 @@ class Pack extends React.Component {
                         <span style={{marginRight:'10px',fontSize:'10px'}}>仅显示未生成的数据</span>
                         <Switch onChange={this.urgentChange} size='small' defaultChecked style={{width:'35px',marginBottom:'2px',background:''}}/>
                         <Divider type="vertical" style={{height:'35px'}}/>
-                        <span style={{float:'right',paddingBottom:'8px'}}>
-                            <SearchCell
-                                name='请输入送检人名称'
-                                searchContentChange={this.searchContentChange}
-                                searchEvent={this.searchEvent}
-                                fetch={this.fetch}
-                                type={1}
-                            />
-                        </span>
+                        <SearchCell
+                            name='请输入送检人名称'
+                            searchContentChange={this.searchContentChange}
+                            searchEvent={this.searchEvent}
+                            fetch={this.fetch}
+                            type={1}
+                        />
                     </div>
                 </div>
 

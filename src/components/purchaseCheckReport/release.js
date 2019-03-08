@@ -43,15 +43,13 @@ class Release extends React.Component {
         }
         return(
             <div>
-                <span style={{float:'right',paddingBottom:'8px'}}>
-                    <SearchCell
-                        name='请输入创建人名称'
-                        searchEvent={this.searchEvent}
-                        searchContentChange={this.searchContentChange}
-                        fetch={this.fetch}
-                        type={3}
-                    />
-                </span>
+                <SearchCell
+                    name='请输入创建人名称'
+                    searchEvent={this.searchEvent}
+                    searchContentChange={this.searchContentChange}
+                    fetch={this.fetch}
+                    type={3}
+                />
                 <div className='clear' ></div>
                 <ReleaseTable
                     fetch={this.fetch}

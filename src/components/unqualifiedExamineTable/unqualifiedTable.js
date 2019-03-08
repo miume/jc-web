@@ -61,7 +61,7 @@ class UnqualifiedTable extends React.Component {
         dataIndex: 'commonBatchNumber.createTime',
         key: 'commonBatchNumber.createTime',
         align:'center',
-        width: '10%',
+        width: '9%',
         render:(createTime)=>{
             return <span title={createTime} className='text-decoration'>{createTime.substring(0,10)+'...'}</span>
         }
@@ -70,7 +70,7 @@ class UnqualifiedTable extends React.Component {
         dataIndex: 'commonBatchNumber.status',
         key: 'commonBatchNumber.status',
         align:'center',
-        width: '6%',
+        width: '8%',
         render:state => {
             return this.props.status[state.toString()];
         }
@@ -79,7 +79,7 @@ class UnqualifiedTable extends React.Component {
         dataIndex: 'commonBatchNumber.isUrgent',
         key: 'commonBatchNumber.isUrgent',
         align:'center',
-        width: '6%',
+        width: '5%',
         render:isUrgent=>{
             return isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>
         },
