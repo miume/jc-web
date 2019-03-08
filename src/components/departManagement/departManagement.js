@@ -54,7 +54,7 @@ class Depart extends React.Component {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -67,17 +67,20 @@ class Depart extends React.Component {
                     <AddModal
                         url={this.url}
                         fetch={this.fetch}
+                        flag={this.judgeOperation(this.operation,'SAVE')}
                     />
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.deleteByIds}
                         cancel={this.cancel}
+                        flag={this.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell
                         name='请输入部门名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
+                        // flag={this.judgeOperation(this.operation,'查询')}
                     />
                 <div className='clear' ></div>
                 <DepartTable
@@ -94,8 +97,8 @@ class Depart extends React.Component {
         )
     }
     /**用来判断该菜单有哪些操作权限 */
-    judgeOperation(operation,operationName){
-        var flag = operation.filter(e=>e.operationName===operationName);
+    judgeOperation(operation,operationCode){
+        var flag = operation.filter(e=>e.operationCode===operationCode);
         return flag.length>0?true:false
     }
     /**修改父组件的数据 */

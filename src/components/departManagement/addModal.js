@@ -96,7 +96,7 @@ class AddModal extends React.Component {
 
     render() {
         return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <NewButton
                     handleClick={this.showModal}
                     name='新增'
