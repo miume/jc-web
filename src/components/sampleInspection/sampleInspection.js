@@ -359,10 +359,10 @@ class SampleInspection extends React.Component{
                         deleteByIds={this.deleteByIds}
                     />
 
-                    <span style={{float:'right',paddingBottom:'8px'}}>
+                    {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
 
                         <SearchCell name='请输入工厂名'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-                    </span>
+                    {/* </span> */}
                     <div className='clear' ></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
                            bordered

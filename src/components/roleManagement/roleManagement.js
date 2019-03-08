@@ -432,6 +432,7 @@ class Role extends React.Component {
       }
       /**用来判断该菜单有哪些操作权限 */
       judgeOperation(operation,operationCode){
+          if(operation===null) return false
           var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
           return flag.length>0?true:false
       }
@@ -442,7 +443,7 @@ class Role extends React.Component {
           this.url = JSON.parse(localStorage.getItem('url')); 
           const current = JSON.parse(localStorage.getItem('current')) ;
           /**获取当前菜单的所有操作权限 */
-          this.operation = JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList;
+          this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
           const {selectedRowKeys} = this.state;
           const rowSelection = {
             selectedRowKeys,
