@@ -276,12 +276,10 @@ class Management extends React.Component{
                         loading={loading}
                         cancel={this.cancel}
                     />
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-                </span>                
-                <div className='clear' ></div>
-                <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
-                    </div>
+                    <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>              
+                    <div className='clear' ></div>
+                    <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
+                        </div>
                 </div>
             );
     }

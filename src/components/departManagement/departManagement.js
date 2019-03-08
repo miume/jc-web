@@ -73,14 +73,12 @@ class Depart extends React.Component {
                         deleteByIds={this.deleteByIds}
                         cancel={this.cancel}
                     />
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell
-                            name='请输入部门名称'
-                            searchEvent={this.searchEvent}
-                            searchContentChange={this.searchContentChange}
-                            fetch={this.fetch}
-                        />
-                    </span>
+                    <SearchCell
+                        name='请输入部门名称'
+                        searchEvent={this.searchEvent}
+                        searchContentChange={this.searchContentChange}
+                        fetch={this.fetch}
+                    />
                 <div className='clear' ></div>
                 <DepartTable
                     url={this.url}
@@ -189,11 +187,13 @@ class Depart extends React.Component {
         }).then((data)=>{
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
+            if(res&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.prePage)*10+i;
+                }
             }
             this.setState({
-                dataSource: res.list,
+                dataSource: res&res.list?res.list:[],
             });
         });
     };

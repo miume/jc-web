@@ -258,10 +258,8 @@ class RawMaterialOut extends React.Component {
             <div style={{padding: '0 15px'}}>
                 <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel}
                              selectedRowKeys={this.state.selectedRowKeys}/>
-                <span style={{float: 'right', paddingBottom: '8px'}}>
-                    <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent}
-                                searchContentChange={this.searchContentChange}></SearchCell>
-                </span>
+                <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent}
+                            searchContentChange={this.searchContentChange}></SearchCell>
                 <div className='clear'></div>
                 <Table rowKey={record => record.id} dataSource={this.props.data} columns={this.columns}
                        rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange}
