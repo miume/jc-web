@@ -6,35 +6,78 @@ import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import moment from "moment";
+import "./equiptment.css";
+import PictureUp from './upload'
 
-const Option = Select.Option;
+// const Option = Select.Option;
 let id = 0;
 
 class DynamicFieldSet extends React.Component{
     url
     ob
     state = {
-        approvalProcess:[],
+        // approvalProcess:[],
         visible: false,
-        previewVisible:false,
-        previewImage: '',
-        fileList:[],
+        // previewVisible:false,
+        // previewImage: '',
+        fileList0:[],
     };
 
-    previewCancel = (file) =>{
-        this.setState({
-            previewImage: file.url || file.thumbUrl,
-            previewVisible: true,
-        })
-    }
+    // previewCancel = () =>{
+    //     this.setState({ previewVisible: false })
+    // }
 
-    handleChange = ({fileList}) =>{
-        this.setState({ fileList })
-    }
+    // previewPreview = (file) =>{
+    //     this.setState({
+    //         previewImage: file.url || file.thumbUrl,
+    //         previewVisible: true,
+    //     })
+    // }
+
+    // handleChange = ({fileList}) =>{
+    //     console.log({fileList})
+    //     this.setState({ fileList })
+    // }
+
+    // onRemove = (e) =>{
+    //     console.log(e.response.data)
+    //     axios({
+    //         url: `${this.url.instructor.deletePic}`,
+    //         method:'delete',
+    //         headers:{
+    //             'Authorization': this.url.Authorization
+    //         },
+    //         fileNames:e.response.data,
+    //         type:'json'
+    //     }).then((data)=>{
+    //         message.info(data.data.message);
+    //     })
+    // }
 
     remove = (k) =>{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
+        const fileList = `fileList${k}`
+        // console.log(fileList)
+        // console.log()
+        // const response = this.state[fileList] === undefined ? this.state[fileList].response.data : null
+        if(this.state[fileList][0] !== undefined){
+            var list = [this.state[fileList][0].response.data]
+            list.push()
+            if(this.state[fileList] !== []){
+                axios({
+                    url: `${this.url.instructor.deletePic}`,
+                    method:'delete',
+                    headers:{
+                        'Authorization': this.url.Authorization
+                    },
+                    data:list,
+                    type:'json'
+                }).then((data)=>{
+                    message.info(data.data.message);
+                })
+            }
+        }
         if(keys.length === 1){
             return;
         }
@@ -47,6 +90,7 @@ class DynamicFieldSet extends React.Component{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat(++id);
+        this.state['fileList'+`${id}`] = []
         form.setFieldsValue({
             keys: nextKeys,
         });
@@ -59,9 +103,47 @@ class DynamicFieldSet extends React.Component{
     handleCreate = (e) =>{
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (!err) {
-              console.log('Received values of form: ', values);
+            if (err) {
+            //   console.log('Received values of form: ', values);
+              return ;
             }
+            let data = {}
+            let instructorRecord = {}
+            let pointRecordList = []
+            instructorRecord["name"] = values.name
+            instructorRecord["effectiveDate"] = values.date.format("YYYY-MM-DD HH:mm:ss")
+            for(var i = 0;i<values.keys.length;i++){
+                pointRecordList.push({})
+            }
+            for(var i = 0;i<values.keys.length;i++){
+                let file = `fileList${values.keys[i]}`
+                pointRecordList[i]["checkContent"]=values.content[values.keys[i]];
+                pointRecordList[i]['checkFrequency']=values.frequency[values.keys[i]];
+                pointRecordList[i]["checkPointPicName"]=this.state[file] === [] ? null :this.state[file][0].response.data
+                pointRecordList[i]['checkStandard']=values.standard[values.keys[i]];
+            }
+            data["createPersonId"] = parseInt(this.ob.userId)
+            data["instructorRecord"] = instructorRecord
+            data["pointRecordList"] = pointRecordList
+            // console.log(data)
+            axios({
+                url : `${this.url.instructor.instructorAll}`,
+                method:'post',
+                data: data,
+                type:'json'
+            }).then((data) => {
+                if(data.data.code !== 0){
+                  message.info('新增失败')
+                  this.setState({
+                    visible:true
+                  })
+                }else{
+                  message.info(data.data.message);
+                  this.props.fetch(); // 重新调用分页函数
+                  this.props.form.resetFields();
+                  this.setState({ visible: false});
+                }
+          })
           });
     }
 
@@ -76,16 +158,19 @@ class DynamicFieldSet extends React.Component{
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
     }
 
+    handleChange = (fileList,k) =>{
+        // console.log(k)
+        this.setState({
+            [fileList]:k.fileList
+        })
+    }
+
     render(){
+        // console.log(this.state)
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
         const { getFieldDecorator, getFieldValue } = this.props.form;
-        const { previewVisible, previewImage, fileList } = this.state;
-        const uploadButton = (
-            <div>
-              <div className="ant-upload-text">Upload</div>
-            </div>
-          );
+        // const { previewVisible, previewImage, fileList } = this.state;
         const formItemLayoutWithOutLabel = {
             wrapperCol: {
             xs: { span: 24, offset: 0 },
@@ -125,19 +210,33 @@ class DynamicFieldSet extends React.Component{
                 </Form.Item>
                 </Col>
                 <Form.Item style={{marginRight: 4 }}>
-                <Upload>
-                    <Button>
+                    {/* var file = 'fileList' + `${k}` */}
+                    {
+                        <PictureUp k={k} handleChange={this.handleChange} fileList={this.state[`fileList${k}`]}/>
+                    }
+                {/* <Upload
+                    action={this.url.instructor.uploadPic}
+                    listType="picture"
+                    fileList={fileList}
+                    onPreview={this.previewPreview}
+                    onChange={this.handleChange}
+                    onRemove={this.onRemove}
+                >
+                    {fileList.length === 1 ? null : <Button>
                         <Icon type="upload"/>上传图片
-                    </Button>
+                    </Button>}
                 </Upload>
+                <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel}>
+                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal> */}
                 </Form.Item>
                 <Form.Item>
                 {keys.length > 1 ? (
                     <Icon
-                    className="dynamic-delete-button"
-                    type="minus-circle-o"
-                    disabled={keys.length === 1}
-                    onClick={() => this.remove(k)}
+                        className="dynamic-delete-button"
+                        type="minus-circle-o"
+                        disabled={keys.length === 1}
+                        onClick={() => this.remove(k)}
                     />
                 ) : null}
                 </Form.Item>

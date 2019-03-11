@@ -170,7 +170,7 @@ class Equipment extends React.Component{
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                <AddModal />&nbsp;&nbsp;&nbsp;
+                <AddModal fetch={this.fetch}/>&nbsp;&nbsp;&nbsp;
                 <SearchCell name='请输入指导书名称' fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                 <div className='clear'></div>
                 <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumber} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
