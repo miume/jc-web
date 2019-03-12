@@ -58,7 +58,7 @@ class CheckUnqualified extends React.Component{
             <div style={{width:`${modalWidth}`}}>
                 {
                     this.state.type?(
-                        <div style={{height:500}}>
+                        <div style={{height:460}}>
                             <PurchaseModal
                                 data={this.state.checkData}
                                 clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
