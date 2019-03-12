@@ -8,18 +8,6 @@ import AddModal from './add';
 import { Table,Popconfirm,Divider,message } from 'antd';
 import Edit from "./edit"
 
-// const data = [];
-// for(let i = 1;i<=10;i++){
-//     data.push({
-//         key:i,
-//         index:i,
-//         serial:'ABC'+i,
-//         name:'name'+i,
-//         time:'1994-'+i+"-10",
-//         person:'person'+i,
-//     })
-// }
-
 class Equipment extends React.Component{
     url
     constructor(props){
@@ -37,10 +25,6 @@ class Equipment extends React.Component{
                 return `共${total}条记录`
             },
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
         };
         this.columns = [{
             title: '序号',
@@ -51,7 +35,7 @@ class Equipment extends React.Component{
         },{
             title: '批号',
             dataIndex: 'batchNumber',
-            key: 'batchNumber',
+            key: 'batchNumberId',
             align:'center',
             width: '16%',
         },{
@@ -78,27 +62,50 @@ class Equipment extends React.Component{
             key: 'id',
             align:'center',
             width: '16%',
-            render:()=>{
+            render:(text,record)=>{
                 return (
                     <span>
-                        <Edit />
-                        <Divider type="vertical" />
                         <span ref="#" className='blue'>详情</span>
                         <Divider type="vertical" />
-                        <span ref="#" className='blue'>删除</span>
+                        <Edit />
+                        <Divider type="vertical" />
+                        {record.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
+                            <span className='blue' href="#">删除</span>
+                        </Popconfirm>:<span className="notClick">删除</span>}
                     </span>
                 )
             }
         }]
     }
+
+    handleDelete = (id) => {
+        axios({
+            url:`${this.url.instructor.instructorAll}/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+        setTimeout(() => {
+            if((this.pagination.total-1)%10===0){
+                this.pagination.current = this.pagination.current-1
+            }
+            this.handleTableChange(this.pagination);
+        }, 1000);
+    }
+
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
+        console.log(pagination.current)
         this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-            orderField: 'id',
-            orderType: 'desc',
-  
+            pageSize: pagination.pageSize,
+            pageNumber: pagination.current,
+            sortField: 'id',
+            sortType: 'desc',
         });
     };
     fetch = (params = {}) =>{
@@ -113,7 +120,7 @@ class Equipment extends React.Component{
             const res = data.data.data;
             if(res&&res.list){
                 this.pagination.total=res.total;
-                this.pagination.current = res.pageNum;
+                this.pagination.current = res.pageNumber;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
@@ -125,7 +132,8 @@ class Equipment extends React.Component{
         })
     };
     componentDidMount() {
-        this.fetch();
+        this.fetch({sortField: 'id',
+        sortType: 'desc',});
     }
     /**获取查询时名称的实时变化 */
     searchContentChange(e){
@@ -173,7 +181,7 @@ class Equipment extends React.Component{
                 <AddModal fetch={this.fetch}/>&nbsp;&nbsp;&nbsp;
                 <SearchCell name='请输入指导书名称' fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                 <div className='clear'></div>
-                <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumber} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
+                <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumberId} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
                 </div>
             </div>
         );
