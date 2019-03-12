@@ -186,7 +186,8 @@ class Home extends Component {
             '11': '不合格评审数据',
             '12': '不合格追踪数据',
             '13':'原材料标准',
-            '14':'成品标准'
+            '14':'成品标准',
+            '15':'设备指导'
         }
         const server = localStorage.getItem('server');
         this.Authorization = localStorage.getItem('authorization');
@@ -194,18 +195,19 @@ class Home extends Component {
             Authorization:this.Authorization,
             /**角色管理 */
             role:{
-                add:`${server}/jc/auth/role/add`,
-                deleteById:`${server}/jc/auth/role`,
-                update:`${server}/jc/auth/role/update`,
+                role:`${server}/jc/auth/role`,
+                // add:`${server}/jc/auth/role/add`,
+                // deleteById:`${server}/jc/auth/role`,
+                // update:`${server}/jc/auth/role/update`,
                 getAll:`${server}/jc/auth/role/getAll`,
                 getAuths:`${server}/jc/auth/role/getAuths`,
-                deleteByIds:`${server}/jc/auth/role/deleteByIds`,
-                getUsersOfRole:`${server}/jc/auth/role/getUsersOfRole`,
-                getRolesByPage:`${server}/jc/auth/role/getRolesByPage`,
-                addOneOperation:`${server}/jc/auth/role/addOneOperation`,
+                // deleteByIds:`${server}/jc/auth/role/deleteByIds`,
+                getUsersOfRole:`${server}/jc/auth/role/usersOfRole`,
+                getRolesByPage:`${server}/jc/auth/role/byNameLikeByPage`,
+                addOneOperation:`${server}/jc/auth/role/addAuthority`,
                 search:`${server}/jc/auth/role/getRolesByNameLikeByPage`,
                 assignRoleToUser:`${server}/jc/auth/role/assignRoleToUser`,
-                deleteOneOperation:`${server}/jc/auth/role/deleteOneOperation`,
+                deleteOneOperation:`${server}/jc/auth/role/removeAuthority`,
             },
             /**菜单管理 */
             menu:{

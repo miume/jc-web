@@ -184,6 +184,10 @@ class Role extends React.Component {
     /**重置 */
     reset(){
         this.pagination.current = 1;
+        this.setState({
+            searchContent:'',
+            pageChangeFlag:0
+        })
         this.fetch();
     }
     /**获取所有数据 getAllByPage */
@@ -192,18 +196,19 @@ class Role extends React.Component {
       const {pageChangeFlag} = this.state;
       /**区分是否是 搜索分页内容 */
       if(pageChangeFlag){
-        this.searchEvent({
-          size: pagination.pageSize,
-          page: pagination.current,
-          orderField: 'id',
-          orderType: 'desc',
+        this.fetch({
+          roleName:this.state.searchContent,
+          pageSize: pagination.pageSize,
+          pageNumber: pagination.current,
+          sortField: 'id',
+          sortType: 'desc',
         });
       }else{
         this.fetch({
-          size: pagination.pageSize,
-          page: pagination.current,
-          orderField: 'id',
-          orderType: 'desc',
+          pageSize: pagination.pageSize,
+          pageNumber: pagination.current,
+          sortField: 'id',
+          sortType: 'desc',
         });
       }
     }
@@ -225,9 +230,8 @@ class Role extends React.Component {
             }
             this.setState({
               dataSource: res.list,
-              searchContent:'',
               selectedRowKeys:[],
-              pageChangeFlag:0
+              // pageChangeFlag:0
             });
         }
       });
@@ -243,7 +247,7 @@ class Role extends React.Component {
      /**根据id处理单条记录删除 */
      handleDelete(id){
         axios({
-          url:`${this.url.role.deleteById}/${id}`,
+          url:`${this.url.role.role}/${id}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -297,15 +301,18 @@ class Role extends React.Component {
       }
       roleUpdate(data,newData){
         axios({
-          url:`${this.url.role.update}`,
-          method:'post',
+          url:`${this.url.role.role}`,
+          method:'put',
           headers:{
             'Authorization':this.url.Authorization
           },
           data:data,
           type:'json'
         }).then((data)=>{
-            message.info(data.data.message);
+            if(data.data.code === -1) message.info('保存失败，请联系管理员！');
+            else{
+              message.info(data.data.message);
+            }
             this.setState({ dataSource: newData});
         }).catch(()=>{
             message.info('保存失败，请联系管理员！');
@@ -333,7 +340,7 @@ class Role extends React.Component {
           visible: false,
         });
         axios({
-          url : `${this.url.role.add}`,
+          url : `${this.url.role.role}`,
           method:'post',
           headers:{
             'Authorization':this.url.Authorization
@@ -362,7 +369,7 @@ class Role extends React.Component {
       deleteByIds() {
         const ids = this.state.selectedRowKeys;
         axios({
-          url:`${this.url.role.deleteByIds}`,
+          url:`${this.url.role.role}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -406,29 +413,35 @@ class Role extends React.Component {
         // console.log(this.state.searchContent)
       }
       /** 根据角色名称分页查询*/
-      searchEvent(params){
-        const role_name = this.state.searchContent;
-        axios({
-          url:`${this.url.role.search}?roleName=${role_name}`,
-          method:'get',
-          headers:{
-            'Authorization':this.url.Authorization
-          },
-          params:params,
-          type:'json',
-        }).then((data)=>{
-          const res = data.data.data;
-          if(res&&res.list){
-              this.pagination.total=res.total;
-              for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=res.prePage*10+i;
-              }
-              this.setState({
-                dataSource: res.list,
-                pageChangeFlag:1,
-              });
-          }
+      searchEvent(){
+        const roleName = this.state.searchContent;
+        this.setState({
+          pageChangeFlag:1
         })
+        this.fetch({
+          roleName:roleName,
+        });
+        // axios({
+        //   url:`${this.url.role.search}?roleName=${role_name}`,
+        //   method:'get',
+        //   headers:{
+        //     'Authorization':this.url.Authorization
+        //   },
+        //   params:params,
+        //   type:'json',
+        // }).then((data)=>{
+        //   const res = data.data.data;
+        //   if(res&&res.list){
+        //       this.pagination.total=res.total;
+        //       for(var i = 1; i<=res.list.length; i++){
+        //         res.list[i-1]['index']=res.prePage*10+i;
+        //       }
+        //       this.setState({
+        //         dataSource: res.list,
+        //         pageChangeFlag:1,
+        //       });
+        //   }
+        // })
       }
       /**用来判断该菜单有哪些操作权限 */
       judgeOperation(operation,operationCode){

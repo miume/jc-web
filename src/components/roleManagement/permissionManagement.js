@@ -62,7 +62,7 @@ class PermissionManagement extends React.Component {
     }
     /** 通过角色id获取角色菜单权限*/
     getAuthByRoleId(){
-        const url = `${this.props.url.role.getAuths}?id=${this.props.value}`;
+        const url = `${this.props.url.role.role}/${this.props.value}`;
         axios({
             url:url,
             type:'get',
@@ -156,7 +156,7 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
-                closable={false} maskClosable={false} destroyOnClose='true' className='modal-lg'
+                closable={false} maskClosable={false} destroyOnClose='true' width={900}
                 footer={[
                     // <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     <CancleButton key='back' handleCancel={this.handleOk} flag={1}/>
@@ -192,9 +192,8 @@ class PermissionManagement extends React.Component {
                                                               this.state.operations.map(op=>{
                                                                   var isChecked = menu.operations.find(me=>me.id===op.id);
                                                                   if(isChecked){
-
                                                                       return (
-                                                                        <span key={op.id} style={{display:'inline'}}>
+                                                                        <span key={op.id} style={{display:'inline-block',minWidth:75}}>
                                                                           <input type='checkbox' key={op.id} value={op.id} id={menu.id.toString()} onChange={this.change} defaultChecked={true}/>&nbsp;&nbsp;&nbsp;{op.operationName}</span>
                                                                        // <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName} checked={true} />
                                                                       );
@@ -242,7 +241,7 @@ export default PermissionManagement;
 class AuthInput extends React.Component{
     render(){
         return(
-            <span style={{display:'inline'}}>
+            <span style={{display:'inline-block',minWidth:75}}>
                 <input type='checkbox' value={this.props.value} id={this.props.id} onChange={this.props.change} checked={this.props.checked} /> &nbsp;{this.props.operationName}</span>
         );
     }
