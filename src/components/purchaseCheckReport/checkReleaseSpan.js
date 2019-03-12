@@ -28,11 +28,12 @@ class CheckReleaseSpan extends React.Component {
     render() {
         const { visible } = this.state;
         const footer = this.judgeFooter(this.props.state);
+        const titleName = "数据"+this.props.name;
         return(
             <span>
                 <span className="blue" onClick={this.handleDetail} >{this.props.name}</span>
                 <Modal
-                    title="数据详情"
+                    title={titleName}
                     visible={visible}
                     width="1080px"
                     centered={true}
