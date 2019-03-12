@@ -1,58 +1,23 @@
 import React from 'react';
-import { Button, Modal,Select,Form, Input,message,Icon,Upload,DatePicker, Col, Row } from 'antd';
+import { Button, Modal,Form, Input,message,Icon,DatePicker, Col, Row } from 'antd';
 import axios from 'axios';
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
-import moment from "moment";
 import "./equiptment.css";
-import PictureUp from './upload'
+import PictureUp from './upload';
+import Submit from '../BlockQuote/checkSubmit';
 
-// const Option = Select.Option;
 let id = 0;
 
 class DynamicFieldSet extends React.Component{
     url
     ob
     state = {
-        // approvalProcess:[],
         visible: false,
-        // previewVisible:false,
-        // previewImage: '',
         fileList0:[],
     };
-
-    // previewCancel = () =>{
-    //     this.setState({ previewVisible: false })
-    // }
-
-    // previewPreview = (file) =>{
-    //     this.setState({
-    //         previewImage: file.url || file.thumbUrl,
-    //         previewVisible: true,
-    //     })
-    // }
-
-    // handleChange = ({fileList}) =>{
-    //     console.log({fileList})
-    //     this.setState({ fileList })
-    // }
-
-    // onRemove = (e) =>{
-    //     console.log(e.response.data)
-    //     axios({
-    //         url: `${this.url.instructor.deletePic}`,
-    //         method:'delete',
-    //         headers:{
-    //             'Authorization': this.url.Authorization
-    //         },
-    //         fileNames:e.response.data,
-    //         type:'json'
-    //     }).then((data)=>{
-    //         message.info(data.data.message);
-    //     })
-    // }
 
     remove = (k) =>{
         const {form} = this.props;
@@ -62,9 +27,9 @@ class DynamicFieldSet extends React.Component{
         // console.log()
         // const response = this.state[fileList] === undefined ? this.state[fileList].response.data : null
         if(this.state[fileList][0] !== undefined){
-            var list = [this.state[fileList][0].response.data]
-            list.push()
-            if(this.state[fileList] !== []){
+            var list = []
+            list.push(this.state[fileList][0].response.data)
+            if(this.state[fileList] != false){
                 axios({
                     url: `${this.url.instructor.deletePic}`,
                     method:'delete',
@@ -107,6 +72,11 @@ class DynamicFieldSet extends React.Component{
             //   console.log('Received values of form: ', values);
               return ;
             }
+            if(values.date === undefined){
+                message.info("请选择时间")
+                return ;
+            }
+            // console.log(this.state["fileList0"] == false)
             let data = {}
             let instructorRecord = {}
             let pointRecordList = []
@@ -119,13 +89,14 @@ class DynamicFieldSet extends React.Component{
                 let file = `fileList${values.keys[i]}`
                 pointRecordList[i]["checkContent"]=values.content[values.keys[i]];
                 pointRecordList[i]['checkFrequency']=values.frequency[values.keys[i]];
-                pointRecordList[i]["checkPointPicName"]=this.state[file] === [] ? null :this.state[file][0].response.data
+                pointRecordList[i]["checkPointPicName"]=this.state[file].length === 0 ? null :this.state[file][0].response.data
                 pointRecordList[i]['checkStandard']=values.standard[values.keys[i]];
             }
             data["createPersonId"] = parseInt(this.ob.userId)
             data["instructorRecord"] = instructorRecord
             data["pointRecordList"] = pointRecordList
             // console.log(data)
+            
             axios({
                 url : `${this.url.instructor.instructorAll}`,
                 method:'post',
@@ -138,8 +109,18 @@ class DynamicFieldSet extends React.Component{
                     visible:true
                   })
                 }else{
+                const keys = this.props.form.getFieldValue('keys');
+                // console.log(keys)
+                for(var i =0;i<keys.length;i++){
+                    let file = `fileList${keys[i]}`
+                    // console.log(file)
+                    this.setState({
+                        [file]:[]
+                    })
+                }
                   message.info(data.data.message);
-                  this.props.fetch(); // 重新调用分页函数
+                  this.props.fetch({sortField: 'id',
+                  sortType: 'desc',}); // 重新调用分页函数
                   this.props.form.resetFields();
                   this.setState({ visible: false});
                 }
@@ -149,6 +130,35 @@ class DynamicFieldSet extends React.Component{
 
     handleCancel = () => {
         // const form = this.formRef.props.form;
+        const keys = this.props.form.getFieldValue('keys');
+        // console.log(keys)
+        for(var i =0;i<keys.length;i++){
+            let file = `fileList${keys[i]}`
+            var list = []
+            if(this.state[file].length === 0){
+                continue;
+            }else{
+                list.push(this.state[file][0].response.data)
+                axios({
+                    url: `${this.url.instructor.deletePic}`,
+                    method:'delete',
+                    headers:{
+                        'Authorization': this.url.Authorization
+                    },
+                    data:list,
+                    type:'json'
+                }).then((data)=>{
+                    message.info(data.data.message);
+                })
+            }
+            
+            // if(this.state[file] != false){
+                
+            // }
+            this.setState({
+                [file]:[]
+            })
+        }
         this.setState({ visible: false });
         this.props.form.resetFields();
         // form.resetFields();
@@ -163,6 +173,91 @@ class DynamicFieldSet extends React.Component{
         this.setState({
             [fileList]:k.fileList
         })
+    }
+
+    getCheck = (dataId,taskId,urgent) => {//调用代办事项接口
+        // console.log(dataId,taskId,urgent)
+        axios({
+            url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${urgent}`,
+            method:'post',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            type:'json'
+         }).then((data)=>{
+             message.info(data.data.message);
+             this.props.fetch({sortField: 'id',
+             sortType: 'desc',});
+         }).catch(()=>{
+             message.info('审核失败，请联系管理员！');
+         });
+    }
+
+    handleSongShenOk = (process,urgent) => {
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+            //   console.log('Received values of form: ', values);
+              return ;
+            }
+            if(values.date === undefined){
+                message.info("请选择时间")
+                return ;
+            }
+            // console.log(this.state["fileList0"] == false)
+            let data = {}
+            let instructorRecord = {}
+            let pointRecordList = []
+            instructorRecord["name"] = values.name
+            instructorRecord["effectiveDate"] = values.date.format("YYYY-MM-DD HH:mm:ss")
+            for(var i = 0;i<values.keys.length;i++){
+                pointRecordList.push({})
+            }
+            for(var i = 0;i<values.keys.length;i++){
+                let file = `fileList${values.keys[i]}`
+                pointRecordList[i]["checkContent"]=values.content[values.keys[i]];
+                pointRecordList[i]['checkFrequency']=values.frequency[values.keys[i]];
+                pointRecordList[i]["checkPointPicName"]=this.state[file].length === 0 ? null :this.state[file][0].response.data
+                pointRecordList[i]['checkStandard']=values.standard[values.keys[i]];
+            }
+            data["createPersonId"] = parseInt(this.ob.userId)
+            data["instructorRecord"] = instructorRecord
+            data["pointRecordList"] = pointRecordList
+            // console.log(data)
+            
+            axios({
+                url : `${this.url.instructor.instructorAll}`,
+                method:'post',
+                data: data,
+                type:'json'
+            }).then((data) => {
+                if(data.data.code !== 0){
+                  message.info('新增失败')
+                  this.setState({
+                    visible:true
+                  })
+                }else{
+                    // console.log(data)
+                const res=data.data.data;
+                const dataId=res.instructorRecord.batchNumberId;//返回的batchnumberId
+                const taskId=process;//选择的流程id
+                this.getCheck(dataId,taskId,urgent);
+                const keys = this.props.form.getFieldValue('keys');
+                // console.log(keys)
+                for(var i =0;i<keys.length;i++){
+                    let file = `fileList${keys[i]}`
+                    // console.log(file)
+                    this.setState({
+                        [file]:[]
+                    })
+                }
+                //   message.info(data.data.message);
+                //   this.props.fetch({sortField: 'id',
+                //   sortType: 'desc',}); // 重新调用分页函数
+                  this.props.form.resetFields();
+                  this.setState({ visible: false});
+                }
+          })
+          });
     }
 
     render(){
@@ -256,7 +351,7 @@ class DynamicFieldSet extends React.Component{
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate}/>,
-                        <AddButton key="submit" handleClick={this.handleCreate} name='提交' className='fa fa-check' />
+                        <Submit  key='submit' applySaveAndReview={this.handleSongShenOk}  url={this.url} />
                     ]}
                 >
                     <Form>
