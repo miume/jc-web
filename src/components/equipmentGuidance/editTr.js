@@ -1,20 +1,70 @@
 import React from 'react';
-import axios from 'axios';
-import {Input,Upload,Button,Icon} from 'antd';
+import { Button, Modal,Select,Form, Input,message,Icon,Row,Col } from 'antd';
+import PictureUp from './upload'
 
 class Tr extends React.Component{
-    constructor(props){
-        super(props);
-    }
     render(){
+        const { getFieldDecorator, getFieldValue } = this.props.form;
+        var array = [];
+        for(var i=0;i<this.props.content.length;i++){
+            array.push(i);
+        }
+        getFieldDecorator('keys', { initialValue: array });
+        const keys = getFieldValue('keys');
         return(
-            <tr>
-                <td><Input style={{border:'none'}} placeholder='每日点检内容' value="内容1"/></td>
-                <td><Input style={{border:'none'}} placeholder='检查标准' value="标准1"/></td>
-                <td><Input style={{border:'none'}} placeholder='频次' value="频次"/></td>
-                <td></td>
-                <td style={{textAlign:"center"}}><span style={{width:'100%'}} href='#' className="blue" onClick={()=>this.props.deleteRow(this.props.value)} value={this.props.value}>删除</span></td>
-            </tr>
+            keys.map((k,index) => {
+                return(
+                    <div key={index}>
+                        <Row gutter={24}>
+                        <Col span={6}>
+                            <Form.Item >
+                                {getFieldDecorator(`content[${k}]`,{
+                                    validateTrigger: ['onChange', 'onBlur'],
+                                    initialValue:this.props.content[k]?this.props.content[k].checkContent:undefined
+                                })(
+                                    <Input placeholder='每日点检内容' style={{width:'130px'}}/>
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item>
+                                {getFieldDecorator(`standard[${k}]`,{
+                                    validateTrigger: ['onChange', 'onBlur'],
+                                    initialValue:this.props.content[k]?this.props.content[k].checkStandard:undefined
+                                })(
+                                    <Input placeholder='检查标准' style={{width:'130px'}}/>
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item>
+                                {getFieldDecorator(`frequency[${k}]`,{
+                                    validateTrigger: ['onChange', 'onBlur'],
+                                    initialValue:this.props.content[k]?this.props.content[k].checkFrequency:undefined
+                                })(
+                                    <Input placeholder='频次' style={{width:'120px'}}/>
+                                )}
+                            </Form.Item>
+                        </Col>
+                        <Form.Item style={{marginRight: 4 }}>
+                            {
+                                <PictureUp k={k} handleChange={this.props.handleChange} fileList={this.props.state[`fileList${k}`]}/>
+                            }
+                        </Form.Item>
+                        <Form.Item>
+                            {keys.length > 1 ? (
+                                <Icon
+                                    className="dynamic-delete-button"
+                                    type="minus-circle-o"
+                                    disabled={keys.length === 1}
+                                    onClick={() => this.props.remove(k)}
+                                />
+                            ) : null}
+                        </Form.Item>
+                        </Row>
+                    </div>
+                )
+            })
         )
     }
 }

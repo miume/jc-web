@@ -6,7 +6,7 @@ import SearchCell from '../BlockQuote/search';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import AddModal from './add';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import Edit from "./edit"
+import Edit from "./editor"
 
 class Equipment extends React.Component{
     url
@@ -67,7 +67,7 @@ class Equipment extends React.Component{
                     <span>
                         <span ref="#" className='blue'>详情</span>
                         <Divider type="vertical" />
-                        <Edit />
+                        <Edit value={record.id} status={record.status} batchNumberId={record.batchNumberId} fetch={this.fetch}/>
                         <Divider type="vertical" />
                         {record.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>

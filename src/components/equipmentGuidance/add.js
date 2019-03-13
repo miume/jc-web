@@ -23,9 +23,6 @@ class DynamicFieldSet extends React.Component{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
         const fileList = `fileList${k}`
-        // console.log(fileList)
-        // console.log()
-        // const response = this.state[fileList] === undefined ? this.state[fileList].response.data : null
         if(this.state[fileList][0] !== undefined){
             var list = []
             list.push(this.state[fileList][0].response.data)
@@ -69,14 +66,12 @@ class DynamicFieldSet extends React.Component{
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) {
-            //   console.log('Received values of form: ', values);
               return ;
             }
             if(values.date === undefined){
                 message.info("请选择时间")
                 return ;
             }
-            // console.log(this.state["fileList0"] == false)
             let data = {}
             let instructorRecord = {}
             let pointRecordList = []
@@ -95,7 +90,6 @@ class DynamicFieldSet extends React.Component{
             data["createPersonId"] = parseInt(this.ob.userId)
             data["instructorRecord"] = instructorRecord
             data["pointRecordList"] = pointRecordList
-            // console.log(data)
             
             axios({
                 url : `${this.url.instructor.instructorAll}`,
@@ -110,10 +104,8 @@ class DynamicFieldSet extends React.Component{
                   })
                 }else{
                 const keys = this.props.form.getFieldValue('keys');
-                // console.log(keys)
                 for(var i =0;i<keys.length;i++){
                     let file = `fileList${keys[i]}`
-                    // console.log(file)
                     this.setState({
                         [file]:[]
                     })
@@ -129,9 +121,7 @@ class DynamicFieldSet extends React.Component{
     }
 
     handleCancel = () => {
-        // const form = this.formRef.props.form;
         const keys = this.props.form.getFieldValue('keys');
-        // console.log(keys)
         for(var i =0;i<keys.length;i++){
             let file = `fileList${keys[i]}`
             var list = []
@@ -151,17 +141,12 @@ class DynamicFieldSet extends React.Component{
                     message.info(data.data.message);
                 })
             }
-            
-            // if(this.state[file] != false){
-                
-            // }
             this.setState({
                 [file]:[]
             })
         }
         this.setState({ visible: false });
         this.props.form.resetFields();
-        // form.resetFields();
     };
 
     onChange = (date, dateString) =>{
@@ -169,14 +154,13 @@ class DynamicFieldSet extends React.Component{
     }
 
     handleChange = (fileList,k) =>{
-        // console.log(k)
+        // console.log(k.fileList)
         this.setState({
             [fileList]:k.fileList
         })
     }
 
     getCheck = (dataId,taskId,urgent) => {//调用代办事项接口
-        // console.log(dataId,taskId,urgent)
         axios({
             url:`${this.url.toDoList}/${taskId}?dataId=${dataId}&isUrgent=${urgent}`,
             method:'post',
@@ -196,14 +180,12 @@ class DynamicFieldSet extends React.Component{
     handleSongShenOk = (process,urgent) => {
         this.props.form.validateFields((err, values) => {
             if (err) {
-            //   console.log('Received values of form: ', values);
               return ;
             }
             if(values.date === undefined){
                 message.info("请选择时间")
                 return ;
             }
-            // console.log(this.state["fileList0"] == false)
             let data = {}
             let instructorRecord = {}
             let pointRecordList = []
@@ -222,7 +204,6 @@ class DynamicFieldSet extends React.Component{
             data["createPersonId"] = parseInt(this.ob.userId)
             data["instructorRecord"] = instructorRecord
             data["pointRecordList"] = pointRecordList
-            // console.log(data)
             
             axios({
                 url : `${this.url.instructor.instructorAll}`,
@@ -236,40 +217,32 @@ class DynamicFieldSet extends React.Component{
                     visible:true
                   })
                 }else{
-                    // console.log(data)
-                const res=data.data.data;
-                const dataId=res.instructorRecord.batchNumberId;//返回的batchnumberId
-                const taskId=process;//选择的流程id
-                this.getCheck(dataId,taskId,urgent);
-                const keys = this.props.form.getFieldValue('keys');
-                // console.log(keys)
-                for(var i =0;i<keys.length;i++){
-                    let file = `fileList${keys[i]}`
-                    // console.log(file)
-                    this.setState({
-                        [file]:[]
-                    })
-                }
-                //   message.info(data.data.message);
-                //   this.props.fetch({sortField: 'id',
-                //   sortType: 'desc',}); // 重新调用分页函数
-                  this.props.form.resetFields();
-                  this.setState({ visible: false});
+                    const res=data.data.data;
+                    const dataId=res.instructorRecord.batchNumberId;//返回的batchnumberId
+                    const taskId=process;//选择的流程id
+                    this.getCheck(dataId,taskId,urgent);
+                    const keys = this.props.form.getFieldValue('keys');
+                    for(var i =0;i<keys.length;i++){
+                        let file = `fileList${keys[i]}`
+                        this.setState({
+                            [file]:[]
+                        })
+                    }
+                    this.props.form.resetFields();
+                    this.setState({ visible: false});
                 }
           })
           });
     }
 
     render(){
-        // console.log(this.state)
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
         const { getFieldDecorator, getFieldValue } = this.props.form;
-        // const { previewVisible, previewImage, fileList } = this.state;
         const formItemLayoutWithOutLabel = {
             wrapperCol: {
-            xs: { span: 24, offset: 0 },
-            sm: { span: 20, offset: 4 },
+                xs: { span: 24, offset: 0 },
+                sm: { span: 20, offset: 4 },
             },
         };
         getFieldDecorator('keys', { initialValue: [0] });
@@ -305,25 +278,9 @@ class DynamicFieldSet extends React.Component{
                 </Form.Item>
                 </Col>
                 <Form.Item style={{marginRight: 4 }}>
-                    {/* var file = 'fileList' + `${k}` */}
                     {
                         <PictureUp k={k} handleChange={this.handleChange} fileList={this.state[`fileList${k}`]}/>
                     }
-                {/* <Upload
-                    action={this.url.instructor.uploadPic}
-                    listType="picture"
-                    fileList={fileList}
-                    onPreview={this.previewPreview}
-                    onChange={this.handleChange}
-                    onRemove={this.onRemove}
-                >
-                    {fileList.length === 1 ? null : <Button>
-                        <Icon type="upload"/>上传图片
-                    </Button>}
-                </Upload>
-                <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                </Modal> */}
                 </Form.Item>
                 <Form.Item>
                 {keys.length > 1 ? (
@@ -357,7 +314,6 @@ class DynamicFieldSet extends React.Component{
                     <Form>
                         <Form.Item wrapperCol={{ span: 21 }} style={{float:'left'}}>
                         {getFieldDecorator('name',{
-                            // rules: [{ required: true, message: '请输入流程名称' }],
                         })(
                             <Input placeholder='请输入指导书名称' style={{width:'250px'}}/>
                         )
@@ -365,7 +321,6 @@ class DynamicFieldSet extends React.Component{
                         </Form.Item>
                         <Form.Item wrapperCol={{ span: 20 }}>
                             {getFieldDecorator('date',{
-                                // rules: [{ required: true, message: '请选择时间' }],
                             })(
                                 <DatePicker format="YYYY-MM-DD HH:mm:ss" locale={locale} showTime={true} style={{width:'275px'}} onChange={this.onChange} placeholder="请选择时间"/>
                             )}
