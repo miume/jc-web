@@ -44,15 +44,9 @@ class PictureUp extends React.Component{
     }
 
     render(){
-        // console.log(this.props.fileList)
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
         const { previewVisible, previewImage } = this.state;
-        // const uploadButton = (
-        //     <div>
-        //       <div className="ant-upload-text">Upload</div>
-        //     </div>
-        //   );
         return(
             <div className="clearfix">
                 <Upload
