@@ -62,7 +62,7 @@ class PictureUp extends React.Component{
                     </Button>}
                 </Upload>
                 <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                    <img alt="图片未显示" style={{ width: '100%' }} src={previewImage} />
                 </Modal>
             </div>
         )
