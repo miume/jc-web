@@ -4,6 +4,7 @@ import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
 import './productInspection.css';
+import RateOptSpan from './rateOptSpan';
 
 class ProductTable extends React.Component{
     columns = [{
@@ -84,6 +85,7 @@ class ProductTable extends React.Component{
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
             let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
+            let rateOpt = this.judgeRateOpt(record.isPublished);
             return (
                 <span>
                     {detailSpanFlag?(
@@ -117,6 +119,18 @@ class ProductTable extends React.Component{
                     ):(
                         <span  className="notClick">发布</span>
                     )}
+                    <Divider type="vertical" />
+                    {rateOpt?(
+                        <RateOptSpan
+                            menuList={this.props.menuList}
+                            batchNumberId={record.batchNumberId}
+                            url={this.props.url}
+                            fetch={this.props.fetch}
+                            checkStatus={record.status}
+                        />
+                    ):(
+                        <span  className="notClick">择优</span>
+                    )}
                 </span>
             )
         }
@@ -146,6 +160,13 @@ class ProductTable extends React.Component{
         );
     }
     /**判断详情，录检，发布可否功能 */
+    judgeRateOpt = (isPublished) => {
+        if(isPublished===1){
+            return true;
+        }else{
+            return false;
+        }
+    }
     judgeDetailOperation = (status) => {
         if(status===-1){
             return false;

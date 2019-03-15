@@ -372,6 +372,7 @@ class Home extends Component {
             productInspection:{
                 pages:`${server}/jc/common/productRecord/pages`,
                 productRecord:`${server}/jc/common/productRecord`,
+                rate: `${server}/jc/common/productRecord/rate`
 
             },
             /**产品检测 */
