@@ -70,6 +70,11 @@ class ReleaseSpan extends React.Component {
     }
     //  处理发布按钮功能
     handleRelease = () => {
+        const optional = this.state.detailData.optional;
+        if(optional.optionalStatus===''||optional.optionalStatus===null){
+            message.info("请先择优")
+            return;
+        }
         axios({
             url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${this.props.batchNumberId}`,
             method:'put',

@@ -85,7 +85,7 @@ class ProductTable extends React.Component{
             let detailSpanFlag = this.judgeDetailOperation(record.status);
             let checkSpanFlag = this.judgeCheckOperation(record.status);
             let releaseSpanFlag = this.judgeReleaseOperation(record.isPublished,record.status);
-            let rateOpt = this.judgeRateOpt(record.isPublished);
+            let rateOpt = this.judgeRateOpt(record.isPublished,record.status);
             return (
                 <span>
                     {detailSpanFlag?(
@@ -160,8 +160,8 @@ class ProductTable extends React.Component{
         );
     }
     /**判断详情，录检，发布可否功能 */
-    judgeRateOpt = (isPublished) => {
-        if(isPublished===1){
+    judgeRateOpt = (isPublished,status) => {
+        if(isPublished===0&&(status===2||status===3)){
             return true;
         }else{
             return false;
