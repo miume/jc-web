@@ -471,3 +471,24 @@
     height: 29px;
 
 }
+.rateOptModal {
+    display: flex;
+    height: 100px;
+    width: 260px;
+    flex-direction:column
+}
+.rateOptSelect {
+    width: 275px ;
+    flex-grow:1;
+}
+.rateOptSelect div{
+    width: 275px;
+}
+.rateOptDate {
+    /*padding-top: 10px;*/
+    width: 275px;
+    flex-grow:1;
+}
+.rateOptDate span{
+    width: 275px !important;
+}
