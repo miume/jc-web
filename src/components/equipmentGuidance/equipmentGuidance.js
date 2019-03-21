@@ -3,10 +3,10 @@ import axios from "axios";
 import '../Home/page.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
-import DeleteByIds from '../BlockQuote/deleteByIds';
 import AddModal from './add';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import Edit from "./edit"
+import Edit from "./editor";
+import Detail from './detail';
 
 class Equipment extends React.Component{
     url
@@ -65,9 +65,9 @@ class Equipment extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <span ref="#" className='blue'>详情</span>
+                        <Detail batchNumberId={record.batchNumberId}/>
                         <Divider type="vertical" />
-                        <Edit />
+                        <Edit value={record.id} status={record.status} batchNumberId={record.batchNumberId} fetch={this.fetch}/>
                         <Divider type="vertical" />
                         {record.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
                             <span className='blue' href="#">删除</span>
@@ -100,7 +100,7 @@ class Equipment extends React.Component{
 
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        console.log(pagination.current)
+        // console.log(pagination.current)
         this.fetch({
             pageSize: pagination.pageSize,
             pageNumber: pagination.current,
@@ -149,8 +149,6 @@ class Equipment extends React.Component{
                 'Authorization':this.Authorization
             },
             params:{
-                // size: this.pagination.pageSize,
-                // page: this.pagination.current,
                 instructorName:ope_name
             },
             type:'json',

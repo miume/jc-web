@@ -5,21 +5,6 @@ import axios from 'axios';
 import "./difference.css";
 import CancleButton from "../BlockQuote/cancleButton";
 
-const columns = [{
-        title: '负责人',
-        dataIndex: 'personName' ,
-        key: 'personName',
-        width: '30%',
-        align:'center',
-      },{
-        title: '职责',
-        dataIndex: 'responsibility',
-        key: 'responsibility',
-        width: '30%',
-        align:'center',
-    }]
-
-
 class Detail extends React.Component{
     url
     constructor(props){
@@ -41,8 +26,6 @@ class Detail extends React.Component{
         }).then((data) => {
             const res = data.data.data;
             if(res){
-                // var dataName = [{}]
-                // dataName[0].description = res.commonBatchNumber.description
                 this.setState({
                     data : res.details,
                     data1 : res.commonBatchNumber.description
@@ -64,9 +47,6 @@ class Detail extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        // const td = this.state.data1.map((p,index)=>
-        //     <td key={index}>{p.description?p.description:'无'}</td>
-        // )
         return(
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
@@ -79,18 +59,6 @@ class Detail extends React.Component{
                         <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
                     ]}>
                     <div>
-                         {/* <table className="custom_tb">
-                             <thead className='theadmanage'>
-                                 <tr>
-                                     <td>流程名称</td>
-                                 </tr>
-                             </thead>
-                             <tbody className='protbody'>
-                                <tr>
-                                {td}
-                                </tr>
-                             </tbody>
-                         </table> */}
                          <div className='Pdescription'>{this.state.data1}</div>
                          <WhiteSpace />
                          <div id="edit" style={{height:'360px'}}>

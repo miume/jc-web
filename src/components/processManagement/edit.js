@@ -17,7 +17,7 @@ class Edit extends React.Component{
           id:this.props.value,
           detail:[],
           name:'',
-          batchStatus: 0  
+          // batchStatus: 0  
         }
         this.Authorization = localStorage.getItem("Authorization");
         this.handleSubmit = this.handleSubmit.bind(this);
