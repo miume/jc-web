@@ -15,7 +15,6 @@ ReactDOM.render(
         <div>
             <Auth/>
             <Switch>
-
                 <Route exact path="/" component={Login}/> {/* 路由下有子路又那么就不用path */}
                 <Route component={Home}/> {/* 这是home页面,其下有很多子路由 */}
             </Switch>

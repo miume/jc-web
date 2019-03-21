@@ -69,6 +69,7 @@ class Role extends React.Component {
     componentDidMount() {
       this.fetch();
     }
+    /**用来解决控制台报错 */
     componentWillUnmount() {
       this.setState = () => {
         return ;
@@ -234,7 +235,12 @@ class Role extends React.Component {
               // pageChangeFlag:0
             });
         }
-      });
+      }).catch((error)=>{
+        if(error.toString().indexOf("500")>0){
+            // message.info('登陆过期，请重新登陆')
+            this.props.history.push({pathname:'/'});
+        }
+      })
     }
 
     /**实时追踪新增弹出框 角色名称和角色描述的变化 */
