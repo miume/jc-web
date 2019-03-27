@@ -247,12 +247,12 @@ class Management extends React.Component{
       }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-        this.setState({ selectedRowKeys:selectedRowKeys }); 
+        this.setState({ selectedRowKeys:selectedRowKeys });
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.status = JSON.parse(localStorage.getItem('status'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
+        const current = JSON.parse(localStorage.getItem('current'));
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,

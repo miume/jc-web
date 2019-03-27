@@ -87,7 +87,7 @@ class Detail extends React.Component{
                                  <span className='Eqcontent'>{e.checkContent}</span>
                                  <span className='Eqstandard'>{e.checkStandard}</span>
                                  <span className='Eqfrequency'>{e.checkFrequency}</span>
-                                 <img onClick={this.previewPreview.bind(this,`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`)} alt="图片未显示" className='Eqpicture' src={`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`} />
+                                 <img style={{cursor:'pointer'}} onClick={this.previewPreview.bind(this,`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`)} alt="图片未显示" className='Eqpicture' src={`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`} />
                                  <Preview previewVisible={this.state.previewVisible} previewImage={this.state.previewImage} previewCancel={this.previewCancel}/>
                              </div>
                          )}

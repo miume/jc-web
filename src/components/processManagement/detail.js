@@ -62,11 +62,11 @@ class Detail extends React.Component{
                          <div className='Pdescription'>{this.state.data1}</div>
                          <WhiteSpace />
                          <div id="edit" style={{height:'360px'}}>
-                         {this.state.data.map( e =>
-                             <div>
+                         {this.state.data.map(function(e,index)
+                            {return(<div key={index}>
                                  <span className='Pname'>{e.personName}</span>
                                  <span className='Pres'>{e.responsibility}</span>
-                             </div>
+                            </div>)}
                          )}
                          </div>
                     </div>
