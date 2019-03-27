@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Icon, Button, Checkbox,message } from 'antd';
+import { Input, Icon, Button, Checkbox,message,Spin } from 'antd';
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 import 'antd/dist/antd.css';
@@ -7,7 +7,11 @@ import './Login2.css';
 class Login extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      loading : false
+    }
     this.getDefault = this.getDefault.bind(this);
+    this.beforeLogin = this.beforeLogin.bind(this);
     this.remindLogin = this.remindLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.dataProcessing = this.dataProcessing.bind(this);
@@ -41,12 +45,19 @@ class Login extends React.Component {
     const server = localStorage.getItem("server");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
+    console.log(username,password)
+    if(!this.beforeLogin(username,password)){
+      return 
+    }
+    this.setState({
+      loading : true
+    })
     axios.post(`${server}/jc/auth/login`,{username:username,password:password})
       .then(res => {
       //console.log(res.data)
       /**如果登陆成功  则屏蔽enter键 */
-      window.onkeydown = undefined
       if(res.data){
+          window.onkeydown = undefined
           this.dataProcessing(res.data)
       }
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
@@ -61,6 +72,14 @@ class Login extends React.Component {
         message.info('账号或密码有误，请重新输入！');
       }
     });
+  }
+  /**登陆前先对数据进行验证 */
+  beforeLogin(username,password){
+    if(username === '' || password === '' ){
+      message.info('请先填写账号和密码！');
+      return false
+    }
+    return true
   }
   /**登陆成功后对返回的数据进行处理 */
   dataProcessing(data){
@@ -103,6 +122,7 @@ class Login extends React.Component {
     // this.keyPress();
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>  
+      <Spin spinning={this.state.loading}>
         <div className='gutter-box' style={{minWidth: '290px'}}>
               <div className='login-box'>
                 <img src={require(`../Login/logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
@@ -120,6 +140,7 @@ class Login extends React.Component {
                 </div>
               </div>
         </div>
+        </Spin>
         <div style={{left:'0px',position:'fixed',height:'80px',width:'100%',bottom:'0px',textAlign:'center', fontSize:'11px'}} className='copy-right' id="copy-right">
           <img src={require(`../Login/logo.png`)} style={{height:'38%'}} alt=''></img>
           <br/>

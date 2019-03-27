@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm,message} from "antd";
+import {Popconfirm,message,Divider} from "antd";
 import axios from "axios";
 class DeletaSpan extends React.Component {
     url;
@@ -7,6 +7,7 @@ class DeletaSpan extends React.Component {
         this.url = JSON.parse(localStorage.getItem('url'));
         return (
             <span className={this.props.flag?'':'hide'}>
+                <Divider type="vertical" />
                 <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
                     <span className='blue'>删除</span>
                 </Popconfirm>

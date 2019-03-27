@@ -124,7 +124,6 @@ class OperationTable extends React.Component {
                         ) : (
                             <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
-                         <Divider type="vertical" />
                         </span>
                     <DeletaSpan
                         record={record}
