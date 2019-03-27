@@ -6,6 +6,7 @@ import axios from 'axios';
 
 
 class ProductInventor extends Component{
+   
     url;
     operation;
     componentDidMount(){
