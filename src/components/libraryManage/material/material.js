@@ -120,7 +120,7 @@ class Material extends React.Component{
         var index = 0;
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
-            console.log(current)
+            // console.log(current)
             if (current !== undefined) {
                 axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},

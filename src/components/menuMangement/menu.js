@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import BlockQuote from '../BlockQuote/blockquote';
 import MenuTable from './menuTable';
 import AddModal from './addModal';
@@ -13,6 +13,7 @@ import SearchCell from '../BlockQuote/search';
 class Menu extends React.Component{
     server
     url
+    operation
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -41,6 +42,7 @@ class Menu extends React.Component{
     //   this.Authorization = localStorage.getItem('Authorization');
       this.searchContentChange1 = this.searchContentChange1.bind(this)
       this.searchFatherEvent = this.searchFatherEvent.bind(this);
+      this.judgeOperation = this.judgeOperation.bind(this);
     //   this.changePage = this.changePage.bind(this);
 
       this.pagination = {
@@ -50,6 +52,12 @@ class Menu extends React.Component{
         },
     }
   }
+
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
 
   /**获取查询时菜单名称的实时变化 */
   searchContentChange1(e){
@@ -89,6 +97,7 @@ class Menu extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
        this.server = localStorage.getItem('remote');
        const current = JSON.parse(localStorage.getItem('current')) ;
+       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
@@ -101,15 +110,17 @@ class Menu extends React.Component{
             <AddModal
                 fetch={this.fetch}
                 fatherMenu = {this.state.fatherMenu}
+                flag={this.judgeOperation(this.operation,'SAVE')}
             />
             <DeleteByIds
                 selectedRowKeys={this.state.selectedRowKeys}
-                start={this.start}
+                deleteByIds={this.start}
                 loading={loading}
                 cancel={this.cancel}
+                flag={this.judgeOperation(this.operation,'DELETE')}
             />
             {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
-                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
+                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
             {/* </span> */}
         <div className='clear' ></div>
         <MenuTable

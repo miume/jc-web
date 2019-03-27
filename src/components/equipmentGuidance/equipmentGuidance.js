@@ -78,6 +78,8 @@ class Equipment extends React.Component{
         }]
     }
 
+
+
     handleDelete = (id) => {
         axios({
             url:`${this.url.instructor.instructorAll}/${id}`,
@@ -121,8 +123,8 @@ class Equipment extends React.Component{
             if(res&&res.list){
                 this.pagination.total=res.total;
                 this.pagination.current = res.pageNumber;
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i;
+                for(var a = 1; a<=res.list.length; a++){
+                    res.list[a-1]['index']=(res.prePage)*10+a;
                 }
                 this.setState({
                     dataSource: res.list,
@@ -156,8 +158,8 @@ class Equipment extends React.Component{
             const res = data.data.data;
             if(res&&res.list){
                 this.pagination.total=res.total;
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i;
+                for(var b = 1; b<=res.list.length; b++){
+                    res.list[b-1]['index']=(res.prePage)*10+b;
                 }
                 this.setState({
                     dataSource: res.list,
