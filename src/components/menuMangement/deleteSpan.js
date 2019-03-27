@@ -11,7 +11,7 @@ class DeletaSpan extends React.Component {
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
                     <span className='blue' href="#">删除</span>
                 </Popconfirm>

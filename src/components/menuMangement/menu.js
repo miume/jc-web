@@ -133,6 +133,8 @@ class Menu extends React.Component{
             fatherMenu = {this.state.fatherMenu}
             searchContentChange1 = {this.searchContentChange1}
             searchFatherEvent = {this.searchFatherEvent}
+            judgeOperation = {this.judgeOperation}
+            operation = {this.operation}
         />
         </div>
       </div>

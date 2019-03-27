@@ -83,7 +83,7 @@ class MenuTable extends React.Component{
     }
     
     
-    columns = [{
+    columns = this.props.judgeOperation(this.props.operation,'DELETE')||this.props.judgeOperation(this.props.operation,'UPDATE')?[{
         title: '序号',
         dataIndex: 'index',
         key: 'id',
@@ -136,7 +136,7 @@ class MenuTable extends React.Component{
             const editable = this.isEditing(record);
             return (
                 <span>
-                    <span>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         {editable ? (
                             <span>
                                 <EditableContext.Consumer>
@@ -162,15 +162,61 @@ class MenuTable extends React.Component{
                             <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
-                    <Divider type="vertical" />
+                    {this.props.judgeOperation(this.props.operation,'DELETE')?<Divider type="vertical" />:null}
                     <DeletaSpan
                         record={record}
                         getFetch={this.getFetch.bind(this)}
+                        flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                     />
 
                 </span>
             )
         }
+    }]:
+    [{
+        title: '序号',
+        dataIndex: 'index',
+        key: 'id',
+        sorter: (a, b) => a.id - b.id,
+        align:'center',
+        width: '20%',
+    },{
+        title: '菜单名称',
+        dataIndex: 'menuName',
+        key: 'menuName',
+        align:'center',
+        editable: 1,
+        width: '20%',
+    },{
+        title: '类型',
+        dataIndex : 'menuType',
+        key: 'menuType',
+        align:'center',
+        width: '20%',
+        render:(text, record)=>{
+            if(record.menuType===1){
+                return '父菜单'
+            }else if(record.menuType===2){
+                return '子菜单'
+            }
+        }
+    },{
+        title: '父菜单',
+        dataIndex: 'parentId',
+        key: 'parentId',
+        align:'center',
+        editable: 1,
+        width: '20%',
+        filterDropdown: () => (
+            <div className="custom-filter-dropdown">
+              <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
+            </div>
+          ),
+        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+        render:(text,record)=>{
+            return record.parentName
+        },
     }];
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
