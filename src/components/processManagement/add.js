@@ -208,7 +208,7 @@ class DynamicFieldSet extends React.Component{
             </div>
           ));
           return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
             <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
             <Modal
               visible={this.state.visible}

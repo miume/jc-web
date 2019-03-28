@@ -15,6 +15,7 @@ class SampleInspection extends React.Component{
     url
     server
     Authorization
+    operation
     componentDidMount() {
         this.fetch({sortField: 'id',
         sortType: 'desc',});
@@ -47,6 +48,7 @@ class SampleInspection extends React.Component{
         this.handleRefuse = this.handleRefuse.bind(this);
         this.contentChange = this.contentChange.bind(this);
         this.changePage = this.changePage.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -132,11 +134,11 @@ class SampleInspection extends React.Component{
             render : (text,record)=>{
                 return(
                     <span>
-                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit handleTableChange={this.handleTableChange} pagination={this.pagination} fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
+                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit handleTableChange={this.handleTableChange} flag={this.judgeOperation(this.operation,'UPDATE')} pagination={this.pagination} fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className={this.judgeOperation(this.operation,'UPDATE')?'notClick':'hide'}>编辑</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus===-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
-                          <span className='blue'>删除</span>
-                        </Popconfirm>:<span className="notClick">删除</span>}
+                          <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'}>删除</span>
+                        </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus===1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className='blue'>接受</span>
@@ -157,6 +159,11 @@ class SampleInspection extends React.Component{
     contentChange(e){
         const value = e.target.value;
         this.setState({Contentvalue:value});
+    }
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
     }
     handleRefuse(id){
         axios({
@@ -338,9 +345,10 @@ class SampleInspection extends React.Component{
     render(){
         const { selectedRowKeys } = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
+        const current = JSON.parse(localStorage.getItem('current'));
         this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem("Authorization")
+        this.Authorization = localStorage.getItem("Authorization");
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -352,16 +360,17 @@ class SampleInspection extends React.Component{
             <div>
                 <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddModal fetch={this.fetch}/>
+                    <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>
                     <DeleteByIds
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
                         deleteByIds={this.deleteByIds}
+                        flag={this.judgeOperation(this.operation,'DELETE')}
                     />
 
                     {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
 
-                        <SearchCell name='请输入工厂名'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
+                        <SearchCell name='请输入工厂名'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
                     {/* </span> */}
                     <div className='clear' ></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"

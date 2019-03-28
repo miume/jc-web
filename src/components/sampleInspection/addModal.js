@@ -624,7 +624,7 @@ class AddModal extends React.Component{
         this.Authorization = localStorage.getItem("Authorization");
         this.server = localStorage.getItem('remote');
         return(
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}

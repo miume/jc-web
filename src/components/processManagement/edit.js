@@ -193,7 +193,7 @@ class Edit extends React.Component{
         },
       };
       return(
-        <span>
+        <span className={this.props.flag?'':'hide'}>
           {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="notClick">编辑</span>}
           <Modal 
              title='编辑' visible={this.state.visible}

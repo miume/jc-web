@@ -165,6 +165,7 @@ class Product extends React.Component{
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
                         type={this.props.type}
+                        flag={this.props.flag}
                     >
                     </SearchCell>
                 </span>

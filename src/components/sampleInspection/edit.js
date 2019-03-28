@@ -561,7 +561,7 @@ class Edit extends React.Component{
         this.Authorization = localStorage.getItem("Authorization");
         this.server = localStorage.getItem('remote');
         return(
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <span onClick={this.showModal} className='blue'>编辑</span>
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
