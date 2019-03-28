@@ -141,10 +141,10 @@ class SampleInspection extends React.Component{
                         </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
                         <Divider type="vertical" />
                         {record.sampleDeliveringRecord.acceptStatus===1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
-                          <span className='blue'>接受</span>
-                        </Popconfirm>:<span className="notClick">接受</span>}
+                          <span className={this.judgeOperation(this.operation,'AUDIT')?'blue':'hide'}>接受</span>
+                        </Popconfirm>:<span className={this.judgeOperation(this.operation,'AUDIT')?'notClick':'hide'}>接受</span>}
                         <Divider type="vertical" />
-                        {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
+                        {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} flag={this.judgeOperation(this.operation,'AUDIT')} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className={this.judgeOperation(this.operation,'AUDIT')?'notClick':'hide'}>拒绝</span>}
                         <Divider type="vertical" />
                         <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                         <Divider type="vertical" />
