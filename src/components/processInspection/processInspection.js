@@ -313,7 +313,7 @@ class ProcessInspection extends React.Component{
             <div>
                 <BlockQuote  name='制程检测' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
-                    <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} />&nbsp;&nbsp;&nbsp;
+                    <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
                   <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>

@@ -6,7 +6,7 @@ class SearchCell extends React.Component{
         const type= this.props.type;
         return(
             //className={this.props.flag?'searchCell':'hide'}
-            <span className='searchCell'>
+            <span className={this.props.flag?'searchCell':'hide'}>
             {
                 this.props.timeFlag?
                 <span id='date-choose'>

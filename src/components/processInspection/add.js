@@ -69,7 +69,7 @@ class Add extends React.Component{
         switch(flag){
             case 1 : return title?'详情':<span className='blue' onClick={this.handleAdd} >详情</span>
             case 2 : return title?'编辑':<span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null} >编辑</span>
-            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
+            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' style='button' />;
         }
     }
     /**判断弹出框 footer 对应的按钮组合 只有status===2才可以迭代*/
@@ -241,7 +241,7 @@ class Add extends React.Component{
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
         const details = this.state.data;
-        console.log(details)
+        // console.log(details)
         if(details.length===0) {
             message.info('必须新增一条数据！');
             return false;

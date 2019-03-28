@@ -125,12 +125,12 @@ class DepartTable extends React.Component {
                             <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
-                    <Divider type="vertical" />
                     <DeletaSpan
                         record={record}
                         fetch={this.props.fetch}
                         pagination={this.props.pagination}
                         handleDelete={this.props.handleDelete}
+                        flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                     />
                 </span>
             )
