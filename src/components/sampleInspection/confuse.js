@@ -28,7 +28,7 @@ class PopRefuse extends React.Component{
                 placement="leftTop"
                 visible={this.state.clicked}
                 onVisibleChange={this.handleClickChange}>
-                <span className='blue'>拒绝</span>
+                <span className={this.props.flag?'blue':'hide'}>拒绝</span>
             </Popover>
         )
     }
