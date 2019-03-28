@@ -10,6 +10,7 @@ import Home from '../src/components/Home/home';
 // import Login from '../src/components/Login/login';
 import Login from '../src/components/Login/Login2';
 
+
 ReactDOM.render(
     <BrowserRouter>
         <div>

@@ -4,10 +4,10 @@ import BlockQuote from '../BlockQuote/blockquote'
 import {Table,Popconfirm,Divider,message } from 'antd';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
-// import Detail from './detail';
-// import Editor from './editor';
 import './editor.css';
 import SearchCell from '../BlockQuote/search';
+
+import home from '../fns'
 // const data = [];
 // for(var i = 1; i<=15;i++){
 //     data.push({
@@ -299,6 +299,9 @@ class ProcessInspection extends React.Component{
 // }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         this.status = JSON.parse(localStorage.getItem('status'));
         const {selectedRowKeys} = this.state; 
         const rowSelection = {
@@ -308,14 +311,15 @@ class ProcessInspection extends React.Component{
             disabled:record.commonBatchNumber.status!==-1&&record.commonBatchNumber.status!==3
           })
         };
-        const current = JSON.parse(localStorage.getItem('current'));
+        console.log(home)
         return (
             <div>
                 <BlockQuote  name='制程检测' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
                     <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
-                    <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} fetch={this.fetch}/>
+                    <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} 
+                    fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
                   <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
                 </div> 
             </div>
