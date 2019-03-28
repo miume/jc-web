@@ -134,6 +134,9 @@ class EquipmentArchive extends Component{//设备档案
      this.searchEvent=this.searchEvent.bind(this);
      this.searchContentChange=this.searchContentChange.bind(this);
      this.reset=this.reset.bind(this);
+     this.deleteByIds=this.deleteByIds.bind(this);
+     this.deleteCancel=this.deleteCancel.bind(this);
+     this.judgeOperation=this.judgeOperation.bind(this);
     }
     handleTableChange=(pagination)=>{//页数变化时调用
           this.pagination=pagination;
@@ -206,6 +209,27 @@ class EquipmentArchive extends Component{//设备档案
                selectedRowKeys:selectedRowKeys
         });
     }
+    /**批量删除*/
+    deleteByIds(){
+       const ids=this.state.selectedRowKeys;
+       axios({
+           url:`${this.url.equipmentArchiveRecord.get}`,
+           method:'Delete',
+           headers:{
+            'Authorization' :this.url.Authorization
+           },
+           data:ids,
+           type:'json'
+       }).then((data)=>{
+           console.log(data)
+       }).catch();
+    }
+    deleteCancel(){
+        this.setState({
+            selectedRowKeys:[]
+        });
+    }
+   
     searchContentChange(e){
        const value=e.target.value;
     //    console.log(value);
@@ -276,10 +300,17 @@ class EquipmentArchive extends Component{//设备档案
              }
          });
     }
-
+    //用来判断该菜单有哪些权限
+   judgeOperation(operation,operationCode){
+       //console.log(operation)
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
+        return flag.length>0?true:false
+    }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
+        //获取当前菜单所有权限
+        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,
@@ -289,8 +320,8 @@ class EquipmentArchive extends Component{//设备档案
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>
                  <div style={{padding:'15px'}}>
-                     <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} reset={this.reset}/> &nbsp;&nbsp;&nbsp;
-                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys}/>
+                    <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} reset={this.reset} judgeOperation={this.judgeOperation} operation={this.operation}/> &nbsp;&nbsp;&nbsp;
+                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
                      
                         <SearchCell 
                            name='请输入文档名称'
