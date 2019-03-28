@@ -10,6 +10,7 @@ import Detail from './detail';
 
 class Equipment extends React.Component{
     url
+    operation
     constructor(props){
         super(props);
         this.state={
@@ -19,6 +20,7 @@ class Equipment extends React.Component{
         }
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -67,11 +69,11 @@ class Equipment extends React.Component{
                     <span>
                         <Detail batchNumberId={record.batchNumberId}/>
                         <Divider type="vertical" />
-                        <Edit value={record.id} status={record.status} batchNumberId={record.batchNumberId} fetch={this.fetch}/>
+                        <Edit value={record.id} status={record.status} batchNumberId={record.batchNumberId} fetch={this.fetch} flag={this.judgeOperation(this.operation,'UPDATE')}/>
                         <Divider type="vertical" />
                         {record.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
-                            <span className='blue' href="#">删除</span>
-                        </Popconfirm>:<span className="notClick">删除</span>}
+                            <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
+                        </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
                     </span>
                 )
             }
@@ -79,6 +81,12 @@ class Equipment extends React.Component{
     }
 
 
+
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
 
     handleDelete = (id) => {
         axios({
@@ -174,12 +182,13 @@ class Equipment extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                <AddModal fetch={this.fetch}/>&nbsp;&nbsp;&nbsp;
-                <SearchCell name='请输入指导书名称' fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>&nbsp;&nbsp;&nbsp;
+                <SearchCell name='请输入指导书名称' fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} flag={this.judgeOperation(this.operation,'QUERY')}/>
                 <div className='clear'></div>
                 <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumberId} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
                 </div>
