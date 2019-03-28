@@ -15,7 +15,7 @@
     <div id="root"></div>
     <!-- <div id="particles-js"></div> -->
   </body>
-  
+  <script type='text/javascript' src='function.js'></script>
   <script type='text/javaScript' src='p5.min.js'></script>
   <script type='text/javaScript' src='sketch.js'></script>
   <!-- <script type='text/javaScript' src='particles.js'></script>
@@ -24,6 +24,7 @@
 
     /**在页面内容加载完成之后立即执行相应的函数*/
     window.onload = function() {
+        console.log(home)
         window.frame = function(number) {
           frameRate(number);
         }
