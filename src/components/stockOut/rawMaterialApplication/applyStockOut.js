@@ -250,7 +250,7 @@ class ApplyStockOut extends React.Component{
         this.toDoList = JSON.parse(localStorage.getItem('url')).toDoList
         return (
             <span>
-                <Button type='primary' size='default' className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'} onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" ></i> 申请出库</Button>
+                <Button type='primary' size='default' style={{margin:'0 0 8px 0'}} className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'} onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" ></i> 申请出库</Button>
                 <Modal title='申请' visible={this.state.visible} centered={true}
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[

@@ -11,7 +11,7 @@ class Block extends Component{
         this.selectChange = this.selectChange.bind(this);
     }
     selectChange(value){
-        console.log(value)
+        // console.log(value)
         if(value===-1){
             message.info('请选择成品！');
             return

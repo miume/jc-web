@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table, Input,message} from 'antd';
+import {Modal,Table, Input,message,Divider} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CheckModal from '../BlockQuote/checkModal';
@@ -304,7 +304,8 @@ class RecordChecking extends React.Component{
     }
     render(){
         return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
+                <Divider type='vertical' />
                 <span className={this.props.status===-1||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 maskClosable={false} centered={true}

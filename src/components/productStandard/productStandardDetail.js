@@ -47,8 +47,10 @@ class ProductStandardDetail extends React.Component{
                 return(
                     <span className={isPublished?'product-table-span':''}>
                         <AddProductStandard flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard} />
-                        <Divider type='vertical'/>
-                        <AddProductStandard flag={2} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard}/>
+                        <span className={this.props.editorFlag?'':'hide'}>
+                            <Divider type='vertical'/>
+                        </span>
+                        <AddProductStandard flag={2} editorFlag={this.props.editorFlag} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard}/>
                         <span className={isPublished?'product-table-span-on':'hide'}><span>实施中</span></span>
                     </span>
                 );

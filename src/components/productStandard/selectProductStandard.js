@@ -20,7 +20,9 @@ class SelectProductStandard extends React.Component{
                      <div className='product-standrad-img-p1'>
                          需要建立一套标准后才能执行相关操作
                     </div>
-                     <AddProductStandard data={this.props.data} url={this.props.url} getAllProductStandard={this.props.getAllProductStandard}/>
+                    <span className={this.props.addFlag?'':'hide'}>
+                        <AddProductStandard data={this.props.data} url={this.props.url} getAllProductStandard={this.props.getAllProductStandard}/>
+                    </span>
                 </div>
             }
             </div>

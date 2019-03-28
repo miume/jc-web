@@ -69,7 +69,7 @@ class Add extends React.Component{
         switch(flag){
             case 1 : return title?'详情':<span className='blue' onClick={this.handleAdd} >详情</span>
             case 2 : return title?'编辑':<span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null} >编辑</span>
-            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
+            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className={this.props.addFlag?'fa fa-plus':'hide'} />;
         }
     }
     /**判断弹出框 footer 对应的按钮组合 只有status===2才可以迭代*/

@@ -62,12 +62,21 @@ class TodoList extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.userId = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         return (
             <div>
-                 <BlockQuote name="待办事项" menu='质量与流程'></BlockQuote>
+                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                  <Tabs defaultActiveKey='todo1'>
-                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}><TodoProcessed url={this.url} data={this.state.data} fetch={this.fetch} getHistory={this.getHistory} /></TabPane>
-                     <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}><TodoProcessed url={this.url} data={this.state.historyRecord} getHistory={this.getHistory} fetch={this.fetch} flag={1} /></TabPane>
+                     <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}>
+                         <TodoProcessed url={this.url} data={this.state.data} fetch={this.fetch} getHistory={this.getHistory} 
+                         operation={this.operation}
+                         /></TabPane>
+                     <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}>
+                         <TodoProcessed url={this.url} data={this.state.historyRecord} getHistory={this.getHistory} fetch={this.fetch} flag={1} 
+                         operation={this.operation}
+                         /></TabPane>
                  </Tabs>
             </div>
         );

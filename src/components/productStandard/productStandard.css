@@ -384,9 +384,9 @@
 /**固定在footer的重新选择样式*/
 .product-footer{
     color:#0086ff;
-    float: right;
-    position: relative;
-    top:15px;
+    /* float: right; */
+    position: absolute;
+    bottom:40px;
     right:25px;
     /* bottom: 40px; */
     font-weight: 500;

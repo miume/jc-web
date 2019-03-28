@@ -214,11 +214,12 @@ class CheckModal extends React.Component{
         const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <span>
-                {/* {
-                    this.props.flag?<Button onClick={this.handleCheck} type='ant-btn ant-btn-primary'><i className='' aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>&nbsp;{this.props.name}</Button>:
-                    <NewButton name='审核' className='fa fa-check' handleClick={this.handleCheck} ></NewButton>
-                } */}
-                <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton>
+                { 
+                    this.props.flag?
+                    <NewButton name={this.props.flag?'详情':'审核'} className='fa fa-floppy-o' handleClick={this.handleCheck} ></NewButton>:
+                    <NewButton name='审核' className={this.props.checkFlag?'fa fa-check':'hide'} handleClick={this.handleCheck} ></NewButton>
+                }
+                {/* <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton> */}
                 <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
                 closable={false} maskClosable={false} className={this.setClassName(type)}
                 /**this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md' */

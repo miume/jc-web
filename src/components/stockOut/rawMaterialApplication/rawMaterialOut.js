@@ -4,6 +4,7 @@ import SearchCell from '../../BlockQuote/search';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import Detail from '../detail';
 import axios from 'axios';
+import home from '../../fns';
 // const data = [];
 // for(var i = 1; i<=20; i++){
 //     data.push({
@@ -111,9 +112,11 @@ class RawMaterialOut extends React.Component {
                 key: 'id',
                 render: (text, record) => {
                     const status = record.status;
+                    const flag = home.judgeOperation(this.operation,'DELETE');
                     return (
                         <span>
                         <Detail id={record.id} url={this.props.url}></Detail>
+                        <span className={flag?'':'hide'}>
                         <Divider type='vertical'></Divider>
                             {
                                 status === 0 || status === 1 || status === 2 || status === 3 ?
@@ -128,6 +131,7 @@ class RawMaterialOut extends React.Component {
                                             id={record.id}>删除</span>
                                     </Popconfirm>
                             }
+                        </span>
                    </span>
                     );
                 }
@@ -139,7 +143,6 @@ class RawMaterialOut extends React.Component {
             showSizeChanger: true,
         }
     }
-
     /**监控表格变化 */
     handleTableChange(pagination) {
         this.pagination = pagination;
@@ -157,7 +160,6 @@ class RawMaterialOut extends React.Component {
             })
         }
     }
-
     /**搜索的重置调用的fetch函数 */
     fetch(status, flag) {
         /**如果flag为1 则将分页搜索标志位置为0 并将搜索内容置为空 */
@@ -169,7 +171,6 @@ class RawMaterialOut extends React.Component {
         }
         this.props.fetch();
     }
-
     /**单条记录删除 */
     handleDelete(id) {
         axios({
@@ -188,7 +189,6 @@ class RawMaterialOut extends React.Component {
             message.info('删除失败，请联系管理员！')
         })
     }
-
     /**批量删除 */
     deleteByIds() {
         axios({
@@ -210,14 +210,12 @@ class RawMaterialOut extends React.Component {
             message.info('删除错误，请联系管理员！')
         })
     }
-
     /**取消删除 */
     cancel() {
         this.setState({
             selectedRowKeys: []
         })
     }
-
     /**监控搜索框的输入变化 */
     searchContentChange(e) {
         const value = e.target.value;
@@ -225,7 +223,6 @@ class RawMaterialOut extends React.Component {
             searchContent: value
         })
     }
-
     /**根据货物名称进行搜索 */
     searchEvent() {
         this.setState({
@@ -235,7 +232,6 @@ class RawMaterialOut extends React.Component {
             personName: this.state.searchContent
         });
     }
-
     /**监控checkbox的选中情况 */
     onSelectChange(selectedRowKeys) {
         this.setState({
@@ -254,12 +250,19 @@ class RawMaterialOut extends React.Component {
             }),
         };
         this.pagination.total = this.props.data.total;
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         return (
             <div style={{padding: '0 15px'}}>
                 <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel}
-                             selectedRowKeys={this.state.selectedRowKeys}/>
+                             selectedRowKeys={this.state.selectedRowKeys}
+                             flag={home.judgeOperation(this.operation,'DELETE')}
+                             />
                 <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent}
-                            searchContentChange={this.searchContentChange}></SearchCell>
+                            searchContentChange={this.searchContentChange}
+                            flag={home.judgeOperation(this.operation,'QUERY')}
+                            ></SearchCell>
                 <div className='clear'></div>
                 <Table rowKey={record => record.id} dataSource={this.props.data} columns={this.columns}
                        rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange}

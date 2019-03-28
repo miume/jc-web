@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
-// import axios from 'axios';
+import home from '../../fns';
 import SearchCell from '../../BlockQuote/search';
 import './rawAdd.css';
 import ApplyStockOut from './applyStockOut';
@@ -123,10 +123,17 @@ class RawMaterialApplication extends React.Component{
             selectedRowKeys,
             onChange:this.onSelectChange,
         }
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         return (
             <div style={{padding:'0 15px'}}>
-                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url} />
-                <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index} fetch={this.props.fetch} searchContentChange={this.searchContentChange}></SearchCell>
+                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url}
+                    flag={home.judgeOperation(this.operation,'SAVE')}
+                />
+                <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index} 
+                fetch={this.props.fetch} searchContentChange={this.searchContentChange}
+                flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                 <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={false} scroll={{ y: 398 }} bordered size='small'></Table>
             </div>
         );

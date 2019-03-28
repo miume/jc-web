@@ -4,6 +4,7 @@ import { Divider,message, } from 'antd';
 import './productStandard.css';
 import Product from './product';
 import SelectModal from './model';
+import home from '../fns';
 import SearchCell from '../BlockQuote/search';
 import Blockquote from '../BlockQuote/blockquote';
 import SelectProductStandard from './selectProductStandard';
@@ -322,6 +323,10 @@ class ProductStandard extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
         const data = [this.state.selectProduct,this.state.selectedModal];
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        const addFlag = home.judgeOperation(this.operation,'SAVE');
+        const editorFlag = home.judgeOperation(this.operation,'SAVE');
         return (
             <div>
                 <Blockquote name={current.menuName} menu={current.menuParent}  />
@@ -334,23 +339,29 @@ class ProductStandard extends React.Component{
                     <div className='product-standrad-middle'>
                         <div className='product-standrad-middle-top'>
                             <span className='product-standrad-middle-text'>{this.showContent()}</span>
-                            <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch} />
+                            <SearchCell name={this.showContent(1)} searchEvent={this.searchEvent} fetch={this.fetch} 
+                                        flag={home.judgeOperation(this.operation,'QUERY')}
+                            />
                             <Divider type='horizontal' />
                         </div>
                         <div className={this.state.flag===1?'':'hide'}>
                            <Product data={this.state.allProduct} blockClick={this.blockClick} add={this.state.add} clickI={this.clickI} url={this.url} />
                         </div>
                         <div  className={this.state.flag===2?'':'hide'}>
-                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} />
+                            <SelectModal url={this.url} data={this.state.allModal} getAllModal={this.getAllSelectModal} 
+                            getAllProductStandard={this.getAllProductStandard} modalArr={this.state.modalArr} 
+                            addFlag={addFlag}
+                            />
                         </div>
                         {/**设置标准 flag===3 标准为空 表示新增界面 */}
                         <div className={this.state.flag===3?'':'hide'}>
-                            <SelectProductStandard url={this.url}  data={data}
+                            <SelectProductStandard url={this.url}  data={data} addFlag={addFlag}
                              getAllProductStandard={this.getAllProductStandard}/>
                         </div>
                         {/**设置标准 flag===4 标准不为空 表示标准显示 */}
                         <div className={this.state.flag===4?'product-standrad-bottom':'hide'}>
-                            <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} getAllProductStandard={this.getAllProductStandard}/>
+                            <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} 
+                            getAllProductStandard={this.getAllProductStandard} editorFlag={editorFlag}/>
                         </div>
                         <div className={this.state.flag===1?'hide':'product-footer'} onClick={this.returnBack} id={this.state.flag}>{`重新选择上一级`}</div>
                     </div>

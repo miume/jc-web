@@ -6,7 +6,6 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
 import './editor.css';
 import SearchCell from '../BlockQuote/search';
-
 import home from '../fns'
 // const data = [];
 // for(var i = 1; i<=15;i++){
@@ -114,20 +113,26 @@ class ProcessInspection extends React.Component{
           align:'left',
           render: (text,record) => {
               const status = record.commonBatchNumber.status;
+              const deleteFlag = home.judgeOperation(this.operation,'DELETE');
+              const editorFlag = home.judgeOperation(this.operation,'UPDATE')
               return (
                   <span>
                       {/* <Detail value={text} status={status} allProductionProcess={this.state.allProductionProcess} url={this.url} /> */}
                       <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={1} />
-                      <Divider type="vertical" />
-                      <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={2}  />
+                      <span className={editorFlag?'':'hide'}>
+                        <Divider type="vertical" />
+                        <Add value={text} status={status} url={this.url} fetch={this.fetch} flag={2}/>
+                      </span>
                       {/* <Editor value={text} status={status} url={this.url}/> */}
-                      <Divider type="vertical" />
-                      {
-                        status === -1?
-                          <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
-                              <span className='blue'>删除</span>
-                          </Popconfirm>:<span className='notClick'>删除</span>
-                      }
+                      <span className={deleteFlag?'':'hide'}>
+                        <Divider type="vertical" />
+                        {
+                            status === -1?
+                            <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(text)} okText="确定" cancelText="取消" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>:<span className='notClick'>删除</span>
+                        }
+                      </span>
                   </span>
                   );
           }
@@ -311,13 +316,15 @@ class ProcessInspection extends React.Component{
             disabled:record.commonBatchNumber.status!==-1&&record.commonBatchNumber.status!==3
           })
         };
-        console.log(home)
+        const addFlag = home.judgeOperation(this.operation,'ADD')
         return (
             <div>
                 <BlockQuote  name='制程检测' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding:'15px'}}>
-                    <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} />
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}/>
+                    <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} addFlag={addFlag} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
+                    flag={home.judgeOperation(this.operation,'DELETE')}
+                    />
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent} 
                     fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
                   <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>

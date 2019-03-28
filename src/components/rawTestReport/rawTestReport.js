@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './rawTestReport.css';
 import Detail from './detail';
+import home from '../fns';
 import { Table, Divider} from 'antd';
 import SearchCell from '../BlockQuote/search';
 import RecordChecking from './recordChecking';
@@ -161,10 +162,10 @@ class RawTestReport extends React.Component{
             key:'id',
             align:'center',
             render:(text,record)=>{
+                const editorFlag = home.judgeOperation(this.operation,'UPDATE')
                 return (
                     <span>
-                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
-                        <Divider type='vertical' />
+                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status} flag={editorFlag}/>
                         <RecordChecking value={text} url={this.url} status={record.status} tableRecord={this.tableRecord}/>
                         <Divider type='vertical' />
                         <Loss statement={record.exceptionComment} name='异常备注' />
@@ -310,13 +311,17 @@ class RawTestReport extends React.Component{
         const current = JSON.parse(localStorage.getItem('current'));
         this.url = JSON.parse(localStorage.getItem('url')); 
         this.status = JSON.parse(localStorage.getItem('status'));
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        
         return (
             <div>
                 <BlockQuote name='原材料录检' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
                     {/* <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/> */}
-                    <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}></SearchCell>
+                    <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} 
+                    fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                     <div className='clear'></div>
                 <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} 
                 onChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}} 
