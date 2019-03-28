@@ -57,7 +57,7 @@ class Add extends Component{
     }
     render(){
         return(
-            <span>
+            <span className={this.props.judgeOperation(this.props.operation,'SAVE')?'':'hide'}>
                 <NewButton className='fa fa-plus' name='新增' handleClick={this.showModal}/>
                 <Modal
                     title={this.state.title}
