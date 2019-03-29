@@ -2,6 +2,7 @@ import React from 'react';
 import SearchCell from '../BlockQuote/search';
 import ReleaseTable from "./releaseTable";
 import axios from "axios";
+import OperationTable from "../operationManagement/operationTable";
 
 
 class Release extends React.Component {
@@ -49,6 +50,7 @@ class Release extends React.Component {
                     searchContentChange={this.searchContentChange}
                     fetch={this.fetch}
                     type={3}
+                    flag={this.props.judgeOperation(this.props.operation,'QUERY')}
                 />
                 <div className='clear' ></div>
                 <ReleaseTable
@@ -59,6 +61,8 @@ class Release extends React.Component {
                     data={this.state.dataSource}
                     pagination={this.state.pagination}
                     handleTableChange={this.handleTableChange}
+                    judgeOperation = {this.props.judgeOperation}
+                    operation = {this.props.operation}
                 />
             </div>
         )

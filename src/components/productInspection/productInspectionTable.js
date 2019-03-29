@@ -97,40 +97,46 @@ class ProductTable extends React.Component{
                     ):(
                         <span  className="notClick">详情</span>
                     )}
-                    <Divider type="vertical" />
-                    {checkSpanFlag?(
-                        <CheckSpan
-                            menuList={this.props.menuList}
-                            fetch={this.props.fetch}
-                            batchNumberId={record.batchNumberId}
-                            url={this.props.url}
-                        />
-                    ):(
-                        <span  className="notClick">录检</span>
-                    )}
-                    <Divider type="vertical" />
-                    {releaseSpanFlag?(
-                        <ReleaseSpan
-                            batchNumberId={record.batchNumberId}
-                            url={this.props.url}
-                            fetch={this.props.fetch}
-                            checkStatus={record.status}
-                        />
-                    ):(
-                        <span  className="notClick">发布</span>
-                    )}
-                    <Divider type="vertical" />
-                    {rateOpt?(
-                        <RateOptSpan
-                            menuList={this.props.menuList}
-                            batchNumberId={record.batchNumberId}
-                            url={this.props.url}
-                            fetch={this.props.fetch}
-                            checkStatus={record.status}
-                        />
-                    ):(
-                        <span  className="notClick">择优</span>
-                    )}
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {checkSpanFlag?(
+                            <CheckSpan
+                                menuList={this.props.menuList}
+                                fetch={this.props.fetch}
+                                batchNumberId={record.batchNumberId}
+                                url={this.props.url}
+                            />
+                        ):(
+                            <span  className="notClick">录检</span>
+                        )}
+                    </span>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {releaseSpanFlag?(
+                            <ReleaseSpan
+                                batchNumberId={record.batchNumberId}
+                                url={this.props.url}
+                                fetch={this.props.fetch}
+                                checkStatus={record.status}
+                            />
+                        ):(
+                            <span  className="notClick">发布</span>
+                        )}
+                    </span>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {rateOpt?(
+                            <RateOptSpan
+                                menuList={this.props.menuList}
+                                batchNumberId={record.batchNumberId}
+                                url={this.props.url}
+                                fetch={this.props.fetch}
+                                checkStatus={record.status}
+                            />
+                        ):(
+                            <span  className="notClick">择优</span>
+                        )}
+                    </span>
                 </span>
             )
         }

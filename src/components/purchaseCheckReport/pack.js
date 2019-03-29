@@ -64,6 +64,7 @@ class Pack extends React.Component {
                         url={this.props.url}
                         menuList={this.props.menuList}
                         selectedRowKeys={this.state.selectedRowKeys}
+                        flag={this.props.judgeOperation(this.props.operation,'SAVE')}
                     />
                     <div style={{float:'right'}}>
                         <span style={{marginRight:'10px',fontSize:'10px'}}>仅显示未生成的数据</span>
@@ -75,6 +76,7 @@ class Pack extends React.Component {
                             searchEvent={this.searchEvent}
                             fetch={this.fetch}
                             type={1}
+                            flag={this.props.judgeOperation(this.props.operation,'QUERY')}
                         />
                     </div>
                 </div>

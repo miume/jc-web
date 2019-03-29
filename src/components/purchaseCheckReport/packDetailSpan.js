@@ -186,6 +186,8 @@ class DetailSpan extends React.Component {
                     })
                 }
 
+            }else{
+                message.info('数据为空')
             }
         }).catch(()=>{
             message.info('打开失败，请联系管理员！')
