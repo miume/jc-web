@@ -5,10 +5,13 @@ import Pack from './pack';
 import Check from './check';
 import Release from './release';
 import './purchaseCheckReport.css';
+import home from "../fns";
+import OperationTable from "../operationManagement/operationTable";
 
 
 class PurchaseCheckReport extends React.Component {
     url;
+    operation;
     componentWillUnmount() {
         this.setState = () => {
             return ;
@@ -25,6 +28,7 @@ class PurchaseCheckReport extends React.Component {
     render() {
         const TabPane = Tabs.TabPane;
         const current = JSON.parse(localStorage.getItem('current')) ;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         const status = JSON.parse(localStorage.getItem('status')) ;
         this.url = JSON.parse(localStorage.getItem('url'));
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
@@ -39,6 +43,8 @@ class PurchaseCheckReport extends React.Component {
                             url={this.url}
                             status={status}
                             menuList={menuList}
+                            judgeOperation = {home.judgeOperation}
+                            operation = {this.operation}
                         />
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-certificate" aria-hidden="true"></i> &nbsp;审核</span>} key="2" >
@@ -48,6 +54,8 @@ class PurchaseCheckReport extends React.Component {
                             menuList={menuList}
                             url={this.url}
                             status={status}
+                            judgeOperation = {home.judgeOperation}
+                            operation = {this.operation}
                         />
                     </TabPane>
                     <TabPane tab={<span className="purchaseReportTab"><i className="fa fa-bullhorn" aria-hidden="true"></i> &nbsp;发布</span>} key="3" >
@@ -57,6 +65,8 @@ class PurchaseCheckReport extends React.Component {
                             menuList={menuList}
                             url={this.url}
                             status={status}
+                            judgeOperation = {home.judgeOperation}
+                            operation = {this.operation}
                         />
                     </TabPane>
                 </Tabs>

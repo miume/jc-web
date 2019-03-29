@@ -3,11 +3,14 @@ import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from "../BlockQuote/search";
 import ProductTable from "./productInspectionTable";
 import axios from "axios";
+import home from "../fns";
+import OperationTable from "../operationManagement/operationTable";
 
 
 class ProductInspection extends React.Component {
     url;
     status;
+    operation;
     componentDidMount() {
         this.fetch({
             pageSize:10,
@@ -44,6 +47,7 @@ class ProductInspection extends React.Component {
         this.status = JSON.parse(localStorage.getItem('status')) ;
         const current = JSON.parse(localStorage.getItem('current')) ;
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         return(
             <div>
                 <BlockQuote name="成品检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -53,6 +57,7 @@ class ProductInspection extends React.Component {
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
+                        flag={home.judgeOperation(this.operation,'QUERY')}
                     />
                     <div className='clear' ></div>
                     <ProductTable
@@ -64,6 +69,8 @@ class ProductInspection extends React.Component {
                         pagination={this.state.pagination}
                         modifyDataSource={this.modifyDataSource}
                         handleTableChange={this.handleTableChange}
+                        judgeOperation = {home.judgeOperation}
+                        operation = {this.operation}
                     />
                 </div>
             </div>

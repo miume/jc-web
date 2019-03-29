@@ -25,7 +25,7 @@ class PackGenerateModal extends React.Component {
     }
     render() {
         return(
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <NewButton handleClick={this.handlePack} name='生成' className='fa fa-cube' />
                 <Modal
                     title="打包数据"
