@@ -6,6 +6,7 @@ import RawMaterial from './rawMaterial/rawMaterial';
 import Manufacturer from './factory/factory';
 import Standard  from './standard/standard';
 import SetStandard from './setStandard/setStandard';
+import home from '../fns';
 class RawStandard extends Component{
    
     constructor(props){
@@ -115,6 +116,7 @@ class RawStandard extends Component{
        render(){
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
+        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
         //console.log(current.menuName,current.menuParent);
            return(
             <div>
@@ -126,16 +128,16 @@ class RawStandard extends Component{
                   </div>   
                      <div>
                         <div className={this.state.flag===1?'':'hide'}>
-                            <RawMaterial onBlockChange={this.onBlockChange} type={1} url={this.url}/>
+                            <RawMaterial onBlockChange={this.onBlockChange} type={1} url={this.url} home={home} operation={this.operation}/>
                         </div>
                         <div className={this.state.flag===2?'':'hide'}  >
-                            <Manufacturer onBlockChange={this.onBlockChange} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}/> 
+                            <Manufacturer onBlockChange={this.onBlockChange} rawMaterialId={this.state.rawMaterialId} type={2} url={this.url}  home={home} operation={this.operation}/> 
                         </div>
                         <div className={this.state.flag===3?'':'hide'}>
-                            <Standard dataSource={this.state.dataSource} onBlockChange={this.onBlockChange}   type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard}/>
+                            <Standard dataSource={this.state.dataSource} onBlockChange={this.onBlockChange}   type={3} raw={this.state.content1} factory={this.state.content2} rawManufacturerId={this.state.factoryId} rawMaterialId={this.state.rawMaterialId} url={this.url} getStandard={this.getStandard} home={home} operation={this.operation}/>
                         </div>
                         <div className={this.state.flag===4?'':'hide'}>
-                            <SetStandard  type={4} raw={this.state.content1} onBlockChange={this.onBlockChange} factory={this.state.content2} rawMaterialId={this.state.rawMaterialId}  rawManufacturerId={this.state.factoryId} url={this.url} getStandard={this.getStandard}/>
+                            <SetStandard  type={4} raw={this.state.content1} onBlockChange={this.onBlockChange} factory={this.state.content2} rawMaterialId={this.state.rawMaterialId}  rawManufacturerId={this.state.factoryId} url={this.url} getStandard={this.getStandard}  home={home} operation={this.operation}/>
                         </div>
                       </div>
                     

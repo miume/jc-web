@@ -190,6 +190,7 @@ class RawMaterial extends Component{
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
                             type={this.props.type}
+                            flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                         />
                     
                      <Divider type='horizontal' />
@@ -200,7 +201,7 @@ class RawMaterial extends Component{
                            this.state.data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
                        }
-                       <DataPart  flag={1} onBlockChange={this.addClick}   name='新增原材料' name1='原材料'/>
+                       <DataPart  flag={1} onBlockChange={this.addClick}  className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'} name='新增原材料' name1='原材料'/>
                       <Modal
                             visible={this.state.visible}
                             title="新增"

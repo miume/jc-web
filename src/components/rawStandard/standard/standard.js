@@ -56,9 +56,9 @@ import EditStandard from './edit';
                //console.log(record.isPublished);
                 return(
                     <span>
-                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} home1={this.props.home} operation1={this.props.operation}/>
                         <Divider type='vertical'/>
-                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} home={this.props.home} operation={this.props.operation}/>
                     </span>
                 );
             }
@@ -124,6 +124,7 @@ import EditStandard from './edit';
                     searchContentChange={this.searchContentChange}
                     type={this.props.type}
                     fetch={this.fetch}
+                    flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                 />
                
                 <Divider type='horizontal'/>

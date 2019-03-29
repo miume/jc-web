@@ -24,7 +24,7 @@ class Edit extends Component{
             visible:false
         });
         const value=this.formRef.getItemsValue();
-       console.log(value.get('file'));
+       //console.log(value.get('file'));
         axios({
             url:`${this.props.url.equipmentArchiveRecord.get}`,
             method:'put',
@@ -47,7 +47,7 @@ class Edit extends Component{
     }
     render(){
         return(
-            <span>
+            <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                 <span className='blue' onClick={this.showModal}>编辑</span>
                 <Modal
                     title={this.state.title}

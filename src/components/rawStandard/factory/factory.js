@@ -174,6 +174,7 @@ class Manufacturer extends Component{
                     searchContentChange={this.searchContentChange}
                     fetch={this.fetch}
                     type={this.props.type}
+                    flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                  />
                
                 <Divider type='horizontal'/>
@@ -186,7 +187,7 @@ class Manufacturer extends Component{
                     )
                   }
                     
-                       <DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
+                       <DataPart className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'} flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
               </div>
               </div>
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
