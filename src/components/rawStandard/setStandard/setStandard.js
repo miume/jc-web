@@ -222,6 +222,7 @@ class SetStandard extends Component{
                      
                       <SearchCell name='请输入创建人名称'
                         fetch={this.fetch}
+                        flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                       />
                     
                 </div>
@@ -234,7 +235,7 @@ class SetStandard extends Component{
                 <div className='rawStandardFontDown'>
                       <p>需要建立一套标准后才能执行相关操作</p>
                 </div>
-                <div style={{textAlign:'center'}}>
+                <div style={{textAlign:'center'}} className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'}>
                     <NewButton  handleClick={this.showModal}  className='fa fa-plus' name='建立标准'/>
                     <Modal
                         title='设置标准'
