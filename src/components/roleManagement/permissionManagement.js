@@ -71,11 +71,10 @@ class PermissionManagement extends React.Component {
             }
         }).then(data=>{
             var res = data.data.data;
-            var roleAuth = res?data.data.data.menus:[];
+            var roleAuth = res?data.data.data.authorities:[];
             this.setState({
                 roleAuth:roleAuth
             })
-            //console.log(roleAuth)
         })
     }
     handleOk() {
@@ -182,7 +181,6 @@ class PermissionManagement extends React.Component {
                                             m1.menuList.map(m2=>{
                                                 var auth = this.state.roleAuth;
                                                 var menuList = auth.filter(au=>au.id === m2.menuId);
-                                                //console.log(menuList)
                                                 if(menuList.length>0){
                                                     var menu = menuList[0];
                                                    return (
@@ -195,7 +193,6 @@ class PermissionManagement extends React.Component {
                                                                       return (
                                                                         <span key={op.id} style={{display:'inline-block',minWidth:75}}>
                                                                           <input type='checkbox' key={op.id} value={op.id} id={menu.id.toString()} onChange={this.change} defaultChecked={true}/>&nbsp;&nbsp;&nbsp;{op.operationName}</span>
-                                                                       // <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName} checked={true} />
                                                                       );
                                                                   }else{
                                                                       return (

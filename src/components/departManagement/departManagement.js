@@ -58,8 +58,6 @@ class Depart extends React.Component {
             selectedRowKeys,
             onChange: this.onSelectChange,
         };
-        const addFlag = home.judgeOperation(this.operation,'SAVE')
-        console.log(current)
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>

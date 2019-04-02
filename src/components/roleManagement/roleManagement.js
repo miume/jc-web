@@ -3,6 +3,7 @@ import {Table,Input,message,Popconfirm,Form,Divider,InputNumber,Modal } from 'an
 import '../Home/page.css';
 import axios from 'axios';
 import RoleModal from './roleModal';
+import home from '../fns';
 import BlockQuote from '../BlockQuote/blockquote';
 import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';
@@ -105,7 +106,7 @@ class Role extends React.Component {
         this.onSelectChange = this.onSelectChange.bind(this);
         this.userManagement = this.userManagement.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        this.judgeOperation = this.judgeOperation.bind(this);
+        // this.judgeOperation = this.judgeOperation.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.handleRoleNameChange = this.handleRoleNameChange.bind(this);
@@ -145,7 +146,7 @@ class Role extends React.Component {
               const editable = this.isEditing(record);
                 return (
                     <span>
-                        <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
+                        <span className={home.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
                         {editable ? (
                           <span>
                             <EditableContext.Consumer>
@@ -164,7 +165,7 @@ class Role extends React.Component {
                         )}
                       <Divider type="vertical" />
                       </span>
-                      <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
+                      <span className={home.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                         <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
                         </Popconfirm>
@@ -450,11 +451,11 @@ class Role extends React.Component {
         // })
       }
       /**用来判断该菜单有哪些操作权限 */
-      judgeOperation(operation,operationCode){
-          if(operation===null) return false
-          var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
-          return flag.length>0?true:false
-      }
+      // judgeOperation(operation,operationCode){
+      //     if(operation===null) return false
+      //     var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+      //     return flag.length>0?true:false
+      // }
       render() {
           /**这是个令牌，每次调用接口都将其放在header里 */
           // this.Authorization = localStorage.getItem('Authorization');
@@ -493,7 +494,7 @@ class Role extends React.Component {
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <span className={this.judgeOperation(this.operation,'SAVE')?'':'hide'}>
+                    <span className={home.judgeOperation(this.operation,'SAVE')?'':'hide'}>
                         <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />
                         <Modal title="新增" visible={this.state.visible} closable={false} className='modal modal-sm' maskClosable={false} 
                             centered={true}
@@ -504,8 +505,8 @@ class Role extends React.Component {
                             <RoleModal wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></RoleModal>
                         </Modal>
                     </span>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={this.judgeOperation(this.operation,'DELETE')} />
-                    <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} flag={this.judgeOperation(this.operation,'QUERY')} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={home.judgeOperation(this.operation,'DELETE')} />
+                    <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')} />
                     <div className='clear'></div>
                     <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns} rowSelection={rowSelection} pagination={this.pagination} components={components} onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }}></Table>
                 </div>
