@@ -155,7 +155,7 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
-                closable={false} maskClosable={false} destroyOnClose='true' width={900}
+                closable={false} maskClosable={false} destroyOnClose='true' width={800}
                 footer={[
                     // <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     <CancleButton key='back' handleCancel={this.handleOk} flag={1}/>
@@ -185,7 +185,7 @@ class PermissionManagement extends React.Component {
                                                     var menu = menuList[0];
                                                    return (
                                                        <div key={menu.id} className='divborder'><span className='rightBorder'><i className="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{menu.menuName}</span>
-                                                           <span style={{display:'inline'}}>
+                                                           <span style={{display:'table',overflow:'auto',}}>
                                                            {
                                                               this.state.operations.map(op=>{
                                                                   var isChecked = menu.operations.find(me=>me.id===op.id);

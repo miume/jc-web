@@ -36,6 +36,7 @@ class Tr1 extends React.Component{
             // testItemIds:[]
         }
         this.hide = this.hide.bind(this);
+        this.judgeText = this.judgeText.bind(this);
         this.handleClickChange = this.handleClickChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.productLineChange = this.productLineChange.bind(this);
@@ -214,16 +215,26 @@ class Tr1 extends React.Component{
     }
     /**处理检测项目数量过多 */
     testItemsProcessing(text){
-        const items = text.split(',');
-        var testItems = '';
-        if(items.length>4){
-            testItems = items[0]+','+items[1]+','+items[2]+','+items[3]+'...';
-            return <abbr title={text}>{testItems}</abbr>;
-        }else{
-          testItems = text;
-          return text;
+        if(text){
+            const items = text.split(',');
+            var testItems = '';
+            if(items.length>2){
+                testItems = items[0]+','+items[1]+'...';
+                return <span className='text-decoration' title={text}>{testItems}</span>;
+            }else{
+            testItems = text;
+            return text;
+            }
         }
     }
+    //判断长度
+   judgeText(text){
+    if(text&&text.length>8){
+        return <span className='text-decoration' title={text}>{text.substring(0,8)}</span>
+    }else{
+        return text
+    }
+   }
     render() {
         const details = this.props.detail;
         const detail = details.detail?details.detail:{};
@@ -240,13 +251,13 @@ class Tr1 extends React.Component{
                         <tr id={this.props.id} className='detail-text'>
                             <td>{detail.deliveryFactory}</td>
                             <td>{detail.productionProcess}</td>
-                            <td>{d.samplePointName}</td>
+                            <td>{this.judgeText(d.samplePointName)}</td>
                             <td>{detail.sampler}</td>
                             <td>{detail.tester}</td>
-                            <td>{detail.testItems}</td>
-                            <td>{d.testFrequency}</td>
-                            <td>{detail.testMaterialName}</td>
-                            <td>{d.comment}</td>
+                            <td>{this.testItemsProcessing(detail.testItems)}</td>
+                            <td>{this.judgeText(d.testFrequency)}</td>
+                            <td>{this.judgeText(detail.testMaterialName)}</td>
+                            <td>{this.judgeText(d.comment)}</td>
                             <td>
                                 <span className='blue' onClick={()=>this.props.editorRow(this.props.id)} value={this.props.value}>编辑</span>
                                 <Divider type='vertical' />
@@ -264,7 +275,7 @@ class Tr1 extends React.Component{
                     <td><Select style={{width:'100%'}} placeholder='请选择检测人' onChange={this.tester} defaultValue={d.tester===''?undefined:d.tester}>{this.props.allUser}</Select></td>
                     <td><Popover
                         content={(
-                            <div style={{ width: '200px'}} >
+                            <div style={{ width : '350px',height : '150px',overflow:'auto' }} >
                              <Checkbox.Group style={{ width: '100%' }} onChange={this.onChange} defaultValue={testItemIds}>
                              {
                                 this.props.allTestItem?this.props.allTestItem.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>):''
@@ -279,7 +290,7 @@ class Tr1 extends React.Component{
                         visible={this.state.clicked}
                         onVisibleChange={this.handleClickChange}>
                         {
-                            detail.testItems?<Button>{detail.testItems}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
+                            detail.testItems?<Button>{this.testItemsProcessing(detail.testItems)}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
                         }
                         </Popover></td>
     
@@ -316,7 +327,7 @@ class Tr1 extends React.Component{
                             visible={this.state.clicked}
                             onVisibleChange={this.handleClickChange}>
                             {
-                                detail.testItems?<Button>{detail.testItems}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
+                                detail.testItems?<Button>{this.testItemsProcessing(detail.testItems)}</Button>:<Button className='PI-popover-placeholder'>请选择检测项目</Button>
                             }
                             </Popover></td>
 
