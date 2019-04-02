@@ -324,7 +324,7 @@ class ProductStandard extends React.Component{
         const current = JSON.parse(localStorage.getItem('current'));
         const data = [this.state.selectProduct,this.state.selectedModal];
         /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         const addFlag = home.judgeOperation(this.operation,'SAVE');
         const editorFlag = home.judgeOperation(this.operation,'SAVE');
         return (

@@ -19,7 +19,7 @@ class LibraryManage extends React.Component{
     }
     render(){
         const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return(
            <div>
                <BlockQuote name={current.menuName} menu={current.menuParent}/>

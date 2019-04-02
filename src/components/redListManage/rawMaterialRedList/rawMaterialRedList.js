@@ -367,7 +367,7 @@ class RawMaterialRedList extends Component{
         this.status=JSON.parse(localStorage.getItem('status'));
         const current=JSON.parse(localStorage.getItem('current'));
         //获取该菜单所有权限
-      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,

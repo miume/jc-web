@@ -48,7 +48,7 @@ class InterProduct extends React.Component {
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.status = JSON.parse(localStorage.getItem('status')) ;
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return(
             <div>
                 <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>

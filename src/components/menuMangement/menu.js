@@ -97,7 +97,7 @@ class Menu extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
        this.server = localStorage.getItem('remote');
        const current = JSON.parse(localStorage.getItem('current')) ;
-       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,

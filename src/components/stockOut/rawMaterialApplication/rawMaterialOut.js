@@ -252,7 +252,7 @@ class RawMaterialOut extends React.Component {
         this.pagination.total = this.props.data.total;
         const current = JSON.parse(localStorage.getItem('current')) ;
         /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div style={{padding: '0 15px'}}>
                 <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel}
