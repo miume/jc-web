@@ -64,7 +64,7 @@ class Login extends React.Component {
       localStorage.setItem('menuList',JSON.stringify(res.data));
       history.push({pathname:'/home'});
     })
-    .catch(function (error) {
+    .catch( (error) => {
       this.setState({
         loading : false
       })
@@ -78,6 +78,9 @@ class Login extends React.Component {
   /**登陆前先对数据进行验证 */
   beforeLogin(username,password){
     if(username === '' || password === '' ){
+      this.setState({
+        loading : false
+      })
       message.info('请先填写账号和密码！');
       return false
     }

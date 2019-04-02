@@ -4,9 +4,7 @@ import SearchCell from "../BlockQuote/search";
 import ProductTable from "./productInspectionTable";
 import axios from "axios";
 import home from "../fns";
-import OperationTable from "../operationManagement/operationTable";
-
-
+import OperationTable from "../operationManagement/operationTable"
 class ProductInspection extends React.Component {
     url;
     status;

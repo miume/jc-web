@@ -371,7 +371,6 @@ class Add extends React.Component{
                 id:maxCount+1,
                 testItemIds:[],
                 procedureTestRecord:{
-                    comment:'',
                     procedureId:'',
                     deliveryFactoryId:'',
                     samplePointName:'',
@@ -379,6 +378,7 @@ class Add extends React.Component{
                     testFrequency:'',
                     serialNumberId:'',
                     tester:'',
+                    comment:'',
                 },
                 detail:{
                     deliveryFactory:'',

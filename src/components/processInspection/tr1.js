@@ -301,7 +301,7 @@ class Tr1 extends React.Component{
                         <td><Select style={{width:'100%'}} placeholder='请选择检测人' onChange={this.tester}>{this.props.allUser}</Select></td>
                         <td><Popover
                             content={(
-                                <div style={{ width: '200px'}} >
+                                <div style={{ width : '350px',height : '150px',overflow:'auto' }} >
                                 <Checkbox.Group style={{ width: '100%' }} onChange={this.onChange} >
                                 {
                                     this.props.allTestItem?this.props.allTestItem.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>):''
