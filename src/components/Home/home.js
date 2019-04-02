@@ -211,16 +211,16 @@ class Home extends Component {
             },
             /**菜单管理 */
             menu:{
-                getAll:`${server}/jc/auth/menu/recursive`,
-                add:`${server}/jc/auth/menu/add`,
-                deleteByIds:`${server}/jc/auth/menu/deleteByIds`,
-                findByParentNameLikeByPage:`${server}/jc/auth/menu/findByParentNameLikeByPage`,
-                findAllByPage:`${server}/jc/auth/menu/findAllByPage`,
-                findByMenuType:`${server}/jc/auth/menu/findByMenuType`,
-                findByNameLikeByPage:`${server}/jc/auth/menu/findByNameLikeByPage`,
-                update:`${server}/jc/auth/menu/update`,
-                findById:`${server}/jc/auth/menu`,
-                deleteById:`${server}/jc/auth/menu`,
+                // getAll:`${server}/jc/auth/menu/getAllRecursive`,
+                add:`${server}/jc/auth/menu`,
+                deleteByIds:`${server}/jc/auth/menu/batchDelete`,
+                findByParentNameLikeByPage:`${server}/jc/auth/menu/byFatherNameLikeByPage`,
+                findAllByPage:`${server}/jc/auth/menu/byNameLikeByPage`,
+                findByMenuType:`${server}/jc/auth/menu/byType`,
+                // findByNameLikeByPage:`${server}/jc/auth/menu/findByNameLikeByPage`,
+                // update:`${server}/jc/auth/menu/update`,
+                // findById:`${server}/jc/auth/menu`,
+                // deleteById:`${server}/jc/auth/menu`,
             },
             /**盘库管理 */
             libraryManage:{

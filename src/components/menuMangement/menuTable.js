@@ -106,27 +106,27 @@ class MenuTable extends React.Component{
         render:(text, record)=>{
             if(record.menuType===1){
                 return '父菜单'
-            }else if(record.menuType===2){
+            }else if(record.menuType>=2){
                 return '子菜单'
             }
         }
     },{
         title: '父菜单',
-        dataIndex: 'parentId',
-        key: 'parentId',
+        dataIndex: 'parentName',
+        key: 'parentName',
         align:'center',
         editable: 1,
         width: '20%',
-        filterDropdown: () => (
-            <div className="custom-filter-dropdown">
-              <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
-            </div>
-          ),
-        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-        onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-        render:(text,record)=>{
-            return record.parentName
-        },
+        // filterDropdown: () => (
+        //     <div className="custom-filter-dropdown">
+        //       <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
+        //     </div>
+        //   ),
+        // filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        // onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+        // render:(text,record)=>{
+        //     return record.parentName
+        // },
     },{
         title: '操作',
         key: 'operation',
@@ -177,7 +177,7 @@ class MenuTable extends React.Component{
         title: '序号',
         dataIndex: 'index',
         key: 'id',
-        sorter: (a, b) => a.id - b.id,
+        sorter: (a, b) => a.menuId - b.menuId,
         align:'center',
         width: '20%',
     },{
@@ -196,27 +196,27 @@ class MenuTable extends React.Component{
         render:(text, record)=>{
             if(record.menuType===1){
                 return '父菜单'
-            }else if(record.menuType===2){
+            }else if(record.menuType>=2){
                 return '子菜单'
             }
         }
     },{
         title: '父菜单',
-        dataIndex: 'parentId',
-        key: 'parentId',
+        dataIndex: 'parentName',
+        key: 'parentName',
         align:'center',
         editable: 1,
         width: '20%',
-        filterDropdown: () => (
-            <div className="custom-filter-dropdown">
-              <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
-            </div>
-          ),
-        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-        onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-        render:(text,record)=>{
-            return record.parentName
-        },
+        // filterDropdown: () => (
+        //     <div className="custom-filter-dropdown">
+        //       <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
+        //     </div>
+        //   ),
+        // filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        // onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+        // render:(text,record)=>{
+        //     return record.parentName
+        // },
     }];
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -248,7 +248,7 @@ class MenuTable extends React.Component{
             <Table
                 components={components}
                 rowClassName="editable-row"
-                rowKey={record => record.id}
+                rowKey={record => record.menuId}
                 dataSource={this.props.data}
                 columns={table_column}
                 rowSelection={this.props.rowSelection}

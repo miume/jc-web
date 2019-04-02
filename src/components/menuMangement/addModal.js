@@ -103,16 +103,27 @@ class AddModal extends React.Component {
     handleCreate = () => {
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
+            // console.log(values)
+            var data = {};
             if (err) {
                 return;
             }
+            if(values.menuType === '1'){
+                data['menuName'] = values.menuName;
+                data['parent'] = -1;
+                
+            }else if(values.menuType === '2'){
+                data['menuName'] = values.menuName;
+                data['parent'] = values.parent;
+            }
+            // console.log(data)
             axios({
                 url : `${this.url.menu.add}`,
                 method:'post',
                 headers:{
                     'Authorization': this.url.Authorization
                 },
-                data: values,
+                data: data,
                 type:'json'
             }).then((data) => {
                 message.info(data.data.message);
