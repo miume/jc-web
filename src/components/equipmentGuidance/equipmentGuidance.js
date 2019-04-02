@@ -93,7 +93,7 @@ class Equipment extends React.Component{
             url:`${this.url.instructor.instructorAll}/${id}`,
             method:'Delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
         }).then((data)=>{
             message.info(data.data.message);
@@ -123,7 +123,7 @@ class Equipment extends React.Component{
             url:`${this.url.instructor.instructorAll}`,
             method: 'get',
             headers:{
-                'Authorization': this.Authorization
+                'Authorization': this.url.Authorization
             },
             params: params,
         }).then((data)=>{
@@ -156,7 +156,7 @@ class Equipment extends React.Component{
             url:`${this.url.instructor.instructorAll}`,
             method:'get',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             params:{
                 instructorName:ope_name

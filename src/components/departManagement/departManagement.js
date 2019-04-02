@@ -104,7 +104,8 @@ class Depart extends React.Component {
     }
     /**用来判断该菜单有哪些操作权限 */
     judgeOperation(operation,operationCode){
-        var flag = operation.filter(e=>e.operationCode===operationCode);
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
         return flag.length>0?true:false
     }
     /**修改父组件的数据 */

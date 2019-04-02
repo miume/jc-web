@@ -73,8 +73,8 @@ class Menu extends React.Component{
                 'Authorization':this.url.Authorization
             },
             params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
+                pageSize: this.pagination.pageSize,
+                pageNumber: this.pagination.current,
                 parentMenuName:ope_name
             },
             type:'json',
@@ -119,9 +119,7 @@ class Menu extends React.Component{
                 cancel={this.cancel}
                 flag={this.judgeOperation(this.operation,'DELETE')}
             />
-            {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
                 <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
-            {/* </span> */}
         <div className='clear' ></div>
         <MenuTable
             data={this.state.dataSource}
@@ -151,10 +149,10 @@ class Menu extends React.Component{
   /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
       this.fetch({
-          size: pagination.pageSize,
-          page: pagination.current,
-          orderField: 'id',
-          orderType: 'desc',
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+        sortField: 'id',
+        sortType: 'asc',
       });
     //   console.log(pagination)
   };
@@ -174,7 +172,7 @@ class Menu extends React.Component{
           const res = data.data.data;
           if(res&&res.list){
             this.pagination.total=res.total;
-            this.pagination.current=res.pageNum;
+            this.pagination.current=res.pageNumber;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
@@ -198,7 +196,6 @@ class Menu extends React.Component{
       headers:{
         'Authorization': this.url.Authorization
         },
-        params: {menuType:1},
     }).then((data)=>{
       const res = data.data.data;
       if(res){
@@ -245,8 +242,8 @@ class Menu extends React.Component{
               'Authorization':this.url.Authorization
           },
           params:{
-              size: this.pagination.pageSize,
-            //   page: this.pagination.current,
+            pageSize: this.pagination.pageSize,
+            //   pageNumber: this.pagination.current,
               menuName:ope_name
           },
           type:'json',
