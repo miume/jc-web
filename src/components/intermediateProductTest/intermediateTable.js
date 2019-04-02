@@ -116,27 +116,31 @@ class InterTable extends React.Component{
                     ):(
                         <span  className="notClick">详情</span>
                     )}
-                    <Divider type="vertical" />
-                    {checkSpanFlag?(
-                        <CheckSpan
-                            menuList={this.props.menuList}
-                            url={this.props.url}
-                            id={record.sampleDeliveringRecord.id}
-                            fetch={this.props.fetch}
-                        />
-                    ):(
-                        <span  className="notClick">录检</span>
-                    )}
-                    <Divider type="vertical" />
-                    {releaseSpanFlag?(
-                        <ReleaseSpan
-                            url={this.props.url}
-                            id={record.sampleDeliveringRecord.id}
-                            fetch={this.props.fetch}
-                        />
-                    ):(
-                        <span  className="notClick">发布</span>
-                    )}
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {checkSpanFlag?(
+                            <CheckSpan
+                                menuList={this.props.menuList}
+                                url={this.props.url}
+                                id={record.sampleDeliveringRecord.id}
+                                fetch={this.props.fetch}
+                            />
+                        ):(
+                            <span  className="notClick">录检</span>
+                        )}
+                    </span>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {releaseSpanFlag?(
+                            <ReleaseSpan
+                                url={this.props.url}
+                                id={record.sampleDeliveringRecord.id}
+                                fetch={this.props.fetch}
+                            />
+                        ):(
+                            <span  className="notClick">发布</span>
+                        )}
+                    </span>
                     <Divider type="vertical" />
                         <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                 </span>

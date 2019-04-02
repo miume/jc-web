@@ -44,7 +44,7 @@ class ProcessTable extends React.Component{
     /**获取所有用户 */
     getAllUser(){
       axios({
-        url:`${this.props.url.role.getAll}`,
+        url:`${this.props.url.role.role}`,
         method:'get',
         headers:{
           'Authorization':this.props.url.Authorization

@@ -3,9 +3,12 @@ import SearchCell from "../BlockQuote/search";
 import BlockQuote from "../BlockQuote/blockquote";
 import UnqualifiedTrackTable from './unqualifiedTrackTable';
 import axios from "axios";
+import home from "../fns"
+import OperationTable from "../operationManagement/operationTable";
 
 class UnqualifiedTrack extends React.Component{
     url;
+    operation;
     componentDidMount() {
         this.fetch({
             pageSize:10,
@@ -41,6 +44,7 @@ class UnqualifiedTrack extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return(
             <div>
                 <BlockQuote name="不合格跟踪表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
@@ -50,6 +54,7 @@ class UnqualifiedTrack extends React.Component{
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
+                        flag={home.judgeOperation(this.operation,'QUERY')}
                     />
                     <div className='clear' ></div>
                     <UnqualifiedTrackTable
@@ -59,6 +64,8 @@ class UnqualifiedTrack extends React.Component{
                         pagination={this.state.pagination}
                         fetch={this.fetch}
                         handleTableChange={this.handleTableChange}
+                        judgeOperation = {home.judgeOperation}
+                        operation = {this.operation}
                     />
                 </div>
             </div>

@@ -98,19 +98,6 @@ class ReleaseTable extends React.Component {
             let operationFlag = this.judgeOperation(record.commonBatchNumber.isPublished);
             return (
                 <span>
-                    {operationFlag?(
-                        <CheckReleaseSpan
-                            url={this.props.url}
-                            menuList={this.props.menuList}
-                            state={record.commonBatchNumber.status}
-                            fetch={this.props.fetch}
-                            name='发布'
-                            id={record.commonBatchNumber.id}
-                        />
-                    ):(
-                        <span  className="notClick">发布</span>
-                    )}
-                    <Divider type="vertical" />
                     <CheckReleaseSpan
                         url={this.props.url}
                         id={record.commonBatchNumber.id}
@@ -118,6 +105,21 @@ class ReleaseTable extends React.Component {
                         state={-1}
                         name='详情'
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationFlag?(
+                            <CheckReleaseSpan
+                                url={this.props.url}
+                                menuList={this.props.menuList}
+                                state={record.commonBatchNumber.status}
+                                fetch={this.props.fetch}
+                                name='发布'
+                                id={record.commonBatchNumber.id}
+                            />
+                        ):(
+                            <span  className="notClick">发布</span>
+                        )}
+                    </span>
                 </span>
             )
         }

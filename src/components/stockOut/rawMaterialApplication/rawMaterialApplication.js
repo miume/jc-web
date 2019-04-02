@@ -125,7 +125,7 @@ class RawMaterialApplication extends React.Component{
         }
         const current = JSON.parse(localStorage.getItem('current')) ;
         /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div style={{padding:'0 15px'}}>
                 <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url}

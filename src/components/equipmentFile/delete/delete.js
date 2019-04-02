@@ -53,7 +53,7 @@ class Delete extends Component{
         }
          render(){
              return(
-                 <span>
+                 <span  className={this.props.judgeOperation(this.props.operation,'DELETE')?'':'hide'}>
                      <span className='blue' onClick={this.showModal}>删除</span>
                       <Modal
                           title='确定删除?'

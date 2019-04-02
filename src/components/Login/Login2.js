@@ -45,7 +45,6 @@ class Login extends React.Component {
     const server = localStorage.getItem("server");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    console.log(username,password)
     if(!this.beforeLogin(username,password)){
       return 
     }
@@ -65,7 +64,10 @@ class Login extends React.Component {
       localStorage.setItem('menuList',JSON.stringify(res.data));
       history.push({pathname:'/home'});
     })
-    .catch(function (error) {
+    .catch( (error) => {
+      this.setState({
+        loading : false
+      })
       if(error.toString().indexOf("Network Error")>0){
         message.info("服务器未响应!");
       }else{
@@ -76,6 +78,9 @@ class Login extends React.Component {
   /**登陆前先对数据进行验证 */
   beforeLogin(username,password){
     if(username === '' || password === '' ){
+      this.setState({
+        loading : false
+      })
       message.info('请先填写账号和密码！');
       return false
     }

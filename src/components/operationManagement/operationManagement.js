@@ -5,6 +5,7 @@ import '../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
 import {message} from "antd";
+import home from '../fns';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from "../BlockQuote/deleteByIds";
 
@@ -36,7 +37,7 @@ class OperationManagement extends React.Component {
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        this.judgeOperation = this.judgeOperation.bind(this);
+        // this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total) {
@@ -49,7 +50,7 @@ class OperationManagement extends React.Component {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         const {  selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -61,19 +62,19 @@ class OperationManagement extends React.Component {
                 <div style={{padding:'15px'}}>
                     <AddModal
                         fetch={this.fetch}
-                        flag={this.judgeOperation(this.operation,'SAVE')}
+                        flag={home.judgeOperation(this.operation,'SAVE')}
                     />
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.deleteByIds}
-                        cancel={this.cancel} flag={this.judgeOperation(this.operation,'DELETE')}
+                        cancel={this.cancel} flag={home.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell
                         name='请输入操作名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
-                        flag={this.judgeOperation(this.operation,'QUERY')}
+                        flag={home.judgeOperation(this.operation,'QUERY')}
                     />
                     <div className='clear' ></div>
                     <OperationTable
@@ -84,7 +85,7 @@ class OperationManagement extends React.Component {
                         fetch={this.fetch}
                         modifyDataSource={this.modifyDataSource}
                         handleTableChange={this.handleTableChange}
-                        judgeOperation = {this.judgeOperation}
+                        judgeOperation = {home.judgeOperation}
                         operation = {this.operation}
                     />
                 </div>
@@ -92,10 +93,10 @@ class OperationManagement extends React.Component {
         )
     }
     /**用来判断该菜单有哪些操作权限 */
-    judgeOperation(operation,operationCode){
-        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
-        return flag.length>0?true:false
-    }
+    // judgeOperation(operation,operationCode){
+    //     var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+    //     return flag.length>0?true:false
+    // }
     /**修改父组件的数据 */
     modifySelectedRowKeys = (data) => {
         this.setState({selectedRowKeys:data});

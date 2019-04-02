@@ -103,17 +103,6 @@ class CheckTable extends React.Component {
             let operationCheckFlag = this.judgeCheckOperation(status);
             return (
                 <span>
-                    {operationCheckFlag?(
-                        <CheckEditSpan
-                            fetch={this.props.fetch}
-                            url={this.props.url}
-                            id={record.commonBatchNumber.id}
-                            menuList={this.props.menuList}
-                        />
-                    ):(
-                        <span  className="notClick">编辑</span>
-                    )}
-                    <Divider type="vertical" />
                     <CheckReleaseSpan
                         fetch={this.props.fetch}
                         url={this.props.url}
@@ -122,6 +111,19 @@ class CheckTable extends React.Component {
                         state={record.commonBatchNumber.status}
                         name='详情'
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationCheckFlag?(
+                            <CheckEditSpan
+                                fetch={this.props.fetch}
+                                url={this.props.url}
+                                id={record.commonBatchNumber.id}
+                                menuList={this.props.menuList}
+                            />
+                        ):(
+                            <span  className="notClick">编辑</span>
+                        )}
+                    </span>
                 </span>
             )
         }

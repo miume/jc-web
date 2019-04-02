@@ -93,18 +93,6 @@ class UnqualifiedTable extends React.Component {
             let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
             return (
                 <span>
-                    {operationCheckFlag?(
-                        <EditSpan
-                            fetch={this.props.fetch}
-                            url={this.props.url}
-                            checkStatus={record.commonBatchNumber.status}
-                            batchNumberId={record.commonBatchNumber.id}
-                            menuList={this.props.menuList}
-                        />
-                    ):(
-                        <span  className="notClick">编辑</span>
-                    )}
-                    <Divider type="vertical" />
                     <DetailSpan
                         url={this.props.url}
                         menuList={this.props.menuList}
@@ -112,6 +100,21 @@ class UnqualifiedTable extends React.Component {
                         batchNumberId={record.commonBatchNumber.id}
                         name='详情'
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationCheckFlag?(
+                            <EditSpan
+                                fetch={this.props.fetch}
+                                url={this.props.url}
+                                checkStatus={record.commonBatchNumber.status}
+                                batchNumberId={record.commonBatchNumber.id}
+                                menuList={this.props.menuList}
+                            />
+                        ):(
+                            <span  className="notClick">编辑</span>
+                        )}
+                    </span>
+
                 </span>
             )
         }

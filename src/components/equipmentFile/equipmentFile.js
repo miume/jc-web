@@ -107,9 +107,9 @@ class EquipmentArchive extends Component{//设备档案
                      <span>
                         <CheckManual record={record} url={this.url}/>
                         <Divider type='vertical'/>
-                        <Edit  url={this.url} record={record} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} fetch={this.fetch}/>
+                        <Edit  url={this.url} record={record} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} fetch={this.fetch} operation={this.operation} judgeOperation={this.judgeOperation}/>
                         <Divider type='vertical'/>
-                        <Delete record={record} url={this.url} fetch={this.fetch} pagination={this.pagination}/>
+                        <Delete record={record} url={this.url} fetch={this.fetch} pagination={this.pagination} operation={this.operation} judgeOperation={this.judgeOperation}/>
                     </span>
                  )
             }
@@ -310,7 +310,7 @@ class EquipmentArchive extends Component{//设备档案
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
         //获取当前菜单所有权限
-        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,
@@ -328,6 +328,7 @@ class EquipmentArchive extends Component{//设备档案
                            searchEvent={this.searchEvent}
                            searchContentChange={this.searchContentChange}
                            fetch={this.fetch}
+                           flag={this.judgeOperation(this.operation,'QUERY')}
                         />
                     
                    <Table

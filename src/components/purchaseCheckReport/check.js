@@ -2,6 +2,7 @@ import React from 'react';
 import CheckTable from './checkTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
+import OperationTable from "../operationManagement/operationTable";
 
 class Check extends React.Component {
     componentDidMount() {
@@ -46,6 +47,7 @@ class Check extends React.Component {
                     searchContentChange={this.searchContentChange}
                     fetch={this.fetch}
                     type={2}
+                    flag={this.props.judgeOperation(this.props.operation,'QUERY')}
                 />
                 <div className='clear' ></div>
                 <CheckTable
@@ -56,6 +58,8 @@ class Check extends React.Component {
                     pagination={this.state.pagination}
                     handleTableChange={this.handleTableChange}
                     fetch={this.fetch}
+                    judgeOperation = {this.props.judgeOperation}
+                    operation = {this.props.operation}
                 />
             </div>
         )
