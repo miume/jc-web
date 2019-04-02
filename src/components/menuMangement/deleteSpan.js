@@ -12,7 +12,7 @@ class DeletaSpan extends React.Component {
         this.server = localStorage.getItem('remote');
         return (
             <span className={this.props.flag?'':'hide'}>
-                <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.id)} okText="确定" cancelText="取消" >
+                <Popconfirm title="确认删除?" onConfirm={() => this.handleDelete(this.props.record.menuId)} okText="确定" cancelText="取消" >
                     <span className='blue' href="#">删除</span>
                 </Popconfirm>
             </span>
@@ -20,7 +20,7 @@ class DeletaSpan extends React.Component {
     }
     handleDelete = (id) => {
         axios({
-            url:`${this.url.menu.deleteById}/${id}`,
+            url:`${this.url.menu.add}/${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.url.Authorization
@@ -31,7 +31,7 @@ class DeletaSpan extends React.Component {
             message.info(error.data)
         });
         setTimeout(() => {
-            this.props.getFetch();
+            this.props.getFetch(this.props.pagination);
         }, 1000);
     }
 }

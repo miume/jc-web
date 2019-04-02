@@ -17,7 +17,7 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
     getInput = () => {
-        if (this.props.inputType === 'select' && this.props.record.parentId !== -1) {
+        if (this.props.inputType === 'select' && this.props.record.parent !== -1) {
             return <Select >
               {
                 this.props.fathermenu.map(de=>{
@@ -27,8 +27,8 @@ class EditableCell extends React.Component {
                 })
               }
         </Select>;
-        } 
-        return <Input disabled= {this.props.inputType === 'select' && this.props.record.parentId===-1?true:false}/>;
+        }
+        return <Input disabled= {this.props.inputType === 'select' && this.props.record.parent===-1?true:false}/>;
     };
     render() {
         const {
@@ -53,8 +53,7 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `Please Input ${title}!`,
                                         }],
-                                        initialValue: record[dataIndex]===-1?"无父菜单":record[dataIndex], 
-                                        // initialValue: (record[dataIndex]==1)? '父菜单':(record[dataIndex]==2 ? '子菜单' : record[dataIndex]),                                       
+                                        initialValue: record[dataIndex]===-1?"无父菜单":record[dataIndex],                                      
                                     })(this.getInput())}
                                 </FormItem>
                             ) : restProps.children}
@@ -112,11 +111,14 @@ class MenuTable extends React.Component{
         }
     },{
         title: '父菜单',
-        dataIndex: 'parentName',
+        dataIndex: 'parent',
         key: 'parentName',
         align:'center',
         editable: 1,
         width: '20%',
+        render:(text,record)=>{
+            return record.parentName
+        }
         // filterDropdown: () => (
         //     <div className="custom-filter-dropdown">
         //       <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
@@ -142,7 +144,7 @@ class MenuTable extends React.Component{
                                 <EditableContext.Consumer>
                                     {form => (
                                         <span
-                                            onClick={() => this.save(form, record.id)}
+                                            onClick={() => this.save(form, record.menuId)}
                                             style={{ marginRight: 8 }}
                                             className="blue"
                                         >
@@ -152,14 +154,14 @@ class MenuTable extends React.Component{
                                     </EditableContext.Consumer>
                                 <Popconfirm
                                     title="确定取消?"
-                                    onConfirm={() => this.cancel(record.id)}
+                                    onConfirm={() => this.cancel(record.menuId)}
                                     okText="确定" cancelText="取消"
                                 >
                                     <span className="blue">取消</span>
                                 </Popconfirm>
                             </span>
                         ) : (
-                            <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
+                            <span className='blue' onClick={() => this.edit(record.menuId)}>编辑</span>
                         )}
                         </span>
                     {this.props.judgeOperation(this.props.operation,'DELETE')?<Divider type="vertical" />:null}
@@ -167,6 +169,7 @@ class MenuTable extends React.Component{
                         record={record}
                         getFetch={this.getFetch.bind(this)}
                         flag={this.props.judgeOperation(this.props.operation,'DELETE')}
+                        pagination = {this.props.pagination}
                     />
 
                 </span>
@@ -234,7 +237,7 @@ class MenuTable extends React.Component{
             return {
               ...col,
               onCell: record => ({
-                inputType:col.dataIndex === 'parentId' ? 'select' : 'text',
+                inputType:col.dataIndex === 'parent' ? 'select' : 'text',
                 record:record,
                 editable:col.editable,
                 dataIndex:col.dataIndex,
@@ -262,13 +265,13 @@ class MenuTable extends React.Component{
         );
     };
     /**实现初始化页面功能 */
-    getFetch = () => {
-        this.props.fetch();
+    getFetch = (pagination) => {
+        this.props.handleTableChange(pagination);
     };
     /**---------------------- */
     /**实现字段搜索功能 */
     isEditing = (record) => {
-        return record.id === this.state.editingKey;
+        return record.menuId === this.state.editingKey;
     };
 
     edit(id) {
@@ -278,25 +281,30 @@ class MenuTable extends React.Component{
     save(form, id) {
         /**row代表修改后的数据  item 代表原始数据 */
         form.validateFields((error, row) => {
+            var data={}
+            data['id'] = id
             if (error) {
                 return;
             }
-            if(row.parentId === '无父菜单'){
-                row.parentId = -1
+            if(row.parent === '无父菜单'){
+                data['parent'] = -1
+            }else{
+                data['parent'] = row.parent
             }
-            const newData = [...this.props.data];
-            const index = newData.findIndex(item => id === item.id);
-            if (index > -1) {
-                const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
-                });
-                const data = row;
-                data['id'] = id.toString()
+            data['menuName'] = row.menuName
+            // const newData = [...this.props.data];
+            // const index = newData.findIndex(item => id === item.id);
+            // if (index > -1) {
+            //     const item = newData[index];
+            //     newData.splice(index, 1, {
+            //         ...item,
+            //         ...row,
+            //     });
+            //     const data = row;
+            //     data['id'] = id.toString()
                 axios({
-                    url:`${this.url.menu.update}`,
-                    method:'post',
+                    url:`${this.url.menu.add}`,
+                    method:'put',
                     headers:{
                         'Authorization':this.url.Authorization
                     },
@@ -304,17 +312,19 @@ class MenuTable extends React.Component{
                     type:'json'
                 }).then((data)=>{
                     message.info(data.data.message);
-                    this.props.modifyDataSource(newData);
+                    // this.props.modifyDataSource(newData);
                 }).catch((error)=>{
                     message.info(error.data.message);
                 });
                 
                 this.setState({ editingKey: '' });
-            } else {
-                newData.push(row);
-                this.props.modifyDataSource(newData);
-                this.setState({ editingKey: '' });
-            }
+                this.getFetch(this.props.pagination)
+            // } 
+            // else {
+            //     newData.push(row);
+            //     this.props.modifyDataSource(newData);
+            //     this.setState({ editingKey: '' });
+            // }
         });
     }
 

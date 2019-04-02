@@ -209,7 +209,7 @@ class Menu extends React.Component{
       const ids = this.state.selectedRowKeys;
       axios({
           url:`${this.url.menu.deleteByIds}`,
-          method:'post',
+          method:'delete',
           headers:{
               'Authorization':this.url.Authorization
           },
@@ -217,7 +217,7 @@ class Menu extends React.Component{
           type:'json'
       }).then((data)=>{
           message.info(data.data.message);
-          this.fetch();
+          this.handleTableChange(this.pagination);
       }).catch((error)=>{
           message.info(error.data.message)
       });
@@ -236,7 +236,7 @@ class Menu extends React.Component{
     searchEvent(){
       const ope_name = this.state.searchContent;
       axios({
-          url:`${this.url.menu.findByNameLikeByPage}`,
+          url:`${this.url.menu.findAllByPage}`,
           method:'get',
           headers:{
               'Authorization':this.url.Authorization
