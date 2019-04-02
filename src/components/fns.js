@@ -3,7 +3,7 @@ const home = {
    judgeOperation(operation,operationCode){
        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
        return flag.length>0?true:false
-   }
+   },
 }
 
 export default home;

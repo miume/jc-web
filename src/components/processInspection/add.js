@@ -259,7 +259,7 @@ class Add extends React.Component{
                 }
             }
         }
-        this.handleCancel(); //取消弹出框
+        // this.handleCancel(); //取消弹出框
         this.applyOut(status,details,process,urgent);
     }
     /**对数据进行保存操作 不管是编辑、新增还是迭代数据格式按照编辑的数据格式，因为多传参数不影响后台的处理
