@@ -64,7 +64,7 @@ class TodoList extends React.Component{
         this.userId = localStorage.getItem('menuList')?JSON.parse(localStorage.getItem('menuList')).userId:-1;
         const current = JSON.parse(localStorage.getItem('current')) ;
         /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operationList:null;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div>
                  <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>

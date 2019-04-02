@@ -45,7 +45,6 @@ class Login extends React.Component {
     const server = localStorage.getItem("server");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    console.log(username,password)
     if(!this.beforeLogin(username,password)){
       return 
     }
@@ -66,6 +65,9 @@ class Login extends React.Component {
       history.push({pathname:'/home'});
     })
     .catch(function (error) {
+      this.setState({
+        loading : false
+      })
       if(error.toString().indexOf("Network Error")>0){
         message.info("服务器未响应!");
       }else{
