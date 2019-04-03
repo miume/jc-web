@@ -12,6 +12,7 @@ import CancleButton from '../BlockQuote/cancleButton';
 import CheckProductStandard from './checkProductStandard';
 import CheckUnqualifiedTrack from './checkUnqualifiedTrack';
 import CkeckProductInspection from './checkProductInspection';
+import EqupimentGuidance from './equpimentGuidance';
 import axios from 'axios';
 class CheckModal extends React.Component{
     componentDidMount(){
@@ -55,7 +56,8 @@ class CheckModal extends React.Component{
             case 11: return <CheckUnqualified url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 12: return <CheckUnqualifiedTrack url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 13: 
-            case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
+            case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />;
+            case 15: return <EqupimentGuidance  url={this.props.url} batchNumberId={this.props.dataId}/>
             default: return '' ;
         }
     }
