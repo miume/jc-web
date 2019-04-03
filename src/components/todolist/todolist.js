@@ -8,6 +8,7 @@ const TabPane = Tabs.TabPane;
 class TodoList extends React.Component{
     url
     userId
+    operation
     componentDidMount(){
         this.fetch();
         this.getHistory('');

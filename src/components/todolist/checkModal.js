@@ -44,9 +44,9 @@ class CheckModal extends React.Component{
         switch(type){
             case 1:  
             case 2:  
-            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
-            case 4:  return<StockTable dataSource={this.state.dataSource} flag={1}/>
-            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
+            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId}/>; 
+            case 4:  return <StockTable dataSource={this.state.dataSource} flag={1}/>
+            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId}/>; 
             case 7:  return <CheckPurchase url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 5:  
