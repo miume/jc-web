@@ -3,8 +3,8 @@ import { Button, Modal,Form, Input,message,Icon,DatePicker, Col, Row } from 'ant
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import axios from 'axios';
 import CancleButton from "../BlockQuote/cancleButton";
-import "./equiptment.css";
-import Preview from './preview'
+import "../equipmentGuidance/equiptment.css";
+import Preview from '../equipmentGuidance/preview'
 
 class Detail extends React.Component{
     url
@@ -20,11 +20,15 @@ class Detail extends React.Component{
         };
         this.fetch = this.fetch.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleDetail = this.handleDetail.bind(this);
+        // this.handleDetail = this.handleDetail.bind(this);
         this.previewCancel = this.previewCancel.bind(this);
         this.previewPreview = this.previewPreview.bind(this);
     }
     
+    componentDidMount(){
+        this.fetch(this.props.batchNumberId)
+    }
+
     fetch = (id) => {
         axios({
             url:`${this.url.instructor.instructorAll}/`+ parseInt(id),
@@ -53,12 +57,12 @@ class Detail extends React.Component{
     }
 
     /**处理一条详情记录 */
-    handleDetail() {
-        this.fetch(this.props.batchNumberId)
-        this.setState({
-          visible: true
-        });
-    }
+    // handleDetail() {
+    //     this.fetch(this.props.batchNumberId)
+    //     this.setState({
+    //       visible: true
+    //     });
+    // }
     handleCancel() {
         this.setState({
         visible: false
@@ -67,16 +71,15 @@ class Detail extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
-            <span>
-                <span onClick={this.handleDetail} className="blue">详情</span>
-                <Modal title='详情' visible={this.state.visible}
-                    width="600px"
-                    closable={false} centered={true}
-                    maskClosable={false}
-                    footer={[
-                        <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
-                    ]}
-                >
+            // <span>
+            //     <Modal title='详情' visible={this.state.visible}
+            //         width="600px"
+            //         closable={false} centered={true}
+            //         maskClosable={false}
+            //         footer={[
+            //             <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
+            //         ]}
+            //     >
                     <div>
                         <span className='Eqname'>{this.state.name}</span>
                         <span className='Eqtime'>{this.state.time}</span>
@@ -93,8 +96,8 @@ class Detail extends React.Component{
                          )}
                         </div>
                     </div>
-                </Modal>
-            </span>
+            //     </Modal>
+            // </span>
         )
     }
 }
