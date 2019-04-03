@@ -2,6 +2,8 @@ import React from 'react';
 import {Modal,message} from 'antd';
 import './permissionManagement.css';
 import axios from 'axios';
+import PermissionThead from './thead';
+import PermissinTbody from './tbody';
 import CancleButton from '../BlockQuote/cancleButton';
 class PermissionManagement extends React.Component {
     constructor(props){
@@ -14,7 +16,6 @@ class PermissionManagement extends React.Component {
         }
         this.showModal = this.showModal.bind(this);
         this.handleOk = this.handleOk.bind(this);
-        // this.handleCancel = this.handleCancel.bind(this);
         this.change = this.change.bind(this);
         this.getAllAuth = this.getAllAuth.bind(this);
         this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
@@ -136,97 +137,23 @@ class PermissionManagement extends React.Component {
         return 1;
     }
     render() {
-        // const api = [
-        //     {id:3,name:'新增'},
-        //     {id:1,name:'删除'},
-        //     {id:2,name:'编辑'},
-        //     {id:4,name:'搜索'},
-        //     {id:5,name:'导出'}
-        // ]
-        // const mennus = [
-        //     {id:1, name : '用户权限', prefix:'AUTH_', parent:-1},
-        //     {id:2, name : '权限管理', prefix:'AUTH_ROLE_', parent:1},
-        //     {id:3, name : '菜单管理', prefix:'AUTH_MENU_', parent:1},
-        //     {id:4, name : '操作管理', prefix:'AUTH_OP_', parent:1},
-        //     {id:5, name : '基础信息', prefix:'AUTH_', parent:-1},
-        //     {id:6, name : '菜单管理', prefix:'AUTH_MENU_', parent:4},
-        // ]
         return (
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
-                closable={false} maskClosable={false} destroyOnClose='true' width={800}
+                closable={false} maskClosable={false} destroyOnClose='true' width={880}
                 footer={[
-                    // <NewButton key="submit" handleClick={this.handleOk} name='确定' className='fa fa-check' />
                     <CancleButton key='back' handleCancel={this.handleOk} flag={1}/>
                   ]}
                    >
-                <div style={{height:'460px'}}>
+                <div className='permissionContanier'>
                 {/**实现用div布局，显示table */}
-                    <div style={{height:'600px'}}>
-                        <div className='tableHead'>
-                            <span>子模块选择</span>
-                            <span>操作</span>
-                        </div>
-                        <div className='PM-tableBody'>
-                        {
-                            this.state.allMenus.map(m1=>{
-                                return (
-                                    /**先显示一级菜单*/
-                                    <div key={m1.menuId}>
-                                        <div className='divborder'><span className='rightBorder menu1Label'><i className="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{m1.menuName}</span><span></span></div>
-                                            <div>
-                                            {
-                                            /**遍历二级菜单 */
-                                            m1.menuList.map(m2=>{
-                                                var auth = this.state.roleAuth;
-                                                var menuList = auth.filter(au=>au.id === m2.menuId);
-                                                if(menuList.length>0){
-                                                    var menu = menuList[0];
-                                                   return (
-                                                       <div key={menu.id} className='divborder'><span className='rightBorder'><i className="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{menu.menuName}</span>
-                                                           <span style={{display:'table',overflow:'auto',}}>
-                                                           {
-                                                              this.state.operations.map(op=>{
-                                                                  var isChecked = menu.operations.find(me=>me.id===op.id);
-                                                                  if(isChecked){
-                                                                      return (
-                                                                        <span key={op.id} style={{display:'inline-block',minWidth:75}}>
-                                                                          <input type='checkbox' key={op.id} value={op.id} id={menu.id.toString()} onChange={this.change} defaultChecked={true}/>&nbsp;&nbsp;&nbsp;{op.operationName}</span>
-                                                                      );
-                                                                  }else{
-                                                                      return (
-                                                                      <AuthInput key={op.id} value={op.id} id={menu.id.toString()} change={this.change} operationName={op.operationName}  />
-                                                                      )}
-                                                              })
-                                                           }
-                                                           </span>
-                                                       </div>
-                                                   );
-                                                }else{
-                                                    return (
-                                                    <div key={m2.menuId} className='divborder'><span className='rightBorder'><i className="fa fa-level-up fa-flip-horizontal"></i>&nbsp;&nbsp;&nbsp;{m2.menuName}</span>
-                                                        <span style={{display:'inline'}}>
-                                                        {
-                                                        this.state.operations.map(op=>{
-                                                            return (
-                                                                <AuthInput key={op.id} value={op.id} id={m2.menuId.toString()} change={this.change} operationName={op.operationName}  />
-                                                            );
-                                                        })
-                                                        }
-                                                        </span>
-                                                    </div>
-                                                    )}
-                                            })
-                                            }
-                                            </div>
-                                    </div>
-                                );
-                            })
-                        }
-                        </div>
+                    <div className='permissionTable'>
+                        <PermissionThead />
+                        <PermissinTbody allMenus={this.state.allMenus} roleAuth={this.state.roleAuth}
+                           operations={this.state.operations} />
                     </div>
-                    </div>
+                </div>
 
                 </Modal>
             </span>
@@ -235,11 +162,3 @@ class PermissionManagement extends React.Component {
 }
 export default PermissionManagement;
 
-class AuthInput extends React.Component{
-    render(){
-        return(
-            <span style={{display:'inline-block',minWidth:75}}>
-                <input type='checkbox' value={this.props.value} id={this.props.id} onChange={this.props.change} checked={this.props.checked} /> &nbsp;{this.props.operationName}</span>
-        );
-    }
-}

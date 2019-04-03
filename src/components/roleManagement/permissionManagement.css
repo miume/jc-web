@@ -1,3 +1,9 @@
+.permissionContanier{
+    height : 460px;
+}
+.permissionTbale{
+    height : 600px;
+}
 .tableHead {
     width : 100%;
     height: 40px;
@@ -42,6 +48,10 @@
     padding-left: 56px !important;
 }
 .menu1Label{
+    text-align: left !important;
+    padding-left: 20px !important;
+}
+.menu2Label{
     text-align: left !important;
     padding-left: 30px !important;
 }

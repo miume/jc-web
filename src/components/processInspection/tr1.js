@@ -220,7 +220,7 @@ class Tr1 extends React.Component{
             var testItems = '';
             if(items.length>2){
                 testItems = items[0]+','+items[1]+'...';
-                return <span className='text-decoration' title={text}>{testItems}</span>;
+                return <span className='text-decoration' title={text}>{testItems.length > 10 ? items[0]+'...' : testItems }</span>;
             }else{
             testItems = text;
             return text;

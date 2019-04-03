@@ -53,7 +53,7 @@ class Detail extends React.Component{
               var testItems = '';
               if(items.length>2){
                   testItems = items[0]+','+items[1]+'...';
-                  return <span className='text-decoration' title={text}>{testItems}</span>;
+                  return <span className='text-decoration' title={text}>{testItems.length > 10 ? items[0]+'...' : testItems}</span>;
               }else{
                 testItems = text;
                 return text;
@@ -109,7 +109,7 @@ class Detail extends React.Component{
                 }
                     </Select>
                     <WhiteSpace />
-                    <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataFlag?this.state.data:this.props.data} size='small' pagination={false} scroll={{y:200}} bordered></Table>
+                    <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataFlag?this.state.data:this.props.data} size='small' pagination={false} scroll={{y:228}} bordered></Table>
             </div>)
     }
 }

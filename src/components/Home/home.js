@@ -211,7 +211,7 @@ class Home extends Component {
             },
             /**菜单管理 */
             menu:{
-                // getAll:`${server}/jc/auth/menu/getAllRecursive`,
+                getAll:`${server}/jc/auth/menu/recursive`,
                 add:`${server}/jc/auth/menu`,
                 deleteByIds:`${server}/jc/auth/menu/batchDelete`,
                 findByParentNameLikeByPage:`${server}/jc/auth/menu/byFatherNameLikeByPage`,

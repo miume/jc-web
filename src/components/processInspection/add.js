@@ -355,17 +355,17 @@ class Add extends React.Component{
         // console.log(data)
         // console.log(`maxCount=${this.state.maxCount},count=${this.state.count}`)
         /**点击新增 前面已知数据全部变成不可编辑 */
-        var flag = true;  //表示能否新增一行数据
-        for(var i = 0; i < data.length; i++){
-            var e = data[i];
-            if(e.testItemIds.length < 1){
-                message.info('请将数据填写完整，再新增！');
-                return false;
-            } 
-            flag = this.checkAddRowData(e);
-            e.mode = 1;
-        }
-        if(flag){
+        // var flag = true;  //表示能否新增一行数据
+        // for(var i = 0; i < data.length; i++){
+        //     var e = data[i];
+        //     if(e.testItemIds.length < 1){
+        //         message.info('请将数据填写完整，再新增！');
+        //         return false;
+        //     } 
+        //     flag = this.checkAddRowData(e);
+        //     e.mode = 1;
+        // }
+        // if(flag){
             data.push({
                 mode:3,
                 id:maxCount+1,
@@ -395,7 +395,7 @@ class Add extends React.Component{
                 count: count+1,
                 maxCount:maxCount+1
             })
-        }
+       // }
     }
     /**新增前对前面数据进行判断 必须填写完整才能新增下一条数据 */
     checkAddRowData(data){

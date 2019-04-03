@@ -81,7 +81,7 @@ class ProcessTable extends React.Component{
     }
     render(){
         return (
-            <div style={{height:'400px'}}>
+            <div style={{height:'440px'}}>
                     <div className='fr'>已录入{this.props.count}条数据</div><br/>
                          <table id='process-table'>
                              <thead className='thead'>
