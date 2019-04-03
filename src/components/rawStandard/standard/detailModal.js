@@ -66,7 +66,7 @@ class DetailModal extends Component{
                       dataSource={this.props.data}
                       pagination={{hideOnSinglePage:true,pageSize:100}}
                       size='small'
-                      scroll={{y:230}}
+                      scroll={{y:210}}
                       bordered/>
                </div>
                <div style={{marginTop:'21px'}}>

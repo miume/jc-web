@@ -65,11 +65,11 @@ class EditStandard extends Component{
                 var raw=[];
                 for(var i=0;i<res.length;i++){
                        raw.push({
-                           id:res[i].testItem.id,
+                           id:res[i].testItem?res[i].testItem.id:'无',
                            index:i+1,
-                           name:res[i].testItem.name,
+                           name:res[i].testItem?res[i].testItem.name:'无',
                            value:res[i].techniqueRawTestItemStandard.value,
-                           unit:res[i].testItem.unit,
+                           unit:res[i].testItem?res[i].testItem.unit:'无',
                        });
                 }
                 this.setState({

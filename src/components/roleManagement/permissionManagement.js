@@ -20,6 +20,8 @@ class PermissionManagement extends React.Component {
         this.getAllAuth = this.getAllAuth.bind(this);
         this.getAuthByRoleId = this.getAuthByRoleId.bind(this);
         this.getAllMenus = this.getAllMenus.bind(this);
+        this.addOneOperation = this.addOneOperation.bind(this);
+        this.deleteOneOperation = this.deleteOneOperation.bind(this);
     }
     /**显示权限分配弹出框 */
     showModal() {
@@ -98,43 +100,48 @@ class PermissionManagement extends React.Component {
             menuId:parseInt(menuId),
             operationId:parseInt(operationId)
         }
-        //console.log(data)
         //实现新增权限的功能
         if(target.checked === true ){
-            axios({
-                url:`${this.props.url.role.addOneOperation}`,
-                method:'post',
-                params:data,
-                headers:{
-                    'Authorization':this.props.Authorization
-                }
-            }).then(data =>{
-                message.info(data.data.message)
-            })
-            .catch(()=>{
-                message.info('权限新增失败，请联系管理员！')
-            })
+            this.addOneOperation(data)
         }
         //实现删除权限的功能
         else {
-            axios({
-                url:`${this.props.url.role.deleteOneOperation}`,
-                method:'Delete',
-                params:data,
-                headers:{
-                    'Authorization':this.props.Authorization
-                }
-            }).then(data =>{
-                message.info(data.data.message)
-            })
-            .catch(()=>{
-                message.info('权限删除失败，请联系管理员！')
-            })
+            this.deleteOneOperation(data)
         }
-
     }
-    isChecked(){
-        return 1;
+    //实现新增权限的功能
+    addOneOperation(data){
+        axios({
+            url:`${this.props.url.role.addOneOperation}`,
+            method:'post',
+            params:data,
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then(data =>{
+            if(data.data.code === 0) 
+                message.info('权限新增成功！')
+        })
+        .catch(()=>{
+            message.info('权限新增失败，请联系管理员！')
+        })
+    }
+    //实现删除权限的功能
+    deleteOneOperation(data){
+        axios({
+            url:`${this.props.url.role.deleteOneOperation}`,
+            method:'Delete',
+            params:data,
+            headers:{
+                'Authorization':this.props.Authorization
+            }
+        }).then(data =>{
+            if(data.data.code === 0) 
+                message.info('权限删除成功！')
+        })
+        .catch(()=>{
+            message.info('权限删除失败，请联系管理员！')
+        })
     }
     render() {
         return (
@@ -151,7 +158,7 @@ class PermissionManagement extends React.Component {
                     <div className='permissionTable'>
                         <PermissionThead />
                         <PermissinTbody allMenus={this.state.allMenus} roleAuth={this.state.roleAuth}
-                           operations={this.state.operations} />
+                           operations={this.state.operations} change={this.change} />
                     </div>
                 </div>
 

@@ -13,6 +13,7 @@ class ProcessTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            allProductionProcess : []
             // count : this.props.data?this.props.data.length:1,
             // addApplyData:[],                             //存取每行的数据
             // flag : this.props.flag,
@@ -33,12 +34,14 @@ class ProcessTable extends React.Component{
         }
       }).then(data=>{
         const res = data.data.data;
-        const children = res.map(p =>
-            <Option key={p.id} value={p.id}>{p.name}</Option>
-            )
-        this.setState({
-          allProductionProcess : children
-      })
+        if(res){
+            const children = res.map(p =>
+                <Option key={p.id} value={p.id}>{p.name}</Option>
+                )
+            this.setState({
+              allProductionProcess : children
+          })
+        }
     })
     }
     /**获取所有用户 */
