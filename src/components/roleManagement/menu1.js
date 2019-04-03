@@ -21,7 +21,8 @@ class PermissionMenu1 extends React.Component{
             case 2 : 
                 return (
                     <div className='divborder'>
-                        <span className='rightBorder menu2Label'><i className="fa fa-bookmark"></i>&nbsp;&nbsp;&nbsp;{this.props.menu2Name}</span><span></span>
+                        <span className='rightBorder menu2Label'><i className="fa fa-level-up fa-flip-horizontal"></i>&nbsp;&nbsp;&nbsp;{this.props.menu2Name}</span>
+                        <span></span>
                     </div>
                 )
         }

@@ -37,10 +37,10 @@ class Add extends React.Component{
             maxCount:1,
             visible : false,
             data : [],
-            saveData:[],       //用来table新增的真实数据
             flag:this.props.flag,           //用来判断是迭代还是详情
          }
         this.judge = this.judge.bind(this);
+        this.clearData = this.clearData.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -261,7 +261,7 @@ class Add extends React.Component{
                 }
             }
         }
-        // this.handleCancel(); //取消弹出框
+        this.handleCancel(); //取消弹出框
         this.applyOut(status,details,process,urgent);
     }
     /**对数据进行保存操作 不管是编辑、新增还是迭代数据格式按照编辑的数据格式，因为多传参数不影响后台的处理
@@ -321,8 +321,10 @@ class Add extends React.Component{
     sucessProcessing(data){
         if(data.data.code===0){
             message.info('保存成功');
+            this.clearData();
             this.props.fetch();
-            this.getByBatchNumberId(this.props.value,1);
+            if(this.state.flag)
+                this.getByBatchNumberId(this.props.value,1);
         }else{
             message.info(data.data.message);
         }
@@ -419,11 +421,7 @@ class Add extends React.Component{
     deleteRow(value){
         var {count,data} = this.state;
         data = data.filter(e=>parseInt(e.id) !== parseInt(value));
-        // for(var i = 0; i < data.length; i++){
-        //     var e = data[i];
-        //     e.mode = 2;
-        // }
-        data[data.length-1].mode=2;
+        if(data.length > 0) data[data.length-1].mode=2;
         // console.log(data)
         this.setState({
             count:count-1,
@@ -448,6 +446,12 @@ class Add extends React.Component{
         this.setState({
             data:data,
             // saveData:saveData,
+        })
+    }
+    //保存或送审成功之后，清空data
+    clearData(){
+        this.setState({
+            data : []
         })
     }
     render() {

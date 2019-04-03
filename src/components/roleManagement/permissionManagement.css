@@ -30,8 +30,9 @@
     font-size: 15px;
     border: 1px #E4E4E4 solid;
     border-top:none;
+    display: inline-block;
 }
-.divborder span{
+.divborder .rightBorder{
     /* color: #6a6a6a; */
     margin-top: 0px;
     padding:7px;
@@ -39,6 +40,13 @@
     text-align: left;
     display: inline-table;
     border-top: none;
+}
+.displayBlock{
+    display: inline-block;
+    min-width:70px;
+}
+.operationSpan{
+    padding-left:10px;
 }
 /* .divborder :first-child{
     border-right: 1px darkgrey solid;
