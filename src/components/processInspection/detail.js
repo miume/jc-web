@@ -66,6 +66,7 @@ class Detail extends React.Component{
           dataIndex: 'procedureTestRecord.testFrequency' ,
           key: 'procedureTestRecord.testFrequency',
           width: '9%',
+          render : (text) => this.judgeText(text)
         },{
           title: '受检物料',
           dataIndex: 'detail.testMaterialName' ,

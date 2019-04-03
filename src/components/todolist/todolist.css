@@ -350,3 +350,10 @@
     line-height:400px;
     height:400px;
 }
+
+.todoProcessTable td{
+    width:21%;
+}
+.todoProcessTable tr:first{
+    width:24%;
+}

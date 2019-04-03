@@ -2,74 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import {Table} from 'antd';
 
-const columns = [{
-    title: '产品线',
-    dataIndex: 'deliveryFactory.name' ,
-    key: 'deliveryFactory.name',
-    width: '9%',
-    align:'center',
-  },{
-    title: '工序',
-    dataIndex: 'productionProcess.name' ,
-    key: 'productionProcess.name',
-    width: '9%',
-    align:'center',
-  },{
-    title: '取样点',
-    dataIndex: 'procedureTestRecord.samplePointName' ,
-    key: 'procedureTestRecord.samplePointName',
-    width: '9%',
-    align:'center',
-  },{
-    title: '取样人',
-    dataIndex: 'sampler' ,
-    key: 'sampler',
-    width: '11%',
-    align:'center',
-  },{
-    title: '检测人',
-    dataIndex: 'tester' ,
-    key: 'tester',
-    width: '11%',
-    align:'center',
-  },{
-    title: '检测项目',
-    dataIndex: 'testItemString' ,
-    key: 'testItemString',
-    render:(text)=>{
-      if(text){
-        const items = text.split(',');
-        var testItems = '';
-        if(items.length>3){
-            testItems = items[0]+','+items[1]+','+items[2]+'...';
-            return <abbr title={text}>{testItems}</abbr>;
-        }else{
-          testItems = text;
-          return text;
-        }
-      }
-     },
-    width: '9%',
-    align:'center',
-  },{
-    title: '频次',
-    dataIndex: 'procedureTestRecord.testFrequency' ,
-    key: 'procedureTestRecord.testFrequency',
-    width: '9%',
-    align:'center',
-  },{
-    title: '受检物料',
-    dataIndex: 'testMaterialName' ,
-    key: 'testMaterialName',
-    width: '9%',
-    align:'center',
-  },{
-    title: '备注',
-    dataIndex: 'procedureTestRecord.comment' ,
-    key: 'procedureTestRecord.comment',
-    width: '9%',
-    align:'center',
-  }]
 class Procedure extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;
@@ -81,8 +13,78 @@ class Procedure extends React.Component{
             data:[],
         }
         this.getData = this.getData.bind(this);
-        // this.textChange = this.textChange.bind(this);
-        // this.getAllTester = this.getAllTester.bind(this);
+        this.judgeText = this.judgeText.bind(this);
+        this.columns = [{
+            title: '产品线',
+            dataIndex: 'deliveryFactory.name' ,
+            key: 'deliveryFactory.name',
+            width: '9%',
+            align:'center',
+          },{
+            title: '工序',
+            dataIndex: 'productionProcess.name' ,
+            key: 'productionProcess.name',
+            width: '9%',
+            align:'center',
+          },{
+            title: '取样点',
+            dataIndex: 'procedureTestRecord.samplePointName' ,
+            key: 'procedureTestRecord.samplePointName',
+            width: '9%',
+            align:'center',
+            render : (text) => this.judgeText(text)
+          },{
+            title: '取样人',
+            dataIndex: 'sampler' ,
+            key: 'sampler',
+            width: '11%',
+            align:'center',
+          },{
+            title: '检测人',
+            dataIndex: 'tester' ,
+            key: 'tester',
+            width: '11%',
+            align:'center',
+          },{
+            title: '检测项目',
+            dataIndex: 'testItemString' ,
+            key: 'testItemString',
+            render:(text)=>{
+              if(text){
+                const items = text.split(',');
+                var testItems = '';
+                if(items.length>2){
+                    testItems = items[0]+','+items[1]+'...';
+                    return <span className='text-decoration' title={text}>{testItems.length > 10 ? items[0]+'...' : testItems}</span>;
+                }else{
+                  testItems = text;
+                  return text;
+                }
+              }
+             },
+            width: '9%',
+            align:'center',
+          },{
+            title: '频次',
+            dataIndex: 'procedureTestRecord.testFrequency' ,
+            key: 'procedureTestRecord.testFrequency',
+            width: '9%',
+            align:'center',
+          },{
+            title: '受检物料',
+            dataIndex: 'testMaterialName' ,
+            key: 'testMaterialName',
+            width: '9%',
+            align:'center',
+            render : (text) => this.judgeText(text)
+          },{
+            title: '备注',
+            dataIndex: 'procedureTestRecord.comment' ,
+            key: 'procedureTestRecord.comment',
+            width: '9%',
+            align:'center',
+            render : (text) => this.judgeText(text)
+          }]
     }
     /**通过batchNumberId查单条记录 */
     getData(dataId){
@@ -110,11 +112,19 @@ class Procedure extends React.Component{
             }
         })
     }
+     //判断长度
+   judgeText(text){
+    if(text&&text.length>6){
+        return <span className='text-decoration' title={text}>{text.substring(0,6)}</span>
+    }else{
+        return text
+    }
+   }
     render(){
         return (
             <div className='checkModal'>
                 <div className="interDrSpanModalTop">
-                    <table>
+                    <table className='todoProcessTable'>
                         <thead>
                         <tr>
                             <th>批号</th>
@@ -136,7 +146,7 @@ class Procedure extends React.Component{
                     </table>
                 </div>
                 <div className='checkModalDiv'>
-                    <Table rowKey={record=>record.procedureTestRecord.id} columns={columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
+                    <Table rowKey={record=>record.procedureTestRecord.id} columns={this.columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
                 </div>
                 {/* <div className={this.props.flag && this.state.examineData?'':'hide'}>
                     <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />

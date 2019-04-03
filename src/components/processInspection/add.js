@@ -158,14 +158,16 @@ class Add extends React.Component{
             maxCount:length,
         })
     }
-            /**将查到的testItems字符串转换为id数组 */
+    /**将查到的testItems字符串转换为id数组 */
     itemsToIds(items){
         var testItemIds = [];
         const {allTestItem} = this.state;
-        for(var i = 0; i < allTestItem.length; i++){
-            for(var j = 0; j < items.length; j++){
-                if(items[j] === allTestItem[i].name ){
-                    testItemIds.push(allTestItem[i].id)
+        if(allTestItem && allTestItem.length){
+            for(var i = 0; i < allTestItem.length; i++){
+                for(var j = 0; j < items.length; j++){
+                    if(items[j] === allTestItem[i].name ){
+                        testItemIds.push(allTestItem[i].id)
+                    }
                 }
             }
         }
