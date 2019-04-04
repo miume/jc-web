@@ -148,7 +148,7 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
-                closable={false} maskClosable={false} destroyOnClose='true' width={880}
+                closable={false} maskClosable={false} destroyOnClose='true' width={820}
                 footer={[
                     <CancleButton key='back' handleCancel={this.handleOk} flag={1}/>
                   ]}

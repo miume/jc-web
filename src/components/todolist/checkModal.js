@@ -80,6 +80,7 @@ class CheckModal extends React.Component{
             case 2: 
             case 7:
             case 12: return flag?0:'modal-xlg';
+            case 15: return '.modal-600'
             default: return flag?1:'modal-md' ;
         }
     }

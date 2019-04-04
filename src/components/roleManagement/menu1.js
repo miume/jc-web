@@ -25,6 +25,13 @@ class PermissionMenu1 extends React.Component{
                         <span></span>
                     </div>
                 )
+            default : 
+            return (
+                <div className='divborder'>
+                    <span className='rightBorder menu2Label'><i className="fa fa-circle"></i>&nbsp;&nbsp;&nbsp;{this.props.menu2Name}</span>
+                    <span></span>
+                </div>
+            )
         }
     }
 }
