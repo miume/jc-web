@@ -1,13 +1,10 @@
 import React from 'react';
-import { Button, Modal,Form, Input,message,Icon,DatePicker, Col, Row } from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import axios from 'axios';
-import CancleButton from "../BlockQuote/cancleButton";
 import "../equipmentGuidance/equiptment.css";
 import Preview from '../equipmentGuidance/preview'
 
 class Detail extends React.Component{
-    url
     constructor(props){
         super(props)
         this.state = {
@@ -19,8 +16,6 @@ class Detail extends React.Component{
             previewImage: '',
         };
         this.fetch = this.fetch.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        // this.handleDetail = this.handleDetail.bind(this);
         this.previewCancel = this.previewCancel.bind(this);
         this.previewPreview = this.previewPreview.bind(this);
     }
@@ -31,7 +26,7 @@ class Detail extends React.Component{
 
     fetch = (id) => {
         axios({
-            url:`${this.url.instructor.instructorAll}/`+ parseInt(id),
+            url:`${this.props.url.instructor.instructorAll}/`+ parseInt(id),
             method:"GET",
         }).then((data) => {
             const res = data.data.data;
@@ -45,8 +40,7 @@ class Detail extends React.Component{
         })
     }
 
-    previewPreview = (e,src) =>{
-        // console.log(e,src)
+    previewPreview = (e) =>{
         this.setState({
             previewImage: e,
             previewVisible: true,
@@ -55,49 +49,24 @@ class Detail extends React.Component{
     previewCancel = () =>{
         this.setState({ previewVisible: false })
     }
-
-    /**处理一条详情记录 */
-    // handleDetail() {
-    //     this.fetch(this.props.batchNumberId)
-    //     this.setState({
-    //       visible: true
-    //     });
-    // }
-    handleCancel() {
-        this.setState({
-        visible: false
-        });
-    }
     render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
-            // <span>
-            //     <Modal title='详情' visible={this.state.visible}
-            //         width="600px"
-            //         closable={false} centered={true}
-            //         maskClosable={false}
-            //         footer={[
-            //             <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
-            //         ]}
-            //     >
-                    <div>
-                        <span className='Eqname'>{this.state.name}</span>
-                        <span className='Eqtime'>{this.state.time}</span>
-                        <WhiteSpace />
-                        <div id="Eqedit" style={{height:'360px'}}>
-                        {this.state.data.map(e=>
-                             <div key={e.id}>
-                                 <span className='Eqcontent'>{e.checkContent}</span>
-                                 <span className='Eqstandard'>{e.checkStandard}</span>
-                                 <span className='Eqfrequency'>{e.checkFrequency}</span>
-                                 <img style={{cursor:'pointer'}} onClick={this.previewPreview.bind(this,`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`)} alt="图片未上传" className='Eqpicture' src={`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`} />
-                                 <Preview previewVisible={this.state.previewVisible} previewImage={this.state.previewImage} previewCancel={this.previewCancel}/>
-                             </div>
-                         )}
+            <div>
+                <span className='Eqname'>{this.state.name}</span>
+                <span className='Eqtime'>{this.state.time}</span>
+                <WhiteSpace />
+                <div id="Eqedit" style={{height:'360px'}}>
+                {this.state.data.map(e=>
+                        <div key={e.id}>
+                            <span className='Eqcontent'>{e.checkContent}</span>
+                            <span className='Eqstandard'>{e.checkStandard}</span>
+                            <span className='Eqfrequency'>{e.checkFrequency}</span>
+                            <img style={{cursor:'pointer'}} onClick={this.previewPreview.bind(this,`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`)} alt="图片未上传" className='Eqpicture' src={`http://2p277534k9.iok.la:58718/jc/common/equipmentInstructor/pic/${e.checkPointPicName}`} />
+                            <Preview previewVisible={this.state.previewVisible} previewImage={this.state.previewImage} previewCancel={this.previewCancel}/>
                         </div>
-                    </div>
-            //     </Modal>
-            // </span>
+                    )}
+                </div>
+            </div>
         )
     }
 }

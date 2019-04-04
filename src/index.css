@@ -165,6 +165,9 @@ button span {
 .ant-modal.modal-md {
     width: 520px !important;
 }
+.ant-modal.modal-600 {
+    width: 600px !important;
+}
 .ant-modal.modal-lg {
     width: 800px !important;
 }
