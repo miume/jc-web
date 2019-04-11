@@ -4,7 +4,7 @@ import { Divider,message, } from 'antd';
 import './productStandard.css';
 import Product from './product';
 import SelectModal from './model';
-import home from '../fns';
+import home from '../commom/fns';
 import SearchCell from '../BlockQuote/search';
 import Blockquote from '../BlockQuote/blockquote';
 import SelectProductStandard from './selectProductStandard';

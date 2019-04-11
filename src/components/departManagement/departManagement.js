@@ -4,7 +4,7 @@ import DepartTable from './departTable';
 import axios from "axios";
 import AddModal from "./addModal";
 import {message} from "antd";
-import home from '../fns';
+import home from '../commom/fns';
 import SearchCell from '../BlockQuote/search';
 import DeleteByIds from "../BlockQuote/deleteByIds";
 class Depart extends React.Component {

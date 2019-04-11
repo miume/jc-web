@@ -1,6 +1,6 @@
 import React from 'react';
 import Todo from './todo';
-import home from '../fns';
+import home from '../commom/fns';
 import SearchCell from '../BlockQuote/search';
 // const data = [];
 // for(var i = 1; i < 4; i++){

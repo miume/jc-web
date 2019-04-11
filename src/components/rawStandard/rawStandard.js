@@ -6,7 +6,7 @@ import RawMaterial from './rawMaterial/rawMaterial';
 import Manufacturer from './factory/factory';
 import Standard  from './standard/standard';
 import SetStandard from './setStandard/setStandard';
-import home from '../fns';
+import home from '../commom/fns';
 class RawStandard extends Component{
    
     constructor(props){

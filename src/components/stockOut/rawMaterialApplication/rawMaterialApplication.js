@@ -1,6 +1,6 @@
 import React from 'react';
 import {Table} from 'antd';
-import home from '../../fns';
+import home from '../../commom/fns';
 import SearchCell from '../../BlockQuote/search';
 import './rawAdd.css';
 import ApplyStockOut from './applyStockOut';

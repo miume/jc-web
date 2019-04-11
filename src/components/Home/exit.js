@@ -8,7 +8,6 @@ import TodoPart from './todopart';
 class Exit extends Component {
     componentWillMount(){
         this.fetch();
-        // console.log(this.getToDoCount());
     }
     constructor(props) {
         super(props);
@@ -19,7 +18,7 @@ class Exit extends Component {
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
-        this.getToDoCount = this.getToDoCount.bind(this);
+        this.judgeCurrent = this.judgeCurrent.bind(this);
         this.count = 0;
         this.state = {
             visible:false,
@@ -110,13 +109,25 @@ class Exit extends Component {
         },100)
     }
     gotodolist(){
-        this.props.history.push({pathname:'/todoList'})
         this.setState({
             visible:false
         })
+        this.judgeCurrent()
+        this.props.history.push({pathname:'/todoList'})
     }
-    getToDoCount(){
-        return this.state.count;
+    /**用来判断 若直接从top 进入待办事项时，怎么正确渲染待办事项页面 */
+    judgeCurrent(){
+        const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path==='/todoList')[0]:[];
+        const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:[];
+        const current = {
+            openKeys:menus.parent,
+            menuName:menus.menuName,
+            menuParent:parentName,
+            path:menus.path
+        }
+        localStorage.setItem('selectedKeys',menus.path)
+        localStorage.setItem('defaultOpenKeys',[menus.parent])
+        localStorage.setItem('current',JSON.stringify(current));
     }
     render() {
         var height1 = document.body.clientHeight - 150;

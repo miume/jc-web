@@ -5,7 +5,7 @@ import Pack from './pack';
 import Check from './check';
 import Release from './release';
 import './purchaseCheckReport.css';
-import home from "../fns";
+import home from "../commom/fns";
 import OperationTable from "../operationManagement/operationTable";
 
 

@@ -3,7 +3,7 @@ import {Table,Input,message,Popconfirm,Form,Divider,InputNumber,Modal } from 'an
 import '../Home/page.css';
 import axios from 'axios';
 import RoleModal from './roleModal';
-import home from '../fns';
+import home from '../commom/fns';
 import BlockQuote from '../BlockQuote/blockquote';
 import UserManagement from './userManagement';
 import PermissionManagement from './permissionManagement';

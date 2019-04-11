@@ -3,7 +3,7 @@ import SearchCell from "../BlockQuote/search";
 import BlockQuote from "../BlockQuote/blockquote";
 import UnqualifiedTrackTable from './unqualifiedTrackTable';
 import axios from "axios";
-import home from "../fns"
+import home from "../commom/fns"
 import OperationTable from "../operationManagement/operationTable";
 
 class UnqualifiedTrack extends React.Component{

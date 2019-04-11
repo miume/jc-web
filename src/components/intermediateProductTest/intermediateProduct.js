@@ -3,7 +3,7 @@ import BlockQuote from '../BlockQuote/blockquote';
 import InterTable from '../intermediateProductTest/intermediateTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
-import home from "../fns";
+import home from "../commom/fns";
 import OperationTable from "../operationManagement/operationTable";
 
 

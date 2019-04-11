@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './rawTestReport.css';
 import Detail from './detail';
-import home from '../fns';
+import home from '../commom/fns';
 import { Table, Divider} from 'antd';
 import SearchCell from '../BlockQuote/search';
 import RecordChecking from './recordChecking';

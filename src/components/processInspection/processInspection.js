@@ -6,7 +6,7 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
 import './editor.css';
 import SearchCell from '../BlockQuote/search';
-import home from '../fns'
+import home from '../commom/fns'
 // const data = [];
 // for(var i = 1; i<=15;i++){
 //     data.push({

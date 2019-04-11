@@ -4,7 +4,7 @@ import SearchCell from '../../BlockQuote/search';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import Detail from '../detail';
 import axios from 'axios';
-import home from '../../fns';
+import home from '../../commom/fns';
 // const data = [];
 // for(var i = 1; i<=20; i++){
 //     data.push({
