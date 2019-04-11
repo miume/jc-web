@@ -155,21 +155,28 @@ class User extends React.Component{
         dataIndex:'username',
         key:'username',
         editable:1,//?
-        width: '17%',
+        width: '13%',
         align:'center',
     },{
       title:'用户名',
       dataIndex:'name',
       key:'name',
       editable:1,//?
-      width: '17%',
+      width: '13%',
       align:'center'
   },{
+    title:'用户ID卡号',
+    dataIndex:'idCardNumber',
+    key:'idCardNumber',
+    editable:1,//?
+    width: '13%',
+    align:'center'
+},{
          title:'所属部门',
          dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
          key:'departmentId',
          editable:1,
-         width: '17%',
+         width: '14%',
          align:'center',
          render:(text,record) => {
           //console.log(text);//text是dataIndex对应的字段值
@@ -182,7 +189,7 @@ class User extends React.Component{
          dataIndex:'phone',
          key:'phone',
          editable:1,
-        width: '16.5%',
+        width: '14%',
          align:'center',
      },{
       title: '操作',
@@ -256,6 +263,7 @@ class User extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
+        console.log(res);
         if(res&&res.list){
           this.pagination.total=res.total?res.total:0;
           this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
