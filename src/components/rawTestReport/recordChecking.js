@@ -115,8 +115,6 @@ class RecordChecking extends React.Component{
                             })
                     }   
                 }
-                // console.log(details)
-                //console.log(`%c halo2 end`, 'color:lightseagreen;')
                 this.setState({
                     detail:details,
                     detailData:details,
@@ -133,12 +131,7 @@ class RecordChecking extends React.Component{
         this.setState({
             visible:false
         })
-        this.getEditorData();
-        // const docu = document.getElementsByClassName('stock-out-input');
-        // for(var i = 0; i < docu.length; i++){
-        //     docu[i].value='';
-        // }
-        
+        this.getEditorData();        
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){
@@ -217,8 +210,7 @@ class RecordChecking extends React.Component{
         } 
         if(flag1){
             this.applyOut(status);
-        }
-        
+        } 
     }
     /**保存 */
     applyOut(status){
@@ -264,7 +256,6 @@ class RecordChecking extends React.Component{
             visible:false,
             visible1:false
         })
-        // this.props.cancle();
     }
     /**送审 */
     applyReview(dataId){

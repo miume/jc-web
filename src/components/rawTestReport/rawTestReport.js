@@ -165,8 +165,8 @@ class RawTestReport extends React.Component{
                 const editorFlag = home.judgeOperation(this.operation,'UPDATE')
                 return (
                     <span>
-                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status} flag={editorFlag}/>
-                        <RecordChecking value={text} url={this.url} status={record.status} tableRecord={this.tableRecord}/>
+                        <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
+                        <RecordChecking value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
                         <Divider type='vertical' />
                         <Loss statement={record.exceptionComment} name='异常备注' />
                         <Divider type='vertical' />
@@ -303,23 +303,18 @@ class RawTestReport extends React.Component{
             }, 1000)
             
        })
-    //    .then((response) => {
-    //        console.log(response);
-    //    })
    }
     render(){
-        const current = JSON.parse(localStorage.getItem('current'));
+        const current = JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url')); 
         this.status = JSON.parse(localStorage.getItem('status'));
-        /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-        
+        /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations;
         return (
             <div>
-                <BlockQuote name='原材料录检' menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    {/* <Button type="primary" size="small" style={{marginRight:'15px'}}  onClick={this.handleAdd} >新增</Button> */}
-                    {/* <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds}/> */}
                     <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} 
                     fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                     <div className='clear'></div>
