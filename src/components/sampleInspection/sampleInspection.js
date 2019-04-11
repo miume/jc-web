@@ -13,8 +13,6 @@ import Loss from '../BlockQuote/lossStatement'
 import Reason from '../BlockQuote/lossStatement'
 class SampleInspection extends React.Component{
     url
-    server
-    Authorization
     operation
     componentDidMount() {
         this.fetch({sortField: 'id',
@@ -345,10 +343,10 @@ class SampleInspection extends React.Component{
     render(){
         const { selectedRowKeys } = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current'));
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem("Authorization");
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -358,7 +356,7 @@ class SampleInspection extends React.Component{
         };
         return(
             <div>
-                <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>
                     <DeleteByIds

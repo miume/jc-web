@@ -3,8 +3,6 @@ import {Divider, Table} from 'antd';
 import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
 import './unqualifiedTrack.css';
-
-
 class UnqualifiedTrackTable extends React.Component {
     constructor(props){
         super(props);

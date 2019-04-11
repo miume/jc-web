@@ -45,13 +45,15 @@ class InterProduct extends React.Component {
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
         this.status = JSON.parse(localStorage.getItem('status')) ;
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations
         return(
             <div>
-                <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
                         name='请输入送检工厂名称'

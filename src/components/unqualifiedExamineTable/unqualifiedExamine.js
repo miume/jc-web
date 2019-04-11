@@ -4,10 +4,6 @@ import UnqualifiedTable from "./unqualifiedTable";
 import BlockQuote from "../BlockQuote/blockquote";
 import axios from "axios";
 import home from "../commom/fns";
-import OperationTable from "../operationManagement/operationTable";
-
-
-
 class UnqualifiedExamine extends React.Component{
     url;
     operation;
@@ -44,14 +40,15 @@ class UnqualifiedExamine extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
     }
     render() {
-        const current = JSON.parse(localStorage.getItem('current')) ;
         const status = JSON.parse(localStorage.getItem('status')) ;
         this.url = JSON.parse(localStorage.getItem('url'));
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations
         return(
             <div>
-                <BlockQuote name="不合格审评表" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
                         name='请输入创建人名称'
