@@ -134,7 +134,7 @@ class ProductRedList extends Component{
                return(//onConfirm是点击确认时的事件回调
                    <span>
                         <Edit record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren} flag={this.judgeOperation(this.operation,'UPDATE')}/>
-                        <Divider type='vertical'/>
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type='vertical' />:''}
                        <span  className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                        {editFlag ? (
                          <span >
@@ -146,7 +146,7 @@ class ProductRedList extends Component{
                          <span className='notClick' >删除</span>
                        )}
                      </span>
-                     <Divider type='vertical'/>
+                     {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
                     <Note record={record}/>
                    </span>
                );

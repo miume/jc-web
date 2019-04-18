@@ -219,7 +219,7 @@ class User extends React.Component{
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
-              <Divider type="vertical" />
+              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
              <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}> <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
@@ -263,7 +263,7 @@ class User extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
-        console.log(res);
+       // console.log(res);
         if(res&&res.list){
           this.pagination.total=res.total?res.total:0;
           this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
@@ -287,7 +287,7 @@ class User extends React.Component{
       handleOk(){//处理新增一条记录
        const value=this.formRef.getItemsValue();//获取新增的表单内容
         //value.splice(4,1);
-       if(!value['username'] ||!value['name'] ||!value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
+       if(!value['username'] ||!value['name'] ||!value['idCardNumber']||!value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
                message.info('信息填写不完整！');
                return
        }
