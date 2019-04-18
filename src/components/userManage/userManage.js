@@ -142,7 +142,8 @@ class User extends React.Component{
           //console.log('Current: ', current);
         }
       };
-      this.columns=[{//表头
+      // console.log(this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE'))
+      this.columns=!this.judgeOperation(this.operation,'UPDATE')||!this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -227,7 +228,56 @@ class User extends React.Component{
             </span>
           );
         }
-     },];
+     },]:[{//表头
+      title:'序号',
+      dataIndex:'index',//dataIndex值与字段值要匹配
+      key:'id',
+     //sorter:true,//需要服务端排序
+     sorter:(a, b) => a.id-b.id,
+      width: '12%',
+      align:'center',
+   },{
+      title:'登录名',
+      dataIndex:'username',
+      key:'username',
+      editable:1,//?
+      width: '15%',
+      align:'center',
+  },{
+    title:'用户名',
+    dataIndex:'name',
+    key:'name',
+    editable:1,//?
+    width: '16%',
+    align:'center'
+},{
+  title:'用户ID卡号',
+  dataIndex:'idCardNumber',
+  key:'idCardNumber',
+  editable:1,//?
+  width: '18%',
+  align:'center'
+},{
+       title:'所属部门',
+       dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
+       key:'departmentId',
+       editable:1,
+       width: '16%',
+       align:'center',
+       render:(text,record) => {
+        //console.log(text);//text是dataIndex对应的字段值
+        // console.log(record);//record代表的是后端传过来的一条记录的值data
+         return `${record.departmentName}`  //渲染此条记录的部门名称
+
+        }
+   },{
+       title:'手机号',
+       dataIndex:'phone',
+       key:'phone',
+       editable:1,
+      width: '17%',
+       align:'center',
+   }];
     }
     //页面切换调用的函数
     handleTableChange=(pagination)=>{
