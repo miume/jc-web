@@ -457,7 +457,7 @@ class Add extends React.Component{
     render() {
         const {flag} = this.state;
         return (
-            <span>
+            <span className={this.props.addFlag?'':'hide'}>
                 {/* <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' /> */}
                 {this.judge(this.props.flag)}
                 <Modal title={this.judge(this.props.flag,1)} visible={this.state.visible} closable={false} centered={true}

@@ -82,7 +82,6 @@ class Menu1List extends React.Component {
   }
 
   render() {
-    //console.log(menu)
     // const menu = [
     //   {
     //       id: 1,
@@ -117,13 +116,13 @@ class Menu1List extends React.Component {
     // ];
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
-      <div>
+      <div className={localStorage.getItem('menuList')?'':'hide'}>
         <Menu mode="inline" theme="dark" 
               selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]} 
               openKeys={localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[]}  
               onOpenChange={this.onOpenChange} style={{width:130}}>
             {
-              localStorage.getItem('menuList') ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
+              localStorage.getItem('menuList') && JSON.parse(localStorage.getItem('menuList')).menuList ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>
                 {
                     v.menuList.map(v1 => 

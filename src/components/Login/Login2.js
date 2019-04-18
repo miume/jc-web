@@ -57,7 +57,8 @@ class Login extends React.Component {
       /**如果登陆成功  则屏蔽enter键 */
       if(res.data){
           window.onkeydown = undefined
-          this.dataProcessing(res.data)
+          if(res.data && res.data.menuList)
+              this.dataProcessing(res.data)
       }
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('authorization',res.headers.authorization);

@@ -317,7 +317,7 @@ class ProcessInspection extends React.Component{
             disabled:record.commonBatchNumber.status!==-1&&record.commonBatchNumber.status!==3
           })
         };
-        const addFlag = home.judgeOperation(this.operation,'ADD')
+        const addFlag = home.judgeOperation(this.operation,'SAVE')
         return (
             <div>
                 <BlockQuote  name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
