@@ -107,7 +107,7 @@ class DeliveryFactory extends React.Component{
           //console.log('Current: ', current);
         }
       };
-      this.columns=[{//表头
+      this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -121,7 +121,8 @@ class DeliveryFactory extends React.Component{
         editable:1,//?显示这个数据格是否可编辑
         width: '33%',
         align:'center',
-    },{
+    },
+    {
       title: '操作',
       key:'operation',
       width: '33%',
@@ -148,7 +149,7 @@ class DeliveryFactory extends React.Component{
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
-              <Divider type="vertical" />
+              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
               <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}><Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
@@ -156,7 +157,21 @@ class DeliveryFactory extends React.Component{
             </span>
           );
         }
-     },];
+     },]:[{//表头
+      title:'序号',
+      dataIndex:'index',//dataIndex值与字段值要匹配
+      key:'id',
+      sorter:(a, b) => a.id-b.id,
+      width: '46%',
+      align:'center',
+   },{
+      title:'送样工厂名称',
+      dataIndex:'name',
+      key:'name',
+      editable:1,//?显示这个数据格是否可编辑
+      width: '46%',
+      align:'center',
+  }];
     }
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{

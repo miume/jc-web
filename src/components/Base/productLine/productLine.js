@@ -109,7 +109,7 @@ class ProductLine extends React.Component{
           //console.log('Current: ', current);
         }
       };
-      this.columns=[{//表头
+      this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -152,7 +152,7 @@ class ProductLine extends React.Component{
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
-              <Divider type="vertical" />
+              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
               <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                 <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
@@ -161,7 +161,22 @@ class ProductLine extends React.Component{
             </span>
         );
         }
-     },];
+     },]:[{//表头
+      title:'序号',
+      dataIndex:'index',//dataIndex值与字段值要匹配
+      key:'id',
+     //sorter:true,//需要服务端排序
+     sorter:(a, b) => a.id-b.id,
+      width: '46%',
+      align:'center',
+   },{
+      title:'产品线名称',
+      dataIndex:'name',
+      key:'name',
+      editable:1,//?
+      width: '46%',
+      align:'center',
+  }];
     }
     
       /**返回基础数据页面 */
