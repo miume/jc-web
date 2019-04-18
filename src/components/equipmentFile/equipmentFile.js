@@ -106,9 +106,9 @@ class EquipmentArchive extends Component{//设备档案
                  return(
                      <span>
                         <CheckManual record={record} url={this.url}/>
-                        <Divider type='vertical'/>
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type='vertical' />:''}
                         <Edit  url={this.url} record={record} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} fetch={this.fetch} operation={this.operation} judgeOperation={this.judgeOperation}/>
-                        <Divider type='vertical'/>
+                        {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
                         <Delete record={record} url={this.url} fetch={this.fetch} pagination={this.pagination} operation={this.operation} judgeOperation={this.judgeOperation}/>
                     </span>
                  )
@@ -221,7 +221,7 @@ class EquipmentArchive extends Component{//设备档案
            data:ids,
            type:'json'
        }).then((data)=>{
-           console.log(data)
+          // console.log(data)
        }).catch();
     }
     deleteCancel(){
