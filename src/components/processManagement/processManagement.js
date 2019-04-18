@@ -88,9 +88,9 @@ class Management extends React.Component{
                 return (
                     <span>
                         <Detail value={record} />
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'DELETE')&&this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
                         <Editor value={text} status={record.commonBatchNumber.status} pagination={this.pagination} handle={this.handleTableChange} flag={this.judgeOperation(this.operation,'UPDATE')}/>
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
                         {record.commonBatchNumber.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
                         </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}

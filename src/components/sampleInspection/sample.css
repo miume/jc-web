@@ -2,3 +2,10 @@
     color: #CCCCCC;
     cursor: not-allowed;
 }
+.check-box{
+    height: 150px;
+    overflow-y:scroll;
+}
+.check-box::-webkit-scrollbar{
+    display: none;
+}
