@@ -91,8 +91,13 @@ class SampleInspection extends React.Component{
             align:'center',
             width: '11%',
             render:(text)=>{
+                if(text !=""){
                     var value = text.split('-')
                     return <div className='text-decoration' title={text}>{value[0]+"..."}</div>
+                }else {
+                    return "无"
+                }
+
             }
         },{
             title: '类型',
@@ -133,17 +138,17 @@ class SampleInspection extends React.Component{
                 return(
                     <span>
                         {record.sampleDeliveringRecord.acceptStatus===-1?<Edit handleTableChange={this.handleTableChange} flag={this.judgeOperation(this.operation,'UPDATE')} pagination={this.pagination} fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className={this.judgeOperation(this.operation,'UPDATE')?'notClick':'hide'}>编辑</span>}
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
                         {record.sampleDeliveringRecord.acceptStatus===-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'}>删除</span>
                         </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'DELETE')?<Divider type="vertical" />:null}
                         {record.sampleDeliveringRecord.acceptStatus===1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
                           <span className={this.judgeOperation(this.operation,'AUDIT')?'blue':'hide'}>接受</span>
                         </Popconfirm>:<span className={this.judgeOperation(this.operation,'AUDIT')?'notClick':'hide'}>接受</span>}
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'AUDIT')?<Divider type="vertical" />:null}
                         {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} flag={this.judgeOperation(this.operation,'AUDIT')} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className={this.judgeOperation(this.operation,'AUDIT')?'notClick':'hide'}>拒绝</span>}
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'AUDIT')?<Divider type="vertical" />:null}
                         <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                         <Divider type="vertical" />
                         <Reason statement={record.sampleDeliveringRecord.handleComment} name='拒绝原因'/>

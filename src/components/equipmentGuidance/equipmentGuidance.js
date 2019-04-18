@@ -68,9 +68,9 @@ class Equipment extends React.Component{
                 return (
                     <span>
                         <Detail batchNumberId={record.batchNumberId}/>
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?<Divider type="vertical" />:null}
                         <Edit value={record.id} status={record.status} batchNumberId={record.batchNumberId} fetch={this.fetch} flag={this.judgeOperation(this.operation,'UPDATE')}/>
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
                         {record.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.batchNumberId)} okText="确定" cancelText="取消" >
                             <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
                         </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}

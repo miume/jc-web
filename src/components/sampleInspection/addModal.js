@@ -449,7 +449,7 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                            <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
+                            <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
                             <Checkbox.Group style={{ width: '100%' }} value={this.state.testItems}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
@@ -461,12 +461,12 @@ const CollectionCreateForm = Form.create()(
                         }
                         {
                             this.state.visible1===3?
-                        <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} >
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+                        <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
+                            <Checkbox.Group style={{ width: '100%' }}  onChange={onChange}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
                             }
-                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} >
+                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
                             <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
