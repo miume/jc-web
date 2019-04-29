@@ -1,5 +1,5 @@
 import React from 'react';
-
+import home from '../commom/fns'
 import {Table, Divider} from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
@@ -58,8 +58,8 @@ class DrSpanModal extends React.Component {
                         <tbody>
                         <tr>
                             <td><span title={this.props.data.topData.serialNumber} className="text-decoration">{arr[0]+'-'+arr[1]+'...'}</span></td>
-                            <td>{this.props.data.topData.materialName}</td>
-                            <td>{this.props.data.topData.sampleDeliveringDate}</td>
+                            <td>{home.judgeText(this.props.data.topData.materialName,8)}</td>
+                            <td>{home.judgeText(this.props.data.topData.sampleDeliveringDate,10)}</td>
                         </tr>
                         </tbody>
                     </table>

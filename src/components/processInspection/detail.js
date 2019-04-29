@@ -94,7 +94,7 @@ class Detail extends React.Component{
         })
     }
      //判断长度
-   judgeText(text){
+   judgeText(text,max){
     if(text&&text.length>8){
         return <span className='text-decoration' title={text}>{text.substring(0,8)}</span>
     }else{

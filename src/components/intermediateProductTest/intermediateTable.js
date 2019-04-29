@@ -65,7 +65,7 @@ class InterTable extends React.Component{
             const items = text.split(',');
             var testItems = '';
             if(items.length>5){
-                testItems = items[0]+','+items[1]+','+items[2];
+                testItems = items[0]+','+items[1]+','+items[2]+'...';
                 return <span title={text} className='text-decoration'>{testItems}</span>;
             }else{
                 testItems = text;

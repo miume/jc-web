@@ -4,8 +4,6 @@ import InterTable from '../intermediateProductTest/intermediateTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
 import home from "../commom/fns";
-import OperationTable from "../operationManagement/operationTable";
-
 
 class InterProduct extends React.Component {
     url;

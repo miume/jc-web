@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import home from '../commom/fns'
 import {Button, Input, Modal, Table, message} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
@@ -150,8 +151,8 @@ class CheckSpan extends React.Component {
                                 <tbody>
                                     <tr>
                                         <td><span title={this.state.detailData.topData.serialNumber} className="text-decoration">{arr[0]+'-'+arr[1]+'...'}</span></td>
-                                        <td>{this.state.detailData.topData.materialName}</td>
-                                        <td>{this.state.detailData.topData.sampleDeliveringDate}</td>
+                                        <td>{home.judgeText(this.state.detailData.topData.materialName,8)}</td>
+                                        <td>{home.judgeText(this.state.detailData.topData.sampleDeliveringDate,10)}</td>
                                     </tr>
                                 </tbody>
                             </table>
