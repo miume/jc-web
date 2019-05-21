@@ -3,7 +3,7 @@ import React from "react";
 const home = {
     /**用来判断该菜单有哪些操作权限 */
    judgeOperation(operation,operationCode){
-       var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+       let flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
        return flag.length>0?true:false
    },
     /**字段过长处理
