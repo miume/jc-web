@@ -48,12 +48,12 @@ class Exit extends Component {
     }
     /**点击弹出待办事项 */
     drawerEvent(){
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth()+1;
-        var day = date.getDate();
-        var week = date.getDay();
-        var time = year+'-'+month+'-'+day;
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth()+1;
+        let day = date.getDate();
+        let week = date.getDay();
+        let time = year+'-'+month+'-'+day;
         switch(week){
             case 0: week='星期天';break;
             case 1: week='星期一';break;
@@ -85,7 +85,7 @@ class Exit extends Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            var count = res? res.length : 0;
+            let count = res? res.length : 0;
             this.setState({
                 data:res,
                 count:count
@@ -99,9 +99,9 @@ class Exit extends Component {
     // }
     logout() {
         /**登出时，使登陆背景动图显示 */
-        document.getElementById('defaultCanvas0').style.visibility='visible'; 
-        var showFrame = setInterval(function() {
-            var frame = window.frame;
+        document.getElementById('defaultCanvas0').style.visibility='visible';
+        let showFrame = setInterval(function() {
+            let frame = window.frame;
             if(frame !== undefined && frame !== null) {
                 frame(20);   //恢复帧
                 clearInterval(showFrame);
@@ -130,9 +130,9 @@ class Exit extends Component {
         localStorage.setItem('current',JSON.stringify(current));
     }
     render() {
-        var height1 = document.body.clientHeight - 150;
+        let height1 = document.body.clientHeight - 150;
         return (
-            <div id='exit'>
+            <div className="fr">
                 {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
                 {/* <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} /> */}
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
