@@ -10,10 +10,7 @@ class InterProduct extends React.Component {
     status;
     operation;
     componentDidMount() {
-        this.fetch({
-            pageSize:10,
-            pageNumber:1,
-        });
+        this.fetch();
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -114,6 +111,14 @@ class InterProduct extends React.Component {
                 searchContent:''
             })
         };
+        if(params === undefined){
+            params = {
+                pageSize:10,
+                pageNumber:1,
+                sortField:'sample_delivering_date',
+                sortType: 'desc',
+            }
+        }
         axios.get(`${this.url.intermediateProduct}/pages`,{
             headers:{
                 'Authorization':this.url.Authorization
@@ -123,7 +128,7 @@ class InterProduct extends React.Component {
             const res = data.data.data?data.data.data:[];
             if(res&&res.list)
             {
-                for(var i = 1; i <= res.list.length;i++){
+                for(let i = 1; i <= res.list.length;i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
                 }
                 const {pagination} = this.state;
