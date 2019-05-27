@@ -65,7 +65,7 @@ class EditableCell extends React.Component {
         );
     }
 }
-
+const current=JSON.parse(localStorage.getItem('current'));
 class TestItem extends React.Component{
   url;
   operation;
@@ -111,6 +111,9 @@ class TestItem extends React.Component{
           //console.log('Current: ', current);
         }
       };
+       //获取该菜单所有权限
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
+    
       this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
@@ -123,9 +126,16 @@ class TestItem extends React.Component{
         dataIndex:'name',
         key:'name',
         editable:1,//?
-        width: '33%',
+        width: '26%',
         align:'center',
     },{
+      title:'单位',
+      dataIndex:'unit',
+      key:'unit',
+      editable:1,//?
+      width: '26%',
+      align:'center',
+  },{
       title: '操作',
       //dataIndex: 'type',
       key:'operation',
@@ -167,16 +177,23 @@ class TestItem extends React.Component{
       dataIndex:'index',//dataIndex值与字段值要匹配
       key:'id',
       sorter:(a, b) => a.id-b.id,
-      width: '46%',
+      width: '30%',
       align:'center',
    },{
       title:'检测项目名称',
       dataIndex:'name',
       key:'name',
       editable:1,//?
-      width: '46%',
+      width: '30%',
       align:'center',
-  }];
+  },{
+    title:'单位',
+    dataIndex:'unit',
+    key:'unit',
+    editable:1,//?
+    width: '30%',
+    align:'center',
+},];
     }
       /**返回基础数据页面 */
       returnBaseInfo(){
@@ -203,6 +220,7 @@ class TestItem extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
+        console.log(res)
         this.pagination.total=res?res.total:0;
         this.pagination.current=res.pageNum;
         if(res&&res.list){
@@ -384,15 +402,15 @@ class TestItem extends React.Component{
            });
       }
       judgeOperation(operation,operationCode){
+        //console.log(operation)
+        if(operation===null) return false
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        //console.log(flag)
         return flag.length>0?true:false
     }
    render(){
      /** 通过localStorage可查到http://218.77.105.241:40080*/
         this.url=JSON.parse(localStorage.getItem('url'));
-       const current=JSON.parse(localStorage.getItem('current'));
-       //获取该菜单所有权限
-       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
        const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
