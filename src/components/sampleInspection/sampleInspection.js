@@ -77,19 +77,34 @@ class SampleInspection extends React.Component{
             dataIndex: 'deliverer.name',
             key: 'deliverer.name',
             align:'center',
-            width: '11%',
+            width: '8%',
         },{
             title: '送检工厂',
             dataIndex: 'deliveryFactory.name',
             key: 'deliveryFactory.name',
             align:'center',
-            width: '11%',
+            width: '8%',
         },{
             title: '编号',
             dataIndex: 'serialNumberName',
             key: 'serialNumberName',
             align:'center',
-            width: '11%',
+            width: '9%',
+            render:(text)=>{
+                if(text !=""){
+                    var value = text.split('-')
+                    return <div className='text-decoration' title={text}>{value[0]+"..."}</div>
+                }else {
+                    return "无"
+                }
+
+            }
+        },{
+            title: '批号',
+            dataIndex: 'sampleDeliveringRecord.tempBatchNumber',
+            key: 'sampleDeliveringRecord.tempBatchNumber',
+            align:'center',
+            width: '8%',
             render:(text)=>{
                 if(text !=""){
                     var value = text.split('-')
