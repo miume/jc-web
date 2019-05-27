@@ -63,7 +63,7 @@ class EditableCell extends React.Component {
         );
     }
 }
-
+const current=JSON.parse(localStorage.getItem('current'));
 class ProductLine extends React.Component{
   url;
   operation;
@@ -109,6 +109,8 @@ class ProductLine extends React.Component{
           //console.log('Current: ', current);
         }
       };
+       //获取该菜单所有权限
+       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
       this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
@@ -398,7 +400,7 @@ class ProductLine extends React.Component{
       }
       judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
-        console.log(flag);
+        //console.log(flag);
         return flag.length>0?true:false
     }
    render(){
