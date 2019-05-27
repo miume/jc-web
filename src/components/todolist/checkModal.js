@@ -12,6 +12,7 @@ import CancleButton from '../BlockQuote/cancleButton';
 import CheckProductStandard from './checkProductStandard';
 import CheckUnqualifiedTrack from './checkUnqualifiedTrack';
 import CkeckProductInspection from './checkProductInspection';
+import EqupimentGuidance from './equpimentGuidance';
 import axios from 'axios';
 class CheckModal extends React.Component{
     componentDidMount(){
@@ -44,9 +45,9 @@ class CheckModal extends React.Component{
         switch(type){
             case 1:  
             case 2:  
-            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
-            case 4:  return<StockTable dataSource={this.state.dataSource} flag={1}/>
-            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>; 
+            case 3:  return <Procedure url={this.props.url} dataId={this.props.dataId}/>; 
+            case 4:  return <StockTable dataSource={this.state.dataSource} flag={1}/>
+            case 6:  return <RedList url={this.props.url} dataId={this.props.dataId}/>; 
             case 7:  return <CheckPurchase url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 8:  return <CkeckProductInspection url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 5:  
@@ -55,7 +56,8 @@ class CheckModal extends React.Component{
             case 11: return <CheckUnqualified url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 12: return <CheckUnqualifiedTrack url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 13: 
-            case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />
+            case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />;
+            case 15: return <EqupimentGuidance  url={this.props.url} batchNumberId={this.props.dataId}/>
             default: return '' ;
         }
     }
@@ -78,6 +80,7 @@ class CheckModal extends React.Component{
             case 2: 
             case 7:
             case 12: return flag?0:'modal-xlg';
+            case 15: return '.modal-600'
             default: return flag?1:'modal-md' ;
         }
     }
@@ -214,11 +217,12 @@ class CheckModal extends React.Component{
         const dataType = JSON.parse(localStorage.getItem('dataType'));
         return (
             <span>
-                {/* {
-                    this.props.flag?<Button onClick={this.handleCheck} type='ant-btn ant-btn-primary'><i className='' aria-hidden="true" style={{color:'white',fontWeight:'bolder'}}></i>&nbsp;{this.props.name}</Button>:
-                    <NewButton name='审核' className='fa fa-check' handleClick={this.handleCheck} ></NewButton>
-                } */}
-                <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton>
+                { 
+                    this.props.flag?
+                    <NewButton name={this.props.flag?'详情':'审核'} className='fa fa-floppy-o' handleClick={this.handleCheck} ></NewButton>:
+                    <NewButton name='审核' className={this.props.checkFlag?'fa fa-check':'hide'} handleClick={this.handleCheck} ></NewButton>
+                }
+                {/* <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton> */}
                 <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
                 closable={false} maskClosable={false} className={this.setClassName(type)}
                 /**this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md' */

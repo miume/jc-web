@@ -40,7 +40,7 @@
     border-right:none;
 }
 #process-table  .tbody {
-    max-height:267px;
+    max-height:280px;
     overflow-y:scroll;
     overflow-x: hidden;
     display:block;
@@ -54,6 +54,9 @@
     box-sizing: border-box !important;
     max-width: 130px;
     min-width: 130px;
+}
+.detail-text td{
+    padding:0 5px;
 }
 #process-table  .tbody tr td:last-child{
     width: 88px;

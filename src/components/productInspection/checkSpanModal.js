@@ -1,6 +1,5 @@
 import React from 'react';
-import { Input,Button,Table } from 'antd';
-import './aePopModal.css';
+import { Input,Button } from 'antd';
 import CheckQualifiedModal from '../BlockQuote/checkQualifiedModal';
 import './productInspection.css';
 
@@ -13,6 +12,7 @@ class CheckSpanModal extends React.Component {
         this.clearData = this.clearData.bind(this);
     }
     render() {
+        const arr = this.props.data.topData.serialNumber.split('-');
         return(
             <div >
                 <div className="productDrSpanModalTop">
@@ -26,7 +26,7 @@ class CheckSpanModal extends React.Component {
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
+                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
@@ -44,7 +44,6 @@ class CheckSpanModal extends React.Component {
                             <Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>
                         )
                     }
-                    {/*<Button onClick={this.clearData}><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button>*/}
                 </div>
                 <div
                     className="productSpanTableModal"

@@ -3,8 +3,6 @@ import {Divider, Table} from 'antd';
 import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
 import './unqualifiedTrack.css';
-
-
 class UnqualifiedTrackTable extends React.Component {
     constructor(props){
         super(props);
@@ -51,20 +49,6 @@ class UnqualifiedTrackTable extends React.Component {
             let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
             return (
                 <span>
-                    {operationCheckFlag?(
-                        <EditSpan
-                            record={record}
-                            // unTrackThead={record}
-                            fetch={this.props.fetch}
-                            url={this.props.url}
-                            checkStatus={record.commonBatchNumber.status}
-                            batchNumberId={record.commonBatchNumber.id}
-                            menuList={this.props.menuList}
-                        />
-                    ):(
-                        <span  className="notClick">编辑</span>
-                    )}
-                    <Divider type="vertical" />
                     <DetailSpan
                         record={record}
                         fetch={this.props.fetch}
@@ -73,6 +57,22 @@ class UnqualifiedTrackTable extends React.Component {
                         batchNumberId={record.commonBatchNumber.id}
                         menuList={this.props.menuList}
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationCheckFlag?(
+                            <EditSpan
+                                record={record}
+                                // unTrackThead={record}
+                                fetch={this.props.fetch}
+                                url={this.props.url}
+                                checkStatus={record.commonBatchNumber.status}
+                                batchNumberId={record.commonBatchNumber.id}
+                                menuList={this.props.menuList}
+                            />
+                        ):(
+                            <span  className="notClick">编辑</span>
+                        )}
+                    </span>
                 </span>
             )
         }
@@ -93,6 +93,7 @@ class UnqualifiedTrackTable extends React.Component {
                 dataSource={this.props.data}
                 columns={columns}
                 pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
                 scroll={{y: 400 }}

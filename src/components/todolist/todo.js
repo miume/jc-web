@@ -101,7 +101,9 @@ class Todo extends React.Component{
                    this.props.flag?this.judge(this.props.data.status):null
                }
                {
-                    <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag} dataType={this.props.data.dataType} />
+                    <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch}
+                     getHistory={this.props.getHistory} flag={this.props.flag} 
+                     dataType={this.props.data.dataType} checkFlag={this.props.checkFlag} />
                }
                </div>
            </div>

@@ -17,10 +17,17 @@ class CheckUnqualified extends React.Component{
                 tbodyData: [],
                 judgement: '',
                 judger: '',
-                topData: {},
+                topData: {
+
+                },
             },
             detailData:{    //成品数据格式
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:'',
+                    id:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -51,7 +58,7 @@ class CheckUnqualified extends React.Component{
             <div style={{width:`${modalWidth}`}}>
                 {
                     this.state.type?(
-                        <div style={{height:500}}>
+                        <div style={{height:460}}>
                             <PurchaseModal
                                 data={this.state.checkData}
                                 clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红

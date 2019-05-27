@@ -10,7 +10,11 @@ class CkeckProductInspection extends React.Component{
         super(props);
         this.state = {
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -60,7 +64,7 @@ class CkeckProductInspection extends React.Component{
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.testItem.name,
                             testResult:e.testItemResultRecord.testResult,
-                            rawTestItemStandard:e.standardValue,
+                            rawTestItemStandard:e.standardValue?e.standardValue:'无',
                             unit:e.testItem.unit,
                             isValid: e.testItemResultRecord.isValid
                         })

@@ -203,26 +203,34 @@
     }
 }
 .block-input{
-    width:80% !important;
-    position: relative;
-    top:-2.5px;
+    height: 48px !important;/**important的优先级最高*/
+    width: 100% !important;
+    border:none !important;
 }
-.block-input .ant-select-selection .ant-select-selection--single{
-    height:48px !important;
+/* .block-input .ant-select-selection .ant-select-selection--single{
     line-height:48px !important;
-}
-.ant-select-lg .ant-select-selection--single, 
-.ant-select-selection--single{
-    height:43px !important;
+} */
+/* .ant-select-lg .ant-select-selection--single {
+    height: 45px !important;
     border:none;
 }
+.ant-select-lg .ant-select-selection__rendered {
+    position: relative;
+    top: 2px;
+}
+.ant-select-lg {
+    font-size: 15px !important;
+} */
 .block-button{
-    height: 48px;
+    height: 50px;
     width:20%;
 }
-.block-input-i{
+.block1 .ant-btn-lg{
+    height:48px !important;
+}
+.block-button i{
     color:#0086ff;
-    font-weight: bold;
+    font-weight: bolder;
 }
 /**选择型号*/
 .product-modal{
@@ -376,9 +384,9 @@
 /**固定在footer的重新选择样式*/
 .product-footer{
     color:#0086ff;
-    float: right;
-    position: relative;
-    top:15px;
+    /* float: right; */
+    position: absolute;
+    bottom:40px;
     right:25px;
     /* bottom: 40px; */
     font-weight: 500;

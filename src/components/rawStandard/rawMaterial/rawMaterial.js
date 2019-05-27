@@ -72,9 +72,8 @@ class RawMaterial extends Component{
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-        
              const res=data.data.data;
-            console.log(res);
+           // console.log(res);
              if(res){
                 this.setState({rawData:res});
              }
@@ -84,6 +83,9 @@ class RawMaterial extends Component{
 
     //监听原材料那个块块是否被选中
     onBlockChange(e){
+        // console.log( e.target);
+        // console.log(e.target.id);
+       
         const rawMaterialId = e.target.id.split('-')[0];
         const name = e.target.id.split('-')[1];
        this.props.onBlockChange(2,name,rawMaterialId);
@@ -98,19 +100,17 @@ class RawMaterial extends Component{
     }
     addEvent(){//新增事件
         const value=this.formRef.getItemsValue();
-        console.log(value);
-        //console.log(this.state.testItems);
         if(!value['serialNumberId']||this.state.testItems.length===0){
             message.info('信息填写不完整!');
             return
         }
         axios({
-            url:`${this.props.url.rawStandard.addRaw}?testItemIds=${this.state.testItems.toString()}`,
+            url:`${this.props.url.rawStandard.addRaw}?serialNumberId=${value['serialNumberId']}&testItemIds=${this.state.testItems.toString()}`,
             method:'post',
             headers:{
                 'Authorization':this.props.url.Authorization
             },
-            data:value
+         
         }).then(data=>{
             //console.log(data);
             message.info(data.data.message);
@@ -182,16 +182,17 @@ class RawMaterial extends Component{
         //  this.url=JSON.parse(localStorage.getItem('url'));
           return(
               <div>
-                  <div style={{padding:'15px'}}>
+                  <div  className='rawMaterailStandardMiddle'>
                     <span className='product-standrad-middle-text'>请选择原材料</span>
-                     <span style={{float:'right' }}>
+                     
                        <SearchCell name='请输入原材料名称'
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             fetch={this.fetch}
                             type={this.props.type}
+                            flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                         />
-                     </span>
+                    
                      <Divider type='horizontal' />
                    </div>
                    <div className='rawStanstdardParent1'>
@@ -200,7 +201,7 @@ class RawMaterial extends Component{
                            this.state.data.map(d=>
                             <DataPart  key={d.id} name={d.name} id={d.id}  onBlockChange={this.onBlockChange}/>)
                        }
-                      <span > <DataPart  flag={1} onBlockChange={this.addClick}   name='新增原材料' name1='原材料'/></span>
+                       <DataPart  flag={1} onBlockChange={this.addClick}  className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'} name='新增原材料' name1='原材料'/>
                       <Modal
                             visible={this.state.visible}
                             title="新增"

@@ -1,5 +1,6 @@
 import React from 'react';
 import Todo from './todo';
+import home from '../commom/fns';
 import SearchCell from '../BlockQuote/search';
 // const data = [];
 // for(var i = 1; i < 4; i++){
@@ -73,7 +74,9 @@ class TodoProcessed extends React.Component{
             <div className={this.props.flag?'historyContianer':'container'} >
                 <div className={this.props.flag?'historySearch':'hide'} >
                     <SearchCell name='请输入搜索内容' timeFlag={1} fetch={this.fetch} 
-                    searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                    searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}
+                    flag={home.judgeOperation(this.props.operation,'QUERY')}
+                    />
                 </div>
                 <div>
                     {
@@ -88,7 +91,11 @@ class TodoProcessed extends React.Component{
                                 if(i<flag) details[i]['flag'] = 0;
                                 else {details[i]['flag'] = 1; }      
                             }
-                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} contents={contents} data={e.commonBatchNumber} details={details} curId={curId} url={this.props.url} fetch={this.props.fetch} getHistory={this.props.getHistory} flag={this.props.flag}/>
+                            return <Todo key={`${e.commonBatchNumber.id}-${this.props.flag?1:0}`} contents={contents} 
+                                    data={e.commonBatchNumber} details={details} curId={curId} url={this.props.url} fetch={this.props.fetch} 
+                                    getHistory={this.props.getHistory} flag={this.props.flag}
+                                    checkFlag={home.judgeOperation(this.props.operation,'AUDIT')}
+                                    />
                         }):<div className='divAuto'>暂无</div>
                     }
                     </div>

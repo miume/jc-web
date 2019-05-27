@@ -37,10 +37,10 @@ class Add extends React.Component{
             maxCount:1,
             visible : false,
             data : [],
-            saveData:[],       //用来table新增的真实数据
             flag:this.props.flag,           //用来判断是迭代还是详情
          }
         this.judge = this.judge.bind(this);
+        this.clearData = this.clearData.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -69,7 +69,7 @@ class Add extends React.Component{
         switch(flag){
             case 1 : return title?'详情':<span className='blue' onClick={this.handleAdd} >详情</span>
             case 2 : return title?'编辑':<span className={this.props.status===-1?'blue':'notClick'} onClick={this.props.status===-1?this.handleAdd:null} >编辑</span>
-            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus' />;
+            default: return title?'新增标准':<NewButton handleClick={this.handleAdd} name='新增' className={this.props.addFlag?'fa fa-plus':'hide'} />;
         }
     }
     /**判断弹出框 footer 对应的按钮组合 只有status===2才可以迭代*/
@@ -158,14 +158,16 @@ class Add extends React.Component{
             maxCount:length,
         })
     }
-            /**将查到的testItems字符串转换为id数组 */
+    /**将查到的testItems字符串转换为id数组 */
     itemsToIds(items){
         var testItemIds = [];
         const {allTestItem} = this.state;
-        for(var i = 0; i < allTestItem.length; i++){
-            for(var j = 0; j < items.length; j++){
-                if(items[j] === allTestItem[i].name ){
-                    testItemIds.push(allTestItem[i].id)
+        if(allTestItem && allTestItem.length){
+            for(var i = 0; i < allTestItem.length; i++){
+                for(var j = 0; j < items.length; j++){
+                    if(items[j] === allTestItem[i].name ){
+                        testItemIds.push(allTestItem[i].id)
+                    }
                 }
             }
         }
@@ -241,7 +243,7 @@ class Add extends React.Component{
     /**对保存 送审数据进行判断和处理 */
     dataProcessing(status,process,urgent){
         const details = this.state.data;
-        console.log(details)
+        // console.log(details)
         if(details.length===0) {
             message.info('必须新增一条数据！');
             return false;
@@ -319,8 +321,10 @@ class Add extends React.Component{
     sucessProcessing(data){
         if(data.data.code===0){
             message.info('保存成功');
+            this.clearData();
             this.props.fetch();
-            this.getByBatchNumberId(this.props.value,1);
+            if(this.state.flag)
+                this.getByBatchNumberId(this.props.value,1);
         }else{
             message.info(data.data.message);
         }
@@ -355,23 +359,22 @@ class Add extends React.Component{
         // console.log(data)
         // console.log(`maxCount=${this.state.maxCount},count=${this.state.count}`)
         /**点击新增 前面已知数据全部变成不可编辑 */
-        var flag = true;  //表示能否新增一行数据
-        for(var i = 0; i < data.length; i++){
-            var e = data[i];
-            if(e.testItemIds.length < 1){
-                message.info('请将数据填写完整，再新增！');
-                return false;
-            } 
-            flag = this.checkAddRowData(e);
-            e.mode = 1;
-        }
-        if(flag){
+        // var flag = true;  //表示能否新增一行数据
+        // for(var i = 0; i < data.length; i++){
+        //     var e = data[i];
+        //     if(e.testItemIds.length < 1){
+        //         message.info('请将数据填写完整，再新增！');
+        //         return false;
+        //     } 
+        //     flag = this.checkAddRowData(e);
+        //     e.mode = 1;
+        // }
+        // if(flag){
             data.push({
                 mode:3,
                 id:maxCount+1,
                 testItemIds:[],
                 procedureTestRecord:{
-                    comment:'',
                     procedureId:'',
                     deliveryFactoryId:'',
                     samplePointName:'',
@@ -379,6 +382,7 @@ class Add extends React.Component{
                     testFrequency:'',
                     serialNumberId:'',
                     tester:'',
+                    comment:'',
                 },
                 detail:{
                     deliveryFactory:'',
@@ -395,7 +399,7 @@ class Add extends React.Component{
                 count: count+1,
                 maxCount:maxCount+1
             })
-        }
+       // }
     }
     /**新增前对前面数据进行判断 必须填写完整才能新增下一条数据 */
     checkAddRowData(data){
@@ -417,11 +421,7 @@ class Add extends React.Component{
     deleteRow(value){
         var {count,data} = this.state;
         data = data.filter(e=>parseInt(e.id) !== parseInt(value));
-        // for(var i = 0; i < data.length; i++){
-        //     var e = data[i];
-        //     e.mode = 2;
-        // }
-        data[data.length-1].mode=2;
+        if(data.length > 0) data[data.length-1].mode=2;
         // console.log(data)
         this.setState({
             count:count-1,
@@ -446,6 +446,12 @@ class Add extends React.Component{
         this.setState({
             data:data,
             // saveData:saveData,
+        })
+    }
+    //保存或送审成功之后，清空data
+    clearData(){
+        this.setState({
+            data : []
         })
     }
     render() {

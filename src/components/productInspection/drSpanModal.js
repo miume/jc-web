@@ -2,7 +2,6 @@ import React from 'react';
 import { Divider } from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import DetailStateModal from "./detailStateModal";
-// import AllTester from '../BlockQuote/allTester';
 import './productInspection.css';
 
 //判断类型，如果为新增,则data为空
@@ -39,28 +38,21 @@ class DrSpanModal extends React.Component {
         width: '20%',
     }];
     render() {
-        const columns = this.columns.map((col) => {
-            return {
-                ...col,
-                onCell: record => ({
-                    record,
-                }),
-            };
-        });
+        const arr = this.props.data.topData.serialNumber.split('-');
         return(
             <div >
                 <div className="productDrSpanModalTop">
                     <table>
                         <thead>
                         <tr>
-                            <th>编号</th>
+                            <th>物料编码</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
+                            <td><span title={this.props.data.topData.serialNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span></td>
                             <td>{this.props.data.topData.materialName}</td>
                             <td>{this.props.data.topData.sampleDeliveringDate}</td>
                         </tr>
@@ -100,11 +92,9 @@ class DrSpanModal extends React.Component {
                                         <div>
                                             <div
                                                 className={(item.isValid)?'productPassValidDefault':'productDefaultDefault'}
-                                                // onClick={this.handleJudgePass.bind(this,index,1)}
                                             >合格</div>
                                             <div
                                                 className={(item.isValid)?'productDefaultDefault':'productNoPassValidDefault'}
-                                                // onClick={this.handleJudgePass.bind(this,index,0)}
                                             >不合格</div>
                                         </div>
                                     </div>
@@ -136,28 +126,8 @@ class DrSpanModal extends React.Component {
                     />
                     <DetailStateModal
                         examine={this.props.data.examine}
-                        // examine = {{
-                        //     examineStatus:2,
-                        //     examineData:[{
-                        //         handler:'a',
-                        //         handleReply:'b',
-                        //         handleTime:'c'
-                        //     },{
-                        //         handler:'aa',
-                        //         handleReply:'bb',
-                        //         handleTime:'cc'
-                        //     }]
-                        // }}
-                        // examineData={this.state.examineData}
                         //  择优人
                         optional={this.props.data.optional}
-                        // optional = {{
-                        //     optionalStatus: 12,
-                        //     optionalData: {
-                        //         personer:'123',
-                        //         personTime:'132'
-                        //     }
-                        // }}
                     />
                 </div>
             </div>

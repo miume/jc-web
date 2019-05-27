@@ -4,12 +4,17 @@ import {withRouter} from "react-router-dom";
 import Auth from '../auth/Auth';
 const SubMenu = Menu.SubMenu;
 
+/**
+ * current 用来存取最近一次访问的2级菜单
+ * selectedKeys 用来存取最近一次访问2级菜单的路径
+ * defaultOpenKeys 用来存取默认展开一级菜单
+ */
 class Menu1List extends React.Component {
   componentDidMount(){
      /**实现刷新后保持最后一次点击界面 */
      const cur = localStorage.getItem('current')?JSON.parse(localStorage.getItem('current')).path :'';
      if(cur){
-      this.props.history.push(cur);
+        this.props.history.push(cur);
      }
   }
   constructor(props){
@@ -24,10 +29,8 @@ class Menu1List extends React.Component {
   }
   /**只展开当前父级菜单 */
   onOpenChange(openKeys){
-    //console.log('openKeys:'+openKeys)
     /**找到当前展开的菜单id */
     const latestOpenKeys = openKeys.find(key=>this.state.openKeys.indexOf(key)===-1);
-    // console.log('latestOPenKeys:'+latestOpenKeys)
     /**如果展开当前一级菜单和以前的不一样 */
     if(this.state.openKeys !== latestOpenKeys){
         this.setState({
@@ -67,20 +70,18 @@ class Menu1List extends React.Component {
         if(!repeat && menuClick.length<6){
           menuClick.push(current)
         }
-        /**如果之前没有访问过，且localStorage已经有6条访问记录 */
-        
+        /**如果之前没有访问过，且localStorage已经有6条访问记录 */   
     }
     else{
       menuClick = [];
       menuClick.push(current)
     }
-    /**每次点击二级菜单 都重新跟新快速访问 */
+    /**每次点击二级菜单 都重新更新快速访问 */
     localStorage.setItem('quickAccess',JSON.stringify(menuClick))
     this.props.history.push(path);
   }
 
   render() {
-    //console.log(menu)
     // const menu = [
     //   {
     //       id: 1,
@@ -113,14 +114,15 @@ class Menu1List extends React.Component {
     //       ]
     //  }
     // ];
-    // const openKeys = localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[];
-    //console.log(openKeys)
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
-      <div>
-        <Menu mode="inline" theme="dark" selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]} openKeys={localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[]}  onOpenChange={this.onOpenChange} style={{width:130}}>
+      <div className={localStorage.getItem('menuList')?'':'hide'}>
+        <Menu mode="inline" theme="dark" 
+              selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]} 
+              openKeys={localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[]}  
+              onOpenChange={this.onOpenChange} style={{width:130}}>
             {
-              localStorage.getItem('menuList') ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
+              localStorage.getItem('menuList') && JSON.parse(localStorage.getItem('menuList')).menuList ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>
                 {
                     v.menuList.map(v1 => 

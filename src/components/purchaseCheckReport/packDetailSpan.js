@@ -5,16 +5,6 @@ import DrSpanModal from '../intermediateProductTest/drSpanModal';
 import CancleButton from '../BlockQuote/cancleButton';
 
 
-// const data = [];
-// for (let i = 0; i < 50; i++) {
-//     data.push({
-//         index:i,
-//         id: i,
-//         testItem: `测试`,
-//         testResult: '0.001',
-//         itemUnit: `g/mL`,
-//     });
-// }
 
 class DetailSpan extends React.Component {
     constructor(props){
@@ -22,7 +12,11 @@ class DetailSpan extends React.Component {
         this.state = {
             visible: false,
             detailData:{
-                topData: {},   //头部数据
+                topData: {
+                    serialNumber:'',
+                    materialName:'',
+                    sampleDeliveringDate:''
+                },   //头部数据
                 testDTOS: [],   //中部项目
                 testData: {},   //检验数据
                 examine: {       //审核数据
@@ -192,6 +186,8 @@ class DetailSpan extends React.Component {
                     })
                 }
 
+            }else{
+                message.info('数据为空')
             }
         }).catch(()=>{
             message.info('打开失败，请联系管理员！')

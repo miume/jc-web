@@ -188,10 +188,10 @@ class Editor extends React.Component{
         }
     }
     applyOut(status){
-        this.setState({
-            visible:false,
-            visible1:false
-        })
+        // this.setState({
+        //     visible:false,
+        //     visible1:false
+        // })
         const details = this.state.addApplyData;
         const commonBatchNumber = {
             id:this.props.value,

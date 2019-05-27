@@ -3,11 +3,11 @@ import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from "../BlockQuote/search";
 import ProductTable from "./productInspectionTable";
 import axios from "axios";
-
-
+import home from "../commom/fns";
 class ProductInspection extends React.Component {
     url;
     status;
+    operation;
     componentDidMount() {
         this.fetch({
             pageSize:10,
@@ -27,7 +27,8 @@ class ProductInspection extends React.Component {
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -37,34 +38,24 @@ class ProductInspection extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showSizeChanger: true,
-        //     showTotal(total) {
-        //         return `共${total}条记录`
-        //     },
-        //     onShowSizeChange(current, pageSize) {
-        //         // console.log('Current: ', current, '; PageSize: ', pageSize);
-        //     },
-        //     onChange(current) {
-        //         // console.log('Current: ', current);
-        //     }
-        // };
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.status = JSON.parse(localStorage.getItem('status')) ;
-        const current = JSON.parse(localStorage.getItem('current')) ;
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations
         return(
             <div>
-                <BlockQuote name="成品检验" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
                     <SearchCell
                         name='请输入送检工厂名称'
                         searchEvent={this.searchEvent}
                         searchContentChange={this.searchContentChange}
                         fetch={this.fetch}
+                        flag={home.judgeOperation(this.operation,'QUERY')}
                     />
                     <div className='clear' ></div>
                     <ProductTable
@@ -76,6 +67,8 @@ class ProductInspection extends React.Component {
                         pagination={this.state.pagination}
                         modifyDataSource={this.modifyDataSource}
                         handleTableChange={this.handleTableChange}
+                        judgeOperation = {home.judgeOperation}
+                        operation = {this.operation}
                     />
                 </div>
             </div>

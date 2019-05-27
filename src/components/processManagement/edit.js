@@ -17,7 +17,7 @@ class Edit extends React.Component{
           id:this.props.value,
           detail:[],
           name:'',
-          batchStatus: 0  
+          // batchStatus: 0  
         }
         this.Authorization = localStorage.getItem("Authorization");
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,11 +63,9 @@ class Edit extends React.Component{
             keys: nextKeys,
           });
       }
-      componentDidMount() {
-        this.getAllUser();
-      };
       handleDetail() {
         this.fetch()
+        this.getAllUser();
         this.setState({
           visible: true
         });
@@ -102,17 +100,18 @@ class Edit extends React.Component{
   }
     handleCreate = () =>{
       this.props.form.validateFields((err, values) => {
+        // console.log(values.name)
         if (err) {
           return ;
         }
         let data = {};
         let value = {};
         let taskPersonList=[];
-        value['description']=values.name
-        value['id'] = this.props.value
-        // value["isUrgent"] = 0
-        value["status"] = -1
-        data["commonBatchNumber"] = value
+        value['description']=values.name;
+        value['id'] = this.props.value;
+        // value["isUrgent"] = 0;
+        value["status"] = -1;
+        data["commonBatchNumber"] = value;
         for(var i = 0;i<values.keys.length;i++){
           taskPersonList.push({})
         }
@@ -120,6 +119,7 @@ class Edit extends React.Component{
           taskPersonList[i]["userId"]=values.persons[values.keys[i]];
           taskPersonList[i]['responsibility']=values.description[values.keys[i]];
         }
+        // console.log(taskPersonList)
         data["details"] = taskPersonList
         axios({
               url : `${this.url.processManagement.deleteByIds}`,
@@ -127,11 +127,18 @@ class Edit extends React.Component{
               data: data,
               type:'json'
           }).then((data) => {
+            if(data.data.code !== 0){
+              message.info('更新失败')
+              this.setState({
+                visible:true
+              })
+            }else{
               message.info(data.data.message);
               this.props.handle(this.props.pagination); // 重新调用分页函数
+              this.props.form.resetFields();
+              this.setState({ visible: false});
+            }
         })
-        this.props.form.resetFields();
-        this.setState({ visible: false});
       })
     }
 
@@ -162,11 +169,18 @@ class Edit extends React.Component{
               data: data,
               type:'json'
           }).then((data) => {
-              message.info(data.data.message);
-              this.props.handle(this.props.pagination); // 重新调用分页函数
+              if(data.data.code !== 0){
+                message.info('更新失败')
+                this.setState({
+                  visible:true
+                })
+              }else{
+                message.info(data.data.message);
+                this.props.handle(this.props.pagination); // 重新调用分页函数
+                this.props.form.resetFields();
+                this.setState({ visible: false});
+              }
         })
-        this.props.form.resetFields();
-        this.setState({ visible: false});
       })
     }
     render(){
@@ -179,7 +193,7 @@ class Edit extends React.Component{
         },
       };
       return(
-        <span>
+        <span className={this.props.flag?'':'hide'}>
           {this.props.status === -1?<span className='blue' onClick={this.handleDetail}>编辑</span>:<span className="notClick">编辑</span>}
           <Modal 
              title='编辑' visible={this.state.visible}
@@ -203,12 +217,14 @@ class Edit extends React.Component{
                         )
                         }
                     </Form.Item>
+                    <div id='edit' style={{height:'360px'}}>
                       <Edtr approvalProcess={this.state.approvalProcess} details={this.state.detail} remove={this.remove} form={this.props.form}/>
                     <Form.Item {...formItemLayoutWithOutLabel}>
                       <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
                         <Icon type="plus" /> 添加一行
                       </Button>
                     </Form.Item>
+                    </div>
                 </Form>
           </Modal>
         </span>

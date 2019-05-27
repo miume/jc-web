@@ -73,7 +73,7 @@ class CheckProductStandard extends React.Component{
         var data = [];
         for(var i = 0; i < details.length; i++){
             var e = details[i];
-            var testItems = e.testItem;
+            var testItems = e.testItem?e.testItem:[];
             testItems['index'] = `${i+1}`;
             testItems['value'] = this.props.flag===13?e.techniqueRawTestItemStandard.value:e.techniqueProductTestItemStandard.value;
             data.push(testItems)

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import home from '../commom/fns'
 import {Table, Divider} from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
@@ -43,22 +43,23 @@ class DrSpanModal extends React.Component {
             };
         });
 
+        const arr = this.props.data.topData.serialNumber.split('-');
         return(
             <div>
                 <div className="interDrSpanModalTop">
                     <table>
                         <thead>
                         <tr>
-                            <th>编号</th>
+                            <th>物料编码</th>
                             <th>原材料</th>
                             <th>送样日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td><span title={this.props.data.topData.serialNumber} className="text-decoration">{this.props.data.topData.serialNumber.substring(0,15)}</span></td>
-                            <td>{this.props.data.topData.materialName}</td>
-                            <td>{this.props.data.topData.sampleDeliveringDate}</td>
+                            <td><span title={this.props.data.topData.serialNumber} className="text-decoration">{arr[0]+'-'+arr[1]+'...'}</span></td>
+                            <td>{home.judgeText(this.props.data.topData.materialName,8)}</td>
+                            <td>{home.judgeText(this.props.data.topData.sampleDeliveringDate,10)}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -74,10 +75,9 @@ class DrSpanModal extends React.Component {
                         rowKey={record => record.index}
                         columns={columns}
                         dataSource={this.props.data.testDTOS}
-                        // dataSource={testData}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 230 }}
+                        scroll={{ y: 225 }}
                         bordered
                     />
                 </div>

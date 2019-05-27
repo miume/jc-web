@@ -6,8 +6,6 @@ import RawMaterialApplication from './rawMaterialApplication/rawMaterialApplicat
 import RawMaterialOut from './rawMaterialApplication/rawMaterialOut';
 const TabPane = Tabs.TabPane;
 class StockOut extends React.Component{
-    // Authorization
-    // server
     url
     componentDidMount(){
         this.apply(1);

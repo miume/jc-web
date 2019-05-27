@@ -12,8 +12,14 @@ div.quick-middle {
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
+  font-size:20px;
+  font-weight:400;
 }
-
+.quick-contact{
+  text-align: center;
+  font-size: 20px;
+  color: red;
+}
 @keyframes fadeInUp {
   0% {
     transform: translateY(20px);

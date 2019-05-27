@@ -6,6 +6,7 @@ import axios from 'axios';
 
 class ProductInStorage extends Component{
     url;
+    operation;
     componentDidMount(){
       this.fetch();
     }
@@ -136,6 +137,7 @@ class ProductInStorage extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
+        this.judgeOperation=this.judgeOperation.bind(this);
     }
     handleTableChange=(pagination)=>{//页码发生改变时调用
         const {pageChangeFlag}=this.state;
@@ -227,19 +229,27 @@ class ProductInStorage extends Component{
      });
      
     }
+    judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
     render(){
        this.url=JSON.parse(localStorage.getItem('url'));
+       const current=JSON.parse(localStorage.getItem('current'));
+       //获取该菜单所有权限
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         return(
             <div style={{padding:'0 15px'}}>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                
                     <SearchCell name='请输入成品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.fetch}
                         type={this.props.type}
+                        flag={this.judgeOperation(this.operation,'QUERY')}
                     >
                     </SearchCell>
-                </span>
+               
                 <div className='clear'  ></div>
                 <Table
                 rowKey={record=>record.id}

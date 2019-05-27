@@ -6,7 +6,6 @@ import PackGenerateModal from './packGenerateModal';
 import axios from "axios";
 import './purchaseCheckReport.css';
 
-
 class Pack extends React.Component {
     rowSelection;
     componentDidMount() {
@@ -22,14 +21,14 @@ class Pack extends React.Component {
             selectedRowKeys: [],    //多选框key
             loading: false,
             searchContent:'',
-            searchText: '',
             generateVisible: false,
             unGenerateDate: true, //未生成数据--true为显示未生成数据，false为显示所有数据
 
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -39,21 +38,10 @@ class Pack extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.modifySelectedRowKeysData = this.modifySelectedRowKeysData.bind(this);
         this.handleGenerateModal = this.handleGenerateModal.bind(this);
-        // this.generateFetch = this.generateFetch.bind(this);
-        // this.judgeGetAll = this.judgeGetAll.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        // this.changePage = this.changePage.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showSizeChanger: true,
-        //     showTotal(total){
-        //         return `共${total}条记录`
-        //     },
-        //     onChange:this.changePage,
-        // }
     };
     render() {
-        const { selectedRowKeys,unGenerateDate } = this.state;
+        const { selectedRowKeys } = this.state;
         if(this.props.tabFlag === 1){
             this.fetch({
                 pageSize:10,
@@ -68,20 +56,6 @@ class Pack extends React.Component {
                 disabled: record.isGenerate !== 0,
             })
         };
-        // if(unGenerateDate===true){
-        //     this.rowSelection = {
-        //         selectedRowKeys,
-        //         onChange: this.onSelectChange,
-        //     };
-        // }else{
-        //     this.rowSelection = {
-        //         selectedRowKeys,
-        //         onChange: this.onSelectChange,
-        //         getCheckboxProps: record => ({
-        //             disabled: record.isGenerate !== 0,
-        //         })
-        //     };
-        // }
         return(
             <div>
                 <div>
@@ -90,31 +64,32 @@ class Pack extends React.Component {
                         url={this.props.url}
                         menuList={this.props.menuList}
                         selectedRowKeys={this.state.selectedRowKeys}
+                        flag={this.props.judgeOperation(this.props.operation,'SAVE')}
                     />
                     <div style={{float:'right'}}>
                         <span style={{marginRight:'10px',fontSize:'10px'}}>仅显示未生成的数据</span>
                         <Switch onChange={this.urgentChange} size='small' defaultChecked style={{width:'35px',marginBottom:'2px',background:''}}/>
                         <Divider type="vertical" style={{height:'35px'}}/>
-                        <span style={{float:'right',paddingBottom:'8px'}}>
-                            <SearchCell
-                                name='请输入送检人名称'
-                                searchContentChange={this.searchContentChange}
-                                searchEvent={this.searchEvent}
-                                fetch={this.judgeGetAll}
-                            />
-                        </span>
+                        <SearchCell
+                            name='请输入送检人名称'
+                            searchContentChange={this.searchContentChange}
+                            searchEvent={this.searchEvent}
+                            fetch={this.fetch}
+                            type={1}
+                            flag={this.props.judgeOperation(this.props.operation,'QUERY')}
+                        />
                     </div>
                 </div>
 
                 <div className='clear' ></div>
                 <PackTable
-                    fetch={this.judgeGetAll}
+                    fetch={this.fetch}
                     unGenerateDate={this.state.unGenerateDate}
                     url={this.props.url}
                     status={this.props.status}
                     data={this.state.dataSource}
                     rowSelection={this.rowSelection}
-                    pagination={this.pagination}
+                    pagination={this.state.pagination}
                     modifySelectedRowKeysData={this.modifySelectedRowKeysData}
                     handleTableChange={this.handleTableChange}
                 />
@@ -130,43 +105,41 @@ class Pack extends React.Component {
     };
     /**获取未生成的所有数据 unGenerated */
     handleTableChange = (pagination) => {
-        const pageChangeFlag = this.state.pageChangeFlag;
-        if(pageChangeFlag===0){
+        this.setState({
+            pagination:pagination
+        });
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
             this.fetch({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-                orderField: 'id',
-                orderType: 'desc',
-            });
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
+                personName:this.state.searchContent
+            })
         }else{
-            this.searchEvent({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
+            this.fetch({
+                pageSize:pagination.pageSize,
+                pageNumber:pagination.current,
             })
         }
+
     };
     /**未生成和已生成的所有数据进行判断调用结构 */
-    // judgeGetAll = () => {
-    //     if(this.state.unGenerateDate===true){
-    //         this.fetch({
-    //             isGenerate: 0,
-    //             pageSize:10,
-    //             pageNumber:1,
-    //         });
-    //     }else{
-    //         this.fetch({
-    //             pageSize:10,
-    //             pageNumber:1,
-    //         });
-    //     }
-    // };
-    fetch = (params = {}) => {
+    fetch = (params ,flag) => {
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:'',
+                pagination:pagination
+            })
+        }
         const unGenerateDate = this.state.unGenerateDate;
         if(unGenerateDate === true){
             var newParam = 'isGenerate';
             params[newParam] = 0;
         }
-        console.log(params);
         axios({
             url: `${this.props.url.purchaseCheckReport.rawPages}` ,
             method: 'get',
@@ -182,27 +155,16 @@ class Pack extends React.Component {
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
-                // const searchFlag = this.state.searchFlag;
                 this.setState({
                     dataSource: res.list,
                     selectedRowKeys: [],
                     pagination:pagination,
-                    // searchContent:'',
                 });
-                // if(searchFlag === 0){
-                //     this.setState({
-                //         dataSource: res.list,
-                //         selectedRowKeys: [],
-                //         pageChangeFlag:1,
-                //     });
-                // }else{
-                //     this.setState({
-                //         dataSource: res.list,
-                //         selectedRowKeys: [],
-                //         pageChangeFlag:0,
-                //         searchContent:'',
-                //     });
-                // }
+            }else{
+                this.setState({
+                    dataSource: [],
+                    selectedRowKeys: [],
+                });
             }
         });
     };
@@ -222,20 +184,6 @@ class Pack extends React.Component {
         this.fetch({
             personName:this.state.searchContent
         });
-        // this.fetch({
-        //     personName:this.state.searchContent,
-        //     pageSize: params.pageSize,
-        //     pageNumber: params.pageNumber,
-        // });
-        // this.setState({
-        //     searchFlag:0,
-        // },()=>{
-        //     this.fetch({
-        //         personName:this.state.searchContent,
-        //         pageSize: params.pageSize,
-        //         pageNumber: params.pageNumber,
-        //     });
-        // })
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange = (e) => {
@@ -248,7 +196,18 @@ class Pack extends React.Component {
         this.setState({
             unGenerateDate: checked
         },()=>{
-            this.fetch();
+            if(checked===true){
+                this.fetch({
+                    pageSize:10,
+                    pageNumber:1,
+                });
+            }else{
+                var flag = 1;
+                this.fetch({
+                    pageSize:10,
+                    pageNumber:1,
+                },flag);
+            }
         })
     };
     /**---------------------- */

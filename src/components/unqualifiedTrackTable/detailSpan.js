@@ -1,9 +1,7 @@
 import React from 'react';
 import {message, Modal} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
-import NewButton from '../BlockQuote/newButton';
 import './unqualifiedTrack.css';
-import EdSpanModal from './edSpanModal';
 import PurchaseModal from "../purchaseCheckReport/purchaseModal";
 import axios from "axios";
 
@@ -51,6 +49,7 @@ class EditSpan extends React.Component {
                             clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
                             unTrackType={1} //追踪类型
                             unTrackModifyThead={0}  //追踪头部可修改
+                            unqualifiedType={1}
                         />
                     </div>
                 </Modal>
@@ -60,9 +59,6 @@ class EditSpan extends React.Component {
 
     handleDetail = () => {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     };
     getDetailData(){
         axios({
@@ -123,8 +119,6 @@ class EditSpan extends React.Component {
                         topData: topData,
                     },
                     visible: true,
-                },()=>{
-                    console.log(this.state.checkData)
                 })
             }else{
                 message.info('查询数据为空，请联系管理员')

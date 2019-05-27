@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Icon, Button, Checkbox,message } from 'antd';
+import { Input, Icon, Button, Checkbox,message,Spin } from 'antd';
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 import 'antd/dist/antd.css';
@@ -7,9 +7,14 @@ import './Login2.css';
 class Login extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      loading : false
+    }
     this.getDefault = this.getDefault.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.beforeLogin = this.beforeLogin.bind(this);
     this.remindLogin = this.remindLogin.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.dataProcessing = this.dataProcessing.bind(this);
   }
   componentWillMount() {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
@@ -29,50 +34,41 @@ class Login extends React.Component {
             message.info('请先填写用户名和密码！')
         }else{
              document.cookie = `${username}-${password}`;
-            //  document.cookie = 'password'+password;
-          // localStorage.setItem('username',username);
-          // localStorage.setItem('password',password);
         }
     }else{
       document.cookie = '';
     }
-    
-
   }
+  /**登陆接口调用 */
   handleSubmit(){
     const history = this.props.history;
     const server = localStorage.getItem("server");  
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
-    axios.post(`${server}/jc/auth/login`,{username:username,password:password}).then(res => {
+    if(!this.beforeLogin(username,password)){
+      return 
+    }
+    this.setState({
+      loading : true
+    })
+    axios.post(`${server}/jc/auth/login`,{username:username,password:password})
+      .then(res => {
       //console.log(res.data)
       /**如果登陆成功  则屏蔽enter键 */
-      window.onkeydown = undefined
-      const quickAccess = [];
-      var i = 1;
       if(res.data){
-          res.data.menuList.forEach(e=>{
-              e.menuList.forEach(e1=>{
-                if(i <= 6){
-                  quickAccess.push({
-                    openKeys:e.menuId,
-                    menuParent:e.menuName,
-                    menuName:e1.menuName,
-                    path:e1.path
-                  }) 
-                  i++; 
-                }
-              })
-          })
+          window.onkeydown = undefined
+          if(res.data && res.data.menuList)
+              this.dataProcessing(res.data)
       }
-      // console.log(quickAccess)
-      localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
       //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
       localStorage.setItem('authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));
       history.push({pathname:'/home'});
     })
-    .catch(function (error) {
+    .catch( (error) => {
+      this.setState({
+        loading : false
+      })
       if(error.toString().indexOf("Network Error")>0){
         message.info("服务器未响应!");
       }else{
@@ -80,9 +76,42 @@ class Login extends React.Component {
       }
     });
   }
+  /**登陆前先对数据进行验证 */
+  beforeLogin(username,password){
+    if(username === '' || password === '' ){
+      this.setState({
+        loading : false
+      })
+      message.info('请先填写账号和密码！');
+      return false
+    }
+    return true
+  }
+  /**登陆成功后对返回的数据进行处理 */
+  dataProcessing(data){
+    var i = 1;
+    var quickAccess = [],menus=[];
+    data.menuList.forEach(e=>{
+      e.menuList.forEach(e1=>{
+        menus.push(e1)
+        if(i <= 6){
+          quickAccess.push({
+            openKeys:e.menuId,
+            menuParent:e.menuName,
+            menuName:e1.menuName,
+            path:e1.path
+          }) 
+          i++; 
+        }
+      })
+    })
+  localStorage.setItem('menus',JSON.stringify(menus));
+  localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
+  }
+  /**实现记录密码和用户名 */
   getDefault(flag){
     var text = document.cookie.split('-');
-    if(text[flag]){
+    if(text.length>1&&text[flag]){
       return text[flag];
     }else{
       return '';
@@ -99,6 +128,7 @@ class Login extends React.Component {
     // this.keyPress();
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>  
+      <Spin spinning={this.state.loading}>
         <div className='gutter-box' style={{minWidth: '290px'}}>
               <div className='login-box'>
                 <img src={require(`../Login/logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
@@ -116,6 +146,7 @@ class Login extends React.Component {
                 </div>
               </div>
         </div>
+        </Spin>
         <div style={{left:'0px',position:'fixed',height:'80px',width:'100%',bottom:'0px',textAlign:'center', fontSize:'11px'}} className='copy-right' id="copy-right">
           <img src={require(`../Login/logo.png`)} style={{height:'38%'}} alt=''></img>
           <br/>

@@ -6,6 +6,9 @@ class BlockQuote extends React.Component {
         this.backHome = this.backHome.bind(this);
     }
     backHome(){
+        //清空默认选中一级菜单以及二级菜单
+        localStorage.setItem('selectedKeys','')
+        localStorage.setItem('defaultOpenKeys',[])
         this.props.history.push({pathname:'/home'});
     }
     render() {

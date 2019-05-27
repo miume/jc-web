@@ -3,16 +3,14 @@ import BlockQuote from '../BlockQuote/blockquote';
 import InterTable from '../intermediateProductTest/intermediateTable';
 import SearchCell from '../BlockQuote/search';
 import axios from "axios";
-
+import home from "../commom/fns";
 
 class InterProduct extends React.Component {
     url;
     status;
+    operation;
     componentDidMount() {
-        this.fetch({
-            pageSize:10,
-            pageNumber:1,
-        });
+        this.fetch();
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -28,7 +26,8 @@ class InterProduct extends React.Component {
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
-                }
+                },
+                showSizeChanger:true
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -38,32 +37,26 @@ class InterProduct extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
-        // this.pagination = {
-        //     total: this.state.dataSource.length,
-        //     showSizeChanger: true,
-        //     showTotal(total){
-        //         return `共${total}条记录`
-        //     },
-        //     onChange:this.changePage,
-        // };
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
         this.status = JSON.parse(localStorage.getItem('status')) ;
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations
         return(
             <div>
-                <BlockQuote name="中间品录检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                        <SearchCell
-                            name='请输入送检工厂名称'
-                            searchEvent={this.searchEvent}
-                            searchContentChange={this.searchContentChange}
-                            fetch={this.fetch}
-                        />
-                    </span>
+                    <SearchCell
+                        name='请输入送检工厂名称'
+                        searchEvent={this.searchEvent}
+                        searchContentChange={this.searchContentChange}
+                        fetch={this.fetch}
+                        flag={home.judgeOperation(this.operation,'QUERY')}
+                    />
                     <div className='clear' ></div>
                     <InterTable
                         menuList={menuList}
@@ -74,6 +67,8 @@ class InterProduct extends React.Component {
                         fetch={this.fetch}
                         modifyDataSource={this.modifyDataSource}
                         handleTableChange={this.handleTableChange}
+                        judgeOperation = {home.judgeOperation}
+                        operation = {this.operation}
                     />
                 </div>
             </div>
@@ -107,12 +102,6 @@ class InterProduct extends React.Component {
                 pageNumber:pagination.current,
             })
         }
-        // this.fetch({
-        //     size: pagination.pageSize,
-        //     page: pagination.current,
-        //     factoryName:this.state.searchContent
-        //
-        // });
     };
     fetch = (params,flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
@@ -122,6 +111,14 @@ class InterProduct extends React.Component {
                 searchContent:''
             })
         };
+        if(params === undefined){
+            params = {
+                pageSize:10,
+                pageNumber:1,
+                sortField:'sample_delivering_date',
+                sortType: 'desc',
+            }
+        }
         axios.get(`${this.url.intermediateProduct}/pages`,{
             headers:{
                 'Authorization':this.url.Authorization
@@ -129,20 +126,16 @@ class InterProduct extends React.Component {
             params:params,
         }).then((data)=>{
             const res = data.data.data?data.data.data:[];
-            // this.pagination.total = res?res.total:0;
             if(res&&res.list)
             {
-                for(var i = 1; i <= res.list.length;i++){
+                for(let i = 1; i <= res.list.length;i++){
                     res.list[i-1]['index']=(res.pageNumber-1)*10+i;
                 }
                 const {pagination} = this.state;
                 pagination.total=res.total;
-                // this.pagination.current = res.pageNumber;
                 this.setState({
                     dataSource:res.list,
                     pagination:pagination,
-                    // searchContent:'',
-                    // pageChangeFlag:1
                 })
             }else{
                 this.setState({
@@ -161,18 +154,6 @@ class InterProduct extends React.Component {
         this.fetch({
             factoryName:this.state.searchContent
         })
-        // this.setState({
-        //     searchFlag:0,
-        // },()=>{
-        //     this.fetch({
-        //         factoryName:this.state.searchContent,
-        //         pageSize: params.pageSize,
-        //         pageNumber: params.pageNumber,
-        //     });
-        // })
-        // this.fetch({
-        //     factoryName:this.state.searchContent
-        // });
     };
     /**获取查询时角色名称的实时变化 */
     searchContentChange(e){

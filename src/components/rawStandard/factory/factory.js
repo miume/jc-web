@@ -53,7 +53,8 @@ class Manufacturer extends Component{
     }
 
     onBlockChange(e){
-       //console.log(e.target);
+    //     console.log(e.target);
+    //    console.log(e.target.id);
        //console.log(JSON.parse(localStorage.getItem('menuList')));
        const factoryId=e.target.id.split('-')[0];
        const factoryName=e.target.id.split('-')[1];
@@ -165,31 +166,30 @@ class Manufacturer extends Component{
         // this.url=JSON.parse(localStorage.getItem('url'));
         return(
           <div style={{position:'relative'}}>
-              <div style={{padding:'15px'}}>
+              <div className='rawMaterailStandardMiddle'>
               <span className='product-standrad-middle-text'>请选择生产厂家</span>
-                <span  className='fr'>
+                
                  <SearchCell name='请输入工厂名称'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
                     fetch={this.fetch}
                     type={this.props.type}
+                    flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                  />
-                </span>
+               
                 <Divider type='horizontal'/>
               </div>
+              <div className='rawStanstdardParent1'>
               <div className='rawStanstdardParent'>
                   {
                       this.state.data.map(d=>
                     <DataPart  key={d.id} name={d.name} id={d.id} onBlockChange={this.onBlockChange}/>
                     )
                   }
-                   <span>
                     
-                       <DataPart flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
-                      
-                   </span>
+                       <DataPart className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'} flag1={this.state.flag1}  flag={1} name='新增工厂' name1='工厂' onBlockChange={this.addClick} addChange={this.addChange} addEvent={this.addEvent}/>
               </div>
-              
+              </div>
                   <span className='rawStandardPosition' onClick={this.checkRaw}>重新选择原材料</span>
               
           </div>

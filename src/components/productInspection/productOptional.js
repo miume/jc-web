@@ -2,7 +2,6 @@ import React from 'react';
 
 class ProductOptional extends React.Component{
     render() {
-        console.log(this.props.optionalStatus)
         switch (this.props.optionalStatus) {
             case 0://不合格品
                 return(

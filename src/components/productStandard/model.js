@@ -203,10 +203,14 @@ class SelectModal extends React.Component{
                             <Block key={e.id} name={e.name} id={`${e.id}-${e.name}`} onBlockChange={this.blockClick} isLeaf={!e.isLeaf} />
                         );
                     }):null
-                }
-                    <Block flag={1} name='新增型号' onBlockChange={this.blockClick} add={this.state.add} clickI={this.clickI} id={-1} visible={this.state.visible} onChange={this.onChange}
-                    handleCancel={this.handleCancel} handleOk={this.handleOk}
-                    />
+                }   
+                    <span className={this.props.addFlag?'':'hide'}>
+                        <Block flag={1} name='型号' onBlockChange={this.blockClick} add={this.state.add} 
+                            clickI={this.clickI} id={-1} visible={this.state.visible} onChange={this.onChange}
+                            handleCancel={this.handleCancel} handleOk={this.handleOk}
+                            />
+                    </span>
+                    
                 </div>
             </div>
         );

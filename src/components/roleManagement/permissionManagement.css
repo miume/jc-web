@@ -1,3 +1,9 @@
+.permissionContanier{
+    height : 460px;
+}
+.permissionTbale{
+    height : 600px;
+}
 .tableHead {
     width : 100%;
     height: 40px;
@@ -24,8 +30,9 @@
     font-size: 15px;
     border: 1px #E4E4E4 solid;
     border-top:none;
+    display: flex;
 }
-.divborder span{
+.divborder .rightBorder{
     /* color: #6a6a6a; */
     margin-top: 0px;
     padding:7px;
@@ -33,6 +40,28 @@
     text-align: left;
     display: inline-table;
     border-top: none;
+}
+.displayBlock{
+    min-width:70px;
+    line-height: 35px;
+    text-align: center;
+}
+.displayI{
+    min-width:30px;
+    text-align: center;
+    line-height: 35px;
+}
+.displayI i:hover{
+    color: #0086ff;
+}
+.operationSpan{
+    min-width: 560px;
+    max-width: 560px;
+    overflow: hidden;
+}
+.displayScroll{
+    display: flex;
+    /* margin-left:15px; */
 }
 /* .divborder :first-child{
     border-right: 1px darkgrey solid;
@@ -42,6 +71,10 @@
     padding-left: 56px !important;
 }
 .menu1Label{
+    text-align: left !important;
+    padding-left: 20px !important;
+}
+.menu2Label{
     text-align: left !important;
     padding-left: 30px !important;
 }

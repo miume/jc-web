@@ -100,12 +100,12 @@ class AddModal extends React.Component {
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     };
-
+    
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         return (
-            <span>
-                <NewButton handleClick={this.showModal} name='新增' style='button' className='fa fa-plus'/>&nbsp;&nbsp;&nbsp;
+            <span className={this.props.flag?'':'hide'}>
+                <NewButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}

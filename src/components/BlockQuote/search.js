@@ -5,7 +5,8 @@ class SearchCell extends React.Component{
         const Search = Input.Search;
         const type= this.props.type;
         return(
-            <span style={{float:'right',paddingBottom:'8px'}}>
+            //className={this.props.flag?'searchCell':'hide'}
+            <span className={this.props.flag?'searchCell':'hide'}>
             {
                 this.props.timeFlag?
                 <span id='date-choose'>

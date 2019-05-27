@@ -63,9 +63,10 @@ class EditableCell extends React.Component {
         );
     }
 }
-
+const current=JSON.parse(localStorage.getItem('current'));
 class ProductProcess extends React.Component{
   url;
+  operation;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/productProcess').style.color='#0079FE';
@@ -97,6 +98,7 @@ class ProductProcess extends React.Component{
       this.searchEvent=this.searchEvent.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
       this.deleteCancel=this.deleteCancel.bind(this);
+      this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -109,7 +111,9 @@ class ProductProcess extends React.Component{
           //console.log('Current: ', current);
         }
       };
-      this.columns=[{//表头
+       //获取该菜单所有权限
+       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
+      this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -133,7 +137,7 @@ class ProductProcess extends React.Component{
         const editable = this.isEditing(record);
         return (
             <span>
-                <span>
+                <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
                 {editable ? (
                   <span>
                     <EditableContext.Consumer>
@@ -151,14 +155,30 @@ class ProductProcess extends React.Component{
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
-              <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
+              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
+              <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}> 
+                <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
+              </span>
             </span>
         );
         }
-     },];
+     },]:[{//表头
+      title:'序号',
+      dataIndex:'index',//dataIndex值与字段值要匹配
+      key:'id',
+     sorter:(a, b) => a.id-b.id,
+      width: '46%',
+      align:'center',
+   },{
+      title:'产品工序名称',
+      dataIndex:'name',
+      key:'name',
+      editable:1,//?
+      width: '46%',
+      align:'center',
+  }];
     }
     
      /**返回基础数据页面 */
@@ -364,11 +384,16 @@ class ProductProcess extends React.Component{
             message.info('搜索失败，请联系管理员！')
            });
       }
-  
+      judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        //console.log(flag);
+        return flag.length>0?true:false
+    }
    render(){
      //通过localStorage可查到
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
+       
         const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
@@ -406,14 +431,16 @@ class ProductProcess extends React.Component{
                <BlockQuote name='产品工序' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>
                
-               <ProductProcessAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+               <ProductProcessAddModal fetch={this.fetch} url={this.url} flag={this.judgeOperation(this.operation,'SAVE')}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
+                
                       <SearchCell name='请输入产品工序' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
-                      fetch={this.fetch}/>
-               </span>
+                      fetch={this.fetch}
+                      flag={this.judgeOperation(this.operation,'QUERY')}
+                      />
+            
                <div className='clear'  ></div>
                 <Table rowKey={record => record.id} 
                     rowSelection={rowSelection} 

@@ -27,7 +27,7 @@
     overflow-y:scroll;
     display:block;
 }
-#thd::-webkit-scrollbar{
+#edit::-webkit-scrollbar{
     display: none;
 }
 
@@ -188,4 +188,36 @@
 }
 .sleID .ant-select-selection{
     border: none !important;
+}
+
+.Pdescription{
+    width: 100%;
+    border:1px solid #e4e4e4;
+    height: 35px;
+    border-radius: 3px;
+    line-height:35px;
+    padding-left: 7px;
+}
+
+.Pname{
+    display: inline-block;
+    width: 48%;
+    border:1px solid #e4e4e4;
+    height: 35px;
+    border-radius: 3px;
+    line-height:35px;
+    padding-left: 7px;
+    margin-top: 10px;
+}
+
+.Pres{
+    display: inline-block;
+    margin-left: 11px;
+    width: 48%;
+    border:1px solid #e4e4e4;
+    height: 35px;
+    border-radius: 3px;
+    line-height:35px;
+    padding-left: 7px;
+    margin-top: 10px;
 }

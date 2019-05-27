@@ -61,6 +61,14 @@ class UserAddModal extends React.Component{
                          <Input placeholder='请输入用户名' style={{height:'40px' }}></Input>
                      )}
             </FormItem>
+            <FormItem wrapperCol={{ span: 24 }} required>
+               {getFieldDecorator('idCardNumber',{
+                     initialValue: '',
+                     rules: [{required: true, message: '用户ID卡号不能为空'}],
+                  })(    //2、getFieldDecorator 的使用方法，
+                         <Input placeholder='请输入用户ID卡号' style={{height:'40px' }}></Input>
+                     )}
+            </FormItem>
                <FormItem wrapperCol={{ span: 24 }} required>
                {getFieldDecorator('password', {
                  rules: [{

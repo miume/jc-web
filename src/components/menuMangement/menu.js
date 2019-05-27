@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/page.css';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import BlockQuote from '../BlockQuote/blockquote';
 import MenuTable from './menuTable';
 import AddModal from './addModal';
@@ -13,6 +13,7 @@ import SearchCell from '../BlockQuote/search';
 class Menu extends React.Component{
     server
     url
+    operation
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -41,6 +42,7 @@ class Menu extends React.Component{
     //   this.Authorization = localStorage.getItem('Authorization');
       this.searchContentChange1 = this.searchContentChange1.bind(this)
       this.searchFatherEvent = this.searchFatherEvent.bind(this);
+      this.judgeOperation = this.judgeOperation.bind(this);
     //   this.changePage = this.changePage.bind(this);
 
       this.pagination = {
@@ -50,6 +52,12 @@ class Menu extends React.Component{
         },
     }
   }
+
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
 
   /**获取查询时菜单名称的实时变化 */
   searchContentChange1(e){
@@ -65,8 +73,8 @@ class Menu extends React.Component{
                 'Authorization':this.url.Authorization
             },
             params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
+                pageSize: this.pagination.pageSize,
+                pageNumber: this.pagination.current,
                 parentMenuName:ope_name
             },
             type:'json',
@@ -89,6 +97,7 @@ class Menu extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
        this.server = localStorage.getItem('remote');
        const current = JSON.parse(localStorage.getItem('current')) ;
+       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
@@ -101,16 +110,16 @@ class Menu extends React.Component{
             <AddModal
                 fetch={this.fetch}
                 fatherMenu = {this.state.fatherMenu}
+                flag={this.judgeOperation(this.operation,'SAVE')}
             />
             <DeleteByIds
                 selectedRowKeys={this.state.selectedRowKeys}
-                start={this.start}
+                deleteByIds={this.start}
                 loading={loading}
                 cancel={this.cancel}
+                flag={this.judgeOperation(this.operation,'DELETE')}
             />
-            <span style={{float:'right',paddingBottom:'8px'}}>
-                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-            </span>
+                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
         <div className='clear' ></div>
         <MenuTable
             data={this.state.dataSource}
@@ -122,6 +131,8 @@ class Menu extends React.Component{
             fatherMenu = {this.state.fatherMenu}
             searchContentChange1 = {this.searchContentChange1}
             searchFatherEvent = {this.searchFatherEvent}
+            judgeOperation = {this.judgeOperation}
+            operation = {this.operation}
         />
         </div>
       </div>
@@ -138,10 +149,10 @@ class Menu extends React.Component{
   /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
       this.fetch({
-          size: pagination.pageSize,
-          page: pagination.current,
-          orderField: 'id',
-          orderType: 'desc',
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+        sortField: 'id',
+        sortType: 'asc',
       });
     //   console.log(pagination)
   };
@@ -161,7 +172,7 @@ class Menu extends React.Component{
           const res = data.data.data;
           if(res&&res.list){
             this.pagination.total=res.total;
-            this.pagination.current=res.pageNum;
+            this.pagination.current=res.pageNumber;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
@@ -185,7 +196,6 @@ class Menu extends React.Component{
       headers:{
         'Authorization': this.url.Authorization
         },
-        params: {menuType:1},
     }).then((data)=>{
       const res = data.data.data;
       if(res){
@@ -199,7 +209,7 @@ class Menu extends React.Component{
       const ids = this.state.selectedRowKeys;
       axios({
           url:`${this.url.menu.deleteByIds}`,
-          method:'post',
+          method:'delete',
           headers:{
               'Authorization':this.url.Authorization
           },
@@ -207,7 +217,7 @@ class Menu extends React.Component{
           type:'json'
       }).then((data)=>{
           message.info(data.data.message);
-          this.fetch();
+          this.handleTableChange(this.pagination);
       }).catch((error)=>{
           message.info(error.data.message)
       });
@@ -226,14 +236,14 @@ class Menu extends React.Component{
     searchEvent(){
       const ope_name = this.state.searchContent;
       axios({
-          url:`${this.url.menu.findByNameLikeByPage}`,
+          url:`${this.url.menu.findAllByPage}`,
           method:'get',
           headers:{
               'Authorization':this.url.Authorization
           },
           params:{
-              size: this.pagination.pageSize,
-            //   page: this.pagination.current,
+            pageSize: this.pagination.pageSize,
+            //   pageNumber: this.pagination.current,
               menuName:ope_name
           },
           type:'json',

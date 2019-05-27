@@ -29,13 +29,14 @@ class AddModal extends Component{
     dateOk(value) {
         //console.log('onOk: ', value);
       }
-    
 
     // 拦截文件上传
     /**上传文件之前的钩子，参数为上传的文件，若返回 false 则停止上传。*/
     beforeUploadHandle=(file)=>{
+        //console.log(file);
         this.setState(state => ({
-          fileList: [...state.fileList, file],
+            fileList:[file]
+        //   fileList: [...state.fileList, file],//数组
         }));
         return false;
       }
@@ -69,7 +70,11 @@ class AddModal extends Component{
     }
      /**重置组件的值 */
      resetField=()=>{
-        this.props.form.resetFields();}
+        this.props.form.resetFields();
+        this.setState({
+            fileList:[]
+        });
+    }
      render(){
             const { form } = this.props;
             const { getFieldDecorator } = form; 
@@ -164,7 +169,7 @@ class AddModal extends Component{
                         <FormItem wrapperCol={{span:24}}>
                             { getFieldDecorator('supplyManufacturePhone',{
                                    
-                                    rules:[{required:true,message:'供货厂家电话不能为空'}]
+                                    rules:[{required:true,message:'请输入11位正确的供货厂家电话',pattern:new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g")}]
                                 })(
                                     <Input placeholder='请输入供货厂家电话' style={{width:'230px'}}/>
                                 )
@@ -196,7 +201,7 @@ class AddModal extends Component{
                         <FormItem wrapperCol={{span:24}}>
                             { getFieldDecorator('repairManufacturePhone',{
                                     
-                                    rules:[{required:true,message:'维修厂家电话不能为空'}]
+                                    rules:[{required:true,message:'请输入11位正确的维修厂家电话',pattern:new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/, "g")}]
                                 })(
                                     <Input placeholder='请输入维修厂家电话' style={{width:'230px'}}/>
                                    
@@ -209,7 +214,7 @@ class AddModal extends Component{
                         <Col span={10} style={{display:"block"}}>
                             <FormItem wrapperCol={{span:24}}>
                                 {
-                                    <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove} fileList={this.state.fileList}>
+                                    <Upload beforeUpload={this.beforeUploadHandle} onRemove={this.fileRemove}  fileList={this.state.fileList}>
                                         <Button className='equipmentFile-upload-button'>
                                          <Icon type="upload" className='equipmentFile-upload-icon'/> 上传手册文件
                                         </Button>

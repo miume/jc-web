@@ -96,6 +96,7 @@ class EditableCell extends React.Component {
 
 class User extends React.Component{
   url;
+  operation;
   componentDidMount(){
     this.fetch();
     this.getAllDepartment();
@@ -128,19 +129,21 @@ class User extends React.Component{
       this.searchEvent=this.searchEvent.bind(this);
       this.getAllDepartment = this.getAllDepartment.bind(this);//获取所有部门
       this.deleteCancel=this.deleteCancel.bind(this);
+      this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
         showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-        //改变每页条目数
-        // onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-        //   //console.log('Current: ', current, '; PageSize: ', pageSize);
-        // },
-        // onChange(current) {//跳转，页码改变
-        //   //console.log('Current: ', current);
-        // }
+       // 改变每页条目数
+        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
+          //console.log('Current: ', current, '; PageSize: ', pageSize);
+        },
+        onChange(current) {//跳转，页码改变
+          //console.log('Current: ', current);
+        }
       };
-      this.columns=[{//表头
+      // console.log(this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE'))
+      this.columns=!this.judgeOperation(this.operation,'UPDATE')||!this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -153,21 +156,28 @@ class User extends React.Component{
         dataIndex:'username',
         key:'username',
         editable:1,//?
-        width: '17%',
+        width: '13%',
         align:'center',
     },{
       title:'用户名',
       dataIndex:'name',
       key:'name',
       editable:1,//?
-      width: '17%',
+      width: '13%',
       align:'center'
   },{
+    title:'用户ID卡号',
+    dataIndex:'idCardNumber',
+    key:'idCardNumber',
+    editable:1,//?
+    width: '13%',
+    align:'center'
+},{
          title:'所属部门',
          dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
          key:'departmentId',
          editable:1,
-         width: '17%',
+         width: '14%',
          align:'center',
          render:(text,record) => {
           //console.log(text);//text是dataIndex对应的字段值
@@ -180,7 +190,7 @@ class User extends React.Component{
          dataIndex:'phone',
          key:'phone',
          editable:1,
-        width: '16.5%',
+        width: '14%',
          align:'center',
      },{
       title: '操作',
@@ -192,12 +202,12 @@ class User extends React.Component{
         const editable = this.isEditing(record);
         return (
             <span>
-                <span className='blue'>
+                <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
                 {editable ? (
                   <span>
                     <EditableContext.Consumer>
                       {form => (
-                        <span
+                        <span className='blue'
                           onClick={() => this.save(form, record.id)}
                           style={{ marginRight: 8 }}>保存</span>
                       )}
@@ -210,14 +220,64 @@ class User extends React.Component{
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
-              <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
+              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
+             <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}> <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
+              </span>
             </span>
           );
         }
-     },];
+     },]:[{//表头
+      title:'序号',
+      dataIndex:'index',//dataIndex值与字段值要匹配
+      key:'id',
+     //sorter:true,//需要服务端排序
+     sorter:(a, b) => a.id-b.id,
+      width: '12%',
+      align:'center',
+   },{
+      title:'登录名',
+      dataIndex:'username',
+      key:'username',
+      editable:1,//?
+      width: '15%',
+      align:'center',
+  },{
+    title:'用户名',
+    dataIndex:'name',
+    key:'name',
+    editable:1,//?
+    width: '16%',
+    align:'center'
+},{
+  title:'用户ID卡号',
+  dataIndex:'idCardNumber',
+  key:'idCardNumber',
+  editable:1,//?
+  width: '18%',
+  align:'center'
+},{
+       title:'所属部门',
+       dataIndex:'departmentId',//列数据在数据项中对应的 key,dataIndex的值要是后端传过来的字段
+       key:'departmentId',
+       editable:1,
+       width: '16%',
+       align:'center',
+       render:(text,record) => {
+        //console.log(text);//text是dataIndex对应的字段值
+        // console.log(record);//record代表的是后端传过来的一条记录的值data
+         return `${record.departmentName}`  //渲染此条记录的部门名称
+
+        }
+   },{
+       title:'手机号',
+       dataIndex:'phone',
+       key:'phone',
+       editable:1,
+      width: '17%',
+       align:'center',
+   }];
     }
     //页面切换调用的函数
     handleTableChange=(pagination)=>{
@@ -253,10 +313,10 @@ class User extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
-        //console.log(res);
-        this.pagination.total=res.total?res.total:0;
-        this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
+       // console.log(res);
         if(res&&res.list){
+          this.pagination.total=res.total?res.total:0;
+          this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
           for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=res.prePage*10+i;
         }
@@ -277,7 +337,7 @@ class User extends React.Component{
       handleOk(){//处理新增一条记录
        const value=this.formRef.getItemsValue();//获取新增的表单内容
         //value.splice(4,1);
-       if(!value['username'] ||!value['name'] ||!value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
+       if(!value['username'] ||!value['name'] ||!value['idCardNumber']||!value['password'] || !value['confirm'] || !value['departmentId']||!value['phone'] ){
                message.info('信息填写不完整！');
                return
        }
@@ -469,8 +529,9 @@ class User extends React.Component{
            .then((data)=>{
              
              const res=data.data.data;
-             this.pagination.total=res?res.total:0;
+            
              if(res&&res.list){
+              this.pagination.total=res?res.total:0;
              // console.log(res&&res.list);
               this.pagination.current=res.pageNum;
               for(var i=1;i<=res.list.length;i++){
@@ -503,9 +564,17 @@ class User extends React.Component{
           })
         })
       }
+      /*用来判断该菜单有哪些操作权限*/
+      judgeOperation(operation,operationCode){
+         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+         return flag.length>0?true:false
+      }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'))
         const current=JSON.parse(localStorage.getItem('current'));
+        /*获取当前菜单所有权限*/
+       // this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[3].operations:null;
+       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             selectedRowKeys,
@@ -538,21 +607,25 @@ class User extends React.Component{
            <div>
                <BlockQuote name={current.menuName} menu={current.menuParent}/>
                <div style={{padding:'15px'}}>
-               <NewButton handleClick={this.handleAdd} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
-                    <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} centered={true} className='modal-sm'
-                          footer={[
-                            <CancleButton  key='cancel' handleCancel={() => this.handleCancel()} />,
-                            <NewButton key='ok' handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
-                          ]}>
-                          <UserAddModal  key='user' deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
-                    </Modal>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                    <span style={{float:'right',paddingBottom:'8px'}}>
+                 <span className={this.judgeOperation(this.operation,'SAVE')?'':'hide'}>
+                  <NewButton handleClick={this.handleAdd} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
+                      <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} centered={true} className='modal-sm'
+                            footer={[
+                              <CancleButton  key='cancel' handleCancel={() => this.handleCancel()} />,
+                              <NewButton key='ok' handleClick={() => this.handleOk()} className='fa fa-check' name='确定'/>,
+                            ]}>
+                            <UserAddModal  key='user' deparment={this.state.departmentchildren} wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset}></UserAddModal>
+                      </Modal>
+                 </span>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
+                   
                       <SearchCell name='请输入用户名称'
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange}
-                      fetch={this.fetch}/>
-                    </span>
+                      fetch={this.fetch}
+                      flag={this.judgeOperation(this.operation,'QUERY')}
+                      />
+                    
                 <div className='clear'  ></div>
                 <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 418 }}/>
                 </div>

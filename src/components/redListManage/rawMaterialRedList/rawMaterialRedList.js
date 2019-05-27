@@ -138,9 +138,9 @@ class RawMaterialRedList extends Component{
                 //console.log(editFlag);
                return(//onConfirm是点击确认时的事件回调
                    <span>
-                        <Edit record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
-                        <Divider type='vertical'/>
-                       <span>
+                        <Edit record={record}  editFlag={this.judgeStatus(record.commonBatchNumber.status)} fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren} flag={this.judgeOperation(this.operation,'UPDATE')}/>
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type='vertical' />:''}
+                       <span  className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                        {editFlag ? (
                          <span>
                            <Popconfirm title='确定删除？' onConfirm={()=>this.handleDelete(record.repoRedTable.id)} okText='确定'cancelText='再想想'>
@@ -151,7 +151,7 @@ class RawMaterialRedList extends Component{
                          <span className='notClick' >删除</span>
                        )}
                      </span>
-                     <Divider type='vertical'/>
+                     {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
                      <Note record={record}/>
                     
                    </span>
@@ -167,6 +167,7 @@ class RawMaterialRedList extends Component{
         this.deleteByIds=this.deleteByIds.bind(this);
         this.fetch = this.fetch.bind(this);
         this.deleteCancel=this.deleteCancel.bind(this);
+        this.judgeOperation=this.judgeOperation.bind(this);
     }
     judgeStatus=(record_status)=>{
          //console.log(record_status);
@@ -205,9 +206,10 @@ class RawMaterialRedList extends Component{
             // console.log(data);
              const res=data.data.data;
              //console.log(res);
-             this.pagination.total=res.total?res.total:0;
-             this.pagination.current=res.pageNumber;
+             
           if(res&&res.list){
+            this.pagination.total=res.total?res.total:0;
+            this.pagination.current=res.pageNumber;
             for(let i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
            }
@@ -318,9 +320,10 @@ class RawMaterialRedList extends Component{
       .then((data)=>{
               const res=data.data.data;
             // console.log(res.total);
-              this.pagination.total=res?res.total:0;
-              this.pagination.current=res.pageNumber;
+             
               if(res&&res.list){
+                this.pagination.total=res?res.total:0;
+                this.pagination.current=res.pageNumber;
                for(var i=1;i<=res.list.length;i++){
                  res.list[i-1]['index']=res.prePage*10+i;
               }
@@ -355,9 +358,16 @@ class RawMaterialRedList extends Component{
             }
         });
  }
+ judgeOperation(operation,operationCode){
+    var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+    return flag.length>0?true:false
+}
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
         this.status=JSON.parse(localStorage.getItem('status'));
+        const current=JSON.parse(localStorage.getItem('current'));
+        //获取该菜单所有权限
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         const {selectedRowKeys}=this.state;
         const rowSelection={
             selectedRowKeys,
@@ -367,17 +377,18 @@ class RawMaterialRedList extends Component{
           }),
     };
         return(
-            <div style={{paddingLeft:'15px'}}>
-                <Add    fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
-                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+            <div style={{padding:'0 15px'}}>
+                <Add   flag={this.judgeOperation(this.operation,'SAVE')}  fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}  flag={this.judgeOperation(this.operation,'DELETE')}/>
+                
                       <SearchCell name='请输入编号' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
                           fetch={this.fetch}
                           type={this.props.type}
+                          flag={this.judgeOperation(this.operation,'QUERY')}
                     />
-                    </span>
+                   
                 <Table
                         rowKey={record => record.repoRedTable.id}
                         dataSource={this.state.dataSource}

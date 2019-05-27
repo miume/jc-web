@@ -6,7 +6,9 @@ import axios from 'axios';
 
 
 class ProductInventor extends Component{
+   
     url;
+    operation;
     componentDidMount(){
       this.fetch();
     }
@@ -54,11 +56,6 @@ class ProductInventor extends Component{
            key:'serialNumber',
            width:'35%',
            align:'center',
-           render:(text)=>{
-            return(
-                <div title={text} className='text-decoration'>{text.split("-")[0]+'-'+text.split("-")[1]+'-'+text.split("-")[2]+'...'}</div>
-            )
-           }
         },{
            title:'重量',
            dataIndex:'weight',
@@ -80,6 +77,7 @@ class ProductInventor extends Component{
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
+        this.judgeOperation=this.judgeOperation.bind(this);
     }
     handleTableChange=(pagination)=>{//页切换时调用
          const {pageChangeFlag}=this.state;
@@ -169,19 +167,27 @@ class ProductInventor extends Component{
          message.info('搜索失败，请联系管理员！');
      });
     }
+    judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'));
+        const current=JSON.parse(localStorage.getItem('current'));
+        //获取该菜单所有权限
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         return(
             <div style={{padding:'0 15px'}}>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+                
                     <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         type={this.props.type}
                         fetch={this.fetch}
+                        flag={this.judgeOperation(this.operation,'QUERY')}
                     >
                     </SearchCell>
-                </span>
+               
                 <div className='clear'  ></div>
                 <Table
                 rowKey={record=>record.id}

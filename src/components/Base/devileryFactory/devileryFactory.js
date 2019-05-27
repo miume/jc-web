@@ -62,9 +62,10 @@ class EditableCell extends React.Component {
         );
     }
 }
-
+const current=JSON.parse(localStorage.getItem('current'));
 class DeliveryFactory extends React.Component{
   url;
+  operation;
   componentDidMount(){
     this.fetch();
     //document.getElementById('/deliveryFactory').style.color='#0079FE';
@@ -93,6 +94,7 @@ class DeliveryFactory extends React.Component{
       this.deleteByIds=this.deleteByIds.bind(this);
       this.returnBaseInfo=this.returnBaseInfo.bind(this);
       this.deleteCancel=this.deleteCancel.bind(this);
+      this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
         total: this.state.dataSource.length,
         showSizeChanger: true,//是否可以改变 pageSize
@@ -105,7 +107,9 @@ class DeliveryFactory extends React.Component{
           //console.log('Current: ', current);
         }
       };
-      this.columns=[{//表头
+      this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
+      
+      this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -119,7 +123,8 @@ class DeliveryFactory extends React.Component{
         editable:1,//?显示这个数据格是否可编辑
         width: '33%',
         align:'center',
-    },{
+    },
+    {
       title: '操作',
       key:'operation',
       width: '33%',
@@ -128,7 +133,7 @@ class DeliveryFactory extends React.Component{
         const editable = this.isEditing(record);
         return (
             <span>
-                <span>
+                <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
                 {editable ? (
                   <span>
                     <EditableContext.Consumer>
@@ -146,14 +151,29 @@ class DeliveryFactory extends React.Component{
                   <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                 )}
               </span>
-              <Divider type="vertical" />
-              <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
+              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
+              <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}><Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
                 <span className='blue'>删除</span>
                 </Popconfirm>
+              </span>
             </span>
           );
         }
-     },];
+     },]:[{//表头
+      title:'序号',
+      dataIndex:'index',//dataIndex值与字段值要匹配
+      key:'id',
+      sorter:(a, b) => a.id-b.id,
+      width: '46%',
+      align:'center',
+   },{
+      title:'送样工厂名称',
+      dataIndex:'name',
+      key:'name',
+      editable:1,//?显示这个数据格是否可编辑
+      width: '46%',
+      align:'center',
+  }];
     }
     //获取所有数据getAllByPage
     handleTableChange=(pagination)=>{
@@ -368,10 +388,16 @@ class DeliveryFactory extends React.Component{
             message.info('查询失败，请联系管理员！')
            });
       }
-  
+   judgeOperation(operation,operationCode){
+       var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+       //console.log(flag);
+       return flag.length>0?true:false
+   }
    render(){
      this.url=JSON.parse(localStorage.getItem('url'));
-     const current=JSON.parse(localStorage.getItem('current'));
+    
+     //获取该菜单所有操作权限
+     this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
      const {selectedRowKeys}=this.state; 
      const rowSelection = {//checkbox
           onChange:this.onSelectChange,
@@ -408,14 +434,15 @@ class DeliveryFactory extends React.Component{
            <div>
                <BlockQuote name='送样工厂' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
                <div style={{padding:'15px'}}>  
-               <DeliveryFactoryAddModal fetch={this.fetch} url={this.url}/>
-               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}/>
-                <span style={{float:'right',paddingBottom:'8px'}}>
+               <DeliveryFactoryAddModal fetch={this.fetch} url={this.url} flag={this.judgeOperation(this.operation,'SAVE')}/>
+               <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'SAVE')}/>
+               
                       <SearchCell name='请输入送样工厂' 
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange} 
-                      fetch={this.fetch}/>
-               </span>
+                      fetch={this.fetch}
+                      flag={this.judgeOperation(this.operation,'QUERY')}/>
+             
                <div className='clear'  ></div>
                 <Table rowKey={record => record.id} 
                     rowSelection={rowSelection} 

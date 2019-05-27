@@ -14,13 +14,15 @@
     border: 1px solid  #E9E9E9;
     border-radius: 3px;
     width: 57%;
+    /*padding-bottom: 500px;*/
 }
 .purchaseTopThead {
     color: white;
     background: #0079FE;
 }
 .purchaseTopThead tr th {
-    text-align: center;
+    /*text-align: center;*/
+    padding-left: 5px;
     font-size: 15px;
     border: 1px solid #E9E9E9;
 }
@@ -35,12 +37,14 @@
 /*}*/
 .purchaseTopTbody tr td {
     width: 15%;
-    text-align: center;
+    /*text-align: center;*/
+    padding-left: 5px;
     border: 1px solid #E9E9E9;
 }
 .purchaseTopTbody tr td .ant-input{
     height: 20px !important;
-    text-align: center;
+    padding-left: 0;
+    /*text-align: center;*/
     border: none;
 }
 .purchaseTopJudger {
@@ -69,6 +73,7 @@
     width: 1000px;
     height: 470px;
     white-space: nowrap;
+    padding-top: 60px;
     /*display: flex;*/
     font-size: 0;
 
@@ -101,7 +106,11 @@
     border-radius: 3px 0 0 0;
     display: flex;
     line-height: 90px;
-    text-align: center;
+    /*text-align: center;*/
+    /*padding-left: 5px;*/
+}
+.theadLeft div{
+    padding-left: 5px;
 }
 .leftThead {
     min-width: 49.9%;
@@ -167,7 +176,7 @@
     min-width: 100px;
     max-width: 100px;
     line-height: 29px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     color:black;
     /*border-left: 1px solid #E9E9E9;*/
@@ -177,11 +186,12 @@
 }
 .middleTheadDiv div{
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .middleTheadDivLength {
     flex-grow:1;
     line-height: 29px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     color:black;
     /*border-left: 1px solid #E9E9E9;*/
@@ -190,6 +200,7 @@
     transition: transform 2s;
 }
 .middleTheadDivLength div{
+    padding-left: 5px;
     border-bottom: 1px solid #E9E9E9;
 }
 
@@ -199,7 +210,7 @@
     height: 90px;
     background-color: #F2F2F2;
     line-height: 90px;
-    text-align: center;
+    /*text-align: center;*/
     cursor: default;
     font-size: 13px;
     border-left: 1px solid #E9E9E9;
@@ -227,13 +238,14 @@
     max-width: 100%;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    /*text-align: center;*/
     cursor: default;
     font-size: 13px;
     display: flex;
 
 }
 .leftTbody div{
+    padding-left: 5px;
     height: 30px;
     min-width: 49.9%;
     max-width: 49.9%;
@@ -258,7 +270,7 @@
     max-width: 100%;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     white-space: nowrap;
     display: flex;
@@ -270,6 +282,7 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .middleTbodyDivWhiteLength {
     min-width: 50px;
@@ -278,7 +291,8 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
-    text-align:center
+    /*text-align:center*/
+    padding-left: 5px;
 }
 .middleTbodyDivWhiteLength div{
     margin:0 auto;
@@ -292,6 +306,7 @@
     height: 30px;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 .middleTbodyDivRedLength {
     min-width: 50px;
@@ -301,7 +316,8 @@
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
     background-color: #FF3B30;
-    text-align:center
+    /*text-align:center*/
+    padding-left: 5px;
 }
 .middleTbodyDivRedLength div{
     margin:0 auto;
@@ -317,7 +333,7 @@
     max-width: 100%;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    /*text-align: center;*/
     font-size: 13px;
     display: flex;
 }
@@ -327,6 +343,7 @@
     max-width: 49.9%;
     border-left: 1px solid #E9E9E9;
     border-bottom: 1px solid #E9E9E9;
+    padding-left: 5px;
 }
 
 .isQualified {
@@ -388,7 +405,10 @@
 }
 
 .unTrackTopModal {
-    padding-bottom: 15px;
+    /*padding-bottom: 80px ;*/
+
+    height: 70px;
+    width: 750px;
 }
 
 .unTrackTopTable{
@@ -398,14 +418,14 @@
     border-collapse: collapse;
     border: 1px solid  #E9E9E9;
     border-radius: 3px;
-    width: 60%;
+    width: 100%;
 }
 .unTrackTopThead {
     color: white;
     background: #0079FE;
 }
 .unTrackTopThead tr th {
-    height: 35px;
+    height: 30px;
     /*text-align: center;*/
     padding-left: 5px;
     font-size: 15px;
@@ -422,7 +442,7 @@
     width: 20%;
     /*text-align: center;*/
     border: 1px solid #E9E9E9;
-    height: 35px !important;
+    height: 30px ;
     /*padding-left: 5px;*/
 }
 /*.unTrackTopTbody tr td:first-child{*/
@@ -443,10 +463,31 @@
 .paddingTop td{
     padding-left: 5px;
 }
+.unTrackTopTable .unTrackTr {
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td{
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td div{
+    height: 30px;
+}
 
-.unTrackTr .ant-select-selection__rendered{
+.unTrackTopTable .unTrackTr td div div {
+    height: 29px !important;
+}
+.unTrackTopTable .unTrackTr .ant-select-selection__rendered{
     margin-left: 5px;
 }
 .unTrackTr td:first-child{
     padding-left: 5px;
+}
+.unTrackTopTable .unTrackTr td span{
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td span div{
+    height: 30px;
+}
+.unTrackTopTable .unTrackTr td span div input{
+    height: 30px !important;
 }

@@ -3,6 +3,7 @@ import {Divider, Table} from 'antd';
 import DetailSpan from './detailSpan';
 import CheckSpan from './checkSpan';
 import ReleaseSpan from './releaseSpan';
+import Loss from '../BlockQuote/lossStatement'
 
 class InterTable extends React.Component{
     columns = [{
@@ -18,8 +19,8 @@ class InterTable extends React.Component{
         key: 'sampleDeliveringRecord.sampleDeliveringDate',
         align:'center',
         width: '8%',
-        render: sampleDeliveringDate => {
-            return <abbr className="text-decoration" title={sampleDeliveringDate?sampleDeliveringDate:'无'}>{sampleDeliveringDate?sampleDeliveringDate.substring(0,10):'无'}</abbr>
+        render:(sampleDeliveringDate)=>{
+            return <span title={sampleDeliveringDate} className='text-decoration'>{sampleDeliveringDate.substring(0,10)}</span>
         }
     },{
         title: '送检人',
@@ -40,36 +41,36 @@ class InterTable extends React.Component{
             return deliveryFactoryName?deliveryFactoryName:'无';
         }
     },{
-        title: '编号',
+        title: '批号',
         dataIndex: 'commonBatchNumber.batchNumber',
         key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
-        render: batchNumber => {
-            return <abbr className="text-decoration" title={batchNumber?batchNumber:'无'}>{batchNumber?batchNumber.substring(0,15):'无'}</abbr>
-            // return batchNumber?batchNumber:'无';
+        render:(batchNumber)=>{
+            const arr = batchNumber.split('-');
+            if(arr.length>2){
+                return <span title={batchNumber} className='text-decoration'>{arr[0]+'-'+arr[1]+'...'}</span>
+            }else{
+                return <span>{batchNumber}</span>
+            }
         }
+
     },{
         title: '检测项目',
         dataIndex: 'testItemString',
         key: 'testItemString',
         align:'center',
         width: '10%',
-        render: testItems => {
-            const length = testItems?testItems.length:0;
-            if(length > 9){
-                return <abbr className="text-decoration" title={testItems?testItems:'无'}>{testItems?testItems.substring(0,9):'无'}</abbr>
+        render:(text)=>{
+            const items = text.split(',');
+            var testItems = '';
+            if(items.length>5){
+                testItems = items[0]+','+items[1]+','+items[2]+'...';
+                return <span title={text} className='text-decoration'>{testItems}</span>;
+            }else{
+                testItems = text;
+                return <span>{testItems}</span>
             }
-            return testItems?testItems:'无';
-        }
-    },{
-        title: '异常备注',
-        dataIndex: 'sampleDeliveringRecord.exceptionComment',
-        key: 'sampleDeliveringRecord.exceptionComment',
-        align:'center',
-        width: '6%',
-        render: exceptionComment => {
-            return exceptionComment?exceptionComment:'无';
         }
     },{
         title: '发布状态',
@@ -98,7 +99,7 @@ class InterTable extends React.Component{
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '11%',
+        width: '18%',
         render: (text,record) => {
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
@@ -115,27 +116,33 @@ class InterTable extends React.Component{
                     ):(
                         <span  className="notClick">详情</span>
                     )}
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {checkSpanFlag?(
+                            <CheckSpan
+                                menuList={this.props.menuList}
+                                url={this.props.url}
+                                id={record.sampleDeliveringRecord.id}
+                                fetch={this.props.fetch}
+                            />
+                        ):(
+                            <span  className="notClick">录检</span>
+                        )}
+                    </span>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {releaseSpanFlag?(
+                            <ReleaseSpan
+                                url={this.props.url}
+                                id={record.sampleDeliveringRecord.id}
+                                fetch={this.props.fetch}
+                            />
+                        ):(
+                            <span  className="notClick">发布</span>
+                        )}
+                    </span>
                     <Divider type="vertical" />
-                    {checkSpanFlag?(
-                        <CheckSpan
-                            menuList={this.props.menuList}
-                            url={this.props.url}
-                            id={record.sampleDeliveringRecord.id}
-                            fetch={this.props.fetch}
-                        />
-                    ):(
-                        <span  className="notClick">录检</span>
-                    )}
-                    <Divider type="vertical" />
-                    {releaseSpanFlag?(
-                        <ReleaseSpan
-                            url={this.props.url}
-                            id={record.sampleDeliveringRecord.id}
-                            fetch={this.props.fetch}
-                        />
-                    ):(
-                        <span  className="notClick">发布</span>
-                    )}
+                        <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                 </span>
             )
         }
@@ -167,7 +174,7 @@ class InterTable extends React.Component{
     }
     /**判断详情，录检，发布可否功能 */
     judgeDetailOperation = (status) => {
-        if(status===0){
+        if(status===-1){
             return false;
         }else{
             return true;

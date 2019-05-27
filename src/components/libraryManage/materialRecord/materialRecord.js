@@ -89,6 +89,7 @@ class MaterialRecord extends React.Component{
                         searchEvent={this.searchEvent}
                         fetch = {this.getAllData}
                         type={this.props.type}
+                        flag={this.props.flag}
                     >
                     </SearchCell>
                 </span>
@@ -150,21 +151,22 @@ class MaterialRecord extends React.Component{
                     </div>
                     <div className="MRfour">
                 {
-                    this.state.dataSource.map((m,index)=>{
-                        var string = m.repoDiffRecord.createTime.substring(0,10)
+
+                    this.state.dataSource?this.state.dataSource.map((m,index)=>{
+                        var string = m.repoDiffRecord.createTime?m.repoDiffRecord.createTime.substring(0,10):'无'
                         return <div title={m.repoDiffRecord.createTime} style={{textDecoration:'underline'}} className="MRborder-down" key={index}>
                                     {string}
                                 </div>    
-                    })
+                    }):null
                 }
                     </div>
                     <div className="MRfour">
                 {
-                    this.state.dataSource.map((m,index)=>{
+                    this.state.dataSource?this.state.dataSource.map((m,index)=>{
                         return <div className="MRborder-down" key={index}>
                                     {m.creator}
                                 </div>    
-                    })
+                    }):null
                 }
                     </div>
                     {/* <div className="MRfive">

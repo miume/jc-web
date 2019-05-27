@@ -75,7 +75,7 @@ class Product extends React.Component{
             },
             type:"json",
         }).then((data)=>{
-            const res = data.data.data.list;
+            const res = data.data.data;
             if(res){
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=i;
@@ -158,13 +158,14 @@ class Product extends React.Component{
         this.server = localStorage.getItem('remote');
         return (
             <div style={{padding:'0 15px'}}>
-                <NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>
+                {this.props.check?<NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>:null}
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
                         fetch={this.getAllData}
                         type={this.props.type}
+                        flag={this.props.flag}
                     >
                     </SearchCell>
                 </span>

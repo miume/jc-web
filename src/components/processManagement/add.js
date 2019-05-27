@@ -82,11 +82,18 @@ class DynamicFieldSet extends React.Component{
                 data: data,
                 type:'json'
             }).then((data) => {
-                message.info(data.data.message);
-                this.props.fetch(); // 重新调用分页函数
+                if(data.data.code !== 0){
+                  message.info('新增失败');
+                  this.setState({
+                    visible:true
+                  })
+                }else{
+                  message.info(data.data.message);
+                  this.props.fetch(); // 重新调用分页函数
+                  this.props.form.resetFields();
+                  this.setState({ visible: false});
+                }
           })
-          this.props.form.resetFields();
-          this.setState({ visible: false});
         });
     }
 
@@ -118,11 +125,18 @@ class DynamicFieldSet extends React.Component{
               data: data,
               type:'json'
           }).then((data) => {
-              message.info(data.data.message);
-              this.props.fetch(); // 重新调用分页函数
+              if(data.data.code !== 0){
+                message.info('新增失败')
+                this.setState({
+                  visible:true
+                })
+              }else{
+                message.info(data.data.message);
+                this.props.fetch(); // 重新调用分页函数
+                this.props.form.resetFields();
+                this.setState({ visible: false});
+              }
         })
-        this.props.form.resetFields();
-        this.setState({ visible: false});
       });
   }
 
@@ -139,7 +153,7 @@ class DynamicFieldSet extends React.Component{
 
       render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        this.ob = JSON.parse(localStorage.getItem('menuList'))
+        this.ob = JSON.parse(localStorage.getItem('menuList'));
         const children = this.state.approvalProcess.map(p => 
           <Option className="option" id={p.id} key={p.id} value={p.id}>{p.name}</Option>
       )
@@ -194,7 +208,7 @@ class DynamicFieldSet extends React.Component{
             </div>
           ));
           return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
             <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
             <Modal
               visible={this.state.visible}
@@ -218,12 +232,14 @@ class DynamicFieldSet extends React.Component{
                       )
                       }
                   </Form.Item>
+                  <div id="edit" style={{height:'360px'}}>
                   {formItems}
                   <Form.Item {...formItemLayoutWithOutLabel}>
                     <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
                       <Icon type="plus" /> 添加一行
                     </Button>
                   </Form.Item>
+                  </div>
               </Form>
             </Modal>
             </span>

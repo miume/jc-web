@@ -3,7 +3,7 @@ import '../Home/page.css';
 import { Table,Popconfirm,Divider,message } from 'antd';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
-import DeleteByIds from './deleteByIds';
+import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
 import Detail from './detail';
 import Editor from './edit';
@@ -14,6 +14,7 @@ import axios from "axios";
 class Management extends React.Component{
     url
     status
+    operation
     constructor(props){
         super(props)
         this.state = {
@@ -30,6 +31,7 @@ class Management extends React.Component{
         this.start=this.start.bind(this);
         this.cancel=this.cancel.bind(this);
         this.handleTableChange=this.handleTableChange.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -41,7 +43,6 @@ class Management extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'commonBatchNumber.id',
-            // sorter: (a, b) => a.commonBatchNumber.id - b.commonBatchNumber.id,
             align:'center',
             width: '6%',
         },{
@@ -62,10 +63,6 @@ class Management extends React.Component{
             key: 'createTime',
             align:'center',
             width: '18%',
-            // render:(text)=>{
-            //     const items = text.split(' ')
-            //     return <abbr title={text}>{items[0]}</abbr>
-            // }
         },{
             title: '保存状态',
             dataIndex: 'commonBatchNumber.status',
@@ -81,13 +78,6 @@ class Management extends React.Component{
             key: 'batchNumber',
             align:'center',
             width: '18%',
-            // render:(text)=>{
-            //     if(text.length>8){
-            //         return <abbr title={text}>{text.substr(0,7)}</abbr>
-            //     }else{
-            //         return text
-            //     }
-            // }
         },{
             title: '操作',
             dataIndex: 'commonBatchNumber.id',
@@ -98,12 +88,12 @@ class Management extends React.Component{
                 return (
                     <span>
                         <Detail value={record} />
-                        <Divider type="vertical" />
-                        <Editor value={text} status={record.commonBatchNumber.status} pagination={this.pagination} handle={this.handleTableChange}/>
-                        <Divider type="vertical" />
+                        {this.judgeOperation(this.operation,'DELETE')&&this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
+                        <Editor value={text} status={record.commonBatchNumber.status} pagination={this.pagination} handle={this.handleTableChange} flag={this.judgeOperation(this.operation,'UPDATE')}/>
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
                         {record.commonBatchNumber.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
-                            <span className='blue' href="#">删除</span>
-                        </Popconfirm>:<span className="notClick">删除</span>}
+                            <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
+                        </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
                         
                     </span>
                 );
@@ -128,6 +118,11 @@ class Management extends React.Component{
             }
             this.handleTableChange(this.pagination);
         }, 1000);
+    };
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
     }
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
@@ -174,10 +169,10 @@ class Management extends React.Component{
           return ;
         }
       }
-    handleSearch = (selectedKeys, confirm) => () => {
-        confirm();
-        this.setState({ searchText: selectedKeys[0] });
-      }
+    // handleSearch = (selectedKeys, confirm) => () => {
+    //     confirm();
+    //     this.setState({ searchText: selectedKeys[0] });
+    //   }
     /**获取查询时菜单名称的实时变化 */
     searchContentChange(e){
         const value = e.target.value;
@@ -247,12 +242,13 @@ class Management extends React.Component{
       }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-        this.setState({ selectedRowKeys:selectedRowKeys }); 
+        this.setState({ selectedRowKeys:selectedRowKeys });
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.status = JSON.parse(localStorage.getItem('status'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
+        const current = JSON.parse(localStorage.getItem('current'));
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         const { loading, selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -269,19 +265,19 @@ class Management extends React.Component{
                     <div style={{padding:'15px'}}>
                     <Add 
                         fetch={this.fetch}
+                        flag={this.judgeOperation(this.operation,'SAVE')}
                     />&nbsp;&nbsp;&nbsp;
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
-                        start={this.start}
+                        deleteByIds={this.start}
                         loading={loading}
                         cancel={this.cancel}
+                        flag={this.judgeOperation(this.operation,'DELETE')}
                     />
-                    <span style={{float:'right',paddingBottom:'8px'}}>
-                <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-                </span>                
-                <div className='clear' ></div>
-                <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
-                    </div>
+                    <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>              
+                    <div className='clear' ></div>
+                    <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
+                        </div>
                 </div>
             );
     }

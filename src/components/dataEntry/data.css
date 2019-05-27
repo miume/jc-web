@@ -60,3 +60,35 @@
     padding-right: 15px;
   }
 }
+.dataEntry{
+  margin-top: 20px;
+  width : 100%;
+  height : 100%
+}
+.dataPart{
+  cursor : pointer;
+  display : inline-block ;
+  height : 220px;
+}
+.dataPart-child{
+  border : 1px solid #1890ff;
+}
+.dataPart-child-div{
+  width : 100%;
+  height : 80%;
+  background-color : #1890ff ;
+  text-align : center;
+}
+.dataPart-child-div p{
+  padding : 40px;
+}
+.dataPart-child-div p i{
+  color: white;
+}
+.dataPart-child-bottom{
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+  margin-top: 10px;
+}

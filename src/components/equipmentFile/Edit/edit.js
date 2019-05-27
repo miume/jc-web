@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {Modal} from 'antd';
+import {Modal,message} from 'antd';
 import EditModal from './editModal';
 import CancleButton from '../../BlockQuote/cancleButton';
 import SaveButton from '../../BlockQuote/saveButton';
 //import NewButton from '../../BlockQuote/newButton';
+import axios from 'axios';
 class Edit extends Component{
     constructor(props){
          super(props);
@@ -18,9 +19,26 @@ class Edit extends Component{
         this.setState({visible:true});
     } 
   
-    handleEditSave(){
+    handleEditSave(){//点击编辑的保存事件
         this.setState({
             visible:false
+        });
+        const value=this.formRef.getItemsValue();
+       //console.log(value.get('file'));
+        axios({
+            url:`${this.props.url.equipmentArchiveRecord.get}`,
+            method:'put',
+            headers:{
+                'Authorization' :this.props.url.Authorization
+            },
+            data:value,
+            type:'json'
+        }).then((data)=>{
+             //console.log(data);
+             message.info(data.data.message);
+             this.props.fetch();
+        }).catch(()=>{
+            message.info('编辑失败，请联系管理员！');
         });
     }
     handleCancel(){
@@ -29,7 +47,7 @@ class Edit extends Component{
     }
     render(){
         return(
-            <span>
+            <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                 <span className='blue' onClick={this.showModal}>编辑</span>
                 <Modal
                     title={this.state.title}

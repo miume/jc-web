@@ -87,7 +87,7 @@ class DeliveryFactoryAddModal extends React.Component{
       }
     render(){
         return(
-          <span>
+          <span className={this.props.flag?'':'hide'}>
               <NewButton handleClick={this.showModal} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
               <CollectionCreateForm
                 wrappedComponentRef={this.saveFormRef}

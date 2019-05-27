@@ -9,7 +9,6 @@ import moment from "moment";
 const Option = Select.Option;
 const FormItem = Form.Item;
 
-
 const CollectionCreateForm = Form.create()(
     class extends React.Component{
         url
@@ -27,7 +26,6 @@ const CollectionCreateForm = Form.create()(
                 // MiddleserialNumber : [],
                 FinalserialNumber:[],
                 materialsItem:[],
-
                 process : [],
                 sampling : [],
                 MiddleFactor : [],
@@ -37,9 +35,12 @@ const CollectionCreateForm = Form.create()(
                 procedureId : null,
                 samplingPoint:null,
                 materialsId : null,
-
                 clicked: false,
-                visible1: 1
+                visible1: 1,
+                processVis : 0,
+                pointVis : 0,
+                materialVis : 0,
+                oldMaterial : undefined
             }
             // this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
@@ -72,7 +73,6 @@ const CollectionCreateForm = Form.create()(
                       })
                 }
             })
-
             axios({
                 url: `${this.url.deliveryFactory.deliveryFactory}`,
                 method : 'get',
@@ -86,7 +86,6 @@ const CollectionCreateForm = Form.create()(
                         factor:res
                       })
                 }
-                
             })
 
             axios({
@@ -153,7 +152,6 @@ const CollectionCreateForm = Form.create()(
                         MiddleFactor:res
                     })
                 }
-                
             })
         }
         onChangeTime = (date, dateString) => {
@@ -173,7 +171,8 @@ const CollectionCreateForm = Form.create()(
                 if(res){
                     this.setState({
                         sampling:res,
-                        procedureId:value
+                        procedureId:value,
+                        pointVis:1,
                     })
                 }
                 
@@ -193,7 +192,8 @@ const CollectionCreateForm = Form.create()(
                 if(res){
                     this.setState({
                         materials:res,
-                        samplingPoint:value
+                        samplingPoint:value,
+                        materialVis:1
                     })
                 }
                 
@@ -232,10 +232,15 @@ const CollectionCreateForm = Form.create()(
             }).then((data)=>{
                 const res = data.data.data;
                 if(res){
-                    
+                    this.props.form.setFieldsValue({
+                        serialNumberId:undefined,
+                        process:undefined,
+                        samplePointName:undefined
+                    })
                     this.setState({
                         process:res,
-                        factoryId:value
+                        factoryId:value,
+                        processVis:1,
                     })
                 }
                 
@@ -255,12 +260,19 @@ const CollectionCreateForm = Form.create()(
                 if(res){
                     this.props.onChange(res);
                     this.setState({
-                        testItems : res
+                        testItems : res,
+                        oldMaterial:value
                     })
                 }
                 
             })
         }
+
+        // onMouseEnter = ()=>{
+        //     this.props.form.setFieldsValue({
+        //         serialNumberId:null
+        //     })
+        // }
 
         disabledDate = (current)=>{
             return current&&current<moment().startOf('day')
@@ -268,16 +280,33 @@ const CollectionCreateForm = Form.create()(
 
         selectChange= (value) =>{
             if(value==='1'){
+                // this.props.onChangeItem()
+                this.props.form.setFieldsValue({
+                    deliveryFactoryId:undefined,
+                    serialNumberId:undefined
+                })
                 this.setState({
-                    visible1 : 1
+                    visible1 : 1,
+                    materialsItem:[]
                 })
             }else if(value==='2'){
+                this.props.form.setFieldsValue({
+                    deliveryFactoryId:undefined,
+                    serialNumberId:undefined
+                })
                 this.setState({
-                    visible1 : 2
+                    visible1 : 2,
+                    materialsItem:[]
                 })
             }else if(value==="3"){
+                // this.props.onChangeItem()
+                this.props.form.setFieldsValue({
+                    deliveryFactoryId:undefined,
+                    serialNumberId:undefined
+                })
                 this.setState({
-                    visible1 : 3
+                    visible1 : 3,
+                    materialsItem:[]
                 })
             }
         }
@@ -286,14 +315,14 @@ const CollectionCreateForm = Form.create()(
             this.url = JSON.parse(localStorage.getItem('url'));
             this.Authorization = localStorage.getItem("Authorization");
             this.server = localStorage.getItem('remote');
-            const {visible,form,onCancel,onCreate,onChange,onCenter} = this.props;
+            const {visible,form,onCancel,onCreate,onChange,onCenter,} = this.props;
             const { getFieldDecorator } = form;
             return(
                 <Modal
                     visible={visible}
                     closable={false}
                     title="新增"
-                    width="360px"
+                    width="500px"
                     style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
@@ -318,14 +347,14 @@ const CollectionCreateForm = Form.create()(
                                 {getFieldDecorator('date', {
                                     rules: [{ required: true, message: '请选择日期' }],
                                 })(
-                                    <DatePicker disabledDate={this.disabledDate} style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
+                                    <DatePicker disabledDate={this.disabledDate} style={{width:"220px"}} onChange={this.onChangeTime} placeholder="请选择送样日期"/>
                                 )}
                             </FormItem>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('time', {
                                     rules: [{ required: true, message: '请选择时间' }],
                                 })(
-                                    <TimePicker style={{width:"153px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
+                                    <TimePicker style={{width:"220px"}} onChange={this.onChangeTime} placeholder="请选择时间"/>
                                 )}
                             </FormItem>
                         </Col>
@@ -333,7 +362,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('id', {
                                 rules: [{ required: true, message: '请选择送样人' }],
                             })(
-                                <Select placeholder="请选择送样人" style={{width:"153px"}}>
+                                <Select placeholder="请选择送样人" style={{width:"220px"}}>
                                     {
                                         this.state.person.map(pe=>{
                                             return(
@@ -348,7 +377,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
-                                <Select placeholder="请选择送样工厂" style={{width:"153px"}}>
+                                <Select placeholder="请选择送样工厂" style={{width:"220px"}}>
                                     {
                                         this.state.factor.map(pe=>{
                                             return(
@@ -358,13 +387,13 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem> : (
+                        </FormItem> :(
                         <div>
                         <FormItem wrapperCol={{ span: 22 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
-                                <Select placeholder="请选择送样工厂" onChange={this.getProcess}  style={{width:"153px"}}>
+                                <Select placeholder="请选择送样工厂" onChange={this.getProcess}  style={{width:"220px"}}>
                                     {
                                         this.state.MiddleFactor.map(pe=>{
                                             return(
@@ -390,6 +419,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
+                        
                         <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('samplePointName', {
                                 rules: [{ required: true, message: '请选择取样点' }],
@@ -419,7 +449,7 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                            <div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}}>
+                            <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">
                             <Checkbox.Group style={{ width: '100%' }} value={this.state.testItems}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id} disabled>{p.name}</Checkbox></Col>)
@@ -427,16 +457,16 @@ const CollectionCreateForm = Form.create()(
                             </Checkbox.Group></div>
                         </FormItem>
                         </div>
-                        )    
+                        )
                         }
                         {
                             this.state.visible1===3?
-                        <div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px"}} >
-                            <Checkbox.Group style={{ width: '100%' }} onChange={onChange}>
+                        <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
+                            <Checkbox.Group style={{ width: '100%' }}  onChange={onChange}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox value={p.id}>{p.name}</Checkbox></Col>)
                             }
-                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '320px',border:"1px solid #E4E4E4",padding:"10px"}} >
+                            </Checkbox.Group></div>:this.state.visible1===1?<div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
                             <Checkbox.Group style={{ width: '100%' }} onChange={onChange} value={this.state.materialsItem}>
                             {
                             this.state.items.map(p=> <Col key={p.id} span={8}><Checkbox disabled value={p.id}>{p.name}</Checkbox></Col>)
@@ -478,7 +508,7 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('exceptionComment', {
                               
                             })(
-                                <Input placeholder="请输入异常备注"/>
+                                <Input.TextArea autosize={{minRows:2}} placeholder="请输入异常备注"/>
                             )}
                         </FormItem>
                     </Form>
@@ -511,6 +541,12 @@ class AddModal extends React.Component{
             testItemIds:checkedValues
         })
       }
+
+    // onChangeItem = ()=>{
+    //     this.setState({
+    //         testItemIds:[]
+    //     })
+    // }
     showModal = () => {
         this.setState({ visible: true });
     };
@@ -577,10 +613,10 @@ class AddModal extends React.Component{
                 message.info(data.data.message);
                 this.props.fetch({sortField: 'id',
                 sortType: 'desc',});
+                this.setState({ visible: false });
+                form.resetFields();
             })
         })
-        this.setState({ visible: false });
-        form.resetFields();
     }
 
     render(){
@@ -588,7 +624,7 @@ class AddModal extends React.Component{
         this.Authorization = localStorage.getItem("Authorization");
         this.server = localStorage.getItem('remote');
         return(
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
@@ -597,6 +633,7 @@ class AddModal extends React.Component{
                     onCreate={this.onCreate}
                     onChange={this.onChange}
                     onCenter={this.onCenter}
+                    // onChangeItem={this.onChangeItem}
                 />
             </span>
         )

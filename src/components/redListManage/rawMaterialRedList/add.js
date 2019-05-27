@@ -1,6 +1,6 @@
 import React from 'react';
 //import $ from 'jquery';
-import {Button,Modal,message} from 'antd';
+import {Modal,message} from 'antd';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import NewButton from '../../BlockQuote/newButton';
@@ -165,13 +165,13 @@ class Add extends React.Component{
     render() {
         this.url=JSON.parse(localStorage.getItem('url'));
         return (
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <NewButton   handleClick={this.showModal} className='fa fa-plus'  name='新增' />&nbsp;&nbsp;&nbsp;
                 <Modal  visible={this.state.visible}
                         maskClosable={false}
                         closable={false}
                         title="新增红单"
-                        width='360px'
+                        width='450px'
                     footer={[
                         <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                         <SaveButton key='save'   handleSave={this.handleSave}>保存</SaveButton>,

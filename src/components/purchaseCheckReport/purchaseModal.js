@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, DatePicker, Select, message} from 'antd';
+import {Input, DatePicker, Select} from 'antd';
 import PurchaseModalColor from './purchaseModalColor';
 import './purchaseCheckReport.css';
 import moment from "moment";
@@ -36,7 +36,7 @@ class PurchaseModal extends React.Component {
         }
         const unqualifiedType = this.props.unqualifiedType?this.props.unqualifiedType:false;
         return(
-            <div style={{width:1200}}>
+            <div style={{width:1200,paddingLeft:'19px'}}>
                 {
                     this.props.unTrackType?(
                         <div className="unTrackTopModal">
@@ -109,7 +109,7 @@ class PurchaseModal extends React.Component {
                                             <td>{this.props.data.topData.norm}</td>
                                             <td>{this.props.data.topData.quantity}</td>
                                             <td>{this.props.data.topData.weight}</td>
-                                            <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                            <td>{this.props.data.topData.receiveDate}</td>
                                             <td>{this.props.data.topData.manufactureName}</td>
                                         </tr>
                                     ):(
@@ -119,7 +119,7 @@ class PurchaseModal extends React.Component {
                                                 <td>{this.props.data.topData.norm}</td>
                                                 <td>{this.props.data.topData.quantity}</td>
                                                 <td>{this.props.data.topData.weight}</td>
-                                                <td><abbr style={{cursor:'default'}} title={this.props.data.topData.receiveDate}>{this.props.data.topData.receiveDate?this.props.data.topData.receiveDate.substring(0,10):'无'}</abbr></td>
+                                                <td>{this.props.data.topData.receiveDate}</td>
                                                 <td>{this.props.data.topData.manufactureName}</td>
                                             </tr>
                                         ):(
@@ -158,7 +158,7 @@ class PurchaseModal extends React.Component {
                         </div>
                     )
                 }
-                <div style={{paddingTop:'80px'}}>
+                <div style={{paddingTop:'10px'}}>
                     <div id={unqualifiedType?'unqualfiedModalTable':'modalTable'}>
                         <div className="purchaseThead">
                             <div className="theadLeft">
@@ -191,7 +191,7 @@ class PurchaseModal extends React.Component {
                                 <div className="rightOnclick" onClick={handleRightClick}>
                                     <i className="fa fa-caret-right"></i>
                                 </div>
-                                <div>判定</div>
+                                <div style={{paddingLeft:'25px'}}>判定</div>
                             </div>
                         </div>
                         <div style={{clear: 'both'}}></div>
@@ -203,14 +203,14 @@ class PurchaseModal extends React.Component {
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
                                                     <div className="leftBorderRadius" key={item.index}>{item.index}</div>
-                                                    <div key={item.serialNumber}><abbr style={{cursor:'default'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
+                                                    <div key={item.serialNumber}><abbr style={{cursor:'default',textDecoration:'underline'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
                                                 </div>
                                             )
                                         }else{
                                             return(
                                                 <div className="leftTbody" key={'tbody'+index}>
                                                     <div key={item.index}>{item.index}</div>
-                                                    <div key={item.serialNumber}><abbr style={{cursor:'default'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
+                                                    <div key={item.serialNumber}><abbr style={{cursor:'default',textDecoration:'underline'}} title={item.serialNumber}>{item.serialNumber.substring(0,10)}</abbr></div>
                                                 </div>
                                             )
                                         }

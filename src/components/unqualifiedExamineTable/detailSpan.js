@@ -52,9 +52,8 @@ class DetailSpan extends React.Component {
         if(type===0){
             modalWidth='520px'
         }else{
-            modalWidth='1035px'
+            modalWidth='1080px'
         }
-        // const footer = this.judgeFooter(2);
         return(
             <span>
                 <span className="blue" onClick={this.handleDetail} >{this.props.name}</span>
@@ -74,15 +73,12 @@ class DetailSpan extends React.Component {
                                 <PurchaseModal
                                     data={this.state.checkData}
                                     clickState ={1} //是否可以点击 0:可以点红， 其余：不可以点红
-                                    // unClickType={1} //表示头部数据不可点击
                                 />
                             </div>
                         ):(
                             <div style={{height:580}}>
                                 <DrSpanModal
                                     data={this.state.detailData}
-                                    // unClickCheck={1}  //中间内容数据不课修改
-                                    // inputSave={this.inputSave}
                                 />
                             </div>
                         )
@@ -94,9 +90,6 @@ class DetailSpan extends React.Component {
     /**点击编辑 */
     handleDetail() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
     }
     getDetailData(){
         axios({
@@ -174,7 +167,6 @@ class DetailSpan extends React.Component {
                     var testData = {};  //检验数据
                     var isQualified = '';
                     var optional = {};  //择优数据
-                    console.log('1111')
                     isQualified =  detail.isQualified?detail.isQualified:0;
                     topData = {
                         serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
@@ -183,45 +175,62 @@ class DetailSpan extends React.Component {
                         id: detail.unqualifiedDetail[0].id
                     };
                     const testItemResults = detail.unqualifiedDetail[0].testItemResults;
-                    console.log('2222')
-                    console.log(testItemResults)
                     if(testItemResults) {
                         for(var i=0; i<testItemResults.length; i++){
                             var e = testItemResults[i];
-                            console.log('55555')
-                            var standard = detail.standard[i].split(',');
-                            console.log('77777')
-                            testDTOS.push({
-                                index:`${i+1}`,
-                                id:e.id,
-                                testItemId:e.testItemId,
-                                testItemName:standard[0],
-                                testResult:e.testResult,
-                                rawTestItemStandard:standard[2],
-                                unit:standard[1],
-                                isValid: e.isValid
-                            })
+                            if(detail.standard!==null){
+                                var standard = detail.standard[i].split(',');
+                                console.log(standard)
+                                testDTOS.push({
+                                    index:`${i+1}`,
+                                    id:e.id,
+                                    testItemId:e.testItemId,
+                                    testItemName:standard[0],
+                                    testResult:e.testResult,
+                                    rawTestItemStandard:standard[2],
+                                    unit:standard[1],
+                                    isValid: e.isValid
+                                })
+                            }else{
+                                message.info('查询数据对象没有建立标准，请联系管理员')
+                                return ;
+                                // testDTOS.push({
+                                //     index:`${i+1}`,
+                                //     id:e.id,
+                                //     testItemId:e.testItemId,
+                                //     testItemName:'无',
+                                //     testResult:e.testResult,
+                                //     rawTestItemStandard:'无',
+                                //     unit:'无',
+                                //     isValid: e.isValid
+                                // })
+                            }
+
+                            // var standard = detail.standard[i].split(',');
+                            // testDTOS.push({
+                            //     index:`${i+1}`,
+                            //     id:e.id,
+                            //     testItemId:e.testItemId,
+                            //     testItemName:standard[0],
+                            //     testResult:e.testResult,
+                            //     rawTestItemStandard:standard[2],
+                            //     unit:standard[1],
+                            //     isValid: e.isValid
+                            // })
                         }
                     }
-                    console.log('3333')
                     testData = {
                         tester: detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无',
                         testTime: detail.unqualifiedHead.date?detail.unqualifiedHead.date:'无',
                     };
                     // 择优数据
                     optional = {
-                        // optionalStatus: detail.testReportRecord.qualityLevel?detail.testReportRecord.qualityLevel:'',
-                        // optionalData: {
-                        //     personer: detail.testReportRecord.ratePersonId?detail.testReportRecord.ratePersonId:'无',
-                        //     personTime:detail.testReportRecord.rateDate?detail.testReportRecord.rateDate:'无',
-                        // }
                         optionalStatus: '',
                         optionalData: {
                             personer: '无',
                             personTime:'无',
                         }
                     };
-                    console.log('4444')
                     const examineStatus = this.props.checkStatus;
                     const batchNumberId = detail.batchNumberId?detail.batchNumberId:'';
                     if((examineStatus===2||examineStatus===3)&&batchNumberId){

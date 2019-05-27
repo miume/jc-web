@@ -66,7 +66,7 @@ class EditSpan extends React.Component {
         if(type===0){
             modalWidth='520px'
         }else{
-            modalWidth='1035px'
+            modalWidth='1080px'
         }
 
         return(
@@ -159,9 +159,6 @@ class EditSpan extends React.Component {
     /**1.点击编辑 */
     handleEdit() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
     }
     /**
      * 详情 区分进货和成品   根据某子段，对数据进行组装
@@ -225,7 +222,7 @@ class EditSpan extends React.Component {
                             decision: detailTbody[j].decision
                         })
                     }
-                    judger = detail.unqualifiedHead.tester?detail.unqualifiedHead.tester:'无';
+                    judger = this.props.menuList.name;
                     judgement = detail.isQualified ;
                     this.setState({
                         checkData: {
@@ -245,7 +242,6 @@ class EditSpan extends React.Component {
                     var testData = {};  //检验数据
                     var isQualified = '';
                     var optional = {};  //择优数据
-                    console.log('1111')
                     isQualified =  detail.isQualified?detail.isQualified:0;
                     topData = {
                         serialNumber: detail.unqualifiedDetail[0]?detail.unqualifiedDetail[0].serialNumber:'无',
@@ -255,19 +251,49 @@ class EditSpan extends React.Component {
                     };
                     const testItemResults = detail.unqualifiedDetail[0].testItemResults;
                     if(testItemResults) {
+                        console.log('111')
                         for(var i=0; i<testItemResults.length; i++){
                             var e = testItemResults[i];
-                            var standard = detail.standard[i].split(',');
-                            testDTOS.push({
-                                index:`${i+1}`,
-                                id:e.id,
-                                testItemId:e.testItemId,
-                                testItemName:standard[0],
-                                testResult:e.testResult,
-                                rawTestItemStandard:standard[2],
-                                unit:standard[1],
-                                isValid: e.isValid
-                            })
+                            console.log(detail)
+                            if(detail.standard!==null){
+                                var standard = detail.standard[i].split(',');
+                                console.log(standard)
+                                testDTOS.push({
+                                    index:`${i+1}`,
+                                    id:e.id,
+                                    testItemId:e.testItemId,
+                                    testItemName:standard[0],
+                                    testResult:e.testResult,
+                                    rawTestItemStandard:standard[2],
+                                    unit:standard[1],
+                                    isValid: e.isValid
+                                })
+                            }else{
+                                message.info('查询数据对象没有建立标准，请联系管理员')
+                                return ;
+                                // testDTOS.push({
+                                //     index:`${i+1}`,
+                                //     id:e.id,
+                                //     testItemId:e.testItemId,
+                                //     testItemName:'无',
+                                //     testResult:e.testResult,
+                                //     rawTestItemStandard:'无',
+                                //     unit:'无',
+                                //     isValid: e.isValid
+                                // })
+                            }
+                            // var standard = detail.standard[i].split(',');
+                            // console.log(standard)
+                            // testDTOS.push({
+                            //     index:`${i+1}`,
+                            //     id:e.id,
+                            //     testItemId:e.testItemId,
+                            //     testItemName:standard[0],
+                            //     testResult:e.testResult,
+                            //     rawTestItemStandard:standard[2],
+                            //     unit:standard[1],
+                            //     isValid: e.isValid
+                            // })
                         }
                     }
                     testData = {
@@ -276,17 +302,13 @@ class EditSpan extends React.Component {
                     };
                     // 择优数据
                     optional = {
-                        // optionalStatus: detail.testReportRecord.qualityLevel?detail.testReportRecord.qualityLevel:'',
-                        // optionalData: {
-                        //     personer: detail.testReportRecord.ratePersonId?detail.testReportRecord.ratePersonId:'无',
-                        //     personTime:detail.testReportRecord.rateDate?detail.testReportRecord.rateDate:'无',
-                        // }
                         optionalStatus: '',
                         optionalData: {
                             personer: '无',
                             personTime:'无',
                         }
                     };
+                    console.log('4444')
                     const examineStatus = this.props.checkStatus;
                     const batchNumberId = detail.batchNumberId?detail.batchNumberId:'';
                     if((examineStatus===2||examineStatus===3)&&batchNumberId){
@@ -366,7 +388,6 @@ class EditSpan extends React.Component {
         this.setState({
             subVisible:false,
         })
-        // this.props.cancle();
     }
     /**点击确定送审 */
     handleOkApply(){
@@ -430,20 +451,6 @@ class EditSpan extends React.Component {
             };
 
         }
-
-        // if(detailIsQualified === -1){
-        //     message.info('请点击合格或者不合格！');
-        //     return
-        // }
-        // if(detailTestDTOS){
-        //     for(var j=0; j<detailTestDTOS.length; j++){
-        //         if(detailTestDTOS[j].testResult === ''){
-        //             message.info('所有检测结果不能为空，请填写完整！');
-        //             return
-        //         }
-        //     }
-        // }
-        console.log('saveData',saveData)
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
@@ -461,14 +468,12 @@ class EditSpan extends React.Component {
         }).then((data)=>{
             if(status){
                 const dataId = this.props.batchNumberId;
-                console.log(dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -493,7 +498,6 @@ class EditSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
-            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')

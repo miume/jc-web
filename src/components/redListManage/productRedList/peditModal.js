@@ -161,7 +161,7 @@ class ProductRedListEditModal extends React.Component{
                               <div className='redListNum1' id='subtract' onClick={this.subtract1}> <Icon type="down" /></div>
                           </div>
                        }
-                     style={{width:'320px'}}
+                     style={{width:'410px'}}
                   />
                 )}
                 </FormItem>

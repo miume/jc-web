@@ -217,13 +217,14 @@ class SetStandard extends Component{
     render(){
         return(
             <div>
-                <div style={{padding:'15px'}}>
-                     &nbsp;<h2 style={{display:'inline-block'}}>请设置标准</h2>
-                     <span className='fr'>
+                <div  className='rawMaterailStandardMiddle'>
+                     <span className='product-standrad-middle-text'>请设置标准</span>
+                     
                       <SearchCell name='请输入创建人名称'
                         fetch={this.fetch}
+                        flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                       />
-                     </span>
+                    
                 </div>
                 <div className='rawStandardImageDiv'>
                    <img src={require(`../standard.png`)} alt='图片加载失败' className='rawStandardImage'  />
@@ -234,7 +235,7 @@ class SetStandard extends Component{
                 <div className='rawStandardFontDown'>
                       <p>需要建立一套标准后才能执行相关操作</p>
                 </div>
-                <div style={{textAlign:'center'}}>
+                <div style={{textAlign:'center'}} className={this.props.home.judgeOperation(this.props.operation,'SAVE')?'':'hide'}>
                     <NewButton  handleClick={this.showModal}  className='fa fa-plus' name='建立标准'/>
                     <Modal
                         title='设置标准'

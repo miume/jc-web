@@ -37,10 +37,8 @@ class Add extends Component{
              type:'json'
         })
         .then((data)=>{
-           //console.log(data);
            message.info(data.data.message);
-           this.fetch();
-           this.pagination.current=1;//新增的记录要显示在第一页，
+           this.props.reset();
         })
         .catch(()=>{
             message.info('新增失败，请联系管理员!')
@@ -59,7 +57,7 @@ class Add extends Component{
     }
     render(){
         return(
-            <span>
+            <span className={this.props.judgeOperation(this.props.operation,'SAVE')?'':'hide'}>
                 <NewButton className='fa fa-plus' name='新增' handleClick={this.showModal}/>
                 <Modal
                     title={this.state.title}
@@ -72,7 +70,7 @@ class Add extends Component{
                     ]}
                  >
                     {
-                        <AddModal  wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset} url={this.props.url} supplyManufacture={this.props.supplyManufacture} repairManufacture={this.props.repairManufacture} equipmentBaseInstrument={this.props.equipmentBaseInstrument}/>
+                        <AddModal  wrappedComponentRef={(form) => this.formRef = form} reset={this.state.reset} url={this.props.url} supplyManufacture={this.props.supplyManufacture} repairManufacture={this.props.repairManufacture} equipmentBaseInstrument={this.props.equipmentBaseInstrument} resetFile={this.resetFile}/>
                     }
                 </Modal>
             </span>

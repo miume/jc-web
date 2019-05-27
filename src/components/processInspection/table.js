@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Tr1 from './tr1';
-import {Button,Select,message} from 'antd';
+import {Button,Select} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 const Option = Select.Option;
 class ProcessTable extends React.Component{
@@ -13,6 +13,7 @@ class ProcessTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            allProductionProcess : []
             // count : this.props.data?this.props.data.length:1,
             // addApplyData:[],                             //存取每行的数据
             // flag : this.props.flag,
@@ -33,27 +34,29 @@ class ProcessTable extends React.Component{
         }
       }).then(data=>{
         const res = data.data.data;
-        const children = res.map(p =>
-            <Option key={p.id} value={p.id}>{p.name}</Option>
-            )
-        this.setState({
-          allProductionProcess : children
-      })
+        if(res){
+            const children = res.map(p =>
+                <Option key={p.id} value={p.id}>{p.name}</Option>
+                )
+            this.setState({
+              allProductionProcess : children
+          })
+        }
     })
     }
     /**获取所有用户 */
     getAllUser(){
       axios({
-        url:`${this.props.url.role.getAll}`,
+        url:`${this.props.url.role.role}`,
         method:'get',
         headers:{
           'Authorization':this.props.url.Authorization
         }
       }).then(data=>{
         const res = data.data.data;
-        const children = res.map(p =>
+        const children = res?res.map(p =>
             <Option key={p.id} value={p.id}>{p.description}</Option>
-            )
+            ):null
         this.setState({
           allUser : children
       })
@@ -69,17 +72,19 @@ class ProcessTable extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            const children = res.map(e=>{
-                return <Option key={e.id} value={e.id}>{e.materialName}</Option>
-            })
-            this.setState({
-                allTestMaterial:children
-            })
+            if(res){
+                const children = res.map(e=>{
+                    return <Option key={e.id} value={e.id}>{e.materialName}</Option>
+                })
+                this.setState({
+                    allTestMaterial:children
+                })
+            }
         })
     }
     render(){
         return (
-            <div style={{height:'400px'}}>
+            <div style={{height:'440px'}}>
                     <div className='fr'>已录入{this.props.count}条数据</div><br/>
                          <table id='process-table'>
                              <thead className='thead'>
@@ -97,12 +102,13 @@ class ProcessTable extends React.Component{
                              </thead>
                              <tbody className='tbody'>
                              {
-                                this.props.data.map((m,index) => { 
+                                this.props.data?this.props.data.map((m,index) => { 
                                     return <Tr1 key={index} deleteRow={this.props.deleteRow} id={m.id?m.id:m} url={this.props.url} getData={this.props.getData}
                                            detail={m} flag={this.props.flag} mode={m.mode} editorRow={this.props.editorRow}
                                            allProductLine={this.props.allProductLine} allProductionProcess={this.state.allProductionProcess} allUser={this.state.allUser}
                                            allTestItem={this.props.allTestItem} allTestMaterial={this.state.allTestMaterial}
                                            /> })
+                                   : null
                              }
                              </tbody>
                          </table>

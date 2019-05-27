@@ -56,9 +56,9 @@ import EditStandard from './edit';
                //console.log(record.isPublished);
                 return(
                     <span>
-                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} home1={this.props.home} operation1={this.props.operation}/>
                         <Divider type='vertical'/>
-                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} />
+                        <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={false} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} home={this.props.home} operation={this.props.operation}/>
                     </span>
                 );
             }
@@ -116,30 +116,33 @@ import EditStandard from './edit';
         this.status=JSON.parse(localStorage.getItem('status'));
          return(
          <div style={{position:'relative'}}>
-             <div style={{padding:'15px'}}>
+             <div  className='rawMaterailStandardMiddle'>
              <span className='product-standrad-middle-text'>请设置标准</span>
-                <span className='fr'>
+                
                 <SearchCell name='请输入创建人'
                     searchEvent={this.searchEvent}
                     searchContentChange={this.searchContentChange}
                     type={this.props.type}
                     fetch={this.fetch}
+                    flag={this.props.home.judgeOperation(this.props.operation,'QUERY')}
                 />
-                </span>
-                <Divider type='horizonal'/>
+               
+                <Divider type='horizontal'/>
              </div>
-             <div>
-                <Table 
-                    rowKey={record=>record.index}
-                    columns={this.columns}
-                    dataSource={this.props.dataSource}
-                    pagination={{hideOnSinglePage:true,pageSize:100}}
-                    rowClassName={(record)=>record.isPublished===1?'rawStandardTableRow':''}
-                    size='small'
-                    bordered
-                    scroll={{y:230}}
-                />
-             </div>
+           <div className='rawMaterailStandardMiddleDown'>
+              <div>
+                    <Table 
+                        rowKey={record=>record.index}
+                        columns={this.columns}
+                        dataSource={this.props.dataSource}
+                        pagination={{hideOnSinglePage:true,pageSize:100}}
+                        rowClassName={(record)=>record.isPublished===1?'rawStandardTableRow':''}
+                        size='small'
+                        bordered
+                        scroll={{y:230}}
+                    />
+                </div>
+           </div>
                <div className='rawStandardPosition' onClick={this.checkRaw}>重新选择厂家</div>
          </div>
          );

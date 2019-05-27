@@ -2,7 +2,6 @@ import React from 'react';
 import {Divider, Table} from 'antd';
 import EditSpan from './editSpan';
 import DetailSpan from './detailSpan';
-import CheckEditSpan from "../purchaseCheckReport/checkEditSpan";
 
 class UnqualifiedTable extends React.Component {
     columns = [{
@@ -18,6 +17,9 @@ class UnqualifiedTable extends React.Component {
         key: 'commonBatchNumber.batchNumber',
         align:'center',
         width: '12%',
+        render: batchNumber => {
+            return batchNumber?batchNumber:'无'
+        }
     },{
         title: '物料类型',
         dataIndex: 'details.materialName',
@@ -59,16 +61,16 @@ class UnqualifiedTable extends React.Component {
         dataIndex: 'commonBatchNumber.createTime',
         key: 'commonBatchNumber.createTime',
         align:'center',
-        width: '10%',
-        render: createTime => {
-            return createTime?createTime:'无'
+        width: '9%',
+        render:(createTime)=>{
+            return <span title={createTime} className='text-decoration'>{createTime.substring(0,10)+'...'}</span>
         }
     },{
         title: '审核状态',
         dataIndex: 'commonBatchNumber.status',
         key: 'commonBatchNumber.status',
         align:'center',
-        width: '6%',
+        width: '8%',
         render:state => {
             return this.props.status[state.toString()];
         }
@@ -77,8 +79,10 @@ class UnqualifiedTable extends React.Component {
         dataIndex: 'commonBatchNumber.isUrgent',
         key: 'commonBatchNumber.isUrgent',
         align:'center',
-        width: '6%',
-        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+        width: '5%',
+        render:isUrgent=>{
+            return isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>
+        },
     },{
         title: '操作',
         dataIndex: 'commonBatchNumber.id',
@@ -87,21 +91,8 @@ class UnqualifiedTable extends React.Component {
         width: '13%',
         render: (text,record) => {
             let operationCheckFlag = this.judgeCheckOperation(record.commonBatchNumber.status);
-            // let operationCheckFlag = true;
             return (
                 <span>
-                    {operationCheckFlag?(
-                        <EditSpan
-                            fetch={this.props.fetch}
-                            url={this.props.url}
-                            checkStatus={record.commonBatchNumber.status}
-                            batchNumberId={record.commonBatchNumber.id}
-                            menuList={this.props.menuList}
-                        />
-                    ):(
-                        <span  className="notClick">编辑</span>
-                    )}
-                    <Divider type="vertical" />
                     <DetailSpan
                         url={this.props.url}
                         menuList={this.props.menuList}
@@ -109,6 +100,21 @@ class UnqualifiedTable extends React.Component {
                         batchNumberId={record.commonBatchNumber.id}
                         name='详情'
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationCheckFlag?(
+                            <EditSpan
+                                fetch={this.props.fetch}
+                                url={this.props.url}
+                                checkStatus={record.commonBatchNumber.status}
+                                batchNumberId={record.commonBatchNumber.id}
+                                menuList={this.props.menuList}
+                            />
+                        ):(
+                            <span  className="notClick">编辑</span>
+                        )}
+                    </span>
+
                 </span>
             )
         }
@@ -124,6 +130,7 @@ class UnqualifiedTable extends React.Component {
         });
         return(
             <Table
+                onChange={this.props.handleTableChange}
                 rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}

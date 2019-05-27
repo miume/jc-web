@@ -98,7 +98,6 @@ class CheckEditSpan extends React.Component {
     inputSave(e){
         const value = e.target.value;
         const name = e.target.name;
-        // console.log(value)
         var checkData = this.state.checkData;
         checkData.topData[name] = value;
         this.setState({
@@ -114,13 +113,9 @@ class CheckEditSpan extends React.Component {
     /**点击编辑 */
     handleEdit() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // })
     }
     /**获取该行的记录详情 */
     getDetailData(){
-        // let detail = this.props.record;
         axios({
             url: `${this.props.url.purchaseCheckReport.purchaseReportRecord}?batchNumberId=${this.props.id}`,
             method:'get',
@@ -129,7 +124,6 @@ class CheckEditSpan extends React.Component {
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log('detail',detail)
             var headData = [];
             var tbodyData = [];
             var judger = '';
@@ -151,7 +145,6 @@ class CheckEditSpan extends React.Component {
                         nowFormDate = nowDate[0]+'-'+nowDate[1]+ '-' +nowDate[2]
                     }
                 }
-                console.log(nowFormDate)
                 topData = {
                     materialName: detail.materialName,
                     norm: detail.purchaseReportRecord?detail.purchaseReportRecord.norm:'',
@@ -268,7 +261,6 @@ class CheckEditSpan extends React.Component {
             };
             validTestRecords.push(validTestRecordsObj)
         }
-        console.log(this.props.menuList.userId)
         var saveData = {
             purchaseReportRecord: {
                 id: checkData.topData.id,
@@ -280,15 +272,11 @@ class CheckEditSpan extends React.Component {
             },
             validTestRecords: validTestRecords
         };
-        // if(detailTestDTOS){
-        //     for(var j=0; j<detailTestDTOS.length; j++){
-        //         if(detailTestDTOS[j].testResult === ''){
-        //             message.info('所有检测结果不能为空，请填写完整！');
-        //             return
-        //         }
-        //     }
-        // }
-        // console.log(saveData)
+        const dataCheck = saveData.purchaseReportRecord;
+        if(dataCheck&&(dataCheck.norm===null||dataCheck.quantity===null||dataCheck.receiveDate===null||dataCheck.weight===null)){
+            message.info('规格、重量、日期和数量不能为空，请填写完整！');
+            return
+        }
         //  调用保存函数
         this.useSavaFunction(saveData,status);
 
@@ -306,14 +294,12 @@ class CheckEditSpan extends React.Component {
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data;
-                console.log('dataId',dataId)
                 this.applyReview(dataId);
             }else{
                 this.setState({
                     visible: false,
                     subVisible: false,
                 });
-                this.props.fetch();
                 message.info(data.data.message);
             }
         }).catch(()=>{
@@ -323,7 +309,6 @@ class CheckEditSpan extends React.Component {
     /**---------------------- */
     /**送审 */
     applyReview(dataId){
-        console.log(this.state.process)
         axios({
             url : `${this.props.url.toDoList}/${parseInt(this.state.process)}`,
             method:'post',

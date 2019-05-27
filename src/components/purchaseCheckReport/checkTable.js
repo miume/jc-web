@@ -2,7 +2,6 @@ import React from 'react';
 import {Divider, message, Popconfirm, Table} from 'antd';
 import CheckEditSpan from './checkEditSpan';
 import CheckReleaseSpan from './checkReleaseSpan';
-// import DeleteById from '../BlockQuote/deleteById';
 import axios from "axios";
 
 class CheckTable extends React.Component {
@@ -72,8 +71,8 @@ class CheckTable extends React.Component {
         key: 'commonBatchNumber.createTime',
         align:'center',
         width: '8%',
-        render: createTime => {
-            return <abbr style={{cursor:'default'}} title={createTime?createTime:'无'}>{createTime?createTime.substring(0,10):'无'}</abbr>
+        render:(createTime)=>{
+            return <span title={createTime} className='text-decoration'>{createTime.substring(0,10)+'...'}</span>
         }
     },{
         title: '审核状态',
@@ -102,22 +101,8 @@ class CheckTable extends React.Component {
         render: (text,record) => {
             const status = record.commonBatchNumber.status;
             let operationCheckFlag = this.judgeCheckOperation(status);
-            // let operationCheckFlag = true;
-            let operationDeleteFlag = this.judgeDeleteOperation(status);
-            // let operationDeleteFlag = true;
             return (
                 <span>
-                    {operationCheckFlag?(
-                        <CheckEditSpan
-                            fetch={this.props.fetch}
-                            url={this.props.url}
-                            id={record.commonBatchNumber.id}
-                            menuList={this.props.menuList}
-                        />
-                    ):(
-                        <span  className="notClick">编辑</span>
-                    )}
-                    <Divider type="vertical" />
                     <CheckReleaseSpan
                         fetch={this.props.fetch}
                         url={this.props.url}
@@ -126,6 +111,19 @@ class CheckTable extends React.Component {
                         state={record.commonBatchNumber.status}
                         name='详情'
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationCheckFlag?(
+                            <CheckEditSpan
+                                fetch={this.props.fetch}
+                                url={this.props.url}
+                                id={record.commonBatchNumber.id}
+                                menuList={this.props.menuList}
+                            />
+                        ):(
+                            <span  className="notClick">编辑</span>
+                        )}
+                    </span>
                 </span>
             )
         }
@@ -147,7 +145,8 @@ class CheckTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 600 }}
+                scroll={{ y: 400 }}
+                onChange={this.props.handleTableChange}
             />
         )
     }
@@ -169,7 +168,6 @@ class CheckTable extends React.Component {
     /**---------------------- */
     /**单条记录删除 */
     handleDelete = (id) => {
-        console.log(id)
         axios({
             url:`${this.props.url.purchaseCheckReport.purchaseReportRecord}/${id}`,
             method:'Delete',

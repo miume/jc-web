@@ -9,10 +9,11 @@ import DeleteByIds from '../BlockQuote/deleteByIds';
 import PopRefuse from "./confuse"
 import "./sample.css"
 import Edit from "./editor"
+import Loss from '../BlockQuote/lossStatement'
+import Reason from '../BlockQuote/lossStatement'
 class SampleInspection extends React.Component{
     url
-    server
-    Authorization
+    operation
     componentDidMount() {
         this.fetch({sortField: 'id',
         sortType: 'desc',});
@@ -45,6 +46,7 @@ class SampleInspection extends React.Component{
         this.handleRefuse = this.handleRefuse.bind(this);
         this.contentChange = this.contentChange.bind(this);
         this.changePage = this.changePage.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -68,45 +70,49 @@ class SampleInspection extends React.Component{
             width: '13%',
             render:(text)=>{
                 const items = text.split(' ')
-                return <abbr title={text}>{items[0]}</abbr>
+                return <div className='text-decoration' title={text}>{items[0]}</div>
             }
         },{
             title: '送检人',
             dataIndex: 'deliverer.name',
             key: 'deliverer.name',
             align:'center',
-            width: '7%',
+            width: '8%',
         },{
             title: '送检工厂',
             dataIndex: 'deliveryFactory.name',
             key: 'deliveryFactory.name',
             align:'center',
-            width: '7%',
+            width: '8%',
         },{
             title: '编号',
             dataIndex: 'serialNumberName',
             key: 'serialNumberName',
             align:'center',
-            width: '11%',
+            width: '9%',
             render:(text)=>{
-                if(text.length>8){
-                    return <abbr title={text}>{text.substr(0,7)}</abbr>
-                }else{
-                    return text
+                if(text !=""){
+                    var value = text.split('-')
+                    return <div className='text-decoration' title={text}>{value[0]+"..."}</div>
+                }else {
+                    return "无"
                 }
+
             }
         },{
-            title: '异常备注',
-            dataIndex: 'sampleDeliveringRecord.exceptionComment',
-            key: 'sampleDeliveringRecord.exceptionComment',
+            title: '批号',
+            dataIndex: 'sampleDeliveringRecord.tempBatchNumber',
+            key: 'sampleDeliveringRecord.tempBatchNumber',
             align:'center',
-            width: '9%',
-            render:(text,record)=>{
-                if(record.sampleDeliveringRecord.exceptionComment === null){
+            width: '8%',
+            render:(text)=>{
+                if(text !=""){
+                    var value = text.split('-')
+                    return <div className='text-decoration' title={text}>{value[0]+"..."}</div>
+                }else {
                     return "无"
-                }else{
-                    return record.sampleDeliveringRecord.exceptionComment
                 }
+
             }
         },{
             title: '类型',
@@ -138,38 +144,29 @@ class SampleInspection extends React.Component{
                 }
             }
         },{
-            title: '拒绝原因',
-            dataIndex: 'sampleDeliveringRecord.handleComment',
-            key: 'sampleDeliveringRecord.handleComment',
-            align:'center',
-            width: '7%',
-            render : (text,record)=>{
-                if(record.sampleDeliveringRecord.handleComment === null){
-                    return "无"
-                }else{
-                    return record.sampleDeliveringRecord.handleComment
-                }
-            }
-        },{
             title:'操作',
             dataIndex: 'sampleDeliveringRecord.id',
             key: 'id',
             align:'center',
-            width: '20%',
+            width: '28%',
             render : (text,record)=>{
                 return(
                     <span>
-                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit handleTableChange={this.handleTableChange} pagination={this.pagination} fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className="notClick">编辑</span>}
-                        <Divider type="vertical" />
+                        {record.sampleDeliveringRecord.acceptStatus===-1?<Edit handleTableChange={this.handleTableChange} flag={this.judgeOperation(this.operation,'UPDATE')} pagination={this.pagination} fetch={this.fetch} id={text} data={record} type={record.sampleDeliveringRecord.type}/>:<span className={this.judgeOperation(this.operation,'UPDATE')?'notClick':'hide'}>编辑</span>}
+                        {this.judgeOperation(this.operation,'UPDATE')?<Divider type="vertical" />:null}
                         {record.sampleDeliveringRecord.acceptStatus===-1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
-                          <span className='blue'>删除</span>
-                        </Popconfirm>:<span className="notClick">删除</span>}
-                        <Divider type="vertical" />
+                          <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'}>删除</span>
+                        </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
+                        {this.judgeOperation(this.operation,'DELETE')?<Divider type="vertical" />:null}
                         {record.sampleDeliveringRecord.acceptStatus===1?<Popconfirm title="确定接受?" onConfirm={()=>this.handleAccept(record.sampleDeliveringRecord.id)} okText="确定" cancelText="取消">
-                          <span className='blue'>接受</span>
-                        </Popconfirm>:<span className="notClick">接受</span>}
+                          <span className={this.judgeOperation(this.operation,'AUDIT')?'blue':'hide'}>接受</span>
+                        </Popconfirm>:<span className={this.judgeOperation(this.operation,'AUDIT')?'notClick':'hide'}>接受</span>}
+                        {this.judgeOperation(this.operation,'AUDIT')?<Divider type="vertical" />:null}
+                        {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} flag={this.judgeOperation(this.operation,'AUDIT')} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className={this.judgeOperation(this.operation,'AUDIT')?'notClick':'hide'}>拒绝</span>}
+                        {this.judgeOperation(this.operation,'AUDIT')?<Divider type="vertical" />:null}
+                        <Loss statement={record.sampleDeliveringRecord.exceptionComment} name='异常备注'/>
                         <Divider type="vertical" />
-                        {record.sampleDeliveringRecord.acceptStatus===1?<PopRefuse contentChange={this.contentChange} id={record.sampleDeliveringRecord.id} handleRefuse={this.handleRefuse} acceptStatus={record.sampleDeliveringRecord.acceptStatus}/>:<span className="notClick">拒绝</span>}
+                        <Reason statement={record.sampleDeliveringRecord.handleComment} name='拒绝原因'/>
                     </span>
                 );
             }
@@ -180,6 +177,11 @@ class SampleInspection extends React.Component{
     contentChange(e){
         const value = e.target.value;
         this.setState({Contentvalue:value});
+    }
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
     }
     handleRefuse(id){
         axios({
@@ -256,12 +258,14 @@ class SampleInspection extends React.Component{
             params:{
                 pageSize: params.pageSize,
                 pageNumber: params.pageNumber,
-                factoryName:ope_name
+                factoryName:ope_name,
+                sortField: 'id',
+                sortType: 'desc',
             },
             type:'json',
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res)
+            // console.log(res)
             if(res&&res.list){
                 this.pagination.total=res.total;
                 this.pagination.current = res.pageNumber
@@ -272,6 +276,11 @@ class SampleInspection extends React.Component{
                     dataSource: res.list,
                     pageChangeFlag:1
                 });
+            }else{
+                this.setState({
+                    dataSource:null,
+                    pageChangeFlag:1
+                })
             }
         })
 
@@ -285,7 +294,7 @@ class SampleInspection extends React.Component{
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
         const pageChangeFlag = this.state.pageChangeFlag;
-        console.log(pageChangeFlag)
+        // console.log(pageChangeFlag)
         if(pageChangeFlag===0){
             this.fetch({
                 pageSize: pagination.pageSize,
@@ -354,9 +363,10 @@ class SampleInspection extends React.Component{
     render(){
         const { selectedRowKeys } = this.state;
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.server = localStorage.getItem('remote');
-        this.Authorization = localStorage.getItem("Authorization")
+        /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
+        const current = JSON.parse(localStorage.getItem('dataEntry')) ;
+        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
+        this.operation = operation.filter(e=>e.path === current.path)[0].operations
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
@@ -366,19 +376,20 @@ class SampleInspection extends React.Component{
         };
         return(
             <div>
-                <BlockQuote name="样品送检" menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddModal fetch={this.fetch}/>
+                    <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>
                     <DeleteByIds
                         selectedRowKeys = {this.state.selectedRowKeys}
                         cancel={this.cancel}
                         deleteByIds={this.deleteByIds}
+                        flag={this.judgeOperation(this.operation,'DELETE')}
                     />
 
-                    <span style={{float:'right',paddingBottom:'8px'}}>
+                    {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
 
-                        <SearchCell name='请输入工厂名'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch}/>
-                    </span>
+                        <SearchCell name='请输入工厂名'  searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
+                    {/* </span> */}
                     <div className='clear' ></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection} size="small"
                            bordered

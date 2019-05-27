@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal,Button,message } from 'antd';
+import { Modal,message } from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
 import CancleButton from '../BlockQuote/cancleButton';
@@ -36,7 +36,7 @@ class DetailSpan extends React.Component {
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
-    handleCancel = (e) => {
+    handleCancel = () => {
         this.setState({
             visible: false,
         });
@@ -72,9 +72,6 @@ class DetailSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        // this.setState({
-        //     visible: true,
-        // });
     }
     /**通过id查询详情 */
     getDetailData(){

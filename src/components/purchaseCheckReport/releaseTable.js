@@ -45,8 +45,9 @@ class ReleaseTable extends React.Component {
         align:'center',
         width: '10%',
         render: receiveDate => {
-            return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
+            return receiveDate?receiveDate:'无';
         }
+
     },{
         title: '创建人',
         dataIndex: 'createPersonName',
@@ -62,8 +63,8 @@ class ReleaseTable extends React.Component {
         key: 'commonBatchNumber.createTime',
         align:'center',
         width: '10%',
-        render: createTime => {
-            return <abbr style={{cursor:'default'}} title={createTime?createTime:'无'}>{createTime?createTime.substring(0,10):'无'}</abbr>
+        render:(createTime)=>{
+            return <span title={createTime} className='text-decoration'>{createTime.substring(0,10)+'...'}</span>
         }
     },{
         title: '发布状态',
@@ -84,7 +85,9 @@ class ReleaseTable extends React.Component {
         key: 'commonBatchNumber.isUrgent',
         align:'center',
         width: '6%',
-        render:isUrgent=>isUrgent?<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>:<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>,
+        render:isUrgent=>{
+            return isUrgent?<span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span>:<span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>
+        },
     },{
         title: '操作',
         dataIndex: 'commonBatchNumber.id',
@@ -93,28 +96,30 @@ class ReleaseTable extends React.Component {
         width: '6%',
         render: (text,record) => {
             let operationFlag = this.judgeOperation(record.commonBatchNumber.isPublished);
-            // let operationFlag = true;
             return (
                 <span>
-                    {operationFlag?(
-                        <CheckReleaseSpan
-                            url={this.props.url}
-                            menuList={this.props.menuList}
-                            state={record.commonBatchNumber.status}
-                            name='发布'
-                            id={record.commonBatchNumber.id}
-                        />
-                    ):(
-                        <span  className="notClick">发布</span>
-                    )}
-                    <Divider type="vertical" />
                     <CheckReleaseSpan
                         url={this.props.url}
                         id={record.commonBatchNumber.id}
                         menuList={this.props.menuList}
-                        state={record.commonBatchNumber.status}
+                        state={-1}
                         name='详情'
                     />
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
+                        <Divider type="vertical" />
+                        {operationFlag?(
+                            <CheckReleaseSpan
+                                url={this.props.url}
+                                menuList={this.props.menuList}
+                                state={record.commonBatchNumber.status}
+                                fetch={this.props.fetch}
+                                name='发布'
+                                id={record.commonBatchNumber.id}
+                            />
+                        ):(
+                            <span  className="notClick">发布</span>
+                        )}
+                    </span>
                 </span>
             )
         }
@@ -130,6 +135,7 @@ class ReleaseTable extends React.Component {
         });
         return(
             <Table
+                onChange={this.props.handleTableChange}
                 rowKey={record => record.commonBatchNumber.id}
                 dataSource={this.props.data}
                 columns={columns}

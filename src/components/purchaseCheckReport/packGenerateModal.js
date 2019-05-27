@@ -1,8 +1,6 @@
 import React from 'react';
 import {Modal,message,Button} from 'antd';
 import CancleButton from "../BlockQuote/cancleButton";
-import SaveButton from "../BlockQuote/saveButton";
-import Submit from "../BlockQuote/submit";
 import NewButton from "../BlockQuote/newButton";
 import PurchaseModal from './purchaseModal';
 import axios from 'axios';
@@ -22,18 +20,17 @@ class PackGenerateModal extends React.Component {
         this.modifyDetailData = this.modifyDetailData.bind(this);
         this.handlePack = this.handlePack.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-
         this.handleGenerate = this.handleGenerate.bind(this);
 
     }
     render() {
         return(
-            <span>
+            <span className={this.props.flag?'':'hide'}>
                 <NewButton handleClick={this.handlePack} name='生成' className='fa fa-cube' />
                 <Modal
                     title="打包数据"
                     visible={this.state.visible}
-                    width="1035px"
+                    width="1080px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
@@ -62,7 +59,6 @@ class PackGenerateModal extends React.Component {
     }
     handleGenerate = () => {
         const batchNumberIds = this.props.selectedRowKeys.toString();
-        console.log(batchNumberIds)
         const params = {
             batchNumberIds:batchNumberIds,
             createPersonId:this.props.menuList.userId,
@@ -76,16 +72,16 @@ class PackGenerateModal extends React.Component {
             params:params
         }).then((data)=>{
             const res = data.data.data;
-            message.info(res);
-            this.props.fetch();
             this.setState({
                 visible: false
-            })
+            });
+            message.info(res);
+            this.props.fetch({
+                pageSize:10,
+                pageNumber:1,
+            });
         }).catch(()=>{
             message.info('操作失败，请联系管理员')
-            // this.setState({
-            //     visible: false
-            // })
         })
     };
 
@@ -97,7 +93,6 @@ class PackGenerateModal extends React.Component {
     };
     handlePack = () => {
         const batchNumberIds = this.props.selectedRowKeys.toString();
-        console.log(batchNumberIds)
         const params = {
             batchNumberIds:batchNumberIds,
         };

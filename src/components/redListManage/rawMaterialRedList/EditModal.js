@@ -101,7 +101,7 @@ class RawMaterialRedListEditModal extends React.Component{
         }
     }
     values.weightLoss=parseInt(v2);
-    //console.log(values);
+    console.log(values);
       
     return values;//用来得到编辑框中填写的新值
 }
@@ -185,7 +185,7 @@ class RawMaterialRedListEditModal extends React.Component{
                                 <div className='redListNum1' id='subtract' onClick={this.subtract1}> <Icon type="down" /></div>
                             </div>
                          }
-                       style={{width:'320px'}}
+                       style={{width:'410px'}}
                     />
                 )}
                 </FormItem>

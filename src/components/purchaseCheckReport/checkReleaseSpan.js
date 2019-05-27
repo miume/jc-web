@@ -4,6 +4,7 @@ import { Modal,Button,Input,message } from 'antd';
 import PurchaseModal from "./purchaseModal";
 import ReleaseNewButton from './releaseNew';
 import ReleaseButton from './releaseButton';
+import CancleButton from '../BlockQuote/cancleButton';
 
 class CheckReleaseSpan extends React.Component {
     constructor(props){
@@ -27,13 +28,14 @@ class CheckReleaseSpan extends React.Component {
     render() {
         const { visible } = this.state;
         const footer = this.judgeFooter(this.props.state);
+        const titleName = "数据"+this.props.name;
         return(
             <span>
                 <span className="blue" onClick={this.handleDetail} >{this.props.name}</span>
                 <Modal
-                    title="数据详情"
+                    title={titleName}
                     visible={visible}
-                    width="1035px"
+                    width="1080px"
                     centered={true}
                     closable={false}
                     maskClosable={false}
@@ -77,9 +79,9 @@ class CheckReleaseSpan extends React.Component {
                     <Input key="input" style={{width:'300px',height:'35px',color:'black',textAlign: 'center',cursor:'default',right:'6px'}} disabled defaultValue="该数据待审核，审核通过后方可发布"/>,
                 ];
                 return footer;
-            default:
+            default:    //返回
                 footer = [
-                    <Button className='white-button' style={{float:'left',backgroundColor:'white',width:'80px',height:'35px'}} key="back"  onClick={this.handleCancel}>返回</Button>,
+                    <CancleButton flag={1} handleCancel={this.handleCancel}/>
                 ];
                 return footer;
         }
@@ -87,28 +89,6 @@ class CheckReleaseSpan extends React.Component {
     //  处理发布新材料
     handleReleaseNew = (handleData) => {
         message.info('暂无此功能')
-        // axios({
-        //     url : `${this.props.url.purchaseCheckReport.purchaseReportRecord}?isDeployNewMaterial=1`,
-        //     method:'put',
-        //     headers:{
-        //         'Authorization': this.props.url.Authorization
-        //     },
-        //     data: {
-        //         purchaseReportRecordDTO: handleData,
-        //     },
-        //     type:'json'
-        // }).then((data)=>{
-        //     this.setState({
-        //         visible: false,
-        //         subVisible: false,
-        //     });
-        //     this.props.fetch();
-        //     message.info(data.data.message);
-        // }).catch(()=>{
-        //     message.info('发布失败，请联系管理员！')
-        // })
-
-
     };
     // 处理发布
     handleRelease = () => {
@@ -119,7 +99,7 @@ class CheckReleaseSpan extends React.Component {
                 'Authorization':this.props.url.Authorization
             },
         }).then((data)=>{
-            // this.props.fetch();
+            this.props.fetch();
             message.info(data.data.message);
         }).catch(()=>{
             message.info('发布失败，请联系管理员！');
@@ -136,9 +116,6 @@ class CheckReleaseSpan extends React.Component {
     /**点击详情 */
     handleDetail() {
         this.getDetailData();
-        this.setState({
-            visible: true,
-        })
     }
     /**获取该行的记录详情 */
     getDetailData(){
@@ -150,7 +127,6 @@ class CheckReleaseSpan extends React.Component {
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log('detail',detail)
             var headData = [];
             var tbodyData = [];
             var judger = '';
@@ -206,7 +182,7 @@ class CheckReleaseSpan extends React.Component {
                         judger: judger,
                         topData: topData,
                     },
-                    // visible: true,
+                    visible: true,
                 })
             }
 

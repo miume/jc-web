@@ -68,7 +68,8 @@ class OperationTable extends React.Component {
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
     }
-    columns = [{
+    columns = this.props.judgeOperation(this.props.operation,'DELETE')||this.props.judgeOperation(this.props.operation,'UPDATE')?
+    [{
         title: '序号',
         dataIndex: 'index',
         key: 'id',
@@ -98,7 +99,7 @@ class OperationTable extends React.Component {
             const editable = this.isEditing(record);
             return (
                 <span>
-                    <span>
+                    <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         {editable ? (
                             <span>
                                 <EditableContext.Consumer>
@@ -124,15 +125,36 @@ class OperationTable extends React.Component {
                             <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
                         )}
                         </span>
-                    <Divider type="vertical" />
                     <DeletaSpan
                         record={record}
                         getFetch={this.getFetch.bind(this)}
+                        flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                     />
-
                 </span>
             )
         }
+    }]:
+    [{
+        title: '序号',
+        dataIndex: 'index',
+        key: 'id',
+        sorter: (a, b) => a.id - b.id,
+        align:'center',
+        width: '20%',
+    },{
+        title: '操作名称',
+        dataIndex: 'operationName',
+        key: 'operationName',
+        align:'center',
+        editable: 1,
+        width: '25%',
+    },{
+        title: '描述',
+        dataIndex: 'operationCode',
+        key: 'operationCode',
+        align:'center',
+        editable: 1,
+        width: '25%',
     }];
     render(){
         //  获取record的记录

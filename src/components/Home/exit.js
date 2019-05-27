@@ -8,18 +8,17 @@ import TodoPart from './todopart';
 class Exit extends Component {
     componentWillMount(){
         this.fetch();
-        // console.log(this.getToDoCount());
     }
     constructor(props) {
         super(props);
         this.fetch = this.fetch.bind(this);
-        this.logout = this.logout.bind(this);
+        //this.logout = this.logout.bind(this);
         this.onClose = this.onClose.bind(this);
         // this.getCount = this.getCount.bind(this);
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
-        this.getToDoCount = this.getToDoCount.bind(this);
+        this.judgeCurrent = this.judgeCurrent.bind(this);
         this.count = 0;
         this.state = {
             visible:false,
@@ -33,15 +32,7 @@ class Exit extends Component {
         localStorage.clear();
         let newState = {...this.state, flag : 1}
         this.setState(newState);
-        /**登出时，使登陆背景动图显示 */
-        document.getElementById('defaultCanvas0').style.visibility='visible'; 
-        var showFrame = setInterval(function() {
-            var frame = window.frame;
-            if(frame !== undefined && frame !== null) {
-                frame(20);   //恢复帧
-                clearInterval(showFrame);
-            }
-        },100)
+        this.props.logout()
     }
     /**查看用户手册 */
     userInstruction(){
@@ -49,12 +40,12 @@ class Exit extends Component {
     }
     /**点击弹出待办事项 */
     drawerEvent(){
-        var date = new Date();
-        var year = date.getFullYear();
-        var month = date.getMonth()+1;
-        var day = date.getDate();
-        var week = date.getDay();
-        var time = year+'-'+month+'-'+day;
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth()+1;
+        let day = date.getDate();
+        let week = date.getDay();
+        let time = year+'-'+month+'-'+day;
         switch(week){
             case 0: week='星期天';break;
             case 1: week='星期一';break;
@@ -86,7 +77,7 @@ class Exit extends Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            var count = res? res.length : 0;
+            let count = res? res.length : 0;
             this.setState({
                 data:res,
                 count:count
@@ -98,30 +89,32 @@ class Exit extends Component {
     //     console.log(count)
     //     return count;
     // }
-    logout() {
-        /**登出时，使登陆背景动图显示 */
-        document.getElementById('defaultCanvas0').style.visibility='visible'; 
-        var showFrame = setInterval(function() {
-            var frame = window.frame;
-            if(frame !== undefined && frame !== null) {
-                frame(20);   //恢复帧
-                clearInterval(showFrame);
-            }
-        },100)
-    }
+
     gotodolist(){
-        this.props.history.push({pathname:'/todoList'})
         this.setState({
             visible:false
         })
+        this.judgeCurrent()
+        this.props.history.push({pathname:'/todoList'})
     }
-    getToDoCount(){
-        return this.state.count;
+    /**用来判断 若直接从top 进入待办事项时，怎么正确渲染待办事项页面 */
+    judgeCurrent(){
+        const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path==='/todoList')[0]:[];
+        const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:[];
+        const current = {
+            openKeys:menus.parent,
+            menuName:menus.menuName,
+            menuParent:parentName,
+            path:menus.path
+        }
+        localStorage.setItem('selectedKeys',menus.path)
+        localStorage.setItem('defaultOpenKeys',[menus.parent])
+        localStorage.setItem('current',JSON.stringify(current));
     }
     render() {
-        var height1 = document.body.clientHeight - 150;
+        let height1 = document.body.clientHeight - 150;
         return (
-            <div id='exit'>
+            <div className="fr">
                 {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
                 {/* <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} /> */}
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
@@ -133,9 +126,9 @@ class Exit extends Component {
                     <div className='drawer-date-div' style={{height:height1}}>
                     {
                         this.state.data?this.state.data.map((e,index)=>{
-                            var contents = '';
-                            var curId = this.props.userId;
-                            for(var i = 0; i < e.details.length; i++){
+                            let contents = '';
+                            let curId = this.props.userId;
+                            for(let i = 0; i < e.details.length; i++){
                                 if(curId===e.details[i].userId) contents = e.details[i].responsibility;     
                             }
                             return (
