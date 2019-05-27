@@ -40,6 +40,10 @@ class ChangePassword extends React.Component{
         const url = JSON.parse(localStorage.getItem('url'));
         let params = getValue.getFieldsValue()
         console.log(params)
+        if(params['newPassword'] !== params['confirm']){
+            message.info('前后两次输入密码不一致！')
+            return
+        }
         if(!params['oldPassword'] || !params['newPassword'] || !params['confirm'] ){
             message.info('信息填写不完整！')
             return
