@@ -63,7 +63,7 @@ class EditableCell extends React.Component {
         );
     }
 }
-
+const current=JSON.parse(localStorage.getItem('current'));
 class ProductProcess extends React.Component{
   url;
   operation;
@@ -111,6 +111,8 @@ class ProductProcess extends React.Component{
           //console.log('Current: ', current);
         }
       };
+       //获取该菜单所有权限
+       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
       this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
@@ -391,8 +393,7 @@ class ProductProcess extends React.Component{
      //通过localStorage可查到
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
-        //获取该菜单所有权限
-        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
+       
         const {selectedRowKeys}=this.state; 
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
