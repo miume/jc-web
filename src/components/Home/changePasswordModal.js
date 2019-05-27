@@ -10,12 +10,20 @@ const FormItem = Form.Item
 class ChangePasswordModal extends React.Component{
     constructor(props){
         super(props)
+        this.state = {
+            confirmDirty : false
+        }
         this.validateToNextPassword = this.validateToNextPassword.bind(this)
         this.compareToFirstPassword = this.compareToFirstPassword.bind(this)
+        this.handleConfirmBlur = this.handleConfirmBlur.bind(this)
+    }
+    handleConfirmBlur(e){
+        const value = e.target.value;
+        this.setState({ confirmDirty: this.state.confirmDirty || !!value });
     }
     validateToNextPassword(rule,value,callback){
         const form = this.props.form
-        if(value){
+        if(value && this.state.confirmDirty){
             form.validateFields(['confirm'],{force:true})
         }
         callback()
@@ -34,9 +42,8 @@ class ChangePasswordModal extends React.Component{
         const {getFieldDecorator} = this.props.form
         return (
             <Form horizontal={'true'}>
-                <FormItem wrapperCol={{span:24}} label={'新密码'} required>
-                    {getFieldDecorator('password',{
-                        initialValue:'',
+                <FormItem wrapperCol={{span:24}} label={'旧密码'} required>
+                    {getFieldDecorator('oldPassword',{
                         rules:[{required:true,message:'旧密码不能为空'}]
                     })(
                         <Input placeholder={'请输入旧密码'} type={'password'}/>
@@ -44,8 +51,7 @@ class ChangePasswordModal extends React.Component{
                 </FormItem>
                 <FormItem wrapperCol={{span:24}} label={'新密码'} required>
                     {getFieldDecorator('newPassword',{
-                        initialValue:'',
-                        rules:[{required:true,message:'新密码不能为空'},
+                        rules:[{required:true,message:'请输入新密码'},
                                {validator:this.validateToNextPassword}]
                     })(
                         <Input placeholder={'请输入新密码'} type={'password'}/>
@@ -53,11 +59,10 @@ class ChangePasswordModal extends React.Component{
                 </FormItem>
                 <FormItem wrapperCol={{span:24}} label={'确定新密码'} required>
                     {getFieldDecorator('confirm',{
-                        initialValue:'',
-                        rules:[{required:true,message:'新密码不能为空'},
+                        rules:[{required:true,message:'请确认新密码'},
                             {validator:this.compareToFirstPassword}]
                     })(
-                        <Input placeholder={'请输入新密码'} type={'password'}/>
+                        <Input placeholder={'确认新密码'} type={'password'} onBlur={this.handleConfirmBlur}/>
                     )}
                 </FormItem>
             </Form>

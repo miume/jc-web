@@ -12,7 +12,7 @@ class Exit extends Component {
     constructor(props) {
         super(props);
         this.fetch = this.fetch.bind(this);
-        this.logout = this.logout.bind(this);
+        //this.logout = this.logout.bind(this);
         this.onClose = this.onClose.bind(this);
         // this.getCount = this.getCount.bind(this);
         this.exitEvent = this.exitEvent.bind(this);
@@ -32,15 +32,7 @@ class Exit extends Component {
         localStorage.clear();
         let newState = {...this.state, flag : 1}
         this.setState(newState);
-        /**登出时，使登陆背景动图显示 */
-        document.getElementById('defaultCanvas0').style.visibility='visible'; 
-        var showFrame = setInterval(function() {
-            var frame = window.frame;
-            if(frame !== undefined && frame !== null) {
-                frame(20);   //恢复帧
-                clearInterval(showFrame);
-            }
-        },100)
+        this.props.logout()
     }
     /**查看用户手册 */
     userInstruction(){
@@ -97,17 +89,7 @@ class Exit extends Component {
     //     console.log(count)
     //     return count;
     // }
-    logout() {
-        /**登出时，使登陆背景动图显示 */
-        document.getElementById('defaultCanvas0').style.visibility='visible';
-        let showFrame = setInterval(function() {
-            let frame = window.frame;
-            if(frame !== undefined && frame !== null) {
-                frame(20);   //恢复帧
-                clearInterval(showFrame);
-            }
-        },100)
-    }
+
     gotodolist(){
         this.setState({
             visible:false
@@ -144,9 +126,9 @@ class Exit extends Component {
                     <div className='drawer-date-div' style={{height:height1}}>
                     {
                         this.state.data?this.state.data.map((e,index)=>{
-                            var contents = '';
-                            var curId = this.props.userId;
-                            for(var i = 0; i < e.details.length; i++){
+                            let contents = '';
+                            let curId = this.props.userId;
+                            for(let i = 0; i < e.details.length; i++){
                                 if(curId===e.details[i].userId) contents = e.details[i].responsibility;     
                             }
                             return (

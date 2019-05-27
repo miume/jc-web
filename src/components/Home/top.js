@@ -6,6 +6,16 @@ class Top extends React.Component{
     constructor(props){
         super(props);
     }
+    logout = () => {
+        document.getElementById('defaultCanvas0').style.visibility='visible';
+        let showFrame = setInterval(function() {
+            let frame = window.frame;
+            if(frame !== undefined && frame !== null) {
+                frame(20);   //恢复帧
+                clearInterval(showFrame);
+            }
+        },100)
+    }
     render(){
         return (
             <div className="top">
@@ -17,8 +27,9 @@ class Top extends React.Component{
                         <span>新能源材料智能工厂MES系统</span>
                     </div>
                 </div>
-                <Exit name='退出' userId={this.props.userId}></Exit>
-                <ChangePassword userName={this.props.userName}/>
+                <Exit name='退出' userId={this.props.userId} logout={this.logout}></Exit>
+                <ChangePassword userId={this.props.userId} logout={this.logout}
+                                userName={this.props.userName} />
             </div>
         )
     }

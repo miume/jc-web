@@ -5,8 +5,8 @@ import Left from './left';
 import Right from './right';
 class Home extends Component {
     componentWillMount() {
-        var canvas;
-        var showCanvas = setInterval(function() {
+        let canvas;
+        let showCanvas = setInterval(function() {
             canvas = document.getElementById('defaultCanvas0');
             if(canvas !== null && canvas !== undefined) {
                 canvas.style.visibility='hidden';
@@ -51,6 +51,7 @@ class Home extends Component {
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
+            passwordChange:`${server}/jc/auth/passwordChange`,
             /**角色管理 */
             role:{
                 role:`${server}/jc/auth/role`,
@@ -281,15 +282,15 @@ class Home extends Component {
     }
     /**控制登陆背景图 */
     componentDidMount() {
-        var showFrame = setInterval(function() {
-            var frame = window.frame;
+        let showFrame = setInterval(function() {
+            let frame = window.frame;
             if(frame !== undefined && frame !== null) {
                 frame(0);   //消除帧
                 clearInterval(showFrame);
             }
         },500)
     }
-    
+    /**登出时，使登陆背景动图显示 */
     render() {
         const userName = JSON.parse(localStorage.getItem('menuList')).name;
         const userId = JSON.parse(localStorage.getItem('menuList')).userId;
