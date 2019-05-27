@@ -1,7 +1,7 @@
 import React from 'react';
-import {Divider} from 'antd';
 import {withRouter} from 'react-router-dom'
 import Exit from './exit';
+import ChangePassword from "./changePassword";
 class Top extends React.Component{
     constructor(props){
         super(props);
@@ -17,14 +17,8 @@ class Top extends React.Component{
                         <span>新能源材料智能工厂MES系统</span>
                     </div>
                 </div>
-                <div className="fr" >
-                    <Exit name='退出' userId={this.props.userId}></Exit>
-                </div>
-                <div className="fr userName" >
-                    <i className="fa fa-user-circle-o" aria-hidden="true"></i> 
-                    <span>{this.props.userName}</span>
-                    <Divider type='vertical' />
-                </div>     
+                <Exit name='退出' userId={this.props.userId}></Exit>
+                <ChangePassword userName={this.props.userName}/>
             </div>
         )
     }
