@@ -94,12 +94,16 @@ class InterProduct extends React.Component {
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
-                factoryName:this.state.searchContent
+                factoryName:this.state.searchContent,
+                sortField:'sample_delivering_date',
+                sortType: 'desc',
             })
         }else{
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
+                sortField:'sample_delivering_date',
+                sortType: 'desc',
             })
         }
     };
@@ -111,7 +115,7 @@ class InterProduct extends React.Component {
                 searchContent:''
             })
         };
-        if(params === undefined){
+        if(params === undefined || flag === 1 ){
             params = {
                 pageSize:10,
                 pageNumber:1,
@@ -152,7 +156,9 @@ class InterProduct extends React.Component {
             pageChangeFlag:1
         });
         this.fetch({
-            factoryName:this.state.searchContent
+            factoryName:this.state.searchContent,
+            sortField:'sample_delivering_date',
+            sortType: 'desc'
         })
     };
     /**获取查询时角色名称的实时变化 */

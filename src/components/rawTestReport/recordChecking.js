@@ -7,7 +7,7 @@ import CheckModal from '../BlockQuote/checkModal';
 import Submit from '../BlockQuote/submit';
 // import NewButton from '../BlockQuote/newButton';
 // const data = [];
-// for(var i = 1; i <=10; i++){
+// for(let i = 1; i <=10; i++){
 //     data.push({
 //         id:i,
 //         testItem:`Ca${i}`,
@@ -91,11 +91,11 @@ class RecordChecking extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            var details  = [];
-            var topData = {};
-            var {flag,fail} = this.state;
+            let details  = [];
+            let topData = {};
+            let {flag,fail} = this.state;
             if(res){
-                var IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
+                let IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
                 if(IsQualified) flag = 1; else fail = 1;
                 topData={
                     batchNumber: res.serialNumber?res.serialNumber:'',
@@ -103,8 +103,8 @@ class RecordChecking extends React.Component{
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
                 if(res.testDTOS){
-                    for(var i = 0; i < res.testDTOS.length; i++){
-                        var e = res.testDTOS[i];
+                    for(let i = 0; i < res.testDTOS.length; i++){
+                        let e = res.testDTOS[i];
                             details.push({
                                 index:`${i+1}`,
                                 id:e.testItemResultRecord.id,
@@ -192,20 +192,24 @@ class RecordChecking extends React.Component{
         this.checkData(0);
     }
     checkData(status){
-        var {detail,fail,flag,IsQualified} = this.state;
-        var flag1 = 1;
+        let {detail,fail,flag,IsQualified} = this.state;
+        let flag1 = 1;
         if(IsQualified === -1 && flag === 0 && fail === 0){
             flag1 = 0;
             message.info('请点击合格或者不合格！');
             return
         }
         if(detail){
-            for(var i = 0; i < detail.length; i++){
+            let count = 0
+            for(let i = 0; i < detail.length; i++){
                 if(detail[i].testResult === ''){
-                    flag1 = 0;
-                    message.info('所有检测结果不能为空，请填写完整！');
-                    return
+                    count++
                 }
+            }
+            if(count === detail.length){
+                flag1 = 0;
+                message.info('必须录入一个检测结果！');
+                return
             }
         } 
         if(flag1){
@@ -214,12 +218,12 @@ class RecordChecking extends React.Component{
     }
     /**保存 */
     applyOut(status){
-        var {detail,flag,IsQualified} = this.state;
+        let {detail,flag,IsQualified} = this.state;
         if(flag) IsQualified = 1; else IsQualified = 0;
-        var testDTOS = [];
-        for(var i=0; i<detail.length;i++ )
+        let testDTOS = [];
+        for(let i=0; i<detail.length;i++ )
         {
-            var e = detail[i];
+            let e = detail[i];
             testDTOS.push({
                 testItemResultRecord:{
                     id:e.id,
@@ -288,7 +292,7 @@ class RecordChecking extends React.Component{
         if(text!==undefined){
             if(flag) return <span className='text-decoration' title={text}>{text.substring(0,10)}</span>;
             else {
-                var te = text.split('-');
+                let te = text.split('-');
                 return <span className='text-decoration' title={text}>{te[0]+'-'+te[1]+'-'+te[2]+'-'+te[3]}</span>;
             }
         }
