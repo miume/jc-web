@@ -73,7 +73,7 @@ class Home extends Component {
                 findAllByPage:`${server}/jc/auth/menu/byNameLikeByPage`,
                 findByMenuType:`${server}/jc/auth/menu/byType`,
             },
-            /**盘库管理 */
+            /**盘库管理*/
             libraryManage:{
                 getAll:`${server}/jc/common/RepoDiffRecord`,
                 getAllLikeByPage:`${server}/jc/common/RepoDiffRecord/getByMaterialNameLike`,
