@@ -290,7 +290,7 @@ class RecordChecking extends React.Component{
     */
     headData(text,flag){
         if(text!==undefined){
-            if(flag) return <span className='text-decoration' title={text}>{text.substring(0,10)}</span>;
+            if(flag) return <span className='text-decoration' title={text}>{text.substring(0,10)} </span>;
             else {
                 let te = text.split('-');
                 return <span className='text-decoration' title={text}>{te[0]+'-'+te[1]+'-'+te[2]+'-'+te[3]}</span>;
