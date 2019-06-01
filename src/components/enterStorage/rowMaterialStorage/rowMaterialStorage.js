@@ -15,6 +15,7 @@ class RowMaterialStorage extends Component{
           return;
         }
     }
+
     constructor(props){
          super(props);
          this.state={
@@ -23,7 +24,6 @@ class RowMaterialStorage extends Component{
              pagination:[],
              pageChangeFlag:0,
          }
-         
          this.columns=[{
             title:'序号',
             dataIndex:'index',
