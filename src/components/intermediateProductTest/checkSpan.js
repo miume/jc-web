@@ -224,8 +224,8 @@ class CheckSpan extends React.Component {
     }
     /**点击清空按钮 */
     handleClearButton = () => {
-        var detailData = this.state.detailData;
-        for(var i=0; i<detailData.testDTOS.length; i++){
+        let detailData = this.state.detailData;
+        for(let i=0; i<detailData.testDTOS.length; i++){
             detailData.testDTOS[i].testResult = '';
         }
         this.setState({
@@ -247,10 +247,10 @@ class CheckSpan extends React.Component {
             }
         }).then((data)=>{
             const res = data.data.data;
-            var topData = {};  //头部数据
-            var testDTOS = [];  //中部项目
-            var testData = {};  //检验数据
-            var isQualified = 0;
+            let topData = {};  //头部数据
+            let testDTOS = [];  //中部项目
+            let testData = {};  //检验数据
+            let isQualified = 0;
             if(res){
                 isQualified = res.testReportRecord?res.testReportRecord.isQualified:'';
                 topData = {
@@ -259,8 +259,8 @@ class CheckSpan extends React.Component {
                     sampleDeliveringDate: res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
                 if(res.testDTOS) {
-                    for(var i=0; i<res.testDTOS.length; i++){
-                        var e = res.testDTOS[i];
+                    for(let i=0; i<res.testDTOS.length; i++){
+                        let e = res.testDTOS[i];
                         testDTOS.push({
                             index:`${i+1}`,
                             id:e.testItemResultRecord.id,
@@ -295,10 +295,10 @@ class CheckSpan extends React.Component {
         const value = e.target.value;
         const name = e.target.name;
         const id = e.target.id;
-        var newData = [...this.state.detailData.testDTOS];
+        let newData = [...this.state.detailData.testDTOS];
         const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
         newData[index][name] = value;
-        var detailData = this.state.detailData;
+        let detailData = this.state.detailData;
         detailData.testDTOS = newData;
         this.setState({
             detailData:detailData
@@ -307,7 +307,7 @@ class CheckSpan extends React.Component {
     /**---------------------- */
     /**点击合格与不合格 */
     clickIsQualified = (isQualified) => {
-        var detailData = this.state.detailData;
+        let detailData = this.state.detailData;
         detailData.isQualified = isQualified;
         this.setState({
             detailData: detailData
@@ -316,13 +316,18 @@ class CheckSpan extends React.Component {
     /**实现保存按钮功能--实现保存的数据处理 */
     clickSavaButton = (status) => {
         //  实现保存的数据处理
-        var interCheckData = this.state.interCheckData;
+        let interCheckData = this.state.interCheckData;
         const detailTestDTOS = this.state.detailData.testDTOS;
         const interTestDTOS = [];
         const id = this.props.id;
         const detailIsQualified = this.state.detailData.isQualified;
         //  进行testDTOS数据组装
-        for(var i=0; i<detailTestDTOS.length; i++){
+        let flag = 0;
+        //console.log(detailTestDTOS)
+        for(let i=0; i<detailTestDTOS.length; i++){
+            if(detailTestDTOS[i].testResult !== null){
+                flag = 1
+            }
             interTestDTOS.push({
                 testItemResultRecord:{
                     id: detailTestDTOS[i].id,
@@ -330,18 +335,28 @@ class CheckSpan extends React.Component {
                 }
             })
         }
+        if(flag === 0){
+            message.info('至少填写一个检测结果！');
+            return
+        }
         interCheckData.testDTOS = interTestDTOS;
         interCheckData.testReportRecord.isQualified = detailIsQualified;
         interCheckData.testReportRecord.judger = this.props.menuList.userId;
         interCheckData.sampleDeliveringRecord.id = id;
-        if(detailTestDTOS){
-            for(var j=0; j<detailTestDTOS.length; j++){
-                if(detailTestDTOS[j].testResult === ''||detailTestDTOS[j].testResult === null||detailTestDTOS[j].testResult === undefined){
-                    message.info('所有检测结果不能为空，请填写完整！');
-                    return
-                }
-            }
-        }
+        // if(detailTestDTOS){
+        //     let flag = 0
+        //     for(let j=0; j<detailTestDTOS.length; j++){
+        //         if(detailTestDTOS[j].testResult !== ''||detailTestDTOS[j].testResult !== null||detailTestDTOS[j].testResult !== undefined){
+        //             flag = 1
+        //             break
+        //         }
+        //     }
+        //     console.log(flag)
+        //     if (flag === 0){
+        //         message.info('至少填写一个检测结果！');
+        //         return
+        //     }
+        // }
         if(detailIsQualified !== 0&&detailIsQualified !== 1){
             message.info('请点击合格或者不合格！');
             return
