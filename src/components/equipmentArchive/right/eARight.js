@@ -10,7 +10,6 @@ class EARight extends Component {
         super(props);
         this.state = {
             rightTableData: [],
-            flag: true
         };
         this.returnEquKey = this.returnEquKey.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
@@ -32,6 +31,7 @@ class EARight extends Component {
         return (
             <TabPane key={item.key} tab={item.name + '(' + item.count + ')'}>
                 <EARightBottom
+                    comFlag={false}
                     data={this.props.rightTableData}
                 />
             </TabPane>

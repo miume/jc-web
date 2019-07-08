@@ -1,59 +1,160 @@
 import React, {Component} from 'react';
-import {Table, Icon} from 'antd';
+import {Table, Icon, Divider} from 'antd';
 import '../equipmentArchive.css'
-import Detail from '../table/details'
+import EqComponent from '../table/eqComponent'
+import Fittings from '../table/fittings'
+import Delete from '../table/delete'
+import Details from '../table/details'
+import Maintenance from '../table/maintenance'
+import Repair from '../table/repair'
 
 class EARightTable extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
     }
-    columns = [{
+
+    columns = this.props.comFlag ? [{
         title: '序号',
         dataIndex: 'index',
         key: 'index',
         sorter: (a, b) => a.index - b.index,
-        align:'center',
+        align: 'center',
         width: '8%',
-    },{
+    }, {
         title: '固定资产编码',
         dataIndex: 'fixedassetsCode',
         key: 'fixedassetsCode',
-        align:'center',
+        align: 'center',
         width: '13%',
-    },{
-        title: '设备名称',
+    }, {
+        title: '部件名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        align:'center',
+        align: 'center',
         width: '10%',
-    },{
+    }, {
         title: '规格型号',
         dataIndex: 'specification',
         key: 'specification',
-        align:'center',
+        align: 'center',
         width: '10%',
-    },{
+    }, {
+        title: 'ID卡号',
+        dataIndex: 'idCode',
+        key: 'idCode',
+        align: 'center',
+        width: '13%',
+    }, {
         title: '启动日期',
         dataIndex: 'startdate',
         key: 'startdate',
-        align:'center',
+        align: 'center',
         width: '10%',
-    },{
-        title: '设备状况',
-        dataIndex: 'statusCode',
-        key: 'statusCode',
-        align:'center',
-        width: '15%',
-    },{
+    }, {
         title: '操作',
         dataIndex: 'code',
         key: 'code',
-        align:'center',
+        align: 'center',
         width: '30%',
-        render:(text,record) => {
-            return(
+        render: (text, record) => {
+            return (
                 <span>
-                    <Detail />
+                    <EqComponent/>
+                    <Divider type="vertical"/>
+                    <Fittings/>
+                    <Divider type="vertical"/>
+                    <Maintenance/>
+                    <Divider type="vertical"/>
+                    <Repair/>
+                    <Divider type="vertical"/>
+                    <Details/>
+                    <Divider type="vertical"/>
+                    <Delete/>
+                </span>
+            )
+        }
+    }] : [{
+        title: '序号',
+        dataIndex: 'index',
+        key: 'index',
+        sorter: (a, b) => a.index - b.index,
+        align: 'center',
+        width: '6%',
+    }, {
+        title: '固定资产编码',
+        dataIndex: 'fixedassetsCode',
+        key: 'fixedassetsCode',
+        align: 'center',
+        width: '10%',
+    }, {
+        title: this.props.comFlag ? '部件名称' : '设备名称',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
+        align: 'center',
+        width: '8%',
+    }, {
+        title: '规格型号',
+        dataIndex: 'specification',
+        key: 'specification',
+        align: 'center',
+        width: '9%',
+    }, {
+        title: 'ID卡号',
+        dataIndex: 'idCode',
+        key: 'idCode',
+        align: 'center',
+        width: '10%',
+    }, {
+        title: '启动日期',
+        dataIndex: 'startdate',
+        key: 'startdate',
+        align: 'center',
+        width: '10%',
+    }, {
+        title: () => {return (
+            <span>设备状况&nbsp;
+                <i style={{color:"lawngreen"}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;
+                <i style={{color:"yellow"}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;
+                <i style={{color:"red"}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;
+                <i style={{color:"grey"}} className="fa fa-circle" aria-hidden="true"></i>
+            </span>
+        )},
+        dataIndex: 'statusCode',
+        key: 'statusCode',
+        align: 'center',
+        width: '13%',
+        render: statusCode => {
+            switch (statusCode) {
+                case 0:
+                    return <span className="eq-statu1">状况1&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                case 1:
+                    return <span className="eq-statu2">状况2&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                case 2:
+                    return <span className="eq-statu3">状况3&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                default:
+                    return <span className="eq-statu4">状况4&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+            }
+        },
+    }, {
+        title: '操作',
+        dataIndex: 'code',
+        key: 'code',
+        align: 'center',
+        width: '28%',
+        render: (text, record) => {
+            return (
+                <span>
+                    <EqComponent/>
+                    <Divider type="vertical"/>
+                    <Fittings/>
+                    <Divider type="vertical"/>
+                    <Maintenance/>
+                    <Divider type="vertical"/>
+                    <Repair/>
+                    <Divider type="vertical"/>
+                    <Details/>
+                    <Divider type="vertical"/>
+                    <Delete/>
                 </span>
             )
         }
@@ -69,7 +170,7 @@ class EARightTable extends Component {
                     columns={this.columns}
                     size="small"
                     bordered
-                    scroll={{ y: 400 }}
+                    scroll={{y: 400}}
                 />
             </div>
         )
