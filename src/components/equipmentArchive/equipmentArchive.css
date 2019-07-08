@@ -58,3 +58,11 @@
     margin-top: 5px !important;
     margin-bottom: 5px !important;
 }
+/*fittingModal*/
+.eq-td {
+    border: 1px solid black;
+    width: 150px;
+}
+.eq-td-left {
+    border-left: 0;
+}

@@ -164,7 +164,7 @@ class EARightTable extends Component {
         return (
             <div className="eA-right-bottom">
                 <Table
-                    rowKey={record => record.id}
+                    rowKey={record => record.code}
                     rowSelection={this.props.rowSelection}
                     dataSource={this.props.dataSource}
                     columns={this.columns}

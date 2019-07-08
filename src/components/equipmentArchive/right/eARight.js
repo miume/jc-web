@@ -22,6 +22,10 @@ class EARight extends Component {
                 <Tabs onChange={this.returnEquKey}>
                     {this.renderEquipmentName(this.props.rightTopData)}
                 </Tabs>
+                <EARightBottom
+                    comFlag={false}
+                    data={this.props.rightTableData}
+                />
             </div>
         )
     }
@@ -30,10 +34,6 @@ class EARight extends Component {
     renderEquipmentName = data => data.map((item) => {
         return (
             <TabPane key={item.key} tab={item.name + '(' + item.count + ')'}>
-                <EARightBottom
-                    comFlag={false}
-                    data={this.props.rightTableData}
-                />
             </TabPane>
         )
     });
