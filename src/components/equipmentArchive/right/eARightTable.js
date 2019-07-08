@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Table, Icon} from 'antd';
 import '../equipmentArchive.css'
+import Detail from '../table/details'
+
 class EARightTable extends Component {
     constructor(props){
         super(props)
@@ -14,41 +16,49 @@ class EARightTable extends Component {
         width: '8%',
     },{
         title: '固定资产编码',
-        dataIndex: 'index',
-        key: 'index',
+        dataIndex: 'fixedassetsCode',
+        key: 'fixedassetsCode',
         align:'center',
         width: '13%',
     },{
         title: '设备名称',
-        dataIndex: 'index',
-        key: 'index',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         align:'center',
         width: '10%',
     },{
         title: '规格型号',
-        dataIndex: 'index',
-        key: 'index',
+        dataIndex: 'specification',
+        key: 'specification',
         align:'center',
         width: '10%',
     },{
         title: '启动日期',
-        dataIndex: 'index',
-        key: 'index',
+        dataIndex: 'startdate',
+        key: 'startdate',
         align:'center',
         width: '10%',
     },{
         title: '设备状况',
-        dataIndex: 'index',
-        key: 'index',
+        dataIndex: 'statusCode',
+        key: 'statusCode',
         align:'center',
         width: '15%',
     },{
         title: '操作',
-        dataIndex: 'index',
-        key: 'index',
+        dataIndex: 'code',
+        key: 'code',
         align:'center',
         width: '30%',
+        render:(text,record) => {
+            return(
+                <span>
+                    <Detail />
+                </span>
+            )
+        }
     }];
+
     render() {
         return (
             <div className="eA-right-bottom">

@@ -14,15 +14,15 @@ class EARightBottom extends Component {
             selectedRowKeys: [],
             searchContent: '',
             pageChangeFlag: 0,        //0表示getAllPage分页查询，
-            dataSource:[]
+            dataSource: []
 
         }
+        this.getData = this.getData.bind(this)
     }
 
     render() {
         const current = JSON.parse(localStorage.getItem('current'));
-        console.log(current)
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
         const {selectedRowKeys} = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -47,15 +47,38 @@ class EARightBottom extends Component {
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
                 <EARightTable
                     rowSelection={rowSelection}
-                    dataSource={this.state.dataSource}
+                    dataSource={this.props.data}
                 />
             </div>
         )
     }
 
+    getData = () => {
+        // TODO 调用接口，获取表格数据
+        const data = [{
+            code: 1,
+            fixedassetsCode: '10102131',
+            deviceName: '反应弧',
+            specification: 'ABC-1231',
+            startdate: '2019/6/14',
+            statusCode: 0
+        }, {
+            code: 2,
+            fixedassetsCode: '10102132',
+            deviceName: '计量勒',
+            specification: 'ABC-1232',
+            startdate: '2019/6/14',
+            statusCode: 1
+        }];
+
+        this.setState = ({
+            dataSource: data
+        })
+    };
+
+
     deleteByIds = () => {
         const ids = this.state.selectedRowKeys;
-        console.log(ids)
     };
     cancle = () => {
         this.setState({
