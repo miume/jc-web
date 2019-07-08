@@ -46,6 +46,7 @@ class EARightBottom extends Component {
                     fetch={this.fetch}
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
                 <EARightTable
+                    comFlag={this.props.comFlag}
                     rowSelection={rowSelection}
                     dataSource={this.props.data}
                 />
@@ -61,6 +62,7 @@ class EARightBottom extends Component {
             deviceName: '反应弧',
             specification: 'ABC-1231',
             startdate: '2019/6/14',
+            idCode: '123456',
             statusCode: 0
         }, {
             code: 2,
@@ -68,6 +70,7 @@ class EARightBottom extends Component {
             deviceName: '计量勒',
             specification: 'ABC-1232',
             startdate: '2019/6/14',
+            idCode: '987654',
             statusCode: 1
         }];
 
