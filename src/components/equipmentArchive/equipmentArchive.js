@@ -80,6 +80,7 @@ class EquipmentArchive extends Component {
         if (key && depKey) {
             // TODO 调用接口，获得表格数据
             const rightTableData = [{
+                index: 1,
                 code: 3,
                 fixedassetsCode: '10102133',
                 deviceName: '反应弧2',
@@ -88,6 +89,7 @@ class EquipmentArchive extends Component {
                 idCode: '123456',
                 statusCode: 0
             }, {
+                index: 2,
                 code: 4,
                 fixedassetsCode: '10102155',
                 deviceName: '计量勒22',
