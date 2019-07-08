@@ -5,10 +5,10 @@ import Blockquote from '../BlockQuote/blockquote';
 //import NewButton from '../BlockQuote/newButton';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
-import CheckManual from '../equipmentFile/checkShouCe/checkShouCe';
-import Edit from '../equipmentFile/Edit/edit';
-import Delete from '../equipmentFile/delete/delete';
-import Add from '../equipmentFile/add/add';
+import CheckManual from './/checkShouCe/checkShouCe';
+import Edit from './/Edit/edit';
+import Delete from './/delete/delete';
+import Add from './/add/add';
 class EquipmentArchive extends Component{//设备档案
     componentDidMount(){
         this.fetch();

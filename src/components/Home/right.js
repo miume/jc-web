@@ -38,7 +38,7 @@ import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
 
 import Equipment from "../equipmentGuidance/equipmentGuidance"
 import EquipmentRepair from "../equipmentRepair/equipmentRepair"
-import EquipmentArchive from '../equipmentFile/equipmentFile';
+import EquipmentArchive from '../equipmentArchive/equipmentArchive';
 class Right extends React.Component{
     render(){
         const data = [{
