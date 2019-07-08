@@ -32,7 +32,7 @@ class Detail extends React.Component {
                         />
                     ]}
                 >
-                    详情
+                    待开发
                 </Modal>
             </span>
         )

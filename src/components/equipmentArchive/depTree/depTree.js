@@ -138,6 +138,10 @@ class DepTree extends Component {
             }
             data[0].children.push(parenObj);
         }
+        // TODO 默认查询第一个一级部门的所有设备信息并显示第一个选项卡的设备信息
+        if(apiData[0]&&apiData[0].parent){
+            this.props.getRightData(apiData[0].parent.code)
+        }
         this.setState({
             data: data
         })
