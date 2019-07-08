@@ -32,20 +32,7 @@ class DepTree extends Component {
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
     }
-
-    // data = [
-    //     {
-    //         value: 'Root',
-    //         defaultValue: 'Root',
-    //         key: '0-1',
-    //         parentKey: '0',
-    //         isEditable: false
-    //     }
-    // ]
-
     render() {
-        console.log("data-----------------")
-        console.log(this.state.data)
         return (
             <Tree
                 showLine
@@ -160,12 +147,12 @@ class DepTree extends Component {
 
 
     onSelect = (selectedKeys, info) => {
-        console.log('selected', selectedKeys, info);
+        // console.log('selected', selectedKeys, info);
+        this.props.getDepKey(selectedKeys)
+
     }
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {
-        console.log("expandedKeys--------------")
-        console.log(expandedKeys)
         this.expandedKeys = expandedKeys;
         this.setState({expandedKeys: expandedKeys})
     }
@@ -290,8 +277,6 @@ class DepTree extends Component {
     onSave = (key) => {
         var data = this.state.data;
         // TODO 调用getData函数，重新从API获取数据
-        console.log("saveData------------")
-        console.log(this.state.saveData)
         this.saveNode(key, data);
         this.setState({
             data: data,

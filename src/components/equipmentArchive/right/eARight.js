@@ -6,33 +6,12 @@ import EARightBottom from './eARightBottom'
 const {TabPane} = Tabs;
 
 class EARight extends Component {
-    topData = [
-        {
-            key: 0,
-            name: "反应弧",
-            count: 11
-        }, {
-            key: 1,
-            name: "计量类",
-            count: 30
-        }
-    ];
-    tableData = [
-        {
-            key: 12,
-            data: '121212'
-        }, {
-            key: 13,
-            data: '131313'
-        }
-    ];
-
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            topData: this.topData,
-            tableData: this.tableData
-        }
+            rightTableData: [],
+            flag: true
+        };
         this.returnEquKey = this.returnEquKey.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
 
@@ -42,7 +21,7 @@ class EARight extends Component {
         return (
             <div className="eA-right-top">
                 <Tabs onChange={this.returnEquKey}>
-                    {this.renderEquipmentName(this.state.topData)}
+                    {this.renderEquipmentName(this.props.rightTopData)}
                 </Tabs>
             </div>
         )
@@ -53,16 +32,17 @@ class EARight extends Component {
         return (
             <TabPane key={item.key} tab={item.name + '(' + item.count + ')'}>
                 <EARightBottom
-                    data={this.state.tableData}
+                    data={this.props.rightTableData}
                 />
             </TabPane>
         )
-    })
+    });
     // 通过回调函数，获得标签页表格中的数据
     returnEquKey = key => {
-        console.log("return:---------")
-        console.log(key)
-    }
+        // this.getTableData(this.props.depKey,key)
+        this.props.getTableData(this.props.depKey, key)
+
+    };
 
 }
 
