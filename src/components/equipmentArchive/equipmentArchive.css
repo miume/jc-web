@@ -1,0 +1,30 @@
+.eA {
+    display: flex;
+    height: 550px;
+    background-color: #859900;
+}
+.eA-left {
+    width: 20%;
+    height: 100%;
+    background-color: #00B83F;
+}
+.eA-right {
+    width: 80%;
+    height: 100%;
+    background-color: #2a65a0;
+}
+.eA-right-top {
+    width: 100%;
+    height: 10%;
+    background-color: yellow;
+}
+.eA-right-bottom {
+    width: 100%;
+    height: 86%;
+    background-color: red;
+}
+
+.depTree-input {
+    max-width: 80px;
+    height:25px
+}

@@ -79,7 +79,7 @@ class DataEntry extends React.Component{
     }
     getData(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path=== this.current.path)[0]:[];
-        var data = menus? 
+        var data = menus&&menus.menuList?
             menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
                 return ({
                     id : m.menuId,
