@@ -2,14 +2,16 @@ import React from 'react';
 import axios from 'axios';
 import {Modal, Button, message} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
+import EARightBottom from '../right/eARightBottom'
 
-class Component extends React.Component {
+class EqComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
+            tableData: [],
         }
-        this.handleDetail = this.handleDetail.bind(this);
+        this.handleData = this.handleData.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
 
@@ -17,8 +19,10 @@ class Component extends React.Component {
         const {visible} = this.state;
         return (
             <span>
-                <span className="blue" onClick={this.handleDetail}>部件</span>
+                <span className="blue" onClick={this.handleData}>部件</span>
                 <Modal
+                    className="modal-xlg"
+
                     title="数据详情"
                     visible={visible}
                     closable={false}
@@ -32,7 +36,12 @@ class Component extends React.Component {
                         />
                     ]}
                 >
-                    详情
+                    <div style={{height:"550px"}}>
+                        <EARightBottom
+                            comFlag = {true}
+                            data={this.state.tableData}
+                        />
+                    </div>
                 </Modal>
             </span>
         )
@@ -43,12 +52,30 @@ class Component extends React.Component {
             visible: false,
         });
     };
-    handleDetail = () => {
+    handleData = () => {
         // TODO 获取数据
+        const tableData = [{
+            code: 4,
+            fixedassetsCode: '10222222',
+            deviceName: '反应弧233',
+            specification: 'ABC-2232',
+            startdate: '2019/6/14',
+            statusCode: 0
+        }, {
+            code: 5,
+            fixedassetsCode: '10222222',
+            deviceName: '反应弧2322',
+            specification: 'ABC-3333',
+            startdate: '2019/6/14',
+            statusCode: 1
+        }];
+
+
         this.setState({
-            visible: true
+            visible: true,
+            tableData: tableData
         })
     }
 }
 
-export default Component
+export default EqComponent

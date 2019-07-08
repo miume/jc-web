@@ -37,6 +37,7 @@ class EquipmentArchive extends Component {
                     <div className="eA-left">
                         <DepTree
                             getDepKey={this.getRightData}
+                            getRightData={this.getRightData}
                         />
                     </div>
                     {/*右边页面部分*/}
@@ -75,7 +76,7 @@ class EquipmentArchive extends Component {
     };
 
     getTableData = (depKey, key) => {
-        console.log(key)
+        console.log(depKey)
         if (key && depKey) {
             // TODO 调用接口，获得表格数据
             const rightTableData = [{
@@ -84,6 +85,7 @@ class EquipmentArchive extends Component {
                 deviceName: '反应弧2',
                 specification: 'ABC-1231',
                 startdate: '2019/6/14',
+                idCode: '123456',
                 statusCode: 0
             }, {
                 code: 4,
@@ -91,6 +93,7 @@ class EquipmentArchive extends Component {
                 deviceName: '计量勒22',
                 specification: 'ABC-1232',
                 startdate: '2019/6/14',
+                idCode: '987654',
                 statusCode: 1
             }];
             this.setState({
