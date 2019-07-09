@@ -1,53 +1,19 @@
 import React from 'react';
-import axios from 'axios';
-import {Modal, Button, message} from 'antd';
-import CancleButton from "../../BlockQuote/cancleButton";
+import {Divider, Popconfirm} from 'antd';
 
 class Delete extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-        }
-        this.handleDetail = this.handleDetail.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+    constructor(props){
+        super(props)
     }
-
     render() {
-        const {visible} = this.state;
         return (
-            <span>
-                <span className="blue" onClick={this.handleDetail}>删除</span>
-                <Modal
-                    title="数据详情"
-                    visible={visible}
-                    closable={false}
-                    centered={true}
-                    maskClosable={false}
-                    footer={[
-                        <CancleButton
-                            handleCancel={this.handleCancel}
-                            flag={true}
-                            key="back"
-                        />
-                    ]}
-                >
-                    待开发
-                </Modal>
+            <span className={this.props.flag?'':'hide'}>
+                <Divider type="vertical" />
+                <Popconfirm title="确认删除?" onConfirm={() => this.props.handleDelete(this.props.record.code)} okText="确定" cancelText="取消" >
+                    <span className='blue'>删除</span>
+                </Popconfirm>
             </span>
         )
-
-    }
-    handleCancel = () => {
-        this.setState({
-            visible: false,
-        });
-    };
-    handleDetail = () => {
-        // TODO 获取数据
-        this.setState({
-            visible: true
-        })
     }
 }
 
