@@ -11,6 +11,7 @@ import Repair from '../table/repair'
 class EARightTable extends Component {
     constructor(props) {
         super(props)
+        this.handleDelete = this.handleDelete.bind(this)
     }
 
     columns = this.props.comFlag ? [{
@@ -68,8 +69,12 @@ class EARightTable extends Component {
                     <Repair/>
                     <Divider type="vertical"/>
                     <Details/>
-                    <Divider type="vertical"/>
-                    <Delete/>
+                    <Delete
+                        record={record}
+                        flag={true}
+                        // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
+                        handleDelete={this.handleDelete}
+                    />
                 </span>
             )
         }
@@ -153,8 +158,12 @@ class EARightTable extends Component {
                     <Repair/>
                     <Divider type="vertical"/>
                     <Details/>
-                    <Divider type="vertical"/>
-                    <Delete/>
+                    <Delete
+                        record={record}
+                        flag={true}
+                        // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
+                        handleDelete={this.handleDelete}
+                    />
                 </span>
             )
         }
@@ -174,6 +183,9 @@ class EARightTable extends Component {
                 />
             </div>
         )
+    }
+    handleDelete = (code) => {
+
     }
 }
 
