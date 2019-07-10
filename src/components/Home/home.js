@@ -293,8 +293,8 @@ class Home extends Component {
     }
     /**登出时，使登陆背景动图显示 */
     render() {
-        const userName = JSON.parse(localStorage.getItem('menuList')).name;
-        const userId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const userName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).name:null;
+        const userId = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).userId:null;
         return (
                 <div className="parent" >
                     <Top userId={userId} userName={userName}/>
