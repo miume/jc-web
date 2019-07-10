@@ -23,6 +23,7 @@ class DepTree extends Component {
             }],
             // 改变名称
             saveData: {
+                code: null,
                 name: '',
                 parentCode: null
             }
@@ -79,7 +80,7 @@ class DepTree extends Component {
                                    className='fa fa-check'/>
                     ]}
                 >
-                    <Input placeholder="请输入部门名称" onChange={this.changeAddDepData}/>
+                    <Input placeholder="请输入部门名称" value={this.state.saveData.name} onChange={this.changeAddDepData}/>
                 </Modal>
             </div>
         )
@@ -88,6 +89,7 @@ class DepTree extends Component {
     handleModalCancel = () => {
         this.setState({
             saveData: {
+                code: null,
                 name: '',
                 parentCode: null
             },
@@ -96,8 +98,9 @@ class DepTree extends Component {
     };
     handleModalOk = () => {
         const saveData = this.state.saveData;
-        console.log(saveData)
         if (saveData.name !== '' && saveData.parentCode !== null && saveData) {
+            saveData.code = parseInt(saveData.code)
+            saveData.parentCode = parseInt(saveData.parentCode)
             axios({
                 url: `${this.props.url.equipmentDept.dept}`,
                 method: 'post',
@@ -107,8 +110,18 @@ class DepTree extends Component {
                 data: saveData,
                 type: 'json'
             }).then((data) => {
+                // if(data.data.code === 0){
+                //     message.info(data.data.message);
+                //     this.getData();
+                //     this.setState({
+                //         addDeptVisable: false
+                //     })
+                // }else{
+                //     message.info(data.data.message);
+                // }
                 message.info(data.data.message);
-                this.getData()
+                this.getData();
+
             }).catch(() => {
                 message.info('新增失败，请联系管理员！');
             });
@@ -171,7 +184,13 @@ class DepTree extends Component {
                     this.props.getRightData(res[0].parent.code)
                 }
                 this.setState({
-                    dataSource: dataSource
+                    dataSource: dataSource,
+                    addDeptVisable: false,
+                    saveData: {
+                        code: null,
+                        name: '',
+                        parentCode: null
+                    },
                 })
             } else {
 
@@ -181,8 +200,7 @@ class DepTree extends Component {
 
 
     onSelect = (selectedKeys, info) => {
-        this.props.getRightData(selectedKeys)
-
+        this.props.getRightData(parseInt(selectedKeys[0]))
     }
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {
@@ -197,7 +215,7 @@ class DepTree extends Component {
             this.expandedKeys.push(parentCode);
         }
         var saveData = this.state.saveData;
-        saveData.parentCode = parentCode;
+        saveData.parentCode = parseInt(parentCode);
         this.setState({
             expandedKeys: this.expandedKeys,
             addDeptVisable: true,
@@ -208,7 +226,7 @@ class DepTree extends Component {
     // 删除部门
     onDelete = (code) => {
         axios({
-            url:`${this.props.url.equipmentDept.dept}/${code}`,
+            url:`${this.props.url.equipmentDept.dept}/${parseInt(code)}`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -265,6 +283,8 @@ class DepTree extends Component {
     onSave = (code) => {
         const saveData = this.state.saveData;
         if(saveData&&saveData.code&&saveData.code===code){
+            saveData.code = parseInt(code)
+            saveData.parentCode = parseInt(saveData.parentCode)
             axios({
                 url : `${this.props.url.equipmentDept.dept}`,
                 method:'put',

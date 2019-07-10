@@ -116,7 +116,7 @@ class EARightTable extends Component {
         align: 'center',
         width: '10%',
     }, {
-        title: '设备状况',
+        title: '设备状态',
         dataIndex: 'statusCode',
         key: 'statusCode',
         align: 'center',

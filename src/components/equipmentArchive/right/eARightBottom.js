@@ -17,7 +17,6 @@ class EARightBottom extends Component {
             dataSource: []
 
         }
-        this.getData = this.getData.bind(this)
         this.onSelectChange = this.onSelectChange.bind(this)
         this.deleteByIds = this.deleteByIds.bind(this)
         this.cancle = this.cancle.bind(this)
@@ -37,6 +36,10 @@ class EARightBottom extends Component {
         return (
             <div className="eA-right-bottom">
                 <Add
+                    deviceName={this.props.deviceName}
+                    getTableData={this.props.getTableData}
+                    url={this.props.url}
+                    depCode={this.props.depCode}
                     addFlag={home.judgeOperation(this.operation, 'SAVE')}
                 />
                 <DeleteByIds
@@ -54,36 +57,12 @@ class EARightBottom extends Component {
                 <EARightTable
                     comFlag={this.props.comFlag}
                     rowSelection={rowSelection}
-                    dataSource={this.props.data}
+                    dataSource={this.props.dataSource}
                 />
             </div>
         )
     }
 
-    getData = () => {
-        // TODO 调用接口，获取表格数据
-        const data = [{
-            code: 1,
-            fixedassetsCode: '10102131',
-            deviceName: '反应弧',
-            specification: 'ABC-1231',
-            startdate: '2019/6/14',
-            idCode: '123456',
-            statusCode: 0
-        }, {
-            code: 2,
-            fixedassetsCode: '10102132',
-            deviceName: '计量勒',
-            specification: 'ABC-1232',
-            startdate: '2019/6/14',
-            idCode: '987654',
-            statusCode: 1
-        }];
-
-        this.setState = ({
-            dataSource: data
-        })
-    };
 
 
     deleteByIds = () => {
