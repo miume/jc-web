@@ -30,7 +30,7 @@ class Add extends Component {
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
                 <Modal
-                    title="数据详情"
+                    title="新增"
                     visible={this.state.addModalVisable}
                     closable={false}
                     centered={true}

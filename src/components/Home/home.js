@@ -255,13 +255,6 @@ class Home extends Component {
                 getAll:`${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass:`${server}/jc/common/techProductStandard/newClass`,
             },
-            /*设备档案*/
-            equipmentArchiveRecord:{
-                getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
-                get:`${server}/jc/common/equipmentArchiveRecord`,
-                getPdf:`${server}/jc/common/equipmentArchiveRecord/pdf`
-                
-            },
             /**设备基本厂商*/
             equipmentManufacture:{
                 getAllEquipmentManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
@@ -274,6 +267,14 @@ class Home extends Component {
             unqualifiedTrack:{
                 pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
                 unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
+            },
+            /**设备管理部门管理*/
+            equipmentDept:{
+                dept:`${server}/jc/common/dept`
+            },
+            /**设备管理设备档案*/
+            equipmentArchive:{
+                device:`${server}/jc/common/device`
             },
 
         }
