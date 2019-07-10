@@ -10,12 +10,17 @@ class Detail extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            newRowData: [],
             uploadData: [{
                 url:'',
                 name: '上传手册文件',
                 code: ''
-            }]
+            }],
+            deviceDocumentMain: {
+                keyFlag: 0,
+                deptCode: ''
+            },
+            newRowData: [],
+            statusCode: []
         };
         this.handleDetail = this.handleDetail.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -24,6 +29,8 @@ class Detail extends React.Component {
         this.reduceUploadFun = this.reduceUploadFun.bind(this)
         this.handleFooter = this.handleFooter.bind(this)
         this.handleSave = this.handleSave.bind(this)
+        this.handleDeviceDocumentMain = this.handleDeviceDocumentMain.bind(this)
+        this.handleNewRowData = this.handleNewRowData.bind(this)
     }
 
     render() {
@@ -41,6 +48,11 @@ class Detail extends React.Component {
                     footer={footer}
                 >
                     <AddModal
+                        statusCode={this.state.statusCode}
+                        handleDeviceDocumentMain={this.handleDeviceDocumentMain}
+                        deviceDocumentMain={this.state.deviceDocumentMain}
+                        handleNewRowData={this.handleNewRowData}
+
                         editFlag={this.props.editFlag}
                         newRowData = {this.state.newRowData}
                         addRowFun = {this.addRowFun}
@@ -53,6 +65,30 @@ class Detail extends React.Component {
         )
 
     }
+    handleDeviceDocumentMain = (key, value) => {
+        var deviceDocumentMain = this.state.deviceDocumentMain;
+        if(key === "power"){
+            deviceDocumentMain[key] = parseInt(value)
+        }else{
+            deviceDocumentMain[key] = value
+        }
+        this.setState({
+            deviceDocumentMain: deviceDocumentMain
+        })
+    };
+    handleNewRowData = (name, value) => {
+        var newRowData = this.state.newRowData;
+        const index = parseInt(name.split('-')[0]);
+        const flag = parseInt(name.split('-')[1]);
+        if (flag === 1) {
+            newRowData[index].name = value
+        } else {
+            newRowData[index].value = value
+        }
+        this.setState({
+            newRowData: newRowData
+        })
+    };
     handleFooter = () => {
         var footer = [];
         if(this.props.editFlag) {

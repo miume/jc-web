@@ -55,6 +55,10 @@ class EARightBottom extends Component {
                     fetch={this.fetch}
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
                 <EARightTable
+                    depCode={this.props.depCode}
+                    deviceName={this.props.deviceName}
+                    getTableData={this.props.getTableData}
+                    url={this.props.url}
                     comFlag={this.props.comFlag}
                     rowSelection={rowSelection}
                     dataSource={this.props.dataSource}

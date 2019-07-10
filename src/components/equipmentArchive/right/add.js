@@ -12,7 +12,6 @@ class Add extends Component {
         super(props);
         this.state = {
             addModalVisable: false,
-            saveData: [],
             uploadData: [{
                 url: '',
                 name: '上传手册文件',

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table, Icon, Divider} from 'antd';
+import {Table, Icon, Divider, message} from 'antd';
 import '../equipmentArchive.css'
 import EqComponent from '../table/eqComponent'
 import Fittings from '../table/fittings'
@@ -7,6 +7,7 @@ import Delete from '../table/delete'
 import Details from '../table/details'
 import Maintenance from '../table/maintenance'
 import Repair from '../table/repair'
+import axios from "axios";
 
 class EARightTable extends Component {
     constructor(props) {
@@ -151,15 +152,18 @@ class EARightTable extends Component {
                     <Repair/>
                     <Divider type="vertical"/>
                     <Details
+                        url={this.props.url}
                         name ="详情"
                         editFlag={true}
                     />
                     <Divider type="vertical"/>
                     <Details
+                        url={this.props.url}
                         editFlag={false}
                         name ="编辑"
                     />
                     <Delete
+                        url={this.props.url}
                         record={record}
                         flag={true}
                         // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
@@ -186,7 +190,18 @@ class EARightTable extends Component {
         )
     }
     handleDelete = (code) => {
-
+        axios({
+            url:`${this.props.url.equipmentArchive.device}/${code}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getTableData(this.props.depCode,this.props.deviceName)
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 }
 
