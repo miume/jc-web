@@ -11,7 +11,7 @@ class DepTree extends Component {
         this.state = {
             expandedKeys: [],
             data: [{
-                value: 'Root',
+                value: '总公司',
                 defaultValue: 'Root',
                 key: '0',
                 parentKey: '-1',
@@ -51,7 +51,7 @@ class DepTree extends Component {
      */
     getData = () => {
         var data = [{
-            value: 'Root',
+            value: '总公司',
             defaultValue: 'Root',
             key: '0',
             parentKey: '-1',

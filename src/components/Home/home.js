@@ -48,6 +48,7 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
+        console.log(server)
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,

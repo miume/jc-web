@@ -27,7 +27,7 @@ class Detail extends React.Component {
         const {visible} = this.state;
         return (
             <span>
-                <span className="blue" onClick={this.handleDetail}>详情</span>
+                <span className="blue" onClick={this.handleDetail}>{this.props.name}</span>
                 <Modal
                     title="数据详情"
                     visible={visible}
