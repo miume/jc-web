@@ -18,6 +18,12 @@ class EARightBottom extends Component {
 
         }
         this.getData = this.getData.bind(this)
+        this.onSelectChange = this.onSelectChange.bind(this)
+        this.deleteByIds = this.deleteByIds.bind(this)
+        this.cancle = this.cancle.bind(this)
+        this.fetch = this.fetch.bind(this)
+        this.searchContentChange = this.searchContentChange.bind(this)
+        this.searchEvent = this.searchEvent.bind(this)
     }
 
     render() {
@@ -91,7 +97,9 @@ class EARightBottom extends Component {
 
     /**实现全选*/
     onSelectChange(selectedRowKeys) {
-        this.setState({selectedRowKeys: selectedRowKeys});
+        this.setState({
+            selectedRowKeys: selectedRowKeys
+        });
     }
 
     fetch = () => {
