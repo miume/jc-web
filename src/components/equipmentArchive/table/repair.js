@@ -16,13 +16,12 @@ class Repair extends React.Component {
     }
 
     render() {
-        const {visible} = this.state;
         return (
             <span>
                 <span className="blue" onClick={this.handleRepair}>保养</span>
                 <Modal
                     title="数据详情"
-                    visible={visible}
+                    visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}

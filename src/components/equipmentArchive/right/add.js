@@ -75,7 +75,7 @@ class Add extends Component {
 
     };
     addRowFun = () => {
-        const {newRowData} = this.state;
+        var newRowData = this.state.newRowData;
         newRowData.push({
             name: '',
             value: ''
@@ -86,7 +86,7 @@ class Add extends Component {
     };
     addUplodFun = () => {
         // TODO 先增加记录，再调用接口获得数据
-        const {uploadData} = this.state;
+        var uploadData = this.state.uploadData;
         uploadData.push({
             url: '',
             name: '上传手册文件',

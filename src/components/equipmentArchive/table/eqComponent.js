@@ -16,7 +16,6 @@ class EqComponent extends React.Component {
     }
 
     render() {
-        const {visible} = this.state;
         return (
             <span>
                 <span className="blue" onClick={this.handleData}>部件</span>
@@ -24,7 +23,7 @@ class EqComponent extends React.Component {
                     className="modal-xlg"
 
                     title="数据详情"
-                    visible={visible}
+                    visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}

@@ -23,13 +23,12 @@ class Fittings extends React.Component {
     }
 
     render() {
-        const {visible} = this.state;
         return (
             <span>
                 <span className="blue" onClick={this.handleFitting}>配件</span>
                 <Modal
                     title="配件"
-                    visible={visible}
+                    visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}

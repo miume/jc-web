@@ -3,7 +3,7 @@ import {Tree, Icon} from 'antd';
 import styles from "./EditableTree.less";
 import '../equipmentArchive.css'
 
-const {TreeNode} = Tree;
+// const {TreeNode} = Tree;
 
 class DepTree extends Component {
     constructor(props) {
@@ -350,12 +350,12 @@ class DepTree extends Component {
         // 如果存在子节点，则继续调用，直到无子节点，再下一个层次节点
         if (item.children) {
             return (
-                <TreeNode title={item.title} key={item.key} dataRef={item}>
+                <Tree.TreeNode title={item.title} key={item.key} dataRef={item}>
                     {this.renderTreeNodes(item.children)}
-                </TreeNode>
+                </Tree.TreeNode>
             );
         }
-        return <TreeNode {...item} />;
+        return <Tree.TreeNode {...item} />;
     })
 }
 

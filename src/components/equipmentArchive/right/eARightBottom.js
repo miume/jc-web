@@ -29,7 +29,7 @@ class EARightBottom extends Component {
     render() {
         const current = JSON.parse(localStorage.getItem('current'));
         this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
-        const {selectedRowKeys} = this.state;
+        var selectedRowKeys = this.state.selectedRowKeys;
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange
