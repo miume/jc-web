@@ -44,6 +44,7 @@ class Detail extends React.Component {
                     ]}
                 >
                     <AddModal
+                        editFlag={this.props.editFlag}
                         newRowData = {this.state.newRowData}
                         addRowFun = {this.addRowFun}
                         uploadData = {this.state.uploadData}

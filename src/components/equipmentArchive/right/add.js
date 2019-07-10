@@ -49,6 +49,7 @@ class Add extends Component {
                     ]}
                 >
                     <AddModal
+                        editFlag={false}
                         newRowData = {this.state.newRowData}
                         addRowFun = {this.addRowFun}
                         uploadData = {this.state.uploadData}

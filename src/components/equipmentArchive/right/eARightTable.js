@@ -152,9 +152,11 @@ class EARightTable extends Component {
                     <Divider type="vertical"/>
                     <Details
                         name ="详情"
+                        editFlag={true}
                     />
                     <Divider type="vertical"/>
                     <Details
+                        editFlag={false}
                         name ="编辑"
                     />
                     <Delete
