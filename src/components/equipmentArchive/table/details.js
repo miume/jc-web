@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Modal, Button, message} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import AddModal from "../modal/addModal";
+import SaveButton from "../../BlockQuote/saveButton";
 
 class Detail extends React.Component {
     constructor(props) {
@@ -21,9 +22,12 @@ class Detail extends React.Component {
         this.addRowFun = this.addRowFun.bind(this)
         this.addUplodFun = this.addUplodFun.bind(this)
         this.reduceUploadFun = this.reduceUploadFun.bind(this)
+        this.handleFooter = this.handleFooter.bind(this)
+        this.handleSave = this.handleSave.bind(this)
     }
 
     render() {
+        const footer = this.handleFooter()
         return (
             <span>
                 <span className="blue" onClick={this.handleDetail}>{this.props.name}</span>
@@ -34,13 +38,7 @@ class Detail extends React.Component {
                     centered={true}
                     maskClosable={false}
                     width="500px"
-                    footer={[
-                        <CancleButton
-                            handleCancel={this.handleCancel}
-                            flag={true}
-                            key="back"
-                        />
-                    ]}
+                    footer={footer}
                 >
                     <AddModal
                         editFlag={this.props.editFlag}
@@ -54,6 +52,37 @@ class Detail extends React.Component {
             </span>
         )
 
+    }
+    handleFooter = () => {
+        var footer = [];
+        if(this.props.editFlag) {
+            footer = [
+                <CancleButton
+                    handleCancel={this.handleCancel}
+                    flag={true}
+                    key="back"
+                />
+            ];
+            return footer
+        }else{
+            footer = [
+                <CancleButton
+                    handleCancel={this.handleCancel}
+                    flag={true}
+                    key="back"
+                />,
+                <SaveButton
+                    key="add"
+                    handleSave={this.handleSave}
+                />
+            ]
+            return footer
+        }
+    }
+    handleSave = () => {
+        this.setState({
+            visible: false,
+        });
     }
     handleCancel = () => {
         this.setState({

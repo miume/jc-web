@@ -82,7 +82,9 @@ class Fittings extends React.Component {
         })
     };
     handleSave = () => {
-
+        this.setState({
+            visible: false,
+        })
     };
     addRowFun = () => {
         const {data} = this.state;
@@ -119,13 +121,14 @@ class Fittings extends React.Component {
     deleteSaveFun = (code) => {
         const data = this.state.data;
         const index = data.findIndex(item => code === item.code);
-        if (index > -1) {
-            data.splice(index, 1);
-
-            this.setState({ data: data });
-        } else {
-            this.setState({ editingKey: data });
-        }
+        // TODO 直接调用删除接口，改变数据
+        // if (index > -1) {
+        //     data.splice(index, 1);
+        //
+        //     this.setState({ data: data });
+        // } else {
+        //     this.setState({ editingKey: data });
+        // }
     }
 }
 
