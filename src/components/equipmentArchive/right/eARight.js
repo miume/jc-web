@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Tabs} from 'antd';
 import '../equipmentArchive.css'
 import EARightBottom from './eARightBottom'
-// const { TabPane } = Tabs;
 class EARight extends Component {
     constructor(props) {
         super(props);

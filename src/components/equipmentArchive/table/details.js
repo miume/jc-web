@@ -24,13 +24,12 @@ class Detail extends React.Component {
     }
 
     render() {
-        const {visible} = this.state;
         return (
             <span>
                 <span className="blue" onClick={this.handleDetail}>{this.props.name}</span>
                 <Modal
                     title="数据详情"
-                    visible={visible}
+                    visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}
@@ -69,7 +68,7 @@ class Detail extends React.Component {
     }
 
     addRowFun = () => {
-        const {newRowData} = this.state;
+        var newRowData = this.state.newRowData;
         newRowData.push({
             name: '',
             value: ''
@@ -80,7 +79,7 @@ class Detail extends React.Component {
     };
     addUplodFun = () => {
         // TODO 先增加记录，再调用接口获得数据
-        const {uploadData} = this.state;
+        var uploadData = this.state.uploadData;
         uploadData.push({
             url: '',
             name: '上传手册文件',
