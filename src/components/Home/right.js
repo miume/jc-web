@@ -12,6 +12,9 @@ import SampleInspection from '../sampleInspection/sampleInspection'
 import Depart from '../departManagement/departManagement';
 import InterProduct from '../intermediateProductTest/intermediateProduct';
 import DataEntry from '../dataEntry/dataEntry';
+import EquipmentStatus from "../equipmentStatus/equipmentStatus";
+import BaseData from "../equipmentBasicData/baseData";
+import DepartmentStruct from '../departmentStruct/departmentStruct';
 import RawTestReport from '../rawTestReport/rawTestReport';
 import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
 import TodoList from '../todolist/todolist';
@@ -135,6 +138,15 @@ class Right extends React.Component{
         },{
             path:'/equipmentArchive',
             component:EquipmentArchive
+        },{
+            path:'/equipmentBasicData',
+            component:BaseData
+        },{
+            path:'/departmentStruct',
+            component:DepartmentStruct
+        },{
+            path:"/equipmentStatus",
+            component:EquipmentStatus
         }]
         return (
             <div className="rightDiv">
