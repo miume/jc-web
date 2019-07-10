@@ -116,14 +116,7 @@ class EARightTable extends Component {
         align: 'center',
         width: '10%',
     }, {
-        title: () => {return (
-            <span>设备状况&nbsp;
-                <i style={{color:"lawngreen"}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;
-                <i style={{color:"yellow"}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;
-                <i style={{color:"red"}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;
-                <i style={{color:"grey"}} className="fa fa-circle" aria-hidden="true"></i>
-            </span>
-        )},
+        title: '设备状况',
         dataIndex: 'statusCode',
         key: 'statusCode',
         align: 'center',
@@ -157,7 +150,13 @@ class EARightTable extends Component {
                     <Divider type="vertical"/>
                     <Repair/>
                     <Divider type="vertical"/>
-                    <Details/>
+                    <Details
+                        name ="详情"
+                    />
+                    <Divider type="vertical"/>
+                    <Details
+                        name ="编辑"
+                    />
                     <Delete
                         record={record}
                         flag={true}
