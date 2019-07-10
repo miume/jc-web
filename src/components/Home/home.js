@@ -276,6 +276,10 @@ class Home extends Component {
             equipmentArchive:{
                 device:`${server}/jc/common/device`
             },
+            /**设备管理状态*/
+            equipmentStatus:{
+                deviceStatus:`${server}/jc/common/deviceStatus`
+            },
 
         }
         localStorage.setItem('status',JSON.stringify(status));

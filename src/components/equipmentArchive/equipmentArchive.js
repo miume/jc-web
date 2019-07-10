@@ -19,7 +19,8 @@ class EquipmentArchive extends Component {
         this.state = {
             rightTopData: [],
             rightTableData: [],
-            depCode: -1
+            depCode: -1,
+            deviceName: ''
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
@@ -47,10 +48,13 @@ class EquipmentArchive extends Component {
                     {/*右边页面部分*/}
                     <div className="eA-right">
                         <EARight
+                            url={this.url}
+                            operation={this.operation}
                             depCode={this.state.depCode}
                             rightTopData={this.state.rightTopData}
                             rightTableData={this.state.rightTableData}
                             getTableData={this.getTableData}
+                            deviceName={this.state.deviceName}
                         />
                     </div>
                 </div>
@@ -59,7 +63,7 @@ class EquipmentArchive extends Component {
     }
 
     getRightData = (code) => {
-        console.log(code)
+        code = parseInt(code)
         axios({
             url: `${this.url.equipmentArchive.device}/${code}` ,
             method: 'get',
@@ -70,7 +74,6 @@ class EquipmentArchive extends Component {
             const res = data.data.data?data.data.data:[];
             if(res){
                 var rightTopData = [];
-                console.log(res)
                 if(JSON.stringify(res) !== '{}'){
                     for(var key in res){
                         rightTopData.push({
@@ -97,6 +100,10 @@ class EquipmentArchive extends Component {
     };
 
     getTableData = (code, name) => {
+        console.log('1------------------')
+        console.log(code)
+        console.log(name)
+        code = parseInt(code)
         axios({
             url: `${this.url.equipmentArchive.device}/${code}/${name}` ,
             method: 'get',
@@ -121,11 +128,13 @@ class EquipmentArchive extends Component {
                     })
                 }
                 this.setState({
-                    rightTableData: rightTableData
+                    rightTableData: rightTableData,
+                    deviceName: name
                 });
             }else{
                 this.setState({
-                    rightTableData: []
+                    rightTableData: [],
+                    deviceName: name
                 });
             }
         });
