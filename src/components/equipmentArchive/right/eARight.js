@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {Tabs, Radio} from 'antd';
+import {Tabs} from 'antd';
 import '../equipmentArchive.css'
 import EARightBottom from './eARightBottom'
-
-const {TabPane} = Tabs;
-
+// const { TabPane } = Tabs;
 class EARight extends Component {
     constructor(props) {
         super(props);
@@ -33,8 +31,8 @@ class EARight extends Component {
     // 通过key获取到设备名称
     renderEquipmentName = data => data.map((item) => {
         return (
-            <TabPane key={item.key} tab={item.name + '(' + item.count + ')'}>
-            </TabPane>
+            <Tabs.TabPane key={item.key} tab={item.name + '(' + item.count + ')'}>
+            </Tabs.TabPane>
         )
     });
     // 通过回调函数，获得标签页表格中的数据
