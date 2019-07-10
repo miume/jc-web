@@ -30,14 +30,13 @@ class EARight extends Component {
     // 通过key获取到设备名称
     renderEquipmentName = data => data.map((item) => {
         return (
-            <Tabs.TabPane key={item.key} tab={item.name + '(' + item.count + ')'}>
+            <Tabs.TabPane key={item.name} tab={item.name + '(' + item.count + ')'}>
             </Tabs.TabPane>
         )
     });
     // 通过回调函数，获得标签页表格中的数据
-    returnEquKey = key => {
-        // this.getTableData(this.props.depKey,key)
-        this.props.getTableData(this.props.depKey, key)
+    returnEquKey = name => {
+        this.props.getTableData(this.props.depCode, name)
 
     };
 

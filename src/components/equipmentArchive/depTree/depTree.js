@@ -1,30 +1,51 @@
 import React, {Component} from 'react';
-import {Tree, Icon} from 'antd';
+import {Tree, Icon, Modal, Input, message} from 'antd';
 import styles from "./EditableTree.less";
+import axios from "axios";
 import '../equipmentArchive.css'
+import CancleButton from "../../BlockQuote/cancleButton";
+import NewButton from "../../BlockQuote/newButton";
 
-// const {TreeNode} = Tree;
 
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
             expandedKeys: [],
-            data: [{
+            addDeptVisable: false,
+            dataSource: [{
                 value: '总公司',
                 defaultValue: 'Root',
-                key: '0',
-                parentKey: '-1',
+                code: '0',
+                parentCode: '-1',
                 isEditable: false,
                 children: []
             }],
             // 改变名称
             saveData: {
                 name: '',
-                code: -1,
+                parentCode: null
             }
         };
+        this.handleModalCancel = this.handleModalCancel.bind(this)
+        this.handleModalOk = this.handleModalOk.bind(this)
+        this.changeAddDepData = this.changeAddDepData.bind(this)
         this.getData = this.getData.bind(this)
+        this.onSelect = this.onSelect.bind(this)
+
+        this.onExpand = this.onExpand.bind(this)
+        this.onAdd = this.onAdd.bind(this)
+        this.onDelete = this.onDelete.bind(this)
+        this.onEdit = this.onEdit.bind(this)
+        this.editNode = this.editNode.bind(this)
+
+        this.onClose = this.onClose.bind(this)
+        this.closeNode = this.closeNode.bind(this)
+        this.onSave = this.onSave.bind(this)
+        this.onChange = this.onChange.bind(this)
+        this.renderTreeNodes = this.renderTreeNodes.bind(this)
+
+        this.changeNode = this.changeNode.bind(this)
     }
 
     componentDidMount() {
@@ -32,127 +53,135 @@ class DepTree extends Component {
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
     }
+
     render() {
         return (
-            <Tree
-                showLine
-                onSelect={this.onSelect}
-                expandedKeys={this.state.expandedKeys}
-                selectedKeys={[]}
-                onExpand={this.onExpand}
-            >
-                {this.renderTreeNodes(this.state.data)}
-            </Tree>
+            <div>
+                <Tree
+                    showLine
+                    onSelect={this.onSelect}
+                    expandedKeys={this.state.expandedKeys}
+                    selectedKeys={[]}
+                    onExpand={this.onExpand}
+                >
+                    {this.renderTreeNodes(this.state.dataSource)}
+                </Tree>
+                <Modal
+                    title="新增部门"
+                    visible={this.state.addDeptVisable}
+                    closable={false}
+                    centered={true}
+                    maskClosable={false}
+                    width="300px"
+                    footer={[
+                        <CancleButton key='back' handleCancel={this.handleModalCancel}/>,
+                        <NewButton key="submit" handleClick={this.handleModalOk} name='确定' style='button'
+                                   className='fa fa-check'/>
+                    ]}
+                >
+                    <Input placeholder="请输入部门名称" onChange={this.changeAddDepData}/>
+                </Modal>
+            </div>
         )
     }
 
+    handleModalCancel = () => {
+        this.setState({
+            saveData: {
+                name: '',
+                parentCode: null
+            },
+            addDeptVisable: false
+        })
+    };
+    handleModalOk = () => {
+        const saveData = this.state.saveData;
+        console.log(saveData)
+        if (saveData.name !== '' && saveData.parentCode !== null && saveData) {
+            axios({
+                url: `${this.props.url.equipmentDept.dept}`,
+                method: 'post',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                data: saveData,
+                type: 'json'
+            }).then((data) => {
+                message.info(data.data.message);
+                this.getData()
+            }).catch(() => {
+                message.info('新增失败，请联系管理员！');
+            });
+        }
+    };
+    changeAddDepData = (e) => {
+        var saveData = this.state.saveData;
+        saveData.name = e.target.value;
+        this.setState({
+            saveData: saveData
+        })
+    };
     /**
      * 获取数据渲染
      */
     getData = () => {
-        var data = [{
-            value: '总公司',
-            defaultValue: 'Root',
-            key: '0',
-            parentKey: '-1',
-            isEditable: false,
-            children: []
-        }];
         // TODO: 调接口，获取数据
-        // 父部门数据
-        const apiData = [{
-            parent: {
-                name: '制造一、二部',
-                parentCode: '',
-                code: 1,
-            },
-            son: [{
-                name: '锂电一车间',
-                parentCode: 1,
-                code: 2,
-            }, {
-                name: '锂电二车间',
-                parentCode: 1,
-                code: 3
-            }, {
-                name: '锂电三车间',
-                parentCode: 1,
-                code: 4
-            }, {
-                name: 'mvr',
-                parentCode: 1,
-                code: 5
-            }]
-        }, {
-            parent: {
-                name: '制造三、四部',
-                parentCode: '',
-                code: 6,
-            },
-            son: [{
-                name: '锂电一车间',
-                parentCode: 1,
-                code: 7,
-            }, {
-                name: '锂电二车间',
-                parentCode: 1,
-                code: 8
-            }]
-        }, {
-            parent: {
-                name: '基建部',
-                parentCode: '',
-                code: 9,
-            },
-            son: []
-        }, {
-            parent: {
-                name: '质量一部',
-                parentCode: '',
-                code: 10,
-            },
-            son: []
-        }];
-
-        for (let i = 0; i < apiData.length; i++) {
-            const arrParent = apiData[i].parent;
-            var parenObj = {
-                value: arrParent.name,
-                defaultValue: arrParent.name,
-                key: arrParent.code.toString(),
-                parentKey: '0',
+        axios({
+            url: `${this.props.url.equipmentDept.dept}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            var dataSource = [{
+                value: '总公司',
+                defaultValue: 'Root',
+                code: '0',
+                parentCode: '-1',
                 isEditable: false,
                 children: []
-            };
-            const arrSon = apiData[i].son;
-            for (let j = 0; j < arrSon.length; j++) {
-                var arr = arrSon[j];
-                parenObj['children'].push({
-                    value: arr.name,
-                    defaultValue: arr.name,
-                    key: arr.code.toString(),
-                    parentKey: arr.parentCode.toString(),
-                    isEditable: false,
-                    children: []
-                });
+            }];
+            if (res) {
+                for (let i = 0; i < res.length; i++) {
+                    const arrParent = res[i].parent;
+                    var parenObj = {
+                        value: arrParent.name,
+                        defaultValue: arrParent.name,
+                        code: arrParent.code.toString(),
+                        parentCode: '0',
+                        isEditable: false,
+                        children: []
+                    };
+                    const arrSon = res[i].son;
+                    for (let j = 0; j < arrSon.length; j++) {
+                        var arr = arrSon[j];
+                        parenObj['children'].push({
+                            value: arr.name,
+                            defaultValue: arr.name,
+                            code: arr.code.toString(),
+                            parentCode: arr.parentCode.toString(),
+                            isEditable: false,
+                            children: []
+                        });
+                    }
+                    dataSource[0].children.push(parenObj);
+                }
+                if (res[0] && res[0].parent) {
+                    this.props.getRightData(res[0].parent.code)
+                }
+                this.setState({
+                    dataSource: dataSource
+                })
+            } else {
+
             }
-            data[0].children.push(parenObj);
-        }
-        // TODO 默认查询第一个一级部门的所有设备信息并显示第一个选项卡的设备信息
-        if(apiData[0]&&apiData[0].parent){
-            this.props.getRightData(apiData[0].parent.code)
-        }
-        this.setState({
-            data: data
-        })
-
-
+        });
     };
 
 
     onSelect = (selectedKeys, info) => {
-        // console.log('selected', selectedKeys, info);
-        this.props.getDepKey(selectedKeys)
+        this.props.getRightData(selectedKeys)
 
     }
     // 展开/收起节点时触发
@@ -160,95 +189,48 @@ class DepTree extends Component {
         this.expandedKeys = expandedKeys;
         this.setState({expandedKeys: expandedKeys})
     }
-    onAdd = (key) => {
+    // 新增部门
+    onAdd = (parentCode) => {
         // 防止expandedKeys重复
         // Tip: Must have, expandedKeys should not be reduplicative
-        if (this.state.expandedKeys.indexOf(key) === -1) {
-            this.expandedKeys.push(key);
+        if (this.state.expandedKeys.indexOf(parentCode) === -1) {
+            this.expandedKeys.push(parentCode);
         }
-        var data = this.state.data;
-        // TODO 点击添加，调用接口，为后台添加一个部门。再重新刷新数据
-        this.addNode(key, data);
+        var saveData = this.state.saveData;
+        saveData.parentCode = parentCode;
         this.setState({
             expandedKeys: this.expandedKeys,
-            data: data
+            addDeptVisable: true,
+            saveData: saveData
         });
     };
 
-    addNode = (key, data) => data.map((item) => {
-        if (item.key === key) {
-            var level = '0';
-            switch (item.parentKey) {
-                case '1':
-                    level = '2';
-                    break;
-                case '2':
-                    level = '2';
-                    break;
-                default:
-                    level = '1';
-            }
-            if (item.children) {
-                item
-                    .children
-                    .push({
-                        value: 'default',
-                        defaultValue: 'default',
-                        key: key + Math.random(100), // 这个 key 应该是唯一的。 Tip: The key should be unique
-                        // parentKey: key,
-                        parentKey: level,
-                        isEditable: false
-                    });
-            } else {
-                item.children = [];
-                item
-                    .children
-                    .push({
-                        value: 'default',
-                        defaultValue: 'default',
-                        key: key + Math.random(100),
-                        // parentKey: key,
-                        parentKey: level,
-                        isEditable: false
-                    });
-            }
-            return;
-        }
-        if (item.children) {
-            this.addNode(key, item.children)
-        }
-    })
-
-    onDelete = (key) => {
-        var data = this.state.data
-        this.deleteNode(key, data);
-        this.setState({
-            data: data
+    // 删除部门
+    onDelete = (code) => {
+        axios({
+            url:`${this.props.url.equipmentDept.dept}/${code}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.getData()
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
         });
-    }
-
-    deleteNode = (key, data) => data.map((item, index) => {
-        if (item.key === key) {
-            data.splice(index, 1);
-            return;
-        } else {
-            if (item.children) {
-                this.deleteNode(key, item.children)
-            }
-        }
-    })
+    };
 
     // 编辑作用：改变isEditable的状态
-    onEdit = (key) => {
-        var data = this.state.data;
-        this.editNode(key, data);
+    onEdit = (code) => {
+        var dataSource = this.state.dataSource;
+        this.editNode(code, dataSource);
         this.setState({
-            data: data
+            dataSource: dataSource
         });
     };
-
-    editNode = (key, data) => data.map((item) => {
-        if (item.key === key) {
+    editNode = (code, data) => data.map((item) => {
+        if (item.code === code) {
             item.isEditable = true;
         } else {
             item.isEditable = false;
@@ -256,78 +238,81 @@ class DepTree extends Component {
         //Tip: Must have, when a node is editable, and you click a button to make other node editable, the node which you don't save yet will be not editable, and its value should be defaultValue
         item.value = item.defaultValue; // 当某节点处于编辑状态，并改变数据，点击编辑其他节点时，此节点变成不可编辑状态，value 需要回退到 defaultvalue
         if (item.children) {
-            this.editNode(key, item.children)
+            this.editNode(code, item.children)
         }
     });
+
+
     // 关闭：值变回默认值，改变改变isEditable的状态状态
-    onClose = (key, defaultValue) => {
-        var data = this.state.data;
-        this.closeNode(key, defaultValue, data);
+    onClose = (code, defaultValue) => {
+        var dataSource = this.state.dataSource;
+        this.closeNode(code, defaultValue, dataSource);
         this.setState({
-            data: data
+            dataSource: dataSource
         });
     };
 
-    closeNode = (key, defaultValue, data) => data.map((item) => {
+    closeNode = (code, defaultValue, data) => data.map((item) => {
         item.isEditable = false;
-        if (item.key === key) {
+        if (item.code === code) {
             item.value = defaultValue;
         }
         if (item.children) {
-            this.closeNode(key, defaultValue, item.children)
+            this.closeNode(code, defaultValue, item.children)
         }
     });
 
-    onSave = (key) => {
-        var data = this.state.data;
-        // TODO 调用getData函数，重新从API获取数据
-        this.saveNode(key, data);
-        this.setState({
-            data: data,
-        });
+    onSave = (code) => {
+        const saveData = this.state.saveData;
+        if(saveData&&saveData.code&&saveData.code===code){
+            axios({
+                url : `${this.props.url.equipmentDept.dept}`,
+                method:'put',
+                headers:{
+                    'Authorization': this.props.url.Authorization
+                },
+                data: saveData,
+                type:'json'
+            }).then((data) => {
+                message.info(data.data.message);
+                this.getData()
+            }).catch(function () {
+                message.info('新增失败，请联系管理员！');
+            });
+        }
     };
 
-    saveNode = (key, data) => data.map((item) => {
-        if (item.key === key) {
-            item.defaultValue = item.value;
-        }
-        if (item.children) {
-            this.saveNode(key, item.children)
-        }
-        item.isEditable = false;
-    });
+    onChange = (e, code, parentCode) => {
+        var saveData = this.state.saveData;
+        saveData.code = code;
+        saveData.name = e.target.value;
+        saveData.parentCode = parentCode;
+        this.changeNode(code, e.target.value, this.state.dataSource);
 
-    onChange = (e, key) => {
-        var data = this.state.data;
-        this.changeNode(key, e.target.value, data);
         this.setState({
-            data: data,
-            saveData: {
-                name: e.target.value,
-                code: key
-            }
+            saveData: saveData
         });
     };
-    changeNode = (key, value, data) => data.map((item) => {
-        if (item.key === key) {
+    changeNode = (code, value, data) => data.map((item) => {
+        if (item.code === code) {
             item.value = value;
         }
         if (item.children) {
-            this.changeNode(key, value, item.children)
+            this.changeNode(code, value, item.children)
         }
-    });
+    })
     // 展开树节点
     renderTreeNodes = data => data.map((item) => {
         if (item.isEditable) {
-            item.title = ( // 是否处于编辑状态
+            item.title = ( // 处于编辑状态
                 <div>
                     <input
                         className="depTree-input"
                         value={item.value}
-                        onChange={(e) => this.onChange(e, item.key, item.parentKey)}/>
+                        onChange={(e) => this.onChange(e, item.code, item.parentCode)}/>
                     <Icon type='close' style={{marginLeft: 10}}
-                          onClick={() => this.onClose(item.key, item.defaultValue)}/>
-                    <Icon type='check' style={{marginLeft: 10}} onClick={() => this.onSave(item.key)}/>
+                          onClick={() => this.onClose(item.code, item.defaultValue)}/>
+                    <Icon type='check' style={{marginLeft: 10}} onClick={() => this.onSave(item.code)}/>
                 </div>
             )
         } else {
@@ -337,12 +322,13 @@ class DepTree extends Component {
                         {item.value}
                     </span>
                     <span>
-                        <Icon style={{marginLeft: 10}} type='edit' onClick={() => this.onEdit(item.key)}/>
-                        {item.parentKey > '0' ? (
+                        <Icon style={{marginLeft: 10}} type='edit' onClick={() => this.onEdit(item.code)}/>
+                        {item.parentCode > '0' ? (
                             <Icon style={{marginLeft: 10, cursor: 'not-allowed'}} type='plus'/>) : (
-                            <Icon style={{marginLeft: 10}} type='plus' onClick={() => this.onAdd(item.key)}/>)}
-                        {item.parentKey === '-1' ? null : (
-                            <Icon style={{marginLeft: 10}} type='minus' onClick={() => this.onDelete(item.key)}/>)}
+                            <Icon style={{marginLeft: 10}} type='plus' onClick={() => this.onAdd(item.code)}/>
+                        )}
+                        {item.parentCode === '-1' ? null : (
+                            <Icon style={{marginLeft: 10}} type='minus' onClick={() => this.onDelete(item.code)}/>)}
                     </span>
                 </div>
             )
@@ -350,7 +336,7 @@ class DepTree extends Component {
         // 如果存在子节点，则继续调用，直到无子节点，再下一个层次节点
         if (item.children) {
             return (
-                <Tree.TreeNode title={item.title} key={item.key} dataRef={item}>
+                <Tree.TreeNode title={item.title} key={item.code} dataRef={item}>
                     {this.renderTreeNodes(item.children)}
                 </Tree.TreeNode>
             );

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {Divider} from 'antd';
+import {Divider, message} from 'antd';
 import DepTree from './depTree/depTree';
 import Blockquote from '../BlockQuote/blockquote';
 import './equipmentArchive.css'
 import EARight from './right/eARight'
+import axios from "axios";
 
 
 /**
@@ -18,7 +19,7 @@ class EquipmentArchive extends Component {
         this.state = {
             rightTopData: [],
             rightTableData: [],
-            depKey: 0
+            depCode: -1
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
@@ -27,7 +28,9 @@ class EquipmentArchive extends Component {
 
     // 页面渲染
     render() {
-        const current = JSON.parse(localStorage.getItem('current'));
+        this.url = JSON.parse(localStorage.getItem('url'));
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         // 页面UI架构
         return (
             <div>
@@ -36,14 +39,15 @@ class EquipmentArchive extends Component {
                     {/*左边树结构部分*/}
                     <div className="eA-left">
                         <DepTree
-                            getDepKey={this.getRightData}
                             getRightData={this.getRightData}
+                            url={this.url}
+                            operation={this.operation}
                         />
                     </div>
                     {/*右边页面部分*/}
                     <div className="eA-right">
                         <EARight
-                            depKey={this.state.depKey}
+                            depCode={this.state.depCode}
                             rightTopData={this.state.rightTopData}
                             rightTableData={this.state.rightTableData}
                             getTableData={this.getTableData}
@@ -54,58 +58,77 @@ class EquipmentArchive extends Component {
         )
     }
 
-    getRightData = (key) => {
-        // TODO 根据部门的key，调用接口，获得右边数据
-        const rightTopData = [
-            {
-                key: 1,
-                name: "反应弧",
-                count: 11
-            }, {
-                key: 2,
-                name: "计量类",
-                count: 30
+    getRightData = (code) => {
+        console.log(code)
+        axios({
+            url: `${this.url.equipmentArchive.device}/${code}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+        }).then((data) => {
+            const res = data.data.data?data.data.data:[];
+            if(res){
+                var rightTopData = [];
+                console.log(res)
+                if(JSON.stringify(res) !== '{}'){
+                    for(var key in res){
+                        rightTopData.push({
+                            name: key,
+                            count: res[key]
+                        })
+                    }
+                }else{
+                    rightTopData.push({
+                        name: '无设备',
+                        count: 0
+                    })
+                }
+                this.setState({
+                    rightTopData: rightTopData,
+                    depCode: code
+                },() => {
+                    this.getTableData(code, rightTopData[0]?rightTopData[0].name : null);
+                });
             }
-        ];
-        // TODO 同时获取第一个key的数据
-        this.getTableData(key, rightTopData ? rightTopData[0].key : null);
-        this.setState({
-            rightTopData: rightTopData,
-            depKey: key
-        })
+        }).catch(()=>{
+            message.info('查询失败，请联系管理员！')
+        });
     };
 
-    getTableData = (depKey, key) => {
-        console.log(depKey)
-        if (key && depKey) {
-            // TODO 调用接口，获得表格数据
-            const rightTableData = [{
-                index: 1,
-                code: 3,
-                fixedassetsCode: '10102133',
-                deviceName: '反应弧2',
-                specification: 'ABC-1231',
-                startdate: '2019/6/14',
-                idCode: '123456',
-                statusCode: 0
-            }, {
-                index: 2,
-                code: 4,
-                fixedassetsCode: '10102155',
-                deviceName: '计量勒22',
-                specification: 'ABC-1232',
-                startdate: '2019/6/14',
-                idCode: '987654',
-                statusCode: 1
-            }];
-            this.setState({
-                rightTableData: rightTableData,
-            })
-        } else {
-            this.setState({
-                rightTableData: [],
-            })
-        }
+    getTableData = (code, name) => {
+        axios({
+            url: `${this.url.equipmentArchive.device}/${code}/${name}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            const res = data.data.data?data.data.data:[];
+            if(res){
+                var rightTableData = [];
+                for(var i=0; i<res.length; i++){
+                    var arr = res[i];
+                    rightTableData.push({
+                        index: i+1,
+                        code: arr['code'],
+                        fixedassetsCode: arr['fixedassetsCode'],
+                        deviceName: arr['deviceName'],
+                        specification: arr['specification'],
+                        startdate: arr['startdate'],
+                        idCode: arr['idCode'],
+                        statusCode: arr['statusCode']
+                    })
+                }
+                this.setState({
+                    rightTableData: rightTableData
+                });
+            }else{
+                this.setState({
+                    rightTableData: []
+                });
+            }
+        });
     }
 }
 
