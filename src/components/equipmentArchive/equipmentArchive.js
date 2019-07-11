@@ -40,6 +40,7 @@ class EquipmentArchive extends Component {
                     {/*左边树结构部分*/}
                     <div className="eA-left">
                         <DepTree
+                            tabKey={this.state.tabKey}
                             getRightData={this.getRightData}
                             url={this.url}
                             operation={this.operation}

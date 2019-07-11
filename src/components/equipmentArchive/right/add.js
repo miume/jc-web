@@ -230,7 +230,7 @@ class Add extends Component {
                 // type: 'json'
             }).then((data) => {
                 message.info(data.data.message);
-                this.props.getRightData(this.props.depCode, deviceDocumentMain.deviceName)
+                this.props.getRightData(this.props.depCode, this.props.deviceName)
             }).catch(function () {
                 message.info('新增失败，请联系管理员！');
             });
