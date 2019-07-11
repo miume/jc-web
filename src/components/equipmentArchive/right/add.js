@@ -101,9 +101,6 @@ class Add extends Component {
 
 
     handleAdd = () => {
-        console.log(this.props.depCode)
-        var deviceDocumentMain = this.state.deviceDocumentMain;
-        deviceDocumentMain.deptCode = parseInt(this.props.depCode)
         // TODO 获取状态
         axios({
             url: `${this.props.url.equipmentStatus.deviceStatus}`,
@@ -140,7 +137,9 @@ class Add extends Component {
         })
     };
     handleSave = () => {
+        console.log("this.props.deptCode: " + this.props.depCode)
         var deviceDocumentMain = this.state.deviceDocumentMain;
+        deviceDocumentMain["deptCode"] = this.props.depCode
         var newRowData = this.state.newRowData;
         // 判断新增属性是否填写完整
         var newRowFlag = true;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Button, message, Upload, Input, Col, Row, DatePicker, Select, Switch, Icon, Divider} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import '../equipmentArchive.css'
+import moment from 'moment';
 
 const Option = Select.Option;
 const props = {
@@ -29,8 +30,20 @@ class DetailModal extends React.Component {
         this.state = {
             visible: false,
             eqStatus: [],
-            startdate: null
+            startdate: null,
+            statusCode: []
 
+        }
+        this.onChangeTime = this.onChangeTime.bind(this)
+        this.changDeviceDocumentMain = this.changDeviceDocumentMain.bind(this)
+        this.handleSelect = this.handleSelect.bind(this)
+        this.handleSwitch = this.handleSwitch.bind(this)
+        this.handleNewRow = this.handleNewRow.bind(this)
+        this.handleDeviceStatus = this.handleDeviceStatus.bind(this)
+    }
+    componentDidMount() {
+        if(!this.props.editFlag){
+            this.handleDeviceStatus();
         }
     }
 
@@ -69,7 +82,8 @@ class DetailModal extends React.Component {
                                        value={this.props.startdate ? this.props.startdate : ''}
                                        onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                                 : <DatePicker disabled={this.props.editFlag} style={{width: "215px"}}
-                                              disabledDate={this.disabledDate} defaultValue={this.props.startdate}
+                                              disabledDate={this.disabledDate}
+                                              defaultValue={moment(this.props.deviceDocumentMain.startdate, 'YYYY-MM-DD')}
                                               onChange={this.onChangeTime} placeholder="请输入启用日期"/>
                         }
                     </Col>
@@ -95,13 +109,13 @@ class DetailModal extends React.Component {
                     <Col span={12}>
                         {
                             this.props.editFlag ?
-                                <Input placeholder="请输入供货厂家电话" key="supplierNum" name="supplierNum"
+                                <Input placeholder="请选择设备状态" key="deviceStatus" name="deviceStatus"
                                        value={this.props.deviceStatus ? this.props.deviceStatus : ''}
                                        onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                                 : <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
-                                          onChange={this.handleSelect}>
+                                          onChange={this.handleSelect} defaultValue={this.props.deviceStatus} >
                                     {
-                                        this.props.statusCode.map(es => {
+                                        this.state.statusCode.map(es => {
                                             return (
                                                 <Option key={es.code} value={es.code}>{es.name}</Option>
                                             )
@@ -126,7 +140,7 @@ class DetailModal extends React.Component {
                             this.props.editFlag ?
                                 null
                                 : <Button type="primary" icon="plus" size='large'
-                                          style={{width: '450px', fontSize: '15px'}}
+                                          style={{width: '445px', fontSize: '15px',marginLeft:'-115px'}}
                                           onClick={this.props.addRowFun} disabled={this.props.editFlag}/>
                         }
                     </Col>
@@ -154,6 +168,61 @@ class DetailModal extends React.Component {
             </div>
         )
 
+    }
+    handleDeviceStatus = () => {
+        // TODO 获取状态
+        axios({
+            url: `${this.props.url.equipmentStatus.deviceStatus}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            var statusCode = [];
+            if (res) {
+                for (var i = 0; i < res.length; i++) {
+                    const arr = res[i];
+                    statusCode.push({
+                        name: arr.name,
+                        code: arr.code
+                    })
+                }
+                this.setState({
+                    statusCode: statusCode
+                })
+            } else {
+                message.info('设备状态为空，请先添加状态！')
+            }
+        }).catch(() => {
+            message.info('设备状态数据存在异常，请联系管理员！')
+        });
+    }
+
+
+    handleNewRow = (e) => {
+        this.props.handleNewRowData(e.target.name, e.target.value)
+    }
+
+    handleSwitch = (checked) => {
+        if (checked) {
+            this.props.handleDeviceDocumentMain('keyFlag', 1)
+        } else {
+            this.props.handleDeviceDocumentMain('keyFlag', 0)
+        }
+    };
+    handleSelect = (value) => {
+        this.props.handleDeviceDocumentMain('statusCode', value)
+    };
+    onChangeTime = (date, dateString) => {
+        this.setState({
+            startdate: date
+        });
+        this.props.handleDeviceDocumentMain('startdate', dateString)
+
+    };
+    changDeviceDocumentMain = (e) => {
+        this.props.handleDeviceDocumentMain(e.target.name, e.target.value)
     }
 }
 
