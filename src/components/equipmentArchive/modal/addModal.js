@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Button, message, Upload, Input, Col, Row, DatePicker, Select, Switch, Icon, Divider} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import '../equipmentArchive.css'
+import moment from 'moment';
 
 const Option = Select.Option;
 const props = {
@@ -29,8 +30,7 @@ class AddModal extends React.Component {
         this.state = {
             visible: false,
             eqStatus: [],
-            startdate: null
-
+            startDate: null
         }
         this.onChangeTime = this.onChangeTime.bind(this)
         this.changDeviceDocumentMain = this.changDeviceDocumentMain.bind(this)
@@ -69,7 +69,7 @@ class AddModal extends React.Component {
                 <Row gutter={16}>
                     <Col span={12}>
                         <DatePicker disabled={this.props.editFlag} style={{width: "215px"}}
-                                    disabledDate={this.disabledDate} value={this.state.startdate}
+                                    defaultValue={moment(this.props.startdate, 'YYYY-MM-DD')}
                                     onChange={this.onChangeTime} placeholder="请输入启用日期"/>
                     </Col>
                     <Col span={12}>
@@ -130,37 +130,37 @@ class AddModal extends React.Component {
                         }) : null
                     }
                 </div>
-                <Divider className="eq-divider"/>
-                <div className="eq-addModal-newRow">
-                    {
-                        this.props.uploadData ? this.props.uploadData.map((m, index) => {
-                            return (
-                                <Row gutter={16}>
-                                    <Col span={8}>
-                                        <Upload {...props} disabled={this.props.editFlag}>
-                                            <Button>
-                                                <Icon type="upload"/> {m.name}
-                                            </Button>
-                                        </Upload>
-                                    </Col>
-                                    <Col span={8}>
-                                        <span style={{fontSize: '15px'}}>支持文件格式：.pdf</span>
-                                    </Col>
-                                    <Col span={4}>
-                                        <Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'
-                                                style={{width: '100%', fontSize: '15px'}}
-                                                onClick={this.props.addUplodFun}/>
-                                    </Col>
-                                    <Col span={4}>
-                                        <Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'
-                                                style={{width: '100%', fontSize: '15px'}}
-                                                onClick={this.props.reduceUploadFun(index)}/>
-                                    </Col>
-                                </Row>
-                            )
-                        }) : null
-                    }
-                </div>
+                {/*<Divider className="eq-divider"/>*/}
+                {/*<div className="eq-addModal-newRow">*/}
+                    {/*{*/}
+                        {/*this.props.uploadData ? this.props.uploadData.map((m, index) => {*/}
+                            {/*return (*/}
+                                {/*<Row gutter={16}>*/}
+                                    {/*<Col span={8}>*/}
+                                        {/*<Upload {...props} disabled={this.props.editFlag}>*/}
+                                            {/*<Button>*/}
+                                                {/*<Icon type="upload"/> {m.name}*/}
+                                            {/*</Button>*/}
+                                        {/*</Upload>*/}
+                                    {/*</Col>*/}
+                                    {/*<Col span={8}>*/}
+                                        {/*<span style={{fontSize: '15px'}}>支持文件格式：.pdf</span>*/}
+                                    {/*</Col>*/}
+                                    {/*<Col span={4}>*/}
+                                        {/*<Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'*/}
+                                                {/*style={{width: '100%', fontSize: '15px'}}*/}
+                                                {/*onClick={this.props.addUplodFun}/>*/}
+                                    {/*</Col>*/}
+                                    {/*<Col span={4}>*/}
+                                        {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
+                                                {/*style={{width: '100%', fontSize: '15px'}}*/}
+                                                {/*onClick={this.props.reduceUploadFun(index)}/>*/}
+                                    {/*</Col>*/}
+                                {/*</Row>*/}
+                            {/*)*/}
+                        {/*}) : null*/}
+                    {/*}*/}
+                {/*</div>*/}
             </div>
         )
 
@@ -184,10 +184,9 @@ class AddModal extends React.Component {
     };
     onChangeTime = (date, dateString) => {
         this.setState({
-            startdate: date
-        });
+            startDate: date
+        })
         this.props.handleDeviceDocumentMain('startdate', dateString)
-
     };
 
     changDeviceDocumentMain = (e) => {

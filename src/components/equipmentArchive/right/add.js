@@ -18,11 +18,11 @@ class Add extends Component {
                 code: ''
             }],
             deviceDocumentMain: {
-                keyFlag: 0,
-                deptCode: ''
+                keyFlag: 0
             },
             newRowData: [],
-            statusCode: []
+            statusCode: [],
+            startdate:''
         };
         this.handleAdd = this.handleAdd.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -32,6 +32,7 @@ class Add extends Component {
         this.reduceUploadFun = this.reduceUploadFun.bind(this)
         this.handleDeviceDocumentMain = this.handleDeviceDocumentMain.bind(this)
         this.handleNewRowData = this.handleNewRowData.bind(this)
+        this.getNowFormatDate = this.getNowFormatDate.bind(this)
     }
 
     render() {
@@ -68,12 +69,12 @@ class Add extends Component {
                         handleDeviceDocumentMain={this.handleDeviceDocumentMain}
                         deviceDocumentMain={this.state.deviceDocumentMain}
                         handleNewRowData={this.handleNewRowData}
+                        startdate = {this.state.startdate}
                     />
                 </Modal>
             </span>
         )
     }
-
     handleNewRowData = (name, value) => {
         var newRowData = this.state.newRowData;
         const index = parseInt(name.split('-')[0]);
@@ -100,7 +101,27 @@ class Add extends Component {
     };
 
 
+    // 获取当天日期
+    getNowFormatDate = () => {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
     handleAdd = () => {
+
+        // 获取当天日期
+        var startdate = this.getNowFormatDate();
+
         // TODO 获取状态
         axios({
             url: `${this.props.url.equipmentStatus.deviceStatus}`,
@@ -121,7 +142,8 @@ class Add extends Component {
                 }
                 this.setState({
                     addModalVisable: true,
-                    statusCode: statusCode
+                    statusCode: statusCode,
+                    startdate:startdate
                 })
             } else {
                 message.info('设备状态为空，请先添加状态！')
@@ -137,7 +159,7 @@ class Add extends Component {
         })
     };
     handleSave = () => {
-        console.log("this.props.deptCode: " + this.props.depCode)
+
         var deviceDocumentMain = this.state.deviceDocumentMain;
         deviceDocumentMain["deptCode"] = this.props.depCode
         var newRowData = this.state.newRowData;
@@ -179,6 +201,7 @@ class Add extends Component {
             message.info("新增属性需要填写完整")
         }
 
+        const startdate = this.getNowFormatDate()
         // 调用保存函数
         if (deviceFlag && newRowFlag) {
             // 组装新增数据格式
@@ -189,12 +212,14 @@ class Add extends Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
+            if (deviceDocumentMain.startdate||deviceDocumentMain.startdate===undefined){
+                deviceDocumentMain.startdate = startdate;
+            }
             var addData = {
                 arrName: packArrName,
                 arrValue: packArrValue,
                 deviceDocumentMain: deviceDocumentMain
             };
-            console.log(addData)
             axios({
                 url: `${this.props.url.equipmentArchive.device}`,
                 method: 'post',
@@ -205,19 +230,19 @@ class Add extends Component {
                 // type: 'json'
             }).then((data) => {
                 message.info(data.data.message);
-                console.log('0-0-0---------------')
-                console.log(this.props.deviceName)
                 this.props.getTableData(this.props.depCode,this.props.deviceName)
             }).catch(function () {
                 message.info('新增失败，请联系管理员！');
             });
+            var deviceDocumentMainInit = {
+                keyFlag: 0
+            }
             this.setState({
                 addModalVisable: false,
-                deviceDocumentMain: {
-                    keyFlag: 0
-                },
+                deviceDocumentMain:deviceDocumentMainInit,
                 newRowData: [],
-                statusCode: []
+                statusCode: [],
+                startdate: startdate
             });
 
         }
