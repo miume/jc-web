@@ -66,3 +66,11 @@
 .eq-td-left {
     border-left: 0;
 }
+
+.depTreeSelect {
+    background: #0079FE;
+    border-radius:3px;
+}
+.depTreeSelect span{
+    padding: 5px;
+}
