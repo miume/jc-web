@@ -28,6 +28,7 @@ class Edit extends React.Component {
         this.handleDeviceDocumentMain = this.handleDeviceDocumentMain.bind(this);
         this.addRowFun = this.addRowFun.bind(this)
         this.handleSave = this.handleSave.bind(this)
+        this.reduceRowFun=this.reduceRowFun.bind(this)
     }
 
     render() {
@@ -65,6 +66,7 @@ class Edit extends React.Component {
                         addRowFun={this.addRowFun}
                         handleNewRowData={this.handleNewRowData}
                         url={this.props.url}
+                        reduceRowFun={this.reduceRowFun}
                     />
                     </Modal>
                     </span>
@@ -159,6 +161,11 @@ class Edit extends React.Component {
         this.setState({
             deviceDocumentMain: deviceDocumentMain
         })
+    }
+
+    reduceRowFun = () => {
+        var newRowData = this.state.newRowData;
+
     }
     addRowFun = () => {
         var newRowData = this.state.newRowData;

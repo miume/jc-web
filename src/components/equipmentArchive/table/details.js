@@ -74,7 +74,6 @@ class Detail extends React.Component {
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             if (res) {
-                console.log(res)
                 const arrName = res.arrName;
                 const arrValue = res.arrValue
                 var newRowData = []
@@ -84,7 +83,6 @@ class Detail extends React.Component {
                         value: arrValue[i]
                     })
                 }
-                console.log(res.startdate)
                 this.setState({
                     visible: true,
                     newRowData: newRowData,

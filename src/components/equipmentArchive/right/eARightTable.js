@@ -202,7 +202,10 @@ class EARightTable extends Component {
             },
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.getTableData(this.props.depCode,this.props.deviceName)
+            console.log("----------")
+            console.log(this.props.depCode)
+            console.log(this.props.deviceName)
+            this.props.getRightData(this.props.depCode,this.props.deviceName)
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });

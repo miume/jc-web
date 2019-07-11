@@ -93,7 +93,14 @@ class EquipmentArchive extends Component {
                     rightTopData: rightTopData,
                     depCode: code
                 }, () => {
-                    if (deviceName === '') {
+                    const rightTopData = this.state.rightTopData;
+                    var deviceFlag = true;
+                    rightTopData.map((item) => {
+                        if(item.name === deviceName){
+                            deviceFlag = false
+                        }
+                    })
+                    if (deviceFlag) {
                         this.getTableData(code, rightTopData[0] ? rightTopData[0].name : null);
                     } else {
                         this.getTableData(code, deviceName);
