@@ -119,7 +119,7 @@ class DepTree extends Component {
                     dataSource[0].children.push(parenObj);
                 }
                 if (res[0] && res[0].son) {
-                    this.props.getRightData(res[0].son[0].code)
+                    this.props.getRightData(res[0].son[0].code,'')
                 }
                 this.setState({
                     dataSource: dataSource,
@@ -139,10 +139,9 @@ class DepTree extends Component {
 
 
     onSelect = (selectedKeys, info) => {
-        console.log(selectedKeys)
         var dataSource = this.state.dataSource;
         this.handleSelect(selectedKeys[0],dataSource);
-        this.props.getRightData(parseInt(selectedKeys[0]))
+        this.props.getRightData(parseInt(selectedKeys[0]),'')
     }
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {
@@ -160,7 +159,6 @@ class DepTree extends Component {
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {
         this.expandedKeys = expandedKeys;
-        console.log(expandedKeys)
         this.setState({expandedKeys: expandedKeys})
     }
     // 展开树节点

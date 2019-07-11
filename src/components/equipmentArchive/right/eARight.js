@@ -20,6 +20,7 @@ class EARight extends Component {
                     {this.renderEquipmentName(this.props.rightTopData)}
                 </Tabs>
                 <EARightBottom
+                    getRightData={this.props.getRightData}
                     deviceName={this.props.deviceName}
                     depCode={this.props.depCode}
                     getTableData={this.props.getTableData}

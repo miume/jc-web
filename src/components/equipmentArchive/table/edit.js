@@ -100,7 +100,6 @@ class Edit extends React.Component {
             deviceFlag = false;
             returnArr.push("设备状态必选")
         }
-        console.log(deviceDocumentMain)
         if (!deviceFlag) {
             var returnString = "";
             for (var j = 0; j < returnArr.length; j++) {
@@ -128,7 +127,6 @@ class Edit extends React.Component {
                 arrValue: packArrValue,
                 deviceDocumentMain: deviceDocumentMain
             };
-            console.log(addData)
             axios({
                 url: `${this.props.url.equipmentArchive.device}`,
                 method: 'put',
@@ -138,7 +136,8 @@ class Edit extends React.Component {
                 data: addData,
                 // type: 'json'
             }).then((data) => {
-                this.props.getTableData(this.props.depCode,this.props.deviceName)
+                const deviceName = this.props.record.deviceName.split('-')[0]
+                this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
             }).catch(function () {
                 message.info('编辑失败，请联系管理员！');
             });
@@ -201,7 +200,6 @@ class Edit extends React.Component {
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             if (res) {
-                console.log(res)
                 const arrName = res.arrName;
                 const arrValue = res.arrValue
                 var newRowData = []
@@ -211,7 +209,6 @@ class Edit extends React.Component {
                         value: arrValue[i]
                     })
                 }
-                console.log(res.startdate)
                 this.setState({
                     visible: true,
                     newRowData: newRowData,

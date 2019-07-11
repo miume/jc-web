@@ -167,8 +167,6 @@ class AddModal extends React.Component {
     }
 
     handleNewRow = (e) => {
-        console.log(e.target.name)
-        console.log(e.target.value)
         this.props.handleNewRowData(e.target.name, e.target.value)
     }
 

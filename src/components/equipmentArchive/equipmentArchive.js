@@ -30,8 +30,8 @@ class EquipmentArchive extends Component {
     // 页面渲染
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        const current = JSON.parse(localStorage.getItem('current'));
+        this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
         // 页面UI架构
         return (
             <div>
@@ -55,6 +55,7 @@ class EquipmentArchive extends Component {
                             rightTableData={this.state.rightTableData}
                             getTableData={this.getTableData}
                             deviceName={this.state.deviceName}
+                            getRightData={this.getRightData}
                         />
                     </div>
                 </div>
@@ -62,63 +63,63 @@ class EquipmentArchive extends Component {
         )
     }
 
-    getRightData = (code) => {
+    getRightData = (code, deviceName) => {
         code = parseInt(code)
         axios({
-            url: `${this.url.equipmentArchive.device}/${code}` ,
+            url: `${this.url.equipmentArchive.device}/${code}`,
             method: 'get',
-            headers:{
+            headers: {
                 'Authorization': this.url.Authorization
             },
         }).then((data) => {
-            const res = data.data.data?data.data.data:[];
-            if(res){
+            const res = data.data.data ? data.data.data : [];
+            if (res) {
                 var rightTopData = [];
-                if(JSON.stringify(res) !== '{}'){
-                    for(var key in res){
+                if (JSON.stringify(res) !== '{}') {
+                    for (var key in res) {
                         rightTopData.push({
                             name: key,
                             count: res[key]
                         })
                     }
-                }else{
+                } else {
                     rightTopData.push({
                         name: '无设备',
                         count: 0
                     })
                 }
-                console.log("code:" + code)
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code
-                },() => {
-                    this.getTableData(code, rightTopData[0]?rightTopData[0].name : null);
+                }, () => {
+                    if (deviceName === '') {
+                        this.getTableData(code, rightTopData[0] ? rightTopData[0].name : null);
+                    } else {
+                        this.getTableData(code, deviceName);
+                    }
                 });
             }
-        }).catch(()=>{
+        }).catch(() => {
             message.info('查询失败，请联系管理员！')
         });
     };
 
     getTableData = (code, name) => {
-        console.log('1------------------')
-        console.log(code)
-        console.log(name)
         code = parseInt(code)
         axios({
-            url: `${this.url.equipmentArchive.device}/${code}/${name}` ,
+            url: `${this.url.equipmentArchive.device}/${code}/${name}`,
             method: 'get',
-            headers:{
+            headers: {
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            const res = data.data.data?data.data.data:[];
-            if(res){
+            const res = data.data.data ? data.data.data : [];
+            if (res) {
                 var rightTableData = [];
-                for(var i=0; i<res.length; i++){
+                for (var i = 0; i < res.length; i++) {
                     var arr = res[i];
                     rightTableData.push({
-                        index: i+1,
+                        index: i + 1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
@@ -132,7 +133,7 @@ class EquipmentArchive extends Component {
                     rightTableData: rightTableData,
                     deviceName: name
                 });
-            }else{
+            } else {
                 this.setState({
                     rightTableData: [],
                     deviceName: name

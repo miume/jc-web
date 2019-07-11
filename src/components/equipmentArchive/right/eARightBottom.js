@@ -36,6 +36,7 @@ class EARightBottom extends Component {
         return (
             <div className="eA-right-bottom">
                 <Add
+                    getRightData={this.props.getRightData}
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}
                     url={this.props.url}
@@ -55,6 +56,7 @@ class EARightBottom extends Component {
                     fetch={this.fetch}
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
                 <EARightTable
+                    getRightData={this.props.getRightData}
                     depCode={this.props.depCode}
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}

@@ -100,8 +100,6 @@ class Fittings extends React.Component {
         })
     };
     addSaveFun = (item,index) => {
-        console.log(item)
-        console.log(index)
         const {saveData,data} = this.state;
         // saveData.push({
         //     name:item.name,
@@ -109,7 +107,6 @@ class Fittings extends React.Component {
         //     counts:item.counts,
         //     code: item.code
         // });
-        console.log(data)
         data[index].name=item.name;
         data[index].specification=item.specification;
         data[index].counts=parseInt(item.counts);
