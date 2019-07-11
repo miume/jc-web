@@ -189,7 +189,6 @@ class Add extends Component {
         if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
             deviceDocumentMain.statusCode = this.state.statusCodeInit
         }
-        console.log(deviceDocumentMain)
         if (!deviceFlag) {
             var returnString = "";
             for (var j = 0; j < returnArr.length; j++) {
@@ -231,7 +230,7 @@ class Add extends Component {
                 // type: 'json'
             }).then((data) => {
                 message.info(data.data.message);
-                this.props.getTableData(this.props.depCode, this.props.deviceName)
+                this.props.getRightData(this.props.depCode, deviceDocumentMain.deviceName)
             }).catch(function () {
                 message.info('新增失败，请联系管理员！');
             });

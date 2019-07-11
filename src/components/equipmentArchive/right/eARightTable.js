@@ -126,14 +126,14 @@ class EARightTable extends Component {
         width: '13%',
         render: statusCode => {
             switch (statusCode) {
-                case 0:
-                    return <span className="eq-statu1">状况1&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
                 case 1:
-                    return <span className="eq-statu2">状况2&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                    return <span className="eq-statu1">运行&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
                 case 2:
-                    return <span className="eq-statu3">状况3&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                    return <span className="eq-statu2">待机(停机)&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                case 3:
+                    return <span className="eq-statu3">检修(保养)&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
                 default:
-                    return <span className="eq-statu4">状况4&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                    return <span className="eq-statu4">报废&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
             }
         },
     }, {
@@ -159,9 +159,12 @@ class EARightTable extends Component {
                     />
                     <Divider type="vertical"/>
                     <Edit
+                        deviceName={this.props.deviceName}
+                        getRightData={this.props.getRightData}
                         url={this.props.url}
                         record={record}
                         getTableData={this.props.getTableData}
+                        depCode={this.props.depCode}
                     />
                     <Delete
                         url={this.props.url}
