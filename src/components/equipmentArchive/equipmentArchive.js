@@ -87,6 +87,7 @@ class EquipmentArchive extends Component {
                         count: 0
                     })
                 }
+                console.log("code:" + code)
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code

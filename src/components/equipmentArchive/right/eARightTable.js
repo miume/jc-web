@@ -8,6 +8,8 @@ import Details from '../table/details'
 import Maintenance from '../table/maintenance'
 import Repair from '../table/repair'
 import axios from "axios";
+import Edit from '../table/edit'
+import Add from "./add";
 
 class EARightTable extends Component {
     constructor(props) {
@@ -156,10 +158,10 @@ class EARightTable extends Component {
                         url={this.props.url}
                     />
                     <Divider type="vertical"/>
-                    <Details
+                    <Edit
                         url={this.props.url}
-                        editFlag={false}
-                        name ="编辑"
+                        record={record}
+                        getTableData={this.props.getTableData}
                     />
                     <Delete
                         url={this.props.url}
