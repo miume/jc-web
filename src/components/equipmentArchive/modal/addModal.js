@@ -37,6 +37,7 @@ class AddModal extends React.Component {
         this.handleSelect = this.handleSelect.bind(this)
         this.handleSwitch = this.handleSwitch.bind(this)
         this.handleNewRow = this.handleNewRow.bind(this)
+        this.handleReduceRowData=this.handleReduceRowData.bind(this)
     }
 
     render() {
@@ -119,11 +120,18 @@ class AddModal extends React.Component {
                         this.props.newRowData ? this.props.newRowData.map((m, index) => {
                             return (
                                 <Row gutter={16}>
-                                    <Col span={12}>
+                                    <Col span={10}>
                                         <Input placeholder="请输入属性名称" key={index + "-1"} value={m.name?m.name:''} name={index + "-1"} disabled={this.props.editFlag} onChange={this.handleNewRow}/>
                                     </Col>
-                                    <Col span={12}>
+                                    <Col span={10}>
                                         <Input placeholder="请输入属性值" key={index + "-2"} value={m.value?m.value:''} name={index + "-2"} disabled={this.props.editFlag} onChange={this.handleNewRow}/>
+                                    </Col>
+                                    <Col span={4}>
+                                        <Button type="primary" icon="minus" size='large'
+                                                style={{width:'60px', fontSize: '15px'}}
+                                                key={index} name={index}
+                                                onClick={this.handleReduceRowData} disabled={this.props.editFlag}
+                                        />
                                     </Col>
                                 </Row>
                             )
@@ -165,7 +173,9 @@ class AddModal extends React.Component {
         )
 
     }
-
+    handleReduceRowData = (e) => {
+        this.props.handleReduceRow(e.target.name)
+    }
     handleNewRow = (e) => {
         this.props.handleNewRowData(e.target.name, e.target.value)
     }

@@ -34,6 +34,7 @@ class Add extends Component {
         this.handleDeviceDocumentMain = this.handleDeviceDocumentMain.bind(this)
         this.handleNewRowData = this.handleNewRowData.bind(this)
         this.getNowFormatDate = this.getNowFormatDate.bind(this)
+        this.handleReduceRow = this.handleReduceRow.bind(this)
     }
 
     render() {
@@ -71,12 +72,25 @@ class Add extends Component {
                         deviceDocumentMain={this.state.deviceDocumentMain}
                         handleNewRowData={this.handleNewRowData}
                         startdate={this.state.startdate}
+                        handleReduceRow={this.handleReduceRow}
                     />
                 </Modal>
             </span>
         )
     }
+    handleReduceRow = (index) => {
+        const newRowData = this.state.newRowData;
+        var newData = []
+        for (var i=0; i<newRowData.length; i++){
+            if(i !== parseInt(index)){
+                newData.push(newRowData[i])
+            }
+        }
+        this.setState({
+            newRowData: newData
+        })
 
+    }
     handleNewRowData = (name, value) => {
         var newRowData = this.state.newRowData;
         const index = parseInt(name.split('-')[0]);
