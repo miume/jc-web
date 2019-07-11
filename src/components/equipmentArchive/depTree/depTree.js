@@ -99,8 +99,11 @@ class DepTree extends Component {
     handleModalOk = () => {
         const saveData = this.state.saveData;
         if (saveData.name !== '' && saveData.parentCode !== null && saveData) {
-            saveData.code = parseInt(saveData.code)
-            saveData.parentCode = parseInt(saveData.parentCode)
+            saveData.parentCode = parseInt(saveData.parentCode);
+            if(saveData.parentCode < 1){
+                saveData.parentCode = null
+            }
+            console.log(saveData)
             axios({
                 url: `${this.props.url.equipmentDept.dept}`,
                 method: 'post',
@@ -110,15 +113,6 @@ class DepTree extends Component {
                 data: saveData,
                 type: 'json'
             }).then((data) => {
-                // if(data.data.code === 0){
-                //     message.info(data.data.message);
-                //     this.getData();
-                //     this.setState({
-                //         addDeptVisable: false
-                //     })
-                // }else{
-                //     message.info(data.data.message);
-                // }
                 message.info(data.data.message);
                 this.getData();
 
@@ -284,7 +278,8 @@ class DepTree extends Component {
         const saveData = this.state.saveData;
         if(saveData&&saveData.code&&saveData.code===code){
             saveData.code = parseInt(code)
-            saveData.parentCode = parseInt(saveData.parentCode)
+            saveData.parentCode = null;
+            console.log(saveData)
             axios({
                 url : `${this.props.url.equipmentDept.dept}`,
                 method:'put',
