@@ -274,7 +274,8 @@ class Home extends Component {
             },
             /**设备管理设备档案*/
             equipmentArchive:{
-                device:`${server}/jc/common/device`
+                device:`${server}/jc/common/device`,
+                detail:`${server}/jc/common/device/detail`
             },
             /**设备管理状态*/
             equipmentStatus:{

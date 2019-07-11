@@ -152,9 +152,8 @@ class EARightTable extends Component {
                     <Repair/>
                     <Divider type="vertical"/>
                     <Details
+                        record={record}
                         url={this.props.url}
-                        name ="详情"
-                        editFlag={true}
                     />
                     <Divider type="vertical"/>
                     <Details
