@@ -22,7 +22,8 @@ class Add extends Component {
             },
             newRowData: [],
             statusCode: [],
-            startdate:''
+            startdate: '',
+            statusCodeInit:''
         };
         this.handleAdd = this.handleAdd.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -69,12 +70,13 @@ class Add extends Component {
                         handleDeviceDocumentMain={this.handleDeviceDocumentMain}
                         deviceDocumentMain={this.state.deviceDocumentMain}
                         handleNewRowData={this.handleNewRowData}
-                        startdate = {this.state.startdate}
+                        startdate={this.state.startdate}
                     />
                 </Modal>
             </span>
         )
     }
+
     handleNewRowData = (name, value) => {
         var newRowData = this.state.newRowData;
         const index = parseInt(name.split('-')[0]);
@@ -90,9 +92,9 @@ class Add extends Component {
     };
     handleDeviceDocumentMain = (key, value) => {
         var deviceDocumentMain = this.state.deviceDocumentMain;
-        if(key === "power"){
+        if (key === "power") {
             deviceDocumentMain[key] = parseInt(value)
-        }else{
+        } else {
             deviceDocumentMain[key] = value
         }
         this.setState({
@@ -143,7 +145,7 @@ class Add extends Component {
                 this.setState({
                     addModalVisable: true,
                     statusCode: statusCode,
-                    startdate:startdate
+                    startdate: startdate
                 })
             } else {
                 message.info('设备状态为空，请先添加状态！')
@@ -185,8 +187,7 @@ class Add extends Component {
             returnArr.push("设备名称必填")
         }
         if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
-            deviceFlag = false;
-            returnArr.push("设备状态必选")
+            deviceDocumentMain.statusCode = this.state.statusCodeInit
         }
         console.log(deviceDocumentMain)
         if (!deviceFlag) {
@@ -212,7 +213,7 @@ class Add extends Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
-            if (deviceDocumentMain.startdate||deviceDocumentMain.startdate===undefined){
+            if (deviceDocumentMain.startdate || deviceDocumentMain.startdate === undefined) {
                 deviceDocumentMain.startdate = startdate;
             }
             var addData = {
@@ -230,19 +231,20 @@ class Add extends Component {
                 // type: 'json'
             }).then((data) => {
                 message.info(data.data.message);
-                this.props.getTableData(this.props.depCode,this.props.deviceName)
+                this.props.getTableData(this.props.depCode, this.props.deviceName)
             }).catch(function () {
                 message.info('新增失败，请联系管理员！');
             });
             var deviceDocumentMainInit = {
                 keyFlag: 0
-            }
+            };
             this.setState({
                 addModalVisable: false,
-                deviceDocumentMain:deviceDocumentMainInit,
+                deviceDocumentMain: deviceDocumentMainInit,
                 newRowData: [],
                 statusCode: [],
-                startdate: startdate
+                startdate: startdate,
+                statusCodeInit: deviceDocumentMain.statusCode
             });
 
         }
