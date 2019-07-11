@@ -157,7 +157,10 @@ class Add extends Component {
     };
     handleCancel = () => {
         this.setState({
-            addModalVisable: false
+            addModalVisable: false,
+            deviceDocumentMain: {},
+            newRowData: [],
+            statusCode: [],
         })
     };
     handleSave = () => {

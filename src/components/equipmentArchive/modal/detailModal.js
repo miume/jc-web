@@ -141,7 +141,8 @@ class DetailModal extends React.Component {
                                 null
                                 : <Button type="primary" icon="plus" size='large'
                                           style={{width: '445px', fontSize: '15px',marginLeft:'-115px'}}
-                                          onClick={this.props.addRowFun} disabled={this.props.editFlag}/>
+                                          onClick={this.props.addRowFun} disabled={this.props.editFlag}
+                                />
                         }
                     </Col>
                 </Row>
@@ -159,6 +160,12 @@ class DetailModal extends React.Component {
                                         <Input placeholder="请输入属性值" key={index + "-2"} value={m.value ? m.value : ''}
                                                name={index + "-2"} disabled={this.props.editFlag}
                                                onChange={this.handleNewRow}/>
+                                    </Col>
+                                    <Col span={8}>
+                                        <Button type="primary" icon="plus" size='large'
+                                                style={{ fontSize: '15px'}}
+                                                onClick={this.props.addRowFun} disabled={this.props.editFlag}
+                                        />
                                     </Col>
                                 </Row>
                             )
