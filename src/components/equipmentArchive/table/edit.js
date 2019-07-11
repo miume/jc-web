@@ -28,7 +28,7 @@ class Edit extends React.Component {
         this.handleDeviceDocumentMain = this.handleDeviceDocumentMain.bind(this);
         this.addRowFun = this.addRowFun.bind(this)
         this.handleSave = this.handleSave.bind(this)
-        this.reduceRowFun=this.reduceRowFun.bind(this)
+        this.handleReduceRow=this.handleReduceRow.bind(this)
     }
 
     render() {
@@ -66,7 +66,7 @@ class Edit extends React.Component {
                         addRowFun={this.addRowFun}
                         handleNewRowData={this.handleNewRowData}
                         url={this.props.url}
-                        reduceRowFun={this.reduceRowFun}
+                        handleReduceRow={this.handleReduceRow}
                     />
                     </Modal>
                     </span>
@@ -140,6 +140,7 @@ class Edit extends React.Component {
             }).then((data) => {
                 const deviceName = this.props.record.deviceName.split('-')[0]
                 this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
+                message.info(data.data.message);
             }).catch(function () {
                 message.info('编辑失败，请联系管理员！');
             });
@@ -163,10 +164,6 @@ class Edit extends React.Component {
         })
     }
 
-    reduceRowFun = () => {
-        var newRowData = this.state.newRowData;
-
-    }
     addRowFun = () => {
         var newRowData = this.state.newRowData;
         newRowData.push({
@@ -177,6 +174,19 @@ class Edit extends React.Component {
             data: newRowData,
         })
     };
+    handleReduceRow = (index) => {
+        const newRowData = this.state.newRowData;
+        var newData = []
+        for (var i=0; i<newRowData.length; i++){
+            if(i !== parseInt(index)){
+                newData.push(newRowData[i])
+            }
+        }
+        this.setState({
+            newRowData: newData
+        })
+
+    }
     handleNewRowData = (name, value) => {
         var newRowData = this.state.newRowData;
         const index = parseInt(name.split('-')[0]);
