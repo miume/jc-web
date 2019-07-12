@@ -129,9 +129,11 @@ class EARightTable extends Component {
                 case 1:
                     return <span className="eq-statu1">运行&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
                 case 2:
-                    return <span className="eq-statu2">待机(停机)&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                    return <span className="eq-statu2">待机(停机)&nbsp;&nbsp;<i className="fa fa-circle"
+                                                                            aria-hidden="true"></i></span>
                 case 3:
-                    return <span className="eq-statu3">检修(保养)&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
+                    return <span className="eq-statu3">检修(保养)&nbsp;&nbsp;<i className="fa fa-circle"
+                                                                            aria-hidden="true"></i></span>
                 default:
                     return <span className="eq-statu4">报废&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
             }
@@ -193,20 +195,18 @@ class EARightTable extends Component {
             </div>
         )
     }
+
     handleDelete = (code) => {
         axios({
-            url:`${this.props.url.equipmentArchive.device}/${code}`,
-            method:'Delete',
-            headers:{
-                'Authorization':this.props.url.Authorization
+            url: `${this.props.url.equipmentArchive.device}/${code}`,
+            method: 'Delete',
+            headers: {
+                'Authorization': this.props.url.Authorization
             },
-        }).then((data)=>{
+        }).then((data) => {
             message.info(data.data.message);
-            console.log("----------")
-            console.log(this.props.depCode)
-            console.log(this.props.deviceName)
-            this.props.getRightData(this.props.depCode,this.props.deviceName)
-        }).catch(()=>{
+            this.props.getRightData(this.props.depCode, this.props.deviceName)
+        }).catch(() => {
             message.info('删除失败，请联系管理员！');
         });
     }
