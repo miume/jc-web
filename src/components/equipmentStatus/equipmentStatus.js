@@ -28,6 +28,8 @@ class EquipmentStatus extends React.Component{
         this.fetch = this.fetch.bind(this)
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.handleDelete = this.handleDelete.bind(this)
+        this.searchEvent = this.searchEvent.bind(this)
+        this.searchContentChange = this.searchContentChange.bind(this);
 
     }
     componentDidMount() {
@@ -76,6 +78,7 @@ class EquipmentStatus extends React.Component{
                         data={this.state.dataSource}
                         rowSelection={rowSelection}
                         modifyDataSource={this.modifyDataSource}
+                        modifySelectedRowKeys={this.modifySelectedRowKeys}
                     />
                 </div>
             </div>
@@ -94,7 +97,6 @@ class EquipmentStatus extends React.Component{
             }
         }).then((data) => {
             const res = data.data.data?data.data.data:[];
-            console.log(res)
             if(res){
                 var dataSource = []
                 for(var i = 0; i<res.length; i++){
@@ -106,10 +108,12 @@ class EquipmentStatus extends React.Component{
                 }
                 this.setState({
                     dataSource: dataSource,
+                    selectedRowKeys:[]
                 });
             }else{
                 this.setState({
-                    dataSource: []
+                    dataSource: [],
+                    selectedRowKeys:[]
                 })
             }
         });
@@ -117,8 +121,22 @@ class EquipmentStatus extends React.Component{
     modifyDataSource = (data) => {
         this.setState({dataSource:data});
     };
-
     deleteByIds = () => {
+        const codes = this.state.selectedRowKeys;
+        axios({
+            url: `${this.url.equipmentStatus.delete}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            data:codes,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！')
+        });
 
     }
     onSelectChange = (selectedRowKeys) => {
@@ -130,7 +148,37 @@ class EquipmentStatus extends React.Component{
         });
     }
     searchEvent = () => {
-
+        axios({
+            url: `${this.url.equipmentStatus.getByNameLike}` ,
+            method: 'get',
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                name: this.state.searchContent
+            }
+        }).then((data) => {
+            const res = data.data.data?data.data.data:[];
+            if(res){
+                var dataSource = []
+                for(var i = 0; i<res.length; i++){
+                    dataSource.push({
+                        index: i,
+                        name: res[i].name,
+                        code: res[i].code
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource,
+                    selectedRowKeys:[]
+                });
+            }else{
+                this.setState({
+                    dataSource: [],
+                    selectedRowKeys:[]
+                })
+            }
+        });
     }
     searchContentChange = (e) => {
         const value = e.target.value;
