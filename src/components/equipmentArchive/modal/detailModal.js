@@ -5,7 +5,6 @@ import CancleButton from "../../BlockQuote/cancleButton";
 import '../equipmentArchive.css'
 import moment from 'moment';
 
-const Option = Select.Option;
 const props = {
     name: 'file',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -118,7 +117,7 @@ class DetailModal extends React.Component {
                                     {
                                         this.state.statusCode.map(es => {
                                             return (
-                                                <Option key={es.code} value={es.code}>{es.name}</Option>
+                                                <Select.Option key={es.code} value={es.code}>{es.name}</Select.Option>
                                             )
                                         })
                                     }
