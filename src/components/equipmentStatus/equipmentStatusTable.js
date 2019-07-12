@@ -162,6 +162,7 @@ class equipmentStatusTable extends React.Component {
                 columns={columns}
                 rowSelection={this.props.rowSelection}
                 dataSource={this.props.data}
+                pagination={false}
                 size="small"
                 bordered
                 scroll={{ y: 400 }}
