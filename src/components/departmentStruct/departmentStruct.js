@@ -7,6 +7,10 @@ import './departmentStruct.css'
 
 
 class DepartmentStruct extends React.Component{
+    constructor(props){
+        super(props)
+        this.returnDataEntry = this.returnDataEntry.bind(this)
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
@@ -14,7 +18,7 @@ class DepartmentStruct extends React.Component{
 
         return (
             <div>
-                <Blockquote menu={current.menuParent} name={current.menuName}/>
+                <Blockquote menu={current.menuParent} name={current.menuName}  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding: '15px'}} className="depStructTree">
                     <DepTree
                         depFlag = {true}
