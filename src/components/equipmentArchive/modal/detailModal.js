@@ -41,8 +41,9 @@ class DetailModal extends React.Component {
         this.handleDeviceStatus = this.handleDeviceStatus.bind(this)
         this.handleReduceRowData = this.handleReduceRowData.bind(this)
     }
+
     componentDidMount() {
-        if(!this.props.editFlag){
+        if (!this.props.editFlag) {
             this.handleDeviceStatus();
         }
     }
@@ -113,7 +114,7 @@ class DetailModal extends React.Component {
                                        value={this.props.deviceStatus ? this.props.deviceStatus : ''}
                                        onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                                 : <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
-                                          onChange={this.handleSelect} defaultValue={this.props.deviceStatus} >
+                                          onChange={this.handleSelect} defaultValue={this.props.deviceStatus}>
                                     {
                                         this.state.statusCode.map(es => {
                                             return (
@@ -125,12 +126,19 @@ class DetailModal extends React.Component {
                         }
                     </Col>
                     <Col span={12}>
-                        <span style={{fontSize: '15px'}}>是否关键设备：
-                            <Switch checkedChildren="是" unCheckedChildren="否"
-                                    disabled={this.props.editFlag}
-                                    onChange={this.handleSwitch}
-                                    checked={this.props.deviceDocumentMain.keyFlag}
-                            /></span>
+                        {
+                            this.props.editFlag ?
+                                <span style={{fontSize: '15px'}}>是否关键设备：
+                                    <i style={this.props.deviceDocumentMain.keyFlag?{fontSize: '15px',color:'lawngreen'}:{fontSize: '15px',color:'grey'}} className="fa fa-circle" aria-hidden="true"></i>
+                                </span>
+                                : <span style={{fontSize: '15px'}}>是否关键设备：
+                                    <Switch checkedChildren="是" unCheckedChildren="否"
+                                        disabled={this.props.editFlag}
+                                        onChange={this.handleSwitch}
+                                        checked={this.props.deviceDocumentMain.keyFlag}
+                                    />
+                                </span>
+                        }
                     </Col>
                 </Row>
                 <Divider className="eq-divider"/>
@@ -140,7 +148,7 @@ class DetailModal extends React.Component {
                             this.props.editFlag ?
                                 null
                                 : <Button type="primary" icon="plus" size='large'
-                                          style={{width: '445px', fontSize: '15px',marginLeft:'-115px'}}
+                                          style={{width: '445px', fontSize: '15px', marginLeft: '-115px'}}
                                           onClick={this.props.addRowFun} disabled={this.props.editFlag}
                                 />
                         }
@@ -163,7 +171,7 @@ class DetailModal extends React.Component {
                                     </Col>
                                     <Col span={4}>
                                         <Button type="primary" icon="minus" size='large'
-                                                style={{width:'60px', fontSize: '15px'}}
+                                                style={{width: '60px', fontSize: '15px'}}
                                                 key={index} name={index}
                                                 onClick={this.handleReduceRowData} disabled={this.props.editFlag}
                                         />
@@ -177,6 +185,7 @@ class DetailModal extends React.Component {
         )
 
     }
+
     handleReduceRowData = (e) => {
         this.props.handleReduceRow(e.target.name)
     }
