@@ -98,7 +98,7 @@ class AddModal extends React.Component {
                             {
                                 this.props.statusCode.map(es => {
                                     return (
-                                        <Option key={es.code} value={es.code}>{es.name}</Option>
+                                        <Select.Option key={es.code} value={es.code}>{es.name}</Select.Option>
                                     )
                                 })
                             }
