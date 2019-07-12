@@ -279,7 +279,9 @@ class Home extends Component {
             },
             /**设备管理状态*/
             equipmentStatus:{
-                deviceStatus:`${server}/jc/common/deviceStatus`
+                deviceStatus:`${server}/jc/common/deviceStatus`,
+                delete:`${server}/jc/common/deviceStatus/delete`,
+                getByNameLike:`${server}/jc/common/deviceStatus/getByNameLike`
             },
 
         }
