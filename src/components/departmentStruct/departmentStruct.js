@@ -18,7 +18,7 @@ class DepartmentStruct extends React.Component{
 
         return (
             <div>
-                <Blockquote menu={current.menuParent} name={current.menuName}  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={current.menuParent} name="部门结构"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding: '15px'}} className="depStructTree">
                     <DepTree
                         depFlag = {true}
