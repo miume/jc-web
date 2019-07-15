@@ -28,6 +28,9 @@ class EARight extends Component {
                     operation={this.props.operation}
                     comFlag={false}
                     dataSource={this.props.rightTableData}
+
+                    handleTableChange={this.props.handleTableChange}
+                    pagination={this.props.pagination}
                 />
             </div>
         )

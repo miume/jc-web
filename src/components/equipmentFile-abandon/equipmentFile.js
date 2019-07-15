@@ -5,7 +5,7 @@ import Blockquote from '../BlockQuote/blockquote';
 //import NewButton from '../BlockQuote/newButton';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import SearchCell from '../BlockQuote/search';
-import CheckManual from './/checkShouCe/checkShouCe';
+import CheckManual from './checkShouCe/checkShouCe';
 import Edit from './/Edit/edit';
 import Delete from './/delete/delete';
 import Add from './/add/add';

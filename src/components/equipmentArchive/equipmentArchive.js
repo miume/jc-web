@@ -13,6 +13,12 @@ import axios from "axios";
  * 时间：2019-7-2
  */
 class EquipmentArchive extends Component {
+    componentWillUnmount() {
+        this.setState = () => {
+            return;
+        }
+    }
+
     // 结构化，获取传入的参数
     constructor(props) {
         super(props);
@@ -20,10 +26,18 @@ class EquipmentArchive extends Component {
             rightTopData: [],
             rightTableData: [],
             depCode: -1,
-            deviceName: ''
+            deviceName: '',
+            pagination: {
+                showTotal(total) {
+                    return `共${total}条记录`
+                },
+                showSizeChanger: true
+            },
+            pageChangeFlag: 0,   //0表示分页 1 表示查询
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
+        this.handleTableChange = this.handleTableChange.bind(this)
 
     }
 
@@ -57,6 +71,9 @@ class EquipmentArchive extends Component {
                             getTableData={this.getTableData}
                             deviceName={this.state.deviceName}
                             getRightData={this.getRightData}
+
+                            handleTableChange={this.handleTableChange}
+                            pagination={this.state.pagination}
                         />
                     </div>
                 </div>
@@ -96,14 +113,20 @@ class EquipmentArchive extends Component {
                     const rightTopData = this.state.rightTopData;
                     var deviceFlag = true;
                     rightTopData.map((item) => {
-                        if(item.name === deviceName){
+                        if (item.name === deviceName) {
                             deviceFlag = false
                         }
                     })
                     if (deviceFlag) {
-                        this.getTableData(code, rightTopData[0] ? rightTopData[0].name : null);
+                        this.getTableData({
+                            deptId: parseInt(code),
+                            deviceName: rightTopData[0] ? rightTopData[0].name : null
+                        }, 0);
                     } else {
-                        this.getTableData(code, deviceName);
+                        this.getTableData({
+                            deptId: parseInt(code),
+                            deviceName: deviceName
+                        }, 0);
                     }
                 });
             }
@@ -112,20 +135,54 @@ class EquipmentArchive extends Component {
         });
     };
 
-    getTableData = (code, name) => {
-        code = parseInt(code)
+
+    handleTableChange = (pagination) => {
+        this.setState({
+            pagination: pagination
+        });
+        const {pageChangeFlag} = this.state;
+        /**分页查询 */
+        if (pageChangeFlag) {
+            this.fetch({
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
+                factory: this.state.searchContent
+            })
+        } else {
+            this.fetch({
+                pageSize: pagination.pageSize,
+                pageNumber: pagination.current,
+            })
+        }
+
+    };
+
+    getTableData = (params, flag) => {
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if(flag) {
+            var {pagination} = this.state;
+            pagination.current = 1;
+            pagination.total = 0;
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:'',
+                pagination:pagination
+            })
+        }
         axios({
-            url: `${this.url.equipmentArchive.device}/${code}/${name}`,
+            url: `${this.url.equipmentArchive.page}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
-            }
+            },
+            params:params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            if (res) {
+            console.log(res)
+            if (res&&res.list) {
                 var rightTableData = [];
-                for (var i = 0; i < res.length; i++) {
-                    var arr = res[i];
+                for (var i = 0; i < res.list.length; i++) {
+                    var arr = res.list[i];
                     rightTableData.push({
                         index: i + 1,
                         code: arr['code'],
@@ -139,12 +196,14 @@ class EquipmentArchive extends Component {
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    deviceName: name
+                    pagination:pagination,
+                    deviceName:params.deviceName
                 });
             } else {
                 this.setState({
                     rightTableData: [],
-                    deviceName: name
+                    pagination:pagination,
+                    deviceName:''
                 });
             }
         });
