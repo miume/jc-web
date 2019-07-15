@@ -10,6 +10,7 @@ import Repair from '../table/repair'
 import axios from "axios";
 import Edit from '../table/edit'
 import Add from "./add";
+import EARightBottom from "./eARightBottom";
 
 class EARightTable extends Component {
     constructor(props) {
@@ -191,6 +192,9 @@ class EARightTable extends Component {
                     size="small"
                     bordered
                     scroll={{y: 400}}
+
+                    onChange={this.props.handleTableChange}
+                    pagination={this.props.pagination}
                 />
             </div>
         )

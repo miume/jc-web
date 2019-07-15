@@ -23,7 +23,9 @@ class Add extends Component {
             newRowData: [],
             statusCode: [],
             startdate: '',
-            statusCodeInit:''
+            statusCodeInit:'',
+
+            fileList: []
         };
         this.handleAdd = this.handleAdd.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -35,9 +37,31 @@ class Add extends Component {
         this.handleNewRowData = this.handleNewRowData.bind(this)
         this.getNowFormatDate = this.getNowFormatDate.bind(this)
         this.handleReduceRow = this.handleReduceRow.bind(this)
+        this.handleUploadChange = this.handleUploadChange.bind(this)
+        this.handleUploadRemove = this.handleUploadRemove.bind(this)
     }
 
     render() {
+        // 处理上传
+        // const uploadProps = {
+        //     onRemove: file => {
+        //         this.setState(state => {
+        //             const index = state.fileList.indexOf(file);
+        //             const newFileList = state.fileList.slice();
+        //             newFileList.splice(index, 1);
+        //             console.log(newFileList)
+        //             return {
+        //                 fileList: newFileList,
+        //             };
+        //         });
+        //     },
+        //     action: this.props.url.equipmentArchive.upload,
+        //     headers: {
+        //         'Authorization': this.props.url.Authorization,
+        //     },
+        //     onChange: this.handleUploadChange,
+        //     multiple: true,
+        // };
         return (
             <span>
                 <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
@@ -73,6 +97,10 @@ class Add extends Component {
                         handleNewRowData={this.handleNewRowData}
                         startdate={this.state.startdate}
                         handleReduceRow={this.handleReduceRow}
+
+                        // fileList={this.state.fileList}
+                        // uploadProps = {uploadProps}
+                        // handleUploadChange={this.handleUploadChange}
                     />
                 </Modal>
             </span>
@@ -289,6 +317,7 @@ class Add extends Component {
             data: uploadData,
         })
     };
+
     reduceUploadFun = (index) => {
         // TODO 先根据code删除记录，再调用接口获得数据
         // const {uploadData} = this.state;
@@ -296,7 +325,38 @@ class Add extends Component {
         // this.setState({
         //     data: uploadData,
         // })
+    };
+    handleUploadRemove = () => {
+        // file => {
+        //     this.setState(state => {
+        //         const index = state.fileList.indexOf(file);
+        //         const newFileList = state.fileList.slice();
+        //         newFileList.splice(index, 1);
+        //         return {
+        //             fileList: newFileList,
+        //         };
+        //     });
+        // }
     }
+    handleUploadChange = (info) => {
+        // const fileList =  [...info.fileList];
+        // console.log(fileList)
+        // this.setState({
+        //     fileList: fileList
+        // });
+        //
+        // // this.setState({
+        // //     uploading: true,
+        // // });
+        // if (info.file.status !== 'uploading') {
+        //     console.log(info.file, info.fileList);
+        // }
+        // if (info.file.status === 'done') {
+        //     message.success(`${info.file.name} file uploaded successfully`);
+        // } else if (info.file.status === 'error') {
+        //     message.error(`${info.file.name} file upload failed.`);
+        // }
+    };
 }
 
 export default Add

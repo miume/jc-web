@@ -6,7 +6,7 @@ import '../equipmentArchive.css'
 import moment from 'moment';
 
 const Option = Select.Option;
-const props = {
+const uploads = {
     name: 'file',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     headers: {
@@ -139,13 +139,32 @@ class AddModal extends React.Component {
                     }
                 </div>
                 {/*<Divider className="eq-divider"/>*/}
+                {/*<Row gutter={16}>*/}
+                    {/*<Col span={14}>*/}
+                        {/*<Upload {...this.props.uploadProps} fileList={this.props.fileList}>*/}
+                            {/*<Button>*/}
+                                {/*<Icon type="upload"/> 请选择上传文件，可多次选择*/}
+                            {/*</Button>*/}
+                        {/*</Upload>*/}
+                    {/*</Col>*/}
+                    {/*<Col span={14}>*/}
+                        {/*<span style={{fontSize: '15px',paddingLeft:'10px'}}>支持文件格式：.pdf</span>*/}
+                    {/*</Col>*/}
+                {/*</Row>*/}
+                {/*<Row gutter={16}>*/}
+                    {/*<Col span={8}>*/}
+                        {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
+                                {/*style={{width: '100%', fontSize: '15px'}}*/}
+                                {/*onClick={this.props.reduceUploadFun()}/>*/}
+                    {/*</Col>*/}
+                {/*</Row>*/}
                 {/*<div className="eq-addModal-newRow">*/}
                     {/*{*/}
                         {/*this.props.uploadData ? this.props.uploadData.map((m, index) => {*/}
                             {/*return (*/}
                                 {/*<Row gutter={16}>*/}
                                     {/*<Col span={8}>*/}
-                                        {/*<Upload {...props} disabled={this.props.editFlag}>*/}
+                                        {/*<Upload {...uploads} disabled={this.props.editFlag}>*/}
                                             {/*<Button>*/}
                                                 {/*<Icon type="upload"/> {m.name}*/}
                                             {/*</Button>*/}
@@ -153,11 +172,6 @@ class AddModal extends React.Component {
                                     {/*</Col>*/}
                                     {/*<Col span={8}>*/}
                                         {/*<span style={{fontSize: '15px'}}>支持文件格式：.pdf</span>*/}
-                                    {/*</Col>*/}
-                                    {/*<Col span={4}>*/}
-                                        {/*<Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'*/}
-                                                {/*style={{width: '100%', fontSize: '15px'}}*/}
-                                                {/*onClick={this.props.addUplodFun}/>*/}
                                     {/*</Col>*/}
                                     {/*<Col span={4}>*/}
                                         {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
@@ -169,6 +183,11 @@ class AddModal extends React.Component {
                         {/*}) : null*/}
                     {/*}*/}
                 {/*</div>*/}
+                {/*<Row gutter={16}>*/}
+                    {/*<Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'*/}
+                            {/*style={{width: '450px', fontSize: '15px'}}*/}
+                            {/*onClick={this.props.addUplodFun}/>*/}
+                {/*</Row>*/}
             </div>
         )
 

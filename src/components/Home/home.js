@@ -275,7 +275,9 @@ class Home extends Component {
             /**设备管理设备档案*/
             equipmentArchive:{
                 device:`${server}/jc/common/device`,
-                detail:`${server}/jc/common/device/detail`
+                detail:`${server}/jc/common/device/detail`,
+                upload:`${server}/jc/common/device/upload`,
+                page:`${server}/jc/common/device/page`
             },
             /**设备管理状态*/
             equipmentStatus:{
@@ -283,7 +285,6 @@ class Home extends Component {
                 delete:`${server}/jc/common/deviceStatus/delete`,
                 getByNameLike:`${server}/jc/common/deviceStatus/getByNameLike`
             },
-
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
