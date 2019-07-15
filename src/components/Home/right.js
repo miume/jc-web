@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import QuickAccess from '../quickAccess/quickAccess';
 
 import Role from '../roleManagement/roleManagement';
@@ -21,14 +21,14 @@ import TodoList from '../todolist/todolist';
 
 import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
-import  ProductLine from '../Base/productLine/productLine';//产品线
-import  ProductProcess from '../Base/ProductProcess/productProcess';//产品工序
+import ProductLine from '../Base/productLine/productLine';//产品线
+import ProductProcess from '../Base/ProductProcess/productProcess';//产品工序
 // import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
 import TestItem from '../Base/testItem/testItem';
 import OperationManagement from "../operationManagement/operationManagement";
 import StockOut from '../stockOut/stockOut';
 
-import EnterStorage  from '../enterStorage/enterStorage';
+import EnterStorage from '../enterStorage/enterStorage';
 import InventorManage from '../inventoryManage/inventorManage';
 import RedListManage from '../redListManage/redListManage';
 import LibraryManage from '../libraryManage/library'
@@ -42,112 +42,129 @@ import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
 import Equipment from "../equipmentGuidance/equipmentGuidance"
 import EquipmentRepair from "../equipmentRepair/equipmentRepair"
 import EquipmentArchive from '../equipmentArchive/equipmentArchive';
-class Right extends React.Component{
-    render(){
+import EquipmentMaintenance from '../equipmentMaintenance/equipmentMaintenance'
+import EqMaintenanceDataEntry from '../eqMaintenanceDataEntry/eqMaintenanceDataEntry'
+import EqMaintenancePlan from '../eqMaintenancePlan/eqMaintenancePlan'
+import EqMaintenanceQuery from '../eqMaintenanceQuery/eqMaintenanceQuery'
+
+class Right extends React.Component {
+    render() {
         const data = [{
-            path:'/role',
-            component:Role
-        },{
-            path:'/menu',
-            component:Menu
-        },{
-            path:'/user',
-            component:User
-        },{
-            path:'/OperationManagement',
-            component:OperationManagement
-        },{
-            path:'/departManagement',
-            component:Depart
-        },{
-            path:'/dataEntry',
-            component:DataEntry
-        },{
-            path:'/processInspection',
-            component:ProcessInspection
-        },{
-            path:'/rawTestReport',
-            component:RawTestReport
-        },{
-            path:'/management',
-            component:Management
-        },{
-            path:'/InterProduct',
-            component:InterProduct
-        },{
-            path:'/PurchaseCheckReport',
-            component:PurchaseCheckReport
-        },{
-            path:'/baseInfo',
-            component:BaseInfo
-        },{
-            path:'/deliveryFactory',
-            component:DeliveryFactory
-        },{
-            path:'/productProcess',
-            component:ProductProcess
-        },{
-            path:'/testItem',
-            component:TestItem
+            path: '/role',
+            component: Role
+        }, {
+            path: '/menu',
+            component: Menu
+        }, {
+            path: '/user',
+            component: User
+        }, {
+            path: '/OperationManagement',
+            component: OperationManagement
+        }, {
+            path: '/departManagement',
+            component: Depart
+        }, {
+            path: '/dataEntry',
+            component: DataEntry
+        }, {
+            path: '/processInspection',
+            component: ProcessInspection
+        }, {
+            path: '/rawTestReport',
+            component: RawTestReport
+        }, {
+            path: '/management',
+            component: Management
+        }, {
+            path: '/InterProduct',
+            component: InterProduct
+        }, {
+            path: '/PurchaseCheckReport',
+            component: PurchaseCheckReport
+        }, {
+            path: '/baseInfo',
+            component: BaseInfo
+        }, {
+            path: '/deliveryFactory',
+            component: DeliveryFactory
+        }, {
+            path: '/productProcess',
+            component: ProductProcess
+        }, {
+            path: '/testItem',
+            component: TestItem
         },
-        {
-            path:'/productLine',
-            component:ProductLine
-        },{
-            path:'/sampleInspection',
-            component:SampleInspection
-        },{
-            path:'/stockOut',
-            component:StockOut
-        },{
-            path:'/enterStorage',
-            component:EnterStorage
-        },{
-            path:'/inventorManage',
-            component:InventorManage
-        },{
-            path:'/redListManage',
-            component:RedListManage
-        },{
-            path:'/libraryManage',
-            component:LibraryManage
-        },{
-            path:'/todoList',
-            component:TodoList
-        },{
-            path:'/rawStandard',
-            component:RawStandard
-        },{
-            path:'/productInspection',
-            component:ProductInspection
-        },{
-            path:'/unqualifiedExamineTable',
-            component:UnqualifiedExamine
-        },{
-            path:'/unqualifiedTrackTable',
-            component:UnqualifiedTrack
-        },{
-            path:'/productStandard',
-            component:ProductStandard
-        },{
-            path:'/equipmentGuidance',
-            component:Equipment
-        },{
-            path:'/equipmentRepair',
-            component:EquipmentRepair
-        },{
-            path:'/equipmentArchive',
-            component:EquipmentArchive
-        },{
-            path:'/equipmentBasicData',
-            component:BaseData
-        },{
-            path:'/departmentStruct',
-            component:DepartmentStruct
-        },{
-            path:"/equipmentStatus",
-            component:EquipmentStatus
-        }]
+            {
+                path: '/productLine',
+                component: ProductLine
+            }, {
+                path: '/sampleInspection',
+                component: SampleInspection
+            }, {
+                path: '/stockOut',
+                component: StockOut
+            }, {
+                path: '/enterStorage',
+                component: EnterStorage
+            }, {
+                path: '/inventorManage',
+                component: InventorManage
+            }, {
+                path: '/redListManage',
+                component: RedListManage
+            }, {
+                path: '/libraryManage',
+                component: LibraryManage
+            }, {
+                path: '/todoList',
+                component: TodoList
+            }, {
+                path: '/rawStandard',
+                component: RawStandard
+            }, {
+                path: '/productInspection',
+                component: ProductInspection
+            }, {
+                path: '/unqualifiedExamineTable',
+                component: UnqualifiedExamine
+            }, {
+                path: '/unqualifiedTrackTable',
+                component: UnqualifiedTrack
+            }, {
+                path: '/productStandard',
+                component: ProductStandard
+            }, {
+                path: '/equipmentGuidance',
+                component: Equipment
+            }, {
+                path: '/equipmentRepair',
+                component: EquipmentRepair
+            }, {
+                path: '/equipmentArchive',
+                component: EquipmentArchive
+            }, {
+                path: '/equipmentBasicData',
+                component: BaseData
+            }, {
+                path: '/departmentStruct',
+                component: DepartmentStruct
+            }, {
+                path: "/equipmentStatus",
+                component: EquipmentStatus
+            }, {
+                path: "/equipmentMaintenance",
+                component: EquipmentMaintenance
+            }, {
+                path: "/maintenanceDataEntry",
+                component: EqMaintenanceDataEntry
+            }, {
+                path: "/maintenancePlan",
+                component: EqMaintenancePlan
+            }, {
+                path: "/maintenanceQuery",
+                component: EqMaintenanceQuery
+            }]
         return (
             <div className="rightDiv">
                 <Switch>
@@ -157,12 +174,13 @@ class Right extends React.Component{
                         data.map(e => {
                             return (
                                 <Route key={e.path} path={e.path} component={e.component}></Route>
-                            ) 
-                        })              
-                    }   
+                            )
+                        })
+                    }
                 </Switch>
             </div>
         )
     }
 }
+
 export default Right;
