@@ -30,37 +30,31 @@ class EARightTable extends Component {
         dataIndex: 'fixedassetsCode',
         key: 'fixedassetsCode',
         align: 'center',
-        width: '13%',
+        width: '15%',
     }, {
         title: '部件名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
         align: 'center',
-        width: '10%',
+        width: '15%',
     }, {
         title: '规格型号',
         dataIndex: 'specification',
         key: 'specification',
         align: 'center',
-        width: '10%',
-    }, {
-        title: 'ID卡号',
-        dataIndex: 'idCode',
-        key: 'idCode',
-        align: 'center',
-        width: '13%',
+        width: '15%',
     }, {
         title: '启动日期',
         dataIndex: 'startdate',
         key: 'startdate',
         align: 'center',
-        width: '10%',
+        width: '15%',
     }, {
         title: '操作',
         dataIndex: 'code',
         key: 'code',
         align: 'center',
-        width: '30%',
+        width: '25%',
         render: (text, record) => {
             return (
                 <span>
