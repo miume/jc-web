@@ -9,12 +9,22 @@ class EqComponent extends React.Component {
         super(props);
         this.state = {
             visible: false,
-            tableData: [],
+            dataSource: [],
+            selectedRowKeys : [],
+            searchContent:'',
+            pageChangeFlag: 0,   //0表示分页 1 表示查询
         }
         this.handleData = this.handleData.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this)
+        this.fetch = this.fetch.bind(this)
+        this.pagination = {
+            showTotal(total) {
+                return `共${total}条记录`
+            } ,
+            showSizeChanger:true
+        };
     }
-
     render() {
         return (
             <span>
@@ -22,7 +32,7 @@ class EqComponent extends React.Component {
                 <Modal
                     className="modal-xlg"
 
-                    title="数据详情"
+                    title="部件"
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
@@ -38,7 +48,7 @@ class EqComponent extends React.Component {
                     <div style={{height:"550px"}}>
                         <EARightBottom
                             comFlag = {true}
-                            data={this.state.tableData}
+                            dataSource={this.state.dataSource}
                         />
                     </div>
                 </Modal>
@@ -46,34 +56,78 @@ class EqComponent extends React.Component {
         )
 
     }
+    /**table变化时 */
+    handleTableChange(pagination){
+        this.pagination = pagination;
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+                personName:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+            })
+        }
+    }
+
+
+
     handleCancel = () => {
         this.setState({
             visible: false,
         });
     };
     handleData = () => {
-        // TODO 获取数据
-        const tableData = [{
-            code: 4,
-            fixedassetsCode: '10222222',
-            deviceName: '反应弧233',
-            specification: 'ABC-2232',
-            startdate: '2019/6/14',
-            statusCode: 0
-        }, {
-            code: 5,
-            fixedassetsCode: '10222222',
-            deviceName: '反应弧2322',
-            specification: 'ABC-3333',
-            startdate: '2019/6/14',
-            statusCode: 1
-        }];
+        this.fetch({
+            deptId: this.props.depCode,
+            deviceId: this.props.record.code
 
-
-        this.setState({
-            visible: true,
-            tableData: tableData
-        })
+        },0)
+    };
+    fetch(params,flag){
+        if(flag)
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:''
+            })
+        axios({
+            url: `${this.props.url.equipmentArchive.units}/${params.deptId}/${params.deviceId}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params:params,
+        }).then((data) => {
+            const res = data.data.data;
+            if(res&&res.list)
+            {
+                var tableData = []
+                for(var i = 0; i < res.list.length;i++){
+                    var e = res.list[i];
+                    tableData.push({
+                        code: e.code,
+                        index: i+1,
+                        fixedassetsCode: e.fixedassetsCode,
+                        deviceName: e.deviceName,
+                        specification: e.specification,
+                        startdate: e.startdate,
+                        statusCode: e.statusCode,
+                        idCode: e.idCode
+                    })
+                }
+                this.pagination.total = res?res.total:0;
+                this.setState({
+                    dataSource:tableData,
+                    visible: true
+                })
+            }
+        }).catch(() => {
+            message.info('查询失败，请联系管理员！');
+        });
     }
 }
 
