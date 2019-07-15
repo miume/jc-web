@@ -154,7 +154,6 @@ class EquipmentArchive extends Component {
                 pageNumber: pagination.current,
             })
         }
-
     };
 
     getTableData = (params, flag) => {

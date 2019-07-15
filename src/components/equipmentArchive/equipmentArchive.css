@@ -97,3 +97,21 @@
     padding-left: 5px;
     border-radius:3px;
 }
+
+.eq-component-titleHead {
+    height: 40px;
+    display: flex;
+}
+.eq-component-title-first{
+    height: 40px;
+    padding-top: 10px;
+}
+/*配件*/
+.eq-component-title{
+    background: #F2F2F2;
+    color: black;
+    height: 40px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
