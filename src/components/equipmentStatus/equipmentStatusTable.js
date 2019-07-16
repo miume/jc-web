@@ -4,65 +4,8 @@ import DeletaSpan from './deletaSpan'
 import './equipmentStatus.css'
 import axios from "axios";
 import Edit from './edit';
-import AddModal from './addModal'
 
-import CancleButton from "../BlockQuote/cancleButton";
-import NewButton from "../BlockQuote/newButton";
-import {SketchPicker} from "react-color";
 
-const FormItem = Form.Item;
-const EditableContext = React.createContext();
-
-const EditableRow = ({form, index, ...props}) => (
-    <EditableContext.Provider value={form}>
-        <tr {...props} />
-    </EditableContext.Provider>
-);
-
-const EditableFormRow = Form.create()(EditableRow);
-
-class EditableCell extends React.Component {
-    getInput = () => {
-        if (this.props.inputType === 'number') {
-            return <InputNumber/>;
-        }
-        return <Input/>;
-    };
-
-    render() {
-        const {
-            editing,
-            dataIndex,
-            title,
-            inputType,
-            record,
-            index,
-            ...restProps
-        } = this.props;
-        return (
-            <EditableContext.Consumer>
-                {(form) => {
-                    const {getFieldDecorator} = form;
-                    return (
-                        <td {...restProps}>
-                            {editing ? (
-                                <FormItem style={{margin: 0}}>
-                                    {getFieldDecorator(dataIndex, {
-                                        rules: [{
-                                            required: true,
-                                            message: `Please Input ${title}!`,
-                                        }],
-                                        initialValue: record[dataIndex],
-                                    })(this.getInput())}
-                                </FormItem>
-                            ) : restProps.children}
-                        </td>
-                    );
-                }}
-            </EditableContext.Consumer>
-        );
-    }
-}
 
 class equipmentStatusTable extends React.Component {
     constructor(props) {
@@ -70,9 +13,6 @@ class equipmentStatusTable extends React.Component {
         this.state = {
             editingKey: '',
         }
-        this.isEditing = this.isEditing.bind(this);
-        this.edit = this.edit.bind(this);
-        this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
         this.getFetch = this.getFetch.bind(this);
 
@@ -113,7 +53,10 @@ class equipmentStatusTable extends React.Component {
             return (
                 <span>
                     <Edit
-
+                        fetch={this.props.fetch}
+                        url={this.props.url}
+                        record={record}
+                        editFlag={true}
                     />
                     <DeletaSpan
                         record={record}
@@ -127,35 +70,11 @@ class equipmentStatusTable extends React.Component {
     }]
 
     render() {
-        //  获取record的记录
-        const columns = this.columns.map((col) => {
-            if (!col.editable) {
-                return col;
-            }
-            return {
-                ...col,
-                onCell: record => ({
-                    record,
-                    editable: col.editable,
-                    dataIndex: col.dataIndex,
-                    title: col.title,
-                    editing: this.isEditing(record),
-                }),
-            };
-        });
-        //  单行编辑
-        const components = {
-            body: {
-                row: EditableFormRow,
-                cell: EditableCell,
-            },
-        };
         return (
             <Table
-                components={components}
                 rowClassName="editable-row"
                 rowKey={record => record.code}
-                columns={columns}
+                columns={this.columns}
                 rowSelection={this.props.rowSelection}
                 dataSource={this.props.data}
                 pagination={false}
@@ -169,54 +88,6 @@ class equipmentStatusTable extends React.Component {
     getFetch = () => {
         this.props.fetch();
     };
-    /**实现字段搜索功能 */
-    isEditing = (record) => {
-        return record.code === this.state.editingKey;
-    };
-
-    edit(code) {
-        this.setState({editingKey: code});
-    }
-
-    save(form, code) {
-        /**row代表修改后的数据  item 代表原始数据 */
-        form.validateFields((error, row) => {
-            if (error) {
-                return;
-            }
-            const newData = [...this.props.data];
-            const index = newData.findIndex(item => code === item.code);
-            if (index > -1) {
-                const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
-                });
-                const data = row;
-                data['code'] = code.toString();
-                axios({
-                    url: `${this.props.url.equipmentStatus.deviceStatus}`,
-                    method: 'put',
-                    headers: {
-                        'Authorization': this.props.url.Authorization
-                    },
-                    data: data,
-                    type: 'json'
-                }).then((data) => {
-                    this.props.modifyDataSource(newData);
-                    message.info(data.data.message);
-                }).catch(() => {
-                    message.info('保存失败，请联系管理员！');
-                });
-                this.setState({editingKey: ''});
-            } else {
-                newData.push(row);
-                this.props.modifyDataSource(newData);
-                this.setState({editingKey: ''});
-            }
-        });
-    }
-
     cancel = () => {
         this.setState({editingKey: ''});
     };
