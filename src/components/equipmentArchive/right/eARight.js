@@ -29,8 +29,8 @@ class EARight extends Component {
                     comFlag={false}
                     dataSource={this.props.rightTableData}
 
-                    handleTableChange={this.props.handleTableChange}
-                    pagination={this.props.pagination}
+                    // handleTableChange={this.props.handleTableChange}
+                    // pagination={this.props.pagination}
                 />
             </div>
         )
@@ -45,7 +45,12 @@ class EARight extends Component {
     });
     // 通过回调函数，获得标签页表格中的数据
     returnEquKey = name => {
-        this.props.getTableData(this.props.depCode, name)
+        // this.props.getTableData(this.props.depCode, name)
+        const params = {
+            deptId: parseInt(this.props.depCode),
+            deviceName: name
+        }
+        this.props.getTableData(params, {})
 
     };
 

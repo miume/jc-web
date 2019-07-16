@@ -37,7 +37,7 @@ class EquipmentArchive extends Component {
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
-        this.handleTableChange = this.handleTableChange.bind(this)
+        // this.handleTableChange = this.handleTableChange.bind(this)
 
     }
 
@@ -72,8 +72,8 @@ class EquipmentArchive extends Component {
                             deviceName={this.state.deviceName}
                             getRightData={this.getRightData}
 
-                            handleTableChange={this.handleTableChange}
-                            pagination={this.state.pagination}
+                            // handleTableChange={this.handleTableChange}
+                            // pagination={this.state.pagination}
                         />
                     </div>
                 </div>
@@ -129,45 +129,47 @@ class EquipmentArchive extends Component {
                         }, 0);
                     }
                 });
+            }else{
+                message.info('查询失败，请刷新下页面！')
             }
         }).catch(() => {
-            message.info('查询失败，请联系管理员！')
+            message.info('查询失败，请刷新下页面！')
         });
     };
 
 
-    handleTableChange = (pagination) => {
-        this.setState({
-            pagination: pagination
-        });
-        const {pageChangeFlag} = this.state;
-        /**分页查询 */
-        if (pageChangeFlag) {
-            this.fetch({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-                factory: this.state.searchContent
-            })
-        } else {
-            this.fetch({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-            })
-        }
-    };
+    // handleTableChange = (pagination) => {
+    //     this.setState({
+    //         pagination: pagination
+    //     });
+    //     const {pageChangeFlag} = this.state;
+    //     /**分页查询 */
+    //     if (pageChangeFlag) {
+    //         this.fetch({
+    //             pageSize: pagination.pageSize,
+    //             pageNumber: pagination.current,
+    //             factory: this.state.searchContent
+    //         })
+    //     } else {
+    //         this.fetch({
+    //             pageSize: pagination.pageSize,
+    //             pageNumber: pagination.current,
+    //         })
+    //     }
+    // };
 
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;
-            pagination.total = 0;
-            this.setState({
-                pageChangeFlag:0,
-                searchContent:'',
-                pagination:pagination
-            })
-        }
+        // if(flag) {
+        //     var {pagination} = this.state;
+        //     pagination.current = 1;
+        //     pagination.total = 0;
+        //     this.setState({
+        //         pageChangeFlag:0,
+        //         searchContent:'',
+        //         pagination:pagination
+        //     })
+        // }
         axios({
             url: `${this.url.equipmentArchive.page}`,
             method: 'get',
@@ -177,11 +179,10 @@ class EquipmentArchive extends Component {
             params:params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
             if (res&&res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
-                    var arr = res.list[i];
+                    var arr = res.list[i].deviceDocumentMain;
                     rightTableData.push({
                         index: i + 1,
                         code: arr['code'],
@@ -195,16 +196,19 @@ class EquipmentArchive extends Component {
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    pagination:pagination,
+                    // pagination:pagination,
                     deviceName:params.deviceName
                 });
             } else {
+                message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
-                    pagination:pagination,
+                    // pagination:pagination,
                     deviceName:''
                 });
             }
+        }).catch(() => {
+            message.info('查询失败，请刷新下页面！')
         });
     }
 }
