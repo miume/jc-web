@@ -65,8 +65,8 @@ class EARightBottom extends Component {
                     rowSelection={rowSelection}
                     dataSource={this.props.dataSource}
 
-                    handleTableChange={this.props.handleTableChange}
-                    pagination={this.props.pagination}
+                    // handleTableChange={this.props.handleTableChange}
+                    // pagination={this.props.pagination}
                 />
             </div>
         )
