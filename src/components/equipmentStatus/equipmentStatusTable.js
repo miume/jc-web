@@ -1,25 +1,32 @@
 import React from 'react';
-import {Table, Input, InputNumber, Popconfirm, Form, message} from 'antd';
+import {Table, Input, InputNumber, Popconfirm, Form, message, Modal, Row} from 'antd';
 import DeletaSpan from './deletaSpan'
 import './equipmentStatus.css'
 import axios from "axios";
+import Edit from './edit';
+import AddModal from './addModal'
+
+import CancleButton from "../BlockQuote/cancleButton";
+import NewButton from "../BlockQuote/newButton";
+import {SketchPicker} from "react-color";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-const EditableRow = ({ form, index, ...props }) => (
+const EditableRow = ({form, index, ...props}) => (
     <EditableContext.Provider value={form}>
         <tr {...props} />
     </EditableContext.Provider>
 );
 
 const EditableFormRow = Form.create()(EditableRow);
+
 class EditableCell extends React.Component {
     getInput = () => {
         if (this.props.inputType === 'number') {
-            return <InputNumber />;
+            return <InputNumber/>;
         }
-        return <Input />;
+        return <Input/>;
     };
 
     render() {
@@ -35,11 +42,11 @@ class EditableCell extends React.Component {
         return (
             <EditableContext.Consumer>
                 {(form) => {
-                    const { getFieldDecorator } = form;
+                    const {getFieldDecorator} = form;
                     return (
                         <td {...restProps}>
                             {editing ? (
-                                <FormItem style={{ margin: 0 }}>
+                                <FormItem style={{margin: 0}}>
                                     {getFieldDecorator(dataIndex, {
                                         rules: [{
                                             required: true,
@@ -70,66 +77,55 @@ class equipmentStatusTable extends React.Component {
         this.getFetch = this.getFetch.bind(this);
 
     }
+
     columns = [{
         title: '序号',
         dataIndex: 'index',
         key: 'index',
         sorter: (a, b) => a.index - b.index,
-        align:'center',
-        width: '30%',
-    },{
+        align: 'center',
+        width: '20%',
+    }, {
         title: '状态名称',
         dataIndex: 'name',
         key: 'name',
-        align:'center',
+        align: 'center',
         editable: 1,
         width: '30%',
-    },{
+    }, {
+        title: '颜色',
+        dataIndex: 'color',
+        key: `code`,
+        align: 'center',
+        editable: 1,
+        width: '20%',
+        render: color => {
+            return <span><i style={{color: `${color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
+        },
+
+    }, {
         title: '操作',
         dataIndex: 'code',
         key: 'code',
-        align:'center',
-        width: '40%',
-        render: (text,record) => {
-            const editable = this.isEditing(record);
+        align: 'center',
+        width: '25%',
+        render: (text, record) => {
             return (
                 <span>
-                    <span>
-                        {editable ? (
-                            <span>
-                                <EditableContext.Consumer>
-                                    {form => (
-                                        <span
-                                            className='blue'
-                                            onClick={() => this.save(form, record.code)}
-                                            style={{ marginRight: 8}}
-                                        >
-                                            保存
-                                        </span>
-                                    )}
-                                    </EditableContext.Consumer>
-                                <Popconfirm
-                                    title="确定取消?"
-                                    onConfirm={() => this.cancel(record.code)}
-                                    okText="确定" cancelText="取消"
-                                >
-                                    <span className='blue'>取消</span>
-                                </Popconfirm>
-                            </span>
-                        ) : (
-                            <span className='blue' onClick={() => this.edit(record.code)}>编辑</span>
-                        )}
-                        </span>
+                    <Edit
+
+                    />
                     <DeletaSpan
                         record={record}
                         getFetch={this.getFetch}
                         handleDelete={this.props.handleDelete}
-                        flag={this.props.judgeOperation(this.props.operation,'DELETE')}
+                        flag={this.props.judgeOperation(this.props.operation, 'DELETE')}
                     />
                 </span>
             )
         }
     }]
+
     render() {
         //  获取record的记录
         const columns = this.columns.map((col) => {
@@ -165,10 +161,11 @@ class equipmentStatusTable extends React.Component {
                 pagination={false}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
+                scroll={{y: 400}}
             />
         );
     }
+
     getFetch = () => {
         this.props.fetch();
     };
@@ -178,7 +175,7 @@ class equipmentStatusTable extends React.Component {
     };
 
     edit(code) {
-        this.setState({ editingKey: code });
+        this.setState({editingKey: code});
     }
 
     save(form, code) {
@@ -198,30 +195,30 @@ class equipmentStatusTable extends React.Component {
                 const data = row;
                 data['code'] = code.toString();
                 axios({
-                    url:`${this.props.url.equipmentStatus.deviceStatus}`,
-                    method:'put',
-                    headers:{
-                        'Authorization':this.props.url.Authorization
+                    url: `${this.props.url.equipmentStatus.deviceStatus}`,
+                    method: 'put',
+                    headers: {
+                        'Authorization': this.props.url.Authorization
                     },
-                    data:data,
-                    type:'json'
-                }).then((data)=>{
+                    data: data,
+                    type: 'json'
+                }).then((data) => {
                     this.props.modifyDataSource(newData);
                     message.info(data.data.message);
-                }).catch(()=>{
+                }).catch(() => {
                     message.info('保存失败，请联系管理员！');
                 });
-                this.setState({ editingKey: '' });
+                this.setState({editingKey: ''});
             } else {
                 newData.push(row);
                 this.props.modifyDataSource(newData);
-                this.setState({ editingKey: '' });
+                this.setState({editingKey: ''});
             }
         });
     }
 
     cancel = () => {
-        this.setState({ editingKey: '' });
+        this.setState({editingKey: ''});
     };
 
 }

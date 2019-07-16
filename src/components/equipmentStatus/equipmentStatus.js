@@ -103,7 +103,8 @@ class EquipmentStatus extends React.Component{
                     dataSource.push({
                         index: i,
                         name: res[i].name,
-                        code: res[i].code
+                        code: res[i].code,
+                        color: res[i].color,
                     })
                 }
                 this.setState({
