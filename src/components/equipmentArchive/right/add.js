@@ -165,13 +165,12 @@ class Add extends Component {
 
         // 获取当天日期
         var startdate = this.getNowFormatDate();
-
         // TODO 获取状态
         axios({
             url: `${this.props.url.equipmentStatus.deviceStatus}`,
             method: 'get',
             headers: {
-                'Authorization': this.props.url.Authorization
+                "Authorization": this.props.url.Authorization
             }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
