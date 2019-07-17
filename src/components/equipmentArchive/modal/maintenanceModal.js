@@ -6,9 +6,7 @@ import AddModal from "./addModal";
 class MaintenanceModal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        };
+        this.state = {};
 
     }
 
@@ -55,8 +53,8 @@ class MaintenanceModal extends React.Component {
         key: 'f',
         align: 'center',
         width: '15%',
-        render:(time) => {
-            return <span title={time} className='text-decoration'>{time.split(" ")[0]+'...'}</span>
+        render: (time) => {
+            return <span title={time} className='text-decoration'>{time.split(" ")[0] + '...'}</span>
         }
     }, {
         title: '接单时间',
@@ -64,8 +62,8 @@ class MaintenanceModal extends React.Component {
         key: 'g',
         align: 'center',
         width: '15%',
-        render:(time) => {
-            return <span title={time} className='text-decoration'>{time.split(" ")[0]+'...'}</span>
+        render: (time) => {
+            return <span title={time} className='text-decoration'>{time.split(" ")[0] + '...'}</span>
         }
     }, {
         title: '完工时间',
@@ -73,8 +71,8 @@ class MaintenanceModal extends React.Component {
         key: 'h',
         align: 'center',
         width: '15%',
-        render:(time) => {
-            return <span title={time} className='text-decoration'>{time.split(" ")[0]+'...'}</span>
+        render: (time) => {
+            return <span title={time} className='text-decoration'>{time.split(" ")[0] + '...'}</span>
         }
     }, {
         title: '操作',
