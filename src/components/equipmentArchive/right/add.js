@@ -220,12 +220,21 @@ class Add extends Component {
             }
         }
 
+
         // 判断设备属性必填项是否填写
         var deviceFlag = true;
         var returnArr = [];
         if (!deviceDocumentMain.fixedassetsCode || deviceDocumentMain.fixedassetsCode === '') {
             deviceFlag = false;
             returnArr.push("固定资产编码必填")
+        }
+
+        var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥\\\\……&*（）——|{}【】‘；：”“'。，、？]")
+        for (var i = 0; i < deviceDocumentMain.deviceName.length; i++) {
+            if(pattern.test(deviceDocumentMain.deviceName.substr(i, 1))){
+                message.info("设备名称存在非法字符，请重新输入设备名称")
+                return
+            }
         }
         if (!deviceDocumentMain.deviceName || deviceDocumentMain.deviceName === '') {
             deviceFlag = false;
@@ -265,6 +274,7 @@ class Add extends Component {
                 arrValue: packArrValue,
                 deviceDocumentMain: deviceDocumentMain
             };
+            console.log(addData)
             axios({
                 url: `${this.props.url.equipmentArchive.device}`,
                 method: 'post',
@@ -275,7 +285,9 @@ class Add extends Component {
                 // type: 'json'
             }).then((data) => {
                 message.info(data.data.message);
+                console.log('11111111111')
                 this.props.getRightData(this.props.depCode, this.props.deviceName)
+                console.log('222222222')
             }).catch(function () {
                 message.info('新增失败，请联系管理员！');
             });
