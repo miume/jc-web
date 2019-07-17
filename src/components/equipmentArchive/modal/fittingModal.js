@@ -1,15 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, Table, Input, InputNumber, Popconfirm, Form, Divider} from 'antd';
-import CancleButton from "../../BlockQuote/cancleButton";
+import { Table, Input, InputNumber, Popconfirm, Form, Divider} from 'antd';
 import '../equipmentArchive.css'
-import DeletaSpan from "../../departManagement/deleteSpan";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
     <EditableContext.Provider value={form}>
-        <tr {...props} />
+        <tr {...props}/>
     </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
