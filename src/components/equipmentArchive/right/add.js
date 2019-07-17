@@ -241,7 +241,11 @@ class Add extends Component {
             returnArr.push("设备名称必填")
         }
         if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
-            deviceDocumentMain.statusCode = this.state.statusCodeInit
+            deviceDocumentMain.statusCode = this.state.statusCodeInit;
+            if (deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === ''){
+                message.info("请选择设备状态")
+                return
+            }
         }
         if (!deviceFlag) {
             var returnString = "";
