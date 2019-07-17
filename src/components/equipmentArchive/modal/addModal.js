@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, message, Upload, Input, Col, Row, DatePicker, Select, Switch, Icon, Divider} from 'antd';
-import CancleButton from "../../BlockQuote/cancleButton";
+import {Button, message, Input, Col, Row, DatePicker, Select, Switch, Divider} from 'antd';
 import '../equipmentArchive.css'
 import moment from 'moment';
 
@@ -98,7 +97,7 @@ class AddModal extends React.Component {
                             {
                                 this.props.statusCode.map(es => {
                                     return (
-                                        <Select.Option key={es.code} value={es.code}>{es.name}</Select.Option>
+                                        <Option key={es.code} value={es.code}>{es.name}</Option>
                                     )
                                 })
                             }
