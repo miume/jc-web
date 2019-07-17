@@ -228,11 +228,13 @@ class Add extends Component {
             returnArr.push("固定资产编码必填")
         }
 
-        var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥\\\\……&*（）——|{}【】‘；：”“'。，、？]")
-        for (var i = 0; i < deviceDocumentMain.deviceName.length; i++) {
-            if(pattern.test(deviceDocumentMain.deviceName.substr(i, 1))){
-                message.info("设备名称存在非法字符，请重新输入设备名称")
-                return
+        if(deviceDocumentMain.deviceName){
+            var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥\\\\……&*（）——|{}【】‘；：”“'。，、？]")
+            for (var ii = 0; ii < deviceDocumentMain.deviceName.length; ii++) {
+                if(pattern.test(deviceDocumentMain.deviceName.substr(ii, 1))){
+                    message.info("设备名称存在非法字符，请重新输入设备名称")
+                    return
+                }
             }
         }
         if (!deviceDocumentMain.deviceName || deviceDocumentMain.deviceName === '') {
@@ -241,7 +243,7 @@ class Add extends Component {
         }
         if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
             deviceDocumentMain.statusCode = this.state.statusCodeInit;
-            if (deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === ''){
+            if (this.state.statusCodeInit === ''){
                 message.info("请选择设备状态")
                 return
             }
