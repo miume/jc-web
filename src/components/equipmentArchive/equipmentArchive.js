@@ -183,6 +183,7 @@ class EquipmentArchive extends Component {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceDocumentMain;
+                    var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
                         index: i + 1,
                         code: arr['code'],
@@ -191,7 +192,9 @@ class EquipmentArchive extends Component {
                         specification: arr['specification'],
                         startdate: arr['startdate'],
                         idCode: arr['idCode'],
-                        statusCode: arr['statusCode']
+                        statusCode: arr['statusCode'],
+                        color:eqStatus['color'],
+                        name:eqStatus['name']
                     })
                 }
                 this.setState({

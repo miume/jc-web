@@ -75,7 +75,8 @@ class EARightBottom extends Component {
 
 
     deleteByIds = () => {
-        const ids = this.state.selectedRowKeys;
+        const codes = this.state.selectedRowKeys;
+        console.log(codes)
     };
     cancle = () => {
         this.setState({

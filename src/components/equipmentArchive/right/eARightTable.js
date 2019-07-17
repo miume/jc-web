@@ -117,20 +117,11 @@ class EARightTable extends Component {
         key: 'statusCode',
         align: 'center',
         width: '13%',
-        render: statusCode => {
-            switch (statusCode) {
-                case 1:
-                    return <span className="eq-statu1">运行&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
-                case 2:
-                    return <span className="eq-statu2">待机(停机)&nbsp;&nbsp;<i className="fa fa-circle"
-                                                                            aria-hidden="true"></i></span>
-                case 3:
-                    return <span className="eq-statu3">检修(保养)&nbsp;&nbsp;<i className="fa fa-circle"
-                                                                            aria-hidden="true"></i></span>
-                default:
-                    return <span className="eq-statu4">报废&nbsp;&nbsp;<i className="fa fa-circle" aria-hidden="true"></i></span>
-            }
-        },
+        render: (text, record) => {
+            return(
+                <span>{record.name}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
+            )
+        }
     }, {
         title: '操作',
         dataIndex: 'code',
