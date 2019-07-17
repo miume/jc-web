@@ -170,7 +170,7 @@ class Add extends Component {
             url: `${this.props.url.equipmentStatus.deviceStatus}`,
             method: 'get',
             headers: {
-                "Authorization": this.props.url.Authorization
+                'Authorization': this.props.url.Authorization
             }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
