@@ -72,21 +72,21 @@ class FittingModal extends React.Component {
         key: 'name',
         align: 'center',
         width: '25%',
-        editable: true
+        editable: 1
     },{
         title: '规格',
         dataIndex: 'specification',
         key: 'specification',
         align: 'center',
         width: '20%',
-        editable: true
+        editable: 1
     },{
         title: '数量',
         dataIndex: 'counts',
         key: 'counts',
         align: 'center',
         width: '20%',
-        editable: true
+        editable: 1
     },{
         title: '操作',
         dataIndex: 'code',
@@ -156,28 +156,13 @@ class FittingModal extends React.Component {
                 components={components}
                 rowKey={record => record.code}
                 columns={columns}
-                dataSource={this.props.data}
+                dataSource={this.props.fittingData}
                 rowClassName="editable-row"
                 size="small"
                 bordered
-                scroll={{y: 400}}
+                scroll={{y: 300}}
+                pagination={false}
             />
-            // <div style={{height:'550px'}} >
-            //     <Row>
-            //         <Col span={6}>
-            //             <td className="eq-td">s</td>
-            //         </Col>
-            //         <Col span={6}>
-            //             <td className="eq-td eq-td-left">b</td>
-            //         </Col>
-            //         <Col span={6}>
-            //             <td className="eq-td eq-td-left">c</td>
-            //         </Col>
-            //         <Col span={6}>
-            //             <td className="eq-td eq-td-left">d</td>
-            //         </Col>
-            //     </Row>
-            // </div>
         )
 
     }
@@ -192,7 +177,7 @@ class FittingModal extends React.Component {
             if (error) {
                 return;
             }
-            const newData = [...this.props.data];
+            const newData = [...this.props.fittingData];
             const index = newData.findIndex(item => key === item.code);
             if (index > -1) {
                 const item = newData[index];
@@ -200,7 +185,7 @@ class FittingModal extends React.Component {
                     ...item,
                     ...row,
                 });
-                this.props.addSaveFun(newData[index],index);
+                this.props.editSave(newData[index]);
                 this.setState({ editingKey: '' });
             } else {
                 this.setState({ editingKey: '' });
