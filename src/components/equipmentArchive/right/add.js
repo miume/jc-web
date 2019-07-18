@@ -215,9 +215,9 @@ class Add extends Component {
         var deviceDocumentMain = this.state.deviceDocumentMain;
         if(this.props.comFlag){
             deviceDocumentMain["mainCode"] = this.props.mainCode
-            deviceDocumentMain["depCode"] = this.props.depCode
+            deviceDocumentMain["deptCode"] = this.props.deptCode
         }else{
-            deviceDocumentMain["depCode"] = this.props.depCode
+            deviceDocumentMain["deptCode"] = this.props.deptCode
         }
         var newRowData = this.state.newRowData;
         // 判断新增属性是否填写完整
@@ -304,9 +304,8 @@ class Add extends Component {
                 arrValue: packArrValue,
                 deviceDocumentMain: deviceDocumentMain
             };
-            console.log(addData)
-
             if(this.props.comFlag){
+                console.log('22222')
                 axios({
                     url: `${this.props.url.equipmentArchive.addUnit}`,
                     method: 'post',
@@ -333,6 +332,8 @@ class Add extends Component {
                     statusCodeInit: deviceDocumentMain.statusCode
                 });
             }else{
+                console.log('------------')
+                console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.device}`,
                     method: 'post',
@@ -343,9 +344,7 @@ class Add extends Component {
                     // type: 'json'
                 }).then((data) => {
                     message.info(data.data.message);
-                    console.log('11111111111')
-                    this.props.getRightData(this.props.depCode, this.props.deviceName)
-                    console.log('222222222')
+                    this.props.getRightData(this.props.deptCode, this.props.deviceName)
                 }).catch(function () {
                     message.info('新增失败，请联系管理员！');
                 });

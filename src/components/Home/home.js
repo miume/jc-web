@@ -282,7 +282,8 @@ class Home extends Component {
                 accsUnit:`${server}/jc/common/device/accsUnit`,
                 addUnit: `${server}/jc/common/device/addUnit`,
                 accsMain: `${server}/jc/common/device/accsMain`,
-                addMainAcc: `${server}/jc/common/device/addMainAcc`
+                addMainAcc: `${server}/jc/common/device/addMainAcc`,
+                delete: `${server}/jc/common/device/delete`
             },
             /**设备管理状态*/
             equipmentStatus:{
