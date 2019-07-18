@@ -80,6 +80,7 @@ class EquipmentArchive extends Component {
 
                             handleTableChange={this.handleTableChange}
                             pagination={this.pagination}
+
                             searchContent={this.state.searchContent}
                             modifySearchContent={this.modifySearchContent}
                             searchEvent={this.searchEvent}
