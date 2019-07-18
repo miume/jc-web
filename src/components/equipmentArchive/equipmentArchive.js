@@ -27,17 +27,23 @@ class EquipmentArchive extends Component {
             rightTableData: [],
             depCode: -1,
             deviceName: '',
-            pagination: {
-                showTotal(total) {
-                    return `共${total}条记录`
-                },
-                showSizeChanger: true
-            },
+
             pageChangeFlag: 0,   //0表示分页 1 表示查询
+            searchContent:''
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
-        // this.handleTableChange = this.handleTableChange.bind(this)
+
+        this.modifySearchContent = this.modifySearchContent.bind(this)
+        this.handleTableChange = this.handleTableChange.bind(this)
+        this.searchEvent = this.searchEvent.bind(this)
+        this.searchReset = this.searchReset.bind(this)
+        this.pagination = {
+            showTotal(total) {
+                return `共${total}条记录`
+            },
+            showSizeChanger: true
+        }
 
     }
 
@@ -72,15 +78,18 @@ class EquipmentArchive extends Component {
                             deviceName={this.state.deviceName}
                             getRightData={this.getRightData}
 
-                            // handleTableChange={this.handleTableChange}
-                            // pagination={this.state.pagination}
+                            handleTableChange={this.handleTableChange}
+                            pagination={this.pagination}
+                            searchContent={this.state.searchContent}
+                            modifySearchContent={this.modifySearchContent}
+                            searchEvent={this.searchEvent}
+                            searchReset={this.searchReset}
                         />
                     </div>
                 </div>
             </div>
         )
     }
-
     getRightData = (code, deviceName) => {
         code = parseInt(code)
         axios({
@@ -136,40 +145,43 @@ class EquipmentArchive extends Component {
             message.info('查询失败，请刷新下页面！')
         });
     };
-
-
-    // handleTableChange = (pagination) => {
-    //     this.setState({
-    //         pagination: pagination
-    //     });
-    //     const {pageChangeFlag} = this.state;
-    //     /**分页查询 */
-    //     if (pageChangeFlag) {
-    //         this.fetch({
-    //             pageSize: pagination.pageSize,
-    //             pageNumber: pagination.current,
-    //             factory: this.state.searchContent
-    //         })
-    //     } else {
-    //         this.fetch({
-    //             pageSize: pagination.pageSize,
-    //             pageNumber: pagination.current,
-    //         })
-    //     }
-    // };
+    handleTableChange = (pagination) => {
+        this.pagination = pagination;
+        const {pageChangeFlag} = this.state;
+        if(pageChangeFlag){
+            this.getTableData({
+                size:pagination.pageSize,
+                page:pagination.current,
+                condition:this.state.searchContent,
+                deptId: parseInt(this.state.depCode),
+                deviceName: this.state.deviceName
+            })
+        }else{
+            this.getTableData({
+                size:pagination.pageSize,
+                page:pagination.current,
+                deptId: parseInt(this.state.depCode),
+                deviceName: this.state.deviceName
+            })
+        }
+    };
 
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        // if(flag) {
-        //     var {pagination} = this.state;
-        //     pagination.current = 1;
-        //     pagination.total = 0;
-        //     this.setState({
-        //         pageChangeFlag:0,
-        //         searchContent:'',
-        //         pagination:pagination
-        //     })
-        // }
+        if(flag) {
+            this.setState({
+                pageChangeFlag:0,
+                searchContent:''
+            })
+            // var {pagination} = this.state;
+            // pagination.current = 1;
+            // pagination.total = 0;
+            // this.setState({
+            //     pageChangeFlag:0,
+            //     searchContent:'',
+            //     pagination:pagination
+            // })
+        }
         axios({
             url: `${this.url.equipmentArchive.page}`,
             method: 'get',
@@ -197,22 +209,47 @@ class EquipmentArchive extends Component {
                         name:eqStatus['name']
                     })
                 }
+                this.pagination.total = res?res.total:0;
                 this.setState({
                     rightTableData: rightTableData,
-                    // pagination:pagination,
                     deviceName:params.deviceName
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
-                    // pagination:pagination,
                     deviceName:''
                 });
             }
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
+    }
+
+    modifySearchContent = (value) => {
+        console.log(value)
+        this.setState({
+            searchContent:value
+        })
+    }
+
+    searchEvent = () => {
+        this.setState({
+            pageChangeFlag:1
+        })
+        this.getTableData({
+            condition:this.state.searchContent,
+            deptId: parseInt(this.state.depCode),
+            deviceName: this.state.deviceName
+        });
+    }
+
+    // 搜索重置调用
+    searchReset = () => {
+        this.getTableData({
+            deptId: parseInt(this.state.depCode),
+            deviceName: this.state.deviceName
+        },1)
     }
 }
 

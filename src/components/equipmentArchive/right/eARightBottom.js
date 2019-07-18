@@ -13,16 +13,14 @@ class EARightBottom extends Component {
         this.state = {
             selectedRowKeys: [],
             searchContent: '',
-            pageChangeFlag: 0,        //0表示getAllPage分页查询，
-            dataSource: []
+            dataSource: [],
+
 
         }
         this.onSelectChange = this.onSelectChange.bind(this)
         this.deleteByIds = this.deleteByIds.bind(this)
         this.cancle = this.cancle.bind(this)
-        this.fetch = this.fetch.bind(this)
         this.searchContentChange = this.searchContentChange.bind(this)
-        this.searchEvent = this.searchEvent.bind(this)
     }
 
     render() {
@@ -52,8 +50,8 @@ class EARightBottom extends Component {
                 <SearchCell
                     name='请输入搜索人'
                     searchContentChange={this.searchContentChange}
-                    searchEvent={this.searchEvent}
-                    fetch={this.fetch}
+                    searchEvent={this.props.searchEvent}
+                    fetch={this.props.searchReset}
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
                 <EARightTable
                     getRightData={this.props.getRightData}
@@ -65,8 +63,8 @@ class EARightBottom extends Component {
                     rowSelection={rowSelection}
                     dataSource={this.props.dataSource}
 
-                    // handleTableChange={this.props.handleTableChange}
-                    // pagination={this.props.pagination}
+                    handleTableChange={this.props.handleTableChange}
+                    pagination={this.props.pagination}
                 />
             </div>
         )
@@ -90,26 +88,11 @@ class EARightBottom extends Component {
             selectedRowKeys: selectedRowKeys
         });
     }
-
-    fetch = () => {
-
-    };
     /**实时跟踪搜索框内容的变化 */
     searchContentChange = (e) => {
         const value = e.target.value;
-        this.setState({
-            searchContent: value
-        })
+        this.props.modifySearchContent(value)
     };
-    /**绑定搜索事件 */
-    searchEvent = () => {
-        this.setState({
-            pageChangeFlag: 1
-        });
-        this.fetch({
-            // personName: this.state.searchContent
-        });
-    }
 }
 
 export default EARightBottom
