@@ -180,8 +180,8 @@ class EARightTable extends Component {
                     bordered
                     scroll={{y: 400}}
 
-                    // onChange={this.props.handleTableChange}
-                    // pagination={this.props.pagination}
+                    onChange={this.props.handleTableChange}
+                    pagination={this.props.pagination}
                 />
             </div>
         )
