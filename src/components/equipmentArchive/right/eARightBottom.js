@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {Table, Icon} from 'antd';
+import {Table, Icon, message} from 'antd';
 import '../equipmentArchive.css'
 import EARightTable from './eARightTable'
 import Add from './add'
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import home from "../../commom/fns";
 import SearchCell from '../../BlockQuote/search';
+import axios from "axios";
 
 class EARightBottom extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ class EARightBottom extends Component {
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}
                     url={this.props.url}
-                    depCode={this.props.depCode}
+                    deptCode={this.props.depCode}
                     addFlag={home.judgeOperation(this.operation, 'SAVE')}
                     fetch={this.props.fetch}
                 />
@@ -78,6 +79,23 @@ class EARightBottom extends Component {
     deleteByIds = () => {
         const codes = this.state.selectedRowKeys;
         console.log(codes)
+        axios({
+            url:`${this.props.url.equipmentArchive.delete}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data:codes,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getRightData(parseInt(this.props.depCode), this.props.deviceName)
+            this.setState({
+                selectedRowKeys: []
+            })
+        }).catch(()=>{
+            message.info('删除错误，请联系管理员！')
+        })
     };
     cancle = () => {
         this.setState({
