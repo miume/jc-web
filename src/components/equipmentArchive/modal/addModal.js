@@ -36,7 +36,7 @@ class AddModal extends React.Component {
         this.handleSelect = this.handleSelect.bind(this)
         this.handleSwitch = this.handleSwitch.bind(this)
         this.handleNewRow = this.handleNewRow.bind(this)
-        this.handleReduceRowData=this.handleReduceRowData.bind(this)
+        this.handleReduceRowData = this.handleReduceRowData.bind(this)
     }
 
     render() {
@@ -49,9 +49,15 @@ class AddModal extends React.Component {
                                onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                     </Col>
                     <Col span={12}>
-                        <Input placeholder="请输入设备名称" key="deviceName" name="deviceName"
-                               value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
-                               onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                        {
+                            this.props.comFlag ? <Input placeholder="请输入部件名称" key="deviceName" name="deviceName"
+                                                        value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
+                                                        onChange={this.changDeviceDocumentMain}
+                                                        disabled={this.props.editFlag}/> :
+                                <Input placeholder="请输入设备名称" key="deviceName" name="deviceName"
+                                       value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
+                                       onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                        }
                     </Col>
                 </Row>
                 <Row gutter={16}>
@@ -90,25 +96,28 @@ class AddModal extends React.Component {
                                onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
-                                onChange={this.handleSelect}>
-                            {
-                                this.props.statusCode.map(es => {
-                                    return (
-                                        <Option key={es.code} value={es.code}>{es.name}</Option>
-                                    )
-                                })
-                            }
-                        </Select>
-                    </Col>
-                    <Col span={12}>
+                {
+                    this.props.comFlag ? null :
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
+                                        onChange={this.handleSelect}>
+                                    {
+                                        this.props.statusCode.map(es => {
+                                            return (
+                                                <Option key={es.code} value={es.code}>{es.name}</Option>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </Col>
+                            <Col span={12}>
                         <span style={{fontSize: '15px'}}>是否关键设备：<Switch checkedChildren="是" unCheckedChildren="否"
                                                                         disabled={this.props.editFlag}
                                                                         onChange={this.handleSwitch}/></span>
-                    </Col>
-                </Row>
+                            </Col>
+                        </Row>
+                }
                 <Divider className="eq-divider"/>
                 <Row gutter={16}>
                     <Button type="primary" icon="plus" size='large' style={{width: '450px', fontSize: '15px'}}
@@ -120,14 +129,18 @@ class AddModal extends React.Component {
                             return (
                                 <Row gutter={16}>
                                     <Col span={10}>
-                                        <Input placeholder="请输入属性名称" key={index + "-1"} value={m.name?m.name:''} name={index + "-1"} disabled={this.props.editFlag} onChange={this.handleNewRow}/>
+                                        <Input placeholder="请输入属性名称" key={index + "-1"} value={m.name ? m.name : ''}
+                                               name={index + "-1"} disabled={this.props.editFlag}
+                                               onChange={this.handleNewRow}/>
                                     </Col>
                                     <Col span={10}>
-                                        <Input placeholder="请输入属性值" key={index + "-2"} value={m.value?m.value:''} name={index + "-2"} disabled={this.props.editFlag} onChange={this.handleNewRow}/>
+                                        <Input placeholder="请输入属性值" key={index + "-2"} value={m.value ? m.value : ''}
+                                               name={index + "-2"} disabled={this.props.editFlag}
+                                               onChange={this.handleNewRow}/>
                                     </Col>
                                     <Col span={4}>
                                         <Button type="primary" icon="minus" size='large'
-                                                style={{width:'60px', fontSize: '15px'}}
+                                                style={{width: '60px', fontSize: '15px'}}
                                                 key={index} name={index}
                                                 onClick={this.handleReduceRowData} disabled={this.props.editFlag}
                                         />
@@ -139,58 +152,59 @@ class AddModal extends React.Component {
                 </div>
                 {/*<Divider className="eq-divider"/>*/}
                 {/*<Row gutter={16}>*/}
-                    {/*<Col span={14}>*/}
-                        {/*<Upload {...this.props.uploadProps} fileList={this.props.fileList}>*/}
-                            {/*<Button>*/}
-                                {/*<Icon type="upload"/> 请选择上传文件，可多次选择*/}
-                            {/*</Button>*/}
-                        {/*</Upload>*/}
-                    {/*</Col>*/}
-                    {/*<Col span={14}>*/}
-                        {/*<span style={{fontSize: '15px',paddingLeft:'10px'}}>支持文件格式：.pdf</span>*/}
-                    {/*</Col>*/}
+                {/*<Col span={14}>*/}
+                {/*<Upload {...this.props.uploadProps} fileList={this.props.fileList}>*/}
+                {/*<Button>*/}
+                {/*<Icon type="upload"/> 请选择上传文件，可多次选择*/}
+                {/*</Button>*/}
+                {/*</Upload>*/}
+                {/*</Col>*/}
+                {/*<Col span={14}>*/}
+                {/*<span style={{fontSize: '15px',paddingLeft:'10px'}}>支持文件格式：.pdf</span>*/}
+                {/*</Col>*/}
                 {/*</Row>*/}
                 {/*<Row gutter={16}>*/}
-                    {/*<Col span={8}>*/}
-                        {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
-                                {/*style={{width: '100%', fontSize: '15px'}}*/}
-                                {/*onClick={this.props.reduceUploadFun()}/>*/}
-                    {/*</Col>*/}
+                {/*<Col span={8}>*/}
+                {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
+                {/*style={{width: '100%', fontSize: '15px'}}*/}
+                {/*onClick={this.props.reduceUploadFun()}/>*/}
+                {/*</Col>*/}
                 {/*</Row>*/}
                 {/*<div className="eq-addModal-newRow">*/}
-                    {/*{*/}
-                        {/*this.props.uploadData ? this.props.uploadData.map((m, index) => {*/}
-                            {/*return (*/}
-                                {/*<Row gutter={16}>*/}
-                                    {/*<Col span={8}>*/}
-                                        {/*<Upload {...uploads} disabled={this.props.editFlag}>*/}
-                                            {/*<Button>*/}
-                                                {/*<Icon type="upload"/> {m.name}*/}
-                                            {/*</Button>*/}
-                                        {/*</Upload>*/}
-                                    {/*</Col>*/}
-                                    {/*<Col span={8}>*/}
-                                        {/*<span style={{fontSize: '15px'}}>支持文件格式：.pdf</span>*/}
-                                    {/*</Col>*/}
-                                    {/*<Col span={4}>*/}
-                                        {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
-                                                {/*style={{width: '100%', fontSize: '15px'}}*/}
-                                                {/*onClick={this.props.reduceUploadFun(index)}/>*/}
-                                    {/*</Col>*/}
-                                {/*</Row>*/}
-                            {/*)*/}
-                        {/*}) : null*/}
-                    {/*}*/}
+                {/*{*/}
+                {/*this.props.uploadData ? this.props.uploadData.map((m, index) => {*/}
+                {/*return (*/}
+                {/*<Row gutter={16}>*/}
+                {/*<Col span={8}>*/}
+                {/*<Upload {...uploads} disabled={this.props.editFlag}>*/}
+                {/*<Button>*/}
+                {/*<Icon type="upload"/> {m.name}*/}
+                {/*</Button>*/}
+                {/*</Upload>*/}
+                {/*</Col>*/}
+                {/*<Col span={8}>*/}
+                {/*<span style={{fontSize: '15px'}}>支持文件格式：.pdf</span>*/}
+                {/*</Col>*/}
+                {/*<Col span={4}>*/}
+                {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
+                {/*style={{width: '100%', fontSize: '15px'}}*/}
+                {/*onClick={this.props.reduceUploadFun(index)}/>*/}
+                {/*</Col>*/}
+                {/*</Row>*/}
+                {/*)*/}
+                {/*}) : null*/}
+                {/*}*/}
                 {/*</div>*/}
                 {/*<Row gutter={16}>*/}
-                    {/*<Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'*/}
-                            {/*style={{width: '450px', fontSize: '15px'}}*/}
-                            {/*onClick={this.props.addUplodFun}/>*/}
+                {/*<Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'*/}
+                {/*style={{width: '450px', fontSize: '15px'}}*/}
+                {/*onClick={this.props.addUplodFun}/>*/}
                 {/*</Row>*/}
             </div>
         )
 
     }
+
     handleReduceRowData = (e) => {
         this.props.handleReduceRow(e.target.name)
     }

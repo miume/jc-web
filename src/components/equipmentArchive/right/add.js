@@ -85,6 +85,7 @@ class Add extends Component {
                     ]}
                 >
                     <AddModal
+                        comFlag={this.props.comFlag}
                         statusCode={this.state.statusCode}
                         editFlag={false}
                         newRowData={this.state.newRowData}
@@ -162,38 +163,44 @@ class Add extends Component {
         return currentdate;
     }
     handleAdd = () => {
-
         // 获取当天日期
         var startdate = this.getNowFormatDate();
-        // TODO 获取状态
-        axios({
-            url: `${this.props.url.equipmentStatus.deviceStatus}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            var statusCode = [];
-            if (res) {
-                for (var i = 0; i < res.length; i++) {
-                    const arr = res[i];
-                    statusCode.push({
-                        name: arr.name,
-                        code: arr.code
-                    })
+        if(this.props.comFlag){
+            this.setState({
+                addModalVisable: true,
+                startdate: startdate
+            })
+        }else{
+            // TODO 获取状态
+            axios({
+                url: `${this.props.url.equipmentStatus.deviceStatus}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
                 }
-                this.setState({
-                    addModalVisable: true,
-                    statusCode: statusCode,
-                    startdate: startdate
-                })
-            } else {
-                message.info('设备状态为空，请先添加状态！')
-            }
-        }).catch(() => {
-            message.info('设备状态数据存在异常，请联系管理员！')
-        });
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
+                var statusCode = [];
+                if (res) {
+                    for (var i = 0; i < res.length; i++) {
+                        const arr = res[i];
+                        statusCode.push({
+                            name: arr.name,
+                            code: arr.code
+                        })
+                    }
+                    this.setState({
+                        addModalVisable: true,
+                        statusCode: statusCode,
+                        startdate: startdate
+                    })
+                } else {
+                    message.info('设备状态为空，请先添加状态！')
+                }
+            }).catch(() => {
+                message.info('设备状态数据存在异常，请联系管理员！')
+            });
+        }
 
     };
     handleCancel = () => {
@@ -205,9 +212,13 @@ class Add extends Component {
         })
     };
     handleSave = () => {
-
         var deviceDocumentMain = this.state.deviceDocumentMain;
-        deviceDocumentMain["deptCode"] = this.props.depCode
+        if(this.props.comFlag){
+            deviceDocumentMain["mainCode"] = this.props.mainCode
+            deviceDocumentMain["depCode"] = this.props.depCode
+        }else{
+            deviceDocumentMain["depCode"] = this.props.depCode
+        }
         var newRowData = this.state.newRowData;
         // 判断新增属性是否填写完整
         var newRowFlag = true;
@@ -232,20 +243,30 @@ class Add extends Component {
             var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥\\\\……&*（）——|{}【】‘；：”“'。，、？]")
             for (var ii = 0; ii < deviceDocumentMain.deviceName.length; ii++) {
                 if(pattern.test(deviceDocumentMain.deviceName.substr(ii, 1))){
-                    message.info("设备名称存在非法字符，请重新输入设备名称")
+                    if(this.props.comFlag){
+                        message.info("部件名称存在非法字符，请重新输入设备名称")
+                    }else{
+                        message.info("设备名称存在非法字符，请重新输入设备名称")
+                    }
                     return
                 }
             }
         }
         if (!deviceDocumentMain.deviceName || deviceDocumentMain.deviceName === '') {
             deviceFlag = false;
-            returnArr.push("设备名称必填")
+            if(this.props.comFlag){
+                returnArr.push("部件名称必填")
+            }else{
+                returnArr.push("设备名称必填")
+            }
         }
-        if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
-            deviceDocumentMain.statusCode = this.state.statusCodeInit;
-            if (this.state.statusCodeInit === ''){
-                message.info("请选择设备状态")
-                return
+        if(!this.props.comFlag){
+            if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
+                deviceDocumentMain.statusCode = this.state.statusCodeInit;
+                if (this.state.statusCodeInit === ''){
+                    message.info("请选择设备状态")
+                    return
+                }
             }
         }
         if (!deviceFlag) {
@@ -260,6 +281,10 @@ class Add extends Component {
             message.info("新增属性需要填写完整")
         }
 
+        if(this.props.comFlag){
+            delete deviceDocumentMain.keyFlag
+        }
+        console.log(deviceDocumentMain)
         const startdate = this.getNowFormatDate()
         // 调用保存函数
         if (deviceFlag && newRowFlag) {
@@ -280,33 +305,62 @@ class Add extends Component {
                 deviceDocumentMain: deviceDocumentMain
             };
             console.log(addData)
-            axios({
-                url: `${this.props.url.equipmentArchive.device}`,
-                method: 'post',
-                headers: {
-                    'Authorization': this.props.url.Authorization
-                },
-                data: addData,
-                // type: 'json'
-            }).then((data) => {
-                message.info(data.data.message);
-                console.log('11111111111')
-                this.props.getRightData(this.props.depCode, this.props.deviceName)
-                console.log('222222222')
-            }).catch(function () {
-                message.info('新增失败，请联系管理员！');
-            });
-            var deviceDocumentMainInit = {
-                keyFlag: 0
-            };
-            this.setState({
-                addModalVisable: false,
-                deviceDocumentMain: deviceDocumentMainInit,
-                newRowData: [],
-                statusCode: [],
-                startdate: startdate,
-                statusCodeInit: deviceDocumentMain.statusCode
-            });
+
+            if(this.props.comFlag){
+                axios({
+                    url: `${this.props.url.equipmentArchive.addUnit}`,
+                    method: 'post',
+                    headers: {
+                        'Authorization': this.props.url.Authorization
+                    },
+                    data: addData,
+                    // type: 'json'
+                }).then((data) => {
+                    message.info(data.data.message);
+                    this.props.fetch()
+                }).catch(function () {
+                    message.info('新增失败，请联系管理员！');
+                });
+                var deviceDocumentMainInit = {
+                    keyFlag: 0
+                };
+                this.setState({
+                    addModalVisable: false,
+                    deviceDocumentMain: deviceDocumentMainInit,
+                    newRowData: [],
+                    statusCode: [],
+                    startdate: startdate,
+                    statusCodeInit: deviceDocumentMain.statusCode
+                });
+            }else{
+                axios({
+                    url: `${this.props.url.equipmentArchive.device}`,
+                    method: 'post',
+                    headers: {
+                        'Authorization': this.props.url.Authorization
+                    },
+                    data: addData,
+                    // type: 'json'
+                }).then((data) => {
+                    message.info(data.data.message);
+                    console.log('11111111111')
+                    this.props.getRightData(this.props.depCode, this.props.deviceName)
+                    console.log('222222222')
+                }).catch(function () {
+                    message.info('新增失败，请联系管理员！');
+                });
+                var deviceDocumentMainInit = {
+                    keyFlag: 0
+                };
+                this.setState({
+                    addModalVisable: false,
+                    deviceDocumentMain: deviceDocumentMainInit,
+                    newRowData: [],
+                    statusCode: [],
+                    startdate: startdate,
+                    statusCodeInit: deviceDocumentMain.statusCode
+                });
+            }
 
         }
 
