@@ -51,10 +51,14 @@ class EqComponent extends React.Component {
                 >
                     <div style={{height: "550px"}}>
                         <EARightBottom
-                            comFlag={true}
+                            depCode={this.props.depCode}
+                            mainCode={this.props.record.code}
+                            url={this.props.url}
+                            comFlag={this.props.comFlag}
                             dataSource={this.state.dataSource}
                             handleTableChange={this.state.handleTableChange}
                             pagination={this.pagination}
+                            fetch={this.fetch}
                         />
                     </div>
                 </Modal>
@@ -91,11 +95,7 @@ class EqComponent extends React.Component {
         });
     };
     handleData = () => {
-        this.fetch({
-            deptId: this.props.depCode,
-            deviceId: this.props.record.code
-
-        }, 0)
+        this.fetch({}, 0)
     };
 
     fetch(params, flag) {
@@ -105,7 +105,7 @@ class EqComponent extends React.Component {
                 searchContent: ''
             })
         axios({
-            url: `${this.props.url.equipmentArchive.units}/${params.deptId}/${params.deviceId}`,
+            url: `${this.props.url.equipmentArchive.accsUnit}/${this.props.record.code}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
@@ -125,7 +125,6 @@ class EqComponent extends React.Component {
                         deviceName: e.deviceName,
                         specification: e.specification,
                         startdate: e.startdate,
-                        statusCode: e.statusCode,
                         idCode: e.idCode
                     })
                 }

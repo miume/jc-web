@@ -34,12 +34,15 @@ class EARightBottom extends Component {
         return (
             <div className="eA-right-bottom">
                 <Add
+                    mainCode={this.props.mainCode}
+                    comFlag={this.props.comFlag}
                     getRightData={this.props.getRightData}
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}
                     url={this.props.url}
                     depCode={this.props.depCode}
                     addFlag={home.judgeOperation(this.operation, 'SAVE')}
+                    fetch={this.props.fetch}
                 />
                 <DeleteByIds
                     selectedRowKeys={this.state.selectedRowKeys}

@@ -278,7 +278,9 @@ class Home extends Component {
                 detail:`${server}/jc/common/device/detail`,
                 upload:`${server}/jc/common/device/upload`,
                 page:`${server}/jc/common/device/page`,
-                units:`${server}/jc/common/device/units`
+                units:`${server}/jc/common/device/units`,
+                accsUnit:`${server}/jc/common/device/accsUnit`,
+                addUnit: `${server}/jc/common/device/addUnit`
             },
             /**设备管理状态*/
             equipmentStatus:{

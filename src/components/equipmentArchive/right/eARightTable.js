@@ -132,6 +132,7 @@ class EARightTable extends Component {
             return (
                 <span>
                     <EqComponent
+                        comFlag={true}
                         record={record}
                         url={this.props.url}
                         depCode={this.props.depCode}
