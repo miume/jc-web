@@ -300,13 +300,14 @@ class Add extends Component {
             if (deviceDocumentMain.startdate || deviceDocumentMain.startdate === undefined) {
                 deviceDocumentMain.startdate = startdate;
             }
-            var addData = {
-                arrName: packArrName,
-                arrValue: packArrValue,
-                deviceDocumentMain: deviceDocumentMain
-            };
             if(this.props.comFlag){
+                var addData = {
+                    arrName: packArrName,
+                    arrValue: packArrValue,
+                    deviceDocumentUnit: deviceDocumentMain
+                };
                 console.log('22222')
+                console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.addUnit}`,
                     method: 'post',
@@ -317,7 +318,7 @@ class Add extends Component {
                     // type: 'json'
                 }).then((data) => {
                     message.info(data.data.message);
-                    this.props.fetch()
+                    this.props.fetch({},{})
                 }).catch(function () {
                     message.info('新增失败，请联系管理员！');
                 });
@@ -333,8 +334,11 @@ class Add extends Component {
                     statusCodeInit: deviceDocumentMain.statusCode
                 });
             }else{
-                console.log('------------')
-                console.log(addData)
+                var addData = {
+                    arrName: packArrName,
+                    arrValue: packArrValue,
+                    deviceDocumentMain: deviceDocumentMain
+                };
                 axios({
                     url: `${this.props.url.equipmentArchive.device}`,
                     method: 'post',

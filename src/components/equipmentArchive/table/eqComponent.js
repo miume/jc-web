@@ -29,7 +29,13 @@ class EqComponent extends React.Component {
 
     render() {
 
-        const title = <div className="eq-component-titleHead"><div className="eq-component-title-first">部件管理：&nbsp;&nbsp;&nbsp;&nbsp;</div><div className="eq-component-title">所属设备:&nbsp;&nbsp;&nbsp;&nbsp;<span>固定资产编码: {this.props.record.fixedassetsCode}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>设备名称: {this.props.record.deviceName}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>规格型号: {this.props.record.specification}</span></div></div>
+        const title = <div className="eq-component-titleHead">
+            <div className="eq-component-title-first">部件管理：&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div className="eq-component-title">所属设备:&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>固定资产编码: {this.props.record.fixedassetsCode}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>设备名称: {this.props.record.deviceName}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>规格型号: {this.props.record.specification}</span></div>
+        </div>
         return (
             <span>
                 <span className="blue" onClick={this.handleData}>部件</span>
@@ -95,17 +101,19 @@ class EqComponent extends React.Component {
         });
     };
     handleData = () => {
-        this.fetch({}, 0)
+        this.fetch({
+            page: 1
+        }, 0)
     };
 
-    fetch(params, flag) {
+    fetch = (params, flag) => {
         if (flag)
             this.setState({
                 pageChangeFlag: 0,
                 searchContent: ''
             })
         axios({
-            url: `${this.props.url.equipmentArchive.accsUnit}/${this.props.record.code}`,
+            url: `${this.props.url.equipmentArchive.units}/${this.props.depCode}/${this.props.record.code}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
