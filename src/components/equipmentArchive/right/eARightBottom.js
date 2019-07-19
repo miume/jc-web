@@ -52,10 +52,11 @@ class EARightBottom extends Component {
                     flag={home.judgeOperation(this.operation, 'DELETE')}
                 />
                 <SearchCell
-                    name='请输入搜索人'
+                    type={this.props.searchType}
+                    name={this.props.searchName}
                     searchContentChange={this.searchContentChange}
                     searchEvent={this.props.searchEvent}
-                    fetch={this.props.searchReset}
+                    fetch={this.props.comFlag?this.props.searchResetCom:this.props.searchReset}
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
                 <EARightTable
                     getRightData={this.props.getRightData}
