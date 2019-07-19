@@ -18,6 +18,12 @@ class Fittings extends React.Component {
                 counts: '',
                 mainCode: ''
             },
+            saveComData: {
+                name: '',
+                specification: '',
+                counts: '',
+                unitCode: ''
+            },
             addVisible: false
         };
         this.handleFitting = this.handleFitting.bind(this);
@@ -84,7 +90,7 @@ class Fittings extends React.Component {
                                 <Col span={20}>
                                     <Input
                                         placeholder="请输入配件名称"
-                                        value={this.state.saveData.name}
+                                        value={this.props.comFlag?this.state.saveComData.name:this.state.saveData.name}
                                         key="name"
                                         name="name"
                                         onChange={this.onChangeAdd}
@@ -96,7 +102,7 @@ class Fittings extends React.Component {
                                 <Col span={20}>
                                     <Input
                                         placeholder="请输入规格"
-                                        value={this.state.saveData.specification}
+                                        value={this.props.comFlag?this.state.saveComData.specification:this.state.saveData.specification}
                                         key="specification"
                                         name="specification"
                                         onChange={this.onChangeAdd}
@@ -108,7 +114,7 @@ class Fittings extends React.Component {
                                 <Col span={20}>
                                     <Input
                                         placeholder="请输入数量"
-                                        value={this.state.saveData.counts}
+                                        value={this.props.comFlag?this.state.saveComData.counts:this.state.saveData.counts}
                                         key="counts"
                                         name="counts"
                                         onChange={this.onChangeAdd}
@@ -123,37 +129,33 @@ class Fittings extends React.Component {
 
     }
     onChangeAdd = (e) => {
-        var saveData = this.state.saveData
-        saveData[e.target.name] = e.target.value
-        this.setState({
-            saveData: saveData,
-        });
+        if(this.props.comFlag){
+            var saveComData = this.state.saveComData
+            saveComData[e.target.name] = e.target.value
+            this.setState({
+                saveComData: saveComData,
+            });
+        }else{
+            var saveData = this.state.saveData
+            saveData[e.target.name] = e.target.value
+            this.setState({
+                saveData: saveData,
+            });
+        }
     }
 
     handleAddCancel = () => {
-        this.setState({
-            addVisible: false,
-            saveData: {
-                name: '',
-                specification: '',
-                counts: '',
-                mainCode: ''
-            },
-        });
-    }
-    handleAddSave = () => {
-        const saveData = this.state.saveData
-        console.log(saveData)
-        axios({
-            url: `${this.props.url.equipmentArchive.addMainAcc}`,
-            method: 'post',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            data: saveData,
-            // type: 'json'
-        }).then((data) => {
-            message.info(data.data.message);
+        if(this.props.comFlag){
+            this.setState({
+                addVisible: false,
+                saveComData: {
+                    name: '',
+                    specification: '',
+                    counts: '',
+                    unitCode: ''
+                },
+            });
+        }else{
             this.setState({
                 addVisible: false,
                 saveData: {
@@ -163,6 +165,31 @@ class Fittings extends React.Component {
                     mainCode: ''
                 },
             });
+        }
+    }
+    handleAddSave = () => {
+        var saveData = {}
+        var url = ''
+        if(this.props.comFlag){
+            saveData = this.state.saveComData
+            url=`${this.props.url.equipmentArchive.addUnitAcc}`
+        }else{
+            saveData = this.state.saveData
+            url=`${this.props.url.equipmentArchive.addMainAcc}`
+        }
+        // const saveData = this.state.saveData
+        console.log(saveData)
+        axios({
+            url: url,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            data: saveData,
+            // type: 'json'
+        }).then((data) => {
+            message.info(data.data.message);
+            this.handleAddCancel()
             this.fetch()
         }).catch(function () {
             message.info('新增失败，请联系管理员！');
@@ -175,12 +202,21 @@ class Fittings extends React.Component {
         });
     };
     addRowFun = () => {
-        var saveData = this.state.saveData;
-        saveData.mainCode = this.props.record.code;
-        this.setState({
-            addVisible: true,
-            saveData: saveData
-        })
+        if(this.props.comFlag){
+            var saveComData = this.state.saveComData;
+            saveComData.unitCode = this.props.record.code
+            this.setState({
+                addVisible: true,
+                saveComData: saveComData
+            })
+        }else{
+            var saveData = this.state.saveData;
+            saveData.mainCode = this.props.record.code;
+            this.setState({
+                addVisible: true,
+                saveData: saveData
+            })
+        }
     };
     handleFitting = () => {
         this.fetch();
@@ -189,8 +225,14 @@ class Fittings extends React.Component {
         })
     };
     fetch = () => {
+        var url = ''
+        if(this.props.comFlag){
+            url=`${this.props.url.equipmentArchive.accsUnit}/${this.props.record.code}`
+        }else{
+            url=`${this.props.url.equipmentArchive.accsMain}/${this.props.record.code}`
+        }
         axios({
-            url: `${this.props.url.equipmentArchive.accsMain}/${this.props.record.code}`,
+            url:url,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
@@ -200,8 +242,14 @@ class Fittings extends React.Component {
             var fittingData = []
             // TODO
             if(res&&res.list){
-                for(var i = 0; i< res.list.length; i++){
-                    const arr = res.list[i]
+                var datas = []
+                if(res.list){
+                    datas = res.list
+                }else{
+                    datas = res
+                }
+                for(var i = 0; i< datas.length; i++){
+                    const arr = datas[i]
                     fittingData.push({
                         name:arr.name,
                         specification:arr.specification,

@@ -58,7 +58,12 @@ class EARightTable extends Component {
         render: (text, record) => {
             return (
                 <span>
-                    <Fittings/>
+                    <Fittings
+                        comFlag={true}
+                        record={record}
+                        url={this.props.url}
+                        depCode={this.props.depCode}
+                    />
                     <Divider type="vertical"/>
                     <Maintenance/>
                     <Divider type="vertical"/>
