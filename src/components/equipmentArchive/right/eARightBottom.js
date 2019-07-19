@@ -80,23 +80,44 @@ class EARightBottom extends Component {
     deleteByIds = () => {
         const codes = this.state.selectedRowKeys;
         console.log(codes)
-        axios({
-            url:`${this.props.url.equipmentArchive.delete}`,
-            method:'Delete',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            data:codes,
-            type:'json'
-        }).then((data)=>{
-            message.info(data.data.message);
-            this.props.getRightData(parseInt(this.props.depCode), this.props.deviceName)
-            this.setState({
-                selectedRowKeys: []
+        if(this.props.comFlag){
+            console.log('11111111')
+            axios({
+                url:`${this.props.url.equipmentArchive.deleteUnits}`,
+                method:'Delete',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                },
+                data:codes,
+                type:'json'
+            }).then((data)=>{
+                message.info(data.data.message);
+                this.props.fetch()
+                this.setState({
+                    selectedRowKeys: []
+                })
+            }).catch(()=>{
+                message.info('删除错误，请联系管理员！')
             })
-        }).catch(()=>{
-            message.info('删除错误，请联系管理员！')
-        })
+        }else{
+            axios({
+                url:`${this.props.url.equipmentArchive.delete}`,
+                method:'Delete',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                },
+                data:codes,
+                type:'json'
+            }).then((data)=>{
+                message.info(data.data.message);
+                this.props.getRightData(parseInt(this.props.depCode), this.props.deviceName)
+                this.setState({
+                    selectedRowKeys: []
+                })
+            }).catch(()=>{
+                message.info('删除错误，请联系管理员！')
+            })
+        }
     };
     cancle = () => {
         this.setState({
