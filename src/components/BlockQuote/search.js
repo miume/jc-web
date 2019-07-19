@@ -19,7 +19,7 @@ class SearchCell extends React.Component{
                     onSearch={this.props.searchEvent}
                     onChange={this.props.searchContentChange}
                     enterButton
-                    style={{ width: 200 }}
+                    style={{ width: 250 }}
                 />
                }
                 <Button
@@ -36,7 +36,8 @@ class SearchCell extends React.Component{
         let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0] 
         //console.log(searchComponent);       
         searchComponent.childNodes[0].value = ''
-        //console.log(searchComponent.childNodes[0])
+        console.log(searchComponent.childNodes[0])
+        console.log(searchComponent.childNodes)
         this.props.fetch({},1);
     }
 }

@@ -29,6 +29,7 @@ class EARight extends Component {
                     comFlag={false}
                     dataSource={this.props.rightTableData}
 
+                    searchName="编码、设备名称、ID卡号"
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                     searchContent={this.props.searchContent}

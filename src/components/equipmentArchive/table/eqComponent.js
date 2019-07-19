@@ -4,6 +4,7 @@ import {Modal, Button, message} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import EARightBottom from '../right/eARightBottom'
 import '../equipmentArchive.css'
+import EARight from "../right/eARight";
 
 class EqComponent extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class EqComponent extends React.Component {
             visible: false,
             dataSource: [],
             selectedRowKeys: [],
+
             searchContent: '',
             pageChangeFlag: 0,   //0表示分页 1 表示查询
         }
@@ -19,6 +21,11 @@ class EqComponent extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this)
         this.fetch = this.fetch.bind(this)
+
+        this.searchEvent = this.searchEvent.bind(this)
+        this.searchResetCom = this.searchResetCom.bind(this)
+        this.modifySearchContent = this.modifySearchContent.bind(this)
+
         this.pagination = {
             showTotal(total) {
                 return `共${total}条记录`
@@ -57,14 +64,21 @@ class EqComponent extends React.Component {
                 >
                     <div style={{height: "550px"}}>
                         <EARightBottom
+                            searchType={1}
+                            searchName="固定资产编码、部件名称"
                             depCode={this.props.depCode}
                             mainCode={this.props.record.code}
                             url={this.props.url}
                             comFlag={this.props.comFlag}
                             dataSource={this.state.dataSource}
-                            handleTableChange={this.state.handleTableChange}
+                            handleTableChange={this.handleTableChange}
                             pagination={this.pagination}
                             fetch={this.fetch}
+
+                            modifySearchContent={this.modifySearchContent}
+                            searchEvent={this.searchEvent}
+                            searchResetCom={this.searchResetCom}
+                            searchContent={this.state.searchContent}
                         />
                     </div>
                 </Modal>
@@ -72,26 +86,43 @@ class EqComponent extends React.Component {
         )
 
     }
+    modifySearchContent = (value) => {
+        console.log(value)
+        this.setState({
+            searchContent:value
+        })
+    }
+    searchEvent = () => {
+        this.setState({
+            pageChangeFlag:1
+        })
+        this.fetch({
+            condition:this.state.searchContent,
+        });
+    }
+
+    // 搜索重置调用
+    searchResetCom = () => {
+        this.fetch({},1)
+    }
+
 
     /**table变化时 */
     handleTableChange = (pagination) => {
-        this.setState({
-            pagination: pagination
-        });
+        this.pagination = pagination;
         const {pageChangeFlag} = this.state;
-        /**分页查询 */
-        // if (pageChangeFlag) {
-        //     this.fetch({
-        //         pageSize: pagination.pageSize,
-        //         pageNumber: pagination.current,
-        //         // factory: this.state.searchContent
-        //     })
-        // } else {
-        //     this.fetch({
-        //         pageSize: pagination.pageSize,
-        //         pageNumber: pagination.current,
-        //     })
-        // }
+        if(pageChangeFlag){
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current,
+                condition:this.state.searchContent
+            })
+        }else{
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
     };
 
 
@@ -101,13 +132,12 @@ class EqComponent extends React.Component {
         });
     };
     handleData = () => {
-        this.fetch({
-            page: 1
-        }, 0)
+        this.fetch()
     };
 
     fetch = (params, flag) => {
         if (flag)
+            console.log('22222223333')
             this.setState({
                 pageChangeFlag: 0,
                 searchContent: ''
