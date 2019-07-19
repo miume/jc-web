@@ -79,9 +79,7 @@ class EARightBottom extends Component {
 
     deleteByIds = () => {
         const codes = this.state.selectedRowKeys;
-        console.log(codes)
         if(this.props.comFlag){
-            console.log('11111111')
             axios({
                 url:`${this.props.url.equipmentArchive.deleteUnits}`,
                 method:'Delete',
