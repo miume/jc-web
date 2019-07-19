@@ -283,7 +283,8 @@ class Home extends Component {
                 accsMain: `${server}/jc/common/device/accsMain`,
                 addMainAcc: `${server}/jc/common/device/addMainAcc`,
                 delete: `${server}/jc/common/device/delete`,
-                upload: `${server}/jc/common/device/upload`
+                upload: `${server}/jc/common/device/upload`,
+                deleteUnits: `${server}/jc/common/device/deleteUnits`
             },
             /**设备管理状态*/
             equipmentStatus:{
