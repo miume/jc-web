@@ -1,27 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, message, Input, Col, Row, DatePicker, Select, Switch, Divider} from 'antd';
+import {Button, message, Input, Col, Row, DatePicker, Select, Switch, Divider,Icon,Upload} from 'antd';
 import '../equipmentArchive.css'
 import moment from 'moment';
 
 const Option = Select.Option;
-const uploads = {
-    name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-        authorization: 'authorization-text',
-    },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};
 
 class AddModal extends React.Component {
     constructor(props) {
@@ -29,7 +12,9 @@ class AddModal extends React.Component {
         this.state = {
             visible: false,
             eqStatus: [],
-            startDate: null
+            startDate: null,
+            fileAddCodes:[],
+            fileRemoveCodes: []
         }
         this.onChangeTime = this.onChangeTime.bind(this)
         this.changDeviceDocumentMain = this.changDeviceDocumentMain.bind(this)
@@ -37,8 +22,10 @@ class AddModal extends React.Component {
         this.handleSwitch = this.handleSwitch.bind(this)
         this.handleNewRow = this.handleNewRow.bind(this)
         this.handleReduceRowData = this.handleReduceRowData.bind(this)
+        this.onChangeUpload = this.onChangeUpload.bind(this)
+        this.previewPreview = this.previewPreview.bind(this)
+        this.onRemove = this.onRemove.bind(this)
     }
-
     render() {
         return (
             <div style={{height: '550px'}}>
@@ -152,58 +139,80 @@ class AddModal extends React.Component {
                 </div>
                 {/*<Divider className="eq-divider"/>*/}
                 {/*<Row gutter={16}>*/}
-                {/*<Col span={14}>*/}
-                {/*<Upload {...this.props.uploadProps} fileList={this.props.fileList}>*/}
-                {/*<Button>*/}
-                {/*<Icon type="upload"/> 请选择上传文件，可多次选择*/}
-                {/*</Button>*/}
-                {/*</Upload>*/}
-                {/*</Col>*/}
-                {/*<Col span={14}>*/}
-                {/*<span style={{fontSize: '15px',paddingLeft:'10px'}}>支持文件格式：.pdf</span>*/}
-                {/*</Col>*/}
+                    {/*<Col span={14}>*/}
+                        {/*<Upload*/}
+                            {/*action={this.props.url.equipmentArchive.upload}*/}
+                            {/*listType="text"*/}
+                            {/*onChange={this.onChangeUpload}*/}
+                            {/*// onPreview={this.previewPreview}*/}
+                            {/*onRemove={this.onRemove}*/}
+                        {/*>*/}
+                            {/*<Button>*/}
+                                {/*<Icon type="upload"/> 请选择上传文件，可多次选择*/}
+                            {/*</Button>*/}
+                        {/*</Upload>*/}
+                    {/*</Col>*/}
+                    {/*<Col span={14}>*/}
+                        {/*<span style={{fontSize: '15px', paddingLeft: '10px'}}>支持文件格式：.pdf</span>*/}
+                    {/*</Col>*/}
                 {/*</Row>*/}
                 {/*<Row gutter={16}>*/}
-                {/*<Col span={8}>*/}
-                {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
-                {/*style={{width: '100%', fontSize: '15px'}}*/}
-                {/*onClick={this.props.reduceUploadFun()}/>*/}
-                {/*</Col>*/}
-                {/*</Row>*/}
-                {/*<div className="eq-addModal-newRow">*/}
-                {/*{*/}
-                {/*this.props.uploadData ? this.props.uploadData.map((m, index) => {*/}
-                {/*return (*/}
-                {/*<Row gutter={16}>*/}
-                {/*<Col span={8}>*/}
-                {/*<Upload {...uploads} disabled={this.props.editFlag}>*/}
-                {/*<Button>*/}
-                {/*<Icon type="upload"/> {m.name}*/}
-                {/*</Button>*/}
-                {/*</Upload>*/}
-                {/*</Col>*/}
-                {/*<Col span={8}>*/}
-                {/*<span style={{fontSize: '15px'}}>支持文件格式：.pdf</span>*/}
-                {/*</Col>*/}
-                {/*<Col span={4}>*/}
-                {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
-                {/*style={{width: '100%', fontSize: '15px'}}*/}
-                {/*onClick={this.props.reduceUploadFun(index)}/>*/}
-                {/*</Col>*/}
-                {/*</Row>*/}
-                {/*)*/}
-                {/*}) : null*/}
-                {/*}*/}
-                {/*</div>*/}
-                {/*<Row gutter={16}>*/}
-                {/*<Button disabled={this.props.editFlag} type="primary" icon="plus" size='large'*/}
-                {/*style={{width: '450px', fontSize: '15px'}}*/}
-                {/*onClick={this.props.addUplodFun}/>*/}
+                    {/*<Col span={8}>*/}
+                        {/*<Button disabled={this.props.editFlag} type="primary" icon="minus" size='large'*/}
+                                {/*style={{width: '100%', fontSize: '15px'}}*/}
+                                {/*onClick={this.props.reduceUploadFun()}/>*/}
+                    {/*</Col>*/}
                 {/*</Row>*/}
             </div>
         )
 
     }
+
+    // 文件上传
+    onChangeUpload = (info) => {
+        if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'removed') {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+            console.log(info.file.response.data)
+            if(info.file.response.code===0){
+                var fileAddCodes = this.state.fileAddCodes
+                fileAddCodes.push(info.file.response.data)
+                this.setState({
+                    fileAddCodes:fileAddCodes
+                },()=>{
+                    console.log(this.state.fileAddCodes)
+                })
+            }
+
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
+    }
+    onRemove = (e) => {
+        console.log(e)
+        var fileRemoveCodes = this.state.fileRemoveCodes
+        fileRemoveCodes.push(e.response.data)
+        console.log(fileRemoveCodes)
+        this.setState({
+            fileRemoveCodes:fileRemoveCodes
+        })
+
+    }
+    previewPreview = (file) =>{
+        console.log(file)
+        // this.setState({
+        //     previewImage: file.url || file.thumbUrl,
+        //     previewVisible: true,
+        // })
+    }
+
+
+
 
     handleReduceRowData = (e) => {
         this.props.handleReduceRow(e.target.name)

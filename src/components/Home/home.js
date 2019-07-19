@@ -276,14 +276,14 @@ class Home extends Component {
             equipmentArchive:{
                 device:`${server}/jc/common/device`,
                 detail:`${server}/jc/common/device/detail`,
-                upload:`${server}/jc/common/device/upload`,
                 page:`${server}/jc/common/device/page`,
                 units:`${server}/jc/common/device/units`,
                 accsUnit:`${server}/jc/common/device/accsUnit`,
                 addUnit: `${server}/jc/common/device/addUnit`,
                 accsMain: `${server}/jc/common/device/accsMain`,
                 addMainAcc: `${server}/jc/common/device/addMainAcc`,
-                delete: `${server}/jc/common/device/delete`
+                delete: `${server}/jc/common/device/delete`,
+                upload: `${server}/jc/common/device/upload`
             },
             /**设备管理状态*/
             equipmentStatus:{
