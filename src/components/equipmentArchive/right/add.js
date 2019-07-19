@@ -25,7 +25,7 @@ class Add extends Component {
             startdate: '',
             statusCodeInit:'',
 
-            fileList: []
+            defaultFileList: []
         };
         this.handleAdd = this.handleAdd.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
@@ -85,6 +85,7 @@ class Add extends Component {
                     ]}
                 >
                     <AddModal
+                        url={this.props.url}
                         comFlag={this.props.comFlag}
                         statusCode={this.state.statusCode}
                         editFlag={false}
