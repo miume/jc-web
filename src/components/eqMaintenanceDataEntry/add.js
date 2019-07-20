@@ -60,7 +60,7 @@ class Add extends React.Component {
             maintenanceItems: this.state.maintenanceItems,
             optType :ooptType,
     }
-
+        if(addData.deviceName&&addData.maintenanceContent&&addData.maintenanceItems&&addData.optType){
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.addOne}`,
             method: 'post',
@@ -70,9 +70,13 @@ class Add extends React.Component {
             data: addData,
             type: 'json'
         }).then((data) => {
-            this.props.ffech(this.props.clickdeviceName)
+            // this.props.fetch()
+            this.props.ffetch(this.props.clickdeviceName)
             message.info(data.data.message);
-        })
+        })}
+        else{
+            message.info('不能有空项出现')
+        }
     }
     onCanCel = () => {
         this.setState({visible: false})

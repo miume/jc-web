@@ -18,7 +18,7 @@ handleClick=()=>{
             <div>
                 <Row>
                     <Col span={21} type="flex" justify="start">
-                    <Button block='true'  onClick={this.handleClick}>
+                    <Button className={this.props.colorFlag} block='true'  onClick={this.handleClick}>
                         {this.props.deviceName}
                     </Button>
                     </Col>

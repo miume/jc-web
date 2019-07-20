@@ -30,3 +30,12 @@
 .eqMaintenance-eqblockb{
     width:804px;
 }
+
+.ed-blue{
+    border-color:#1890ff !important;
+    color:#1890ff !important;
+}
+.ed-grey{
+    border-color:grey !important;
+    color:black !important;
+}
