@@ -1,0 +1,56 @@
+#departmentCard,#titledepartment1{
+    text-align: center;
+    font-size: 10px;
+}
+#titledepartmentselect{
+    font-size: 20px;
+}
+#AddButtonDepartment{
+
+}
+.Buttontodo{
+    display: flex;
+}
+#right_buttons{
+    display: flex;
+    width:90%;
+    justify-content:flex-end;
+}
+.left_buttons{
+    display: flex;
+}
+#Planname_add,#Effective_add,#department_add,#MaintenancePeriod_add,#ImplementDate_add,#deviceNameAndNum_add,#NextPlanDate_add{
+    width: 200px;
+}
+#Mainname_add{
+    width:890px;
+}
+.divofadd{
+    display: flex;
+    justify-content:start;
+    align-items:center;
+    margin:10px;
+    margin-top: 20px;
+}
+.Rowofadd{
+    display: flex;
+    justify-content:start;
+    align-items:center;
+}
+.divofadd1{
+    display: flex;
+    justify-content:start;
+    align-items:center;
+    margin-left: 66px;
+}
+.divofadd2{
+    display: flex;
+    justify-content:start;
+    align-items:center;
+    margin-left: 56px;
+    height: 35px;
+}
+#NextPlanDate_add{
+    line-height: 35px;
+    align-items:center;
+}
