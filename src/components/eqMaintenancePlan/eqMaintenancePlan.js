@@ -6,7 +6,6 @@ import ButtonToDd from './blockCompontent/buttontodo'
 import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
 import {message} from "antd";
-import EARight from "../equipmentArchive/right/eARight";
 
 class EqMaintenancePlan extends React.Component{
     constructor(props){

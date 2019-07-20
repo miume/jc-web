@@ -6,8 +6,6 @@ import './style.css'
 import DetailofMain from '../miniCompontent/detialofmaintance'
 import EditorofMain from '../miniCompontent/editorofmain'
 
-import index from "babel-plugin-import/src";
-
 class ContentTable extends React.Component {
     url
     ob
