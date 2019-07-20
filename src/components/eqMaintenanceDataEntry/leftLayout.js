@@ -17,6 +17,8 @@ class LeftLayout extends React.Component{
             pageChangeFlag:0,
             datasource:[],
             searchContent:'',
+            firstdeviceName:'',
+            deviceDatas: []
         }
         this.clickdeviceName=''
         this.searchEvent=this.searchEvent.bind(this)
@@ -24,9 +26,28 @@ class LeftLayout extends React.Component{
         this.changeeqname=this.changeeqname.bind(this)
         this.ffetch=this.ffetch.bind(this)
         this.searchContentChange=this.searchContentChange.bind(this)
+        this.handleTableChange=this.handleTableChange.bind(this)
+        this.pagination = {
+            showSizeChanger: true,
+            itemRender(current, type, originalElement){
+                if (type === 'prev') {
+                    return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
+                }
+                if (type === 'next') {
+                    return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
+                }
+                return originalElement;
+            },
+            showTotal(total){
+                return `共${total}条记录`
+            },
+
+        };
+
     }
     componentDidMount() {
         this.fetch( );
+        // this.ffetch(this.state.firstdeviceName)
     }
 
     searchEvent=()=>{
@@ -78,11 +99,28 @@ class LeftLayout extends React.Component{
             if(res){
                 // for(var i = 1; i<=res.list.length; i++){
                 //     res.list[i-1]['index']=res.prePage*10+i;
+                var deviceDatas = []
+                for(var i=0; i<res.length; i++){
+                    if(i===0){
+                        deviceDatas.push({
+                            deviceName: res[i],
+                            colorFlag:true
+                        })
+                    }else{
+                        deviceDatas.push({
+                            deviceName: res[i],
+                            colorFlag:false
+                        })
+                    }
+                }
                 // }//是序号从1开始
                 this.setState({
                     loading:false,
-                    deviceName:res,
+                    deviceDatas:deviceDatas,
                 });
+
+                this.ffetch(res[0])
+
                 console.log('22222222')
 
             }
@@ -90,7 +128,19 @@ class LeftLayout extends React.Component{
     }
     changeeqname=( eqname)=>{
         this.clickdeviceName=eqname;
-        {this.ffetch(eqname)}
+        var deviceDatas = this.state.deviceDatas
+        for (var i=0; i< deviceDatas.length; i++){
+            if(deviceDatas[i].deviceName===eqname){
+                deviceDatas[i].colorFlag = true
+            }else{
+                deviceDatas[i].colorFlag = false
+            }
+        }
+        this.setState({
+            deviceDatas:deviceDatas
+        },()=>{
+            this.ffetch(eqname)
+        })
     }
     ffetch=(clickdeviceName)=>{
         // if(flag)
@@ -99,7 +149,7 @@ class LeftLayout extends React.Component{
         //         searchContent:''
         //     })
         axios({
-            url: `${this.props.url.eqMaintenanceDataEntry.getAll}`,
+            url: `${this.props.url.eqMaintenanceDataEntry.page}`,
             method:'get',
             headers:{
                 'Authorizatiton':this.url.Authorization},
@@ -110,18 +160,20 @@ class LeftLayout extends React.Component{
             console.log('sssssssssss')
             const result = data.data.data
             console.log(result)
-            // this.pagination.total=result?result.total:0;
-            // this.pagination.current=result.pageNum;
+            this.pagination.total=result?result.total:0;
+            this.pagination.current=result.page;
             console.log('------------------')
-            // console.log(result.pageNum)
+             console.log(result.page)
             console.log('------------------')
-            // if(result&&result.list){
-            //     for(let i=1;i<=result.list.length;i++){
-            //         result.list[i-1]['id']=result.prePage*10+i;
-            //     }
-            // }
+            if(result&&result.list){
+                for(let i=1;i<=result.list.length;i++){
+                    result.list[i-1]['index']=(result.page-1)*10+i;
+                    console.log(result.page)
+                    console.log(result.list[i-1]['index'])
+                }
+            }
             this.setState({
-                datasource:result,
+                datasource:result.list
             });
             // const res = data.data.data;
             // if(res&&res.list)
@@ -135,6 +187,39 @@ class LeftLayout extends React.Component{
             //         dataSource:res.list,
             //     })
             // }
+        });
+    }
+    handleTableChange(pagination){
+        this.pagination = pagination;
+        axios({
+            url: `${this.props.url.eqMaintenanceDataEntry.page}`,
+            method:'get',
+            headers:{
+                'Authorizatiton':this.url.Authorization},
+            params:{
+                deviceName: this.clickdeviceName,
+                size:pagination.pageSize,
+                page:pagination.current
+            },}
+        ).then((data)=>{
+            console.log('sssssssssss')
+            const result = data.data.data
+            console.log(result)
+            this.pagination.total=result?result.total:0;
+            this.pagination.current=result.page;
+            console.log('------------------')
+            console.log(result.page)
+            console.log('------------------')
+            if(result&&result.list){
+                for(let i=1;i<=result.list.length;i++){
+                    result.list[i-1]['index']=(result.page-1)*10+i;
+                    console.log(result.page)
+                    console.log(result.list[i-1]['index'])
+                }
+            }
+            this.setState({
+                datasource:result.list
+            })
         });
     }
 
@@ -168,9 +253,9 @@ class LeftLayout extends React.Component{
                                 </Col>
                             </Row>
                             {
-                                this.state.deviceName.map(e=> {
+                                this.state.deviceDatas.map(e=> {
                                     console.log(e)
-                                return <Eqblock deviceName={e} changeeqname={this.changeeqname} />
+                                return <Eqblock  colorFlag={e.colorFlag?"ed-blue":"ed-grey"} deviceName={e.deviceName} changeeqname={this.changeeqname} />
                             })
                             }
 
@@ -187,7 +272,10 @@ class LeftLayout extends React.Component{
                                deviceName={this.state.deviceName}
                                datasource={this.state.datasource}
                                clickdeviceName={this.clickdeviceName}
-                               ffech={this.ffetch}
+                               ffetch={this.ffetch}
+                               fetch={this.fetch}
+                               pagination={this.pagination}
+                               handleTableChange={this.handleTableChange}
                                />
 
                     </div>

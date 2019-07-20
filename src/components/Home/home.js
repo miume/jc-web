@@ -303,10 +303,10 @@ class Home extends Component {
                 maintenance:`${server}/jc/common/maintenance`,
                 addOne:`${server}/jc/common/maintenance/addOne`,
                 getAll:`${server}/jc/common/maintenance/getAll`,
-                page:`${server})/jc/common/maintenance/page`,
+                page:`${server}/jc/common/maintenance/page`,
                 queryAll:`${server}/jc/common/maintenance/queryAll`,
-                deletelds:`${server}/jc/common/maintenance/deletelds`,
-                maintenanceDetailByid:`${server}/jc/common/maintenance/maintenanceDetailByid`,
+                deleteIds:`${server}/jc/common/maintenance/deleteIds`,
+                maintenanceDetailById:`${server}/jc/common/maintenance/maintenanceDetailById`,
                 getAllByDeviceName:`${server}/jc/common/maintenance/getAllByDeviceName`,
             }
         }
