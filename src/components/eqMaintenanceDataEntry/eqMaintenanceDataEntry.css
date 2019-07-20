@@ -1,0 +1,32 @@
+.eqMaintenance-DE-demo{
+    display: flex;                /*设置为flex布局*/
+    /*justify-content: space-around;*/
+    width: 100%;
+}
+/*.demo > div{*/
+/*    flex: none;*/
+/*}*/
+.eqMaintenance-DE-left{
+    margin-left:15px;
+    width: 20%;
+    height: 525px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #F5f5f5;
+}
+.eqMaintenance-DE-right{
+    width: 80%;
+    margin-left: 20px;
+    height: 100%;
+}
+.eqMaintenance-eqblocka{
+    height:50px;
+    width: 100%;
+    background:#F5F5F5;
+    text-align:center;
+    line-height: 50px;
+
+}
+.eqMaintenance-eqblockb{
+    width:804px;
+}
