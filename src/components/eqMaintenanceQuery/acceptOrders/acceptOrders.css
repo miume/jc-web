@@ -1,0 +1,18 @@
+/*.inputIt{*/
+/*    margin:0 8px 8px 0;*/
+/*    display: inline-block;*/
+/*    width:200px;*/
+/*}*/
+/*.title{*/
+/*    float:right;*/
+/*}*/
+.ac-putright{
+    position: absolute;
+    right: 18px;
+}
+
+.ac-table .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
