@@ -1,0 +1,27 @@
+.input {
+    width: 200px;
+    margin: 0 8px 8px 0;
+}
+
+.head{
+    display: flex;
+}
+.title{
+    font-weight:bold ;
+    color:black;
+}
+.table .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.table .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.table{
+    text-align:center;
+}
+
+/*.right{*/
+/*    width:200px;*/
+/*}*/
