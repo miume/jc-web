@@ -287,6 +287,10 @@ class Home extends Component {
                 deleteUnits: `${server}/jc/common/device/deleteUnits`,
                 addUnitAcc: `${server}/jc/common/device/addUnitAcc`,
                 unitDetail: `${server}/jc/common/device/unitDetail`,
+                delMainAcc: `${server}/jc/common/device/delMainAcc`,
+                delUnitAcc:`${server}/jc/common/device/delUnitAcc`,
+
+
             },
             /**设备管理状态*/
             equipmentStatus:{
