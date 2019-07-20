@@ -293,6 +293,17 @@ class Home extends Component {
                 delete:`${server}/jc/common/deviceStatus/delete`,
                 getByNameLike:`${server}/jc/common/deviceStatus/getByNameLike`
             },
+            /**项目录入**/
+            eqMaintenanceDataEntry:{
+                maintenance:`${server}/jc/common/maintenance`,
+                addOne:`${server}/jc/common/maintenance/addOne`,
+                getAll:`${server}/jc/common/maintenance/getAll`,
+                page:`${server})/jc/common/maintenance/page`,
+                queryAll:`${server}/jc/common/maintenance/queryAll`,
+                deletelds:`${server}/jc/common/maintenance/deletelds`,
+                maintenanceDetailByid:`${server}/jc/common/maintenance/maintenanceDetailByid`,
+                getAllByDeviceName:`${server}/jc/common/maintenance/getAllByDeviceName`,
+            }
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

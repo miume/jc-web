@@ -2,7 +2,8 @@ import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
 import axios from "axios";
 import {message} from "antd";
-
+import LeftLayout from"./leftLayout"
+import "./eqMaintenanceDataEntry.css"
 
 class EqMaintenanceDataEntry extends React.Component{
     constructor(props){
@@ -18,7 +19,12 @@ class EqMaintenanceDataEntry extends React.Component{
             <div>
                 <Blockquote menu={current.menuParent} name="项目录入"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div style={{padding: '15px'}} >
-                    待开发
+                    <LeftLayout
+                        url={this.url}
+                        operation={this.operation}
+                        current={this.current}
+                    />
+
                 </div>
             </div>
         )
