@@ -293,6 +293,7 @@ class Fittings extends React.Component {
     editSave = (value) => {
         console.log(value)
         // TODO 调用更新接口
+
     }
 }
 

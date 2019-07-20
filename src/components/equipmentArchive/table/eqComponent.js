@@ -47,8 +47,7 @@ class EqComponent extends React.Component {
             <span>
                 <span className="blue" onClick={this.handleData}>部件</span>
                 <Modal
-                    className="modal-xlg"
-
+                    className="modal-xxlg"
                     title={title}
                     visible={this.state.visible}
                     closable={false}

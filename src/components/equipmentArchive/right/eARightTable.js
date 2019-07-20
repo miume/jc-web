@@ -69,7 +69,20 @@ class EARightTable extends Component {
                     <Divider type="vertical"/>
                     <Repair/>
                     <Divider type="vertical"/>
-                    <Details/>
+                    <Details
+                        record={record}
+                        url={this.props.url}
+                        comFlag={true}
+                    />
+                    <Divider type="vertical"/>
+                    <Edit
+                        // deviceName={this.props.deviceName}
+                        // getRightData={this.props.getRightData}
+                        // url={this.props.url}
+                        // record={record}
+                        // getTableData={this.props.getTableData}
+                        // depCode={this.props.depCode}
+                    />
                     <Delete
                         record={record}
                         flag={true}

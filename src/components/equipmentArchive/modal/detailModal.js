@@ -63,18 +63,28 @@ class DetailModal extends React.Component {
                                onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Input placeholder="请输入规格型号" key="specification" name="specification"
-                               value={this.props.deviceDocumentMain.specification ? this.props.deviceDocumentMain.specification : ''}
-                               onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
-                    </Col>
-                    <Col span={12}>
-                        <Input placeholder="请输入ID卡号" key="idCode" name="idCode"
-                               value={this.props.deviceDocumentMain.idCode ? this.props.deviceDocumentMain.idCode : ''}
-                               onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
-                    </Col>
-                </Row>
+                {
+                    this.props.comFlag?
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Input placeholder="请输入规格型号" key="specification" name="specification"
+                                       value={this.props.deviceDocumentMain.specification ? this.props.deviceDocumentMain.specification : ''}
+                                       onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                            </Col>
+                        </Row>:
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Input placeholder="请输入规格型号" key="specification" name="specification"
+                                       value={this.props.deviceDocumentMain.specification ? this.props.deviceDocumentMain.specification : ''}
+                                       onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                            </Col>
+                            <Col span={12}>
+                                <Input placeholder="请输入ID卡号" key="idCode" name="idCode"
+                                       value={this.props.deviceDocumentMain.idCode ? this.props.deviceDocumentMain.idCode : ''}
+                                       onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                            </Col>
+                        </Row>
+                }
                 <Row gutter={16}>
                     <Col span={12}>
                         {
@@ -106,41 +116,44 @@ class DetailModal extends React.Component {
                                onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        {
-                            this.props.editFlag ?
-                                <Input placeholder="请选择设备状态" key="deviceStatus" name="deviceStatus"
-                                       value={this.props.deviceStatus ? this.props.deviceStatus : ''}
-                                       onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
-                                : <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
-                                          onChange={this.handleSelect} defaultValue={this.props.deviceStatus}>
-                                    {
-                                        this.state.statusCode.map(es => {
-                                            return (
-                                                <Option key={es.code} value={es.code}>{es.name}</Option>
-                                            )
-                                        })
-                                    }
-                                </Select>
-                        }
-                    </Col>
-                    <Col span={12}>
-                        {
-                            this.props.editFlag ?
-                                <span style={{fontSize: '15px'}}>是否关键设备：
+                {
+                    this.props.comFlag?null:
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                {
+                                    this.props.editFlag ?
+                                        <Input placeholder="请选择设备状态" key="deviceStatus" name="deviceStatus"
+                                               value={this.props.deviceStatus ? this.props.deviceStatus : ''}
+                                               onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                                        : <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
+                                                  onChange={this.handleSelect} defaultValue={this.props.deviceStatus}>
+                                            {
+                                                this.state.statusCode.map(es => {
+                                                    return (
+                                                        <Option key={es.code} value={es.code}>{es.name}</Option>
+                                                    )
+                                                })
+                                            }
+                                        </Select>
+                                }
+                            </Col>
+                            <Col span={12}>
+                                {
+                                    this.props.editFlag ?
+                                        <span style={{fontSize: '15px'}}>是否关键设备：
                                     <i style={this.props.deviceDocumentMain.keyFlag?{fontSize: '15px',color:'lawngreen'}:{fontSize: '15px',color:'grey'}} className="fa fa-circle" aria-hidden="true"></i>
                                 </span>
-                                : <span style={{fontSize: '15px'}}>是否关键设备：
+                                        : <span style={{fontSize: '15px'}}>是否关键设备：
                                     <Switch checkedChildren="是" unCheckedChildren="否"
-                                        disabled={this.props.editFlag}
-                                        onChange={this.handleSwitch}
-                                        checked={this.props.deviceDocumentMain.keyFlag}
+                                            disabled={this.props.editFlag}
+                                            onChange={this.handleSwitch}
+                                            checked={this.props.deviceDocumentMain.keyFlag}
                                     />
                                 </span>
-                        }
-                    </Col>
-                </Row>
+                                }
+                            </Col>
+                        </Row>
+                }
                 <Divider className="eq-divider"/>
                 <Row gutter={16}>
                     <Col span={12}>
