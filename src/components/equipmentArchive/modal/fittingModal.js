@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Table, Input, InputNumber, Popconfirm, Form, Divider} from 'antd';
+import {Table, Input, InputNumber, Popconfirm, Form, Divider} from 'antd';
 import '../equipmentArchive.css'
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
-const EditableRow = ({ form, index, ...props }) => (
+const EditableRow = ({form, index, ...props}) => (
     <EditableContext.Provider value={form}>
         <tr {...props}/>
     </EditableContext.Provider>
@@ -15,10 +15,11 @@ const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
     getInput = () => {
         if (this.props.inputType === 'number') {
-            return <InputNumber />;
+            return <InputNumber/>;
         }
-        return <Input />;
+        return <Input/>;
     };
+
     render() {
         const {
             editing,
@@ -32,11 +33,11 @@ class EditableCell extends React.Component {
         return (
             <EditableContext.Consumer>
                 {(form) => {
-                    const { getFieldDecorator } = form;
+                    const {getFieldDecorator} = form;
                     return (
                         <td {...restProps}>
                             {editing ? (
-                                <FormItem style={{ margin: 0 }}>
+                                <FormItem style={{margin: 0}}>
                                     {getFieldDecorator(dataIndex, {
                                         rules: [{
                                             required: true,
@@ -66,6 +67,7 @@ class FittingModal extends React.Component {
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
     }
+
     columns = [{
         title: '名称',
         dataIndex: 'name',
@@ -73,21 +75,21 @@ class FittingModal extends React.Component {
         align: 'center',
         width: '25%',
         editable: 1
-    },{
+    }, {
         title: '规格',
         dataIndex: 'specification',
         key: 'specification',
         align: 'center',
         width: '20%',
         editable: 1
-    },{
+    }, {
         title: '数量',
         dataIndex: 'counts',
         key: 'counts',
         align: 'center',
         width: '20%',
         editable: 1
-    },{
+    }, {
         title: '操作',
         dataIndex: 'code',
         key: 'code',
@@ -105,7 +107,7 @@ class FittingModal extends React.Component {
                                         <span
                                             className='blue'
                                             onClick={() => this.save(form, record.code)}
-                                            style={{ marginRight: 8}}
+                                            style={{marginRight: 8}}
                                         >
                                             保存
                                         </span>
@@ -124,11 +126,14 @@ class FittingModal extends React.Component {
                         )}
                         </span>
                     <Divider type="vertical"/>
-                    <span className="blue" onClick={() => this.delete(record.code)}>删除</span>
+                    <Popconfirm title="确定删除?" onConfirm={() => this.delete(record.code)} okText="确定" cancelText="取消">
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
                 </span>
             )
         },
     }]
+
     render() {
         const columns = this.columns.map((col) => {
             if (!col.editable) {
@@ -166,10 +171,11 @@ class FittingModal extends React.Component {
         )
 
     }
+
     isEditing = record => record.code === this.state.editingKey;
 
     cancel = () => {
-        this.setState({ editingKey: '' });
+        this.setState({editingKey: ''});
     };
 
     save(form, key) {
@@ -186,18 +192,19 @@ class FittingModal extends React.Component {
                     ...row,
                 });
                 this.props.editSave(newData[index]);
-                this.setState({ editingKey: '' });
+                this.setState({editingKey: ''});
             } else {
-                this.setState({ editingKey: '' });
+                this.setState({editingKey: ''});
             }
         });
     }
+
     delete = (code) => {
         this.props.deleteSaveFun(code)
     };
 
     edit(key) {
-        this.setState({ editingKey: key });
+        this.setState({editingKey: key});
     }
 }
 
