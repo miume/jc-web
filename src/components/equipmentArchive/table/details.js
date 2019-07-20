@@ -46,6 +46,7 @@ class Detail extends React.Component {
                     ]}
                 >
                     <DetailModal
+                        comFlag={this.props.comFlag}
                         editFlag={true}
                         deviceDocumentMain={this.state.deviceDocumentMain}
                         newRowData={this.state.newRowData}
@@ -64,39 +65,77 @@ class Detail extends React.Component {
         });
     };
     handleDetail = () => {
-        // TODO 获取数据
-        axios({
-            url: `${this.props.url.equipmentArchive.detail}/${this.props.record.code}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res) {
-                const arrName = res.arrName;
-                const arrValue = res.arrValue
-                var newRowData = []
-                for (var i = 0; i < arrName.length; i++) {
-                    newRowData.push({
-                        name: arrName[i],
-                        value: arrValue[i]
-                    })
+        if(this.props.comFlag){
+            axios({
+                url: `${this.props.url.equipmentArchive.unitDetail}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    id: this.props.record.code
                 }
-                this.setState({
-                    visible: true,
-                    newRowData: newRowData,
-                    deviceDocumentMain: res.deviceDocumentMain,
-                    deviceStatus: res.deviceStatus,
-                    deptName: res.deptName,
-                    startdate: res.deviceDocumentMain.startdate
-                })
-            } else {
-                message.info('设备状态为空，请先添加状态！')
-            }
-        }).catch(() => {
-            message.info('设备状态数据存在异常，请联系管理员！')
-        });
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
+                if (res) {
+                    const arrName = res.arrName;
+                    const arrValue = res.arrValue
+                    var newRowData = []
+                    for (var i = 0; i < arrName.length; i++) {
+                        newRowData.push({
+                            name: arrName[i],
+                            value: arrValue[i]
+                        })
+                    }
+                    this.setState({
+                        visible: true,
+                        newRowData: newRowData,
+                        deviceDocumentMain: res.deviceDocumentUnit,
+                        deptName: res.basicInfoDept.name,
+                        startdate: res.deviceDocumentUnit.startdate
+                    })
+                } else {
+                    // message.info('设备状态为空，请先添加状态！')
+                }
+            }).catch(() => {
+                message.info('数据存在异常，请联系管理员！')
+            });
+
+        }else{
+            axios({
+                url: `${this.props.url.equipmentArchive.detail}/${this.props.record.code}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                }
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
+                if (res) {
+                    const arrName = res.arrName;
+                    const arrValue = res.arrValue
+                    var newRowData = []
+                    for (var i = 0; i < arrName.length; i++) {
+                        newRowData.push({
+                            name: arrName[i],
+                            value: arrValue[i]
+                        })
+                    }
+                    this.setState({
+                        visible: true,
+                        newRowData: newRowData,
+                        deviceDocumentMain: res.deviceDocumentMain,
+                        deviceStatus: res.deviceStatus,
+                        deptName: res.deptName,
+                        startdate: res.deviceDocumentMain.startdate
+                    })
+                } else {
+                    message.info('设备状态为空，请先添加状态！')
+                }
+            }).catch(() => {
+                message.info('设备状态数据存在异常，请联系管理员！')
+            });
+        }
+        // TODO 获取数据
     }
 
 }
