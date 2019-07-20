@@ -93,6 +93,7 @@ class Right extends React.Component{
         this.isEditing = this.isEditing.bind(this)
         this.edit = this.edit.bind(this)
         this.deleteCancel = this.deleteCancel.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
         this.pagination = {
             total:this.props.datasource.length,
             showSizeChanger: true,
@@ -114,7 +115,7 @@ class Right extends React.Component{
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
-            key: 'id',
+            key: 'index',
             sorter:(a, b) => a.id-b.id,
             width: '8%',
             align:'left',
@@ -238,10 +239,10 @@ class Right extends React.Component{
     /**table变化时 */
     handleTableChange(pagination){
         this.pagination = pagination;
-        this.fetch({
-            size:pagination.pageSize,
-            page:pagination.current,
-        })
+        // this.fetch({
+        //     size:pagination.pageSize,
+        //     page:pagination.current,
+        // })
         }
 
     /**批量删除弹出框确认函数 */
@@ -283,7 +284,29 @@ class Right extends React.Component{
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     /**处理单条记录删除 */
-    handleDelete(key){
+    handleDelete=(id)=>{
+        console.log(id)
+        axios({
+            url:`${this.url.eqMaintenanceDataEntry.maintenance}/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=> {
+            message.info(data.data.message);
+            // this.fetch({
+            //     pageSize: this.state.pagination.pageSize,
+            //     pageNumber: this.state.pagination.current,
+            // })
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！')
+        })
+        }
+
+
+
+
+
         // axios({
         //     url:`${this.url.procedure.procedureTestRecord}/${key}`,
         //     method:'Delete',
@@ -303,7 +326,6 @@ class Right extends React.Component{
         // }).catch(()=>{
         //     message.info('删除失败，请联系管理员！');
         // })
-    }
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});

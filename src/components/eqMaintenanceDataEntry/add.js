@@ -54,14 +54,11 @@ class Add extends React.Component {
         }
         if(ooptType === 1)
         var addData = {
-            code: 0,
             deviceName:this.state.deviceName,
             maintenanceContent:this.state.maintenanceContent,
             maintenanceFrequency:this.state.maintenanceFrequency,
             maintenanceItems: this.state.maintenanceItems,
             optType :ooptType,
-
-
     }
 
         axios({
@@ -146,7 +143,7 @@ class Add extends React.Component {
                             保养项目:
                         </Col>
                         <Col span={10}>
-                            <Input size="middle" placeholder="请输入保养项目"   style={{width:"313px"}}key='2'
+                            <Input size="small" placeholder="请输入保养项目"   style={{width:"313px"}}key='2'
                                      name="maintenanceItems" onChange={this.onInputChange}/>
                         </Col>
                     </Row>
@@ -157,7 +154,7 @@ class Add extends React.Component {
                             保养内容:
                         </Col>
                         <Col span={10} style={{paddingRight:"20px"}} >
-                            <Input size="middle" placeholder="请输入保养内容"  key='3' name="maintenanceContent" onChange={this.onInputChange}/>
+                            <Input size="small" placeholder="请输入保养内容"  key='3' name="maintenanceContent" onChange={this.onInputChange}/>
                         </Col>
 
                         <Col span={1.5} style={{paddingTop:"5px"}}>
@@ -177,7 +174,7 @@ class Add extends React.Component {
                             &nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;&nbsp;
                         </Col>
                         <Col span={10} style={{paddingRight:"20px"}}>
-                            <Input size="middle" placeholder="请输入保养内容"  key='4' name="maintenanceFrequency"onChange={this.onInputChange}/>
+                            <Input size="small" placeholder="请输入保养内容"  key='4' name="maintenanceFrequency"onChange={this.onInputChange}/>
                         </Col>
                     </Row>
                 </div>

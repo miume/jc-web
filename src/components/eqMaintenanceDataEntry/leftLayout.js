@@ -16,19 +16,21 @@ class LeftLayout extends React.Component{
             deviceName:[],
             pageChangeFlag:0,
             datasource:[],
+            searchContent:'',
         }
         this.clickdeviceName=''
         this.searchEvent=this.searchEvent.bind(this)
         this.fetch=this.fetch.bind(this)
         this.changeeqname=this.changeeqname.bind(this)
         this.ffetch=this.ffetch.bind(this)
+        this.searchContentChange=this.searchContentChange.bind(this)
     }
     componentDidMount() {
         this.fetch( );
     }
 
-    searchEvent(value){
-        console.log({value})
+    searchEvent=()=>{
+        console.log(this.state.searchContent)
             axios({
                 url: `${this.url.eqMaintenanceDataEntry.getAllByDeviceName}`,
                 method:'get',
@@ -36,7 +38,7 @@ class LeftLayout extends React.Component{
                     'Authorization':this.url.Authorization
                 },
                 params:{
-                    deviceName:value
+                    deviceName:this.state.searchContent
                 },
             }).then((data)=>{
                 const res=data.data.data;
@@ -50,6 +52,8 @@ class LeftLayout extends React.Component{
                     this.setState({
                         loading:false,
                         deviceName:res,
+                    },()=>{
+                        console.log(this.state.deviceName)
                     });
 
                 }
@@ -112,12 +116,12 @@ class LeftLayout extends React.Component{
             // console.log(result.pageNum)
             console.log('------------------')
             // if(result&&result.list){
-            //     // for(let i=1;i<=result.list.length;i++){
-            //     //     result.list[i-1]['index']=result.prePage*10+i;
-            //     // }
+            //     for(let i=1;i<=result.list.length;i++){
+            //         result.list[i-1]['id']=result.prePage*10+i;
+            //     }
             // }
             this.setState({
-                datasource:result
+                datasource:result,
             });
             // const res = data.data.data;
             // if(res&&res.list)
@@ -133,6 +137,14 @@ class LeftLayout extends React.Component{
             // }
         });
     }
+
+    searchContentChange=(e) =>{
+        const value = e.target.value;
+        this.setState({searchContent:value});
+        if(this.searchContent===null){
+            this.fetch();
+        }
+    }
     render(){
 
         this.url = this.props.url;
@@ -146,14 +158,18 @@ class LeftLayout extends React.Component{
                                 设备名称(请选择）
                             </div>
                             <Row>
-                                <Col span={24} style={{paddingleft:"20px"}} >
-                            <SearchCell placeholder='请输入搜索内容' onSearch={value =>this.searchEvent(value) }
-                                        onChange={this.handleonChange}
-                            />
+                                <Col span={24} style={{paddingLeft:"10px",paddingRight:'10px'}} >
+                                    <Search
+
+                                        placeholder="请输入设备名称"
+                                        onSearch={this.searchEvent}
+                                        onChange={this.searchContentChange}
+                                    />
                                 </Col>
                             </Row>
                             {
                                 this.state.deviceName.map(e=> {
+                                    console.log(e)
                                 return <Eqblock deviceName={e} changeeqname={this.changeeqname} />
                             })
                             }
