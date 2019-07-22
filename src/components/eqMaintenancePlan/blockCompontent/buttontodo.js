@@ -22,6 +22,7 @@ class ButtonToDd extends Component {
                     getMaintType={this.props.getMaintType}
                     getDevice={this.props.getDevice}
                     Device={this.props.Device}
+                    MaintenanceType={this.props.MaintenanceType}
                 />
                 <Searchpart
                     id='searchpart'

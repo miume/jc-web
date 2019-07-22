@@ -33,26 +33,26 @@ class Addmaintenancebutton extends React.Component{
     columns = [
         {
             title: '序号',
-            dataIndex: 'number',
-            key:'number',
+            dataIndex: 'code',
+            key:'code',
             width: "10%"
         },
         {
             title: '保养项目',
-            dataIndex: 'maintanencetype',
-            key:'maintanencetype',
+            dataIndex: 'maintenanceItems',
+            key:'maintenanceItems',
             width: "20%"
         },
         {
             title: '保养内容',
-            dataIndex: 'maintanencecontent',
-            key:'maintanencecontent',
+            dataIndex: 'maintenanceContent',
+            key:'maintenanceContent',
             width: "40%"
         },
         {
             title: '频次',
-            dataIndex: 'frequency',
-            key:'frequency',
+            dataIndex: 'maintenanceFrequency',
+            key:'maintenanceFrequency',
             width: "30%",
         },
     ];
@@ -70,24 +70,9 @@ class Addmaintenancebutton extends React.Component{
             const params2={
                 deviceName:jing[0],
             }
-            //this.props.getMaintType(params2)
+            this.props.getMaintType(params2)
             console.log(value);
         }
-
-
-        // this.setState({deviceNameAndNum:value},()=>{
-        //     var jing=this.state.deviceNameAndNum.split('/#');
-        //     this.setState({
-        //         deviceName:jing[0],
-        //         fixedassetsCode:jing[1]
-        //     })
-        //     const params2={
-        //         deviceName:jing[0],
-        //     }
-        //     //this.props.getMaintType(params2)
-        //     console.log(value);
-        // })
-
     }
     handlePlanName1Change=(e)=>{
         this.setState({PlanName1:e.target.value})
@@ -134,64 +119,69 @@ class Addmaintenancebutton extends React.Component{
 
     showModal = () => {
         this.setState({ visible: true });
-
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        console.log(menuList);
+        this.setState({whomade:menuList.userId})
         const params1={
             code:this.props.depCode,
         }
         console.log(params1)
         this.props.getDevice(params1)
-    };
-    handleCreate = (e) => {
-        var deviceMaintenanceItems=[];
-
-        var objectdata = {
-            deviceMaintenancePlansHead:{
-                "code":0,
-                "planName":this.state.PlanName1,
-                "fixedassetsCode":"string",
-                "deviceName":this.state.deviceNameAndNum,
-                "deptCode":this.props.depCode,
-                "maintPeriod":this.state.MaintenancePeriod,
-                "planDate":this.state.ImplementDate,
-                "nextDate":this.state.NextPlanDate,
-                "setPeople":1,
-                "effFlag":this.state.Effective,
-            },
-
-            deviceMaintenanceItems:[{
-                "code":0,
-                "deviceName":"string",
-                "maintenanceItems":"string",
+        for(var i=0;i<3;i++)
+        {
+            this.d2.push({
+                "deviceName":this.state.deviceName,
+                "maintenanceItems":"saasd",
                 "maintenanceContent":"string",
                 "optType":0,
                 "maintenanceFrequency": "string"
-            }],
-            deviceMaintenancePlansDetails:[
-                {
-                    "code":0,
-                    "planCode":0,
-                    "maintenanceItems":"string",
-                    "maintenanceContent":"string",
-                    "optType":0,
-                }
-            ],
-            detailNum:0,
+            })
         }
-        console.log(objectdata)
-        this.handleCancel();
-        axios({
-            url: `${this.props.url.DeviceMaintenancePlan.maintenanceAddPlan}`,
-            method: 'post',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            data: objectdata,
-        }).then((data) => {
-            message.info('');
-            this.props.getTableData(this.props.params)
-        }).catch(function () {
-            message.info('新增失败，请联系管理员！');
-        });
+    };
+    handleCreate = (e) => {
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        var jing=this.state.deviceNameAndNum.search('/#');
+        this.setState({
+            deviceName:this.state.deviceNameAndNum.slice(0,jing),
+            fixedassetsCode:this.state.deviceNameAndNum.slice(jing+2),
+            whomade:menuList.userId,
+        },()=>{
+            var objectdata = {
+                deviceMaintenancePlansHead:{
+                    "planName":this.state.PlanName1,
+                    "fixedassetsCode":this.state.fixedassetsCode,
+                    "deviceName":this.state.deviceName,
+                    "deptCode":this.props.depCode,
+                    "maintPeriod":this.state.MaintenancePeriod,
+                    "planDate":this.state.ImplementDate,
+                    "nextDate":this.state.NextPlanDate,
+                    "setPeople":this.state.whomade,
+                    "effFlag":this.state.Effective,
+                },
+                "deviceMaintenanceItems":this.state.MaintenanceType,
+                "detailNum":1,
+            }
+            console.log(objectdata)
+            this.handleCancel();
+            axios({
+                url: `${this.props.url.DeviceMaintenancePlan.maintenanceAddPlan}`,
+                method: 'post',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                data: objectdata,
+            }).then((data) => {
+                message.info(data.data.data.message);
+                this.props.getTableData(this.props.params)
+            }).catch(function () {
+                message.info('新增失败，请联系管理员！');
+            });
+        })
+        const params1={
+            deptId:this.props.depCode,
+            statusId:-1,
+        }
+        this.props.getTableData(params1,this.props.depName)
     }
     handleCancel = () => {
         this.setState({
@@ -213,14 +203,24 @@ class Addmaintenancebutton extends React.Component{
     handledapartmentChange=(e)=>{
         this.setState({departmentname:e.event.value})
     }
-
-
     render(){
         const MaintenanceTypeSelection={
             onChange: (selectedRowKeys, selectedRows) => {
+                var objMain=[];
                 console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                this.state.MaintenanceType=selectedRows;
-                console.log(this.state.MaintenanceType);
+                for(var j=0;j<selectedRowKeys.length;j++) {
+                    objMain.push({
+                        deviceName:selectedRows[j].deviceName,
+                        maintenanceItems:selectedRows[j].maintenanceItems,
+                        maintenanceContent:selectedRows[j].maintenanceContent,
+                        optType:1,
+                        maintenanceFrequency: selectedRows[j].maintenanceFrequency,
+                    })
+                }
+                //console.log(objMain)
+                this.setState({MaintenanceType:objMain});
+                //console.log(`MaintenanceType:${this.state.MaintenanceType}`);
+                objMain=[];
             },
         }
         const dateFormat = 'YYYY-MM-DD';

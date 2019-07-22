@@ -10,9 +10,6 @@ class ContentTable extends React.Component {
     url
     ob
     state={
-        isLoad:false,
-        isMaintenanced:false,
-        departmentname:'xascacasc',
         record:'',
     }
     columns = [{
@@ -78,6 +75,13 @@ class ContentTable extends React.Component {
                         editorRecord={record}
                         depCode={this.props.depCode}
                         depName={this.props.depName}
+                        getMaintType={this.props.getMaintType}
+                        getDepartmentData={this.props.getDepartmentData}
+                        MaintenanceType={this.props.MaintenanceType}
+                        Opt_type={this.props.Opt_type}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
+                        url={this.props.url}
                     />
                     <Divider type="vertical"/>
                     <DetailofMain
@@ -96,6 +100,13 @@ class ContentTable extends React.Component {
                         editorRecord={record}
                         depCode={this.props.depCode}
                         depName={this.props.depName}
+                        getMaintType={this.props.getMaintType}
+                        getDepartmentData={this.props.getDepartmentData}
+                        MaintenanceType={this.props.MaintenanceType}
+                        Opt_type={this.props.Opt_type}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
+                        url={this.props.url}
                     />
                     <Divider type="vertical"/>
                     <DetailofMain
@@ -129,7 +140,6 @@ class ContentTable extends React.Component {
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-
         return(
             <div>
                 <Table
@@ -146,5 +156,4 @@ class ContentTable extends React.Component {
         )
     }
 }
-
 export default  ContentTable

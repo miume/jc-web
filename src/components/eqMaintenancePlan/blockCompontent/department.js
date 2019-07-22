@@ -24,7 +24,6 @@ class DepartmentCard extends React.Component{
             }],
         };
         this.returnDepKey = this.returnDepKey.bind(this)
-
     }
     componentDidMount() {
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
@@ -56,17 +55,19 @@ class DepartmentCard extends React.Component{
 
     // 通过回调函数，更新表格中的数据
     returnDepKey = (selectedKeys,e) => {
-        this.setState({
-            depCode:selectedKeys[0],
-            depName:e.node.props.value,
-        },()=>{
-            const params = {
-                deptId:this.state.depCode,
-                statusId:-1,
-            }
-            console.log(params)
-            this.props.getTableData(params,this.state.depName)
-        });
+        if(selectedKeys[0]){
+            this.setState({
+                depCode:selectedKeys[0],
+                depName:e.node.props.value,
+            },()=>{
+                const params = {
+                    deptId:this.state.depCode,
+                    statusId:-1,
+                }
+                console.log(params)
+                this.props.getTableData(params,this.state.depName)
+            });
+        }
     };
 
     // 获取部门树
