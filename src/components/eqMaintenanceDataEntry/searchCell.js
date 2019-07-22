@@ -38,7 +38,7 @@ class SearchCell extends React.Component{
         searchComponent.childNodes[0].value = ''
         console.log(searchComponent.childNodes[0])
         console.log(searchComponent.childNodes)
-        this.props.fetch(this.props.clickdeviceName,1);
+        this.props.fetch(this.props.clickdeviceName,'',1);
     }
 }
 export default SearchCell;

@@ -351,7 +351,7 @@ class Right extends React.Component{
                                  flag={home.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                                fetch={this.props.ffetch} flag={home.judgeOperation(this.operation,'QUERY')} clickdeviceName={this.props.clickdeviceName}/>
+                                fetch={this.props.ffetch3} flag={home.judgeOperation(this.operation,'QUERY')} clickdeviceName={this.props.clickdeviceName}/>
 
                     <Table rowKey={record => record.code}
                            rowSelection={rowSelection}
