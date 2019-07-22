@@ -27,24 +27,41 @@ class Add extends React.Component {
         this.handleChange2=this.handleChange2.bind(this)
         this.setnull = this.setnull.bind(this)
     }
+    componentDidMount() {
+        this.setState({deviceName:this.props.clickdeviceName})
+    }
+
     handleAdd = () => {
         this.setState({visible: true})
     }
     handleSave = () => {
+        this.setState({
+            visible:false,
+        })
         console.log(this.state.deviceName)
         console.log(this.state.maintenanceItems)
         console.log(this.state.maintenanceContent)
         console.log(this.state.optType)
         console.log(this.state.maintenanceFrequency)
-        this.setState({visible:false})
-        var addData = {
-            deviceName:this.state.deviceName,
-            maintenanceContent:this.state.maintenanceContent,
-            maintenanceFrequency:this.state.maintenanceFrequency,
-            maintenanceItems: this.state.maintenanceItems,
-            optType :this.state.optType,
+if(this.state.deviceName===''){
+    var addData = {
+        deviceName:this.props.clickdeviceName,
+        maintenanceContent:this.state.maintenanceContent,
+        maintenanceFrequency:this.state.maintenanceFrequency,
+        maintenanceItems: this.state.maintenanceItems,
+        optType :this.state.optType,
     }
-        console.log(addData.optType)
+}else{
+    var addData = {
+        deviceName:this.state.deviceName,
+        maintenanceContent:this.state.maintenanceContent,
+        maintenanceFrequency:this.state.maintenanceFrequency,
+        maintenanceItems: this.state.maintenanceItems,
+        optType :this.state.optType,
+    }
+}
+
+        console.log(addData)
         if(addData.deviceName&&addData.maintenanceContent&&addData.maintenanceItems){
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.addOne}`,
@@ -130,7 +147,7 @@ class Add extends React.Component {
                             设备名称:
                         </Col>
                         <Col span={10}>
-                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2} value={this.state.deviceName}>
+                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2} defaultValue={this.props.clickdeviceName} >
                                 {
                                     this.props.deviceDatas.map(e => {
                                         return (<option value={e.deviceName}> {e.deviceName}</option>)

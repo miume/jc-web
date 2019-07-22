@@ -17,7 +17,8 @@ class LeftLayout extends React.Component{
             datasource:[],
             searchContent:'',
             firstdeviceName:'',
-            deviceDatas: []
+            deviceDatas: [],
+            searchContent2:''
         }
         this.clickdeviceName=''
         this.searchEvent=this.searchEvent.bind(this)
@@ -219,6 +220,10 @@ class LeftLayout extends React.Component{
         });
     }
     ffetch3=( clickdeviceName,searchContent)=>{
+        this.setState({
+            pageChangeFlag:1,
+            searchContent2:searchContent
+        })
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.page}`,
             method:'get',
@@ -243,6 +248,14 @@ class LeftLayout extends React.Component{
                     result.list[i-1]['index']=(result.page-1)*10+i;
                     console.log(result.page)
                     console.log(result.list[i-1]['index'])
+
+                    if(result.list[i-1]['optType']===0)
+                    {
+                        result.list[i-1]['optType']='勾选';
+                    }
+                    if(result.list[i-1]['optType']===1){
+                        result.list[i-1]['optType']='录入';
+                    }
                 }
             }
             this.setState({
@@ -255,6 +268,47 @@ class LeftLayout extends React.Component{
 
     handleTableChange(pagination){
         this.pagination = pagination;
+        if(this.state.pageChangeFlag){
+            axios({
+                url: `${this.props.url.eqMaintenanceDataEntry.page}`,
+                method:'get',
+                headers:{
+                    'Authorizatiton':this.url.Authorization},
+                params:{
+                    deviceName: this.clickdeviceName,
+                    condition:this.state.searchContent2,
+                    size:pagination.pageSize,
+                    page:pagination.current
+                },}
+            ).then((data)=>{
+                console.log('sssssssssss')
+                const result = data.data.data
+                console.log(result)
+                this.pagination.total=result?result.total:0;
+                this.pagination.current=result.page;
+                console.log('------------------')
+                console.log(result.page)
+                console.log('------------------')
+                if(result&&result.list){
+                    for(let i=1;i<=result.list.length;i++){
+                        result.list[i-1]['index']=(result.page-1)*10+i;
+                        console.log(result.page)
+                        console.log(result.list[i-1]['index'])
+                        if(result.list[i-1]['optType']===0)
+                        {
+                            result.list[i-1]['optType']='勾选';
+                        }
+                        if(result.list[i-1]['optType']===1){
+                            result.list[i-1]['optType']='录入';
+                        }
+                    }
+                }
+                this.setState({
+                    datasource:result.list
+                })
+            }).catch(()=>{
+                message.info('获取表格失败，请联系管理员！')
+            });}else{
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.page}`,
             method:'get',
@@ -293,7 +347,7 @@ class LeftLayout extends React.Component{
             })
         }).catch(()=>{
             message.info('获取表格失败，请联系管理员！')
-        });
+        });}
     }
 
     searchContentChange=(e) =>{

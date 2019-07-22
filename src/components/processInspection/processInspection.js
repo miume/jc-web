@@ -112,6 +112,7 @@ class ProcessInspection extends React.Component{
           key:'commonBatchNumber.id',
           align:'left',
           render: (text,record) => {
+
               const status = record.commonBatchNumber.status;
               const deleteFlag = home.judgeOperation(this.operation,'DELETE');
               const editorFlag = home.judgeOperation(this.operation,'UPDATE')
