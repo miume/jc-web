@@ -5,7 +5,7 @@ import {
     Button, Table, Popconfirm, Divider, Pagination, Form, Input, Row, Col, Select, Modal, Icon, message} from 'antd';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
-import SearchCell from '../BlockQuote/search';
+import SearchCell from './searchCell';
 import home from '../commom/fns'
 import Mmodal from './mmodal'
 import "./eqMaintenanceDataEntry.css"
@@ -351,7 +351,7 @@ class Right extends React.Component{
                                  flag={home.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                                fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
+                                fetch={this.props.ffetch} flag={home.judgeOperation(this.operation,'QUERY')} clickdeviceName={this.props.clickdeviceName}/>
 
                     <Table rowKey={record => record.code}
                            rowSelection={rowSelection}
