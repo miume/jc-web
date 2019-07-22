@@ -17,9 +17,14 @@ class EqMaintenancePlan extends React.Component{
         super(props)
         this.state={
             deviceMaintenancePlansDetails:[],
-            MaintenanceType:[],
-            detailNum:'',
+
+
             rightTableData: [],
+
+            MaintenanceType:[],
+            deviceName:'',
+            Opt_type:'',
+            detailNum:'',
 
             depCode: 2,
             depName:'铜官制造一、二部-锂电一',
@@ -67,6 +72,7 @@ class EqMaintenancePlan extends React.Component{
                             depCode={this.state.depCode}
                             depName={this.state.depName}
                             getMaintType={this.getMaintType}
+                            MaintenanceType={this.state.MaintenanceType}
                             getDevice={this.getDevice}
                             //四个更新表格的方法
                             getTableData={this.getTableData}
@@ -81,8 +87,11 @@ class EqMaintenancePlan extends React.Component{
                             depName={this.state.depName}
                             getTableData={this.getTableData}
                             getMaintType={this.getMaintType}
+                            MaintenanceType={this.state.MaintenanceType}
                             getDevice={this.getDevice}
                             Device={this.state.Device}
+                            deviceName={this.state.deviceName}
+                            Opt_type={this.state.Opt_type}
                             // handleTableChange={this.handleTableChange}
                             handleDel={this.handleDel}
                             pagination={this.pagination}
@@ -110,11 +119,15 @@ class EqMaintenancePlan extends React.Component{
             header:{
                 'Authorization': this.url.Authorization,
             },
-            params:params
+            params:params,
         }).then((data)=>{
             const res=data.data.data;
             if(res){
-                this.setState({MaintenanceType:res})
+                this.setState({
+                    MaintenanceType:res,
+                    deviceName:res.deviceName,
+                    Opt_type:res.Opt_type,
+                })
                 console.log(res)
             }else{
                 message.info("未检测到保养计划")
@@ -140,6 +153,7 @@ class EqMaintenancePlan extends React.Component{
                         return value.title !== familiar;
                     })){
                         DevicetreeData.push({
+                            key:res[i].code,
                             title:res[i].deviceName,
                             value:res[i].deviceName,
                             children:[],
@@ -152,6 +166,7 @@ class EqMaintenancePlan extends React.Component{
                     {
                         if(DevicetreeData[i].value===res[j].deviceName){
                             DevicetreeData[i].children.push({
+                                key:res[j].code,
                                 title:res[j].fixedassetsCode,
                                 value:res[j].deviceName+'/#'+res[j].fixedassetsCode,
                                 children: [],
@@ -236,7 +251,7 @@ class EqMaintenancePlan extends React.Component{
                 condition:value,
                 statusId:parseInt(this.state.selectContent),
                 deptId: parseInt(this.state.depCode),
-            })
+            },this.state.depName)
         })
         ;
     }
@@ -245,7 +260,7 @@ class EqMaintenancePlan extends React.Component{
     searchReset = () => {
         this.getTableData({
             deptId: parseInt(this.state.depCode),
-        })
+        },this.state.depName)
     }
 }
 
