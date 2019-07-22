@@ -285,7 +285,6 @@ class Add extends Component {
         if(this.props.comFlag){
             delete deviceDocumentMain.keyFlag
         }
-        console.log(deviceDocumentMain)
         const startdate = this.getNowFormatDate()
         // 调用保存函数
         if (deviceFlag && newRowFlag) {
@@ -306,8 +305,6 @@ class Add extends Component {
                     arrValue: packArrValue,
                     deviceDocumentUnit: deviceDocumentMain
                 };
-                console.log('22222')
-                console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.addUnit}`,
                     method: 'post',

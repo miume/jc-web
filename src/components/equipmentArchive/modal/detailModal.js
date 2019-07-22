@@ -173,7 +173,7 @@ class DetailModal extends React.Component {
                         }
                     </Col>
                 </Row>
-                <div className="eq-addModal-newRow">
+                <div className="eq-comModal-newRow">
                     {
                         this.props.newRowData ? this.props.newRowData.map((m, index) => {
                             return (

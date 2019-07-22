@@ -178,7 +178,6 @@ class Fittings extends React.Component {
             url=`${this.props.url.equipmentArchive.addMainAcc}`
         }
         // const saveData = this.state.saveData
-        console.log(saveData)
         axios({
             url: url,
             method: 'post',
@@ -316,7 +315,6 @@ class Fittings extends React.Component {
     }
 
     editSave = (value) => {
-        console.log(value)
         var url='';
         // TODO 调用更新接口
         if(this.props.comFlag){
