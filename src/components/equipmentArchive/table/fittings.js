@@ -317,7 +317,31 @@ class Fittings extends React.Component {
 
     editSave = (value) => {
         console.log(value)
+        var url=''
         // TODO 调用更新接口
+        if(this.props.comFlag){
+            console.log("com----------")
+            url=`${this.props.url.equipmentArchive.updateUnitAccessory}`
+
+        }else{
+            console.log("----------")
+            url=`${this.props.url.equipmentArchive.updateMainAccessory}`
+        }
+        axios({
+            url:url,
+            method:'put',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data:value
+        }).then((data)=>{
+            message.info(data.data.message);
+            if(data.data.code===0){
+                this.fetch();
+            }
+        }).catch(()=>{
+            message.info('更新失败，请联系管理员！');
+        })
     }
 }
 
