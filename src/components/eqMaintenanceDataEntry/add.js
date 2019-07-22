@@ -18,7 +18,6 @@ class Add extends React.Component {
                 maintenanceContent: '',
                 optType: 0,
                 maintenanceFrequency: '',
-            newRowData:[],
         }
         this.handleAdd = this.handleAdd.bind(this)
         this.onCanCel = this.onCanCel.bind(this)
@@ -26,41 +25,36 @@ class Add extends React.Component {
         this.handleSave = this.handleSave.bind(this)
         this.onInputChange=this.onInputChange.bind(this)
         this.handleChange2=this.handleChange2.bind(this)
+        this.setnull = this.setnull.bind(this)
     }
+    componentDidMount() {
+        this.setState({deviceName:this.props.clickdeviceName})
+    }
+
     handleAdd = () => {
         this.setState({visible: true})
     }
     handleSave = () => {
+        this.setState({
+            visible:false,
+        })
         console.log(this.state.deviceName)
         console.log(this.state.maintenanceItems)
         console.log(this.state.maintenanceContent)
         console.log(this.state.optType)
         console.log(this.state.maintenanceFrequency)
-        this.setState({visible:false})
-        var newRowData=this.state.newRowData;
-        var newRowFlag = true;
-        for (var i = 0; i < newRowData.length; i++) {
-            var arr = newRowData[i]
-            if (arr.name === '' || arr.value === '') {
-                newRowFlag = false;
-                break;
-            }
-        }
-        var ooptType=0;
-        if(this.state.OptType=== '0'){
-            ooptType=0;
-        }else{
-            ooptType=1;
-        }
-        if(ooptType === 1)
-        var addData = {
-            deviceName:this.state.deviceName,
-            maintenanceContent:this.state.maintenanceContent,
-            maintenanceFrequency:this.state.maintenanceFrequency,
-            maintenanceItems: this.state.maintenanceItems,
-            optType :ooptType,
-    }
+        console.log(this.props.clickdeviceName)
 
+
+    var addData = {
+        deviceName: this.state.deviceName,
+        maintenanceContent: this.state.maintenanceContent,
+        maintenanceFrequency: this.state.maintenanceFrequency,
+        maintenanceItems: this.state.maintenanceItems,
+        optType: this.state.optType,
+    }
+        console.log(addData)
+        if(addData.deviceName&&addData.maintenanceContent&&addData.maintenanceItems){
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.addOne}`,
             method: 'post',
@@ -70,9 +64,22 @@ class Add extends React.Component {
             data: addData,
             type: 'json'
         }).then((data) => {
-            this.props.ffech(this.props.clickdeviceName)
+            // this.props.fetch()
+            this.props.ffetch(this.props.clickdeviceName)
             message.info(data.data.message);
-        })
+            this.setState({
+                deviceName:'',
+                maintenanceItems: '',
+                maintenanceContent: '',
+                optType: 0,
+                maintenanceFrequency: '',
+            })
+        }).catch(()=>{
+            message.info('新增失败，请联系管理员！')
+        });}
+        else{
+            message.info('不能有空项出现')
+        }
     }
     onCanCel = () => {
         this.setState({visible: false})
@@ -98,10 +105,12 @@ class Add extends React.Component {
         let InputName=e.target.name;
         let InputValue=e.target.value;
         this.setState({
-            [InputName] : InputValue,
-        })
+            [InputName] : InputValue,})
     }
 
+    setnull=(e)=>{
+        e.target.value=null;
+    }
     render() {
         return (
             <span>
@@ -130,10 +139,10 @@ class Add extends React.Component {
                             设备名称:
                         </Col>
                         <Col span={10}>
-                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2}>
+                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2}  >
                                 {
-                                    this.props.deviceName.map(e => {
-                                        return (<option value={e}> {e}</option>)
+                                    this.props.deviceDatas.map(e => {
+                                        return (<option value={e.deviceName}> {e.deviceName}</option>)
                                     })
                                 }
                             </Select>
@@ -144,7 +153,7 @@ class Add extends React.Component {
                         </Col>
                         <Col span={10}>
                             <Input size="small" placeholder="请输入保养项目"   style={{width:"313px"}}key='2'
-                                     name="maintenanceItems" onChange={this.onInputChange}/>
+                                     name="maintenanceItems" onChange={this.onInputChange}  value={this.state.maintenanceItems}/>
                         </Col>
                     </Row>
 
@@ -154,14 +163,14 @@ class Add extends React.Component {
                             保养内容:
                         </Col>
                         <Col span={10} style={{paddingRight:"20px"}} >
-                            <Input size="small" placeholder="请输入保养内容"  key='3' name="maintenanceContent" onChange={this.onInputChange}/>
+                            <Input size="small" placeholder="请输入保养内容"  key='3' name="maintenanceContent" onChange={this.onInputChange} value={this.state.maintenanceContent}/>
                         </Col>
 
                         <Col span={1.5} style={{paddingTop:"5px"}}>
                             操作类型:
                         </Col>
                         <Col span={10}>
-                            <Select   onChange={this.handleChange} name="optType" style={{ width:"313px"}}>
+                            <Select   defaultValue="勾选" onChange={this.handleChange} name="optType" style={{ width:"313px"}}>
                                 <Option value='0'>勾选</Option>
                                 <Option value='1'>录入</Option>
                             </Select>
@@ -174,7 +183,7 @@ class Add extends React.Component {
                             &nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;&nbsp;
                         </Col>
                         <Col span={10} style={{paddingRight:"20px"}}>
-                            <Input size="small" placeholder="请输入保养内容"  key='4' name="maintenanceFrequency"onChange={this.onInputChange}/>
+                            <Input size="small" placeholder="请输入保养内容"  key='4' name="maintenanceFrequency"onChange={this.onInputChange} value={this.state.maintenanceFrequency}/>
                         </Col>
                     </Row>
                 </div>

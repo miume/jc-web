@@ -25,6 +25,7 @@ class DetailofMain extends React.Component{
         detailNum:'',
     };
     handleMaintanceDetail=()=>{
+
         this.setState({detailVisible:true})
         axios({
                 url:`${this.url.DeviceMaintenancePlan.maintenancePlanDetail}/${this.props.editorRecord.code}`,

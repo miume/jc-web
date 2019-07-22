@@ -5,7 +5,7 @@ import {
     Button, Table, Popconfirm, Divider, Pagination, Form, Input, Row, Col, Select, Modal, Icon, message} from 'antd';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
-import SearchCell from '../BlockQuote/search';
+import SearchCell from './searchCell';
 import home from '../commom/fns'
 import Mmodal from './mmodal'
 import "./eqMaintenanceDataEntry.css"
@@ -82,7 +82,6 @@ class Right extends React.Component{
             visible:false,
         }
         // this.fetch = this.fetch.bind(this);
-        this.handleTableChange = this.handleTableChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancle = this.cancle.bind(this);
@@ -94,24 +93,24 @@ class Right extends React.Component{
         this.edit = this.edit.bind(this)
         this.deleteCancel = this.deleteCancel.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
-        this.pagination = {
-            total:this.props.datasource.length,
-            showSizeChanger: true,
-            itemRender(current, type, originalElement){
-                if (type === 'prev') {
-                    return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
-                }
-                if (type === 'next') {
-                    return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
-                }
-                return originalElement;
-            },
-            showTotal(total){
-                return `共${total}条记录`
-            },
+        // this.pagination = {
+        //     total:this.props.datasource.length,
+        //     showSizeChanger: true,
+        //     itemRender(current, type, originalElement){
+        //         if (type === 'prev') {
+        //             return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
+        //         }
+        //         if (type === 'next') {
+        //             return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
+        //         }
+        //         return originalElement;
+        //     },
+        //     showTotal(total){
+        //         return `共${total}条记录`
+        //     },
+        //
+        // };
 
-        };
-        ;
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
@@ -158,10 +157,15 @@ class Right extends React.Component{
                 const editable = this.isEditing(record);
                 return (
                     <span>
-                        <Mmodal clickdeviceName={this.props.clickdeviceName} />
+                        <Mmodal clickdeviceName={this.props.clickdeviceName} code={record.code} url={this.props.url} ffetch={this.props.ffetch } fetch={this.props.fetch}
+                                maintenanceContent={record.maintenanceContent}
+                                maintenanceFrequency={record.maintenanceFrequency}
+                                maintenanceItems={record.maintenanceItems}
+                                optType={record.optType}
+                        />
                         {home.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
-                        <span className={home.judgeOperation(this.operation,'DELETE')?'':'hide'}><Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
-                <span className='blue'><Icon type="delete" />删除</span>
+                        <span className={home.judgeOperation(this.operation,'DELETE')?'':'hide'}><Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
+                <span className='blue'>删除</span>
                 </Popconfirm>
               </span>
                   </span>
@@ -237,63 +241,60 @@ class Right extends React.Component{
     }
     //实现checkbox全选
     /**table变化时 */
-    handleTableChange(pagination){
-        this.pagination = pagination;
-        // this.fetch({
-        //     size:pagination.pageSize,
-        //     page:pagination.current,
-        // })
-        }
 
     /**批量删除弹出框确认函数 */
-    deleteByIds() {
+    deleteByIds =() =>  {
         const ids = this.state.selectedRowKeys;
-        // axios({
-        //     url:`${this.url.procedure.procedureTestRecord}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.url.Authorization
-        //     },
-        //     params:{
-        //         batchNumberIds:ids.toString()
-        //     }
-        //     //   data:ids,
-        //     //   type:'json'
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     if(data.data.code===0){
-        //         this.fetch({
-        //             size: this.pagination.pageSize,
-        //             page: this.pagination.current,
-        //             orderField: 'id',
-        //             orderType: 'desc',
-        //         });
-        //     }
-        // }).catch(()=>{
-        //     message.info('删除错误，请联系管理员！')
-        // })
+        console.log(ids)
+        axios({
+            url:`${this.props.url.eqMaintenanceDataEntry.deleteIds}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+              data:ids,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            if(data.data.code===0){
+                this.props.ffetch(this.props.clickdeviceName)
+                // this.fetch({
+                //     size: this.pagination.pageSize,
+                //     page: this.pagination.current,
+                //     orderField: 'id',
+                //     orderType: 'desc',
+                // });
+            }
+        }).catch(()=>{
+            message.info('删除错误，请联系管理员！')
+        })
     }
     /**取消批量删除 */
     cancle() {
-        this.setState({
-            selectedRowKeys:[]
-        })
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+            });
+        }, 1000);
     }
     /**实现全选 */
-    onSelectChange(selectedRowKeys) {
-        this.setState({ selectedRowKeys:selectedRowKeys });
+    onSelectChange=(selectedRowKeys)=> {
+        this.setState({ selectedRowKeys });
+        console.log(this.state.selectedRowKeys)
     }
     /**处理单条记录删除 */
     handleDelete=(id)=>{
         console.log(id)
         axios({
-            url:`${this.url.eqMaintenanceDataEntry.maintenance}/${id}`,
+            url:`${this.props.url.eqMaintenanceDataEntry.maintenance}/${id}`,
             method:'Delete',
             headers:{
-                'Authorization':this.url.Authorization
+                'Authorization':this.props.url.Authorization
             },
         }).then((data)=> {
             message.info(data.data.message);
+            // this.props.fetch()
+            this.props.ffetch(this.props.clickdeviceName)
             // this.fetch({
             //     pageSize: this.state.pagination.pageSize,
             //     pageNumber: this.state.pagination.current,
@@ -303,29 +304,6 @@ class Right extends React.Component{
         })
         }
 
-
-
-
-
-        // axios({
-        //     url:`${this.url.procedure.procedureTestRecord}/${key}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     if(data.data.code===0){
-        //         this.fetch({
-        //             size: this.pagination.pageSize,
-        //             page: this.pagination.current,
-        //             orderField: 'id',
-        //             orderType: 'desc',
-        //         });
-        //     }
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // })
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/dataEntry'});
@@ -340,42 +318,12 @@ class Right extends React.Component{
     }
     /**绑定搜索事件 */
     searchEvent(){
-        const testItemName=this.state.searchContent;
+        const condition=this.state.searchContent;
         // // console.log(this.pagination);
-        // axios({
-        //     url:`${this.url.testItems.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.url.Authorization
-        //     },
-        //     params:{
-        //         size:this.pagination.pageSize,
-        //         //page:this.pagination.current,
-        //         testItemName:testItemName
-        //     },
-        //     type:'json'
-        // })
-        //     .then((data)=>{
-        //         const res=data.data.data;
-        //         this.pagination.total=res.total?res.total:0;
-        //         this.pagination.current=res.pageNum;
-        //         if(res&&res.list){
-        //             for(let i=1;i<=res.list.length;i++){
-        //                 res.list[i-1]['index']=res.prePage*10+i;
-        //             }
-        //             this.setState({
-        //                 dataSource:res.list,
-        //                 searchContent:''
-        //             });
-        //         }
-        //     })
-        //     .catch(()=>{
-        //         message.info('搜索失败，请联系管理员！')
-        //     });
+        this.props.ffetch3(this.props.clickdeviceName,this.state.searchContent)
     }
     /**通过id查询详情 */
     render() {
-        this.url=this.props.url
         /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
         this.current=this.props.current
 
@@ -391,32 +339,31 @@ class Right extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange:this.onSelectChange,
-            // getCheckboxProps:record=>({
-            //     disabled:record.maintenance.status!==-1&&record.maintenance.status!==3
-            // })
+
         };
 
         const addFlag = home.judgeOperation(this.operation,'SAVE')
         this.datasource=this.props.datasource
         return (
-                <div style={{padding:'15px' }}>
-                    <Add deviceName={this.props.deviceName}  url={this.props.url} ffech={this.props.ffech} clickdeviceName={this.props.clickdeviceName}/>
+                <div >
+                    <Add deviceDatas={this.props.deviceDatas}  url={this.props.url} ffetch={this.props.ffetch} clickdeviceName={this.props.clickdeviceName} fetch={this.props.fetch}/>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
                                  flag={home.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                                fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
+                                fetch={this.props.ffetch} flag={home.judgeOperation(this.operation,'QUERY')} clickdeviceName={this.props.clickdeviceName}/>
 
-                    <Table rowKey={record => record.id}
+                    <Table rowKey={record => record.code}
                            rowSelection={rowSelection}
                            components={components}
                            columns={this.columns}
                            dataSource={this.datasource}
-                           pagination={this.pagination}
-                           onChange={this.handleTableChange}
+                           pagination={this.props.pagination}
+                           onChange={this.props.handleTableChange}
                            size="small"
                            bordered
-                           scroll={{ y: 400 }}
+                           scroll={{ y: 380 }}
+                           style={{paddingTop:'5px'}}
                     />
                 </div>
         );

@@ -67,7 +67,7 @@ class EARightBottom extends Component {
                     comFlag={this.props.comFlag}
                     rowSelection={rowSelection}
                     dataSource={this.props.dataSource}
-
+                    fetch={this.props.fetch}
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                 />

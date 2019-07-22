@@ -1,12 +1,11 @@
 import React from "react";
-import {Layout, Menu, Breadcrumb, Icon, Card, Select, Input, Row, Col, Table} from 'antd';
+import {Layout, Menu, Breadcrumb, Icon, Card, Select, Input, Row, Col, Table, message} from 'antd';
 import  "./eqMaintenanceDataEntry.css"
 import Eqblock from "./eqblock"
 import axios from "axios";
 import home from '../commom/fns'
 import SearchCell from '../BlockQuote/search';
 import Right from './right'
-
 class LeftLayout extends React.Component{
     operation
 
@@ -17,6 +16,9 @@ class LeftLayout extends React.Component{
             pageChangeFlag:0,
             datasource:[],
             searchContent:'',
+            firstdeviceName:'',
+            deviceDatas: [],
+            searchContent2:''
         }
         this.clickdeviceName=''
         this.searchEvent=this.searchEvent.bind(this)
@@ -24,41 +26,78 @@ class LeftLayout extends React.Component{
         this.changeeqname=this.changeeqname.bind(this)
         this.ffetch=this.ffetch.bind(this)
         this.searchContentChange=this.searchContentChange.bind(this)
+        this.handleTableChange=this.handleTableChange.bind(this)
+        this.ffetch3=this.ffetch3.bind(this)
+        this.pagination = {
+            showSizeChanger: true,
+            itemRender(current, type, originalElement){
+                if (type === 'prev') {
+                    return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
+                }
+                if (type === 'next') {
+                    return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
+                }
+                return originalElement;
+            },
+            showTotal(total){
+                return `共${total}条记录`
+            },
+
+        };
+
     }
     componentDidMount() {
         this.fetch( );
+        // this.ffetch(this.state.firstdeviceName)
     }
 
     searchEvent=()=>{
         console.log(this.state.searchContent)
-            axios({
-                url: `${this.url.eqMaintenanceDataEntry.getAllByDeviceName}`,
-                method:'get',
-                headers:{
-                    'Authorization':this.url.Authorization
-                },
-                params:{
-                    deviceName:this.state.searchContent
-                },
-            }).then((data)=>{
-                const res=data.data.data;
-                console.log(res);
-                // this.pagination.total=res.total?res.total:0;
-                // this.pagination.current=res.pageNum;
-                if(res){
-                    // for(var i = 1; i<=res.list.length; i++){
-                    //     res.list[i-1]['index']=res.prePage*10+i;
-                    // }//是序号从1开始
-                    this.setState({
-                        loading:false,
-                        deviceName:res,
-                    },()=>{
-                        console.log(this.state.deviceName)
-                    });
-
+        axios({
+            url: `${this.url.eqMaintenanceDataEntry.getAllByDeviceName}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{
+                deviceName:this.state.searchContent
+            },
+        }).then((data)=>{
+            const res1=data.data.data;
+            console.log(res1);
+            // this.pagination.total=res.total?res.total:0;
+            // this.pagination.current=res.pageNum;
+            if(res1){
+                // for(var i = 1; i<=res.list.length; i++){
+                //     res.list[i-1]['index']=res.prePage*10+i;
+                var deviceDatas = []
+                for(var i=0; i<res1.length; i++){
+                    if(i===0){
+                        deviceDatas.push({
+                            deviceName: res1[i],
+                            colorFlag:true
+                        })
+                    }else{
+                        deviceDatas.push({
+                            deviceName: res1[i],
+                            colorFlag:false
+                        })
+                    }
                 }
-            });
+                // }//是序号从1开始
+                this.setState({
+                    loading:false,
+                    deviceDatas:deviceDatas,
+                });
+                this.clickdeviceName=res1[0]
+                this.ffetch(this.clickdeviceName)
 
+                console.log('22222222')
+
+            }
+        }).catch(()=>{
+            message.info('刷新列表失败，请联系管理员！')
+        });
     }
      fetch=(params = {})=>{
         axios({
@@ -78,28 +117,60 @@ class LeftLayout extends React.Component{
             if(res){
                 // for(var i = 1; i<=res.list.length; i++){
                 //     res.list[i-1]['index']=res.prePage*10+i;
+                var deviceDatas = []
+                for(var i=0; i<res.length; i++){
+                    if(i===0){
+                        deviceDatas.push({
+                            deviceName: res[i],
+                            colorFlag:true
+                        })
+                    }else{
+                        deviceDatas.push({
+                            deviceName: res[i],
+                            colorFlag:false
+                        })
+                    }
+                }
                 // }//是序号从1开始
                 this.setState({
                     loading:false,
-                    deviceName:res,
+                    deviceDatas:deviceDatas,
                 });
-                console.log('22222222')
+                this.clickdeviceName=res[0]
+                this.ffetch(this.clickdeviceName)
+
+                //
 
             }
+        }).catch(()=>{
+            message.info('刷新列表失败，请联系管理员！')
         });
     }
     changeeqname=( eqname)=>{
         this.clickdeviceName=eqname;
-        {this.ffetch(eqname)}
+        console.log(this.clickdeviceName)
+        var deviceDatas = this.state.deviceDatas
+        for (var i=0; i< deviceDatas.length; i++){
+            if(deviceDatas[i].deviceName===eqname){
+                deviceDatas[i].colorFlag = true
+            }else{
+                deviceDatas[i].colorFlag = false
+            }
+        }
+        this.setState({
+            deviceDatas:deviceDatas
+        },()=>{
+            this.ffetch(eqname)
+        })
     }
     ffetch=(clickdeviceName)=>{
-        // if(flag)
+        // if(flag)s
         //     this.setState({
         //         pageChangeFlag:0,
         //         searchContent:''
         //     })
         axios({
-            url: `${this.props.url.eqMaintenanceDataEntry.getAll}`,
+            url: `${this.props.url.eqMaintenanceDataEntry.page}`,
             method:'get',
             headers:{
                 'Authorizatiton':this.url.Authorization},
@@ -107,22 +178,32 @@ class LeftLayout extends React.Component{
                 deviceName:clickdeviceName
             },}
         ).then((data)=>{
-            console.log('sssssssssss')
+            // console.log('sssssssssss')
             const result = data.data.data
-            console.log(result)
-            // this.pagination.total=result?result.total:0;
-            // this.pagination.current=result.pageNum;
-            console.log('------------------')
-            // console.log(result.pageNum)
-            console.log('------------------')
-            // if(result&&result.list){
-            //     for(let i=1;i<=result.list.length;i++){
-            //         result.list[i-1]['id']=result.prePage*10+i;
-            //     }
-            // }
+            this.pagination.total=result?result.total:0;
+            this.pagination.current=result.page;
+            if(result&&result.list){
+                for(let i=1;i<=result.list.length;i++){
+                    result.list[i-1]['index']=(result.page-1)*10+i;
+                    if(result.list[i-1]['optType']===0)
+                    {
+                        result.list[i-1]['optType']='勾选';
+                    }
+                    if(result.list[i-1]['optType']===1){
+                        result.list[i-1]['optType']='录入';
+                    }
+
+                }
+            }
+
             this.setState({
-                datasource:result,
+                datasource:result.list
             });
+
+
+
+
+
             // const res = data.data.data;
             // if(res&&res.list)
             // {
@@ -135,13 +216,147 @@ class LeftLayout extends React.Component{
             //         dataSource:res.list,
             //     })
             // }
+        }).catch(()=>{
+            message.info('获取表格失败，请联系管理员！')
         });
+    }
+    ffetch3=( clickdeviceName,searchContent)=>{
+        this.setState({
+            pageChangeFlag:1,
+            searchContent2:searchContent
+        })
+        axios({
+            url: `${this.props.url.eqMaintenanceDataEntry.page}`,
+            method:'get',
+            headers:{
+                'Authorizatiton':this.props.url.Authorization
+            },
+            params:{
+                deviceName: clickdeviceName,
+                condition: searchContent
+            },}
+        ).then((data)=>{
+            console.log('sssssssssss')
+            const result = data.data.data
+            console.log(result)
+            this.pagination.total=result?result.total:0;
+            this.pagination.current=result.page;
+            console.log('------------------')
+            console.log(result.page)
+            console.log('------------------')
+            if(result&&result.list){
+                for(let i=1;i<=result.list.length;i++){
+                    result.list[i-1]['index']=(result.page-1)*10+i;
+                    console.log(result.page)
+                    console.log(result.list[i-1]['index'])
+
+                    if(result.list[i-1]['optType']===0)
+                    {
+                        result.list[i-1]['optType']='勾选';
+                    }
+                    if(result.list[i-1]['optType']===1){
+                        result.list[i-1]['optType']='录入';
+                    }
+                }
+            }
+            this.setState({
+                datasource:result.list
+            })
+        }).catch(()=>{
+            message.info('搜索失败，请联系管理员！')
+        });
+    }
+
+    handleTableChange(pagination){
+        this.pagination = pagination;
+        if(this.state.pageChangeFlag){
+            axios({
+                url: `${this.props.url.eqMaintenanceDataEntry.page}`,
+                method:'get',
+                headers:{
+                    'Authorizatiton':this.url.Authorization},
+                params:{
+                    deviceName: this.clickdeviceName,
+                    condition:this.state.searchContent2,
+                    size:pagination.pageSize,
+                    page:pagination.current
+                },}
+            ).then((data)=>{
+                console.log('sssssssssss')
+                const result = data.data.data
+                console.log(result)
+                this.pagination.total=result?result.total:0;
+                this.pagination.current=result.page;
+                console.log('------------------')
+                console.log(result.page)
+                console.log('------------------')
+                if(result&&result.list){
+                    for(let i=1;i<=result.list.length;i++){
+                        result.list[i-1]['index']=(result.page-1)*10+i;
+                        console.log(result.page)
+                        console.log(result.list[i-1]['index'])
+                        if(result.list[i-1]['optType']===0)
+                        {
+                            result.list[i-1]['optType']='勾选';
+                        }
+                        if(result.list[i-1]['optType']===1){
+                            result.list[i-1]['optType']='录入';
+                        }
+                    }
+                }
+                this.setState({
+                    datasource:result.list
+                })
+            }).catch(()=>{
+                message.info('获取表格失败，请联系管理员！')
+            });}else{
+        axios({
+            url: `${this.props.url.eqMaintenanceDataEntry.page}`,
+            method:'get',
+            headers:{
+                'Authorizatiton':this.url.Authorization},
+            params:{
+                deviceName: this.clickdeviceName,
+                size:pagination.pageSize,
+                page:pagination.current
+            },}
+        ).then((data)=>{
+            console.log('sssssssssss')
+            const result = data.data.data
+            console.log(result)
+            this.pagination.total=result?result.total:0;
+            this.pagination.current=result.page;
+            console.log('------------------')
+            console.log(result.page)
+            console.log('------------------')
+            if(result&&result.list){
+                for(let i=1;i<=result.list.length;i++){
+                    result.list[i-1]['index']=(result.page-1)*10+i;
+                    console.log(result.page)
+                    console.log(result.list[i-1]['index'])
+                    if(result.list[i-1]['optType']===0)
+                    {
+                        result.list[i-1]['optType']='勾选';
+                    }
+                    if(result.list[i-1]['optType']===1){
+                        result.list[i-1]['optType']='录入';
+                    }
+                }
+            }
+            this.setState({
+                datasource:result.list
+            })
+        }).catch(()=>{
+            message.info('获取表格失败，请联系管理员！')
+        });}
     }
 
     searchContentChange=(e) =>{
         const value = e.target.value;
         this.setState({searchContent:value});
-        if(this.searchContent===null){
+        console.log(this.state.searchContent)
+        if(value===null){
+            console.log('清空')
             this.fetch();
         }
     }
@@ -168,9 +383,9 @@ class LeftLayout extends React.Component{
                                 </Col>
                             </Row>
                             {
-                                this.state.deviceName.map(e=> {
-                                    console.log(e)
-                                return <Eqblock deviceName={e} changeeqname={this.changeeqname} />
+                                this.state.deviceDatas.map(e=> {
+                                    // console.log(e)
+                                return <Eqblock  colorFlag={e.colorFlag?"ed-blue":"ed-grey"} deviceName={e.deviceName} changeeqname={this.changeeqname} />
                             })
                             }
 
@@ -184,12 +399,15 @@ class LeftLayout extends React.Component{
                         <Right url={this.url}
                                operation={this.operation}
                                current={this.current}
-                               deviceName={this.state.deviceName}
+                               deviceDatas={this.state.deviceDatas}
                                datasource={this.state.datasource}
                                clickdeviceName={this.clickdeviceName}
-                               ffech={this.ffetch}
+                               ffetch={this.ffetch}
+                               fetch={this.fetch}
+                               pagination={this.pagination}
+                               handleTableChange={this.handleTableChange}
+                               ffetch3={this.ffetch3}
                                />
-
                     </div>
                 </div>
         )

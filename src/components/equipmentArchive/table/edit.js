@@ -29,6 +29,7 @@ class Edit extends React.Component {
         this.addRowFun = this.addRowFun.bind(this)
         this.handleSave = this.handleSave.bind(this)
         this.handleReduceRow=this.handleReduceRow.bind(this)
+        this.getNowFormatDate = this.getNowFormatDate.bind(this)
     }
 
     render() {
@@ -55,6 +56,7 @@ class Edit extends React.Component {
                         ]}
                     >
                     <DetailModal
+                        comFlag={this.props.comFlag}
                         editFlag={false}
                         deviceDocumentMain={this.state.deviceDocumentMain}
                         newRowData={this.state.newRowData}
@@ -94,13 +96,35 @@ class Edit extends React.Component {
             deviceFlag = false;
             returnArr.push("固定资产编码必填")
         }
+        if(deviceDocumentMain.deviceName){
+            var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥\\\\……&*（）——|{}【】‘；：”“'。，、？]")
+            for (var ii = 0; ii < deviceDocumentMain.deviceName.length; ii++) {
+                if(pattern.test(deviceDocumentMain.deviceName.substr(ii, 1))){
+                    if(this.props.comFlag){
+                        message.info("部件名称存在非法字符，请重新输入部件名称")
+                    }else{
+                        message.info("设备名称存在非法字符，请重新输入设备名称")
+                    }
+                    return
+                }
+            }
+        }
         if (!deviceDocumentMain.deviceName || deviceDocumentMain.deviceName === '') {
             deviceFlag = false;
-            returnArr.push("设备名称必填")
+            if(this.props.comFlag){
+                returnArr.push("部件名称必填")
+            }else{
+                returnArr.push("设备名称必填")
+            }
         }
-        if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
-            deviceFlag = false;
-            returnArr.push("设备状态必选")
+        if(!this.props.comFlag){
+            if (!deviceDocumentMain.statusCode || deviceDocumentMain.statusCode === '') {
+                deviceDocumentMain.statusCode = this.state.statusCodeInit;
+                if (this.state.statusCodeInit === ''){
+                    message.info("请选择设备状态")
+                    return
+                }
+            }
         }
         if (!deviceFlag) {
             var returnString = "";
@@ -113,7 +137,10 @@ class Edit extends React.Component {
         if (!newRowFlag) {
             message.info("新增属性需要填写完整")
         }
-
+        if(this.props.comFlag){
+            delete deviceDocumentMain.keyFlag
+        }
+        const startdate = this.getNowFormatDate()
         // 调用保存函数
         if (deviceFlag && newRowFlag) {
             // 组装新增数据格式
@@ -124,38 +151,83 @@ class Edit extends React.Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
-            var addData = {
-                arrName: packArrName,
-                arrValue: packArrValue,
-                deviceDocumentMain: deviceDocumentMain
-            };
-            axios({
-                url: `${this.props.url.equipmentArchive.device}`,
-                method: 'put',
-                headers: {
-                    'Authorization': this.props.url.Authorization
-                },
-                data: addData,
-                // type: 'json'
-            }).then((data) => {
-                const deviceName = this.props.record.deviceName.split('-')[0]
-                this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
-                message.info(data.data.message);
-            }).catch(function () {
-                message.info('编辑失败，请联系管理员！');
-            });
-            this.setState({
-                visible: false,
-                deviceDocumentMain: {},
-                newRowData: [],
-                statusCode: []
-            });
-
+            if (deviceDocumentMain.startdate || deviceDocumentMain.startdate === undefined) {
+                deviceDocumentMain.startdate = startdate;
+            }
+            if(this.props.comFlag){
+                var addData = {
+                    arrName: packArrName,
+                    arrValue: packArrValue,
+                    deviceDocumentUnit: deviceDocumentMain
+                };
+                axios({
+                    url: `${this.props.url.equipmentArchive.updateUnit}`,
+                    method: 'put',
+                    headers: {
+                        'Authorization': this.props.url.Authorization
+                    },
+                    data: addData,
+                    // type: 'json'
+                }).then((data) => {
+                    this.props.fetch({},{})
+                    message.info(data.data.message);
+                }).catch(function () {
+                    message.info('编辑失败，请联系管理员！');
+                });
+                this.setState({
+                    visible: false,
+                    deviceDocumentMain: {},
+                    newRowData: [],
+                    statusCode: []
+                });
+            }else{
+                var addData = {
+                    arrName: packArrName,
+                    arrValue: packArrValue,
+                    deviceDocumentMain: deviceDocumentMain
+                };
+                axios({
+                    url: `${this.props.url.equipmentArchive.device}`,
+                    method: 'put',
+                    headers: {
+                        'Authorization': this.props.url.Authorization
+                    },
+                    data: addData,
+                    // type: 'json'
+                }).then((data) => {
+                    const deviceName = this.props.record.deviceName.split('-')[0]
+                    this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
+                    message.info(data.data.message);
+                }).catch(function () {
+                    message.info('编辑失败，请联系管理员！');
+                });
+                this.setState({
+                    visible: false,
+                    deviceDocumentMain: {},
+                    newRowData: [],
+                    statusCode: []
+                });
+            }
         }
 
 
     };
 
+    getNowFormatDate = () => {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
     handleDeviceDocumentMain = (name, value) => {
         var deviceDocumentMain = this.state.deviceDocumentMain;
         deviceDocumentMain[name] = value;
@@ -207,39 +279,75 @@ class Edit extends React.Component {
         });
     };
     handleEdit = () => {
-        // TODO 获取数据
-        axios({
-            url: `${this.props.url.equipmentArchive.detail}/${this.props.record.code}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res) {
-                const arrName = res.arrName;
-                const arrValue = res.arrValue
-                var newRowData = []
-                for (var i = 0; i < arrName.length; i++) {
-                    newRowData.push({
-                        name: arrName[i],
-                        value: arrValue[i]
-                    })
+        if(this.props.comFlag){
+            axios({
+                url: `${this.props.url.equipmentArchive.unitDetail}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    id: this.props.record.code
                 }
-                this.setState({
-                    visible: true,
-                    newRowData: newRowData,
-                    deviceDocumentMain: res.deviceDocumentMain,
-                    deviceStatus: res.deviceStatus,
-                    deptName: res.deptName,
-                    startdate: res.deviceDocumentMain.startdate
-                })
-            } else {
-                message.info('设备状态为空，请先添加状态！')
-            }
-        }).catch(() => {
-            message.info('设备状态数据存在异常，请联系管理员！')
-        });
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
+                if (res) {
+                    const arrName = res.arrName;
+                    const arrValue = res.arrValue
+                    var newRowData = []
+                    for (var i = 0; i < arrName.length; i++) {
+                        newRowData.push({
+                            name: arrName[i],
+                            value: arrValue[i]
+                        })
+                    }
+                    this.setState({
+                        visible: true,
+                        newRowData: newRowData,
+                        deviceDocumentMain: res.deviceDocumentUnit,
+                        deptName: res.basicInfoDept.name,
+                        startdate: res.deviceDocumentUnit.startdate
+                    })
+                } else {
+                    // message.info('设备状态为空，请先添加状态！')
+                }
+            }).catch(() => {
+                message.info('数据存在异常，请联系管理员！')
+            });
+        }else{
+            axios({
+                url: `${this.props.url.equipmentArchive.detail}/${this.props.record.code}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                }
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
+                if (res) {
+                    const arrName = res.arrName;
+                    const arrValue = res.arrValue
+                    var newRowData = []
+                    for (var i = 0; i < arrName.length; i++) {
+                        newRowData.push({
+                            name: arrName[i],
+                            value: arrValue[i]
+                        })
+                    }
+                    this.setState({
+                        visible: true,
+                        newRowData: newRowData,
+                        deviceDocumentMain: res.deviceDocumentMain,
+                        deviceStatus: res.deviceStatus,
+                        deptName: res.deptName,
+                        startdate: res.deviceDocumentMain.startdate
+                    })
+                } else {
+                    message.info('设备状态为空，请先添加状态！')
+                }
+            }).catch(() => {
+                message.info('设备状态数据存在异常，请联系管理员！')
+            });
+        }
     }
 
 }
