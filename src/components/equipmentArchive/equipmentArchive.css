@@ -115,3 +115,7 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+.eq-comModal-newRow {
+    max-height: 250px;
+    overflow-y: auto;
+}

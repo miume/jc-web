@@ -230,7 +230,6 @@ class EquipmentArchive extends Component {
     }
 
     modifySearchContent = (value) => {
-        console.log(value)
         this.setState({
             searchContent: value
         })

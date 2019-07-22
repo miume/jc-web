@@ -215,14 +215,17 @@ class EARightTable extends Component {
     handleDelete = (code) => {
         if(this.props.comFlag){
             axios({
-                url: `${this.props.url.equipmentArchive.device}/${code}`,
+                url: `${this.props.url.equipmentArchive.deleteUnit}`,
                 method: 'Delete',
                 headers: {
                     'Authorization': this.props.url.Authorization
                 },
+                params:{
+                    code:code
+                }
             }).then((data) => {
                 message.info(data.data.message);
-                this.props.getRightData(this.props.depCode, this.props.deviceName)
+                this.props.fetch({},{})
             }).catch(() => {
                 message.info('删除失败，请联系管理员！');
             });
