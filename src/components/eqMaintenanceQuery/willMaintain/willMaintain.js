@@ -4,9 +4,7 @@ import {message} from "antd";
 class WillMaintain extends React.Component{
     constructor(props) {
         super(props);
-
     }
-
     render() {
         return (
             <div>

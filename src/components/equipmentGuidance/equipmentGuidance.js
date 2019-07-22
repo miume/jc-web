@@ -147,8 +147,7 @@ class Equipment extends React.Component{
     }
     /**获取查询时名称的实时变化 */
     searchContentChange(e){
-        const value = e.target.value;
-        this.setState({searchContent:value});
+        this.setState({searchContent: e.target.value});
     }
     searchEvent(){
         const ope_name = this.state.searchContent;

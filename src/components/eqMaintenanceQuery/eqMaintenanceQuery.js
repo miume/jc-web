@@ -13,10 +13,14 @@ class EqMaintenanceQuery extends React.Component{
         this.returnDataEntry = this.returnDataEntry.bind(this)
         this.returnEquKey = this.returnEquKey.bind(this)
     }
+    getTableData=()=>{
+
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+
 
         return (
             <div>
@@ -24,7 +28,7 @@ class EqMaintenanceQuery extends React.Component{
                 <Tabs onChange={this.returnEquKey} style={{paddingLeft:'15px',paddingRight:'15px'}}>
                     <Tabs.TabPane key={1} tab="待保养">
                         <WillMaintain
-
+                            getTableData={this.getTableData}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={2} tab="已接单">

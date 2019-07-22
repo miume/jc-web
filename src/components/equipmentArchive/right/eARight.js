@@ -14,6 +14,7 @@ class EARight extends Component {
     }
 
     render() {
+        console.log(this.props.rightTopData)
         return (
             <div className="eA-right-top">
                 <Tabs onChange={this.returnEquKey}>
@@ -42,7 +43,8 @@ class EARight extends Component {
     }
 
     // 通过key获取到设备名称
-    renderEquipmentName = data => data.map((item) => {
+    renderEquipmentName = (data) => data.map((item) => {
+        console.log(this.props.rightTopData)
         return (
             <Tabs.TabPane key={item.name} tab={item.name + '(' + item.count + ')'}>
             </Tabs.TabPane>
@@ -56,7 +58,6 @@ class EARight extends Component {
             deviceName: name
         }
         this.props.getTableData(params, {})
-
     };
 
 }
