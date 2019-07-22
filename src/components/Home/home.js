@@ -272,6 +272,13 @@ class Home extends Component {
             equipmentDept:{
                 dept:`${server}/jc/common/dept`
             },
+            /**设备保养*/
+            eqMaintenanceQuery:{
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
+                recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
+                recordDelete:`${server}/jc/common/maintenanceRecord/{id}`,
+
+            },
             /**设备管理设备档案*/
             equipmentArchive:{
                 device:`${server}/jc/common/device`,

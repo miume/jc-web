@@ -16,32 +16,38 @@ class TheTable extends React.Component {
             title: '序号',
             dataIndex: 'num',
             key: 'num',
-            width: '5%',
+            sorter: (a, b) => a.index - b.index,
+            width: '10%',
+            align:'center',
         },
         {
             title: '保养单号',
-            dataIndex: 'list',
-            key: 'list',
+            dataIndex: 'code',
+            key: 'code',
             width: '20%',
+            align:'center',
         },
         {
             title: '设备名称/编号',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'deviceName',
+            key: 'deviceName',
             sorter: (a, b) => a.index - b.index,
             width: '20%',
+            align:'center',
         },
         {
             title: '所属部门',
-            dataIndex: 'depart',
-            key: 'depart',
+            dataIndex: 'deptCode',
+            key: 'deptCode',
             width: '20%',
+            align:'center',
         },
         {
             title: '本次计划执行日期',
-            dataIndex: 'date',
-            key: 'date',
+            dataIndex: 'planDate',
+            key: 'planDate',
             width: '20%',
+            align:'center',
         },
         {
             title: '操作',
@@ -63,23 +69,10 @@ class TheTable extends React.Component {
 
 
     render() {
-        const dataSource = [];
-        for ( let i=0;i<100;i++){
-            dataSource.push({
-                key:i,
-                num: i,
-                list: 32,
-                name: '？？？',
-                depart: '项目部',
-                date: '2019.7.17',
-            })
-        }
         return (
             <div style={{width:'100%'}}>
                 <Table
-                    rowKey={record => record.code}
-                    rowSelection={this.props.rowSelection}
-                    dataSource={dataSource}
+                    dataSource={this.props.rightTableData}
                     columns={this.columns}
                     size="small"
                     bordered

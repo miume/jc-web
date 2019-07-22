@@ -14,8 +14,10 @@
     width: 100% !important;
     margin: 0 !important;
 }
-/*.eA-right-bottom {*/
-/*    display: flex;*/
-/*}*/
-
+.wi-roll {
+    width: 200px;
+    height: 552px;
+    overflow-x:auto;
+    overflow-y:auto;
+}
 
