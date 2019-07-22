@@ -75,14 +75,16 @@ class EARightTable extends Component {
                         comFlag={true}
                     />
                     <Divider type="vertical"/>
-                    {/*<Edit*/}
-                        {/*// deviceName={this.props.deviceName}*/}
-                        {/*// getRightData={this.props.getRightData}*/}
-                        {/*// url={this.props.url}*/}
-                        {/*// record={record}*/}
-                        {/*// getTableData={this.props.getTableData}*/}
-                        {/*// depCode={this.props.depCode}*/}
-                    {/*/>*/}
+                    <Edit
+                        // deviceName={this.props.deviceName}
+                        // getRightData={this.props.getRightData}
+                        url={this.props.url}
+                        comFlag={true}
+                        record={record}
+                        // getTableData={this.props.getTableData}
+                        depCode={this.props.depCode}
+                        fetch={this.props.fetch}
+                    />
                     <Delete
                         record={record}
                         flag={true}

@@ -245,7 +245,7 @@ class Add extends Component {
             for (var ii = 0; ii < deviceDocumentMain.deviceName.length; ii++) {
                 if(pattern.test(deviceDocumentMain.deviceName.substr(ii, 1))){
                     if(this.props.comFlag){
-                        message.info("部件名称存在非法字符，请重新输入设备名称")
+                        message.info("部件名称存在非法字符，请重新输入部件名称")
                     }else{
                         message.info("设备名称存在非法字符，请重新输入设备名称")
                     }
