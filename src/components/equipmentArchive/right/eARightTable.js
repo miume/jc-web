@@ -78,10 +78,12 @@ class EARightTable extends Component {
                     <Edit
                         // deviceName={this.props.deviceName}
                         // getRightData={this.props.getRightData}
-                        // url={this.props.url}
-                        // record={record}
+                        url={this.props.url}
+                        comFlag={true}
+                        record={record}
                         // getTableData={this.props.getTableData}
-                        // depCode={this.props.depCode}
+                        depCode={this.props.depCode}
+                        fetch={this.props.fetch}
                     />
                     <Delete
                         record={record}
@@ -211,18 +213,36 @@ class EARightTable extends Component {
     }
 
     handleDelete = (code) => {
-        axios({
-            url: `${this.props.url.equipmentArchive.device}/${code}`,
-            method: 'Delete',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-        }).then((data) => {
-            message.info(data.data.message);
-            this.props.getRightData(this.props.depCode, this.props.deviceName)
-        }).catch(() => {
-            message.info('删除失败，请联系管理员！');
-        });
+        if(this.props.comFlag){
+            axios({
+                url: `${this.props.url.equipmentArchive.deleteUnit}`,
+                method: 'Delete',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    code:code
+                }
+            }).then((data) => {
+                message.info(data.data.message);
+                this.props.fetch({},{})
+            }).catch(() => {
+                message.info('删除失败，请联系管理员！');
+            });
+        }else{
+            axios({
+                url: `${this.props.url.equipmentArchive.device}/${code}`,
+                method: 'Delete',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+            }).then((data) => {
+                message.info(data.data.message);
+                this.props.getRightData(this.props.depCode, this.props.deviceName)
+            }).catch(() => {
+                message.info('删除失败，请联系管理员！');
+            });
+        }
     }
 }
 

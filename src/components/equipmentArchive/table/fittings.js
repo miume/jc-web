@@ -178,7 +178,6 @@ class Fittings extends React.Component {
             url=`${this.props.url.equipmentArchive.addMainAcc}`
         }
         // const saveData = this.state.saveData
-        console.log(saveData)
         axios({
             url: url,
             method: 'post',
@@ -279,20 +278,66 @@ class Fittings extends React.Component {
         });
     }
     deleteSaveFun = (code) => {
-        console.log(code)
-        // TODO 直接调用删除接口，改变数据
-        // if (index > -1) {
-        //     data.splice(index, 1);
-        //
-        //     this.setState({ data: data });
-        // } else {
-        //     this.setState({ editingKey: data });
-        // }
+        if(this.props.comFlag){
+            axios({
+                url:`${this.props.url.equipmentArchive.delUnitAcc}`,
+                method:'Delete',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                },
+                params:{
+                    id: code
+                }
+            }).then((data)=>{
+                message.info(data.data.message);
+                if(data.data.code===0){
+                    this.fetch();
+                }
+            }).catch(()=>{
+                message.info('删除失败，请联系管理员！');
+            })
+        }else{
+            axios({
+                url:`${this.props.url.equipmentArchive.delMainAcc}/${code}`,
+                method:'Delete',
+                headers:{
+                    'Authorization':this.props.url.Authorization
+                }
+            }).then((data)=>{
+                message.info(data.data.message);
+                if(data.data.code===0){
+                    this.fetch();
+                }
+            }).catch(()=>{
+                message.info('删除失败，请联系管理员！');
+            })
+        }
     }
 
     editSave = (value) => {
-        console.log(value)
+        var url='';
         // TODO 调用更新接口
+        if(this.props.comFlag){
+            url=`${this.props.url.equipmentArchive.updateUnitAccessory}`
+
+        }else{
+            url=`${this.props.url.equipmentArchive.updateMainAccessory}`
+        }
+        axios({
+            url:url,
+            method:'put',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data:value
+        }).then((data)=>{
+            message.info(data.data.message);
+            if(data.data.code===0){
+                this.fetch();
+            }
+        }).catch(()=>{
+            message.info('更新失败，请联系管理员！');
+        })
     }
 }
 

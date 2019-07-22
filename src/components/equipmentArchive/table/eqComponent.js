@@ -87,7 +87,6 @@ class EqComponent extends React.Component {
 
     }
     modifySearchContent = (value) => {
-        console.log(value)
         this.setState({
             searchContent:value
         })
@@ -137,7 +136,6 @@ class EqComponent extends React.Component {
 
     fetch = (params, flag) => {
         if (flag)
-            console.log('22222223333')
             this.setState({
                 pageChangeFlag: 0,
                 searchContent: ''
@@ -151,7 +149,6 @@ class EqComponent extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
-            console.log(res)
             if (res && res.list) {
                 var tableData = []
                 for (var i = 0; i < res.list.length; i++) {
@@ -167,7 +164,6 @@ class EqComponent extends React.Component {
                     })
                 }
                 this.pagination.total = res ? res.total : 0;
-                console.log('2-------')
                 this.setState({
                     dataSource: tableData,
                     visible: true

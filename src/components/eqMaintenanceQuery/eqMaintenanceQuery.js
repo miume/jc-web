@@ -11,11 +11,12 @@ class EqMaintenanceQuery extends React.Component{
     constructor(props){
         super(props)
         this.state={
+            depCode:'',//新建的状态用来获得所需的查询条件
             rightTableData:[],
-            depCode:'2',
         }
         this.returnDataEntry = this.returnDataEntry.bind(this)
         this.returnEquKey = this.returnEquKey.bind(this)
+        this.getTableData=this.getTableData.bind(this)
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -28,12 +29,20 @@ class EqMaintenanceQuery extends React.Component{
                 <Tabs onChange={this.returnEquKey} style={{paddingLeft:'15px',paddingRight:'15px'}}>
                     <Tabs.TabPane key={1} tab="待保养">
                         <WillMaintain
-
+                            rightTableData={this.state.rightTableData}
+                            getTableData={this.getTableData}
+                            url={this.url}
+                            operation={this.operation}
+                            depCode={this.state.depCode}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={2} tab="已接单">
                         <AcceptOrders
-
+                            rightTableData={this.state.rightTableData}
+                            getTableData={this.getTableData}
+                            url={this.url}
+                            operation={this.operation}
+                            depCode={this.state.depCode}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
@@ -47,69 +56,65 @@ class EqMaintenanceQuery extends React.Component{
             </div>
         )
     }
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/EquipmentMaintenance'});
+    }
+    /**用于选择页面，看是待保养还是已接单*/
+    returnEquKey = key => {
+        if(key==='1'||key==='2'){
+            this.setState({
+                rightTableData:[]
+            })
+        }
+    };
+
     getTableData = (params) => {
-        this.setState({depCode:params.deptId})
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        // if(flag) {
-        //     var {pagination} = this.state;
-        //     pagination.current = 1;
-        //     pagination.total = 0;
-        //     this.setState({
-        //         pageChangeFlag:0,
-        //         searchContent:'',
-        //         pagination:pagination
-        //     })
-        // }
+        console.log(params)
+        this.setState({depCode:params.deptId})//新建状态用来获得所需的查询条件
         axios({
-            url: `${this.url.eqmaintenance.recordPage}`,
+            url: `${this.url.eqMaintenanceQuery.recordPage}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
             },
             params:params,
         }).then((data) => {
+            console.log(data)
             const res = data.data.data ? data.data.data : [];
             if (res&&res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
-                    var arr = res.list[i];
+                    var arr = res.list[i]
                     rightTableData.push({
-                        code: arr['code'],
-                        planCode:arr['planCode'],
-                        fixedassetsCode: arr['fixedassetsCode'],
-                        deviceName: arr['deviceName'],
-                        deptCode:arr['deptCode'],
-                        planDate:arr['planDate'],
-                        receiveDate:arr['receiveDate'],
-                        finishDate:arr['finishDate'],
-                        maintPeople:arr['maintPeople'],
-                        abnormalcontent:arr['abnormalconten'],
-                        editFlag:arr['editFlag'],
+                        code: arr['code'],//保养单号
+                        planCode: arr['planCode'],//所属计划单号
+                        fixedassetsCode: arr["fixedassetsCode"],//固定资产编码
+                        deviceName: arr['deviceName'],//设备名称
+                        deptCode:arr["deptCode"],//所属部门
+                        planDate:arr["planDate"],//计划执行日期
+                        receiveDate:arr["receiveDate"],//接单日期
+                        finishiDate:arr["finishiDate"],//保养完成日期
+                        maintPeople:arr["maintPeople"],//保养人
+                        abnormalcontent:arr["abnormalcontent"],//异常处理备注
+                        editFlag:arr["editFlag"],//标记位
+
                     })
+
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    // pagination:pagination,
-
                 });
-                console.log(rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
-                console.log(rightTableData)
+                this.setState({
+                    rightTableData: [],
+                });
             }
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
     }
-
-    /**返回数据录入页面 */
-    returnDataEntry(){
-        this.props.history.push({pathname:'/EquipmentMaintenance'});
-    }
-    returnEquKey = key => {
-        console.log(key)
-
-    };
 }
 
 export default EqMaintenanceQuery

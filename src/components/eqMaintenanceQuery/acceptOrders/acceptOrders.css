@@ -15,4 +15,9 @@
     width: 100% !important;
     margin: 0 !important;
 }
-
+.ac-roll {
+    width: 200px;
+    height: 552px;
+    overflow-x:auto;
+    overflow-y:auto;
+}

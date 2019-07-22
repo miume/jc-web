@@ -188,7 +188,11 @@ class Equipment extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
                 <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>&nbsp;&nbsp;&nbsp;
-                <SearchCell name='请输入指导书名称' fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} flag={this.judgeOperation(this.operation,'QUERY')}/>
+                <SearchCell
+                    name='请输入指导书名称'
+                    fetch={this.fetch}
+                    searchEvent={this.searchEvent}
+                    searchContentChange={this.searchContentChange} flag={this.judgeOperation(this.operation,'QUERY')}/>
                 <div className='clear'></div>
                 <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumberId} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
                 </div>

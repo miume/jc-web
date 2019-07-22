@@ -282,6 +282,13 @@ class Home extends Component {
             equipmentDept:{
                 dept:`${server}/jc/common/dept`
             },
+            /**设备保养*/
+            eqMaintenanceQuery:{
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
+                recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
+                recordDelete:`${server}/jc/common/maintenanceRecord/{id}`,
+
+            },
             /**设备管理设备档案*/
             equipmentArchive:{
                 device:`${server}/jc/common/device`,
@@ -297,6 +304,12 @@ class Home extends Component {
                 deleteUnits: `${server}/jc/common/device/deleteUnits`,
                 addUnitAcc: `${server}/jc/common/device/addUnitAcc`,
                 unitDetail: `${server}/jc/common/device/unitDetail`,
+                delMainAcc: `${server}/jc/common/device/delMainAcc`,
+                delUnitAcc:`${server}/jc/common/device/delUnitAcc`,
+                updateMainAccessory: `${server}/jc/common/device/updateMainAccessory`,
+                updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
+                updateUnit: `${server}/jc/common/device/updateUnit`,
+                deleteUnit: `${server}/jc/common/device/deleteUnit`,
             },
             /**设备管理状态*/
             equipmentStatus:{
@@ -309,10 +322,10 @@ class Home extends Component {
                 maintenance:`${server}/jc/common/maintenance`,
                 addOne:`${server}/jc/common/maintenance/addOne`,
                 getAll:`${server}/jc/common/maintenance/getAll`,
-                page:`${server})/jc/common/maintenance/page`,
+                page:`${server}/jc/common/maintenance/page`,
                 queryAll:`${server}/jc/common/maintenance/queryAll`,
-                deletelds:`${server}/jc/common/maintenance/deletelds`,
-                maintenanceDetailByid:`${server}/jc/common/maintenance/maintenanceDetailByid`,
+                deleteIds:`${server}/jc/common/maintenance/deleteIds`,
+                maintenanceDetailById:`${server}/jc/common/maintenance/maintenanceDetailById`,
                 getAllByDeviceName:`${server}/jc/common/maintenance/getAllByDeviceName`,
             }
         }
