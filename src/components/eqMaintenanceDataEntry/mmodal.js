@@ -14,7 +14,7 @@ class Mmodal extends React.Component {
             visible: false,
             maintenanceItems: '',
             maintenanceContent: '',
-            optType: '',
+            optType: 0,
             maintenanceFrequency: ''
         }
         this.handleAdd = this.handleAdd.bind(this)
@@ -28,7 +28,6 @@ class Mmodal extends React.Component {
         this.setState({
             maintenanceItems: this.props.maintenanceItems,
             maintenanceContent: this.props.maintenanceContent,
-            optType: this.props.optType,
             maintenanceFrequency: this.props.maintenanceFrequency
         })
     }
@@ -38,22 +37,18 @@ class Mmodal extends React.Component {
     handleSave = (code) => {
 
         this.setState({visible:false})
-        var ooptType=0;
-        if(this.state.OptType=== '0'){
-            ooptType=0;
-        }else{
-            ooptType=1;
+        console.log(this.state.optType)
+        console.log(this.props.optType)
+        var addData = {
+            code: this.props.code,
+            deviceName: this.props.clickdeviceName,
+            maintenanceContent: this.state.maintenanceContent,
+            maintenanceFrequency: this.state.maintenanceFrequency,
+            maintenanceItems: this.state.maintenanceItems,
+            optType: this.state.optType,
         }
-        if(ooptType === 1)
-            var addData = {
-                code:this.props.code,
-                deviceName:this.props.clickdeviceName,
-                maintenanceContent:this.state.maintenanceContent,
-                maintenanceFrequency:this.state.maintenanceFrequency,
-                maintenanceItems: this.state.maintenanceItems,
-                optType :ooptType,
-            }
-        if(addData.maintenanceContent&&addData.maintenanceItems&&addData.optType){
+        console.log(addData)
+        if(addData.maintenanceContent&&addData.maintenanceItems){
             axios({
                 url: `${this.props.url.eqMaintenanceDataEntry.maintenance}`,
                 method: 'put',
@@ -66,7 +61,9 @@ class Mmodal extends React.Component {
                 this.props.ffetch(this.props.clickdeviceName)
                 // this.props.fetch()
                 message.info(data.data.message);
-            })}
+            }).catch(()=>{
+                message.info('编辑失败，请联系管理员！')
+            });}
         else{
             message.info('不能有空项出现')
         }
@@ -151,7 +148,7 @@ class Mmodal extends React.Component {
                             操作类型:
                         </Col>
                         <Col span={10}>
-                            <Select   onChange={this.handleChange} name="optType" style={{ width:"313px"}} Value={this.props.optType}>
+                            <Select   onChange={this.handleChange} name="optType" style={{ width:"313px"}} defaultValue={this.props.optType} >
                                 <Option value='0'>勾选</Option>
                                 <Option value='1'>录入</Option>
                             </Select>

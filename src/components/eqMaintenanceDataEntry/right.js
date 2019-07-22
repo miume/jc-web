@@ -318,38 +318,9 @@ class Right extends React.Component{
     }
     /**绑定搜索事件 */
     searchEvent(){
-        const testItemName=this.state.searchContent;
+        const condition=this.state.searchContent;
         // // console.log(this.pagination);
-        axios({
-            url: `${this.props.url.eqMaintenanceDataEntry.page}`,
-            method:'get',
-            headers:{
-                'Authorizatiton':this.url.Authorization},
-            params:{
-                deviceName: this.clickdeviceName,
-            },}
-        ).then((data)=>{
-            console.log('sssssssssss')
-            const result = data.data.data
-            console.log(result)
-            this.pagination.total=result?result.total:0;
-            this.pagination.current=result.page;
-            console.log('------------------')
-            console.log(result.page)
-            console.log('------------------')
-            if(result&&result.list){
-                for(let i=1;i<=result.list.length;i++){
-                    result.list[i-1]['index']=(result.page-1)*10+i;
-                    console.log(result.page)
-                    console.log(result.list[i-1]['index'])
-                }
-            }
-            this.setState({
-                datasource:result.list
-            })
-        }).catch(()=>{
-                message.info('搜索失败，请联系管理员！')
-            });
+        this.props.ffetch3(this.props.clickdeviceName,this.state.searchContent)
     }
     /**通过id查询详情 */
     render() {
@@ -375,7 +346,7 @@ class Right extends React.Component{
         this.datasource=this.props.datasource
         return (
                 <div >
-                    <Add deviceName={this.props.deviceName}  url={this.props.url} ffetch={this.props.ffetch} clickdeviceName={this.props.clickdeviceName} fetch={this.props.fetch}/>
+                    <Add deviceDatas={this.props.deviceDatas}  url={this.props.url} ffetch={this.props.ffetch} clickdeviceName={this.props.clickdeviceName} fetch={this.props.fetch}/>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
                                  flag={home.judgeOperation(this.operation,'DELETE')}
                     />
@@ -392,7 +363,7 @@ class Right extends React.Component{
                            size="small"
                            bordered
                            scroll={{ y: 380 }}
-                           style={{paddingTop:'15px'}}
+                           style={{paddingTop:'5px'}}
                     />
                 </div>
         );
