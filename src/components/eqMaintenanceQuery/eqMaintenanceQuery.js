@@ -47,7 +47,9 @@ class EqMaintenanceQuery extends React.Component{
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
                         <Completed
-
+                            getTableData={this.getTableData}
+                            rightTableData={this.state.rightTableData}
+                            depCode={this.state.depCode}
                         />
                     </Tabs.TabPane>
                 </Tabs>

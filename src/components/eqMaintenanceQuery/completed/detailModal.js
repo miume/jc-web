@@ -13,7 +13,9 @@ class Detail extends React.Component{
         super(props)
         this.state = {
             visible: false,
-            data:[],
+            depCode:'2',
+            dataSource : [],
+            detailData:[],
             name:'',
             time:'',
             previewVisible:false,
@@ -22,99 +24,99 @@ class Detail extends React.Component{
         this.fetch = this.fetch.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
+        this.dateA=''
     }
     acolums=[{
         title:'序号',
-        dataIndex:'index',
-        key:'index',
+        key:'code',
+        dataIndex:'code',
         align:'center',
     },{
         title:'保养项目',
-        dataIndex:'project',
-        key:'project',
-        align:'project',
+        dataIndex:'maintenanceItems',
+        key:'maintenanceitems',
+        align:'center',
     },{
         title:'保养内容',
-        dataIndex:'context',
-        key:'context',
-        align:'context',
+        dataIndex:'maintenanceContent',
+        key:'maintenanceContent',
+        align:'center',
     },{
         title:'保养情况',
-        dataIndex:'condition',
-        key:'condition',
-        align:'condition',
+        dataIndex:'mainValues',
+        key:'mainValues',
+        align:'center',
     }
     ]
     bcolums=[{
         title:'序号',
-        dataIndex:'index',
         key:'index',
+        dataIndex:'index',
         align:'center',
     },{
         title:'配件名称',
         dataIndex:'name',
         key:'name',
-        align:'name',
+        align:'center',
     },{
         title:'配件规格',
-        dataIndex:'standards',
-        key:'standards',
-        align:'standards',
+        dataIndex:'specification',
+        key:'specification',
+        align:'center',
     },{
         title:'配件数量',
-        dataIndex:'number',
-        key:'number',
-        align:'number',
+        dataIndex:'counts',
+        key:'counts',
+        align:'center',
     }
     ]
     columns= [
-
         {
             title: '保养单号',
-            dataIndex: 'odd_number',
-            key: 'odd_number',
+            dataIndex: 'planCode',
+            key: 'planCode',
             align:'center',
             width:130,
             height:0.5,
         },
         {
             title: '设备名称/编号',
-            dataIndex: 'number',
-            key: 'number',
+            dataIndex: 'deviceName',
+            key: 'deviceName',
             align:'center',
             width:130,
         },
         {
             title: '所属部门',
             align:'center',
-            key: 'department',
-            dataIndex: 'department',
+            key: 'deptCode',
+            dataIndex: 'deptCode',
             width:130,
         },
         {
             title: '本次计划执行日期',
-            key: 'date',
+            key: 'planDate',
             align:'center',
-            dataIndex: 'date',
+            dataIndex: 'planDate',
             width:130,
         },
         {
             title: '接单时间',
-            key: 'time',
-            dataIndex: 'time',
+            key: 'receiveDate',
+            dataIndex: 'receiveDate',
             width:130,
         },
         {
             title: '保养完成日期',
-            key: 'deadline',
-            dataIndex: 'deadline',
+            key: 'finishDate',
+            dataIndex: 'finishDate',
             align:'center',
             width:130,
         },
         {
             title: '保养人',
-            key: 'someone',
-            dataIndex: 'someone',
+            key: 'maintPeople',
+            dataIndex: 'maintPeople',
             align:'center',
             width:150,
         }]
@@ -141,6 +143,25 @@ class Detail extends React.Component{
         this.setState({
             visible: true
         });
+        const params ={
+            Id:this.props.planCode
+        }
+        axios({
+            url:`${this.props.url.eqmaintenance.recordDetail}`,
+            method:'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            const res=data.data.data ? data.data.data : [];
+            if(res){
+                this.setState({detailData:res})
+                this.dateA="本次计划执行日期:"+this.state.detailData.deviceMaintenanceAccessory.receiveDate
+            }else{
+
+            }
+
+        })
     }
     handleCancel() {
         this.setState({
@@ -156,28 +177,28 @@ class Detail extends React.Component{
                 {dot}
             </Popover>
         )
-        const data = [
-            {
-                odd_number:'by12345',
-                number:'管道阀门/#1001',
-                department:'制造一部',
-                date:'2019-07-18',
-                time:'2019-07-17 10:00',
-                deadline:'2019-8-17',
-                someone:'ww',
-            }]
-      var adata=[{
-          index:1,
-          project:'管道阀门',
-          context:'畅通、不漏液',
-          condition:'异常',
-      }]
-        var bdata=[{
-            index:1,
-            name:'配件名称',
-            standards:'配件规格',
-            number:'配件数量',
-        }]
+      //   const data = [
+      //       {
+      //           odd_number:'by12345',
+      //           number:'管道阀门/#1001',
+      //           department:'制造一部',
+      //           date:'2019-07-18',
+      //           time:'2019-07-17 10:00',
+      //           deadline:'2019-8-17',
+      //           someone:'ww',
+      //       }]
+      // var adata=[{
+      //     index:1,
+      //     project:'管道阀门',
+      //     context:'畅通、不漏液',
+      //     condition:'异常',
+      // }]
+      //   var bdata=[{
+      //       index:1,
+      //       name:'配件名称',
+      //       standards:'配件规格',
+      //       number:'配件数量',
+      //   }]
         return(
             <span>
                 <span onClick={this.handleDetail} className='blue'>详情</span>
@@ -190,20 +211,47 @@ class Detail extends React.Component{
                        ]}
                 >
                     <div>
-                        <Table className="table" size="small" columns={this.columns} dataSource={data} bordered  pagination={false}/>
+
+                        <Table
+                            className="eqQueryCompleted-table"
+                            size="small"
+                            columns={this.columns}
+                            dataSource={this.state.detailData.deviceMaintenanceRecordHead}
+                            bordered
+                            pagination={false}
+                            style={{marginBottom:"20"}}
+                        />
+
                         <WhiteSpace />
-                        <Steps size="small" current={1} progressDot={customDot}>
-                            <Step title="制定计划" description="本次计划执行日期：2012年01月01日" />
-                            <Step title="已接单" description="2012年01月01日 22:12:10" />
-                            <Step title="已完成" description="2012年01月01日 22:12:10" />
+                        <Steps size="small" current={2} progressDot={customDot}>
+                            <Step title="制定计划" description={this.dateA}/>
+
+                            <Step title="已接单" description=''/>
+                            <Step title="已完成" description= ''/>
+
                         </Steps>
-                         <Table className="table" size="small" columns={this.acolums} dataSource={adata} bordered pagination={false}
-                             footer={() => '1，15日白班9:20，硫酸管道阀门漏，10:00维修好后正常使用。'}
+
+                        <Table
+                            className="eqQueryCompleted-table"
+                            size="small"
+                            columns={this.acolums}
+                            dataSource={this.state.detailData.deviceMaintenanceRecordDetails}
+                            bordered
+                            pagination={false}
+                            style={{marginBottom:"20"}}
+                          //  footer={() =>  {this.state.detailData.deviceMaintenanceAccessory.abnormalcontent}}
                          />
-                        <div className="title">配件使用</div>
-                         <Table className="table"
-                            size="small" columns={this.bcolums} dataSource={bdata} bordered pagination={false}
+
+                        <div className="eqQueryCompleted-title" style={{paddingTop:"20"}}>配件使用</div>
+
+                        <Table className="eqQueryCompleted-table"
+                             size="small"
+                             columns={this.bcolums}
+                             dataSource={this.state.detailData.deviceMaintenanceAccessory}
+                             bordered
+                             pagination={false}
                          />
+
                     </div>
 
                 </Modal>

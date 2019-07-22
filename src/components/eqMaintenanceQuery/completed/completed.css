@@ -1,24 +1,38 @@
-.input {
+.eqQueryCompleted-input {
     width: 200px;
     margin: 0 8px 8px 0;
 }
-
-.head{
+.eqQueryCompleted{
+    background: white;
+}
+.eqQueryCompleted-head{
     display: flex;
 }
-.title{
+.eqQueryCompleted-title{
     font-weight:bold ;
     color:black;
 }
-.table .ant-table-body  {
+.ant-layout-content{
+    background: white;
+}
+.eqQueryCompleted-table .ant-table-body  {
     width: 100% !important;
     margin: 0 !important;
 }
-.table .ant-table-thead tr th{
+.eqQueryCompleted-table .ant-table-thead tr th{
     background-color:royalblue !important;
     color:white !important;
 }
-.table{
+.eqQueryCompleted-left{
+    margin-left:15px;
+    width: 20%;
+    height: 525px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #F5f5f5;
+}
+
+.eqQueryCompleted-table{
     text-align:center;
 }
 

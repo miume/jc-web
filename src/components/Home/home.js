@@ -145,6 +145,16 @@ class Home extends Component {
                 // deleteById:`${server}/jc/auth/department`,
                 getAll:`${server}/jc/auth/department`,
             },
+            /**设备保养 */
+            eqmaintenance:{
+                recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
+                deleteByIds:`${server}/jc/common/maintenanceRecord/deleteByIds`,
+                addRecord:`${server}/jc/common/maintenanceRecord/addRecord`,
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
+                records: `${server}/jc/common/maintenanceRecord/records`,
+                updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
+                maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
+            },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
