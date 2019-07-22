@@ -317,14 +317,12 @@ class Fittings extends React.Component {
 
     editSave = (value) => {
         console.log(value)
-        var url=''
+        var url='';
         // TODO 调用更新接口
         if(this.props.comFlag){
-            console.log("com----------")
             url=`${this.props.url.equipmentArchive.updateUnitAccessory}`
 
         }else{
-            console.log("----------")
             url=`${this.props.url.equipmentArchive.updateMainAccessory}`
         }
         axios({

@@ -58,9 +58,15 @@ class DetailModal extends React.Component {
                                onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                     </Col>
                     <Col span={12}>
-                        <Input placeholder="请输入设备名称" key="deviceName" name="deviceName"
-                               value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
-                               onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                        {
+                            this.props.comFlag ? <Input placeholder="请输入部件名称" key="deviceName" name="deviceName"
+                                                        value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
+                                                        onChange={this.changDeviceDocumentMain}
+                                                        disabled={this.props.editFlag}/> :
+                                <Input placeholder="请输入设备名称" key="deviceName" name="deviceName"
+                                       value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
+                                       onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
+                        }
                     </Col>
                 </Row>
                 {
