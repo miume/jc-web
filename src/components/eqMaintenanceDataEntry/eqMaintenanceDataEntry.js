@@ -3,6 +3,7 @@ import Blockquote from "../BlockQuote/blockquote";
 import axios from "axios";
 import {message} from "antd";
 import LeftLayout from"./leftLayout"
+
 import "./eqMaintenanceDataEntry.css"
 
 class EqMaintenanceDataEntry extends React.Component{
