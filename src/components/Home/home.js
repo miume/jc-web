@@ -289,7 +289,8 @@ class Home extends Component {
                 unitDetail: `${server}/jc/common/device/unitDetail`,
                 delMainAcc: `${server}/jc/common/device/delMainAcc`,
                 delUnitAcc:`${server}/jc/common/device/delUnitAcc`,
-
+                updateMainAccessory: `${server}/jc/common/device/updateMainAccessory`,
+                updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
 
             },
             /**设备管理状态*/

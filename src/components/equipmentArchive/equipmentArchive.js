@@ -29,7 +29,7 @@ class EquipmentArchive extends Component {
             deviceName: '',
 
             pageChangeFlag: 0,   //0表示分页 1 表示查询
-            searchContent:''
+            searchContent: ''
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
@@ -38,6 +38,7 @@ class EquipmentArchive extends Component {
         this.handleTableChange = this.handleTableChange.bind(this)
         this.searchEvent = this.searchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
+
         this.pagination = {
             showTotal(total) {
                 return `共${total}条记录`
@@ -91,6 +92,7 @@ class EquipmentArchive extends Component {
             </div>
         )
     }
+
     getRightData = (code, deviceName) => {
         code = parseInt(code)
         axios({
@@ -139,7 +141,7 @@ class EquipmentArchive extends Component {
                         }, 0);
                     }
                 });
-            }else{
+            } else {
                 message.info('查询失败，请刷新下页面！')
             }
         }).catch(() => {
@@ -149,18 +151,18 @@ class EquipmentArchive extends Component {
     handleTableChange = (pagination) => {
         this.pagination = pagination;
         const {pageChangeFlag} = this.state;
-        if(pageChangeFlag){
+        if (pageChangeFlag) {
             this.getTableData({
-                size:pagination.pageSize,
-                page:pagination.current,
-                condition:this.state.searchContent,
+                size: pagination.pageSize,
+                page: pagination.current,
+                condition: this.state.searchContent,
                 deptId: parseInt(this.state.depCode),
                 deviceName: this.state.deviceName
             })
-        }else{
+        } else {
             this.getTableData({
-                size:pagination.pageSize,
-                page:pagination.current,
+                size: pagination.pageSize,
+                page: pagination.current,
                 deptId: parseInt(this.state.depCode),
                 deviceName: this.state.deviceName
             })
@@ -169,10 +171,10 @@ class EquipmentArchive extends Component {
 
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) {
+        if (flag) {
             this.setState({
-                pageChangeFlag:0,
-                searchContent:''
+                pageChangeFlag: 0,
+                searchContent: ''
             })
             // var {pagination} = this.state;
             // pagination.current = 1;
@@ -189,10 +191,10 @@ class EquipmentArchive extends Component {
             headers: {
                 'Authorization': this.url.Authorization
             },
-            params:params,
+            params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            if (res&&res.list) {
+            if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceDocumentMain;
@@ -206,20 +208,20 @@ class EquipmentArchive extends Component {
                         startdate: arr['startdate'],
                         idCode: arr['idCode'],
                         statusCode: arr['statusCode'],
-                        color:eqStatus['color'],
-                        name:eqStatus['name']
+                        color: eqStatus['color'],
+                        name: eqStatus['name']
                     })
                 }
-                this.pagination.total = res?res.total:0;
+                this.pagination.total = res ? res.total : 0;
                 this.setState({
                     rightTableData: rightTableData,
-                    deviceName:params.deviceName
+                    deviceName: params.deviceName
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
-                    deviceName:''
+                    deviceName: ''
                 });
             }
         }).catch(() => {
@@ -230,16 +232,16 @@ class EquipmentArchive extends Component {
     modifySearchContent = (value) => {
         console.log(value)
         this.setState({
-            searchContent:value
+            searchContent: value
         })
     }
 
     searchEvent = () => {
         this.setState({
-            pageChangeFlag:1
+            pageChangeFlag: 1
         })
         this.getTableData({
-            condition:this.state.searchContent,
+            condition: this.state.searchContent,
             deptId: parseInt(this.state.depCode),
             deviceName: this.state.deviceName
         });
@@ -250,7 +252,7 @@ class EquipmentArchive extends Component {
         this.getTableData({
             deptId: parseInt(this.state.depCode),
             deviceName: this.state.deviceName
-        },1)
+        }, 1)
     }
 }
 
