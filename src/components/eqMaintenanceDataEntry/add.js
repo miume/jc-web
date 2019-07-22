@@ -43,24 +43,16 @@ class Add extends React.Component {
         console.log(this.state.maintenanceContent)
         console.log(this.state.optType)
         console.log(this.state.maintenanceFrequency)
-if(this.state.deviceName===''){
-    var addData = {
-        deviceName:this.props.clickdeviceName,
-        maintenanceContent:this.state.maintenanceContent,
-        maintenanceFrequency:this.state.maintenanceFrequency,
-        maintenanceItems: this.state.maintenanceItems,
-        optType :this.state.optType,
-    }
-}else{
-    var addData = {
-        deviceName:this.state.deviceName,
-        maintenanceContent:this.state.maintenanceContent,
-        maintenanceFrequency:this.state.maintenanceFrequency,
-        maintenanceItems: this.state.maintenanceItems,
-        optType :this.state.optType,
-    }
-}
+        console.log(this.props.clickdeviceName)
 
+
+    var addData = {
+        deviceName: this.state.deviceName,
+        maintenanceContent: this.state.maintenanceContent,
+        maintenanceFrequency: this.state.maintenanceFrequency,
+        maintenanceItems: this.state.maintenanceItems,
+        optType: this.state.optType,
+    }
         console.log(addData)
         if(addData.deviceName&&addData.maintenanceContent&&addData.maintenanceItems){
         axios({
@@ -147,7 +139,7 @@ if(this.state.deviceName===''){
                             设备名称:
                         </Col>
                         <Col span={10}>
-                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2} defaultValue={this.props.clickdeviceName} >
+                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2}  >
                                 {
                                     this.props.deviceDatas.map(e => {
                                         return (<option value={e.deviceName}> {e.deviceName}</option>)
