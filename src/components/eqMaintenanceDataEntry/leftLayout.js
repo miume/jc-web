@@ -148,6 +148,7 @@ class LeftLayout extends React.Component{
     }
     changeeqname=( eqname)=>{
         this.clickdeviceName=eqname;
+        console.log(this.clickdeviceName)
         var deviceDatas = this.state.deviceDatas
         for (var i=0; i< deviceDatas.length; i++){
             if(deviceDatas[i].deviceName===eqname){
