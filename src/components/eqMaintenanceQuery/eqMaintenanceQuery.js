@@ -10,6 +10,10 @@ import WillMaintain from './willMaintain/willMaintain'
 class EqMaintenanceQuery extends React.Component{
     constructor(props){
         super(props)
+        this.state={
+            rightTableData:[],
+            depCode:'2',
+        }
         this.returnDataEntry = this.returnDataEntry.bind(this)
         this.returnEquKey = this.returnEquKey.bind(this)
     }
@@ -34,13 +38,70 @@ class EqMaintenanceQuery extends React.Component{
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
                         <Completed
-
+                            getTableData={this.getTableData}
+                            rightTableData={this.state.rightTableData}
+                            depCode={this.state.depCode}
                         />
                     </Tabs.TabPane>
                 </Tabs>
             </div>
         )
     }
+    getTableData = (params) => {
+        this.setState({depCode:params.deptId})
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        // if(flag) {
+        //     var {pagination} = this.state;
+        //     pagination.current = 1;
+        //     pagination.total = 0;
+        //     this.setState({
+        //         pageChangeFlag:0,
+        //         searchContent:'',
+        //         pagination:pagination
+        //     })
+        // }
+        axios({
+            url: `${this.url.eqmaintenance.recordPage}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:params,
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            if (res&&res.list) {
+                var rightTableData = [];
+                for (var i = 0; i < res.list.length; i++) {
+                    var arr = res.list[i];
+                    rightTableData.push({
+                        code: arr['code'],
+                        planCode:arr['planCode'],
+                        fixedassetsCode: arr['fixedassetsCode'],
+                        deviceName: arr['deviceName'],
+                        deptCode:arr['deptCode'],
+                        planDate:arr['planDate'],
+                        receiveDate:arr['receiveDate'],
+                        finishDate:arr['finishDate'],
+                        maintPeople:arr['maintPeople'],
+                        abnormalcontent:arr['abnormalconten'],
+                        editFlag:arr['editFlag'],
+                    })
+                }
+                this.setState({
+                    rightTableData: rightTableData,
+                    // pagination:pagination,
+
+                });
+                console.log(rightTableData)
+            } else {
+                message.info('查询失败，请刷新下页面！')
+                console.log(rightTableData)
+            }
+        }).catch(() => {
+            message.info('查询失败，请刷新下页面！')
+        });
+    }
+
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/EquipmentMaintenance'});

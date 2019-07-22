@@ -22,6 +22,7 @@ class Completed extends React.Component{
             editingKey: '',
             searchContent:'',
             searchText: '',
+            eff_flag:1,
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
@@ -34,115 +35,6 @@ class Completed extends React.Component{
     // onSelect = (selectedKeys, info) => {
     //     console.log('selected', selectedKeys, info);
     // };
-    getRightData = (code, deviceName) => {
-        code = parseInt(code)
-        axios({
-            url: `${this.url.equipmentArchive.device}/${code}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res) {
-                var rightTopData = [];
-                if (JSON.stringify(res) !== '{}') {
-                    for (var key in res) {
-                        rightTopData.push({
-                            name: key,
-                            count: res[key]
-                        })
-                    }
-                } else {
-                    rightTopData.push({
-                        name: '无设备',
-                        count: 0
-                    })
-                }
-                this.setState({
-                    rightTopData: rightTopData,
-                    depCode: code
-                }, () => {
-                    const rightTopData = this.state.rightTopData;
-                    var deviceFlag = true;
-                    rightTopData.map((item) => {
-                        if (item.name === deviceName) {
-                            deviceFlag = false
-                        }
-                    })
-                    if (deviceFlag) {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: rightTopData[0] ? rightTopData[0].name : null
-                        }, 0);
-                    } else {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: deviceName
-                        }, 0);
-                    }
-                });
-            }
-        }).catch(() => {
-            message.info('查询失败，请联系管理员！')
-        });
-    };
-    getTableData = (params, flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        // if(flag) {
-        //     var {pagination} = this.state;
-        //     pagination.current = 1;
-        //     pagination.total = 0;
-        //     this.setState({
-        //         pageChangeFlag:0,
-        //         searchContent:'',
-        //         pagination:pagination
-        //     })
-        // }
-        axios({
-            url: `${this.url.equipmentArchive.page}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            params:params,
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res&&res.list) {
-                var rightTableData = [];
-                for (var i = 0; i < res.list.length; i++) {
-                    var arr = res.list[i].deviceDocumentMain;
-                    var eqStatus = res.list[i].basicInfoDeviceStatus
-                    rightTableData.push({
-                        index: i + 1,
-                        code: arr['code'],
-                        fixedassetsCode: arr['fixedassetsCode'],
-                        deviceName: arr['deviceName'],
-                        specification: arr['specification'],
-                        startdate: arr['startdate'],
-                        idCode: arr['idCode'],
-                        statusCode: arr['statusCode'],
-                        color:eqStatus['color'],
-                        name:eqStatus['name']
-                    })
-                }
-                this.setState({
-                    rightTableData: rightTableData,
-                    // pagination:pagination,
-                    deviceName:params.deviceName
-                });
-            } else {
-                message.info('查询失败，请刷新下页面！')
-                this.setState({
-                    rightTableData: [],
-                    // pagination:pagination,
-                    deviceName:''
-                });
-            }
-        }).catch(() => {
-            message.info('查询失败，请刷新下页面！')
-        });
-    }
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -153,12 +45,15 @@ class Completed extends React.Component{
             onChange: this.onSelectChange,
         };
         return (
-            <div>
+            <div className="eqQueryCompleted">
                 <Layout>
-                    <Sider theme='light'>
+                    <Sider theme='light' classname="eqQueryCompleted-left" >
                         <Card headStyle={{marginLeft:"30px"}} title="所属部门" width="100">
-                            <DepTree url={this.url} getRightData={this.getRightData} />
-                        </Card>
+                            <DepTree
+                                url={this.url}
+                                getTableData={this.props.getTableData}
+                            />
+                        </Card>&nbsp;&nbsp;
                     </Sider>
                     <Content margin-left={600} theme="light">
                         <Right
@@ -171,6 +66,9 @@ class Completed extends React.Component{
                             handleDelete={this.handleDelete}
                             judgeOperation = {Home.judgeOperation}
                             operation = {this.operation}
+                            rightTableData={this.props.rightTableData}
+                            getTableData={this.props.getTableData}
+                            depCode={this.props.depCode}
                         />
                     </Content>
                 </Layout>

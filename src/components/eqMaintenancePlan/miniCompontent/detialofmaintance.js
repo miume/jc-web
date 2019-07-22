@@ -29,6 +29,7 @@ class DetailofMain extends React.Component{
 
 
     handleMaintanceDetail=()=>{
+
         this.setState({detailVisible:true})
         for(let i = 0; i < 2; i++) {
             d2.push({
