@@ -327,6 +327,15 @@ class Home extends Component {
                 deleteIds:`${server}/jc/common/maintenance/deleteIds`,
                 maintenanceDetailById:`${server}/jc/common/maintenance/maintenanceDetailById`,
                 getAllByDeviceName:`${server}/jc/common/maintenance/getAllByDeviceName`,
+            },
+            DeviceMaintenancePlan:{
+                maintenanceAddPlan:`${server}/jc/common/maintenancePlan/addPlan`,
+                maintenancePlanDetail:`${server}/jc/common/maintenancePlan/planDetail`,
+                maintenancePlanPage:`${server}/jc/common/maintenancePlan/planPage`,
+                maintenanceUpdatePlan:`${server}/jc/common/maintenancePlan/updatePlan`,
+                maintenanceDeletePlan:`${server}/jc/common/maintenancePlan/`,
+                maintenanceDeleteByIds:`${server}/jc/common/maintenancePlan/deleteByIds`,
+                getDeviceByDeptCode:`${server}/jc/common/maintenancePlan/getDeviceByDeptCode`,
             }
         }
         localStorage.setItem('status',JSON.stringify(status));

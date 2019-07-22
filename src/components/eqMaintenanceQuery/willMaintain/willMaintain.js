@@ -31,7 +31,6 @@ class WillMaintain extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         // this.judgeOperation = this.judgeOperation.bind(this)
     }
-
     render() {
         const { Header, Sider, Content } = Layout;
         this.url = this.props.url;

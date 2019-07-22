@@ -13,7 +13,7 @@ class EditorofMain extends React.Component{
     state = {
         editorVisible:false,
         PlanName1:``,
-        departmentname:``,
+        depCode:``,
         deviceNameAndNum:``,
         dataOfDepartment:[],
         MaintenancePeriod:``,
@@ -26,16 +26,18 @@ class EditorofMain extends React.Component{
     };
     //点编辑的时候设置状态
     handlemounteditor=()=>{
-        this.setState({deviceNameAndNum:this.props.editorRecord.deviceNameAndNum})
+        console.log(this.props.editorRecord)
+        this.setState({deviceNameAndNum:this.props.editorRecord.deviceName+'/#'+this.props.editorRecord.fixedassetsCode})
         this.setState({deviceNameAndNumdata:[]})
-        this.setState({PlanName1:this.props.editorRecord.PlanName1})
-        this.setState({whomade:this.props.editorRecord.whomade})
-        this.setState({departmentname:this.props.departmente.departmentname})
+        this.setState({PlanName1:this.props.editorRecord.planName})
+        this.setState({whomade:this.props.editorRecord.setPeople})
+        this.setState({depCode:this.props.depCode})
         this.setState({MaintenanceType:['1','2']})
-        this.setState({MaintenancePeriod:this.props.editorRecord.MaintenancePeriod})
-        this.setState({ImplementDate:this.props.editorRecord.ImplementDate})
-        this.setState({Effective:this.props.editorRecord.Effective})
-        console.log(this.state.departmentname)
+        this.setState({MaintenancePeriod:this.props.editorRecord.maintPeriod})
+        this.setState({ImplementDate:this.props.editorRecord.planDate})
+        this.setState({Effective:this.props.editorRecord.effFlag})
+        this.setState({NextPlanDate:this.props.editorRecord.nextDate})
+        console.log(this.state.depCode)
     }
     render(){
         const dateFormat = 'YYYY-MM-DD';
@@ -71,16 +73,14 @@ class EditorofMain extends React.Component{
                     </div>
                     <div className='divofadd1'>
                         <b>所属部门</b>
-                        <TreeSelect
+                        <Input
                             id='department_add'
                             key="department"
                             name="department"
                             placeholder="请选择"
                             style={{ width: 200 }}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                             onChange={this.handledepartmentnameChange}
-                            treeData={this.state.dataOfDepartment}
-                            value={this.state.departmentname}
+                            value={this.props.depName}
                             treeNodeLabelProp='value'
                             disabled={true}
                         />
@@ -98,6 +98,7 @@ class EditorofMain extends React.Component{
                             allowClear={true}
                             value={this.state.deviceNameAndNum}
                             onChange={this.handleDeviceNameAndNumChange}
+                            disabled={true}
                         />
                     </div>
                 </div>
@@ -160,68 +161,13 @@ class EditorofMain extends React.Component{
             </span>
         )
     }
-    getDepartmentData = () => {
-        // TODO：调接口，获取部门数据
-        axios({
-            url: `${this.url.equipmentDept.dept}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            var dataSource = [{
-                title: '总公司',
-                value:'总公司',
-                key:'总公司',
-                children: []
-            }];
-            if (res) {
-                for (let i = 0; i < res.length; i++) {
-                    const arrParent = res[i].parent;
-                    var parenObj = {
-                        title:arrParent.name,
-                        value: arrParent.name,
-                        key:arrParent.name,
-                        children: []
-                    };
-                    const arrSon = res[i].son;
-                    for (let j = 0; j < arrSon.length; j++) {
-                        var arr = arrSon[j];
-                        if(i===0&&j===0){
-                            parenObj['children'].push({
-                                title:arr.name.toString(),
-                                key:arr.name,
-                                value:  arrParent.name.toString()+'-'+arr.name.toString(),
-                                children: []
-                            });
-                        }else{
-                            parenObj['children'].push({
-                                title:arr.name.toString(),
-                                key:arr.name,
-                                value: arrParent.name.toString()+'-'+arr.name.toString(),
-                                children: []
-                            });
-                        }
-                    }
-                    dataSource[0].children.push(parenObj);
-                }
 
-                this.setState({
-                    dataOfDepartment: dataSource
-                })
-                console.log(this.state.dataOfDepartment)
-            } else {
-
-            }
-        });
-    };
 
     handlePlanName1Change=(e)=>{
         this.setState({PlanName1:e.target.value})
     }
     handledepartmentnameChange=(value)=>{
-        this.setState({departmentname:value})
+        this.setState({depCode:value})
         //console.log(this.state.departmentname)
     }
     handleDeviceNameAndNumChange=(value)=>{
@@ -231,6 +177,7 @@ class EditorofMain extends React.Component{
     handleImplementDateChange=(date, dateString)=>{
         this.setState({ImplementDate:dateString})
         this.date1=Date.parse(dateString);
+        console.log(this.date1)
         var date2=this.date1+(this.state.MaintenancePeriod * 24* 3600* 1000)
         var time = new Date(date2);
         let Y=time.getFullYear()
@@ -262,8 +209,15 @@ class EditorofMain extends React.Component{
         this.setState({Effective:e.target.value})
     }
     /**处理一条编辑记录 */
-    handleMaintanceEditor=()=>{
+    handleMaintanceEditor=(params)=>{
         this.setState({editorVisible:true})
+        var jing=this.state.deviceNameAndNum.search('/#');
+        this.setState({deviceName:this.state.deviceNameAndNum.slice(0,jing)})
+        this.setState({fixedassetsCode:this.state.deviceNameAndNum.slice(jing+2)})
+        const params2={
+            deviceName:this.state.deviceNameAndNum.slice(0,jing),
+        }
+        this.props.getMaintType(params2)
         for(let i = 1; i < 5; i++) {
             this.d2.push({
                 index: i,
@@ -273,7 +227,8 @@ class EditorofMain extends React.Component{
                 code:i
             });
         }
-        this.getDepartmentData();
+
+        this.props.getDepartmentData();
         const d3=this.props.editorRecord;
         this.date1=Date.parse(this.props.editorRecord.ImplementDate)
         var date2=this.date1+(this.state.MaintenancePeriod * 24* 3600* 1000)

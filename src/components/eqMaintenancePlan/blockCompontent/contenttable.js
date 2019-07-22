@@ -1,4 +1,4 @@
-import {Divider, Table} from 'antd';
+import {Divider, Table,message} from 'antd';
 import React from 'react'
 import axios from 'axios'
 
@@ -10,12 +10,11 @@ class ContentTable extends React.Component {
     url
     ob
     state={
-        dataSource:[],
         isLoad:false,
         isMaintenanced:false,
         departmentname:'xascacasc',
+        record:'',
     }
-    ifMain =this.state.isMaintenanced;
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -25,38 +24,38 @@ class ContentTable extends React.Component {
         width: '7%',
     },  {
         title: '设备名称/编号',
-        dataIndex: 'deviceNameAndNum',
-        key: 'deviceNameAndNum',
+        dataIndex: 'deviceName',
+        key: 'deviceName',
         align: 'center',
         width: '16%',
     }, {
         title: '计划名称',
-        dataIndex: 'PlanName1',
-        key: 'PlanName1',
+        dataIndex: 'planName',
+        key: 'planName',
         align: 'center',
         width: '10%',
     },{
         title: '保养周期',
-        dataIndex: 'MaintenancePeriod',
-        key: 'MaintenancePeriod',
+        dataIndex: 'maintPeriod',
+        key: 'maintPeriod',
         align: 'center',
         width: '10%',
     }, {
         title: '本计划执行日期',
-        dataIndex: 'ImplementDate',
-        key: 'ImplementDate',
+        dataIndex: 'planDate',
+        key: 'planDate',
         align: 'center',
         width: '17%',
     }, {
         title: '制定人',
-        dataIndex: 'whomade',
-        key: 'whomade',
+        dataIndex: 'setPeople',
+        key: 'setPeople',
         align: 'center',
         width: '10%',
     }, {
         title: '是否生效',
-        dataIndex: 'Effective',
-        key: 'Effective',
+        dataIndex: 'effFlag',
+        key: 'effFlag',
         align: 'center',
         width: '10%',
         render: (statusCode) => {
@@ -67,59 +66,65 @@ class ContentTable extends React.Component {
             }
     }, {
         title: '操作',
-        dataIndex: 'code',
-        key: 'code',
+        dataIndex: 'whetherdelete',
+        key: 'whetherdelete',
         align: 'center',
         width: '19%',
         render: (text,record) => {
-            console.log(record)
-            return (
-                <span>
+            if(text){
+                return (
+                    <span>
                     <EditorofMain
                         editorRecord={record}
-                        departmente={this.state.departmentname}
+                        depCode={this.props.depCode}
+                        depName={this.props.depName}
                     />
                     <Divider type="vertical"/>
-                    <DetailofMain/>
-                </span>
-            )
+                    <DetailofMain
+                        editorRecord={record}
+                        depCode={this.props.depCode}
+                        depName={this.props.depName}
+                    />
+                    <Divider type="vertical"/>
+                    <span>删除</span>
+                    </span>)
+                }
+            else {
+                return (
+                    <span>
+                    <EditorofMain
+                        editorRecord={record}
+                        depCode={this.props.depCode}
+                        depName={this.props.depName}
+                    />
+                    <Divider type="vertical"/>
+                    <DetailofMain
+                        editorRecord={record}
+                        depCode={this.props.depCode}
+                        depName={this.props.depName}
+                    />
+                    <Divider type="vertical"/>
+                    <span className="blue" onClick={()=>this.handleDel(record.code)} >删除</span>
+                    </span>
+                )
+            }
         }
     }]
-componentDidMount() {
-    this.getData();
-}
-
-    pagination = {
-        total:this.state.dataSource.length,
-        showSizeChanger: true,
-        itemRender(current, type, originalElement){
-            if (type === 'prev') {
-                return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
+    handleDel=(id)=>{
+        axios({
+            url:`${this.props.url.DeviceMaintenancePlan.maintenanceDeletePlan}${id}`,
+            method:'delete',
+            header:{
+                'Authorization': this.url.Authorization,
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+            const params={
+                deptId:this.props.depCode,
             }
-            if (type === 'next') {
-                return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
-            }
-            return originalElement;
-        },
-        showTotal(total){
-            return `共${total}条记录`
-        },
-    };
-    getData=()=>{
-        var data=[];
-        for(var i=1;i<100;i++){
-            data.push({
-                index:i,
-                deviceNameAndNum:`管道阀门/#0218`,
-                MaintenancePeriod:30,
-                PlanName1:'阀门保养',
-                ImplementDate:'2017-02-18',
-                whomade:'tom',
-                Effective:1,            //1代表’已生效‘；
-            });
-        }
-        this.setState({
-            dataSource:data
+            console.log(id);
+            console.log(params)
+            this.props.getTableData(params,this.props.depName)
         })
     }
     render(){
@@ -130,12 +135,12 @@ componentDidMount() {
                 <Table
                     rowKey={record=>record.id}
                     align={"center"}
-                    dataSource={this.state.dataSource}
+                    dataSource={this.props.dataSource}
                     columns={this.columns}
                     bordered
                     scroll={{y: 400}}
                     size="small"
-                    pagination={this.pagination}
+                    pagination={this.props.pagination}
                 />
             </div>
         )

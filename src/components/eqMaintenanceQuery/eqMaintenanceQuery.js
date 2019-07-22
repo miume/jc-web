@@ -18,10 +18,14 @@ class EqMaintenanceQuery extends React.Component{
         this.returnEquKey = this.returnEquKey.bind(this)
         this.getTableData=this.getTableData.bind(this)
     }
+    getTableData=()=>{
+
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+
 
         return (
             <div>

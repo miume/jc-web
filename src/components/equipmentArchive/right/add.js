@@ -336,9 +336,11 @@ class Add extends Component {
                     arrValue: packArrValue,
                     deviceDocumentMain: deviceDocumentMain
                 };
+                console.log('adaddadad')
+                console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.device}`,
-                    method: 'post',
+                    method:'post',
                     headers: {
                         'Authorization': this.props.url.Authorization
                     },
