@@ -70,6 +70,7 @@
 .depTreeSelect {
     background: #0079FE;
     border-radius:3px;
+    color: white;
 }
 .depTreeSelect span{
     padding: 5px;
