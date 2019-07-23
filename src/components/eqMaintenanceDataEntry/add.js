@@ -35,16 +35,16 @@ class Add extends React.Component {
         this.setState({visible: true,
 
         })
-        console.log(this.props.clickdeviceName)
+        // console.log(this.props.clickdeviceName)
     }
     handleSave = () => {
 
-        console.log(this.state.deviceName)
-        console.log(this.state.maintenanceItems)
-        console.log(this.state.maintenanceContent)
-        console.log(this.state.optType)
-        console.log(this.state.maintenanceFrequency)
-        console.log(this.props.clickdeviceName)
+        // console.log(this.state.deviceName)
+        // console.log(this.state.maintenanceItems)
+        // console.log(this.state.maintenanceContent)
+        // console.log(this.state.optType)
+        // console.log(this.state.maintenanceFrequency)
+        // console.log(this.props.clickdeviceName)
         if(this.state.deviceName===''){
             var addData = {
                 deviceName: this.props.clickdeviceName,
@@ -63,7 +63,7 @@ class Add extends React.Component {
             }
         }
 
-        console.log(addData)
+        // console.log(addData)
         if(addData.deviceName&&addData.maintenanceContent&&addData.maintenanceItems){
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.addOne}`,
@@ -103,13 +103,13 @@ class Add extends React.Component {
         this.setState({
             optType:value
         })
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
     }
     handleChange2=(value) => {
         this.setState({
             deviceName:value,
         })
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
     }
     // handleChangeproject=() =>{
     //     this.setState({Data:[{
@@ -198,7 +198,7 @@ class Add extends React.Component {
                             &nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;&nbsp;
                         </Col>
                         <Col span={10} style={{paddingRight:"20px"}}>
-                            <Input size="small" placeholder="请输入保养内容"  key='4' name="maintenanceFrequency"onChange={this.onInputChange} value={this.state.maintenanceFrequency}/>
+                            <Input size="small" placeholder="请输入保养频率"  key='4' name="maintenanceFrequency"onChange={this.onInputChange} value={this.state.maintenanceFrequency}/>
                         </Col>
                     </Row>
                 </div>

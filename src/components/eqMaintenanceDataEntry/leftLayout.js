@@ -30,15 +30,6 @@ class LeftLayout extends React.Component{
         this.ffetch3=this.ffetch3.bind(this)
         this.pagination = {
             showSizeChanger: true,
-            itemRender(current, type, originalElement){
-                if (type === 'prev') {
-                    return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
-                }
-                if (type === 'next') {
-                    return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
-                }
-                return originalElement;
-            },
             showTotal(total){
                 return `共${total}条记录`
             },
@@ -52,7 +43,7 @@ class LeftLayout extends React.Component{
     }
 
     searchEvent=()=>{
-        console.log(this.state.searchContent)
+        // console.log(this.state.searchContent)
         axios({
             url: `${this.url.eqMaintenanceDataEntry.getAllByDeviceName}`,
             method:'get',
@@ -64,7 +55,7 @@ class LeftLayout extends React.Component{
             },
         }).then((data)=>{
             const res1=data.data.data;
-            console.log(res1);
+            // console.log(res1);
             // this.pagination.total=res.total?res.total:0;
             // this.pagination.current=res.pageNum;
             if(res1){
@@ -92,7 +83,7 @@ class LeftLayout extends React.Component{
                 this.clickdeviceName=res1[0]
                 this.ffetch(this.clickdeviceName)
 
-                console.log('22222222')
+                // console.log('22222222')
 
             }
         }).catch(()=>{
@@ -111,7 +102,7 @@ class LeftLayout extends React.Component{
             },
         }).then((data)=>{
             const res=data.data.data;
-            console.log(res);
+            // console.log(res);
             // this.pagination.total=res.total?res.total:0;
             // this.pagination.current=res.pageNum;
             if(res){
@@ -148,7 +139,7 @@ class LeftLayout extends React.Component{
     }
     changeeqname=( eqname)=>{
         this.clickdeviceName=eqname;
-        console.log(this.clickdeviceName)
+        // console.log(this.clickdeviceName)
         var deviceDatas = this.state.deviceDatas
         for (var i=0; i< deviceDatas.length; i++){
             if(deviceDatas[i].deviceName===eqname){
@@ -236,19 +227,19 @@ class LeftLayout extends React.Component{
                 condition: searchContent
             },}
         ).then((data)=>{
-            console.log('sssssssssss')
+            // console.log('sssssssssss')
             const result = data.data.data
-            console.log(result)
+            // console.log(result)
             this.pagination.total=result?result.total:0;
             this.pagination.current=result.page;
-            console.log('------------------')
-            console.log(result.page)
-            console.log('------------------')
+            // console.log('------------------')
+            // console.log(result.page)
+            // console.log('------------------')
             if(result&&result.list){
                 for(let i=1;i<=result.list.length;i++){
                     result.list[i-1]['index']=(result.page-1)*10+i;
-                    console.log(result.page)
-                    console.log(result.list[i-1]['index'])
+                    // console.log(result.page)
+                    // console.log(result.list[i-1]['index'])
 
                     if(result.list[i-1]['optType']===0)
                     {
@@ -282,19 +273,18 @@ class LeftLayout extends React.Component{
                     page:pagination.current
                 },}
             ).then((data)=>{
-                console.log('sssssssssss')
+                // console.log('sssssssssss')
                 const result = data.data.data
-                console.log(result)
+                // console.log(result)
                 this.pagination.total=result?result.total:0;
                 this.pagination.current=result.page;
-                console.log('------------------')
-                console.log(result.page)
-                console.log('------------------')
+                // console.log('------------------')
+                // console.log(result.page)
+                // console.log('------------------')
                 if(result&&result.list){
                     for(let i=1;i<=result.list.length;i++){
                         result.list[i-1]['index']=(result.page-1)*10+i;
-                        console.log(result.page)
-                        console.log(result.list[i-1]['index'])
+
                         if(result.list[i-1]['optType']===0)
                         {
                             result.list[i-1]['optType']='勾选';
@@ -321,19 +311,19 @@ class LeftLayout extends React.Component{
                 page:pagination.current
             },}
         ).then((data)=>{
-            console.log('sssssssssss')
+            // console.log('sssssssssss')
             const result = data.data.data
-            console.log(result)
+            // console.log(result)
             this.pagination.total=result?result.total:0;
             this.pagination.current=result.page;
-            console.log('------------------')
-            console.log(result.page)
-            console.log('------------------')
+            // console.log('------------------')
+            // console.log(result.page)
+            // console.log('------------------')
             if(result&&result.list){
                 for(let i=1;i<=result.list.length;i++){
                     result.list[i-1]['index']=(result.page-1)*10+i;
-                    console.log(result.page)
-                    console.log(result.list[i-1]['index'])
+                    // console.log(result.page)
+                    // console.log(result.list[i-1]['index'])
                     if(result.list[i-1]['optType']===0)
                     {
                         result.list[i-1]['optType']='勾选';
@@ -354,9 +344,9 @@ class LeftLayout extends React.Component{
     searchContentChange=(e) =>{
         const value = e.target.value;
         this.setState({searchContent:value});
-        console.log(this.state.searchContent)
+        // console.log(this.state.searchContent)
         if(value===null){
-            console.log('清空')
+            // console.log('清空')
             this.fetch();
         }
     }
