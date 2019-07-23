@@ -4,7 +4,7 @@ class Detail extends  React.Component{
 
     render(){
         return(
-            <a>详情</a>
+           <span className='blue'>详情</span>
         )
     }
 }

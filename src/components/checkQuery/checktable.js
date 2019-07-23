@@ -57,11 +57,7 @@ class CheckTable extends React.Component{
             align: 'left',
             render: (text, record) => {
                 return (
-                    <span>
                      <Detail />
-
-
-                    </span>
                      );
                 }
             }]
@@ -76,7 +72,7 @@ class CheckTable extends React.Component{
             <Table
                    rowSelection={rowSelection}
                    columns={this.columns}
-                   dataSource={this.datasource}
+                   dataSource={this.props.datasource}
                    onChange={this.props.handleTableChange}
                    size="small"
                    bordered
