@@ -68,7 +68,7 @@ class Right extends React.Component {
 
     }
     onChange(date, dateString) {
-        console.log(date, dateString);
+
     }
     columns = [
         {
@@ -216,7 +216,6 @@ class Right extends React.Component {
     /**---------------------- */
 
     fetch = (params ,flag) => {
-        console.log(params)
         this.props.getTableData(params)
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if(flag) {

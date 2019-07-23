@@ -34,9 +34,7 @@ class Completed extends React.Component{
         };
         this.getLastMonthTime=this.getLastMonthTime.bind(this)
     }
-    // onSelect = (selectedKeys, info) => {
-    //     console.log('selected', selectedKeys, info);
-    // };
+
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -49,19 +47,20 @@ class Completed extends React.Component{
         return (
             <div className="eqQueryCompleted">
                 <Layout>
-                    <Sider theme='light' classname="eqQueryCompleted-left" style={{paddingRight:5}}>
+                    <Sider theme='light' width={240} style={{background:"white",height:'525px'}}>
+                        <div className="ac-roll" style={{width:'220px'}}>
+                        <Card  title="所属部门"  >
 
-                        <Card headStyle={{marginLeft:"30px"}} title="所属部门" width="100"  type="innner">
-                            <div className="eqQueryCompleted-left-over">
                             <DepTree
                                 url={this.url}
                                 getTableData={this.props.getTableData}
                                 getLastMonthTime={this.getLastMonthTime}
                             />
-                        </div>
+
                         </Card>&nbsp;&nbsp;
+                        </div>
                     </Sider>
-                    <Content margin-left={600} theme="light">
+                    <Content  theme="light">
                         <Right
                           //  style={{marginLeft:10}}
                             url={this.url}

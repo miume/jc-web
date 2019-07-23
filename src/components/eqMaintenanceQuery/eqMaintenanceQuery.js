@@ -76,7 +76,6 @@ class EqMaintenanceQuery extends React.Component{
     };
 
     getTableData = (params) => {
-        console.log(params)
         this.setState({depCode:params.deptId})//新建状态用来获得所需的查询条件
         axios({
             url: `${this.url.eqMaintenanceQuery.recordPage}`,
@@ -86,9 +85,7 @@ class EqMaintenanceQuery extends React.Component{
             },
             params:params,
         }).then((data) => {
-            console.log(data)
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
             if (res&&res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {

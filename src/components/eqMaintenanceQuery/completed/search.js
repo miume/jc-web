@@ -14,7 +14,10 @@ class SearchCell extends React.Component{
             NowIndexDate:'',
             LastDate:'',
             NowDate:'',
-            date:{}
+            date:{},
+            clickflaga:1,
+            clickflagb:0,
+            clickflagc:0,
         }
 
         this.handleClicka=this.handleClicka.bind(this);
@@ -34,6 +37,9 @@ class SearchCell extends React.Component{
         }
         this.props.fetch(params)
         this.setState({
+            clickflagb:0,
+            clickflagc:0,
+            clickflaga:1,
             date:date
         })
 
@@ -48,6 +54,9 @@ class SearchCell extends React.Component{
             }
             this.props.fetch(params)
             this.setState({
+                clickflaga:0,
+                clickflagb:1,
+                clickflagc:0,
                 date:date
             })
         }
@@ -61,12 +70,14 @@ class SearchCell extends React.Component{
         }
         this.props.fetch(params)
         this.setState({
+            clickflaga:0,
+            clickflagb:0,
+            clickflagc:1,
+
             date:date
         })
     }
     dateArea = (date, dateString) => {
-        console.log(date)
-        console.log(dateString)
         var NowIndexDate = this.state.NowIndexDate
         var LastIndexDate = this.state.LastIndexDate
         NowIndexDate = dateString[1]
@@ -79,7 +90,6 @@ class SearchCell extends React.Component{
         })
     }
     handleSearch=()=>{
-        console.log('搜索事件')
         var date = this.state.date
         var NowIndexDate = this.state.NowIndexDate
         var LastIndexDate = this.state.LastIndexDate
@@ -101,12 +111,10 @@ class SearchCell extends React.Component{
                 statusId:3
             }
         }
-        console.log(pramas)
         this.props.getTableData(pramas)
 
 }
     searchContentChange=(e)=>{
-        console.log('获得input内容')
         this.setState({
             searchInput: e.target.value,
         })
@@ -119,25 +127,28 @@ class SearchCell extends React.Component{
         return(
             //className={this.props.flag?'searchCell':'hide'}
             <div >
-                <span style={{paddingTop: '7px'}}>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;默认：&nbsp;&nbsp;&nbsp;</span>
+                <span style={{paddingTop: '7px'}}>&nbsp;&nbsp;默认：&nbsp;&nbsp;&nbsp;</span>
 
                 <Button
+                    className={this.state.clickflaga?"bd-blue":"bd-grey"}
                     style={{height:30}}
                     onClick={this.handleClicka}
                     type="default"
                 >最近1月</Button>&nbsp;&nbsp;&nbsp;
 
                 <Button
+                    className={this.state.clickflagb?"bd-blue":"bd-grey"}
                     style={{height:30}}
                     onClick={this.handleClickb}
                     type="default"
                 >最近3月</Button>&nbsp;&nbsp;&nbsp;
 
                 <Button
+                    className={this.state.clickflagc?"bd-blue":"bd-grey"}
                     style={{height:30}}
                     onClick={this.handleClickc}
                     type="default"
-                >最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                >最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
                 保养时段：<RangePicker style={{width:210}} onChange={this.dateArea} value={[this.state.LastDate,this.state.NowDate]}  />&nbsp;&nbsp;
 
@@ -166,62 +177,12 @@ class SearchCell extends React.Component{
     }
 
     getFetch = () => {
-        /*重置时清除搜索框的值*/
-        // let searchComponent = document.getElementsByClassName(`search-$1`)[0]
-        //console.log(searchComponent);
-        // searchComponent.childNodes[0].value = ''
-        //console.log(searchComponent.childNodes[0])
         this.setState({
             searchInput:'',
             LastDate:null,
             NowDate:null
         })
         this.props.fetch({},1);
-        console.log('重置')
     }
-    // fetch = (params ,flag) => {
-    //     console.log(params)
-    //     this.props.getTableData(params)
-    //     console.log(flag)
-    //     /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-    //     if (flag) {
-    //         this.setState({
-    //             pageChangeFlag: 0,
-    //             searchInput: '',
-    //         })
-    //     }
-    // }
-
-    // ffetch=(selectdate)=>{
-    //     // if(flag)
-    //     //     this.setState({
-    //     //         pageChangeFlag:0,
-    //     //         searchContent:''
-    //     //     })
-    //     axios({
-    //         url: `${this.props.url.eqMaintenanceDataEntry.getAll}`,
-    //         method:'get',
-    //         headers:{
-    //             'Authorizatiton':this.url.Authorization},
-    //         params:{
-    //             deviceName:selectdate
-    //         },}
-    //     ).then((data)=>{
-    //         console.log('sssssssssss')
-    //         const result = data.data.data
-    //         console.log(result)
-    //         console.log('------------------')
-    //         this.setState({
-    //             datasource:result,
-    //         });
-    //     });
-    // }
-
-
-    // /**获取查询时角色名称的实时变化 */
-    // searchContentChange(e){
-    //     const value = e.target.value;
-    //     this.setState({searchContent:value});
-    // }
 }
 export default SearchCell;

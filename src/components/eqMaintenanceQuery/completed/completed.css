@@ -46,10 +46,24 @@
 .eqQueryCompleted-left-over{
     /*background-color:royalblue; !important*/
     max-height:450px; !important
-    width:100px;
+    width:300px;
     overflow-x:auto;
     overflow-y:auto;
 
+}
+.ac-roll {
+    width: 350px;
+    height: 552px;
+    overflow-x:auto;
+    overflow-y:auto;
+}
+.bd-blue{
+    border-color:#1890ff !important;
+    color: #1890ff !important;
+}
+.bd-grey{
+    border-color:grey  !important;
+    color:black !important;
 }
 /*.right{*/
 /*    width:200px;*/

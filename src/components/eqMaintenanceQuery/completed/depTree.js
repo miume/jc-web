@@ -5,7 +5,12 @@ import CancleButton from "../../BlockQuote/cancleButton";
 import NewButton from "../../BlockQuote/newButton";
 import Home from "../../Home/home";
 import "./completed.css"
-
+var params = {
+    deptId:'',
+    statusId:3,
+    startDate:'',
+    endDate:''
+}
 class DepTree extends Component {
     url=JSON.parse(localStorage.getItem('url'));
     constructor(props) {
@@ -17,6 +22,7 @@ class DepTree extends Component {
                 key:0,
                 children: [],
             }],
+            key:''
         };
         this.getData = this.getData.bind(this)
 
@@ -41,29 +47,26 @@ class DepTree extends Component {
 
     render() {
         return (
-            <div   >
-                <Tree className="eqQueryCompleted-left-over"
+                <Tree
                     showLine
                     defaultExpandAll
                     treeData={this.state.dataSource}
                     onSelect={this.returnDepKey}
+                    defaultExpandedKeys={['0-0-0', '0-0-1']}
+                    defaultSelectedKeys={[this.state.key]}
                />
-            </div>
         )
     }
     //通过回调函数，获得标签页表格中的数据
     returnDepKey = (selectedKeys) => {
         const date = this.props.getLastMonthTime(1);
-        console.log(date)
         this.setState({depCode:selectedKeys[0]},()=>{
-            const params = {
+             params = {
                 deptId:parseInt(selectedKeys[0]),
                 statusId:3,
                 startDate:date.datastr,
                 endDate:date.NowDate
             }
-            console.log('params')
-            console.log(params)
             this.props.getTableData(params)
         });
     };
@@ -124,13 +127,12 @@ class DepTree extends Component {
                     const depCode = dataSource[0].children[0].children[0]?dataSource[0].children[0].children[0].key:null
                     if(depCode){
                         const date = this.props.getLastMonthTime(1);
-                        const params = {
+                         params = {
                             deptId:depCode,
                             statusId:3,
                             startDate:date.datastr,
                             endDate:date.NowDate
                         }
-                        console.log(params)
                         this.props.getTableData(params)
 
                     }
