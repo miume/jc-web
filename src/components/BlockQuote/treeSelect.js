@@ -32,7 +32,7 @@ class TreeCard extends React.Component{
                     <div>
                         <Tree
                             showLine={true}
-                            defaultExpandAll={true}
+                            defaulQtExpandAll={true}
                             treeData={this.props.dataSource}
                             onSelect={this.returnDepKey}
                         />
