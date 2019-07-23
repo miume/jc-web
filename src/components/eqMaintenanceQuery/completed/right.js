@@ -45,15 +45,15 @@ class Right extends React.Component {
         }
         this.pagination = {
             showSizeChanger: true,
-            itemRender(current, type, originalElement){
-                if (type === 'prev') {
-                    return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
-                }
-                if (type === 'next') {
-                    return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
-                }
-                return originalElement;
-            },
+            // itemRender(current, type, originalElement){
+            //     if (type === 'prev') {
+            //         return <a>&nbsp;&nbsp;上一页&nbsp;&nbsp;</a>;
+            //     }
+            //     if (type === 'next') {
+            //         return <a>&nbsp;&nbsp;下一页&nbsp;&nbsp;</a>;
+            //     }
+            //     return originalElement;
+            // },
             showTotal(total){
                 return `共${total}条记录`
             },
@@ -75,20 +75,21 @@ class Right extends React.Component {
             title: '序号',
             dataIndex: 'index',
             key: 'index',
+            sorter: (a, b) => a.index - b.index,
             align:'center',
         },
         {
             title: '保养单号',
-            dataIndex: 'planCode',
-            key: 'planCode',
+            dataIndex: 'code',
+            key: 'code',
             align:'center',
             width:'100',
         },
         {
             title: '设备名称/编号',
-            dataIndex: 'Device_name',
+            dataIndex: 'deviceName',
             sorter: (a, b) => a.number - b.number,
-            key: 'Device_name',
+            key: 'deviceName',
             align:'center',
             width:'100',
         },
@@ -96,31 +97,31 @@ class Right extends React.Component {
             title: '所属部门',
             align:'center',
             width: '50',
-            key: 'Dept_code',
-            dataIndex: 'Dept_code',
+            key: 'deptCode',
+            dataIndex: 'deptCode',
         },
         {
             title: '本次计划执行日期',
-            key: 'plandate',
+            key: 'planDate',
             align:'center',
-            dataIndex: 'plandate',
+            dataIndex: 'planDate',
         },
         {
             title: '接单时间',
-            key: 'receivedate',
-            dataIndex: 'receivedate',
+            key: 'receiveDate',
+            dataIndex: 'receiveDate',
         },
         {
             title: '保养完成日期',
             sorter: (a, b) => a.deadline - b.deadline,
-            key: 'finishdate',
-            dataIndex: 'finishdate',
+            key: 'finishiDate',
+            dataIndex: 'finishiDate',
             align:'center',
         },
         {
             title: '保养人',
-            key: 'maintenancepeople',
-            dataIndex: 'maintenancepeople',
+            key: 'maintPeople',
+            dataIndex: 'maintPeople',
             align:'center',
         },
         {
@@ -149,7 +150,7 @@ class Right extends React.Component {
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div style={{background: 'rgb(255, 255, 255)'} }>
-                <div className="head" >
+                <div className="head" style={{paddingTop:10}} >
                     </div>
                     <SearchCell
                         name="单号/设备名称/单号..."
@@ -158,6 +159,7 @@ class Right extends React.Component {
                         getTableData={this.props.getTableData}
                         depCode={this.props.depCode}
                         style={{marginTop:10}}
+                        getLastMonthTime={this.props.getLastMonthTime}
                     />
                     <div>
                 <Table size="small"
@@ -170,7 +172,7 @@ class Right extends React.Component {
                         handleTableChange={this.handleTableChange}
                        judgeOperation = {home.judgeOperation}
                        operation = {this.operation}
-                       style={{marginTop:20}}
+                       style={{marginTop:10}}
               />
                     </div>
 
@@ -214,42 +216,41 @@ class Right extends React.Component {
     /**---------------------- */
 
     fetch = (params ,flag) => {
+        console.log(params)
+        this.props.getTableData(params)
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if(flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;
-            pagination.total = 0;
             this.setState({
                 pageChangeFlag:0,
                 searchContent:'',
-                pagination:pagination
             })
         }
-        axios({
-            url: `${this.url.department.byNameLikeByPage}` ,
-            method: 'get',
-            headers:{
-                'Authorization': this.url.Authorization
-            },
-            params: params,
-        }).then((data) => {
-            const res = data.data.data?data.data.data:[];
-            if(res&&res.list){
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i;
-                }
-                const {pagination} = this.state;
-                pagination.total=res.total;
-                this.setState({
-                    dataSource: res.list,
-                    pagination:pagination,
-                });
-            }else{
-                this.setState({
-                    dataSource: []
-                })
-            }
-        });
+
+        // axios({
+        //     url: `${this.url.department.byNameLikeByPage}` ,
+        //     method: 'get',
+        //     headers:{
+        //         'Authorization': this.url.Authorization
+        //     },
+        //     params: params,
+        // }).then((data) => {
+        //     const res = data.data.data?data.data.data:[];
+        //     if(res&&res.list){
+        //         for(var i = 1; i<=res.list.length; i++){
+        //             res.list[i-1]['index']=(res.prePage)*10+i;
+        //         }
+        //         const {pagination} = this.state;
+        //         pagination.total=res.total;
+        //         this.setState({
+        //             dataSource: res.list,
+        //             pagination:pagination,
+        //         });
+        //     }else{
+        //         this.setState({
+        //             dataSource: []
+        //         })
+        //     }
+        // });
     };
 }
 export default Right

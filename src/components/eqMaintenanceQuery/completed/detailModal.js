@@ -9,65 +9,83 @@ const Step = Steps.Step
 
 class Detail extends React.Component{
     url
+    ind = [];
     constructor(props){
         super(props)
         this.state = {
             visible: false,
             depCode:'2',
             dataSource : [],
-            detailData:[],
+            // detailData:[],
             name:'',
             time:'',
             previewVisible:false,
             previewImage: '',
+            detailData: {
+                deviceMaintenanceRecordHead:[],
+                deviceMaintenanceRecordDetails: [],
+                deviceMaintenanceAccessory:[],
+                planData:''
+            },
+            abnormalContent:[]
         };
         this.fetch = this.fetch.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
-        this.dateA=''
+        this.footer = this.footer.bind(this)
     }
     acolums=[{
         title:'序号',
-        key:'code',
-        dataIndex:'code',
+        key:'index',
+        dataIndex:'index',
+        sorter: (a, b) => a.index - b.index,
         align:'center',
+        width:50
     },{
         title:'保养项目',
         dataIndex:'maintenanceItems',
-        key:'maintenanceitems',
+        key:'maintenanceItems',
         align:'center',
+        width:160
     },{
         title:'保养内容',
         dataIndex:'maintenanceContent',
         key:'maintenanceContent',
         align:'center',
+        width:160
     },{
         title:'保养情况',
-        dataIndex:'mainValues',
-        key:'mainValues',
+        dataIndex:'mainContent',
+        key:'mainContent',
         align:'center',
+        width:160
     }
     ]
     bcolums=[{
         title:'序号',
         key:'index',
         dataIndex:'index',
+        sorter: (a, b) => a.index - b.index,
         align:'center',
+        width:50
     },{
         title:'配件名称',
         dataIndex:'name',
         key:'name',
         align:'center',
+        width:160
     },{
         title:'配件规格',
         dataIndex:'specification',
         key:'specification',
         align:'center',
+        width:160
     },{
         title:'配件数量',
         dataIndex:'counts',
         key:'counts',
         align:'center',
+        width:160
     }
     ]
     columns= [
@@ -104,12 +122,13 @@ class Detail extends React.Component{
             title: '接单时间',
             key: 'receiveDate',
             dataIndex: 'receiveDate',
+            align:'center',
             width:130,
         },
         {
             title: '保养完成日期',
-            key: 'finishDate',
-            dataIndex: 'finishDate',
+            key: 'finishiDate',
+            dataIndex: 'finishiDate',
             align:'center',
             width:130,
         },
@@ -139,34 +158,98 @@ class Detail extends React.Component{
 
     /**处理一条详情记录 */
     handleDetail() {
-        this.fetch(this.props.batchNumberId)
-        this.setState({
-            visible: true
-        });
-        const params ={
-            Id:this.props.planCode
-        }
         axios({
-            url:`${this.props.url.eqmaintenance.recordDetail}`,
+            url:`${this.props.url.eqMaintenanceQuery.recordDetail}`,
             method:'get',
             headers: {
                 'Authorization': this.props.url.Authorization
+            },
+            params:{
+                id:this.props.code
             }
         }).then((data) => {
             const res=data.data.data ? data.data.data : [];
             if(res){
-                this.setState({detailData:res})
-                this.dateA="本次计划执行日期:"+this.state.detailData.deviceMaintenanceAccessory.receiveDate
+                var detailData = this.state.detailData
+                const deviceMaintenanceRecordHead=res.deviceMaintenanceRecordHead
+                detailData.deviceMaintenanceRecordHead.push({
+                    planCode:deviceMaintenanceRecordHead.planCode,
+                    deviceName:deviceMaintenanceRecordHead.deviceName + '#' + '编号待定',
+                    deptCode:deviceMaintenanceRecordHead.deptCode + '需要名称',
+                    planDate:deviceMaintenanceRecordHead.planDate,
+                    receiveDate:deviceMaintenanceRecordHead.receiveDate,
+                    finishiDate:deviceMaintenanceRecordHead.finishiDate,
+                    maintPeople:deviceMaintenanceRecordHead.maintPeople+'需要名字'
+                })
+                const deviceMaintenanceRecordDetails=res.deviceMaintenanceRecordDetails
+                var abnormalContent = this.state.abnormalContent
+                for(var i = 0 ; i<deviceMaintenanceRecordDetails.length; i++){
+                    const arr = deviceMaintenanceRecordDetails[i]
+                    if(arr.mainValues===1){
+                        abnormalContent.push(arr.mainContent)
+                    }
+                }
+                detailData.deviceMaintenanceRecordDetails = deviceMaintenanceRecordDetails
+                const deviceMaintenanceAccessory=res.deviceMaintenanceAccessory
+                detailData.deviceMaintenanceAccessory =deviceMaintenanceAccessory
+                detailData.planData = '本次计划时间：' + deviceMaintenanceRecordHead.planDate
+                detailData.receiveDate = deviceMaintenanceRecordHead.receiveDate
+                detailData.finishiDate = deviceMaintenanceRecordHead.finishiDate
+                console.log(detailData)
+                this.setState({
+                    detailData:detailData,
+                    visible:true,
+                    abnormalContent:abnormalContent
+                })
             }else{
 
             }
 
         })
+        // this.fetch(this.props.batchNumberId)
+        // this.setState({
+        //     visible: true
+        // });
+        // const params ={
+        //     Id:this.props.planCode
+        // }
+        // axios({
+        //     url:`${this.props.url.eqmaintenance.recordDetail}`,
+        //     method:'get',
+        //     headers: {
+        //         'Authorization': this.props.url.Authorization
+        //     }
+        // }).then((data) => {
+        //     const res=data.data.data ? data.data.data : [];
+        //     if(res){
+        //         this.setState({detailData:res})
+        //         this.dateA="本次计划执行日期:"+this.state.detailData.deviceMaintenanceAccessory.receiveDate
+        //     }else{
+        //
+        //     }
+        //
+        // })
     }
     handleCancel() {
         this.setState({
-            visible: false
+            visible: false,
+            detailData: {
+                deviceMaintenanceRecordHead:[],
+                deviceMaintenanceRecordDetails: [],
+                deviceMaintenanceAccessory:[],
+                planData:''
+            },
+            abnormalContent:[]
         });
+    }
+    footer = () => {
+        const abnormalContent = this.state.abnormalContent
+        if(abnormalContent.length===0){
+            return null
+        }else{
+
+            return abnormalContent
+        }
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -177,28 +260,6 @@ class Detail extends React.Component{
                 {dot}
             </Popover>
         )
-      //   const data = [
-      //       {
-      //           odd_number:'by12345',
-      //           number:'管道阀门/#1001',
-      //           department:'制造一部',
-      //           date:'2019-07-18',
-      //           time:'2019-07-17 10:00',
-      //           deadline:'2019-8-17',
-      //           someone:'ww',
-      //       }]
-      // var adata=[{
-      //     index:1,
-      //     project:'管道阀门',
-      //     context:'畅通、不漏液',
-      //     condition:'异常',
-      // }]
-      //   var bdata=[{
-      //       index:1,
-      //       name:'配件名称',
-      //       standards:'配件规格',
-      //       number:'配件数量',
-      //   }]
         return(
             <span>
                 <span onClick={this.handleDetail} className='blue'>详情</span>
@@ -210,7 +271,7 @@ class Detail extends React.Component{
                            <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
                        ]}
                 >
-                    <div>
+                    <div style={{maxHeight:'550px'}}>
 
                         <Table
                             className="eqQueryCompleted-table"
@@ -219,38 +280,43 @@ class Detail extends React.Component{
                             dataSource={this.state.detailData.deviceMaintenanceRecordHead}
                             bordered
                             pagination={false}
-                            style={{marginBottom:"20"}}
+                            style={{marginBottom:"35"}}
                         />
 
                         <WhiteSpace />
-                        <Steps size="small" current={2} progressDot={customDot}>
-                            <Step title="制定计划" description={this.dateA}/>
-
-                            <Step title="已接单" description=''/>
-                            <Step title="已完成" description= ''/>
-
+                        <Steps size="small" current={2} progressDot={customDot} className="eqQueryCompleted-step">
+                            <Step title="制定计划" description={this.state.detailData.planData}/>
+                            <Step title="已接单" description={this.state.detailData.receiveDate}/>
+                            <Step title="已完成" description= {this.state.detailData.finishiDate}/>
                         </Steps>
+                        <WhiteSpace />
+                        <div style={{maxHeight:'150px',marginBottom:'2px',marginTop:'2px'}}>
+                            <Table
 
-                        <Table
-                            className="eqQueryCompleted-table"
-                            size="small"
-                            columns={this.acolums}
-                            dataSource={this.state.detailData.deviceMaintenanceRecordDetails}
-                            bordered
-                            pagination={false}
-                            style={{marginBottom:"20"}}
-                          //  footer={() =>  {this.state.detailData.deviceMaintenanceAccessory.abnormalcontent}}
-                         />
+                                className="eqQueryCompleted-table"
+                                size="small"
+                                columns={this.acolums}
+                                dataSource={this.state.detailData.deviceMaintenanceRecordDetails}
+                                bordered
+                                pagination={false}
+                               // style={{tr height:'10'}}
+                                scroll={{ y: 150 }}
+                                 footer={this.footer}
+                            />
+                        </div>
 
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"20"}}>配件使用</div>
-
-                        <Table className="eqQueryCompleted-table"
-                             size="small"
-                             columns={this.bcolums}
-                             dataSource={this.state.detailData.deviceMaintenanceAccessory}
-                             bordered
-                             pagination={false}
-                         />
+                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>配件使用</div>
+                        <div style={{maxHeight:'150px',marginTop:'10px'}}>
+                            <Table className="eqQueryCompleted-table"
+                                   size="small"
+                                   columns={this.bcolums}
+                                   dataSource={this.state.detailData.deviceMaintenanceAccessory}
+                                   bordered
+                                 //  style={{marginTop:"20"}}
+                                   pagination={false}
+                                   scroll={{ y: 150 }}
+                            />
+                        </div>
 
                     </div>
 

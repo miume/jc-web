@@ -4,7 +4,7 @@ import axios from "axios";
 import CancleButton from "../../BlockQuote/cancleButton";
 import NewButton from "../../BlockQuote/newButton";
 import Home from "../../Home/home";
-
+import "./completed.css"
 
 class DepTree extends Component {
     url=JSON.parse(localStorage.getItem('url'));
@@ -32,17 +32,17 @@ class DepTree extends Component {
      //   this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
 
         this.getData();
-        const params = {
-            deptId:2,
-            statusId:1,
-        }
-        this.props.getTableData(params)
+        // const params = {
+        //     deptId:2,
+        //     statusId:1,
+        // }
+        // this.props.getTableData(params)
     }
 
     render() {
         return (
-            <div>
-                <Tree
+            <div   >
+                <Tree className="eqQueryCompleted-left-over"
                     showLine
                     defaultExpandAll
                     treeData={this.state.dataSource}
@@ -53,14 +53,14 @@ class DepTree extends Component {
     }
     //通过回调函数，获得标签页表格中的数据
     returnDepKey = (selectedKeys) => {
+        const date = this.props.getLastMonthTime(1);
+        console.log(date)
         this.setState({depCode:selectedKeys[0]},()=>{
-            console.log('this.state.depCode')
-            console.log(this.state.depCode)
-            console.log('selectedKeys[0]')
-            console.log(selectedKeys[0])
             const params = {
-                deptId:parseInt(this.state.depCode),
-                statusId:1,
+                deptId:parseInt(selectedKeys[0]),
+                statusId:3,
+                startDate:date.datastr,
+                endDate:date.NowDate
             }
             console.log('params')
             console.log(params)
@@ -120,6 +120,20 @@ class DepTree extends Component {
                 }
                 this.setState({
                     dataSource: dataSource,
+                },()=>{
+                    const depCode = dataSource[0].children[0].children[0]?dataSource[0].children[0].children[0].key:null
+                    if(depCode){
+                        const date = this.props.getLastMonthTime(1);
+                        const params = {
+                            deptId:depCode,
+                            statusId:3,
+                            startDate:date.datastr,
+                            endDate:date.NowDate
+                        }
+                        console.log(params)
+                        this.props.getTableData(params)
+
+                    }
                 })
             } else {
 

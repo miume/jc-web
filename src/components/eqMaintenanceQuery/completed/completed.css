@@ -31,11 +31,26 @@
     overflow-y:auto;
     border:1px solid #F5f5f5;
 }
-
 .eqQueryCompleted-table{
     text-align:center;
 }
+/*.eqQueryCompleted-table .tr{*/
+/*    padding:0px 0px;*/
+/*    word-break:break-word;*/
+/*}*/
+.eqQueryCompleted-step .ant-steps-item-description{
+    width: 200px ;
+    margin-left: 0px;
+}
 
+.eqQueryCompleted-left-over{
+    /*background-color:royalblue; !important*/
+    max-height:450px; !important
+    width:100px;
+    overflow-x:auto;
+    overflow-y:auto;
+
+}
 /*.right{*/
 /*    width:200px;*/
 /*}*/

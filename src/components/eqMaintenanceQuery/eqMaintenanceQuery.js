@@ -51,8 +51,12 @@ class EqMaintenanceQuery extends React.Component{
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
                         <Completed
+                            url={this.url}
+                            operation={this.operation}
                             getTableData={this.getTableData}
-                            rightTableData={this.state.rightTableData}
+                            rightTableData={
+                                this.state.rightTableData
+                            }
                             depCode={this.state.depCode}
                         />
                     </Tabs.TabPane>
@@ -66,11 +70,9 @@ class EqMaintenanceQuery extends React.Component{
     }
     /**用于选择页面，看是待保养还是已接单*/
     returnEquKey = key => {
-        if(key==='1'||key==='2'){
-            this.setState({
-                rightTableData:[]
-            })
-        }
+        this.setState({
+            rightTableData:[]
+        })
     };
 
     getTableData = (params) => {
@@ -86,6 +88,7 @@ class EqMaintenanceQuery extends React.Component{
         }).then((data) => {
             console.log(data)
             const res = data.data.data ? data.data.data : [];
+            console.log(res)
             if (res&&res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
@@ -110,7 +113,6 @@ class EqMaintenanceQuery extends React.Component{
                     rightTableData: rightTableData,
                 });
             } else {
-                message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
                 });
