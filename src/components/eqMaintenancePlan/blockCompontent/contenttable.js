@@ -121,6 +121,9 @@ class ContentTable extends React.Component {
             }
         }
     }]
+    handleTableChange=()=>{
+
+    }
     handleDel=(id)=>{
         axios({
             url:`${this.props.url.DeviceMaintenancePlan.maintenanceDeletePlan}${id}`,
@@ -150,6 +153,7 @@ class ContentTable extends React.Component {
                     bordered
                     scroll={{y: 400}}
                     size="small"
+                    onChange={this.handleTableChange}
                     pagination={this.props.pagination}
                 />
             </div>

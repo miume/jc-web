@@ -1,5 +1,6 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
+import TreeCard from "../BlockQuote/treeSelect";
 import axios from "axios";
 import DepartmentCard from './blockCompontent/department'
 import ButtonToDd from './blockCompontent/buttontodo'
@@ -17,18 +18,13 @@ class EqMaintenancePlan extends React.Component{
         super(props)
         this.state={
             deviceMaintenancePlansDetails:[],
-
-
             rightTableData: [],
-
             MaintenanceType:[],
             deviceName:'',
             Opt_type:'',
             detailNum:'',
-
             depCode: 2,
             depName:'铜官制造一、二部-锂电一',
-
             Device:[],
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent:'',
@@ -47,7 +43,6 @@ class EqMaintenancePlan extends React.Component{
         this.searchEvent = this.searchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
     }
-
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
@@ -97,7 +92,9 @@ class EqMaintenancePlan extends React.Component{
                             pagination={this.pagination}
                             dataSource={this.state.rightTableData}
                         />
+
                     </div>
+
                 </div>
             </div>
         )

@@ -33,6 +33,7 @@ class DepartmentCard extends React.Component{
         }
         this.props.getTableData(params,this.state.depName);
     }
+    ExpandedKeys=['0','1','2']
     render() {
 
         return(
@@ -48,6 +49,7 @@ class DepartmentCard extends React.Component{
                         defaultExpandAll={true}
                         treeData={this.state.dataSource}
                         onSelect={this.returnDepKey}
+                        ExpandedKeys={this.ExpandedKeys}
                     />
                 </div>
             </Card>)

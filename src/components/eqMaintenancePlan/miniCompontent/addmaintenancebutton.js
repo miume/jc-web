@@ -159,7 +159,6 @@ class Addmaintenancebutton extends React.Component{
                     "effFlag":this.state.Effective,
                 },
                 "deviceMaintenanceItems":this.state.MaintenanceType,
-                "detailNum":1,
             }
             console.log(objectdata)
             this.handleCancel();
@@ -242,7 +241,7 @@ class Addmaintenancebutton extends React.Component{
                     <div >
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>计划名称</b>
+                        <b>计划名称</b>&nbsp;
                         <Input
                             id='Planname_add'
                             onChange={this.handlePlanName1Change}
@@ -265,7 +264,7 @@ class Addmaintenancebutton extends React.Component{
                         />
                     </div>
                     <div className='divofadd1'>
-                        <b>设备名称/编号</b>
+                        <b>设备名称/编号</b>&nbsp;
                         <TreeSelect
                             id='deviceNameAndNum_add'
                             key="deviceNameAndNum"
@@ -284,7 +283,7 @@ class Addmaintenancebutton extends React.Component{
                 </div>
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>保养周期</b>
+                        <b>保养周期</b>&nbsp;
                         <InputNumber
                             id='MaintenancePeriod_add'
                             placeholder='请输入天数'
@@ -298,7 +297,7 @@ class Addmaintenancebutton extends React.Component{
                         />
                     </div>
                     <div className='divofadd'>
-                        <b>本次计划执行日期</b>
+                        <b>本次计划执行日期</b>&nbsp;
                         <DatePicker
                             format={dateFormat}
                             id='ImplementDate_add'
@@ -315,17 +314,18 @@ class Addmaintenancebutton extends React.Component{
                 </div>
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>保养项目</b>
+                        <b>保养项目</b>&nbsp;
                         <Table
                             id='Mainname_add'
                             key="Maintenancetype"
                             name="Maintenancetype"
                             columns={this.columns}
-                            dataSource={this.d2}
+                            dataSource={this.props.MaintenanceType}
                             size="small"
                             scroll={{ y: 240 }}
                             rowSelection={MaintenanceTypeSelection}
                             bordered={true}
+                            pagination={false}
                         />
                     </div>
                 </div>
