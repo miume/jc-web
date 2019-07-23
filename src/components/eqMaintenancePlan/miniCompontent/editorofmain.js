@@ -159,6 +159,7 @@ class EditorofMain extends React.Component{
                             scroll={{ y: 240 }}
                             rowSelection={MaintenanceTypeSelection}
                             bordered={true}
+                            pagination={false}
                         />
                     </div>
                 </div>

@@ -156,6 +156,7 @@ class DetailofMain extends React.Component{
                             size="small"
                             scroll={{ y: 240 }}
                             bordered={true}
+                            pagination={false}
                         />
                     </div>
                 </div>
@@ -189,13 +190,7 @@ class DetailofMain extends React.Component{
             dataIndex: 'maintenanceContent',
             key:'maintenanceContent',
             width: "40%"
-        },
-        {
-            title: '频次',
-            dataIndex: 'frequency',
-            key:'frequency',
-            width: "30%",
-        },
+        }
     ];
 }
 

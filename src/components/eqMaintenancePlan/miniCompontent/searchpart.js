@@ -54,7 +54,7 @@ class Searchpart extends Component {
                     <Option key="0"  title='已失效'>已失效</Option>
                 </Select>&nbsp;&nbsp;&nbsp;
                 <SearchCell
-                    name="单号/设备名称/编号..."
+                    name="设备名称/编号..."
                     width='100px'
                     flag={true}
                     searchContentChange={this.searchContentChange}
