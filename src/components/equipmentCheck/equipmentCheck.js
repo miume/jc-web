@@ -4,10 +4,10 @@ import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
 
 const icon = [
-    'fa fa-tasks fa-5x','fa fa-flask fa-5x'
+    'fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
 ]
 
-class BaseData extends React.Component{
+class EquipmentCheck extends React.Component{
     componentDidMount(){
         this.getData()
     }
@@ -29,7 +29,7 @@ class BaseData extends React.Component{
            menuParent : this.current.menuName,
            path : path[0]
        }
-       localStorage.setItem('baseData',JSON.stringify(dataEntry))
+       localStorage.setItem('equipmentCheck',JSON.stringify(dataEntry))
         this.props.history.push({pathname:path[0]})
    }
    getData(){
@@ -65,4 +65,4 @@ class BaseData extends React.Component{
     }
 }
 
-export default BaseData;
+export default EquipmentCheck
