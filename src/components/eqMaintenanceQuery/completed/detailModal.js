@@ -174,12 +174,12 @@ class Detail extends React.Component{
                 const deviceMaintenanceRecordHead=res.deviceMaintenanceRecordHead
                 detailData.deviceMaintenanceRecordHead.push({
                     planCode:deviceMaintenanceRecordHead.planCode,
-                    deviceName:deviceMaintenanceRecordHead.deviceName + '#' + '编号待定',
-                    deptCode:deviceMaintenanceRecordHead.deptCode + '需要名称',
+                    deviceName:deviceMaintenanceRecordHead.deviceName + '/#' + deviceMaintenanceRecordHead.fixedassetsCode,
+                    deptCode:deviceMaintenanceRecordHead.deptCode ,
                     planDate:deviceMaintenanceRecordHead.planDate,
                     receiveDate:deviceMaintenanceRecordHead.receiveDate,
                     finishiDate:deviceMaintenanceRecordHead.finishiDate,
-                    maintPeople:deviceMaintenanceRecordHead.maintPeople+'需要名字'
+                    maintPeople:deviceMaintenanceRecordHead.maintPeople
                 })
                 const deviceMaintenanceRecordDetails=res.deviceMaintenanceRecordDetails
                 var abnormalContent = this.state.abnormalContent
@@ -195,7 +195,6 @@ class Detail extends React.Component{
                 detailData.planData = '本次计划时间：' + deviceMaintenanceRecordHead.planDate
                 detailData.receiveDate = deviceMaintenanceRecordHead.receiveDate
                 detailData.finishiDate = deviceMaintenanceRecordHead.finishiDate
-                console.log(detailData)
                 this.setState({
                     detailData:detailData,
                     visible:true,
