@@ -1,13 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Button, Input,DatePicker} from 'antd';
-
-var date=new Date();
-var strYear = date.getFullYear();
-var strDay = date.getDate();
-var strMonth = date.getMonth()+1;
-var NowDate= strYear+"-"+strMonth+"-"+strDay;
-
+import moment from 'moment';
 class SearchCell extends React.Component{
     constructor(props){
         super(props)
@@ -16,117 +10,99 @@ class SearchCell extends React.Component{
             selectTime:'',
             //searchData:'',
             searchInput:'',
-            LastIndexDate:' ',
-            NowIndexDate:' ',
+            LastIndexDate:'',
+            NowIndexDate:'',
+            LastDate:'',
+            NowDate:'',
+            date:{}
         }
 
         this.handleClicka=this.handleClicka.bind(this);
         this.handleClickb=this.handleClickb.bind(this);
         this.handleClickc=this.handleClickc.bind(this);
-        this.handleChangeTime=this.handleChangeTime.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
-        this.getLastMonthTime=this.getLastMonthTime.bind(this);
+        this.dateArea = this.dateArea.bind(this);
+        this.searchContentChange=this.searchContentChange.bind(this);
     }
     handleClicka=()=> {
-        console.log('传送点击的button获取表格数据')
-            this.setState({
-                selectState: 'oneMonth',
-            })
-        //近1个月
-        var d=this.getLastMonthTime(1)
-        console.log(d)
-        console.log(NowDate)
+        var date = this.props.getLastMonthTime(1)
+        var params = {
+            deptId:parseInt(this.props.depCode),
+            statusId:3,
+            startDate:date.datastr,
+            endDate:date.NowDate
+        }
+        this.props.fetch(params)
         this.setState({
-            NowIndexDate:NowDate,
-            LastIndexDate:d,
+            date:date
         })
 
     }
         handleClickb=()=>{
-            console.log('传送点击的button获取表格数据')
+            var date = this.props.getLastMonthTime(3)
+            var params = {
+                deptId:parseInt(this.props.depCode),
+                statusId:3,
+                startDate:date.datastr,
+                endDate:date.NowDate
+            }
+            this.props.fetch(params)
             this.setState({
-                selectState:'threeMonth',
-            })
-            //近3个月
-            var d=this.getLastMonthTime(3)
-            console.log(d)
-            this.setState({
-                NowIndexDate:NowDate,
-                LastIndexDate:d,
+                date:date
             })
         }
     handleClickc=()=>{
-        console.log('传送点击的button获取表格数据')
+        var date = this.props.getLastMonthTime(12)
+        var params = {
+            deptId:parseInt(this.props.depCode),
+            statusId:3,
+            startDate:date.datastr,
+            endDate:date.NowDate
+        }
+        this.props.fetch(params)
         this.setState({
-            selectState:'year',
-        })
-        //近一年
-        var d=this.getLastMonthTime(12)
-        console.log(d)
-        this.setState({
-            NowIndexDate:NowDate,
-            LastIndexDate:d,
+            date:date
         })
     }
-    handleChangeTime=(e)=>{
-        console.log('选择时间')
+    dateArea = (date, dateString) => {
+        console.log(date)
+        console.log(dateString)
+        var NowIndexDate = this.state.NowIndexDate
+        var LastIndexDate = this.state.LastIndexDate
+        NowIndexDate = dateString[1]
+        LastIndexDate = dateString[0]
         this.setState({
-            selectTime:e.value,
+            NowIndexDate:NowIndexDate,
+            LastIndexDate:LastIndexDate,
+            LastDate:date[0],
+            NowDate:date[1]
         })
-        // const pramas ={
-        //     deptId:this.props.depCode,
-        //     condition:this.state.selectTime,
-        // }
-        // this.props.getTableData(pramas)
     }
     handleSearch=()=>{
         console.log('搜索事件')
-        const pramas ={
-            deptId:parseInt(this.props.depCode),
-            condition:this.state.searchInput,
+        var date = this.state.date
+        var NowIndexDate = this.state.NowIndexDate
+        var LastIndexDate = this.state.LastIndexDate
+        var pramas = {}
+        if(NowIndexDate!==''&&LastIndexDate!==''){
+            pramas ={
+                deptId:parseInt(this.props.depCode),
+                condition:this.state.searchInput,
+                startDate:LastIndexDate,
+                endDate:NowIndexDate,
+                statusId:3
+            }
+        }else{
+            pramas ={
+                deptId:parseInt(this.props.depCode),
+                condition:this.state.searchInput,
+                startDate:date.datastr,
+                endDate:date.NowDate,
+                statusId:3
+            }
         }
         console.log(pramas)
         this.props.getTableData(pramas)
-    //     axios({
-    //         url: `${this.props.url.eqMaintenanceDataEntry.getAll}`,
-    //         method:'get',
-    //         headers:{
-    //             'Authorizatiton':this.url.Authorization},
-    //         params:{
-    //             deviceName:clickdeviceName
-    //         },}
-    //     ).then((data)=>{
-    //         console.log('sssssssssss')
-    //         const result = data.data.data
-    //         console.log(result)
-    //         // this.pagination.total=result?result.total:0;
-    //         // this.pagination.current=result.pageNum;
-    //         console.log('------------------')
-    //         // console.log(result.pageNum)
-    //         console.log('------------------')
-    //         // if(result&&result.list){
-    //         //     for(let i=1;i<=result.list.length;i++){
-    //         //         result.list[i-1]['id']=result.prePage*10+i;
-    //         //     }
-    //         // }
-    //         this.setState({
-    //             datasource:result,
-    //         });
-    //         // const res = data.data.data;
-    //         // if(res&&res.list)
-    //         // {
-    //         //     for(var i = 1; i <= res.list.length;i++){
-    //         //         var e = res.list[i-1];
-    //         //         e['index'] = res.prePage*10+i
-    //         //     }
-    //         //     this.pagination.total = res?res.total:0;
-    //         //     this.setState({
-    //         //         dataSource:res.list,
-    //         //     })
-    //         // }
-    //     });
-    // }
-
 
 }
     searchContentChange=(e)=>{
@@ -134,57 +110,6 @@ class SearchCell extends React.Component{
         this.setState({
             searchInput: e.target.value,
         })
-    }
-
-    getLastMonthTime(month){
-        //  1    2    3    4    5    6    7    8    9   10    11   12月
-        var daysInMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31];
-        //一、解决闰年平年的二月份天数   //平年28天、闰年29天//能被4整除且不能被100整除的为闰年,或能被100整除且能被400整除
-        if (((strYear % 4) === 0) && ((strYear % 100)!==0) || ((strYear % 400)===0)){
-            daysInMonth[2] = 29;
-        }
-        if(month===1){
-            if(strMonth - 1 === 0) //二、解决跨年问题
-            {
-                strYear -= 1;
-                strMonth = 12;
-            }
-            else
-            {
-                strMonth -= month;
-            }
-        }
-        else if(month===3){
-            if(strMonth - month<= 0) //二、解决跨年问题
-            {
-                strYear -= 1;
-                if(strMonth===1)strMonth=10;
-                else if(strMonth===2)strMonth=11;
-                else if(strMonth===3)strMonth=12;
-            }
-            else
-            {
-                strMonth -= month;
-            }
-        }
-        else if(month===12){
-            strYear-=1;
-        }
-        // strYear=2000;
-        // strMonth=2;
-        // strDay=31;
-//  strDay = daysInMonth[strMonth] >= strDay ? strDay : daysInMonth[strMonth];
-        strDay = Math.min(strDay,daysInMonth[strMonth]);//三、前一个月日期不一定和今天同一号，例如3.31的前一个月日期是2.28；9.30前一个月日期是8.30
-        if(strMonth<10)//给个位数的月、日补零
-        {
-            strMonth="0"+strMonth;
-        }
-        if(strDay<10)
-        {
-            strDay="0"+strDay;
-        }
-        var datastr = strYear+"-"+strMonth+"-"+strDay;
-        return datastr;
     }
 
     render(){
@@ -212,14 +137,15 @@ class SearchCell extends React.Component{
                     style={{height:30}}
                     onClick={this.handleClickc}
                     type="default"
-                >最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                >最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                保养时段：<RangePicker style={{width:200}} onChange={this.onChange} />&nbsp;&nbsp;
+                保养时段：<RangePicker style={{width:210}} onChange={this.dateArea} value={[this.state.LastDate,this.state.NowDate]}  />&nbsp;&nbsp;
 
                 <Search
                    //  id='search'
                    // className = {`search-${type}`}
-                  //  placeholder={this.props.name}
+                    value={this.state.searchInput}
+                    placeholder={this.props.name}
                      onSearch={this.handleSearch}
                      onChange={this.searchContentChange}
                      enterButton
@@ -241,13 +167,30 @@ class SearchCell extends React.Component{
 
     getFetch = () => {
         /*重置时清除搜索框的值*/
-        let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]
+        // let searchComponent = document.getElementsByClassName(`search-$1`)[0]
         //console.log(searchComponent);
-        searchComponent.childNodes[0].value = ''
+        // searchComponent.childNodes[0].value = ''
         //console.log(searchComponent.childNodes[0])
+        this.setState({
+            searchInput:'',
+            LastDate:null,
+            NowDate:null
+        })
         this.props.fetch({},1);
         console.log('重置')
     }
+    // fetch = (params ,flag) => {
+    //     console.log(params)
+    //     this.props.getTableData(params)
+    //     console.log(flag)
+    //     /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+    //     if (flag) {
+    //         this.setState({
+    //             pageChangeFlag: 0,
+    //             searchInput: '',
+    //         })
+    //     }
+    // }
 
     // ffetch=(selectdate)=>{
     //     // if(flag)
