@@ -245,7 +245,7 @@ class Right extends React.Component{
     /**批量删除弹出框确认函数 */
     deleteByIds =() =>  {
         const ids = this.state.selectedRowKeys;
-        console.log(ids)
+        // console.log(ids)
         axios({
             url:`${this.props.url.eqMaintenanceDataEntry.deleteIds}`,
             method:'Delete',
@@ -280,11 +280,11 @@ class Right extends React.Component{
     /**实现全选 */
     onSelectChange=(selectedRowKeys)=> {
         this.setState({ selectedRowKeys });
-        console.log(this.state.selectedRowKeys)
+        // console.log(this.state.selectedRowKeys)
     }
     /**处理单条记录删除 */
     handleDelete=(id)=>{
-        console.log(id)
+        // console.log(id)
         axios({
             url:`${this.props.url.eqMaintenanceDataEntry.maintenance}/${id}`,
             method:'Delete',

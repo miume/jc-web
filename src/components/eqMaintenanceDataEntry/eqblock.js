@@ -10,7 +10,7 @@ constructor(props){
     this.handleClick=this.handleClick.bind(this)
 }
 handleClick=()=>{
-    console.log('传送点击的eqname获取表格数据')
+    // console.log('传送点击的eqname获取表格数据')
     {this.props.changeeqname(this.props.deviceName)}
 }
     render() {
