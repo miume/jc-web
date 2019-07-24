@@ -100,7 +100,7 @@ class EARightTable extends Component {
         key: 'index',
         sorter: (a, b) => a.index - b.index,
         align: 'center',
-        width: '6%',
+        width: '8%',
     }, {
         title: '固定资产编码',
         dataIndex: 'fixedassetsCode',
@@ -118,7 +118,7 @@ class EARightTable extends Component {
         dataIndex: 'specification',
         key: 'specification',
         align: 'center',
-        width: '11%',
+        width: '10%',
     }, {
         title: 'ID卡号',
         dataIndex: 'idCode',
