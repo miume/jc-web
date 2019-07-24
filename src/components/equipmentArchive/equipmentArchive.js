@@ -177,14 +177,6 @@ class EquipmentArchive extends Component {
                 pageChangeFlag: 0,
                 searchContent: ''
             })
-            // var {pagination} = this.state;
-            // pagination.current = 1;
-            // pagination.total = 0;
-            // this.setState({
-            //     pageChangeFlag:0,
-            //     searchContent:'',
-            //     pagination:pagination
-            // })
         }
         axios({
             url: `${this.url.equipmentArchive.page}`,
@@ -201,7 +193,7 @@ class EquipmentArchive extends Component {
                     var arr = res.list[i].deviceDocumentMain;
                     var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
-                        index: i + 1,
+                        index: (res.page-1)*10 + i+1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
