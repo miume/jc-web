@@ -46,6 +46,7 @@
 .eqQueryCompleted-left-over{
     /*background-color:royalblue; !important*/
     max-height:450px; !important
+
     width:300px;
     overflow-x:auto;
     overflow-y:auto;
