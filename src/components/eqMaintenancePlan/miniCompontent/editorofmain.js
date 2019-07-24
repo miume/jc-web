@@ -44,7 +44,7 @@ class EditorofMain extends React.Component{
     }
     findkeys=()=>{
         const x=this.props.editorRecord.MaintenanceType;
-        const y=[];
+        var y=[];
         for(var i=0;i<x.length;i++){
             y.push(x.index)
         }
