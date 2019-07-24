@@ -78,10 +78,8 @@ class EquipmentArchive extends Component {
                             getTableData={this.getTableData}
                             deviceName={this.state.deviceName}
                             getRightData={this.getRightData}
-
                             handleTableChange={this.handleTableChange}
                             pagination={this.pagination}
-
                             searchContent={this.state.searchContent}
                             modifySearchContent={this.modifySearchContent}
                             searchEvent={this.searchEvent}
@@ -118,6 +116,7 @@ class EquipmentArchive extends Component {
                         count: 0
                     })
                 }
+                console.log(rightTopData)
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code
@@ -144,6 +143,7 @@ class EquipmentArchive extends Component {
             } else {
                 message.info('查询失败，请刷新下页面！')
             }
+            console.log(rightTopData)
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
@@ -169,6 +169,7 @@ class EquipmentArchive extends Component {
         }
     };
 
+
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if (flag) {
@@ -176,14 +177,6 @@ class EquipmentArchive extends Component {
                 pageChangeFlag: 0,
                 searchContent: ''
             })
-            // var {pagination} = this.state;
-            // pagination.current = 1;
-            // pagination.total = 0;
-            // this.setState({
-            //     pageChangeFlag:0,
-            //     searchContent:'',
-            //     pagination:pagination
-            // })
         }
         axios({
             url: `${this.url.equipmentArchive.page}`,
@@ -200,7 +193,7 @@ class EquipmentArchive extends Component {
                     var arr = res.list[i].deviceDocumentMain;
                     var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
-                        index: i + 1,
+                        index: (res.page-1)*res.size + i+1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],

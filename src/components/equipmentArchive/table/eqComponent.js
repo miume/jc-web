@@ -155,7 +155,7 @@ class EqComponent extends React.Component {
                     var e = res.list[i];
                     tableData.push({
                         code: e.code,
-                        index: i + 1,
+                        index: (res.page-1)*res.size + i+1,
                         fixedassetsCode: e.fixedassetsCode,
                         deviceName: e.deviceName,
                         specification: e.specification,

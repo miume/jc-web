@@ -25,7 +25,6 @@ class WillMaintain extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.searchReset=this.searchReset.bind(this);
     }
-
     render() {
         const { Header, Sider, Content } = Layout;
         this.state.pagination=this.props.pagination;

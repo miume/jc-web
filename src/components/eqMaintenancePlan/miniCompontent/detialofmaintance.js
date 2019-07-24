@@ -3,55 +3,70 @@ import {Modal, Input, DatePicker, TreeSelect, Table, Radio, InputNumber} from 'a
 import CancleButton from "../../BlockQuote/cancleButton";
 import axios from "axios";
 import moment from 'moment';
+import SaveButton from "../../BlockQuote/saveButton";
 const dateFormat = 'YYYY-MM-DD';
 const d2 = [];
-const d1={
-    "dataOfDepartment":[],
-    "mainNumber":'hfht',
-    "deviceNameAndNum":'dhfdh',
-    "deviceNameAndNumdata":[],
-    "PlanName1":'sacascasc',
-    "whomade":'casasca',
-    "departmentname": 'ascascas',
-    "MaintenanceType":[],
-    "MaintenancePeriod":'ascasc',
-    "NextPlanDate":'scasca',
-    "Effective": 0,
-}
 class DetailofMain extends React.Component{
     url = JSON.parse(localStorage.getItem('url'));
     ob = JSON.parse(localStorage.getItem('menuList'));
-    state={
-        detailVisible:false,
-    }
-    treeData=[];
-
-
-
+    state = {
+        editorVisible:false,
+        PlanName1:``,
+        depCode:``,
+        deviceNameAndNum:``,
+        dataOfDepartment:[],
+        MaintenancePeriod:``,
+        ImplementDate:``,
+        NextPlanDate:``,
+        MaintenanceType:[],
+        Effective: ``,
+        deviceNameAndNumdata:[],
+        whomade:``,
+        detailNum:'',
+    };
     handleMaintanceDetail=()=>{
+
         this.setState({detailVisible:true})
-        for(let i = 0; i < 2; i++) {
-            d2.push({
-                number: i,
-                maintanencetype: `Edward King ${i}`,
-                maintanencecontent: 32,
-                frequency: `Park Lane No.${i}`,
-            });
-        }
+        axios({
+                url:`${this.url.DeviceMaintenancePlan.maintenancePlanDetail}/${this.props.editorRecord.code}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.url.Authorization
+                },
+            }).then((data) => {
+            var res = data.data.data ? data.data.data : [];
+            console.log(res)
+            var detailNum=res.detailNum;
+            console.log('detailNum')
+            console.log(detailNum)
+            var deviceMaintenanceItems=res.deviceMaintenanceItems;
+            var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
+            var deviceMaintenancePlansHead=res.deviceMaintenancePlansHead;
+            console.log(deviceMaintenancePlansHead)
+            this.setState({
+                deviceNameAndNum:deviceMaintenancePlansHead["deviceName"]+'/'+deviceMaintenancePlansHead.fixedassetsCode,
+                PlanName1:deviceMaintenancePlansHead.planName,
+                whomade:deviceMaintenancePlansHead.setPeople,
+                depCode:deviceMaintenancePlansHead.depCode,
+                MaintenanceType:deviceMaintenancePlansDetails,
+                MaintenancePeriod:deviceMaintenancePlansHead.maintPeriod,
+                ImplementDate:deviceMaintenancePlansHead.planDate,
+                Effective:deviceMaintenancePlansHead.effFlag,
+                NextPlanDate:deviceMaintenancePlansHead.nextDate,
+                detailNum:detailNum
+            })
+        })
     }
     handleCancel2=()=>{
         this.setState({detailVisible:false})
     }
-    render(){
+    handleClick=()=>{
 
-        const MaintenanceTypeSelection={
-            onChange: (selectedRowKeys, selectedRows) => {
-                //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                this.state.MaintenanceType=selectedRows;
-                //console.log(this.state.MaintenanceType);
-            },
-        }
+    }
+
+    render(){
         return(
+
             <span>
                 <span onClick={this.handleMaintanceDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.detailVisible}
@@ -59,7 +74,10 @@ class DetailofMain extends React.Component{
                        closable={false}
                        centered={true}
                        maskClosable={false}
-                       footer={[<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />,]}
+                       footer={this.state.detailNum?[<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />]:
+                       [<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />,
+                           <SaveButton key="define" handleClick={this.handleClick}/>]
+                       }
                 >
                     <div >
                 <div className='Rowofadd'>
@@ -70,33 +88,29 @@ class DetailofMain extends React.Component{
                             disabled={true}
                             placeholder='请输入'
                             key="PlanName1" name="PlanName1"
-                            value={d1.PlanName1}
+                            value={this.state.PlanName1}
                         />
                     </div>
                     <div className='divofadd1'>
                         <b>所属部门</b>
-                        <TreeSelect
+                        <Input
                             id='department_add'
                             key="department"
                             name="department"
                             placeholder="请选择"
-                            treeDefaultExpandAll={true}
                             style={{ width: 200 }}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                             disabled={true}
-                            treeData={d1.dataOfDepartment}
-                            value={d1.departmentname}
-                            treeNodeLabelProp='value'
+                            value={this.props.depName}
                         />
                     </div>
                     <div className='divofadd1'>
                         <b>设备名称/编号</b>
-                        <TreeSelect
+                        <Input
                             id='deviceNameAndNum_add'
                             key="deviceNameAndNum"
                             name="deviceNameAndNum"
                             style={{ width: 200 }}
-                            value={d1.deviceNameAndNum}
+                            value={this.state.deviceNameAndNum}
                             disabled={true}
                         />
                     </div>
@@ -109,25 +123,24 @@ class DetailofMain extends React.Component{
                             style={{width:'200px'}}
                             key="MaintenancePeriod"
                             name="MaintenancePeriod"
-                            value={d1.MaintenancePeriod}
+                            value={this.state.MaintenancePeriod}
                             disabled={true}
                             min={0}
                         />
                     </div>
                     <div className='divofadd'>
                         <b>本次计划执行日期</b>
-                        <DatePicker
+                        <Input
                             id='ImplementDate_add'
                             disabled={true}
                             placeholder='请选择日期'
                             key="ImplementDate" name="ImplementDate"
-                            defaultValue={moment(this.state.ImplementDate, dateFormat)}
-
+                            value={this.state.ImplementDate}
                         />
                     </div>
                     <div className='divofadd2'>
                         <h4 id='NextPlanDate_add' key="NextPlanDate" name="NextPlanDate">
-                            <b>下次计划执行日期:</b>&nbsp;&nbsp;{d1.NextPlanDate}
+                            <b>下次计划执行日期:</b>&nbsp;&nbsp;{this.state.NextPlanDate}
                         </h4>
                     </div>
                 </div>
@@ -139,16 +152,16 @@ class DetailofMain extends React.Component{
                             key="Maintenancetype"
                             name="Maintenancetype"
                             columns={this.columns}
-                            dataSource={d2}
+                            dataSource={this.state.MaintenanceType}
                             size="small"
                             scroll={{ y: 240 }}
-                            rowSelection={MaintenanceTypeSelection}
                             bordered={true}
+                            pagination={false}
                         />
                     </div>
                 </div>
                 <div id='Effective_add' style={{display:'inline'}}>&nbsp;&nbsp;&nbsp;&nbsp;<b>是否生效:</b>&nbsp;&nbsp;
-                    <Radio.Group disabled={true} value={d1.Effective}>
+                    <Radio.Group disabled={true} value={this.state.Effective}>
                         <Radio value={0}>生效</Radio>
                         <Radio value={1}>失效</Radio>
                     </Radio.Group>
@@ -162,28 +175,22 @@ class DetailofMain extends React.Component{
     columns = [
         {
             title: '序号',
-            dataIndex: 'number',
-            key:'number',
+            dataIndex: 'code',
+            key:'code',
             width: "10%"
         },
         {
             title: '保养项目',
-            dataIndex: 'maintanencetype',
-            key:'maintanencetype',
+            dataIndex: 'maintenanceItems',
+            key:'maintenanceItems',
             width: "20%"
         },
         {
             title: '保养内容',
-            dataIndex: 'maintanencecontent',
-            key:'maintanencecontent',
+            dataIndex: 'maintenanceContent',
+            key:'maintenanceContent',
             width: "40%"
-        },
-        {
-            title: '频次',
-            dataIndex: 'frequency',
-            key:'frequency',
-            width: "30%",
-        },
+        }
     ];
 }
 

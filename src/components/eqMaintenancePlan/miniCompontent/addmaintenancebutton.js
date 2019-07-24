@@ -8,7 +8,6 @@ import CancleButton from "../../BlockQuote/cancleButton";
 import SaveButton from "../../BlockQuote/saveButton";
 
 class Addmaintenancebutton extends React.Component{
-    url = JSON.parse(localStorage.getItem('url'));
     d2 = [];
     constructor(props){
         super(props)
@@ -20,101 +19,60 @@ class Addmaintenancebutton extends React.Component{
             deviceNameAndNumdata:[],
             PlanName1:'',
             whomade:'',
-            departmentname: '',
+            departmentname: this.props.departmentname,
             MaintenanceType:[],
             MaintenancePeriod:'',
             ImplementDate:'',
             NextPlanDate:'',
             Effective: 1,
+            deviceName:'',
+            fixedassetsCode:'',
         }
     }
     date1='';
     columns = [
         {
             title: '序号',
-            dataIndex: 'number',
-            key:'number',
+            dataIndex: 'code',
+            key:'code',
             width: "10%"
         },
         {
             title: '保养项目',
-            dataIndex: 'maintanencetype',
-            key:'maintanencetype',
+            dataIndex: 'maintenanceItems',
+            key:'maintenanceItems',
             width: "20%"
         },
         {
             title: '保养内容',
-            dataIndex: 'maintanencecontent',
-            key:'maintanencecontent',
+            dataIndex: 'maintenanceContent',
+            key:'maintenanceContent',
             width: "40%"
         },
         {
             title: '频次',
-            dataIndex: 'frequency',
-            key:'frequency',
+            dataIndex: 'maintenanceFrequency',
+            key:'maintenanceFrequency',
             width: "30%",
         },
     ];
-    getDepartmentData = () => {
-        // TODO: 调接口，获取数据
-        axios({
-            url: `${this.url.equipmentDept.dept}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            var dataSource = [{
-                title: '总公司',
-                value:'总公司',
-                key:'总公司',
-                children: []
-            }];
-            if (res) {
-                for (let i = 0; i < res.length; i++) {
-                    const arrParent = res[i].parent;
-                    var parenObj = {
-                        title:arrParent.name,
-                        value: arrParent.name,
-                        key:arrParent.name,
-                        children: []
-                    };
-                    const arrSon = res[i].son;
-                    for (let j = 0; j < arrSon.length; j++) {
-                        var arr = arrSon[j];
-                        if(i===0&&j===0){
-                            parenObj['children'].push({
-                                title:arr.name.toString(),
-                                key:arr.name,
-                                value:  arrParent.name.toString()+'-'+arr.name.toString(),
-                                children: []
-                            });
-                        }else{
-                            parenObj['children'].push({
-                                title:arr.name.toString(),
-                                key:arr.name,
-                                value: arrParent.name.toString()+'-'+arr.name.toString(),
-                                children: []
-                            });
-                        }
-                    }
-                    dataSource[0].children.push(parenObj);
-                }
 
-                this.setState({
-                    dataOfDepartment: dataSource
-                })
-                console.log(this.state.dataOfDepartment)
-            } else {
-
-            }
-        });
-    };
 
     handleDeviceNameAndNumChange=(value)=>{
-        this.setState({deviceNameAndNum:value})
-        console.log(value);
+        console.log(value)
+        if(value !== undefined){
+            var jing=value.split('/#');
+            this.setState({
+                deviceName:jing[0]?jing[0]:'',
+                fixedassetsCode:jing[1]?jing[1]:'',
+                deviceNameAndNum:value
+            })
+            const params2={
+                deviceName:jing[0],
+            }
+            this.props.getMaintType(params2)
+            console.log(value);
+        }
     }
     handlePlanName1Change=(e)=>{
         this.setState({PlanName1:e.target.value})
@@ -133,7 +91,7 @@ class Addmaintenancebutton extends React.Component{
         let Y=time.getFullYear()
         let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
         let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
-        this.setState({NextPlanDate:Y+'/'+M+'/'+D})
+        this.setState({NextPlanDate:Y+'-'+M+'-'+D})
         console.log(this.state.ImplementDate)
     }
     handleMaintenancePeriodChange=(e)=>{
@@ -152,7 +110,7 @@ class Addmaintenancebutton extends React.Component{
         let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
         let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
         if(this.state.ImplementDate){
-            this.setState({NextPlanDate:Y+'/'+M+'/'+D})
+            this.setState({NextPlanDate:Y+'-'+M+'-'+D})
         }
     }
     handleEffectiveChange=(e)=>{
@@ -161,32 +119,68 @@ class Addmaintenancebutton extends React.Component{
 
     showModal = () => {
         this.setState({ visible: true });
-        for(let i = 0; i <5; i++) {
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        console.log(menuList);
+        this.setState({whomade:menuList.userId})
+        const params1={
+            code:this.props.depCode,
+        }
+        console.log(params1)
+        this.props.getDevice(params1)
+        for(var i=0;i<3;i++)
+        {
             this.d2.push({
-                number: i,
-                maintanencetype: `Edward King ${i}`,
-                maintanencecontent: 32,
-                frequency: `Park Lane No.${i}`,
-            });
+                "deviceName":this.state.deviceName,
+                "maintenanceItems":"saasd",
+                "maintenanceContent":"string",
+                "optType":0,
+                "maintenanceFrequency": "string"
+            })
         }
-        this.getDepartmentData()
     };
-    handleCreate = (e) =>{
-        const objectdata={
-            dataOfDepartment:this.state.dataOfDepartment,
-            deviceNameAndNum:this.state.deviceNameAndNum,
-            deviceNameAndNumdata:this.state.deviceNameAndNumdata,
-            PlanName1:this.state.PlanName1,
-            whomade:this.state.whomade,
-            departmentname: this.state.departmentname,
-            MaintenanceType:this.state.MaintenanceType,
-            MaintenancePeriod:this.state.MaintenancePeriod,
-            ImplementDate:this.state.ImplementDate,
-            NextPlanDate:this.state.NextPlanDate,
-            Effective: this.state.Effective,
+    handleCreate = (e) => {
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        var jing=this.state.deviceNameAndNum.search('/#');
+        this.setState({
+            deviceName:this.state.deviceNameAndNum.slice(0,jing),
+            fixedassetsCode:this.state.deviceNameAndNum.slice(jing+2),
+            whomade:menuList.userId,
+        },()=>{
+            var objectdata = {
+                deviceMaintenancePlansHead:{
+                    "planName":this.state.PlanName1,
+                    "fixedassetsCode":this.state.fixedassetsCode,
+                    "deviceName":this.state.deviceName,
+                    "deptCode":this.props.depCode,
+                    "maintPeriod":this.state.MaintenancePeriod,
+                    "planDate":this.state.ImplementDate,
+                    "nextDate":this.state.NextPlanDate,
+                    "setPeople":this.state.whomade,
+                    "effFlag":this.state.Effective,
+                },
+                "deviceMaintenanceItems":this.state.MaintenanceType,
+            }
+            console.log(objectdata)
+            this.handleCancel();
+            axios({
+                url: `${this.props.url.DeviceMaintenancePlan.maintenanceAddPlan}`,
+                method: 'post',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                data: objectdata,
+            }).then((data) => {
+                message.info(data.data.data.message);
+                this.props.getTableData(this.props.params)
+            }).catch(function () {
+                message.info('新增失败，请联系管理员！');
+            });
+        })
+        const params1={
+            deptId:this.props.depCode,
+            statusId:-1,
         }
-        console.log(objectdata)
-        this.handleCancel();
+        this.props.getTableData(params1,this.props.depName)
     }
     handleCancel = () => {
         this.setState({
@@ -205,16 +199,30 @@ class Addmaintenancebutton extends React.Component{
         });
         this.d2=[];
     };
-
+    handledapartmentChange=(e)=>{
+        this.setState({departmentname:e.event.value})
+    }
     render(){
         const MaintenanceTypeSelection={
             onChange: (selectedRowKeys, selectedRows) => {
+                var objMain=[];
                 console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                this.state.MaintenanceType=selectedRows;
-                console.log(this.state.MaintenanceType);
+                for(var j=0;j<selectedRowKeys.length;j++) {
+                    objMain.push({
+                        deviceName:selectedRows[j].deviceName,
+                        maintenanceItems:selectedRows[j].maintenanceItems,
+                        maintenanceContent:selectedRows[j].maintenanceContent,
+                        optType:1,
+                        maintenanceFrequency: selectedRows[j].maintenanceFrequency,
+                    })
+                }
+                //console.log(objMain)
+                this.setState({MaintenanceType:objMain});
+                //console.log(`MaintenanceType:${this.state.MaintenanceType}`);
+                objMain=[];
             },
         }
-        const dateFormat = 'YYYY/MM/DD';
+        const dateFormat = 'YYYY-MM-DD';
         return(
             <span className='left_buttons'>
                 <AddButton handleClick={this.showModal}  name='新增' className='fa fa-plus' />
@@ -233,7 +241,7 @@ class Addmaintenancebutton extends React.Component{
                     <div >
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>计划名称</b>
+                        <b>计划名称</b>&nbsp;
                         <Input
                             id='Planname_add'
                             onChange={this.handlePlanName1Change}
@@ -244,30 +252,28 @@ class Addmaintenancebutton extends React.Component{
                     </div>
                     <div className='divofadd1'>
                         <b>所属部门</b>
-                        <TreeSelect
+                        <Input
                             id='department_add'
                             key="department"
                             name="department"
                             placeholder="请选择"
-                            treeDefaultExpandAll={true}
+                            onChange={this.handledapartmentChange}
                             style={{ width: 200 }}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                            onChange={this.handledepartmentnameChange}
-                            treeData={this.state.dataOfDepartment}
-                            value={this.state.departmentname}
-                            treeNodeLabelProp='value'
+                            value={this.props.depName}
+                            disabled={true}
                         />
                     </div>
                     <div className='divofadd1'>
-                        <b>设备名称/编号</b>
+                        <b>设备名称/编号</b>&nbsp;
                         <TreeSelect
                             id='deviceNameAndNum_add'
                             key="deviceNameAndNum"
                             name="deviceNameAndNum"
                             style={{ width: 200 }}
                             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                            treeNodeLabelProp={'value'}
                             placeholder="请选择"
-                            treeData={this.state.deviceNameAndNumdata}
+                            treeData={this.props.Device}
                             treeDefaultExpandAll={true}
                             allowClear={true}
                             value={this.state.deviceNameAndNum}
@@ -277,7 +283,7 @@ class Addmaintenancebutton extends React.Component{
                 </div>
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>保养周期</b>
+                        <b>保养周期</b>&nbsp;
                         <InputNumber
                             id='MaintenancePeriod_add'
                             placeholder='请输入天数'
@@ -291,7 +297,7 @@ class Addmaintenancebutton extends React.Component{
                         />
                     </div>
                     <div className='divofadd'>
-                        <b>本次计划执行日期</b>
+                        <b>本次计划执行日期</b>&nbsp;
                         <DatePicker
                             format={dateFormat}
                             id='ImplementDate_add'
@@ -308,17 +314,18 @@ class Addmaintenancebutton extends React.Component{
                 </div>
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>保养项目</b>
+                        <b>保养项目</b>&nbsp;
                         <Table
                             id='Mainname_add'
                             key="Maintenancetype"
                             name="Maintenancetype"
                             columns={this.columns}
-                            dataSource={this.d2}
+                            dataSource={this.props.MaintenanceType}
                             size="small"
                             scroll={{ y: 240 }}
                             rowSelection={MaintenanceTypeSelection}
                             bordered={true}
+                            pagination={false}
                         />
                     </div>
                 </div>

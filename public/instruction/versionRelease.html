@@ -1,0 +1,140 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <link rel="shortcut icon" href="../jc_favicon.ico">
+    <title>MES 系统版本说明</title>
+    <link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet"
+          type="text/css"/>
+    <link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet"
+          type="text/css"/>
+    <link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+    <style>
+        pre {
+            counter-reset: line-numbering;
+            border: solid 1px #d9d9d9;
+            border-radius: 0;
+            background: #fff;
+            padding: 0;
+            line-height: 23px;
+            margin-bottom: 30px;
+            white-space: pre;
+            overflow-x: auto;
+            word-break: inherit;
+            word-wrap: inherit;
+        }
+
+        pre a::before {
+            content: counter(line-numbering);
+            counter-increment: line-numbering;
+            padding-right: 1em; /* space after numbers */
+            width: 25px;
+            text-align: right;
+            opacity: 0.7;
+            display: inline-block;
+            color: #aaa;
+            background: #eee;
+            margin-right: 16px;
+            padding: 2px 10px;
+            font-size: 13px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        pre a:first-of-type::before {
+            padding-top: 10px;
+        }
+
+        pre a:last-of-type::before {
+            padding-bottom: 10px;
+        }
+
+        pre a:only-of-type::before {
+            padding: 10px;
+        }
+
+        .highlight {
+            background-color: #ffffcc
+        }
+
+        /* RIGHT */
+    </style>
+</head>
+<body>
+<div>
+    <div style='width:25%;'>
+        <ul id="tree" class="ztree" style='width:100%'>
+        </ul>
+    </div>
+    <div id='readme' style='width:70%;margin-left:20%;'>
+        <article class='markdown-body'>
+            <h1 id="mes-">MES 系统版本发布</h1>
+            <h2 >（最新）2019年7月24日 版本发布情况说明</h2>
+            <h3 >设备管理-设备档案</h3>
+            <ul>
+                <li>
+                    <p>新增</p>
+                    <p>
+                        1、各页面新增分页功能
+                    </p>
+                    <p>
+                        2、新增部件操作。包含部件操作里的新增、搜索、重置、批量删除、配件、详情、编辑和删除功能
+                    </p>
+                    <p>
+                        3、新增配件操作。包含配件操作里的新增、编辑和删除功能
+                    </p>
+                    <p>
+                        4、新增配件操作。包含配件操作里的新增、编辑和删除功能
+                    </p>
+                </li>
+            </ul>
+            <h3 >设备管理-设备保养</h3>
+            <ul>
+                <li>
+                    <p>新增</p>
+                    <p>
+                        1、新增设备管理-设备保养菜单。含项目录入、保养计划、保养查询等3个子模块
+                    </p>
+                    <p>
+                        2、新增项目录入子模块。包含设备名称搜索和选择、新增、批量删除、搜索、重置、编辑和删除功能。以及分页效果
+                    </p>
+                    <p>
+                        3、新增保养计划子模块。包含部门选择、新增功能。
+                    </p>
+                    <p>
+                        4、新增保养查询子模块。包含部门选择、查询、搜索功能。
+                    </p>
+                </li>
+            </ul>
+            <h3 >设备管理-基础数据</h3>
+            <ul>
+                <li>
+                    <p>新增</p>
+                    <p>
+                        1、新增编辑颜色功能
+                    </p>
+                </li>
+            </ul>
+
+        </article>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript">
+    $(document).ready(function () {
+        var css_conf = eval(markdown_panel_style);
+        $('#readme').css(css_conf)
+
+        var conf = eval(jquery_ztree_toc_opts);
+        $('#tree').ztree_toc(conf);
+    });
+</SCRIPT>

@@ -42,7 +42,7 @@ class EARight extends Component {
     }
 
     // 通过key获取到设备名称
-    renderEquipmentName = data => data.map((item) => {
+    renderEquipmentName = (data) => data.map((item) => {
         return (
             <Tabs.TabPane key={item.name} tab={item.name + '(' + item.count + ')'}>
             </Tabs.TabPane>
@@ -56,7 +56,6 @@ class EARight extends Component {
             deviceName: name
         }
         this.props.getTableData(params, {})
-
     };
 
 }

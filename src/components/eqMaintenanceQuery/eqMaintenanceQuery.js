@@ -25,10 +25,14 @@ class EqMaintenanceQuery extends React.Component{
         this.returnEquKey = this.returnEquKey.bind(this)
         this.getTableData=this.getTableData.bind(this)
     }
+    getTableData=()=>{
+
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+
 
         return (
             <div>
@@ -57,7 +61,13 @@ class EqMaintenanceQuery extends React.Component{
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
                         <Completed
-
+                            url={this.url}
+                            operation={this.operation}
+                            getTableData={this.getTableData}
+                            rightTableData={
+                                this.state.rightTableData
+                            }
+                            depCode={this.state.depCode}
                         />
                     </Tabs.TabPane>
                 </Tabs>
@@ -113,27 +123,19 @@ class EqMaintenanceQuery extends React.Component{
                             abnormalcontent:arr["abnormalcontent"],//异常处理备注
                             editFlag:arr["editFlag"],//标记位
                             depName:this.state.depName,
-                        })
-
-                    }
-                    console.log(rightTableData)
-                    const {pagination} = this.state;
-                    pagination.total=res.total;
-                    this.setState({
-                        pagination:pagination,
-                        rightTableData: rightTableData,
-                    });
-                } else {
-                    message.info('查询失败，请刷新下页面！')
-                    this.setState({
-                        rightTableData: [],
-                    });
-                }
-            }).catch(() => {
-                message.info('查询失败，请刷新下页面！')
-            });
+  
         })//新建状态用来获得所需的查询条件
-
+                this.setState({
+                    rightTableData: rightTableData,
+                });
+            } else {
+                this.setState({
+                    rightTableData: [],
+                });
+            }
+        }).catch(() => {
+            message.info('查询失败，请刷新下页面！')
+        });
     }
 }
 

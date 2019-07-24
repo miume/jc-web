@@ -5,7 +5,7 @@ import {
     Button, Table, Popconfirm, Divider, Pagination, Form, Input, Row, Col, Select, Modal, Icon, message} from 'antd';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
-import SearchCell from '../BlockQuote/search';
+import SearchCell from './searchCell';
 import home from '../commom/fns'
 import Mmodal from './mmodal'
 import "./eqMaintenanceDataEntry.css"
@@ -245,7 +245,7 @@ class Right extends React.Component{
     /**批量删除弹出框确认函数 */
     deleteByIds =() =>  {
         const ids = this.state.selectedRowKeys;
-        console.log(ids)
+        // console.log(ids)
         axios({
             url:`${this.props.url.eqMaintenanceDataEntry.deleteIds}`,
             method:'Delete',
@@ -280,11 +280,11 @@ class Right extends React.Component{
     /**实现全选 */
     onSelectChange=(selectedRowKeys)=> {
         this.setState({ selectedRowKeys });
-        console.log(this.state.selectedRowKeys)
+        // console.log(this.state.selectedRowKeys)
     }
     /**处理单条记录删除 */
     handleDelete=(id)=>{
-        console.log(id)
+        // console.log(id)
         axios({
             url:`${this.props.url.eqMaintenanceDataEntry.maintenance}/${id}`,
             method:'Delete',
@@ -351,7 +351,7 @@ class Right extends React.Component{
                                  flag={home.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                                fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
+                                fetch={this.props.ffetch3} flag={home.judgeOperation(this.operation,'QUERY')} clickdeviceName={this.props.clickdeviceName}/>
 
                     <Table rowKey={record => record.code}
                            rowSelection={rowSelection}

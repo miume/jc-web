@@ -7,7 +7,7 @@ class Searchpart extends Component {
     constructor(props){
         super(props)
         this.state= {
-            statusSelect:{key: "AllStatus", label: "全部状态"},
+            statusSelect:{key: "-1", label: "全部状态"},
             searchContent: '',
             pageChangeFlag: 0,
         }
@@ -19,21 +19,22 @@ class Searchpart extends Component {
         })
         console.log(value)
     };
-    searchEvent = () => {
+
+    SearchEvent = () => {
         this.setState({
             pageChangeFlag: 1
         });
-        this.fetch({
-            // personName: this.state.searchContent
-        });
+        this.props.searchEvent(this.state.searchContent)
     }
     fetch = () => {
-
+        this.props.searchReset(this.props.depCode)
+        this.setState({statusSelect:{key: "-1", label: "全部状态"}})
     };
 
     handleSelectChange=(value)=> {
         this.setState({statusSelect:value})
-        //console.log(value); // { key: "lucy", label: "Lucy (101)" }
+        this.props.selectEvent(value.key)
+        console.log(value); // { key: "lucy", label: "Lucy (101)" }
         //console.log(this.state.statusSelect)
     }
     render(){
@@ -48,16 +49,16 @@ class Searchpart extends Component {
                     value={this.state.statusSelect}
                     onChange={this.handleSelectChange}
                 >
-                    <Option key="AllStatus" title='全部状态'>全部状态</Option>
-                    <Option key="isEffective"  title='已生效'>已生效</Option>
-                    <Option key="notEffective"  title='已失效'>已失效</Option>
+                    <Option key="-1" title='全部状态'>全部状态</Option>
+                    <Option key="1"  title='已生效'>已生效</Option>
+                    <Option key="0"  title='已失效'>已失效</Option>
                 </Select>&nbsp;&nbsp;&nbsp;
                 <SearchCell
-                    name="单号/设备名称/编号..."
+                    name="设备名称/编号..."
                     width='100px'
                     flag={true}
                     searchContentChange={this.searchContentChange}
-                    searchEvent={this.searchEvent}
+                    searchEvent={this.SearchEvent}
                     fetch={this.fetch}
                 />
             </div>

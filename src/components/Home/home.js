@@ -35,7 +35,7 @@ class Home extends Component {
             '2' : '制程检测',
             '3' : '样品检测',
             '4' : '原材料出库',
-            '5' : '成品出库',
+            '5' :'成品出库',
             '6' : '红单申请',
             '7' : '进货检验',
             '8' : '成品检验',
@@ -83,6 +83,7 @@ class Home extends Component {
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`,
+                //dsds,
                 realStock:`${server}/jc/common/sortout/realStock`,
                 stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
@@ -144,6 +145,16 @@ class Home extends Component {
                 // add:`${server}/jc/auth/department/add`,
                 // deleteById:`${server}/jc/auth/department`,
                 getAll:`${server}/jc/auth/department`,
+            },
+            /**设备保养 */
+            eqmaintenance:{
+                recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
+                deleteByIds:`${server}/jc/common/maintenanceRecord/deleteByIds`,
+                addRecord:`${server}/jc/common/maintenanceRecord/addRecord`,
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
+                records: `${server}/jc/common/maintenanceRecord/records`,
+                updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
+                maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
             },
             /**出库管理 */
             stockOut:{
@@ -340,6 +351,15 @@ class Home extends Component {
                 deleteIds:`${server}/jc/common/maintenance/deleteIds`,
                 maintenanceDetailById:`${server}/jc/common/maintenance/maintenanceDetailById`,
                 getAllByDeviceName:`${server}/jc/common/maintenance/getAllByDeviceName`,
+            },
+            DeviceMaintenancePlan:{
+                maintenanceAddPlan:`${server}/jc/common/maintenancePlan/addPlan`,
+                maintenancePlanDetail:`${server}/jc/common/maintenancePlan/planDetail`,
+                maintenancePlanPage:`${server}/jc/common/maintenancePlan/planPage`,
+                maintenanceUpdatePlan:`${server}/jc/common/maintenancePlan/updatePlan`,
+                maintenanceDeletePlan:`${server}/jc/common/maintenancePlan/`,
+                maintenanceDeleteByIds:`${server}/jc/common/maintenancePlan/deleteByIds`,
+                getDeviceByDeptCode:`${server}/jc/common/maintenancePlan/getDeviceByDeptCode`,
             }
         }
         localStorage.setItem('status',JSON.stringify(status));

@@ -37,8 +37,8 @@ class Mmodal extends React.Component {
     handleSave = (code) => {
 
         this.setState({visible:false})
-        console.log(this.state.optType)
-        console.log(this.props.optType)
+        // console.log(this.state.optType)
+        // console.log(this.props.optType)
         var addData = {
             code: this.props.code,
             deviceName: this.props.clickdeviceName,
@@ -47,7 +47,7 @@ class Mmodal extends React.Component {
             maintenanceItems: this.state.maintenanceItems,
             optType: this.state.optType,
         }
-        console.log(addData)
+        // console.log(addData)
         if(addData.maintenanceContent&&addData.maintenanceItems){
             axios({
                 url: `${this.props.url.eqMaintenanceDataEntry.maintenance}`,
@@ -75,13 +75,13 @@ class Mmodal extends React.Component {
         this.setState({
             optType:value
         })
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
     }
     handleChange2=(value) => {
         this.setState({
             deviceName:value
         })
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
     }
     onInputChange=(e)=>{
         let InputName=e.target.name;
@@ -161,7 +161,7 @@ class Mmodal extends React.Component {
                             &nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;&nbsp;
                         </Col>
                         <Col span={10} style={{paddingRight:"20px"}}>
-                            <Input size="small" placeholder="请输入保养内容"  key='4' name="maintenanceFrequency"onChange={this.onInputChange}
+                            <Input size="small" placeholder="请输入保养频率"  key='4' name="maintenanceFrequency"onChange={this.onInputChange}
                                    Value={this.props.maintenanceFrequency}/>
                         </Col>
                     </Row>

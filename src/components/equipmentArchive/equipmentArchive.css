@@ -1,6 +1,6 @@
 .eA {
     display: flex;
-    height: 600px;
+    height: 550px;
     /*background-color: #859900;*/
 
 }
@@ -24,7 +24,7 @@
 }
 .eA-right-bottom {
     width: 100%;
-    height: 86%;
+    /*height: 50px !important;*/
     /*background-color: red;*/
 }
 

@@ -1,0 +1,23 @@
+.equipment-DE-demo{
+    display: flex;                /*设置为flex布局*/
+    /*justify-content: space-around;*/
+    width: 100%;
+}
+/*.demo > div{*/
+/*    flex: none;*/
+/*}*/
+.equipment-DE-left{
+    margin-left:15px;
+    width: 20%;
+    height: 525px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    background-color: #1d7fb3;
+    border:1px solid ;
+}
+.equipment-DE-right{
+    width: 80%;
+    margin-left: 20px;
+    height:525px;
+    background-color: #f17f49;
+}

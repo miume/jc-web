@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Button, Input,DatePicker} from 'antd';
+import moment from 'moment';
 class SearchCell extends React.Component{
     constructor(props){
         super(props)
@@ -9,109 +10,153 @@ class SearchCell extends React.Component{
             selectTime:'',
             //searchData:'',
             searchInput:'',
+            LastIndexDate:'',
+            NowIndexDate:'',
+            LastDate:'',
+            NowDate:'',
+            date:{},
+            clickflaga:1,
+            clickflagb:0,
+            clickflagc:0,
         }
 
         this.handleClicka=this.handleClicka.bind(this);
         this.handleClickb=this.handleClickb.bind(this);
         this.handleClickc=this.handleClickc.bind(this);
-        this.handleChangeTime=this.handleChangeTime.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
+        this.dateArea = this.dateArea.bind(this);
+        this.searchContentChange=this.searchContentChange.bind(this);
     }
     handleClicka=()=> {
-        console.log('传送点击的button获取表格数据')
-
-            this.setState({
-                selectState: 'oneMonth',
-            })
+        var date = this.props.getLastMonthTime(1)
+        var params = {
+            deptId:parseInt(this.props.depCode),
+            statusId:3,
+            startDate:date.datastr,
+            endDate:date.NowDate
+        }
+        this.props.fetch(params)
+        this.setState({
+            clickflagb:0,
+            clickflagc:0,
+            clickflaga:1,
+            date:date
+        })
 
     }
         handleClickb=()=>{
-            console.log('传送点击的button获取表格数据')
+            var date = this.props.getLastMonthTime(3)
+            var params = {
+                deptId:parseInt(this.props.depCode),
+                statusId:3,
+                startDate:date.datastr,
+                endDate:date.NowDate
+            }
+            this.props.fetch(params)
             this.setState({
-                selectState:'threeMonth',
+                clickflaga:0,
+                clickflagb:1,
+                clickflagc:0,
+                date:date
             })
-
         }
     handleClickc=()=>{
-        console.log('传送点击的button获取表格数据')
+        var date = this.props.getLastMonthTime(12)
+        var params = {
+            deptId:parseInt(this.props.depCode),
+            statusId:3,
+            startDate:date.datastr,
+            endDate:date.NowDate
+        }
+        this.props.fetch(params)
         this.setState({
-            selectState:'year',
-        })
+            clickflaga:0,
+            clickflagb:0,
+            clickflagc:1,
 
+            date:date
+        })
     }
-    handleChangeTime=(e)=>{
-        console.log('选择时间')
+    dateArea = (date, dateString) => {
+        var NowIndexDate = this.state.NowIndexDate
+        var LastIndexDate = this.state.LastIndexDate
+        NowIndexDate = dateString[1]
+        LastIndexDate = dateString[0]
         this.setState({
-            selectTime:e.value,
+            NowIndexDate:NowIndexDate,
+            LastIndexDate:LastIndexDate,
+            LastDate:date[0],
+            NowDate:date[1]
         })
     }
     handleSearch=()=>{
-        console.log('搜索事件')
-    //     axios({
-    //         url: `${this.props.url.eqMaintenanceDataEntry.getAll}`,
-    //         method:'get',
-    //         headers:{
-    //             'Authorizatiton':this.url.Authorization},
-    //         params:{
-    //             deviceName:clickdeviceName
-    //         },}
-    //     ).then((data)=>{
-    //         console.log('sssssssssss')
-    //         const result = data.data.data
-    //         console.log(result)
-    //         // this.pagination.total=result?result.total:0;
-    //         // this.pagination.current=result.pageNum;
-    //         console.log('------------------')
-    //         // console.log(result.pageNum)
-    //         console.log('------------------')
-    //         // if(result&&result.list){
-    //         //     for(let i=1;i<=result.list.length;i++){
-    //         //         result.list[i-1]['id']=result.prePage*10+i;
-    //         //     }
-    //         // }
-    //         this.setState({
-    //             datasource:result,
-    //         });
-    //         // const res = data.data.data;
-    //         // if(res&&res.list)
-    //         // {
-    //         //     for(var i = 1; i <= res.list.length;i++){
-    //         //         var e = res.list[i-1];
-    //         //         e['index'] = res.prePage*10+i
-    //         //     }
-    //         //     this.pagination.total = res?res.total:0;
-    //         //     this.setState({
-    //         //         dataSource:res.list,
-    //         //     })
-    //         // }
-    //     });
-    // }
-
+        var date = this.state.date
+        var NowIndexDate = this.state.NowIndexDate
+        var LastIndexDate = this.state.LastIndexDate
+        var pramas = {}
+        if(NowIndexDate!==''&&LastIndexDate!==''){
+            pramas ={
+                deptId:parseInt(this.props.depCode),
+                condition:this.state.searchInput,
+                startDate:LastIndexDate,
+                endDate:NowIndexDate,
+                statusId:3
+            }
+        }else{
+            pramas ={
+                deptId:parseInt(this.props.depCode),
+                condition:this.state.searchInput,
+                startDate:date.datastr,
+                endDate:date.NowDate,
+                statusId:3
+            }
+        }
+        this.props.getTableData(pramas)
 
 }
     searchContentChange=(e)=>{
-        console.log('获得input内容')
         this.setState({
             searchInput: e.target.value,
         })
     }
 
-
     render(){
         const Search = Input.Search;
         const type= this.props.type;
+        const {  RangePicker } = DatePicker;
         return(
             //className={this.props.flag?'searchCell':'hide'}
             <div >
-                <span style={{paddingTop: '7px'}}>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;默认：&nbsp;&nbsp;&nbsp;</span>
-                <Button onClick={this.handleClicka} type="default" >最近1月</Button>&nbsp;&nbsp;&nbsp;
-                <Button onClick={this.handleClickb}  type="default">最近3月</Button>&nbsp;&nbsp;&nbsp;
-                <Button onClick={this.handleClickc} type="default">最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <DatePicker className = {`search-${type}`} onChange={this.handleChangeTime} placeholder='保养时段' />&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style={{paddingTop: '7px'}}>&nbsp;&nbsp;默认：&nbsp;&nbsp;&nbsp;</span>
+
+                <Button
+                    className={this.state.clickflaga?"bd-blue":"bd-grey"}
+                    style={{height:30}}
+                    onClick={this.handleClicka}
+                    type="default"
+                >最近1月</Button>&nbsp;&nbsp;&nbsp;
+
+                <Button
+                    className={this.state.clickflagb?"bd-blue":"bd-grey"}
+                    style={{height:30}}
+                    onClick={this.handleClickb}
+                    type="default"
+                >最近3月</Button>&nbsp;&nbsp;&nbsp;
+
+                <Button
+                    className={this.state.clickflagc?"bd-blue":"bd-grey"}
+                    style={{height:30}}
+                    onClick={this.handleClickc}
+                    type="default"
+                >最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                保养时段：<RangePicker style={{width:210}} onChange={this.dateArea} value={[this.state.LastDate,this.state.NowDate]}  />&nbsp;&nbsp;
+
                 <Search
                    //  id='search'
                    // className = {`search-${type}`}
-                  //  placeholder={this.props.name}
+                    value={this.state.searchInput}
+                    placeholder={this.props.name}
                      onSearch={this.handleSearch}
                      onChange={this.searchContentChange}
                      enterButton
@@ -119,56 +164,25 @@ class SearchCell extends React.Component{
                   //  searchContentChange={this.searchContentChange}
                     name='单号/设备名称/编号...'
                 />
+
                 <Button
                     type="primary"
-                    style={{marginLeft:10}}
+                    style={{marginLeft:10,width:70}}
                     onClick={this.getFetch}
                     className='button'
                 ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
+
             </div>
         );
     }
 
     getFetch = () => {
-        /**重置时清除搜索框的值*/
-        let searchComponent = document.getElementsByClassName(`search-${this.props.type}`)[0]
-        //console.log(searchComponent);
-        searchComponent.childNodes[0].value = ''
-        //console.log(searchComponent.childNodes[0])
+        this.setState({
+            searchInput:'',
+            LastDate:null,
+            NowDate:null
+        })
         this.props.fetch({},1);
-        console.log('重置')
     }
-
-    // ffetch=(selectdate)=>{
-    //     // if(flag)
-    //     //     this.setState({
-    //     //         pageChangeFlag:0,
-    //     //         searchContent:''
-    //     //     })
-    //     axios({
-    //         url: `${this.props.url.eqMaintenanceDataEntry.getAll}`,
-    //         method:'get',
-    //         headers:{
-    //             'Authorizatiton':this.url.Authorization},
-    //         params:{
-    //             deviceName:selectdate
-    //         },}
-    //     ).then((data)=>{
-    //         console.log('sssssssssss')
-    //         const result = data.data.data
-    //         console.log(result)
-    //         console.log('------------------')
-    //         this.setState({
-    //             datasource:result,
-    //         });
-    //     });
-    // }
-
-
-    // /**获取查询时角色名称的实时变化 */
-    // searchContentChange(e){
-    //     const value = e.target.value;
-    //     this.setState({searchContent:value});
-    // }
 }
 export default SearchCell;

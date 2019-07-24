@@ -27,6 +27,10 @@ import ProductProcess from '../Base/ProductProcess/productProcess';//产品工�
 import TestItem from '../Base/testItem/testItem';
 import OperationManagement from "../operationManagement/operationManagement";
 import StockOut from '../stockOut/stockOut';
+import EquipmentCheck from "../equipmentCheck/equipmentCheck";
+import CheckPlan from "../checkPlan/checkPlan";
+import CheckQuery from "../checkQuery/checkQuery";
+import CheckTemplate from "../checkTemplate/checkTemplate";
 
 import EnterStorage from '../enterStorage/enterStorage';
 import InventorManage from '../inventoryManage/inventorManage';
@@ -164,6 +168,18 @@ class Right extends React.Component {
             }, {
                 path: "/maintenanceQuery",
                 component: EqMaintenanceQuery
+            },{
+                path:"/equipmentCheck",
+                component:EquipmentCheck
+            },{
+                path:"/checkPlan",
+                component:CheckPlan
+            },{
+                path:"/checkQuery",
+                component:CheckQuery
+            },{
+                path:"/checkTemplate",
+                component:CheckTemplate
             }]
         return (
             <div className="rightDiv">
