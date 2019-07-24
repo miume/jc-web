@@ -187,9 +187,14 @@ class Fittings extends React.Component {
             data: saveData,
             // type: 'json'
         }).then((data) => {
-            message.info(data.data.message);
-            this.handleAddCancel()
-            this.fetch()
+            if(data.data.code===0){
+                message.info(data.data.message);
+                this.handleAddCancel()
+                this.fetch()
+            }else{
+                message.info('请重新保存')
+                return
+            }
         }).catch(function () {
             message.info('新增失败，请联系管理员！');
         });
@@ -331,11 +336,15 @@ class Fittings extends React.Component {
             },
             data:value
         }).then((data)=>{
-            message.info(data.data.message);
             if(data.data.code===0){
+                message.info(data.data.message);
                 this.fetch();
+            }else{
+                message.info("请重新保存");
+                return
             }
         }).catch(()=>{
+            return
             message.info('更新失败，请联系管理员！');
         })
     }

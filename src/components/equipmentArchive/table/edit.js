@@ -151,7 +151,7 @@ class Edit extends React.Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
-            if (deviceDocumentMain.startdate || deviceDocumentMain.startdate === undefined) {
+            if ((deviceDocumentMain.startdate&&deviceDocumentMain.startdate === undefined) || (deviceDocumentMain.startdate&&deviceDocumentMain.startdate==='')) {
                 deviceDocumentMain.startdate = startdate;
             }
             if(this.props.comFlag){
@@ -169,16 +169,21 @@ class Edit extends React.Component {
                     data: addData,
                     // type: 'json'
                 }).then((data) => {
-                    this.props.fetch({},{})
-                    message.info(data.data.message);
+                    if(data.data.code===0){
+                        this.props.fetch({},{})
+                        message.info(data.data.message);
+                        this.setState({
+                            visible: false,
+                            deviceDocumentMain: {},
+                            newRowData: [],
+                            statusCode: []
+                        });
+                    }else{
+                        message.info("请重新保存");
+                        return
+                    }
                 }).catch(function () {
                     message.info('编辑失败，请联系管理员！');
-                });
-                this.setState({
-                    visible: false,
-                    deviceDocumentMain: {},
-                    newRowData: [],
-                    statusCode: []
                 });
             }else{
                 var addData = {
@@ -195,17 +200,22 @@ class Edit extends React.Component {
                     data: addData,
                     // type: 'json'
                 }).then((data) => {
-                    const deviceName = this.props.record.deviceName.split('-')[0]
-                    this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
-                    message.info(data.data.message);
+                    if(data.data.code===0){
+                        const deviceName = this.props.record.deviceName.split('-')[0]
+                        this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
+                        message.info(data.data.message);
+                        this.setState({
+                            visible: false,
+                            deviceDocumentMain: {},
+                            newRowData: [],
+                            statusCode: []
+                        });
+                    }else{
+                        message.info("请重新保存");
+                        return
+                    }
                 }).catch(function () {
                     message.info('编辑失败，请联系管理员！');
-                });
-                this.setState({
-                    visible: false,
-                    deviceDocumentMain: {},
-                    newRowData: [],
-                    statusCode: []
                 });
             }
         }
