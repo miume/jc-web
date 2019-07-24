@@ -215,7 +215,7 @@ class EARightTable extends Component {
     handleDelete = (code) => {
         if(this.props.comFlag){
             axios({
-                url: `${this.props.url.equipmentArchive.deleteUnit}`,
+                url: `${this.props.url.eqMaintenanceQuery.recordDelete}`,
                 method: 'Delete',
                 headers: {
                     'Authorization': this.props.url.Authorization
@@ -231,7 +231,7 @@ class EARightTable extends Component {
             });
         }else{
             axios({
-                url: `${this.props.url.equipmentArchive.device}/${code}`,
+                url: `${this.props.url.eqMaintenanceQuery.recordDelete}/${code}`,
                 method: 'Delete',
                 headers: {
                     'Authorization': this.props.url.Authorization
