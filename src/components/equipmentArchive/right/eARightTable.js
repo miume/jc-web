@@ -203,7 +203,7 @@ class EARightTable extends Component {
                     columns={this.columns}
                     size="small"
                     bordered
-                    scroll={{y: 400}}
+                    scroll={{y: 360}}
 
                     onChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
