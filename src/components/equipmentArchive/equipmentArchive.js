@@ -183,7 +183,7 @@ class EquipmentArchive extends Component {
             url: `${this.url.equipmentArchive.page}`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorization
+                'Authorization':this.url.Authorization
             },
             params: params,
         }).then((data) => {
