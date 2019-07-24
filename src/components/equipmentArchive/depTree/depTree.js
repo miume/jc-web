@@ -37,6 +37,10 @@ class DepTree extends Component {
     }
 
     componentDidMount() {
+        const params={
+            deptId:2,
+            statusId:1,
+        }
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();

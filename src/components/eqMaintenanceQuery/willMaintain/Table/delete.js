@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, Button, message, Popover, Steps} from 'antd';
+import {Modal, Button, message, Popover, Steps, Popconfirm, Divider} from 'antd';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import WhiteSpace from "../../../BlockQuote/whiteSpace";
 
@@ -8,22 +8,21 @@ import WhiteSpace from "../../../BlockQuote/whiteSpace";
 class Delete extends React.Component {
     constructor(props) {
         super(props);
-        this.handleDelete=this.handleDelete.bind(this)
         }
-
-
     render(){
 
         return(
             <div>
-                <span className="blue" onClick={this.handleDelete}>删除</span>
+                <span >
+                <Divider type="vertical" />
+                <Popconfirm title="确认删除?" onConfirm={()=> this.props.handleDelete(this.props.record.code)} okText="确定" cancelText="取消" >
+                    <span className='blue' >删除</span>
+                </Popconfirm>
+            </span>
             </div>
         )
     }
 
-    handleDelete(){
-
-    }
 }
 
 export default Delete
