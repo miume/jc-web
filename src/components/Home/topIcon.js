@@ -13,6 +13,9 @@ class TopIcon extends React.Component{
                 <div onClick={ this.props.userInstruction} className='iconHover'>
                     <i className="fa fa-info" aria-hidden="true" style={{padding:'10px'}}></i>
                 </div>
+                <div onClick={ this.props.versionInstruction} className='iconHover'>
+                    <i className="fa fa-code-fork" aria-hidden="true" style={{padding:'10px',color: 'black'}}></i>
+                </div>
             </div>
         );
     }
