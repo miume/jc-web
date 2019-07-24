@@ -94,49 +94,50 @@ class EqMaintenanceQuery extends React.Component{
     };
 
     getTableData = (params) => {
-        this.setState({depCode:params.deptId,depName:params.depName,},()=>{
+        this.setState({depCode:params.deptId,depName:params.depName,},()=> {
             axios({
                 url: `${this.url.eqMaintenanceQuery.recordPage}`,
                 method: 'get',
                 headers: {
                     'Authorization': this.url.Authorization
                 },
-                params:params,
+                params: params,
             }).then((data) => {
                 console.log(data)
                 const res = data.data.data ? data.data.data : [];
-                if (res&&res.list) {
+                if (res && res.list) {
                     var rightTableData = [];
                     for (var i = 0; i < res.list.length; i++) {
                         var arr = res.list[i];
                         rightTableData.push({
-                            index:i+1+(res.page-1)*res.size,//序号
+                            index: i + 1 + (res.page - 1) * res.size,//序号
                             code: arr['code'],//保养单号
                             planCode: arr['planCode'],//所属计划单号
                             fixedassetsCode: arr["fixedassetsCode"],//固定资产编码
-                            deviceName: arr['deviceName']+"/"+arr["fixedassetsCode"],//设备名称
-                            deptCode:arr["deptCode"],//所属部门
-                            planDate:arr["planDate"],//计划执行日期
-                            receiveDate:arr["receiveDate"],//接单日期
-                            finishiDate:arr["finishiDate"],//保养完成日期
-                            maintPeople:arr["maintPeople"],//保养人
-                            abnormalcontent:arr["abnormalcontent"],//异常处理备注
-                            editFlag:arr["editFlag"],//标记位
-                            depName:this.state.depName,
-  
-        })//新建状态用来获得所需的查询条件
-                this.setState({
-                    rightTableData: rightTableData,
-                });
-            } else {
-                this.setState({
-                    rightTableData: [],
-                });
-            }
-        }).catch(() => {
-            message.info('查询失败，请刷新下页面！')
-        });
-    }
+                            deviceName: arr['deviceName'] + "/" + arr["fixedassetsCode"],//设备名称
+                            deptCode: arr["deptCode"],//所属部门
+                            planDate: arr["planDate"],//计划执行日期
+                            receiveDate: arr["receiveDate"],//接单日期
+                            finishiDate: arr["finishiDate"],//保养完成日期
+                            maintPeople: arr["maintPeople"],//保养人
+                            abnormalcontent: arr["abnormalcontent"],//异常处理备注
+                            editFlag: arr["editFlag"],//标记位
+                            depName: this.state.depName,
+                        })
+                    }//新建状态用来获得所需的查询条件
+                    this.setState({
+                        rightTableData: rightTableData,
+                    });
+                } else {
+                    this.setState({
+                        rightTableData: [],
+                    });
+                }
+            }).catch(() => {
+                message.info('查询失败，请刷新下页面！')
+            })
+        }
+        )}
 }
 
 export default EqMaintenanceQuery
