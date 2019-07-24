@@ -17,18 +17,21 @@ class Searchpart extends Component {
         this.setState({
             searchContent: value
         })
+
         console.log(value)
     };
 
-    SearchEvent = () => {
-        this.setState({
-            pageChangeFlag: 1
-        });
-        this.props.searchEvent(this.state.searchContent)
+    searchEvent = () => {
+        this.props.SearchEvent(this.state.searchContent)
     }
     fetch = () => {
-        this.props.searchReset(this.props.depCode)
-        this.setState({statusSelect:{key: "-1", label: "全部状态"}})
+
+        this.setState({
+            statusSelect:{key: "-1", label: "全部状态"},
+            searchContent:''
+        },()=>{
+            this.props.searchReset()
+        })
     };
 
     handleSelectChange=(value)=> {
@@ -50,15 +53,15 @@ class Searchpart extends Component {
                     onChange={this.handleSelectChange}
                 >
                     <Option key="-1" title='全部状态'>全部状态</Option>
-                    <Option key="1"  title='已生效'>已生效</Option>
-                    <Option key="0"  title='已失效'>已失效</Option>
+                    <Option key="0"  title='已生效'>已生效</Option>
+                    <Option key="1"  title='已失效'>已失效</Option>
                 </Select>&nbsp;&nbsp;&nbsp;
                 <SearchCell
                     name="设备名称/编号..."
                     width='100px'
                     flag={true}
                     searchContentChange={this.searchContentChange}
-                    searchEvent={this.SearchEvent}
+                    searchEvent={this.searchEvent}
                     fetch={this.fetch}
                 />
             </div>

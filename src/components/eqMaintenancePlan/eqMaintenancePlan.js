@@ -1,12 +1,13 @@
 import React from "react";
+
 import Blockquote from "../BlockQuote/blockquote";
-import TreeCard from "../BlockQuote/treeSelect";
+
 import axios from "axios";
 import DepartmentCard from './blockCompontent/department'
 import ButtonToDd from './blockCompontent/buttontodo'
 import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
-import {message} from "antd";
+import {message, Pagination } from "antd";
 
 class EqMaintenancePlan extends React.Component{
     componentWillUnmount() {
@@ -26,22 +27,28 @@ class EqMaintenancePlan extends React.Component{
             depCode: 2,
             depName:'铜官制造一、二部-锂电一',
             Device:[],
-            pageChangeFlag: 0,   //0表示分页 1 表示查询
+            deviceNameandNum:'',
+            //控制搜索
+            condition:'',
             searchContent:'',
             params:{},
             selectContent:-1,
-        }
-        this.pagination = {
-            showTotal(total) {
-                return `共${total}条记录`
-            },
-            showSizeChanger: true
+            //控制分页
+            page:1,
+            size:10,
+            current:1,
         }
         this.returnDataEntry = this.returnDataEntry.bind(this)
         this.getTableData = this.getTableData.bind(this)
         this.handleTableChange = this.handleTableChange.bind(this)
-        this.searchEvent = this.searchEvent.bind(this)
+        this.SearchEvent = this.SearchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
+    }
+    pagination = {
+        showSizeChanger:true,
+        showTotal(total) {
+            return `共${total}条记录`
+        },
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -54,9 +61,15 @@ class EqMaintenancePlan extends React.Component{
                 <div style={{padding: '15px' ,display:'flex',margin:'15px'}} >
                     <DepartmentCard
                         style={{display:'inline' ,width:"20%"}}
-                        getTableData={this.getTableData}
                         url={this.url}
+                        getTableData={this.getTableData}
+                        depName={this.state.depName}
                         depCode={this.state.depCode}
+                        statusId={this.state.selectContent}
+                        condition={this.state.condition}
+                        page={this.state.page}
+                        size={this.state.size}
+                        current={this.state.current}
                     />
                     <div style={{width:"80%",marginLeft:'15px'}}>
                         <ButtonToDd
@@ -71,10 +84,15 @@ class EqMaintenancePlan extends React.Component{
                             getDevice={this.getDevice}
                             //四个更新表格的方法
                             getTableData={this.getTableData}
-                            searchEvent={this.searchEvent}
+                            SearchEvent={this.SearchEvent}
                             searchReset={this.searchReset}
                             selectEvent={this.selectEvent}
                             Device={this.state.Device}
+                            statusId={this.state.selectContent}
+                            page={this.state.page}
+                            size={this.state.size}
+                            current={this.state.current}
+                            condition={this.state.condition}
                         />
                         <ContentTable
                             url={this.url}
@@ -87,14 +105,18 @@ class EqMaintenancePlan extends React.Component{
                             Device={this.state.Device}
                             deviceName={this.state.deviceName}
                             Opt_type={this.state.Opt_type}
+                            statusId={this.state.selectContent}
                             // handleTableChange={this.handleTableChange}
                             handleDel={this.handleDel}
                             pagination={this.pagination}
                             dataSource={this.state.rightTableData}
+                            page={this.state.page}
+                            size={this.state.size}
+                            current={this.state.current}
+                            condition={this.state.condition}
+                            getTableSize={this.getTableSize}
                         />
-
                     </div>
-
                 </div>
             </div>
         )
@@ -107,6 +129,7 @@ class EqMaintenancePlan extends React.Component{
     handleTableChange = () => {
         this.getTableData({
                 deptId: parseInt(this.state.depCode),
+
             })
     };
     getMaintType=(params)=>{
@@ -120,12 +143,22 @@ class EqMaintenancePlan extends React.Component{
         }).then((data)=>{
             const res=data.data.data;
             if(res){
+                var mainData=[];
+                for(var i=0;i<res.length;i++){
+                    mainData.push({
+                        code:res[i].code,
+                        deviceName:res[i].deviceName,
+                        maintenanceItems:res[i].maintenanceItems,
+                        maintenanceContent:res[i].maintenanceContent,
+                        maintenanceFrequency:res[i].maintenanceFrequency,
+                        optType:res[i].optType,
+                        index:i,
+                    })
+                }
                 this.setState({
-                    MaintenanceType:res,
-                    deviceName:res.deviceName,
-                    Opt_type:res.Opt_type,
+                    MaintenanceType:mainData,
                 })
-                console.log(res)
+                console.log(mainData)
             }else{
                 message.info("未检测到保养计划")
             }
@@ -178,54 +211,74 @@ class EqMaintenancePlan extends React.Component{
             }
         })
     }
-
-    getTableData = (params,depName) => {
+    getTableSize=(current,size)=>{
+        this.setState({
+            size:size,
+            current:current,
+        })
+    }
+    getTableData = (params) => {
         //console.log(depName)
-        this.setState({params:params})
-        this.setState({depCode:params.deptId})
-        this.setState({depName:depName})
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        axios({
-            url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
+        console.log(params)
+        this.setState({
+            depCode:params.deptId,
+            selectContent:params.statusId,
+            page:params.page,
+            condition:params.condition,
             params:params,
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
+            size:params.size,
+            depName:params.depName,
+        },()=>{
+            console.log('this.state.depName',this.state.depName)
+            console.log('params',params)
+            /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+            axios({
+                url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.url.Authorization
+                },
+                params:params,
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
 
-            if (res&&res.list) {
-                var rightTableData = [];
-                for (var i = 0; i < res.list.length; i++) {
-                    var arr = res.list[i].deviceMaintenancePlansHead;
-                    this.setState({depCode:arr['deptCode'],});
-                    rightTableData.push({
-                        code: arr['code'],
-                        index:i+1,
-                        planName:arr['planName'],
-                        fixedassetsCode:arr['fixedassetsCode'],
-                        deviceName:arr['deviceName'],
-                        deptCode:arr['deptCode'],
-                        maintPeriod:arr['maintPeriod'],
-                        planDate:arr['planDate'],
-                        nextDate:arr['nextDate'],
-                        setDate:arr['setDate'],
-                        setPeople:arr['setPeople'],
-                        editFlag:arr['editFlag'],
-                        effFlag:arr['effFlag'],//1代表'已生效'；
-                        whetherdelete:res.list[i].detailNum,
-                    })
+                if (res&&res.list) {
+                    var rightTableData = [];
+                    for (var i = 0; i < res.list.length; i++) {
+                        var arr = res.list[i].deviceMaintenancePlansHead;
+                        this.setState({depCode:arr['deptCode'],});
+                        rightTableData.push({
+                            index:(res.page-1)*res.size+i+1,
+                            code: arr['code'],
+                            planName:arr['planName'],
+                            fixedassetsCode:arr['fixedassetsCode'],
+                            deviceName:arr['deviceName'],
+                            deptCode:arr['deptCode'],
+                            maintPeriod:arr['maintPeriod'],
+                            planDate:arr['planDate'],
+                            nextDate:arr['nextDate'],
+                            setDate:arr['setDate'],
+                            setPeople:arr['setPeople'],
+                            editFlag:arr['editFlag'],
+                            effFlag:arr['effFlag'],//1代表'已生效'；
+                            whetherdelete:res.list[i].detailNum,
+                            depName:this.state.depName,
+                            deviceNameAndNum:arr['deviceName']+'/#'+arr['fixedassetsCode'],
+                            MaintenanceType:res.list[i].deviceMaintenanceItems,
+                        })
+                    }
+                    this.pagination.total = res?res.total:0;
+                    this.setState({
+                        rightTableData: rightTableData,
+                    });
+                    console.log(this.state.depCode)
+                } else {
+                    message.info('查询无结果，请联系管理员！');
                 }
-                this.pagination.total = res?res.total:0;
-                this.setState({
-                    rightTableData: rightTableData,
-                });
-                console.log(this.state.depCode)
-            } else {
-                message.info('查询无结果，请联系管理员！');
-            }
-        });
+            })
+        })
+
+        ;
     }
     selectEvent=(status)=>{
         this.setState({
@@ -235,19 +288,26 @@ class EqMaintenancePlan extends React.Component{
                 condition:this.state.searchContent,
                 statusId:parseInt(status),
                 deptId: parseInt(this.state.depCode),
+                page:this.state.page,
+                size:this.state.size,
             })
         })
     }
 
-    searchEvent = (value) => {
+    SearchEvent = (value) => {
         console.log(value)
         this.setState({
             searchContent:value,
+            deptId:this.state.deptId,
+            statusId:this.state.statusId,
+            page:this.state.page,
         },()=>{
             this.getTableData({
                 condition:value,
                 statusId:parseInt(this.state.selectContent),
                 deptId: parseInt(this.state.depCode),
+                page:parseInt(this.state.page),
+                size:this.state.size,
             },this.state.depName)
         })
         ;
@@ -255,9 +315,13 @@ class EqMaintenancePlan extends React.Component{
 
     // 搜索重置调用
     searchReset = () => {
+        this.setState({searchContent:''})
         this.getTableData({
             deptId: parseInt(this.state.depCode),
-        },this.state.depName)
+            statusId:-1,
+            page:1,
+            size:this.state.size,
+        })
     }
 }
 
