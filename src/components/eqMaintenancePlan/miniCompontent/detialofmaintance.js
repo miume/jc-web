@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Input, DatePicker, TreeSelect, Table, Radio, InputNumber} from 'antd';
+import {Modal, Input, DatePicker, TreeSelect,message, Table, Radio, InputNumber, Button} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import axios from "axios";
 import moment from 'moment';
@@ -23,6 +23,9 @@ class DetailofMain extends React.Component{
         deviceNameAndNumdata:[],
         whomade:``,
         detailNum:'',
+        generateMaint:'',
+        detail_head:'',
+        deviceMaintenancePlansDetails:'',
     };
     handleMaintanceDetail=()=>{
 
@@ -35,16 +38,15 @@ class DetailofMain extends React.Component{
                 },
             }).then((data) => {
             var res = data.data.data ? data.data.data : [];
-            console.log(res)
+            console.log('res:',res)
             var detailNum=res.detailNum;
-            console.log('detailNum')
-            console.log(detailNum)
-            var deviceMaintenanceItems=res.deviceMaintenanceItems;
+            console.log('detailNum:',detailNum)
+            var generateMaint=res.generateMaint;
             var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
             var deviceMaintenancePlansHead=res.deviceMaintenancePlansHead;
-            console.log(deviceMaintenancePlansHead)
+            console.log('deviceMaintenancePlansHead',deviceMaintenancePlansHead)
             this.setState({
-                deviceNameAndNum:deviceMaintenancePlansHead["deviceName"]+'/'+deviceMaintenancePlansHead.fixedassetsCode,
+                deviceNameAndNum:deviceMaintenancePlansHead.deviceName+'/'+deviceMaintenancePlansHead.fixedassetsCode,
                 PlanName1:deviceMaintenancePlansHead.planName,
                 whomade:deviceMaintenancePlansHead.setPeople,
                 depCode:deviceMaintenancePlansHead.depCode,
@@ -53,15 +55,49 @@ class DetailofMain extends React.Component{
                 ImplementDate:deviceMaintenancePlansHead.planDate,
                 Effective:deviceMaintenancePlansHead.effFlag,
                 NextPlanDate:deviceMaintenancePlansHead.nextDate,
-                detailNum:detailNum
+                detailNum:detailNum,
+                generateMaint:generateMaint,
+                detail_head:{deviceMaintenancePlansHead},
             })
+            console.log(this.state)
         })
     }
     handleCancel2=()=>{
         this.setState({detailVisible:false})
     }
     handleClick=()=>{
+        const m=[];
+        for(var i=0;i<this.state.MaintenanceType.length;i++){
+            m.push({
+                deviceName:this.props.editorRecord.deviceName,
+                maintenanceContent:this.state.MaintenanceType[i].maintenanceContent,
+                maintenanceItems:this.state.MaintenanceType[i].maintenanceItems,
+                optType:this.state.MaintenanceType[i].optType
+            })
+        }
+        const dataofmain={
+            deviceMaintenanceItems:m,
+            deviceMaintenancePlansHead:this.state.detail_head.deviceMaintenancePlansHead
 
+        }
+        //console.log(dataofmain)
+        axios({
+            url:`${this.props.url.DeviceMaintenancePlan.generatorMaint}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            data:dataofmain,
+        }).then((data)=>{
+            message.info(data.data.message)
+        })
+        const params={
+            deptId:this.props.depCode,
+            statusId:this.props.statusId,
+            page:1,
+        }
+        this.props.getTableData(params)
+        this.handleCancel2()
     }
 
     render(){
@@ -74,9 +110,9 @@ class DetailofMain extends React.Component{
                        closable={false}
                        centered={true}
                        maskClosable={false}
-                       footer={this.state.detailNum?[<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />]:
+                       footer={!this.state.generateMaint?[<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />]:
                        [<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />,
-                           <SaveButton key="define" handleClick={this.handleClick}/>]
+                           <Button onClick={this.handleClick} key='planid' className='green-button'><i className="fa fa-floppy-o" aria-hidden="true" style={{color:'white'}}></i>&nbsp;&nbsp;生成保养单</Button>]
                        }
                 >
                     <div >
@@ -177,19 +213,19 @@ class DetailofMain extends React.Component{
             title: '序号',
             dataIndex: 'code',
             key:'code',
-            width: "10%"
+            width: "6%"
         },
         {
             title: '保养项目',
             dataIndex: 'maintenanceItems',
             key:'maintenanceItems',
-            width: "20%"
+            width: "40%"
         },
         {
             title: '保养内容',
             dataIndex: 'maintenanceContent',
             key:'maintenanceContent',
-            width: "40%"
+            width: "54%"
         }
     ];
 }
