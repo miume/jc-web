@@ -83,7 +83,8 @@ class Home extends Component {
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`,
-                realStock: `${server}/jc/common/sortout/realStock`,
+                //dsds,
+                realStock:`${server}/jc/common/sortout/realStock`,
                 stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
             process:{
