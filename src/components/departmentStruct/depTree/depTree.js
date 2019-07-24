@@ -101,6 +101,7 @@ class DepTree extends Component {
         if (saveData.name !== '' && saveData.parentCode !== null && saveData) {
             saveData.parentCode = parseInt(saveData.parentCode);
             if(saveData.parentCode < 1){
+
                 saveData.parentCode = null
             }
             console.log(saveData)
