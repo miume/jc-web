@@ -215,7 +215,7 @@ class EARightTable extends Component {
     handleDelete = (code) => {
         if(this.props.comFlag){
             axios({
-                url: `${this.props.url.eqMaintenanceQuery.recordDelete}`,
+                url:`${this.props.url.eqMaintenanceQuery.recordDelete}`,
                 method: 'Delete',
                 headers: {
                     'Authorization': this.props.url.Authorization
