@@ -193,7 +193,7 @@ class EquipmentArchive extends Component {
                     var arr = res.list[i].deviceDocumentMain;
                     var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
-                        index: (res.page-1)*10 + i+1,
+                        index: (res.page-1)*res.size + i+1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
