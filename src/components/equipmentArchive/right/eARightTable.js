@@ -118,7 +118,7 @@ class EARightTable extends Component {
         dataIndex: 'specification',
         key: 'specification',
         align: 'center',
-        width: '9%',
+        width: '11%',
     }, {
         title: 'ID卡号',
         dataIndex: 'idCode',
@@ -136,7 +136,7 @@ class EARightTable extends Component {
         dataIndex: 'statusCode',
         key: 'statusCode',
         align: 'center',
-        width: '13%',
+        width: '11%',
         render: (text, record) => {
             return(
                 <span>{record.name}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
