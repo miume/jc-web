@@ -170,6 +170,7 @@ class EquipmentArchive extends Component {
     };
 
 
+
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if (flag) {
