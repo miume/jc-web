@@ -21,8 +21,8 @@ class ContentTable extends React.Component {
         width: '7%',
     },  {
         title: '设备名称/编号',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
+        dataIndex: 'deviceNameAndNum',
+        key: 'deviceNameAndNum',
         align: 'center',
         width: '16%',
     }, {
@@ -56,7 +56,7 @@ class ContentTable extends React.Component {
         align: 'center',
         width: '10%',
         render: (statusCode) => {
-            if(statusCode===1)
+            if(statusCode===0)
                     return <span className="main-statu1">已生效</span>
                else
                     return <span className="main-statu2">已失效</span>
@@ -86,8 +86,11 @@ class ContentTable extends React.Component {
                     <Divider type="vertical"/>
                     <DetailofMain
                         editorRecord={record}
+                        url={this.props.url}
                         depCode={this.props.depCode}
                         depName={this.props.depName}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
                     />
                     <Divider type="vertical"/>
                     <span>删除</span>
@@ -110,9 +113,12 @@ class ContentTable extends React.Component {
                     />
                     <Divider type="vertical"/>
                     <DetailofMain
+                        url={this.props.url}
                         editorRecord={record}
                         depCode={this.props.depCode}
                         depName={this.props.depName}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
                     />
                     <Divider type="vertical"/>
                     <span className="blue" onClick={()=>this.handleDel(record.code)} >删除</span>
@@ -121,8 +127,21 @@ class ContentTable extends React.Component {
             }
         }
     }]
-    handleTableChange=()=>{
-
+    onShowSizeChange=(current,size)=>{
+        this.props.getTableSize(current,size)
+    }
+    handleTableChange=(page,pageSize)=>{
+        console.log(pageSize)
+        const params={
+            deptId: this.props.depCode,
+            statusId: this.props.statusId,
+            condition:this.props.searchContent,
+            page:page.current,
+            depName:this.props.depName,
+            size:this.props.size,
+        }
+        console.log(params)
+        this.props.getTableData(params);
     }
     handleDel=(id)=>{
         axios({
@@ -151,9 +170,10 @@ class ContentTable extends React.Component {
                     dataSource={this.props.dataSource}
                     columns={this.columns}
                     bordered
-                    scroll={{y: 400}}
+                    scroll={{y:380}}
                     size="small"
                     onChange={this.handleTableChange}
+                    onShowSizeChange={this.onShowSizeChange}
                     pagination={this.props.pagination}
                 />
             </div>

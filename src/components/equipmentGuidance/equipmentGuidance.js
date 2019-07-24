@@ -7,6 +7,7 @@ import AddModal from './add';
 import { Table,Popconfirm,Divider,message } from 'antd';
 import Edit from "./editor";
 import Detail from './detail';
+import DepartmentCard from "../eqMaintenancePlan/blockCompontent/department";
 
 class Equipment extends React.Component{
     url
@@ -17,6 +18,7 @@ class Equipment extends React.Component{
             dataSource:[],
             pagination:[],
             searchContent:'',
+
         }
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);

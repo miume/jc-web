@@ -11,18 +11,20 @@ class EditorofMain extends React.Component{
     date1='';
     state = {
         editorVisible:false,
-        PlanName1:this.props.editorRecord.planName,
-        depCode:this.props.editorRecord.depCode,
-        depName:this.props.editorRecord.depName,
-        deviceName:this.props.editorRecord.deviceName,
-        fixedassetsCode:this.props.editorRecord.fixedassetsCode,
-        deviceNameAndNum:this.props.editorRecord.deviceName+'/#'+this.props.editorRecord.fixedassetsCode,
-        MaintenancePeriod:this.props.editorRecord.maintPeriod,
-        ImplementDate:this.props.editorRecord.planDate,
-        NextPlanDate:this.props.editorRecord.nextDate,
+        PlanName1:'',
+        depCode:'',
+        depName:'',
+        deviceName:'',
+        fixedassetsCode:'',
+        deviceNameAndNum:'',
+        MaintenancePeriod:'',
+        ImplementDate:'',
+        NextPlanDate:'',
         MaintenanceType:[],
-        Effective:this.props.editorRecord.effFlag,
-        whomade:this.props.editorRecord.setPeople,
+        Effective:'',
+        whomade:'',
+        selectedRowKeys: [],
+        MaintenanceDetail:[],
     };
     setS=()=>{
         this.setState({
@@ -31,7 +33,7 @@ class EditorofMain extends React.Component{
             PlanName1:this.props.editorRecord.planName,
             whomade:this.props.editorRecord.setPeople,
             depCode:this.props.editorRecord.depCode,
-            MaintenanceType:this.props.MaintenanceType,
+            MaintenanceType:this.props.editorRecord.MaintenanceType,
             MaintenancePeriod:this.props.editorRecord.maintPeriod,
             ImplementDate:this.props.editorRecord.planDate,
             Effective:this.props.editorRecord.effFlag,
@@ -40,27 +42,42 @@ class EditorofMain extends React.Component{
             fixedassetsCode:this.props.editorRecord.fixedassetsCode,
         })
     }
-
-    //点编辑的时候设置状态
-    handlemounteditor=()=>{
-        const params2={
-            deviceName:this.props.editorRecord.deviceName,
+    findkeys=()=>{
+        const x=this.props.editorRecord.MaintenanceType;
+        const y=[];
+        for(var i=0;i<x.length;i++){
+            y.push(x.index)
         }
-        this.props.getMaintType(params2)
-        console.log(this.props.editorRecord)
-        console.log(this.props.MaintenanceType)
-        this.setS();
-        //console.log(this.state.depCode)
     }
     render(){
         const dateFormat = 'YYYY-MM-DD';
         const MaintenanceTypeSelection={
             onChange: (selectedRowKeys, selectedRows) => {
-                //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                this.state.MaintenanceType=selectedRowKeys;
-
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                this.setState({
+                    MaintenanceType:selectedRows,
+                    selectedRowKeys:selectedRowKeys
+                })
                 console.log(this.state.MaintenanceType);
             },
+            onSelect: (changeAbleRowKeys) => {
+                const selected=[];
+                console.log("MaintenanceTypelength",this.props.MaintenanceType.length);
+                for(var i=0;i<this.props.MaintenanceType.length;i++){
+                    for(var j=0;j<this.state.MaintenanceDetail.length;j++){
+                        console.log("-----------------------------")
+                        if(this.props.MaintenanceType[i].code===this.state.MaintenanceDetail[j].code){
+                            selected.push(i);
+                        }
+                        console.log("Detailcode",this.state.MaintenanceDetail[i].code);
+                        console.log("MaintenanceTypecode",this.props.MaintenanceType[i].code);
+                    }
+
+                }
+                console.log("selected",selected)
+                this.setState({ selectedRowKeys: selected });
+            },
+
         }
         return(
             <span>
@@ -92,7 +109,6 @@ class EditorofMain extends React.Component{
                             name="department"
                             placeholder="请选择"
                             style={{ width: 200 }}
-                            onChange={this.handledepartmentnameChange}
                             value={this.props.depName}
                             disabled={true}
                         />
@@ -154,7 +170,6 @@ class EditorofMain extends React.Component{
                             name="Maintenancetype"
                             columns={this.columns}
                             dataSource={this.props.MaintenanceType}
-                            pagination={this.pagination}
                             size="small"
                             scroll={{ y: 240 }}
                             rowSelection={MaintenanceTypeSelection}
@@ -165,8 +180,8 @@ class EditorofMain extends React.Component{
                 </div>
                 <div id='Effective_add' style={{display:'inline'}}>&nbsp;&nbsp;&nbsp;&nbsp;<b>是否生效:</b>&nbsp;&nbsp;
                     <Radio.Group onChange={this.handleEffectiveChange} value={this.state.Effective}>
-                        <Radio value={1}>生效</Radio>
-                        <Radio value={0}>失效</Radio>
+                        <Radio value={0}>生效</Radio>
+                        <Radio value={1}>失效</Radio>
                     </Radio.Group>
                 </div>
             </div>
@@ -174,14 +189,13 @@ class EditorofMain extends React.Component{
             </span>
         )
     }
+    defaultSelect=(record)=>{
+        console.log("record",record)
+    }
 
 
     handlePlanName1Change=(e)=>{
         this.setState({PlanName1:e.target.value})
-    }
-    handledepartmentnameChange=(value)=>{
-        this.setState({depCode:value})
-        //console.log(this.state.departmentname)
     }
     handleDeviceNameAndNumChange=(value)=>{
         this.setState({deviceNameAndNum:value})
@@ -221,28 +235,37 @@ class EditorofMain extends React.Component{
         this.setState({Effective:e.target.value})
     }
     /**处理一条编辑记录 */
-    handleMaintanceEditor=(params)=>{
-        this.setState({editorVisible:true})
-        var jing=this.state.deviceNameAndNum.search('/#');
-        this.setState({deviceName:this.state.deviceNameAndNum.slice(0,jing)})
-        this.setState({fixedassetsCode:this.state.deviceNameAndNum.slice(jing+2)})
+    handleMaintanceEditor=()=>{
+        axios({
+            url:`${this.url.DeviceMaintenancePlan.maintenancePlanDetail}/${this.props.editorRecord.code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+        }).then((data) => {
+            var res = data.data.data ? data.data.data : [];
+            console.log(res)
+            var detailNum=res.detailNum;
+            console.log('detailNum')
+            console.log(detailNum)
+            var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
+            this.setState({
+                MaintenanceDetail:deviceMaintenancePlansDetails,
+            })
+        })
         const params2={
-            deviceName:this.state.deviceNameAndNum.slice(0,jing),
+            deviceName:this.props.editorRecord.deviceName,
         }
         this.props.getMaintType(params2)
-        this.date1=Date.parse(this.props.editorRecord.ImplementDate)
-        var date2=this.date1+(this.state.MaintenancePeriod * 24* 3600* 1000)
-        var time = new Date(date2);
-        let Y=time.getFullYear()
-        let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
-        let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
-        this.setState({NextPlanDate:Y+'-'+M+'-'+D})
-        this.handlemounteditor()
+        this.setS();
+        console.log("this.props.editorRecord",this.props.editorRecord)
+        console.log("this.props.MaintenanceType",this.props.MaintenanceType)
+        this.setState({editorVisible:true})
+
     }
     //点击返回
     handleCancel2=()=>{
         this.setState({editorVisible:false});
-        this.d2=[];
     }    ;
     //点击保存
     handleCreate=()=>{
@@ -311,8 +334,8 @@ class EditorofMain extends React.Component{
     columns = [
         {
             title: '序号',
-            dataIndex: 'code',
-            key:'code',
+            dataIndex: 'index',
+            key:'index',
             width: "10%"
         },
         {

@@ -17,25 +17,33 @@ class DepartmentCard extends React.Component{
             depCode:2,
             depName:'铜官制造一、二部-锂电一',
             dataSource: [{
+                title: '总公司',
                 key:'0',
-                title:'总公司',
                 children: [],
-                value: '总公司',
+                value:'总公司',
             }],
+            expandedKeys:'',
         };
         this.returnDepKey = this.returnDepKey.bind(this)
+    }
+    onExpand = (expandedKeys) => {
+        this.expandedKeys = expandedKeys;
+        this.setState({expandedKeys: expandedKeys})
     }
     componentDidMount() {
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.getDepartmentData();
         const params = {
             deptId:this.state.depCode,
-        }
-        this.props.getTableData(params,this.state.depName);
-    }
-    ExpandedKeys=['0','1','2']
-    render() {
+            page:1,
+            statusId: -1,
+            depName:this.props.depName,
 
+        }
+        this.onExpand([]);
+        this.props.getTableData(params);
+    }
+    render() {
         return(
             <Card
                 style={{display:'inline',width: "240px",overflowX:'auto', height:'520px'}}
@@ -45,11 +53,12 @@ class DepartmentCard extends React.Component{
                 } >
                 <div>
                     <Tree
+                        expandedKeys={this.state.expandedKeys}
                         showLine={true}
-                        defaultExpandAll={true}
                         treeData={this.state.dataSource}
                         onSelect={this.returnDepKey}
-                        ExpandedKeys={this.ExpandedKeys}
+                        onExpand={this.onExpand}
+                        defaultSelectedKeys={['2']}
                     />
                 </div>
             </Card>)
@@ -64,10 +73,13 @@ class DepartmentCard extends React.Component{
             },()=>{
                 const params = {
                     deptId:this.state.depCode,
-                    statusId:-1,
+                    statusId:this.props.statusId,
+                    depName:this.state.depName,
+                    page:1,
+                    size:this.props.size,
                 }
                 console.log(params)
-                this.props.getTableData(params,this.state.depName)
+                this.props.getTableData(params)
             });
         }
     };
@@ -90,6 +102,7 @@ class DepartmentCard extends React.Component{
                 value:'总公司',
             }];
             if (res) {
+                var expandedKeys = ["0"];
                 for (let i = 0; i < res.length; i++) {
                     const arrParent = res[i].parent;
                     var parenObj = {
@@ -98,29 +111,25 @@ class DepartmentCard extends React.Component{
                         children: [],
                         value: arrParent.name,
                     };
+                    if(i === 0){
+                        expandedKeys.push(arrParent.code.toString())
+                    }
                     const arrSon = res[i].son;
                     for (let j = 0; j < arrSon.length; j++) {
                         var arr = arrSon[j];
-                        if(i===0&&j===0){
                             parenObj['children'].push({
                                 title:arr.name.toString(),
                                 key:arr.code,
                                 value:  arrParent.name.toString()+'-'+arr.name.toString(),
                                 children: []
                             });
-                        }else{
-                            parenObj['children'].push({
-                                title:arr.name.toString(),
-                                key:arr.code,
-                                value: arrParent.name.toString()+'-'+arr.name.toString(),
-                                children: []
-                            });
-                        }
                     }
                     dataSource[0].children.push(parenObj);
                 }
+                console.log(dataSource)
                 this.setState({
                     dataSource: dataSource,
+                    expandedKeys: expandedKeys,
                 })
             } else {
                 message.info('查询无结果,请联系管理员！')

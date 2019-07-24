@@ -47,7 +47,7 @@
     display: flex;
     justify-content:start;
     align-items:center;
-    margin-left: 56px;
+    margin-left: 46px;
     height: 35px;
 }
 #NextPlanDate_add{
@@ -67,4 +67,13 @@ div.ant-card-head {
 }
 span.ant-tree-node-selected{
     background-color:salmon;
+}
+tr th.ant-table-selection-column{
+    width: 30px;
+}
+div.ant-table-selection{
+    width: 20px;
+}
+#Mainname_add table th.ant-table-selection-column {
+    width: 30px;
 }
