@@ -99,6 +99,7 @@ class DepTree extends Component {
     handleModalOk = () => {
         const saveData = this.state.saveData;
         if (saveData.name !== '' && saveData.parentCode !== null && saveData) {
+
             saveData.parentCode = parseInt(saveData.parentCode);
             if(saveData.parentCode < 1){
 
