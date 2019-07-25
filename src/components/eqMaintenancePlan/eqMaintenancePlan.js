@@ -58,9 +58,9 @@ class EqMaintenancePlan extends React.Component{
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="保养计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div style={{padding: '15px' ,display:'flex',margin:'15px'}} >
+                <div className={'eqMaintenancePlan_blockComponent'} style={{padding: '15px' ,display:'flex',margin:'15px'}} >
                     <DepartmentCard
-                        style={{display:'inline' ,width:"20%"}}
+                        style={{display:'inline-block' ,width:"20%"}}
                         url={this.url}
                         getTableData={this.getTableData}
                         depName={this.state.depName}
@@ -152,13 +152,12 @@ class EqMaintenancePlan extends React.Component{
                         maintenanceContent:res[i].maintenanceContent,
                         maintenanceFrequency:res[i].maintenanceFrequency,
                         optType:res[i].optType,
-                        index:i,
                     })
                 }
                 this.setState({
                     MaintenanceType:mainData,
                 })
-                console.log(mainData)
+                //console.log(mainData)
             }else{
                 message.info("未检测到保养计划")
             }
@@ -205,7 +204,7 @@ class EqMaintenancePlan extends React.Component{
                     }
                 }
                 this.setState({Device:DevicetreeData})
-                console.log(DevicetreeData);
+                //console.log(DevicetreeData);
             }else{
                 message.info("未检测到设备")
             }
@@ -218,8 +217,8 @@ class EqMaintenancePlan extends React.Component{
         })
     }
     getTableData = (params) => {
-        //console.log(depName)
-        console.log(params)
+        ////console.log(depName)
+        //console.log(params)
         this.setState({
             depCode:params.deptId,
             selectContent:params.statusId,
@@ -229,8 +228,8 @@ class EqMaintenancePlan extends React.Component{
             size:params.size,
             depName:params.depName,
         },()=>{
-            console.log('this.state.depName',this.state.depName)
-            console.log('params',params)
+            //console.log('this.state.depName',this.state.depName)
+            //console.log('params',params)
             /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
             axios({
                 url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
@@ -241,40 +240,48 @@ class EqMaintenancePlan extends React.Component{
                 params:params,
             }).then((data) => {
                 const res = data.data.data ? data.data.data : [];
-
-                if (res&&res.list) {
-                    var rightTableData = [];
-                    for (var i = 0; i < res.list.length; i++) {
-                        var arr = res.list[i].deviceMaintenancePlansHead;
-                        this.setState({depCode:arr['deptCode'],});
-                        rightTableData.push({
-                            index:(res.page-1)*res.size+i+1,
-                            code: arr['code'],
-                            planName:arr['planName'],
-                            fixedassetsCode:arr['fixedassetsCode'],
-                            deviceName:arr['deviceName'],
-                            deptCode:arr['deptCode'],
-                            maintPeriod:arr['maintPeriod'],
-                            planDate:arr['planDate'],
-                            nextDate:arr['nextDate'],
-                            setDate:arr['setDate'],
-                            setPeople:arr['setPeople'],
-                            editFlag:arr['editFlag'],
-                            effFlag:arr['effFlag'],//1代表'已生效'；
-                            whetherdelete:res.list[i].detailNum,
-                            depName:this.state.depName,
-                            deviceNameAndNum:arr['deviceName']+'/#'+arr['fixedassetsCode'],
-                            MaintenanceType:res.list[i].deviceMaintenanceItems,
-                        })
+                const status=data.status;
+                if(status===200){
+                    if (res&&res.list) {
+                        var rightTableData = [];
+                        for (var i = 0; i < res.list.length; i++) {
+                            var arr = res.list[i].deviceMaintenancePlansHead;
+                            this.setState({depCode:arr['deptCode'],});
+                            rightTableData.push({
+                                key:i,
+                                index:(res.page-1)*res.size+i+1,
+                                code: arr['code'],
+                                planName:arr['planName'],
+                                fixedassetsCode:arr['fixedassetsCode'],
+                                deviceName:arr['deviceName'],
+                                deptCode:arr['deptCode'],
+                                maintPeriod:arr['maintPeriod'],
+                                planDate:arr['planDate'],
+                                nextDate:arr['nextDate'],
+                                setDate:arr['setDate'],
+                                setPeople:arr['setPeople'],
+                                editFlag:arr['editFlag'],
+                                effFlag:arr['effFlag'],//1代表'已生效'；
+                                whetherdelete:res.list[i].detailNum,
+                                depName:this.state.depName,
+                                deviceNameAndNum:arr['deviceName']+'/#'+arr['fixedassetsCode'],
+                                MaintenanceType:res.list[i].deviceMaintenanceItems,
+                                setPeopleName:res.list[i].setPeopleName
+                            })
+                        }
+                        this.pagination.total = res?res.total:0;
+                        this.setState({
+                            rightTableData: rightTableData,
+                        });
+                        ////console.log(this.state.depCode)
+                    } else {
+                        message.info('未查询到结果，请联系管理员！');
                     }
-                    this.pagination.total = res?res.total:0;
-                    this.setState({
-                        rightTableData: rightTableData,
-                    });
-                    console.log(this.state.depCode)
-                } else {
-                    message.info('查询无结果，请联系管理员！');
                 }
+                else{
+                    message.info("网络错误，请重试")
+                }
+
             })
         })
 
@@ -295,7 +302,7 @@ class EqMaintenancePlan extends React.Component{
     }
 
     SearchEvent = (value) => {
-        console.log(value)
+        //console.log(value)
         this.setState({
             searchContent:value,
             deptId:this.state.deptId,

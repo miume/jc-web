@@ -27,13 +27,13 @@ class EditorofMain extends React.Component{
         MaintenanceDetail:[],
     };
     setS=()=>{
+
         this.setState({
             deviceNameAndNum:this.props.editorRecord.deviceName+'/#'+this.props.editorRecord.fixedassetsCode,
             depName:this.props.editorRecord.depName,
             PlanName1:this.props.editorRecord.planName,
             whomade:this.props.editorRecord.setPeople,
             depCode:this.props.editorRecord.depCode,
-            MaintenanceType:this.props.editorRecord.MaintenanceType,
             MaintenancePeriod:this.props.editorRecord.maintPeriod,
             ImplementDate:this.props.editorRecord.planDate,
             Effective:this.props.editorRecord.effFlag,
@@ -42,42 +42,31 @@ class EditorofMain extends React.Component{
             fixedassetsCode:this.props.editorRecord.fixedassetsCode,
         })
     }
-    findkeys=()=>{
-        const x=this.props.editorRecord.MaintenanceType;
-        const y=[];
-        for(var i=0;i<x.length;i++){
-            y.push(x.index)
-        }
-    }
+    onSelectChange =( selectedRowKeys, selectedRows) => {
+        //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+        this.setState({
+            MaintenanceType:selectedRows,
+        },()=>{
+            //console.log(this.state.MaintenanceType);
+        })
+
+        //console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    };
+    // onChange: (selectedRowKeys, selectedRows) => {
+    //     //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    //     this.setState({
+    //         MaintenanceType:selectedRows,
+    //         selectedRowKeys:selectedRowKeys
+    //     })
+    //     //console.log(this.state.MaintenanceType);
+    // },
     render(){
         const dateFormat = 'YYYY-MM-DD';
+        const { selectedRowKeys } = this.state;
         const MaintenanceTypeSelection={
-            onChange: (selectedRowKeys, selectedRows) => {
-                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-                this.setState({
-                    MaintenanceType:selectedRows,
-                    selectedRowKeys:selectedRowKeys
-                })
-                console.log(this.state.MaintenanceType);
-            },
-            onSelect: (changeAbleRowKeys) => {
-                const selected=[];
-                console.log("MaintenanceTypelength",this.props.MaintenanceType.length);
-                for(var i=0;i<this.props.MaintenanceType.length;i++){
-                    for(var j=0;j<this.state.MaintenanceDetail.length;j++){
-                        console.log("-----------------------------")
-                        if(this.props.MaintenanceType[i].code===this.state.MaintenanceDetail[j].code){
-                            selected.push(i);
-                        }
-                        console.log("Detailcode",this.state.MaintenanceDetail[i].code);
-                        console.log("MaintenanceTypecode",this.props.MaintenanceType[i].code);
-                    }
-
-                }
-                console.log("selected",selected)
-                this.setState({ selectedRowKeys: selected });
-            },
-
+            selectedRowKeys,
+            onChange:this.onSelectChange,
         }
         return(
             <span>
@@ -171,6 +160,7 @@ class EditorofMain extends React.Component{
                             columns={this.columns}
                             dataSource={this.props.MaintenanceType}
                             size="small"
+                            selectedRowKeys={this.state.selectedRowKeys}
                             scroll={{ y: 240 }}
                             rowSelection={MaintenanceTypeSelection}
                             bordered={true}
@@ -189,9 +179,7 @@ class EditorofMain extends React.Component{
             </span>
         )
     }
-    defaultSelect=(record)=>{
-        console.log("record",record)
-    }
+
 
 
     handlePlanName1Change=(e)=>{
@@ -199,12 +187,12 @@ class EditorofMain extends React.Component{
     }
     handleDeviceNameAndNumChange=(value)=>{
         this.setState({deviceNameAndNum:value})
-        console.log(value);
+        //console.log(value);
     }
     handleImplementDateChange=(date, dateString)=>{
         this.setState({ImplementDate:dateString});
         this.date1=Date.parse(dateString);
-        console.log(this.date1);
+        //console.log(this.date1);
         var date2=this.date1+(this.state.MaintenancePeriod * 24* 3600* 1000);
         var time = new Date(date2);
         let Y=time.getFullYear();
@@ -244,28 +232,57 @@ class EditorofMain extends React.Component{
             },
         }).then((data) => {
             var res = data.data.data ? data.data.data : [];
-            console.log(res)
+            //console.log(res)
             var detailNum=res.detailNum;
-            console.log('detailNum')
-            console.log(detailNum)
+            //console.log('detailNum')
+            //console.log(detailNum)
+            const params2={
+                deviceName:this.props.editorRecord.deviceName,
+            }
+            this.props.getMaintType(params2)
+            this.setS();
             var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
+            const m=[];
+            for(var i=0;i<this.state.MaintenanceType.length;i++){
+                m.push({
+                    code:deviceMaintenancePlansDetails[i].itemsCode,
+                    deviceName:this.props.editorRecord.deviceName,
+                    maintenanceContent:deviceMaintenancePlansDetails[i].maintenanceContent,
+                    maintenanceItems:deviceMaintenancePlansDetails[i].maintenanceItems,
+                    optType:deviceMaintenancePlansDetails[i].optType,
+                    planCode:deviceMaintenancePlansDetails[i].planCode,
+                })
+            }
             this.setState({
+                MaintenanceType:m,
                 MaintenanceDetail:deviceMaintenancePlansDetails,
+            },()=>{
+                ////console.log("this.props.editorRecord",this.props.editorRecord)
+                ////console.log("this.props.MaintenanceType",this.props.MaintenanceType)
+                ////console.log("this.state.MaintenanceDetail",this.state.MaintenanceDetail)
+                const selected=[];
+                for(var i=0;i<this.props.MaintenanceType.length;i++){
+                    for(var j=0;j<this.state.MaintenanceDetail.length;j++){
+                        if(this.props.MaintenanceType[i].code===this.state.MaintenanceDetail[j].itemsCode){
+                            selected.push(this.props.MaintenanceType[i].code);
+                        }
+                    }
+                }
+                this.setState({
+                    editorVisible:true,
+                    selectedRowKeys:selected,
+                },()=>{
+                    ////console.log("selected",selected)
+                })
             })
         })
-        const params2={
-            deviceName:this.props.editorRecord.deviceName,
-        }
-        this.props.getMaintType(params2)
-        this.setS();
-        console.log("this.props.editorRecord",this.props.editorRecord)
-        console.log("this.props.MaintenanceType",this.props.MaintenanceType)
-        this.setState({editorVisible:true})
+
 
     }
     //点击返回
     handleCancel2=()=>{
-        this.setState({editorVisible:false});
+        this.setState({
+            editorVisible:false});
     }    ;
     //点击保存
     handleCreate=()=>{
@@ -291,7 +308,7 @@ class EditorofMain extends React.Component{
                 "deviceMaintenanceItems":this.state.MaintenanceType,
                 "detailNum":1,
             }
-            console.log(objectdata)
+            //console.log(objectdata)
             this.handleCancel2();
             axios({
                 url: `${this.props.url.DeviceMaintenancePlan.maintenanceUpdatePlan}`,
@@ -301,18 +318,24 @@ class EditorofMain extends React.Component{
                 },
                 data: objectdata,
             }).then((data) => {
-                message.info(data.data.data.message);
-                this.props.getTableData(this.props.params)
-            }).catch(function () {
-                message.info('更新失败，请联系管理员！');
+                message.info(data.data.message);
+                const params={
+                    deptId: this.props.depCode,
+                    statusId: this.props.statusId,
+                    condition:this.props.condition,
+                    page:this.props.page,
+                    size:this.props.size,
+                }
+                this.props.getTableData(params)
             });
         })
         const params1={
             deptId:this.props.depCode,
             statusId:-1,
             pagination:this.pagination,
+            depName:this.props.depName,
         }
-        this.props.getTableData(params1,this.props.depName)
+        this.props.getTableData(params1,)
         this.handleCancel2()
         const Editorobject={
             editorVisible:this.state.editorVisible,
@@ -328,14 +351,14 @@ class EditorofMain extends React.Component{
             deviceNameAndNumdata:[],
             whomade:this.state.whomade,
         }
-        console.log(Editorobject)
+        //console.log(Editorobject)
     }
 
     columns = [
         {
             title: '序号',
-            dataIndex: 'index',
-            key:'index',
+            dataIndex: 'code',
+            key:'code',
             width: "10%"
         },
         {
