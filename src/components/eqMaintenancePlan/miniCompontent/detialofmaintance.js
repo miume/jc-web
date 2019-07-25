@@ -38,13 +38,13 @@ class DetailofMain extends React.Component{
                 },
             }).then((data) => {
             var res = data.data.data ? data.data.data : [];
-            console.log('res:',res)
+            ////console.log('res:',res)
             var detailNum=res.detailNum;
-            console.log('detailNum:',detailNum)
+            ////console.log('detailNum:',detailNum)
             var generateMaint=res.generateMaint;
             var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
             var deviceMaintenancePlansHead=res.deviceMaintenancePlansHead;
-            console.log('deviceMaintenancePlansHead',deviceMaintenancePlansHead)
+            //////console.log('deviceMaintenancePlansHead',deviceMaintenancePlansHead)
             this.setState({
                 deviceNameAndNum:deviceMaintenancePlansHead.deviceName+'/'+deviceMaintenancePlansHead.fixedassetsCode,
                 PlanName1:deviceMaintenancePlansHead.planName,
@@ -59,7 +59,7 @@ class DetailofMain extends React.Component{
                 generateMaint:generateMaint,
                 detail_head:{deviceMaintenancePlansHead},
             })
-            console.log(this.state)
+            ////console.log(this.state)
         })
     }
     handleCancel2=()=>{
@@ -69,18 +69,21 @@ class DetailofMain extends React.Component{
         const m=[];
         for(var i=0;i<this.state.MaintenanceType.length;i++){
             m.push({
+                code:this.state.MaintenanceType[i].itemsCode,
                 deviceName:this.props.editorRecord.deviceName,
                 maintenanceContent:this.state.MaintenanceType[i].maintenanceContent,
                 maintenanceItems:this.state.MaintenanceType[i].maintenanceItems,
-                optType:this.state.MaintenanceType[i].optType
+                optType:this.state.MaintenanceType[i].optType,
+                planCode:this.state.MaintenanceType[i].planCode,
             })
         }
+
         const dataofmain={
             deviceMaintenanceItems:m,
             deviceMaintenancePlansHead:this.state.detail_head.deviceMaintenancePlansHead
 
         }
-        //console.log(dataofmain)
+        ////console.log(dataofmain)
         axios({
             url:`${this.props.url.DeviceMaintenancePlan.generatorMaint}`,
             method: 'post',

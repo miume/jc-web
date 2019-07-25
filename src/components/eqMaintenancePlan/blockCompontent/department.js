@@ -22,7 +22,7 @@ class DepartmentCard extends React.Component{
                 children: [],
                 value:'总公司',
             }],
-            expandedKeys:'',
+            expandedKeys:[],
         };
         this.returnDepKey = this.returnDepKey.bind(this)
     }
@@ -31,6 +31,7 @@ class DepartmentCard extends React.Component{
         this.setState({expandedKeys: expandedKeys})
     }
     componentDidMount() {
+
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.getDepartmentData();
         const params = {
@@ -46,12 +47,11 @@ class DepartmentCard extends React.Component{
     render() {
         return(
             <Card
-                style={{display:'inline',width: "240px",overflowX:'auto', height:'520px'}}
                 className='departmentCard'
                 title={
                     <p id='titledepartment1'><b fontSize="10px" id='titledepartmentselect'>所属部门&nbsp;</b>(请选择)</p>
                 } >
-                <div>
+                <div style={{display:'inline-block',width: "200px",overflowX:'auto', height:'400px'}}>
                     <Tree
                         expandedKeys={this.state.expandedKeys}
                         showLine={true}
@@ -78,7 +78,7 @@ class DepartmentCard extends React.Component{
                     page:1,
                     size:this.props.size,
                 }
-                console.log(params)
+                //console.log(params)
                 this.props.getTableData(params)
             });
         }
@@ -126,7 +126,7 @@ class DepartmentCard extends React.Component{
                     }
                     dataSource[0].children.push(parenObj);
                 }
-                console.log(dataSource)
+                //console.log(dataSource)
                 this.setState({
                     dataSource: dataSource,
                     expandedKeys: expandedKeys,

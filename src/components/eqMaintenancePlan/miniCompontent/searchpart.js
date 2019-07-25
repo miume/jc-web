@@ -18,7 +18,7 @@ class Searchpart extends Component {
             searchContent: value
         })
 
-        console.log(value)
+        //console.log(value)
     };
 
     searchEvent = () => {
@@ -37,8 +37,8 @@ class Searchpart extends Component {
     handleSelectChange=(value)=> {
         this.setState({statusSelect:value})
         this.props.selectEvent(value.key)
-        console.log(value); // { key: "lucy", label: "Lucy (101)" }
-        //console.log(this.state.statusSelect)
+        //console.log(value); // { key: "lucy", label: "Lucy (101)" }
+        ////console.log(this.state.statusSelect)
     }
     render(){
 
