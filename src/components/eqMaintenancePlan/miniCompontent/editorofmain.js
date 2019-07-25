@@ -61,6 +61,13 @@ class EditorofMain extends React.Component{
     //     })
     //     //console.log(this.state.MaintenanceType);
     // },
+    findkeys=()=>{
+        const x=this.props.editorRecord.MaintenanceType;
+        var y=[];
+        for(var i=0;i<x.length;i++){
+            y.push(x.index)
+        }
+    }
     render(){
         const dateFormat = 'YYYY-MM-DD';
         const { selectedRowKeys } = this.state;
