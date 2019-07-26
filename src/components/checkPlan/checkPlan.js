@@ -153,48 +153,7 @@ class CheckPlan extends React.Component{
             //     pagination:pagination
             // })
         }
-        axios({
-            url: `${this.url.equipmentArchive.page}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            params: params,
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res && res.list) {
-                var rightTableData = [];
-                for (var i = 0; i < res.list.length; i++) {
-                    var arr = res.list[i].deviceDocumentMain;
-                    var eqStatus = res.list[i].basicInfoDeviceStatus
-                    rightTableData.push({
-                        index: i + 1,
-                        code: arr['code'],
-                        fixedassetsCode: arr['fixedassetsCode'],
-                        deviceName: arr['deviceName'],
-                        specification: arr['specification'],
-                        startdate: arr['startdate'],
-                        idCode: arr['idCode'],
-                        statusCode: arr['statusCode'],
-                        color: eqStatus['color'],
-                        name: eqStatus['name']
-                    })
-                }
-                this.pagination.total = res ? res.total : 0;
-                this.setState({
-                    rightTableData: rightTableData,
-                    deviceName: params.deviceName
-                });
-            } else {
-                message.info('查询失败，请刷新下页面！')
-                this.setState({
-                    rightTableData: [],
-                    deviceName: ''
-                });
-            }
-        }).catch(() => {
-            message.info('查询失败，请刷新下页面！')
-        });
+
     }
     handleChange=(value)=>{
         this.setState({
