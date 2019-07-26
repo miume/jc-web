@@ -33,29 +33,11 @@ class BelowTable extends React.Component {
         }
     ];
 
-    dataSource = [
-        {
-           number:1,
-           project:"洗澡",
-            content:"睡觉"
-        },
-        {
-            number:2,
-            project:"洗澡",
-            content:"睡觉"
-        },
-        {
-            number:3,
-            project:"洗澡",
-            content:"睡觉"
-        }
-    ];
-
     render() {
         return (
             <div>
                 <Table
-                    dataSource={this.dataSource}
+                    dataSource={this.props.newRowData}
                     columns={this.columns}
                     size="small"
                     pagination={false}

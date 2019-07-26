@@ -1,11 +1,11 @@
 .eA {
     display: flex;
-    height: 600px;
+    height: 550px;
     /*background-color: #859900;*/
 
 }
 .eA-left {
-    width: 17%;
+    width: 15%;
     height: 100%;
     /*background-color: #00B83F;*/
     overflow-y: auto;
@@ -13,8 +13,10 @@
     font-size: small;
 }
 .eA-right {
-    width: 83%;
+    width: 85%;
     height: 100%;
+    padding-left: 10px;
+
     /*background-color: #2a65a0;*/
 }
 .eA-right-top {
@@ -24,7 +26,7 @@
 }
 .eA-right-bottom {
     width: 100%;
-    height: 86%;
+    /*height: 50px !important;*/
     /*background-color: red;*/
 }
 

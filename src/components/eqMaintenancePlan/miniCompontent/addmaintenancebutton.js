@@ -8,23 +8,20 @@ import CancleButton from "../../BlockQuote/cancleButton";
 import SaveButton from "../../BlockQuote/saveButton";
 
 class Addmaintenancebutton extends React.Component{
-    d2 = [];
     constructor(props){
         super(props)
         this.state={
             visible: false,
-            dataOfDepartment:[],
-            mainNumber:'',
             deviceNameAndNum:'',
             deviceNameAndNumdata:[],
             PlanName1:'',
             whomade:'',
-            departmentname: this.props.departmentname,
             MaintenanceType:[],
+            selectedRowKeys:[],
             MaintenancePeriod:'',
             ImplementDate:'',
             NextPlanDate:'',
-            Effective: 1,
+            Effective: 0,
             deviceName:'',
             fixedassetsCode:'',
         }
@@ -35,54 +32,52 @@ class Addmaintenancebutton extends React.Component{
             title: '序号',
             dataIndex: 'code',
             key:'code',
-            width: "10%"
+            width: "7%"
         },
         {
             title: '保养项目',
             dataIndex: 'maintenanceItems',
             key:'maintenanceItems',
-            width: "20%"
+            width: "25%"
         },
         {
             title: '保养内容',
             dataIndex: 'maintenanceContent',
             key:'maintenanceContent',
-            width: "40%"
+            width: "45%"
         },
         {
             title: '频次',
             dataIndex: 'maintenanceFrequency',
             key:'maintenanceFrequency',
-            width: "30%",
+            width: "35%",
         },
     ];
-
-
     handleDeviceNameAndNumChange=(value)=>{
-        console.log(value)
+        //console.log(value)
         if(value !== undefined){
             var jing=value.split('/#');
             this.setState({
                 deviceName:jing[0]?jing[0]:'',
                 fixedassetsCode:jing[1]?jing[1]:'',
                 deviceNameAndNum:value
+            },()=>{
+                if(!this.state.fixedassetsCode){
+                    message.info("请选择固定编号！")
+                    this.setState({deviceNameAndNum:''})
+                }
             })
+
             const params2={
                 deviceName:jing[0],
             }
             this.props.getMaintType(params2)
-            console.log(value);
+            ////console.log(value);
         }
     }
     handlePlanName1Change=(e)=>{
         this.setState({PlanName1:e.target.value})
     }
-
-    handledepartmentnameChange=(value)=>{
-        this.setState({departmentname:value})
-        //console.log(this.state.departmentname)
-    }
-
     handleImplementDateChange=(date, dateString)=>{
         this.setState({ImplementDate:dateString})
         this.date1=Date.parse(dateString);
@@ -92,7 +87,7 @@ class Addmaintenancebutton extends React.Component{
         let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
         let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
         this.setState({NextPlanDate:Y+'-'+M+'-'+D})
-        console.log(this.state.ImplementDate)
+        ////console.log(this.state.ImplementDate)
     }
     handleMaintenancePeriodChange=(e)=>{
         var re =/[1−9]+[0−9]∗]∗/
@@ -118,34 +113,50 @@ class Addmaintenancebutton extends React.Component{
     }
 
     showModal = () => {
-        this.setState({ visible: true });
+        var now = new Date();
+        var year = now.getFullYear(); //得到年份
+        var month = now.getMonth();//得到月份
+        var date = now.getDate();//得到日期
+        if (month < 10) month = "0" + month;
+        if (date < 10) date = "0" + date;
+        var date1 = year + "-" + month + "-" + date;
+        //console.log("state",this.state)
+        //console.log(this.props.MaintenanceType)
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
-        console.log(menuList);
-        this.setState({whomade:menuList.userId})
+        this.setState({
+            visible: true,
+            whomade:menuList.userId,
+            ImplementDate:date1,
+        });
+        //console.log(menuList);
         const params1={
             code:this.props.depCode,
         }
-        console.log(params1)
+        ////console.log(params1)
         this.props.getDevice(params1)
-        for(var i=0;i<3;i++)
-        {
-            this.d2.push({
-                "deviceName":this.state.deviceName,
-                "maintenanceItems":"saasd",
-                "maintenanceContent":"string",
-                "optType":0,
-                "maintenanceFrequency": "string"
-            })
-        }
     };
     handleCreate = (e) => {
-        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
-        var jing=this.state.deviceNameAndNum.search('/#');
-        this.setState({
-            deviceName:this.state.deviceNameAndNum.slice(0,jing),
-            fixedassetsCode:this.state.deviceNameAndNum.slice(jing+2),
-            whomade:menuList.userId,
-        },()=>{
+        if((!this.state.PlanName1)){
+            message.info("请输入计划名称！")
+            return;
+        }
+        if(!(this.state.deviceNameAndNum)){
+            message.info("请选择设备名称及固定资产编号！")
+            return;
+        }
+        if(!this.state.ImplementDate){
+            message.info("请选择当前计划执行日期！")
+            return;
+        }
+        if(!this.state.MaintenancePeriod){
+            message.info("请输入保养周期！")
+            return;
+        }
+        if(this.state.MaintenanceType.length===0){
+            message.info("请选择保养项目！")
+            return;
+        }
+        //console.log(this.state)
             var objectdata = {
                 deviceMaintenancePlansHead:{
                     "planName":this.state.PlanName1,
@@ -157,11 +168,11 @@ class Addmaintenancebutton extends React.Component{
                     "nextDate":this.state.NextPlanDate,
                     "setPeople":this.state.whomade,
                     "effFlag":this.state.Effective,
+                    "editFlag":1,
                 },
                 "deviceMaintenanceItems":this.state.MaintenanceType,
             }
-            console.log(objectdata)
-            this.handleCancel();
+            //console.log("objectdata",objectdata)
             axios({
                 url: `${this.props.url.DeviceMaintenancePlan.maintenanceAddPlan}`,
                 method: 'post',
@@ -170,56 +181,70 @@ class Addmaintenancebutton extends React.Component{
                 },
                 data: objectdata,
             }).then((data) => {
-                message.info(data.data.data.message);
-                this.props.getTableData(this.props.params)
-            }).catch(function () {
-                message.info('新增失败，请联系管理员！');
-            });
-        })
+                message.info(data.data.message)
+                if(data.data.code!==0){
+                    return;
+                } else{
+                    this.handleCancel();
+                    this.props.getTableData({
+                        deptId: this.props.depCode,
+                        depName: this.props.depName,
+                        page:this.props.current,
+                        size:this.props.size,
+                    })
+                }
+
+            }).catch(function (err) {
+                message.info('新增失败，请联系管理员！')
+            })
+
         const params1={
             deptId:this.props.depCode,
             statusId:-1,
+            condition:this.props.condition,
+            page:1,
+            size:this.props.size,
+            depName:this.props.depName,
         }
-        this.props.getTableData(params1,this.props.depName)
+        this.props.getTableData(params1)
+        ////console.log(params1)
     }
     handleCancel = () => {
         this.setState({
-            visible: false ,
-            dataOfDepartment:[],
             deviceNameAndNum:'',
-            deviceNameAndNumdata:[],
+            visible: false ,
             PlanName1:'',
             whomade:'',
-            departmentname: '',
             MaintenanceType:[],
             MaintenancePeriod:'',
-            ImplementDate:'',
+            selectedRowKeys:[],
             NextPlanDate:'',
-            Effective: 1,
+            Effective: 0,
+            deviceName:'',
+            fixedassetsCode:"",
         });
-        this.d2=[];
     };
-    handledapartmentChange=(e)=>{
-        this.setState({departmentname:e.event.value})
-    }
+
     render(){
         const MaintenanceTypeSelection={
             onChange: (selectedRowKeys, selectedRows) => {
                 var objMain=[];
-                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
                 for(var j=0;j<selectedRowKeys.length;j++) {
                     objMain.push({
+                        code:selectedRows[j].code,
                         deviceName:selectedRows[j].deviceName,
                         maintenanceItems:selectedRows[j].maintenanceItems,
                         maintenanceContent:selectedRows[j].maintenanceContent,
-                        optType:1,
+                        optType:selectedRows[j].optType,
                         maintenanceFrequency: selectedRows[j].maintenanceFrequency,
                     })
                 }
-                //console.log(objMain)
-                this.setState({MaintenanceType:objMain});
-                //console.log(`MaintenanceType:${this.state.MaintenanceType}`);
-                objMain=[];
+                ////console.log(objMain)
+                this.setState({
+                    MaintenanceType:objMain,
+                    selectedRowKeys: selectedRowKeys});
+                ////console.log(`MaintenanceType:${this.state.MaintenanceType}`);
             },
         }
         const dateFormat = 'YYYY-MM-DD';
@@ -257,7 +282,6 @@ class Addmaintenancebutton extends React.Component{
                             key="department"
                             name="department"
                             placeholder="请选择"
-                            onChange={this.handledapartmentChange}
                             style={{ width: 200 }}
                             value={this.props.depName}
                             disabled={true}
@@ -304,6 +328,7 @@ class Addmaintenancebutton extends React.Component{
                             onChange={this.handleImplementDateChange}
                             placeholder='请选择日期'
                             key="ImplementDate" name="ImplementDate"
+                            value={moment(`${this.state.ImplementDate}`, dateFormat)}
                         />
                     </div>
                     <div className='divofadd2'>
@@ -331,8 +356,8 @@ class Addmaintenancebutton extends React.Component{
                 </div>
                 <div id='Effective_add' style={{display:'inline'}}>&nbsp;&nbsp;&nbsp;&nbsp;<b>是否生效:</b>&nbsp;&nbsp;
                     <Radio.Group onChange={this.handleEffectiveChange} value={this.state.Effective}>
-                        <Radio value={1}>生效</Radio>
-                        <Radio value={0}>失效</Radio>
+                        <Radio value={0}>生效</Radio>
+                        <Radio value={1}>失效</Radio>
                     </Radio.Group>
                 </div>
             </div>

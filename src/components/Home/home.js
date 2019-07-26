@@ -35,7 +35,7 @@ class Home extends Component {
             '2' : '制程检测',
             '3' : '样品检测',
             '4' : '原材料出库',
-            '5' : '成品出库',
+            '5' :'成品出库',
             '6' : '红单申请',
             '7' : '进货检验',
             '8' : '成品检验',
@@ -83,6 +83,7 @@ class Home extends Component {
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`,
+                //dsds,
                 realStock:`${server}/jc/common/sortout/realStock`,
                 stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
@@ -282,12 +283,35 @@ class Home extends Component {
             equipmentDept:{
                 dept:`${server}/jc/common/dept`
             },
-            /**设备保养*/
+            /**设备保养
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             * */
             eqMaintenanceQuery:{
                 recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
                 recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
-                recordDelete:`${server}/jc/common/maintenanceRecord/{id}`,
-
+                recordDelete:`${server}/jc/common/maintenanceRecord`,
             },
             /**设备管理设备档案*/
             equipmentArchive:{
@@ -336,6 +360,8 @@ class Home extends Component {
                 maintenanceDeletePlan:`${server}/jc/common/maintenancePlan/`,
                 maintenanceDeleteByIds:`${server}/jc/common/maintenancePlan/deleteByIds`,
                 getDeviceByDeptCode:`${server}/jc/common/maintenancePlan/getDeviceByDeptCode`,
+                generatorMaint:`${server}/jc/common//maintenancePlan/generatorMaint`,
+
             }
         }
         localStorage.setItem('status',JSON.stringify(status));

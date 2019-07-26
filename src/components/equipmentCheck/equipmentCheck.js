@@ -4,7 +4,7 @@ import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
 
 const icon = [
-    'fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
+    'fa fa-file-o fa-5x','fa fa-table fa-5x','fa fa-search fa-5x'
 ]
 
 class EquipmentCheck extends React.Component{

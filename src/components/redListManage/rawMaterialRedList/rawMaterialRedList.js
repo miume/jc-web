@@ -98,7 +98,7 @@ class RawMaterialRedList extends Component{
             width:'10%',
             render:(text)=>{
                 if(text.length>10){//给元素设置title属性会在鼠标悬停时显示
-                    return <div title={text}style={{textDecoration:'underline'}} >{text.substring(0,10)}</div>
+                    return <div title={text} style={{textDecoration:'underline'}} >{text.substring(0,10)}</div>
                 }
                 else{
                     return text
