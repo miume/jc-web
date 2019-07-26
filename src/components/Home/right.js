@@ -51,6 +51,9 @@ import EqMaintenanceDataEntry from '../eqMaintenanceDataEntry/eqMaintenanceDataE
 import EqMaintenancePlan from '../eqMaintenancePlan/eqMaintenancePlan'
 import EqMaintenanceQuery from '../eqMaintenanceQuery/eqMaintenanceQuery'
 
+import EquipmentArchiveManager from '../equipmentArchiveManager/equipmentArchiveManager'
+import EqcomponentSearch from '../eqcomponentSearch/eqcomponentSearch'
+
 class Right extends React.Component {
     render() {
         const data = [{
@@ -180,6 +183,12 @@ class Right extends React.Component {
             },{
                 path:"/checkTemplate",
                 component:CheckTemplate
+            },{
+                path:"/equipmentArchiveManager",
+                component:EquipmentArchiveManager
+            },{
+                path:"/eqcomponentSearch",
+                component:EqcomponentSearch
             }]
         return (
             <div className="rightDiv">
