@@ -95,7 +95,7 @@ class EqMaintenanceQuery extends React.Component{
                         planCode: arr['planCode'],//所属计划单号
                         fixedassetsCode: arr["fixedassetsCode"],//固定资产编码
                         deviceName: arr['deviceName'],//设备名称
-                        deptCode:arr["deptCode"],//所属部门
+                        deptCode:params.name,//所属部门
                         planDate:arr["planDate"],//计划执行日期
                         receiveDate:arr["receiveDate"],//接单日期
                         finishiDate:arr["finishiDate"],//保养完成日期

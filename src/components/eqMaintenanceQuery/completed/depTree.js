@@ -22,7 +22,8 @@ class DepTree extends Component {
                 key:0,
                 children: [],
             }],
-            key:''
+            key:'',
+            name:''
         };
         this.getData = this.getData.bind(this)
 
@@ -58,15 +59,18 @@ class DepTree extends Component {
         )
     }
     //通过回调函数，获得标签页表格中的数据
-    returnDepKey = (selectedKeys) => {
+    returnDepKey = (selectedKeys,e) => {
         const date = this.props.getLastMonthTime(1);
         this.setState({depCode:selectedKeys[0]},()=>{
              params = {
                 deptId:parseInt(selectedKeys[0]),
                 statusId:3,
                 startDate:date.datastr,
-                endDate:date.NowDate
+                endDate:date.NowDate,
+                 name:e.node.props.value
             }
+            console.log(e)
+            console.log(e.node.props.value)
             this.props.getTableData(params)
         });
     };
