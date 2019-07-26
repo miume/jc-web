@@ -53,8 +53,6 @@ class DepTree extends Component {
                     defaultExpandAll
                     treeData={this.state.dataSource}
                     onSelect={this.returnDepKey}
-                    defaultExpandedKeys={['0-0-0', '0-0-1']}
-                    defaultSelectedKeys={[this.state.key]}
                />
         )
     }
