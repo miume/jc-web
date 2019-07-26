@@ -19,6 +19,7 @@ class Exit extends Component {
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
         this.judgeCurrent = this.judgeCurrent.bind(this);
+        this.versionInstruction = this.versionInstruction.bind(this)
         this.count = 0;
         this.state = {
             visible:false,
@@ -37,6 +38,10 @@ class Exit extends Component {
     /**查看用户手册 */
     userInstruction(){
         window.open('../../../instruction/guide.html','_blank');
+    }
+    /**查看版本发布手册 */
+    versionInstruction(){
+        window.open('../../../instruction/versionRelease.html','_blank');
     }
     /**点击弹出待办事项 */
     drawerEvent(){
@@ -115,7 +120,7 @@ class Exit extends Component {
         let height1 = document.body.clientHeight - 150;
         return (
             <div className="fr">
-                {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
+                {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} versionInstruction={this.versionInstruction} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
                 {/* <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} /> */}
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
                 onClose={this.onClose} maskClosable={false} mask={false} width={400}

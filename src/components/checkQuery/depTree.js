@@ -1,17 +1,12 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message} from 'antd';
-import styles from "./EditableTree.less";
+import {Tree, Icon, Modal, Input, message, Card} from 'antd';
 import axios from "axios";
-import '../equipmentArchive.css'
-import CancleButton from "../../BlockQuote/cancleButton";
-import NewButton from "../../BlockQuote/newButton";
-
-
+import "./checkQuery.css"
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: [],
+            expandedKeys: ['0','1'],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -37,10 +32,6 @@ class DepTree extends Component {
     }
 
     componentDidMount() {
-        const params={
-            deptId:2,
-            statusId:1,
-        }
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
@@ -128,13 +119,14 @@ class DepTree extends Component {
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                    expandedKeys: expandedKeys,
+                     expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
                         parentCode: null
                     },
                 })
+                console.log(expandedKeys)
             } else {
 
             }
@@ -142,10 +134,11 @@ class DepTree extends Component {
     };
 
 
-    onSelect = (selectedKeys, info) => {
+    onSelect = (selectedKeys, e) => {
         var dataSource = this.state.dataSource;
         this.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
+        console.log(e)
     }
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {

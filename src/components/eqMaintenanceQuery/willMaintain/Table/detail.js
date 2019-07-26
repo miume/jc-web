@@ -14,12 +14,13 @@ class Details extends React.Component {
         super(props);
         this.state={
             visible:false,
+            newRowData:[],
         }
         this.handleDetail = this.handleDetail.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
     }
 
-    render() {
+    render=(text, record)=> {
         const customDot = (dot,{status,index})=>(
             <Popover visible={this.state.visible1}>
                 {dot}
@@ -40,15 +41,23 @@ class Details extends React.Component {
                     ]}
                 >
                     <div>
-                        <InnerTable/>
+                        <InnerTable
+                            record={record}
+                            code={this.props.record.code}
+                            deviceName={this.props.record.deviceName}
+                            deptCode={this.props.record.deptCode}
+                            planDate={this.props.record.planDate}
+                        />
                         <WhiteSpace />
                         <Steps current={0} progressDot={customDot}>
-                            <Step title="制定计划" description="2012-01-01" />
+                            <Step title="制定计划" description={this.props.record.planDate} />
                             <Step title="已接单" description="" />
                             <Step title="待完成" description="" />
                         </Steps>
                         <WhiteSpace />
-                        <BelowTable/>
+                        <BelowTable
+                            newRowData={this.state.newRowData}
+                        />
                     </div>
                 </Modal>
 
@@ -56,17 +65,38 @@ class Details extends React.Component {
         );
     }
 
-    handleDetail = () => {
-        this.setState({
-            visible:true
-        })
-    }
     handleCancel() {
         this.setState({
             visible: false
         });
     }
 
+    handleDetail = () => {
+            axios({
+                url: `${this.props.url.eqMaintenanceQuery.recordDetail}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    id: this.props.record.code
+                }
+            }).then((data) => {
+                const res = data.data.data ? data.data.data : [];
+                if (res) {
+                    const arrMes = res.deviceMaintenanceRecordDetails;
+                    var newRowData = arrMes
+                    this.setState({
+                        visible: true,
+                        newRowData: newRowData,
+                    })
+                } else {
+
+                }
+            }).catch(() => {
+                message.info('数据存在异常，请联系管理员！')
+            });
+    }
 }
 
 export default Details

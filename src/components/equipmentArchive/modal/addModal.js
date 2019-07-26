@@ -31,17 +31,17 @@ class AddModal extends React.Component {
             <div style={{height: '550px'}}>
                 <Row gutter={16}>
                     <Col span={12}>
-                        <Input placeholder="请输入固定资产编码" key="fixedassetsCode" name="fixedassetsCode"
+                        <Input placeholder="请输入固定资产编码(必填)" key="fixedassetsCode" name="fixedassetsCode"
                                value={this.props.deviceDocumentMain.fixedassetsCode ? this.props.deviceDocumentMain.fixedassetsCode : ''}
                                onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                     </Col>
                     <Col span={12}>
                         {
-                            this.props.comFlag ? <Input placeholder="请输入部件名称" key="deviceName" name="deviceName"
+                            this.props.comFlag ? <Input placeholder="请输入部件名称(必填)" key="deviceName" name="deviceName"
                                                         value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
                                                         onChange={this.changDeviceDocumentMain}
                                                         disabled={this.props.editFlag}/> :
-                                <Input placeholder="请输入设备名称" key="deviceName" name="deviceName"
+                                <Input placeholder="请输入设备名称(必填)" key="deviceName" name="deviceName"
                                        value={this.props.deviceDocumentMain.deviceName ? this.props.deviceDocumentMain.deviceName : ''}
                                        onChange={this.changDeviceDocumentMain} disabled={this.props.editFlag}/>
                         }
@@ -87,7 +87,7 @@ class AddModal extends React.Component {
                     this.props.comFlag ? null :
                         <Row gutter={16}>
                             <Col span={12}>
-                                <Select placeholder="请选择设备状态" style={{width: "215px"}} disabled={this.props.editFlag}
+                                <Select placeholder="请选择设备状态(必填)" style={{width: "215px"}} disabled={this.props.editFlag}
                                         onChange={this.handleSelect}>
                                     {
                                         this.props.statusCode.map(es => {
@@ -116,12 +116,12 @@ class AddModal extends React.Component {
                             return (
                                 <Row gutter={16}>
                                     <Col span={10}>
-                                        <Input placeholder="请输入属性名称" key={index + "-1"} value={m.name ? m.name : ''}
+                                        <Input placeholder="请输入属性名称(必填)" key={index + "-1"} value={m.name ? m.name : ''}
                                                name={index + "-1"} disabled={this.props.editFlag}
                                                onChange={this.handleNewRow}/>
                                     </Col>
                                     <Col span={10}>
-                                        <Input placeholder="请输入属性值" key={index + "-2"} value={m.value ? m.value : ''}
+                                        <Input placeholder="请输入属性值(必填)" key={index + "-2"} value={m.value ? m.value : ''}
                                                name={index + "-2"} disabled={this.props.editFlag}
                                                onChange={this.handleNewRow}/>
                                     </Col>

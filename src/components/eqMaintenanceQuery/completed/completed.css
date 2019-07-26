@@ -45,10 +45,10 @@
 
 .eqQueryCompleted-left-over{
     /*background-color:royalblue; !important*/
-    max-height:450px; !important
-    width:300px;
+    max-height:450px !important;
     overflow-x:auto;
     overflow-y:auto;
+    width:300px;
 
 }
 .ac-roll {

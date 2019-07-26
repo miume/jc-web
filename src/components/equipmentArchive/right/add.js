@@ -314,21 +314,28 @@ class Add extends Component {
                     data: addData,
                     // type: 'json'
                 }).then((data) => {
-                    message.info(data.data.message);
-                    this.props.fetch({},{})
+                    if(data.data.code===0){
+                        message.info(data.data.message);
+                        this.props.fetch({},{});
+                        var deviceDocumentMainInit = {
+                            keyFlag: 0
+                        };
+                        this.setState({
+                            addModalVisable: false,
+                            deviceDocumentMain: deviceDocumentMainInit,
+                            newRowData: [],
+                            statusCode: [],
+                            startdate: startdate,
+                            statusCodeInit: deviceDocumentMain.statusCode
+                        });
+                    }else{
+                        message.info("请重新保存");
+                        return
+                    }
+                    // message.info(data.data.message);
+                    // this.props.fetch({},{})
                 }).catch(function () {
                     message.info('新增失败，请联系管理员！');
-                });
-                var deviceDocumentMainInit = {
-                    keyFlag: 0
-                };
-                this.setState({
-                    addModalVisable: false,
-                    deviceDocumentMain: deviceDocumentMainInit,
-                    newRowData: [],
-                    statusCode: [],
-                    startdate: startdate,
-                    statusCodeInit: deviceDocumentMain.statusCode
                 });
             }else{
                 var addData = {
@@ -336,7 +343,6 @@ class Add extends Component {
                     arrValue: packArrValue,
                     deviceDocumentMain: deviceDocumentMain
                 };
-                console.log('adaddadad')
                 console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.device}`,
@@ -347,21 +353,26 @@ class Add extends Component {
                     data: addData,
                     // type: 'json'
                 }).then((data) => {
-                    message.info(data.data.message);
-                    this.props.getRightData(this.props.deptCode, this.props.deviceName)
+                    if(data.data.code===0){
+                        message.info(data.data.message);
+                        this.props.getRightData(this.props.deptCode, this.props.deviceName);
+                        var deviceDocumentMainInit = {
+                            keyFlag: 0
+                        };
+                        this.setState({
+                            addModalVisable: false,
+                            deviceDocumentMain: deviceDocumentMainInit,
+                            newRowData: [],
+                            statusCode: [],
+                            startdate: startdate,
+                            statusCodeInit: deviceDocumentMain.statusCode
+                        });
+                    }else{
+                        message.info("请重新保存");
+                        return
+                    }
                 }).catch(function () {
                     message.info('新增失败，请联系管理员！');
-                });
-                var deviceDocumentMainInit = {
-                    keyFlag: 0
-                };
-                this.setState({
-                    addModalVisable: false,
-                    deviceDocumentMain: deviceDocumentMainInit,
-                    newRowData: [],
-                    statusCode: [],
-                    startdate: startdate,
-                    statusCodeInit: deviceDocumentMain.statusCode
                 });
             }
 

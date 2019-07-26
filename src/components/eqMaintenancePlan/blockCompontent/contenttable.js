@@ -1,4 +1,4 @@
-import {Divider, Table,message} from 'antd';
+import {Divider, Table, message, Popconfirm} from 'antd';
 import React from 'react'
 import axios from 'axios'
 
@@ -9,9 +9,6 @@ import EditorofMain from '../miniCompontent/editorofmain'
 class ContentTable extends React.Component {
     url
     ob
-    state={
-        record:'',
-    }
     columns = [{
         title: '序号',
         dataIndex: 'index',
@@ -21,8 +18,8 @@ class ContentTable extends React.Component {
         width: '7%',
     },  {
         title: '设备名称/编号',
-        dataIndex: 'deviceName',
-        key: 'deviceName',
+        dataIndex: 'deviceNameAndNum',
+        key: 'deviceNameAndNum',
         align: 'center',
         width: '16%',
     }, {
@@ -45,8 +42,8 @@ class ContentTable extends React.Component {
         width: '17%',
     }, {
         title: '制定人',
-        dataIndex: 'setPeople',
-        key: 'setPeople',
+        dataIndex: 'setPeopleName',
+        key: 'setPeopleName',
         align: 'center',
         width: '10%',
     }, {
@@ -56,10 +53,10 @@ class ContentTable extends React.Component {
         align: 'center',
         width: '10%',
         render: (statusCode) => {
-            if(statusCode===1)
-                    return <span className="main-statu1">已生效</span>
+            if(statusCode===0)
+                    return <span className="main-statu1"><i style={{color: `\t#53FF53`}} className="fa fa-circle" aria-hidden="true"></i>&nbsp;已生效</span>
                else
-                    return <span className="main-statu2">已失效</span>
+                    return <span className="main-statu2"><i style={{color: `\t#9D9D9D`}} className="fa fa-circle" aria-hidden="true"></i>已失效</span>
             }
     }, {
         title: '操作',
@@ -86,8 +83,11 @@ class ContentTable extends React.Component {
                     <Divider type="vertical"/>
                     <DetailofMain
                         editorRecord={record}
+                        url={this.props.url}
                         depCode={this.props.depCode}
                         depName={this.props.depName}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
                     />
                     <Divider type="vertical"/>
                     <span>删除</span>
@@ -107,22 +107,41 @@ class ContentTable extends React.Component {
                         deviceName={this.props.deviceName}
                         getTableData={this.props.getTableData}
                         url={this.props.url}
+                        condition={this.props.condition}
                     />
                     <Divider type="vertical"/>
                     <DetailofMain
+                        url={this.props.url}
                         editorRecord={record}
                         depCode={this.props.depCode}
                         depName={this.props.depName}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
                     />
                     <Divider type="vertical"/>
-                    <span className="blue" onClick={()=>this.handleDel(record.code)} >删除</span>
+                    <Popconfirm title="确认删除?" onConfirm={() =>this.handleDel(record.code)} okText="确定" cancelText="取消" >
+                    <span className='blue'>删除</span>
+                </Popconfirm>
                     </span>
                 )
             }
         }
     }]
-    handleTableChange=()=>{
-
+    onShowSizeChange=(current,size)=>{
+        this.props.getTableSize(current,size)
+    }
+    handleTableChange=(page,pageSize)=>{
+        console.log(page)
+        const params={
+            deptId: this.props.depCode,
+            statusId: this.props.statusId,
+            condition:this.props.searchContent,
+            page:page.current,
+            depName:this.props.depName,
+            size:page.pageSize,
+        }
+        //console.log(params)
+        this.props.getTableData(params);
     }
     handleDel=(id)=>{
         axios({
@@ -136,8 +155,8 @@ class ContentTable extends React.Component {
             const params={
                 deptId:this.props.depCode,
             }
-            console.log(id);
-            console.log(params)
+            //console.log(id);
+            //console.log(params)
             this.props.getTableData(params,this.props.depName)
         })
     }
@@ -151,9 +170,10 @@ class ContentTable extends React.Component {
                     dataSource={this.props.dataSource}
                     columns={this.columns}
                     bordered
-                    scroll={{y: 400}}
+                    scroll={{y:380}}
                     size="small"
                     onChange={this.handleTableChange}
+                    onShowSizeChange={this.onShowSizeChange}
                     pagination={this.props.pagination}
                 />
             </div>

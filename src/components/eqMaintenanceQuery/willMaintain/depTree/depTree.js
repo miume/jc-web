@@ -18,9 +18,15 @@ class DepTree extends Component {
     }
 
     componentDidMount() {
+        const params={
+            deptId:2,
+            statusId:1,
+            depName:'锂电一',
+        }
+        this.props.getTableData(params);
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
-        this.getData();
-    }
+        this.getData();}
+
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -38,7 +44,8 @@ class DepTree extends Component {
     }
 
     //通过回调函数获取数据
-    getReturn=(selectedKeys)=>{
+    getReturn=(selectedKeys,e)=>{
+        console.log(e)
         console.log(selectedKeys)
         console.log(selectedKeys[0])
         this.setState({
@@ -47,6 +54,7 @@ class DepTree extends Component {
             const params = {
                 deptId:parseInt(this.state.selectedTree),
                 statusId:1,
+                depName:e.node.props.value,
             }
             this.props.getTableData(params)
         });

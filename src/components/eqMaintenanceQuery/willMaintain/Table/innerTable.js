@@ -12,44 +12,43 @@ class InnerTable extends React.Component {
     columns = [
         {
             title: '保养单号',
-            dataIndex: 'list',
-            key: 'list',
-            width: '10px',
+            dataIndex: 'code',
+            key: 'code',
+            width: '20%',
             align:'center',
         },
         {
             title: '设备名称/编号',
-            dataIndex: 'name',
-            key: 'name',
-            width: '10px',
+            dataIndex: 'deviceName',
+            key: 'deviceName',
+            width: '20%',
             align:'center',
         },
         {
             title: '所属部门',
-            dataIndex: 'depart',
-            key: 'depart',
-            width: '10px',
+            dataIndex: 'deptCode',
+            key: 'deptCode',
+            width: '20%',
             align:'center',
         },
         {
             title: '本次计划执行日期',
-            dataIndex: 'date',
-            key: 'date',
-            width: '10px',
+            dataIndex: 'planDate',
+            key: 'planDate',
+            width: '20%',
             align:'center',
-        }
+        },
     ];
 
-    dataSource = [
+    dataSource=[
         {
-            key: '1',
-            list: 32,
-            name: '？？？',
-            depart: '项目部',
-            date: '2019.7.17',
+            key:'1',
+            code: this.props.code,
+            deviceName: this.props.deviceName,
+            deptCode: this.props.deptCode,
+            planDate: this.props.planDate,
         }
-    ];
-
+        ];
     render() {
         return (
             <div>

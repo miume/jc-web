@@ -37,8 +37,8 @@ class TheTable extends React.Component {
         },
         {
             title: '所属部门',
-            dataIndex: 'deptCode',
-            key: 'deptCode',
+            dataIndex: 'deptName',
+            key: 'deptName',
             width: '10px',
             align:'center',
         },
@@ -72,7 +72,10 @@ class TheTable extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Details/>
+                        <Details
+                            url={this.props.url}
+                            record={record}
+                        />
                     </span>
                 )
             }
@@ -84,6 +87,8 @@ class TheTable extends React.Component {
             <div>
                 <Table
                     dataSource={this.props.rightTableData}
+                    pagination={this.props.pagination}
+                    onChange={this.props.handleTableChange}
                     columns={this.columns}
                     size="small"
                     bordered

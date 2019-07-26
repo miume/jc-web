@@ -65,10 +65,6 @@ class EARightTable extends Component {
                         depCode={this.props.depCode}
                     />
                     <Divider type="vertical"/>
-                    <Maintenance/>
-                    <Divider type="vertical"/>
-                    <Repair/>
-                    <Divider type="vertical"/>
                     <Details
                         record={record}
                         url={this.props.url}
@@ -100,7 +96,7 @@ class EARightTable extends Component {
         key: 'index',
         sorter: (a, b) => a.index - b.index,
         align: 'center',
-        width: '6%',
+        width: '8%',
     }, {
         title: '固定资产编码',
         dataIndex: 'fixedassetsCode',
@@ -118,7 +114,7 @@ class EARightTable extends Component {
         dataIndex: 'specification',
         key: 'specification',
         align: 'center',
-        width: '9%',
+        width: '10%',
     }, {
         title: 'ID卡号',
         dataIndex: 'idCode',
@@ -136,7 +132,7 @@ class EARightTable extends Component {
         dataIndex: 'statusCode',
         key: 'statusCode',
         align: 'center',
-        width: '13%',
+        width: '11%',
         render: (text, record) => {
             return(
                 <span>{record.name}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
@@ -203,7 +199,7 @@ class EARightTable extends Component {
                     columns={this.columns}
                     size="small"
                     bordered
-                    scroll={{y: 400}}
+                    scroll={{y: 360}}
 
                     onChange={this.props.handleTableChange}
                     pagination={this.props.pagination}

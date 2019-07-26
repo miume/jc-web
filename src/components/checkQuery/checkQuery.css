@@ -1,0 +1,36 @@
+.checkQ-DE-demo{
+    display: flex;                /*设置为flex布局*/
+    /*justify-content: space-around;*/
+    width: 100%;
+    padding: 15px;
+
+}
+/*.demo > div{*/
+/*    flex: none;*/
+/*}*/
+.checkQ-DE-left{
+    width: 20%;
+    height: 729px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #f1f1f1;
+}
+.checkQ-DE-right{
+    width: 80%;
+    margin-left: 20px;
+    height:729px;
+}
+.checkQ-Table-top{
+    background-color: #1d7fb3 !important;
+}
+.checkQ-Table-bottom{
+    background-color: #F5F5F5 !important;
+}
+.checkQ-eqblocka{
+    height:50px;
+    width: 100%;
+    background:#F5F5F5;
+    text-align:center;
+    line-height: 50px;
+
+}

@@ -1,17 +1,11 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message} from 'antd';
-import styles from "./EditableTree.less";
+import {Tree, Icon, Modal, Input, message, Card} from 'antd';
 import axios from "axios";
-import '../equipmentArchive.css'
-import CancleButton from "../../BlockQuote/cancleButton";
-import NewButton from "../../BlockQuote/newButton";
-
-
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: [],
+            expandedKeys: ['0','1'],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -26,21 +20,16 @@ class DepTree extends Component {
                 code: null,
                 name: '',
                 parentCode: null
-            }
+            },
         };
         this.getData = this.getData.bind(this)
         this.onSelect = this.onSelect.bind(this)
 
         this.onExpand = this.onExpand.bind(this)
         this.renderTreeNodes = this.renderTreeNodes.bind(this)
-        this.handleSelect = this.handleSelect.bind(this)
     }
 
     componentDidMount() {
-        const params={
-            deptId:2,
-            statusId:1,
-        }
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
@@ -92,7 +81,8 @@ class DepTree extends Component {
                         code: arrParent.code.toString(),
                         parentCode: '0',
                         isSelect: false,
-                        children: []
+                        children: [],
+                        parentname:'总公司'
                     };
                     if(i === 0){
                         expandedKeys.push(arrParent.code.toString())
@@ -107,7 +97,8 @@ class DepTree extends Component {
                                 code: arr.code.toString(),
                                 parentCode: arr.parentCode.toString(),
                                 isSelect: true,
-                                children: []
+                                children: [],
+                                parentname:arrParent.name
                             });
                         }else{
                             parenObj['children'].push({
@@ -116,7 +107,8 @@ class DepTree extends Component {
                                 code: arr.code.toString(),
                                 parentCode: arr.parentCode.toString(),
                                 isSelect: false,
-                                children: []
+                                children: [],
+                                parentname:arrParent.name,
                             });
                         }
                     }
@@ -128,13 +120,14 @@ class DepTree extends Component {
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                    expandedKeys: expandedKeys,
+                     expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
                         parentCode: null
                     },
                 })
+                console.log(expandedKeys)
             } else {
 
             }
@@ -142,23 +135,12 @@ class DepTree extends Component {
     };
 
 
-    onSelect = (selectedKeys, info) => {
+    onSelect = (selectedKeys, e) => {
         var dataSource = this.state.dataSource;
-        this.handleSelect(selectedKeys[0],dataSource);
+        this.props.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
     }
-    handleSelect = (code, data) => data.map((item) => {
-        if (item.code === code) {
-            item.isSelect = true;
-        } else {
-            item.isSelect = false;
-        }
-        //Tip: Must have, when a node is editable, and you click a button to make other node editable, the node which you don't save yet will be not editable, and its value should be defaultValue
-        // item.isSelect = false;
-        if (item.children) {
-            this.handleSelect(code, item.children)
-        }
-    });
+
 
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {

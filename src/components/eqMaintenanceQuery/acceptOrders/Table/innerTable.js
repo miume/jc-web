@@ -12,57 +12,57 @@ class InnerTable extends React.Component {
     columns = [
         {
             title: '保养单号',
-            dataIndex: 'list',
-            key: 'list',
+            dataIndex: 'code',
+            key: 'code',
             width: '10px',
             align:'center',
         },
         {
             title: '设备名称/编号',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'deviceName',
+            key: 'deviceName',
             width: '10px',
             align:'center',
         },
         {
             title: '所属部门',
-            dataIndex: 'depart',
-            key: 'depart',
+            dataIndex: 'deptCode',
+            key: 'deptCode',
             width: '10px',
             align:'center',
         },
         {
             title: '本次计划执行日期',
-            dataIndex: 'date',
-            key: 'date',
+            dataIndex: 'planDate',
+            key: 'planDate',
             width: '10px',
             align:'center',
         },
         {
             title: '接单时间',
-            dataIndex: 'time',
-            key: 'time',
+            dataIndex: 'receiveDate',
+            key: 'receiveDate',
             width: '10px',
             align:'center',
         },
         {
             title: '保养人',
-            dataIndex: 'person',
-            key: 'person',
+            dataIndex: 'maintPeople',
+            key: 'maintPeople',
             width: '5px',
             align:'center',
-        }
+        },
     ];
 
     dataSource = [
         {
             key: '1',
-            list: 32,
-            name: '？？？',
-            depart: '项目部',
-            date: '2019.7.17',
-            time: '2019.7.17 10:00',
-            person: '王大锤',
+            code:this.props.record.code,
+            deviceName:this.props.record.deviceName,
+            deptCode:this.props.record.deptCode,
+            planDate:this.props.record.planDate,
+            receiveDate:this.props.receiveDate,
+            maintPeople:this.props.maintPeople,
         }
     ];
 
