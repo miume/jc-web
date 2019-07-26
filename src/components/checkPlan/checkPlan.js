@@ -23,37 +23,38 @@ for(var i=0;i<15;i++)
 }
 
 
-class CheckPlan extends React.Component{
-    constructor(props){
+class CheckPlan extends React.Component {
+    constructor(props) {
         super(props)
-        this.state={
-            dataSource:[],
+        this.state = {
+            dataSource: [],
             rightTopData: [],
             rightTableData: [],
             depCode: -1,
             deviceNamee: '',
-            pagination : {
+            pagination: {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger: true
             },
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
-            Tableflag:'',
-            parentname:'',
+            Tableflag: '',
+            parentname: '',
         }
 
-        this.fetch=this.fetch.bind(this)
+        this.fetch = this.fetch.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
-        this.handleChange=this.handleChange.bind(this)
-        this.handleSelect=this.handleSelect.bind(this)
-        this.returnEquKey=this.returnEquKey.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSelect = this.handleSelect.bind(this)
+        this.returnEquKey = this.returnEquKey.bind(this)
     }
 
     componentDidMount() {
         this.fetch()
     }
+
     renderEquipmentName = (data) => data.map((item) => {
 
         return (
@@ -67,7 +68,7 @@ class CheckPlan extends React.Component{
         if (item.code === code) {
             item.isSelect = true;
             this.setState({
-                parentname:item.parentname
+                parentname: item.parentname
             })
             console.log(this.state.parentname)
         } else {
@@ -121,7 +122,7 @@ class CheckPlan extends React.Component{
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
                         this.setState({
-                            deviceNamee:rightTopData[0].name
+                            deviceNamee: rightTopData[0].name
                         })
                     } else {
                         this.getTableData({
@@ -155,12 +156,12 @@ class CheckPlan extends React.Component{
         }
 
     }
-    handleChange=(value)=>{
+    handleChange = (value) => {
         this.setState({
-            Tableflag:value
+            Tableflag: value
         })
     }
-    fetch = (params,flag) => {
+    fetch = (params, flag) => {
         console.log('1111111111111111')
         // this.setState({
         //     dataSource:fakedataSource
@@ -213,13 +214,13 @@ class CheckPlan extends React.Component{
 
     }
     //---------------------------------
-    searchEvent=()=>{
+    searchEvent = () => {
         console.log('调用查询借口并')
     }
-    searchContentChange=(e)=>{
+    searchContentChange = (e) => {
         const value = e.target.value;
         this.setState({
-            searchContent:value
+            searchContent: value
         })
         console.log(this.state.searchContent)
     }
@@ -229,7 +230,7 @@ class CheckPlan extends React.Component{
             deviceName: key
         }
         this.setState({
-            deviceNamee:key
+            deviceNamee: key
         })
         console.log(this.state.deviceNamee)
         this.getTableData(params, {})
