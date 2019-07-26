@@ -18,9 +18,6 @@ class EqMaintenanceQuery extends React.Component{
         this.returnEquKey = this.returnEquKey.bind(this)
         this.getTableData=this.getTableData.bind(this)
     }
-    getTableData=()=>{
-
-    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
@@ -76,7 +73,10 @@ class EqMaintenanceQuery extends React.Component{
     };
 
     getTableData = (params) => {
-        this.setState({depCode:params.deptId})//新建状态用来获得所需的查询条件
+        this.setState({
+            depCode:params.deptId,
+            depName:params.depName,
+        })//新建状态用来获得所需的查询条件
         axios({
             url: `${this.url.eqMaintenanceQuery.recordPage}`,
             method: 'get',
@@ -91,6 +91,7 @@ class EqMaintenanceQuery extends React.Component{
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i]
                     rightTableData.push({
+                        index:(res.page-1)*res.page+i+1,
                         code: arr['code'],//保养单号
                         planCode: arr['planCode'],//所属计划单号
                         fixedassetsCode: arr["fixedassetsCode"],//固定资产编码
