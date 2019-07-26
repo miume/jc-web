@@ -12,10 +12,7 @@ class CheckPlan extends React.Component{
             expandedKeys:[],
         }
     }
-    onExpand = (expandedKeys) => {
-        this.expandedKeys = expandedKeys;
-        this.setState({expandedKeys: expandedKeys})
-    }
+
     getTreeData = () => {
         // TODO: 调接口，获取数据
         axios({
@@ -57,12 +54,12 @@ class CheckPlan extends React.Component{
                     }
                     dataSource[0].children.push(parenObj);
                 }
-                console.log(dataSource)
+                // console.log(dataSource)
                 this.setState({
                     departmentData: dataSource,
                     expandedKeys: expandedKeys,
                 })
-                console.log(this.state.expandedKeys)
+                // console.log(this.state.expandedKeys)
             } else {
                 message.info('查询无结果,请联系管理员！')
             }
@@ -71,6 +68,8 @@ class CheckPlan extends React.Component{
     getTableData=()=>{
 
     }
+    getParams=()=>{}
+
     render(){
         return (
 
@@ -79,13 +78,10 @@ class CheckPlan extends React.Component{
                    <TreeCard
                        treeData={this.state.departmentData}
                        getTableData={this.getTableData}
-                       defaultparams={{}}
-                       expandedKeys={this.state.expandedKeys}
-                       defaultSelectedKeys={['2']}
-                       params={{}}
-                       onExpand={this.onExpand}
-                       treeName={'所属部门'}
                        getTreeData={this.getTreeData}
+                       defaultparams={{}}
+                       treeName={'所属部门'}
+                       getParams={this.getParams}
                    />
                 </div>
                 <div style={{width:'80%'}}>
@@ -98,7 +94,7 @@ class CheckPlan extends React.Component{
             deptId:this.state.depCode,
             page:1,
             statusId: -1,
-            depName:this.props.depName,
+            depName:this.state.depName,
 
         }
         this.getTableData(params);
