@@ -94,6 +94,37 @@ class EqMaintenanceQuery extends React.Component{
     };
 
     getTableData = (params) => {
+<<<<<<< HEAD
+        this.setState({depCode:params.deptId})//新建状态用来获得所需的查询条件
+        axios({
+            url: `${this.url.eqMaintenanceQuery.recordPage}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:params,
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            if (res&&res.list) {
+                var rightTableData = [];
+                for (var i = 0; i < res.list.length; i++) {
+                    var arr = res.list[i]
+                    rightTableData.push({
+                        code: arr['code'],//保养单号
+                        planCode: arr['planCode'],//所属计划单号
+                        fixedassetsCode: arr["fixedassetsCode"],//固定资产编码
+                        deviceName: arr['deviceName'],//设备名称
+                        deptCode:arr['deptCode'],//所属部门
+                        planDate:arr["planDate"],//计划执行日期
+                        receiveDate:arr["receiveDate"],//接单日期
+                        finishiDate:arr["finishiDate"],//保养完成日期
+                        maintPeople:arr["maintPeople"],//保养人
+                        abnormalcontent:arr["abnormalcontent"],//异常处理备注
+                        editFlag:arr["editFlag"],//标记位
+
+                    })
+
+=======
         this.setState({depCode:params.deptId,depName:params.depName,},()=> {
             axios({
                 url: `${this.url.eqMaintenanceQuery.recordPage}`,
@@ -132,6 +163,7 @@ class EqMaintenanceQuery extends React.Component{
                     this.setState({
                         rightTableData: [],
                     });
+>>>>>>> master
                 }
             }).catch(() => {
                 message.info('查询失败，请刷新下页面！')

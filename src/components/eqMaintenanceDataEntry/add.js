@@ -33,6 +33,7 @@ class Add extends React.Component {
 
     handleAdd = () => {
         this.setState({visible: true,
+            deviceName:this.props.clickdeviceName
 
         })
         // console.log(this.props.clickdeviceName)
@@ -154,7 +155,7 @@ class Add extends React.Component {
                             设备名称:
                         </Col>
                         <Col span={10}>
-                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2}  value={this.props.clickdeviceName}>
+                            <Select style={{width:"315px"}} dropdownMatchSelectWidth='false' onChange={this.handleChange2}  value={this.state.deviceName}>
                                 {
                                     this.props.deviceDatas.map(e => {
                                         return (<option value={e.deviceName}> {e.deviceName}</option>)
