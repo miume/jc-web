@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Divider, message} from 'antd';
 import DepTree from './depTree/depTree';
 import Blockquote from '../BlockQuote/blockquote';
-import './equipmentArchive.css'
+import './equipmentArchiveManager.css'
 import EARight from './right/eARight'
 import axios from "axios";
 

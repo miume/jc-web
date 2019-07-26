@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Tabs} from 'antd';
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 import EARightBottom from './eARightBottom'
 class EARight extends Component {
     constructor(props) {

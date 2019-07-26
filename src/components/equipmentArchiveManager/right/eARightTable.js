@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Table, Icon, Divider, message} from 'antd';
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 import EqComponent from '../table/eqComponent'
 import Fittings from '../table/fittings'
 import Delete from '../table/delete'

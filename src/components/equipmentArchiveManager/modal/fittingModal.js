@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {Table, Input, InputNumber, Popconfirm, Form, Divider} from 'antd';
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
