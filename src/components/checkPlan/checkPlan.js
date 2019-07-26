@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
 import {Col, message, Row, Select, Tabs} from "antd";
 import axios from "axios";
 import Blockquote from "../BlockQuote/blockquote";
@@ -24,37 +23,38 @@ for(var i=0;i<15;i++)
 }
 
 
-class CheckPlan extends React.Component{
-    constructor(props){
+class CheckPlan extends React.Component {
+    constructor(props) {
         super(props)
-        this.state={
-            dataSource:[],
+        this.state = {
+            dataSource: [],
             rightTopData: [],
             rightTableData: [],
             depCode: -1,
             deviceNamee: '',
-            pagination : {
+            pagination: {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger: true
             },
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
-            Tableflag:'',
-            parentname:'',
+            Tableflag: '',
+            parentname: '',
         }
 
-        this.fetch=this.fetch.bind(this)
+        this.fetch = this.fetch.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
-        this.handleChange=this.handleChange.bind(this)
-        this.handleSelect=this.handleSelect.bind(this)
-        this.returnEquKey=this.returnEquKey.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSelect = this.handleSelect.bind(this)
+        this.returnEquKey = this.returnEquKey.bind(this)
     }
 
     componentDidMount() {
         this.fetch()
     }
+
     renderEquipmentName = (data) => data.map((item) => {
 
         return (
@@ -68,7 +68,7 @@ class CheckPlan extends React.Component{
         if (item.code === code) {
             item.isSelect = true;
             this.setState({
-                parentname:item.parentname
+                parentname: item.parentname
             })
             console.log(this.state.parentname)
         } else {
@@ -122,7 +122,7 @@ class CheckPlan extends React.Component{
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
                         this.setState({
-                            deviceNamee:rightTopData[0].name
+                            deviceNamee: rightTopData[0].name
                         })
                     } else {
                         this.getTableData({
@@ -197,12 +197,12 @@ class CheckPlan extends React.Component{
             message.info('查询失败，请刷新下页面！')
         });
     }
-    handleChange=(value)=>{
+    handleChange = (value) => {
         this.setState({
-            Tableflag:value
+            Tableflag: value
         })
     }
-    fetch = (params,flag) => {
+    fetch = (params, flag) => {
         console.log('1111111111111111')
         // this.setState({
         //     dataSource:fakedataSource
@@ -255,13 +255,13 @@ class CheckPlan extends React.Component{
 
     }
     //---------------------------------
-    searchEvent=()=>{
+    searchEvent = () => {
         console.log('调用查询借口并')
     }
-    searchContentChange=(e)=>{
+    searchContentChange = (e) => {
         const value = e.target.value;
         this.setState({
-            searchContent:value
+            searchContent: value
         })
         console.log(this.state.searchContent)
     }
@@ -271,177 +271,11 @@ class CheckPlan extends React.Component{
             deviceName: key
         }
         this.setState({
-            deviceNamee:key
+            deviceNamee: key
         })
         console.log(this.state.deviceNamee)
         this.getTableData(params, {})
     };
-=======
-import TreeCard from "../BlockQuote/treeSelect"
-import axios from "axios";
-import {message} from "antd";
-class CheckPlan extends React.Component{
-    componentWillUnmount() {this.setState = () => {return;}}
-    url= JSON.parse(localStorage.getItem('url'));
-    constructor(props){
-        super(props)
-        this.state={
-            departmentData:[],
-            expandedKeys:[],
-        }
-    }
-    onExpand = (expandedKeys) => {
-        this.expandedKeys = expandedKeys;
-        this.setState({expandedKeys: expandedKeys})
-    }
-    getTreeData = () => {
-        // TODO: 调接口，获取数据
-        axios({
-            url: `${this.url.equipmentDept.dept}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            var dataSource = [{
-                title: '总公司',
-                key:'0',
-                children: [],
-                value:'总公司',
-            }];
-            if (res) {
-                var expandedKeys = ["0"];
-                for (let i = 0; i < res.length; i++) {
-                    const arrParent = res[i].parent;
-                    var parenObj = {
-                        title:arrParent.name,
-                        key:arrParent.code,
-                        children: [],
-                        value: arrParent.name,
-                    };
-                    if(i === 0){
-                        expandedKeys.push(arrParent.code.toString())
-                    }
-                    const arrSon = res[i].son;
-                    for (let j = 0; j < arrSon.length; j++) {
-                        var arr = arrSon[j];
-                        parenObj['children'].push({
-                            title:arr.name.toString(),
-                            key:arr.code,
-                            value:  arrParent.name.toString()+'-'+arr.name.toString(),
-                            children: []
-                        });
-                    }
-                    dataSource[0].children.push(parenObj);
-                }
-                console.log(dataSource)
-                this.setState({
-                    departmentData: dataSource,
-                    expandedKeys: expandedKeys,
-                })
-                console.log(this.state.expandedKeys)
-            } else {
-                message.info('查询无结果,请联系管理员！')
-            }
-        });
-    };
-    getTableData=()=>{
-
-    }
->>>>>>> master
-    render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
-        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
-        this.operation = operation.filter(e=>e.path === current.path)[0].operations;
-        const { TabPane } = Tabs;
-        function callback(key) {
-            console.log(key);
-        }
-        const { Option } = Select;
-        return (
-<<<<<<< HEAD
-            <div>
-                <Blockquote menu={current.menuParent} name="点检查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div className="checkP-DE-demo" >
-                    <div className="checkP-DE-left" >
-                        <div  className="checkP-eqblocka">
-                            设备名称(请选择）
-                        </div>
-                        <DepTree
-                            getRightData={this.getRightData}
-                            url={this.url}
-                            operation={this.operation}
-                            handleSelect={this.handleSelect}
-                        />
-                    </div>
-                    <div className="checkP-DE-right">
-                        <Tabs onChange={this.returnEquKey}>
-                            {this.renderEquipmentName(this.state.rightTopData)}
-                        </Tabs>
-                    <div>
-                            <div className="checkP_buttons">
-                                <div className="checkp-left">
-                                 <Add parentname={this.state.parentname} deviceNamee={this.state.deviceNamee}/>
-                                </div>
-                        <div className="check_right">
-                                    <Select defaultValue="全部状态" style={{ width:120}} onChange={this.handleChange} >
-                                        <Option value="全部状态">全部状态</Option>
-                                        <Option value="开">开</Option>
-                                        <Option value="关">关</Option>
-                                    </Select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <SearchCell
-                                        name='请输入搜索内容'
-                                        flag={home.judgeOperation(this.operation, 'QUERY')}
-                                        searchEvent={this.searchEvent}
-                                        searchContentChange={this.searchContentChange}
-                                        fetch={this.fetch}
-                                    />
-                                     </div>
-                            </div>
-                        <RightTable dataSource={fakedataSource} operation={this.operation} pagination={this.state.pagination}/>
-                    </div>
-                    </div>
-                </div>
-
-            </div>
-        )
-    }
-    returnDataEntry(){
-        // this.props.history.push({pathname:'/equipmentCheck'});
-=======
-
-            <div style={{padding:"15px"}}>
-                <div style={{width:'20%'}}>
-                   <TreeCard
-                       treeData={this.state.departmentData}
-                       getTableData={this.getTableData}
-                       defaultparams={{}}
-                       expandedKeys={this.state.expandedKeys}
-                       defaultSelectedKeys={['2']}
-                       params={{}}
-                       onExpand={this.onExpand}
-                       treeName={'所属部门'}
-                       getTreeData={this.getTreeData}
-                   />
-                </div>
-                <div style={{width:'80%'}}>
-                </div>
-            </div>
-        )
-    }
-    componentDidMount() {
-        const params = {
-            deptId:this.state.depCode,
-            page:1,
-            statusId: -1,
-            depName:this.props.depName,
-
-        }
-        this.getTableData(params);
->>>>>>> master
-    }
 }
 
 export default CheckPlan
