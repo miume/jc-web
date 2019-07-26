@@ -50,13 +50,11 @@ class Completed extends React.Component{
                     <Sider theme='light' width={240} style={{background:"white",height:'525px'}}>
                         <div className="ac-roll" style={{width:'220px'}}>
                         <Card  title="所属部门"  >
-
                             <DepTree
                                 url={this.url}
                                 getTableData={this.props.getTableData}
                                 getLastMonthTime={this.getLastMonthTime}
                             />
-
                         </Card>&nbsp;&nbsp;
                         </div>
                     </Sider>

@@ -61,11 +61,12 @@ class DepTree extends Component {
         const date = this.props.getLastMonthTime(1);
         this.setState({depCode:selectedKeys[0]},()=>{
              params = {
+
                 deptId:parseInt(selectedKeys[0]),
                 statusId:3,
                 startDate:date.datastr,
                 endDate:date.NowDate,
-                 name:e.node.props.value
+                name:e.node.props.value
             }
             console.log(e)
             console.log(e.node.props.value)
