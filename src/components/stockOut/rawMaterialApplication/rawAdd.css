@@ -39,8 +39,8 @@
   .stock-out .ant-table-body .ant-table-tbody>tr>td input{
     text-align: left !important;
   }
-  /* .stock-out .ant-table-body {
-    max-height: 200px !important;
-  } */
+  .stock-out .ant-table-body {
+    max-height: 250px !important;
+  }
     
   
