@@ -11,6 +11,7 @@ import axios from "axios";
     *
     *
     * */
+var defaultkey=[];
 class TreeCard extends React.Component{
     constructor(props){
         super(props)
@@ -28,6 +29,7 @@ class TreeCard extends React.Component{
         this.props.getTreeData();
         const params = this.props.defaultparams;
         this.props.getTableData(params);
+        this.setState({selectedKeys:defaultkey})
     }
     componentWillReceiveProps(nextProps) {
         this.findExpandKeys();
@@ -35,9 +37,9 @@ class TreeCard extends React.Component{
     findExpandKeys=()=>{
         var data=this.props.treeData;
         if(data.length!==0){
-            console.log(data)
+            //console.log(data)
             var keys=[];
-            var defaultkey=[];
+
             while(data[0].children.length!==0)
            {
                keys.push(data[0].key+'');
@@ -48,10 +50,9 @@ class TreeCard extends React.Component{
            }
             this.setState({
                 expandedKeys:keys,
-                selectedKeys:defaultkey,
             },()=>{
-                console.log('setde',this.state.selectedKeys)
-                console.log('set',this.state.expandedKeys)
+                //console.log('setde',this.state.selectedKeys)
+                //console.log('set',this.state.expandedKeys)
             });
 
         }
@@ -62,7 +63,7 @@ class TreeCard extends React.Component{
         this.setState({expandedKeys: expandedKeys})
     }
     render() {
-        console.log(this.state.selectedKeys)
+        //console.log(this.state.selectedKeys)
         return(
             <Card
                 style={{display:'inline-block',width: "100%"}}
@@ -84,9 +85,12 @@ class TreeCard extends React.Component{
     // 通过回调函数，更新表格中的数据
     returnDepKey = (selectedKeys,e) => {
         this.props.getParams(selectedKeys,e)
-        this.setState({selectedKeys:selectedKeys})
-        console.log("selectedKeys",selectedKeys)
-        console.log("e",e)
+        this.setState({selectedKeys:selectedKeys},()=>{
+            //console.log("selectedKeys",selectedKeys)
+            //console.log("state",this.state.selectedKeys)
+            //console.log("e",e)
+        })
+
     };
 }
 export default TreeCard

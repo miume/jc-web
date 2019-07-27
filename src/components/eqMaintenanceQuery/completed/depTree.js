@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message} from 'antd';
+import { Icon, Modal, Input, message} from 'antd';
 import axios from "axios";
 import CancleButton from "../../BlockQuote/cancleButton";
 import NewButton from "../../BlockQuote/newButton";
 import Home from "../../Home/home";
 import "./completed.css"
+import TreeCard from "../../BlockQuote/treeSelect"
+
 var params = {
     deptId:'',
     statusId:3,
@@ -48,11 +50,15 @@ class DepTree extends Component {
 
     render() {
         return (
-                <Tree
+                <TreeCard
+                    treeName="所属部门"
                     showLine
                     defaultExpandAll
                     treeData={this.state.dataSource}
-                    onSelect={this.returnDepKey}
+                    getTableData={this.props.getTableData}
+                    getTreeData={this.getData}
+                    defaultparams={params}
+                    getParams={this.returnDepKey}
                />
         )
     }
@@ -61,7 +67,6 @@ class DepTree extends Component {
         const date = this.props.getLastMonthTime(1);
         this.setState({depCode:selectedKeys[0]},()=>{
              params = {
-
                 deptId:parseInt(selectedKeys[0]),
                 statusId:3,
                 startDate:date.datastr,
