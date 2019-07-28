@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form,Checkbox,Col,Select} from 'antd';
+import { Form,Checkbox,Col,Select,Input} from 'antd';
 const FormItem = Form.Item;
 const Option=Select.Option;
 class RawMaterialAddModal extends React.Component{
@@ -30,15 +30,15 @@ class RawMaterialAddModal extends React.Component{
                 {getFieldDecorator('serialNumberId',{
                     
                     rules:[{required:true,message:'请选择原材料'}]
-                })( 
+                })(
                     <Select  placeholder='请选择原材料' style={{height:'24px'}}>
                         {
                             this.props.rawData.map((data)=>{
-                               
-                                // <Option key={Object.keys(data)[0]} value={Object.keys(data)[0]}>{data[Object.keys(data)[0]]}</Option> 
+
+                                // <Option key={Object.keys(data)[0]} value={Object.keys(data)[0]}>{data[Object.keys(data)[0]]}</Option>
                                 return(
                                     <Option key={data.id} value={data.id}>{data.manufacturer}</Option>
-                                )                               
+                                )
                             })
                         }
                     </Select>

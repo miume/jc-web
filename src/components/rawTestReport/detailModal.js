@@ -60,7 +60,7 @@ class DetailModal extends React.Component {
                        </div>
                 </div>
                     <Table
-                        className="interCursorDefault"
+                        className="rawTestReport-detailModal"
                         rowKey={record => record.id}
                         columns={columns}
                         dataSource={data.details}
