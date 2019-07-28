@@ -95,12 +95,14 @@ class InterProduct extends React.Component {
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
                 factoryName:this.state.searchContent,
+                sortField:'sample_delivering_date',
                 sortType: 'desc',
             })
         }else{
             this.fetch({
                 pageSize:pagination.pageSize,
                 pageNumber:pagination.current,
+                sortField:'sample_delivering_date',
                 sortType: 'desc',
             })
         }
@@ -117,17 +119,16 @@ class InterProduct extends React.Component {
             params = {
                 pageSize:10,
                 pageNumber:1,
-                sortType: 'desc'
+                sortField:'sample_delivering_date',
+                sortType: 'desc',
             }
         }
-        console.log(params)
         axios.get(`${this.url.intermediateProduct}/pages`,{
             headers:{
                 'Authorization':this.url.Authorization
             },
             params:params,
         }).then((data)=>{
-            console.log(data)
             const res = data.data.data?data.data.data:[];
             if(res&&res.list)
             {
@@ -156,6 +157,7 @@ class InterProduct extends React.Component {
         });
         this.fetch({
             factoryName:this.state.searchContent,
+            sortField:'sample_delivering_date',
             sortType: 'desc'
         })
     };
