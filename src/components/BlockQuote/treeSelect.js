@@ -1,16 +1,7 @@
 import {Card, message, Tree} from 'antd';
 import React from 'react'
 import "./blockquote.css"
-import axios from "axios";
-/*
-    * 1.父组件必须传初始化的选择项，数据源，查询属性
-    * dataSource,treeName,defaultparams,params,
-    *
-    *
-    *
-    *
-    *
-    * */
+
 class TreeCard extends React.Component{
     constructor(props){
         super(props)
