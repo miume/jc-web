@@ -123,7 +123,7 @@ class EquipmentArchiveManager extends Component {
                 console.log(rightTopData)
                 this.setState({
                     rightTopData: rightTopData,
-                    depCode: code
+                    depCode: code,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
                     var deviceFlag = true;
