@@ -9,6 +9,7 @@ import "./checkQuery.css"
 import axios from "axios";
 import home from '../commom/fns'
 import Check from "../purchaseCheckReport/check";
+import SearchCell from "./searchCell";
 
 
 class CheckQuery extends React.Component{
@@ -36,6 +37,8 @@ class CheckQuery extends React.Component{
         this.returnEquKey=this.returnEquKey.bind(this)
         this.changeworkshop=this.changeworkshop.bind(this)
         this.firstworkshop=this.firstworkshop.bind(this)
+        this.searchContentChange=this.searchContentChange.bind(this)
+        this.searchEvent=this.searchEvent.bind(this)
     }
 
     componentDidMount() {
@@ -49,7 +52,26 @@ class CheckQuery extends React.Component{
         )
     });
     //----------------------------------
-
+    searchEvent = () => {
+        console.log('调用查询借口并查询')
+            console.log(this.state.deptCode)
+        console.log(this.state.deviceName)
+        this.setState({
+            pageChangeFlag:1
+        });
+        this.getTableData({
+            condition:this.state.searchContent,
+            deptId:parseInt(this.state.depCode),
+            deviceName:this.state.deviceName,
+        })
+    }
+    searchContentChange = (e) => {
+        const value = e.target.value;
+        this.setState({
+            searchContent: value
+        })
+        console.log(this.state.searchContent)
+    }
 
     getRightData = (code, deviceName) => {
         code = parseInt(code)
@@ -245,6 +267,31 @@ class CheckQuery extends React.Component{
             workshop:e
         })
     }
+    handleTableChange = (pagination) => {
+        this.setState({
+            pagination:pagination
+        });
+        const {pageChangeFlag} = this.state;
+        /**分页查询 */
+        if(pageChangeFlag){
+            this.getTableData({
+                deptId:this.state.deptCode,
+                deviceName:this.state.deviceName,
+                status:this.state.Tableflag,
+                size:pagination.pageSize,
+                page:pagination.current,
+                condition:this.state.searchContent
+            })
+        }else{
+            this.getTableData({
+                deptId:this.state.deptCode,
+                deviceName:this.state.deviceName,
+                status:this.state.Tableflag,
+                size:pagination.pageSize,
+                page:pagination.current,
+            })
+        }
+    };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
@@ -275,7 +322,10 @@ class CheckQuery extends React.Component{
                             <Tabs onChange={this.returnEquKey}>
                                 {this.renderEquipmentName(this.state.rightTopData)}
                             </Tabs>
-                        <CheckTable rightTableData={this.state.rightTableData} operation={this.operation} pagination={this.state.pagination} url={this.url} fetch={this.getTableData} />
+                        <CheckTable rightTableData={this.state.rightTableData} operation={this.operation} pagination={this.state.pagination} url={this.url} fetch={this.getTableData}  handleTableChange={this.handleTableChange}
+                                    deptId={this.state.depCode}
+                                    deviceName={this.state.deviceName}
+                                    searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                         </div>
                     </div>
 

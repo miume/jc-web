@@ -4,7 +4,7 @@ import TabBar from "antd/lib/tabs/TabBar";
 import Mmodal from "../eqMaintenanceDataEntry/mmodal";
 import home from "../commom/fns";
 import Detail from "./detail"
-import SearchCell from "../BlockQuote/search";
+import SearchCell from "./searchCell";
 import "./checkQuery.css"
 const { Search } = Input;
 
@@ -12,24 +12,9 @@ const { Search } = Input;
 class CheckTable extends React.Component{
     constructor(props){
         super(props)
-        this.state={
-            searchContent:''
-        }
-        this.searchContentChange=this.searchContentChange.bind(this)
-        this.searchEvent=this.searchEvent.bind(this)
     }
 
-    searchEvent=()=>{
-        console.log(this.state.searchContent)
-        // fetch(this.state.searchContent)
-    }
 
-    searchContentChange=(e)=>{
-        const content=e.target.value;
-        this.setState({
-            searchContent:content
-        })
-    }
     render(){
 
 
@@ -80,8 +65,10 @@ class CheckTable extends React.Component{
                 <SearchCell
                     fetch={this.props.fetch}
 s                    name="设备编号/设备名称"
-                    onSearch={this.searchEvent}
-                    onChange={this.searchContentChange}
+                    deptId={this.props.deptId}
+                    deviceName={this.props.deviceName}
+                    searchEvent={this.props.searchEvent}
+                    searchContentChange={this.props.searchContentChange}
                     flag={home.judgeOperation(this.props.operation, 'QUERY')}
                 />
                 <div className="clear"></div>

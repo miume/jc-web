@@ -374,6 +374,7 @@ class Home extends Component {
                 deleteByCode:`${server}/jc/common/SpotcheckPlan/deleteByCode`,
                 getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
                 page:`${server}/jc/common/SpotcheckPlan/page`,
+                getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
             }
 
         }

@@ -53,12 +53,11 @@ class EARightBottom extends Component {
                 {/*    flag={home.judgeOperation(this.operation, 'DELETE')}*/}
                 {/*/>*/}
 
-                <div>
-                    <Radio.Group defaultValue="部件" buttonStyle="solid"  onChange={this.radioChange}>
-                        <Radio.Button value="部件">部件</Radio.Button>
-                        <Radio.Button value="配件">配件</Radio.Button>
-                    </Radio.Group>
-                </div>
+
+                    {/*<Radio.Group defaultValue="部件" buttonStyle="solid"  onChange={this.radioChange}>*/}
+                    {/*    <Radio.Button value="部件">部件</Radio.Button>*/}
+                    {/*    <Radio.Button value="配件">配件</Radio.Button>*/}
+                    {/*</Radio.Group>*/}
 
 
                 <SearchCell
