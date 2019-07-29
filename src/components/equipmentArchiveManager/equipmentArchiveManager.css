@@ -25,6 +25,7 @@
     /*background-color: yellow;*/
 }
 .eA-right-bottom {
+    margin-top: 15px;
     width: 100%;
     /*height: 50px !important;*/
     /*background-color: red;*/
@@ -121,4 +122,40 @@
 .eq-comModal-newRow {
     max-height: 250px;
     overflow-y: auto;
+}
+.DropExpandselected{
+    height: 80px;
+    overflow-x: auto;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    display: flex;
+    font-size: 15px;
+    width: 1000px;
+}
+.buttonofdrop{
+    display: inline;
+    position: absolute;
+    z-index: 10;
+    margin-left: 1010px;
+}
+.DropExpandblue{
+    overflow-x: auto;
+    font-size: 15px;
+    cursor: pointer;
+    color: deepskyblue;
+    margin-right: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+.Dropfrist{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 1159px;
+    font-size: 15px;
+    background-color: white;
+}
+.eq-outside{
+    width: 1159px;
 }

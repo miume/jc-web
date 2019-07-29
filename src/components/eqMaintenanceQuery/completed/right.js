@@ -153,7 +153,7 @@ class Right extends React.Component {
                 <div className="head" style={{paddingTop:10}} >
                     </div>
                     <SearchCell
-                        name="单号/设备名称/单号..."
+                        name="单号/设备名称/编号..."
                         fetch={this.fetch}
                         flag={home.judgeOperation(this.operation,'QUERY')}
                         getTableData={this.props.getTableData}

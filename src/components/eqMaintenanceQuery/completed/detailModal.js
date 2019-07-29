@@ -134,8 +134,8 @@ class Detail extends React.Component{
         },
         {
             title: '保养人',
-            key: 'maintPeople',
-            dataIndex: 'maintPeople',
+            key: 'setPeople',
+            dataIndex: 'setPeople',
             align:'center',
             width:150,
         }]
@@ -179,8 +179,16 @@ class Detail extends React.Component{
                     planDate:deviceMaintenanceRecordHead.planDate,
                     receiveDate:deviceMaintenanceRecordHead.receiveDate,
                     finishiDate:deviceMaintenanceRecordHead.finishiDate,
-                    maintPeople:deviceMaintenanceRecordHead.maintPeople
                 })
+                if(res.setPeople){
+                detailData.deviceMaintenanceRecordHead.push({
+                    setPeople:res.setPeople
+                })}
+                else{
+                    detailData.deviceMaintenanceRecordHead.push({
+                        setPeople:''
+                    })
+                    }
                 const deviceMaintenanceRecordDetails=res.deviceMaintenanceRecordDetails
                 var abnormalContent = this.state.abnormalContent
                 for(var i = 0 ; i<deviceMaintenanceRecordDetails.length; i++){

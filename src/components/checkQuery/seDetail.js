@@ -4,9 +4,9 @@ import CancleButton from "../BlockQuote/cancleButton";
 import {Modal} from "antd";
 import Table from "antd/lib/table";
 import SeTable from "./seTable";
-
-
-class Detail extends  React.Component{
+import ThirdTable from "./thirdTable"
+import FhTable from "./fhTable"
+class SeDetail extends  React.Component{
     constructor(props){
         super(props)
         this.state={
@@ -68,7 +68,6 @@ class Detail extends  React.Component{
             });
         }
         //假数据
-
         return(
             <span>
            <span className='blue' onClick={this.clickDetail}>详情</span>
@@ -78,24 +77,28 @@ class Detail extends  React.Component{
                 centered={true}
                 maskClosable={false}
                 width="1000px"
-                height="464"
                 title="点检详情"
                 footer={[
-                         <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
+                    <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
             >
                 <span>
+
                     <span>设备编号:{this.props.deviceNumber}</span> &nbsp;&nbsp;&nbsp;&nbsp;<span>设备名称:{this.props.deviceName}</span>
-                <SeTable
-                    // dataSource={this.state.dataSource}
-                       dataSource={fakedataSource}
-                />
-
-
+                {/*<ThirdTable*/}
+                {/*    // dataSource={this.state.dataSource}*/}
+                {/*    // dataSource={fakedataSource}*/}
+                {/*/>*/}
                 </span>
+                <span> <FhTable /></span>
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                <span><ThirdTable/></span>
+                <span className="checkQ-Table-bottom">备注:</span>
             </Modal>
                 </span>
         )
     }
 }
 
-export default Detail
+export default SeDetail

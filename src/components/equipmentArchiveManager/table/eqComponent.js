@@ -3,7 +3,7 @@ import axios from 'axios';
 import {Modal, Button, message} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import EARightBottom from '../right/eARightBottom'
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 import EARight from "../right/eARight";
 
 class EqComponent extends React.Component {
