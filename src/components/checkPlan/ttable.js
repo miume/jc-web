@@ -84,7 +84,6 @@ class TTable extends React.Component{
                 <Table
                     dataSource={this.props.dataSource}
                     columns={this.columns}
-                    pagination={this.props.pagination}
                     size="default"
                     bordered
                     scroll={{ y: 450 }}

@@ -21,7 +21,7 @@ class CheckPlan extends React.Component {
             rightTableData: [],
 
             depCode: -1,
-            deviceNamee: '',
+            deviceName: '',
             pagination: {
                 showTotal(total) {
                     return `共${total}条记录`
@@ -73,11 +73,14 @@ class CheckPlan extends React.Component {
         code = parseInt(code)
         console.log(code)
         axios({
-            url: `${this.url.equipmentArchive.device}/${code}`,
+            url: `${this.url.SpotcheckPlan.getDeviceCount}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
             },
+            params:{
+                deptId:code
+            }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             if (res) {
@@ -242,15 +245,21 @@ class CheckPlan extends React.Component {
         const {pageChangeFlag} = this.state;
         /**分页查询 */
         if(pageChangeFlag){
-            this.fetch({
-                pageSize:pagination.pageSize,
-                pageNumber:pagination.current,
-                departmentName:this.state.searchContent
+            this.getTableData({
+                deptId:this.state.deptCode,
+                deviceName:this.state.deviceName,
+                status:this.state.Tableflag,
+                size:pagination.pageSize,
+                page:pagination.current,
+                condition:this.state.searchContent
             })
         }else{
-            this.fetch({
-                pageSize:pagination.pageSize,
-                pageNumber:pagination.current,
+            this.getTableData({
+                deptId:this.state.deptCode,
+                deviceName:this.state.deviceName,
+                status:this.state.Tableflag,
+                size:pagination.pageSize,
+                page:pagination.current,
             })
         }
     };
@@ -270,7 +279,7 @@ render(){
     }
     const { Option } = Select;
     return (<div>
-            <Blockquote menu={current.menuParent} name="点检查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+            <Blockquote menu={current.menuParent} name="点检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
             <div className="checkP-DE-demo" >
                 <div className="checkP-DE-left" >
                     <div  className="checkP-eqblocka">
