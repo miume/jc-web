@@ -12,7 +12,7 @@ class CheckPlan extends React.Component{
             expandedKeys:[],
         }
     }
-    onExpand = (expandedKeys) => {
+    onExpand = (expandedKeys) => {//展开的时候更新一下
         this.expandedKeys = expandedKeys;
         this.setState({expandedKeys: expandedKeys})
     }

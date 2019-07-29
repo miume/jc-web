@@ -4,7 +4,6 @@ import axios from "axios";
 import Details from "./detail";
 import Delete from "./delete";
 import '../willMaintain.css'
-import DeletaSpan from "../../../departManagement/deleteSpan";
 
 //用于编写表格的显示样式
 

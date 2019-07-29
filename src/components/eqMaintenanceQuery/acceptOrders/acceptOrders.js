@@ -1,12 +1,11 @@
 import React from "react";
 import {message,Input,Button,Table,Layout,Tree} from "antd";
 import './acceptOrders.css'
-import Card from "antd/lib/card";
 import TheTable from "./Table/theTable";
 import axios from "axios";
 import SearchCell from "../../BlockQuote/search";
-import DepTree from "./depTree/depTree";
 import home from "../../commom/fns";
+import TreeCard from "../../BlockQuote/treeSelect";
 
 //总的页面样式
 
@@ -15,10 +14,15 @@ class AcceptOrders extends React.Component{
         super(props);
         this.state = {
             deviceName: '',
-            rightTableData:[],
             eff_flag: '2',
+            rightTableData:[],
             searchContent:'',
             pageChangeFlag: 0,   //0表示分页 1 表示查询
+            dataSource:[],
+            TreeData:[],
+            expandedKeys:[],
+            depName:'',
+            deptId:'',
         };
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -35,14 +39,27 @@ class AcceptOrders extends React.Component{
             <div >
                 <Layout >
                     <Sider width={240} style={{background:"white",height:'525px'}} >
-                        <div className="ac-roll" style={{width:'235px'}}>
-                            <Card title="所属部门" >
-                                <DepTree
-                                    url={this.url}
-                                    eff_flag={this.state.eff_flag}
-                                    getTableData={this.props.getTableData}
-                                />
-                            </Card>
+                        <div style={{width:'235px'}}>
+                            <TreeCard
+                                getParams={this.getParams}
+                                treeData={this.state.TreeData}
+                                getTableData={this.props.getTableData}
+                                defaultparams={{
+                                    deptId:2,
+                                    statusId:2,
+                                    depName:'锂电一',
+                                }}
+                                expandedKeys={this.state.expandedKeys}
+                                defaultSelectedKeys={['2']}
+                                params={{
+                                    deptId:this.state.deptId,
+                                    depName:this.state.depName,
+                                    statusId:2,
+                                }}
+                                onExpand={this.onExpand}
+                                treeName={'所属部门'}
+                                getTreeData={this.getTreeData}
+                            />
                         </div>
                     </Sider>
                     <Layout >
@@ -59,9 +76,9 @@ class AcceptOrders extends React.Component{
                         <Content style={{background:"white"}}>
                             <div style={{background:"white"}}>
                             <TheTable
+                                url={this.url}
                                 fetch={this.fetch}
                                 searchReset={this.searchReset}
-                                getTableData={this.props.getTableData}
                                 pagination={this.state.pagination}
                                 rightTableData={this.props.rightTableData}
                                 handleTableChange={this.handleTableChange}
@@ -74,12 +91,97 @@ class AcceptOrders extends React.Component{
         );
     }
 
+    getParams=(selectedkeys,e)=>{
+        this.setState({
+            deptId:selectedkeys[0],
+            depName:e.node.props.value,
+        },()=>{
+            if(selectedkeys[0]){
+                const params = {
+                    deptId:this.state.deptId,
+                    statusId:2,
+                    depName:this.state.depName,
+                };
+                console.log(params)
+                this.props.getTableData(params)
+            }
+        })
+
+    }
+
+    onExpand = (expandedKeys) => {//展开的时候更新一下
+        this.expandedKeys = expandedKeys;
+        this.setState({expandedKeys: expandedKeys})
+    }
 
     /**实时跟踪搜索框内容的变化 */
     searchContentChange = (e) => {
         const value = e.target.value;
         this.setState({searchContent: value});
     };
+
+    getTreeData = () => {
+        // TODO: 调接口，获取数据
+        axios({
+            url: `${this.props.url.equipmentDept.dept}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            var dataSource = [{
+
+                title:'总公司',
+                key:0,
+                value: '总公司',
+                children: []
+            }];
+            if (res) {
+                var expandedKeys=['0'];
+                for (let i = 0; i < res.length; i++) {
+                    const arrParent = res[i].parent;
+                    var parenObj = {
+                        title:arrParent.name,
+                        value: arrParent.name,
+                        key:arrParent.code,
+                        children: [],
+                    };
+                    const arrSon = res[i].son;
+                    if(i === 0){
+                        expandedKeys.push(arrParent.code.toString())
+                    }
+                    for (let j = 0; j < arrSon.length; j++) {
+                        var arr = arrSon[j];
+                        if(i===0&&j===0){
+                            parenObj['children'].push({
+                                value: arr.name,
+                                children:[],
+                                title:arr.name,
+                                key:arr.code,
+                            });
+                        }else{
+                            parenObj['children'].push({
+                                value: arr.name,
+                                children: [],
+                                title:arr.name,
+                                key:arr.code,
+
+                            });
+                        }
+                    }
+                    dataSource[0].children.push(parenObj);
+                }
+                this.setState({
+                    TreeData: dataSource,
+                    expandedKeys: expandedKeys,
+                })
+            } else {
+                message.info('没有获取到数据')
+            }
+        });
+    };
+
     /**绑定搜索事件 */
     searchEvent = () => {
         this.setState({
