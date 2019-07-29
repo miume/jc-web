@@ -112,7 +112,11 @@ class InterProduct extends React.Component {
         if(flag){
             this.setState({
                 pageChangeFlag:0,
-                searchContent:''
+                searchContent:'',
+                pagination:{
+                    pageSize:10,
+                    current:1
+                }
             })
         };
         if(params === undefined || flag === 1 ){

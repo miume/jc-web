@@ -89,14 +89,14 @@ class ProcessTable extends React.Component{
                          <table id='process-table'>
                              <thead className='thead'>
                              <tr>
-                                <td>产品线</td>
-                                <td>工序</td>
+                                <td>产品线(必填)</td>
+                                <td>工序(必填)</td>
                                 <td>取样点</td>
-                                <td>取样人</td>
-                                <td>检测人</td>
-                                <td>检测项目</td>
+                                <td>取样人(必填)</td>
+                                <td>检测人(必填)</td>
+                                <td>检测项目(必填)</td>
                                 <td>频次</td>
-                                <td>受检物料</td>
+                                <td>受检物料(必填)</td>
                                 <td>备注</td><td>操作</td>
                               </tr>
                              </thead>
