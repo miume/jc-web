@@ -71,6 +71,9 @@ class DepTree extends Component {
                 isEditable: false,
                 children: []
             }];
+            console.log('-----------------------')
+            console.log(res)
+            console.log('-----------------------')
             if (res) {
                 var expandedKeys = ["0"];
                 for (let i = 0; i < res.length; i++) {
@@ -116,6 +119,7 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
+                    this.props.firstname(res[0].parent.name)
                 }
                 this.setState({
                     dataSource: dataSource,
@@ -139,6 +143,10 @@ class DepTree extends Component {
         var dataSource = this.state.dataSource;
         this.props.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
+        console.log(e.node)
+        console.log(e.node.props)
+        console.log(e.node.props.dataRef)
+        console.log(e.node.props.dataRef.value)
     }
 
 

@@ -1,12 +1,17 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message, Card} from 'antd';
+import {Tree, Icon, Modal, Input, message} from 'antd';
+import styles from "./EditableTree.less";
 import axios from "axios";
-import "./checkQuery.css"
+import '../eqcomponentSearch.css'
+import CancleButton from "../../BlockQuote/cancleButton";
+import NewButton from "../../BlockQuote/newButton";
+
+
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ['0','1'],
+            expandedKeys: [],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -32,6 +37,10 @@ class DepTree extends Component {
     }
 
     componentDidMount() {
+        const params={
+            deptId:2,
+            statusId:1,
+        }
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
@@ -115,20 +124,17 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
-                    this.props.firstworkshop(res[0].son[0].name)
                 }
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                     expandedKeys: expandedKeys,
+                    expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
                         parentCode: null
-
                     },
                 })
-                console.log(expandedKeys)
             } else {
 
             }
@@ -136,12 +142,10 @@ class DepTree extends Component {
     };
 
 
-    onSelect = (selectedKeys, e) => {
+    onSelect = (selectedKeys, info) => {
         var dataSource = this.state.dataSource;
         this.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-        this.props.changeworkshop(e.node.props.dataRef.value)
-        console.log(e.node.props.dataRef.value)
     }
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {

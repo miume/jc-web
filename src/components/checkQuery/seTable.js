@@ -21,35 +21,35 @@ class SeTable extends React.Component{
             sorter:(a,b) =>a.id-b.id,
             width:'5%',
         },{ title: '点检时间',
-            dataIndex: 'checktime' ,
-            key: 'devicenumber',
+            dataIndex: 'scanTime' ,
+            key: 'scanTime',
             width: '19%',
             align:'left',
             editable: false
         }, {
             title: '点检人',
-            dataIndex: 'checkname',
-            key:  'checkname',
+            dataIndex: 'spotcheckPeople',
+            key:  'spotcheckPeople',
             width: '13%',
             align:'left',
             editable: true
         },{
             title: '确认时间',
-            dataIndex: 'confirmtime',
-            key: 'confirmtime',
+            dataIndex: 'confirmTime',
+            key: 'confirmTime',
             width: '19%',
             align:'left',
             editable: true
         }, {
             title: "确认人",
-            dataIndex: 'confirmpeople',
-            key: 'confirmpeople',
+            dataIndex: 'confirmPeople',
+            key: 'confirmPeople',
             width: '13%',
             align: 'left',
         },{
             title: "状态",
-            dataIndex: 'satausCode',
-            key: 'statusCode',
+            dataIndex: 'editFlag',
+            key: 'editFlag',
             width: '13%',
             align: 'left',
             render: (text, record) => {
@@ -67,7 +67,9 @@ class SeTable extends React.Component{
                 align: 'left',
                 render: (text, record) => {
                     return (
-                        <SeDetail />
+                        <SeDetail deviceName={this.props.deviceName} fixedassetsCode={this.props.fixedassetsCode} scanTime={record.scanTime}
+                                  spotcheckPeople={record.spotcheckPeople} confirmTime={record.confirmTime} confirmPeople={record.confirmPeople} editFlag={record.editFlag}
+                        record={record} url={this.props.url}/>
                     );
                 }
             }]
