@@ -191,7 +191,7 @@ class EARightTable extends Component {
 
     render() {
         return (
-            <div className="eA-right-bottom">
+            <div className={this.props.bottomheight?'eA-right-bottom-one':'eA-right-bottom-two'}>
                 <Table
                     rowKey={record => record.code}
                     rowSelection={this.props.rowSelection}
@@ -200,7 +200,6 @@ class EARightTable extends Component {
                     size="small"
                     bordered
                     scroll={{y: 360}}
-
                     onChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                 />

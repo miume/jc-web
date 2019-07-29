@@ -11,6 +11,7 @@ class EARight extends Component {
             topNumber:'',
             flag:true,
             flags:[1],
+            bottomheight:true,
         };
         this.returnEquKey = this.returnEquKey.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
@@ -39,6 +40,7 @@ class EARight extends Component {
                     modifySearchContent={this.props.modifySearchContent}
                     searchEvent={this.props.searchEvent}
                     searchReset={this.props.searchReset}
+                    bottomheight={this.state.bottomheight}
                 />
             </div>
         )
@@ -61,7 +63,10 @@ class EARight extends Component {
     }
 
     handleClick=()=>{
-        this.setState({flag:!this.state.flag})
+        this.setState({
+            flag:!this.state.flag,
+            bottomheight:!this.state.bottomheight,
+        })
     }
     // 通过key获取到设备名称
     renderEquipmentName = (data) =>  {
