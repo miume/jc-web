@@ -29,7 +29,8 @@ class EquipmentArchiveManager extends Component {
             deviceName: '',
 
             pageChangeFlag: 0,   //0表示分页 1 表示查询
-            searchContent: ''
+            searchContent: '',
+            updatebackground:[],
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
@@ -85,6 +86,7 @@ class EquipmentArchiveManager extends Component {
                             modifySearchContent={this.modifySearchContent}
                             searchEvent={this.searchEvent}
                             searchReset={this.searchReset}
+                            updatebackground={this.state.updatebackground}
                         />
                     </div>
                 </div>
@@ -120,10 +122,15 @@ class EquipmentArchiveManager extends Component {
                         count: 0
                     })
                 }
+                var updatebackground=[1];
+                for(var i=0;i<rightTopData.length-1;i++){
+                    updatebackground.push(0);
+                }
                 console.log(rightTopData)
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code,
+                    updatebackground:updatebackground,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
                     var deviceFlag = true;
@@ -214,6 +221,8 @@ class EquipmentArchiveManager extends Component {
                 this.setState({
                     rightTableData: rightTableData,
                     deviceName: params.deviceName
+                },()=>{
+                    message.info('查询成功！')
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
