@@ -68,3 +68,8 @@
     background-color: #e3f7ff;
 }
 
+
+.rawTestReport-detailModal{
+    cursor: default;
+    height: 250px;
+}

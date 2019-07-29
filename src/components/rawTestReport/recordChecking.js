@@ -111,7 +111,7 @@ class RecordChecking extends React.Component{
                                 testItemId:e.testItemResultRecord.testItemId,
                                 testItemName:e.name,
                                 testResult:e.testItemResultRecord.testResult?e.testItemResultRecord.testResult:'',
-                                unit:'g/ml'
+                                unit:e.unit
                             })
                     }   
                 }
@@ -293,6 +293,7 @@ class RecordChecking extends React.Component{
             if(flag) return <span className='text-decoration' title={text}>{text.substring(0,10)} </span>;
             else {
                 let te = text.split('-');
+                console.log(te)
                 return <span className='text-decoration' title={text}>{te[0]+'-'+te[1]+'-'+te[2]+'-'+te[3]}</span>;
             }
         }
@@ -336,7 +337,7 @@ class RecordChecking extends React.Component{
                        {/* <Button className='white-button' onClick={this.props.handleCancel}><i className="fa fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button> */}
                 </div>
                 <div style={{height:'350px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:216}}></Table>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:250}} />
                 </div>
                 <CheckModal flag={this.state.flag} fail={this.state.fail} qualified={this.qualified} failed={this.failed}/>
                 </div>

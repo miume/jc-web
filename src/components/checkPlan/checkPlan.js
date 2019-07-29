@@ -12,26 +12,28 @@ import home from "../commom/fns";
 
 
 
-class CheckPlan extends React.Component{
-    constructor(props){
+class CheckPlan extends React.Component {
+    constructor(props) {
         super(props)
-        this.state={
-            dataSource:[],
+        this.state = {
+            dataSource: [],
             rightTopData: [],
             rightTableData: [],
-            deptCode: -1,
-            deviceName: '',
-            pagination : {
+
+            depCode: -1,
+            deviceNamee: '',
+            pagination: {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger: true
             },
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
-            Tableflag:'',
-            parentname:'',
+            Tableflag: '',
+            parentname: '',
         }
+
 
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
         this.handleChange=this.handleChange.bind(this)
@@ -110,7 +112,7 @@ class CheckPlan extends React.Component{
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
                         this.setState({
-                            deviceNamee:rightTopData[0].name
+                            deviceNamee: rightTopData[0].name
                         })
                     } else {
                         this.getTableData({
@@ -194,9 +196,9 @@ class CheckPlan extends React.Component{
             message.info('查询失败，请刷新下页面！')
         });
     }
-    handleChange=(value)=>{
+    handleChange = (value) => {
         this.setState({
-            Tableflag:value
+            Tableflag: value
         })
         const params = {
             deptId: parseInt(this.state.deptCode),
@@ -205,9 +207,7 @@ class CheckPlan extends React.Component{
         }
         this.getTableData(params, 0)
     }
-
-
-    searchEvent=()=>{
+    searchEvent = () => {
         console.log('调用查询借口并')
         this.setState({
             pageChangeFlag:1
@@ -218,10 +218,10 @@ class CheckPlan extends React.Component{
             deviceName:this.state.deviceName,
         })
     }
-    searchContentChange=(e)=>{
+    searchContentChange = (e) => {
         const value = e.target.value;
         this.setState({
-            searchContent:value
+            searchContent: value
         })
         console.log(this.state.searchContent)
     }
@@ -232,7 +232,6 @@ class CheckPlan extends React.Component{
         }
         this.setState({
             deviceName:key
-
         })
         this.getTableData(params, {})
     };

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Tree, Icon, Modal, Input, message} from 'antd';
 import axios from "axios";
-import '../../../equipmentArchive/equipmentArchive.css'
+import '../../../equipmentArchiveManager/equipmentArchiveManager.css'
 
 class DepTree extends Component {
     constructor(props) {

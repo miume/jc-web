@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Tree, Icon, Modal, Input, message} from 'antd';
 import styles from "./EditableTree.less";
 import axios from "axios";
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 import CancleButton from "../../BlockQuote/cancleButton";
 import NewButton from "../../BlockQuote/newButton";
 

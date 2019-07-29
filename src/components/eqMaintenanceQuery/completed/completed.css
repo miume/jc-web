@@ -51,12 +51,7 @@
     width:300px;
 
 }
-.ac-roll {
-    width: 350px;
-    height: 552px;
-    overflow-x:auto;
-    overflow-y:auto;
-}
+
 .bd-blue{
     border-color:#1890ff !important;
     color: #1890ff !important;

@@ -201,6 +201,7 @@ const CollectionCreateForm = Form.create()(
         }
 
         materialsItem = (value)=>{
+            console.log(value)
             axios({
                 url:`${this.url.sampleInspection.rawStandard}`,
                 method:'get',
@@ -210,6 +211,7 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
+                console.log(res)
                 if(res){
                     this.props.onChange(res);
                     this.setState({
