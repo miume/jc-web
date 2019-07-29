@@ -283,6 +283,7 @@ render(){
                         operation={this.operation}
                         handleSelect={this.handleSelect}
                         firstname={this.firstname}
+
                     />
                 </div>
                 <div className="checkP-DE-right">
