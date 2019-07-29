@@ -102,6 +102,7 @@ class UnqualifiedTrackTable extends React.Component {
     }
     judgeCheckOperation = (record) => {
         if(record===-1||record===3){
+
             return true;
         }else{
             return false;

@@ -250,14 +250,17 @@ class Add extends React.Component{
         }
         for(var i = 0; i < details.length; i++){
             var e = details[i].procedureTestRecord;
+            console.log(e)
             if(details[i].testItemIds===[]){
                 message.info('请将数据填写完整，再新增！');
                 return false;
-            } 
+            }
             for(var j in e){
-                if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
-                    message.info('请将数据填写完整，再新增！');
-                    return
+                if(j !== 'testFrequency' && j!== 'comment' && j!== 'samplePointName'){
+                    if( e[j]==='' || e[j] === -1 || e[j] === []||e[j] === undefined){
+                        message.info('请将数据填写完整，再新增！');
+                        return
+                    }
                 }
             }
         }

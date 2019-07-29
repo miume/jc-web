@@ -35,7 +35,7 @@ class Home extends Component {
             '2' : '制程检测',
             '3' : '样品检测',
             '4' : '原材料出库',
-            '5' : '成品出库',
+            '5' :'成品出库',
             '6' : '红单申请',
             '7' : '进货检验',
             '8' : '成品检验',
@@ -48,6 +48,7 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
+        console.log(server)
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -82,6 +83,7 @@ class Home extends Component {
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`,
+                //dsds,
                 realStock:`${server}/jc/common/sortout/realStock`,
                 stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
@@ -143,6 +145,16 @@ class Home extends Component {
                 // add:`${server}/jc/auth/department/add`,
                 // deleteById:`${server}/jc/auth/department`,
                 getAll:`${server}/jc/auth/department`,
+            },
+            /**设备保养 */
+            eqmaintenance:{
+                recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
+                deleteByIds:`${server}/jc/common/maintenanceRecord/deleteByIds`,
+                addRecord:`${server}/jc/common/maintenanceRecord/addRecord`,
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
+                records: `${server}/jc/common/maintenanceRecord/records`,
+                updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
+                maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
             },
             /**出库管理 */
             stockOut:{
@@ -254,13 +266,6 @@ class Home extends Component {
                 getAll:`${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass:`${server}/jc/common/techProductStandard/newClass`,
             },
-            /*设备档案*/
-            equipmentArchiveRecord:{
-                getAllByPage:`${server}/jc/common/equipmentArchiveRecord/pages`,
-                get:`${server}/jc/common/equipmentArchiveRecord`,
-                getPdf:`${server}/jc/common/equipmentArchiveRecord/pdf`
-                
-            },
             /**设备基本厂商*/
             equipmentManufacture:{
                 getAllEquipmentManufactute:`${server}/jc/common/equipmentBaseManufacturer/type`
@@ -274,6 +279,103 @@ class Home extends Component {
                 pages:`${server}/jc/common/unqualifiedTracingRecord/pages`,
                 unqualifiedTracingRecord:`${server}/jc/common/unqualifiedTracingRecord`
             },
+            /**设备管理部门管理*/
+            equipmentDept:{
+                dept:`${server}/jc/common/dept`
+            },
+            /**设备保养
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             * */
+            eqMaintenanceQuery:{
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
+                recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
+                recordDelete:`${server}/jc/common/maintenanceRecord`,
+            },
+            /**设备管理设备档案*/
+            equipmentArchive:{
+                device:`${server}/jc/common/device`,
+                detail:`${server}/jc/common/device/detail`,
+                page:`${server}/jc/common/device/page`,
+                units:`${server}/jc/common/device/units`,
+                accsUnit:`${server}/jc/common/device/accsUnit`,
+                addUnit: `${server}/jc/common/device/addUnit`,
+                accsMain: `${server}/jc/common/device/accsMain`,
+                addMainAcc: `${server}/jc/common/device/addMainAcc`,
+                delete: `${server}/jc/common/device/delete`,
+                upload: `${server}/jc/common/device/upload`,
+                deleteUnits: `${server}/jc/common/device/deleteUnits`,
+                addUnitAcc: `${server}/jc/common/device/addUnitAcc`,
+                unitDetail: `${server}/jc/common/device/unitDetail`,
+                delMainAcc: `${server}/jc/common/device/delMainAcc`,
+                delUnitAcc:`${server}/jc/common/device/delUnitAcc`,
+                updateMainAccessory: `${server}/jc/common/device/updateMainAccessory`,
+                updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
+                updateUnit: `${server}/jc/common/device/updateUnit`,
+                deleteUnit: `${server}/jc/common/device/deleteUnit`,
+            },
+            /**设备管理状态*/
+            equipmentStatus:{
+                deviceStatus:`${server}/jc/common/deviceStatus`,
+                delete:`${server}/jc/common/deviceStatus/delete`,
+                getByNameLike:`${server}/jc/common/deviceStatus/getByNameLike`
+            },
+            /**项目录入**/
+            eqMaintenanceDataEntry:{
+                maintenance:`${server}/jc/common/maintenance`,
+                addOne:`${server}/jc/common/maintenance/addOne`,
+                getAll:`${server}/jc/common/maintenance/getAll`,
+                page:`${server}/jc/common/maintenance/page`,
+                queryAll:`${server}/jc/common/maintenance/queryAll`,
+                deleteIds:`${server}/jc/common/maintenance/deleteIds`,
+                maintenanceDetailById:`${server}/jc/common/maintenance/maintenanceDetailById`,
+                getAllByDeviceName:`${server}/jc/common/maintenance/getAllByDeviceName`,
+            },
+            DeviceMaintenancePlan:{
+                maintenanceAddPlan:`${server}/jc/common/maintenancePlan/addPlan`,
+                maintenancePlanDetail:`${server}/jc/common/maintenancePlan/planDetail`,
+                maintenancePlanPage:`${server}/jc/common/maintenancePlan/planPage`,
+                maintenanceUpdatePlan:`${server}/jc/common/maintenancePlan/updatePlan`,
+                maintenanceDeletePlan:`${server}/jc/common/maintenancePlan/`,
+                maintenanceDeleteByIds:`${server}/jc/common/maintenancePlan/deleteByIds`,
+                getDeviceByDeptCode:`${server}/jc/common/maintenancePlan/getDeviceByDeptCode`,
+                generatorMaint:`${server}/jc/common//maintenancePlan/generatorMaint`,
+
+            },
+            /**点检查询**/
+            checkQuery:{
+                deviceDetailPage:`${server}/jc/common/deviceSpotCheckQuery/deviceDetailPage`,
+                deviceDetail:`${server}/jc/common/deviceSpotCheckQuery/deviceRecordDetail`
+            },
+            /**点检计划**/
+            SpotcheckPlan:{
+                SpotcheckPlan1:`${server}/jc/common/SpotcheckPlan`,
+                deleteByCode:`${server}/jc/common/SpotcheckPlan/deleteByCode`,
+                getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
+                page:`${server}/jc/common/SpotcheckPlan/page`,
+                getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
+            }
 
         }
         localStorage.setItem('status',JSON.stringify(status));
@@ -292,8 +394,8 @@ class Home extends Component {
     }
     /**登出时，使登陆背景动图显示 */
     render() {
-        const userName = JSON.parse(localStorage.getItem('menuList')).name;
-        const userId = JSON.parse(localStorage.getItem('menuList')).userId;
+        const userName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).name:null;
+        const userId = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).userId:null;
         return (
                 <div className="parent" >
                     <Top userId={userId} userName={userName}/>

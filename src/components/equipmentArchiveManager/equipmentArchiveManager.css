@@ -1,0 +1,190 @@
+.eA {
+    display: flex;
+    height: 550px;
+    /*background-color: #859900;*/
+
+}
+.eA-left {
+    width: 15%;
+    height: 100%;
+    /*background-color: #00B83F;*/
+    overflow-y: auto;
+    overflow-x: auto;
+    font-size: small;
+}
+.eA-right {
+    width: 85%;
+    height: 100%;
+    padding-left: 10px;
+
+    /*background-color: #2a65a0;*/
+}
+.eA-right-top {
+    width: 100%;
+    height: 10%;
+    /*background-color: yellow;*/
+}
+.eA-right-bottom{
+    margin-top: 15px;
+}
+.eA-right-bottom-one {
+    margin-top: 15px;
+    width: 100%;
+    /*height: 50px !important;*/
+    /*background-color: red;*/
+}
+.eA-right-bottom-two {
+    margin-top: 15px;
+    width: 100%;
+    /*height: 50px !important;*/
+    /*background-color: red;*/
+}
+.eA-right-bottom-one .ant-table-body {
+     max-height: 360px !important;
+ }
+.eA-right-bottom-two .ant-table-body {
+    max-height: 302px !important;
+}
+.depTree-input {
+    max-width: 100px;
+    height:25px
+}
+
+/*设备状况*/
+.eq-statu1 i {
+    color:lawngreen;
+}
+.eq-statu2 i {
+    color:yellow;
+}
+.eq-statu3 i {
+    color:red;
+}
+.eq-statu4 i {
+    color:grey;
+}
+
+/*增加模块*/
+.eq-addModal-newRow {
+    height: 110px;
+    overflow-y: auto;
+}
+
+/*功能*/
+.eq-divider {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+/*fittingModal*/
+.eq-td {
+    border: 1px solid black;
+    width: 150px;
+}
+.eq-td-left {
+    border-left: 0;
+}
+
+.depTreeSelect {
+    background: #0079FE;
+    border-radius:3px;
+    color: white;
+}
+.depTreeSelect span{
+    padding: 5px;
+}
+
+.eq-detailModalFirst{
+    display: flex;
+}
+.eq-detailModalFirstFont {
+    padding-top: 5px;
+    font-size: 20px;
+}
+.eq-detailModalDiv{
+    width: 110px;
+    height: 35px;
+    /*border: 1px solid grey;*/
+    padding-top: 5px;
+    padding-left: 5px;
+    border-radius:3px;
+}
+.eq-detailModalDiv-switch{
+    width: 210px;
+    height: 35px;
+    padding-top: 5px;
+    padding-left: 5px;
+    border-radius:3px;
+}
+
+.eq-component-titleHead {
+    height: 40px;
+    display: flex;
+}
+.eq-component-title-first{
+    height: 40px;
+    padding-top: 10px;
+}
+/*配件*/
+.eq-component-title{
+    background: #F2F2F2;
+    color: black;
+    height: 40px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.eq-comModal-newRow {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.DropExpandselected{
+    height: 80px;
+    overflow-x: auto;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    display: flex;
+    font-size: 15px;
+    width: 1000px;
+}
+.buttonofdrop{
+    display: inline;
+    position: absolute;
+    z-index: 10;
+    margin-left: 1010px;
+}
+.DropExpandblue{
+    overflow-x: auto;
+    font-size: 15px;
+    cursor: pointer;
+    color: deepskyblue;
+    margin-right: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    background-color: white;
+    border-radius:5px;
+}
+.DropExpandwhite{
+    overflow-x: auto;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+    margin-right: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    background-color: dodgerblue;
+    border-radius:5px;
+    padding: 3px;
+}
+.Dropfrist{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 1159px;
+    font-size: 15px;
+    background-color: white;
+}
+.eq-outside{
+    width: 1159px;
+}

@@ -204,7 +204,7 @@ class DynamicFieldSet extends React.Component{
             data["createPersonId"] = parseInt(this.ob.userId)
             data["instructorRecord"] = instructorRecord
             data["pointRecordList"] = pointRecordList
-            
+
             axios({
                 url : `${this.url.instructor.instructorAll}`,
                 method:'post',

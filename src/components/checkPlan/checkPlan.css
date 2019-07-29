@@ -1,0 +1,60 @@
+.checkP-DE-demo{
+    display: flex;                /*设置为flex布局*/
+    /*justify-content: space-around;*/
+    width: 100%;
+    padding: 15px;
+
+}
+/*.demo > div{*/
+/*    flex: none;*/
+/*}*/
+.checkP-DE-left{
+    width: 20%;
+    height: 729px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #f1f1f1;
+}
+.checkP-DE-right{
+    width: 80%;
+    margin-left: 20px;
+    height:729px;
+}
+.checkP-Table-top{
+    background-color: #1d7fb3 !important;
+}
+.checkP-Table-bottom{
+    background-color: #F5F5F5 !important;
+}
+.checkP-right {
+    float: right;
+    border: 3px solid #73AD21;
+    padding: 5px;
+}
+.checkP-eqblocka{
+    height:50px;
+    width: 100%;
+    background:#F5F5F5;
+    text-align:center;
+    line-height: 50px;
+
+}
+
+.changeTable .ant-table .ant-table-content{
+    height:450px;
+    max-height: 450px !important;
+}
+.changeTable .ant-table{
+    height:450px;
+}
+.checkP_buttons{
+    display: flex;
+}
+.check_right{
+    display: flex;
+    justify-content:flex-end;
+    width:90%;
+}
+.checkp-left{
+    display: flex;
+}

@@ -267,7 +267,7 @@ class CheckSpan extends React.Component {
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.name,
                             testResult:e.testItemResultRecord.testResult,
-                            unit:'g/ml'
+                            unit:e.unit
                         })
                     }
                 }
@@ -409,7 +409,12 @@ class CheckSpan extends React.Component {
                 visible: false,
                 subVisible: false,
             });
-            this.props.fetch();
+            this.props.fetch({
+                pageSize:this.props.pagination.pageSize,
+                pageNumber:this.props.pagination.current,
+                sortField:'sample_delivering_date',
+                sortType: 'desc',
+            });
             message.info(data.data.message);
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')

@@ -1,0 +1,23 @@
+.wi-inputIt{
+    margin:0 8px 8px 0;
+    display: inline-block;
+    width:200px;
+}
+.wi-title{
+    float:right;
+}
+.wi-putright{
+    position: absolute;
+    right: 18px;
+}
+.wi-table .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.wi-roll {
+    width: 200px;
+    height: 552px;
+    overflow-x:auto;
+    overflow-y:auto;
+}
+

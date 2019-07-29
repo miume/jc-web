@@ -80,9 +80,8 @@ class InterTable extends React.Component{
         width: '6%',
         render: isPublished => {
             switch(`${isPublished}`) {
-                case '0': return '未发布';
                 case '1': return '已发布';
-                default: return '无';
+                default: return '未发布';
             }
         },
     },{
@@ -120,6 +119,7 @@ class InterTable extends React.Component{
                         <Divider type="vertical" />
                         {checkSpanFlag?(
                             <CheckSpan
+                                pagination={this.props.pagination}
                                 menuList={this.props.menuList}
                                 url={this.props.url}
                                 id={record.sampleDeliveringRecord.id}
@@ -188,7 +188,7 @@ class InterTable extends React.Component{
         }
     };
     judgeReleaseOperation = (isPublished,status) => {
-        if(isPublished===0&&(status===3||status===2)){
+        if((isPublished===0||isPublished===null)&&(status===3||status===2)){
             return true;
         }else{
             return false;

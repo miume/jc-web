@@ -7,6 +7,7 @@ import AddModal from './add';
 import { Table,Popconfirm,Divider,message } from 'antd';
 import Edit from "./editor";
 import Detail from './detail';
+import DepartmentCard from "../eqMaintenancePlan/blockCompontent/department";
 
 class Equipment extends React.Component{
     url
@@ -17,6 +18,7 @@ class Equipment extends React.Component{
             dataSource:[],
             pagination:[],
             searchContent:'',
+
         }
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -147,8 +149,7 @@ class Equipment extends React.Component{
     }
     /**获取查询时名称的实时变化 */
     searchContentChange(e){
-        const value = e.target.value;
-        this.setState({searchContent:value});
+        this.setState({searchContent: e.target.value});
     }
     searchEvent(){
         const ope_name = this.state.searchContent;
@@ -188,7 +189,11 @@ class Equipment extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
                 <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>&nbsp;&nbsp;&nbsp;
-                <SearchCell name='请输入指导书名称' fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} flag={this.judgeOperation(this.operation,'QUERY')}/>
+                <SearchCell
+                    name='请输入指导书名称'
+                    fetch={this.fetch}
+                    searchEvent={this.searchEvent}
+                    searchContentChange={this.searchContentChange} flag={this.judgeOperation(this.operation,'QUERY')}/>
                 <div className='clear'></div>
                 <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumberId} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
                 </div>
