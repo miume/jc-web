@@ -115,6 +115,7 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
+                    this.props.firstworkshop(res[0].son[0].name)
                 }
                 this.setState({
                     dataSource: dataSource,
@@ -138,7 +139,8 @@ class DepTree extends Component {
         var dataSource = this.state.dataSource;
         this.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-        console.log(e)
+        this.props.changeworkshop(e.node.props.dataRef.value)
+        console.log(e.node.props.dataRef.value)
     }
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {

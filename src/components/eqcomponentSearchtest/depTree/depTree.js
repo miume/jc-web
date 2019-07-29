@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message, Card} from 'antd';
+import {Tree, Icon, Modal, Input, message} from 'antd';
+import styles from "./EditableTree.less";
 import axios from "axios";
+import '../eqcomponentSearch.css'
+import CancleButton from "../../BlockQuote/cancleButton";
+import NewButton from "../../BlockQuote/newButton";
+
+
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ['0','1'],
+            expandedKeys: [],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -20,16 +26,21 @@ class DepTree extends Component {
                 code: null,
                 name: '',
                 parentCode: null
-            },
+            }
         };
         this.getData = this.getData.bind(this)
         this.onSelect = this.onSelect.bind(this)
 
         this.onExpand = this.onExpand.bind(this)
         this.renderTreeNodes = this.renderTreeNodes.bind(this)
+        this.handleSelect = this.handleSelect.bind(this)
     }
 
     componentDidMount() {
+        const params={
+            deptId:2,
+            statusId:1,
+        }
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
@@ -71,9 +82,6 @@ class DepTree extends Component {
                 isEditable: false,
                 children: []
             }];
-            console.log('-----------------------')
-            console.log(res)
-            console.log('-----------------------')
             if (res) {
                 var expandedKeys = ["0"];
                 for (let i = 0; i < res.length; i++) {
@@ -84,8 +92,7 @@ class DepTree extends Component {
                         code: arrParent.code.toString(),
                         parentCode: '0',
                         isSelect: false,
-                        children: [],
-                        parentname:'总公司'
+                        children: []
                     };
                     if(i === 0){
                         expandedKeys.push(arrParent.code.toString())
@@ -100,8 +107,7 @@ class DepTree extends Component {
                                 code: arr.code.toString(),
                                 parentCode: arr.parentCode.toString(),
                                 isSelect: true,
-                                children: [],
-                                parentname:arrParent.name
+                                children: []
                             });
                         }else{
                             parenObj['children'].push({
@@ -110,8 +116,7 @@ class DepTree extends Component {
                                 code: arr.code.toString(),
                                 parentCode: arr.parentCode.toString(),
                                 isSelect: false,
-                                children: [],
-                                parentname:arrParent.name,
+                                children: []
                             });
                         }
                     }
@@ -119,19 +124,17 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
-                    this.props.firstname(res[0].parent.name)
                 }
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                     expandedKeys: expandedKeys,
+                    expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
                         parentCode: null
                     },
                 })
-                console.log(expandedKeys)
             } else {
 
             }
@@ -139,16 +142,23 @@ class DepTree extends Component {
     };
 
 
-    onSelect = (selectedKeys, e) => {
+    onSelect = (selectedKeys, info) => {
         var dataSource = this.state.dataSource;
-        this.props.handleSelect(selectedKeys[0],dataSource);
+        this.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-        console.log(e.node)
-        console.log(e.node.props)
-        console.log(e.node.props.dataRef)
-        console.log(e.node.props.dataRef.value)
     }
-
+    handleSelect = (code, data) => data.map((item) => {
+        if (item.code === code) {
+            item.isSelect = true;
+        } else {
+            item.isSelect = false;
+        }
+        //Tip: Must have, when a node is editable, and you click a button to make other node editable, the node which you don't save yet will be not editable, and its value should be defaultValue
+        // item.isSelect = false;
+        if (item.children) {
+            this.handleSelect(code, item.children)
+        }
+    });
 
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {

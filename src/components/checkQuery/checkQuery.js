@@ -7,18 +7,10 @@ import CheckTable from "./checktable"
 import DepTree from './depTree';
 import "./checkQuery.css"
 import axios from "axios";
+import home from '../commom/fns'
 import Check from "../purchaseCheckReport/check";
 
-var fakedataSource=[];
-for(var i=0;i<15;i++)
-{
-    fakedataSource.push({
-        index: i,
-        deviceNumber:i,
-        deviceName:'设备名称4',
-        workshop:'所属车间',
-    });
-}
+
 class CheckQuery extends React.Component{
     constructor(props){
         super(props)
@@ -36,11 +28,14 @@ class CheckQuery extends React.Component{
             },
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
-            deviceNamee:''
+            deviceNamee:'',
+            workshop:''
         }
         this.fetch=this.fetch.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
         this.returnEquKey=this.returnEquKey.bind(this)
+        this.changeworkshop=this.changeworkshop.bind(this)
+        this.firstworkshop=this.firstworkshop.bind(this)
     }
 
     componentDidMount() {
@@ -97,9 +92,6 @@ class CheckQuery extends React.Component{
                             deptId: parseInt(code),
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
-                        this.setState({
-                            deviceNamee:rightTopData[0].name
-                        })
                     } else {
                         this.getTableData({
                             deptId: parseInt(code),
@@ -116,6 +108,7 @@ class CheckQuery extends React.Component{
     };
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        console.log(params)
         if (flag) {
             this.setState({
                 pageChangeFlag: 0,
@@ -139,16 +132,19 @@ class CheckQuery extends React.Component{
             params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
+            console.log(res)
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceDocumentMain;
+                    console.log('11111')
                     var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
                         index: i + 1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
+                        workshop:this.state.workshop,
                         specification: arr['specification'],
                         startdate: arr['startdate'],
                         idCode: arr['idCode'],
@@ -157,11 +153,14 @@ class CheckQuery extends React.Component{
                         name: eqStatus['name']
                     })
                 }
-                this.pagination.total = res ? res.total : 0;
+                console.log('2222222')
+                console.log(rightTableData)
                 this.setState({
                     rightTableData: rightTableData,
                     deviceName: params.deviceName
                 });
+                console.log('kkkkkkkkkkkk')
+                console.log(this.state.rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
@@ -175,9 +174,6 @@ class CheckQuery extends React.Component{
     }
     fetch = () => {
         console.log('1111111111111111')
-        this.setState({
-            dataSource:fakedataSource
-        })
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         // if(flag) {
         //     var {pagination} = this.state;
@@ -228,15 +224,27 @@ class CheckQuery extends React.Component{
             //---------------------------------
     returnEquKey = (key) => {
         const params = {
-            deptId: parseInt(this.props.depCode),
-            deviceName: key
+            deptId: parseInt(this.state.depCode),
+            deviceName: key,
         }
         this.setState({
             deviceNamee:key
         })
+        console.log(params)
         console.log(this.state.deviceNamee)
-        this.getTableData(params, {})
+        this.getTableData(params, 0)
     };
+
+    changeworkshop = (value)=> {
+        this.setState({
+            workshop:value
+        })
+    }
+    firstworkshop=(e)=>{
+        this.setState({
+            workshop:e
+        })
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
@@ -259,13 +267,15 @@ class CheckQuery extends React.Component{
                                 getRightData={this.getRightData}
                                 url={this.url}
                                 operation={this.operation}
+                                changeworkshop={this.changeworkshop}
+                                firstworkshop={this.firstworkshop}
                             />
                         </div>
                         <div className="checkQ-DE-right">
                             <Tabs onChange={this.returnEquKey}>
                                 {this.renderEquipmentName(this.state.rightTopData)}
                             </Tabs>
-                        <CheckTable dataSource={this.state.dataSource} operation={this.operation} pagination={this.state.pagination}/>
+                        <CheckTable rightTableData={this.state.rightTableData} operation={this.operation} pagination={this.state.pagination} url={this.url} fetch={this.getTableData} />
                         </div>
                     </div>
 

@@ -13,7 +13,6 @@ class CheckTable extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            selectedRowKeys : [],
             searchContent:''
         }
         this.searchContentChange=this.searchContentChange.bind(this)
@@ -32,13 +31,6 @@ class CheckTable extends React.Component{
         })
     }
     render(){
-        const {selectedRowKeys,pagination} = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange:this.onSelectChange,
-
-        };
-
 
 
 
@@ -49,8 +41,8 @@ class CheckTable extends React.Component{
             sorter:(a,b) =>a.id-b.id,
             width:'7%',
         },{ title: '设备编号',
-            dataIndex: 'deviceNumber' ,
-            key: 'deviceNumber',
+            dataIndex: 'fixedassetsCode' ,
+            key: 'fixedassetsCode',
             width: '24%',
             align:'left',
             editable: false
@@ -75,7 +67,7 @@ class CheckTable extends React.Component{
             align: 'left',
             render: (text, record) => {
                 return (
-                     <Detail deviceNumber={record.deviceNumber} devicename={record.deviceName}/>
+                     <Detail fixedassetsCode={record.fixedassetsCode} deviceName={record.deviceName}    url={this.props.url} code={record.code}/>
                      );
                 }
             }]
@@ -86,17 +78,17 @@ class CheckTable extends React.Component{
 
 
                 <SearchCell
+                    fetch={this.props.fetch}
 s                    name="设备编号/设备名称"
                     onSearch={this.searchEvent}
                     onChange={this.searchContentChange}
                     flag={home.judgeOperation(this.props.operation, 'QUERY')}
                 />
                 <div className="clear"></div>
-
             <Table
-                   rowSelection={rowSelection}
+
                    columns={this.columns}
-                   dataSource={this.props.dataSource}
+                   dataSource={this.props.rightTableData}
                    onChange={this.props.handleTableChange}
                    pagination={this.props.pagination}
                    size="small"
