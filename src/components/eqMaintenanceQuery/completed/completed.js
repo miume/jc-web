@@ -48,17 +48,11 @@ class Completed extends React.Component{
             <div className="eqQueryCompleted">
                 <Layout>
                     <Sider theme='light' width={240} style={{background:"white",height:'525px'}}>
-                        <div className="ac-roll" style={{width:'220px'}}>
-                        <Card  title="所属部门"  >
-
                             <DepTree
-                                url={this.url}
-                                getTableData={this.props.getTableData}
-                                getLastMonthTime={this.getLastMonthTime}
+                              url={this.url}
+                              getTableData={this.props.getTableData}
+                               getLastMonthTime={this.getLastMonthTime}
                             />
-
-                        </Card>&nbsp;&nbsp;
-                        </div>
                     </Sider>
                     <Content  theme="light">
                         <Right
@@ -198,7 +192,7 @@ class Completed extends React.Component{
             const res = data.data.data?data.data.data:[];
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i;
+                    res.list[i-1]['index']=(res.prePage)*10+i; // index: i + 1 + (res.page - 1) * res.size
                 }
                 const {pagination} = this.state;
                 pagination.total=res.total;

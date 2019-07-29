@@ -2,7 +2,7 @@ import {Card, message, Tree} from 'antd';
 import React from 'react'
 
 import './style.css'
-import '../../equipmentArchive/equipmentArchive.css'
+import '../../equipmentArchiveManager/equipmentArchiveManager.css'
 import axios from "axios";
 
 class DepartmentCard extends React.Component{

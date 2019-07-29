@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Table, Icon, Divider, message} from 'antd';
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 import EqComponent from '../table/eqComponent'
 import Fittings from '../table/fittings'
 import Delete from '../table/delete'
@@ -64,10 +64,6 @@ class EARightTable extends Component {
                         url={this.props.url}
                         depCode={this.props.depCode}
                     />
-                    <Divider type="vertical"/>
-                    <Maintenance/>
-                    <Divider type="vertical"/>
-                    <Repair/>
                     <Divider type="vertical"/>
                     <Details
                         record={record}

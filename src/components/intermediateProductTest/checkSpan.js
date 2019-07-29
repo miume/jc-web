@@ -267,7 +267,7 @@ class CheckSpan extends React.Component {
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.name,
                             testResult:e.testItemResultRecord.testResult,
-                            unit:'g/ml'
+                            unit:e.unit
                         })
                     }
                 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Table, Icon, message} from 'antd';
-import '../equipmentArchive.css'
+import '../equipmentArchiveManager.css'
 import EARightTable from './eARightTable'
 import Add from './add'
 import DeleteByIds from '../../BlockQuote/deleteByIds';
