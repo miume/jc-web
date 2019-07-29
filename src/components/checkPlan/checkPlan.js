@@ -50,7 +50,10 @@ class CheckPlan extends React.Component {
         this.handleSelect = this.handleSelect.bind(this)
         this.returnEquKey = this.returnEquKey.bind(this)
     }
-
+    onExpand = (expandedKeys) => {//展开的时候更新一下
+        this.expandedKeys = expandedKeys;
+        this.setState({expandedKeys: expandedKeys})
+    }
     componentDidMount() {
         this.fetch()
     }
