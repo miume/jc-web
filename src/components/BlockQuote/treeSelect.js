@@ -44,11 +44,7 @@ class TreeCard extends React.Component{
     }
     // 通过回调函数，更新表格中的数据
     returnDepKey = (selectedKeys,e) => {
-        if(selectedKeys[0]){
-            const params = this.props.params;
-            console.log(params)
-            this.props.getTableData(params)
-        }
+        this.props.getParams(selectedKeys,e)
     };
 }
 export default TreeCard
