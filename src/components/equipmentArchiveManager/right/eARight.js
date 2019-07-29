@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Icon, Tabs} from 'antd';
-import '../equipmentArchiveManager.css'
-import EARightBottom from './eARightBottom'
+import '../equipmentArchiveManager.css';
+import EARightBottom from './eARightBottom';
+var flagsState=[1];
 class EARight extends Component {
     constructor(props) {
         super(props);
@@ -9,14 +10,15 @@ class EARight extends Component {
             rightTableData: [],
             topNumber:'',
             flag:true,
+            flags:[1],
+            bottomheight:true,
         };
         this.returnEquKey = this.returnEquKey.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
-
     }
 
     render() {
-        console.log("设备数据",this.props.rightTopData)
+
         return (
             <div className="eA-right-top">
                 <div>
@@ -38,30 +40,40 @@ class EARight extends Component {
                     modifySearchContent={this.props.modifySearchContent}
                     searchEvent={this.props.searchEvent}
                     searchReset={this.props.searchReset}
+                    bottomheight={this.state.bottomheight}
                 />
             </div>
         )
     }
     // 通过回调函数，获得标签页表格中的数据
-    returnEquKey=(key,name,count)=>{
+    returnEquKey=(key,name)=>{
         const params = {
             deptId: parseInt(this.props.depCode),
             deviceName: name
         }
         this.props.getTableData(params, {})
-        console.log(key)
-        console.log(name)
+        console.log("props",this.props.updatebackground)
+        this.setState({flags:this.props.updatebackground},()=>{
+            var flagx=this.state.flags;
+            const index=flagx.indexOf(1);
+            flagx[index]=0;
+            flagx[parseInt(key)]=1;
+            this.setState({flags:flagx})
+        })
     }
 
     handleClick=()=>{
-        this.setState({flag:!this.state.flag})
+        this.setState({
+            flag:!this.state.flag,
+            bottomheight:!this.state.bottomheight,
+        })
     }
-
     // 通过key获取到设备名称
     renderEquipmentName = (data) =>  {
         console.log("data",data);
         var first=data.slice(0,7);
-        var last=data.slice(7)
+        console.log(this.props.updatebackground)
+        console.log(this.state.flags)
         return (
             <div >
                 <div className="eq-outside">
@@ -80,32 +92,53 @@ class EARight extends Component {
                             <div className="DropNoExpand">
                                 {
                                     first.map((data,index)=>{
-                                        return (
-                                            <span
-                                                className="DropExpandblue"
-                                                key={index}
-                                                onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
-                                        )
+                                        if(this.props.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+
                                     } )
                                 }
                             </div>:
                             <div className={"DropExpandselected"} >
                                 {
                                     data.map((data,index)=>{
-                                        return (
-                                            <span
-                                                className="DropExpandblue"
-                                                key={index}
-                                                onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
-                                        );
+                                        if(this.props.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
                                     } )
                                 }
                             </div>
                         }
                     </div>
                 </div>
-
             </div>)
+
     }
 
 

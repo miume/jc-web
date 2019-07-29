@@ -70,6 +70,7 @@ class EARightBottom extends Component {
                     fetch={this.props.fetch}
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
+                    bottomheight={this.props.bottomheight}
                 />
             </div>
         )

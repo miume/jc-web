@@ -24,13 +24,27 @@
     height: 10%;
     /*background-color: yellow;*/
 }
-.eA-right-bottom {
+.eA-right-bottom{
+    margin-top: 15px;
+}
+.eA-right-bottom-one {
     margin-top: 15px;
     width: 100%;
     /*height: 50px !important;*/
     /*background-color: red;*/
 }
-
+.eA-right-bottom-two {
+    margin-top: 15px;
+    width: 100%;
+    /*height: 50px !important;*/
+    /*background-color: red;*/
+}
+.eA-right-bottom-one .ant-table-body {
+     max-height: 360px !important;
+ }
+.eA-right-bottom-two .ant-table-body {
+    max-height: 302px !important;
+}
 .depTree-input {
     max-width: 100px;
     height:25px
@@ -147,6 +161,20 @@
     margin-left: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
+    background-color: white;
+    border-radius:5px;
+}
+.DropExpandwhite{
+    overflow-x: auto;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+    margin-right: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    background-color: dodgerblue;
+    border-radius:5px;
 }
 .Dropfrist{
     display: flex;
