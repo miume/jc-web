@@ -120,6 +120,7 @@ class InterTable extends React.Component{
                         <Divider type="vertical" />
                         {checkSpanFlag?(
                             <CheckSpan
+                                pagination={this.props.pagination}
                                 menuList={this.props.menuList}
                                 url={this.props.url}
                                 id={record.sampleDeliveringRecord.id}
