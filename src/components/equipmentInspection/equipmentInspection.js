@@ -1,13 +1,13 @@
-import React from 'react';
-import './data.css';
-import DataPart from './dataPart';
+import React from "react";
 import Blockquote from '../BlockQuote/blockquote';
+import DataPart from './dataPart';
+import './data.css';
 
 const icon = [
     'fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
 ]
 
-class BaseData extends React.Component{
+class EquipmentInspection extends React.Component{
     componentDidMount(){
         this.getData()
     }
@@ -24,15 +24,15 @@ class BaseData extends React.Component{
     click(e){
         const path = e.target.id.split('-');
         const dataEntry = {
-           openKeys : this.current.menuId,
-           menuName : path[1],
-           menuParent : this.current.menuName,
-           path : path[0]
-       }
-       localStorage.setItem('baseData',JSON.stringify(dataEntry))
+            openKeys : this.current.menuId,
+            menuName : path[1],
+            menuParent : this.current.menuName,
+            path : path[0]
+        }
+        localStorage.setItem('equipmentInspection',JSON.stringify(dataEntry))
         this.props.history.push({pathname:path[0]})
-   }
-   getData(){
+    }
+    getData(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path=== this.current.path)[0]:[];
         var data = menus&&menus.menuList?
             menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
@@ -53,16 +53,16 @@ class BaseData extends React.Component{
                 <Blockquote name={this.current?this.current.menuName:''} menu={this.current?this.current.menuParent:''} />
                 <div className='dataEntry'>
                     <div className='card-parent'>
-                    {
-                        this.state.data?this.state.data.map(d=>
-                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
-                        ):null
-                    }
+                        {
+                            this.state.data?this.state.data.map(d=>
+                                <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
+                            ):null
+                        }
+                    </div>
                 </div>
-           </div>
-           </div>
+            </div>
         );
     }
 }
 
-export default BaseData;
+export default EquipmentInspection;
