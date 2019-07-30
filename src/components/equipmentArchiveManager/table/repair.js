@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {Modal, Button, message} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
-import MaintenanceModal from "../modal/maintenanceModal";
+import RepairModal from "../modal/repairModal";
 
 class Repair extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class Repair extends React.Component {
     render() {
         return (
             <span>
-                <span className="blue" onClick={this.handleRepair}>保养</span>
+                <span className="blue" onClick={this.handleRepair}>维修</span>
                 <Modal
                     title="数据详情"
                     visible={this.state.visible}
@@ -34,7 +34,7 @@ class Repair extends React.Component {
                         />
                     ]}
                 >
-                    <MaintenanceModal
+                    <RepairModal
                         data={this.state.data}
                     />
                 </Modal>

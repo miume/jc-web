@@ -160,7 +160,10 @@ class EARightTable extends Component {
                         depCode={this.props.depCode}
                     />
                     <Divider type="vertical"/>
-                    <Maintenance/>
+                    <Maintenance
+                        record={record}
+
+                    />
                     <Divider type="vertical"/>
                     <Repair/>
                     <Divider type="vertical"/>
