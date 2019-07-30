@@ -53,7 +53,11 @@ import EqMaintenanceQuery from '../eqMaintenanceQuery/eqMaintenanceQuery'
 
 import EquipmentArchiveManager from '../equipmentArchiveManager/equipmentArchiveManager'
 import EqcomponentSearch from '../eqcomponentSearch/eqcomponentSearch'
-
+import EquipmentInspection from '../equipmentInspection/equipmentInspection'
+import InspectionTemplate from '../inspectionTemplate/inspectionTemplate'
+import InspectionPlan from '../inspectionPlan/inspectionPlan'
+import InspectionQuery from '../inspectionQuery/inspectionQuery'
+import LocationBasic from "../locationBasic/locationBasic";
 class Right extends React.Component {
     render() {
         const data = [{
@@ -189,6 +193,21 @@ class Right extends React.Component {
             },{
                 path:"/eqcomponentSearch",
                 component:EqcomponentSearch
+            },{
+                path:"/equipmentInspection",
+                component:EquipmentInspection
+            },{
+                path:"/inspectionTemplate",
+                component:InspectionTemplate
+            },{
+                path:"/inspectionPlan",
+                component:InspectionPlan
+            },{
+                path:"/inspectionQuery",
+                component:InspectionQuery
+            },{
+                path:"/locationBasic",
+                component:LocationBasic
             }]
         return (
             <div className="rightDiv">
