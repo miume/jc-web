@@ -362,7 +362,21 @@ class Home extends Component {
                 getDeviceByDeptCode:`${server}/jc/common/maintenancePlan/getDeviceByDeptCode`,
                 generatorMaint:`${server}/jc/common//maintenancePlan/generatorMaint`,
 
+            },
+            /**点检查询**/
+            checkQuery:{
+                deviceDetailPage:`${server}/jc/common/deviceSpotCheckQuery/deviceDetailPage`,
+                deviceDetail:`${server}/jc/common/deviceSpotCheckQuery/deviceRecordDetail`
+            },
+            /**点检计划**/
+            SpotcheckPlan:{
+                SpotcheckPlan1:`${server}/jc/common/SpotcheckPlan`,
+                deleteByCode:`${server}/jc/common/SpotcheckPlan/deleteByCode`,
+                getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
+                page:`${server}/jc/common/SpotcheckPlan/page`,
+                getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
             }
+
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

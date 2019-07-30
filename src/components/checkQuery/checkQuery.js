@@ -1,24 +1,18 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import {Col, message, Row, Tabs} from "antd";
+import {Button, Col, Icon, message, Row, Tabs} from "antd";
 import Eqblock from "../eqMaintenanceDataEntry/eqblock";
 import Right from "../eqMaintenanceDataEntry/right";
 import CheckTable from "./checktable"
 import DepTree from './depTree';
 import "./checkQuery.css"
+import "../equipmentArchiveManager/equipmentArchiveManager.css"
 import axios from "axios";
+import home from '../commom/fns'
 import Check from "../purchaseCheckReport/check";
+import SearchCell from "./searchCell";
 
-var fakedataSource=[];
-for(var i=0;i<15;i++)
-{
-    fakedataSource.push({
-        index: i,
-        deviceNumber:i,
-        deviceName:'设备名称4',
-        workshop:'所属车间',
-    });
-}
+
 class CheckQuery extends React.Component{
     constructor(props){
         super(props)
@@ -36,25 +30,125 @@ class CheckQuery extends React.Component{
             },
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
-            deviceNamee:''
+            deviceNamee:'',
+            workshop:'',
+            updatebackground:[],
+            topNumber:'',
+            flag:true,
+            flags:[1],
+            bottomheight:true,
         }
         this.fetch=this.fetch.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
         this.returnEquKey=this.returnEquKey.bind(this)
+        this.changeworkshop=this.changeworkshop.bind(this)
+        this.firstworkshop=this.firstworkshop.bind(this)
+        this.searchContentChange=this.searchContentChange.bind(this)
+        this.searchEvent=this.searchEvent.bind(this)
+        this.handleClick=this.handleClick.bind(this)
     }
 
+    handleClick=()=>{
+        this.setState({
+            flag:!this.state.flag,
+            bottomheight:!this.state.bottomheight,
+        })
+    }
     componentDidMount() {
         this.fetch()
     }
-    renderEquipmentName = (data) => data.map((item) => {
-
+    renderEquipmentName = (data) =>  {
+        console.log("data",data);
+        var first=data.slice(0,7);
+        console.log(this.state.updatebackground)
+        console.log(this.state.flags)
         return (
-            <Tabs.TabPane key={item.name} tab={item.name + '(' + item.count + ')'}>
-            </Tabs.TabPane>
-        )
-    });
-    //----------------------------------
+            <div >
+                <div className="eq-outside">
+                    <div className={'buttonofdrop'}>
+                        {
+                            data.length>7?
+                                <Button size={"small" } onClick={this.handleClick}>
+                                    {this.state.flag?<Icon type="down" />:<Icon type="up" />}
+                                    {this.state.flag?"更多":"收起"}
+                                </Button>:''
 
+                        }
+                    </div>
+                    <div className={'Dropfrist'}>
+                        {this.state.flag?
+                            <div className="DropNoExpand">
+                                {
+                                    first.map((data,index)=>{
+                                        if(this.state.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+
+                                    } )
+                                }
+                            </div>:
+                            <div className={"DropExpandselected"} >
+                                {
+                                    data.map((data,index)=>{
+                                        if(this.state.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                    } )
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>)
+
+    }
+    //----------------------------------
+    searchEvent = () => {
+        console.log('调用查询借口并查询')
+            console.log(this.state.deptCode)
+        console.log(this.state.deviceName)
+        this.setState({
+            pageChangeFlag:1
+        });
+        this.getTableData({
+            condition:this.state.searchContent,
+            deptId:parseInt(this.state.depCode),
+            deviceName:this.state.deviceName,
+        })
+    }
+    searchContentChange = (e) => {
+        const value = e.target.value;
+        this.setState({
+            searchContent: value
+        })
+        console.log(this.state.searchContent)
+    }
 
     getRightData = (code, deviceName) => {
         code = parseInt(code)
@@ -81,9 +175,14 @@ class CheckQuery extends React.Component{
                         count: 0
                     })
                 }
+                var updatebackground=[1];
+                for(var i=0;i<rightTopData.length-1;i++){
+                    updatebackground.push(0);
+                }
                 this.setState({
                     rightTopData: rightTopData,
-                    depCode: code
+                    depCode: code,
+                    updatebackground:updatebackground,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
                     var deviceFlag = true;
@@ -97,9 +196,6 @@ class CheckQuery extends React.Component{
                             deptId: parseInt(code),
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
-                        this.setState({
-                            deviceNamee:rightTopData[0].name
-                        })
                     } else {
                         this.getTableData({
                             deptId: parseInt(code),
@@ -116,6 +212,7 @@ class CheckQuery extends React.Component{
     };
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        console.log(params)
         if (flag) {
             this.setState({
                 pageChangeFlag: 0,
@@ -139,16 +236,19 @@ class CheckQuery extends React.Component{
             params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
+            console.log(res)
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceDocumentMain;
+                    console.log('11111')
                     var eqStatus = res.list[i].basicInfoDeviceStatus
                     rightTableData.push({
                         index: i + 1,
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
+                        workshop:this.state.workshop,
                         specification: arr['specification'],
                         startdate: arr['startdate'],
                         idCode: arr['idCode'],
@@ -157,11 +257,14 @@ class CheckQuery extends React.Component{
                         name: eqStatus['name']
                     })
                 }
-                this.pagination.total = res ? res.total : 0;
+                console.log('2222222')
+                console.log(rightTableData)
                 this.setState({
                     rightTableData: rightTableData,
                     deviceName: params.deviceName
                 });
+                console.log('kkkkkkkkkkkk')
+                console.log(this.state.rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
@@ -175,9 +278,6 @@ class CheckQuery extends React.Component{
     }
     fetch = () => {
         console.log('1111111111111111')
-        this.setState({
-            dataSource:fakedataSource
-        })
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         // if(flag) {
         //     var {pagination} = this.state;
@@ -226,16 +326,56 @@ class CheckQuery extends React.Component{
 
             }
             //---------------------------------
-    returnEquKey = (key) => {
+    returnEquKey=(key,name)=>{
         const params = {
-            deptId: parseInt(this.props.depCode),
-            deviceName: key
+            deptId: parseInt(this.state.depCode),
+            deviceName: name
         }
-        this.setState({
-            deviceNamee:key
+        this.getTableData(params, 0)
+        console.log("props",this.state.updatebackground)
+        this.setState({flags:this.state.updatebackground},()=>{
+            var flagx=this.state.flags;
+            const index=flagx.indexOf(1);
+            flagx[index]=0;
+            flagx[parseInt(key)]=1;
+            this.setState({flags:flagx})
         })
-        console.log(this.state.deviceNamee)
-        this.getTableData(params, {})
+    }
+
+    changeworkshop = (value)=> {
+        this.setState({
+            workshop:value
+        })
+    }
+    firstworkshop=(e)=>{
+        this.setState({
+            workshop:e
+        })
+    }
+    handleTableChange = (pagination) => {
+        this.setState({
+            pagination:pagination
+        });
+        const {pageChangeFlag} = this.state;
+        /**分页查询 */
+        if(pageChangeFlag){
+            this.getTableData({
+                deptId:this.state.deptCode,
+                deviceName:this.state.deviceName,
+                status:this.state.Tableflag,
+                size:pagination.pageSize,
+                page:pagination.current,
+                condition:this.state.searchContent
+            })
+        }else{
+            this.getTableData({
+                deptId:this.state.deptCode,
+                deviceName:this.state.deviceName,
+                status:this.state.Tableflag,
+                size:pagination.pageSize,
+                page:pagination.current,
+            })
+        }
     };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -259,13 +399,18 @@ class CheckQuery extends React.Component{
                                 getRightData={this.getRightData}
                                 url={this.url}
                                 operation={this.operation}
+                                changeworkshop={this.changeworkshop}
+                                firstworkshop={this.firstworkshop}
                             />
                         </div>
                         <div className="checkQ-DE-right">
-                            <Tabs onChange={this.returnEquKey}>
+                            <div >
                                 {this.renderEquipmentName(this.state.rightTopData)}
-                            </Tabs>
-                        <CheckTable dataSource={this.state.dataSource} operation={this.operation} pagination={this.state.pagination}/>
+                            </div>
+                        <CheckTable rightTableData={this.state.rightTableData} operation={this.operation} pagination={this.state.pagination} url={this.url} fetch={this.getTableData}  handleTableChange={this.handleTableChange}
+                                    deptId={this.state.depCode}
+                                    deviceName={this.state.deviceName}
+                                    searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                         </div>
                     </div>
 

@@ -40,6 +40,7 @@ class CheckTemplate extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.judgeOperation = this.judgeOperation.bind(this);
         this.getTableData = this.getTableData.bind(this);
+        this.getTreeData = this.getTreeData.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -95,6 +96,8 @@ class CheckTemplate extends React.Component{
                         <a href="#">编辑</a>
                         <Divider type="vertical" />
                         <a href="#">详情</a>
+                        <Divider type="vertical" />
+                        <a href="#">删除</a>
                     </span>
                 )
             }
@@ -112,6 +115,9 @@ class CheckTemplate extends React.Component{
         }, 1000);
     }
     getTableData(){
+
+    }
+    getTreeData(){
 
     }
     judgeOperation(operation,operationCode){
@@ -138,7 +144,7 @@ class CheckTemplate extends React.Component{
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px',display:'flex',margin:'15px'}}>
-                    <TreeCard getTableData={this.getTableData} />
+                    <div style={{width:"20%"}}><TreeCard getTableData={this.getTableData} getTreeData={this.getTreeData}/></div>
                     <div style={{width:"80%",marginLeft:"15px"}}>
                     <AddBut />
                     <DeleteByIds

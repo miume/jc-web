@@ -4,6 +4,7 @@ import Detail from "../checkQuery/detail";
 import DeleteSpan from "./deleteSpan"
 import home from '../commom/fns';
 import axios from "axios";
+import  MakePlan from './makePlan'
 import "./checkPlan.css"
 
 class TTable extends React.Component{
@@ -44,22 +45,22 @@ class TTable extends React.Component{
             sorter:(a,b) =>a.id-b.id,
             width:'8%',
         },{ title: '部门名称',
-            dataIndex: 'departname' ,
-            key: 'departname',
+            dataIndex: 'departName' ,
+            key: 'departName',
             width: '23%',
             align:'left',
             editable: false
         }, {
             title: '设备编号',
-            dataIndex: 'devicecode',
-            key:  'devicecode',
+            dataIndex: 'fixedassetsCode',
+            key:  'fixedassetsCode',
             width: '23%',
             align:'left',
             editable: true
         },{
             title: '设备名称',
-            dataIndex: 'devicename',
-            key: 'devicename',
+            dataIndex: 'deviceName',
+            key: 'deviceName',
             width: '23%',
             align:'left',
             editable: true
@@ -71,13 +72,8 @@ class TTable extends React.Component{
             render: (text, record) => {
                 return (
                     <span>
-                    {/*<Detail deviceNumber={record.deviceNumber} devicename={record.deviceName}/>*/}
-                    {/*    <DeleteSpan*/}
-                    {/*        record={record}*/}
-                    {/*        pagination={this.props.pagination}*/}
-                    {/*        handleDelete={this.handleDelete}*/}
-                    {/*        flag={home.judgeOperation(this.props.operation,'DELETE')}*/}
-                    {/*    />*/}
+                    <MakePlan  flag={record.flag} url={this.props.url} record={record} deptId={this.props.deptId} deviceName={this.props.deviceName}
+                     fetch={this.props.fetch} fresh={this.props.fresh}/>
                     </span>
                 );
             }
@@ -86,12 +82,12 @@ class TTable extends React.Component{
 
             <div className="changeTable">
                 <Table
-                    // dataSource={this.props.dataSource}
+                    dataSource={this.props.dataSource}
                     columns={this.columns}
-                    pagination={this.props.pagination}
                     size="default"
                     bordered
                     scroll={{ y: 450 }}
+
                 />
             </div>
         )

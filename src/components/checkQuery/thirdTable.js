@@ -21,36 +21,35 @@ class ThirdTable extends React.Component{
             sorter:(a,b) =>a.id-b.id,
             width:'5%',
         },{ title: '项目名称',
-            dataIndex: 'projectName' ,
-            key: 'projectName',
+            dataIndex: 'spotcheckItems' ,
+            key: 'spotcheckItems',
             width: '19%',
             align:'left',
             editable: false
         }, {
             title: '点检标准',
-            dataIndex: 'checkstandard',
-            key:  'checkstandard',
+            dataIndex: 'spotcheckContent',
+            key:  'spotcheckContent',
             width: '13%',
             align:'left',
             editable: true
         },{
             title: '点检结果',
-            dataIndex: 'checkresult',
-            key: 'checkresult',
+            dataIndex: 'mainValues',
+            key: 'mainValues',
             width: '19%',
             align:'left',
             editable: true
         }, {
             title: "不合格备注",
-            dataIndex: 'unqualified',
-            key: 'unqualified',
+            dataIndex: 'mainContent',
+            key: 'mainContent',
             width: 'left',
             align: 'left',
         }]
         return(
 
             <Table
-                className="checkQ-Table-top"
                 columns={this.columns}
                 dataSource={this.props.dataSource}
                 onChange={this.props.handleTableChange}
