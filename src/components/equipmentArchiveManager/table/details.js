@@ -65,6 +65,8 @@ class Detail extends React.Component {
         });
     };
     handleDetail = () => {
+        console.log("this.props.record.code")
+        console.log(this.props.record.code)
         if(this.props.comFlag){
             axios({
                 url: `${this.props.url.equipmentArchive.unitDetail}`,
@@ -76,6 +78,7 @@ class Detail extends React.Component {
                     id: this.props.record.code
                 }
             }).then((data) => {
+
                 const res = data.data.data ? data.data.data : [];
                 if (res) {
                     const arrName = res.arrName;
