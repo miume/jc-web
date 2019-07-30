@@ -1,16 +1,14 @@
 import React from "react";
-import {Col, message, Row, Select, Tabs} from "antd";
+import {Button, Col, Icon, message, Row, Select, Tabs} from "antd";
 import axios from "axios";
 import Blockquote from "../BlockQuote/blockquote";
 import DepTree from "./depTree";
 import RightTable from "./rightTable"
 import "./checkPlan.css"
+import "../equipmentArchiveManager/equipmentArchiveManager.css"
 import Add from "./add";
 import SearchCell from "./searchCell";
 import home from "../commom/fns";
-
-
-
 
 class CheckPlan extends React.Component {
     constructor(props) {
@@ -19,8 +17,7 @@ class CheckPlan extends React.Component {
             dataSource: [],
             rightTopData: [],
             rightTableData: [],
-
-            depCode: -1,
+            deptCode: -1,
             deviceName: '',
             pagination: {
                 showTotal(total) {
@@ -32,6 +29,11 @@ class CheckPlan extends React.Component {
             searchContent: '',
             Tableflag: '',
             parentname: '',
+            updatebackground:[],
+            topNumber:'',
+            flag:true,
+            flags:[1],
+            bottomheight:true,
         }
 
 
@@ -40,15 +42,86 @@ class CheckPlan extends React.Component {
         this.handleSelect=this.handleSelect.bind(this)
         this.returnEquKey=this.returnEquKey.bind(this)
         this.firstname=this.firstname.bind(this)
+        this.handleClick=this.handleClick.bind(this)
+    }
+    handleClick=()=>{
+        this.setState({
+            flag:!this.state.flag,
+            bottomheight:!this.state.bottomheight,
+        })
     }
 
-    renderEquipmentName = (data) => data.map((item) => {
-        console.log(item)
+    renderEquipmentName = (data) =>  {
+        console.log("data",data);
+        var first=data.slice(0,7);
+        console.log(this.state.updatebackground)
+        console.log(this.state.flags)
         return (
-            <Tabs.TabPane key={item.name} tab={item.name + '(' + item.count + ')'}>
-            </Tabs.TabPane>
-        )
-    });
+            <div >
+                <div className="eq-outside">
+                    <div className={'buttonofdrop'}>
+                        {
+                            data.length>7?
+                                <Button size={"small" } onClick={this.handleClick}>
+                                    {this.state.flag?<Icon type="down" />:<Icon type="up" />}
+                                    {this.state.flag?"更多":"收起"}
+                                </Button>:''
+
+                        }
+                    </div>
+                    <div className={'Dropfrist'}>
+                        {this.state.flag?
+                            <div className="DropNoExpand">
+                                {
+                                    first.map((data,index)=>{
+                                        if(this.state.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+
+                                    } )
+                                }
+                            </div>:
+                            <div className={"DropExpandselected"} >
+                                {
+                                    data.map((data,index)=>{
+                                        if(this.state.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                    } )
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>)
+
+    }
     //----------------------------------
 
     handleSelect = (code, data) => data.map((item) => {
@@ -72,6 +145,9 @@ class CheckPlan extends React.Component {
 
         code = parseInt(code)
         console.log(code)
+        this.setState({
+            deptCode:code
+        })
         axios({
             url: `${this.url.SpotcheckPlan.getDeviceCount}`,
             method: 'get',
@@ -98,9 +174,14 @@ class CheckPlan extends React.Component {
                         count: 0
                     })
                 }
+                var updatebackground=[1];
+                for(var i=0;i<rightTopData.length-1;i++){
+                    updatebackground.push(0);
+                }
                 this.setState({
                     rightTopData: rightTopData,
-                    deptCode: code
+                    deptCode: code,
+                 updatebackground:updatebackground,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
                     var deviceFlag = true;
@@ -228,16 +309,26 @@ class CheckPlan extends React.Component {
         })
         console.log(this.state.searchContent)
     }
-    returnEquKey = (key) => {
+
+
+    returnEquKey=(key,name)=>{
         const params = {
             deptId: parseInt(this.state.deptCode),
-            deviceName: key
+            deviceName: name
         }
         this.setState({
-            deviceName:key
+            deviceName:name
         })
-        this.getTableData(params, {})
-    };
+        this.getTableData(params, 0)
+        console.log("props",this.state.updatebackground)
+        this.setState({flags:this.state.updatebackground},()=>{
+            var flagx=this.state.flags;
+            const index=flagx.indexOf(1);
+            flagx[index]=0;
+            flagx[parseInt(key)]=1;
+            this.setState({flags:flagx})
+        })
+    }
     handleTableChange = (pagination) => {
         this.setState({
             pagination:pagination
@@ -295,9 +386,9 @@ render(){
                     />
                 </div>
                 <div className="checkP-DE-right">
-                    <Tabs onChange={this.returnEquKey}>
+                    <div style={{paddingBottom:10}}>
                         {this.renderEquipmentName(this.state.rightTopData)}
-                    </Tabs>
+                    </div>
                     <div>
                         <div className="checkP_buttons">
                             <div className="checkp-left">
