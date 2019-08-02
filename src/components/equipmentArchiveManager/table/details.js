@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, Button, message} from 'antd';
+import {message, Modal} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import DetailModal from "../modal/detailModal";
-import SaveButton from "../../BlockQuote/saveButton";
 
 class Detail extends React.Component {
     constructor(props) {

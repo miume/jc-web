@@ -1,10 +1,8 @@
 import React from 'react';
-import { Button, Modal,Select,Form, Input,message,Icon,Col, Row,Upload } from 'antd';
-import axios from 'axios';
+import { Button, Modal,Form, Input,Icon,Col, Row } from 'antd';
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import "./checkTemplate.css";
 
 let id = 0;

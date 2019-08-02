@@ -1,8 +1,6 @@
 import React from 'react';
-import axios from 'axios';
-import {Table, Divider, message} from 'antd';
-import AddModal from "./addModal";
-import RepairDetail from  "../table/repairDetailModal"
+import {Table} from 'antd';
+import RepairDetail from "../table/repairDetailModal"
 
 class RepairModal extends React.Component {
     constructor(props) {

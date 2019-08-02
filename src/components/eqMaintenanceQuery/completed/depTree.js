@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import { Icon, Modal, Input, message} from 'antd';
 import axios from "axios";
-import CancleButton from "../../BlockQuote/cancleButton";
-import NewButton from "../../BlockQuote/newButton";
-import Home from "../../Home/home";
 import "./completed.css"
 import TreeCard from "../../BlockQuote/treeSelect"
 

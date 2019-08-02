@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table, Icon, Divider, message} from 'antd';
+import {Divider, message, Table} from 'antd';
 import '../equipmentArchiveManager.css'
 import EqComponent from '../table/eqComponent'
 import Fittings from '../table/fittings'
@@ -9,8 +9,6 @@ import Maintenance from '../table/maintenance'
 import Repair from '../table/repair'
 import axios from "axios";
 import Edit from '../table/edit'
-import Add from "./add";
-import EARightBottom from "./eARightBottom";
 
 class EARightTable extends Component {
     constructor(props) {

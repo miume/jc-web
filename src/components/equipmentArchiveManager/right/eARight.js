@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Icon, Tabs} from 'antd';
+import {Button, Icon} from 'antd';
 import '../equipmentArchiveManager.css';
 import EARightBottom from './eARightBottom';
+
 var flagsState=[1];
 class EARight extends Component {
     constructor(props) {

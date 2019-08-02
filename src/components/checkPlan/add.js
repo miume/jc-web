@@ -1,10 +1,9 @@
 import React from 'react'
-import {message, Modal, Table} from "antd";
+import {message, Modal} from "antd";
 import CancleButton from "../BlockQuote/cancleButton";
 import NewButton from "../BlockQuote/newButton";
 import TTable from "./ttable"
 import axios from "axios";
-import MakePlan from "./makePlan";
 class Add extends React.Component{
     constructor(props) {
         super(props);

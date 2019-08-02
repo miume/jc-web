@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, Button, message,Row,Input,Col} from 'antd';
+import {Button, Col, Input, message, Modal, Row} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import SaveButton from "../../BlockQuote/saveButton";
 import FittingModal from "../modal/fittingModal";

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Upload,Modal,Icon,Button,message} from 'antd';
+import {Button, Icon, message, Modal, Upload} from 'antd';
 import axios from 'axios';
 import "./equiptment.css"
 

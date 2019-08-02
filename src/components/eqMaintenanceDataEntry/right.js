@@ -1,16 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import BlockQuote from '../BlockQuote/blockquote'
-import {
-    Button, Table, Popconfirm, Divider, Pagination, Form, Input, Row, Col, Select, Modal, Icon, message} from 'antd';
+import {Divider, Form, Input, message, Popconfirm, Select, Table} from 'antd';
 import DeleteByIds from '../BlockQuote/deleteByIds';
 import Add from './add';
 import SearchCell from './searchCell';
 import home from '../commom/fns'
 import Mmodal from './mmodal'
 import "./eqMaintenanceDataEntry.css"
-import NewButton from "../BlockQuote/newButton";
-import CancleButton from "../BlockQuote/cancleButton";
+
 const EditableContext = React.createContext(); // ??这个是什么作用
 const FormItem = Form.Item;
 const Option = Select.Option;

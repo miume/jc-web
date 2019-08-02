@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Divider, message} from 'antd';
+import {message} from 'antd';
 import DepTree from './depTree/depTree';
 import Blockquote from '../BlockQuote/blockquote';
 import './equipmentArchiveManager.css'

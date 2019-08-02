@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message} from 'antd';
+import {message, Tree} from 'antd';
 import axios from "axios";
 import '../../../equipmentArchiveManager/equipmentArchiveManager.css'
 

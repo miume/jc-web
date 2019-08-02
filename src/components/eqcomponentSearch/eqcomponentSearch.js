@@ -104,6 +104,7 @@ class EqcomponentSearch extends React.Component{
                         if (item.name === deviceName) {
                             deviceFlag = false
                         }
+                        return deviceFlag;
                     })
                     if (deviceFlag) {
                         this.getTableData({
@@ -116,6 +117,7 @@ class EqcomponentSearch extends React.Component{
                             deviceName: deviceName
                         }, 0);
                     }
+                return;
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')

@@ -3,6 +3,7 @@ import {Table} from 'antd';
 import SearchCell from '../BlockQuote/search';
 import BlockQuote from '../BlockQuote/blockquote';
 import DeleteByIds from '../BlockQuote/deleteByIds';
+
 class Module extends React.Component{
     constructor(props){
         super(props);
