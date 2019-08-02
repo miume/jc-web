@@ -8,6 +8,11 @@ import NewButton from "../../BlockQuote/newButton";
 
 
 class DepTree extends Component {
+    componentWillUnmount() {
+        this.setState = () => {
+            return;
+        }
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -50,6 +55,7 @@ class DepTree extends Component {
         return (
             <div>
                 <Tree
+                    key={"treeofdepTree"}
                     showLine
                     onSelect={this.onSelect}
                     expandedKeys={this.state.expandedKeys}

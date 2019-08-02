@@ -14,6 +14,11 @@ var params = {
     endDate:''
 }
 class DepTree extends Component {
+    componentWillUnmount() {
+        this.setState = () => {
+            return;
+        }
+    }
     url=JSON.parse(localStorage.getItem('url'));
     constructor(props) {
         super(props);
