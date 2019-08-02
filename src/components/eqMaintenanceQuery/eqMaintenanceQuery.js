@@ -8,6 +8,7 @@ import WillMaintain from './willMaintain/willMaintain'
 
 
 class EqMaintenanceQuery extends React.Component{
+
     constructor(props){
         super(props)
         this.state={
