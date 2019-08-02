@@ -70,7 +70,7 @@ class TreeCard extends React.Component{
                 style={{display:'inline-block',width: "100%"}}
                 className='departmentCard'
                 title={<p id='titledepartment1'><b fontSize="10px" id='titledepartmentselect'>{this.props.treeName}&nbsp;</b>(请选择)</p>} >
-                <div style={{overflowX:'auto', height:'450px'}}>
+                <div style={{overflowX:'auto', height:'400px'}}>
                     <Tree
                         showLine={true}
                         expandedKeys={this.state.expandedKeys}

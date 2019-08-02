@@ -1,0 +1,24 @@
+.inspectionQueryTree{
+    width:15%;
+    position: fixed;
+    height: 150px;
+}
+.inspectionsearchPart{
+    width: 60%;
+    margin-left: 44%;
+    display:flex;
+}
+.inspectionQueryTable{
+    right:15px;
+    margin-left: 18%;
+    margin-top: 15px;
+    width: 82%;
+    top:30%;
+}
+.inspectionQuerySpan{
+    cursor: pointer;
+    color: deepskyblue;
+}
+#inspectionInput {
+    width: 230px;
+}
