@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import {Button, message, Input, Col, Row, DatePicker, Select, Switch, Divider,Icon,Upload} from 'antd';
+import {Button, Col, DatePicker, Divider, Input, message, Row, Select, Switch} from 'antd';
 import '../equipmentArchiveManager.css'
 import moment from 'moment';
 

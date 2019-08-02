@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table, Icon, message} from 'antd';
+import {message} from 'antd';
 import '../equipmentArchiveManager.css'
 import EARightTable from './eARightTable'
 import Add from './add'

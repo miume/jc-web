@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import {Table, Input, InputNumber, Popconfirm, Form, Divider} from 'antd';
+import {Divider, Form, Input, InputNumber, Popconfirm, Table} from 'antd';
 import '../equipmentArchiveManager.css'
 
 const FormItem = Form.Item;

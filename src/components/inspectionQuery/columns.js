@@ -1,5 +1,6 @@
 import React from "react"
 import InspectionDetailModal from "./detailModal"
+
 export const column1=[{
     title:"序号",
     dataIndex:"index",

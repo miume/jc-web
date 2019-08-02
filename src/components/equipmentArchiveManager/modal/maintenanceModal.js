@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import {Table, Divider, message, Modal} from 'antd';
-import AddModal from "./addModal";
-import  Detail from "../table/MaintdetailModal"
-import CancleButton from "../../BlockQuote/cancleButton";
+import {Table} from 'antd';
+import Detail from "../table/MaintdetailModal"
+
 class MaintenanceModal extends React.Component {
     constructor(props) {
         super(props);

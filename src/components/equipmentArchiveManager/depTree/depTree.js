@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message} from 'antd';
-import styles from "./EditableTree.less";
+import {Tree} from 'antd';
 import axios from "axios";
 import '../equipmentArchiveManager.css'
-import CancleButton from "../../BlockQuote/cancleButton";
-import NewButton from "../../BlockQuote/newButton";
 
 
 class DepTree extends Component {

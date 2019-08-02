@@ -7,7 +7,7 @@ import DepartmentCard from './blockCompontent/department'
 import ButtonToDd from './blockCompontent/buttontodo'
 import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
-import {message, Pagination } from "antd";
+import {message} from "antd";
 
 class EqMaintenancePlan extends React.Component{
     componentWillUnmount() {
@@ -189,12 +189,12 @@ class EqMaintenancePlan extends React.Component{
                         })
                     }
                 }
-                for(var i=0;i<DevicetreeData.length;i++)
+                for(var o=0;o<DevicetreeData.length;o++)
                 {
                     for(var j=0;j<res.length;j++)
                     {
-                        if(DevicetreeData[i].value===res[j].deviceName){
-                            DevicetreeData[i].children.push({
+                        if(DevicetreeData[o].value===res[j].deviceName){
+                            DevicetreeData[o].children.push({
                                 key:res[j].code,
                                 title:res[j].fixedassetsCode,
                                 value:res[j].deviceName+'/#'+res[j].fixedassetsCode,

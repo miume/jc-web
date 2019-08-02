@@ -1,14 +1,13 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import axios from "axios";
-import {message,Tabs,Table} from "antd";
+import {Table, Tabs} from "antd";
 import SearchPart from "./searchPart"
 import TreeCard from "../BlockQuote/treeSelect"
 import "./inspectionQuery.css"
-import { column1,column2,column3}from "./columns"
+import {column1, column2, column3} from "./columns"
 import {datasource} from "./dataSource";
+
 var recordq={};
-var vis=false;
 class InspectionQuery extends React.Component{
     constructor(props){
         super(props)
@@ -182,6 +181,5 @@ export default InspectionQuery
 
 export var HandleInspectionClick = function  (record) {
     recordq=record;
-    vis=true;
     console.log(recordq);
 }

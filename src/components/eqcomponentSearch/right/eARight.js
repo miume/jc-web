@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Tabs} from 'antd';
 import '../eqcomponentSearch.css'
 import EARightBottom from './eARightBottom'
+
 class EARight extends Component {
     constructor(props) {
         super(props);

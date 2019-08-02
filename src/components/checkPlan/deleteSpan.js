@@ -1,5 +1,5 @@
 import React from 'react';
-import {Popconfirm,Divider} from "antd";
+import {Popconfirm} from "antd";
 
 class DeleteSpan extends React.Component {
     render() {

@@ -2,8 +2,7 @@ import React from "react";
 import '../Home/page.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
-import DeleteByIds from '../BlockQuote/deleteByIds';
-import { Table,Popconfirm,Divider,message,Select } from 'antd';
+import {Divider, Select, Table} from 'antd';
 import Detail from './detail'
 import RateNum from './rate'
 

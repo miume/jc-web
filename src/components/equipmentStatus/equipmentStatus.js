@@ -5,7 +5,6 @@ import DeleteByIds from "../BlockQuote/deleteByIds";
 import SearchCell from '../BlockQuote/search'
 import EquipmentStatusTable from './equipmentStatusTable'
 import home from "../commom/fns";
-import DepartTable from "../departManagement/departTable";
 import axios from "axios";
 import {message} from "antd";
 

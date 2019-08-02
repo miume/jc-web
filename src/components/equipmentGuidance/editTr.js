@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal,Select,Form, Input,message,Icon,Row,Col } from 'antd';
+import {Col, Form, Icon, Input, Row} from 'antd';
 import PictureUp from './upload'
 
 class Tr extends React.Component{

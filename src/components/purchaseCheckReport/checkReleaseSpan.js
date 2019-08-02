@@ -162,6 +162,7 @@ class CheckReleaseSpan extends React.Component {
                             'testResult':e.testResult,
                             'id':e.id,
                         }
+                        return resultRecordList;
                     });
                     tbodyData.push({
                         index: `${j+1}`,

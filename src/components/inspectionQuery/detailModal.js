@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Modal} from 'antd';
+import {Modal, Table} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import CancleButton from "../BlockQuote/cancleButton";
 

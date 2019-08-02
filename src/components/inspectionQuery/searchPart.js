@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Input, Table, message, DatePicker, Icon} from 'antd';
+import {Button, DatePicker, Icon, Input} from 'antd';
 import "./inspectionQuery.css"
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+
 moment.locale('zh-cn');
 const { RangePicker } = DatePicker;
 

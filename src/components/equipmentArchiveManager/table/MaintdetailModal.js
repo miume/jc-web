@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Modal, Steps, Popover} from 'antd';
+import {Modal, Popover, Steps, Table} from 'antd';
 import WhiteSpace from '../../BlockQuote/whiteSpace';
 import axios from 'axios';
 import CancleButton from "../../BlockQuote/cancleButton";

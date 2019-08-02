@@ -1,8 +1,7 @@
 import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
 import DeleteByIds from '../BlockQuote/deleteByIds';
-import axios from "axios";
-import { Table,Popconfirm,Divider,message } from 'antd';
+import { Table,Divider } from 'antd';
 import '../Home/page.css';
 import AddBut from "./add";
 import TreeCard from "../BlockQuote/treeSelect";
