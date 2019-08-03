@@ -265,17 +265,8 @@ class Fittings extends React.Component {
                     fittingData: fittingData
                 })
             }else{
-                for(var j = 0; j< res.length; j++){
-                    const arr = res[j]
-                    fittingData.push({
-                        name:arr.name,
-                        specification:arr.specification,
-                        counts:arr.counts,
-                        code:arr.code
-                    })
-                }
                 this.setState({
-                    fittingData: fittingData
+                    fittingData: []
                 })
             }
         }).catch(() => {
