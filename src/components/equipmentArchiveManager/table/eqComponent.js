@@ -73,7 +73,7 @@ class EqComponent extends React.Component {
                             handleTableChange={this.handleTableChange}
                             pagination={this.pagination}
                             fetch={this.fetch}
-
+                            repFlag = {true}
                             modifySearchContent={this.modifySearchContent}
                             searchEvent={this.searchEvent}
                             searchResetCom={this.searchResetCom}
