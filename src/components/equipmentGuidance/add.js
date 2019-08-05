@@ -103,20 +103,20 @@ class DynamicFieldSet extends React.Component{
                     visible:true
                   })
                 }else{
-                const keys = this.props.form.getFieldValue('keys');
-                for(var i =0;i<keys.length;i++){
-                    let file = `fileList${keys[i]}`
-                    this.setState({
-                        [file]:[]
-                    })
+                    const keys = this.props.form.getFieldValue('keys');
+                    for(var i =0;i<keys.length;i++){
+                        let file = `fileList${keys[i]}`
+                        this.setState({
+                            [file]:[]
+                        })
+                    }
+                    message.info(data.data.message);
+                    this.props.fetch({sortField: 'id',
+                    sortType: 'desc',}); // 重新调用分页函数
+                    this.props.form.resetFields();
+                    this.setState({ visible: false});
                 }
-                  message.info(data.data.message);
-                  this.props.fetch({sortField: 'id',
-                  sortType: 'desc',}); // 重新调用分页函数
-                  this.props.form.resetFields();
-                  this.setState({ visible: false});
-                }
-          })
+            })
           });
     }
 

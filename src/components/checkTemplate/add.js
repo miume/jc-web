@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button, Modal,Form, Input,Icon,Col, Row } from 'antd';
+import { Button, Modal,Select,Form, Input,message,Icon,Col, Row,Upload,Radio,Divider,DatePicker } from 'antd';
+import axios from 'axios';
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import "./checkTemplate.css";
+import moment from "moment";
 
 let id = 0;
 
@@ -13,31 +15,34 @@ class AddBut extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            visible:false
+            visible:false,
+            radioValue:false,
+            date:"",
         }
+
     };
 
     remove = (k) =>{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
-        const fileList = `fileList${k}`
-        if(this.state[fileList][0] !== undefined){
-            var list = []
-            list.push(this.state[fileList][0].response.data)
-            // if(this.state[fileList] != false){
-            //     axios({
-            //         url: `${this.url.instructor.deletePic}`,
-            //         method:'delete',
-            //         headers:{
-            //             'Authorization': this.url.Authorization
-            //         },
-            //         data:list,
-            //         type:'json'
-            //     }).then((data)=>{
-            //         message.info(data.data.message);
-            //     })
-            // }
-        }
+        // const fileList = `fileList${k}`;
+        // if(this.state[fileList][0] !== undefined){
+        //     var list = []
+        //     list.push(this.state[fileList][0].response.data)
+        //     // if(this.state[fileList] != false){
+        //     //     axios({
+        //     //         url: `${this.url.instructor.deletePic}`,
+        //     //         method:'delete',
+        //     //         headers:{
+        //     //             'Authorization': this.url.Authorization
+        //     //         },
+        //     //         data:list,
+        //     //         type:'json'
+        //     //     }).then((data)=>{
+        //     //         message.info(data.data.message);
+        //     //     })
+        //     // }
+        // }
         if(keys.length === 1){
             return;
         }
@@ -50,31 +55,97 @@ class AddBut extends React.Component{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat(++id);
-        this.state['fileList'+`${id}`] = []
+        // this.state['fileList'+`${id}`] = []
         form.setFieldsValue({
             keys: nextKeys,
         });
     };
-    
+    onChange = (e)=>{
+        this.setState({
+            radioValue:e.target.value
+        })
+    }
+    onChangeTime = (date, dateString) =>{
+        // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
+        this.setState({
+            date:moment(date).format('YYYY-MM-DD HH:mm:ss')
+        })
+        // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
+    }
     showModal = () => {
         this.setState({ visible: true });
     };
 
     handleCancel = () => {
     // const form = this.formRef.props.form;
+    this.props.form.resetFields();
     this.setState({ visible: false });
     // this.props.form.resetFields();
     // form.resetFields();
     };
-    handleCreate = () => {
-    // const form = this.formRef.props.form;
-    this.setState({ visible: false });
-    // this.props.form.resetFields();
-    // form.resetFields();
+    handleCreate = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values)=>{
+            if(err){
+                return ;
+            }
+            // console.log(values)
+            let data = {};
+            let deviceSpotcheckModelsDetails = [];
+            let deviceSpotcheckModelsHead = {};
+            let peopleName = "string";
+            deviceSpotcheckModelsHead.deviceName = this.props.deviceName;
+            deviceSpotcheckModelsHead.effectDate = this.state.date;
+            deviceSpotcheckModelsHead.modelStatus = this.state.radioValue;
+            deviceSpotcheckModelsHead.setPeople = parseInt(this.ob.userId);
+            deviceSpotcheckModelsHead.deptCode = this.props.deptCode;
+            deviceSpotcheckModelsHead.tabulateDate = moment().locale('zh-cn').format('YYYY-MM-DD HH:mm:ss');
+            this.setState({ visible: false});
+            for(var i=0;i<values.keys.length;i++){
+                deviceSpotcheckModelsDetails.push({})
+            }
+            for(var i=0;i<values.keys.length;i++){
+                deviceSpotcheckModelsDetails[i]["spotcheckAddress"] = values.address[values.keys[i]];
+                deviceSpotcheckModelsDetails[i]["spotcheckContent"] = values.content[values.keys[i]];
+                deviceSpotcheckModelsDetails[i]["spotcheckItems"] = values.standard[values.keys[i]];
+                deviceSpotcheckModelsDetails[i]["spotcheckPeriod"] = values.frequency[values.keys[i]];
+            }
+            data["deviceSpotcheckModelsDetails"] = deviceSpotcheckModelsDetails;
+            data["deviceSpotcheckModelsHead"] = deviceSpotcheckModelsHead;
+            data["peopleName"] = peopleName;
+
+            // console.log(data)
+            axios({
+                url:`${this.url.deviceSpot.addCheck}`,
+                method:"post",
+                data:data,
+                type:"json"
+            }).then((data)=>{
+                if(data.data.code !== 0){
+                    message.info('新增失败')
+                  this.setState({
+                    visible:true
+                  })
+                }else{
+                    message.info(data.data.message);
+                    this.props.getTableData({
+                        page:1,
+                        size:10,
+                        deviceName:this.props.deviceName,
+                        deptId:this.props.deptCode,
+                    });
+                    this.props.form.resetFields();
+                    this.setState({ visible: false});
+                }
+            })
+        })
+    
     };
 
     render(){
         const { getFieldDecorator, getFieldValue } = this.props.form;
+        this.url = JSON.parse(localStorage.getItem('url'));
+        this.ob = JSON.parse(localStorage.getItem('menuList'));
         const formItemLayoutWithOutLabel = {
             wrapperCol: {
                 xs: { span: 24, offset: 0 },
@@ -85,39 +156,45 @@ class AddBut extends React.Component{
         const keys = getFieldValue('keys');
         const formItems = keys.map((k,index)=>(
             <div key={index}>
-                <Row gutter={24}>
-                <Col span={6}>
-                <Form.Item >
+                <div style={{display:"flex",justifyContent:"space-between"}}>
+                <Form.Item>
                     {getFieldDecorator(`content[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
-                        <Input placeholder='项目名称' style={{width:'130px'}}/>
+                        <Input placeholder='请输入项目名称' style={{width:'150px'}}/>
                     )}
                 </Form.Item>
-                </Col>
-                <Col span={6}>
+              
                 <Form.Item>
                     {getFieldDecorator(`standard[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
-                        <Input placeholder='点检标准' style={{width:'130px'}}/>
+                        <Input placeholder='请输入点检标准' style={{width:'150px'}}/>
                     )}
                 </Form.Item>
-                </Col>
-                <Col span={6}>
+              
                 <Form.Item>
                     {getFieldDecorator(`frequency[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
-                        <Input placeholder='点检周期' style={{width:'120px'}}/>
+                        <Input placeholder='请输入点检周期' style={{width:'150px'}}/>
                     )}
                 </Form.Item>
-                </Col>
+             
                 {/* <Form.Item style={{marginRight: 4 }}>
                     {
                         <Upload />
                     }
                 </Form.Item> */}
+              
+                <Form.Item>
+                    {getFieldDecorator(`address[${k}]`,{
+                        validateTrigger: ['onChange', 'onBlur'],
+                    })(
+                        <Input placeholder='图片' style={{width:'150px'}}/>
+                    )}
+                </Form.Item>
+            
                 <Form.Item>
                 {keys.length > 1 ? (
                     <Icon
@@ -128,7 +205,7 @@ class AddBut extends React.Component{
                     />
                 ) : null}
                 </Form.Item>
-                </Row>
+                </div>
             </div>
         ))
         return(
@@ -140,16 +217,23 @@ class AddBut extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="新增"
-                    width='500px'
+                    width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
                     <Form>
-                        <div className="checkName">制造一部</div>
-                        <div className="checkName">酸溶槽</div>
-                        <div className="checkName">1993-12-01</div>
+                        <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
+                        <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
+                        <span className="headers">生效日期：</span><span><DatePicker format="YYYY-MM-DD HH:mm:ss" locale={locale} showTime={true} style={{width:'200px'}} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
+                        <div className="radios">
+                            模板状态：<Radio.Group onChange={this.onChange} value={this.state.radioValue}>
+                            <Radio value={false}>生效</Radio>
+                            <Radio value={true}>失效</Radio>
+                        </Radio.Group>
+                        </div>
+                        <Divider />
                         <div id="edit" style={{height:'360px'}}>
                             {formItems}
                             <Form.Item {...formItemLayoutWithOutLabel}>
