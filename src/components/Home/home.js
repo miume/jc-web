@@ -375,8 +375,20 @@ class Home extends Component {
                 getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
                 page:`${server}/jc/common/SpotcheckPlan/page`,
                 getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
+            },
+            /**点检模板**/
+            deviceSpot:{
+                addCheck:`${server}/jc/common/deviceSpotCheck/addCheckModel`,
+                checkDetail:`${server}/jc/common/deviceSpotCheck/checkModelDetail`,
+                deleteDetailId:`${server}/jc/common/deviceSpotCheck/deleteDetailId`,
+                deleteByIds:`${server}/jc/common/deviceSpotCheck/deleteByIds`,
+                getAllDevices:`${server}/jc/common/deviceSpotCheck/getAllDevices`,
+                planPage:`${server}/jc/common/deviceSpotCheck/getPage`,
+                updateCheckModel:`${server}/jc/common/deviceSpotCheck/updateCheckModel`,
+                upload:`${server}/jc/common/deviceSpotCheck/upload`,
+                delete:`${server}/jc/common/deviceSpotCheck`,
+                getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`
             }
-
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
