@@ -6,6 +6,7 @@ import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import "./checkTemplate.css";
 import moment from "moment";
+import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 let id = 0;
 
