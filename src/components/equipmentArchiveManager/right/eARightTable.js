@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Table, Icon, Divider, message} from 'antd';
+import {Divider, message, Table} from 'antd';
 import '../equipmentArchiveManager.css'
 import EqComponent from '../table/eqComponent'
 import Fittings from '../table/fittings'
@@ -9,8 +9,8 @@ import Maintenance from '../table/maintenance'
 import Repair from '../table/repair'
 import axios from "axios";
 import Edit from '../table/edit'
-import Add from "./add";
-import EARightBottom from "./eARightBottom";
+import MainFitting from '../replication/mainFitting'
+import ComFitting from '../replication/comFitting'
 
 class EARightTable extends Component {
     constructor(props) {
@@ -87,6 +87,16 @@ class EARightTable extends Component {
                         // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                         handleDelete={this.handleDelete}
                     />
+                    <Divider type="vertical"/>
+                    <ComFitting
+                        url={this.props.url}
+                        record={record}
+                        buCode={record.code}
+
+                        deviceName={this.props.deviceName}
+                        getRightData={this.props.getRightData}
+                        depCode={this.props.depCode}
+                    />
                 </span>
             )
         }
@@ -95,43 +105,36 @@ class EARightTable extends Component {
         dataIndex: 'index',
         key: 'index',
         sorter: (a, b) => a.index - b.index,
-        align: 'center',
         width: '8%',
     }, {
         title: '固定资产编码',
         dataIndex: 'fixedassetsCode',
         key: 'fixedassetsCode',
-        align: 'center',
         width: '10%',
     }, {
         title: this.props.comFlag ? '部件名称' : '设备名称',
         dataIndex: 'deviceName',
         key: 'deviceName',
-        align: 'center',
         width: '8%',
     }, {
         title: '规格型号',
         dataIndex: 'specification',
         key: 'specification',
-        align: 'center',
         width: '10%',
     }, {
         title: 'ID卡号',
         dataIndex: 'idCode',
         key: 'idCode',
-        align: 'center',
         width: '10%',
     }, {
         title: '启动日期',
         dataIndex: 'startdate',
         key: 'startdate',
-        align: 'center',
         width: '10%',
     }, {
         title: '设备状态',
         dataIndex: 'statusCode',
         key: 'statusCode',
-        align: 'center',
         width: '11%',
         render: (text, record) => {
             return(
@@ -142,16 +145,19 @@ class EARightTable extends Component {
         title: '操作',
         dataIndex: 'code',
         key: 'code',
-        align: 'center',
         width: '28%',
         render: (text, record) => {
             return (
                 <span>
                     <EqComponent
+                        deviceName={this.props.deviceName}
                         comFlag={true}
                         record={record}
+                        mainCode={record.code}
                         url={this.props.url}
                         depCode={this.props.depCode}
+                        getRightData={this.props.getRightData}
+
                     />
                     <Divider type="vertical"/>
                     <Fittings
@@ -160,7 +166,10 @@ class EARightTable extends Component {
                         depCode={this.props.depCode}
                     />
                     <Divider type="vertical"/>
-                    <Maintenance/>
+                    <Maintenance
+                        record={record}
+
+                    />
                     <Divider type="vertical"/>
                     <Repair/>
                     <Divider type="vertical"/>
@@ -183,6 +192,15 @@ class EARightTable extends Component {
                         flag={true}
                         // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                         handleDelete={this.handleDelete}
+                    />
+                    <Divider type="vertical"/>
+                    <MainFitting
+                        url={this.props.url}
+                        record={record}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
+                        getRightData={this.props.getRightData}
+                        depCode={this.props.depCode}
                     />
                 </span>
             )
@@ -219,7 +237,7 @@ class EARightTable extends Component {
                     code:code
                 }
             }).then((data) => {
-                message.info(data.data.message);
+                message.info(data.data.data);
                 this.props.fetch({},{})
             }).catch(() => {
                 message.info('删除失败，请联系管理员！');
@@ -232,7 +250,7 @@ class EARightTable extends Component {
                     'Authorization': this.props.url.Authorization
                 },
             }).then((data) => {
-                message.info(data.data.message);
+                message.info(data.data.data);
                 this.props.getRightData(this.props.depCode, this.props.deviceName)
             }).catch(() => {
                 message.info('删除失败，请联系管理员！');

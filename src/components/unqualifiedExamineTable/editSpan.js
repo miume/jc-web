@@ -213,6 +213,7 @@ class EditSpan extends React.Component {
                                 'testResult':e.testResult,
                                 'id':e.id,
                             }
+                            return testItemResults;
                         });
                         tbodyData.push({
                             index: `${j+1}`,

@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import { Modal,InputNumber , Input,DatePicker,TreeSelect , Table ,Radio,message } from 'antd';
 import Addmaintenance from '../miniCompontent/addmaintenancebutton'
 import Searchpart from '../miniCompontent/searchpart'
 import './style.css'
-import axios from "axios";
+
 class ButtonToDd extends Component {
     state={
         MaintenanceType:[],

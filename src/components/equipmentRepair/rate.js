@@ -1,5 +1,5 @@
 import React from 'react';
-import {Rate,Modal,Input} from 'antd';
+import {Input, Modal, Rate} from 'antd';
 import CancleButton from "../BlockQuote/cancleButton";
 import AddButton from '../BlockQuote/newButton';
 import WhiteSpace from '../BlockQuote/whiteSpace';

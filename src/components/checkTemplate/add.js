@@ -4,7 +4,6 @@ import axios from 'axios';
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import "./checkTemplate.css";
 import moment from "moment";
 

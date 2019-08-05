@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import {Table, Icon, message,Radio} from 'antd';
+import {message} from 'antd';
 import '../eqcomponentSearch.css'
 import EARightTable from './eARightTable'
-import Add from './add'
-import DeleteByIds from '../../BlockQuote/deleteByIds';
 import home from "../../commom/fns";
 import SearchCell from '../../BlockQuote/search';
 import axios from "axios";

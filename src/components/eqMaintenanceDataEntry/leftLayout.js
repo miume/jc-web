@@ -1,11 +1,10 @@
 import React from "react";
-import {Layout, Menu, Breadcrumb, Icon, Card, Select, Input, Row, Col, Table, message} from 'antd';
-import  "./eqMaintenanceDataEntry.css"
+import {Col, Input, message, Row} from 'antd';
+import "./eqMaintenanceDataEntry.css"
 import Eqblock from "./eqblock"
 import axios from "axios";
-import home from '../commom/fns'
-import SearchCell from '../BlockQuote/search';
 import Right from './right'
+
 class LeftLayout extends React.Component{
     operation
 

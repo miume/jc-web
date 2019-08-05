@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, message, Select, Input, Row, Col, Button} from 'antd';
-import Submit from '../BlockQuote/checkSubmit';
+import {Col, Input, message, Modal, Row, Select} from 'antd';
 import NewButton from '../BlockQuote/newButton';
 import SaveButton from '../BlockQuote/saveButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import "./eqMaintenanceDataEntry.css"
-import Eqblock from "./eqblock";
+
 const Option = Select.Option;
 class Add extends React.Component {
     constructor(props) {

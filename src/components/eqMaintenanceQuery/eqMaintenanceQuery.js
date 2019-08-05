@@ -1,13 +1,14 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
 import axios from "axios";
-import {message,Tabs} from "antd";
+import {message, Tabs} from "antd";
 import Completed from './completed/completed'
 import AcceptOrders from './acceptOrders/acceptOrders'
 import WillMaintain from './willMaintain/willMaintain'
 
 
 class EqMaintenanceQuery extends React.Component{
+
     constructor(props){
         super(props)
         this.state={
@@ -100,7 +101,6 @@ class EqMaintenanceQuery extends React.Component{
                 },
                 params: params,
             }).then((data) => {
-                console.log(data)
                 const res = data.data.data ? data.data.data : [];
                 if (res && res.list) {
                     var rightTableData = [];

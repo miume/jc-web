@@ -1,5 +1,5 @@
 import React from "react";
-import {message,Tree,Card,Layout} from "antd";
+import {Layout} from "antd";
 import Right from "./right";
 import axios from "axios";
 import DepTree from "./depTree";

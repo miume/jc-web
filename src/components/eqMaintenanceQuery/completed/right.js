@@ -1,9 +1,7 @@
 import React from "react";
-import {size,Table,DatePicker,Input,Button,Divider, Tag} from "antd";
-import axios from "axios";
+import {Table} from "antd";
 import "./completed.css"
 import Detail from "./detailModal";
-import DepartTable from "../../departManagement/departTable";
 import home from "../../commom/fns";
 import SearchCell from "./search";
 // let data=[ ];

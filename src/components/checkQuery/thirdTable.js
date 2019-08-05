@@ -1,9 +1,5 @@
 import React from "react"
-import {Divider, Popconfirm, Table} from 'antd'
-import TabBar from "antd/lib/tabs/TabBar";
-import Mmodal from "../eqMaintenanceDataEntry/mmodal";
-import home from "../commom/fns";
-import Detail from "./detail"
+import {Table} from 'antd'
 import "./checkQuery.css"
 class ThirdTable extends React.Component{
     constructor(props){

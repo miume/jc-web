@@ -1,10 +1,10 @@
 import React from 'react';
-import {Modal, Row, Input,message } from 'antd';
+import {Input, message, Modal, Row} from 'antd';
 import CancleButton from "../BlockQuote/cancleButton";
 import NewButton from "../BlockQuote/newButton";
 import axios from "axios";
 import './equipmentStatus.css'
-import { SketchPicker } from 'react-color';
+import {SketchPicker} from 'react-color';
 
 class Edit extends React.Component {
     constructor(props) {

@@ -1,7 +1,6 @@
-import {Card, message, Tree} from 'antd';
+import {Card, Tree} from 'antd';
 import React from 'react'
 import "./blockquote.css"
-import axios from "axios";
 /*
     * 1.父组件必须传初始化的选择项，数据源，查询属性
     * dataSource,treeName,defaultparams,params,
@@ -70,7 +69,7 @@ class TreeCard extends React.Component{
                 style={{display:'inline-block',width: "100%"}}
                 className='departmentCard'
                 title={<p id='titledepartment1'><b fontSize="10px" id='titledepartmentselect'>{this.props.treeName}&nbsp;</b>(请选择)</p>} >
-                <div style={{overflowX:'auto', height:'450px'}}>
+                <div style={{overflowX:'auto', height:'400px'}}>
                     <Tree
                         showLine={true}
                         expandedKeys={this.state.expandedKeys}

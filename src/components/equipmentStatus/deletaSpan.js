@@ -1,5 +1,6 @@
 import React from 'react';
-import {Popconfirm,message,Divider} from "antd";
+import {Divider, Popconfirm} from "antd";
+
 class DeletaSpan extends React.Component {
     render() {
         return (

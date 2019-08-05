@@ -1,7 +1,6 @@
 import React from "react"
-import {Divider, Popconfirm, Table, Input, Button} from 'antd'
-import TabBar from "antd/lib/tabs/TabBar";
-import Mmodal from "../eqMaintenanceDataEntry/mmodal";
+import {Table, Input} from 'antd'
+
 import home from "../commom/fns";
 import Detail from "./detail"
 import SearchCell from "./searchCell";

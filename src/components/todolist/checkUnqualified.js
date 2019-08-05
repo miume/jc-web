@@ -125,6 +125,7 @@ class CheckUnqualified extends React.Component{
                                 'testResult':e.testResult,
                                 'id':e.id,
                             }
+                            return tbodyMiddleData;
                         });
                         tbodyData.push({
                             index: `${j+1}`,
