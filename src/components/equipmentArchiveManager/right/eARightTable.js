@@ -10,6 +10,7 @@ import Repair from '../table/repair'
 import axios from "axios";
 import Edit from '../table/edit'
 import MainFitting from '../replication/mainFitting'
+import ComFitting from '../replication/comFitting'
 
 class EARightTable extends Component {
     constructor(props) {
@@ -87,11 +88,10 @@ class EARightTable extends Component {
                         handleDelete={this.handleDelete}
                     />
                     <Divider type="vertical"/>
-                    <MainFitting
+                    <ComFitting
                         url={this.props.url}
                         record={record}
                         buCode={record.code}
-                        mainFlag={false}
 
                         deviceName={this.props.deviceName}
                         getRightData={this.props.getRightData}
@@ -197,7 +197,6 @@ class EARightTable extends Component {
                     <MainFitting
                         url={this.props.url}
                         record={record}
-                        mainFlag={true}
                         deviceName={this.props.deviceName}
                         getTableData={this.props.getTableData}
                         getRightData={this.props.getRightData}
