@@ -90,7 +90,12 @@ class EARightTable extends Component {
                     <MainFitting
                         url={this.props.url}
                         record={record}
+                        buCode={record.code}
                         mainFlag={false}
+
+                        deviceName={this.props.deviceName}
+                        getRightData={this.props.getRightData}
+                        depCode={this.props.depCode}
                     />
                 </span>
             )
@@ -145,10 +150,14 @@ class EARightTable extends Component {
             return (
                 <span>
                     <EqComponent
+                        deviceName={this.props.deviceName}
                         comFlag={true}
                         record={record}
+                        mainCode={record.code}
                         url={this.props.url}
                         depCode={this.props.depCode}
+                        getRightData={this.props.getRightData}
+
                     />
                     <Divider type="vertical"/>
                     <Fittings
@@ -229,7 +238,7 @@ class EARightTable extends Component {
                     code:code
                 }
             }).then((data) => {
-                message.info(data.data.message);
+                message.info(data.data.data);
                 this.props.fetch({},{})
             }).catch(() => {
                 message.info('删除失败，请联系管理员！');
@@ -242,7 +251,7 @@ class EARightTable extends Component {
                     'Authorization': this.props.url.Authorization
                 },
             }).then((data) => {
-                message.info(data.data.message);
+                message.info(data.data.data);
                 this.props.getRightData(this.props.depCode, this.props.deviceName)
             }).catch(() => {
                 message.info('删除失败，请联系管理员！');

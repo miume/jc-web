@@ -84,8 +84,6 @@ class MainFitting extends React.Component{
                     ]}
                 >
                     <div style={{maxHeight:'450px'}}>
-                        <Button type="primary" size='large' onClick={this.replication}>复制</Button>
-                        <div style={{paddingBottom:'10px'}}></div>
                         <Table
                             columns={this.columns}
                             size="small"
@@ -108,21 +106,39 @@ class MainFitting extends React.Component{
     //     });
     // }
     replication= (code) => {
-        axios({
-            url:`${this.props.url.equipmentArchive.duplicateDeviceAcc}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            params:{
-                originDeviceId:code,
-                newDeviceId:this.props.record.code
-            }
-        }).then((data) => {
-            message.info('复制成功');
-        }).catch(() => {
-            message.info('复制失败，请联系管理员！');
-        });
+        if(this.props.mainFlag){
+            axios({
+                url:`${this.props.url.equipmentArchive.duplicateDeviceAcc}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    originDeviceId:code,
+                    newDeviceId:this.props.record.code
+                }
+            }).then((data) => {
+                message.info('复制成功');
+            }).catch(() => {
+                message.info('复制失败，请联系管理员！');
+            });
+        }else{
+            axios({
+                url:`${this.props.url.equipmentArchive.duplicateUnitAcc}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    originUnitId:code,
+                    newUnitId:this.props.buCode
+                }
+            }).then((data) => {
+                message.info('复制成功');
+            }).catch(() => {
+                message.info('复制失败，请联系管理员！');
+            });
+        }
 
     }
     handleMainFitting = () => {

@@ -56,6 +56,11 @@ class EARightBottom extends Component {
                     this.props.repFlag?
                         <ComponentRep
                             url={this.props.url}
+                            deviceName={this.props.deviceName}
+                            getRightData={this.props.getRightData}
+                            depCode={this.props.depCode}
+                            mainCode={this.props.mainCode}
+                            handleData={this.props.handleData}
                         />
                         :null
                 }
