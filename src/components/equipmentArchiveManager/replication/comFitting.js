@@ -5,7 +5,7 @@ import FittingDetail from './fittingDetail'
 import axios from "axios";
 
 
-class MainFitting extends React.Component{
+class ComFitting extends React.Component{
     constructor(props) {
         super(props);
         this.state={
@@ -46,7 +46,7 @@ class MainFitting extends React.Component{
             return(
                 <span>
                     <FittingDetail
-                        mainFlag = {true}
+                        mainFlag = {false}
                         url={this.props.url}
                         record={record}
                     />
@@ -106,15 +106,17 @@ class MainFitting extends React.Component{
     //     });
     // }
     replication= (code) => {
+        console.log(code)
+        console.log(this.props.buCode)
         axios({
-            url:`${this.props.url.equipmentArchive.duplicateDeviceAcc}`,
+            url:`${this.props.url.equipmentArchive.duplicateUnitAcc}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
             params:{
-                originDeviceId:code,
-                newDeviceId:this.props.record.code
+                originUnitId:code,
+                newUnitId:this.props.buCode
             }
         }).then((data) => {
             message.info('复制成功');
@@ -125,7 +127,7 @@ class MainFitting extends React.Component{
     }
     handleMainFitting = () => {
         axios({
-            url:`${this.props.url.equipmentArchive.getAllMainByDeptCodeByDeviceName}?deviceName=${this.props.deviceName}`,
+            url:`${this.props.url.equipmentArchive.getAllUnitByDeptCodeByDeviceName}?deviceName=${this.props.deviceName}`,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
@@ -170,4 +172,4 @@ class MainFitting extends React.Component{
     };
 
 }
-export default MainFitting
+export default ComFitting
