@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, Col, Input, message, Modal, Row,Table} from 'antd';
+import {Button, Col, Divider, Input, message, Modal, Popconfirm, Row, Table} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import FittingDetail from './fittingDetail'
+import axios from "axios";
 
 
 class MainFitting extends React.Component{
@@ -43,20 +44,27 @@ class MainFitting extends React.Component{
         width: '20%',
         render:(text,record) => {
             return(
-                <FittingDetail
-                    mainFlag = {true}
-                    url={this.props.url}
-                    record={record}
-                />
+                <span>
+                    <FittingDetail
+                        mainFlag = {true}
+                        url={this.props.url}
+                        record={record}
+                    />
+                    <Divider type="vertical"/>
+                    <Popconfirm title="确认复制?" onConfirm={() => this.replication(record.code)} okText="确定" cancelText="取消" >
+                        <span className='blue'>复制</span>
+                    </Popconfirm>
+                </span>
+
             )
         }
     }]
     render() {
-        var selectedRowKeys = this.state.selectedRowKeys;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange
-        };
+        // var selectedRowKeys = this.state.selectedRowKeys;
+        // const rowSelection = {
+        //     selectedRowKeys,
+        //     onChange: this.onSelectChange
+        // };
         return (
             <span>
                 <span className="blue" onClick={this.handleMainFitting}>配件复制</span>
@@ -76,8 +84,6 @@ class MainFitting extends React.Component{
                     ]}
                 >
                     <div style={{maxHeight:'450px'}}>
-                        <Button type="primary" size='large' onClick={this.replication}>复制</Button>
-                        <div style={{paddingBottom:'10px'}}></div>
                         <Table
                             columns={this.columns}
                             size="small"
@@ -86,116 +92,96 @@ class MainFitting extends React.Component{
                             pagination={false}
                             rowKey={record => record.code}
                             dataSource={this.state.dataSource}
-                            rowSelection={rowSelection}
+                            // rowSelection={rowSelection}
                         />
                     </div>
                 </Modal>
             </span>
         );
     }
-    /**实现全选*/
-    onSelectChange = (selectedRowKeys) => {
-        this.setState({
-            selectedRowKeys: selectedRowKeys
-        });
-    }
-    replication= () => {
-        const selectedRowKeys = this.state.selectedRowKeys
-        console.log(selectedRowKeys)
+    // /**实现全选*/
+    // onSelectChange = (selectedRowKeys) => {
+    //     this.setState({
+    //         selectedRowKeys: selectedRowKeys
+    //     });
+    // }
+    replication= (code) => {
+        if(this.props.mainFlag){
+            axios({
+                url:`${this.props.url.equipmentArchive.duplicateDeviceAcc}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    originDeviceId:code,
+                    newDeviceId:this.props.record.code
+                }
+            }).then((data) => {
+                message.info('复制成功');
+            }).catch(() => {
+                message.info('复制失败，请联系管理员！');
+            });
+        }else{
+            axios({
+                url:`${this.props.url.equipmentArchive.duplicateUnitAcc}`,
+                method: 'get',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                params:{
+                    originUnitId:code,
+                    newUnitId:this.props.buCode
+                }
+            }).then((data) => {
+                message.info('复制成功');
+            }).catch(() => {
+                message.info('复制失败，请联系管理员！');
+            });
+        }
 
     }
     handleMainFitting = () => {
-        const dataSource = [{
-            index:'1',
-            fixedassetsCode:'111',
-            specification:'222',
-            deviceName:'aaaa',
-            code:1
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        }]
-        this.setState({
-            visible: true,
-            dataSource: dataSource
+
+        axios({
+            url:`${this.props.url.equipmentArchive.getAllMainByDeptCodeByDeviceName}?deviceName=${this.props.deviceName}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data) => {
+            const res = data.data.data;
+            var dataSource = []
+            // TODO
+            if(res){
+                for(var i = 0; i< res.length; i++){
+                    const arr = res[i]
+                    dataSource.push({
+                        index:i+1,
+                        fixedassetsCode:arr.fixedassetsCode,
+                        specification:arr.specification,
+                        deviceName:arr.deviceName,
+                        code:arr.code
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource,
+                    visible: true,
+                })
+            }else{
+                this.setState({
+                    dataSource: [],
+                    visible: true,
+                })
+            }
+        }).catch(() => {
+            message.info('查询失败，请联系管理员！');
         });
+
     }
     handleCancel = () => {
+        const deviceName = this.props.record.deviceName.split('-')[0]
+        this.props.getRightData(this.props.depCode,deviceName?deviceName:this.props.deviceName)
         this.setState({
             visible: false,
         });

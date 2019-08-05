@@ -1,10 +1,11 @@
 import React from 'react';
-import {message, Modal, Button, Table,Switch} from 'antd';
+import {message, Modal, Button, Table, Switch, Divider, Popconfirm} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import SaveButton from "../../BlockQuote/saveButton";
 import '../equipmentArchiveManager.css'
 import FittingDetail from "./fittingDetail";
 import NewButton from "../../BlockQuote/newButton";
+import axios from "axios";
 
 
 class ComponentRep extends React.Component{
@@ -14,6 +15,7 @@ class ComponentRep extends React.Component{
             visible:false,
             dataSource: [],
             selectedRowKeys: [],
+            switchFlag:1
         }
 
     }
@@ -50,21 +52,27 @@ class ComponentRep extends React.Component{
         width: '20%',
         render:(text,record) => {
             return (
-                <FittingDetail
-                    mainFlag = {false}
-                    url={this.props.url}
-                    record={record}
-                />
+                <span>
+                    <FittingDetail
+                        mainFlag = {false}
+                        url={this.props.url}
+                        record={record}
+                    />
+                    <Divider type="vertical"/>
+                    <Popconfirm title="确认复制?" onConfirm={() => this.replication(record.code)} okText="确定" cancelText="取消" >
+                        <span className='blue'>复制</span>
+                    </Popconfirm>
+                </span>
             )
         }
     }]
 
     render() {
-        var selectedRowKeys = this.state.selectedRowKeys;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange
-        };
+        // var selectedRowKeys = this.state.selectedRowKeys;
+        // const rowSelection = {
+        //     selectedRowKeys,
+        //     onChange: this.onSelectChange
+        // };
         return (
             <span style={{marginLeft:'8px'}}>
                 <Button className="eqRepButton" onClick={this.handleDetail}>部件复制</Button>
@@ -85,10 +93,10 @@ class ComponentRep extends React.Component{
                 >
                     <div style={{maxHeight:'450px'}}>
                         <div>
-                            <Button type="primary" size='large' onClick={this.replication}>复制</Button>
+                            {/*<Button type="primary" size='large' onClick={this.replication}>复制</Button>*/}
                             &nbsp;&nbsp;&nbsp;是否同时复制其配件：<Switch onChange={this.handleSwitch} checkedChildren="是" unCheckedChildren="否"  />
                         </div>
-                        <div style={{paddingBottom:'10px'}}></div>
+                        {/*<div style={{paddingBottom:'10px'}}></div>*/}
                         <Table
                             columns={this.columns}
                             size="small"
@@ -97,7 +105,7 @@ class ComponentRep extends React.Component{
                             pagination={false}
                             rowKey={record => record.code}
                             dataSource={this.state.dataSource}
-                            rowSelection={rowSelection}
+                            // rowSelection={rowSelection}
                         />
                     </div>
                 </Modal>
@@ -105,7 +113,15 @@ class ComponentRep extends React.Component{
         );
     }
     handleSwitch = (checked) => {
-        console.log(checked)
+        var flag = 1
+        if(checked===true){
+            flag = 0
+        }else{
+            flag = 1
+        }
+        this.setState({
+            switchFlag:flag
+        })
     }
     /**实现全选*/
     onSelectChange = (selectedRowKeys) => {
@@ -113,106 +129,71 @@ class ComponentRep extends React.Component{
             selectedRowKeys: selectedRowKeys
         });
     }
-    replication= () => {
-        const selectedRowKeys = this.state.selectedRowKeys
-        console.log(selectedRowKeys)
+    replication= (code) => {
+        // const selectedRowKeys = this.state.selectedRowKeys
+        // console.log(selectedRowKeys)
+        const switchFlag = this.state.switchFlag
+        axios({
+            url:`${this.props.url.equipmentArchive.duplicateDeviceUnit}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params:{
+                originDeviceId:code,
+                newDeviceId:this.props.mainCode,
+                flag:switchFlag
+            }
+        }).then((data) => {
+            message.info('复制成功');
+        }).catch(() => {
+            message.info('复制失败，请联系管理员！');
+        });
 
     }
     handleDetail = () => {
-        const dataSource = [{
-            index:'1',
-            fixedassetsCode:'111',
-            specification:'222',
-            deviceName:'aaaa',
-            code:1
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        },{
-            index:'2',
-            fixedassetsCode:'222',
-            specification:'3333',
-            deviceName:'bbb',
-            code:2
-        }]
-        this.setState({
-            visible: true,
-            dataSource: dataSource
+        axios({
+            url:`${this.props.url.equipmentArchive.getAllUnitByDeptCodeByDeviceName}?deviceName=${this.props.deviceName}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+        }).then((data) => {
+            const res = data.data.data;
+            var dataSource = []
+            // TODO
+            if(res){
+                for(var i = 0; i< res.length; i++){
+                    const arr = res[i]
+                    dataSource.push({
+                        index:i+1,
+                        fixedassetsCode:arr.fixedassetsCode,
+                        specification:arr.specification,
+                        deviceName:arr.deviceName,
+                        code:arr.code
+                    })
+                }
+                this.setState({
+                    dataSource: dataSource,
+                    visible: true,
+                })
+            }else{
+                this.setState({
+                    dataSource: [],
+                    visible: true,
+                })
+            }
+        }).catch(() => {
+            message.info('查询失败，请联系管理员！');
         });
     }
     handleCancel = () => {
+        // console.log(this.props.depCode)
+        // console.log(this.props.deviceName)
+        this.props.handleData()
         this.setState({
-            visible:false
-        })
+            visible: false,
+        });
     }
 
 }
