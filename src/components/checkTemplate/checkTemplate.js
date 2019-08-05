@@ -5,6 +5,7 @@ import { Table,Divider } from 'antd';
 import '../Home/page.css';
 import AddBut from "./add";
 import TreeCard from "./treeCard";
+import axios from 'axios';
 
 // const data = [];
 // for(var i=0;i<5;i++){
