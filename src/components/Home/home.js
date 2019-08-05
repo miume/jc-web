@@ -334,7 +334,9 @@ class Home extends Component {
                 updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
                 updateUnit: `${server}/jc/common/device/updateUnit`,
                 deleteUnit: `${server}/jc/common/device/deleteUnit`,
-            },
+                getAllMainByDeptCodeByDeviceName:`${server}/jc/common/device/getAllMainByDeptCodeByDeviceName`,
+                duplicateDeviceAcc:`${server}/jc/common/device/duplicateDeviceAcc`,
+    },
             /**设备管理状态*/
             equipmentStatus:{
                 deviceStatus:`${server}/jc/common/deviceStatus`,

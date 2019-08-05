@@ -189,6 +189,10 @@ class EARightTable extends Component {
                         url={this.props.url}
                         record={record}
                         mainFlag={true}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
+                        getRightData={this.props.getRightData}
+                        depCode={this.props.depCode}
                     />
                 </span>
             )
