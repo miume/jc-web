@@ -381,6 +381,10 @@ class Home extends Component {
                 page:`${server}/jc/common/SpotcheckPlan/page`,
                 getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
             },
+            devicePatrolQuery:{
+                PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
+                PatrolQueryPage:`${server}/jc/common/devicePatrolQuery/page`
+            },
             /**点检模板**/
             deviceSpot:{
                 addCheck:`${server}/jc/common/deviceSpotCheck/addCheckModel`,
@@ -393,8 +397,10 @@ class Home extends Component {
                 upload:`${server}/jc/common/deviceSpotCheck/upload`,
                 delete:`${server}/jc/common/deviceSpotCheck`,
                 getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`
+
             }
         }
+
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
