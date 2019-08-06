@@ -1,8 +1,8 @@
 import React from "react"
-import {Table, Switch, Icon, Select,Row,Col,message} from 'antd'
-import Detail from "../checkQuery/detail";
+import {Table, Switch,message} from 'antd'
+
 import DeleteSpan from "./deleteSpan"
-import home from '../commom/fns';
+
 import axios from "axios";
 import "./checkPlan.css"
 

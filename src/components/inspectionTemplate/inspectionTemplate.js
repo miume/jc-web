@@ -1,7 +1,5 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import axios from "axios";
-import {message} from "antd";
 
 
 class InspectionTemplate extends React.Component{

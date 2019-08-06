@@ -6,10 +6,6 @@ class CancleButton extends React.Component{
         this.state = {
             visible:false
         }
-        this.cancle = this.cancle.bind(this);
-    }
-    /**取消点击 取消按钮 */
-    cancle(){
     }
     render(){
         return (

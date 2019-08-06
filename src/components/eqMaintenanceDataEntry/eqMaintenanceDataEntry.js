@@ -1,8 +1,6 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import axios from "axios";
-import {message} from "antd";
-import LeftLayout from"./leftLayout"
+import LeftLayout from "./leftLayout"
 
 import "./eqMaintenanceDataEntry.css"
 

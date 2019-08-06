@@ -1,0 +1,66 @@
+.inspectionQueryTree{
+    width:15%;
+    position: fixed;
+    height: 150px;
+}
+.inspectionsearchPart{
+    width: 60%;
+    margin-left: 44%;
+    display:flex;
+}
+.inspectionQueryTable{
+    right:15px;
+    margin-left: 18%;
+    margin-top: 15px;
+    width: 82%;
+    top:30%;
+}
+.inspectionQuerySpan{
+    cursor: pointer;
+    color: deepskyblue;
+}
+#inspectionInput {
+    width: 230px;
+}
+.thirdinspectiondetailtable{
+    max-height: 180px;
+    overflow: auto;
+}
+.secondinspectiondetailtable{
+    overflow: auto;
+    max-height: 150px;
+}
+
+.firstinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.secondinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.thirdinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.firstinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.secondinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.thirdinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius:  0  !important;
+}
+.footerofdetail{
+    background: lightgrey;
+    height: 45px;
+    margin: 0;
+    border-radius:  0 0 4px 4px ;
+    padding: 10px;
+    overflow-y: auto;
+}

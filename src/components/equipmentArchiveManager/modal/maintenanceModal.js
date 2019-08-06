@@ -1,96 +1,119 @@
 import React from 'react';
 import axios from 'axios';
-import {Table, Divider, message} from 'antd';
-import AddModal from "./addModal";
+import {Table} from 'antd';
+import Detail from "../table/MaintdetailModal"
 
 class MaintenanceModal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            visible: false,
+            data: []
+        };
 
     }
+    url=JSON.parse(localStorage.getItem('url'));
+    columns = [
+        {
+            title: '序号',
+            dataIndex: 'index',
+            key: 'index',
+            sorter: (a, b) => a.index - b.index,
+            align:'center',
+            width:"6%"
+        },
+        {
+            title: '保养单号',
+            dataIndex: 'plancode',
+            key: 'plancode',
+            align:'center',
+            width:'8%',
 
-    columns = [{
-        title: '序号',
-        dataIndex: 'index',
-        key: 'index',
-        sorter: (a, b) => a.index - b.index,
-        align: 'center',
-        width: '5%',
-    }, {
-        title: '工单状态',
-        dataIndex: 'a',
-        key: 'a',
-        align: 'center',
-        width: '8%',
-    }, {
-        title: '设备设施名称',
-        dataIndex: 'b',
-        key: 'b',
-        align: 'center',
-        width: '8%',
-    }, {
-        title: '单位/部门',
-        dataIndex: 'c',
-        key: 'c',
-        align: 'center',
-        width: '8%',
-    }, {
-        title: '所属生产线',
-        dataIndex: 'd',
-        key: 'd',
-        align: 'center',
-        width: '8%',
-    }, {
-        title: '报修人',
-        dataIndex: 'e',
-        key: 'e',
-        align: 'center',
-        width: '8%',
-    }, {
-        title: '报修时间',
-        dataIndex: 'f',
-        key: 'f',
-        align: 'center',
-        width: '15%',
-        render: (time) => {
-            return <span title={time} className='text-decoration'>{time.split(" ")[0] + '...'}</span>
-        }
-    }, {
-        title: '接单时间',
-        dataIndex: 'g',
-        key: 'g',
-        align: 'center',
-        width: '15%',
-        render: (time) => {
-            return <span title={time} className='text-decoration'>{time.split(" ")[0] + '...'}</span>
-        }
-    }, {
-        title: '完工时间',
-        dataIndex: 'h',
-        key: 'h',
-        align: 'center',
-        width: '15%',
-        render: (time) => {
-            return <span title={time} className='text-decoration'>{time.split(" ")[0] + '...'}</span>
-        }
-    }, {
+        },
+        {
+            title: '设备名称/编号',
+            dataIndex: 'deviceName',
+            sorter: (a, b) => a.number - b.number,
+            key: 'deviceName',
+            align:'center',
+            width:'11%',
+        },
+        {
+            title: '所属部门',
+            align:'center',
+            width: '10%',
+            key: 'deptCode',
+            dataIndex: 'deptCode',
+
+        },
+        {
+            title: '本次计划执行日期',
+            key: 'planDate',
+            align:'center',
+            dataIndex: 'planDate',
+            width:"12%"
+        },
+        {
+            title: '接单时间',
+            key: 'receiveDate',
+            dataIndex: 'receiveDate',
+            width:"12%"
+        },
+        {
+            title: '保养完成日期',
+            sorter: (a, b) => a.deadline - b.deadline,
+            key: 'finishiDate',
+            dataIndex: 'finishiDate',
+            align:'center',
+            width:"12%",
+        },
+        {
+            title: '保养人',
+            key: 'maintPeople',
+            dataIndex: 'maintPeople',
+            align:'center',
+            width:"10%",
+        }, {
         title: '操作',
         dataIndex: 'code',
         key: 'code',
         align: 'center',
-        width: '15%',
+        width: '8%',
         render: (text, record) => {
             return (
-                <span>
-                    <span className="blue">详情</span>
-                    <Divider type="vertical"/>
-                    <span className="blue">评价</span>
-                </span>
+                <Detail
+                    record={record}
+                    code={record.plancode}
+                    url={this.url}
+                />
             )
         }
     }];
-
+    handleCancel = () => {
+        this.setState({
+            visible: false,
+        });
+    };
+    handleClickDetail=(record)=>{
+        console.log(record)
+        const param=record.plancode;
+        axios({
+            url:this.url.eqMaintenanceQuery.recordDetail,
+            method:"get",
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:{
+                id:param,
+            }
+        }).then((data)=>{
+            const result=data.data.data;
+            console.log(result)
+        })
+        this.setState({
+            visible: true,
+        })
+    }
     render() {
         return (
             <div style={{height: '500px'}}>

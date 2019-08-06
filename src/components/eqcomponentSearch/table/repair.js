@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import {Modal, Button, message} from 'antd';
+import {Modal} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import MaintenanceModal from "../modal/maintenanceModal";
 

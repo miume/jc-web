@@ -1,8 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import {Modal, Button, message, Popover, Steps, Popconfirm, Divider} from 'antd';
-import CancleButton from "../../../BlockQuote/cancleButton";
-import WhiteSpace from "../../../BlockQuote/whiteSpace";
+import {Divider, Popconfirm} from 'antd';
 
 //用于编写弹出框的按钮应用
 class Delete extends React.Component {

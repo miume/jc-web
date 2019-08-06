@@ -11,6 +11,7 @@ import IsRepair from "./isRepair/isRepair";
 import axios from 'axios';
 
 
+
 class equipmentRepair extends React.Component{
     constructor(props){
         super(props);
