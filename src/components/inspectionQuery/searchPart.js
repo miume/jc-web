@@ -55,10 +55,23 @@ export default class SearchPart extends React.Component{
         );
     }
     handleSearch=()=>{
-        var params={
-            searchContent:this.state.InputValue,
-            StartDate:this.state.RangePickerValue,
+        var params={};
+        if(this.state.RangePickerValue.length===0){
+            params={
+                condition:this.state.InputValue,
+                startDate:'',
+                endDate:'',
+            }
         }
+        else{
+            params={
+                condition:this.state.InputValue,
+                startDate:moment(this.state.RangePickerValue[0]).format("YYYY-MM-DD"),
+                endDate:moment(this.state.RangePickerValue[1]).format("YYYY-MM-DD"),
+            }
+        }
+        this.props.getTableData(params)
+        this.props.handleSearch()
         console.log(params)
     }
     getFetch = () => {
@@ -67,6 +80,8 @@ export default class SearchPart extends React.Component{
             InputValue:'',
             RangePickerValue:[],
         })
+        this.props.getTableData();
+        this.props.handleSearch()
     }
 }
 

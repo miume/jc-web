@@ -375,9 +375,15 @@ class Home extends Component {
                 getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
                 page:`${server}/jc/common/SpotcheckPlan/page`,
                 getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
+            },
+            devicePatrolQuery:{
+                PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
+                PatrolQueryPage:`${server}/jc/common/devicePatrolQuery/page`
+
             }
 
         }
+
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
