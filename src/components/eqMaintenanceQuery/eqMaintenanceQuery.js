@@ -101,7 +101,6 @@ class EqMaintenanceQuery extends React.Component{
                 },
                 params: params,
             }).then((data) => {
-                console.log(data)
                 const res = data.data.data ? data.data.data : [];
                 if (res && res.list) {
                     var rightTableData = [];

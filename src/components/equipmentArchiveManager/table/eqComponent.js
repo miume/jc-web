@@ -63,6 +63,11 @@ class EqComponent extends React.Component {
                 >
                     <div style={{height: "550px"}}>
                         <EARightBottom
+                            getRightData={this.props.getRightData}
+                            deviceName={this.props.deviceName}
+                            mainCode={this.props.mainCode}
+                            handleData={this.handleData}
+
                             searchType={1}
                             searchName="固定资产编码、部件名称"
                             depCode={this.props.depCode}
@@ -73,7 +78,7 @@ class EqComponent extends React.Component {
                             handleTableChange={this.handleTableChange}
                             pagination={this.pagination}
                             fetch={this.fetch}
-
+                            repFlag = {true}
                             modifySearchContent={this.modifySearchContent}
                             searchEvent={this.searchEvent}
                             searchResetCom={this.searchResetCom}

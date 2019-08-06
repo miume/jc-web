@@ -188,3 +188,11 @@
 .eq-outside{
     width: 1159px;
 }
+
+.eqRepButton{
+    margin:0 8px 8px 0;
+    display: inline-block;
+    width: 75px;
+    height: 35px !important;
+    padding-left: 10px !important;
+}

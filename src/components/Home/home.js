@@ -334,7 +334,12 @@ class Home extends Component {
                 updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
                 updateUnit: `${server}/jc/common/device/updateUnit`,
                 deleteUnit: `${server}/jc/common/device/deleteUnit`,
-            },
+                getAllMainByDeptCodeByDeviceName:`${server}/jc/common/device/getAllMainByDeptCodeByDeviceName`,
+                duplicateDeviceAcc:`${server}/jc/common/device/duplicateDeviceAcc`,
+                getAllUnitByDeptCodeByDeviceName:`${server}/jc/common/device/getAllUnitByDeptCodeByDeviceName`,
+                duplicateDeviceUnit:`${server}/jc/common/device/duplicateDeviceUnit`,
+                duplicateUnitAcc:`${server}/jc/common/device/duplicateUnitAcc`,
+    },
             /**设备管理状态*/
             equipmentStatus:{
                 deviceStatus:`${server}/jc/common/deviceStatus`,
@@ -379,9 +384,21 @@ class Home extends Component {
             devicePatrolQuery:{
                 PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
                 PatrolQueryPage:`${server}/jc/common/devicePatrolQuery/page`
+            },
+            /**点检模板**/
+            deviceSpot:{
+                addCheck:`${server}/jc/common/deviceSpotCheck/addCheckModel`,
+                checkDetail:`${server}/jc/common/deviceSpotCheck/checkModelDetail`,
+                deleteDetailId:`${server}/jc/common/deviceSpotCheck/deleteDetailId`,
+                deleteByIds:`${server}/jc/common/deviceSpotCheck/deleteByIds`,
+                getAllDevices:`${server}/jc/common/deviceSpotCheck/getAllDevices`,
+                planPage:`${server}/jc/common/deviceSpotCheck/getPage`,
+                updateCheckModel:`${server}/jc/common/deviceSpotCheck/updateCheckModel`,
+                upload:`${server}/jc/common/deviceSpotCheck/upload`,
+                delete:`${server}/jc/common/deviceSpotCheck`,
+                getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`
 
             }
-
         }
 
         localStorage.setItem('status',JSON.stringify(status));

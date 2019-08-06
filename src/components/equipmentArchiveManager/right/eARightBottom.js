@@ -7,6 +7,7 @@ import DeleteByIds from '../../BlockQuote/deleteByIds';
 import home from "../../commom/fns";
 import SearchCell from '../../BlockQuote/search';
 import axios from "axios";
+import ComponentRep from '../replication/componentRep'
 
 class EARightBottom extends Component {
     constructor(props) {
@@ -51,6 +52,18 @@ class EARightBottom extends Component {
                     cancel={this.cancle}
                     flag={home.judgeOperation(this.operation, 'DELETE')}
                 />
+                {
+                    this.props.repFlag?
+                        <ComponentRep
+                            url={this.props.url}
+                            deviceName={this.props.deviceName}
+                            getRightData={this.props.getRightData}
+                            depCode={this.props.depCode}
+                            mainCode={this.props.mainCode}
+                            handleData={this.props.handleData}
+                        />
+                        :null
+                }
                 <SearchCell
                     type={this.props.searchType}
                     name={this.props.searchName}
