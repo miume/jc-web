@@ -17,11 +17,11 @@ export default class SearchPart extends React.Component{
     }
     handleRangePickerChange=(value)=>{
         this.setState({RangePickerValue:value})
-        console.log(value)
+        //console.log(value)
     }
     handleInputChange=(e)=>{
         this.setState({InputValue:e.target.value})
-        console.log(e.target.value)
+        //console.log(e.target.value)
     }
     render(){
         return(
@@ -72,7 +72,7 @@ export default class SearchPart extends React.Component{
         }
         this.props.getTableData(params)
         this.props.handleSearch()
-        console.log(params)
+        //console.log(params)
     }
     getFetch = () => {
         /**重置时清除搜索框的值 */
@@ -80,8 +80,8 @@ export default class SearchPart extends React.Component{
             InputValue:'',
             RangePickerValue:[],
         })
-        this.props.getTableData();
         this.props.handleSearch()
+        this.props.getTableData()
     }
 }
 
