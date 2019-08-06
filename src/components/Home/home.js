@@ -156,6 +156,43 @@ class Home extends Component {
                 updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
                 maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
             },
+            /**
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             * 设备维修*/
+            equipmentRepair:{
+                deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
+                evaluations:`${server}/jc/common/deviceRepair/evaluations`,
+                getPage:`${server}/jc/common/deviceRepair/getPage`,
+            },
+            /**
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             * 位置基础信息*/
+            locationBasic:{
+                addBasicInfo:`${server}/jc/common/basicInfoLocation/addBasicInfo`,
+                deleteByIds:`${server}/jc/common/basicInfoLocation/deleteByIds`,
+                getPage:`${server}/jc/common/basicInfoLocation/getPage`,
+                maintenanceDetailById:`${server}/jc/common/basicInfoLocation/maintenanceDetailById`,
+                updateById:`${server}/jc/common/basicInfoLocation/updateById`,
+                basicInfoLocation:`${server}/jc/common/basicInfoLocation`,
+            },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
