@@ -25,7 +25,7 @@ class InspectionDetailModal extends React.Component{
         const params={
             id:this.props.record.key,
         };
-        console.log(params);
+        //console.log(params);
         axios({
             url:this.url.devicePatrolQuery.PatrolQueryDetail,
             method:"get",
@@ -34,7 +34,7 @@ class InspectionDetailModal extends React.Component{
             },
             params:params,
         }).then((data)=>{
-            console.log(data);
+            //console.log(data);
             var data1=[];
             var data2=[];
             var data3=[];
@@ -43,6 +43,11 @@ class InspectionDetailModal extends React.Component{
                 const devicePatrolPlanRecordHead=result.devicePatrolPlanRecordHead;
                 const devicePatrolPlanRecordItemDetailsList=result.devicePatrolPlanRecordItemDetailsList;
                 const devicePatrolPlanRecordLocationDetailsList=result.devicePatrolPlanRecordLocationDetailsList;
+                var checktype1;
+                const checktype=devicePatrolPlanRecordHead.checkType;
+                if(checktype===true){checktype1="电气类"}
+                else if(checktype===false){checktype1="机械类"}
+                else {checktype1="null"}
                 const detpName=result.detpName;
                 const modelName=result.modelName;
                 const footer1 = `备注: ${devicePatrolPlanRecordHead.patrolComment}`;
@@ -53,7 +58,7 @@ class InspectionDetailModal extends React.Component{
                     planName:devicePatrolPlanRecordHead.planName,
                     belongShop:detpName,
                     modalName:modelName,
-                    checkType:devicePatrolPlanRecordHead.checkType.toString(),
+                    checkType:checktype1,
                     planTime:devicePatrolPlanRecordHead.planTime,
                     getTime:devicePatrolPlanRecordHead.receiveTime,
                     completedTime:devicePatrolPlanRecordHead.finishTime,

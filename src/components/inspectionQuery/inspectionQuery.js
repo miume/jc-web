@@ -9,7 +9,6 @@ import {column1, column2, column3} from "./columns"
 
 class InspectionQuery extends React.Component{
     componentWillUnmount() {
-        clearInterval(this.timerID);
         this.setState = () => {
             return ;
         }
@@ -39,15 +38,12 @@ class InspectionQuery extends React.Component{
         this.returnDataEntry = this.returnDataEntry.bind(this);
     }
     componentDidMount() {
-        this.timerID = setInterval(
-            () => this.setState({loading:false},()=>{
-                clearInterval(this.timerID);
-            }),
-            800
-        );
+        if(this.state.RightTableData) {
+            this.setState({loading:false})
+        }
     }
     handleSizeChange=(current,size)=>{
-        console.log(current);
+        //console.log(current);
         this.setState({
             size:current.pageSize,
             page:'1',
@@ -158,7 +154,7 @@ class InspectionQuery extends React.Component{
     }
     returnEquKey = key => {
         if(key==='1'||key==='2'||key==='3'){
-            console.log(key);
+            //console.log(key);
             this.setState({
                 doingStatus:key,
                 loading:true,
@@ -169,7 +165,7 @@ class InspectionQuery extends React.Component{
 
     };
     getTreeData=()=>{
-        //console.log('----------------------------------------')
+        ////console.log('----------------------------------------')
         // TODO: 调接口，获取数据
         axios({
             url: `${this.url.equipmentDept.dept}`,
@@ -244,20 +240,25 @@ class InspectionQuery extends React.Component{
             params:params,
         }).then((data)=>{
             if(data.status===200){
-                console.log(data.status);
+                //console.log(data.status);
                 if(data.data.code===0){
                     var result=data.data.data ? data.data.data.list : [];
                     if(result){
                         var tabledata=[];
                         for(var i=0;i<result.length;i++){
                             const devicePatrolPlanRecordHead=result[i].devicePatrolPlanRecordHead;
+                            var checktype1;
+                            const checktype=devicePatrolPlanRecordHead.checkType;
+                            if(checktype===true){checktype1="电气类"}
+                            else if(checktype===false){checktype1="机械类"}
+                            else {checktype1="null"}
                             const modelName=result[i].modelName;
                             tabledata.push({
                                 index:i+1,
                                 key:devicePatrolPlanRecordHead.code,
                                 planName:devicePatrolPlanRecordHead.planName,
                                 modalName:modelName,
-                                checkType:devicePatrolPlanRecordHead.checkType.toString(),
+                                checkType:checktype1,
                                 planDate:devicePatrolPlanRecordHead.planTime,
                                 recivedTime:devicePatrolPlanRecordHead.receiveTime,
                                 completed:devicePatrolPlanRecordHead.finishTime,
@@ -269,15 +270,12 @@ class InspectionQuery extends React.Component{
                         }
                         this.setState({RightTableData:tabledata},()=>{
                             message.info("查询成功！");
-                            this.timerID = setInterval(
-                                () => this.setState({loading:false},()=>{
-                                    clearInterval(this.timerID);
-
-                                }),
-                                800
-                            );
+                            if(this.state.TreeData!==null){
+                                this.setState({loading:false})
+                            }
                         })
                     }
+
                     else {
                         message.info(data.data.message)
                     }
@@ -303,14 +301,10 @@ class InspectionQuery extends React.Component{
     };
     handleSearch=()=>{
         this.setState({loading:true},()=>{
-            this.timerID = setInterval(
-                () => this.setState({loading:false},()=>{
-                    clearInterval(this.timerID);
-                }),
-                800
-            );
+            if(this.state.TreeData!==null){
+                this.setState({loading:false})
+            }
         });
-
     };
     /**返回数据录入页面 */
     returnDataEntry(){
