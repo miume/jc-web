@@ -20,16 +20,18 @@ class EqcomponentSearch extends React.Component{
             deviceName: '',
 
             pageChangeFlag: 0,   //0表示分页 1 表示查询
-            searchContent: ''
+            searchContent: '',
+            flag:0
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
+        this.getTableData2 = this.getTableData2.bind(this)
 
         this.modifySearchContent = this.modifySearchContent.bind(this)
         this.handleTableChange = this.handleTableChange.bind(this)
         this.searchEvent = this.searchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
-
+        this.cleardata=this.cleardata.bind(this)
         this.pagination = {
             showTotal(total) {
                 return `共${total}条记录`
@@ -37,6 +39,15 @@ class EqcomponentSearch extends React.Component{
             showSizeChanger: true
         }
         this.returnDataEntry = this.returnDataEntry.bind(this)
+    }
+
+    cleardata=(flag)=>{
+        this.setState({
+            flag:flag,
+            rightTableData:[],
+
+        })
+        this.pagination.total=0;
     }
 
     render() {
@@ -54,6 +65,7 @@ class EqcomponentSearch extends React.Component{
                             depCode={this.state.depCode}
                             rightTableData={this.state.rightTableData}
                             getTableData={this.getTableData}
+                            getTableData2={this.getTableData2}
                             deviceName={this.state.deviceName}
                             getRightData={this.getRightData}
                             handleTableChange={this.handleTableChange}
@@ -62,6 +74,7 @@ class EqcomponentSearch extends React.Component{
                             modifySearchContent={this.modifySearchContent}
                             searchEvent={this.searchEvent}
                             searchReset={this.searchReset}
+                            cleardata={this.cleardata}
                         />
                     </div>
                 </div>
@@ -71,7 +84,7 @@ class EqcomponentSearch extends React.Component{
     getRightData = (code, deviceName) => {
         code = parseInt(code)
         axios({
-            url: `${this.url.equipmentArchive.device}/${code}`,
+            url: `$this.url.equipmentArchive.UnitName`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
@@ -128,22 +141,24 @@ class EqcomponentSearch extends React.Component{
     handleTableChange = (pagination) => {
         this.pagination = pagination;
         const {pageChangeFlag} = this.state;
-        if (pageChangeFlag) {
+        console.log(this.state.searchContent)
+        if (this.flag===1) {
             this.getTableData({
                 size: pagination.pageSize,
                 page: pagination.current,
-                condition: this.state.searchContent,
-                deptId: parseInt(this.state.depCode),
-                deviceName: this.state.deviceName
+                unitName: this.state.searchContent,
+                accName: this.state.searchContent,
+
             })
         } else {
-            this.getTableData({
+            this.getTableData2({
                 size: pagination.pageSize,
                 page: pagination.current,
-                deptId: parseInt(this.state.depCode),
-                deviceName: this.state.deviceName
+                unitName: this.state.searchContent,
+                accName: this.state.searchContent,
             })
         }
+        console.log('123123123')
     };
 
 
@@ -157,7 +172,7 @@ class EqcomponentSearch extends React.Component{
             })
         }
         axios({
-            url: `${this.url.equipmentArchive.page}`,
+            url: `${this.url.equipmentArchive.AccName}`,
             method: 'get',
             headers: {
                 'Authorization':this.url.Authorization
@@ -200,6 +215,62 @@ class EqcomponentSearch extends React.Component{
         });
     }
 
+
+
+    getTableData2 = (params, flag) => {
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if (flag) {
+            this.setState({
+                pageChangeFlag: 0,
+                searchContent: ''
+            })
+        }
+        axios({
+            url: `${this.url.equipmentArchive.UnitName}`,
+            method: 'get',
+            headers: {
+                'Authorization':this.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            if (res && res.list) {
+                var rightTableData = [];
+                for (var i = 0; i < res.list.length; i++) {
+                    var arr = res.list[i].deviceDocumentMain;
+                    var eqStatus = res.list[i].basicInfoDeviceStatus
+                    rightTableData.push({
+                        index: (res.page-1)*res.size + i+1,
+                        code: arr['code'],
+                        fixedassetsCode: arr['fixedassetsCode'],
+                        deviceName: arr['deviceName'],
+                        specification: arr['specification'],
+                        startdate: arr['startdate'],
+                        idCode: arr['idCode'],
+                        statusCode: arr['statusCode'],
+                        color: eqStatus['color'],
+                        name: eqStatus['name']
+                    })
+                }
+                this.pagination.total = res ? res.total : 0;
+                this.setState({
+                    rightTableData: rightTableData,
+                    deviceName: params.deviceName
+                });
+            } else {
+                message.info('查询失败，请刷新下页面！')
+                this.setState({
+                    rightTableData: [],
+                    deviceName: ''
+                });
+            }
+        }).catch(() => {
+            message.info('查询失败，请刷新下页面！')
+        });
+    }
+
+
+
     modifySearchContent = (value) => {
         this.setState({
             searchContent: value
@@ -210,20 +281,27 @@ class EqcomponentSearch extends React.Component{
         this.setState({
             pageChangeFlag: 1
         })
+        if(this.state.flag===1){
         this.getTableData({
-            condition: this.state.searchContent,
-            deptId: parseInt(this.state.depCode),
-            deviceName: this.state.deviceName
-        });
+            accName: this.state.searchContent,
+        })}
+        else{
+            this.getTableData2({
+                unitName: this.state.searchContent,
+            })
+        }
     }
 
     // 搜索重置调用
     searchReset = () => {
-        this.getTableData({
-            deptId: parseInt(this.state.depCode),
-            deviceName: this.state.deviceName
-        }, 1)
-    }
+    //     this.getTableData({
+    //         accName:'',
+    //         unitName:'',
+    //     }, 1)
+        this.setState({
+            rightTableData:[],
+        })
+     }
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/equipmentArchive'});

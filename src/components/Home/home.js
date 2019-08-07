@@ -334,6 +334,8 @@ class Home extends Component {
                 updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
                 updateUnit: `${server}/jc/common/device/updateUnit`,
                 deleteUnit: `${server}/jc/common/device/deleteUnit`,
+                AccName:`${server}/jc/common/device/getDeviceByAccName`,
+                UnitName:`${server}/jc/common/device/getDeviceByUnitName`,
             },
             /**设备管理状态*/
             equipmentStatus:{
@@ -375,6 +377,16 @@ class Home extends Component {
                 getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
                 page:`${server}/jc/common/SpotcheckPlan/page`,
                 getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
+            },
+            /**巡检模板**/
+            devicePatrolModel:{
+                add:`${server}/jc/common/devicePatrolModel/add`,
+                deleteByIds:`${server}/jc/common/devicePatrolModel/deleteByIds`,
+                detail:`${server}/jc/common/devicePatrolModel/detail`,
+                page:`${server}/jc/common/devicePatrolModel/page`,
+                update:`${server}/jc/common/devicePatrolModel/update`,
+                delete:`${server}/jc/common/devicePatrolModel/{id}`,
+                position:`${server}/jc/common/basicInfoLocation/getPage`,
             }
 
         }

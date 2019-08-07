@@ -59,7 +59,8 @@ class EARightBottom extends Component {
                     {/*    <Radio.Button value="配件">配件</Radio.Button>*/}
                     {/*</Radio.Group>*/}
 
-
+                   <div className="eq-aM-search">  </div>
+                <div className="eq-amm-search">
                 <SearchCell
                     type={this.props.searchType}
                     name={this.props.searchName}
@@ -67,6 +68,7 @@ class EARightBottom extends Component {
                     searchEvent={this.props.searchEvent}
                     fetch={this.props.comFlag?this.props.searchResetCom:this.props.searchReset}
                     flag={home.judgeOperation(this.operation, 'QUERY')}/>
+                </div>
                 <EARightTable
                     getRightData={this.props.getRightData}
                     depCode={this.props.depCode}

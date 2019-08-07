@@ -13,7 +13,11 @@ class EARight extends Component {
 
     }
     callback=(key)=>{
-        console.log(key)
+        if(key==="部件"){
+        this.props.cleardata(0)}
+        else {
+            this.props.cleardata(1)
+        }
     }
 
     render() {
@@ -32,7 +36,7 @@ class EARight extends Component {
                             operation={this.props.operation}
                             comFlag={false}
                             dataSource={this.props.rightTableData}
-                            searchName="编码、设备名称、ID卡号"
+                            searchName="请输入搜索的部件名称"
                             handleTableChange={this.props.handleTableChange}
                             pagination={this.props.pagination}
                             searchContent={this.props.searchContent}
@@ -46,12 +50,12 @@ class EARight extends Component {
                             getRightData={this.props.getRightData}
                             deviceName={this.props.deviceName}
                             depCode={this.props.depCode}
-                            getTableData={this.props.getTableData}
+                            getTableData2={this.props.getTableData2}
                             url={this.props.url}
                             operation={this.props.operation}
                             comFlag={false}
                             dataSource={this.props.rightTableData}
-                            searchName="编码、设备名称、ID卡号"
+                            searchName="请输入搜索的配件名称"
                             handleTableChange={this.props.handleTableChange}
                             pagination={this.props.pagination}
                             searchContent={this.props.searchContent}

@@ -196,7 +196,7 @@ class CheckPlan extends React.Component {
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
                         this.setState({
-                            deviceNamee: rightTopData[0].name
+                            deviceName: rightTopData[0].name
                         })
                     } else {
                         this.getTableData({
