@@ -281,7 +281,7 @@ class CheckTemplate extends React.Component{
           };
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px',display:'flex',margin:'15px'}}>
                     <div style={{width:"20%"}}>
                     <TreeCard onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>
@@ -300,6 +300,10 @@ class CheckTemplate extends React.Component{
                 </div>
             </div>
         )
+    }
+    /**返回数据录入页面 */
+    returnDataEntry = () => {
+        this.props.history.push({pathname:'/equipmentCheck'});
     }
 }
 

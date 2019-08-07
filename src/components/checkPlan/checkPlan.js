@@ -360,6 +360,10 @@ class CheckPlan extends React.Component {
             parentname:e
         })
     }
+    /**返回数据录入页面 */
+    returnDataEntry = () => {
+        this.props.history.push({pathname:'/equipmentCheck'});
+    }
 render(){
     this.url = JSON.parse(localStorage.getItem('url'));
     const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
@@ -423,7 +427,7 @@ render(){
 
         </div>
     )
-}s
+}
 
 }
 
