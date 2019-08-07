@@ -67,7 +67,7 @@ class Maintenance extends React.Component {
         })
         const data = [{
             index: 1,
-            plancode: 120,
+            plancode: 121,
             deviceName: '气炉',
             deptCode: '制造部',
             maintPeople: '李小红',
@@ -76,7 +76,7 @@ class Maintenance extends React.Component {
             finishiDate: '2018年12月12日',
         }, {
             index: 1,
-            plancode: 120,
+            plancode: 121,
             deviceName: '气炉',
             deptCode: '制造部',
             maintPeople: '李小红',

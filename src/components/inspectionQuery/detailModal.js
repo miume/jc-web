@@ -1,39 +1,107 @@
 import React from 'react';
-import {Modal, Table} from 'antd';
+import {Modal, Table,message} from 'antd';
 import WhiteSpace from '../BlockQuote/whiteSpace';
 import CancleButton from "../BlockQuote/cancleButton";
+import axios from "axios"
+import {acolums,bcolums,ccolumns,willacolums,willbcolums,willccolumus,doingacolums,doingbcolums} from "./columns";
+import "./inspectionQuery.css"
 
 class InspectionDetailModal extends React.Component{
-    url
+    url=JSON.parse(localStorage.getItem('url'));
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
+            footer:'',
             visible: false,
+            devicePatrolPlanRecordHead:[],
+            devicePatrolPlanRecordItemDetailsList:[],
+            devicePatrolPlanRecordLocationDetailsList:[],
         };
-        this.fetch = this.fetch.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
-        this.footer = this.footer.bind(this)
     }
-
-
-    fetch = () => {
-
-    }
-
     /**处理一条详情记录 */
     handleDetail() {
-        this.setState({visible:true,})
         const params={
-            id:this.props.record,
-        }
-        console.log(params)
+            id:this.props.record.key,
+        };
+        //console.log(params);
+        axios({
+            url:this.url.devicePatrolQuery.PatrolQueryDetail,
+            method:"get",
+            header:{
+                'Authorization': this.url.Authorization
+            },
+            params:params,
+        }).then((data)=>{
+            //console.log(data);
+            var data1=[];
+            var data2=[];
+            var data3=[];
+            const result=data.data.data?data.data.data:[];
+            if(data.data.code===0){
+                const devicePatrolPlanRecordHead=result.devicePatrolPlanRecordHead;
+                const devicePatrolPlanRecordItemDetailsList=result.devicePatrolPlanRecordItemDetailsList;
+                const devicePatrolPlanRecordLocationDetailsList=result.devicePatrolPlanRecordLocationDetailsList;
+                var checktype1;
+                const checktype=devicePatrolPlanRecordHead.checkType;
+                if(checktype===true){checktype1="电气类"}
+                else if(checktype===false){checktype1="机械类"}
+                else {checktype1="null"}
+                const detpName=result.detpName;
+                const modelName=result.modelName;
+                const footer1 = `备注: ${devicePatrolPlanRecordHead.patrolComment}`;
+                const tabPeopleName=result.tabPeopleName;
+                data1.push({
+                    key:devicePatrolPlanRecordHead.code,
+                    recordCode:devicePatrolPlanRecordHead.code,
+                    planName:devicePatrolPlanRecordHead.planName,
+                    belongShop:detpName,
+                    modalName:modelName,
+                    checkType:checktype1,
+                    planTime:devicePatrolPlanRecordHead.planTime,
+                    getTime:devicePatrolPlanRecordHead.receiveTime,
+                    completedTime:devicePatrolPlanRecordHead.finishTime,
+                    getPeopleName:tabPeopleName,
+                });
+                for(var i1=0;i1<devicePatrolPlanRecordItemDetailsList.length;i1++)
+                {
+                    data2.push({
+                        key:devicePatrolPlanRecordItemDetailsList[i1].code,
+                        index:i1+1,
+                        InspectionContent:devicePatrolPlanRecordItemDetailsList[i1].patrolContent,
+                        inspectionResult:devicePatrolPlanRecordItemDetailsList[i1].mainValues,
+                        reason:devicePatrolPlanRecordItemDetailsList[i1].mainContent,
+                    })
+                }
+                for(var i2=0;i2<devicePatrolPlanRecordLocationDetailsList.length;i2++)
+                {
+                    data3.push({
+                        key:devicePatrolPlanRecordLocationDetailsList[i2].code,
+                        index:i2+1,
+                        patrolContent:devicePatrolPlanRecordLocationDetailsList[i2].patrolContent,
+                        inspectionLocation:devicePatrolPlanRecordLocationDetailsList[i2].locationName,
+                        visitedTime:devicePatrolPlanRecordLocationDetailsList[i2].readIdcardTime,
+                    })
+                }
+                this.setState({
+                    devicePatrolPlanRecordHead:data1,
+                    devicePatrolPlanRecordItemDetailsList:data2,
+                    devicePatrolPlanRecordLocationDetailsList:data3,
+                    footer:footer1,
+                });
+                message.info(data.data.message);
+                this.setState({
+                    visible:true,
+                })
+            }
+            else{
+                message.info("网络错误")
+            }
+        })
     }
     handleCancel() {
         this.setState({visible: false});
-    }
-    footer = () => {
-
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -41,53 +109,48 @@ class InspectionDetailModal extends React.Component{
             return(
                 <span>
                 <span onClick={this.handleDetail} className='blue'>详情</span>
-                <Modal title='设备巡检详情' visible={this.state.visible}
-                       width="1120px"
-                       closable={false}
-                       centered={true}
-                       maskClosable={false}
-                       footer={[
-                           <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
-                       ]}
-                >
-                    <div>
+                <Modal
+                    title='设备巡检详情'
+                    visible={this.state.visible}
+                    width="1120px"
+                    closable={false}
+                    centered={true}
+                    maskClosable={false}
+                    footer={[<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,]}
+                ><div>
                         <Table
-                            className="eqQueryCompleted-table"
+                            className="firstinspectiondetailtable"
                             size="small"
-                            columns={this.willacolums}
+                            columns={willacolums}
+                            bordered
+                            dataSource={this.state.devicePatrolPlanRecordHead}
+                            pagination={false}
+                        />
+                        <WhiteSpace />
+                        <b>巡检项目</b>
+                        <Table
+                            className="secondinspectiondetailtable"
+                            size="small"
+                            columns={willbcolums}
+                            dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                             bordered
                             pagination={false}
-                            style={{marginBottom:"35"}}
-                        />
+                            rowKey={record => record.code}
+                        /><div className="footerofdetail">{this.state.footer}</div>
 
                         <WhiteSpace />
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>巡检项目</div>
-                        <div style={{maxHeight:'150px',marginBottom:'2px',marginTop:'2px'}}>
-                            <Table
-                                className="eqQueryCompleted-table"
-                                size="small"
-                                columns={this.willbcolums}
-                                bordered
-                                pagination={false}
-                                // style={{tr height:'10'}}
-                                scroll={{ y: 150 }}
-                                footer={this.footer}
-                            />
-                        </div>
-                        <WhiteSpace />
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>巡检区域</div>
-                        <div style={{maxHeight:'150px',marginTop:'10px'}}>
-                            <Table className="eqQueryCompleted-table"
+                        <b>巡检区域</b>
+                        <div>
+                            <Table className="thirdinspectiondetailtable"
                                    size="small"
-                                   columns={this.willccolumus}
+                                   columns={willccolumus}
                                    bordered
                                    pagination={false}
-                                   scroll={{ y: 150 }}
+                                   rowKey={record => record.code}
+                                   dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                             />
                         </div>
-
                     </div>
-
                 </Modal>
             </span>
             )}
@@ -106,42 +169,44 @@ class InspectionDetailModal extends React.Component{
                 >
                     <div>
                         <Table
-                            className="eqQueryCompleted-table"
+                            className="firstinspectiondetailtable"
                             size="small"
-                            columns={this.doingacolums}
+                            columns={doingacolums}
+                            dataSource={this.state.devicePatrolPlanRecordHead}
                             bordered
+                            rowKey={record => record.code}
                             pagination={false}
                             style={{marginBottom:"35"}}
                         />
 
                         <WhiteSpace />
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>巡检项目</div>
-                        <div style={{maxHeight:'150px',marginBottom:'2px',marginTop:'2px'}}>
+                        <b>巡检项目</b>
+                        <div>
                             <Table
-                                className="eqQueryCompleted-table"
+                                className="secondinspectiondetailtable"
                                 size="small"
-                                columns={this.doingbcolums}
+                                columns={doingbcolums}
                                 bordered
+                                rowKey={record => record.code}
+                                dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                                 pagination={false}
-                                // style={{tr height:'10'}}
                                 scroll={{ y: 150 }}
-                                footer={this.footer}
-                            />
+                            /><div className="footerofdetail">{this.state.footer}</div>
                         </div>
                         <WhiteSpace />
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>巡检区域</div>
-                        <div style={{maxHeight:'150px',marginTop:'10px'}}>
-                            <Table className="eqQueryCompleted-table"
+                        <b>巡检区域</b>
+                        <div>
+                            <Table className="thirdinspectiondetailtable"
                                    size="small"
-                                   columns={this.willccolumus}
+                                   columns={willccolumus}
                                    bordered
+                                   rowKey={record => record.code}
+                                   dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                                    pagination={false}
-                                   scroll={{ y: 150 }}
+                                   scroll={{ y: 50 }}
                             />
                         </div>
-
                     </div>
-
                 </Modal>
             </span>
                 )
@@ -161,160 +226,48 @@ class InspectionDetailModal extends React.Component{
                 >
                     <div>
                         <Table
-                            className="eqQueryCompleted-table"
+                            className="firstinspectiondetailtable"
                             size="small"
-                            columns={this.acolums}
+                            columns={acolums}
                             bordered
+                            rowKey={record => record.code}
+                            dataSource={this.state.devicePatrolPlanRecordHead}
                             pagination={false}
                             style={{marginBottom:"35"}}
                         />
 
                         <WhiteSpace />
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>巡检项目</div>
-                        <div style={{maxHeight:'150px',marginBottom:'2px',marginTop:'2px'}}>
+                        <b>巡检项目</b>
+                        <div>
                             <Table
-                                className="eqQueryCompleted-table"
+                                className="secondinspectiondetailtable"
                                 size="small"
-                                columns={this.bcolums}
+                                columns={bcolums}
                                 bordered
+                                rowKey={record => record.code}
                                 pagination={false}
-                                // style={{tr height:'10'}}
+                                dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                                 scroll={{ y: 150 }}
-                                footer={this.footer}
-                            />
+                            /><div className="footerofdetail">{this.state.footer}</div>
                         </div>
                         <WhiteSpace />
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>巡检区域</div>
-                        <div style={{maxHeight:'150px',marginTop:'10px'}}>
-                            <Table className="eqQueryCompleted-table"
+                        <b>巡检区域</b>
+                        <div>
+                            <Table className="thirdinspectiondetailtable"
                                    size="small"
-                                   columns={this.ccolumns}
+                                   columns={ccolumns}
                                    bordered
+                                   rowKey={record => record.code}
+                                   dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                                    pagination={false}
-                                   scroll={{ y: 150 }}
+                                   scroll={{ y: 50 }}
                             />
                         </div>
-
                     </div>
-
                 </Modal>
             </span>
             )
         }
-
     }
-    acolums=[{
-        title:'巡检记录编号',
-        key:'recordCode',
-        dataIndex:'recordCode',
-        sorter: (a, b) => a.index - b.index,
-        align:'center',
-        width:180,
-    },{
-        title:'所属车间',
-        dataIndex:'belongShop',
-        key:'belongShop',
-        align:'center',
-        width:140
-    },{
-        title:'计划名称',
-        dataIndex:'planName',
-        key:'planName',
-        align:'center',
-        width:140
-    },{
-        title:'巡检模板名称',
-        dataIndex:'modalName',
-        key:'modalName',
-        align:'center',
-        width:140
-    },{
-        title:'检查类型',
-        dataIndex:'checkType',
-        key:'checkType',
-        align:'center',
-        width:140
-    },{
-        title:'计划日期',
-        dataIndex:'planTime',
-        key:'planTime',
-        align:'center',
-        width:160
-    },{
-        title:'接单时间',
-        dataIndex:'getTime',
-        key:'getTime',
-        align:'center',
-        width:180
-    },{
-        title:'接单人',
-        dataIndex:'getPeopleName',
-        key:'getPeopleName',
-        align:'center',
-        width:130
-    },{
-        title:'完成时间',
-        dataIndex:'completedTime',
-        key:'completedTime',
-        align:'center',
-        width:180
-    }
-    ]
-    willacolums=this.acolums.slice(0,6);
-    doingacolums=this.acolums.slice(0,8);
-    bcolums=[{
-        title:'序号',
-        key:'index',
-        dataIndex:'index',
-        sorter: (a, b) => a.index - b.index,
-        align:'center',
-        width:"5%",
-    },{
-        title:'巡检内容',
-        dataIndex:'InspectionContent',
-        key:'InspectionContent',
-        align:'center',
-        width:"50%"
-    },{
-        title:'巡检结果',
-        dataIndex:'inspectionResult',
-        key:'inspectionResult',
-        align:'center',
-        width:"20%"
-    },{
-        title:'异常原因',
-        dataIndex:'reason',
-        key:'reason',
-        align:'center',
-        width:"25%"
-    }
-    ]
-    willbcolums=this.bcolums.slice(0,2);
-    doingbcolums=this.bcolums.slice(0,2);
-    ccolumns= [
-        {
-            title: '序号',
-            dataIndex: 'index',
-            key: 'index',
-            align:'center',
-            width:"5%",
-            height:0.5,
-        },
-        {
-            title: '巡检位置',
-            dataIndex: 'inspectionLocation',
-            key: 'inspectionLocation',
-            align:'center',
-            width:"50%",
-        },
-        {
-            title: '打卡时间',
-            align:'center',
-            key: 'visitedTime',
-            dataIndex: 'visitedTime',
-            width:"25%"
-        }]
-    willccolumus=this.ccolumns.slice(0,2)
 }
-
 export default InspectionDetailModal

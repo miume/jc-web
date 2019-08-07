@@ -2,158 +2,130 @@ import React from "react";
 import '../Home/page.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
-import {Divider, Select, Table} from 'antd';
-import Detail from './detail'
-import RateNum from './rate'
+import DeleteByIds from '../BlockQuote/deleteByIds';
+import {Table, Popconfirm, Divider, message, Select, Tabs} from 'antd';
+import WillRepair from "./willRepair/willRepair";
+import HaveRepair from "./haveRepair/haveRepair";
+import HaveJudge from "./haveJudge/haveJudge";
+import IsRepair from "./isRepair/isRepair";
+import axios from 'axios';
 
-const data = [];
-for(let i=1;i<=10;i++){
-    data.push({
-        key:i,
-        index:i,
-        status:'状态'+i,
-        name:'名字'+i,
-        department:'部门'+i,
-        productLine:'生产线'+i,
-        person:'人'+i,
-        time:'保修时间'+i,
-        acceptTime:'接受时间'+i,
-        finishTime:'完工时间'+i,
-    })
-}
+
 
 class equipmentRepair extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            dataSource:[],
-            pagination:[],
-            selectedRowKeys: [],
-            searchContent:'',
+            repairStatus:'',
+            secondDeptId:'',
+
+            rightTableData:[],
+            pagination:{
+                showTotal(total) {
+                    return `共${total}条记录`
+                },
+                showSizeChanger: true
+            }
         }
-        this.searchContentChange = this.searchContentChange.bind(this);
-        this.searchEvent = this.searchEvent.bind(this);
-        this.onSelectChange = this.onSelectChange.bind(this);
-        this.pagination = {
-            total: this.state.dataSource.length,
-            showTotal(total){
-                return `共${total}条记录`
-            },
-            showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {
-            },
-            onChange(current) {
-            }
-        };
-        this.columns=[{
-            title:'序号',
-            dataIndex:'index',
-            key: 'index',
-            align:'center',
-            width: '10%',
-        },{
-            title: '工单状态',
-            dataIndex: 'status',
-            key: 'status',
-            align:'center',
-            width: '10%',
-        },{
-            title: '设备名称',
-            dataIndex: 'name',
-            key: 'name',
-            align:'center',
-            width: '10%',
-        },{
-            title: '单位/部门',
-            dataIndex: 'department',
-            key: 'department',
-            align:'center',
-            width: '10%',
-        },{
-            title: '所属生产线',
-            dataIndex: 'productLine',
-            key: 'productLine',
-            align:'center',
-            width: '10%',
-        },{
-            title: '报修人',
-            dataIndex: 'person',
-            key: 'person',
-            align:'center',
-            width: '10%',
-        },{
-            title: '保修时间',
-            dataIndex: 'time',
-            key: 'time',
-            align:'center',
-            width: '10%',
-        },{
-            title: '接单时间',
-            dataIndex: 'acceptTime',
-            key: 'acceptTime',
-            align:'center',
-            width: '10%',
-        },{
-            title: '完工时间',
-            dataIndex: 'finishTime',
-            key: 'finishTime',
-            align:'center',
-            width: '10%',
-        },{
-            title: '操作',
-            dataIndex: 'operation',
-            key: 'operation',
-            align:'center',
-            width: '10%',
-            render:()=>{
-                return(
-                    <span>
-                        <Detail />
-                        <Divider type="vertical" />
-                        <RateNum />
-                    </span>
-                )
-            }
-        }]
-    }
-    /**获取查询时名称的实时变化 */
-    searchContentChange(e){
-        const value = e.target.value;
-        this.setState({searchContent:value});
-    }
-    searchEvent(){
-        console.log(this.searchContentChange)
-    }
-    onSelectChange(selectedRowKeys) {
-        this.setState({ selectedRowKeys:selectedRowKeys }); 
-    }
+    };
+
     render(){
+        this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
         const { selectedRowKeys } = this.state;
         const Option = Select.Option;
-        // const rowSelection = {
-        //     selectedRowKeys,
-        //     onChange: this.onSelectChange,
-        //     onSelect() {},
-        //     onSelectAll() {},
-        //   };
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
-                    <Select style={{ width: 200 }} placeholder="请选择工单状态">
-                        <Option value={0}>待接单</Option>
-                        <Option value={1}>已接单</Option>
-                        <Option value={2}>已维修</Option>
-                        <Option value={3}>已评价</Option>
-                    </Select>
-                    {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
-                    <SearchCell name='请输入设备名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
-                    {/* </span> */}
-                    <div className='clear'></div>
-                    <Table size="small" rowKey={record => record.index} dataSource={data} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
-                </div>
+                <Tabs onChange={this.returnEquKey} style={{paddingLeft:'15px',paddingRight:'15px'}}>
+                    <Tabs.TabPane key={1} tab="待维修">
+                        <WillRepair
+                            url={this.url}
+                            getTableData={this.getTableData}
+                            rightTableData={this.state.rightTableData}
+                        />
+                    </Tabs.TabPane>
+
+                    <Tabs.TabPane key={2} tab="已接单">
+                        <IsRepair
+                            url={this.url}
+                        />
+                    </Tabs.TabPane>
+
+                    <Tabs.TabPane key={3} tab="已完成">
+                        <HaveRepair
+                            url={this.url}
+                        />
+                    </Tabs.TabPane>
+
+                    <Tabs.TabPane key={4} tab="已评价">
+                         <HaveJudge
+                             url={this.url}
+                         />
+                    </Tabs.TabPane>
+                </Tabs>
             </div>
+        )
+    }
+
+    returnEquKey = key => {
+        if(key==='1'||key==='2'||key==='3'||key==='4'){
+            this.setState({
+                rightTableData:[],
+            })
+        }
+    };
+
+    /**获得表格数据*/
+    getTableData = (params) => {
+        this.setState({secondDeptId:params.secondDeptId,repairStatus:params.repairStatus},()=> {
+                axios({
+                    url: `http://192.168.1.103:8082/deviceRepair/getPage?`,
+                    method: 'get',
+                    headers: {
+                        'Authorization': this.url.Authorization
+                    },
+                    params: params,
+                }).then((data) => {
+                    console.log(data)
+                    const res = data.data.data ? data.data.data : [];
+                    if (res && res.list) {
+                        var rightTableData = [];
+                        for (var i = 0; i < res.list.length; i++) {
+                            var arr = res.list[i];
+                            rightTableData.push({
+                                index: i + 1 + (res.page - 1) * res.size,//序号
+                                code: arr.deviceRepairApplication['code'],
+                                deptCode:arr.deviceRepairApplication['deptCode'],
+                                deviceCode:arr.deviceRepairApplication['deviceCode'],
+                                deviceName:arr.deviceRepairApplication['deviceName'],
+                                fixedassetsCode:arr.deviceRepairApplication['fixedassetsCode'],
+                                faultContent:arr.deviceRepairApplication['faultContent'],
+                                reportTime:arr.deviceRepairApplication['reportTime'],
+                                reportPeople:arr['reportPeople'],
+                                reportPhone:arr.deviceRepairApplication['reportPhone'],
+                                receiveTime:arr.deviceRepairApplication['receiveTime'],
+                                receivePeople:arr['receivePeople'],
+                                receivePhone:arr.deviceRepairApplication['receivePhone'],
+                                faultReason:arr.deviceRepairApplication['faultReason'],
+                                finishTime:arr.deviceRepairApplication['finishTime'],
+                                evaluationResult:arr.deviceRepairApplication['evaluationResult'],
+                                repairStatus:arr.deviceRepairApplication['repairStatus'],
+                            })
+                        }//新建状态用来获得所需的查询条件
+                        this.setState({
+                            rightTableData: rightTableData,
+                        });
+                    } else {
+                        this.setState({
+                            rightTableData: [],
+                        });
+                    }
+                    console(rightTableData);
+                }).catch(() => {
+                    message.info('查询失败，请刷新下页面！')
+                })
+            }
         )
     }
 }

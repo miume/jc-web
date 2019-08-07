@@ -22,3 +22,45 @@
 #inspectionInput {
     width: 230px;
 }
+.thirdinspectiondetailtable{
+    max-height: 180px;
+    overflow: auto;
+}
+.secondinspectiondetailtable{
+    overflow: auto;
+    max-height: 150px;
+}
+
+.firstinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.secondinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.thirdinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.firstinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.secondinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.thirdinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius:  0  !important;
+}
+.footerofdetail{
+    background: lightgrey;
+    height: 45px;
+    margin: 0;
+    border-radius:  0 0 4px 4px ;
+    padding: 10px;
+    overflow-y: auto;
+}
