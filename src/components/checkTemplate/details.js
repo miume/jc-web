@@ -31,7 +31,7 @@ class Detail extends React.Component{
         }).then((data) => {
             // console.log(data)
             const res = data.data.data;
-            console.log(res)
+            // console.log(res)
             if(res){
                 this.setState({
                     data : res,
@@ -81,16 +81,16 @@ class Detail extends React.Component{
                             <Radio value={false}>生效</Radio>
                             <Radio value={true}>失效</Radio>
                         </Radio.Group>
-                        <span className="headers">制表人：</span><span className="checkName">{this.state.peopleName?this.state.name:"管理员"}</span>
-                        <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
+                        <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.name:"管理员"}</span>
+                        <span className="headersDate">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
                         </div>
                     </div>
                     <Divider />
                     {
                         this.state.deviceSpotcheckModelsDetails.map(e=>
                             <div key={e.code}>
-                                <span className="DetailName">{e.spotcheckItems}</span>
                                 <span className="DetailName">{e.spotcheckContent}</span>
+                                <span className="DetailName">{e.spotcheckItems}</span>
                                 <span className="DetailName">{e.spotcheckPeriod}</span>
                                 <span className="DetailName">{e.spotcheckAddress}</span>
                             </div>

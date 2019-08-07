@@ -14,6 +14,14 @@
     display: inline-block;
     margin-left: 5px;
 }
+.headersPerson{
+    display: inline-block;
+    margin-left: 22px;
+}
+.headersDate{
+    display: inline-block;
+    margin-left: 19px;
+}
 .radios{
     margin-left: 5px;
 }
