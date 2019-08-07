@@ -1,24 +1,12 @@
 import React from "react";
 import BlockQuote from '../BlockQuote/blockquote';
 import DeleteByIds from '../BlockQuote/deleteByIds';
-import { Table,Divider } from 'antd';
+import { Table,Divider,Popconfirm,message } from 'antd';
 import '../Home/page.css';
 import AddBut from "./add";
 import TreeCard from "./treeCard";
 import axios from 'axios';
-
-// const data = [];
-// for(var i=0;i<5;i++){
-//     data.push({
-//         key:i,
-//         index:i,
-//         name:"名字"+i,
-//         date:"日期"+i,
-//         person:"人"+i,
-//         tableDate:"时间"+i,
-//         status:"状态"+i,
-//     })
-// }
+import Detail from "./details";
 
 class CheckTemplate extends React.Component{
     url
@@ -58,7 +46,7 @@ class CheckTemplate extends React.Component{
         this.columns=[{
             title:"序号",
             dataIndex:'index',
-            key: 'index',
+            key: 'deviceSpotcheckModelsHead.code',
             align:'center',
             width: '10%',
         },{
@@ -103,20 +91,23 @@ class CheckTemplate extends React.Component{
             key: 'operation',
             align:'center',
             width: '15%',
-            render:()=>{
+            render:(text,record)=>{
                 return (
                     <span>
                         <a href="#">编辑</a>
                         <Divider type="vertical" />
-                        <a href="#">详情</a>
+                        <Detail code = {record.deviceSpotcheckModelsHead.code} deptName={this.state.deptName} deviceName={this.state.deviceName}/>
                         <Divider type="vertical" />
-                        <a href="#">删除</a>
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.deviceSpotcheckModelsHead.code)} okText="确定" cancelText="取消" >
+                            <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
         }]
     }
     onSelectChange(selectedRowKeys) {
+        console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     componentDidMount(){
@@ -153,6 +144,9 @@ class CheckTemplate extends React.Component{
             });
         }, 1000);
     }
+    onExpand = (expandedKeys) => {
+        this.setState({expandedKeys: expandedKeys})
+    }
     getTreeData(){
         axios({
             url:`${this.url.deviceSpot.getAllDevices}`,
@@ -179,8 +173,32 @@ class CheckTemplate extends React.Component{
             }
         })
     }
+    handleDelete = (id) => {
+        axios({
+            url:`${this.url.deviceSpot.delete}/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+        setTimeout(() => {
+            // if((this.pagination.total-1)%10===0){
+            //     this.pagination.current = this.pagination.current-1
+            // }
+            this.getTableData({
+                page:1,
+                size:10,
+                deviceName:this.state.deviceName,
+                deptId:this.state.deptCode
+            });
+        }, 1000);
+    };
     onSelect = (selectedKeys,info)=>{
-        // console.log(info)
+        // console.log(selectedKeys)
         this.getTableData({
             page:1,
             size:10,
@@ -192,6 +210,30 @@ class CheckTemplate extends React.Component{
             deptCode:info.node.props.code,
             deviceName:info.node.props.title,
             deptName:info.node.props.fatherName,
+        })
+    }
+    deleteByIds = ()=>{
+        const ids = this.state.selectedRowKeys;
+        axios({
+            url:`${this.url.processManagement.deleteByIds}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            if(data.data.code===0){
+                this.getTableData({
+                    page:1,
+                    size:10,
+                    deviceName:this.state.deviceName,
+                    deptId:this.state.deptCode
+                })
+            }
+        }).catch(()=>{
+            message.info('删除错误，请联系管理员！')
         })
     }
     getTableData = (params = {})=>{
@@ -231,8 +273,8 @@ class CheckTemplate extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            onSelect() {},
-            onSelectAll() {},
+            // onSelect() {},
+            // onSelectAll() {},
             // getCheckboxProps: record => ({
             //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
             //   }),
@@ -242,17 +284,18 @@ class CheckTemplate extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px',display:'flex',margin:'15px'}}>
                     <div style={{width:"20%"}}>
-                    <TreeCard expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>
+                    <TreeCard onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>
                     <div style={{width:"80%",marginLeft:"15px"}}>
                     <AddBut getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         loading={loading}
                         cancel={this.cancel}
+                        deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation,'DELETE')}
                     />
                     <div className='clear'></div>
-                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.index} dataSource={this.state.dataSource} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
+                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.deviceSpotcheckModelsHead.code} dataSource={this.state.dataSource} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
                     </div>
                 </div>
             </div>

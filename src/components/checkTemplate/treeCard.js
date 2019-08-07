@@ -30,9 +30,10 @@ class TreeCard extends React.Component{
           return ;
         }
       }
-    onExpand = (expandedKeys) => {
-        this.setState({expandedKeys: expandedKeys})
-    }
+    // onExpand = (expandedKeys) => {
+        
+    //     this.setState({expandedKeys: expandedKeys})
+    // }
     
     // getTreeData(){
     //     axios({
@@ -70,7 +71,7 @@ class TreeCard extends React.Component{
                         selectedKeys={this.props.selectedKeys}
                         // treeData={this.state.treeData}
                         onSelect={this.props.onSelect}
-                        onExpand={this.onExpand}
+                        onExpand={this.props.onExpand}
                         expandedKeys={this.props.expandedKeys}
                     >
                         {

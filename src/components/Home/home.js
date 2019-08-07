@@ -393,6 +393,13 @@ class Home extends Component {
                 upload:`${server}/jc/common/deviceSpotCheck/upload`,
                 delete:`${server}/jc/common/deviceSpotCheck`,
                 getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`
+            },
+            /**巡检计划 */
+            devicePatrolPlan:{
+                add:`${server}/jc/common/devicePatrolPlan/add`,
+                detail:`${server}/jc/common/devicePatrolPlan/detail`,
+                page:`${server}/jc/common/devicePatrolPlan/page`,
+                update:`${server}/jc/common/devicePatrolPlan/update`,
             }
         }
         localStorage.setItem('status',JSON.stringify(status));

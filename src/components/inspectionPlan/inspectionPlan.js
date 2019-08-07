@@ -3,6 +3,7 @@ import Blockquote from "../BlockQuote/blockquote";
 
 
 class InspectionPlan extends React.Component{
+    url
     constructor(props){
         super(props)
         this.returnDataEntry = this.returnDataEntry.bind(this)
