@@ -38,6 +38,7 @@ class LocationBasic extends React.Component{
         this.onSelectChange=this.onSelectChange.bind(this)
         this.cancel=this.cancel.bind(this)
         this.getTableData=this.getTableData.bind(this)
+        this.fetch=this.fetch.bind(this)
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -112,7 +113,7 @@ class LocationBasic extends React.Component{
             type:'json'
         }).then((data)=>{
             message.info(data.data.message);
-            // this.fetch();
+            this.fetch();
         }).catch(()=>{
             message.info('删除失败，请联系管理员！')
         });
@@ -121,12 +122,11 @@ class LocationBasic extends React.Component{
     fetch = () => {
         /**flag为1时，将分页搜索位置0 */
         var params={
-            id:this.deptCode,
-            page:this.pagination.page,
+            id:this.state.deptCode,
+            page:this.state.pagination.page,
             size:10,
-            depName:this.deptName,
+            depName:this.state.deptName,
         }
-        console.log(params)
         this.getTableData(params);
     };
 

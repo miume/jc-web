@@ -19,8 +19,9 @@
 }
 .eRp-shangbianju{
     margin-top: 57px;
+    overflow-x: auto;
 }
 .eRp-putright{
     position: absolute;
-    right: 18px;
+    right: 30px;
 }

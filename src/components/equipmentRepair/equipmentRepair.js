@@ -9,6 +9,7 @@ import HaveRepair from "./haveRepair/haveRepair";
 import HaveJudge from "./haveJudge/haveJudge";
 import IsRepair from "./isRepair/isRepair";
 import axios from 'axios';
+import home from "../commom/fns";
 
 
 
@@ -32,7 +33,6 @@ class equipmentRepair extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
-        const { selectedRowKeys } = this.state;
         const Option = Select.Option;
         return(
             <div>
@@ -49,6 +49,8 @@ class equipmentRepair extends React.Component{
                     <Tabs.TabPane key={2} tab="已接单">
                         <IsRepair
                             url={this.url}
+                            getTableData={this.getTableData}
+                            rightTableData={this.state.rightTableData}
                         />
                     </Tabs.TabPane>
 
@@ -78,14 +80,22 @@ class equipmentRepair extends React.Component{
 
     /**获得表格数据*/
     getTableData = (params) => {
-        this.setState({secondDeptId:params.secondDeptId,repairStatus:params.repairStatus},()=> {
+        this.setState({
+            secondDeptId:params.secondDeptId,
+            repairStatus:params.repairStatus},
+            ()=> {
+                var theParams={
+                    secondDeptId:params.secondDeptId,
+                    repairStatus:params.repairStatus
+                }
+                console.log(theParams)
                 axios({
-                    url: `http://192.168.1.103:8082/deviceRepair/getPage?`,
+                    url: `${this.url.equipmentRepair.getPage}`,
                     method: 'get',
                     headers: {
                         'Authorization': this.url.Authorization
                     },
-                    params: params,
+                    params: theParams,
                 }).then((data) => {
                     console.log(data)
                     const res = data.data.data ? data.data.data : [];
@@ -95,22 +105,23 @@ class equipmentRepair extends React.Component{
                             var arr = res.list[i];
                             rightTableData.push({
                                 index: i + 1 + (res.page - 1) * res.size,//序号
-                                code: arr.deviceRepairApplication['code'],
-                                deptCode:arr.deviceRepairApplication['deptCode'],
-                                deviceCode:arr.deviceRepairApplication['deviceCode'],
-                                deviceName:arr.deviceRepairApplication['deviceName'],
-                                fixedassetsCode:arr.deviceRepairApplication['fixedassetsCode'],
-                                faultContent:arr.deviceRepairApplication['faultContent'],
-                                reportTime:arr.deviceRepairApplication['reportTime'],
-                                reportPeople:arr['reportPeople'],
-                                reportPhone:arr.deviceRepairApplication['reportPhone'],
-                                receiveTime:arr.deviceRepairApplication['receiveTime'],
-                                receivePeople:arr['receivePeople'],
-                                receivePhone:arr.deviceRepairApplication['receivePhone'],
-                                faultReason:arr.deviceRepairApplication['faultReason'],
-                                finishTime:arr.deviceRepairApplication['finishTime'],
-                                evaluationResult:arr.deviceRepairApplication['evaluationResult'],
-                                repairStatus:arr.deviceRepairApplication['repairStatus'],
+                                code: arr.deviceRepairApplication['code'],//序号ID
+                                deptCode:arr.deviceRepairApplication['deptCode'],//所属部门
+                                deviceCode:arr.deviceRepairApplication['deviceCode'],//主设备编号
+                                deviceName:arr.deviceRepairApplication['deviceName'],//设备名称
+                                fixedassetsCode:arr.deviceRepairApplication['fixedassetsCode'],//固定资产编码
+                                faultContent:arr.deviceRepairApplication['faultContent'],//故障描述
+                                reportTime:arr.deviceRepairApplication['reportTime'],//报修时间
+                                reportPeople:arr['reportPeople'],//报修人
+                                reportPhone:arr.deviceRepairApplication['reportPhone'],//报修人联系电话
+                                receiveTime:arr.deviceRepairApplication['receiveTime'],//接单时间
+                                receivePeople:arr['receivePeople'],//接单人
+                                receivePhone:arr.deviceRepairApplication['receivePhone'],//接单人联系电话
+                                faultReason:arr.deviceRepairApplication['faultReason'],//故障原因
+                                finishTime:arr.deviceRepairApplication['finishTime'],//完成时间
+                                evaluationResult:arr.deviceRepairApplication['evaluationResult'],//评价结果
+                                repairStatus:arr.deviceRepairApplication['repairStatus'],//维修状态
+                                emergeStatus:arr.deviceRepairApplication['emergeStatus'],//紧急程度
                             })
                         }//新建状态用来获得所需的查询条件
                         this.setState({
