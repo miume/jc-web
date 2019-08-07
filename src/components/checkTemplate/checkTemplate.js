@@ -7,6 +7,7 @@ import AddBut from "./add";
 import TreeCard from "./treeCard";
 import axios from 'axios';
 import Detail from "./details";
+import Edit from "./edit";
 
 class CheckTemplate extends React.Component{
     url
@@ -94,7 +95,7 @@ class CheckTemplate extends React.Component{
             render:(text,record)=>{
                 return (
                     <span>
-                        <a href="#">编辑</a>
+                        <Edit getTableData={this.getTableData} deptmentCode={this.state.deptCode} info={this.state.lineData} deptCode={record.deviceSpotcheckModelsDetails.code} code = {record.deviceSpotcheckModelsHead.code} deptName={this.state.deptName} deviceName={this.state.deviceName}/>
                         <Divider type="vertical" />
                         <Detail code = {record.deviceSpotcheckModelsHead.code} deptName={this.state.deptName} deviceName={this.state.deviceName}/>
                         <Divider type="vertical" />
