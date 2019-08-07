@@ -58,6 +58,11 @@ import InspectionTemplate from '../inspectionTemplate/inspectionTemplate'
 import InspectionPlan from '../inspectionPlan/inspectionPlan'
 import InspectionQuery from '../inspectionQuery/inspectionQuery'
 import LocationBasic from "../locationBasic/locationBasic";
+
+import BatchInfo from "../batchInfo/batchInfo"
+import BatchSearch from "../batchSearch/batchSearch"
+import BatchRule from  "../batchRule/batchRule"
+
 class Right extends React.Component {
     render() {
         const data = [{
@@ -208,6 +213,15 @@ class Right extends React.Component {
             },{
                 path:"/locationBasic",
                 component:LocationBasic
+            },{
+                path:"/batchRule",
+                component:BatchRule
+            },{
+                path:"/batchInfo",
+                component:BatchInfo
+            },{
+                path:"/batchSearch",
+                component:BatchSearch
             }]
         return (
             <div className="rightDiv">
