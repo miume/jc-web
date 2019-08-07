@@ -4,56 +4,6 @@ import axios from "axios";
 import DeletaSpan from "./deleteModal";
 import EditPart from "./editPart"
 
-const FormItem = Form.Item;
-const EditableContext = React.createContext();
-
-const EditableRow = ({ form, index, ...props }) => (
-    <EditableContext.Provider value={form}>
-        <tr {...props} />
-    </EditableContext.Provider>
-);
-
-const EditableFormRow = Form.create()(EditableRow);
-class EditableCell extends React.Component {
-    getInput = () => {
-        return <Input />;
-    };
-    render() {
-        const {
-            editing,
-            dataIndex,
-            title,
-            inputType,
-            record,
-            index,
-            ...restProps
-        } = this.props;
-        return (
-            <EditableContext.Consumer>
-                {(form) => {
-                    this.form = form;
-                    return (
-                        <td {...restProps}>
-                            {editing ? (
-                                <FormItem style={{ margin: 0 }}>
-                                    {form.getFieldDecorator(dataIndex, {
-                                        rules: [{
-                                            required: true,
-                                            message: `${title}不能为空`,
-                                        }],
-                                        initialValue:record[dataIndex],
-                                    })(this.getInput())
-                                    }
-                                </FormItem>
-                            ) : restProps.children}
-                        </td>
-                    );
-                }}
-            </EditableContext.Consumer>
-        );
-    }
-}
-
 class TheTable extends React.Component{
     constructor(props){
         super(props)
@@ -69,7 +19,7 @@ class TheTable extends React.Component{
         key: 'index',
         sorter: (a, b) => a.index - b.index,
         align:'center',
-        width: '20%',
+        width: "230px",
     },{
         title: '所属部门',
         dataIndex: 'deptName',
@@ -90,20 +40,22 @@ class TheTable extends React.Component{
         key: 'idCode',
         align:'center',
         editable: 1,
-        width: '20%',
+        width: '21%',
     },{
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
         align:'center',
-        width: '20%',
+        editable: 1,
+        width: '21%',
         render: (text, record) => {
             return (
                 <div style={{display:'flex'}}>
                     <EditPart
                         url={this.props.url}
                         code={record.code}
-                        record={record}
+                        locationName={record.locationName}
+                        idCode={record.idCode}
                         deptName={this.props.deptName}
                         deptCode={this.props.deptCode}
                         getTableData={this.props.getTableData}
@@ -120,24 +72,19 @@ class TheTable extends React.Component{
             )
         }
     }];
-
+    /**rowKey={record => record.code}用于选定需要批量删除的数据的ID*/
     render() {
         const {selectedRowKeys,pagination} = this.state;
-        const components = {
-            body: {
-                row: EditableFormRow,
-                cell: EditableCell,
-            },
-        };
         return (
             <div>
                 <Table
                     columns={this.columns}
+                    rowKey={record => record.code}
                     pagination={this.props.pagination}
-                    components={components}
                     rowSelection={this.props.rowSelection}
                     dataSource={this.props.rightTableData}
                     onChange={this.handleTableChange}
+                    fixed='true'
                     size="small"
                     bordered
                     scroll={{ y: 450 }}

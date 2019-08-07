@@ -2,6 +2,10 @@ import React from "react";
 import {Button, Input, Layout, message, Tree} from "antd";
 import axios from "axios";
 import home from "../../commom/fns";
+import "../equipmenRepair.css";
+import DepTree from "./depTree";
+import SearchCell from "../../BlockQuote/search";
+import TheTable from "./theTable";
 
 class IsRepair extends React.Component{
     constructor(props){
@@ -13,8 +17,32 @@ class IsRepair extends React.Component{
         this.url=this.props.url;
 
         return(
-            <div>
-                待开发
+            <div style={{padding: '15px'}} className="eRp">
+                {/*左边树部分*/}
+                <div className="eRp-left">
+                    <DepTree
+                        url={this.url}
+                        getTableData={this.props.getTableData}
+                    />
+                </div>
+                <div className='eRp-right'>
+                    <div className='eRp-putright'>
+                        <SearchCell
+                            name='关键字'
+                            flag={true}
+                            fetch={this.fetch}
+                            searchEvent={this.searchEvent}
+                            searchContentChange={this.searchContentChange}
+                        />
+                    </div>
+
+                    <div className='eRp-shangbianju'>
+                        <TheTable
+                            url={this.url}
+                            rightTableData={this.props.rightTableData}
+                        />
+                    </div>
+                </div>
             </div>
 
         );
