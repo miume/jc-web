@@ -1,0 +1,53 @@
+.inspection-Tem{
+    width:100%;
+    padding: 15px;
+    display: flex;
+}
+
+
+.inspection-Tem-leftTree{
+    width: 20%;
+    margin-right: 15px;
+
+}
+.inspection-Tem-right{
+    width:70%;
+    margin-left: 15px;
+    /*padding-left: 10px;*/
+    /*padding-right: 15px;*/
+}
+.inspection-Tem-Cardtitle{
+    text-align: center;
+    font-size: 10px;
+}
+
+.inspection-Tem-changetable .ant-card-head-title{
+    display: block;
+}
+.inspection-Tem-table{
+    padding-top: 15px;
+}
+.example-input .ant-input {
+    width: 250px;
+}
+.example-input2 .ant-input {
+    width: 110px;
+}
+.inspection-Table{
+    width:100%;
+    display: flex;
+}
+.inspection-Left-Table{
+    width: 40%;
+    padding-right: 10px;
+}
+.inspection-Right-Table{
+    width: 60%;
+    padding-left: 10px;
+    margin-right: 60px;
+}
+.ins-tem-deleteByIds{
+    display: flex;
+    padding-left: 100px;
+    margin-top: -57.8px;
+}

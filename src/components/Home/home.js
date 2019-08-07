@@ -371,6 +371,8 @@ class Home extends Component {
                 updateUnitAccessory: `${server}/jc/common/device/updateUnitAccessory`,
                 updateUnit: `${server}/jc/common/device/updateUnit`,
                 deleteUnit: `${server}/jc/common/device/deleteUnit`,
+                AccName:`${server}/jc/common/device/getDeviceByAccName`,
+                UnitName:`${server}/jc/common/device/getDeviceByUnitName`,
                 getAllMainByDeptCodeByDeviceName:`${server}/jc/common/device/getAllMainByDeptCodeByDeviceName`,
                 duplicateDeviceAcc:`${server}/jc/common/device/duplicateDeviceAcc`,
                 getAllUnitByDeptCodeByDeviceName:`${server}/jc/common/device/getAllUnitByDeptCodeByDeviceName`,
@@ -418,6 +420,16 @@ class Home extends Component {
                 page:`${server}/jc/common/SpotcheckPlan/page`,
                 getDeviceCount:`${server}/jc/common/SpotcheckPlan/getDeviceCount`,
             },
+            /**巡检模板**/
+            devicePatrolModel:{
+                add:`${server}/jc/common/devicePatrolModel/add`,
+                deleteByIds:`${server}/jc/common/devicePatrolModel/deleteByIds`,
+                detail:`${server}/jc/common/devicePatrolModel/detail`,
+                page:`${server}/jc/common/devicePatrolModel/page`,
+                update:`${server}/jc/common/devicePatrolModel/update`,
+                delete:`${server}/jc/common/devicePatrolModel/{id}`,
+                position:`${server}/jc/common/basicInfoLocation/getPage`,
+            }
             devicePatrolQuery:{
                 PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
                 PatrolQueryPage:`${server}/jc/common/devicePatrolQuery/page`

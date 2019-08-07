@@ -1,11 +1,13 @@
-import React, {Component} from 'react';
-import {Tree} from 'antd';
+import React from "react"
+import {Card, Tree} from "antd";
+import "./inspectionTemplate.css"
 import axios from "axios";
-class DepTree extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            expandedKeys: [],
+
+class LeftTree extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            expendedKeys:[],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -15,43 +17,41 @@ class DepTree extends Component {
                 isSelect: false,
                 children: []
             }],
-            // 改变名称
-            saveData: {
-                code: null,
-                name: '',
-                parentCode: null
-            },
-        };
+        }
+
+
         this.getData = this.getData.bind(this)
         this.onSelect = this.onSelect.bind(this)
 
         this.onExpand = this.onExpand.bind(this)
         this.renderTreeNodes = this.renderTreeNodes.bind(this)
     }
-
     componentDidMount() {
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
     }
-
     render() {
         return (
-            <div>
-                <Tree
-                    showLine
-                    onSelect={this.onSelect}
-                    expandedKeys={this.state.expandedKeys}
-                    onExpand={this.onExpand}
-                >
-                    {this.renderTreeNodes(this.state.dataSource)}
-                </Tree>
+            <div className="inspection-Tem-changetable">
+            <Card
+                title="部门选择"
+                headStyle={{textAlign:'center',display:'block'}}
+            >
+                <div style={{display:'inline-block'}}>
+                    <Tree
+                        showLine
+                        onSelect={this.onSelect}
+                        expandedKeys={this.state.expandedKeys}
+                        onExpand={this.onExpand}
+                    >
+                        {this.renderTreeNodes(this.state.dataSource)}
+                    </Tree>
+                </div>
+            </Card>
             </div>
-        )
+        );
     }
-    /**
-     * 获取数据渲染
-     */
     getData = () => {
         // TODO: 调接口，获取数据
         axios({
@@ -70,9 +70,6 @@ class DepTree extends Component {
                 isEditable: false,
                 children: []
             }];
-            console.log('-----------------------')
-            console.log(res)
-            console.log('-----------------------')
             if (res) {
                 var expandedKeys = ["0"];
                 for (let i = 0; i < res.length; i++) {
@@ -119,18 +116,18 @@ class DepTree extends Component {
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
                     this.props.firstname(res[0].parent.name)
+                    this.props.name(res[0].son[0].name)
                 }
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                     expandedKeys: expandedKeys,
+                    expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
                         parentCode: null
                     },
                 })
-                console.log(expandedKeys)
             } else {
 
             }
@@ -142,19 +139,16 @@ class DepTree extends Component {
         var dataSource = this.state.dataSource;
         this.props.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-        console.log(e.node)
-        console.log(e.node.props)
-        console.log(e.node.props.dataRef)
-        console.log(e.node.props.dataRef.value)
+        this.props.name(e.node.props.dataRef.value)
     }
 
 
-    // 展开/收起节点时触发
     onExpand = (expandedKeys) => {
         this.expandedKeys = expandedKeys;
         this.setState({expandedKeys: expandedKeys})
     }
-    // 展开树节点
+
+
     renderTreeNodes = data => data.map((item) => {
         item.title = ( // 不处于编辑状态
             <div className={item.isSelect?"depTreeSelect":""}>
@@ -175,4 +169,4 @@ class DepTree extends Component {
     })
 }
 
-export default DepTree
+export default LeftTree

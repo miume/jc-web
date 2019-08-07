@@ -29,7 +29,13 @@
     /*height: 50px !important;*/
     /*background-color: red;*/
 }
-
+.eq-aM-search{
+     display: flex;
+     clear:both;
+ }
+.eq-amm-search{
+    height: 35px;
+}
 .depTree-input {
     max-width: 100px;
     height:25px
