@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Icon, Divider, message} from 'antd';
+import {message, Table} from 'antd';
 import axios from "axios";
 import Details from "./detail";
 import Delete from "./delete";

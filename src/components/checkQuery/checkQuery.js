@@ -1,17 +1,11 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import {Button, Col, Icon, message, Row, Tabs} from "antd";
-import Eqblock from "../eqMaintenanceDataEntry/eqblock";
-import Right from "../eqMaintenanceDataEntry/right";
+import {Button, Icon, message, Tabs} from "antd";
 import CheckTable from "./checktable"
 import DepTree from './depTree';
 import "./checkQuery.css"
 import "../equipmentArchiveManager/equipmentArchiveManager.css"
 import axios from "axios";
-import home from '../commom/fns'
-import Check from "../purchaseCheckReport/check";
-import SearchCell from "./searchCell";
-
 
 class CheckQuery extends React.Component{
     constructor(props){
@@ -377,6 +371,10 @@ class CheckQuery extends React.Component{
             })
         }
     };
+    /**返回数据录入页面 */
+    returnDataEntry = () => {
+        this.props.history.push({pathname:'/equipmentCheck'});
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;

@@ -1,6 +1,5 @@
 import React from 'react';
-import {Table, Icon, Divider, message} from 'antd';
-import axios from "axios";
+import {Table} from 'antd';
 import '../willMaintain.css';
 
 //用于编写表格的显示样式

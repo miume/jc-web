@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, Icon, message, Row, Select, Tabs} from "antd";
+import {Button, Icon, message, Select, Tabs} from "antd";
 import axios from "axios";
 import Blockquote from "../BlockQuote/blockquote";
 import DepTree from "./depTree";
@@ -189,6 +189,7 @@ class CheckPlan extends React.Component {
                         if (item.name === deviceName) {
                             deviceFlag = false
                         }
+                        return rightTopData;
                     })
                     if (deviceFlag) {
                         this.getTableData({
@@ -359,15 +360,15 @@ class CheckPlan extends React.Component {
             parentname:e
         })
     }
+    /**返回数据录入页面 */
+    returnDataEntry = () => {
+        this.props.history.push({pathname:'/equipmentCheck'});
+    }
 render(){
     this.url = JSON.parse(localStorage.getItem('url'));
     const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
     const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
     this.operation = operation.filter(e=>e.path === current.path)[0].operations;
-    const { TabPane } = Tabs;
-    function callback (key) {
-        console.log(key);
-    }
     const { Option } = Select;
     return (<div>
             <Blockquote menu={current.menuParent} name="点检计划"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
@@ -426,7 +427,7 @@ render(){
 
         </div>
     )
-}s
+}
 
 }
 

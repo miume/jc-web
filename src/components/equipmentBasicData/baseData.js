@@ -57,6 +57,7 @@ class BaseData extends React.Component{
                         this.state.data?this.state.data.map(d=>
                         <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
                         ):null
+
                     }
                 </div>
            </div>

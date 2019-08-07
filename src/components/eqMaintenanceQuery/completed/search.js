@@ -1,7 +1,6 @@
 import React from 'react';
-import axios from 'axios';
-import {Button, Input,DatePicker} from 'antd';
-import moment from 'moment';
+import {Button, DatePicker, Input} from 'antd';
+
 class SearchCell extends React.Component{
     constructor(props){
         super(props)
@@ -122,7 +121,6 @@ class SearchCell extends React.Component{
 
     render(){
         const Search = Input.Search;
-        const type= this.props.type;
         const {  RangePicker } = DatePicker;
         return(
             //className={this.props.flag?'searchCell':'hide'}

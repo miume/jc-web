@@ -1,7 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import {Table, Divider, message} from 'antd';
-import AddModal from "./addModal";
+import {Divider, Table} from 'antd';
 
 class MaintenanceModal extends React.Component {
     constructor(props) {

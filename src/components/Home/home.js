@@ -156,6 +156,43 @@ class Home extends Component {
                 updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
                 maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
             },
+            /**
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             * 设备维修*/
+            equipmentRepair:{
+                deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
+                evaluations:`${server}/jc/common/deviceRepair/evaluations`,
+                getPage:`${server}/jc/common/deviceRepair/getPage`,
+            },
+            /**
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             *
+             * 位置基础信息*/
+            locationBasic:{
+                addBasicInfo:`${server}/jc/common/basicInfoLocation/addBasicInfo`,
+                deleteByIds:`${server}/jc/common/basicInfoLocation/deleteByIds`,
+                getPage:`${server}/jc/common/basicInfoLocation/getPage`,
+                maintenanceDetailById:`${server}/jc/common/basicInfoLocation/maintenanceDetailById`,
+                updateById:`${server}/jc/common/basicInfoLocation/updateById`,
+                basicInfoLocation:`${server}/jc/common/basicInfoLocation`,
+            },
             /**出库管理 */
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
@@ -336,7 +373,12 @@ class Home extends Component {
                 deleteUnit: `${server}/jc/common/device/deleteUnit`,
                 AccName:`${server}/jc/common/device/getDeviceByAccName`,
                 UnitName:`${server}/jc/common/device/getDeviceByUnitName`,
-            },
+                getAllMainByDeptCodeByDeviceName:`${server}/jc/common/device/getAllMainByDeptCodeByDeviceName`,
+                duplicateDeviceAcc:`${server}/jc/common/device/duplicateDeviceAcc`,
+                getAllUnitByDeptCodeByDeviceName:`${server}/jc/common/device/getAllUnitByDeptCodeByDeviceName`,
+                duplicateDeviceUnit:`${server}/jc/common/device/duplicateDeviceUnit`,
+                duplicateUnitAcc:`${server}/jc/common/device/duplicateUnitAcc`,
+    },
             /**设备管理状态*/
             equipmentStatus:{
                 deviceStatus:`${server}/jc/common/deviceStatus`,
@@ -388,8 +430,33 @@ class Home extends Component {
                 delete:`${server}/jc/common/devicePatrolModel/{id}`,
                 position:`${server}/jc/common/basicInfoLocation/getPage`,
             }
+            devicePatrolQuery:{
+                PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
+                PatrolQueryPage:`${server}/jc/common/devicePatrolQuery/page`
+            },
+            /**点检模板**/
+            deviceSpot:{
+                addCheck:`${server}/jc/common/deviceSpotCheck/addCheckModel`,
+                checkDetail:`${server}/jc/common/deviceSpotCheck/checkModelDetail`,
+                deleteDetailId:`${server}/jc/common/deviceSpotCheck/deleteDetailId`,
+                deleteByIds:`${server}/jc/common/deviceSpotCheck/deleteByIds`,
+                getAllDevices:`${server}/jc/common/deviceSpotCheck/getAllDevices`,
+                planPage:`${server}/jc/common/deviceSpotCheck/getPage`,
+                updateCheckModel:`${server}/jc/common/deviceSpotCheck/updateCheckModel`,
+                upload:`${server}/jc/common/deviceSpotCheck/upload`,
+                delete:`${server}/jc/common/deviceSpotCheck`,
+                getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`
+            },
+            /**巡检计划 */
+            devicePatrolPlan:{
+                add:`${server}/jc/common/devicePatrolPlan/add`,
+                detail:`${server}/jc/common/devicePatrolPlan/detail`,
+                page:`${server}/jc/common/devicePatrolPlan/page`,
+                update:`${server}/jc/common/devicePatrolPlan/update`,
 
+            }
         }
+
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))

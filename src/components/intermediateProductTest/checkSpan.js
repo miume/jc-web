@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import home from '../commom/fns'
-import {Button, Input, Modal, Table, message} from 'antd';
+import {Button, Input, message, Modal, Table} from 'antd';
 import CancleButton from '../BlockQuote/cancleButton';
 import SaveButton from '../BlockQuote/saveButton';
 import Submit from '../BlockQuote/submit';
 import './interProduct.css';
 import CheckQualifiedModal from "../BlockQuote/checkQualifiedModal";
+
 const data = [];
 for (let i = 0; i < 50; i++) {
     data.push({

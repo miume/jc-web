@@ -1,5 +1,6 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
+
 import "./inspectionTemplate.css"
 import LeftTree from "./leftTree"
 import axios from "axios";
@@ -10,6 +11,7 @@ import home from "../commom/fns";
 import RightTable from "./rightTable";
 import DepTree from "../checkPlan/depTree";
 import DeleteByIds from "../BlockQuote/deleteByIds";
+
 
 
 class InspectionTemplate extends React.Component{

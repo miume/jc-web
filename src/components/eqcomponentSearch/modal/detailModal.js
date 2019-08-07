@@ -1,9 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import {Button, message, Upload, Input, Col, Row, DatePicker, Select, Switch, Icon, Divider} from 'antd';
-import CancleButton from "../../BlockQuote/cancleButton";
+import {Button, Col, DatePicker, Divider, Input, message, Row, Select, Switch} from 'antd';
 import '../eqcomponentSearch.css'
 import moment from 'moment';
+
 const Option = Select.Option;
 const props = {
     name: 'file',

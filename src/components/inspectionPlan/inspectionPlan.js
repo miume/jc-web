@@ -1,10 +1,9 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import axios from "axios";
-import {message} from "antd";
 
 
 class InspectionPlan extends React.Component{
+    url
     constructor(props){
         super(props)
         this.returnDataEntry = this.returnDataEntry.bind(this)

@@ -1,9 +1,7 @@
 import React from "react";
-import Blockquote from "../BlockQuote/blockquote";
-import axios from "axios";
-import { Tooltip, Button,Row,Col} from 'antd';
-import LeftLayout from"./leftLayout"
+import {Button, Col, Row} from 'antd';
 import "./eqMaintenanceDataEntry.css"
+
 class Eqblock extends React.Component{
 constructor(props){
     super(props)

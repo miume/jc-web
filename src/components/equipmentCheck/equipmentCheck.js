@@ -55,7 +55,7 @@ class EquipmentCheck extends React.Component{
                     <div className='card-parent'>
                     {
                         this.state.data?this.state.data.map(d=>
-                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
+                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} />
                         ):null
                     }
                 </div>

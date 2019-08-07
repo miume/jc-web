@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message, Card} from 'antd';
+import {Tree} from 'antd';
 import axios from "axios";
 class DepTree extends Component {
     constructor(props) {

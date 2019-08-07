@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Divider, message} from 'antd';
+import {message} from 'antd';
 import DepTree from './depTree/depTree';
 import Blockquote from '../BlockQuote/blockquote';
 import './equipmentArchiveManager.css'
@@ -126,7 +126,7 @@ class EquipmentArchiveManager extends Component {
                 for(var i=0;i<rightTopData.length-1;i++){
                     updatebackground.push(0);
                 }
-                console.log(rightTopData)
+                //console.log(rightTopData)
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code,
@@ -154,7 +154,7 @@ class EquipmentArchiveManager extends Component {
             } else {
                 message.info('查询失败，请刷新下页面！')
             }
-            console.log(rightTopData)
+            //console.log(rightTopData)
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
@@ -183,6 +183,7 @@ class EquipmentArchiveManager extends Component {
 
 
     getTableData = (params, flag) => {
+        console.log(params)
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if (flag) {
             this.setState({

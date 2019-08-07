@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {Modal, Form, Input, DatePicker, Select, Col, Switch, message} from 'antd';
+import {message, Modal} from 'antd';
 import NewButton from '../../BlockQuote/newButton';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
 import AddModal from '../modal/addModal'
-import moment from "moment";
 import axios from "axios";
 
 class Add extends Component {

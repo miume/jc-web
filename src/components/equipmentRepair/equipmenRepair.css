@@ -1,0 +1,26 @@
+.eRp {
+    display: flex;
+    height: 550px;
+    /*background-color: #859900;*/
+}
+.eRp-left {
+    width: 20%;
+    height: 100%;
+    /*background-color:#cea61b;*/
+    /*overflow-y: auto;*/
+    /*overflow-x: auto;*/
+    font-size: small;
+}
+.eRp-right {
+    width: 80%;
+    height: 100%;
+    padding-left: 10px;
+
+}
+.eRp-shangbianju{
+    margin-top: 57px;
+}
+.eRp-putright{
+    position: absolute;
+    right: 18px;
+}
