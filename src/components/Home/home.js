@@ -378,6 +378,7 @@ class Home extends Component {
                 getAllUnitByDeptCodeByDeviceName:`${server}/jc/common/device/getAllUnitByDeptCodeByDeviceName`,
                 duplicateDeviceUnit:`${server}/jc/common/device/duplicateDeviceUnit`,
                 duplicateUnitAcc:`${server}/jc/common/device/duplicateUnitAcc`,
+                duplicateMutipleDevice:`${server}/jc/common/device/duplicateMutipleDevice`,
     },
             /**设备管理状态*/
             equipmentStatus:{

@@ -184,7 +184,6 @@ class EARightTable extends Component {
                         getRightData={this.props.getRightData}
                         url={this.props.url}
                         record={record}
-                        getTableData={this.props.getTableData}
                         depCode={this.props.depCode}
                     />
                     <Delete
@@ -199,12 +198,18 @@ class EARightTable extends Component {
                         url={this.props.url}
                         record={record}
                         deviceName={this.props.deviceName}
-                        getTableData={this.props.getTableData}
                         getRightData={this.props.getRightData}
                         depCode={this.props.depCode}
                     />
                     <Divider type="vertical"/>
-                    <DeviceRep />
+                    <DeviceRep
+                        url={this.props.url}
+                        record={record}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
+                        depCode={this.props.depCode}
+
+                    />
                 </span>
             )
         }

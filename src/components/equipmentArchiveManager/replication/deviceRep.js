@@ -1,7 +1,8 @@
 import React from 'react';
 import CancleButton from "../../BlockQuote/cancleButton";
 import SaveButton from "../../BlockQuote/saveButton";
-import {Modal,Row,Col,Input,Button} from "antd";
+import {Modal, Row, Col, Input, Button, message} from "antd";
+import axios from "axios";
 
 class DeviceRep extends React.Component{
     constructor(props) {
@@ -48,7 +49,30 @@ class DeviceRep extends React.Component{
         );
     }
     handleSave = () => {
-        this.handleCancel()
+        console.log(this.props.depCode)
+        console.log(this.props.deviceName)
+        console.log(this.props.record.code)
+        console.log(this.state.number)
+        axios({
+            url:`${this.props.url.equipmentArchive.duplicateMutipleDevice}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params:{
+                deviceId:this.props.record.code,
+                cnt:this.state.number
+            }
+        }).then((data) => {
+            message.info('复制成功');
+            this.props.getTableData({
+                deptId: parseInt(this.props.depCode),
+                deviceName: this.props.deviceName
+            })
+            this.handleCancel()
+        }).catch(() => {
+            message.info('复制失败，请联系管理员！');
+        });
     }
     inputChange = (e) => {
         this.setState({
