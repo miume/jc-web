@@ -142,8 +142,8 @@ class ComponentRep extends React.Component{
                 'Authorization': this.props.url.Authorization
             },
             params:{
-                originDeviceId: code,
-                newDeviceId:this.props.mainId,
+                originDeviceId: this.props.mainId,
+                newUnitId:code,
                 flag:switchFlag
             }
         }).then((data) => {
