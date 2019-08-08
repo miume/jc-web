@@ -14,6 +14,7 @@ class ComFitting extends React.Component{
             selectedRowKeys: [],
         }
         this.handleCancel = this.handleCancel.bind(this);
+        this.replication=this.replication.bind(this)
 
     }
     columns = [{
@@ -106,9 +107,6 @@ class ComFitting extends React.Component{
     //     });
     // }
     replication= (code) => {
-        console.log("部件的配件")
-        console.log(code)
-        console.log(this.props.buCode)
         axios({
             url:`${this.props.url.equipmentArchive.duplicateUnitAcc}`,
             method: 'get',
