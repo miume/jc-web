@@ -65,7 +65,7 @@ class EqComponent extends React.Component {
                         <EARightBottom
                             getRightData={this.props.getRightData}
                             deviceName={this.props.deviceName}
-                            mainCode={this.props.mainCode}
+                            mainId={this.props.mainCode}
                             handleData={this.handleData}
 
                             searchType={1}

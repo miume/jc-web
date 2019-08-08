@@ -106,6 +106,7 @@ class ComFitting extends React.Component{
     //     });
     // }
     replication= (code) => {
+        console.log("部件的配件")
         console.log(code)
         console.log(this.props.buCode)
         axios({

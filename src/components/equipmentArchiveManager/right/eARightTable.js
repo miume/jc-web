@@ -11,6 +11,7 @@ import axios from "axios";
 import Edit from '../table/edit'
 import MainFitting from '../replication/mainFitting'
 import ComFitting from '../replication/comFitting'
+import DeviceRep from "../replication/deviceRep";
 
 class EARightTable extends Component {
     constructor(props) {
@@ -202,6 +203,8 @@ class EARightTable extends Component {
                         getRightData={this.props.getRightData}
                         depCode={this.props.depCode}
                     />
+                    <Divider type="vertical"/>
+                    <DeviceRep />
                 </span>
             )
         }
