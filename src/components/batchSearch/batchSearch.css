@@ -1,0 +1,93 @@
+.batchsearchPart{
+    float: right;
+}
+.batchSearch_page{
+    /*margin-right:15px ;*/
+}
+#batchInput {
+    width: 230px;
+}
+.batchSearch_table{
+    margin-top: 50px;
+}
+
+.firstAssayDetailTable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.firstAssayDetailTable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.secondAssayDetailTable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.secondAssayDetailTable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.InstrumentDetailModal .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.InstrumentDetailModal .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+/*
+.inspectionQueryTable{
+    right:15px;
+    margin-left: 18%;
+    margin-top: 15px;
+    width: 82%;
+    top:30%;
+}
+.inspectionQuerySpan{
+    cursor: pointer;
+    color: deepskyblue;
+}
+
+.thirdinspectiondetailtable{
+    max-height: 180px;
+    overflow: auto;
+}
+.secondinspectiondetailtable{
+    overflow: auto;
+    max-height: 150px;
+}
+
+.firstinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.secondinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.thirdinspectiondetailtable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.firstinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.secondinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.thirdinspectiondetailtable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius:  0  !important;
+}
+.footerofdetail{
+    background: lightgrey;
+    height: 45px;
+    margin: 0;
+    border-radius:  0 0 4px 4px ;
+    padding: 10px;
+    overflow-y: auto;
+}*/

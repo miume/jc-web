@@ -1,0 +1,241 @@
+import React from "react"
+import BatchDetailModal from "../batchSearch/batchSearchDetail"
+import InstrumentsDetail from "../batchSearch/InstrumentsDetail"
+import AssayDetail from  '../batchSearch/assayDetail'
+import Repair from "../batchSearch/repair"
+import Maintenance from  "../batchSearch/maintenance"
+export const searchcolums=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"5%"
+    },{
+        title:"批次信息",
+        dataIndex:"batchInfo",
+        key:"batchInfo",
+        width:"15%"
+    },{
+        title:"开始时间",
+        dataIndex:"startTime",
+        key:"startTime",
+        width:"15%"
+    },{
+        title:"结束时间",
+        dataIndex:"EndTime",
+        key:"EndTime",
+        width:"15%"
+    },{
+        title:"追溯生成时间",
+        dataIndex:"setTime",
+        key:"setTime",
+        width:"15%"
+    },{
+        title:"生成人",
+        dataIndex:"setPeople",
+        key:"setPeople",
+        width:"10%"
+    },{
+        title:"操作",
+        dataIndex:"code",
+        key:"code",
+        width:"10%",
+        render:(text,record)=>{
+            return(<BatchDetailModal
+                record={record}
+            />)
+        }
+    }
+];
+export var datas=[];
+for(var i=0;i<13;i++){
+    datas.push({
+        index:i+1,
+        batchInfo:'19M01001806TE4S',
+        startTime:'2019-01-01  12:30',
+        EndTime:'2019-01-01  12:30',
+        setTime:'2019-01-01  12:30',
+        setPeople:'Lily',
+    })
+}
+export const SearchDetailColums1=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"2%"
+    },{
+        title:"批次信息",
+        dataIndex:"batchInfo",
+        key:"batchInfo",
+        width:"10%"
+    },{
+        title:"合成槽号",
+        dataIndex:"Number",
+        key:"Number",
+        width:"10%"
+    },{
+        title:"操作",
+        dataIndex:"code",
+        key:"code",
+        width:"2%",
+        render:(text,record)=>{
+            return(<InstrumentsDetail
+                record={record}
+            />)
+        }
+    }
+];
+export const SearchDetailColums2=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"5%"
+    },{
+        title:"批次信息",
+        dataIndex:"batchInfo",
+        key:"batchInfo",
+        width:"10%"
+    },{
+        title:"固定资产编号",
+        dataIndex:"fixedNumber",
+        key:"fixedNumber",
+        width:"10%"
+    },{
+        title:"规格型号",
+        dataIndex:"type",
+        key:"type",
+        width:"10%"
+    },{
+        title:"操作",
+        dataIndex:"code",
+        key:"code",
+        width:"6%",
+        render:(text,record)=>{
+            return(
+                <div>
+                    <Maintenance
+                        record={record}
+                    />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Repair
+                        record={record}
+                    />
+                </div>
+                )
+
+        }
+    }
+];
+export const SearchDetailColums3=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"5%"
+    },{
+        title:"批次信息",
+        dataIndex:"batchInfo",
+        key:"batchInfo",
+        width:"10%"
+    },{
+        title:"化验类型",
+        dataIndex:"checkType",
+        key:"checkType",
+        width:"10%"
+    },{
+        title:"送样人",
+        dataIndex:"sentPerson",
+        key:"sentPerson",
+        width:"10%"
+    },{
+        title:"送样时间",
+        dataIndex:"sentTime",
+        key:"sentTime",
+        width:"10%"
+    },{
+        title:"送样工厂",
+        dataIndex:"sentFactory",
+        key:"sentFactory",
+        width:"10%"
+    },{
+        title:"检测项目",
+        dataIndex:"checkProject",
+        key:"checkProject",
+        width:"10%"
+    },{
+        title:"操作",
+        dataIndex:"code",
+        key:"code",
+        width:"5%",
+        render:(text,record)=>{
+            return(<AssayDetail
+                record={record}
+            />)
+        }
+    }
+];
+export const InstrumentDetailColums=[
+    {
+        title:"类型",
+        dataIndex:"Type",
+        key:"Type",
+        width:"25%"
+    },{
+        title:"最小值",
+        dataIndex:"minValue",
+        key:"minValue",
+        width:"25%"
+    },{
+        title:"最大值",
+        dataIndex:"maxValue",
+        key:"maxValue",
+        width:"25%"
+    },{
+        title:"平均值",
+        dataIndex:"averageValue",
+        key:"averageValue",
+        width:"25%"
+    }
+]
+export const AssayDetailColums=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"5%"
+    },{
+        title:"检测项目",
+        dataIndex:"checkProject",
+        key:"checkProject",
+        width:"25%"
+    },{
+        title:"检测结果",
+        dataIndex:"checkResult",
+        key:"checkResult",
+        width:"25%"
+    },{
+        title:"计量单位",
+        dataIndex:"measurement",
+        key:"measurement",
+        width:"25%"
+    }
+]
+export const AssayDetailColums2=[
+    {
+        title:"编号",
+        dataIndex:"AssayNumber",
+        key:"AssayNumber",
+        width:"5%"
+    },{
+        title:"原材料",
+        dataIndex:"material",
+        key:"material",
+        width:"5%"
+    },{
+        title:"送样日期",
+        dataIndex:"sentDate",
+        key:"sentDate",
+        width:"5%"
+    }
+]
