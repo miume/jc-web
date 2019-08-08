@@ -132,6 +132,8 @@ class ComponentRep extends React.Component{
     replication= (code) => {
         // const selectedRowKeys = this.state.selectedRowKeys
         // console.log(selectedRowKeys)
+        console.log(code)
+        console.log(this.props.mainId)
         const switchFlag = this.state.switchFlag
         axios({
             url:`${this.props.url.equipmentArchive.duplicateDeviceUnit}`,
@@ -140,8 +142,8 @@ class ComponentRep extends React.Component{
                 'Authorization': this.props.url.Authorization
             },
             params:{
-                originDeviceId:code,
-                newDeviceId:this.props.mainCode,
+                originDeviceId: code,
+                newDeviceId:this.props.mainId,
                 flag:switchFlag
             }
         }).then((data) => {
