@@ -20,7 +20,7 @@ class DeviceRep extends React.Component{
             <span>
                 <span className="blue" onClick={this.deviceReplication}>主设备复制</span>
                 <Modal
-                    title="数据详情"
+                    title="主设备复制"
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
