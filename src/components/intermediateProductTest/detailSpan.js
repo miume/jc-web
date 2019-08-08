@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Modal,message } from 'antd';
+import {message, Modal} from 'antd';
 import DrSpanModal from './drSpanModal';
 import './interProduct.css';
 import CancleButton from '../BlockQuote/cancleButton';

@@ -4,7 +4,7 @@ import DataPart from './dataPart';
 import Blockquote from '../BlockQuote/blockquote';
 
 const icon = [
-    'fa fa-tasks fa-5x','fa fa-flask fa-5x'
+    'fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
 ]
 
 class BaseData extends React.Component{
@@ -57,6 +57,7 @@ class BaseData extends React.Component{
                         this.state.data?this.state.data.map(d=>
                         <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
                         ):null
+
                     }
                 </div>
            </div>

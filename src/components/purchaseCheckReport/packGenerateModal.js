@@ -114,7 +114,6 @@ class PackGenerateModal extends React.Component {
                     var judger = '';
                     var judgement = '';
                     var topData = {};
-                    var isQualified = '';
                     if(detail){
                         topData = {
                             materialName: detail.materialName?detail.materialName:'无',

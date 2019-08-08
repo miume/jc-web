@@ -1,5 +1,6 @@
 import React from 'react';
 import './data.css';
+
 class DataPart extends React.Component{
     render(){
         return (

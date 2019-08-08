@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, Button, message} from 'antd';
+import {message, Modal} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import DetailModal from "../modal/detailModal";
-import SaveButton from "../../BlockQuote/saveButton";
 
 class Detail extends React.Component {
     constructor(props) {
@@ -65,6 +64,8 @@ class Detail extends React.Component {
         });
     };
     handleDetail = () => {
+        console.log("this.props.record.code")
+        console.log(this.props.record.code)
         if(this.props.comFlag){
             axios({
                 url: `${this.props.url.equipmentArchive.unitDetail}`,
@@ -76,6 +77,7 @@ class Detail extends React.Component {
                     id: this.props.record.code
                 }
             }).then((data) => {
+
                 const res = data.data.data ? data.data.data : [];
                 if (res) {
                     const arrName = res.arrName;

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Icon, Tabs} from 'antd';
+import {Button, Icon} from 'antd';
 import '../equipmentArchiveManager.css';
 import EARightBottom from './eARightBottom';
+
 var flagsState=[1];
 class EARight extends Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class EARight extends Component {
             deviceName: name
         }
         this.props.getTableData(params, {})
-        console.log("props",this.props.updatebackground)
+        //console.log("props",this.props.updatebackground)
         this.setState({flags:this.props.updatebackground},()=>{
             var flagx=this.state.flags;
             const index=flagx.indexOf(1);
@@ -70,10 +71,10 @@ class EARight extends Component {
     }
     // 通过key获取到设备名称
     renderEquipmentName = (data) =>  {
-        console.log("data",data);
+        //console.log("data",data);
         var first=data.slice(0,7);
-        console.log(this.props.updatebackground)
-        console.log(this.state.flags)
+        //console.log(this.props.updatebackground)
+        //console.log(this.state.flags)
         return (
             <div >
                 <div className="eq-outside">

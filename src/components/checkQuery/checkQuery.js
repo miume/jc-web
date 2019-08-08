@@ -1,16 +1,11 @@
 import React from "react";
 import Blockquote from "../BlockQuote/blockquote";
-import {Col, message, Row, Tabs} from "antd";
-import Eqblock from "../eqMaintenanceDataEntry/eqblock";
-import Right from "../eqMaintenanceDataEntry/right";
+import {Button, Icon, message, Tabs} from "antd";
 import CheckTable from "./checktable"
 import DepTree from './depTree';
 import "./checkQuery.css"
+import "../equipmentArchiveManager/equipmentArchiveManager.css"
 import axios from "axios";
-import home from '../commom/fns'
-import Check from "../purchaseCheckReport/check";
-import SearchCell from "./searchCell";
-
 
 class CheckQuery extends React.Component{
     constructor(props){
@@ -30,7 +25,12 @@ class CheckQuery extends React.Component{
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             deviceNamee:'',
-            workshop:''
+            workshop:'',
+            updatebackground:[],
+            topNumber:'',
+            flag:true,
+            flags:[1],
+            bottomheight:true,
         }
         this.fetch=this.fetch.bind(this)
         this.renderEquipmentName = this.renderEquipmentName.bind(this)
@@ -39,18 +39,89 @@ class CheckQuery extends React.Component{
         this.firstworkshop=this.firstworkshop.bind(this)
         this.searchContentChange=this.searchContentChange.bind(this)
         this.searchEvent=this.searchEvent.bind(this)
+        this.handleClick=this.handleClick.bind(this)
     }
 
+    handleClick=()=>{
+        this.setState({
+            flag:!this.state.flag,
+            bottomheight:!this.state.bottomheight,
+        })
+    }
     componentDidMount() {
         this.fetch()
     }
-    renderEquipmentName = (data) => data.map((item) => {
-
+    renderEquipmentName = (data) =>  {
+        console.log("data",data);
+        var first=data.slice(0,7);
+        console.log(this.state.updatebackground)
+        console.log(this.state.flags)
         return (
-            <Tabs.TabPane key={item.name} tab={item.name + '(' + item.count + ')'}>
-            </Tabs.TabPane>
-        )
-    });
+            <div >
+                <div className="eq-outside">
+                    <div className={'buttonofdrop'}>
+                        {
+                            data.length>7?
+                                <Button size={"small" } onClick={this.handleClick}>
+                                    {this.state.flag?<Icon type="down" />:<Icon type="up" />}
+                                    {this.state.flag?"更多":"收起"}
+                                </Button>:''
+
+                        }
+                    </div>
+                    <div className={'Dropfrist'}>
+                        {this.state.flag?
+                            <div className="DropNoExpand">
+                                {
+                                    first.map((data,index)=>{
+                                        if(this.state.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+
+                                    } )
+                                }
+                            </div>:
+                            <div className={"DropExpandselected"} >
+                                {
+                                    data.map((data,index)=>{
+                                        if(this.state.updatebackground[index]===0){
+                                            return (
+                                                <span
+                                                    className="DropExpandblue"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                        else {
+                                            return (
+                                                <span
+                                                    className="DropExpandwhite"
+                                                    key={index}
+                                                    onClick={this.returnEquKey.bind(this,`${index}`,`${data.name}`,`${data.count}`)}>{`${data.name}(${data.count})`}</span>
+                                            )
+                                        }
+                                    } )
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>)
+
+    }
     //----------------------------------
     searchEvent = () => {
         console.log('调用查询借口并查询')
@@ -98,9 +169,14 @@ class CheckQuery extends React.Component{
                         count: 0
                     })
                 }
+                var updatebackground=[1];
+                for(var i=0;i<rightTopData.length-1;i++){
+                    updatebackground.push(0);
+                }
                 this.setState({
                     rightTopData: rightTopData,
-                    depCode: code
+                    depCode: code,
+                    updatebackground:updatebackground,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
                     var deviceFlag = true;
@@ -244,18 +320,21 @@ class CheckQuery extends React.Component{
 
             }
             //---------------------------------
-    returnEquKey = (key) => {
+    returnEquKey=(key,name)=>{
         const params = {
             deptId: parseInt(this.state.depCode),
-            deviceName: key,
+            deviceName: name
         }
-        this.setState({
-            deviceNamee:key
-        })
-        console.log(params)
-        console.log(this.state.deviceNamee)
         this.getTableData(params, 0)
-    };
+        console.log("props",this.state.updatebackground)
+        this.setState({flags:this.state.updatebackground},()=>{
+            var flagx=this.state.flags;
+            const index=flagx.indexOf(1);
+            flagx[index]=0;
+            flagx[parseInt(key)]=1;
+            this.setState({flags:flagx})
+        })
+    }
 
     changeworkshop = (value)=> {
         this.setState({
@@ -292,6 +371,10 @@ class CheckQuery extends React.Component{
             })
         }
     };
+    /**返回数据录入页面 */
+    returnDataEntry = () => {
+        this.props.history.push({pathname:'/equipmentCheck'});
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('equipmentCheck')) ;
@@ -319,9 +402,9 @@ class CheckQuery extends React.Component{
                             />
                         </div>
                         <div className="checkQ-DE-right">
-                            <Tabs onChange={this.returnEquKey}>
+                            <div >
                                 {this.renderEquipmentName(this.state.rightTopData)}
-                            </Tabs>
+                            </div>
                         <CheckTable rightTableData={this.state.rightTableData} operation={this.operation} pagination={this.state.pagination} url={this.url} fetch={this.getTableData}  handleTableChange={this.handleTableChange}
                                     deptId={this.state.depCode}
                                     deviceName={this.state.deviceName}

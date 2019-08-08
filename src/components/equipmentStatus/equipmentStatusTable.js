@@ -1,10 +1,8 @@
 import React from 'react';
-import {Table, Input, InputNumber, Popconfirm, Form, message, Modal, Row} from 'antd';
+import {Table} from 'antd';
 import DeletaSpan from './deletaSpan'
 import './equipmentStatus.css'
-import axios from "axios";
 import Edit from './edit';
-
 
 
 class equipmentStatusTable extends React.Component {

@@ -41,11 +41,10 @@
 }
 
 .changeTable .ant-table .ant-table-content{
-    height:450px;
     max-height: 450px !important;
 }
 .changeTable .ant-table{
-    height:450px;
+    max-height:450px;
 }
 .checkP_buttons{
     display: flex;

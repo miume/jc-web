@@ -189,11 +189,18 @@ const CollectionCreateForm = Form.create()(
                 },
             }).then((data)=>{
                 const res = data.data.data;
+                const testIte = res["检测项目"];
+                // console.log(res["物料"]);
                 if(res){
+                    this.props.onChange(testIte);
+                    this.props.form.setFieldsValue({
+                        serialNumberId:res["物料"].id
+                    })
                     this.setState({
-                        materials:res,
+                        materials:res["物料"],
                         samplingPoint:value,
-                        materialVis:1
+                        materialVis:1,
+                        testItems:testIte
                     })
                 }
                 
@@ -249,6 +256,7 @@ const CollectionCreateForm = Form.create()(
             })
         }
         getItems=(value)=>{
+            // console.log(value)
             axios({
                 url:`${this.url.procedure.testItems}`,
                 method:'get',
@@ -441,14 +449,8 @@ const CollectionCreateForm = Form.create()(
                             {getFieldDecorator('serialNumberId', {
                                 rules: [{ required: true, message: '请选择受检物料' }],
                             })(
-                                <Select placeholder="请选择受检物料" onChange={this.getItems}>
-                                    {
-                                        this.state.materials.map(pe=>{
-                                            return(
-                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName}</Option>
-                                            )
-                                        })
-                                    }
+                                <Select placeholder="请选择受检物料">
+                                    <Option key={this.state.materials.id} value={this.state.materials.id}>{this.state.materials.serialNumber+' - '+this.state.materials.materialName}</Option>
                                 </Select>
                             )}
                             <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px",marginTop:"10px"}} className="check-box">

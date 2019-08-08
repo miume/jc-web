@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message, Card} from 'antd';
+import {Tree} from 'antd';
 import axios from "axios";
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ['0','1'],
+            expandedKeys: [],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -42,7 +42,6 @@ class DepTree extends Component {
                     showLine
                     onSelect={this.onSelect}
                     expandedKeys={this.state.expandedKeys}
-                    selectedKeys={[]}
                     onExpand={this.onExpand}
                 >
                     {this.renderTreeNodes(this.state.dataSource)}

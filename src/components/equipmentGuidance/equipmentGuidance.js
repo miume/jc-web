@@ -4,10 +4,9 @@ import '../Home/page.css';
 import BlockQuote from '../BlockQuote/blockquote';
 import SearchCell from '../BlockQuote/search';
 import AddModal from './add';
-import { Table,Popconfirm,Divider,message } from 'antd';
+import {Divider, message, Popconfirm, Table} from 'antd';
 import Edit from "./editor";
 import Detail from './detail';
-import DepartmentCard from "../eqMaintenancePlan/blockCompontent/department";
 
 class Equipment extends React.Component{
     url

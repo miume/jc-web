@@ -1,11 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,message,Select,Input,Row,Col,Icon} from 'antd';
-import Submit from '../BlockQuote/checkSubmit';
-import NewButton from '../BlockQuote/newButton';
+import {Col, Input, message, Modal, Row, Select} from 'antd';
 import SaveButton from '../BlockQuote/saveButton';
 import CancleButton from '../BlockQuote/cancleButton';
 import "./eqMaintenanceDataEntry.css"
+
 const Option = Select.Option;
 class Mmodal extends React.Component {
     constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, Button, message,Row,Input,Col} from 'antd';
+import {Button, Col, Input, message, Modal, Row} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import SaveButton from "../../BlockQuote/saveButton";
 import FittingModal from "../modal/fittingModal";
@@ -265,17 +265,8 @@ class Fittings extends React.Component {
                     fittingData: fittingData
                 })
             }else{
-                for(var j = 0; j< res.length; j++){
-                    const arr = res[j]
-                    fittingData.push({
-                        name:arr.name,
-                        specification:arr.specification,
-                        counts:arr.counts,
-                        code:arr.code
-                    })
-                }
                 this.setState({
-                    fittingData: fittingData
+                    fittingData: []
                 })
             }
         }).catch(() => {

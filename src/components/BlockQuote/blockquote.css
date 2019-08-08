@@ -17,7 +17,7 @@ div.ant-card-head {
 span.ant-tree-node-selected{
     background-color:salmon;
 }
-#departmentCard,#titledepartment1{
+#titledepartment1{
     text-align: center;
     font-size: 10px;
 }

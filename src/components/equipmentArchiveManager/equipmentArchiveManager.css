@@ -150,7 +150,7 @@
     display: inline;
     position: absolute;
     z-index: 10;
-    margin-left: 1010px;
+    margin-left: 900px;
 }
 .DropExpandblue{
     overflow-x: auto;
@@ -170,7 +170,7 @@
     cursor: pointer;
     color: white;
     margin-right: 20px;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     margin-top: 5px;
     margin-bottom: 10px;
     background-color: dodgerblue;
@@ -187,4 +187,12 @@
 }
 .eq-outside{
     width: 1159px;
+}
+
+.eqRepButton{
+    margin:0 8px 8px 0;
+    display: inline-block;
+    width: 75px;
+    height: 35px !important;
+    padding-left: 10px !important;
 }

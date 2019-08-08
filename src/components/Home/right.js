@@ -53,6 +53,15 @@ import EqMaintenanceQuery from '../eqMaintenanceQuery/eqMaintenanceQuery'
 
 import EquipmentArchiveManager from '../equipmentArchiveManager/equipmentArchiveManager'
 import EqcomponentSearch from '../eqcomponentSearch/eqcomponentSearch'
+import EquipmentInspection from '../equipmentInspection/equipmentInspection'
+import InspectionTemplate from '../inspectionTemplate/inspectionTemplate'
+import InspectionPlan from '../inspectionPlan/inspectionPlan'
+import InspectionQuery from '../inspectionQuery/inspectionQuery'
+import LocationBasic from "../locationBasic/locationBasic";
+
+import BatchInfo from "../batchInfo/batchInfo"
+import BatchSearch from "../batchSearch/batchSearch"
+import BatchRule from  "../batchRule/batchRule"
 
 class Right extends React.Component {
     render() {
@@ -189,6 +198,30 @@ class Right extends React.Component {
             },{
                 path:"/eqcomponentSearch",
                 component:EqcomponentSearch
+            },{
+                path:"/equipmentInspection",
+                component:EquipmentInspection
+            },{
+                path:"/inspectionTemplate",
+                component:InspectionTemplate
+            },{
+                path:"/inspectionPlan",
+                component:InspectionPlan
+            },{
+                path:"/inspectionQuery",
+                component:InspectionQuery
+            },{
+                path:"/locationBasic",
+                component:LocationBasic
+            },{
+                path:"/batchRule",
+                component:BatchRule
+            },{
+                path:"/batchInfo",
+                component:BatchInfo
+            },{
+                path:"/batchSearch",
+                component:BatchSearch
             }]
         return (
             <div className="rightDiv">

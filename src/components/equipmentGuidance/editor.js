@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button, Modal,Form, Input,message,Icon,DatePicker, Col, Row } from 'antd';
+import {Button, DatePicker, Form, Icon, Input, message, Modal} from 'antd';
 import axios from 'axios';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import "./equiptment.css";
-import PictureUp from './upload';
 import Submit from '../BlockQuote/checkSubmit';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 import Tr from './editTr';

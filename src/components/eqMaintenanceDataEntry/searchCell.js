@@ -1,5 +1,6 @@
 import React from 'react';
-import {Button, Input,DatePicker} from 'antd';
+import {Button, DatePicker, Input} from 'antd';
+
 class SearchCell extends React.Component{
     render(){
         const Search = Input.Search;

@@ -1,6 +1,6 @@
 import React from 'react';
 import home from '../commom/fns'
-import {Table, Divider} from 'antd';
+import {Divider, Table} from 'antd';
 import IsQualified from "../BlockQuote/isQualified";
 import './interProduct.css';
 import DetailStateModal from "./detailStateModal";
