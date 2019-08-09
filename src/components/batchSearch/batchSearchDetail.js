@@ -73,6 +73,7 @@ class BatchDetailModal extends React.Component{
                         <Tabs onChange={this.returnEquKey}>
                             <Tabs.TabPane key={1} tab={(<b>仪器仪表数据</b>)}>
                                 <Table
+                                    className={"Batch_Instrument_Table"}
                                     columns={SearchDetailColums1}
                                     size={"small"}
                                     bordered={true}
@@ -83,6 +84,7 @@ class BatchDetailModal extends React.Component{
                             </Tabs.TabPane>
                             <Tabs.TabPane key={2} tab={(<b>设备维修保养数据</b>)}>
                                 <Table
+                                    className={"Batch_Equ_Table"}
                                     columns={SearchDetailColums2}
                                     size={"small"}
                                     bordered={true}
@@ -93,6 +95,7 @@ class BatchDetailModal extends React.Component{
                             </Tabs.TabPane>
                             <Tabs.TabPane key={3} tab={(<b>化验数据</b>)}>
                                 <Table
+                                    className={"Batch_Assay_Table"}
                                     columns={SearchDetailColums3}
                                     size={"small"}
                                     bordered={true}

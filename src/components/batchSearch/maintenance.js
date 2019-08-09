@@ -21,12 +21,12 @@ class Maintenance extends React.Component {
             <span>
                 <span className="blue" onClick={this.handleMaintenance}>保养</span>
                 <Modal
-                    title="数据详情"
+                    title="设备保养信息"
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    width="1150px"
+                    width="85%"
                     footer={[
                         <CancleButton
                             handleCancel={this.handleCancel}
