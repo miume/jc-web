@@ -19,7 +19,8 @@ class Ordered extends React.Component{
             selectedKeys:[],
             deptCode:'',
             deviceName:'',
-            deptName:''
+            deptName:'',
+            sonKey:""
         }
         this.url=JSON.parse(localStorage.getItem('url'));
         this.pagination = {
@@ -53,6 +54,13 @@ class Ordered extends React.Component{
             key: 'devicePatrolPlanRecordHead.checkType',
             align:'center',
             width: '10%',
+            render:(record)=>{
+                if(record===true){
+                    return "电气类"
+                }else{
+                    return "机械类"
+                }
+            }
         },{
             title:"计划日期",
             dataIndex:'devicePatrolPlanRecordHead.planTime',
@@ -76,6 +84,24 @@ class Ordered extends React.Component{
     }
     componentDidMount(){
         this.getTreeData();
+        axios({
+            url:`${this.url.equipmentDept.dept}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res[0].son[0].code);
+            if(res.length !== 0){
+                this.getTableData({
+                    page:this.pagination.current,
+                    size:10,
+                    deptId:res[0].son[0].code,
+                    status:1
+                })
+            }
+        })
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
@@ -85,17 +111,37 @@ class Ordered extends React.Component{
       onExpand = (expandedKeys) => {
         this.setState({expandedKeys: expandedKeys})
     }
-    getTableData = ()=>{
-
+    getTableData = (params = {})=>{
+        axios({
+            url:`${this.url.devicePatrolPlan.page}`,
+            method:"get",
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+            params: params,
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res);
+            if(res&&res.list){
+                this.pagination.total = res.total;
+                this.pagination.current = res.page;
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.page-1)*10+i;
+                }
+                this.setState({
+                    dataSource:res.list
+                })
+            }
+        })
     }
     onSelect = (selectedKeys,info)=>{
-        console.log(selectedKeys)
-        // this.getTableData({
-        //     page:1,
-        //     size:10,
-        //     deviceName:info.node.props.title,
-        //     deptId:parseInt(selectedKeys)
-        // })
+        // console.log(selectedKeys)
+        this.getTableData({
+            page:1,
+            size:10,
+            deptId:parseInt(selectedKeys[0].split("-")[1]),
+            status:1
+        })
         this.setState({
             selectedKeys:selectedKeys,
         })
@@ -109,7 +155,7 @@ class Ordered extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            console.log(res);
+            // console.log(res);
             if(res.length !== 0){
                 var defaultkey = [];
                 defaultkey.push(res[0].parent.code.toString());
@@ -122,7 +168,7 @@ class Ordered extends React.Component{
                     deptCode:res[0].parent.code,
                     deviceName:res[0].son[0].name,
                     deptName:res[0].parent.name,
-
+                    sonKey:res[0].son[0].code,
                 })
             }
         })
@@ -130,9 +176,12 @@ class Ordered extends React.Component{
     render(){
         return (
             <div>
-                <div style={{padding:'15px'}}>
+                <div style={{padding:'15px',display:'flex',margin:'15px'}}>
                     <div style={{width:"20%"}}>
                         <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/>
+                    </div>
+                    <div style={{width:"80%",marginLeft:"15px"}}>
+                        <Table size="small" rowKey={record => record.devicePatrolPlanRecordHead.code} pagination={this.pagination} dataSource={this.state.dataSource} columns={this.columns} bordered scroll={{ y: 400 }}/>
                     </div>
                 </div>
             </div>
