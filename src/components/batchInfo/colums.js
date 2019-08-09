@@ -63,22 +63,22 @@ export const SearchDetailColums1=[
         title:"序号",
         dataIndex:"index",
         key:"index",
-        width:"2%"
+        width:"10%"
     },{
         title:"批次信息",
         dataIndex:"batchInfo",
         key:"batchInfo",
-        width:"10%"
+        width:"40%"
     },{
         title:"合成槽号",
         dataIndex:"Number",
         key:"Number",
-        width:"10%"
+        width:"40%"
     },{
         title:"操作",
         dataIndex:"code",
         key:"code",
-        width:"2%",
+        width:"10%",
         render:(text,record)=>{
             return(<InstrumentsDetail
                 record={record}
@@ -203,22 +203,22 @@ export const AssayDetailColums=[
         title:"序号",
         dataIndex:"index",
         key:"index",
-        width:"5%"
+        width:"10%"
     },{
         title:"检测项目",
         dataIndex:"checkProject",
         key:"checkProject",
-        width:"25%"
+        width:"30%"
     },{
         title:"检测结果",
         dataIndex:"checkResult",
         key:"checkResult",
-        width:"25%"
+        width:"30%"
     },{
         title:"计量单位",
         dataIndex:"measurement",
         key:"measurement",
-        width:"25%"
+        width:"30%"
     }
 ]
 export const AssayDetailColums2=[

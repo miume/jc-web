@@ -91,7 +91,7 @@ class Repair extends React.Component {
                     message.info("没有数据，请联系管理员")
                 }
             } else{
-                message.info(data.data.message)
+                message.info(data1.data.message)
             }
         })
         // TODO 获取数据
