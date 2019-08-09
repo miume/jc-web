@@ -1,16 +1,16 @@
 import React from 'react';
-import {Modal, Popover, Steps, Table} from 'antd';
+import {Modal, message, Table} from 'antd';
 import axios from "axios"
 import CancleButton from "../../BlockQuote/cancleButton";
 import "../equipmentArchiveManager.css"
-import WhiteSpace from "../../BlockQuote/whiteSpace";
+
 const bcolums=[{
     title:'序号',
     key:'index',
     dataIndex:'index',
     sorter: (a, b) => a.index - b.index,
     align:'center',
-    width:50
+    width:80
 },{
     title:'配件名称',
     dataIndex:'name',
@@ -54,20 +54,32 @@ class RepairDetail extends React.Component{
                 id:this.props.record.code,
             }
         }).then((data)=>{
-            const result=data.data.data;
-            var data1=result.deviceRepairApplication;
-            data1["reportPeople"]=result.reportPeople;
-            data1["receivePeople"]=result.receivePeople;
-            var table=result.deviceRepairAccessory;
-            for(var i=0;i<result.deviceRepairAccessory.length;i++)
-            {
-                table[i]["index"]=i+1;
+
+            const result=data.data.data?data.data.data:[];
+            if(result){
+                var data1=result.deviceRepairApplication?result.deviceRepairApplication:[];
+                if(data1){
+                    data1["reportPeople"]=result.reportPeople;
+                    data1["receivePeople"]=result.receivePeople;
+                    var table=result.deviceRepairAccessory;
+                    for(var i=0;i<result.deviceRepairAccessory.length;i++)
+                    {
+                        table[i]["index"]=i+1;
+                    }
+                    this.setState({
+                        data:data1,
+                        tableData:table,
+                    },()=>{
+                        message.info("操作成功")
+                    })
+                    console.log(result);
+                }else {
+                    message.info("没有数据，请联系管理员")
+                }
+            }else {
+                message.info("没有数据，请联系管理员")
             }
-            this.setState({
-                data:data1,
-                tableData:table,
-            })
-            console.log(result);
+
         })
         this.setState({
             visible:true,
@@ -125,6 +137,7 @@ class RepairDetail extends React.Component{
                             size={"small"}
                             columns={bcolums}
                             dataSource={this.state.tableData}
+                            rowKey={record => record.index}
                         />
                     </div>
                 </Modal>
