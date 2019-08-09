@@ -66,23 +66,31 @@ class Repair extends React.Component {
                 'Authorization': this.url.Authorization
             },
             params:params,
-        }).then((data)=>{
-            if(data.data.code===0){
-                message.info(data.data.message)
-                const result=data.data.data.list;
-                var data=result;
+        }).then((data1)=>{
+            if(data1.data.code===0){
+                const result=data1.data.data.list?data1.data.data.list:[];
                 if(result){
+                    // console.log(result)
+                    var data=result;
                     for(var i=0;i<result.length;i++){
                         data[i]["index"]=i+1;
+                        data[i]["code"]=data[i].deviceRepairApplication.code;
+                        data[i]["deviceName"]=data[i].deviceRepairApplication.deviceName;
+                        data[i]["fixedassetsCode"]=data[i].deviceRepairApplication.fixedassetsCode;
+                        data[i]["faultContent"]=data[i].deviceRepairApplication.faultContent;
+                        data[i]["reportTime"]=data[i].deviceRepairApplication.reportTime;
+                        data[i]["receiveTime"]=data[i].deviceRepairApplication.receiveTime;
+                        data[i]["finishTime"]=data[i].deviceRepairApplication.finishTime;
+                        data[i]["emergeStatus"]=data[i].deviceRepairApplication.emergeStatus;
                     }
-                    this.setState({TableData:data})
+                    this.setState({TableData:data},()=>{
+                        message.info(data1.data.message)
+                    })
                     console.log(data)
-                }
-                else{
+                }else{
                     message.info("没有数据，请联系管理员")
                 }
-            }
-            else{
+            } else{
                 message.info(data.data.message)
             }
         })
