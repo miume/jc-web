@@ -79,7 +79,7 @@ class EqMaintenanceQuery extends React.Component{
     }
     /**用于选择页面，看是待保养还是已接单*/
     returnEquKey = key => {
-        if(key==='1'||key==='2'){
+        if(key==='1'||key==='2'||key==='3'){
             this.getTableData({
                 deptId:2,
                 statusId:parseInt(key),

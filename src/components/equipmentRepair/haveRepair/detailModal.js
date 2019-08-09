@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Table, Steps, Popover, message, Col, Row} from 'antd';
+import {Modal, Table, Steps, Popover, message, Col, Row, Divider} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
 import "../equipmenRepair.css"
 import axios from "axios";
@@ -65,81 +65,68 @@ class DetailModal extends React.Component{
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    width="500px"
+                    width="550px"
                     footer={[
                         <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />
                     ]}
                 >
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>维修单号：{this.props.record.deviceCode}</div>
+                    <Row>
+                        <Col span={1.5} style={{}}>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>维修单号：{this.props.record.deviceCode}</div>
+                            </Row>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>设备名称：{this.props.record.deviceName}</div>
+                            </Row>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>报修时间：{this.props.record.reportTime}</div>
+                            </Row>
                         </Col>
-                        <Col span={1.5} style={{paddingLeft:"100px"}}>
-                            <div>所属部门：{this.props.record.deptName}</div>
+
+                        <Col span={1.5} style={{paddingLeft:"20px"}}>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"29px"}} >
+                                <div>所属部门：{this.props.record.deptName}</div>
+                            </Row>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>固定资产编号：{this.props.record.fixedassetsCode}</div>
+                            </Row>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"42px"}} >
+                                <div>报修人：{this.props.record.reportPeople}</div>
+                            </Row>
                         </Col>
                     </Row>
 
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>设备名称：{this.props.record.deviceName}</div>
-                        </Col>
-                        <Col span={1.5} style={{paddingLeft:"100px"}}>
-                            <div>固定资产编号：{this.props.record.fixedassetsCode}</div>
-                        </Col>
-                    </Row>
-
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>报修时间：{this.props.record.reportTime}</div>
-                        </Col>
-                        <Col span={1.5} style={{paddingLeft:"50px"}}>
-                            <div>报修人：{this.props.record.reportPeople}</div>
-                        </Col>
-                    </Row>
-
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
+                    <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"20px"}} >
+                        <Col span={1.5} style={{paddingLeft:"40px"}}>
                             <div>故障描述：{this.props.record.faultContent}</div>
                         </Col>
                     </Row>
 
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px",paddingRight:"20px"}}>
-                            <div>故障处理及原因：{this.props.record.faultReason}</div>
+                    <Divider dashed />
+
+                    <Row>
+                        <Col type="flex" span={1.5} style={{paddingLeft:"20px"}}>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>接单时间：{this.props.record.receiveTime}</div>
+                            </Row>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>联系电话：{this.props.record.receivePhone}</div>
+                            </Row>
+                        </Col>
+
+                        <Col type="flex" span={1.5} style={{paddingLeft:"20px"}}>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"10px"}} >
+                                <div>接单人：{this.props.record.receivePeople}</div>
+                            </Row>
+                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                <div>完成时间：{this.props.record.finishTime}</div>
+                            </Row>
                         </Col>
                     </Row>
 
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>-------------------------------------------------------------------------</div>
-                        </Col>
-                    </Row>
+                    <Divider dashed />
 
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>接单时间：{this.props.record.receiveTime}</div>
-                        </Col>
-                        <Col span={1.5} style={{paddingLeft:"100px"}}>
-                            <div>接单人：{this.props.record.receivePeople}</div>
-                        </Col>
-                    </Row>
-
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>联系电话：{this.props.record.receivePhone}</div>
-                        </Col>
-                        <Col span={1.5} style={{paddingLeft:"80px"}}>
-                            <div>完成时间：{this.props.record.finishTime}</div>
-                        </Col>
-                    </Row>
-
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>-------------------------------------------------------------------------</div>
-                        </Col>
-                    </Row>
-
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                    <Row type="flex" justify="start" style={{}} >
                             <Col span={1.5} style={{paddingLeft:"30px",paddingRight:"30px"}}>
                             <div>
                                 <h4>配件使用</h4>
