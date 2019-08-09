@@ -26,7 +26,7 @@ class DepTree extends React.Component{
                     getTableData={this.props.getTableData}
                     defaultparams={{
                         secondDeptId:2,
-                        repairStatus:1,
+                        repairStatus:3,
                         deptName:'锂电一',}}
                     treeName={'所属部门'}
                     getTreeData={this.getTreeData}
@@ -44,7 +44,7 @@ class DepTree extends React.Component{
             if(selectedkeys[0]){
                 const params = {
                     secondDeptId:this.state.deptId,
-                    repairStatus:1,
+                    repairStatus:3,
                     deptName:this.state.depName,
                 };
                 console.log(params)
@@ -53,7 +53,7 @@ class DepTree extends React.Component{
             else{
                 const params = {
                     secondDeptId:2,
-                    repairStatus:1,
+                    repairStatus:3,
                     deptName:this.state.depName,
                 };
                 console.log(params)

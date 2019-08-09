@@ -76,12 +76,20 @@ class TheTable extends React.Component{
         editable: 1,
         width: '100px',
     },{
+        title: '完成时间',
+        dataIndex: 'finishTime',
+        key: 'finishTime',
+        align:'center',
+        editable: 1,
+        width: '150px',
+    },{
         title: '操作',
         dataIndex: 'move',
         key: 'move',
         align:'center',
         width: '80px',
         render: (text, record) =>{
+            console.log(record)
             return(
                 <div>
                     <DetailModal
@@ -105,10 +113,11 @@ class TheTable extends React.Component{
     //     receiveTime:'2019-8-9',
     //     reportPeople:'蔡徐坤',
     //     receivePeople:'吴亦凡',
-    //     faultContent:'xxxxxxxxxxxxxxxx',
+    //     faultContent:'漱口水电话福克斯大回馈粉丝低速回放活动房卡的很但是补发单号大饱口福很多事覅湖大铝框架和地理树回复打开VB凝聚法',
+    //     faultReason:'漱口水电话福克斯大回馈粉丝低速回放活动房卡的很但是补发单号大饱口福很多事覅湖大铝框架和地理树回复打开VB凝聚法',
     //     receivePhone:'15678892436',
+    //     finishTime:'2019-8-10',
     // }]
-
     render(){
         return(
             <div>
@@ -120,7 +129,7 @@ class TheTable extends React.Component{
                     // dataSource={this.dataSource}
                     size="small"
                     bordered
-                    scroll={{x: "1100px", y: 450 }}
+                    scroll={{x: "1260px", y: 450 }}
                 />
             </div>
         )

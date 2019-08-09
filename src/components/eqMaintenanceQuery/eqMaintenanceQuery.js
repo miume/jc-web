@@ -55,6 +55,7 @@ class EqMaintenanceQuery extends React.Component{
                             getTableData={this.getTableData}
                             pagination={this.state.pagination}
                             rightTableData={this.state.rightTableData}
+                            depName={this.state.depName}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
@@ -79,15 +80,11 @@ class EqMaintenanceQuery extends React.Component{
     /**用于选择页面，看是待保养还是已接单*/
     returnEquKey = key => {
         if(key==='1'||key==='2'){
-            const prov_depCode=this.state.depCode;
-            const prov_depName=this.state.depName;
-            const prov=this.state.pagination;
-            this.setState({
-                rightTableData:[],
-                pagination:prov,
-                depCode:prov_depCode,
-                depName:prov_depName,
-            })
+            this.getTableData({
+                deptId:2,
+                statusId:parseInt(key),
+                depName:"锂电一",}
+        )
         }
     };
 

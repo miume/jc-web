@@ -57,10 +57,10 @@ class InnerTable extends React.Component {
     dataSource = [
         {
             key: '1',
-            code:this.props.record.code,
-            deviceName:this.props.record.deviceName,
-            deptCode:this.props.record.deptCode,
-            planDate:this.props.record.planDate,
+            code:this.props.code,
+            deviceName:this.props.deviceName,
+            deptCode:this.props.deptCode,
+            planDate:this.props.planDate,
             receiveDate:this.props.receiveDate,
             maintPeople:this.props.maintPeople,
         }

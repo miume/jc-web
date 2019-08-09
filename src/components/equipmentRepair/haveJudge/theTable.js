@@ -4,6 +4,7 @@ import axios from "axios";
 import CancleButton from "../../BlockQuote/cancleButton";
 import home from "../../commom/fns";
 import DetailModal from "./detailModal";
+import JudgeModal from "./judgeModal";
 
 class TheTable extends React.Component{
     constructor(props){
@@ -76,15 +77,35 @@ class TheTable extends React.Component{
         editable: 1,
         width: '100px',
     },{
+        title: '完成时间',
+        dataIndex: 'finishTime',
+        key: 'finishTime',
+        align:'center',
+        editable: 1,
+        width: '150px',
+    },{
+        title: '评价时间',
+        dataIndex: 'finishTime',
+        key: 'finishTime',
+        align:'center',
+        editable: 1,
+        width: '150px',
+    },{
         title: '操作',
         dataIndex: 'move',
         key: 'move',
         align:'center',
-        width: '80px',
+        width: '150px',
         render: (text, record) =>{
             return(
-                <div>
+                <div style={{display:'flex'}}>
                     <DetailModal
+                        record={record}
+                        url={this.props.url}
+                        code={record.code}
+                        rightTableData={this.props.rightTableData}
+                    />
+                    <JudgeModal
                         record={record}
                         url={this.props.url}
                         code={record.code}
@@ -94,7 +115,7 @@ class TheTable extends React.Component{
             )
         }
     }]
-    //
+
     // dataSource=[{
     //     code:'1',
     //     deviceCode:'12345',
@@ -105,10 +126,12 @@ class TheTable extends React.Component{
     //     receiveTime:'2019-8-9',
     //     reportPeople:'蔡徐坤',
     //     receivePeople:'吴亦凡',
-    //     faultContent:'xxxxxxxxxxxxxxxx',
+    //     faultContent:'漱口水电话福克斯大回馈粉丝低速回放活动房卡的很但是补发单号大饱口福很多事覅湖大铝框架和地理树回复打开VB凝聚法',
+    //     faultReason:'漱口水电话福克斯大回馈粉丝低速回放活动房卡的很但是补发单号大饱口福很多事覅湖大铝框架和地理树回复打开VB凝聚法',
     //     receivePhone:'15678892436',
+    //     finishTime:'2019-8-10',
+    //     judgeTime:'2019-9-01',
     // }]
-
     render(){
         return(
             <div>
@@ -120,7 +143,7 @@ class TheTable extends React.Component{
                     // dataSource={this.dataSource}
                     size="small"
                     bordered
-                    scroll={{x: "1100px", y: 450 }}
+                    scroll={{x:'1480px', y: 450 }}
                 />
             </div>
         )

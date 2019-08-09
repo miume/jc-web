@@ -1,6 +1,6 @@
 .eRp {
     display: flex;
-    height: 550px;
+    height: 525px;
     /*background-color: #859900;*/
 }
 .eRp-left {
@@ -10,18 +10,23 @@
     /*overflow-y: auto;*/
     /*overflow-x: auto;*/
     font-size: small;
+
 }
 .eRp-right {
     width: 80%;
     height: 100%;
-    padding-left: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
 
 }
 .eRp-shangbianju{
-    margin-top: 57px;
-    overflow-x: auto;
+    margin-top: 48px;
+    width: 915px;
 }
 .eRp-putright{
     position: absolute;
     right: 30px;
+}
+th.eRp-thblue{
+    background-color: royalblue!important;
 }
