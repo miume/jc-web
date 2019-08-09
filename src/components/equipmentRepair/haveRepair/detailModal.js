@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal, Table, Steps, Popover, message, Col, Row} from 'antd';
 import CancleButton from "../../BlockQuote/cancleButton";
+import "../equipmenRepair.css"
 import axios from "axios";
 
 class DetailModal extends React.Component{
@@ -11,7 +12,49 @@ class DetailModal extends React.Component{
             detailData:[],
         }
     }
+    columns=[{
+        title: '序号',
+        dataIndex: 'code',
+        key: 'code',
+        sorter: (a, b) => a.index - b.index,
+        align:'center',
+        width: '80px',
+    },{
+        title: '配件名称',
+        dataIndex: 'name',
+        key: 'name',
+        align:'center',
+        width: '150px',
+    },{
+        title: '配件规格',
+        dataIndex: 'specification',
+        key: 'specification',
+        align:'center',
+        width: '150px',
+    },{
+        title: '配件数量',
+        dataIndex: 'counts',
+        key: 'counts',
+        align:'center',
+        width: '120px',
+    }]
 
+    dataSource=[{
+        code:'1',
+        name:'螺丝',
+        specification:'big',
+        counts:6
+    },{
+        code:'2',
+        name:'螺丝',
+        specification:'big',
+        counts:6
+    },{
+        code:'3',
+        name:'螺丝',
+        specification:'big',
+        counts:6
+    }]
     render() {
         return(
             <div style={{display:'flex'}}>
@@ -61,6 +104,12 @@ class DetailModal extends React.Component{
                     </Row>
 
                     <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                        <Col span={1.5} style={{paddingLeft:"20px",paddingRight:"20px"}}>
+                            <div>故障处理及原因：{this.props.record.faultReason}</div>
+                        </Col>
+                    </Row>
+
+                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
                         <Col span={1.5} style={{paddingLeft:"20px"}}>
                             <div>-------------------------------------------------------------------------</div>
                         </Col>
@@ -70,7 +119,7 @@ class DetailModal extends React.Component{
                         <Col span={1.5} style={{paddingLeft:"20px"}}>
                             <div>接单时间：{this.props.record.receiveTime}</div>
                         </Col>
-                        <Col span={1.5} style={{paddingLeft:"50px"}}>
+                        <Col span={1.5} style={{paddingLeft:"100px"}}>
                             <div>接单人：{this.props.record.receivePeople}</div>
                         </Col>
                     </Row>
@@ -79,7 +128,34 @@ class DetailModal extends React.Component{
                         <Col span={1.5} style={{paddingLeft:"20px"}}>
                             <div>联系电话：{this.props.record.receivePhone}</div>
                         </Col>
+                        <Col span={1.5} style={{paddingLeft:"80px"}}>
+                            <div>完成时间：{this.props.record.finishTime}</div>
+                        </Col>
                     </Row>
+
+                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                        <Col span={1.5} style={{paddingLeft:"20px"}}>
+                            <div>-------------------------------------------------------------------------</div>
+                        </Col>
+                    </Row>
+
+                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                            <Col span={1.5} style={{paddingLeft:"30px",paddingRight:"30px"}}>
+                            <div>
+                                <h4>配件使用</h4>
+                                <Table
+                                    columns={this.columns}
+                                    dataSource={this.state.detailData}
+                                    // dataSource={this.dataSource}
+                                    size="small"
+                                    bordered
+                                    pagination={false}
+                                />
+                            </div>
+                        </Col>
+                    </Row>
+
+
                 </Modal>
             </div>
         )
@@ -91,30 +167,32 @@ class DetailModal extends React.Component{
     }
 
     handleDetail = () => {
-        // axios({
-        //     url:`${this.props.url.equipmentRepair.deviceRepairApplication}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.props.url.Authorization
-        //     },
-        //     params:{
-        //         id: this.props.code
-        //     }
-        // }).then((data) => {
-        //     const res = data.data.data ? data.data.data : [];
-        //     if (res) {
-        //         const arrMes = res.deviceRepairAccessory;
-        //         var newRowData = arrMes
-        //         this.setState({
-        //             visible: true,
-        //             detailData: newRowData,
-        //         })
-        //     } else {
-        //
-        //     }
-        // }).catch(() => {
-        //     message.info('数据存在异常，请联系管理员！')
-        // });
+        console.log(this.props.code)
+        axios({
+            url:`${this.props.url.equipmentRepair.deviceRepairApplication}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params:{
+                id: this.props.code
+            }
+        }).then((data) => {
+            console.log(data)
+            const res = data.data.data.deviceRepairAccessory ? data.data.data.deviceRepairAccessory: [];
+            if (res) {
+                const arrMes = res;
+                var newRowData = arrMes;
+                this.setState({
+                    visible: true,
+                    detailData: newRowData,
+                })
+            } else {
+
+            }
+        }).catch(() => {
+            message.info('数据存在异常，请联系管理员！')
+        });
         this.setState({
             visible: true
         });

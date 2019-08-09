@@ -19,6 +19,7 @@ class equipmentRepair extends React.Component{
         this.state={
             repairStatus:'',
             secondDeptId:'',
+            deptName:'',
 
             rightTableData:[],
             pagination:{
@@ -26,7 +27,8 @@ class equipmentRepair extends React.Component{
                     return `共${total}条记录`
                 },
                 showSizeChanger: true
-            }
+            },
+            pageChangeFlag : 0,   //0表示分页 1 表示查询
         }
     };
 
@@ -42,27 +44,39 @@ class equipmentRepair extends React.Component{
                         <WillRepair
                             url={this.url}
                             getTableData={this.getTableData}
+                            pagination={this.state.pagination}
                             rightTableData={this.state.rightTableData}
+                            secondDeptId={this.state.secondDeptId}
                         />
                     </Tabs.TabPane>
 
                     <Tabs.TabPane key={2} tab="已接单">
                         <IsRepair
                             url={this.url}
+                            pagination={this.state.pagination}
                             getTableData={this.getTableData}
                             rightTableData={this.state.rightTableData}
+                            secondDeptId={this.state.secondDeptId}
                         />
                     </Tabs.TabPane>
 
                     <Tabs.TabPane key={3} tab="已完成">
                         <HaveRepair
                             url={this.url}
+                            pagination={this.state.pagination}
+                            getTableData={this.getTableData}
+                            rightTableData={this.state.rightTableData}
+                            secondDeptId={this.state.secondDeptId}
                         />
                     </Tabs.TabPane>
 
                     <Tabs.TabPane key={4} tab="已评价">
                          <HaveJudge
                              url={this.url}
+                             pagination={this.state.pagination}
+                             getTableData={this.getTableData}
+                             rightTableData={this.state.rightTableData}
+                             secondDeptId={this.state.secondDeptId}
                          />
                     </Tabs.TabPane>
                 </Tabs>
@@ -72,8 +86,10 @@ class equipmentRepair extends React.Component{
 
     returnEquKey = key => {
         if(key==='1'||key==='2'||key==='3'||key==='4'){
-            this.setState({
-                rightTableData:[],
+            this.getTableData({
+                secondDeptId:this.state.secondDeptId,
+                repairStatus:parseInt(key),
+                deptName:this.state.deptName,
             })
         }
     };
@@ -82,13 +98,15 @@ class equipmentRepair extends React.Component{
     getTableData = (params) => {
         this.setState({
             secondDeptId:params.secondDeptId,
-            repairStatus:params.repairStatus},
+            repairStatus:params.repairStatus,
+                deptName:params.deptName,
+            },
             ()=> {
                 var theParams={
                     secondDeptId:params.secondDeptId,
-                    repairStatus:params.repairStatus
+                    repairStatus:params.repairStatus,
+                    condition:params.condition,
                 }
-                console.log(theParams)
                 axios({
                     url: `${this.url.equipmentRepair.getPage}`,
                     method: 'get',
@@ -103,6 +121,14 @@ class equipmentRepair extends React.Component{
                         var rightTableData = [];
                         for (var i = 0; i < res.list.length; i++) {
                             var arr = res.list[i];
+                            var emergeStatus='';
+                            if(arr.deviceRepairApplication['emergeStatus']===1)
+                            {
+                                emergeStatus='紧急';
+                            }
+                            else{
+                                emergeStatus='一般';
+                            }
                             rightTableData.push({
                                 index: i + 1 + (res.page - 1) * res.size,//序号
                                 code: arr.deviceRepairApplication['code'],//序号ID
@@ -121,18 +147,25 @@ class equipmentRepair extends React.Component{
                                 finishTime:arr.deviceRepairApplication['finishTime'],//完成时间
                                 evaluationResult:arr.deviceRepairApplication['evaluationResult'],//评价结果
                                 repairStatus:arr.deviceRepairApplication['repairStatus'],//维修状态
-                                emergeStatus:arr.deviceRepairApplication['emergeStatus'],//紧急程度
+                                emergeStatus:emergeStatus,//紧急程度
+                                deptName:this.state.deptName,
                             })
+
                         }//新建状态用来获得所需的查询条件
+                        const {pagination}=this.state;
+                        pagination.total=res.total;
+                        pagination.page=res.page;
+                        console.log(pagination)
                         this.setState({
                             rightTableData: rightTableData,
+                            pagination:pagination,
                         });
                     } else {
                         this.setState({
                             rightTableData: [],
+                            pagination:[],
                         });
                     }
-                    console(rightTableData);
                 }).catch(() => {
                     message.info('查询失败，请刷新下页面！')
                 })

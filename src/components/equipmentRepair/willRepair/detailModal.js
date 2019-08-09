@@ -32,7 +32,7 @@ class DetailModal extends React.Component{
                             <div>维修单号：{this.props.record.deviceCode}</div>
                         </Col>
                         <Col span={1.5} style={{paddingLeft:"100px"}}>
-                            <div>所属部门：{this.props.record.deviceCode}</div>
+                            <div>所属部门：{this.props.record.deptName}</div>
                         </Col>
                     </Row>
 
@@ -49,7 +49,7 @@ class DetailModal extends React.Component{
                         <Col span={1.5} style={{paddingLeft:"20px"}}>
                             <div>报修时间：{this.props.record.reportTime}</div>
                         </Col>
-                        <Col span={1.5} style={{paddingLeft:"100px"}}>
+                        <Col span={1.5} style={{paddingLeft:"50px"}}>
                             <div>报修人：{this.props.record.reportPeople}</div>
                         </Col>
                     </Row>
@@ -70,29 +70,32 @@ class DetailModal extends React.Component{
     }
 
     handleDetail = () => {
-        axios({
-            url: `http://192.168.1.103:8082/deviceRepair/deviceRepairApplication?`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            params:{
-                id: this.props.code
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res) {
-                const arrMes = res.deviceRepairAccessory;
-                var newRowData = arrMes
-                this.setState({
-                    visible: true,
-                    detailData: newRowData,
-                })
-            } else {
-
-            }
-        }).catch(() => {
-            message.info('数据存在异常，请联系管理员！')
+        // axios({
+        //     url: `${this.props.url.equipmentRepair.deviceRepairApplication}`,
+        //     method: 'get',
+        //     headers: {
+        //         'Authorization': this.props.url.Authorization
+        //     },
+        //     params:{
+        //         id: this.props.code
+        //     }
+        // }).then((data) => {
+        //     const res = data.data.data ? data.data.data : [];
+        //     if (res) {
+        //         const arrMes = res.deviceRepairAccessory;
+        //         var newRowData = arrMes
+        //         this.setState({
+        //             visible: true,
+        //             detailData: newRowData,
+        //         })
+        //     } else {
+        //
+        //     }
+        // }).catch(() => {
+        //     message.info('数据存在异常，请联系管理员！')
+        // });
+        this.setState({
+            visible: true
         });
     }
 }
