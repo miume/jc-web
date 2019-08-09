@@ -3,6 +3,7 @@ import axios from "axios";
 import SearchCell from '../../BlockQuote/search';
 import { Table,Divider,Popconfirm,message } from 'antd';
 import TreeCard from '../treeCard';
+import Detail from "../details"
 
 class Ordered extends React.Component{
     url = JSON.parse(localStorage.getItem('url'));
@@ -73,10 +74,11 @@ class Ordered extends React.Component{
             key: 'operation',
             align:'center',
             width: '15%',
-            render:()=>{
+            render:(text,record)=>{
+                // console.log(record)
                 return(
                     <span>
-                        <a href="#">详情</a>
+                        <Detail code={record.devicePatrolPlanRecordHead.code}/>
                     </span>
                 )
             }
@@ -98,7 +100,7 @@ class Ordered extends React.Component{
                     page:this.pagination.current,
                     size:10,
                     deptId:res[0].son[0].code,
-                    status:1
+                    status:0
                 })
             }
         })
@@ -176,7 +178,7 @@ class Ordered extends React.Component{
     render(){
         return (
             <div>
-                <div style={{padding:'15px',display:'flex',margin:'15px'}}>
+                <div style={{padding:'15px',display:'flex'}}>
                     <div style={{width:"20%"}}>
                         <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/>
                     </div>
