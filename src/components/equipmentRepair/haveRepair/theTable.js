@@ -102,7 +102,7 @@ class TheTable extends React.Component{
             )
         }
     }]
-    //
+
     // dataSource=[{
     //     code:'1',
     //     deviceCode:'12345',
