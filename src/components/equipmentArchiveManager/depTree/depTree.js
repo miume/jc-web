@@ -126,7 +126,7 @@ class DepTree extends Component {
                     dataSource[0].children.push(parenObj);
                 }
                 if (res[0] && res[0].son) {
-                    this.props.getRightData(res[0].son[0].code,'')
+                    this.props.getRightData(res[0].son[0].code,'',res[0].son[0].name)
                 }
                 this.setState({
                     dataSource: dataSource,
@@ -146,9 +146,11 @@ class DepTree extends Component {
 
 
     onSelect = (selectedKeys, info) => {
+        console.log(info)
+        console.log(info.node.props.dataRef.value)
         var dataSource = this.state.dataSource;
         this.handleSelect(selectedKeys[0],dataSource);
-        this.props.getRightData(parseInt(selectedKeys[0]),'')
+        this.props.getRightData(parseInt(selectedKeys[0]),'',info.node.props.dataRef.value)
     }
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {

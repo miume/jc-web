@@ -42,6 +42,7 @@ class EARight extends Component {
                     searchEvent={this.props.searchEvent}
                     searchReset={this.props.searchReset}
                     bottomheight={this.state.bottomheight}
+                    deptName={this.props.deptName}
                 />
             </div>
         )

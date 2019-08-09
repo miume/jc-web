@@ -27,7 +27,7 @@ class EquipmentArchiveManager extends Component {
             rightTableData: [],
             depCode: -1,
             deviceName: '',
-
+            deptName:'',
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             updatebackground:[],
@@ -87,6 +87,7 @@ class EquipmentArchiveManager extends Component {
                             searchEvent={this.searchEvent}
                             searchReset={this.searchReset}
                             updatebackground={this.state.updatebackground}
+                            deptName={this.state.deptName}
                         />
                     </div>
                 </div>
@@ -97,7 +98,7 @@ class EquipmentArchiveManager extends Component {
     returnDataEntry(){
         this.props.history.push({pathname:'/equipmentArchive'});
     }
-    getRightData = (code, deviceName) => {
+    getRightData = (code, deviceName,deptName) => {
         code = parseInt(code)
         axios({
             url: `${this.url.equipmentArchive.device}/${code}`,
@@ -130,6 +131,7 @@ class EquipmentArchiveManager extends Component {
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code,
+                    deptName:deptName,
                     updatebackground:updatebackground,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
@@ -141,11 +143,13 @@ class EquipmentArchiveManager extends Component {
                     })
                     if (deviceFlag) {
                         this.getTableData({
+                            deptName:this.state.deptName,
                             deptId: parseInt(code),
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
                     } else {
                         this.getTableData({
+                            deptName:this.state.deptName,
                             deptId: parseInt(code),
                             deviceName: deviceName
                         }, 0);
@@ -168,14 +172,16 @@ class EquipmentArchiveManager extends Component {
                 page: pagination.current,
                 condition: this.state.searchContent,
                 deptId: parseInt(this.state.depCode),
-                deviceName: this.state.deviceName
+                deviceName: this.state.deviceName,
+                deptName:this.state.deptName,
             })
         } else {
             this.getTableData({
                 size: pagination.pageSize,
                 page: pagination.current,
                 deptId: parseInt(this.state.depCode),
-                deviceName: this.state.deviceName
+                deviceName: this.state.deviceName,
+                deptName:this.state.deptName,
             })
         }
     };
@@ -215,7 +221,8 @@ class EquipmentArchiveManager extends Component {
                         idCode: arr['idCode'],
                         statusCode: arr['statusCode'],
                         color: eqStatus['color'],
-                        name: eqStatus['name']
+                        name: eqStatus['name'],
+                        depCode:params.deptId,
                     })
                 }
                 this.pagination.total = res ? res.total : 0;

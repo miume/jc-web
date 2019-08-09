@@ -196,3 +196,41 @@
     height: 35px !important;
     padding-left: 10px !important;
 }
+.firstLine{
+    font-size: 15px;
+    display: inline-block;
+    width: 120px;
+    margin: 7.5px 0 7.5px 7.5px;
+    text-align: right;
+}
+.secondLine{
+    font-size: 15px;
+    display: inline-block;
+    margin: 7.5px 0 7.5px 0px;
+    width: 110px;
+    text-align: right;
+}
+.firstContent{
+    margin: 7.5px 7.5px 7.5px 0;
+    display: inline-block;
+    text-align: left;
+    width: 140px;
+
+}
+.secondContent{
+    display: inline-block;
+    text-align: left;
+    width: 140px;
+}
+.repairDetailModalTable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.repairDetailModalTable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.peiTitle{
+    display: inline-block;
+    margin-bottom:5px ;
+}
