@@ -239,3 +239,68 @@ export const AssayDetailColums2=[
         width:"5%"
     }
 ]
+export  const batchInfoTablecolums=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"5%"
+    },{
+        title:"批次信息",
+        dataIndex:"batchNumber",
+        key:"batchNumber",
+        width:"15%"
+    },{
+        title:"工序",
+        dataIndex:"procedure",
+        key:"procedure",
+        width:"5%"
+    },{
+        title:"批次生成时间",
+        dataIndex:"setTime",
+        key:"setTime",
+        width:"15%"
+    },{
+        title:"生成人",
+        dataIndex:"setPerson",
+        key:"setPerson",
+        width:"5%"
+    },{
+        title:"状态",
+        dataIndex:"status",
+        key:"status",
+        width:"10%",
+        render:(text,record)=>{
+            if(record.status===0){
+                return(<span >进行中</span>)
+            }
+            else{
+                return(<span >已完成</span>)
+            }
+        }
+
+    },{
+        title:"开始时间",
+        dataIndex:"startTime",
+        key:"startTime",
+        width:"15%"
+    },{
+        title:"结束时间",
+        dataIndex:"endTime",
+        key:"endTime",
+        width:"15%"
+    },{
+        title:"操作",
+        dataIndex:"code",
+        key:"code",
+        width:"15%",
+        render:()=>{
+            return(
+                <span>
+                    <span>编辑</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span>删除</span>
+                </span>
+            )
+        }
+    }
+]

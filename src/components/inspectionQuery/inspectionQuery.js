@@ -26,13 +26,15 @@ class InspectionQuery extends React.Component{
             status:'',
             page:1,
             size:10,
+            total:'',
             loading:true,
         }
         this.pagination={
             showSizeChanger:true,
             showTotal(total) {
                 return `共${total}条记录`
-            }
+            },
+            total:this.state.total
         }
         this.handleSizeChange=this.handleSizeChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
@@ -268,7 +270,7 @@ class InspectionQuery extends React.Component{
                                 patrolComment:devicePatrolPlanRecordHead.patrolComment,
                             })
                         }
-                        this.setState({RightTableData:tabledata},()=>{
+                        this.setState({RightTableData:tabledata,total:data.data.total},()=>{
                             message.info("查询成功！");
                             if(this.state.TreeData!==null){
                                 this.setState({loading:false})
