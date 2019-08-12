@@ -137,23 +137,22 @@
     max-height: 250px;
     overflow-y: auto;
 }
-.DropExpandselected{
+#DropExpandselected{
     height: 80px;
     overflow-x: auto;
     flex-wrap:wrap;
     justify-content:flex-start;
     display: flex;
     font-size: 15px;
-    width: 1000px;
+    width: 94%;
 }
 .buttonofdrop{
-    display: inline;
-    position: absolute;
+    display: inline-block;
+    position: fixed;
     z-index: 10;
-    margin-left: 900px;
+    right: 15px;
 }
 .DropExpandblue{
-    overflow-x: auto;
     font-size: 15px;
     cursor: pointer;
     color: deepskyblue;
@@ -165,28 +164,42 @@
     border-radius:5px;
 }
 .DropExpandwhite{
-    overflow-x: auto;
     font-size: 15px;
     cursor: pointer;
     color: white;
     margin-right: 20px;
-    /*margin-left: 10px;*/
+    margin-left: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
     background-color: dodgerblue;
     border-radius:5px;
     padding: 3px;
 }
+#DropNoExpandHide{
+    height: 1px;
+}
+.DropExpandbluehide{
+    display: inline-block;
+    font-size: 15px;
+    color: white;
+    margin-right: 20px;
+    margin-left: 10px;
+    height: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    visibility: hidden;
+}
 .Dropfrist{
     display: flex;
+    flex-wrap:nowrap;
     justify-content: flex-start;
     align-items: center;
-    width: 1159px;
+    width: 100%;
     font-size: 15px;
     background-color: white;
 }
 .eq-outside{
-    width: 1159px;
+    width: 1153px;
 }
 
 .eqRepButton{

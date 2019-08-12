@@ -151,6 +151,7 @@ class DepTree extends Component {
         var dataSource = this.state.dataSource;
         this.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'',info.node.props.dataRef.value)
+        this.props.handleResetFlag();
     }
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {
