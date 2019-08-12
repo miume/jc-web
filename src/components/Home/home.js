@@ -454,6 +454,8 @@ class Home extends Component {
                 detail:`${server}/jc/common/devicePatrolPlan/detail`,
                 page:`${server}/jc/common/devicePatrolPlan/page`,
                 update:`${server}/jc/common/devicePatrolPlan/update`,
+                delete:`${server}/jc/common/devicePatrolPlan/delete`,
+                deleteByIds:`${server}/jc/common/devicePatrolPlan/deleteByIds`
             },
             deviceRepair:{
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,

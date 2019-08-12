@@ -199,7 +199,7 @@ class CheckTemplate extends React.Component{
         }, 1000);
     };
     onSelect = (selectedKeys,info)=>{
-        // console.log(selectedKeys)
+        // console.log(parseInt(selectedKeys))
         this.getTableData({
             page:1,
             size:10,

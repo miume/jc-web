@@ -145,7 +145,7 @@ class CheckPlan extends React.Component{
         this.getTableData({
             page:1,
             size:10,
-            deptId:parseInt(selectedKeys[0].split("-")[1]),
+            deptId:selectedKeys.length!==0?parseInt(selectedKeys[0].split("-")[1]):"",
             status:0
         })
         this.setState({
