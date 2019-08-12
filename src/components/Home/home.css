@@ -130,6 +130,7 @@ input::-webkit-input-placeholder{
 }
 .userName:hover .topMask{
     padding-left: 30px;
+    width: 60px;
     display:inline-block;
     color: black !important;
 }
