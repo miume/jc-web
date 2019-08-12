@@ -91,6 +91,7 @@ html, body, .parent {
 }
 .userName{
     cursor: pointer;
+    width: 115px;
 }
 /**修改全局input placeholder里面字体的大小和颜色 */
 input::-webkit-input-placeholder{
@@ -106,6 +107,14 @@ input::-webkit-input-placeholder{
    background-color: #1890ff;
    color: white;
 }
+.iconHover .topMask {
+    display: none;
+}
+.iconHover:hover .topMask {
+    display: inline;
+    color: black !important;
+}
+
 
 .ant-menu-item-active {
     background-color: #1890ff !important;
@@ -116,6 +125,15 @@ input::-webkit-input-placeholder{
 .userName>span{
     padding-right:20px
 }
+.userName .topMask {
+    display: none;
+}
+.userName:hover .topMask{
+    padding-left: 30px;
+    display:inline-block;
+    color: black !important;
+}
+
 .drawer-div{
     text-align: center;
     color:#333333;
