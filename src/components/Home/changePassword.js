@@ -77,6 +77,7 @@ class ChangePassword extends React.Component{
                 <i className="fa fa-user-circle-o" aria-hidden="true"></i>
                 <span onClick={this.click}>{this.props.userName}</span>
                 <Divider type='vertical' />
+                <div className="topMask">修改密码</div>
                 <Modal visible={this.state.visible} title={'修改密码'}
                        closable={false} maskClosable={false} centered={true} className={'modal-sm'}
                        footer={[
