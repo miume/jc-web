@@ -28,6 +28,7 @@ class EquipmentArchiveManager extends Component {
             depCode: -1,
             deviceName: '',
             deptName:'',
+            flag:true,
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             updatebackground:[],
@@ -67,6 +68,7 @@ class EquipmentArchiveManager extends Component {
                             getRightData={this.getRightData}
                             url={this.url}
                             operation={this.operation}
+                            handleResetFlag={this.handleResetFlag}
                         />
                     </div>
                     {/*右边页面部分*/}
@@ -88,13 +90,20 @@ class EquipmentArchiveManager extends Component {
                             searchReset={this.searchReset}
                             updatebackground={this.state.updatebackground}
                             deptName={this.state.deptName}
+                            handleFlag={this.handleFlag}
+                            flag={this.state.flag}
                         />
                     </div>
                 </div>
             </div>
         )
     }
-
+    handleFlag=()=>{
+        this.setState({flag:!this.state.flag})
+    }
+    handleResetFlag=()=>{
+        this.setState({flag:true})
+    }
     returnDataEntry(){
         this.props.history.push({pathname:'/equipmentArchive'});
     }
