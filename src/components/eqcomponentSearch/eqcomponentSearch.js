@@ -14,8 +14,8 @@ class EqcomponentSearch extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            rightTopData: [],
-            rightTableData: [],
+            rightTableData2: [],
+            rightTableData3: [],
             depCode: -1,
             deviceName: '',
 
@@ -23,7 +23,6 @@ class EqcomponentSearch extends React.Component{
             searchContent: '',
             flag:0
         };
-        this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
         this.getTableData2 = this.getTableData2.bind(this)
 
@@ -42,12 +41,14 @@ class EqcomponentSearch extends React.Component{
     }
 
     cleardata=(flag)=>{
+        var pagination = this.pagination;
+        pagination.current = 1;
+        pagination.total = 0;
         this.setState({
+            pagination:pagination,
             flag:flag,
-            rightTableData:[],
-
+            rightTableData3:[],
         })
-        this.pagination.total=0;
     }
 
     render() {
@@ -63,7 +64,7 @@ class EqcomponentSearch extends React.Component{
                             url={this.url}
                             operation={this.operation}
                             depCode={this.state.depCode}
-                            rightTableData={this.state.rightTableData}
+                            rightTableData={this.state.rightTableData3}
                             getTableData={this.getTableData}
                             getTableData2={this.getTableData2}
                             deviceName={this.state.deviceName}
@@ -75,76 +76,18 @@ class EqcomponentSearch extends React.Component{
                             searchEvent={this.searchEvent}
                             searchReset={this.searchReset}
                             cleardata={this.cleardata}
+                            rightTableData2={this.state.rightTableData2}
                         />
                     </div>
                 </div>
             </div>
         );
     }
-    getRightData = (code, deviceName) => {
-        code = parseInt(code)
-        axios({
-            url: `$this.url.equipmentArchive.UnitName`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if (res) {
-                var rightTopData = [];
-                if (JSON.stringify(res) !== '{}') {
-                    for (var key in res) {
-                        rightTopData.push({
-                            name: key,
-                            count: res[key]
-                        })
-                    }
-                } else {
-                    rightTopData.push({
-                        name: '无设备',
-                        count: 0
-                    })
-                }
-                console.log(rightTopData)
-                this.setState({
-                    rightTopData: rightTopData,
-                    depCode: code
-                }, () => {
-                    const rightTopData = this.state.rightTopData;
-                    var deviceFlag = true;
-                    rightTopData.map((item) => {
-                        if (item.name === deviceName) {
-                            deviceFlag = false
-                        }
-                        return deviceFlag;
-                    })
-                    if (deviceFlag) {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: rightTopData[0] ? rightTopData[0].name : null
-                        }, 0);
-                    } else {
-                        this.getTableData({
-                            deptId: parseInt(code),
-                            deviceName: deviceName
-                        }, 0);
-                    }
-                return;
-                });
-            } else {
-                message.info('查询失败，请刷新下页面！')
-            }
-            console.log(rightTopData)
-        }).catch(() => {
-            message.info('查询失败，请刷新下页面！')
-        });
-    };
     handleTableChange = (pagination) => {
         this.pagination = pagination;
         const {pageChangeFlag} = this.state;
         console.log(this.state.searchContent)
-        if (this.flag===1) {
+        if (this.state.flag===1) {
             this.getTableData({
                 size: pagination.pageSize,
                 page: pagination.current,
@@ -202,13 +145,14 @@ class EqcomponentSearch extends React.Component{
                 }
                 this.pagination.total = res ? res.total : 0;
                 this.setState({
-                    rightTableData: rightTableData,
+                    rightTableData3: rightTableData,
                     deviceName: params.deviceName
                 });
+                console.log(rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
-                    rightTableData: [],
+                    rightTableData3: [],
                     deviceName: ''
                 });
             }
@@ -256,13 +200,15 @@ class EqcomponentSearch extends React.Component{
                 }
                 this.pagination.total = res ? res.total : 0;
                 this.setState({
-                    rightTableData: rightTableData,
+                    rightTableData2: rightTableData,
                     deviceName: params.deviceName
                 });
+                console.log(rightTableData)
+                console.log(this.state. rightTableData2)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
-                    rightTableData: [],
+                    rightTableData2: [],
                     deviceName: ''
                 });
             }

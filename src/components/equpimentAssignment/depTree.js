@@ -37,12 +37,11 @@ class DepTree extends Component {
 
     render() {
         return (
-            <div className="checkp-tree">
+            <div>
                 <Tree
                     showLine
                     onSelect={this.onSelect}
                     expandedKeys={this.state.expandedKeys}
-                    selectedKeys={[]}
                     onExpand={this.onExpand}
                 >
                     {this.renderTreeNodes(this.state.dataSource)}
@@ -119,7 +118,6 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
-                    this.props.firstname(res[0].parent.name)
                 }
                 this.setState({
                     dataSource: dataSource,
@@ -143,10 +141,6 @@ class DepTree extends Component {
         var dataSource = this.state.dataSource;
         this.props.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-        console.log(e.node)
-        console.log(e.node.props)
-        console.log(e.node.props.dataRef)
-        console.log(e.node.props.dataRef.value)
     }
 
 
@@ -158,7 +152,7 @@ class DepTree extends Component {
     // 展开树节点
     renderTreeNodes = data => data.map((item) => {
         item.title = ( // 不处于编辑状态
-            <div className={item.isSelect?"checkp-depTreeSelect":""}>
+            <div className={item.isSelect?"depTreeSelect":""}>
                 <span>
                     {item.value}
                 </span>

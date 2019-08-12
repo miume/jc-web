@@ -10,7 +10,8 @@
 /*}*/
 .checkQ-DE-left{
     width: 20%;
-    height: 729px;
+    height: 553px;
+    max-height: 553px;
     overflow-x:hidden;
     overflow-y:auto;
     border:1px solid #f1f1f1;
@@ -31,4 +32,14 @@
     text-align:center;
     line-height: 50px;
 
+}
+.checkQ-depTreeSelect {
+    background: #bae7ff;
+    border-radius: 3px;
+    color: rgba(0, 0, 0, 0.65);
+    /*margin-right: -4px;*/
+}
+.checkQ-tree{
+    padding-top: 15px;
+    padding-left: 20px;
 }

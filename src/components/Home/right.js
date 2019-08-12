@@ -50,6 +50,7 @@ import EquipmentMaintenance from '../equipmentMaintenance/equipmentMaintenance'
 import EqMaintenanceDataEntry from '../eqMaintenanceDataEntry/eqMaintenanceDataEntry'
 import EqMaintenancePlan from '../eqMaintenancePlan/eqMaintenancePlan'
 import EqMaintenanceQuery from '../eqMaintenanceQuery/eqMaintenanceQuery'
+import EqupimentAssignment from '../equpimentAssignment/equpimentAssignment'
 
 import EquipmentArchiveManager from '../equipmentArchiveManager/equipmentArchiveManager'
 import EqcomponentSearch from '../eqcomponentSearch/eqcomponentSearch'
@@ -222,6 +223,9 @@ class Right extends React.Component {
             },{
                 path:"/batchSearch",
                 component:BatchSearch
+            },{
+                path:"/equpimentAssignment",
+                component:EqupimentAssignment
             }]
         return (
             <div className="rightDiv">

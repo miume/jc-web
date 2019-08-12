@@ -429,7 +429,7 @@ class Home extends Component {
                 update:`${server}/jc/common/devicePatrolModel/update`,
                 delete:`${server}/jc/common/devicePatrolModel/{id}`,
                 position:`${server}/jc/common/basicInfoLocation/getPage`,
-            }
+            },
             devicePatrolQuery:{
                 PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
                 PatrolQueryPage:`${server}/jc/common/devicePatrolQuery/page`

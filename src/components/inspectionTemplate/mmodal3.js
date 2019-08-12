@@ -60,7 +60,7 @@ class Mmodal3 extends React.Component {
                  <Row>
                           <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;{this.props.workshop}</Col>
                           <Col span={9}>
-                              <div className="example-input">巡检模板名称:<Input value={this.props.patrolName} size="small" disabled/> </div></Col>
+                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;<Input value={this.props.patrolName} size="small" disabled/> </div></Col>
                           <Col span={9} >
                               <div>
                                   检查类型:
@@ -71,8 +71,8 @@ class Mmodal3 extends React.Component {
                           </Col>s
                  </Row>
                  <Row type="flex" justify="start" style={{paddingTop:15,paddingBottom:15}}>
-                     <Col span={6} > <div className="example-input2">制&nbsp;&nbsp;表&nbsp;&nbsp;人:<Input value={this.props.setPeople} size="small" disabled/></div></Col>
-                          <Col span={9}><div className="example-input">制&nbsp;&nbsp;表&nbsp;&nbsp;日&nbsp;&nbsp;期:&nbsp;&nbsp;<Input placeholder={this.props.tabulatedate} size="small" disabled/> </div></Col>
+                     <Col span={6} > <div className="example-input2">制&nbsp;&nbsp;表&nbsp;&nbsp;人:&nbsp;&nbsp;<Input value={this.props.setPeople} size="small" disabled/></div></Col>
+                          <Col span={9}><div className="example-input">制&nbsp;&nbsp;表&nbsp;&nbsp;日&nbsp;&nbsp;期:&nbsp;&nbsp;&nbsp;<Input placeholder={this.props.tabulatedate} size="small" disabled/> </div></Col>
 
                  </Row>
 
@@ -85,6 +85,7 @@ class Mmodal3 extends React.Component {
                          columns={this.column1}
                          size="small"
                          dataSource={this.props.devicePatrolModelsItemDetailsList}
+                         bordered
                      />
 
 
@@ -98,6 +99,7 @@ class Mmodal3 extends React.Component {
                          columns={this.column2}
                          size="small"
                          dataSource={this.props.devicePatrolModelsLocationDetails}
+                         bordered
                      />
 
                  </div>

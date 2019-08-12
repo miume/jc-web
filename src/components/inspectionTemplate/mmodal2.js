@@ -196,13 +196,13 @@ class Mmodal2 extends React.Component {
                      <CancleButton key='cancel' handleCancel={this.onCanCel1}/>]}
              >
                  <Row>
-                          <Col span={6} style={{paddingTop: 8}}>所属车间:&nbsp;{this.props.name}</Col>
+                          <Col span={6} style={{paddingTop: 8}}>所属车间:&nbsp;&nbsp;&nbsp;{this.props.name}</Col>
                           <Col span={9}>
-                              <div className="example-input">巡检模板名称:<Input Value={this.props.patrolName} size="small" onChange={this.valueChange}/> </div></Col>
+                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;&nbsp;<Input Value={this.props.patrolName} size="small" onChange={this.valueChange}/> </div></Col>
                           <Col span={9}>
                               <div>
                                   检查类型:
-                                <Select value={this.state.selectflag?this.state.checkType:this.props.checkType} style={{width: 240, paddingLeft: 20}}
+                                <Select value={this.state.selectflag?this.state.checkType:this.props.checkType} style={{width: 240, paddingLeft: 5}}
                                         onChange={this.handleChange}>
                                       <Option value="false">机械类</Option>
                                       <Option value="true">电气类</Option>
@@ -211,9 +211,9 @@ class Mmodal2 extends React.Component {
                           </Col>
                  </Row>
                   <Row type="flex" justify="start" style={{paddingTop:15,paddingBottom:15}}>
-                     <Col span={6} > <div className="example-input2">制&nbsp;&nbsp;表&nbsp;&nbsp;人:
+                     <Col span={6} > <div className="example-input2">制&nbsp;&nbsp;表&nbsp;&nbsp;人:&nbsp;&nbsp;&nbsp;
                          <Input  Value={this.props.setPeople} size="small" name="setPeople" disabled/></div></Col>
-                          <Col span={9}><div className="example-input">制&nbsp;&nbsp;表&nbsp;&nbsp;日&nbsp;&nbsp;期:&nbsp;&nbsp;
+                          <Col span={9}><div className="example-input">制&nbsp;&nbsp;表&nbsp;&nbsp;日&nbsp;&nbsp;期:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               <Input Value={this.props.tabulatedate} size="small"name="tabulatedate" disabled/> </div></Col>
 
                  </Row>
@@ -228,6 +228,7 @@ class Mmodal2 extends React.Component {
                          size="small"
                          dataSource={this.state.leftdataflag?this.state.leftDataSource:this.props.leftDataSource}
                          scroll={{y: 312}}
+                         bordered
                      />
 
 
@@ -242,6 +243,7 @@ class Mmodal2 extends React.Component {
                          dataSource={this.state.rightdataflag?this.state.dataSource2:this.props.dataSource2}
                          size="small"
                          scroll={{y: 312}}
+                         bordered
                      />
 
                       <Modal
@@ -267,6 +269,7 @@ class Mmodal2 extends React.Component {
                                  scroll={{y: 312}}
                                  pagination={this.pagination}
                                  onChange={this.handleTableChange}
+                                 bordered
                              />
 
 

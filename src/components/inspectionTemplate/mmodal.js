@@ -167,13 +167,12 @@ class Mmodal extends React.Component {
                      <CancleButton key='cancel' handleCancel={this.props.onCanCel} />]}
              >
                  <Row>
-                          <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;{this.props.name}</Col>
+                          <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;&nbsp;&nbsp;{this.props.name}</Col>
                           <Col span={9}>
-                              <div className="example-input">巡检模板名称:<Input placeholder="请输入巡检模板名称" size="small"  onChange={this.valueChange} value={this.state.patrolName}/> </div></Col>
+                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;&nbsp;<Input placeholder="请输入巡检模板名称" size="small"  onChange={this.valueChange} value={this.state.patrolName}/> </div></Col>
                           <Col span={9} >
                               <div>
-                                  检查类型:
-                                <Select  style={{ width: 240 ,paddingLeft:20}} onChange={this.handleChange} value={this.state.value?'电气类':'机械类'} >
+                                  检查类型:<Select  style={{ width: 240 ,paddingLeft:10}} onChange={this.handleChange} value={this.state.value?'电气类':'机械类'} >
                                       <Option value="false">机械类</Option>
                                       <Option value="true">电气类</Option>
                                 </Select>
@@ -189,19 +188,18 @@ class Mmodal extends React.Component {
                          size="small"
                          dataSource={this.state.leftDataSource}
                          scroll={{ y: 312 }}
+                         bordered
                          />
-
-
-
                  </div>
 
                  <div className="inspection-Right-Table" style={{paddingTop:20}}>
-                     <span>巡检区域：</span>
+                     <span>巡检区域:&nbsp;&nbsp;&nbsp;</span>
                      <span className="blue" style={{float:'right'}} onClick={this.addtable2}>新增</span>
                      <Table
                         columns={this.column2}
                         dataSource={this.state.dataSource2}
                         size="small"
+                        bordered
                         scroll={{ y: 312 }}
                      />
 
