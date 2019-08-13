@@ -186,12 +186,12 @@ class Ordered extends React.Component{
                 })
             }
         })
-        };
-        judgeOperation(operation,operationCode){
-            if(operation===null) return false
-            var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
-            return flag.length>0?true:false
-        }
+    };
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+    }
     getTreeData(){
         axios({
             url:`${this.url.equipmentDept.dept}`,

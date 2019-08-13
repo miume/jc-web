@@ -42,7 +42,7 @@ class SearchCell extends React.Component{
             page:this.props.pagination.current,
             size:this.props.pagination.pageSize,
             deptId:this.props.selectedKeys.length!==0?parseInt(this.props.selectedKeys[0].split("-")[1]):'',
-            status:2
+            status:0
         },1);
     }
 }
