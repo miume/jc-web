@@ -1,11 +1,14 @@
 import React from "react";
 import axios from "axios";
-import SearchCell from '../../BlockQuote/search';
+import SearchCell from "./search";
 import { Table,Divider,Popconfirm,message } from 'antd';
 import TreeCard from '../treeCard';
-import Detail from "../details"
+import Detail from "../details";
+import DeleteByIds from '../../BlockQuote/deleteByIds';
+import AddModal from './add';
 
 class CheckPlan extends React.Component{
+    operation
     url = JSON.parse(localStorage.getItem('url'));
     constructor(props){
         super(props);
@@ -24,6 +27,11 @@ class CheckPlan extends React.Component{
             sonKey:""
         }
         this.url=JSON.parse(localStorage.getItem('url'));
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.judgeOperation = this.judgeOperation.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.cancel=this.cancel.bind(this);
+        this.onSelectChange = this.onSelectChange.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total){
@@ -33,8 +41,8 @@ class CheckPlan extends React.Component{
         };
         this.columns=[{
             title:"序号",
-            dataIndex:'devicePatrolPlanRecordHead.code',
-            key: 'index',
+            dataIndex:'index',
+            key: 'devicePatrolPlanRecordHead.code',
             align:'center',
             width: '10%',
         },{
@@ -42,13 +50,13 @@ class CheckPlan extends React.Component{
             dataIndex:'devicePatrolPlanRecordHead.planName',
             key: 'devicePatrolPlanRecordHead.planName',
             align:'center',
-            width: '10%',
+            width: '15%',
         },{
             title:"巡检模板名称",
             dataIndex:'modelName',
             key: 'modelName',
             align:'center',
-            width: '10%',
+            width: '20%',
         },{
             title:"检查类型",
             dataIndex:'devicePatrolPlanRecordHead.checkType',
@@ -67,13 +75,13 @@ class CheckPlan extends React.Component{
             dataIndex:'devicePatrolPlanRecordHead.planTime',
             key: 'devicePatrolPlanRecordHead.planTime',
             align:'center',
-            width: '10%',
+            width: '20%',
         },{
             title:"操作",
             dataIndex: 'operation',
             key: 'operation',
             align:'center',
-            width: '15%',
+            width: '20%',
             render:(text,record)=>{
                 return(
                     <span>
@@ -81,7 +89,9 @@ class CheckPlan extends React.Component{
                         <Divider type="vertical" />
                         <Detail code={record.devicePatrolPlanRecordHead.code}/>
                         <Divider type="vertical" />
-                        <a href="#">删除</a>
+                        <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.devicePatrolPlanRecordHead.code)} okText="确定" cancelText="取消" >
+                            <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
@@ -101,13 +111,45 @@ class CheckPlan extends React.Component{
             if(res.length !== 0){
                 this.getTableData({
                     page:this.pagination.current,
-                    size:10,
+                    size:this.pagination.pageSize,
                     deptId:res[0].son[0].code,
                     status:0,
                 })
             }
         })
     }
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
+    handleDelete = (id) => {
+        axios({
+            url:`${this.url.devicePatrolPlan.delete}/${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+        }).then((data)=>{
+            message.info(data.data.message);
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+        setTimeout(() => {
+            // if((this.pagination.total-1)%10===0){
+            //     this.pagination.current = this.pagination.current-1
+            // }
+            this.getTableData({
+                page:this.pagination.current,
+                size:this.pagination.pageSize,
+                deptId:parseInt(this.state.selectedKeys[0].split("-")[1]),
+                status:0
+            });
+        }, 1000);
+    };
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -115,6 +157,30 @@ class CheckPlan extends React.Component{
       }
       onExpand = (expandedKeys) => {
         this.setState({expandedKeys: expandedKeys})
+    }
+    deleteByIds = ()=>{
+        const ids = this.state.selectedRowKeys;
+        axios({
+            url:`${this.url.devicePatrolPlan.deleteByIds}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            if(data.data.code===0){
+                this.getTableData({
+                    page:this.pagination.current,
+                    size:this.pagination.pageSize,
+                    deptId:parseInt(this.state.selectedKeys[0].split("-")[1]),
+                    status:0
+                })
+            }
+        }).catch(()=>{
+            message.info('删除错误，请联系管理员！')
+        })
     }
     getTableData = (params = {})=>{
         axios({
@@ -134,7 +200,9 @@ class CheckPlan extends React.Component{
                     res.list[i-1]['index']=(res.page-1)*10+i;
                 }
                 this.setState({
-                    dataSource:res.list
+                    dataSource:res.list,
+                    searchContent:'',
+                    selectedRowKeys: [],
                 })
             }
         })
@@ -143,14 +211,55 @@ class CheckPlan extends React.Component{
         // console.log(selectedKeys)
         // console.log(info)
         this.getTableData({
-            page:1,
-            size:10,
+            page:this.pagination.current,
+            size:this.pagination.pageSize,
             deptId:selectedKeys.length!==0?parseInt(selectedKeys[0].split("-")[1]):"",
             status:0
         })
         this.setState({
             selectedKeys:selectedKeys,
+            deviceName:info.node.props.title
         })
+    }
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        axios({
+            url:`${this.url.devicePatrolPlan.page}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
+                condition:ope_name,
+                status:0,
+                deptId:this.state.selectedKeys[0].split("-")[1]
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res);
+            if(res&&res.list){
+                this.pagination.total = res.total;
+                this.pagination.current = res.page;
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.page-1)*10+i;
+                }
+                this.setState({
+                    dataSource:res.list
+                })
+            }
+        })
+    };
+    judgeOperation(operation,operationCode){
+        if(operation===null) return false
+        var flag = operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
     }
     getTreeData(){
         axios({
@@ -179,7 +288,23 @@ class CheckPlan extends React.Component{
             }
         })
     }
+    /**实现全选 */
+    onSelectChange(selectedRowKeys) {
+        // console.log(selectedRowKeys)
+        this.setState({ selectedRowKeys:selectedRowKeys });
+    }
     render(){
+        /** 先获取数据录入的所有子菜单，在筛选当前子菜单的所有操作权限*/
+        const current = JSON.parse(localStorage.getItem('equipmentInspection'));
+        const operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.menuName === current.menuParent)[0].menuList : null;
+        this.operation = operation.filter(e => e.path === current.path)[0].operations;
+        const { loading,selectedRowKeys } = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+            onSelect() {},
+            onSelectAll() {},
+          };
         return (
             <div>
                 <div style={{padding:'15px',display:'flex'}}>
@@ -187,7 +312,17 @@ class CheckPlan extends React.Component{
                         <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/>
                     </div>
                     <div style={{width:"80%",marginLeft:"15px"}}>
-                        <Table size="small" rowKey={record => record.devicePatrolPlanRecordHead.code} pagination={this.pagination} dataSource={this.state.dataSource} columns={this.columns} bordered scroll={{ y: 400 }}/>
+                    <AddModal pagination={this.pagination} deptName={this.state.deviceName} getTableData={this.getTableData} deptCode={this.state.selectedKeys.length!==0?this.state.selectedKeys[0].split("-")[1]:""}/>
+                    <DeleteByIds
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        loading={loading}
+                        cancel={this.cancel}
+                        deleteByIds={this.deleteByIds}
+                        flag={this.judgeOperation(this.operation,'DELETE')}
+                    />
+                    <SearchCell name='请输入计划名称' type={this.props.type} searchEvent={this.searchEvent} pagination={this.pagination} selectedKeys={this.state.selectedKeys} searchContentChange={this.searchContentChange} fetch={this.getTableData} flag={this.judgeOperation(this.operation,'QUERY')}/>
+                    <div className='clear' ></div>
+                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.devicePatrolPlanRecordHead.code} pagination={this.pagination} dataSource={this.state.dataSource} columns={this.columns} bordered scroll={{ y: 400 }}/>
                     </div>
                 </div>
             </div>
