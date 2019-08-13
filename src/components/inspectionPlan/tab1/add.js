@@ -76,7 +76,7 @@ class AddModal extends React.Component{
             params:{deptId:parseInt(this.props.deptCode),planName:this.state.planName,checkType:this.state.checkType === false?0:1,planDate:this.state.date,modelId:this.state.devicePatrolModelsHead.code},
             type:"json"
         }).then((data)=>{
-            console.log(data)
+            // console.log(data)
             if(data.data.code !== 0){
                 message.info('新增失败')
                 this.setState({
@@ -126,7 +126,7 @@ class AddModal extends React.Component{
             type:"json"
         }).then((data)=>{
             var res = data.data.data;
-            console.log(res);
+            // console.log(res);
             this.setState({
                 checkType:res.devicePatrolModelsHead.checkType,
                 devicePatrolModelsItemDetailsList:res.devicePatrolModelsItemDetailsList,
