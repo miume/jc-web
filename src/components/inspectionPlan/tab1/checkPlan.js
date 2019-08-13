@@ -6,6 +6,7 @@ import TreeCard from '../treeCard';
 import Detail from "../details";
 import DeleteByIds from '../../BlockQuote/deleteByIds';
 import AddModal from './add';
+import Edit from './edit';
 
 class CheckPlan extends React.Component{
     operation
@@ -83,9 +84,10 @@ class CheckPlan extends React.Component{
             align:'center',
             width: '20%',
             render:(text,record)=>{
+                // console.log(record)
                 return(
                     <span>
-                        <a href="#">编辑</a>
+                        <Edit pagination={this.pagination} deptName={this.state.deviceName} planId={record.devicePatrolPlanRecordHead.code} getTableData={this.getTableData} deptCode={this.state.selectedKeys.length!==0?this.state.selectedKeys[0].split("-")[1]:""}/>
                         <Divider type="vertical" />
                         <Detail code={record.devicePatrolPlanRecordHead.code}/>
                         <Divider type="vertical" />
@@ -128,8 +130,9 @@ class CheckPlan extends React.Component{
     }
     handleDelete = (id) => {
         axios({
-            url:`${this.url.devicePatrolPlan.delete}/${id}`,
+            url:`${this.url.devicePatrolPlan.delete}`,
             method:'Delete',
+            params:{planId:id},
             headers:{
                 'Authorization':this.Authorization
             },
