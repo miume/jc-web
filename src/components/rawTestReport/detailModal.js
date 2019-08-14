@@ -32,7 +32,7 @@ const columns = [{
 class DetailModal extends React.Component {
     render() {
         const data = this.props.detail;
-        const sty = [{height:550},{height:480}]
+        const sty = [{maxHeight:550},{maxHeight:480}]
         const divheight = this.props.checkFlag?sty[1]:sty[0];
         return(
             <div style={divheight}>
@@ -59,6 +59,7 @@ class DetailModal extends React.Component {
                            样品名称：<span>{data.topData?data.topData.materialName+'样品':''}</span>
                        </div>
                 </div>
+                <div className="rawTestReport-detail">
                     <Table
                         className="rawTestReport-detailModal"
                         rowKey={record => record.id}
@@ -69,6 +70,7 @@ class DetailModal extends React.Component {
                         scroll={{ y: 190 }}
                         bordered
                     />
+                </div>
                     <div style={{display:'flex',flexDirection:'row',marginTop:20}}>
                         <div style={{flexGrow:2}}>
                             <p>检验人：{data.testData?data.testData.tester:'无'}</p>
