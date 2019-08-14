@@ -1,3 +1,10 @@
-.firstLine{
-
+.everyLine{
+    margin: 5px;
+    display: inline-block;
+}
+.batchInfo_Table .ant-table-body  {
+    max-height:380px !important;
+}
+.previewBatch_button{
+    margin-left: 10px;
 }
