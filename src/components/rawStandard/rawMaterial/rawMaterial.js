@@ -107,27 +107,29 @@ class RawMaterial extends Component {
 
     addEvent() {//新增事件
         const value = this.formRef.getItemsValue();
-        if (!value['serialNumberId'] || this.state.testItems.length === 0) {
+        if (!value['materialName'] || this.state.testItems.length === 0) {
             message.info('信息填写不完整!');
             return
         }
-        axios({
-            url: `${this.props.url.rawStandard.addRaw}?serialNumberId=${value['serialNumberId']}&testItemIds=${this.state.testItems.toString()}`,
-            method: 'post',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-
-        }).then(data => {
-            //console.log(data);
-            message.info(data.data.message);
-            this.fetch();
-        }).catch(() => {
-            message.info('新增失败，请联系管理员！');
-        });
-        this.setState({
-            visible: false
-        });
+        console.log(value)
+        message.info("功能开发中")
+        // axios({
+        //     url: `${this.props.url.rawStandard.addRaw}?serialNumberId=${value['serialNumberId']}&testItemIds=${this.state.testItems.toString()}`,
+        //     method: 'post',
+        //     headers: {
+        //         'Authorization': this.props.url.Authorization
+        //     },
+        //
+        // }).then(data => {
+        //     //console.log(data);
+        //     message.info(data.data.message);
+        //     this.fetch();
+        // }).catch(() => {
+        //     message.info('新增失败，请联系管理员！');
+        // });
+        // this.setState({
+        //     visible: false
+        // });
     }
 
     handleCancel() {
