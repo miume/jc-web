@@ -1,10 +1,9 @@
 import React from 'react';
 import 'moment/locale/zh-cn';
-import {Button, Modal, Select, message, Table,} from 'antd';
+import {Button, Modal, message, Table,} from 'antd';
 import "../batchSearch/batchSearch.css"
 import "./batchinfo.css"
 import CancleButton from "../BlockQuote/cancleButton";
-import SaveButton from "../BlockQuote/saveButton";
 import {datas, searchcolums} from "./colums";
 export default class PreviewBatch extends React.Component{
     constructor(props){

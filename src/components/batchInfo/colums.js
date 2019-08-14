@@ -5,6 +5,7 @@ import AssayDetail from  '../batchSearch/assayDetail'
 import Repair from "../batchSearch/repair"
 import Maintenance from  "../batchSearch/maintenance"
 import EditPart from './batchinfoEditModal'
+import DeleteOne from "./deleteOne";
 export const searchcolums=[
     {
         title:"序号",
@@ -295,11 +296,11 @@ export  const batchInfoTablecolums=[
         dataIndex:"code",
         key:"code",
         width:"15%",
-        render:()=>{
+        render:(text,record)=>{
             return(
                 <span>
-                    <EditPart/>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span>删除</span>
+                    <EditPart record={record}/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <DeleteOne record={record}/>
                 </span>
             )
         }
