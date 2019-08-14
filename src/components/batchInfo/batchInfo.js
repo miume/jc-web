@@ -6,6 +6,7 @@ import axios from "axios";
 import {Table ,message} from "antd";
 import {batchInfoTablecolums,datas} from "./colums"
 import AddPart from "./addpart"
+import PreviewBatch from "./previewBatch"
 
 class BatchInfo extends React.Component{
     componentWillUnmount() {
@@ -99,14 +100,17 @@ class BatchInfo extends React.Component{
                         deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation,'DELETE')}
                     />
+                    <PreviewBatch/>
                     <SearchPart/>
                     <Table
+                        className={"batchInfo_Table"}
                         bordered={true}
                         size={"small"}
                         rowSelection={rowSelection}
                         columns={batchInfoTablecolums}
                         dataSource={datas}
                         scroll={{y:420}}
+                        rowKey={record => record.index}
                         pagination={this.pagination}
                     />
                 </div>
