@@ -1,21 +1,17 @@
 import React from 'react';
-import moment from 'moment';
 import 'moment/locale/zh-cn';
-import locale from 'antd/es/date-picker/locale/zh_CN';
-import {Button, Icon, Input, Modal, Select, message, DatePicker, Table,} from 'antd';
+import {Button, Modal, Select, message, Table,} from 'antd';
 import "../batchSearch/batchSearch.css"
 import "./batchinfo.css"
-import AddButton from "../BlockQuote/newButton";
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import {datas, searchcolums} from "./colums";
-const { Option } = Select;
-const data1=[{name:"合成",code:'1'},{name:"合成2",code:'2'}]
 export default class PreviewBatch extends React.Component{
     constructor(props){
         super(props)
         this.state={
             visible:false,          //是否可见
+            dataSource:[],
         }
         this.pagination={
             showSizeChanger:true,
@@ -25,7 +21,15 @@ export default class PreviewBatch extends React.Component{
         }
     }
     showModal=()=>{
-        this.setState({visible:true})
+        if(this.props.ifClick==='1'){
+            this.setState({
+                visible:true,
+                dataSource:datas,
+            })
+        }
+        else{
+            message.info(this.props.ifClick)
+        }
     }
     handleCancel=()=>{
         this.setState({visible:false})
@@ -43,8 +47,7 @@ export default class PreviewBatch extends React.Component{
                        closable={false} centered={true}
                        maskClosable={false}
                        footer={[
-                           <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                           <SaveButton key="define" handleSave={this.handleCreate}/>,
+                           <CancleButton key='cancel' handleCancel={this.handleCancel}/>,
                        ]}>
                        <div>
                            <Table
@@ -52,9 +55,10 @@ export default class PreviewBatch extends React.Component{
                                columns={searchcolums}
                                size={"small"}
                                bordered={true}
-                               dataSource={datas}
+                               dataSource={this.state.dataSource}
                                scroll={{y:200}}
                                pagination={this.pagination}
+                               rowKey={record => record.index}
                            />
                        </div>
                 </Modal>

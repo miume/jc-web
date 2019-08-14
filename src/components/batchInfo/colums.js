@@ -248,8 +248,8 @@ export  const batchInfoTablecolums=[
         width:"5%"
     },{
         title:"批次信息",
-        dataIndex:"batchNumber",
-        key:"batchNumber",
+        dataIndex:"batchInfo",
+        key:"batchInfo",
         width:"15%"
     },{
         title:"工序",
