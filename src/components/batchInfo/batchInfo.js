@@ -20,6 +20,9 @@ class BatchInfo extends React.Component{
         this.state={
             selectedRowKeys:[],
             loading:'',
+            selectRows:[],
+            batchInfo:'',
+            ifClick:"请选择4条相同批次信息的记录",
         };
         this.pagination={
             showSizeChanger:true,
@@ -76,9 +79,26 @@ class BatchInfo extends React.Component{
         // })
         console.log(ids)
     }
-    onSelectChange=(selectedRowKeys)=> {
-        console.log(selectedRowKeys)
-        this.setState({ selectedRowKeys:selectedRowKeys });
+    onSelectChange=(selectedRowKeys,selectRows)=> {
+        // console.log(selectedRowKeys);
+        // console.log('selectRows',selectRows);
+        this.setState({
+            selectedRowKeys:selectedRowKeys ,
+            selectRows:selectRows,
+        },()=>{
+            if(this.state.selectRows.length===4){
+                if(this.state.selectRows[0].batchInfo===this.state.selectRows[1].batchInfo&&this.state.selectRows[1].batchInfo===this.state.selectRows[2].batchInfo&&this.state.selectRows[2].batchInfo===this.state.selectRows[3].batchInfo){
+                    this.setState({batchInfo:this.state.selectRows[0].batchInfo,ifClick:"1"},()=>{
+                        console.log('batchInfo',this.state.batchInfo)
+                    })
+                }
+                else {
+                    this.setState({ifClick:"选中项批次信息不一致,请选择相同批次信息的记录!"})
+                }
+            }else {
+                this.setState({ifClick:"请选择4条相同批次信息的记录!",batchInfo:''})
+            }
+        });
     }
     render(){
         const { loading, selectedRowKeys } = this.state;
@@ -100,7 +120,10 @@ class BatchInfo extends React.Component{
                         deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation,'DELETE')}
                     />
-                    <PreviewBatch/>
+                    <PreviewBatch
+                        batchInfo={this.state.batchInfo}
+                        ifClick={this.state.ifClick}
+                    />
                     <SearchPart/>
                     <Table
                         className={"batchInfo_Table"}
