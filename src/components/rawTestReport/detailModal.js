@@ -59,6 +59,7 @@ class DetailModal extends React.Component {
                            样品名称：<span>{data.topData?data.topData.materialName+'样品':''}</span>
                        </div>
                 </div>
+                <div className="rawTestReport-detail">
                     <Table
                         className="rawTestReport-detailModal"
                         rowKey={record => record.id}
@@ -69,6 +70,7 @@ class DetailModal extends React.Component {
                         scroll={{ y: 190 }}
                         bordered
                     />
+                </div>
                     <div style={{display:'flex',flexDirection:'row',marginTop:20}}>
                         <div style={{flexGrow:2}}>
                             <p>检验人：{data.testData?data.testData.tester:'无'}</p>
