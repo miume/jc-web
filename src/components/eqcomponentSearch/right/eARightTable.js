@@ -191,7 +191,7 @@ class EARightTable extends Component {
         return (
             <div className="eA-right-bottom">
                 <Table
-                    rowKey={record => record.code}
+                    // rowKey={record => record.code}
                     rowSelection={this.props.rowSelection}
                     dataSource={this.props.dataSource}
                     columns={this.columns}
@@ -199,7 +199,7 @@ class EARightTable extends Component {
                     bordered
                     scroll={{y: 360}}
 
-                    onChange={this.props.handleTableChange}
+                    onChange={this.props.handleTableChange}s
                     pagination={this.props.pagination}
                 />
             </div>

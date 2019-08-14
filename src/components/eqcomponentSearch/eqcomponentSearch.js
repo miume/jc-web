@@ -95,6 +95,7 @@ class EqcomponentSearch extends React.Component{
                 accName: this.state.searchContent,
 
             })
+            console.log('11111111111')
         } else {
             this.getTableData2({
                 size: pagination.pageSize,
@@ -102,8 +103,8 @@ class EqcomponentSearch extends React.Component{
                 unitName: this.state.searchContent,
                 accName: this.state.searchContent,
             })
+            console.log('222222222')
         }
-        console.log('123123123')
     };
 
 
@@ -247,8 +248,10 @@ class EqcomponentSearch extends React.Component{
     //         unitName:'',
     //     }, 1)
         this.setState({
-            rightTableData:[],
+            rightTableData2:[],
+            rightTableData3:[],
         })
+        this.pagination.total = 0;
      }
     /**返回数据录入页面 */
     returnDataEntry(){

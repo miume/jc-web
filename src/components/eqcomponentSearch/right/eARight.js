@@ -33,7 +33,7 @@ class EARight extends Component {
                             getRightData={this.props.getRightData}
                             deviceName={this.props.deviceName}
                             depCode={this.props.depCode}
-                            getTableData={this.props.getTableData}
+                            getTableData={this.props.getTableData2}
                             url={this.props.url}
                             operation={this.props.operation}
                             comFlag={false}
@@ -52,7 +52,7 @@ class EARight extends Component {
                             getRightData={this.props.getRightData}
                             deviceName={this.props.deviceName}
                             depCode={this.props.depCode}
-                            getTableData2={this.props.getTableData2}
+                            getTableData2={this.props.getTableData}
                             url={this.props.url}
                             operation={this.props.operation}
                             comFlag={false}

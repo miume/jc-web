@@ -41,7 +41,21 @@
      margin-left: 20px;
      height: 100%;
      padding: 5px;
+    display: flex;
  }
 .eqa-eqb{
     padding-top: 10px;
+}
+.eqa-transfer-left{
+    width: 45%;
+}
+.eq-transfer-mid{
+    width:10%
+}
+.eqa-transfer-right{
+    width:45%;
+}
+.eqa-transfer{
+    width:100%;
+    display: flex;
 }

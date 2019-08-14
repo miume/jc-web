@@ -6,13 +6,14 @@ import CancleButton from "../BlockQuote/cancleButton";
 import DepTree from "./depTree";
 import "./equpimentAssignment.css"
 import axios from "axios";
-import App from './transfer'
+import Transferq from './transferq'
 class Allocation extends React.Component{
     constructor(props) {
         super(props)
         this.state={
             visible:false,
-
+            dataSource:[],
+            dataSource2:[],
         }
     }
 
@@ -48,12 +49,12 @@ class Allocation extends React.Component{
                         url={this.props.url}
                         operation={this.operation}
                         handleSelect={this.handleSelect}
-                        firstname={this.firstname}
+
 
                   />
                    </div>
                 <div className="equip-allocation-right">
-                 <App />
+                 <Transferq  dataSource={this.state.dataSource} dataSource2={this.state.dataSource2}/>
                 </div>
             </div>
             </Modal>
@@ -96,59 +97,37 @@ class Allocation extends React.Component{
            }
        }).then((data) => {
            const res = data.data.data ? data.data.data : [];
-           if (res) {
-               var rightTopData = [];
-               if (JSON.stringify(res) !== '{}') {
-                   for (var key in res) {
-                       rightTopData.push({
-                           name: key,
-                           count: res[key]
-                       })
-                   }
-               } else {
-                   rightTopData.push({
-                       name: '无设备',
-                       count: 0
-                   })
-               }
-               var updatebackground=[1];
-               for(var i=0;i<rightTopData.length-1;i++){
-                   updatebackground.push(0);
-               }
-               this.setState({
-                   rightTopData: rightTopData,
-                   deptCode: code,
-                   updatebackground:updatebackground,
-               }, () => {
-                   const rightTopData = this.state.rightTopData;
-                   var deviceFlag = true;
-                   rightTopData.map((item) => {
-                       if (item.name === deviceName) {
-                           deviceFlag = false
-                       }
-                       return rightTopData;
-                   })
-                   // if (deviceFlag) {
-                   //     this.getTableData({
-                   //         deptId: parseInt(code),
-                   //         deviceName: rightTopData[0] ? rightTopData[0].name : null
-                   //     }, 0);
-                   //     this.setState({
-                   //         deviceName: rightTopData[0].name
-                   //     })
-                   // } else {
-                   //     this.getTableData({
-                   //         deptId: parseInt(code),
-                   //         deviceName: deviceName
-                   //     }, 0);
-                   // }
-               });
-           } else {
-               message.info('查询失败，请刷新下页面！')
+           var fakedataSource=[];
+           var fakedataSource2=[];
+           for(var i=0;i<20;i++)
+           {
+               fakedataSource.push({
+                   code:i,
+                   index:i+1,
+                   Fixedassetscode:i,
+                   Devicename:'fake1',
+                   specification:'222-111',
+               })
+               fakedataSource2.push({
+                   code:i*100,
+                   index:i+1,
+                   Fixedassetscode:i,
+                   Devicename:'fake2',
+                   specification:'111-222',
+               })
            }
+           console.log(fakedataSource)
+           console.log(fakedataSource2)
+           this.setState({
+               dataSource:fakedataSource,
+               dataSource2:fakedataSource2,
+           })
+
        }).catch(() => {
            message.info('查询失败，请刷新下页面！')
        });
    };
+
+
 }
 export default Allocation

@@ -31,6 +31,7 @@ class EARightBottom extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
+        console.log(this.props.dataSource)
         return (
             <div className="eA-right-bottom">
                 {/*<Add*/}
