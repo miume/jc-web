@@ -69,7 +69,10 @@ class WillMaintain extends React.Component{
                                     fetch={this.fetch}
                                     searchEvent={this.searchEvent}
                                     searchContentChange={this.searchContentChange}
-                                    flag={home.judgeOperation(this.props.operation,'QUERY')}/>
+                                    flag={home.judgeOperation(this.props.operation,'QUERY')}
+                                    type={1}
+                                />
+
                             </div>
                         </Header >
                         <Content style={{background:"white"}}>
@@ -126,6 +129,7 @@ class WillMaintain extends React.Component{
         const params={
             deptId:parseInt(this.props.depCode),
             statusId:1,
+            depName:this.props.depName,
             condition:this.state.searchContent,
         }
         // this.props.getTableData(params);
@@ -137,6 +141,7 @@ class WillMaintain extends React.Component{
             {
                 deptId:parseInt(this.props.depCode),
                 statusId:1,
+                depName:this.props.depName,
             }
         )
     }
@@ -147,6 +152,7 @@ class WillMaintain extends React.Component{
             this.props.getTableData({
                 deptId:parseInt(this.props.depCode),
                 statusId: 1,
+                depName:this.props.depName,
                 condition:this.state.searchContent,
                 page:page.current,
                 size:page.pageSize,
@@ -155,6 +161,7 @@ class WillMaintain extends React.Component{
             this.props.getTableData({
                 deptId:parseInt(this.props.depCode),
                 statusId: 1,
+                depName:this.props.depName,
                 page:page.current,
                 size:page.pageSize,
             })
@@ -242,6 +249,7 @@ class WillMaintain extends React.Component{
             const params={
                 deptId:parseInt(this.props.depCode),
                 statusId:1,
+                depName:this.props.depName,
                 condition:this.state.searchContent,
             }
             this.props.getTableData(params);

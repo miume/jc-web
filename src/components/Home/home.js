@@ -430,6 +430,7 @@ class Home extends Component {
                 update:`${server}/jc/common/devicePatrolModel/update`,
                 delete:`${server}/jc/common/devicePatrolModel/{id}`,
                 position:`${server}/jc/common/basicInfoLocation/getPage`,
+                getAllByDeptCode:`${server}/jc/common/devicePatrolModel/getAllByDeptCode`
             },
             devicePatrolQuery:{
                 PatrolQueryDetail:`${server}/jc/common/devicePatrolQuery/detail`,
@@ -454,10 +455,14 @@ class Home extends Component {
                 detail:`${server}/jc/common/devicePatrolPlan/detail`,
                 page:`${server}/jc/common/devicePatrolPlan/page`,
                 update:`${server}/jc/common/devicePatrolPlan/update`,
-
+                delete:`${server}/jc/common/devicePatrolPlan/delete`,
+                deleteByIds:`${server}/jc/common/devicePatrolPlan/deleteByIds`
+            },
+            deviceRepair:{
+                getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
+                getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
             }
         }
-
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))

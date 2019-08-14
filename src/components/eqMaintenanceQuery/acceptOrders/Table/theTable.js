@@ -14,8 +14,8 @@ class TheTable extends React.Component {
    columns = [
         {
             title: '序号',
-            dataIndex: 'num',
-            key: 'num',
+            dataIndex: 'index',
+            key: 'index',
             sorter: (a, b) => a.index - b.index,
             width: '5px',
             align:'center',
@@ -37,8 +37,8 @@ class TheTable extends React.Component {
         },
         {
             title: '所属部门',
-            dataIndex: 'deptName',
-            key: 'deptName',
+            dataIndex: 'depName',
+            key: 'depName',
             width: '10px',
             align:'center',
         },

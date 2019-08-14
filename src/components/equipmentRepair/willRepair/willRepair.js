@@ -10,14 +10,19 @@ import TheTable from "./theTable";
 class WillRepair extends React.Component{
     constructor(props){
         super(props)
+        this.state={
+            pageChangeFlag:'',
+            searchContent:'',
+        }
 
     }
 
     render() {
         this.url=this.props.url;
+        this.state.pagination=this.props.pagination;
 
         return(
-            <div style={{padding: '15px'}} className="eRp">
+            <div style={{paddingTop: '1px'}} className="eRp">
                 {/*左边树部分*/}
                 <div className="eRp-left">
                     <DepTree
@@ -33,6 +38,7 @@ class WillRepair extends React.Component{
                             fetch={this.fetch}
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
+                            type={1}
                         />
                     </div>
 
@@ -40,23 +46,79 @@ class WillRepair extends React.Component{
                         <TheTable
                             url={this.url}
                             rightTableData={this.props.rightTableData}
+                            pagination={this.state.pagination}
+                            handleTableChange={this.handleTableChange}
                         />
                     </div>
                 </div>
             </div>
         );
     }
-
-    fetch=()=>{
-
-    }
-    /**绑定搜索事件*/
-    searchEvent=()=>{
-
-    }
     /**跟踪搜索事件变化 */
     searchContentChange=(e)=>{
-
+        const value = e.target.value;
+        this.setState({searchContent:value});
     }
+    /**绑定搜索事件 */
+    searchEvent = () => {
+        this.setState({
+            pageChangeFlag: 1
+        });
+        const params={
+            secondDeptId:this.props.secondDeptId,
+            repairStatus:1,
+            condition:this.state.searchContent,
+        }
+        this.fetch(params,0);
+    }
+    /**重置时重新加载数据*/
+    searchReset=()=>{
+        this.props.getTableData(
+            {
+                secondDeptId:this.props.secondDeptId,
+                repairStatus:1,
+            }
+        )
+    }
+    /**分页查询*/
+    handleTableChange = (page) => {
+        const {pageChangeFlag} = this.state.pageChangeFlag;
+        if (pageChangeFlag) {
+            this.props.getTableData({
+                secondDeptId:this.props.secondDeptId,
+                repairStatus:1,
+                condition:this.state.searchContent,
+            })
+        } else {
+            this.props.getTableData({
+                secondDeptId:this.props.secondDeptId,
+                repairStatus:1,
+            })
+        }
+    };
+    fetch = (params,flag) => {
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if(flag) {
+            var {pagination} = this.state;
+            // pagination.total = 0;//设置全部页面为0
+            this.setState({
+                pageChangeFlag: 0,
+                searchContent:'',
+                pagination:pagination
+            })
+            this.searchReset();
+        }
+        else{
+            this.setState({
+                pageChangeFlag: 1
+            });
+            const params={
+                secondDeptId:this.props.secondDeptId,
+                repairStatus:1,
+                condition:this.state.searchContent,
+            }
+            this.props.getTableData(params);
+        }
+    };
 }
 export default WillRepair

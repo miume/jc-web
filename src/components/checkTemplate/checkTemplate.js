@@ -123,7 +123,7 @@ class CheckTemplate extends React.Component{
             const res = data.data.data
             if(res.length !== 0){
                 this.getTableData({
-                    page:1,
+                    page:this.pagination.current,
                     size:10,
                     deviceName:res[0].deviceName[0],
                     deptId:res[0].basicInfoDept.code,
@@ -199,7 +199,7 @@ class CheckTemplate extends React.Component{
         }, 1000);
     };
     onSelect = (selectedKeys,info)=>{
-        // console.log(selectedKeys)
+        // console.log(parseInt(selectedKeys))
         this.getTableData({
             page:1,
             size:10,
@@ -216,7 +216,7 @@ class CheckTemplate extends React.Component{
     deleteByIds = ()=>{
         const ids = this.state.selectedRowKeys;
         axios({
-            url:`${this.url.processManagement.deleteByIds}`,
+            url:`${this.url.deviceSpot.deleteByIds}`,
             method:'delete',
             headers:{
                 'Authorization':this.Authorization
@@ -285,7 +285,7 @@ class CheckTemplate extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <div style={{padding:'15px',display:'flex',margin:'15px'}}>
                     <div style={{width:"20%"}}>
-                    <TreeCard onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>
+                    <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>
                     <div style={{width:"80%",marginLeft:"15px"}}>
                     <AddBut getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>
                     <DeleteByIds
