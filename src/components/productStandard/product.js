@@ -50,12 +50,13 @@ class Product extends React.Component{
             {
                 this.props.data?this.props.data.map(e=>{
                     return (
-                        <Block key={e.id} name={e.materialName} id={`${e.id}-${e.materialName}`} onBlockChange={this.blockClick}/>
+                        <Block key={e.id} name={e.materialName} id={`${e.id}-${e.materialName}`}
+                               onBlockChange={this.blockClick}/>
                     );
                 }):null
             }
-                {/* <Block flag={1} name='新增成品' onBlockChange={this.blockClick} add={this.props.add} 
-                clickI={this.props.clickI} id={-1} serialNumberChildren={this.state.serialNumberChildren}/> */}
+                <Block flag={1} name='新增成品' onBlockChange={this.blockClick} add={this.props.add}
+                clickI={this.props.clickI} id={-1} serialNumberChildren={this.state.serialNumberChildren}/>
             </div>
         );
     }

@@ -294,6 +294,7 @@ class Home extends Component {
                 addFactory:`${server}/jc/common/techRawStandard/newManufacturer`,
                 getStandard:`${server}/jc/common/techRawStandard`,
                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
+                addNewRaw:`${server}/jc/common/techRawStandard/addRaw`,
                 
             },
             /**产品标准 */
