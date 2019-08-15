@@ -277,7 +277,7 @@ class Right extends React.Component{
     /**实现全选 */
     onSelectChange=(selectedRowKeys)=> {
         this.setState({ selectedRowKeys });
-        // console.log(this.state.selectedRowKeys)
+        console.log(this.state.selectedRowKeys)
     }
     /**处理单条记录删除 */
     handleDelete=(id)=>{
@@ -350,7 +350,7 @@ class Right extends React.Component{
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
                                 fetch={this.props.ffetch3} flag={home.judgeOperation(this.operation,'QUERY')} clickdeviceName={this.props.clickdeviceName}/>
 
-                    <Table rowKey={record => record.code}
+                    <Table rowKey={record => record.index}
                            rowSelection={rowSelection}
                            components={components}
                            columns={this.columns}

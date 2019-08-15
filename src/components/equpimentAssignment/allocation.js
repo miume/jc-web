@@ -14,6 +14,8 @@ class Allocation extends React.Component{
             visible:false,
             dataSource:[],
             dataSource2:[],
+            transferdataleft:[],
+            transferdataright:[],
         }
     }
 
@@ -54,7 +56,7 @@ class Allocation extends React.Component{
                   />
                    </div>
                 <div className="equip-allocation-right">
-                 <Transferq  dataSource={this.state.dataSource} dataSource2={this.state.dataSource2}/>
+                 <Transferq  dataSource={this.state.dataSource} dataSource2={this.state.dataSource2} gettransferright={this.gettransferright} gettransferleft={this.gettransferleft}/>
                 </div>
             </div>
             </Modal>
@@ -70,6 +72,7 @@ class Allocation extends React.Component{
    handleSave=()=>{
        console.log('保存按钮')
        this.setState({visible:false})
+
    }
 
    /** 取消按钮 */
@@ -103,13 +106,15 @@ class Allocation extends React.Component{
            {
                fakedataSource.push({
                    code:i,
+                   flag:0,
                    index:i+1,
                    Fixedassetscode:i,
                    Devicename:'fake1',
                    specification:'222-111',
                })
                fakedataSource2.push({
-                   code:i*100,
+                   code:i+20,
+                   flag:0,
                    index:i+1,
                    Fixedassetscode:i,
                    Devicename:'fake2',
@@ -128,6 +133,22 @@ class Allocation extends React.Component{
        });
    };
 
-
+  /**从子组件获取保存的穿梭框数据*/
+  gettransferright=(data)=>{
+      var rightchangedata = data.filter(e=>e.flag%2!==0);
+      console.log(rightchangedata)
+      console.log(data)
+      this.setState({
+          transferdataright:rightchangedata
+      })
+  }
+  gettransferleft=(data)=>{
+      var rightchangedata = data.filter(e=>e.flag%2!==0);
+      console.log(rightchangedata)
+      console.log(data)
+      this.setState({
+          transferdataleft:rightchangedata
+      })
+    }
 }
 export default Allocation

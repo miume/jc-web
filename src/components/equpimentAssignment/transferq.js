@@ -5,7 +5,10 @@ import Button from "antd/lib/button";
 
 
 
-
+function NumAscSort(a,b)
+{
+    return a - b;
+}
 
 class Transferq extends React.Component{
     constructor(props) {
@@ -74,7 +77,7 @@ class Transferq extends React.Component{
                     style={{ width: 353.89,paddingBottom:10 }}
                 />
 
-        <Table rowKey={record => record.code} columns={columns} size="small" dataSource={this.state.Sourceflag1?this.state.dataSource:this.props.dataSource}  scroll={{ y: 337 }}
+        <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag1?this.state.dataSource:this.props.dataSource}  scroll={{ y: 337 }}
                rowSelection={rowSelection}/>
             </Card>
         </div>
@@ -90,7 +93,7 @@ class Transferq extends React.Component{
                     placeholder="input search text"
                     onSearch={value => console.log(value)}
                 />
-       <Table rowKey={record => record.code} columns={columns} size="small" dataSource={this.state.Sourceflag2?this.state.dataSource2:this.props.dataSource2}  scroll={{ y: 337 }}
+       <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag2?this.state.dataSource2:this.props.dataSource2}  scroll={{ y: 337 }}
               rowSelection={rowSelection2}/>
             </Card>
         </div>
@@ -127,14 +130,27 @@ class Transferq extends React.Component{
     rightmove=()=>{
         var array=this.state.dataSource;
         var array2=this.state.dataSource2;
+        var rowkeys=this.state.selectedRowKeys1
         var length=this.state.selectedRowKeys1.length;
+        var changedata1=[];
+        rowkeys.sort(NumAscSort);
+        console.log(rowkeys)
         if(length) {
             for (var i = 0; i < length; i++) {
-                console.log(this.state.selectedRowKeys1[i])
-                var kk = array.splice(this.state.selectedRowKeys1[i] - i, 1);
+                console.log(rowkeys[i])
+                var kk = array.splice(rowkeys[i]-1-i, 1);
                 console.log(kk)
                 kk[0].index = array2.length + 1;
+                kk[0].flag = kk[0].flag+1;
                 array2.push({
+                    flag:kk[0].flag,
+                    index: kk[0].index,
+                    Fixedassetscode: kk[0].Fixedassetscode,
+                    Devicename: kk[0].Devicename,
+                    specification: kk[0].specification,
+                })
+                changedata1.push({
+                    flag:kk[0].flag,
                     index: kk[0].index,
                     Fixedassetscode: kk[0].Fixedassetscode,
                     Devicename: kk[0].Devicename,
@@ -144,23 +160,35 @@ class Transferq extends React.Component{
             for (var i = 0; i < array.length; i++) {
                 array[i].index = i + 1
             }
-
+            console.log(array)
             this.setState({
                 dataSourc: array,
                 dataSource2: array2,
                 selectedRowKeys1: [],
             })
+            this.props.gettransferright(changedata1)
         }
     }
     leftmove=()=>{
         var array=this.state.dataSource2;
         var array2=this.state.dataSource;
         var length=this.state.selectedRowKeys2.length;
+        var rowkeys=this.state.selectedRowKeys2
+        rowkeys.sort(NumAscSort);
+        var changedata2=[];
         for(var i=0;i<length;i++){
-            var tt=array.splice(this.state.selectedRowKeys2[i]-i,1);
+            var tt=array.splice(rowkeys[i]-i-1,1);
             tt[0].index=array2.length+1;
+            tt[0].flag=tt[0].flag+1;
             array2.push({
-
+                flag:tt[0].flag,
+                index:tt[0].index,
+                Fixedassetscode:tt[0].Fixedassetscode,
+                Devicename:tt[0].Devicename,
+                specification:tt[0].specification,
+            })
+            changedata2.push({
+                flag:tt[0].flag,
                 index:tt[0].index,
                 Fixedassetscode:tt[0].Fixedassetscode,
                 Devicename:tt[0].Devicename,
@@ -176,6 +204,7 @@ class Transferq extends React.Component{
             dataSource2:array,
             selectedRowKeys2: [],
         })
+        this.props.gettransferleft(changedata2)
     }
 }
 export default Transferq
