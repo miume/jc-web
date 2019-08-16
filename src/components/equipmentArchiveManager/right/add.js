@@ -21,7 +21,7 @@ class Add extends Component {
             },
             newRowData: [],
             statusCode: [],
-            startdate: '',
+            addStartdate: '',
             statusCodeInit:'',
             keyFlag:0,
 
@@ -144,7 +144,12 @@ class Add extends Component {
                     deviceDocumentMain: deviceDocumentMain,
                     keyFlag:value
                 })
-            }else{
+            }else if(key === "startdate"){
+                this.setState({
+                    deviceDocumentMain: deviceDocumentMain,
+                    addStartdate:value
+                })
+            } else {
                 deviceDocumentMain[key] = value
                 this.setState({
                     deviceDocumentMain: deviceDocumentMain
@@ -304,9 +309,7 @@ class Add extends Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
-            if (deviceDocumentMain.startdate === undefined || deviceDocumentMain.startdate==='') {
-                deviceDocumentMain['startdate'] = startdate;
-            }
+            deviceDocumentMain['startdate'] = this.state.addStartdate;
             deviceDocumentMain['keyFlag'] = this.state.keyFlag;
             if(this.props.comFlag){
                 var addData = {
