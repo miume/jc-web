@@ -5,14 +5,16 @@ import "../batchSearch/batchSearch.css"
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import locale from "antd/es/date-picker/locale/zh_CN";
+import axios from "axios";
 const { Option } = Select;
 const data1=[{name:"合成",code:'1'},{name:"合成2",code:'2'}]
 export default class EditPart extends React.Component{
+    url = JSON.parse(localStorage.getItem('url'));
     constructor(props){
         super(props)
         this.state={
             visible:false,
-            process:"合成",             //工序
+            process:"HC",             //工序
             wheBegin:true,          //是否启用
             NowTime:'',             //时间点
             startTime:'',           //开始时间
@@ -30,7 +32,12 @@ export default class EditPart extends React.Component{
             editTime:'',
             editPeople:'',
             madeTime:'',
-            madePeople:''
+            madePeople:'',
+            /* *
+             * 存储接口调用的状态，格式固定
+             * */
+            ToSelectData:[],
+            ToDecideStatus:[],
         }
     }
     handleChange=(flag,value)=> {
@@ -84,7 +91,7 @@ export default class EditPart extends React.Component{
                 {
                     data.map((data,index,type)=>{
                         return(
-                            <Option  value={data.name} key={data.code}>{`${data.name}`}</Option>
+                            <Option  value={data.name} key={data.name}>{`${data.name}`}</Option>
                         )
                     })
                 }
@@ -96,15 +103,75 @@ export default class EditPart extends React.Component{
         this.setState({visible:false})
     }
     handleBatchEdit=()=>{
+        var ToSelectData=[];
+        var ToDecideStatus=[];
+        for(var i=0;i<10;i++){
+            ToSelectData.push([]);
+            for(var j=0;j<5;j++)
+                ToSelectData[i].push({name:`H${j}`})
+        }
+        ToSelectData[0][0].name="HC";
+        for(var ii=0;ii<10;ii++){
+            ToDecideStatus.push({defaultValue:`${ii+1}`,effFlag:true,name:'HC'})
+        }
         this.setState({
+            ToSelectData:ToSelectData,
+            ToDecideStatus:ToDecideStatus,
             visible:true,
-            editTime:'1'
+            editTime:this.props.record.modifyTime,
+            process:this.props.record.process,                  //工序
+            wheBegin:true,                                      //是否启用
+            startTime:this.props.record.startTime,              //开始时间
+            addYear:this.props.record.year,                     //年份
+            addMonth:this.props.record.month,                   //月份
+            ChangedNum:this.props.record.serialNumber,          //流水号
+            productType:this.props.record.productionType,         //产品类型
+            materialType:this.props.record.material,            //原材料类型
+            productTypeNum:this.props.record.productionModel,      //产品型号
+            grooveNum:this.props.record.cellNum,                //槽号
+            grooveOrder:this.props.record.slotnum,              //槽次
+            productLine:this.props.record.productionLine,       //生产线
+            editPeople:this.props.record.modifyPeople,
+            madeTime:this.props.record.setTime,
+            madePeople:this.props.record.setPeople
         })
 
     }
     handleCreate=()=>{
+        const menuList = JSON.parse(localStorage.getItem('menuList')) ;
+        var editData={
+            code:this.props.record.code,
+            year:this.state.addYear,
+            month:this.state.addMonth,
+            serialnumber:this.state.ChangedNum,
+            modifyPeople:menuList.userId,
+        };
+        if(this.state.process==="HC")editData['timepoint']=this.state.NowTime;
+        console.log(editData)
+        axios({
+            url:this.url.productionBatchInfo.updateOne,
+            method:"post",
+            header:{
+                'Authorization': this.url.Authorization,
+            },
+            data:editData,
+        }).then((response)=>{
+            console.log(response)
+            if(response.status===200){
+                if(response.data.code===0){
+                    message.info(response.data.message)
+                    this.props.getTableData();
+                    this.handleCancel();
+                }else{
+                    message.info(response.data.message)
+                }
+            }else {
+                message.info("编辑失败，请联系管理员！")
+            }
+            console.log(response.data.message)
+        })
         this.setState({
-            visible:false,editNumber:this.state.editNumber+1,
+            visible:false,
         })
     }
     render(){
@@ -148,15 +215,15 @@ export default class EditPart extends React.Component{
                         }
                             <span className={"everyLine"}>
                                 <span className={"firstLine"}>年份:&nbsp;</span>
-                                {this.selectData('2',true,data1)}
+                                {this.state.ToSelectData.length>0?this.selectData("2",true,this.state.ToSelectData[0]):this.selectData('2',true,[{name:"没有数据"}])}
                                 <span className={"secondLine"}>产品类型:&nbsp; </span>
                                 {this.selectData('3',false)}
                             </span><br/>
                             <span className={"everyLine"}>
                                 <span className={"firstLine"}>月份:&nbsp;</span>
-                                {this.selectData('4',true,data1)}
+                                {this.state.ToSelectData.length>0?this.selectData("4",true,this.state.ToSelectData[0]):this.selectData('4',true,[{name:"没有数据"}])}
                                 <span className={"secondLine"}>流水号:&nbsp;</span>
-                                {this.selectData('5',true,data1)}
+                                {this.state.ToSelectData.length>0?this.selectData("5",true,this.state.ToSelectData[0]):this.selectData('5',true,[{name:"没有数据"}])}
                             </span><br/>
                             <span className={"everyLine"}>
                                 <span className={"firstLine"}>产品型号:&nbsp;</span>

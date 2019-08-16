@@ -461,6 +461,15 @@ class Home extends Component {
             deviceRepair:{
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
+            },
+            productionBatchInfo:{
+                getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
+                deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
+                deletes:`${server}/jc/common/productionBatchInfo/delSomeByCodes`,
+                addOne:`${server}/jc/common/productionBatchInfo/addOne`,
+                updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
+                getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
+                getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
             }
         }
         localStorage.setItem('status',JSON.stringify(status));
