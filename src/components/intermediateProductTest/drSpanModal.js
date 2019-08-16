@@ -69,7 +69,7 @@ class DrSpanModal extends React.Component {
                            样品名称：<span>{this.props.data.topData.materialName?(this.props.data.topData.materialName+'样品'):''}</span>
                        </div>
                 </div>
-                <div>
+                <div className="interDetailTable">
                     <Table
                         className="interCursorDefault"
                         rowKey={record => record.index}
@@ -77,7 +77,7 @@ class DrSpanModal extends React.Component {
                         dataSource={this.props.data.testDTOS}
                         pagination={{hideOnSinglePage:true,pageSize:100}}
                         size="small"
-                        scroll={{ y: 225 }}
+                        scroll={{ y: 220 }}
                         bordered
                     />
                 </div>

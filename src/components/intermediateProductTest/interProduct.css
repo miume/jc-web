@@ -71,6 +71,9 @@
     margin: 15px 0 !important;
 }
 
+.interDetailTable .ant-table-body {
+    max-height: 220px !important;
+}
 /*.interDrSpanModalBottom .ant-divider .ant-divider-horizontal{*/
     /*margin: 20px 0 !important;*/
 /*}*/

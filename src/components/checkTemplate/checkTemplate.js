@@ -108,7 +108,7 @@ class CheckTemplate extends React.Component{
         }]
     }
     onSelectChange(selectedRowKeys) {
-        console.log(selectedRowKeys)
+        // console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys }); 
     }
     componentDidMount(){
