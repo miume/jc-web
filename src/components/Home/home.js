@@ -461,6 +461,13 @@ class Home extends Component {
             deviceRepair:{
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
+            },
+            /**批次规则 */
+            productionBatchRule:{
+                getAll:`${server}/jc/common/productionBatchRule/getAll`,
+                getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
+                updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
+                updateState:`${server}/jc/common/productionBatchRule/UpdateState`
             }
         }
         localStorage.setItem('status',JSON.stringify(status));
