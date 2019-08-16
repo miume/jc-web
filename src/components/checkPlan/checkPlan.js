@@ -407,8 +407,6 @@ render(){
                                     fetch={this.getTableData}
                                     deptId={this.state.deptCode}
                                     deviceName={this.state.deviceName}
-
-
                                 />
                             </div>
                         </div>

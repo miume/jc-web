@@ -11,11 +11,15 @@ class Allocation extends React.Component{
     constructor(props) {
         super(props)
         this.state={
+            Sourceflag1:false,
+            Sourceflag2:false,
+            deptCode:0,
             visible:false,
             dataSource:[],
             dataSource2:[],
             transferdataleft:[],
             transferdataright:[],
+            deviceName:[],
         }
     }
 
@@ -34,29 +38,24 @@ class Allocation extends React.Component{
             >
 
                 工序选择:&nbsp;&nbsp;&nbsp;
-                   <Select style={{width:"315px"}} onChange={this.handleChange2}  value={this.state.deviceName}>
-                                {
-                                    this.props.processData.map(e => {
-                                        return (<Option value={e.deviceName}> {e.deviceName}</Option>)
-                                    })
-                                }
+                   <Select style={{width:"315px"}} onChange={this.handleChange2}  value={this.props.clickName} disabled>
                    </Select>
                 <div className="equip-allocation">
                     <div  className="equip-allocation-left">
                         <div  className="equpiment-eqblocka">
-                        设备名称(请选择）
+                            设备工序(请选择）
                     </div>
                     <DepTree
                         getRightData={this.getRightData}
                         url={this.props.url}
-                        operation={this.operation}
+                        operation={this.props.operation}
                         handleSelect={this.handleSelect}
 
 
                   />
                    </div>
                 <div className="equip-allocation-right">
-                 <Transferq  dataSource={this.state.dataSource} dataSource2={this.state.dataSource2} gettransferright={this.gettransferright} gettransferleft={this.gettransferleft}/>
+                 <Transferq  dataSource={this.state.dataSource} dataSource2={this.state.dataSource2} gettransferright={this.gettransferright} gettransferleft={this.gettransferleft} Sourceflag1={this.state.Sourceflag1} Sourceflag2={this.state.Sourceflag2} changeSourceflag={this.changeSourceflag}/>
                 </div>
             </div>
             </Modal>
@@ -67,18 +66,42 @@ class Allocation extends React.Component{
     /** 分配点击事件 */
     onclick=()=>{
         console.log('进行分配');
-        this.setState({visible:true})};
+        this.setState({
+            visible:true,
+            devicename:this.props.clickName,
+            Sourceflag1:false,
+            Sourceflag2:false,
+        })
+        /**默认第一个*/
+        //需要给初始第一个的部门的数据
+        this.getRightData()
+        console.log(this.props.clickName);
+        console.log(this.state.devicename);
+    };
+
    /**保存事件*/
    handleSave=()=>{
        console.log('保存按钮')
-       this.setState({visible:false})
+       this.setState({
+           visible:false,
+           dataSource:[],
+           dataSource2:[],
+           Sourceflag1:false,
+           Sourceflag2:false,
+       })
 
    }
 
    /** 取消按钮 */
    onCanCel=()=>{
        console.log('分配取消')
-       this.setState({visible:false})
+       this.setState({
+           visible:false,
+           Sourceflag1:false,
+           Sourceflag2:false,})
+       console.log(this.state.dataSource)
+       console.log(this.state.dataSource2)
+       console.log(this.state.Sourceflag2)
    }
 
    /**获取数据*/
@@ -86,6 +109,7 @@ class Allocation extends React.Component{
 
        code = parseInt(code)
        console.log(code)
+       console.log('调用获取数据接口')
        this.setState({
            deptCode:code
        })
@@ -141,7 +165,7 @@ class Allocation extends React.Component{
       this.setState({
           transferdataright:rightchangedata
       })
-  }
+  };
   gettransferleft=(data)=>{
       var rightchangedata = data.filter(e=>e.flag%2!==0);
       console.log(rightchangedata)
@@ -149,6 +173,38 @@ class Allocation extends React.Component{
       this.setState({
           transferdataleft:rightchangedata
       })
+    }
+    /**树选择切换*/
+    handleSelect = (code, data) => data.map((item) => {
+        if (item.code === code) {
+            item.isSelect = true;
+            this.setState({
+                deptCode:code
+            })
+            this.getRightData()
+        } else {
+            item.isSelect = false;
+        }
+        //Tip: Must have, when a node is editable, and you click a button to make other node editable, the node which you don't save yet will be not editable, and its value should be defaultValue
+        // item.isSelect = false;
+        if (item.children) {
+            this.handleSelect(code, item.children)
+        }
+
+    });
+
+    /**改变状态*/
+    changeSourceflag=()=>{
+        this.setState({
+            Sourceflag1:true,
+            Sourceflag2:true,
+        })
+    }
+    /**下拉列表回调*/
+    handleChange2 = (value) =>{
+        this.setState({
+            deviceName:value
+        })
     }
 }
 export default Allocation

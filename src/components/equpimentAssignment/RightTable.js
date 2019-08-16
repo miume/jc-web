@@ -45,17 +45,25 @@ class RightTable extends React.Component{
             title:'设备状态',
             dataIndex:'status',
             width:'left',
-            align:'left'
+            align:'left',
+            render: (text, record) => {
+                return(
+                    <span>{record.name}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
+                )
+            }
         }]
 
         return(
             <div>
             <Table
                 columns={this.columns}
-                    bordered
+                bordered
+                dataSource={this.props.DataSource}
                 size="small"
                 scroll={{ y: 380 }}
                 style={{paddingTop:'5px'}}
+                pagination={this.props.pagination}
+                onChange={this.props.handleTableChange}
                     />
             </div>
         )

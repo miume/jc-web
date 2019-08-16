@@ -59,3 +59,14 @@
     width:100%;
     display: flex;
 }
+.Equip-leftbutton{
+
+    padding-top: 250px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.Equip-rightbutton{
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}

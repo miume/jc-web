@@ -1,8 +1,7 @@
 import React from 'react'
 import {Card, Table,Input,Icon} from "antd";
 import Button from "antd/lib/button";
-
-
+import './equpimentAssignment.css'
 
 
 function NumAscSort(a,b)
@@ -16,20 +15,12 @@ class Transferq extends React.Component{
         this.state = {
             dataSource: [],
             dataSource2: [],
-            Sourceflag1:false,
-            Sourceflag2:false,
             selectedRowKeys1:[],
             selectedRowKeys2:[],
         }
 
     }
 
-    componentDidMount() {
-        this.setState({
-            dataSource:this.props.dataSource,
-            dataSource2:this.props.dataSource2,
-        })
-    }
 
     render(){
         const columns = [{
@@ -77,25 +68,26 @@ class Transferq extends React.Component{
                     style={{ width: 353.89,paddingBottom:10 }}
                 />
 
-        <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag1?this.state.dataSource:this.props.dataSource}  scroll={{ y: 337 }}
+        <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.props.Sourceflag1?this.state.dataSource:this.props.dataSource}  scroll={{ y: 337 }}
                rowSelection={rowSelection}/>
             </Card>
         </div>
                 <div className="eqa-transfer-mid">
-                    <Button type="primary" onClick={this.rightmove} disabled={this.state.Sourceflag1?this.state.dataSource.length===0?true:false:this.props.dataSource.length===0?true:false}> <Icon type="right" /></Button>
-                    <Button type="primary" onClick={this.leftmove} disabled={this.state.Sourceflag2?this.state.dataSource2.length===0?true:false:this.props.dataSource2.length===0?true:false}><Icon type="left" /></Button>
+                    <div className="Equip-leftbutton">
+                    <Button type="primary"  onClick={this.rightmove} disabled={this.props.Sourceflag1?this.state.dataSource.length===0?true:false:this.props.dataSource.length===0?true:false}> <Icon type="right" /></Button>
+                    </div>
+                    <div className="Equip-rightbutton">
+                    <Button type="primary" onClick={this.leftmove} disabled={this.props.Sourceflag2?this.state.dataSource2.length===0?true:false:this.props.dataSource2.length===0?true:false}> <Icon type="left" /></Button>
+                    </div>
                     </div>
 
         <div className="eqa-transfer-right">
 
             <Card title="已分配" >
-                <Search
-                    placeholder="input search text"
-                    onSearch={value => console.log(value)}
-                />
-       <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag2?this.state.dataSource2:this.props.dataSource2}  scroll={{ y: 337 }}
-              rowSelection={rowSelection2}/>
+                <Search placeholder="input search text" onSearch={value => console.log(value)}/>
+       <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag2?this.state.dataSource2:this.props.dataSource2}  scroll={{ y: 337 }} rowSelection={rowSelection2}/>
             </Card>
+
         </div>
             </div>
         )
@@ -103,7 +95,8 @@ class Transferq extends React.Component{
     onSelectChange=(selectedRowKeys)=> {
         console.log(selectedRowKeys)
 
-        if(this.state.Sourceflag1===false){
+        if(this.props.Sourceflag1===false){
+            this.props.changeSourceflag()
             this.setState({
                 dataSource:this.props.dataSource,
                 dataSource2:this.props.dataSource2,
@@ -112,8 +105,6 @@ class Transferq extends React.Component{
 
 
         this.setState({ selectedRowKeys1:selectedRowKeys,
-            Sourceflag1:true,
-            Sourceflag2:true,
         });
     }
     onSelectChange2=(selectedRowKeys)=> {
@@ -123,9 +114,9 @@ class Transferq extends React.Component{
                 dataSource2:this.props.dataSource2,
             })
         }
+        this.props.changeSourceflag()
         this.setState({ selectedRowKeys2:selectedRowKeys,
-            Sourceflag1:true,
-            Sourceflag2:true,});
+           });
     }
     rightmove=()=>{
         var array=this.state.dataSource;
@@ -166,6 +157,8 @@ class Transferq extends React.Component{
                 dataSource2: array2,
                 selectedRowKeys1: [],
             })
+            console.log(this.props.dataSource)
+            console.log(this.props.dataSource2)
             this.props.gettransferright(changedata1)
         }
     }
@@ -204,6 +197,8 @@ class Transferq extends React.Component{
             dataSource2:array,
             selectedRowKeys2: [],
         })
+        console.log(this.props.dataSource)
+        console.log(this.props.dataSource2)
         this.props.gettransferleft(changedata2)
     }
 }

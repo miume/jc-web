@@ -119,11 +119,12 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
+                    this.props.firstname(res[0].parent.name)
                 }
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                    expandedKeys: expandedKeys,
+                     expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
