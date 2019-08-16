@@ -254,8 +254,8 @@ export  const batchInfoTablecolums=[
         width:"15%"
     },{
         title:"工序",
-        dataIndex:"procedure",
-        key:"procedure",
+        dataIndex:"process",
+        key:"process",
         width:"5%"
     },{
         title:"批次生成时间",
@@ -264,8 +264,8 @@ export  const batchInfoTablecolums=[
         width:"15%"
     },{
         title:"生成人",
-        dataIndex:"setPerson",
-        key:"setPerson",
+        dataIndex:"setPeople",
+        key:"setPeople",
         width:"5%"
     },{
         title:"状态",
@@ -297,6 +297,7 @@ export  const batchInfoTablecolums=[
         key:"code",
         width:"15%",
         render:(text,record)=>{
+
             return(
                 <span>
                     <EditPart record={record}/>&nbsp;&nbsp;&nbsp;&nbsp;
