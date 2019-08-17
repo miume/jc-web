@@ -1,13 +1,11 @@
 import React from "react";
-
-import Blockquote from "../BlockQuote/blockquote";
-
+import {message} from "antd";
 import axios from "axios";
 import DepartmentCard from './blockCompontent/department'
 import ButtonToDd from './blockCompontent/buttontodo'
 import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
-import {message} from "antd";
+import Blockquote from "../BlockQuote/blockquote";
 
 class EqMaintenancePlan extends React.Component{
     componentWillUnmount() {
@@ -213,7 +211,7 @@ class EqMaintenancePlan extends React.Component{
             }
         })
     }
-    getTableSize=(current,size)=>{
+     getTableSize=(current,size)=>{
         this.setState({
             size:size,
             current:current,

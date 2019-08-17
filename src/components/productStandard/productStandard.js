@@ -168,14 +168,15 @@ class ProductStandard extends React.Component{
     /**点击成品新增 */
     clickI(e){
         /**通过点击新增确定 找到input value值 */
-        // const value = e.target.parentNode.parentNode.firstElementChild.value;
-        // if(value===''){
-        //     message.info('请输入成品名称！');
-        //     return
-        // }
-        // else{
-        //     this.addProduct(value);
-        // }
+        const value = e.target.parentNode.parentNode.firstElementChild.value;
+        console.log(value)
+        if(value===''||value===null){
+            message.info('请输入成品名称！');
+            return
+        }
+        else{
+            this.addProduct(value);
+        }
     }
     /**成品新增事件 */
     addProduct(value){

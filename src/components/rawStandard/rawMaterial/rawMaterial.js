@@ -112,24 +112,23 @@ class RawMaterial extends Component {
             return
         }
         console.log(value)
-        message.info("功能开发中")
-        // axios({
-        //     url: `${this.props.url.rawStandard.addRaw}?serialNumberId=${value['serialNumberId']}&testItemIds=${this.state.testItems.toString()}`,
-        //     method: 'post',
-        //     headers: {
-        //         'Authorization': this.props.url.Authorization
-        //     },
-        //
-        // }).then(data => {
-        //     //console.log(data);
-        //     message.info(data.data.message);
-        //     this.fetch();
-        // }).catch(() => {
-        //     message.info('新增失败，请联系管理员！');
-        // });
-        // this.setState({
-        //     visible: false
-        // });
+        axios({
+            url: `${this.props.url.rawStandard.addNewRaw}?materialName=${value['materialName']}&testItemIds=${this.state.testItems.toString()}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+
+        }).then(data => {
+            //console.log(data);
+            message.info(data.data.message);
+            this.fetch();
+        }).catch(() => {
+            message.info('新增失败，请联系管理员！');
+        });
+        this.setState({
+            visible: false
+        });
     }
 
     handleCancel() {

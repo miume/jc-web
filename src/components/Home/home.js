@@ -294,6 +294,7 @@ class Home extends Component {
                 addFactory:`${server}/jc/common/techRawStandard/newManufacturer`,
                 getStandard:`${server}/jc/common/techRawStandard`,
                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
+                addNewRaw:`${server}/jc/common/techRawStandard/addRaw`,
                 
             },
             /**产品标准 */
@@ -461,6 +462,25 @@ class Home extends Component {
             deviceRepair:{
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
+            },
+
+            productionBatchInfo:{
+                getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
+                deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
+                deletes:`${server}/jc/common/productionBatchInfo/delSomeByCodes`,
+                addOne:`${server}/jc/common/productionBatchInfo/addOne`,
+                updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
+                getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
+                getAllRule:`${server}/jc/common/productionBatchRule/getAll`
+            },
+
+            /**批次规则 */
+            productionBatchRule:{
+                getAll:`${server}/jc/common/productionBatchRule/getAll`,
+                getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
+                updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
+                updateState:`${server}/jc/common/productionBatchRule/UpdateState`
+
             }
         }
         localStorage.setItem('status',JSON.stringify(status));
