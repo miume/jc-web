@@ -21,8 +21,9 @@ class Add extends Component {
             },
             newRowData: [],
             statusCode: [],
-            startdate: '',
+            addStartdate: '',
             statusCodeInit:'',
+            keyFlag:0,
 
             defaultFileList: []
         };
@@ -138,11 +139,23 @@ class Add extends Component {
         if (key === "power") {
             deviceDocumentMain[key] = parseInt(value)
         } else {
-            deviceDocumentMain[key] = value
+            if(key === "keyFlag"){
+                this.setState({
+                    deviceDocumentMain: deviceDocumentMain,
+                    keyFlag:value
+                })
+            }else if(key === "startdate"){
+                this.setState({
+                    deviceDocumentMain: deviceDocumentMain,
+                    addStartdate:value
+                })
+            } else {
+                deviceDocumentMain[key] = value
+                this.setState({
+                    deviceDocumentMain: deviceDocumentMain
+                })
+            }
         }
-        this.setState({
-            deviceDocumentMain: deviceDocumentMain
-        })
     };
 
 
@@ -296,15 +309,15 @@ class Add extends Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
-            if (deviceDocumentMain.startdate || deviceDocumentMain.startdate === undefined) {
-                deviceDocumentMain.startdate = startdate;
-            }
+            deviceDocumentMain['startdate'] = this.state.addStartdate;
+            deviceDocumentMain['keyFlag'] = this.state.keyFlag;
             if(this.props.comFlag){
                 var addData = {
                     arrName: packArrName,
                     arrValue: packArrValue,
                     deviceDocumentUnit: deviceDocumentMain
                 };
+                console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.addUnit}`,
                     method: 'post',
@@ -343,6 +356,7 @@ class Add extends Component {
                     arrValue: packArrValue,
                     deviceDocumentMain: deviceDocumentMain
                 };
+                console.log("--------------------")
                 console.log(addData)
                 axios({
                     url: `${this.props.url.equipmentArchive.device}`,

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {Table} from 'antd';
 import Detail from "./MaintdetailModal"
+import "./batchSearch.css"
 
 class MaintenanceModal extends React.Component {
     constructor(props) {
@@ -99,8 +100,14 @@ class MaintenanceModal extends React.Component {
     }
     render() {
         return (
-            <div style={{height: '500px'}}>
+            <div style={{height: '520px'}}>
+                <span>
+                    <span className={"batct_maint_firstLine_name"}><b>设备名称:&nbsp;</b></span><span className={"batct_maint_firstLine_content"}><b>设备名称</b></span>
+                    <span className={"batct_maint_firstLine_name"}><b>固定资产编码:</b>&nbsp;</span><span className={"batct_maint_firstLine_content"}><b>固定资产编码</b></span>
+                    <span className={"batct_maint_firstLine_name"}><b>所属部门:</b>&nbsp;</span><span className={"batct_maint_firstLine_content"}><b>所属部门</b></span>
+                </span>
                 <Table
+                    className={"batct_maint_Table"}
                     dataSource={this.props.data}
                     columns={this.columns}
                     size="small"

@@ -84,6 +84,7 @@ class EARightBottom extends Component {
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                     bottomheight={this.props.bottomheight}
+                    deptName={this.props.deptName}
                 />
             </div>
         )

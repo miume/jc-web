@@ -172,7 +172,10 @@ class EARightTable extends Component {
 
                     />
                     <Divider type="vertical"/>
-                    <Repair/>
+                    <Repair
+                        record={record}
+                        deptName={this.props.deptName}
+                    />
                     <Divider type="vertical"/>
                     <Details
                         record={record}

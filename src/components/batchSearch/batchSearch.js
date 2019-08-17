@@ -45,7 +45,7 @@ class BatchSearch extends React.Component{
                         size={"small"}
                         bordered={true}
                         dataSource={datas}
-                        scroll={{y:360}}
+                        scroll={{y:200}}
                         pagination={this.pagination}
                     />
                 </div>

@@ -47,8 +47,8 @@ class Details extends React.Component {
                         deviceName={this.props.record.deviceName}
                         deptCode={this.props.record.deptCode}
                         planDate={this.props.record.planDate}
-                        receiveDate={this.props.receiveDate}
-                        maintPeople={this.props.maintPeople}
+                        receiveDate={this.props.record.receiveDate}
+                        maintPeople={this.props.record.maintPeople}
                     />
                     <WhiteSpace />
                     <Steps current={1} progressDot={customDot}>
@@ -84,9 +84,11 @@ class Details extends React.Component {
                 id: this.props.record.code
             }
         }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
+
+            const res = data.data.data.deviceMaintenanceRecordDetails ? data.data.data.deviceMaintenanceRecordDetails : [];
+            console.log(res)
             if (res) {
-                const arrMes = res.deviceMaintenanceRecordDetails;
+                const arrMes = res;
                 var newRowData = arrMes
                 this.setState({
                     visible: true,

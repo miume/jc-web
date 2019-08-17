@@ -107,12 +107,13 @@ class RawMaterial extends Component {
 
     addEvent() {//新增事件
         const value = this.formRef.getItemsValue();
-        if (!value['serialNumberId'] || this.state.testItems.length === 0) {
+        if (!value['materialName'] || this.state.testItems.length === 0) {
             message.info('信息填写不完整!');
             return
         }
+        console.log(value)
         axios({
-            url: `${this.props.url.rawStandard.addRaw}?serialNumberId=${value['serialNumberId']}&testItemIds=${this.state.testItems.toString()}`,
+            url: `${this.props.url.rawStandard.addNewRaw}?materialName=${value['materialName']}&testItemIds=${this.state.testItems.toString()}`,
             method: 'post',
             headers: {
                 'Authorization': this.props.url.Authorization

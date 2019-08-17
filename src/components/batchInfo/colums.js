@@ -4,6 +4,8 @@ import InstrumentsDetail from "../batchSearch/InstrumentsDetail"
 import AssayDetail from  '../batchSearch/assayDetail'
 import Repair from "../batchSearch/repair"
 import Maintenance from  "../batchSearch/maintenance"
+import EditPart from './batchinfoEditModal'
+import DeleteOne from "./deleteOne";
 export const searchcolums=[
     {
         title:"序号",
@@ -63,22 +65,22 @@ export const SearchDetailColums1=[
         title:"序号",
         dataIndex:"index",
         key:"index",
-        width:"2%"
+        width:"10%"
     },{
         title:"批次信息",
         dataIndex:"batchInfo",
         key:"batchInfo",
-        width:"10%"
+        width:"40%"
     },{
         title:"合成槽号",
         dataIndex:"Number",
         key:"Number",
-        width:"10%"
+        width:"40%"
     },{
         title:"操作",
         dataIndex:"code",
         key:"code",
-        width:"2%",
+        width:"10%",
         render:(text,record)=>{
             return(<InstrumentsDetail
                 record={record}
@@ -203,22 +205,22 @@ export const AssayDetailColums=[
         title:"序号",
         dataIndex:"index",
         key:"index",
-        width:"5%"
+        width:"10%"
     },{
         title:"检测项目",
         dataIndex:"checkProject",
         key:"checkProject",
-        width:"25%"
+        width:"30%"
     },{
         title:"检测结果",
         dataIndex:"checkResult",
         key:"checkResult",
-        width:"25%"
+        width:"30%"
     },{
         title:"计量单位",
         dataIndex:"measurement",
         key:"measurement",
-        width:"25%"
+        width:"30%"
     }
 ]
 export const AssayDetailColums2=[
@@ -237,5 +239,71 @@ export const AssayDetailColums2=[
         dataIndex:"sentDate",
         key:"sentDate",
         width:"5%"
+    }
+]
+export  const batchInfoTablecolums=[
+    {
+        title:"序号",
+        dataIndex:"index",
+        key:"index",
+        width:"5%"
+    },{
+        title:"批次信息",
+        dataIndex:"batchInfo",
+        key:"batchInfo",
+        width:"15%"
+    },{
+        title:"工序",
+        dataIndex:"process",
+        key:"process",
+        width:"5%"
+    },{
+        title:"批次生成时间",
+        dataIndex:"setTime",
+        key:"setTime",
+        width:"15%"
+    },{
+        title:"生成人",
+        dataIndex:"setPeople",
+        key:"setPeople",
+        width:"5%"
+    },{
+        title:"状态",
+        dataIndex:"status",
+        key:"status",
+        width:"10%",
+        render:(text,record)=>{
+            if(record.status===0){
+                return(<span >进行中</span>)
+            }
+            else{
+                return(<span >已完成</span>)
+            }
+        }
+
+    },{
+        title:"开始时间",
+        dataIndex:"startTime",
+        key:"startTime",
+        width:"15%"
+    },{
+        title:"结束时间",
+        dataIndex:"endTime",
+        key:"endTime",
+        width:"15%"
+    },{
+        title:"操作",
+        dataIndex:"code",
+        key:"code",
+        width:"15%",
+        render:(text,record)=>{
+
+            return(
+                <span>
+                    <EditPart record={record}/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <DeleteOne record={record}/>
+                </span>
+            )
+        }
     }
 ]

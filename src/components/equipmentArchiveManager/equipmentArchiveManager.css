@@ -137,23 +137,22 @@
     max-height: 250px;
     overflow-y: auto;
 }
-.DropExpandselected{
+#DropExpandselected{
     height: 80px;
     overflow-x: auto;
     flex-wrap:wrap;
     justify-content:flex-start;
     display: flex;
     font-size: 15px;
-    width: 1000px;
+    width: 94%;
 }
 .buttonofdrop{
-    display: inline;
-    position: absolute;
+    display: inline-block;
+    position: fixed;
     z-index: 10;
-    margin-left: 900px;
+    right: 15px;
 }
 .DropExpandblue{
-    overflow-x: auto;
     font-size: 15px;
     cursor: pointer;
     color: deepskyblue;
@@ -165,28 +164,42 @@
     border-radius:5px;
 }
 .DropExpandwhite{
-    overflow-x: auto;
     font-size: 15px;
     cursor: pointer;
     color: white;
     margin-right: 20px;
-    /*margin-left: 10px;*/
+    margin-left: 10px;
     margin-top: 5px;
     margin-bottom: 10px;
     background-color: dodgerblue;
     border-radius:5px;
     padding: 3px;
 }
+#DropNoExpandHide{
+    height: 1px;
+}
+.DropExpandbluehide{
+    display: inline-block;
+    font-size: 15px;
+    color: white;
+    margin-right: 20px;
+    margin-left: 10px;
+    height: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    visibility: hidden;
+}
 .Dropfrist{
     display: flex;
+    flex-wrap:nowrap;
     justify-content: flex-start;
     align-items: center;
-    width: 1159px;
+    width: 100%;
     font-size: 15px;
     background-color: white;
 }
 .eq-outside{
-    width: 1159px;
+    width: 1153px;
 }
 
 .eqRepButton{
@@ -195,4 +208,42 @@
     width: 75px;
     height: 35px !important;
     padding-left: 10px !important;
+}
+.firstLine{
+    font-size: 15px;
+    display: inline-block;
+    width: 120px;
+    margin: 7.5px 0 7.5px 7.5px;
+    text-align: right;
+}
+.secondLine{
+    font-size: 15px;
+    display: inline-block;
+    margin: 7.5px 0 7.5px 0px;
+    width: 110px;
+    text-align: right;
+}
+.firstContent{
+    margin: 7.5px 7.5px 7.5px 0;
+    display: inline-block;
+    text-align: left;
+    width: 140px;
+
+}
+.secondContent{
+    display: inline-block;
+    text-align: left;
+    width: 140px;
+}
+.repairDetailModalTable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.repairDetailModalTable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.peiTitle{
+    display: inline-block;
+    margin-bottom:5px ;
 }

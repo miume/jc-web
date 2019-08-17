@@ -70,7 +70,10 @@ class AcceptOrders extends React.Component{
                                     fetch={this.fetch}
                                     searchEvent={this.searchEvent}
                                     searchContentChange={this.searchContentChange}
-                                    flag={home.judgeOperation(this.props.operation, 'QUERY')}/>
+                                    flag={home.judgeOperation(this.props.operation, 'QUERY')}
+                                    type={2}
+                                />
+
                             </div>
                         </Header >
                         <Content style={{background:"white"}}>
@@ -100,7 +103,7 @@ class AcceptOrders extends React.Component{
                 const params = {
                     deptId:this.state.deptId,
                     statusId:2,
-                    depName:this.state.depName,
+                    depName:this.props.depName,
                 };
                 console.log(params)
                 this.props.getTableData(params)
@@ -191,6 +194,7 @@ class AcceptOrders extends React.Component{
             deptId:parseInt(this.props.depCode),
             statusId:2,
             condition:this.state.searchContent,
+            depName:this.props.depName,
         }
         // this.props.getTableData(params);
         this.fetch(params,0);
@@ -201,6 +205,7 @@ class AcceptOrders extends React.Component{
             {
                 deptId:parseInt(this.props.depCode),
                 statusId:2,
+                depName:this.props.depName,
             }
         )
     }
@@ -212,12 +217,14 @@ class AcceptOrders extends React.Component{
                 deptId:parseInt(this.props.depCode),
                 statusId: 2,
                 condition:this.state.searchContent,
+                depName:this.props.depName,
                 page:page.current,
                 size:page.pageSize,
             })
         } else {
             this.props.getTableData({
                 deptId:parseInt(this.props.depCode),
+                depName:this.props.depName,
                 statusId: 2,
                 page:page.current,
                 size:page.pageSize,
@@ -246,6 +253,7 @@ class AcceptOrders extends React.Component{
                 deptId:parseInt(this.props.depCode),
                 statusId:2,
                 condition:this.state.searchContent,
+                depName:this.props.depName,
             }
             this.props.getTableData(params);
         }

@@ -65,6 +65,7 @@ class Detail extends React.Component {
     };
     handleDetail = () => {
         console.log("this.props.record.code")
+        console.log(this.props.record)
         console.log(this.props.record.code)
         if(this.props.comFlag){
             axios({
