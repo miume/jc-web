@@ -181,7 +181,7 @@ class Add extends Component {
         if(this.props.comFlag){
             this.setState({
                 addModalVisable: true,
-                startdate: startdate
+                startdate: startdate,
             })
         }else{
             // TODO 获取状态
@@ -205,7 +205,7 @@ class Add extends Component {
                     this.setState({
                         addModalVisable: true,
                         statusCode: statusCode,
-                        startdate: startdate
+                        startdate: startdate,
                     })
                 } else {
                     message.info('设备状态为空，请先添加状态！')
@@ -309,7 +309,12 @@ class Add extends Component {
                 packArrName.push(arrs.name);
                 packArrValue.push(arrs.value)
             }
-            deviceDocumentMain['startdate'] = this.state.addStartdate;
+            if(this.state.addStartdate){
+                deviceDocumentMain['startdate'] = this.state.addStartdate;
+            }else{
+                deviceDocumentMain['startdate'] = this.state.startdate;
+            }
+            // deviceDocumentMain['startdate'] = this.state.addStartdate;
             deviceDocumentMain['keyFlag'] = this.state.keyFlag;
             if(this.props.comFlag){
                 var addData = {
@@ -338,7 +343,7 @@ class Add extends Component {
                             deviceDocumentMain: deviceDocumentMainInit,
                             newRowData: [],
                             statusCode: [],
-                            startdate: startdate,
+                            // startdate: startdate,
                             statusCodeInit: deviceDocumentMain.statusCode
                         });
                     }else{
@@ -378,7 +383,7 @@ class Add extends Component {
                             deviceDocumentMain: deviceDocumentMainInit,
                             newRowData: [],
                             statusCode: [],
-                            startdate: startdate,
+                            // startdate: startdate,
                             statusCodeInit: deviceDocumentMain.statusCode
                         });
                     }else{

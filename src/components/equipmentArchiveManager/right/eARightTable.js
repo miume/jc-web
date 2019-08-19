@@ -67,12 +67,14 @@ class EARightTable extends Component {
                     />
                     <Divider type="vertical"/>
                     <Details
+                        name='详情'
                         record={record}
                         url={this.props.url}
                         comFlag={true}
                     />
                     <Divider type="vertical"/>
                     <Edit
+                        name='编辑'
                         // deviceName={this.props.deviceName}
                         // getRightData={this.props.getRightData}
                         url={this.props.url}
@@ -178,11 +180,13 @@ class EARightTable extends Component {
                     />
                     <Divider type="vertical"/>
                     <Details
+                        name='详情'
                         record={record}
                         url={this.props.url}
                     />
                     <Divider type="vertical"/>
                     <Edit
+                        name='编辑'
                         deviceName={this.props.deviceName}
                         getRightData={this.props.getRightData}
                         url={this.props.url}
