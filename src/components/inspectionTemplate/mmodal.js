@@ -15,11 +15,7 @@ class Mmodal extends React.Component {
         this.state={
             visible:false,
             current:1,
-            leftDataSource:[{
-                index:1,
-                patrolContent:'',
-
-            }],
+            leftDataSource:[],
             dataSource2:[],
             dataSource3:[],
             selectedRows : [],
@@ -134,12 +130,12 @@ class Mmodal extends React.Component {
             dataIndex:'index',
             key:'index',
             sorter:(a,b) =>a.id-b.id,
-            width:'20%',
+            width:'15%',
         },{
             title:'巡检位置',
             dataIndex:'locationName',
             key:'locationName',
-            width:'40%'
+            width:'70%'
         }];
         const {selectedRowKeys} = this.state;
         const rowSelection = {
@@ -167,13 +163,12 @@ class Mmodal extends React.Component {
                      <CancleButton key='cancel' handleCancel={this.props.onCanCel} />]}
              >
                  <Row>
-                          <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;{this.props.name}</Col>
+                          <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;&nbsp;&nbsp;{this.props.name}</Col>
                           <Col span={9}>
-                              <div className="example-input">巡检模板名称:<Input placeholder="请输入巡检模板名称" size="small"  onChange={this.valueChange} value={this.state.patrolName}/> </div></Col>
+                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;&nbsp;<Input placeholder="请输入巡检模板名称" size="small"  onChange={this.valueChange} value={this.state.patrolName}/> </div></Col>
                           <Col span={9} >
                               <div>
-                                  检查类型:
-                                <Select  style={{ width: 240 ,paddingLeft:20}} onChange={this.handleChange} value={this.state.value?'电气类':'机械类'} >
+                                  检查类型:<Select  style={{ width: 240 ,paddingLeft:10}} onChange={this.handleChange} value={this.state.value?'电气类':'机械类'} >
                                       <Option value="false">机械类</Option>
                                       <Option value="true">电气类</Option>
                                 </Select>
@@ -189,19 +184,18 @@ class Mmodal extends React.Component {
                          size="small"
                          dataSource={this.state.leftDataSource}
                          scroll={{ y: 312 }}
+                         bordered
                          />
-
-
-
                  </div>
 
                  <div className="inspection-Right-Table" style={{paddingTop:20}}>
-                     <span>巡检区域：</span>
+                     <span>巡检区域:&nbsp;&nbsp;&nbsp;</span>
                      <span className="blue" style={{float:'right'}} onClick={this.addtable2}>新增</span>
                      <Table
                         columns={this.column2}
                         dataSource={this.state.dataSource2}
                         size="small"
+                        bordered
                         scroll={{ y: 312 }}
                      />
 
@@ -210,7 +204,7 @@ class Mmodal extends React.Component {
                           closable={false}
                           centered={true}
                           maskClosable={false}
-                          width="800px"
+                          width="500px"
                           height="464"
                           title="新增数据"
                           footer={[
@@ -275,39 +269,39 @@ class Mmodal extends React.Component {
             devicePatrolModelsLocationDetails:devicePatrolModelsLocationDetails,
             setPeople: this.props.userName,
         }
-        axios({
-            url: `${this.props.url.devicePatrolModel.add}`,
-            method: 'post',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            data: addData,
-            type: 'json'
-        }).then((data) => {
-            this.props.fetch({
-                deptId:this.props.deptCode,
-            },1)
-            this.setState({
-                visible:false,
-                current:1,
-                leftDataSource:[{
-                    index:1,
-                    patrolContent:'',
-
-                }],
-                dataSource2:[],
-                dataSource3:[],
-                selectedRows : [],
-                selectedRowKeys:[],
-                rightcurrent:1,
-                value:false,
-                patrolName:'',
+        if(this.state.patrolName) {
+            axios({
+                url: `${this.props.url.devicePatrolModel.add}`,
+                method: 'post',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                data: addData,
+                type: 'json'
+            }).then((data) => {
+                this.props.fetch({
+                    deptId: this.props.deptCode,
+                }, 1)
+                this.setState({
+                    visible: false,
+                    current: 1,
+                    leftDataSource: [{}],
+                    dataSource2: [],
+                    dataSource3: [],
+                    selectedRows: [],
+                    selectedRowKeys: [],
+                    rightcurrent: 1,
+                    value: false,
+                    patrolName: '',
+                })
+                this.props.changevisible()
+            }).catch(() => {
+                message.info('新增失败，请联系管理员！')
             })
-            this.props.changevisible()
-        }).catch(()=>{
-            message.info('新增失败，请联系管理员！')
-        })
-
+        }else
+        {
+            message.info('模板名称不能为空')
+        }
 
     }
 
@@ -366,8 +360,14 @@ class Mmodal extends React.Component {
                         index:i+1,
                     })
                 }
+                var  kk=[{
+                    code:12,
+                    deptCode:2,
+                    index:2,
+                    locationName:'asdsadsa',
+                }]
                 this.setState({
-                    dataSource3:TableData
+                    dataSource3:kk
                 })
                 console.log(TableData)
             } else {

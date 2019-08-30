@@ -39,7 +39,7 @@ class DepTree extends Component {
 
     render() {
         return (
-            <div>
+            <div className="checkQ-tree">
                 <Tree
                     showLine
                     onSelect={this.onSelect}
@@ -164,7 +164,7 @@ class DepTree extends Component {
     // 展开树节点
     renderTreeNodes = data => data.map((item) => {
         item.title = ( // 不处于编辑状态
-            <div className={item.isSelect?"depTreeSelect":""}>
+            <div className={item.isSelect?"checkQ-depTreeSelect":""}>
                 <span>
                     {item.value}
                 </span>

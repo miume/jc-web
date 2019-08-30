@@ -149,7 +149,7 @@ class CheckPlan extends React.Component {
             deptCode:code
         })
         axios({
-            url: `${this.url.SpotcheckPlan.getDeviceCount}`,
+            url: `${this.url.equipmentArchive.device}/${code}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
@@ -196,9 +196,6 @@ class CheckPlan extends React.Component {
                             deptId: parseInt(code),
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
-                        this.setState({
-                            deviceName: rightTopData[0].name
-                        })
                     } else {
                         this.getTableData({
                             deptId: parseInt(code),
@@ -410,8 +407,6 @@ render(){
                                     fetch={this.getTableData}
                                     deptId={this.state.deptCode}
                                     deviceName={this.state.deviceName}
-
-
                                 />
                             </div>
                         </div>

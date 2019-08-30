@@ -13,7 +13,7 @@ class Innput extends  React.Component{
     render() {
         return (
             <div>
-                <Input  onChange={this.onChange} value={this.props.value} />
+                <Input  onChange={this.onChange} value={this.props.value} placeholder="请输入巡检内容" style={{border:0}}/>
             </div>
         );
     }

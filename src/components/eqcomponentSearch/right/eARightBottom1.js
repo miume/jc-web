@@ -6,7 +6,7 @@ import home from "../../commom/fns";
 import SearchCell from '../../BlockQuote/search';
 import axios from "axios";
 
-class EARightBottom extends Component {
+class EARightBottom1 extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -31,7 +31,6 @@ class EARightBottom extends Component {
             selectedRowKeys,
             onChange: this.onSelectChange
         };
-        console.log(this.props.dataSource)
         return (
             <div className="eA-right-bottom">
                 {/*<Add*/}
@@ -156,4 +155,4 @@ class EARightBottom extends Component {
     };
 }
 
-export default EARightBottom
+export default EARightBottom1

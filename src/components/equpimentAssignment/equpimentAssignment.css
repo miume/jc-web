@@ -1,0 +1,72 @@
+.equip-total{
+    padding: 15px;
+    width: 100%;
+    display: flex;
+}
+
+.equpiment-left{
+    width: 20%;
+    height: 525px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #F5f5f5;
+}.equpiment-right{
+     width: 80%;
+     margin-left: 20px;
+     height: 100%;
+     padding: 5px;
+ }
+.equpiment-eqblocka{
+    height:50px;
+    width: 100%;
+    background:#F5F5F5;
+    text-align:center;
+    line-height: 50px;
+    padding-bottom: 10px;
+}
+.equip-allocation{
+    display:flex;
+    width:100%;
+    padding-top: 15px;
+}
+.equip-allocation-left{
+    width: 20%;
+    height: 525px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #F5f5f5;
+}
+.equip-allocation-right{
+     width: 80%;
+     margin-left: 20px;
+     height: 100%;
+     padding: 5px;
+    display: flex;
+ }
+.eqa-eqb{
+    padding-top: 10px;
+}
+.eqa-transfer-left{
+    width: 45%;
+}
+.eq-transfer-mid{
+    width:10%
+}
+.eqa-transfer-right{
+    width:45%;
+}
+.eqa-transfer{
+    width:100%;
+    display: flex;
+}
+.Equip-leftbutton{
+
+    padding-top: 250px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.Equip-rightbutton{
+    padding-top: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
