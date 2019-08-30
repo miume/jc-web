@@ -1,13 +1,11 @@
 import React from "react";
-
-import Blockquote from "../BlockQuote/blockquote";
-
+import {message} from "antd";
 import axios from "axios";
 import DepartmentCard from './blockCompontent/department'
 import ButtonToDd from './blockCompontent/buttontodo'
 import ContentTable from './blockCompontent/contenttable'
 import './blockCompontent/style.css'
-import {message} from "antd";
+import Blockquote from "../BlockQuote/blockquote";
 
 class EqMaintenancePlan extends React.Component{
     componentWillUnmount() {
@@ -37,6 +35,14 @@ class EqMaintenancePlan extends React.Component{
             page:1,
             size:10,
             current:1,
+            total:''
+        }
+        this.pagination = {
+            showSizeChanger:true,
+            total:this.state.total,
+            showTotal(total) {
+                return `共${total}条记录`
+            },
         }
         this.returnDataEntry = this.returnDataEntry.bind(this)
         this.getTableData = this.getTableData.bind(this)
@@ -44,12 +50,7 @@ class EqMaintenancePlan extends React.Component{
         this.SearchEvent = this.SearchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
     }
-    pagination = {
-        showSizeChanger:true,
-        showTotal(total) {
-            return `共${total}条记录`
-        },
-    }
+
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current')) ;
@@ -210,7 +211,7 @@ class EqMaintenancePlan extends React.Component{
             }
         })
     }
-    getTableSize=(current,size)=>{
+     getTableSize=(current,size)=>{
         this.setState({
             size:size,
             current:current,
@@ -272,6 +273,7 @@ class EqMaintenancePlan extends React.Component{
                         this.pagination.total = res?res.total:0;
                         this.setState({
                             rightTableData: rightTableData,
+                            total:data.data.total,
                         });
                         ////console.log(this.state.depCode)
                     } else {

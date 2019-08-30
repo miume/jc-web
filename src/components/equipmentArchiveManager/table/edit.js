@@ -37,7 +37,7 @@ class Edit extends React.Component {
             <span>
                 <span className="blue" onClick={this.handleEdit}>编辑</span>
                     <Modal
-                        title="数据详情"
+                        title={this.props.name}
                         visible={this.state.visible}
                         closable={false}
                         centered={true}

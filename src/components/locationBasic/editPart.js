@@ -20,12 +20,21 @@ class EditPart extends React.Component {
         this.handleOk = this.handleOk.bind(this);
     }
 
+    componentWillMount() {
+        this.setState({
+            idCode:this.props.idCode,
+            locationName:this.props.locationName,
+        })
+    }
+
     render=(text, record)=> {
         const customDot = (dot,{status,index})=>(
             <Popover visible={this.state.visible1}>
                 {dot}
             </Popover>
         )
+        console.log(this.props.locationName)
+
         return (
             <div >
                 <span className="blue" onClick={this.showModal}>编辑</span>
@@ -56,9 +65,9 @@ class EditPart extends React.Component {
                                    style={{width:"313px"}}
                                    key='1'
                                    name='locationName'
-                                   value={this.state.locationName}
+                                   defaultValue={this.props.locationName}
+                                   // value={this.state.locationName}
                                    onChange={this.onInputChange}
-                                   placeholder="请输入"
                             />
                         </Col>
                     </Row>
@@ -73,9 +82,9 @@ class EditPart extends React.Component {
                                    style={{width:"313px"}}
                                    key='2'
                                    name='idCode'
-                                   value={this.state.idCode}
+                                   defaultValue={this.props.idCode}
+                                   // value={this.state.idCode}
                                    onChange={this.onInputChange}
-                                   placeholder="请输入"
                             />
                         </Col>
                     </Row>

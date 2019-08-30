@@ -27,21 +27,12 @@ class RawMaterialAddModal extends React.Component{
         return(
             <Form horizontal='true' >
               <FormItem   wrapperCol={{span:24}} required>
-                {getFieldDecorator('serialNumberId',{
+                {getFieldDecorator('materialName',{
                     
-                    rules:[{required:true,message:'请选择原材料'}]
+                    rules:[{required:true,message:'请输入原材料名称'}]
                 })(
-                    <Select  placeholder='请选择原材料' style={{height:'24px'}}>
-                        {
-                            this.props.rawData.map((data)=>{
+                    <Input placeholder="请输入原材料名称(必填)" key="materialName"/>
 
-                                // <Option key={Object.keys(data)[0]} value={Object.keys(data)[0]}>{data[Object.keys(data)[0]]}</Option>
-                                return(
-                                    <Option key={data.id} value={data.id}>{data.manufacturer}</Option>
-                                )
-                            })
-                        }
-                    </Select>
                 )}
                 </FormItem>
               <FormItem wrapperCol={{span:24}} >
@@ -58,4 +49,16 @@ class RawMaterialAddModal extends React.Component{
         );
     }
 }
+
+{/*<Select  placeholder='请选择原材料' style={{height:'24px'}}>*/}
+    {/*{*/}
+        {/*this.props.rawData.map((data)=>{*/}
+
+            {/*// <Option key={Object.keys(data)[0]} value={Object.keys(data)[0]}>{data[Object.keys(data)[0]]}</Option>*/}
+            {/*return(*/}
+                {/*<Option key={data.id} value={data.id}>{data.manufacturer}</Option>*/}
+            {/*)*/}
+        {/*})*/}
+    {/*}*/}
+{/*</Select>*/}
 export default Form.create()(RawMaterialAddModal);

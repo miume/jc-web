@@ -27,7 +27,8 @@ class EquipmentArchiveManager extends Component {
             rightTableData: [],
             depCode: -1,
             deviceName: '',
-
+            deptName:'',
+            flag:true,
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             updatebackground:[],
@@ -67,6 +68,7 @@ class EquipmentArchiveManager extends Component {
                             getRightData={this.getRightData}
                             url={this.url}
                             operation={this.operation}
+                            handleResetFlag={this.handleResetFlag}
                         />
                     </div>
                     {/*右边页面部分*/}
@@ -87,17 +89,25 @@ class EquipmentArchiveManager extends Component {
                             searchEvent={this.searchEvent}
                             searchReset={this.searchReset}
                             updatebackground={this.state.updatebackground}
+                            deptName={this.state.deptName}
+                            handleFlag={this.handleFlag}
+                            flag={this.state.flag}
                         />
                     </div>
                 </div>
             </div>
         )
     }
-
+    handleFlag=()=>{
+        this.setState({flag:!this.state.flag})
+    }
+    handleResetFlag=()=>{
+        this.setState({flag:true})
+    }
     returnDataEntry(){
         this.props.history.push({pathname:'/equipmentArchive'});
     }
-    getRightData = (code, deviceName) => {
+    getRightData = (code, deviceName,deptName) => {
         code = parseInt(code)
         axios({
             url: `${this.url.equipmentArchive.device}/${code}`,
@@ -126,10 +136,10 @@ class EquipmentArchiveManager extends Component {
                 for(var i=0;i<rightTopData.length-1;i++){
                     updatebackground.push(0);
                 }
-                //console.log(rightTopData)
                 this.setState({
                     rightTopData: rightTopData,
                     depCode: code,
+                    deptName:deptName,
                     updatebackground:updatebackground,
                 }, () => {
                     const rightTopData = this.state.rightTopData;
@@ -141,11 +151,13 @@ class EquipmentArchiveManager extends Component {
                     })
                     if (deviceFlag) {
                         this.getTableData({
+                            deptName:this.state.deptName,
                             deptId: parseInt(code),
                             deviceName: rightTopData[0] ? rightTopData[0].name : null
                         }, 0);
                     } else {
                         this.getTableData({
+                            deptName:this.state.deptName,
                             deptId: parseInt(code),
                             deviceName: deviceName
                         }, 0);
@@ -154,7 +166,6 @@ class EquipmentArchiveManager extends Component {
             } else {
                 message.info('查询失败，请刷新下页面！')
             }
-            //console.log(rightTopData)
         }).catch(() => {
             message.info('查询失败，请刷新下页面！')
         });
@@ -168,14 +179,16 @@ class EquipmentArchiveManager extends Component {
                 page: pagination.current,
                 condition: this.state.searchContent,
                 deptId: parseInt(this.state.depCode),
-                deviceName: this.state.deviceName
+                deviceName: this.state.deviceName,
+                deptName:this.state.deptName,
             })
         } else {
             this.getTableData({
                 size: pagination.pageSize,
                 page: pagination.current,
                 deptId: parseInt(this.state.depCode),
-                deviceName: this.state.deviceName
+                deviceName: this.state.deviceName,
+                deptName:this.state.deptName,
             })
         }
     };
@@ -183,7 +196,6 @@ class EquipmentArchiveManager extends Component {
 
 
     getTableData = (params, flag) => {
-        console.log(params)
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if (flag) {
             this.setState({
@@ -215,7 +227,8 @@ class EquipmentArchiveManager extends Component {
                         idCode: arr['idCode'],
                         statusCode: arr['statusCode'],
                         color: eqStatus['color'],
-                        name: eqStatus['name']
+                        name: eqStatus['name'],
+                        depCode:params.deptId,
                     })
                 }
                 this.pagination.total = res ? res.total : 0;

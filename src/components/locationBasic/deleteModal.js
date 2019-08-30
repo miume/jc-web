@@ -3,7 +3,6 @@ import {Popconfirm,Divider} from "antd";
 
 class DeletaSpan extends React.Component {
     render() {
-        console.log(this.props.flag)
         return (
             <span className={this.props.flag?'':'hide'}>
                 <Divider type="vertical" />

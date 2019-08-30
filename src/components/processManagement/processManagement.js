@@ -263,7 +263,7 @@ class Management extends React.Component{
                 <div>
                     <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                     <div style={{padding:'15px'}}>
-                    <Add 
+                    <Add
                         fetch={this.fetch}
                         flag={this.judgeOperation(this.operation,'SAVE')}
                     />&nbsp;&nbsp;&nbsp;

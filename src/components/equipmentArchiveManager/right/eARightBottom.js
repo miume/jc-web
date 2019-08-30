@@ -59,7 +59,7 @@ class EARightBottom extends Component {
                             deviceName={this.props.deviceName}
                             getRightData={this.props.getRightData}
                             depCode={this.props.depCode}
-                            mainCode={this.props.mainCode}
+                            mainId={this.props.mainId}
                             handleData={this.props.handleData}
                         />
                         :null
@@ -84,6 +84,7 @@ class EARightBottom extends Component {
                     handleTableChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                     bottomheight={this.props.bottomheight}
+                    deptName={this.props.deptName}
                 />
             </div>
         )

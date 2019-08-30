@@ -38,6 +38,7 @@ class RawTest extends React.Component{
             var testData = {};
             var IsQualified = 0;
             if(res){
+                console.log(res)
                 IsQualified = res.testReportRecord?res.testReportRecord.isQualified:0;
                 topData={
                     batchNumber: res.commonBatchNumber.batchNumber?res.commonBatchNumber.batchNumber:'',
@@ -57,7 +58,7 @@ class RawTest extends React.Component{
                                 testItemId:e.testItemResultRecord.testItemId,
                                 testItemName:e.name,
                                 testResult:e.testItemResultRecord.testResult,
-                                unit:'g/ml'
+                                unit:e.unit
                             })
                     }   
                 }

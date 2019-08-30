@@ -68,8 +68,10 @@
     background-color: #e3f7ff;
 }
 
-
+.rawTestReport-detail .ant-table-body{
+    max-height: 180px !important;
+}
 .rawTestReport-detailModal{
     cursor: default;
-    height: 250px;
+    /*height: 200px !important;*/
 }

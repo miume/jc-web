@@ -1,0 +1,19 @@
+.planTable{
+    border-collapse: collapse;
+    text-align: center;
+}
+.planTable td, .planTable th{
+    border: 1px solid #cad9ea;
+    color: #666;
+    height: 30px;
+}
+.planTable thead th{
+    background-color: #CCE8EB;
+    width: 100px;
+}
+.planTable tr:nth-child(odd){
+    background: #fff;
+}
+.planTable tr:nth-child(even){
+    background: #F5FAFA;
+}

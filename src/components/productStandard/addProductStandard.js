@@ -118,6 +118,7 @@ class AddProductStandard extends React.Component{
             //console.log(details)
             testItems['index'] = i+1;
             testItems['value'] = e.techniqueProductTestItemStandard.value;
+            testItems['unit'] = e.testItem.unit
             data.push(testItems)
         }
         this.setState({
@@ -377,17 +378,18 @@ class AddProductStandard extends React.Component{
         return (
             <span>
                 {this.judge(flag)}
-                <Modal title={this.judge(flag,1)} visible={this.state.visible} closable={false}
+                <Modal title={this.judge(flag,1)} visible={this.state.visible} closable={false} centered={true}
                 maskClosable={false} 
                 footer={this.state.flag===1?detail:iteration}>
                 <div>
                     <HeadTable flag={this.props.flag} data={data} batchNumber={this.state.batchNumber} />
                     <div className='modal-add-table' >
-                        <Table className={this.props.flag===1?'':'stock-out'} rowKey={record=>record.id} 
+                        <Table className={this.props.flag===1?'':'stock-out'} rowKey={record=>record.id}
                         columns={this.columns} dataSource={this.state.allTestItem} 
                         pagination={false} size='small' bordered scroll={{y:this.props.flag===1?228:251}}>
                         </Table>
                     </div>
+                    <div style={{height:10}}></div>
                     <div style={{height:70}}>
                     {
                         this.state.flag===1?

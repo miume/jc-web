@@ -1,0 +1,73 @@
+.batchsearchPart{
+    float: right;
+}
+#batchInput {
+    width: 230px;
+}
+.batchSearch_table{
+    margin-top: 50px;
+}
+
+.firstAssayDetailTable .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.firstAssayDetailTable .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.Batch_Assay_Table .ant-table-body  {
+    max-height:380px !important;
+}
+.Batch_Instrument_Table .ant-table-body  {
+    max-height:380px !important;
+}
+.Batch_Equ_Table  .ant-table-body  {
+    max-height:380px !important;
+}
+/*.secondAssayDetailTable .ant-table-thead tr th{*/
+/*    background-color:royalblue !important;*/
+/*    color:white !important;*/
+/*}*/
+.secondAssayDetailTable .ant-table-body  {
+    max-height: 200px !important;
+}
+.InstrumentDetailModal{
+    margin-top:15px ;
+}
+
+.batchSearch_table .ant-table-body {
+    max-height: 375px !important;
+}
+.batct_repair_firstLine_name{
+    font-size: 16px;
+    display: inline-block;
+    margin: 5px 0 0px 5px;;
+}
+.batct_repair_firstLine_content{
+    font-size: 16px;
+    display: inline-block;
+    margin: 5px 30px 0px 0px;
+}
+.batct_repair_Table{
+    margin-top: 20px;
+}
+.batct_repair_Table .ant-table-body {
+    max-height: 375px !important;
+}
+.batct_maint_firstLine_name{
+    font-size: 16px;
+    display: inline-block;
+    margin: 5px 0 0px 5px;;
+}
+.batct_maint_firstLine_content{
+    font-size: 16px;
+    display: inline-block;
+    margin: 5px 30px 0px 0px;
+}
+.batct_maint_Table{
+    margin-top: 20px;
+}
+.batct_maint_Table .ant-table-body {
+    max-height: 375px !important;
+}

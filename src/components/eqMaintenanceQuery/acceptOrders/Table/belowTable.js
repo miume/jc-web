@@ -12,22 +12,22 @@ class BelowTable extends React.Component {
     columns = [
         {
             title: '序号',
-            dataIndex: 'number',
-            key: 'number',
+            dataIndex: 'code',
+            key: 'code',
             width: '2px',
             align:'center',
         },
         {
             title: '保养项目',
-            dataIndex: 'project',
-            key: 'project',
+            dataIndex: 'maintenanceItems',
+            key: 'maintenanceItems',
             width: '10px',
             align:'center',
         },
         {
             title: '保养内容',
-            dataIndex: 'content',
-            key: 'content',
+            dataIndex: 'maintenanceContent',
+            key: 'maintenanceContent',
             width: '10px',
             align:'center',
         }

@@ -65,6 +65,7 @@ import LocationBasic from "../locationBasic/locationBasic";
 import BatchInfo from "../batchInfo/batchInfo"
 import BatchSearch from "../batchSearch/batchSearch"
 import BatchRule from  "../batchRule/batchRule"
+import RawMaterialInput from '../rawMaterialInput/rawMaterialInput'
 
 class Right extends React.Component {
     render() {
@@ -234,8 +235,10 @@ class Right extends React.Component {
             },{
                 path:"/checkStatistics",
                  component:CheckStatistics
-            }
-            ]
+            },{
+                path:"/rawMaterialInput",
+                component:RawMaterialInput
+            }]
         return (
             <div className="rightDiv">
                 <Switch>

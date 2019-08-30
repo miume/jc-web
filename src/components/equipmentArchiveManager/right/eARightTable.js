@@ -11,6 +11,7 @@ import axios from "axios";
 import Edit from '../table/edit'
 import MainFitting from '../replication/mainFitting'
 import ComFitting from '../replication/comFitting'
+import DeviceRep from "../replication/deviceRep";
 
 class EARightTable extends Component {
     constructor(props) {
@@ -66,12 +67,14 @@ class EARightTable extends Component {
                     />
                     <Divider type="vertical"/>
                     <Details
+                        name='详情'
                         record={record}
                         url={this.props.url}
                         comFlag={true}
                     />
                     <Divider type="vertical"/>
                     <Edit
+                        name='编辑'
                         // deviceName={this.props.deviceName}
                         // getRightData={this.props.getRightData}
                         url={this.props.url}
@@ -171,19 +174,23 @@ class EARightTable extends Component {
 
                     />
                     <Divider type="vertical"/>
-                    <Repair/>
+                    <Repair
+                        record={record}
+                        deptName={this.props.deptName}
+                    />
                     <Divider type="vertical"/>
                     <Details
+                        name='详情'
                         record={record}
                         url={this.props.url}
                     />
                     <Divider type="vertical"/>
                     <Edit
+                        name='编辑'
                         deviceName={this.props.deviceName}
                         getRightData={this.props.getRightData}
                         url={this.props.url}
                         record={record}
-                        getTableData={this.props.getTableData}
                         depCode={this.props.depCode}
                     />
                     <Delete
@@ -198,9 +205,17 @@ class EARightTable extends Component {
                         url={this.props.url}
                         record={record}
                         deviceName={this.props.deviceName}
-                        getTableData={this.props.getTableData}
                         getRightData={this.props.getRightData}
                         depCode={this.props.depCode}
+                    />
+                    <Divider type="vertical"/>
+                    <DeviceRep
+                        url={this.props.url}
+                        record={record}
+                        deviceName={this.props.deviceName}
+                        getTableData={this.props.getTableData}
+                        depCode={this.props.depCode}
+
                     />
                 </span>
             )
