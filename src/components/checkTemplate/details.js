@@ -35,7 +35,7 @@ class Detail extends React.Component{
             if(res){
                 this.setState({
                     data : res,
-                    effectDate:res.deviceSpotcheckModelsHead.effectDate,
+                    effectDate:res.deviceSpotcheckModelsHead.modelName,
                     tabulateDate:res.deviceSpotcheckModelsHead.tabulateDate,
                     peopleName:res.peopleName,
                     radioValue:res.deviceSpotcheckModelsHead.modelStatus,
@@ -81,7 +81,7 @@ class Detail extends React.Component{
                             <Radio value={false}>生效</Radio>
                             <Radio value={true}>失效</Radio>
                         </Radio.Group>
-                        <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.name:"管理员"}</span>
+                        <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.peopleName:"管理员"}</span>
                         <span className="headersDate">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
                         </div>
                     </div>

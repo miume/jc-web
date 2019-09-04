@@ -18,7 +18,7 @@ class Add extends React.Component{
     handleAdd = () => {
         this.setState({visible: true
         })
-        console.log(this.props.deptCode)
+        // console.log(this.props.deptCode)
 
     }
 

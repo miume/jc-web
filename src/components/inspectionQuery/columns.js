@@ -204,6 +204,12 @@ export const bcolums=[{
     align:'center',
     width:"50%"
 },{
+    title:'巡检项目',
+    dataIndex:'InspectionItem',
+    key:'InspectionItem',
+    align:'center',
+    width:"45%"
+},{
     title:'巡检结果',
     dataIndex:'inspectionResult',
     key:'inspectionResult',
@@ -217,7 +223,7 @@ export const bcolums=[{
     width:"25%"
 }
 ]
-export const willbcolums=bcolums.slice(0,2);
+export const willbcolums=bcolums.slice(0,3);
 export const doingbcolums=bcolums.slice(0,2);
 export const ccolumns= [
     {

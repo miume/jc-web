@@ -21,8 +21,8 @@ class Innput extends  React.Component{
     onChange=(e)=>{
         const record=this.props.record
         this.props.changepatrolContent(e.target.value,record)
-        console.log(this.props.record)
-        console.log(this.props.record.patrolContent)
+        // console.log(this.props.record)
+        // console.log(this.props.record.patrolContent)
         // this.changerecord(e.target.value)
     }
 }

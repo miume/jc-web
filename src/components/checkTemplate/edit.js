@@ -89,7 +89,7 @@ class Edit extends React.Component{
                     peopleName:res.peopleName,
                     radioValue:res.deviceSpotcheckModelsHead.modelStatus,
                     deviceSpotcheckModelsDetails:res.deviceSpotcheckModelsDetails,
-                    date:res.deviceSpotcheckModelsHead.effectDate.toString()
+                    date:res.deviceSpotcheckModelsHead.modelName.toString()
                 })
             }
         }).catch((err)=>{
@@ -129,7 +129,7 @@ class Edit extends React.Component{
             let deviceSpotcheckModelsHead = {};
             let peopleName = "string";
             deviceSpotcheckModelsHead.deviceName = this.props.deviceName;
-            deviceSpotcheckModelsHead.effectDate = this.state.date;
+            deviceSpotcheckModelsHead.modelName = this.state.date;
             deviceSpotcheckModelsHead.modelStatus = this.state.radioValue;
             deviceSpotcheckModelsHead.setPeople = parseInt(this.ob.userId);
             deviceSpotcheckModelsHead.deptCode = this.props.deptCode;
@@ -273,7 +273,7 @@ class Edit extends React.Component{
                                 <Radio value={false}>生效</Radio>
                                 <Radio value={true}>失效</Radio>
                             </Radio.Group>
-                            <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.name:"管理员"}</span>
+                            <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.peopleName:"管理员"}</span>
                             <span className="headersDate">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
                             </div>
                         <Divider />

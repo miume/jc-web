@@ -96,7 +96,7 @@ class AddBut extends React.Component{
             let deviceSpotcheckModelsHead = {};
             let peopleName = "string";
             deviceSpotcheckModelsHead.deviceName = this.props.deviceName;
-            deviceSpotcheckModelsHead.effectDate = this.state.date;
+            deviceSpotcheckModelsHead.modelName = this.state.date;
             deviceSpotcheckModelsHead.modelStatus = this.state.radioValue;
             deviceSpotcheckModelsHead.setPeople = parseInt(this.ob.userId);
             deviceSpotcheckModelsHead.deptCode = this.props.deptCode;
@@ -158,7 +158,7 @@ class AddBut extends React.Component{
         const formItems = keys.map((k,index)=>(
             <div key={index}>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Form.Item>
+                <Form.Item label="项目名称">
                     {getFieldDecorator(`content[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -166,7 +166,7 @@ class AddBut extends React.Component{
                     )}
                 </Form.Item>
               
-                <Form.Item>
+                <Form.Item label="点检标准">
                     {getFieldDecorator(`standard[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -174,7 +174,7 @@ class AddBut extends React.Component{
                     )}
                 </Form.Item>
               
-                <Form.Item>
+                <Form.Item label="点检周期">
                     {getFieldDecorator(`frequency[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -188,7 +188,7 @@ class AddBut extends React.Component{
                     }
                 </Form.Item> */}
               
-                <Form.Item>
+                <Form.Item label="图片">
                     {getFieldDecorator(`address[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -218,7 +218,7 @@ class AddBut extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="新增"
-                    width='800px'
+                    width='1000px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
