@@ -53,13 +53,9 @@ class Add extends React.Component{
                         flag:res[i].flag,
                     })
                 }
-                console.log('2222222')
-                console.log(rightTableData)
                 this.setState({
                     rightTableData: rightTableData,
                 });
-                console.log('kkkkkkkkkkkk')
-                console.log(this.state.rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({

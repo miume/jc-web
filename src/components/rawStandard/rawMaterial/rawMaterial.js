@@ -111,7 +111,8 @@ class RawMaterial extends Component {
             message.info('信息填写不完整!');
             return
         }
-        console.log(value)
+        console.log(value['materialName'])
+        console.log(this.state.testItems.toString())
         axios({
             url: `${this.props.url.rawStandard.addNewRaw}?materialName=${value['materialName']}&testItemIds=${this.state.testItems.toString()}`,
             method: 'post',

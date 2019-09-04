@@ -52,10 +52,7 @@ class CheckPlan extends React.Component {
     }
 
     renderEquipmentName = (data) =>  {
-        console.log("data",data);
         var first=data.slice(0,7);
-        console.log(this.state.updatebackground)
-        console.log(this.state.flags)
         return (
             <div >
                 <div className="eq-outside">
@@ -131,7 +128,6 @@ class CheckPlan extends React.Component {
                 parentname:item.parentname,
                 deptCode:code
             })
-            console.log(this.state.parentname)
         } else {
             item.isSelect = false;
         }
@@ -144,7 +140,6 @@ class CheckPlan extends React.Component {
     getRightData = (code, deviceName) => {
 
         code = parseInt(code)
-        console.log(code)
         this.setState({
             deptCode:code
         })
@@ -212,8 +207,6 @@ class CheckPlan extends React.Component {
     };
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        console.log(params)
-        console.log(this.state.deviceName)
         if (flag) {
             var {pagination} = this.state;
             pagination.current = 1;
@@ -241,12 +234,10 @@ class CheckPlan extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].deviceSpotcheckPlans;
-                    console.log('11111')
                     rightTableData.push({
                         index:i+1,
                         code:arr['code'],
@@ -258,14 +249,10 @@ class CheckPlan extends React.Component {
                         detailNum:res.list[i].detailNum
                     })
                 }
-                console.log('2222222')
-                console.log(rightTableData)
                 this.setState({
                     rightTableData: rightTableData,
                     deviceName: params.deviceName
                 });
-                console.log('kkkkkkkkkkkk')
-                console.log(this.state.rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
@@ -290,7 +277,6 @@ class CheckPlan extends React.Component {
         this.getTableData(params, 0)
     }
     searchEvent = () => {
-        console.log('调用查询借口并')
         this.setState({
             pageChangeFlag:1
         });
@@ -305,7 +291,6 @@ class CheckPlan extends React.Component {
         this.setState({
             searchContent: value
         })
-        console.log(this.state.searchContent)
     }
 
 
@@ -318,7 +303,6 @@ class CheckPlan extends React.Component {
             deviceName:name
         })
         this.getTableData(params, 0)
-        console.log("props",this.state.updatebackground)
         this.setState({flags:this.state.updatebackground},()=>{
             var flagx=this.state.flags;
             const index=flagx.indexOf(1);
