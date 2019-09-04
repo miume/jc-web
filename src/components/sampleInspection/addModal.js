@@ -491,7 +491,7 @@ const CollectionCreateForm = Form.create()(
                                     {
                                         this.state.serialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName+" - "+pe.manufacturerName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.materialName+" - "+pe.manufacturerName}</Option>
                                             )
                                         })
                                     }
