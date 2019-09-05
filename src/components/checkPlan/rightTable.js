@@ -19,7 +19,6 @@ class RightTable extends React.Component{
     }
 
     handleDelete = (id) => {
-        console.log('删除成功')
         axios({
             url:`${this.props.url.SpotcheckPlan.deleteByCode}`,
             method:'Delete',

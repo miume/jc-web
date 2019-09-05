@@ -17,7 +17,6 @@ class TTable extends React.Component{
     }
 
     handleDelete = (id) => {
-        console.log('删除成功')
         // axios({
         //     url:`${this.url.department.department}/${id}`,
         //     method:'Delete',

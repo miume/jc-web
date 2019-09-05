@@ -41,7 +41,6 @@ class Add extends React.Component{
                 var rightTableData = [];
                 for (var i = 0; i < res.length; i++) {
                     var arr = res[i].deviceDocumentMain;
-                    console.log('11111')
                     rightTableData.push({
                         index:i+1,
                         departName:this.props.departName,
