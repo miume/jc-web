@@ -39,10 +39,10 @@ constructor(props){
             <span className={this.props.flag===2?'blue':'hide'} onClick={this.makeplan}>
               新增点检计划
             </span>
-            <span className={this.props.flag===0?'green':'hide'}>
+            <span className={this.props.flag===1?'green':'hide'}>
                 计划已制定
             </span>
-                <span className={this.props.flag===1?'green':'hide'}>
+                <span className={this.props.flag===0?'green':'hide'}>
                     无点检模板
                 </span>
             </span>
