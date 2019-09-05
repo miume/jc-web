@@ -28,7 +28,7 @@ class CheckPlan extends React.Component {
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             Tableflag: '',
-            parentname: '',
+            departName: '',
             updatebackground:[],
             topNumber:'',
             flag:true,
@@ -123,9 +123,10 @@ class CheckPlan extends React.Component {
 
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {
+            console.log(item)
             item.isSelect = true;
             this.setState({
-                parentname:item.parentname,
+                departName:item.value,
                 deptCode:code
             })
         } else {
@@ -216,14 +217,6 @@ class CheckPlan extends React.Component {
                 searchContent: '',
                 pagination:pagination
             })
-            // var {pagination} = this.state;
-            // pagination.current = 1;
-            // pagination.total = 0;
-            // this.setState({
-            //     pageChangeFlag:0,
-            //     searchContent:'',
-            //     pagination:pagination
-            // })
         }
         axios({
             url: `${this.url.SpotcheckPlan.page}`,
@@ -337,8 +330,9 @@ class CheckPlan extends React.Component {
         }
     };
     firstname=(e)=>{
+        console.log(e)
         this.setState({
-            parentname:e
+            departName:e
         })
     }
     /**返回数据录入页面 */
@@ -356,7 +350,7 @@ render(){
             <div className="checkP-DE-demo" >
                 <div className="checkP-DE-left" >
                     <div  className="checkP-eqblocka">
-                        设备名称(请选择）
+                        部门名称(请选择）
                     </div>
                     <DepTree
                         getRightData={this.getRightData}
@@ -374,7 +368,7 @@ render(){
                     <div>
                         <div className="checkP_buttons">
                             <div className="checkp-left">
-                                <Add deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.parentname} pagination={this.state.pagination}
+                                <Add deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.departName} pagination={this.state.pagination}
                                 fetch={this.getTableData}/>
                             </div>
                             <div className="check_right">

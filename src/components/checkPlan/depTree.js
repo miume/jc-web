@@ -115,8 +115,9 @@ class DepTree extends Component {
                     dataSource[0].children.push(parenObj);
                 }
                 if (res[0] && res[0].son) {
+                    console.log(res[0])
                     this.props.getRightData(res[0].son[0].code,'')
-                    this.props.firstname(res[0].parent.name)
+                    this.props.firstname(res[0].son[0]?res[0].son[0].name:'')
                 }
                 this.setState({
                     dataSource: dataSource,

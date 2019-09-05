@@ -10,6 +10,8 @@ constructor(props){
 }
 
     makeplan=()=>{
+        console.log(this.props.record.code)
+        console.log(this.props.record.deviceName)
         axios({
             url: `${this.props.url.SpotcheckPlan.SpotcheckPlan1}`,
             method: 'post',

@@ -36,7 +36,6 @@ class Add extends React.Component{
             }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
             if (res) {
                 var rightTableData = [];
                 for (var i = 0; i < res.length; i++) {

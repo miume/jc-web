@@ -66,6 +66,7 @@ class TTable extends React.Component{
             key: 'operation',
             align: 'left',
             render: (text, record) => {
+                console.log(record)
                 return (
                     <span>
                     <MakePlan  flag={record.flag} url={this.props.url} record={record} deptId={this.props.deptId} deviceName={this.props.deviceName}
