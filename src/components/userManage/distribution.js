@@ -3,6 +3,7 @@ import axios from "axios";
 import {Table,Modal} from "antd";
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
+import Tr from "./tr";
 
 class Distribution extends React.Component{
     url
@@ -11,7 +12,7 @@ class Distribution extends React.Component{
         this.state={
             visible:false,
             appAuth:[],
-            userAuth:[]
+            userAuth:[],
         }
     }
     showModal = () => {
@@ -78,8 +79,21 @@ class Distribution extends React.Component{
                     <CancleButton key='back' handleCancel={this.handleCancel}/>,
                     <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                 ]}>
-                    <table>
-                        
+                    <table className="batchTable">
+                        <thead className="bactchHead">
+                            <tr>
+                                <th style={{textAlign:"center"}}>序号</th>
+                                <th style={{textAlign:"center"}}>权限名称</th>
+                                <th style={{textAlign:"center"}}>是否拥有</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.appAuth.length!==0?this.state.appAuth.map((value,item)=>{
+                                    return <Tr key={item} index={item} value={value} userAuth={this.state.userAuth}/>
+                                }):null
+                            }
+                        </tbody>
                     </table>
                 </Modal>
             </span>
