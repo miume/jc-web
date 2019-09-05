@@ -116,6 +116,10 @@ class AddBut extends React.Component{
             data["peopleName"] = peopleName;
 
             // console.log(data)
+            if(this.state.date==""){
+                message.info("新增失败,时间不能为空");
+                return
+            }
             axios({
                 url:`${this.url.deviceSpot.addCheck}`,
                 method:"post",
