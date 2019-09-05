@@ -9,6 +9,7 @@ import SearchCell from '../BlockQuote/search';
 import UserAddModal from './userAddModal';
 import NewButton from "../BlockQuote/newButton";
 import CancleButton from '../BlockQuote/cancleButton';
+import Distribution from "./distribution";
 
 const Option = Select.Option;
 const EditableContext = React.createContext(); // ??这个是什么作用
@@ -199,6 +200,7 @@ class User extends React.Component{
       width: '18%',
       align:'center',
       render : (text, record) =>  {
+        // console.log(record.id)
         const editable = this.isEditing(record);
         return (
             <span>
@@ -225,6 +227,8 @@ class User extends React.Component{
                 <span className='blue'>删除</span>
                 </Popconfirm>
               </span>
+              <Divider type='vertical' />
+              <Distribution userId = {record.id}/>
             </span>
           );
         }

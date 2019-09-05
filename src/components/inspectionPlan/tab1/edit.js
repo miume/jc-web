@@ -155,7 +155,7 @@ class Edit extends React.Component{
                             this.state.devicePatrolPlanRecordLocationDetailsList.map((value,item)=>{
                                 return (<tr key={item}>
                                     <td>{item}</td>
-                                    <td>{value.patrolContent}</td>
+                                    <td>{value.locationName}</td>
                                 </tr>)
                             })
                         }

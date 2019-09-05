@@ -95,6 +95,12 @@ class Home extends Component {
                 getAll:`${server}/jc/common/authUser/getAll`,
                 getAllById:`${server}/jc/common/authUser/getById`
             },
+            /**权限模块，app用户 */
+            appUserAuth:{
+                getAllAuth:`${server}/jc/common/appUserAuth/getAllAuth`,
+                getAuthByUserId:`${server}/jc/common/appUserAuth/getAuthByUserId`,
+                update:`${server}/jc/common/update`
+            },
             /**流程管理 */
             processManagement:{
                 deleteByIds:`${server}/jc/common/batchAuditTask`,
