@@ -56,7 +56,6 @@ class EARight extends Component {
             deviceName: name
         }
         this.props.getTableData(params, {})
-        //console.log("props",this.props.updatebackground)
         this.setState({flags:this.props.updatebackground},()=>{
             var flagx=this.state.flags;
             const index=flagx.indexOf(1);
@@ -81,7 +80,6 @@ class EARight extends Component {
                 }
                 else break;
             }
-            console.log(num)
         }
         let first=data.slice(0,num)
         return (
