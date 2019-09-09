@@ -109,7 +109,7 @@ class JudgeModal extends React.Component{
                             complete:newRowData[i].levels
                         })
                     }
-                    if(newRowData[i].itemName==="修复及时性"){
+                    if(newRowData[i].itemName==="维修及时性"){
                         this.setState({
                             inTime:newRowData[i].levels
                         })
