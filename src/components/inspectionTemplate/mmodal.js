@@ -14,12 +14,8 @@ class Mmodal extends React.Component {
         super(props)
         this.state={
             visible:false,
-            current:1,
-            leftDataSource:[{
-                index:1,
-                patrolContent:'',
-
-            }],
+            current:0,
+            leftDataSource:[],
             dataSource2:[],
             dataSource3:[],
             selectedRows : [],
@@ -48,6 +44,12 @@ class Mmodal extends React.Component {
         console.log(record)
         // this.changerecord(e.target.value)
 }
+    onChange2=(e,record)=>{
+        console.log(e.target.value)
+        record.patrolItem=e.target.value
+        console.log(record)
+        // this.changerecord(e.target.value)
+    }
 
     render(){
         const { Option } = Select;
@@ -59,12 +61,26 @@ class Mmodal extends React.Component {
             dataIndex:'index',
             key:'index',
             sorter:(a,b) =>a.id-b.id,
-            width:'20%',
+            width:'15%',
         },{
+                title:'巡检项目',
+                dataIndex:'patrolItem',
+                key:'patrolItem',
+                width:'30%',
+                render:(text,record) => {
+                    return(
+                        <span>
+                        <Innput   record={record} onChange={this.onChange2} value={record.patrolItem}
+                                  changepatrolContent={this.changepatrolItem}/>
+
+                    </span>
+                    )
+                }
+            },{
             title:'巡检内容',
             dataIndex:'patrolContent',
             key:'patrolContent',
-            width:'40%',
+            width:'30%',
             render:(text,record) => {
                 return(
                     <span>
@@ -134,12 +150,12 @@ class Mmodal extends React.Component {
             dataIndex:'index',
             key:'index',
             sorter:(a,b) =>a.id-b.id,
-            width:'20%',
+            width:'15%',
         },{
             title:'巡检位置',
             dataIndex:'locationName',
             key:'locationName',
-            width:'40%'
+            width:'70%'
         }];
         const {selectedRowKeys} = this.state;
         const rowSelection = {
@@ -167,13 +183,12 @@ class Mmodal extends React.Component {
                      <CancleButton key='cancel' handleCancel={this.props.onCanCel} />]}
              >
                  <Row>
-                          <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;{this.props.name}</Col>
+                          <Col span={6} style={{paddingTop:8}}>所属车间:&nbsp;&nbsp;&nbsp;{this.props.name}</Col>
                           <Col span={9}>
-                              <div className="example-input">巡检模板名称:<Input placeholder="请输入巡检模板名称" size="small"  onChange={this.valueChange} value={this.state.patrolName}/> </div></Col>
+                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;&nbsp;<Input placeholder="请输入巡检模板名称" size="small"  onChange={this.valueChange} value={this.state.patrolName}/> </div></Col>
                           <Col span={9} >
                               <div>
-                                  检查类型:
-                                <Select  style={{ width: 240 ,paddingLeft:20}} onChange={this.handleChange} value={this.state.value?'电气类':'机械类'} >
+                                  检查类型:<Select  style={{ width: 240 ,paddingLeft:10}} onChange={this.handleChange} value={this.state.value?'电气类':'机械类'} >
                                       <Option value="false">机械类</Option>
                                       <Option value="true">电气类</Option>
                                 </Select>
@@ -189,19 +204,18 @@ class Mmodal extends React.Component {
                          size="small"
                          dataSource={this.state.leftDataSource}
                          scroll={{ y: 312 }}
+                         bordered
                          />
-
-
-
                  </div>
 
                  <div className="inspection-Right-Table" style={{paddingTop:20}}>
-                     <span>巡检区域：</span>
+                     <span>巡检区域:&nbsp;&nbsp;&nbsp;</span>
                      <span className="blue" style={{float:'right'}} onClick={this.addtable2}>新增</span>
                      <Table
                         columns={this.column2}
                         dataSource={this.state.dataSource2}
                         size="small"
+                        bordered
                         scroll={{ y: 312 }}
                      />
 
@@ -210,7 +224,7 @@ class Mmodal extends React.Component {
                           closable={false}
                           centered={true}
                           maskClosable={false}
-                          width="800px"
+                          width="500px"
                           height="464"
                           title="新增数据"
                           footer={[
@@ -249,7 +263,8 @@ class Mmodal extends React.Component {
         for(var i=0;i<this.state.leftDataSource.length;i++)
         {
             devicePatrolModelsItemDetailsList.push({
-                patrolContent:this.state.leftDataSource[i].patrolContent
+                patrolContent:this.state.leftDataSource[i].patrolContent,
+                patrolItem:this.state.leftDataSource[i].patrolItem,
             })
         }
         var devicePatrolModelsLocationDetails=[];
@@ -275,39 +290,42 @@ class Mmodal extends React.Component {
             devicePatrolModelsLocationDetails:devicePatrolModelsLocationDetails,
             setPeople: this.props.userName,
         }
-        axios({
-            url: `${this.props.url.devicePatrolModel.add}`,
-            method: 'post',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            },
-            data: addData,
-            type: 'json'
-        }).then((data) => {
-            this.props.fetch({
-                deptId:this.props.deptCode,
-            },1)
-            this.setState({
-                visible:false,
-                current:1,
-                leftDataSource:[{
-                    index:1,
-                    patrolContent:'',
-
-                }],
-                dataSource2:[],
-                dataSource3:[],
-                selectedRows : [],
-                selectedRowKeys:[],
-                rightcurrent:1,
-                value:false,
-                patrolName:'',
+        console.log(addData);
+        if(this.state.patrolName) {
+            axios({
+                url: `${this.props.url.devicePatrolModel.add}`,
+                method: 'post',
+                headers: {
+                    'Authorization': this.props.url.Authorization
+                },
+                data: addData,
+                type: 'json'
+            }).then((data) => {
+                console.log(data)
+                this.props.fetch({
+                    deptId: this.props.deptCode,
+                }, 1)
+                this.setState({
+                    visible: false,
+                    current: 1,
+                    leftDataSource: [{}],
+                    dataSource2: [],
+                    dataSource3: [],
+                    selectedRows: [],
+                    selectedRowKeys: [],
+                    rightcurrent: 1,
+                    value: false,
+                    patrolName: '',
+                })
+                this.props.changevisible()
+                message.info('新增成功')
+            }).catch(() => {
+                message.info('新增失败，请联系管理员！')
             })
-            this.props.changevisible()
-        }).catch(()=>{
-            message.info('新增失败，请联系管理员！')
-        })
-
+        }else
+        {
+            message.info('模板名称不能为空')
+        }
 
     }
 
@@ -326,6 +344,7 @@ class Mmodal extends React.Component {
         this.state.leftDataSource.push({
             index:current,
             patrolContent:'',
+            patrolItem:'',
         })
         console.log(this.state.leftDataSource)
         this.setState({
@@ -350,11 +369,11 @@ class Mmodal extends React.Component {
             }
         }).then( (data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
+            // console.log(res)
             this.pagination.total=res?res.total:0;
             this.pagination.current=res.page;
             if (res) {
-                console.log('11111')
+                // console.log('11111')
                 var TableData=[];
                 for(var i=0 ; i<res.list.length;i++){
                     var arr=res.list[i]
@@ -366,10 +385,17 @@ class Mmodal extends React.Component {
                         index:i+1,
                     })
                 }
+                // var  kk=[{
+                //     code:12,
+                //     deptCode:2,
+                //     index:2,
+                //     locationName:'asdsadsa',
+                // }]
                 this.setState({
                     dataSource3:TableData
                 })
-                console.log(TableData)
+                // console.log(TableData)
+                // message.info('新增成功')
             } else {
             message.info('查询失败，请刷新下页面！')
             this.setState({
@@ -455,7 +481,13 @@ class Mmodal extends React.Component {
             leftDataSource:dataSource
         })
     }
-
+    changepatrolItem=(e,record)=>{
+        record.patrolItem=e
+        const dataSource=this.state.leftDataSource
+        this.setState({
+            leftDataSource:dataSource
+        })
+    }
 
     onChange=()=>{
         this.setState({

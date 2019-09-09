@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import {Tree } from 'antd';
+import {Tree} from 'antd';
 import axios from "axios";
-import "./checkQuery.css"
 class DepTree extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expandedKeys: ['0','1'],
+            expandedKeys: [],
             addDeptVisable: false,
             dataSource: [{
                 value: '总公司',
@@ -21,14 +20,13 @@ class DepTree extends Component {
                 code: null,
                 name: '',
                 parentCode: null
-            }
+            },
         };
         this.getData = this.getData.bind(this)
         this.onSelect = this.onSelect.bind(this)
 
         this.onExpand = this.onExpand.bind(this)
         this.renderTreeNodes = this.renderTreeNodes.bind(this)
-        this.handleSelect = this.handleSelect.bind(this)
     }
 
     componentDidMount() {
@@ -39,7 +37,7 @@ class DepTree extends Component {
 
     render() {
         return (
-            <div className="checkQ-tree">
+            <div className="checkp-tree">
                 <Tree
                     showLine
                     onSelect={this.onSelect}
@@ -73,6 +71,9 @@ class DepTree extends Component {
                 isEditable: false,
                 children: []
             }];
+            console.log('-----------------------')
+            console.log(res)
+            console.log('-----------------------')
             if (res) {
                 var expandedKeys = ["0"];
                 for (let i = 0; i < res.length; i++) {
@@ -83,7 +84,8 @@ class DepTree extends Component {
                         code: arrParent.code.toString(),
                         parentCode: '0',
                         isSelect: false,
-                        children: []
+                        children: [],
+                        parentname:'总公司'
                     };
                     if(i === 0){
                         expandedKeys.push(arrParent.code.toString())
@@ -98,7 +100,8 @@ class DepTree extends Component {
                                 code: arr.code.toString(),
                                 parentCode: arr.parentCode.toString(),
                                 isSelect: true,
-                                children: []
+                                children: [],
+                                parentname:arrParent.name
                             });
                         }else{
                             parenObj['children'].push({
@@ -107,7 +110,8 @@ class DepTree extends Component {
                                 code: arr.code.toString(),
                                 parentCode: arr.parentCode.toString(),
                                 isSelect: false,
-                                children: []
+                                children: [],
+                                parentname:arrParent.name,
                             });
                         }
                     }
@@ -115,17 +119,15 @@ class DepTree extends Component {
                 }
                 if (res[0] && res[0].son) {
                     this.props.getRightData(res[0].son[0].code,'')
-                    this.props.firstworkshop(res[0].son[0].name)
                 }
                 this.setState({
                     dataSource: dataSource,
                     addDeptVisable: false,
-                     expandedKeys: expandedKeys,
+                    expandedKeys: expandedKeys,
                     saveData: {
                         code: null,
                         name: '',
                         parentCode: null
-
                     },
                 })
                 console.log(expandedKeys)
@@ -138,23 +140,14 @@ class DepTree extends Component {
 
     onSelect = (selectedKeys, e) => {
         var dataSource = this.state.dataSource;
-        this.handleSelect(selectedKeys[0],dataSource);
+        this.props.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-        this.props.changeworkshop(e.node.props.dataRef.value)
+        console.log(e.node)
+        console.log(e.node.props)
+        console.log(e.node.props.dataRef)
         console.log(e.node.props.dataRef.value)
     }
-    handleSelect = (code, data) => data.map((item) => {
-        if (item.code === code) {
-            item.isSelect = true;
-        } else {
-            item.isSelect = false;
-        }
-        //Tip: Must have, when a node is editable, and you click a button to make other node editable, the node which you don't save yet will be not editable, and its value should be defaultValue
-        // item.isSelect = false;
-        if (item.children) {
-            this.handleSelect(code, item.children)
-        }
-    });
+
 
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {
@@ -164,7 +157,7 @@ class DepTree extends Component {
     // 展开树节点
     renderTreeNodes = data => data.map((item) => {
         item.title = ( // 不处于编辑状态
-            <div className={item.isSelect?"checkQ-depTreeSelect":""}>
+            <div className={item.isSelect?"checkp-depTreeSelect":""}>
                 <span>
                     {item.value}
                 </span>

@@ -118,6 +118,7 @@ class AddProductStandard extends React.Component{
             //console.log(details)
             testItems['index'] = i+1;
             testItems['value'] = e.techniqueProductTestItemStandard.value;
+            testItems['unit'] = e.testItem.unit
             data.push(testItems)
         }
         this.setState({

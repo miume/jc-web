@@ -12,10 +12,9 @@ constructor(props){
     makeplan=()=>{
         console.log(this.props.record.code)
         console.log(this.props.record.deviceName)
-        console.log('2321321312321312')
         axios({
             url: `${this.props.url.SpotcheckPlan.SpotcheckPlan1}`,
-            method: 'put',
+            method: 'post',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
@@ -31,7 +30,6 @@ constructor(props){
                 deviceName:this.props.deviceName
             })
             this.props.fresh()
-            console.log('调用成功')
             message.info(data.data.message);
         }).catch(()=>{
             message.info('编辑失败，请联系管理员！')
@@ -43,10 +41,10 @@ constructor(props){
             <span className={this.props.flag===2?'blue':'hide'} onClick={this.makeplan}>
               新增点检计划
             </span>
-            <span className={this.props.flag===0?'green':'hide'}>
+            <span className={this.props.flag===1?'green':'hide'}>
                 计划已制定
             </span>
-                <span className={this.props.flag===1?'green':'hide'}>
+                <span className={this.props.flag===0?'green':'hide'}>
                     无点检模板
                 </span>
             </span>

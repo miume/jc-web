@@ -35,7 +35,7 @@ class Detail extends React.Component{
             if(res){
                 this.setState({
                     data : res,
-                    effectDate:res.deviceSpotcheckModelsHead.effectDate,
+                    effectDate:res.deviceSpotcheckModelsHead.modelName,
                     tabulateDate:res.deviceSpotcheckModelsHead.tabulateDate,
                     peopleName:res.peopleName,
                     radioValue:res.deviceSpotcheckModelsHead.modelStatus,
@@ -75,13 +75,13 @@ class Detail extends React.Component{
                     <div>
                         <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
                         <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
-                        <span className="headers">生效日期：</span><span className="checkName">{this.state.effectDate}</span>
+                        <span className="headers">模板名称：</span><span className="checkName">{this.state.effectDate}</span>
                         <div>
                         <span className="headers">模板状态：</span><Radio.Group value={this.state.radioValue} disabled={true}>
                             <Radio value={false}>生效</Radio>
                             <Radio value={true}>失效</Radio>
                         </Radio.Group>
-                        <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.name:"管理员"}</span>
+                        <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.peopleName:"管理员"}</span>
                         <span className="headersDate">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
                         </div>
                     </div>

@@ -161,7 +161,7 @@ class InspectionTemplate extends React.Component{
     getRightData = (code, deviceName) => {
 
         code = parseInt(code)
-        console.log(code)
+        // console.log(code)
         this.setState({
             deptCode:code
         })
@@ -170,7 +170,7 @@ class InspectionTemplate extends React.Component{
     };
     getTableData = (params, flag) => {
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        console.log(params)
+        // console.log(params)
         if (flag) {
             var pagination = this.pagination;
             pagination.current = 1;
@@ -190,14 +190,14 @@ class InspectionTemplate extends React.Component{
             params: params,
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
+            // console.log(res)
             this.pagination.total=res?res.total:0;
             this.pagination.current=res.page;
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].devicePatrolModelsHead;
-                    console.log('11111')
+                    // console.log('11111')
                     if(arr['checkType']===true){
                         arr['checkType']='电气类'
                     }else
@@ -215,14 +215,14 @@ class InspectionTemplate extends React.Component{
                         workshop:this.state.name,
                     })
                 }
-                console.log('2222222')
-                console.log(rightTableData)
+                // console.log('2222222')
+                // console.log(rightTableData)
                 this.setState({
                     rightTableData: rightTableData,
                     deviceName: params.deviceName
                 });
-                console.log('kkkkkkkkkkkk')
-                console.log(this.state.rightTableData)
+                // console.log('kkkkkkkkkkkk')
+                // console.log(this.state.rightTableData)
             } else {
             message.info('查询失败，请刷新下页面！')
             this.setState({

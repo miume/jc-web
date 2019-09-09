@@ -17,7 +17,6 @@ class TTable extends React.Component{
     }
 
     handleDelete = (id) => {
-        console.log('删除成功')
         // axios({
         //     url:`${this.url.department.department}/${id}`,
         //     method:'Delete',
@@ -67,6 +66,7 @@ class TTable extends React.Component{
             key: 'operation',
             align: 'left',
             render: (text, record) => {
+                console.log(record)
                 return (
                     <span>
                     <MakePlan  flag={record.flag} url={this.props.url} record={record} deptId={this.props.deptId} deviceName={this.props.deviceName}

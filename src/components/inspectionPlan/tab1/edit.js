@@ -131,7 +131,7 @@ class Edit extends React.Component{
                         <b className="headers">巡检项目：</b>
                         <table className="planTable">
                             <thead className="planHead">
-                                <tr><th>序号</th><th>巡检内容</th></tr>
+                                <tr><th>序号</th><th>巡检内容</th><th>巡检项目</th></tr>
                             </thead>
                             <tbody>
                         {
@@ -139,6 +139,7 @@ class Edit extends React.Component{
                                 return (<tr key={item}>
                                     <td>{item}</td>
                                     <td>{value.patrolContent}</td>
+                                    <td>{value.patrolItem}</td>
                                 </tr>)
                             })
                         }
@@ -154,7 +155,7 @@ class Edit extends React.Component{
                             this.state.devicePatrolPlanRecordLocationDetailsList.map((value,item)=>{
                                 return (<tr key={item}>
                                     <td>{item}</td>
-                                    <td>{value.patrolContent}</td>
+                                    <td>{value.locationName}</td>
                                 </tr>)
                             })
                         }

@@ -128,13 +128,13 @@ class BatchRule extends React.Component{
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="批次规则" />
-                <div style={{padding: '15px'}}>
+                <div className="batchTableRule" style={{padding: '15px'}}>
                     <strong>代码示例：</strong><strong>{this.state.year}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.productType}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.month}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.serialNum}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.productModel}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.productLine}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.materialType}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.process}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.slot}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.slotNumber}</strong>
-                    <Table columns={this.columns} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.code} size="small" bordered/>
+                    <Table pagination={{hideOnSinglePage:true}} columns={this.columns} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.code} size="small" bordered/>
                 </div>
             </div>
         )

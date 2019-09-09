@@ -36,12 +36,10 @@ class Add extends React.Component{
             }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
             if (res) {
                 var rightTableData = [];
                 for (var i = 0; i < res.length; i++) {
                     var arr = res[i].deviceDocumentMain;
-                    console.log('11111')
                     rightTableData.push({
                         index:i+1,
                         departName:this.props.departName,
@@ -53,13 +51,9 @@ class Add extends React.Component{
                         flag:res[i].flag,
                     })
                 }
-                console.log('2222222')
-                console.log(rightTableData)
                 this.setState({
                     rightTableData: rightTableData,
                 });
-                console.log('kkkkkkkkkkkk')
-                console.log(this.state.rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({

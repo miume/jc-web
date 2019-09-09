@@ -378,11 +378,6 @@ class LeftLayout extends React.Component{
                             })
                             }
 
-                        {/*    this.props.statusCode.map(es => {*/}
-                        {/*    return (*/}
-                        {/*    <Select.Option key={es.code} value={es.code}>{es.name}</Select.Option>*/}
-                        {/*    )*/}
-                        {/*})*/}
                     </div>
                     <div className="eqMaintenance-DE-right">
                         <Right url={this.url}

@@ -66,7 +66,7 @@ class AddModal extends React.Component{
             });
     };
     handleCreate = () =>{
-        // console.log(parseInt(this.props.deptCode),this.state.planName,this.state.checkType,this.state.date,this.state.devicePatrolModelsHead.code)
+        console.log(parseInt(this.props.deptCode),this.state.planName,this.state.checkType,this.state.date,this.state.devicePatrolModelsHead.code)
         axios({
             url:`${this.url.devicePatrolPlan.add}`,
             method:"post",
@@ -76,7 +76,7 @@ class AddModal extends React.Component{
             params:{deptId:parseInt(this.props.deptCode),planName:this.state.planName,checkType:this.state.checkType === false?0:1,planDate:this.state.date,modelId:this.state.devicePatrolModelsHead.code},
             type:"json"
         }).then((data)=>{
-            // console.log(data)
+            console.log(data)
             if(data.data.code !== 0){
                 message.info('新增失败')
                 this.setState({
@@ -173,7 +173,7 @@ class AddModal extends React.Component{
                         <b className="headers">巡检项目：</b>
                         <table className="planTable">
                             <thead className="planHead">
-                                <tr><th>序号</th><th>巡检内容</th></tr>
+                                <tr><th>序号</th><th>巡检内容</th><th>巡检项目</th></tr>
                             </thead>
                             <tbody>
                         {
@@ -181,6 +181,7 @@ class AddModal extends React.Component{
                                 return (<tr key={item}>
                                     <td>{item}</td>
                                     <td>{value.patrolContent}</td>
+                                    <td>{value.patrolItem}</td>
                                 </tr>)
                             })
                         }
@@ -196,7 +197,7 @@ class AddModal extends React.Component{
                             this.state.devicePatrolModelsLocationDetails.map((value,item)=>{
                                 return (<tr key={item}>
                                     <td>{item}</td>
-                                    <td>{value.patrolContent}</td>
+                                    <td>{value.locationName}</td>
                                 </tr>)
                             })
                         }
