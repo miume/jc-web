@@ -32,6 +32,8 @@ class EquipmentArchiveManager extends Component {
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
             updatebackground:[],
+            size:10,
+            page:1
         };
         this.getRightData = this.getRightData.bind(this);
         this.getTableData = this.getTableData.bind(this)
@@ -150,6 +152,7 @@ class EquipmentArchiveManager extends Component {
                         }
                     })
                     if (deviceFlag) {
+                        console.log('1--------')
                         this.getTableData({
                             deptName:this.state.deptName,
                             deptId: parseInt(code),
@@ -157,6 +160,8 @@ class EquipmentArchiveManager extends Component {
                         }, 0);
                     } else {
                         this.getTableData({
+                            size: this.state.size,
+                            page: this.state.page,
                             deptName:this.state.deptName,
                             deptId: parseInt(code),
                             deviceName: deviceName
@@ -172,6 +177,11 @@ class EquipmentArchiveManager extends Component {
     };
     handleTableChange = (pagination) => {
         this.pagination = pagination;
+        this.setState({
+            size: pagination.size,
+            page: pagination.current,
+        })
+
         const {pageChangeFlag} = this.state;
         if (pageChangeFlag) {
             this.getTableData({
