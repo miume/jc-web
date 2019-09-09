@@ -1,0 +1,58 @@
+.check-Sa-tree{
+    width: 20%;
+    height: 550px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #F5f5f5;
+}
+.check-Sa-TT{
+    height:50px;
+    width: 100%;
+    background:#F5F5F5;
+    text-align:center;
+    line-height: 50px;
+    padding-bottom: 10px;
+}
+.check-Sa{
+    display:flex;
+    width:100%;
+    padding-top: 15px;
+}
+.check-Sa-right{
+    width: 80%;
+    margin-left: 20px;
+    height: 525px;
+    padding: 5px;
+    display: flex;
+}
+/*.check-Sa-right .calandern .ant-fullcalendar-fullscreen .ant-fullcalendar .ant-fullcalendar-calendar-body .ant-fullcalendar-table{*/
+/*    min-height: 76px;*/
+/*    max-height: 76px;*/
+/*    */
+/*}*/
+/*.ant-fullcalendar-cell{*/
+/*    max-height: 76px;*/
+/*}*/
+.ant-fullcalendar-date{
+    min-height: 76px;
+    max-height: 76px;
+}
+.events {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.events .ant-badge-status {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}
+.notes-month {
+    text-align: center;
+    font-size: 28px;
+}
+.notes-month section {
+    font-size: 28px;
+}

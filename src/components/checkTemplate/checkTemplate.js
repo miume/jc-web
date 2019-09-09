@@ -58,8 +58,8 @@ class CheckTemplate extends React.Component{
             width: '15%',
         },{
             title: '生效日期',
-            dataIndex: 'deviceSpotcheckModelsHead.effectDate',
-            key: 'effectDate',
+            dataIndex: 'deviceSpotcheckModelsHead.modelName',
+            key: 'modelName',
             align:'center',
             width: '15%',
         },{

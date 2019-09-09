@@ -12,13 +12,15 @@
     width:100%;
     overflow-x: hidden;
     white-space: nowrap;
-    border-collapse: collapse
+    border-collapse: collapse;
+    max-height: 450px;
 }
 
 .batchTable .thead{
     color: white;
     text-align: left;
 }
+
 
 .batchTable .bactchHead tr th{
     background: #1890ff !important;

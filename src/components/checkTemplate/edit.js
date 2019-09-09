@@ -89,7 +89,7 @@ class Edit extends React.Component{
                     peopleName:res.peopleName,
                     radioValue:res.deviceSpotcheckModelsHead.modelStatus,
                     deviceSpotcheckModelsDetails:res.deviceSpotcheckModelsDetails,
-                    date:res.deviceSpotcheckModelsHead.effectDate.toString()
+                    date:res.deviceSpotcheckModelsHead.modelName.toString()
                 })
             }
         }).catch((err)=>{
@@ -97,10 +97,10 @@ class Edit extends React.Component{
         })
     }
 
-    onChangeTime = (date, dateString) =>{
+    onChangeTime = (date) =>{
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
         this.setState({
-            date:moment(date).format('YYYY-MM-DD HH:mm:ss')
+            date:date.target.value
         })
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
     }
@@ -129,7 +129,7 @@ class Edit extends React.Component{
             let deviceSpotcheckModelsHead = {};
             let peopleName = "string";
             deviceSpotcheckModelsHead.deviceName = this.props.deviceName;
-            deviceSpotcheckModelsHead.effectDate = this.state.date;
+            deviceSpotcheckModelsHead.modelName = this.state.date;
             deviceSpotcheckModelsHead.modelStatus = this.state.radioValue;
             deviceSpotcheckModelsHead.setPeople = parseInt(this.ob.userId);
             deviceSpotcheckModelsHead.deptCode = this.props.deptCode;
@@ -267,13 +267,13 @@ class Edit extends React.Component{
                     <Form>
                         <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
                             <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
-                            <span className="headers">生效日期：</span><span><DatePicker format="YYYY-MM-DD" locale={locale} showTime={true} style={{width:'200px'}} value={moment(this.state.date,timeFormat)} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
+                            <span className="headers">模板名称：</span><span><Input style={{width:'200px'}} value={this.state.date} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
                             <div className="radios">
                             <span className="headers">模板状态：</span><Radio.Group onChange={this.onChange} value={this.state.radioValue}>
                                 <Radio value={false}>生效</Radio>
                                 <Radio value={true}>失效</Radio>
                             </Radio.Group>
-                            <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.name:"管理员"}</span>
+                            <span className="headersPerson">制表人：</span><span className="checkName">{this.state.peopleName?this.state.peopleName:"管理员"}</span>
                             <span className="headersDate">制表日期：</span><span className="checkName">{this.state.tabulateDate}</span>
                             </div>
                         <Divider />

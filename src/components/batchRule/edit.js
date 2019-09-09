@@ -33,11 +33,14 @@ class Edit extends React.Component{
             },
         }).then((data) => {
             // console.log(data)
-            const res = data.data.data;
+            var res = data.data.data;
             for(var i = 1; i<=res.length; i++){
                 res[i-1]['index']=i;
                 res[i-1]["id"]=i;
             }
+            res.sort((a,b)=>{
+                return a.ruleValue-b.ruleValue
+            });
             if(res){
                 this.setState({
                     dataSource : res,

@@ -66,10 +66,11 @@ class AddBut extends React.Component{
             radioValue:e.target.value
         })
     }
-    onChangeTime = (date, dateString) =>{
+    onChangeTime = (date) =>{
+        // console.log(date.target.value)
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
         this.setState({
-            date:moment(date).format('YYYY-MM-DD HH:mm:ss')
+            date:date.target.value
         })
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
     }
@@ -96,7 +97,7 @@ class AddBut extends React.Component{
             let deviceSpotcheckModelsHead = {};
             let peopleName = "string";
             deviceSpotcheckModelsHead.deviceName = this.props.deviceName;
-            deviceSpotcheckModelsHead.effectDate = this.state.date;
+            deviceSpotcheckModelsHead.modelName = this.state.date;
             deviceSpotcheckModelsHead.modelStatus = this.state.radioValue;
             deviceSpotcheckModelsHead.setPeople = parseInt(this.ob.userId);
             deviceSpotcheckModelsHead.deptCode = this.props.deptCode;
@@ -116,6 +117,10 @@ class AddBut extends React.Component{
             data["peopleName"] = peopleName;
 
             // console.log(data)
+            if(this.state.date==""){
+                message.info("新增失败,时间不能为空");
+                return
+            }
             axios({
                 url:`${this.url.deviceSpot.addCheck}`,
                 method:"post",
@@ -158,7 +163,7 @@ class AddBut extends React.Component{
         const formItems = keys.map((k,index)=>(
             <div key={index}>
                 <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Form.Item>
+                <Form.Item label="项目名称">
                     {getFieldDecorator(`content[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -166,7 +171,7 @@ class AddBut extends React.Component{
                     )}
                 </Form.Item>
               
-                <Form.Item>
+                <Form.Item label="点检标准">
                     {getFieldDecorator(`standard[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -174,7 +179,7 @@ class AddBut extends React.Component{
                     )}
                 </Form.Item>
               
-                <Form.Item>
+                <Form.Item label="点检周期">
                     {getFieldDecorator(`frequency[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -188,7 +193,7 @@ class AddBut extends React.Component{
                     }
                 </Form.Item> */}
               
-                <Form.Item>
+                <Form.Item label="图片">
                     {getFieldDecorator(`address[${k}]`,{
                         validateTrigger: ['onChange', 'onBlur'],
                     })(
@@ -218,7 +223,7 @@ class AddBut extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="新增"
-                    width='800px'
+                    width='1000px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
@@ -227,7 +232,7 @@ class AddBut extends React.Component{
                     <Form>
                         <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
                         <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
-                        <span className="headers">生效日期：</span><span><DatePicker format="YYYY-MM-DD HH:mm:ss" locale={locale} showTime={true} style={{width:'200px'}} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
+                        <span className="headers">模板名称：</span><span><Input style={{width:'200px'}} onChange={this.onChangeTime} placeholder="请输入名称"/></span>
                         <div className="radios">
                             模板状态：<Radio.Group onChange={this.onChange} value={this.state.radioValue}>
                             <Radio value={false}>生效</Radio>

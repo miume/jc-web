@@ -1,10 +1,11 @@
 import React from 'react';
-import { Modal, Form, Input,Select,DatePicker,TimePicker,Col,Checkbox,message  } from 'antd';
+import { Modal, Form, Input,Select,DatePicker,TimePicker,Col,Checkbox,message } from 'antd';
 import axios from "axios";
 import AddButton from '../BlockQuote/newButton';
 import CancleButton from "../BlockQuote/cancleButton";
 import SaveButton from "../BlockQuote/saveButton";
 import moment from "moment";
+import BatchSelect from "./batchSelect"
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -40,7 +41,8 @@ const CollectionCreateForm = Form.create()(
                 processVis : 0,
                 pointVis : 0,
                 materialVis : 0,
-                oldMaterial : undefined
+                oldMaterial : undefined,
+                batchRule:""
             }
             // this.handleClickChange = this.handleClickChange.bind(this);
             this.onChangeTime = this.onChangeTime.bind(this);
@@ -321,6 +323,8 @@ const CollectionCreateForm = Form.create()(
             }
         }
 
+       
+
         render(){
             this.url = JSON.parse(localStorage.getItem('url'));
             this.Authorization = localStorage.getItem("Authorization");
@@ -333,13 +337,14 @@ const CollectionCreateForm = Form.create()(
                     closable={false}
                     title="新增"
                     width="500px"
-                    style={{zIndex:"9999"}}
+                    // style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={onCancel}/>,
                         <SaveButton key="define" handleSave={onCreate} className='fa fa-check' />,
                         <AddButton key="submit" handleClick={onCenter} name='提交' className='fa fa-check' />
                       ]}
                 >
+                    <BatchSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>
                     <Form horizontal='true'>
                         <FormItem wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('type', {
@@ -447,9 +452,9 @@ const CollectionCreateForm = Form.create()(
                         </FormItem>
                         <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
-                                rules: [{ required: true, message: '请选择受检物料' }],
+                                rules: [{ required: true, message: '请选择中间品标准' }],
                             })(
-                                <Select placeholder="请选择受检物料">
+                                <Select placeholder="请选择中间品标准">
                                     <Option key={this.state.materials.id} value={this.state.materials.id}>{this.state.materials.serialNumber+' - '+this.state.materials.materialName}</Option>
                                 </Select>
                             )}
@@ -480,13 +485,13 @@ const CollectionCreateForm = Form.create()(
                         {
                             this.state.visible1 === 1 ?  <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
-                                rules: [{ required: true, message: '请选择受检物料' }],
+                                rules: [{ required: true, message: '请选择原材料标准' }],
                             })(
-                                <Select placeholder="请选择受检物料" onChange={this.materialsItem}>
+                                <Select placeholder="请选择原材料标准" onChange={this.materialsItem}>
                                     {
                                         this.state.serialNumber.map(pe=>{
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.serialNumber+' - '+pe.materialName+" - "+pe.manufacturerName}</Option>
+                                                <Option key={pe.id} value={pe.id}>{pe.materialName+" - "+pe.manufacturerName}</Option>
                                             )
                                         })
                                     }
@@ -494,9 +499,9 @@ const CollectionCreateForm = Form.create()(
                             )}
                         </FormItem> : this.state.visible1 === 3 ?  <FormItem wrapperCol={{ span: 24 }}>
                             {getFieldDecorator('serialNumberId', {
-                                rules: [{ required: true, message: '请选择受检物料' }],
+                                rules: [{ required: true, message: '请选择成品标准' }],
                             })(
-                                <Select placeholder="请选择受检物料">
+                                <Select placeholder="请选择成品标准">
                                     {
                                         this.state.FinalserialNumber.map(pe=>{
                                             return(
@@ -538,6 +543,7 @@ class AddModal extends React.Component{
         serialNumberId:null,
         testItemIds:[],
         type:null,
+        batchRule:""
     };
 
     onChange = (checkedValues) =>{
@@ -545,6 +551,13 @@ class AddModal extends React.Component{
             testItemIds:checkedValues
         })
       }
+
+      onBatchCenter = (batchRule)=>{
+        // console.log(batchRule);
+        this.setState({
+            batchRule:batchRule
+        })
+    }
 
     // onChangeItem = ()=>{
     //     this.setState({
@@ -557,7 +570,7 @@ class AddModal extends React.Component{
 
     handleCancel = () => {
         const form = this.formRef.props.form;
-        this.setState({ visible: false });
+        this.setState({ visible: false,batchRule:"" });
         form.resetFields();
     };
 
@@ -574,7 +587,7 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            let data = {sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
+            let data = {batch:this.state.batchRule,sampleDeliveringRecord:{acceptStatus:-1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
                 url:`${this.url.sampleInspection.getAll}`,
@@ -588,7 +601,7 @@ class AddModal extends React.Component{
                 message.info(data.data.message);
                 this.props.fetch({sortField: 'id',
                 sortType: 'desc',});
-                this.setState({ visible: false });
+                this.setState({ visible: false,batchRule:"" });
                 form.resetFields();
             })
         })
@@ -603,7 +616,7 @@ class AddModal extends React.Component{
             let date = moment(value.date).format("YYYY-MM-DD")
             let time = moment(value.time).format("HH:mm:ss")
             let dateTime = date + " " + time
-            let data = {sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
+            let data = {batch:this.state.batchRule,sampleDeliveringRecord:{acceptStatus:1,delivererId:value.id,deliveryFactoryId:value.deliveryFactoryId,exceptionComment:value.exceptionComment,
                 sampleDeliveringDate:dateTime,serialNumberId:value.serialNumberId,type:value.type},testItemIds:this.state.testItemIds}
             axios({
                 url:`${this.url.sampleInspection.getAll}`,
@@ -617,7 +630,7 @@ class AddModal extends React.Component{
                 message.info(data.data.message);
                 this.props.fetch({sortField: 'id',
                 sortType: 'desc',});
-                this.setState({ visible: false });
+                this.setState({ visible: false,batchRule:"" });
                 form.resetFields();
             })
         })
@@ -637,6 +650,8 @@ class AddModal extends React.Component{
                     onCreate={this.onCreate}
                     onChange={this.onChange}
                     onCenter={this.onCenter}
+                    onBatchCenter={this.onBatchCenter}
+                    batchRule={this.state.batchRule}
                     // onChangeItem={this.onChangeItem}
                 />
             </span>

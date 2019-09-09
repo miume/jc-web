@@ -72,6 +72,7 @@ class InspectionDetailModal extends React.Component{
                         InspectionContent:devicePatrolPlanRecordItemDetailsList[i1].patrolContent,
                         inspectionResult:devicePatrolPlanRecordItemDetailsList[i1].mainValues,
                         reason:devicePatrolPlanRecordItemDetailsList[i1].mainContent,
+                        InspectionItem:devicePatrolPlanRecordItemDetailsList[i1].patrolItem
                     })
                 }
                 for(var i2=0;i2<devicePatrolPlanRecordLocationDetailsList.length;i2++)

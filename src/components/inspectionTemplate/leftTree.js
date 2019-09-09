@@ -37,8 +37,9 @@ class LeftTree extends React.Component{
             <Card
                 title="部门选择"
                 headStyle={{textAlign:'center',display:'block'}}
+                style={{display:'inline-block',width: "100%"}}
             >
-                <div style={{display:'inline-block'}}>
+                <div className="inspection-tree" style={{display:'inline-block',overflowX:'auto', height:'450px'}}>
                     <Tree
                         showLine
                         onSelect={this.onSelect}
@@ -151,7 +152,7 @@ class LeftTree extends React.Component{
 
     renderTreeNodes = data => data.map((item) => {
         item.title = ( // 不处于编辑状态
-            <div className={item.isSelect?"depTreeSelect":""}>
+            <div className={item.isSelect?"inp-depTreeSelect":""}>
                 <span>
                     {item.value}
                 </span>

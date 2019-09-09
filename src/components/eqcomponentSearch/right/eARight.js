@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Tabs} from 'antd';
 import '../eqcomponentSearch.css'
 import EARightBottom from './eARightBottom'
+import EARightBottom1 from './eARightBottom1'
 
 class EARight extends Component {
     constructor(props) {
@@ -32,11 +33,11 @@ class EARight extends Component {
                             getRightData={this.props.getRightData}
                             deviceName={this.props.deviceName}
                             depCode={this.props.depCode}
-                            getTableData={this.props.getTableData}
+                            getTableData={this.props.getTableData2}
                             url={this.props.url}
                             operation={this.props.operation}
                             comFlag={false}
-                            dataSource={this.props.rightTableData}
+                            dataSource={this.props.rightTableData2}
                             searchName="请输入搜索的部件名称"
                             handleTableChange={this.props.handleTableChange}
                             pagination={this.props.pagination}
@@ -47,11 +48,11 @@ class EARight extends Component {
                         />
                     </TabPane>
                     <TabPane tab="配件" key="配件">
-                        <EARightBottom
+                        <EARightBottom1
                             getRightData={this.props.getRightData}
                             deviceName={this.props.deviceName}
                             depCode={this.props.depCode}
-                            getTableData2={this.props.getTableData2}
+                            getTableData2={this.props.getTableData}
                             url={this.props.url}
                             operation={this.props.operation}
                             comFlag={false}
