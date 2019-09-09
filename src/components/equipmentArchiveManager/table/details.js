@@ -30,7 +30,7 @@ class Detail extends React.Component {
             <span>
                 <span className="blue" onClick={this.handleDetail}>详情</span>
                 <Modal
-                    title="数据详情"
+                    title={this.props.name}
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
@@ -64,9 +64,6 @@ class Detail extends React.Component {
         });
     };
     handleDetail = () => {
-        console.log("this.props.record.code")
-        console.log(this.props.record)
-        console.log(this.props.record.code)
         if(this.props.comFlag){
             axios({
                 url: `${this.props.url.equipmentArchive.unitDetail}`,
