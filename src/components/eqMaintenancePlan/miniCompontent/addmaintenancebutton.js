@@ -210,6 +210,7 @@ class Addmaintenancebutton extends React.Component{
         ////console.log(params1)
     }
     handleCancel = () => {
+        this.props.clearMainType()
         this.setState({
             deviceNameAndNum:'',
             visible: false ,

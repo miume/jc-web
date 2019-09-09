@@ -27,59 +27,61 @@ class DetailModal extends React.Component{
                         <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />
                     ]}
                 >
+                    <div>
+                        <Row>
+                            <Col type="flex" span={1.5}>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>维修单号：{this.props.record.deviceCode}</div>
+                                </Row>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>设备名称：{this.props.record.deviceName}</div>
+                                </Row>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>报修时间：{this.props.record.reportTime}</div>
+                                </Row>
+                            </Col>
 
-                    <Row>
-                        <Col type="flex" span={1.5} style={{}}>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                <div>维修单号：{this.props.record.deviceCode}</div>
-                            </Row>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                <div>设备名称：{this.props.record.deviceName}</div>
-                            </Row>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                <div>报修时间：{this.props.record.reportTime}</div>
-                            </Row>
-                        </Col>
+                            <Col type="flex" span={1.5} style={{paddingLeft:"20px"}}>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>所属部门：{this.props.record.deptName}</div>
+                                </Row>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>固定资产编号：{this.props.record.fixedassetsCode}</div>
+                                </Row>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>报修人：{this.props.record.reportPeople}</div>
+                                </Row>
+                            </Col>
+                        </Row>
 
-                        <Col type="flex" span={1.5} style={{paddingLeft:"20px"}}>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"29px"}} >
-                                <div>所属部门：{this.props.record.deptName}</div>
-                            </Row>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                <div>固定资产编号：{this.props.record.fixedassetsCode}</div>
-                            </Row>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"42px"}} >
-                                <div>报修人：{this.props.record.reportPeople}</div>
-                            </Row>
-                        </Col>
-                    </Row>
+                        <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"21px"}} >
+                            <Col span={1.5} style={{paddingLeft:"23px"}}>
+                                <div>故障描述：{this.props.record.faultContent}</div>
+                            </Col>
+                        </Row>
 
-                    <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"20px"}} >
-                        <Col span={1.5} style={{paddingLeft:"20px"}}>
-                            <div>故障描述：{this.props.record.faultContent}</div>
-                        </Col>
-                    </Row>
+                        <Divider dashed />
 
-                    <Divider dashed />
+                        <Row>
+                            <Col type="flex" span={1.5} style={{marginLeft:'-15px'}}>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"-5px"}} >
+                                    <div>接单时间：{this.props.record.receiveTime}</div>
+                                </Row>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                                    <div>联系电话：{this.props.record.receivePhone}</div>
+                                </Row>
+                            </Col>
 
-                    <Row>
-                        <Col type="flex" span={1.5} style={{}}>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                <div>接单时间：{this.props.record.receiveTime}</div>
-                            </Row>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                                <div>联系电话：{this.props.record.receivePhone}</div>
-                            </Row>
-                        </Col>
+                            <Col type="flex" span={1.5} style={{paddingLeft:"20px"}}>
+                                <Row type="flex" justify="start" style={{paddingTop:"15px",marginLeft:'-15px'}} >
+                                    <Col span={1.5} >
+                                        <div>接单人：{this.props.record.receivePeople}</div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
 
-                        <Col type="flex" span={1.5} style={{paddingLeft:"30px"}}>
-                            <Row type="flex" justify="start" style={{paddingTop:"15px",paddingLeft:"30px"}} >
-                                <Col span={1.5} style={{paddingLeft:"0px"}}>
-                                    <div>接单人：{this.props.record.receivePeople}</div>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                    </div>
 
                 </Modal>
             </div>

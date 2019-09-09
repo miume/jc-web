@@ -19,6 +19,7 @@ class ButtonToDd extends Component {
                     depCode={this.props.depCode}
                     depName={this.props.depName}
                     getMaintType={this.props.getMaintType}
+                    clearMainType={this.props.clearMainType}
                     getDevice={this.props.getDevice}
                     Device={this.props.Device}
                     MaintenanceType={this.props.MaintenanceType}
