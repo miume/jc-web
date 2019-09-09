@@ -49,6 +49,7 @@ class EqMaintenancePlan extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this)
         this.SearchEvent = this.SearchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
+        this.clearMainType = this.clearMainType.bind(this)
     }
 
     render(){
@@ -81,6 +82,7 @@ class EqMaintenancePlan extends React.Component{
                             depCode={this.state.depCode}
                             depName={this.state.depName}
                             getMaintType={this.getMaintType}
+                            clearMainType={this.clearMainType}
                             MaintenanceType={this.state.MaintenanceType}
                             getDevice={this.getDevice}
                             //四个更新表格的方法
@@ -133,6 +135,11 @@ class EqMaintenancePlan extends React.Component{
 
             })
     };
+    clearMainType = () => {
+        this.setState({
+            MaintenanceType:[],
+        })
+    }
     getMaintType=(params)=>{
         axios({
             url:this.url.eqMaintenanceDataEntry.getAll,
