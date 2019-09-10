@@ -24,6 +24,7 @@ class Login extends React.Component {
     // localStorage.setItem("server", "http://192.168.5.231:8080");//模块二的外网
     //localStorage.setItem("server", "http://192.168.5.231:8080");//模块二的外网
     //   localStorage.setItem("server", "http://119.39.4.6:18080");//模块二的外网
+    //localStorage.setItem("server", "http://192.168.5.231:8080");//模块二的外网
       // localStorage.setItem("remote3", "http://218.77.105.241:40080");
     // localStorage.setItem("remote", "http://127.0.0.1:8085");
 	localStorage.setItem("server", "http://192.168.190.161:8080");//模块二的server2服务器
