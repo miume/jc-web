@@ -54,7 +54,6 @@ class Addmaintenancebutton extends React.Component{
         },
     ];
     handleDeviceNameAndNumChange=(value)=>{
-        //console.log(value)
         if(value !== undefined){
             var jing=value.split('/#');
             this.setState({
@@ -72,7 +71,6 @@ class Addmaintenancebutton extends React.Component{
                 deviceName:jing[0],
             }
             this.props.getMaintType(params2)
-            ////console.log(value);
         }
     }
     handlePlanName1Change=(e)=>{
@@ -87,7 +85,6 @@ class Addmaintenancebutton extends React.Component{
         let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
         let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
         this.setState({NextPlanDate:Y+'-'+M+'-'+D})
-        ////console.log(this.state.ImplementDate)
     }
     handleMaintenancePeriodChange=(e)=>{
         var re =/[1−9]+[0−9]∗]∗/
@@ -98,7 +95,10 @@ class Addmaintenancebutton extends React.Component{
             message.info("请输入整数字")
         }
 
-        const date1=this.date1;
+        var date1=this.date1;
+        if(!date1){
+            date1 = (new Date()).getTime();
+        }
         var date2=date1+(e * 24* 3600* 1000)
         var time = new Date(date2);
         let Y=time.getFullYear()
@@ -115,24 +115,20 @@ class Addmaintenancebutton extends React.Component{
     showModal = () => {
         var now = new Date();
         var year = now.getFullYear(); //得到年份
-        var month = now.getMonth();//得到月份
+        var month = now.getMonth()+1;//得到月份
         var date = now.getDate();//得到日期
         if (month < 10) month = "0" + month;
         if (date < 10) date = "0" + date;
         var date1 = year + "-" + month + "-" + date;
-        //console.log("state",this.state)
-        //console.log(this.props.MaintenanceType)
         const menuList = JSON.parse(localStorage.getItem('menuList')) ;
         this.setState({
             visible: true,
             whomade:menuList.userId,
             ImplementDate:date1,
         });
-        //console.log(menuList);
         const params1={
             code:this.props.depCode,
         }
-        ////console.log(params1)
         this.props.getDevice(params1)
     };
     handleCreate = (e) => {
@@ -156,7 +152,6 @@ class Addmaintenancebutton extends React.Component{
             message.info("请选择保养项目！")
             return;
         }
-        //console.log(this.state)
             var objectdata = {
                 deviceMaintenancePlansHead:{
                     "planName":this.state.PlanName1,
@@ -172,7 +167,6 @@ class Addmaintenancebutton extends React.Component{
                 },
                 "deviceMaintenanceItems":this.state.MaintenanceType,
             }
-            //console.log("objectdata",objectdata)
             axios({
                 url: `${this.props.url.DeviceMaintenancePlan.maintenanceAddPlan}`,
                 method: 'post',
@@ -207,7 +201,6 @@ class Addmaintenancebutton extends React.Component{
             depName:this.props.depName,
         }
         this.props.getTableData(params1)
-        ////console.log(params1)
     }
     handleCancel = () => {
         this.props.clearMainType()
@@ -230,7 +223,6 @@ class Addmaintenancebutton extends React.Component{
         const MaintenanceTypeSelection={
             onChange: (selectedRowKeys, selectedRows) => {
                 var objMain=[];
-                //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
                 for(var j=0;j<selectedRowKeys.length;j++) {
                     objMain.push({
                         code:selectedRows[j].code,
@@ -241,11 +233,9 @@ class Addmaintenancebutton extends React.Component{
                         maintenanceFrequency: selectedRows[j].maintenanceFrequency,
                     })
                 }
-                ////console.log(objMain)
                 this.setState({
                     MaintenanceType:objMain,
                     selectedRowKeys: selectedRowKeys});
-                ////console.log(`MaintenanceType:${this.state.MaintenanceType}`);
             },
         }
         const dateFormat = 'YYYY-MM-DD';
