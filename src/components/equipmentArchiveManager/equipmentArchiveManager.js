@@ -152,7 +152,6 @@ class EquipmentArchiveManager extends Component {
                         }
                     })
                     if (deviceFlag) {
-                        console.log('1--------')
                         this.getTableData({
                             deptName:this.state.deptName,
                             deptId: parseInt(code),
