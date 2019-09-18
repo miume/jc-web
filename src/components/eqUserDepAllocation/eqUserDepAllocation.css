@@ -1,0 +1,13 @@
+.eqUserDep-left {
+    width: 22%;
+    height: 100%;
+    /*background-color:#cea61b;*/
+    /*overflow-y: auto;*/
+    /*overflow-x: auto;*/
+    font-size: small;
+
+}
+.eqUserDep-right{
+    width: 76%;
+    height: 100%;
+}
