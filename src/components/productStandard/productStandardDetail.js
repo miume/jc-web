@@ -14,8 +14,8 @@ class ProductStandardDetail extends React.Component{
             width:'5%',
         },{
             title:'批号',
-            dataIndex:'batchNumber',
-            key:'batchNumber',
+            dataIndex:'commonBath',
+            key:'commonBath',
             width:'15%',
         },{
             title:'创建时间',
@@ -24,24 +24,24 @@ class ProductStandardDetail extends React.Component{
             width:'15%',
         },{
             title:'创建人',
-            dataIndex:'name',
-            key:'name',
+            dataIndex:'createPeople',
+            key:'createPeople',
             width:'10%',
         },{
             title:'审核状态',
-            dataIndex:'status',
-            key:'status',      
+            dataIndex:'audit',
+            key:'audit',
             width:'10%',
             render:status=>{
                 return this.status[status.toString()];
             }
         },{
             title:'操作',
-            dataIndex:'id',
-            key:'id',
+            dataIndex:'commonBatchId',
+            key:'commonBatchId',
             width:'10%',
             render:(text,record)=>{
-                const status = record.status;
+                const status = record.audit;
                 const isPublished = record.isPublished;
                 //console.log(record)
                 return(
@@ -50,7 +50,7 @@ class ProductStandardDetail extends React.Component{
                         <span className={this.props.editorFlag?'':'hide'}>
                             <Divider type='vertical'/>
                         </span>
-                        <AddProductStandard flag={2} editorFlag={this.props.editorFlag} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard}/>
+                        <AddProductStandard selItemsFlag={false} flag={2} editorFlag={this.props.editorFlag} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard}/>
                         <span className={isPublished?'product-table-span-on':'hide'}><span>实施中</span></span>
                     </span>
                 );

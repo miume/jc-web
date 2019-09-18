@@ -99,7 +99,7 @@ class Home extends Component {
             appUserAuth:{
                 getAllAuth:`${server}/jc/common/appUserAuth/getAllAuth`,
                 getAuthByUserId:`${server}/jc/common/appUserAuth/getAuthByUserId`,
-                update:`${server}/jc/common/update`
+                update:`${server}/jc/common/appUserAuth/update`
             },
             /**流程管理 */
             processManagement:{
@@ -306,6 +306,18 @@ class Home extends Component {
             /**产品标准 */
             productStandard:{
                 add:`${server}/jc/common/techProductStandard/newClasses`,
+                productStandard:`${server}/jc/common/techProductStandard`,
+                getAll:`${server}/jc/common/techProductStandard/allClasses`,
+                addNewClass:`${server}/jc/common/techProductStandard/newClass`,
+            },
+            /**成品标准 */
+            product:{
+                product:`${server}/jc/common/product`,
+                addStandard:`${server}/jc/common/product/addStandard`,
+                getAllProduct:`${server}/jc/common/product/getAllProduct`,
+                getAllStandardByPIdandCId:`${server}/jc/common/product/getAllStandardByPIdandCId`,
+                detailByCommonBatchId:`${server}/jc/common/product/detailByCommonBatchId`,
+
                 productStandard:`${server}/jc/common/techProductStandard`,
                 getAll:`${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass:`${server}/jc/common/techProductStandard/newClass`,

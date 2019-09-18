@@ -216,6 +216,7 @@ class EditStandard extends Component{
     }
     handleDetailSaveCheck(saveData,status){//点击迭代的保存或送审
         // console.log('yeirw');
+        console.log(saveData)
         this.setState({
             visible:false,
             popVisible:false
@@ -232,6 +233,7 @@ class EditStandard extends Component{
          .then((data)=>{
              const res=data.data.data;
             if(res){
+                console.log(res)
                 if(status===0){
                     message.info(data.data.message);
                     if(data.data.code===0){
