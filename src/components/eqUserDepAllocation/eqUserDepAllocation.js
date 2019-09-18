@@ -99,9 +99,7 @@ class EqUserDepAllocation extends React.Component {
 
     /**获得表格数据*/
     getTableData = (params) => {
-        console.log(params)
         const depId = parseInt(params.secondDeptId)
-        console.log(depId)
         axios({
             url: `${this.url.appUserAuth.getUser}`,
             method: 'get',
@@ -116,7 +114,6 @@ class EqUserDepAllocation extends React.Component {
             const targetKeys = [];
             const mockData = [];
             if (res) {
-                console.log(res)
                 for(var i=0; i<res.length; i++){
                     res[i]['description'] = res[i].username
                     if(res[i].chosen){
