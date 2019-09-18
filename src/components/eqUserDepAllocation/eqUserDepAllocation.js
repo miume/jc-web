@@ -28,7 +28,7 @@ class EqUserDepAllocation extends React.Component {
         return (
 
             <div>
-                <Blockquote menu={current.menuParent} name="设备工序分配" menu2='返回' returnDataEntry={this.returnDataEntry}
+                <Blockquote menu={current.menuParent} name="设备部门用户分配" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div  style={{padding: '15px',display:"flex"}}>
                     <div className="eqUserDep-left">
