@@ -24,7 +24,7 @@ class TreeCard extends React.Component{
         this.returnDepKey = this.returnDepKey.bind(this)
         this.props.getTreeData()
     }
-    componentWillUnmount() {this.setState = () => {return;}}
+    //componentWillUnmount() {this.setState = () => {return;}}
     componentDidMount() {
         this.props.getTreeData();
         const params = this.props.defaultparams;
