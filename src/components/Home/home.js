@@ -437,6 +437,7 @@ class Home extends Component {
             /**点检计划**/
             SpotcheckPlan:{
                 SpotcheckPlan1:`${server}/jc/common/SpotcheckPlan`,
+                update:`${server}/jc/common/SpotcheckPlan/update`,
                 deleteByCode:`${server}/jc/common/SpotcheckPlan/deleteByCode`,
                 getAddMsg:`${server}/jc/common/SpotcheckPlan/getAddMsg`,
                 page:`${server}/jc/common/SpotcheckPlan/page`,

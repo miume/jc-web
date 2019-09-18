@@ -123,7 +123,6 @@ class CheckPlan extends React.Component {
 
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {
-            console.log(item)
             item.isSelect = true;
             this.setState({
                 departName:item.value,
@@ -330,7 +329,6 @@ class CheckPlan extends React.Component {
         }
     };
     firstname=(e)=>{
-        console.log(e)
         this.setState({
             departName:e
         })
