@@ -68,7 +68,6 @@ class EqUserDepAllocation extends React.Component {
     filterOption = (inputValue, option) => option.description.indexOf(inputValue) > -1;
 
     handleChange = targetKeys => {
-        console.log(targetKeys)
         axios({
             type:'json',
             url: `${this.url.appUserAuth.assign}`,
@@ -100,7 +99,6 @@ class EqUserDepAllocation extends React.Component {
 
     /**获得表格数据*/
     getTableData = (params) => {
-        console.log(params)
         const depId = parseInt(params.secondDeptId)
         axios({
             url: `${this.url.appUserAuth.getUser}`,
@@ -116,7 +114,6 @@ class EqUserDepAllocation extends React.Component {
             const targetKeys = [];
             const mockData = [];
             if (res) {
-                console.log(res)
                 for(var i=0; i<res.length; i++){
                     res[i]['description'] = res[i].username
                     if(res[i].chosen){
@@ -126,7 +123,8 @@ class EqUserDepAllocation extends React.Component {
                 }
                 this.setState({
                     mockData: mockData,
-                    targetKeys: targetKeys
+                    targetKeys: targetKeys,
+                    depId:depId
                 },()=>{
                     message.info('查询成功！')
                 });
