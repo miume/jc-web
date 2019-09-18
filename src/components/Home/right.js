@@ -66,6 +66,7 @@ import BatchInfo from "../batchInfo/batchInfo"
 import BatchSearch from "../batchSearch/batchSearch"
 import BatchRule from  "../batchRule/batchRule"
 import RawMaterialInput from '../rawMaterialInput/rawMaterialInput'
+import EqUserDepAllocation from '../eqUserDepAllocation/eqUserDepAllocation'
 
 class Right extends React.Component {
     render() {
@@ -238,6 +239,9 @@ class Right extends React.Component {
             },{
                 path:"/rawMaterialInput",
                 component:RawMaterialInput
+            },{
+                path:"/eqUserDepAllocation",
+                component:EqUserDepAllocation
             }]
         return (
             <div className="rightDiv">

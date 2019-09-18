@@ -99,7 +99,9 @@ class Home extends Component {
             appUserAuth:{
                 getAllAuth:`${server}/jc/common/appUserAuth/getAllAuth`,
                 getAuthByUserId:`${server}/jc/common/appUserAuth/getAuthByUserId`,
-                update:`${server}/jc/common/appUserAuth/update`
+                update:`${server}/jc/common/appUserAuth/update`,
+                getUser:`${server}/jc/common/appUserAuth/getUser`,
+                assign:`${server}/jc/common/appUserAuth/assign`,
             },
             /**流程管理 */
             processManagement:{
@@ -499,7 +501,8 @@ class Home extends Component {
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
                 updateState:`${server}/jc/common/productionBatchRule/UpdateState`
 
-            }
+            },
+
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
