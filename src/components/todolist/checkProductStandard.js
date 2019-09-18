@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import {Table} from 'antd';
+import {message, Table} from 'antd';
 import HeadTable from '../productStandard/headTable';
 class CheckProductStandard extends React.Component{
     componentDidMount(){
         const {flag} = this.props;
         // console.log(flag)
-        var url = `${this.props.url.productStandard.productStandard}`;
+        var url = `${this.props.url.product.detailByCommonBatchId}`;
         if(flag===13) url = `${this.props.url.rawStandard.getStandard}`;
         this.getDataByBatchNumberId(this.props.batchNumberId,url);
     }
@@ -32,7 +32,7 @@ class CheckProductStandard extends React.Component{
             width:'25%'
         },{
             title:'检测结果',
-            dataIndex:'value',
+            dataIndex:'count',
             key:'value',
             align:'center',
             width:'25%'
@@ -46,25 +46,32 @@ class CheckProductStandard extends React.Component{
     }
 
     getDataByBatchNumberId(id,url){
-        axios.get(`${url}/${id}`,{
-            headers:{
-                'Authorization':this.props.url.Authorization
+        axios({
+            method: 'get',
+            url: url,
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                commonBatchId: id,
             }
-        }).then((data)=>{
+        }).then((data) => {
             const res = data.data.data;
-            // console.log(res)
             if(res){
                 this.detailDataProcessing(res);
             }
+        }).catch(() => {
+            message.info('保存失败，请联系管理员！')
         })
     }
     /**对详情、编辑数据进行处理 */
     detailDataProcessing(res){
+        console.log(res)
         var batchNumber = res.commonBatchNumber.batchNumber;
         var time = {
             createTime:res.commonBatchNumber.createTime,
             effectiveTime:this.props.flag===13?res.details.techniqueRawStandardRecord.effectiveTime
-            :res.details.techniqueProductStandardRecord.effectiveTime
+            :res.techniqueProductStandardRecord.effectiveTime
         }
         var data1 = [
             this.props.flag===13?res.details.rawMaterialName:res.details.productName,this.props.flag===13?res.details.rawManufacturerName:res.details.className

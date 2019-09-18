@@ -26,6 +26,7 @@ class ProductStandard extends React.Component{
             selectedModal:[],       //用来存取最后一次选择型号的id和name
             selectProduct:[],       //用来存取最后一次选择成品的id和name
             standradFlag:0,            //用来存取设置标准页面来区分是搜索时为空1，还是getAllStandard为空0
+            selItemsFlag:true
         }
         this.fetch = this.fetch.bind(this);
         this.clickI = this.clickI.bind(this);
@@ -80,7 +81,7 @@ class ProductStandard extends React.Component{
     }
     /**获取所有成品 */
     getAllProduct(){
-        axios.get(`${this.url.serialNumber.serialNumber}?materialClass=3`,{
+        axios.get(`${this.url.product.getAllProduct}`,{
             headers:{
                 Authorization:this.url.Authorization
             }
@@ -169,7 +170,6 @@ class ProductStandard extends React.Component{
     clickI(e){
         /**通过点击新增确定 找到input value值 */
         const value = e.target.parentNode.parentNode.firstElementChild.value;
-        console.log(value)
         if(value===''||value===null){
             message.info('请输入成品名称！');
             return
@@ -180,16 +180,16 @@ class ProductStandard extends React.Component{
     }
     /**成品新增事件 */
     addProduct(value){
-        axios.post(`${this.url.serialNumber.serialNumber}`,{
-            materialName:value,
-            materialClass:3,
-            manufacturerName:'',
-            serialNumber:''
-        },{
-            headers:{
-                Authorization:this.url.Authorization
+        axios({
+            url: `${this.url.product.product}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:{
+                productName:value
             }
-        }).then((data)=>{
+        }).then(data => {
             message.info(data.data.message);
             if(data.data.code===0){
                 this.getAllProduct();
@@ -271,33 +271,31 @@ class ProductStandard extends React.Component{
     /**根据成品id 型号id查询所对应的标准 */
     getAllProductStandard(params,ids,mode){
         if(ids){
-            //console.log('id')
             this.recentModal(ids);
         }
         const {selectProduct} = this.state;
         /**给设置标准#product-3加点击类 使其背景色变蓝*/
         this.addClass('product-3',1);
         params['productId'] = parseInt(selectProduct[0]);
-        axios.get(`${this.url.productStandard.productStandard}`,{
+        axios.get(`${this.url.product.getAllStandardByPIdandCId}`,{
             headers:{
                 Authorization:this.url.Authorization
             },
             params:params
         }).then((data)=>{
             const res = data.data.data;
-            var data = [];
+            var arr = [];
             var flag = mode?4:3;  //代表新增
-            if(res){
+            if(res&&res.length>0){
                 for(var i = 0; i < res.length; i++){
-                    res[i].commonBatchNumber['index'] = `${i+1}`;
-                    res[i].commonBatchNumber['name'] = res[i].createPersonName;
-                    data.push(res[i].commonBatchNumber)
+                    res[i]['index'] = `${i+1}`;
+                    arr.push(res[i])
                 }
                 flag = 4; //代表标准界面
             }
             this.setState({
                 flag:flag,
-                allProductStandard:data?data:[]
+                allProductStandard:arr?arr:[]
             })
         })
     }
@@ -320,6 +318,17 @@ class ProductStandard extends React.Component{
         })
         this.addClass(dom);
     }
+
+    selectSelItemsFlag = (flag) => {
+        if(flag === 3){
+            return true
+        }else{
+            return false
+        }
+    }
+    modifySelItemsFlag = () => {
+    }
+
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
@@ -356,12 +365,12 @@ class ProductStandard extends React.Component{
                         </div>
                         {/**设置标准 flag===3 标准为空 表示新增界面 */}
                         <div className={this.state.flag===3?'':'hide'}>
-                            <SelectProductStandard url={this.url}  data={data} addFlag={addFlag}
+                            <SelectProductStandard selItemsFlag={this.selectSelItemsFlag(this.state.flag)} url={this.url}  data={data} addFlag={addFlag}
                              getAllProductStandard={this.getAllProductStandard}/>
                         </div>
                         {/**设置标准 flag===4 标准不为空 表示标准显示 */}
                         <div className={this.state.flag===4?'product-standrad-bottom':'hide'}>
-                            <ProductStandardDetail data={this.state.allProductStandard} topData={data} url={this.url} 
+                            <ProductStandardDetail selItemsFlag={this.selectSelItemsFlag(this.state.flag)} data={this.state.allProductStandard} topData={data} url={this.url}
                             getAllProductStandard={this.getAllProductStandard} editorFlag={editorFlag}/>
                         </div>
                         <div className={this.state.flag===1?'hide':'product-footer'} onClick={this.returnBack} id={this.state.flag}>{`重新选择上一级`}</div>
