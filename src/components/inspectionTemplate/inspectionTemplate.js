@@ -4,7 +4,7 @@ import Blockquote from "../BlockQuote/blockquote";
 import "./inspectionTemplate.css"
 import LeftTree from "./leftTree"
 import axios from "axios";
-import {message, Select,Button,Icon} from "antd";
+import {message, Select, Button, Icon} from "antd";
 import Add from "./add";
 import SearchCell from "./searchCell";
 import home from "../commom/fns";
@@ -13,9 +13,8 @@ import DepTree from "../checkPlan/depTree";
 import DeleteByIds from "../BlockQuote/deleteByIds";
 
 
-
-class InspectionTemplate extends React.Component{
-    constructor(props){
+class InspectionTemplate extends React.Component {
+    constructor(props) {
         super(props)
         this.state = {
             dataSource: [],
@@ -28,9 +27,9 @@ class InspectionTemplate extends React.Component{
             searchContent: '',
             Tableflag: '',
             parentname: '',
-            name:'',
+            name: '',
         }
-        this.pagination={
+        this.pagination = {
             showTotal(total) {
                 return `共${total}条记录`
             },
@@ -38,17 +37,18 @@ class InspectionTemplate extends React.Component{
         }
 
         this.returnDataEntry = this.returnDataEntry.bind(this)
-        this.handleChange=this.handleChange.bind(this)
-        this.handleSelect=this.handleSelect.bind(this)
-        this.firstname=this.firstname.bind(this)
-        this.getRightData=this.getRightData.bind(this)
-        this.getTableData=this.getTableData.bind(this)
-        this.searchEvent=this.searchEvent.bind(this)
-        this.searchContentChange=this.searchContentChange.bind(this)
-        this.handleTableChange=this.handleTableChange.bind(this)
-        this.name=this.name.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSelect = this.handleSelect.bind(this)
+        this.firstname = this.firstname.bind(this)
+        this.getRightData = this.getRightData.bind(this)
+        this.getTableData = this.getTableData.bind(this)
+        this.searchEvent = this.searchEvent.bind(this)
+        this.searchContentChange = this.searchContentChange.bind(this)
+        this.handleTableChange = this.handleTableChange.bind(this)
+        this.name = this.name.bind(this)
     }
-    render(){
+
+    render() {
         /*获取日期*/
         var date = new Date();
         var nowMonth = date.getMonth() + 1;
@@ -61,17 +61,18 @@ class InspectionTemplate extends React.Component{
             strDate = "0" + strDate;
         }
         this.nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
-        const menuList1=JSON.parse(localStorage.getItem('menuList'))
-        this.userName=menuList1.name
+        const menuList1 = JSON.parse(localStorage.getItem('menuList'))
+        this.userName = menuList1.name
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('equipmentInspection')) ;
-        const operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.menuName===current.menuParent)[0].menuList:null;
-        this.operation = operation.filter(e=>e.path === current.path)[0].operations;
-        const { Option } = Select;
+        const current = JSON.parse(localStorage.getItem('equipmentInspection'));
+        const operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.menuName === current.menuParent)[0].menuList : null;
+        this.operation = operation.filter(e => e.path === current.path)[0].operations;
+        const {Option} = Select;
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="巡检模板"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div  className="inspection-Tem">
+                <Blockquote menu={current.menuParent} name="巡检模板" menu2='返回' returnDataEntry={this.returnDataEntry}
+                            flag={1}/>
+                <div className="inspection-Tem">
 
                     <div className="inspection-Tem-leftTree">
                         <LeftTree
@@ -81,21 +82,24 @@ class InspectionTemplate extends React.Component{
                             handleSelect={this.handleSelect}
                             firstname={this.firstname}
                             name={this.name}
-                            />
+                        />
                     </div>
 
                     <div className="inspection-Tem-right">
                         <div>
                             <div className="checkP_buttons">
                                 <div className="checkp-left">
-                                    <Add deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.parentname} pagination={this.pagination}
-                                         fetch={this.getTableData} parentname={this.state.parentname} name={this.state.name} operation={this.operation} userName={this.userName} nowDate={this.nowDate}/>
+                                    <Add deptCode={this.state.deptCode} deviceName={this.state.deviceName}
+                                         url={this.url} departName={this.state.parentname} pagination={this.pagination}
+                                         fetch={this.getTableData} parentname={this.state.parentname}
+                                         name={this.state.name} operation={this.operation} userName={this.userName}
+                                         nowDate={this.nowDate}/>
                                     {/*<DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}*/}
                                     {/*             flag={home.judgeOperation(this.operation,'DELETE')}*/}
                                     {/*/>*/}
                                 </div>
                                 <div className="check_right">
-                                    <Select defaultValue="全部类型" style={{ width:120}} onChange={this.handleChange} >
+                                    <Select defaultValue="全部类型" style={{width: 120}} onChange={this.handleChange}>
                                         <Option value=''>全部类型</Option>
                                         <Option value='0'>机械类</Option>
                                         <Option value='1'>电气类</Option>
@@ -114,38 +118,36 @@ class InspectionTemplate extends React.Component{
                                 </div>
                             </div>
                             <div className="inspection-Tem-table">
-                            <RightTable
-                                dataSource={this.state.rightTableData}
-                                operation={this.operation}
-                                pagination={this.pagination}
-                                getTableData={this.getTableData}
-                                deptCode={this.state.deptCode}
-                                deviceName={this.state.deviceName}
-                                url={this.url}
-                                handleTableChange={this.handleTableChange}
-                                name={this.state.name}
-                                Tableflag={this.state.Tableflag}
-                                deleteByIds={this.deleteByIds}
-                            />
-                        </div>
+                                <RightTable
+                                    dataSource={this.state.rightTableData}
+                                    operation={this.operation}
+                                    pagination={this.pagination}
+                                    getTableData={this.getTableData}
+                                    deptCode={this.state.deptCode}
+                                    deviceName={this.state.deviceName}
+                                    url={this.url}
+                                    handleTableChange={this.handleTableChange}
+                                    name={this.state.name}
+                                    Tableflag={this.state.Tableflag}
+                                    deleteByIds={this.deleteByIds}
+                                />
+                            </div>
                         </div>
 
                     </div>
-
-
-
 
 
                 </div>
             </div>
         )
     }
+
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {
             item.isSelect = true;
             this.setState({
-                parentname:item.parentname,
-                deptCode:code
+                parentname: item.parentname,
+                deptCode: code
             })
             console.log(this.state.parentname)
         } else {
@@ -163,7 +165,7 @@ class InspectionTemplate extends React.Component{
         code = parseInt(code)
         // console.log(code)
         this.setState({
-            deptCode:code
+            deptCode: code
         })
         this.getTableData({deptId: parseInt(code)}, 0);
 
@@ -178,7 +180,7 @@ class InspectionTemplate extends React.Component{
             this.setState({
                 pageChangeFlag: 0,
                 searchContent: '',
-                pagination:pagination
+                pagination: pagination
             })
         }
         axios({
@@ -191,28 +193,27 @@ class InspectionTemplate extends React.Component{
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             // console.log(res)
-            this.pagination.total=res?res.total:0;
-            this.pagination.current=res.page;
+            this.pagination.total = res ? res.total : 0;
+            this.pagination.current = res.page;
             if (res && res.list) {
                 var rightTableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].devicePatrolModelsHead;
                     // console.log('11111')
-                    if(arr['checkType']===true){
-                        arr['checkType']='电气类'
-                    }else
-                    {
-                        arr['checkType']='机械类'
+                    if (arr['checkType'] === true) {
+                        arr['checkType'] = '电气类'
+                    } else {
+                        arr['checkType'] = '机械类'
                     }
                     rightTableData.push({
-                        index:i+1,
-                        code:arr['code'],
-                        deptCode:arr['deptCode'],
-                        patrolName:arr['patrolName'],
-                        tabulatedate:arr['tabulatedate'],
-                        checkType:arr['checkType'],
-                        setPeople:res.list[i].setPeople,
-                        workshop:this.state.name,
+                        index: i + 1,
+                        code: arr['code'],
+                        deptCode: arr['deptCode'],
+                        patrolName: arr['patrolName'],
+                        tabulatedate: arr['tabulatedate'],
+                        checkType: arr['checkType'],
+                        setPeople: res.list[i].setPeople,
+                        workshop: this.state.name,
                     })
                 }
                 // console.log('2222222')
@@ -224,16 +225,16 @@ class InspectionTemplate extends React.Component{
                 // console.log('kkkkkkkkkkkk')
                 // console.log(this.state.rightTableData)
             } else {
+                message.info('查询失败，请刷新下页面！')
+                this.setState({
+                    rightTableData: [],
+                    deviceName: '',
+                    pagination: pagination
+                });
+            }
+        }).catch(() => {
             message.info('查询失败，请刷新下页面！')
-            this.setState({
-                rightTableData: [],
-                deviceName: '',
-                pagination:pagination
-            });
-        }
-    }).catch(() => {
-    message.info('查询失败，请刷新下页面！')
-});
+        });
     };
     handleChange = (value) => {
         this.setState({
@@ -242,18 +243,18 @@ class InspectionTemplate extends React.Component{
         const params = {
             deptId: parseInt(this.state.deptCode),
             deviceName: this.state.deviceName,
-            status:value,
+            status: value,
         }
         this.getTableData(params, 0)
     }
     searchEvent = () => {
         console.log('调用查询借口并')
         this.setState({
-            pageChangeFlag:1
+            pageChangeFlag: 1
         });
         this.getTableData({
-            condition:this.state.searchContent,
-            deptId:this.state.deptCode,
+            condition: this.state.searchContent,
+            deptId: this.state.deptCode,
 
         })
     }
@@ -266,49 +267,49 @@ class InspectionTemplate extends React.Component{
     }
     handleTableChange = (pagination) => {
         this.setState({
-            pagination:pagination
+            pagination: pagination
         });
         const {pageChangeFlag} = this.state;
         /**分页查询 */
-        if(pageChangeFlag){
+        if (pageChangeFlag) {
             this.getTableData({
-                deptId:this.state.deptCode,
-                status:this.state.Tableflag,
-                size:pagination.pageSize,
-                page:pagination.current,
-                condition:this.state.searchContent
+                deptId: this.state.deptCode,
+                status: this.state.Tableflag,
+                size: pagination.pageSize,
+                page: pagination.current,
+                condition: this.state.searchContent
             })
-        }else{
+        } else {
             this.getTableData({
-                deptId:this.state.deptCode,
-                status:this.state.Tableflag,
-                size:pagination.pageSize,
-                page:pagination.current,
+                deptId: this.state.deptCode,
+                status: this.state.Tableflag,
+                size: pagination.pageSize,
+                page: pagination.current,
             })
         }
     };
-    firstname=(e)=>{
+    firstname = (e) => {
         this.setState({
-            parentname:e
+            parentname: e
         })
     }
-    name=(e)=>{
+    name = (e) => {
         this.setState({
-            name:e
+            name: e
         })
     }
-    deleteByIds=(ids)=>{
+    deleteByIds = (ids) => {
         axios({
-            url:`${this.url.devicePatrolModel.deleteByIds}`,
-            method:'Delete',
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.devicePatrolModel.deleteByIds}`,
+            method: 'Delete',
+            headers: {
+                'Authorization': this.url.Authorization
             },
-            data:ids,
-            type:'json'
-        }).then((data)=>{
+            data: ids,
+            type: 'json'
+        }).then((data) => {
             message.info(data.data.message);
-            if(data.data.code===0){
+            if (data.data.code === 0) {
                 // this.fetch({
                 //     size: this.pagination.pageSize,
                 //     page: this.pagination.current,
@@ -316,13 +317,14 @@ class InspectionTemplate extends React.Component{
                 //     orderType: 'desc',
                 // });
             }
-        }).catch(()=>{
+        }).catch(() => {
             message.info('删除错误，请联系管理员！')
         })
     }
+
     /**返回数据录入页面 */
-    returnDataEntry(){
-        this.props.history.push({pathname:'/equipmentInspection'});
+    returnDataEntry() {
+        this.props.history.push({pathname: '/equipmentInspection'});
     }
 }
 

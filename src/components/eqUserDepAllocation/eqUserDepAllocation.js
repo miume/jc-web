@@ -10,13 +10,14 @@ class EqUserDepAllocation extends React.Component {
         this.state={
             mockData: [],
             targetKeys: [],
+            depId:-1
         }
     }
 
-    componentDidMount() {
-        //this.fetch()
-        this.getMock();
-    }
+    // componentDidMount() {
+    //     //this.fetch()
+    //     //this.getMock();
+    // }
 
     render() {
 
@@ -42,7 +43,7 @@ class EqUserDepAllocation extends React.Component {
                     </div>
                     <div className="eqUserDep-right">
                         <Transfer
-                            rowKey={record => record.code}
+                            rowKey={record => record.userId}
                             listStyle={{
                                 width: '38%',
                                 height: 505,
@@ -53,7 +54,7 @@ class EqUserDepAllocation extends React.Component {
                             targetKeys={this.state.targetKeys}
                             onChange={this.handleChange}
                             onSearch={this.handleSearch}
-                            render={item => item.name}
+                            render={item => item.username}
                             titles={['未被分配用户','已被分配用户']}
                             locale={{
                                 itemUnit: '项', itemsUnit: '项', searchPlaceholder: '请输入搜索内容'
@@ -64,33 +65,33 @@ class EqUserDepAllocation extends React.Component {
             </div>
         )
     }
-    getMock = () => {
-        const targetKeys = [];
-        const mockData = [];
-        var data = [];
-        for (let i = 0; i < 20; i++) {
-            data.push({
-                code: i,
-                name: `content${i}`,
-                description: `content${i}`,
-                chosen: (i)%2===0?1:0,
-            })
-        }
-        for (var i=0;i<data.length;i++){
-            if(data[i].chosen===1){
-                targetKeys.push(data[i].code)
-            }
-            mockData.push(data[i]);
-        }
-
-        this.setState({ mockData, targetKeys });
-    };
     filterOption = (inputValue, option) => option.description.indexOf(inputValue) > -1;
 
     handleChange = targetKeys => {
-        this.setState({ targetKeys });
         console.log(targetKeys)
-        console.log('abc')
+        axios({
+            type:'json',
+            url: `${this.url.appUserAuth.assign}`,
+            method: 'put',
+            headers: {
+                'Authorization':this.url.Authorization
+            },
+            params: {
+                deptCode:this.state.depId
+            },
+            data:targetKeys
+        }).then((data) => {
+            if (data.data.code===0) {
+                this.setState({
+                    targetKeys: targetKeys
+                },()=>{
+                    message.info('分配成功！')
+                });
+            } else {
+                message.info('分配失败')
+            }
+        })
+
     };
 
     handleSearch = (dir, value) => {
@@ -100,6 +101,46 @@ class EqUserDepAllocation extends React.Component {
     /**获得表格数据*/
     getTableData = (params) => {
         console.log(params)
+        const depId = parseInt(params.secondDeptId)
+        axios({
+            url: `${this.url.appUserAuth.getUser}`,
+            method: 'get',
+            headers: {
+                'Authorization':this.url.Authorization
+            },
+            params: {
+                deptCode:depId
+            },
+        }).then((data) => {
+            var res = data.data.data ? data.data.data : [];
+            const targetKeys = [];
+            const mockData = [];
+            if (res) {
+                console.log(res)
+                for(var i=0; i<res.length; i++){
+                    res[i]['description'] = res[i].username
+                    if(res[i].chosen){
+                        targetKeys.push(res[i].userId)
+                    }
+                    mockData.push(res[i]);
+                }
+                this.setState({
+                    mockData: mockData,
+                    targetKeys: targetKeys
+                },()=>{
+                    message.info('查询成功！')
+                });
+            } else {
+                message.info('查询失败，请刷新下页面！')
+                this.setState({
+                    mockData: [],
+                    targetKeys: [],
+                    depId:depId
+                });
+            }
+        }).catch(() => {
+            message.info('查询失败，请刷新下页面！')
+        });
 
     }
     /**返回数据录入页面 */

@@ -72,7 +72,7 @@ class DepTree extends React.Component{
             var dataSource = [{
 
                 title:'总公司',
-                key:0,
+                key:'0',
                 value: '总公司',
                 children: []
             }];
@@ -111,8 +111,6 @@ class DepTree extends React.Component{
                 }
                 this.setState({
                     treeData: dataSource,
-                },()=>{
-
                 })
             } else {
                 message.info('没有获取到数据')

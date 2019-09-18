@@ -20,11 +20,11 @@ class TreeCard extends React.Component{
             expandedKeys:[],
             TreeData:[],
             defaultkey:[],
+            flag:false
         }
         this.returnDepKey = this.returnDepKey.bind(this)
         this.props.getTreeData()
     }
-    //componentWillUnmount() {this.setState = () => {return;}}
     componentDidMount() {
         this.props.getTreeData();
         const params = this.props.defaultparams;
@@ -36,34 +36,30 @@ class TreeCard extends React.Component{
     }
     findExpandKeys=()=>{
         var data=this.props.treeData;
-        if(data.length!==0){
-            //console.log(data)
-            var keys=[];
+        if(!this.state.flag){
+            if(data.length!==0){
+                var keys=[];
 
-            while(data[0].children.length!==0)
-           {
-               keys.push(data[0].key+'');
-               data=data[0].children;
-               defaultkey.push(data[0].key+'');
-               if(defaultkey.length===2)
-               defaultkey.shift();
-           }
-            this.setState({
-                expandedKeys:keys,
-            },()=>{
-                //console.log('setde',this.state.selectedKeys)
-                //console.log('set',this.state.expandedKeys)
-            });
+                while(data[0].children.length!==0)
+                {
+                    keys.push(data[0].key+'');
+                    data=data[0].children;
+                    defaultkey.push(data[0].key+'');
+                    if(defaultkey.length===2)
+                        defaultkey.shift();
+                }
+                this.setState({
+                    expandedKeys:keys,
+                },()=>{
+                    console.log(this.state.expandedKeys)
+                });
 
+            }
         }
     }
 
     url = JSON.parse(localStorage.getItem('url'));
-    onExpand = (expandedKeys) => {
-        this.setState({expandedKeys: expandedKeys})
-    }
     render() {
-        //console.log(this.state.selectedKeys)
         return(
             <Card
                 style={{display:'inline-block',width: "100%"}}
@@ -82,14 +78,17 @@ class TreeCard extends React.Component{
             </Card>
         )
     }
+    onExpand = (expandedKeys) => {
+        this.setState({
+            expandedKeys: expandedKeys,
+            flag:true
+        })
+    }
     // 通过回调函数，更新表格中的数据
     returnDepKey = (selectedKeys,e) => {
         this.props.getParams(selectedKeys,e)
-        this.setState({selectedKeys:selectedKeys},()=>{
-            //console.log("selectedKeys",selectedKeys)
-            //console.log("state",this.state.selectedKeys)
-            //console.log("e",e)
-        })
+        this.setState({selectedKeys:selectedKeys})
     };
 }
 export default TreeCard
+
