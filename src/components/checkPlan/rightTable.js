@@ -29,7 +29,7 @@ class RightTable extends React.Component {
         }).then((data) => {
             message.info(data.data.message);
             this.props.getTableData({
-                deptCode: this.props.deptCode,
+                deptId: this.props.deptCode,
                 deviceName: this.props.deviceName,
             })
         }).catch(() => {
