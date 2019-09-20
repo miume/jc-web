@@ -32,7 +32,7 @@ class CheckProductStandard extends React.Component{
             width:'25%'
         },{
             title:'检测结果',
-            dataIndex:'count',
+            dataIndex:'value',
             key:'value',
             align:'center',
             width:'25%'
@@ -64,6 +64,7 @@ class CheckProductStandard extends React.Component{
             message.info('保存失败，请联系管理员！')
         })
     }
+
     /**对详情、编辑数据进行处理 */
     detailDataProcessing(res){
         console.log(res)
@@ -71,19 +72,25 @@ class CheckProductStandard extends React.Component{
         var time = {
             createTime:res.commonBatchNumber.createTime,
             effectiveTime:this.props.flag===13?res.details.techniqueRawStandardRecord.effectiveTime
-            :res.techniqueProductStandardRecord.effectiveTime
+            :res.techniqueProductNewStandardRecord.effectiveTime
         }
         var data1 = [
-            this.props.flag===13?res.details.rawMaterialName:res.details.productName,this.props.flag===13?res.details.rawManufacturerName:res.details.className
+            this.props.flag===13?res.details.rawMaterialName:res.productName,this.props.flag===13?res.details.rawManufacturerName:res.meterialClass
         ]
-        var details = this.props.flag===13?res.details.rawStandards:res.details.techniqueProductTestItemDTOs;
+        var details = this.props.flag===13?res.details.rawStandards:res.items;
         var data = [];
         for(var i = 0; i < details.length; i++){
             var e = details[i];
-            var testItems = e.testItem?e.testItem:[];
-            testItems['index'] = `${i+1}`;
-            testItems['value'] = this.props.flag===13?e.techniqueRawTestItemStandard.value:e.techniqueProductTestItemStandard.value;
-            data.push(testItems)
+            if(this.props.flag===13){
+                var testItems = e.testItem?e.testItem:[];
+                testItems['index'] = `${i+1}`;
+                testItems['value'] = e.techniqueRawTestItemStandard.value;
+                data.push(testItems)
+            }else{
+                e['index'] = `${i+1}`;
+                e['value'] = e.count
+                data.push(e)
+            }
         }
         this.setState({
             batchNumber:batchNumber,
