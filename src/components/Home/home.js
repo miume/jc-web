@@ -142,6 +142,7 @@ class Home extends Component {
                 deleteByIds:`${server}/jc/auth/user/deleteByIds`,    
                 getAllByPage:`${server}/jc/auth/user/getAllByPage`,
                 search:`${server}/jc/auth/user/getUserByNameByPage`,
+                reset:`${server}/jc/auth/user/reset`,
                 
             },
             /**部门管理 */
@@ -319,6 +320,7 @@ class Home extends Component {
                 getAllProduct:`${server}/jc/common/product/getAllProduct`,
                 getAllStandardByPIdandCId:`${server}/jc/common/product/getAllStandardByPIdandCId`,
                 detailByCommonBatchId:`${server}/jc/common/product/detailByCommonBatchId`,
+                updateByCommonBatchId:`${server}/jc/common/product/updateByCommonBatchId`,
 
                 productStandard:`${server}/jc/common/techProductStandard`,
                 getAll:`${server}/jc/common/techProductStandard/allClasses`,
