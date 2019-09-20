@@ -25,7 +25,8 @@ class AddProductStandard extends React.Component {
             option: [],
             selectTestItems: [],
             testItems: [],
-            batchNumberId:-1
+            batchNumberId:-1,
+            iteFlag:true
         }
         this.save = this.save.bind(this);
         this.judge = this.judge.bind(this);
@@ -152,7 +153,8 @@ class AddProductStandard extends React.Component {
     handleIteration() {
         /**将详情置为编辑 */
         this.setState({
-            flag: 2
+            flag: 2,
+            iteFlag:false
         })
     }
 
@@ -160,12 +162,22 @@ class AddProductStandard extends React.Component {
     handleSave() {
         this.addDataProcessing(0);
     }
+    /**点击迭代保存按钮 */
+    // handleIteSave = () => {
+    //     this.setState({
+    //         flag:-1
+    //     },() => {
+    //         this.addDataProcessing(0);
+    //     })
+    // }
+
 
     /**点击取消按钮 */
     handleCancel() {
         this.setState({
             visible: false,
-            visible1: false
+            visible1: false,
+            iteFlag:true
         });
     }
 
@@ -187,6 +199,14 @@ class AddProductStandard extends React.Component {
     handleOkApply() {
         this.addDataProcessing(1);
     }
+
+    // handleIteOkApply = () => {
+    //     this.setState({
+    //         flag:-1
+    //     },() => {
+    //         this.addDataProcessing(1);
+    //     })
+    // }
 
     /**监听送审界面 送审流程的变化 */
     selectChange(value) {
@@ -231,7 +251,6 @@ class AddProductStandard extends React.Component {
             message.info('生效日期不能为空！');
             return
         }
-        console.log(date)
         var items = [];
         const data = this.state.testItems;
         for (var i = 0; i < data.length; i++) {
@@ -256,12 +275,12 @@ class AddProductStandard extends React.Component {
     applyOut(status, params) {
         axios({
             type: 'json',
-            method: this.state.flag ? 'put' : 'post',
-            url: this.props.url.product.addStandard,
+            method: this.state.flag&&this.state.iteFlag ? 'put' : 'post',
+            url: this.state.flag&&this.state.iteFlag?this.props.url.product.updateByCommonBatchId:this.props.url.product.addStandard,
             headers: {
                 'Authorization': this.props.url.Authorization
             },
-            params: this.state.flag?{
+            params: this.state.flag&&this.state.iteFlag?{
                 commonBatchId: this.state.batchNumberId,
                 effTime:params.effTime
             }:{
@@ -280,6 +299,9 @@ class AddProductStandard extends React.Component {
                 this.props.getAllProductStandard({
                     classId: params.classId,
                     productId: params.productId
+                })
+                this.setState({
+                    iteFlag:true
                 })
             }
         }).catch(() => {

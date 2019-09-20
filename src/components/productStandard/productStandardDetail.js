@@ -43,7 +43,6 @@ class ProductStandardDetail extends React.Component{
             render:(text,record)=>{
                 const status = record.audit;
                 const isPublished = record.isPublished;
-                //console.log(record)
                 return(
                     <span className={isPublished?'product-table-span':''}>
                         <AddProductStandard flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard} />
@@ -62,7 +61,7 @@ class ProductStandardDetail extends React.Component{
         return (
             <div className='standard-table' style={{height:height1}}>
                 <Table columns={this.columns} pagination={false} size='small' scroll={{y:300}}
-                rowKey={record=>record.id}  dataSource={this.props.data} bordered
+                rowKey={record=>record.commonBatchId}  dataSource={this.props.data} bordered
                 rowClassName={(record)=>record.isPublished?'table-implemention':''}
                 />
             </div>

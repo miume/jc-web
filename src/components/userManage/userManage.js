@@ -78,7 +78,7 @@ class EditableCell extends React.Component {
                                         rules: [{
                                             required: true,
                                             message:`${title}不能为空`,
-                                            
+
                                         }],
                                         // initialValue:record[dataIndex].dataIndex?record[dataIndex].key.toString():record[dataIndex],
                                         initialValue:record[dataIndex],
@@ -205,30 +205,39 @@ class User extends React.Component{
         return (
             <span>
                 <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
-                {editable ? (
-                  <span>
-                    <EditableContext.Consumer>
-                      {form => (
-                        <span className='blue'
-                          onClick={() => this.save(form, record.id)}
-                          style={{ marginRight: 8 }}>保存</span>
-                      )}
-                    </EditableContext.Consumer>
-                    <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
-                      <span className='blue'>取消</span>
-                    </Popconfirm>
-                  </span>
-                ) : (
-                  <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
-                )}
-              </span>
-              {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
-             <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}> <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
-                <span className='blue'>删除</span>
-                </Popconfirm>
-              </span>
-              <Divider type='vertical' />
-              <Distribution userId = {record.id}/>
+                    {editable ? (
+                      <span>
+                        <EditableContext.Consumer>
+                          {form => (
+                            <span className='blue'
+                              onClick={() => this.save(form, record.id)}
+                              style={{ marginRight: 8 }}>保存</span>
+                          )}
+                        </EditableContext.Consumer>
+                        <Popconfirm title="确定取消?" onConfirm={() => this.cancel(record.id)}  okText="确定" cancelText="取消" >
+                          <span className='blue'>取消</span>
+                        </Popconfirm>
+                      </span>
+                    ) : (
+                      <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
+                    )}
+                </span>
+                {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
+                 <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
+                     <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
+                        <span className='blue'>删除</span>
+                     </Popconfirm>
+                 </span>
+                {this.judgeOperation(this.operation,'SAVE')?<Divider type='vertical' />:''}
+                <span className={this.judgeOperation(this.operation,'SAVE')?'':'hide'}>
+                    <Distribution userId = {record.id}/>
+                </span>
+                {this.judgeOperation(this.operation,'UPDATE')?<Divider type='vertical' />:''}
+                <span className={this.judgeOperation(this.operation,'UPDATE')?'':'hide'}>
+                     <Popconfirm title="确定重置密码?" onConfirm={() => this.handleReset(record.id)} okText="确定" cancelText="再想想" >
+                        <span className='blue'>重置</span>
+                     </Popconfirm>
+                 </span>
             </span>
           );
         }
@@ -400,6 +409,34 @@ class User extends React.Component{
          message.info('删除失败，请联系管理员！');
         });
       }
+
+    handleReset = (id) =>{
+        axios({
+            url:`${this.url.userManage.reset}?id=${id}`,
+            method:'post',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        })
+            .then((data)=>{
+                message.info(data.data.message);
+                //console.log(this.pagination);
+                if(data.data.code===0){
+                    if(this.pagination.total%10===1){
+                        this.pagination.current=this.pagination.current-1;
+                    }
+                    this.fetch({
+                        size:this.pagination.pageSize,//条目数
+                        page:this.pagination.current,//当前是第几页
+                        orderField: 'id',
+                        orderType: 'desc',
+                    });
+                }
+            })
+            .catch(()=>{
+                message.info('删除失败，请联系管理员！');
+            });
+    }
     //实现checkbox选择
     onSelectChange(selectedRowKeys) {
         this.setState({ selectedRowKeys:selectedRowKeys });
@@ -503,7 +540,7 @@ class User extends React.Component{
             newData.push(row);
             this.setState({ dataSource: newData, editingKey: '' });
           }
-        });  
+        });
       }
       /**编辑的取消*/
       cancel = () => {
@@ -531,9 +568,9 @@ class User extends React.Component{
              },
            })
            .then((data)=>{
-             
+
              const res=data.data.data;
-            
+
              if(res&&res.list){
               this.pagination.total=res?res.total:0;
              // console.log(res&&res.list);
@@ -579,7 +616,7 @@ class User extends React.Component{
         /*获取当前菜单所有权限*/
        // this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[3].operations:null;
        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-        const {selectedRowKeys}=this.state; 
+        const {selectedRowKeys}=this.state;
         const rowSelection = {//checkbox
             selectedRowKeys,
             onChange:this.onSelectChange,
@@ -622,14 +659,14 @@ class User extends React.Component{
                       </Modal>
                  </span>
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
-                   
+
                       <SearchCell name='请输入用户名称'
                       searchEvent={this.searchEvent}
                       searchContentChange={this.searchContentChange}
                       fetch={this.fetch}
                       flag={this.judgeOperation(this.operation,'QUERY')}
                       />
-                    
+
                 <div className='clear'  ></div>
                 <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 418 }}/>
                 </div>
