@@ -97,17 +97,28 @@ class Edit extends React.Component {
             returnArr.push("固定资产编码必填")
         }
         if(deviceDocumentMain.deviceName){
-            var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥\\\\……&*（）——|{}【】‘；：”“'。，、？]")
-            for (var ii = 0; ii < deviceDocumentMain.deviceName.length; ii++) {
-                if(pattern.test(deviceDocumentMain.deviceName.substr(ii, 1))){
-                    if(this.props.comFlag){
-                        message.info("部件名称存在非法字符，请重新输入部件名称")
-                    }else{
-                        message.info("设备名称存在非法字符，请重新输入设备名称")
-                    }
-                    return
+            var pattern = ['^','\'',']','[','}','{','|','\\','%','0','1','2','3','4','5','6','7','8','9']
+            const deviceLenght = deviceDocumentMain.deviceName.length-1;
+            if(pattern.includes(deviceDocumentMain.deviceName.substr(deviceLenght, 1))){
+                if(this.props.comFlag){
+                    message.info("部件名称最后一位存在非法字符：\""+ deviceDocumentMain.deviceName.substr(deviceLenght, 1) +"\"，请重新输入部件名称")
+                }else{
+                    message.info("设备名称最后一位存在非法字符：\""+ deviceDocumentMain.deviceName.substr(deviceLenght, 1) + "\"，请重新输入设备名称")
                 }
+                return
             }
+
+
+            // for (var ii = 0; ii < deviceDocumentMain.deviceName.length; ii++) {
+            //     if(pattern.test(deviceDocumentMain.deviceName.substr(ii, 1))){
+            //         if(this.props.comFlag){
+            //             message.info("部件名称存在非法字符，请重新输入部件名称")
+            //         }else{
+            //             message.info("设备名称存在非法字符，请重新输入设备名称")
+            //         }
+            //         return
+            //     }
+            // }
         }
         if (!deviceDocumentMain.deviceName || deviceDocumentMain.deviceName === '') {
             deviceFlag = false;
