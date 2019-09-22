@@ -34,7 +34,6 @@ class CheckPlan extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.pagination = {
-            total: this.state.dataSource.length,
             showTotal(total){
                 return `共${total}条记录`
             },
@@ -109,13 +108,12 @@ class CheckPlan extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res[0].son[0].code);
             if(res.length !== 0){
                 this.getTableData({
                     page:this.pagination.current,
                     size:this.pagination.pageSize,
                     deptId:res[0].son[0].code,
-                    status:0,
+                    status:1,
                 })
             }
         })
@@ -149,7 +147,7 @@ class CheckPlan extends React.Component{
                 page:this.pagination.current,
                 size:this.pagination.pageSize,
                 deptId:parseInt(this.state.selectedKeys[0].split("-")[1]),
-                status:0
+                status:1
             });
         }, 1000);
     };
@@ -178,7 +176,7 @@ class CheckPlan extends React.Component{
                     page:this.pagination.current,
                     size:this.pagination.pageSize,
                     deptId:parseInt(this.state.selectedKeys[0].split("-")[1]),
-                    status:0
+                    status:1
                 })
             }
         }).catch(()=>{
@@ -186,6 +184,7 @@ class CheckPlan extends React.Component{
         })
     }
     getTableData = (params = {})=>{
+        console.log(params)
         axios({
             url:`${this.url.devicePatrolPlan.page}`,
             method:"get",
@@ -211,13 +210,11 @@ class CheckPlan extends React.Component{
         })
     }
     onSelect = (selectedKeys,info)=>{
-        // console.log(selectedKeys)
-        // console.log(info)
         this.getTableData({
             page:this.pagination.current,
             size:this.pagination.pageSize,
             deptId:selectedKeys.length!==0?parseInt(selectedKeys[0].split("-")[1]):"",
-            status:0
+            status:1
         })
         this.setState({
             selectedKeys:selectedKeys,
@@ -240,7 +237,7 @@ class CheckPlan extends React.Component{
                 size: this.pagination.pageSize,
                 page: this.pagination.current,
                 condition:ope_name,
-                status:0,
+                status:1,
                 deptId:this.state.selectedKeys[0].split("-")[1]
             },
             type:'json',
@@ -273,7 +270,6 @@ class CheckPlan extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res);
             if(res.length !== 0){
                 var defaultkey = [];
                 defaultkey.push(res[0].parent.code.toString());
@@ -301,6 +297,7 @@ class CheckPlan extends React.Component{
         const current = JSON.parse(localStorage.getItem('equipmentInspection'));
         const operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.menuName === current.menuParent)[0].menuList : null;
         this.operation = operation.filter(e => e.path === current.path)[0].operations;
+        this.ob = JSON.parse(localStorage.getItem('menuList'));
         const { loading,selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -315,7 +312,7 @@ class CheckPlan extends React.Component{
                         <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/>
                     </div>
                     <div style={{width:"80%",marginLeft:"15px"}}>
-                    <AddModal pagination={this.pagination} deptName={this.state.deviceName} getTableData={this.getTableData} deptCode={this.state.selectedKeys.length!==0?this.state.selectedKeys[0].split("-")[1]:""}/>
+                    <AddModal userId={this.ob.userId} pagination={this.pagination} deptName={this.state.deviceName} getTableData={this.getTableData} deptCode={this.state.selectedKeys.length!==0?this.state.selectedKeys[0].split("-")[1]:""}/>
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         loading={loading}

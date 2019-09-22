@@ -72,12 +72,6 @@ class SeTable extends React.Component{
             }]
         return(
 
-
-
-
-
-
-
             <Table
 
                 columns={this.columns}

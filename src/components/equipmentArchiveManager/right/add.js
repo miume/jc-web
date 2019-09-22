@@ -256,7 +256,6 @@ class Add extends Component {
             var pattern = ['^','\'',']','[','}','{','|','\\','%','0','1','2','3','4','5','6','7','8','9']
 
             const deviceLenght = deviceDocumentMain.deviceName.length-1;
-            console.log(deviceDocumentMain.deviceName.substr(deviceLenght, 1))
             if(pattern.includes(deviceDocumentMain.deviceName.substr(deviceLenght, 1))){
                 if(this.props.comFlag){
                     message.info("部件名称最后一位存在非法字符：\""+ deviceDocumentMain.deviceName.substr(deviceLenght, 1) +"\"，请重新输入部件名称")
