@@ -103,7 +103,7 @@ class Finished extends React.Component{
                     page:this.pagination.current,
                     size:10,
                     deptId:res[0].son[0].code,
-                    status:2
+                    status:3
                 })
             }
         })
@@ -145,7 +145,7 @@ class Finished extends React.Component{
             page:this.pagination.current,
             size:this.pagination.pageSize,
             deptId:parseInt(selectedKeys[0].split("-")[1]),
-            status:2
+            status:3
         })
         this.setState({
             selectedKeys:selectedKeys,
@@ -172,7 +172,7 @@ class Finished extends React.Component{
                 size: this.pagination.pageSize,
                 page: this.pagination.current,
                 condition:ope_name,
-                status:2,
+                status:3,
                 deptId:this.state.selectedKeys[0].split("-")[1]
             },
             type:'json',

@@ -10,7 +10,8 @@ class SeDetail extends  React.Component{
         this.state={
             visible:false,
             dataSource:[],
-            detaildataSource:[]
+            detaildataSource:[],
+            spotcheckComment:''
         }
         this.fetch=this.fetch.bind(this)
     }
@@ -69,29 +70,24 @@ class SeDetail extends  React.Component{
                     fixedassetsCode: arr1['fixedassetsCode'],
                     deviceName: arr1['deviceName'],
                     scanTime:arr1['scanTime'],
-                    spotcheckPeople:arr1['spotcheckPeople'],
+                    spotcheckPeople:res.spotPeople,
                     confirmTime:arr1['confirmTime'],
-                    confirmPeople:arr1['confirmPeople'],
+                    confirmPeople:res.confirmPeople,
                     editFlag:arr1['editFlag'],
                     specification: arr1['specification'],
                     startdate: arr1['startdate'],
                     idCode: arr1['idCode'],
                     statusCode: arr1['statusCode'],
                 })
-                console.log(arr1)
-                console.log(detailData1)
                 var detailData2 = [];
-
-                console.log(res.deviceSpotcheckRecordDetailsList)
                 for (var i = 0; i < res.deviceSpotcheckRecordDetailsList.length; i++) {
                    ;
                     var arr2 = res.deviceSpotcheckRecordDetailsList[i];
-                    console.log('11111')
-                    if(arr2['mainValues'] === '0')
+                    if(arr2['mainValues'] === 0)
                     {
-                        arr2['mainValues']='不合格'
-                    }else{
                         arr2['mainValues']='合格'
+                    }else{
+                        arr2['mainValues']='不合格'
                     }
                     detailData2.push({
                         index:i+1,
@@ -105,17 +101,17 @@ class SeDetail extends  React.Component{
 
 
 
-                console.log('2222222')
                 this.setState({
                     dataSource: detailData1,
-                    detaildataSource:detailData2
+                    detaildataSource:detailData2,
+                    spotcheckComment:res.deviceSpotcheckRecordHead?res.deviceSpotcheckRecordHead.spotcheckComment:''
                 });
-                console.log('kkkkkkkkkkkk')
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     dataSource: [],
                     detaildataSource:[],
+                    spotcheckComment:''
                 });
             }
         }).catch(() => {
@@ -147,13 +143,12 @@ class SeDetail extends  React.Component{
                 {/*    // dataSource={fakedataSource}*/}
                 {/*/>*/}
                 </span>
-                <span> <FhTable  dataSource={this.state.dataSource}
-
-
-                /></span>
+                <span>
+                    <FhTable  dataSource={this.state.dataSource} />
+                </span>
                 <div>&nbsp;</div>
                 <span><ThirdTable dataSource={this.state.detaildataSource}/></span>
-                <span className="checkQ-Table-bottom">备注:</span>
+                <span>{`备注：${this.state.spotcheckComment}`}</span>
             </Modal>
                 </span>
         )
