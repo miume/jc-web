@@ -1,0 +1,13 @@
+##设备管理
+- 基础数据（equipmentBasicData）
+  - 部门结构
+  - 设备状态
+  - 位置基础信息
+  - 设备工序分配
+- 设备点检（equipmentCheck）
+- 设备巡检（equipmentCheck）
+- 设备保养（equipmentMaintenance）
+- 设备维修（equipmentRepair）
+- 统计分析（statisticAnalysis）
+- 设备档案（equipmentArchiveManager）
+- 设备指导（equipmentGuidance）

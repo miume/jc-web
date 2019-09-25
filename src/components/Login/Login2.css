@@ -8,7 +8,7 @@ body {
     background: transparent;
     border: 0;
   }
-  
+
   .full-height {
     height: 100%;
   }
@@ -20,14 +20,12 @@ body {
   }
   .gutter-box {
     padding: 5px 0;
-    
-    height: 400px; 
-  
+    height: 400px;
+    min-width: 290px;
     position: relative;
     top: 15%;
   }
   .login-box{
-    
     height: 430px;
     min-width: 300px;
     width: 30%;
@@ -52,17 +50,29 @@ body {
     color: #cccccc;
     font-size: 14px;
   }
-  
+  .login-footer {
+    position: fixed;
+    height: 80px;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+    font-size: 11px;
+  }
+  .login-blockquote {
+    height: 10%;
+  }
+
   @media only screen and (max-height: 666px) {
     #copy-right {
       display: none;
     }
-  
+
     #defaultCanvas0 {
       visibility: hidden;
     }
   }
-  
+
   @media only screen and (max-height: 500px) {
     .gutter-box {
       top: 6%;
@@ -72,11 +82,11 @@ body {
     #defaultCanvas0 {
       display: none;
     }
-    
+
   }
   @media only screen and (max-height: 470px) {
     .gutter-box {
       top: 6%;
     }
-    
+
   }

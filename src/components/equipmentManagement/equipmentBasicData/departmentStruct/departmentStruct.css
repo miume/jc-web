@@ -1,0 +1,35 @@
+.depStructTree {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.eA {
+    display: flex;
+    height: 600px;
+}
+.eA-left {
+    width: 17%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    font-size: small;
+}
+.eA-right {
+    width: 83%;
+    height: 100%;
+}
+.eA-right-top {
+    width: 100%;
+    height: 10%;
+}
+.eA-right-bottom {
+    width: 100%;
+    height: 86%;
+}
+
+.depTree-input {
+    max-width: 100px;
+    height:25px
+}
