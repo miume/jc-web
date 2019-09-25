@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import history from '../components/history/history';
- 
-import ProcessInspection from '../components/processInspection/processInspection';
-import Role from '../components/roleManagement/roleManagement';
+import history from './history/history';
+
+import ProcessInspection from '../components/qualityProcess/dataEntry/processInspection/processInspection';
+import Role from '../components/userPermissions/roleManagement/roleManagement';
 import RawTestReport from '../rawTestReport/rawTestReport';
 class DataRoute extends Component {
   render() {
@@ -19,5 +19,5 @@ class DataRoute extends Component {
     );
   }
 }
- 
+
 export default DataRoute;

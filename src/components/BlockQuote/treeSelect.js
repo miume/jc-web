@@ -4,11 +4,6 @@ import "./blockquote.css"
 /*
     * 1.父组件必须传初始化的选择项，数据源，查询属性
     * dataSource,treeName,defaultparams,params,
-    *
-    *
-    *
-    *
-    *
     * */
 var defaultkey=[];
 
@@ -50,8 +45,6 @@ class TreeCard extends React.Component{
                 }
                 this.setState({
                     expandedKeys:keys,
-                },()=>{
-                    console.log(this.state.expandedKeys)
                 });
 
             }
