@@ -21,7 +21,7 @@ class Top extends React.Component{
             <div className="top">
                 <div className="top-left" >
                     <div className="top-left-image" >
-                        <img src={require("../logo/logo.png")} width={30} height={30} alt=""  />
+                        <img src={require("../image/logo.png")} width={30} height={30} alt=""  />
                     </div>
                     <div className="top-left-text" >
                         <span>新能源材料智能工厂MES系统</span>

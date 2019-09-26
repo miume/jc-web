@@ -11,7 +11,7 @@ class Home extends Component {
             if(canvas !== null && canvas !== undefined) {
                 canvas.style.visibility='hidden';
                 clearInterval(showCanvas);
-            }    
+            }
         },100)
         /**统一管理status */
         const status = {
@@ -48,7 +48,6 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
-        console.log(server)
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -139,11 +138,11 @@ class Home extends Component {
                 deleteById:`${server}/jc/auth/user/deleteById`,
                 update:`${server}/jc/auth/user/update`,
                 getAll:`${server}/jc/auth/user/getAll`,
-                deleteByIds:`${server}/jc/auth/user/deleteByIds`,    
+                deleteByIds:`${server}/jc/auth/user/deleteByIds`,
                 getAllByPage:`${server}/jc/auth/user/getAllByPage`,
                 search:`${server}/jc/auth/user/getUserByNameByPage`,
                 reset:`${server}/jc/auth/user/reset`,
-                
+
             },
             /**部门管理 */
             department:{
@@ -165,35 +164,13 @@ class Home extends Component {
                 updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
                 maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
             },
-            /**
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             * 设备维修*/
+            /**设备维修*/
             equipmentRepair:{
                 deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
                 evaluations:`${server}/jc/common/deviceRepair/evaluations`,
                 getPage:`${server}/jc/common/deviceRepair/getPage`,
             },
-            /**
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             * 位置基础信息*/
+            /**位置基础信息*/
             locationBasic:{
                 addBasicInfo:`${server}/jc/common/basicInfoLocation/addBasicInfo`,
                 deleteByIds:`${server}/jc/common/basicInfoLocation/deleteByIds`,
@@ -272,8 +249,8 @@ class Home extends Component {
             },
             /**原材料检验 */
             rawTestReport:{
-                rawTestReport:`${server}/jc/common/rawTestReport`, 
-                getById:`${server}/jc/common/rawTestReport/details`, 
+                rawTestReport:`${server}/jc/common/rawTestReport`,
+                getById:`${server}/jc/common/rawTestReport/details`,
                 getAllByPage:`${server}/jc/common/rawTestReport/pages`,
                 detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
             },
@@ -304,7 +281,7 @@ class Home extends Component {
                 getStandard:`${server}/jc/common/techRawStandard`,
                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
                 addNewRaw:`${server}/jc/common/techRawStandard/addRaw`,
-                
+
             },
             /**产品标准 */
             productStandard:{
@@ -343,31 +320,7 @@ class Home extends Component {
             equipmentDept:{
                 dept:`${server}/jc/common/dept`
             },
-            /**设备保养
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             * */
+            /**设备保养*/
             eqMaintenanceQuery:{
                 recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
                 recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
@@ -503,9 +456,7 @@ class Home extends Component {
                 getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
                 updateState:`${server}/jc/common/productionBatchRule/UpdateState`
-
             },
-
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
@@ -533,5 +484,5 @@ class Home extends Component {
                 </div>
         );
     }
-} 
+}
 export default Home;

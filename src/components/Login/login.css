@@ -1,8 +1,8 @@
-@import '~antd/dist/antd.css';
+@import '../../../node_modules/antd/dist/antd.css';
 html, body {
     height: 100%;
   }
-  
+
 body {
     margin: 0;
     display: flex;
@@ -44,7 +44,7 @@ body {
     margin: 0 auto;
 }
 .Login-abbr{
-    padding: 5px; 
+    padding: 5px;
 }
 .login-background {
     width:100%;
