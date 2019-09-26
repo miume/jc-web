@@ -57,7 +57,7 @@ class CheckTemplate extends React.Component{
             align:'center',
             width: '15%',
         },{
-            title: '生效日期',
+            title: '模板名称',
             dataIndex: 'deviceSpotcheckModelsHead.modelName',
             key: 'modelName',
             align:'center',

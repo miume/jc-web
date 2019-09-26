@@ -5,7 +5,7 @@ import QuickAccess from '../quickAccess/quickAccess';
 import Role from '../roleManagement/roleManagement';
 import Menu from '../menuMangement/menu';
 import User from '../userManage/userManage';
-import Management from '../processManagement/processManagement'
+import Management from '../processManagement/processManagement';
 
 import ProcessInspection from '../processInspection/processInspection'
 import SampleInspection from '../sampleInspection/sampleInspection'
@@ -18,6 +18,7 @@ import DepartmentStruct from '../departmentStruct/departmentStruct';
 import RawTestReport from '../rawTestReport/rawTestReport';
 import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
 import TodoList from '../todolist/todolist';
+import PrecursorCostBasisData from "../precursorCostBasisData/basisData";
 
 import BaseInfo from '../Base/baseInfo';
 import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
@@ -67,6 +68,15 @@ import BatchSearch from "../batchSearch/batchSearch"
 import BatchRule from  "../batchRule/batchRule"
 import RawMaterialInput from '../rawMaterialInput/rawMaterialInput'
 import EqUserDepAllocation from '../eqUserDepAllocation/eqUserDepAllocation'
+
+import StatisticalPeriod from "../statisticalPeriod/statisticalPeriod"
+import BaseProductLine from "../productLine/productLine"
+import DetailItem from "../detailItem/detailItem"
+import PLCaddress from "../PLCaddress/PLCaddress"
+import MaterialPLC from "../materialPLC/materialPLC"
+import XinsongVGA from "../xinsongVGA/xinsongVGA"
+import ProductLineStatical from "../productLineStatical/productLineStatical"
+import ProductLineVGA from "../productLineVGA/productLineVGA"
 
 class Right extends React.Component {
     render() {
@@ -242,6 +252,33 @@ class Right extends React.Component {
             },{
                 path:"/eqUserDepAllocation",
                 component:EqUserDepAllocation
+            },{
+                path:"/precursorCostBasisData",
+                component:PrecursorCostBasisData
+            },{
+                path:"/statisticalPeriod",
+                component:StatisticalPeriod
+            },{
+                path:"/BaseproductLine",
+                component:BaseProductLine
+            },{
+                path:"/detailItem",
+                component:DetailItem
+            },{
+                path:"/PLCaddress",
+                component:PLCaddress
+            },{
+                path:"/materialPLC",
+                component:MaterialPLC
+            },{
+                path:"/xinsongVGA",
+                component:XinsongVGA
+            },{
+                path:"/productLineStatical",
+                component:ProductLineStatical
+            },{
+                path:"/productLineVGA",
+                component:ProductLineVGA
             }]
         return (
             <div className="rightDiv">
