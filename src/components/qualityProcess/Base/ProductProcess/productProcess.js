@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
+import {Input, Table, Popconfirm, Form, Divider, message, Spin} from 'antd';
 import '../../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../../../BlockQuote/blockquote';
@@ -75,13 +75,14 @@ class ProductProcess extends React.Component{
     constructor(props){
       super(props);
       this.state={
-        dataSource : [],
-        pagination:[],
-        selectedRowKeys : [],//最开始一条记录也没选
-        searchContent:'',
-        visible:false,
-        editingKey:'',
-        reset:false,
+          dataSource : [],
+          pagination:[],
+          selectedRowKeys : [],//最开始一条记录也没选
+          searchContent:'',
+          visible:false,
+          editingKey:'',
+          reset:false,
+          loading: true
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -96,20 +97,14 @@ class ProductProcess extends React.Component{
       this.deleteCancel=this.deleteCancel.bind(this);
       this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
-        total: this.state.dataSource.length,
-        showSizeChanger: true,//是否可以改变 pageSize
-        showTotal:total=>`共${total}条记录`,
-        //改变每页条目数
-        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-          //console.log('Current: ', current, '; PageSize: ', pageSize);
-        },
-        onChange(current) {//跳转，页码改变
-          //console.log('Current: ', current);
-        }
+          total: this.state.dataSource.length,
+          showSizeChanger: true,//是否可以改变 pageSize
+          showTotal:total=>`共${total}条记录`,
+          pageSizeOptions: ["10","20","50","100"]
       };
        //获取该菜单所有权限
        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
-      this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
+       this.columns=this.judgeOperation(this.operation,'UPDATE')&&this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
         dataIndex:'index',//dataIndex值与字段值要匹配
         key:'id',
@@ -198,7 +193,6 @@ class ProductProcess extends React.Component{
         params:{
           ...params,
         },
-        //type:'json',
       }).then((data)=>{
         const res=data.data.data;
         this.pagination.total=res.total?res.total:0;
@@ -208,7 +202,8 @@ class ProductProcess extends React.Component{
               res.list[i-1]['index']=res.prePage*10+i;
          }
          this.setState({
-          dataSource:res.list
+             dataSource:res.list,
+             loading: false
            });
         }
       });
@@ -418,8 +413,7 @@ class ProductProcess extends React.Component{
        return(
            <div>
                <BlockQuote name='产品工序' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
-               <div style={{padding:'15px'}}>
-
+               <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                <ProductProcessAddModal fetch={this.fetch} url={this.url} flag={this.judgeOperation(this.operation,'SAVE')}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
 
@@ -438,8 +432,8 @@ class ProductProcess extends React.Component{
                     components={components}
                     pagination={this.pagination}
                     onChange={this.handleTableChange}
-                    size="small" bordered  scroll={{ y: 400 }}/>
-                </div>
+                    size="small" bordered />
+               </Spin>
            </div>
        );
    }

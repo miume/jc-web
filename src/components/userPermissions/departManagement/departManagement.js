@@ -3,7 +3,7 @@ import BlockQuote from '../../BlockQuote/blockquote';
 import DepartTable from './departTable';
 import axios from "axios";
 import AddModal from "./addModal";
-import {message} from "antd";
+import {message,Spin} from "antd";
 import home from '../../commom/fns';
 import SearchCell from '../../BlockQuote/search';
 import DeleteByIds from "../../BlockQuote/deleteByIds";
@@ -33,9 +33,11 @@ class Depart extends React.Component {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
             },
-            pageChangeFlag : 0,   //0表示分页 1 表示查询
+            pageChangeFlag : 0,   //0表示分页 1 表示查询,
+            loading: true
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
@@ -61,7 +63,7 @@ class Depart extends React.Component {
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal
                         url={this.url}
                         fetch={this.fetch}
@@ -80,20 +82,20 @@ class Depart extends React.Component {
                         fetch={this.fetch}
                         flag={home.judgeOperation(this.operation,'QUERY')}
                     />
-                <div className='clear' ></div>
-                <DepartTable
-                    url={this.url}
-                    data={this.state.dataSource}
-                    pagination={this.state.pagination}
-                    rowSelection={rowSelection}
-                    fetch={this.fetch}
-                    modifyDataSource={this.modifyDataSource}
-                    handleTableChange={this.handleTableChange}
-                    handleDelete={this.handleDelete}
-                    judgeOperation = {home.judgeOperation}
-                    operation = {this.operation}
-                />
-                </div>
+                    <div className='clear' ></div>
+                    <DepartTable
+                        url={this.url}
+                        data={this.state.dataSource}
+                        pagination={this.state.pagination}
+                        rowSelection={rowSelection}
+                        fetch={this.fetch}
+                        modifyDataSource={this.modifyDataSource}
+                        handleTableChange={this.handleTableChange}
+                        handleDelete={this.handleDelete}
+                        judgeOperation = {home.judgeOperation}
+                        operation = {this.operation}
+                    />
+                </Spin>
             </div>
         )
     }
@@ -154,20 +156,19 @@ class Depart extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data?data.data.data:[];
+            let dataSource = [];
             if(res&&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
                 const {pagination} = this.state;
+                dataSource = res.list;
                 pagination.total=res.total;
                 this.setState({
-                    dataSource: res.list,
+                    dataSource: dataSource,
                     pagination:pagination,
+                    loading: false
                 });
-            }else{
-                this.setState({
-                    dataSource: []
-                })
             }
         });
     };

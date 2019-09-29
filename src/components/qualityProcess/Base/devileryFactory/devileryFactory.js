@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
+import {Input, Table, Popconfirm, Form, Divider, message, Spin} from 'antd';
 import '../../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../../../BlockQuote/blockquote';
@@ -29,9 +29,7 @@ class EditableCell extends React.Component {
             editing,
             dataIndex,
             title,
-            inputType,
             record,
-            index,
             ...restProps
         } = this.props;
         return (
@@ -68,7 +66,6 @@ class DeliveryFactory extends React.Component{
   operation;
   componentDidMount(){
     this.fetch();
-    //document.getElementById('/deliveryFactory').style.color='#0079FE';
   }
   componentWillUnmount() {
     this.setState = (state, callback) => {
@@ -78,11 +75,12 @@ class DeliveryFactory extends React.Component{
     constructor(props){
       super(props);
       this.state={
-        dataSource : [],
-        pagination:[],
-        selectedRowKeys : [],//最开始一条记录也没选
-        searchContent:'',
-        editingKey:'',
+          dataSource : [],
+          pagination:[],
+          selectedRowKeys : [],//最开始一条记录也没选
+          searchContent:'',
+          editingKey:'',
+          loading: true
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -96,16 +94,10 @@ class DeliveryFactory extends React.Component{
       this.deleteCancel=this.deleteCancel.bind(this);
       this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
-        total: this.state.dataSource.length,
-        showSizeChanger: true,//是否可以改变 pageSize
-        showTotal:total=>`共${total}条记录`,
-        //改变每页条目数
-        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-          //console.log('Current: ', current, '; PageSize: ', pageSize);
-        },
-        onChange(current) {//跳转，页码改变
-          //console.log('Current: ', current);
-        }
+          total: this.state.dataSource.length,
+          showSizeChanger: true,//是否可以改变 pageSize
+          showTotal:total=>`共${total}条记录`,
+          pageSizeOptions: ["10","20","50","100"]
       };
       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
 
@@ -194,7 +186,6 @@ class DeliveryFactory extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
-        //console.log(res);
         this.pagination.total=res.total?res.total:0;
         this.pagination.current=res.pageNum;
      if(res&&res.list){
@@ -433,7 +424,7 @@ class DeliveryFactory extends React.Component{
        return(
            <div>
                <BlockQuote name='送样工厂' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
-               <div style={{padding:'15px'}}>
+               <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                <DeliveryFactoryAddModal fetch={this.fetch} url={this.url} flag={this.judgeOperation(this.operation,'SAVE')}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'SAVE')}/>
 
@@ -451,8 +442,8 @@ class DeliveryFactory extends React.Component{
                     components={components}
                     pagination={this.pagination}
                     onChange={this.handleTableChange}
-                    size="small" bordered  scroll={{ y: 400 }}/>
-                </div>
+                    size="small" bordered/>
+               </Spin>
            </div>
        );
    }

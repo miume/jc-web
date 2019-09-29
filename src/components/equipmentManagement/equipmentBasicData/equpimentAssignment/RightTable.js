@@ -60,7 +60,6 @@ class RightTable extends React.Component{
                 bordered
                 dataSource={this.props.DataSource}
                 size="small"
-                scroll={{ y: 380 }}
                 style={{paddingTop:'5px'}}
                 pagination={this.props.pagination}
                 onChange={this.props.handleTableChange}

@@ -26,7 +26,6 @@ import ProductLine from '../qualityProcess/Base/productLine/productLine';//产�
 import ProductProcess from '../qualityProcess/Base/ProductProcess/productProcess';//产品工序
 import StatisticAnalysis from '../equipmentManagement/statisticAnalysis/statisticAnalysis'
 import CheckStatistics from '../equipmentManagement/statisticAnalysis/checkStatistics/checkStatistics'
-// import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
 import TestItem from '../qualityProcess/Base/testItem/testItem';
 import OperationManagement from "../userPermissions/operationManagement/operationManagement";
 import StockOut from '../smartWarehouse/stockOut/stockOut';

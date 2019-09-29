@@ -1,12 +1,11 @@
 import React,{Component} from 'react';
-import {Table,Popconfirm,Divider,message} from 'antd';
+import {Table, Popconfirm, Divider, message, Spin} from 'antd';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Add from './padd';
 import Edit from './pedit';
 import Note from './note';
 import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios';
-
 
 class ProductRedList extends Component{
     url;
@@ -27,11 +26,13 @@ class ProductRedList extends Component{
             searchContent:'',
             processChildren:[],//送审流程（对应那个下拉框）
             serialNumberChildren:[],//编号下拉框
+            loading: true
         };
         this.pagination={
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,
             showSizeChanger:true,
+            pageSizeOptions: ['10','20','50','100']
         }
         this.columns=[{
           title:'序号',
@@ -62,8 +63,6 @@ class ProductRedList extends Component{
             dataIndex:'repoBaseSerialNumber.materialClass',
             key:'repoBaseSerialNumber.materialClass',
             render:(text,record)=>{
-                // console.log(text);
-                // console.log(record);
                 let type=record.repoBaseSerialNumber.materialClass;
                 switch(`${type}`){
                      case '1':return '原材料';
@@ -195,19 +194,18 @@ class ProductRedList extends Component{
         })
         .then((data)=>{
              const res=data.data.data;
-             //console.log(res);
-
              if(res&&res.list){
                 this.pagination.total=res?res.total:0;
                 this.pagination.current=res.pageNumber;//当前是第几页，点击重置时，分页显示的是第一页,pageNUm就是内容是第几页，就显示是第几页，0和1都代表第一页
                 for(let i=1;i<=res.list.length;i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                }
-               this.setState({
+             }
+            this.setState({
                 dataSource:res.list,
-                searchContent:''
-                 });
-              }
+                searchContent:'',
+                loading: false
+            });
         });
     }
     onSelectChange(selectedRowKeys){
@@ -364,7 +362,7 @@ class ProductRedList extends Component{
     };
       //console.log(this.state.batchNumberChildren);
         return(
-            <div style={{padding:'0 15px'}}>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <Add  flag={this.judgeOperation(this.operation,'SAVE')}  fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
 
@@ -385,11 +383,10 @@ class ProductRedList extends Component{
                         onChange={this.handleTableChange}
                         bordered
                         size='small'
-                        scroll={{y:400}}
                     >
 
                 </Table>
-            </div>
+            </Spin>
         );
     }
 }

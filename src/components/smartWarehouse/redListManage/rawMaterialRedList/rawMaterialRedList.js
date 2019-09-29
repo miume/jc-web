@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Table,Popconfirm,Divider,message} from 'antd';
+import {Table, Popconfirm, Divider, message, Spin} from 'antd';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Add from './add';
 import Edit from './edit';
@@ -25,18 +25,13 @@ class RawMaterialRedList extends Component{
             searchContent:'',
             processChildren:[],//送审流程（对应那个下拉框）
             serialNumberChildren:[],//编号下拉框
+            loading: true
         };
         this.pagination = {
             total: this.state.dataSource.length,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-            //改变每页条目数
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-              //console.log('Current: ', current, '; PageSize: ', pageSize);
-            },
-            onChange(current) {//跳转，页码改变
-              //console.log('Current: ', current);
-            }
+            pageSizeOptions: ['10','20','50','100']
           };
         this.columns=[{
           title:'序号',
@@ -190,7 +185,6 @@ class RawMaterialRedList extends Component{
           })
     }
     fetch=(params={})=>{
-       // console.log(this.pagination);
         const materialType=1;
         axios({
             url:`${this.url.redList.redList}/?materialType=${materialType}`,
@@ -203,22 +197,20 @@ class RawMaterialRedList extends Component{
             },
         })
         .then((data)=>{
-            // console.log(data);
              const res=data.data.data;
-             //console.log(res);
-
           if(res&&res.list){
             this.pagination.total=res.total?res.total:0;
             this.pagination.current=res.pageNumber;
             for(let i=1;i<=res.list.length;i++){
                 res.list[i-1]['index']=res.prePage*10+i;
            }
-           this.setState({
-            dataSource:res.list,
-            searchContent:'',
-            selectedRowKeys:[]
-            });
           }
+            this.setState({
+                dataSource:res.list,
+                searchContent:'',
+                selectedRowKeys:[],
+                loading: false
+            });
         });
     }
 
@@ -377,7 +369,7 @@ class RawMaterialRedList extends Component{
           }),
     };
         return(
-            <div style={{padding:'0 15px'}}>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <Add   flag={this.judgeOperation(this.operation,'SAVE')}  fetch={this.fetch} process={this.state.processChildren} serialNumber={this.state.serialNumberChildren}/>
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel}  flag={this.judgeOperation(this.operation,'DELETE')}/>
 
@@ -397,12 +389,10 @@ class RawMaterialRedList extends Component{
                         pagination={this.pagination}
                         onChange={this.handleTableChange}
                         bordered
-                        scroll={{y:400}}
                         size='small'
-
                     >
                 </Table>
-            </div>
+            </Spin>
         );
     }
 }

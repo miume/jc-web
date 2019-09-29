@@ -137,7 +137,6 @@ class UnqualifiedTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
             />
         )
     }

@@ -4,7 +4,7 @@ import OperationTable from './operationTable';
 import '../../Home/page.css';
 import axios from "axios";
 import AddModal from "./addModal";
-import {message} from "antd";
+import {message, Spin} from "antd";
 import home from '../../commom/fns';
 import SearchCell from '../../BlockQuote/search';
 import DeleteByIds from "../../BlockQuote/deleteByIds";
@@ -28,6 +28,7 @@ class OperationManagement extends React.Component {
             searchContent:'',
             searchText: '',
             pageChangeFlag: 0, //分页标志： 0为fetch 1为search
+            loading: true
         };
         this.modifySelectedRowKeys=this.modifySelectedRowKeys.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
@@ -44,6 +45,7 @@ class OperationManagement extends React.Component {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
         }
     }
     render() {
@@ -59,7 +61,7 @@ class OperationManagement extends React.Component {
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal
                         fetch={this.fetch}
                         flag={home.judgeOperation(this.operation,'SAVE')}
@@ -88,7 +90,7 @@ class OperationManagement extends React.Component {
                         judgeOperation = {home.judgeOperation}
                         operation = {this.operation}
                     />
-                </div>
+                </Spin>
             </div>
         )
     }
@@ -130,19 +132,18 @@ class OperationManagement extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             this.pagination.total=res?res.total:0;
+            let dataSource = [];
             if(res&&res.list) {
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.prePage)*10+i;
                 }
+                dataSource = res.list
                 this.setState({
-                    dataSource: res.list,
+                    dataSource: dataSource,
                     searchContent: '',
                     selectedRowKeys: [],
                     pageChangeFlag: 0,
-                });
-            }else{
-                this.setState({
-                    dataSource: [],
+                    loading: false
                 });
             }
         })

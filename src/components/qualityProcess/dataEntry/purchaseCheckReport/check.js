@@ -2,7 +2,7 @@ import React from 'react';
 import CheckTable from './checkTable';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
-import OperationTable from "../../../userPermissions/operationManagement/operationTable";
+import {Spin} from "antd";
 
 class Check extends React.Component {
     componentDidMount() {
@@ -21,9 +21,11 @@ class Check extends React.Component {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
+            loading: true
         };
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -40,7 +42,7 @@ class Check extends React.Component {
             this.props.modifyTabFlag();
         }
         return(
-            <div>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <SearchCell
                     name='请输入原材料名称'
                     searchEvent={this.searchEvent}
@@ -61,7 +63,7 @@ class Check extends React.Component {
                     judgeOperation = {this.props.judgeOperation}
                     operation = {this.props.operation}
                 />
-            </div>
+            </Spin>
         )
     }
     /**获取所有数据 getAllByPage */
@@ -104,21 +106,18 @@ class Check extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            const {pagination} = this.state;
             if(res&&res.list){
-                const {pagination} = this.state;
                 pagination.total = res.total;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
-                this.setState({
-                    dataSource: res.list,
-                    pagination:pagination,
-                });
-            }else{
-                this.setState({
-                    dataSource: [],
-                });
             }
+            this.setState({
+                dataSource: res && res.list? res.list : [],
+                pagination:pagination,
+                loading: false
+            });
         });
     };
     /**---------------------- */

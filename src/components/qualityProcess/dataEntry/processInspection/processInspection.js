@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import BlockQuote from '../../../BlockQuote/blockquote'
-import {Table,Popconfirm,Divider,message } from 'antd';
+import {Table, Popconfirm, Divider, message, Spin} from 'antd';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Add from './add';
 import './editor.css';
@@ -50,6 +50,7 @@ class ProcessInspection extends React.Component{
             allProductionProcess:[],
             detailData:[],
             pageChangeFlag:0,        //0表示getAllPage分页查询，
+            loading: true
         }
         this.fetch = this.fetch.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
@@ -64,7 +65,8 @@ class ProcessInspection extends React.Component{
             showTotal(total) {
                 return `共${total}条记录`
             } ,
-            showSizeChanger:true
+            showSizeChanger:true,
+            pageSizeOptions: ["10","20","50","100"]
           };
         this.columns = [{
           title: '序号',
@@ -179,6 +181,7 @@ class ProcessInspection extends React.Component{
             this.pagination.total = res?res.total:0;
             this.setState({
                 dataSource:res.list,
+                loading: false
             })
             }
         })
@@ -298,15 +301,15 @@ class ProcessInspection extends React.Component{
         return (
             <div>
                 <BlockQuote  name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Add url={this.url} fetch={this.fetch} allProductionProcess={this.state.allProductionProcess} addFlag={addFlag} />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
                     flag={home.judgeOperation(this.operation,'DELETE')}
                     />
                     <SearchCell name='请输入搜索人' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
                     fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}/>
-                  <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 400 }}/>
-                </div>
+                  <Table rowKey={record => record.commonBatchNumber.id} rowSelection={rowSelection} columns={this.columns} dataSource={this.state.dataSource}  pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>
+                </Spin>
             </div>
 
         );

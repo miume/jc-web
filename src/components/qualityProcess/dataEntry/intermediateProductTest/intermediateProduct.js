@@ -4,6 +4,7 @@ import InterTable from './intermediateTable';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 import home from "../../../commom/fns";
+import {Spin} from "antd";
 
 class InterProduct extends React.Component {
     url;
@@ -27,9 +28,11 @@ class InterProduct extends React.Component {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
+            loading: true
         };
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.fetch=this.fetch.bind(this);
@@ -49,7 +52,7 @@ class InterProduct extends React.Component {
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell
                         name='请输入送检工厂名称'
                         searchEvent={this.searchEvent}
@@ -70,7 +73,7 @@ class InterProduct extends React.Component {
                         judgeOperation = {home.judgeOperation}
                         operation = {this.operation}
                     />
-                </div>
+                </Spin>
             </div>
         )
     }
@@ -144,10 +147,12 @@ class InterProduct extends React.Component {
                 this.setState({
                     dataSource:res.list,
                     pagination:pagination,
+                    loading: false
                 })
             }else{
                 this.setState({
-                    dataSource: []
+                    dataSource: [],
+                    loading: false
                 })
             }
 

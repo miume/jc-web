@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios'
+import {Spin} from "antd";
 
 class MaterialRecord extends React.Component{
     url
@@ -16,7 +17,8 @@ class MaterialRecord extends React.Component{
         this.state={
             searchContent:'',
             dataSource:[],
-            user:[]
+            user:[],
+            loading: true
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -41,8 +43,9 @@ class MaterialRecord extends React.Component{
             res[i-1]['index']=i;
         }
           this.setState({
-            dataSource:res,
-            searchContent:'',
+              dataSource:res,
+              searchContent:'',
+              loading: false
           })
       }
     })
@@ -82,7 +85,7 @@ class MaterialRecord extends React.Component{
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (
-            <div style={{padding:'0 15px'}}>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货品名称'
                         searchContentChange={this.searchContentChange}
@@ -119,12 +122,6 @@ class MaterialRecord extends React.Component{
                     <div className="MRtwo">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        // var string = m.serialNumber.split('-')[0]+'...'
-                        // if(m.serialNumber.length>13){
-                        //     string = m.serialNumber.substring(0,13)
-                        // }else{
-                        //     string = m.serialNumber
-                        // }
                         return <div title={m.serialNumber} className="MRborder-down" key={index}>
                                     {m.serialNumber}
                                 </div>
@@ -169,33 +166,6 @@ class MaterialRecord extends React.Component{
                     }):null
                 }
                     </div>
-                    {/* <div className="MRfive">
-
-                            <div className="head-shadow">
-                            </div>
-
-
-                {
-                    this.state.dataSource.map((m,index)=>{
-                        if(m.repoDiffRecord.supposedQuantity !== m.repoDiffRecord.realQuantity){
-                            return <div className="MRborder-down" key={index} style={{color:"red"}}>
-                        {m.repoDiffRecord.supposedQuantity}  </div>
-                        }else{
-                            return <div className="MRborder-down" key={index}>
-                            {m.repoDiffRecord.supposedQuantity}  </div>
-                        }
-                    })
-                }
-                    </div> */}
-                    {/* <div className="MRsix">
-                {
-                    this.state.dataSource.map((m,index)=>{
-                        return <div className="MRborder-down" key={index}>
-                                    {m.repoDiffRecord.realQuantity}
-                                </div>
-                    })
-                }
-                    </div> */}
                     <div className="MRseven">
                         {/* <div className="MRborder-down2">记录重量</div> */}
                         <div className='white-space space-left'></div>
@@ -223,7 +193,7 @@ class MaterialRecord extends React.Component{
                 }
                     </div>
                 </div>
-            </div>
+            </Spin>
         )
     }
 }

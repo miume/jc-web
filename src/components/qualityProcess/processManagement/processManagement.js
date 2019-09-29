@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../Home/page.css';
-import { Table,Popconfirm,Divider,message } from 'antd';
+import {Table, Popconfirm, Divider, message, Spin} from 'antd';
 import BlockQuote from '../../BlockQuote/blockquote';
 import SearchCell from '../../BlockQuote/search';
 import DeleteByIds from '../../BlockQuote/deleteByIds';
@@ -19,9 +19,9 @@ class Management extends React.Component{
             dataSource: [],
             pagination:[],
             selectedRowKeys: [],
-            loading: false,
+            loading: true,
             searchContent:'',
-            searchText: '',
+            searchText: ''
         }
         this.onSelectChange = this.onSelectChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
@@ -36,6 +36,7 @@ class Management extends React.Component{
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
           };
         this.columns = [{
             title: '序号',
@@ -256,7 +257,7 @@ class Management extends React.Component{
             return(
                 <div>
                     <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                    <div style={{padding:'15px'}}>
+                    <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Add
                         fetch={this.fetch}
                         flag={this.judgeOperation(this.operation,'SAVE')}
@@ -270,8 +271,8 @@ class Management extends React.Component{
                     />
                     <SearchCell name='请输入流程名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
-                        </div>
+                    <Table rowSelection={rowSelection} columns={this.columns} pagination={this.pagination} dataSource={this.state.dataSource} rowKey={record => record.commonBatchNumber.id} size="small" bordered onChange={this.handleTableChange}/>
+                    </Spin>
                 </div>
             );
     }

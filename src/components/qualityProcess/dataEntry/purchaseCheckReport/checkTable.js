@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, message, Popconfirm, Table} from 'antd';
+import {Divider, message, Table} from 'antd';
 import CheckEditSpan from './checkEditSpan';
 import CheckReleaseSpan from './checkReleaseSpan';
 import axios from "axios";
@@ -53,9 +53,6 @@ class CheckTable extends React.Component {
         render: receiveDate=>{
             return receiveDate?receiveDate:'无'
         }
-        // render: receiveDate => {
-        //     return <abbr style={{cursor:'default'}} title={receiveDate?receiveDate:'无'}>{receiveDate?receiveDate.substring(0,10):'无'}</abbr>
-        // }
     },{
         title: '创建人',
         dataIndex: 'createPersonName',
@@ -145,7 +142,6 @@ class CheckTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
                 onChange={this.props.handleTableChange}
             />
         )
@@ -153,13 +149,6 @@ class CheckTable extends React.Component {
     /**判断编辑、删除可否功能 */
     judgeCheckOperation = (record) => {
         if(record===-1||record===3){
-            return true;
-        }else{
-            return false;
-        }
-    };
-    judgeDeleteOperation = (record) => {
-        if(record===-1){
             return true;
         }else{
             return false;

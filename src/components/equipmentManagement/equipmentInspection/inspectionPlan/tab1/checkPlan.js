@@ -322,7 +322,7 @@ class CheckPlan extends React.Component{
                     />
                     <SearchCell name='请输入计划名称' type={this.props.type} searchEvent={this.searchEvent} pagination={this.pagination} selectedKeys={this.state.selectedKeys} searchContentChange={this.searchContentChange} fetch={this.getTableData} flag={this.judgeOperation(this.operation,'QUERY')}/>
                     <div className='clear' ></div>
-                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.devicePatrolPlanRecordHead.code} pagination={this.pagination} dataSource={this.state.dataSource} columns={this.columns} bordered scroll={{ y: 400 }}/>
+                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.devicePatrolPlanRecordHead.code} pagination={this.pagination} dataSource={this.state.dataSource} columns={this.columns} bordered/>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import BlockQuote from '../../../BlockQuote/blockquote';
 import axios from "axios";
-import {Table, Divider, message, Popconfirm} from "antd";
+import {Table, Divider, message, Popconfirm, Spin} from "antd";
 import '../../../Home/page.css';
 import SearchCell from '../../../BlockQuote/search'
 import AddModal from './addModal'
@@ -34,7 +34,7 @@ class SampleInspection extends React.Component {
         this.state = {
             dataSource: [],
             selectedRowKeys: [],    //多选框key
-            loading: false,
+            loading: true,
             pagination: [],
             searchContent: '',
             clicked: false,
@@ -51,7 +51,6 @@ class SampleInspection extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.handleRefuse = this.handleRefuse.bind(this);
         this.contentChange = this.contentChange.bind(this);
-        this.changePage = this.changePage.bind(this);
         this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
@@ -59,7 +58,7 @@ class SampleInspection extends React.Component {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
-            onChange: this.changePage,
+            pageSizeOptions: ["10","20","50","100"]
         }
         this.columns = [{
             title: '序号',
@@ -110,15 +109,6 @@ class SampleInspection extends React.Component {
             key: 'sampleDeliveringRecord.tempBatchNumber',
             align: 'center',
             width: '15%',
-            // render:(text)=>{
-            //     if(text !=""){
-            //         var value = text.split('-')
-            //         return <div className='text-decoration' title={text}>{value[0]+"..."}</div>
-            //     }else {
-            //         return "无"
-            //     }
-            //
-            // }
         }, {
             title: '类型',
             dataIndex: 'sampleDeliveringRecord.type',
@@ -201,9 +191,6 @@ class SampleInspection extends React.Component {
                 );
             }
         }];
-    }
-
-    changePage = (page, pageSize) => {
     }
 
     contentChange(e) {
@@ -369,6 +356,9 @@ class SampleInspection extends React.Component {
                     pageChangeFlag: 0
                 });
             }
+            this.setState({
+                loading: false
+            })
         })
     };
     onSelectChange = (selectedRowKeys) => {
@@ -419,7 +409,7 @@ class SampleInspection extends React.Component {
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1} />
-                <div style={{padding: '15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation, 'SAVE')}/>
                     <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
@@ -427,13 +417,9 @@ class SampleInspection extends React.Component {
                         deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation, 'DELETE')}
                     />
-
-                    {/* <span style={{float:'right',paddingBottom:'8px'}}> */}
-
                     <SearchCell name='请输入工厂名' searchEvent={this.searchEvent}
                                 searchContentChange={this.searchContentChange} fetch={this.fetch}
                                 flag={this.judgeOperation(this.operation, 'QUERY')}/>
-                    {/* </span> */}
                     <div className='clear'></div>
                     <Table columns={this.columns} dataSource={this.state.dataSource} rowSelection={rowSelection}
                            size="small"
@@ -441,9 +427,8 @@ class SampleInspection extends React.Component {
                            rowKey={record => record.sampleDeliveringRecord.id}
                            onChange={this.handleTableChange}
                            pagination={this.pagination}
-                           scroll={{ y: 450 }}
                     />
-                </div>
+                </Spin>
             </div>
         )
     }

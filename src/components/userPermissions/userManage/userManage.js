@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Table,Popconfirm,Form,Divider,Modal,Select,message} from 'antd';
+import {Input, Table, Popconfirm, Form, Divider, Modal, Select, message, Spin} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../../BlockQuote/blockquote';
@@ -111,6 +111,7 @@ class User extends React.Component{
         username:'',
         reset:false,
         pageChangeFlag:0,//0表示getAllByPage分页，1表示搜索分页
+          loading: true
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -124,14 +125,10 @@ class User extends React.Component{
       this.deleteCancel=this.deleteCancel.bind(this);
       this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
-        total: this.state.dataSource.length,
-        showSizeChanger: true,//是否可以改变 pageSize
-        showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-       // 改变每页条目数
-        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-        },
-        onChange(current) {//跳转，页码改变
-        }
+          total: this.state.dataSource.length,
+          showSizeChanger: true,//是否可以改变 pageSize
+          showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+          pageSizeOptions: ["10","20","50","100"]
       };
       this.columns=!this.judgeOperation(this.operation,'UPDATE')||!this.judgeOperation(this.operation,'DELETE')?[{//表头
         title:'序号',
@@ -310,18 +307,20 @@ class User extends React.Component{
         },
       }).then((data)=>{
         const res=data.data.data;
-       // console.log(res);
+          let dataSource = [];
         if(res&&res.list){
           this.pagination.total=res.total?res.total:0;
           this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
           for(var i=1;i<=res.list.length;i++){
             res.list[i-1]['index']=res.prePage*10+i;
         }
+            dataSource = res.list
         this.setState({
-          dataSource:res.list,//list取到的是所有符合要求的数据
+          dataSource:dataSource,//list取到的是所有符合要求的数据
           searchContent:'',
           selectedRowKeys:[],
-          pageChangeFlag:0
+          pageChangeFlag:0,
+            loading: false
          });
         }
       });
@@ -629,7 +628,7 @@ class User extends React.Component{
        return(
            <div>
                <BlockQuote name={current.menuName} menu={current.menuParent}/>
-               <div style={{padding:'15px'}}>
+               <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                  <span className={this.judgeOperation(this.operation,'SAVE')?'':'hide'}>
                   <NewButton handleClick={this.handleAdd} name='新增'  className='fa fa-plus' />&nbsp;&nbsp;&nbsp;
                       <Modal title="新增" visible={this.state.visible} closable={false} maskClosable={false} centered={true} className='modal-sm'
@@ -650,8 +649,8 @@ class User extends React.Component{
                       />
 
                 <div className='clear'  ></div>
-                <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered  scroll={{ y: 418 }}/>
-                </div>
+                <Table rowKey={record => record.id} rowSelection={rowSelection} columns={table_column} dataSource={this.state.dataSource} components={components} pagination={this.pagination} onChange={this.handleTableChange} size="small" bordered/>
+               </Spin>
            </div>
        );
    }

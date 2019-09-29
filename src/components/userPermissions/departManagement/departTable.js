@@ -171,7 +171,6 @@ class DepartTable extends React.Component {
                 onChange={this.props.handleTableChange}
                 size="small"
                 bordered
-                scroll={{ y: 450 }}
             />
         );
     };
