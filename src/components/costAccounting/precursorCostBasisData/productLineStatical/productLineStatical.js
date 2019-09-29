@@ -1,12 +1,12 @@
 import React from "react";
-import '../Home/page.css';
+import '../../../Home/page.css';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
-import DeleteByIds from '../BlockQuote/deleteByIds';
-import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../../../BlockQuote/deleteByIds';
+import SearchCell from '../../../BlockQuote/search';
 
-class MaterialPLC extends React.Component{
+class ProductLineStatical extends React.Component{
     url;
     constructor(props){
         super(props);
@@ -14,16 +14,22 @@ class MaterialPLC extends React.Component{
             visible:false,
             data:[{
                 index:1,
-                name:"701#合成槽",
-                PLCaddress:"plc地址"
+                materialName:"701#合成槽",
+                type:"主材",
+                process:"合成工序",
+                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
             },{
                 index:2,
-                name:"701#合成槽",
-                PLCaddress:"plc地址1"
+                materialName:"701#合成槽",
+                type:"主材",
+                process:"合成工序",
+                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
             },{
                 index:3,
-                name:"701#合成槽",
-                PLCaddress:"plc地址2"
+                materialName:"701#合成槽",
+                type:"主材",
+                process:"合成工序",
+                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
             }]
         }
         this.pagination = {
@@ -38,19 +44,41 @@ class MaterialPLC extends React.Component{
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '20%',
+            width: '10%',
         },{
             title: '物料名称',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'materialName',
+            key: 'materialName',
             align:'center',
-            width: '30%',
+            width: '15%',
         },{
-            title: 'PLC地址表',
-            dataIndex: 'PLCaddress',
-            key: 'PLCaddress',
+            title: '所属类别',
+            dataIndex: 'type',
+            key: 'type',
             align:'center',
-            width: '30%',
+            width: '20%',
+        },{
+            title: '所属工序',
+            dataIndex: 'process',
+            key: 'process',
+            align:'center',
+            width: '20%',
+        },{
+            title: '产线/权重',
+            dataIndex: 'value',
+            key: 'value',
+            align:'center',
+            width: '25%',
+            render:(text,record)=>{
+                var record = record.value.split(",");
+                return(
+                    record.map((item,index)=>{
+                        return(<div key={index}>
+                            {item}
+                        </div>)
+                    })
+                )
+            }
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -88,4 +116,4 @@ class MaterialPLC extends React.Component{
     }
 }
 
-export default MaterialPLC
+export default ProductLineStatical

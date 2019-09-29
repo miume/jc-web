@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Modal,Select,Form, Input,message,Icon } from 'antd';
 import axios from 'axios';
-import AddButton from '../BlockQuote/newButton';
-import CancleButton from "../BlockQuote/cancleButton";
-import SaveButton from "../BlockQuote/saveButton";
+import AddButton from '../../../BlockQuote/newButton';
+import CancleButton from "../../../BlockQuote/cancleButton";
+import SaveButton from "../../../BlockQuote/saveButton";
 
 class AddModal extends React.Component{
     url;
@@ -43,6 +43,9 @@ class AddModal extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
+                    <Input id="name" placeholder="请输入物料名称"/>
+                    <br />
+                    <br />
                     <Input id="name" placeholder="请输入PLC地址"/>
                 </Modal>
             </span>

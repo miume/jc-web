@@ -1,12 +1,12 @@
 import React from "react";
-import '../Home/page.css';
+import '../../../Home/page.css';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
-import DeleteByIds from '../BlockQuote/deleteByIds';
-import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../../../BlockQuote/deleteByIds';
+import SearchCell from '../../../BlockQuote/search';
 
-class PLCaddress extends React.Component{
+class XinsongVGA extends React.Component{
     url;
     constructor(props){
         super(props);
@@ -14,13 +14,13 @@ class PLCaddress extends React.Component{
             visible:false,
             data:[{
                 index:1,
-                PLCaddress:"plc地址"
+                VGAname:"1号叫料点"
             },{
                 index:2,
-                PLCaddress:"plc地址1"
+                VGAname:"2号叫料点"
             },{
                 index:3,
-                PLCaddress:"plc地址2"
+                VGAname:"3号叫料点"
             }]
         }
         this.pagination = {
@@ -37,9 +37,9 @@ class PLCaddress extends React.Component{
             align:'center',
             width: '20%',
         },{
-            title: 'PLC地址表',
-            dataIndex: 'PLCaddress',
-            key: 'PLCaddress',
+            title: 'VGA点名称',
+            dataIndex: 'VGAname',
+            key: 'VGAname',
             align:'center',
             width: '60%',
         },{
@@ -79,4 +79,4 @@ class PLCaddress extends React.Component{
     }
 }
 
-export default PLCaddress
+export default XinsongVGA
