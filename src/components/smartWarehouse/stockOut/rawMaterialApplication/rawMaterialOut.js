@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Popconfirm, message, Divider} from 'antd';
+import {Table, Popconfirm, message, Divider, Spin} from 'antd';
 import SearchCell from '../../../BlockQuote/search';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Detail from '../detail';
@@ -23,7 +23,6 @@ import home from '../../../commom/fns';
 // }
 class RawMaterialOut extends React.Component {
     status
-
     constructor(props) {
         super(props);
         this.state = {
@@ -50,27 +49,7 @@ class RawMaterialOut extends React.Component {
             dataIndex: 'batchNumber',
             key: 'batchNumber',
             width: '15%',
-        }
-            // ,{
-            //     title:'货物名称',
-            //     dataIndex:'materialName',
-            //     key:'materialName',
-            //
-            //     width:'8%'
-            // },{
-            //     title:'货物数量',
-            //     dataIndex:'quantity',
-            //     key:'quantity',
-            //
-            //     width:'8%'
-            // },{
-            //     title:'获取重量',
-            //     dataIndex:'weight',
-            //     key:'weight',
-            //
-            //     width:'10%'
-            // }
-            , {
+        }, {
                 title: '申请人',
                 dataIndex: 'createPersonName',
                 key: 'createPersonName',
@@ -87,16 +66,6 @@ class RawMaterialOut extends React.Component {
                 width: '15%',
                 render: status => {
                     return this.status[status.toString()];
-                    // switch(`${status}`) {
-                    //     case '-1': return '已保存未提交';
-                    //     case '0': return '已提交未审核';
-                    //     case '1': return '审核';
-                    //     case '2': return '审核通过';
-                    //     case '3': return '审核未通过';
-                    //     case '4': return '合格';
-                    //     case '5': return '不合格';
-                    //     default: return '';
-                    // }
                 },
             }, {
                 title: '紧急',
@@ -141,6 +110,7 @@ class RawMaterialOut extends React.Component {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ['10','20','50','100']
         }
     }
     /**监控表格变化 */
@@ -254,7 +224,7 @@ class RawMaterialOut extends React.Component {
         /**获取当前菜单的所有操作权限 */
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
-            <div style={{padding: '0 15px'}}>
+            <Spin spinning={this.props.loading} wrapperClassName='rightDiv-content'>
                 <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel}
                              selectedRowKeys={this.state.selectedRowKeys}
                              flag={home.judgeOperation(this.operation,'DELETE')}
@@ -267,7 +237,7 @@ class RawMaterialOut extends React.Component {
                 <Table rowKey={record => record.id} dataSource={this.props.data} columns={this.columns}
                        rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange}
                        size='small' bordered></Table>
-            </div>
+            </Spin>
         );
     }
 }

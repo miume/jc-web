@@ -97,21 +97,17 @@ class Material extends React.Component{
         var index = 0;
         var myInterval = setInterval(() => {
             let current = this.state.dataSource[index];
-            // console.log(current)
             if (current !== undefined) {
                 axios.post(`${this.url.libraryManage.oneKeyStock}`,
                     {},
                     {
                         params: {
                             'id': current.id,
-                            // 'materialName': current.materialName,
-                            // 'weight': current.realWeig,
                             'creator': this.ob.userId
                         }
                     }
                 ).then((res) => {
                     let newDataSource = [...$this.state.dataSource]
-                    // newDataSource[index]['quantity'] = res.data.data.realQuantity;
                     newDataSource[index]['weight'] = res.data.data.realWeight;
                     newDataSource[index]['realWeig'] = res.data.data.realWeight;
                     $this.setState({dataSource: newDataSource})
