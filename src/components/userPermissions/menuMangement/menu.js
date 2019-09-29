@@ -5,7 +5,7 @@ import BlockQuote from '../../BlockQuote/blockquote';
 import MenuTable from './menuTable';
 import AddModal from './addModal';
 import axios from "axios";
-import {message} from "antd";
+import {message, Spin} from "antd";
 import SearchCell from '../../BlockQuote/search';
 
 /**这是个令牌，每次调用接口都将其放在header里 */
@@ -25,7 +25,7 @@ class Menu extends React.Component{
           dataSource: [],
           pagination:[],
           selectedRowKeys: [],
-          loading: false,
+          loading: true,
           searchContent:'',
           searchText: '',
           fatherMenu:[],
@@ -39,17 +39,17 @@ class Menu extends React.Component{
       this.searchContentChange = this.searchContentChange.bind(this);
       this.searchEvent = this.searchEvent.bind(this);
       this.getAllFatherMenu = this.getAllFatherMenu.bind(this);
-    //   this.Authorization = localStorage.getItem('Authorization');
       this.searchContentChange1 = this.searchContentChange1.bind(this)
       this.searchFatherEvent = this.searchFatherEvent.bind(this);
       this.judgeOperation = this.judgeOperation.bind(this);
-    //   this.changePage = this.changePage.bind(this);
 
       this.pagination = {
-        total: this.state.dataSource.length,
-        showTotal(total){
-            return `共${total}条记录`
-        },
+          total: this.state.dataSource.length,
+          showTotal(total){
+              return `共${total}条记录`
+          },
+          showSizeChanger: true,
+          pageSizeOptions: ["10","20","50","100"]
     }
   }
 
@@ -105,8 +105,8 @@ class Menu extends React.Component{
     };
     return (
       <div>
-        <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-        <div style={{padding:'15px'}}>
+          <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
+          <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
             <AddModal
                 fetch={this.fetch}
                 fatherMenu = {this.state.fatherMenu}
@@ -134,7 +134,7 @@ class Menu extends React.Component{
             judgeOperation = {this.judgeOperation}
             operation = {this.operation}
         />
-        </div>
+          </Spin>
       </div>
     )
   }
@@ -167,18 +167,19 @@ class Menu extends React.Component{
               'Authorization': this.url.Authorization
           },
           params: params,
-          // type: 'json',
       }).then((data) => {
           const res = data.data.data;
+          let dataSource = [];
           if(res&&res.list){
             this.pagination.total=res.total;
             this.pagination.current=res.pageNumber;
             for(var i = 1; i<=res.list.length; i++){
                 res.list[i-1]['index']=(res.prePage)*10+i;
             }
+              dataSource = res.list;
             this.setState({
                 loading: false,
-                dataSource: res.list,
+                dataSource: dataSource,
                 searchContent:'',
                 selectedRowKeys: [],
             });

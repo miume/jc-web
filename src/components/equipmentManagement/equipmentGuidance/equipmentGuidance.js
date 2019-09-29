@@ -4,7 +4,7 @@ import '../../Home/page.css';
 import BlockQuote from '../../BlockQuote/blockquote';
 import SearchCell from '../../BlockQuote/search';
 import AddModal from './add';
-import {Divider, message, Popconfirm, Table} from 'antd';
+import {Divider, message, Popconfirm, Spin, Table} from 'antd';
 import Edit from "./editor";
 import Detail from './detail';
 
@@ -186,7 +186,7 @@ class Equipment extends React.Component{
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <AddModal fetch={this.fetch} flag={this.judgeOperation(this.operation,'SAVE')}/>&nbsp;&nbsp;&nbsp;
                 <SearchCell
                     name='请输入指导书名称'
@@ -195,7 +195,7 @@ class Equipment extends React.Component{
                     searchContentChange={this.searchContentChange} flag={this.judgeOperation(this.operation,'QUERY')}/>
                 <div className='clear'></div>
                 <Table size="small" dataSource={this.state.dataSource} columns={this.columns} bordered rowKey={record => record.batchNumberId} pagination={this.pagination} scroll={{ y: 400 }} onChange={this.handleTableChange}/>
-                </div>
+                </Spin>
             </div>
         );
     }

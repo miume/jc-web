@@ -1,5 +1,5 @@
 import React from 'react';
-import {Divider, Switch} from 'antd';
+import {Divider, Spin, Switch} from 'antd';
 import PackTable from './packTable';
 import SearchCell from '../../../BlockQuote/search';
 import PackGenerateModal from './packGenerateModal';
@@ -19,7 +19,7 @@ class Pack extends React.Component {
         this.state = {
             dataSource: [],
             selectedRowKeys: [],    //多选框key
-            loading: false,
+            loading: true,
             searchContent:'',
             generateVisible: false,
             unGenerateDate: true, //未生成数据--true为显示未生成数据，false为显示所有数据
@@ -28,7 +28,8 @@ class Pack extends React.Component {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ['10','20','50','100']
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
         };
@@ -57,7 +58,7 @@ class Pack extends React.Component {
             })
         };
         return(
-            <div>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <div>
                     <PackGenerateModal
                         fetch={this.fetch}
@@ -93,7 +94,7 @@ class Pack extends React.Component {
                     modifySelectedRowKeysData={this.modifySelectedRowKeysData}
                     handleTableChange={this.handleTableChange}
                 />
-            </div>
+            </Spin>
         )
     };
 
@@ -149,23 +150,19 @@ class Pack extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            const {pagination} = this.state;
             if(res&&res.list){
-                const {pagination} = this.state;
-                pagination.total=res.total;
+                pagination.total=res && res.total ? res.total : 0;
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
-                this.setState({
-                    dataSource: res.list,
-                    selectedRowKeys: [],
-                    pagination:pagination,
-                });
-            }else{
-                this.setState({
-                    dataSource: [],
-                    selectedRowKeys: [],
-                });
             }
+            this.setState({
+                dataSource: res && res.list ? res.list : [],
+                selectedRowKeys: [],
+                pagination: pagination,
+                loading: false
+            });
         });
     };
     /**---------------------- */

@@ -1,6 +1,6 @@
 //入库管理的原材料入库
 import React,{Component} from 'react';
-import {Table,message} from 'antd';
+import {Table, message, Spin} from 'antd';
 import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios';
 class RowMaterialInventor extends Component{
@@ -20,6 +20,7 @@ class RowMaterialInventor extends Component{
              searchContent:'',
              dataSource:[],
              pageChangeFlag:0,//0表示getAllByPage分页  1 表示搜索分页
+             loading: true
          }
 
          this.columns=[{
@@ -71,12 +72,7 @@ class RowMaterialInventor extends Component{
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-                //console.log('Current: ', current, '; PageSize: ', pageSize);
-              },
-              onChange(current) {//跳转，页码改变
-                //console.log('Current: ', current);
-              }
+            pageSizeOptions: ['10','20','50','100']
         }
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
@@ -117,7 +113,6 @@ class RowMaterialInventor extends Component{
             },
         })
         .then((data)=>{
-               //console.log(data.data.data);
                const res=data.data.data;
                if(res&&res.list){
                     this.pagination.total=res.total;
@@ -125,12 +120,13 @@ class RowMaterialInventor extends Component{
                     for(var i=1;i<=res.list.length;i++){
                         res.list[i-1]['index']=res.prePage*10+i;
                   }//使序号从1开始
-                  this.setState({
-                    dataSource:res.list,
-                    searchContent:'',
-                    pageChangeFlag:0
-                });
             }
+            this.setState({
+                dataSource:res.list,
+                searchContent:'',
+                pageChangeFlag:0,
+                loading: false
+            });
         });
     }
 
@@ -179,8 +175,7 @@ class RowMaterialInventor extends Component{
         //获取该菜单所有权限
       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         return(
-            <div style={{padding:'0 15px'}}>
-
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
@@ -199,9 +194,8 @@ class RowMaterialInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:400}}
                 ></Table>
-            </div>
+            </Spin>
         );
     }
 }

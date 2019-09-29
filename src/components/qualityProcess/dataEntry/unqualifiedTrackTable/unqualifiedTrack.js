@@ -4,6 +4,7 @@ import BlockQuote from "../../../BlockQuote/blockquote";
 import UnqualifiedTrackTable from './unqualifiedTrackTable';
 import axios from "axios";
 import home from "../../../commom/fns"
+import {Spin} from "antd";
 class UnqualifiedTrack extends React.Component{
     url;
     operation;
@@ -28,9 +29,11 @@ class UnqualifiedTrack extends React.Component{
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
+            loading: true
         };
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.fetch=this.fetch.bind(this);
@@ -47,7 +50,7 @@ class UnqualifiedTrack extends React.Component{
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell
                         name='请输入处理人名称'
                         searchEvent={this.searchEvent}
@@ -66,7 +69,7 @@ class UnqualifiedTrack extends React.Component{
                         judgeOperation = {home.judgeOperation}
                         operation = {this.operation}
                     />
-                </div>
+                </Spin>
             </div>
         )
     }
@@ -120,15 +123,12 @@ class UnqualifiedTrack extends React.Component{
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
-                this.setState({
-                    dataSource: res.list,
-                    pagination:pagination
-                });
-            }else{
-                this.setState({
-                    dataSource: [],
-                });
             }
+            this.setState({
+                dataSource: res && res.list? res.list: [],
+                pagination: pagination,
+                loading: false
+            });
         });
     };
     /**---------------------- */

@@ -192,7 +192,6 @@ class OperationTable extends React.Component {
                 handleTableChange={this.props.handleTableChange}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
                 onChange={this.props.handleTableChange}
             />
         );

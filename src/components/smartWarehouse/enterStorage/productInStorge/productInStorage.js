@@ -1,6 +1,6 @@
 //入库管理的原材料入库
 import React,{Component} from 'react';
-import {Table,message} from 'antd';
+import {Table, message, Spin} from 'antd';
 import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios';
 
@@ -22,6 +22,7 @@ class ProductInStorage extends Component{
              dataSource:[],
              pagination:[],
              pageChangeFlag:0,//1是搜索分页，0是getAllByPAge
+             loading: true
          }
          this.columns=[{
             title:'序号',
@@ -42,7 +43,7 @@ class ProductInStorage extends Component{
             key:'itemCode',
             align:'center',
             width:'11%',
-            render:(text,record)=>{
+            render:(text)=>{
                 return(
                     <div title={text} className='text-decoration'>{text.split("-")[0]+'...'}</div>
                 )
@@ -89,8 +90,7 @@ class ProductInStorage extends Component{
            key:'inTime',
            align:'center',
            width:'9%',
-           render:(text,record)=>{
-              // console.log(text);
+           render:(text)=>{
              if(text&&text.length>10){
                 return(<div title={text} className='text-decoration'>{text.substring(0,10)}</div>)
              }
@@ -127,12 +127,7 @@ class ProductInStorage extends Component{
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-                //console.log('Current: ', current, '; PageSize: ', pageSize);
-              },
-              onChange(current) {//跳转，页码改变
-                //console.log('Current: ', current);
-              }
+            pageSizeOptions: ['10','20','50','100']
         }
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
@@ -181,13 +176,13 @@ class ProductInStorage extends Component{
             res.list[i-1]['quantity']=1;
 
         }//使序号从1开始
-        this.setState({
-            dataSource:res.list,
-            pageChangeFlag:0,
-            searchContent:''
-        });
       }
-
+          this.setState({
+              dataSource:res.list,
+              pageChangeFlag:0,
+              searchContent:'',
+              loading: false
+          });
       });
 
     }
@@ -239,8 +234,7 @@ class ProductInStorage extends Component{
        //获取该菜单所有权限
       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         return(
-            <div style={{padding:'0 15px'}}>
-
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell name='请输入成品名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
@@ -259,9 +253,8 @@ class ProductInStorage extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:400}}
                 ></Table>
-            </div>
+            </Spin>
         );
     }
 }

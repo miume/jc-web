@@ -1,12 +1,10 @@
 //库存管理的原材料入库
 import React,{Component} from 'react';
-import {Table,message} from 'antd';
+import {Table, message, Spin} from 'antd';
 import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios';
 
-
 class ProductInventor extends Component{
-
     url;
     operation;
     componentDidMount(){
@@ -23,6 +21,7 @@ class ProductInventor extends Component{
              searchContent:'',
              dataSource:[],
              pageChangeFlag:0,//0表示getAllByPage分页  1 表示搜索分页
+             loading: true
          }
          this.columns=[{
             title:'序号',
@@ -67,12 +66,7 @@ class ProductInventor extends Component{
             total:this.state.dataSource.length,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
             showSizeChanger: true,
-            onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-                //console.log('Current: ', current, '; PageSize: ', pageSize);
-              },
-              onChange(current) {//跳转，页码改变
-                //console.log('Current: ', current);
-              }
+            pageSizeOptions: ['10','20','50','100']
         }
         this.handleTableChange=this.handleTableChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
@@ -120,15 +114,14 @@ class ProductInventor extends Component{
                if(res&&res.list){
                     for(var i=1;i<=res.list.length;i++){
                         res.list[i-1]['index']=res.prePage*10+i;
-
                     }
-
-                    this.setState({
-                        dataSource:res.list,//list取到的是所有符合要求的数据
-                        pageChangeFlag:0,
-                        searchContent:''
-                    });
                }
+            this.setState({
+                dataSource:res.list,//list取到的是所有符合要求的数据
+                pageChangeFlag:0,
+                searchContent:'',
+                loading: false
+            });
              });
     }
 
@@ -177,8 +170,7 @@ class ProductInventor extends Component{
         //获取该菜单所有权限
       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         return(
-            <div style={{padding:'0 15px'}}>
-
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell name='请输入物料名称'
                         searchContentChange={this.searchContentChange}
                         searchEvent={this.searchEvent}
@@ -197,9 +189,8 @@ class ProductInventor extends Component{
                 onChange={this.handleTableChange}
                 bordered
                 size='small'
-                scroll={{y:400}}
                 ></Table>
-            </div>
+            </Spin>
         );
     }
 }

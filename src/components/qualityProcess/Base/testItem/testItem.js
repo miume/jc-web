@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,Table,Popconfirm,Form,Divider,message} from 'antd';
+import {Input, Table, Popconfirm, Form, Divider, message, Spin} from 'antd';
 import '../../../Home/page.css';
 import axios from 'axios';
 import BlockQuote from '../../../BlockQuote/blockquote';
@@ -82,6 +82,7 @@ class TestItem extends React.Component{
         searchContent:'',
         visible:false,
         editingKey:'',
+          loading: true
       }
       this.handleDelete=this.handleDelete.bind(this);
       this.onSelectChange=this.onSelectChange.bind(this);
@@ -96,16 +97,10 @@ class TestItem extends React.Component{
       this.deleteCancel=this.deleteCancel.bind(this);
       this.judgeOperation=this.judgeOperation.bind(this);
       this.pagination = {
-        total: this.state.dataSource.length,
-        showSizeChanger: true,//是否可以改变 pageSize
-        showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-        //改变每页条目数
-        onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-          //console.log('Current: ', current, '; PageSize: ', pageSize);
-        },
-        onChange(current) {//跳转，页码改变
-          //console.log('Current: ', current);
-        }
+          total: this.state.dataSource.length,
+          showSizeChanger: true,//是否可以改变 pageSize
+          showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+          pageSizeOptions: ["10","20","50","100"]
       };
        //获取该菜单所有权限
       this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
@@ -223,7 +218,8 @@ class TestItem extends React.Component{
               res.list[i-1]['index']=res.prePage*10+i;
          }
          this.setState({
-          dataSource:res.list
+          dataSource:res.list,
+             loading: false
            });
         }
       });
@@ -441,8 +437,7 @@ class TestItem extends React.Component{
        return(
            <div>
                <BlockQuote name='检测项目' menu={current.menuParent} menu2='返回' returnDataEntry={this.returnBaseInfo} flag={1}/>
-               <div style={{padding:'15px'}}>
-
+               <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                <TestItemAddModal fetch={this.fetch} url={this.url} flag={this.judgeOperation(this.operation,'SAVE')}/>
                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
 
@@ -461,8 +456,8 @@ class TestItem extends React.Component{
                     components={components}
                     pagination={this.pagination}
                     onChange={this.handleTableChange}
-                    size="small" bordered  scroll={{ y: 400 }}/>
-                </div>
+                    size="small" bordered/>
+               </Spin>
            </div>
        );
    }

@@ -35,9 +35,7 @@ class EditableCell extends React.Component {
             editing,
             dataIndex,
             title,
-            inputType,
             record,
-            index,
             ...restProps
         } = this.props;
         return (
@@ -53,7 +51,7 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `Please Input ${title}!`,
                                         }],
-                                        initialValue: record[dataIndex]===-1?"无父菜单":record[dataIndex],                                      
+                                        initialValue: record[dataIndex]===-1?"无父菜单":record[dataIndex],
                                     })(this.getInput())}
                                 </FormItem>
                             ) : restProps.children}
@@ -72,7 +70,7 @@ class MenuTable extends React.Component{
         this.state = {
             editingKey: '',
             searchText: '',
-            
+
         };
         this.Authorization = localStorage.getItem('Authorization');
         this.isEditing = this.isEditing.bind(this);
@@ -80,8 +78,8 @@ class MenuTable extends React.Component{
         this.save = this.save.bind(this);
         this.cancel = this.cancel.bind(this);
     }
-    
-    
+
+
     columns = this.props.judgeOperation(this.props.operation,'DELETE')||this.props.judgeOperation(this.props.operation,'UPDATE')?[{
         title: '序号',
         dataIndex: 'index',
@@ -119,16 +117,6 @@ class MenuTable extends React.Component{
         render:(text,record)=>{
             return record.parentName
         }
-        // filterDropdown: () => (
-        //     <div className="custom-filter-dropdown">
-        //       <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
-        //     </div>
-        //   ),
-        // filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-        // onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-        // render:(text,record)=>{
-        //     return record.parentName
-        // },
     },{
         title: '操作',
         key: 'operation',
@@ -256,10 +244,8 @@ class MenuTable extends React.Component{
                 columns={table_column}
                 rowSelection={this.props.rowSelection}
                 pagination={this.props.pagination}
-                // handleTableChange={this.props.handleTableChange}
                 size="small"
                 bordered
-                scroll={{ y: 400 }}
                 onChange={this.props.handleTableChange}
             />
         );
@@ -316,10 +302,10 @@ class MenuTable extends React.Component{
                 }).catch((error)=>{
                     message.info(error.data.message);
                 });
-                
+
                 this.setState({ editingKey: '' });
                 this.getFetch(this.props.pagination)
-            // } 
+            // }
             // else {
             //     newData.push(row);
             //     this.props.modifyDataSource(newData);

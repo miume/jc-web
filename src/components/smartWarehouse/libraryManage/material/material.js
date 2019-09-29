@@ -3,6 +3,7 @@ import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios';
 import NewButton from "./button";
 import "../product/difference.css";
+import {Spin} from "antd";
 
 const forkData = [2000,1000,1000,2001,1010,1010,1000,2000,2000,2000,2000,2000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,]
 
@@ -21,7 +22,7 @@ class Material extends React.Component{
         this.state={
             searchContent:'',
             dataSource:[],
-            loading: false,
+            loading: true,
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -42,43 +43,19 @@ class Material extends React.Component{
         params: {materialClass:1},
     }).then((data)=>{
       const res = data.data.data;
-    //   console.log(res)
       if(res){
         for(var i = 1; i<=res.length; i++){
             res[i-1]['index']=i;
             res[i-1]["realNum"]=forkData[i-1]
-            // res[i-1]["realWeig"]= -1
         }
           this.setState({
-            dataSource:res,
-            searchContent:'',
+              dataSource:res,
+              searchContent:'',
+              loading: false
           })
       }
     })
   }
-
-//   getAllData1(){
-//     axios({
-//       url:`${this.url.libraryManage.getAllPage}`,
-//       method:'get',
-//       headers:{
-//         'Authorization': this.url.Authorization
-//         },
-//         params: {materialClass:1},
-//     }).then((data)=>{
-//       const res = data.data.data;
-//       if(res){
-//         for(var i = 1; i<=res.length; i++){
-//             res[i-1]['index']=i;
-//             res[i-1]["realNum"]=forkData[i-1]
-//             res[i-1]["realWeig"]=forkData[i-1]
-//         }
-//           this.setState({
-//             dataSource:res
-//           })
-//       }
-//     })
-//   }
 
     searchContentChange(e){
         const value=e.target.value;//此处显示的是我搜索框填的内容
@@ -179,7 +156,7 @@ class Material extends React.Component{
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem("remote");
         return (
-            <div style={{padding:'0 15px'}}>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 {this.props.check?<NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>:null}
 
                 <span style={{float:'right',paddingBottom:'8px'}}>
@@ -216,12 +193,6 @@ class Material extends React.Component{
                     <div className="Mtwo Mcol">
                 {
                     this.state.dataSource.map((m,index)=>{
-                        // var string = m.serialNumber.split('-')[0]+'...'
-                        // if(m.serialNumber.length>13){
-                        //     string = m.serialNumber.substring(0,13)+'...'
-                        // }else{
-                        //     string = m.serialNumber
-                        // }
                         return <div title={m.serialNumber} className={"Mborder-down Mrow"+index} key={index}>
                                     {/* {string} */}
                                     {m.serialNumber}
@@ -247,34 +218,6 @@ class Material extends React.Component{
                     })
                 }
                     </div>
-                    {/* <div className="Mfive Mcol"> */}
-
-                            {/* <div className="Mhead-shadow">
-
-                            </div>
-
-
-                {
-                    this.state.dataSource.map((m,index)=>{
-                        if(m.quantity !== m.realNum){
-                            return <div className={"Mborder-down Mrow"+index} key={index} style={{color:"red"}}>
-                        {m.quantity}  </div>
-                        }else{
-                            return <div className={"Mborder-down Mrow"+index} key={index}>
-                            {m.quantity}  </div>
-                        }
-                    })
-                } */}
-                    {/* </div> */}
-                    {/* <div className="Msix Mcol"> */}
-                {/* {
-                    this.state.dataSource.map((m,index)=>{
-                        return <div className={"Mborder-down Mrow"+index} key={index}>
-                                    {m.realNum}
-                                </div>
-                    })
-                } */}
-                    {/* </div> */}
                     <div className="Mseven Mcol">
                         <div className='white-space space-left'></div>
                 {
@@ -301,7 +244,7 @@ class Material extends React.Component{
                 }
                     </div>
                 </div>
-            </div>
+            </Spin>
         )
     }
 }

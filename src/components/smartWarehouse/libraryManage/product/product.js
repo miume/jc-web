@@ -3,6 +3,7 @@ import SearchCell from '../../../BlockQuote/search';
 import axios from 'axios'
 import NewButton from "./button";
 import "../material/difference.css"
+import {Spin} from "antd";
 
 const forkData = [2000,2200,2130,2100,1211,1110,2001,2100,2001,1001,201010,12002,2202,2023,2000,2001,2000,1100,1100,1100,1100,2000,1200,1003,1002,1004,1005,1006,1007,1007,]
 
@@ -22,7 +23,7 @@ class Product extends React.Component{
             searchContent:'',
             dataSource:[],
             height:[],
-            loading:false
+            loading:true
         }
         this.searchContentChange=this.searchContentChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
@@ -50,8 +51,9 @@ class Product extends React.Component{
             res[i-1]["realWeig"]= -1
         }
           this.setState({
-            dataSource:res,
-            searchContent:'',
+              dataSource:res,
+              searchContent:'',
+              loading: false
           })
       }
     })
@@ -157,7 +159,7 @@ class Product extends React.Component{
         this.Authorization = localStorage.getItem('Authorization');
         this.server = localStorage.getItem('remote');
         return (
-            <div style={{padding:'0 15px'}}>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 {this.props.check?<NewButton handleClick={this.handleClick} style={{float:'left'}} name="一键盘库" className="fa fa-balance-scale" loading={this.state.loading}/>:null}
                 <span style={{float:'right',paddingBottom:'8px'}}>
                     <SearchCell name='请输入货品名称'
@@ -195,12 +197,6 @@ class Product extends React.Component{
 
                 {
                     this.state.dataSource.map((m,index)=>{
-                        // var string = m.serialNumber.split('-')[0]+'...'
-                        // if(m.serialNumber.length>13){
-                        //     string = m.serialNumber.substring(0,13)
-                        // }else{
-                        //     string = m.serialNumber
-                        // }
                         return <div title={m.serialNumber} className={"border-down row"+index} key={index}>
                                     {m.serialNumber}
                                 </div>
@@ -227,33 +223,7 @@ class Product extends React.Component{
                     })
                 }
                     </div>
-                    {/* <div className="five col">
-
-                {
-                    this.state.dataSource.map((m,index)=>{
-                        if(m.quantity !== m.realNum){
-                            return <div className={"border-down row"+index} style={{color:"red"}} key={index}>
-                        {m.quantity}  </div>
-                        }else{
-                            return <div className={"border-down row"+index} key={index}>
-                            {m.quantity}  </div>
-                        }
-                    })
-                }
-                    </div> */}
-                    {/* <div className="six col">
-
-                {
-                    this.state.dataSource.map((m,index)=>{
-                        return <div className={"border-down row"+index} key={index}>
-                                    {m.realNum}
-                                </div>
-                    })
-                }
-                    </div> */}
                     <div className="seven col">
-
-
                 {
                     this.state.dataSource.map((m,index)=>{
                         if(m.weight !== m.realWeight){
@@ -280,7 +250,7 @@ class Product extends React.Component{
                 }
                     </div>
                 </div>
-            </div>
+            </Spin>
         )
     }
 }

@@ -85,7 +85,6 @@ class InspectionQuery extends React.Component{
                                     bordered
                                     size={"small"}
                                     columns={column1}
-                                    scroll={{y: 360}}
                                     dataSource={this.state.RightTableData}
                                     pagination={this.pagination}
                                     onChange={this.handleSizeChange}
@@ -114,7 +113,6 @@ class InspectionQuery extends React.Component{
                                     size={"small"}
                                     columns={column2}
                                     dataSource={this.state.RightTableData}
-                                    scroll={{y: 360}}
                                     pagination={this.pagination}
                                     onChange={this.handleSizeChange}
                                 /></Spin>
@@ -142,7 +140,6 @@ class InspectionQuery extends React.Component{
                                     size={"small"}
                                     columns={column3}
                                     dataSource={this.state.RightTableData}
-                                    scroll={{y: 360}}
                                     pagination={this.pagination}
                                     onChange={this.handleSizeChange}
                                 /></Spin>

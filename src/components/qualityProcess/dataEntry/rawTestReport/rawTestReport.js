@@ -3,7 +3,7 @@ import axios from 'axios';
 import './rawTestReport.css';
 import Detail from './detail';
 import home from '../../../commom/fns';
-import { Table, Divider} from 'antd';
+import { Table, Divider,Spin} from 'antd';
 import SearchCell from '../../../BlockQuote/search';
 import RecordChecking from './recordChecking';
 import BlockQuote from '../../../BlockQuote/blockquote';
@@ -48,12 +48,13 @@ class RawTestReport extends React.Component{
                 showTotal(total) {
                     return `共${total}条记录`
                 } ,
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
               },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
+            loading: true
         }
         this.fetch = this.fetch.bind(this);
-        // this.handleAdd = this.handleAdd.bind(this);
         this.tableRecord = this.tableRecord.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
@@ -192,7 +193,8 @@ class RawTestReport extends React.Component{
                 this.dataProcessing(res)
             }else{
                 this.setState({
-                    dataSource:[]
+                    dataSource:[],
+                    loading: false
                 })
             }
         })
@@ -225,7 +227,8 @@ class RawTestReport extends React.Component{
         }
         this.setState({
             dataSource:da,
-            pagination:pagination
+            pagination:pagination,
+            loading: false
         })
     }
     /**监控搜索框的实时变化 */
@@ -285,14 +288,14 @@ class RawTestReport extends React.Component{
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}
                     fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                     <div className='clear'></div>
                 <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource}
-                onChange={this.handleTableChange} pagination={this.state.pagination} scroll={{y:400}}
+                onChange={this.handleTableChange} pagination={this.state.pagination}
                 size='small' bordered rowClassName={(record)=>record.flag?'table-recorcd':''}/>
-                </div>
+                </Spin>
             </div>
         );
     }

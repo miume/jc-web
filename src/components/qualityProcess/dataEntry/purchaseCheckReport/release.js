@@ -2,8 +2,7 @@ import React from 'react';
 import SearchCell from '../../../BlockQuote/search';
 import ReleaseTable from "./releaseTable";
 import axios from "axios";
-import OperationTable from "../../../userPermissions/operationManagement/operationTable";
-
+import {Spin} from "antd";
 
 class Release extends React.Component {
     componentDidMount() {
@@ -19,14 +18,15 @@ class Release extends React.Component {
             selectedRowKeys: [],    //多选框key
             searchContent:'',
             searchText: '',
-
             pagination : {
                 showTotal(total) {
                     return `共${total}条记录`
                 },
-                showSizeChanger:true
+                showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
+            loading: true
         };
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
@@ -43,7 +43,7 @@ class Release extends React.Component {
             this.props.modifyTabFlag();
         }
         return(
-            <div>
+            <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <SearchCell
                     name='请输入创建人名称'
                     searchEvent={this.searchEvent}
@@ -64,7 +64,7 @@ class Release extends React.Component {
                     judgeOperation = {this.props.judgeOperation}
                     operation = {this.props.operation}
                 />
-            </div>
+            </Spin>
         )
     }
     /**获取所有数据 getAllByPage */
@@ -115,11 +115,13 @@ class Release extends React.Component {
                 }
                 this.setState({
                     dataSource: res.list,
-                    pagination:pagination
+                    pagination:pagination,
+                    loading: false
                 });
             }else{
                 this.setState({
                     dataSource: [],
+                    loading: false
                 });
             }
         });

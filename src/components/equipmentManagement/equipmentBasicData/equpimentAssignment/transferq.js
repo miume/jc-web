@@ -85,7 +85,7 @@ class Transferq extends React.Component{
 
             <Card title="已分配" >
                 <Search placeholder="input search text" onSearch={value => console.log(value)}/>
-       <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag2?this.state.dataSource2:this.props.dataSource2}  scroll={{ y: 337 }} rowSelection={rowSelection2}/>
+       <Table rowKey={record => record.index} columns={columns} size="small" dataSource={this.state.Sourceflag2?this.state.dataSource2:this.props.dataSource2} rowSelection={rowSelection2}/>
             </Card>
 
         </div>

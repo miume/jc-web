@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table,Input,message,Popconfirm,Form,Divider,InputNumber } from 'antd';
+import {Table, Input, message, Popconfirm, Form, Divider, InputNumber, Spin} from 'antd';
 import '../../Home/page.css';
 import axios from 'axios';
 import Add from './add'
@@ -109,9 +109,11 @@ class Role extends React.Component {
         this.handleRoleNameChange = this.handleRoleNameChange.bind(this);
         this.handleRoleDescriptionChange = this.handleRoleDescriptionChange.bind(this);
         this.pagination = {
-          showTotal(total) {
-            return `共${total}条记录`
-          } ,
+            showTotal(total) {
+                return `共${total}条记录`
+            },
+            showSizeChanger:true,
+            pageSizeOptions: ["10","20","50","100"]
         }
         this.columns = [{
             title: '序号',
@@ -193,15 +195,15 @@ class Role extends React.Component {
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Add flag={flag} fetch={this.fetch} url={this.url} />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={home.judgeOperation(this.operation,'DELETE')} />
                     <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')} />
                     <div className='clear'></div>
                     <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns}
                            rowSelection={rowSelection} pagination={this.pagination} components={components}
-                           onChange={this.handleTableChange} bordered size='small' scroll={{ y: 400 }} />
-                </div>
+                           onChange={this.handleTableChange} bordered size='small' />
+                </Spin>
             </div>
         );
     }
@@ -247,14 +249,17 @@ class Role extends React.Component {
             params: params,
         }).then((data) => {
             const res = data.data.data;
+            let dataSource = [];
             if(res&&res.list){
                 this.pagination.total=res?res.total:0;
                 for(let i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=res.prePage*10+i;
                 }
+                dataSource = res.list;
                 this.setState({
-                    dataSource: res.list,
+                    dataSource: dataSource,
                     selectedRowKeys:[],
+                    loading: false
                 });
             }
         }).catch((error)=>{

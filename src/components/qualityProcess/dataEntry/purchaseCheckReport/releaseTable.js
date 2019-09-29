@@ -2,7 +2,6 @@ import React from 'react';
 import {Divider, Table} from 'antd';
 import CheckReleaseSpan from './checkReleaseSpan';
 
-
 class ReleaseTable extends React.Component {
     columns = [{
         title: '序号',
@@ -142,7 +141,6 @@ class ReleaseTable extends React.Component {
                 pagination={this.props.pagination}
                 size="small"
                 bordered
-                scroll={{y: 400 }}
             />
         )
     }
