@@ -1,10 +1,10 @@
 import React from "react";
-import '../Home/page.css';
+import '../../../Home/page.css';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
-import DeleteByIds from '../BlockQuote/deleteByIds';
-import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../../../BlockQuote/deleteByIds';
+import SearchCell from '../../../BlockQuote/search';
 
 class ProductLineVGA extends React.Component{
     url;

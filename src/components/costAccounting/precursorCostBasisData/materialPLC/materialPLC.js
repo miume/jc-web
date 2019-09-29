@@ -1,12 +1,12 @@
 import React from "react";
-import '../Home/page.css';
+import '../../../Home/page.css';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
-import DeleteByIds from '../BlockQuote/deleteByIds';
-import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../../../BlockQuote/deleteByIds';
+import SearchCell from '../../../BlockQuote/search';
 
-class XinsongVGA extends React.Component{
+class MaterialPLC extends React.Component{
     url;
     constructor(props){
         super(props);
@@ -14,13 +14,16 @@ class XinsongVGA extends React.Component{
             visible:false,
             data:[{
                 index:1,
-                VGAname:"1号叫料点"
+                name:"701#合成槽",
+                PLCaddress:"plc地址"
             },{
                 index:2,
-                VGAname:"2号叫料点"
+                name:"701#合成槽",
+                PLCaddress:"plc地址1"
             },{
                 index:3,
-                VGAname:"3号叫料点"
+                name:"701#合成槽",
+                PLCaddress:"plc地址2"
             }]
         }
         this.pagination = {
@@ -37,11 +40,17 @@ class XinsongVGA extends React.Component{
             align:'center',
             width: '20%',
         },{
-            title: 'VGA点名称',
-            dataIndex: 'VGAname',
-            key: 'VGAname',
+            title: '物料名称',
+            dataIndex: 'name',
+            key: 'name',
             align:'center',
-            width: '60%',
+            width: '30%',
+        },{
+            title: 'PLC地址表',
+            dataIndex: 'PLCaddress',
+            key: 'PLCaddress',
+            align:'center',
+            width: '30%',
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -79,4 +88,4 @@ class XinsongVGA extends React.Component{
     }
 }
 
-export default XinsongVGA
+export default MaterialPLC

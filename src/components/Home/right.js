@@ -18,7 +18,7 @@ import DepartmentStruct from '../equipmentManagement/equipmentBasicData/departme
 import RawTestReport from '../qualityProcess/dataEntry/rawTestReport/rawTestReport';
 import PurchaseCheckReport from '../qualityProcess/dataEntry/purchaseCheckReport/purchaseCheckReport';
 import TodoList from '../qualityProcess/todolist/todolist';
-import PrecursorCostBasisData from "../precursorCostBasisData/basisData";
+import PrecursorCostBasisData from "../costAccounting/precursorCostBasisData/basisData";
 
 import BaseInfo from '../qualityProcess/Base/baseInfo';
 import DeliveryFactory from '../qualityProcess/Base/devileryFactory/devileryFactory';//送样工厂
@@ -69,14 +69,15 @@ import BatchRule from "../productionManagement/batchRule/batchRule"
 import RawMaterialInput from '../technologyCenter/rawMaterialInput/rawMaterialInput'
 import EqUserDepAllocation from '../equipmentManagement/equipmentBasicData/eqUserDepAllocation/eqUserDepAllocation'
 
-import StatisticalPeriod from "../statisticalPeriod/statisticalPeriod"
-import BaseProductLine from "../productLine/productLine"
-import DetailItem from "../detailItem/detailItem"
-import PLCaddress from "../PLCaddress/PLCaddress"
-import MaterialPLC from "../materialPLC/materialPLC"
-import XinsongVGA from "../xinsongVGA/xinsongVGA"
-import ProductLineStatical from "../productLineStatical/productLineStatical"
-import ProductLineVGA from "../productLineVGA/productLineVGA"
+import StatisticalPeriod from "../costAccounting/precursorCostBasisData/statisticalPeriod/statisticalPeriod"
+import BaseProductLine from "../costAccounting/precursorCostBasisData/productLine/productLine"
+import DetailItem from "../costAccounting/precursorCostBasisData/detailItem/detailItem"
+import PLCaddress from "../costAccounting/precursorCostBasisData/PLCaddress/PLCaddress"
+import MaterialPLC from "../costAccounting/precursorCostBasisData/materialPLC/materialPLC"
+import XinsongVGA from "../costAccounting/precursorCostBasisData/xinsongVGA/xinsongVGA"
+import ProductLineStatical from "../costAccounting/precursorCostBasisData/productLineStatical/productLineStatical"
+import ProductLineVGA from "../costAccounting/precursorCostBasisData/productLineVGA/productLineVGA"
+import ProcessName from "../costAccounting/precursorCostBasisData/processName/processName"
 
 class Right extends React.Component {
     render() {
@@ -279,6 +280,9 @@ class Right extends React.Component {
             },{
                 path:"/productLineVGA",
                 component:ProductLineVGA
+            },{
+                path:"/processName",
+                component:ProcessName
             }]
         return (
             <div className="rightDiv">

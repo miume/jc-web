@@ -1,56 +1,58 @@
 import React from "react";
-import '../Home/page.css';
+import '../../../Home/page.css';
 import { Table,Popconfirm,Divider,message } from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
+import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
-import DeleteByIds from '../BlockQuote/deleteByIds';
-import SearchCell from '../BlockQuote/search';
+import DeleteByIds from '../../../BlockQuote/deleteByIds';
+import SearchCell from '../../../BlockQuote/search';
 
-class ProductLineStatical extends React.Component{
+class DetailItem extends React.Component{
     url;
     constructor(props){
         super(props);
-        this.state={
-            visible:false,
-            data:[{
+        this.state = {
+            visiable:false,
+            dataSource:[{
                 index:1,
                 materialName:"701#合成槽",
                 type:"主材",
-                process:"合成工序",
-                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
+                process:"合成工序"
             },{
                 index:2,
                 materialName:"701#合成槽",
                 type:"主材",
-                process:"合成工序",
-                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
+                process:"合成工序"
             },{
                 index:3,
                 materialName:"701#合成槽",
                 type:"主材",
-                process:"合成工序",
-                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
-            }]
+                process:"车间"
+            },{
+                index:4,
+                materialName:"701#合成槽",
+                type:"辅材",
+                process:"烘干工序"
+            },]
         }
         this.pagination = {
-            total: this.state.data.length,
+            total: this.state.dataSource.length,
             showTotal(total){
                 return `共${total}条记录`
             },
             showSizeChanger: true,
         };
-        this.columns=[{
+        this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '10%',
+            width: '20%',
         },{
             title: '物料名称',
             dataIndex: 'materialName',
             key: 'materialName',
             align:'center',
-            width: '15%',
+            width: '20%',
         },{
             title: '所属类别',
             dataIndex: 'type',
@@ -63,22 +65,6 @@ class ProductLineStatical extends React.Component{
             key: 'process',
             align:'center',
             width: '20%',
-        },{
-            title: '产线/权重',
-            dataIndex: 'value',
-            key: 'value',
-            align:'center',
-            width: '25%',
-            render:(text,record)=>{
-                var record = record.value.split(",");
-                return(
-                    record.map((item,index)=>{
-                        return(<div key={index}>
-                            {item}
-                        </div>)
-                    })
-                )
-            }
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -109,11 +95,11 @@ class ProductLineStatical extends React.Component{
                     />
                     <SearchCell flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={{}} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={{}} columns={this.columns} rowKey={record => record.index} dataSource={this.state.dataSource} scroll={{ y: 400 }} size="small" bordered/>
                 </div>
             </div>
         )
     }
 }
 
-export default ProductLineStatical
+export default DetailItem

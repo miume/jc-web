@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Modal,Select,Form, Input,message,Icon } from 'antd';
 import axios from 'axios';
-import AddButton from '../BlockQuote/newButton';
-import CancleButton from "../BlockQuote/cancleButton";
-import SaveButton from "../BlockQuote/saveButton";
+import AddButton from '../../../BlockQuote/newButton';
+import CancleButton from "../../../BlockQuote/cancleButton";
+import SaveButton from "../../../BlockQuote/saveButton";
 
 class AddModal extends React.Component{
     url;
@@ -46,7 +46,10 @@ class AddModal extends React.Component{
                     <Input id="name" placeholder="请输入物料名称"/>
                     <br />
                     <br />
-                    <Input id="name" placeholder="请输入PLC地址"/>
+                    <Input placeholder="请选择辅材"/>
+                    <br />
+                    <br />
+                    <Input placeholder="请选择工序"/>
                 </Modal>
             </span>
         )

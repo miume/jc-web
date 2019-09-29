@@ -1,16 +1,16 @@
 import React from "react";
-import '../Home/page.css';
+import '../../../Home/page.css';
 import { Table,Popconfirm,Divider,message,InputNumber,Input,Form } from 'antd';
-import BlockQuote from '../BlockQuote/blockquote';
-import AddButton from '../BlockQuote/newButton';
-import SearchCell from '../BlockQuote/search';
+import BlockQuote from '../../../BlockQuote/blockquote';
+import AddButton from '../../../BlockQuote/newButton';
+import SearchCell from '../../../BlockQuote/search';
 
 const EditableContext = React.createContext();
 
 class EditableCell extends React.Component{
     getInput = ()=>{
         if(this.props.inputType === "number"){
-            return <InputNumber />
+            return <InputNumber />;
         }
         return <Input />;
     };
@@ -60,16 +60,19 @@ class statisticalPeriod extends React.Component{
         super(props)
         this.state = {
             data:[{
+                key:1,
                 index:1,
                 startTime:1,
                 periodName:"测试周期",
                 defaultTime:7,
             },{
+                key:2,
                 index:2,
                 startTime:2,
                 periodName:"测试周期",
                 defaultTime:21,
             },{
+                key:3,
                 index:3,
                 startTime:3,
                 periodName:"测试周期",
@@ -89,18 +92,21 @@ class statisticalPeriod extends React.Component{
             key: 'startTime',
             align:'center',
             width: '20%',
+            editable: true,
         },{
             title: '周期名称',
             dataIndex: 'periodName',
             key: 'periodName',
             align:'center',
             width: '20%',
+            editable: true,
         },{
             title: '默认时长(天)',
             dataIndex: 'defaultTime',
             key: 'defaultTime',
             align:'center',
             width: '20%',
+            editable: true,
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -108,13 +114,28 @@ class statisticalPeriod extends React.Component{
             align:'center',
             width: '20%',
             render:(text,record)=>{
-                const {editing} = this.state;
                 const editable = this.isEditing(record)
                 return (
                     <span>
                         <span>
                             {editable ? (
-                                <span></span>
+                                <span>
+                                    <EditableContext.Consumer>
+                                        {
+                                            form=>(
+                                                <a 
+                                                    onClick={()=>this.save(form,record.key)}
+                                                    style={{marginRight:8}}
+                                                >
+                                                保存
+                                                </a>
+                                            )
+                                        }
+                                    </EditableContext.Consumer>
+                                    <Popconfirm title="确定取消?" onConfirm={()=>this.cancel(record.key)}>
+                                        <a>取消</a>
+                                    </Popconfirm>
+                                </span>
                             ):(
                                 <span className='blue' onClick={() => this.edit(record.index)}>编辑</span>
                             )
@@ -129,6 +150,44 @@ class statisticalPeriod extends React.Component{
         }]
     }
     isEditing = record=>record.index === this.state.editingKey;
+
+    cancel = () =>{
+        this.setState({
+            editingKey:""
+        })
+    }
+    save = (form,key) =>{
+        form.validateFields((error,row)=>{
+            if(error){
+                return;
+            }
+            const newData = [...this.state.data];
+            const index = newData.findIndex(item=>key===item.key);
+            if(index >-1){
+                const item = newData[index];
+                newData.splice(index,1,{
+                    ...item,
+                    ...row,
+                });
+                this.setState({
+                    data:newData,
+                    editingKey:""
+                });
+            }else{
+                newData.push(row);
+                this.setState({
+                    data:newData,
+                    editingKey:""
+                });
+            }
+        });
+    }
+
+    edit=(key)=>{
+        this.setState({
+            editingKey:key
+        })
+    }
     delete = (record)=>{
         // console.log(record)
         var data = this.state.data;
@@ -146,6 +205,7 @@ class statisticalPeriod extends React.Component{
         var data = this.state.data;
         var len = data.length;
         data.push({
+                key:len+1,
                 index:len+1,
                 startTime:1,
                 periodName:"测试周期",
@@ -156,6 +216,26 @@ class statisticalPeriod extends React.Component{
         })
     }
     render(){
+        const components = {
+            body:{
+                cell:EditableCell,
+            }
+        };
+        const columns = this.columns.map(col=>{
+            if(!col.editable){
+                return col;
+            }
+            return {
+                ...col,
+                onCell:record=>({
+                    record,
+                    inputType:col.dataIndex === "defaultTime"?"number":"text",
+                    dataIndex:col.dataIndex,
+                    title:col.title,
+                    editing:this.isEditing(record),
+                }),
+            };
+        });
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
         return(
@@ -165,11 +245,14 @@ class statisticalPeriod extends React.Component{
                     <AddButton key="submit" handleClick={this.add} name='新增周期' className='fa fa-plus' />
                     <SearchCell flag={true}/>
                     <div className='clear' ></div>
-                    <Table columns={this.columns} rowSelection={{}} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <EditableContext.Provider value={this.props.form}>
+                        <Table components={components} columns={columns} rowSelection={{}} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    </EditableContext.Provider>
                 </div>
             </div>
         )
     }
 }
 
-export default statisticalPeriod
+const EditableFormTable = Form.create()(statisticalPeriod);
+export default EditableFormTable

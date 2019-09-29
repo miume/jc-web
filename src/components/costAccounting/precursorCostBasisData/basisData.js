@@ -1,7 +1,7 @@
 import React from 'react';
 import './data.css';
 import DataPart from './dataPart';
-import Blockquote from '../BlockQuote/blockquote';
+import Blockquote from '../../BlockQuote/blockquote';
 
 const icon = [
     'fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
