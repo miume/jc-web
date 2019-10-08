@@ -1,6 +1,6 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {Col, message, Row,Transfer} from "antd";
+import {message,Transfer} from "antd";
 import axios from "axios";
 import DepTree from "./depTree";
 import './eqUserDepAllocation.css'
@@ -13,24 +13,19 @@ class EqUserDepAllocation extends React.Component {
             depId:-1
         }
     }
-
-    // componentDidMount() {
-    //     //this.fetch()
-    //     //this.getMock();
-    // }
-
+    componentWillUnmount() {
+        this.setState = () => {
+            return ;
+        }
+    }
     render() {
-
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
-        const menus = JSON.parse(localStorage.getItem('menus'))
-
         return (
-
             <div>
                 <Blockquote menu={current.menuParent} name="设备部门用户分配" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
-                <div  style={{padding: '15px',display:"flex"}}>
+                <div  style={{padding: '15px',height: '78vh',display:"flex"}}>
                     <div className="eqUserDep-left">
                         <DepTree
                             key="depTree"
@@ -38,15 +33,17 @@ class EqUserDepAllocation extends React.Component {
                             getTableData={this.getTableData}
                         />
                     </div>
-                    <div style={{width:'25px'}}>
-
+                    <div style={{width:'5%'}}>
                     </div>
                     <div className="eqUserDep-right">
                         <Transfer
                             rowKey={record => record.userId}
+                            style={{
+                                height: '100%'
+                            }}
                             listStyle={{
-                                width: '38%',
-                                height: 505,
+                                width: '45%',
+                                height: '100%'
                             }}
                             dataSource={this.state.mockData}
                             showSearch
@@ -125,8 +122,6 @@ class EqUserDepAllocation extends React.Component {
                     mockData: mockData,
                     targetKeys: targetKeys,
                     depId:depId
-                },()=>{
-                    message.info('查询成功！')
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')

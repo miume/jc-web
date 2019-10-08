@@ -1,11 +1,9 @@
-import React, {Component} from 'react';
-import {Tree, Icon, Modal, Input, message} from 'antd';
+import React from 'react';
+import {message} from 'antd';
 import axios from "axios";
 import TreeCard from "../../../BlockQuote/treeSelect";
 
-
 class DepTree extends React.Component{
-
     constructor(props){
         super(props);
         this.state={
@@ -13,27 +11,30 @@ class DepTree extends React.Component{
             deptId:'',
             treeData:[],
         };
-
         this.getTreeData=this.getTreeData.bind(this)
         this.getParams=this.getParams.bind(this)
     }
+    componentWillUnmount() {
+        this.setState = () => {
+            return ;
+        }
+    }
     render() {
         return(
-            <div>
-                <TreeCard
-                    getParams={this.getParams}
-                    getTableData={this.props.getTableData}
-                    defaultparams={{
-                        secondDeptId:2,
-                        repairStatus:1,
-                        deptName:'锂电一',}}
-                    treeName={'所属部门'}
-                    getTreeData={this.getTreeData}
-                    treeData={this.state.treeData}
-                />
-            </div>
+            <TreeCard
+                getParams={this.getParams}
+                getTableData={this.props.getTableData}
+                defaultparams={{
+                    secondDeptId:2,
+                    repairStatus:1,
+                    deptName:'锂电一',}}
+                treeName={'所属部门'}
+                getTreeData={this.getTreeData}
+                treeData={this.state.treeData}
+            />
         )
     }
+
     /**获取参数*/
     getParams=(selectedkeys,e)=>{
         this.setState({

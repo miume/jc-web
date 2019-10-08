@@ -38,7 +38,6 @@ class OperationManagement extends React.Component {
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
-        // this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
             total: this.state.dataSource.length,
             showTotal(total) {
