@@ -1,16 +1,16 @@
 .equip-total{
     padding: 15px;
-    width: 100%;
+    height: 78vh;
     display: flex;
 }
 
-.equpiment-left{
+.equipment-left{
     width: 20%;
-    height: 525px;
-    overflow-x:hidden;
-    overflow-y:auto;
+    height: 100%;
+    overflow:auto;
     border:1px solid #F5f5f5;
-}.equpiment-right{
+}
+.equipment-right{
      width: 80%;
      margin-left: 20px;
      height: 100%;
@@ -39,34 +39,45 @@
 .equip-allocation-right{
      width: 80%;
      margin-left: 20px;
-     height: 100%;
-     padding: 5px;
-    display: flex;
+     padding: 0 5px;
  }
-.eqa-eqb{
-    padding-top: 10px;
-}
 .eqa-transfer-left{
-    width: 45%;
+    width: 47%;
 }
-.eq-transfer-mid{
-    width:10%
+.eqa-transfer-mid{
+    display: inline-block;
+    overflow: hidden;
+    margin: auto 8px;
+    vertical-align: middle;
 }
 .eqa-transfer-right{
-    width:45%;
+    width:47%;
 }
 .eqa-transfer{
     width:100%;
+    height: 100%;
     display: flex;
 }
-.Equip-leftbutton{
-
-    padding-top: 250px;
-    padding-left: 15px;
-    padding-right: 15px;
+.eqa-leftButton {
+    width: 28px;
+    margin-bottom: 15px;
 }
-.Equip-rightbutton{
-    padding-top: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
+.eqa-rightButton {
+    width: 28px;
+}
+.equipment-button {
+    border-radius: 2px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    margin: 10px;
+    cursor: pointer;
+}
+.equipment-button:hover {
+    border-color:#0079FE;
+    color: #0079FE;
+}
+.eqa-transfer-right-input {
+    width: 100%;
+    padding-bottom: 10px;
 }

@@ -55,7 +55,8 @@ class TreeCard extends React.Component{
     render() {
         return(
             <Card
-                style={{width: "100%",height: '100%'}}
+                bordered={false}
+                style={{width: "100%",height: '100%',display: 'inline-block'}}
                 className='departmentCard'
                 headStyle={{height:'10%'}}
                 bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}

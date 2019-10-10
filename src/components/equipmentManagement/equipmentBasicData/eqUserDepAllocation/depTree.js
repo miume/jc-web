@@ -1,5 +1,5 @@
 import React from 'react';
-import {message} from 'antd';
+import {Spin} from 'antd';
 import axios from "axios";
 import TreeCard from "../../../BlockQuote/treeSelect";
 
@@ -10,6 +10,7 @@ class DepTree extends React.Component{
             depName:'',
             deptId:'',
             treeData:[],
+            loading: false
         };
         this.getTreeData=this.getTreeData.bind(this)
         this.getParams=this.getParams.bind(this)
@@ -21,17 +22,19 @@ class DepTree extends React.Component{
     }
     render() {
         return(
-            <TreeCard
-                getParams={this.getParams}
-                getTableData={this.props.getTableData}
-                defaultparams={{
-                    secondDeptId:2,
-                    repairStatus:1,
-                    deptName:'锂电一',}}
-                treeName={'所属部门'}
-                getTreeData={this.getTreeData}
-                treeData={this.state.treeData}
-            />
+            <Spin spinning={this.state.loading}>
+                <TreeCard
+                    getParams={this.getParams}
+                    getTableData={this.props.getTableData}
+                    defaultparams={{
+                        secondDeptId:2,
+                        repairStatus:1,
+                        deptName:'锂电一',}}
+                    treeName={'所属部门'}
+                    getTreeData={this.getTreeData}
+                    treeData={this.state.treeData}
+                />
+            </Spin>
         )
     }
 
@@ -71,14 +74,12 @@ class DepTree extends React.Component{
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             var dataSource = [{
-
                 title:'总公司',
                 key:'0',
                 value: '总公司',
                 children: []
             }];
             if (res) {
-                var expandedKeys=['0'];
                 for (let i = 0; i < res.length; i++) {
                     const arrParent = res[i].parent;
                     var parenObj = {
@@ -113,8 +114,7 @@ class DepTree extends React.Component{
                 this.setState({
                     treeData: dataSource,
                 })
-            } else {
-                message.info('没有获取到数据')
+                this.props.getTableData()
             }
         });
     };

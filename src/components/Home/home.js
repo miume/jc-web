@@ -82,7 +82,6 @@ class Home extends Component {
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`,
-                //dsds,
                 realStock:`${server}/jc/common/sortout/realStock`,
                 stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
@@ -457,6 +456,15 @@ class Home extends Component {
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
                 updateState:`${server}/jc/common/productionBatchRule/UpdateState`
             },
+
+            /**设备工序*/
+            deviceProcess: {
+                getAll: `${server}/jc/common/deviceProcess/getAllProcedure`,
+                getDeviceByProIdByPage: `${server}/jc/common/deviceProcess/getDeviceByProIdByPage`,
+                getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssignment`,
+                assign: `${server}/jc/common/deviceProcess/assign`
+            }
+
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

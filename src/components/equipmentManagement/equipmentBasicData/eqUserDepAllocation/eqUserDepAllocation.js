@@ -1,6 +1,6 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {message,Transfer} from "antd";
+import {message, Spin, Transfer} from "antd";
 import axios from "axios";
 import DepTree from "./depTree";
 import './eqUserDepAllocation.css'
@@ -10,7 +10,8 @@ class EqUserDepAllocation extends React.Component {
         this.state={
             mockData: [],
             targetKeys: [],
-            depId:-1
+            depId:-1,
+            transferLoading: true
         }
     }
     componentWillUnmount() {
@@ -26,37 +27,38 @@ class EqUserDepAllocation extends React.Component {
                 <Blockquote menu={current.menuParent} name="设备部门用户分配" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div  style={{padding: '15px',height: '78vh',display:"flex"}}>
-                    <div className="eqUserDep-left">
+                    <Spin spinning={this.state.loading} wrapperClassName='eqUserDep-left'>
                         <DepTree
                             key="depTree"
                             url={this.url}
                             getTableData={this.getTableData}
                         />
-                    </div>
-                    <div style={{width:'5%'}}>
-                    </div>
-                    <div className="eqUserDep-right">
+                    </Spin>
+                    <div style={{width:'5%'}}></div>
+                    <div className='eqUserDep-right'>
+                    {/*<Spin spinning={this.state.transferLoading} wrapperClassName='eqUserDep-right'>*/}
                         <Transfer
                             rowKey={record => record.userId}
                             style={{
-                                height: '100%'
+                                height: '100%',
                             }}
                             listStyle={{
                                 width: '45%',
-                                height: '100%'
+                                height: '100%',
+                                overflow: 'auto'
                             }}
                             dataSource={this.state.mockData}
                             showSearch
                             filterOption={this.filterOption}
                             targetKeys={this.state.targetKeys}
                             onChange={this.handleChange}
-                            onSearch={this.handleSearch}
                             render={item => item.username}
                             titles={['未被分配用户','已被分配用户']}
                             locale={{
                                 itemUnit: '项', itemsUnit: '项', searchPlaceholder: '请输入搜索内容'
                             }}
                         />
+                    {/*</Spin>*/}
                     </div>
                 </div>
             </div>
@@ -87,54 +89,48 @@ class EqUserDepAllocation extends React.Component {
                 message.info('分配失败')
             }
         })
-
-    };
-
-    handleSearch = (dir, value) => {
-        console.log('search:', dir, value);
     };
 
     /**获得表格数据*/
     getTableData = (params) => {
-        const depId = parseInt(params.secondDeptId)
-        axios({
-            url: `${this.url.appUserAuth.getUser}`,
-            method: 'get',
-            headers: {
-                'Authorization':this.url.Authorization
-            },
-            params: {
-                deptCode:depId
-            },
-        }).then((data) => {
-            var res = data.data.data ? data.data.data : [];
-            const targetKeys = [];
-            const mockData = [];
-            if (res) {
-                for(var i=0; i<res.length; i++){
-                    res[i]['description'] = res[i].username
-                    if(res[i].chosen){
-                        targetKeys.push(res[i].userId)
+        if(params === undefined) {
+            this.setState({
+                loading: false
+            })
+        } else {
+            const depId = params && params.secondDeptId ? parseInt(params.secondDeptId) : -1
+            axios({
+                url: `${this.url.appUserAuth.getUser}`,
+                method: 'get',
+                headers: {
+                    'Authorization':this.url.Authorization
+                },
+                params: {
+                    deptCode:depId
+                },
+            }).then((data) => {
+                var res = data.data.data ? data.data.data : [];
+                const targetKeys = [];
+                const mockData = [];
+                if (res && res.length) {
+                    for(var i=0; i<res.length; i++){
+                        res[i]['description'] = res[i].username
+                        if(res[i].chosen){
+                            targetKeys.push(res[i].userId)
+                        }
+                        mockData.push(res[i]);
                     }
-                    mockData.push(res[i]);
                 }
                 this.setState({
                     mockData: mockData,
                     targetKeys: targetKeys,
-                    depId:depId
+                    depId:depId,
+                    transferLoading: false
                 });
-            } else {
+            }).catch(() => {
                 message.info('查询失败，请刷新下页面！')
-                this.setState({
-                    mockData: [],
-                    targetKeys: [],
-                    depId:depId
-                });
-            }
-        }).catch(() => {
-            message.info('查询失败，请刷新下页面！')
-        });
-
+            });
+        }
     }
     /**返回数据录入页面 */
     returnDataEntry = () => {

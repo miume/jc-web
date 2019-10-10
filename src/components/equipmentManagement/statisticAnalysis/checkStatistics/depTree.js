@@ -37,17 +37,15 @@ class DepTree extends Component {
 
     render() {
         return (
-            <div className="checkp-tree">
-                <Tree
-                    showLine
-                    onSelect={this.onSelect}
-                    expandedKeys={this.state.expandedKeys}
-                    selectedKeys={[]}
-                    onExpand={this.onExpand}
-                >
-                    {this.renderTreeNodes(this.state.dataSource)}
-                </Tree>
-            </div>
+            <Tree
+                showLine
+                onSelect={this.onSelect}
+                expandedKeys={this.state.expandedKeys}
+                selectedKeys={[]}
+                onExpand={this.onExpand}
+            >
+                {this.renderTreeNodes(this.state.dataSource)}
+            </Tree>
         )
     }
     /**

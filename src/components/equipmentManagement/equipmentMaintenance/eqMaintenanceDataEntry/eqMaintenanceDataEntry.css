@@ -1,11 +1,7 @@
 .eqMaintenance-DE-demo{
     display: flex;                /*设置为flex布局*/
-    /*justify-content: space-around;*/
     width: 100%;
 }
-/*.demo > div{*/
-/*    flex: none;*/
-/*}*/
 .eqMaintenance-DE-left{
     margin-left:15px;
     width: 20%;
@@ -32,10 +28,9 @@
 }
 
 .ed-blue{
-    border-color:#1890ff !important;
-    color:#1890ff !important;
+    border: 1px solid #0079FE;
+    color: #0079FE;
 }
-.ed-grey{
-    border-color:grey !important;
-    color:black !important;
+.ed-grey {
+    border: 1px solid rgba(228, 228, 228, 1);
 }

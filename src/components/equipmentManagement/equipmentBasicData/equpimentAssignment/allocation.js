@@ -1,187 +1,227 @@
 import React from 'react'
-import {Button, message, Modal, Select,Transfer,Table} from "antd";
-import difference from "lodash/difference";
+import {Button, message, Modal, Card} from "antd";
 import SaveButton from "../../../BlockQuote/saveButton";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import DepTree from "./depTree";
-import "./equpimentAssignment.css"
+import "./equpimentAssignment.css";
 import axios from "axios";
-import Transferq from './transferq'
+import Transferq from './transferq';
+
 class Allocation extends React.Component{
     constructor(props) {
         super(props)
         this.state={
-            Sourceflag1:false,
-            Sourceflag2:false,
             deptCode:0,
             visible:false,
-            dataSource:[],
+            data1: [],
+            data2: [], //为了方便搜索开辟两个数组
+            dataSource1:[],
             dataSource2:[],
-            transferdataleft:[],
-            transferdataright:[],
             deviceName:[],
+            treeData: []
         }
     }
 
+    /** 分配点击事件 */
+    onclick=()=>{
+        this.setState({
+            visible:true,
+            deviceName:this.props.clickName,
+        });
+        this.getTreeData();  //获取部门数据
+    };
+
     render() {
-        const { targetKeys } = this.state;
-        const { Option } = Select;
-        console.log()
         return(
             <span>
             <Button type="primary" onClick={this.onclick}>分配</Button>
             <Modal visible={this.state.visible} closable={false}
                    centered={true} maskClosable={false}
-                    width="1200px"     height="464"   title="设备工序分配"
+                    width="90vw" height="60vh"   title="设备工序分配"
                     footer={[ <SaveButton key="save" handleSave={this.handleSave }/>,
                               <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
             >
-
-                工序选择:&nbsp;&nbsp;&nbsp;
-                   <Select style={{width:"315px"}} onChange={this.handleChange2}  value={this.props.clickName} disabled>
-                   </Select>
+                <p><span>工序名称:&nbsp;&nbsp;&nbsp;</span>{this.props.clickName}</p>
                 <div className="equip-allocation">
                     <div  className="equip-allocation-left">
-                        <div  className="equpiment-eqblocka">
-                            设备工序(请选择）
+                        <Card
+                            style={{width: "100%",height: '100%',display: 'inline-block'}}
+                            className='equip-allocation'
+                            headStyle={{height:'10%'}}
+                            bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
+                            title={`设备工序(请选择)`}>
+                            <DepTree
+                                treeData = {this.state.treeData}
+                                getRightData = {this.getRightData}
+                                handleSelect = {this.handleSelect}/>
+                        </Card>
                     </div>
-                    <DepTree
-                        getRightData={this.getRightData}
-                        url={this.props.url}
-                        operation={this.props.operation}
-                        handleSelect={this.handleSelect}
-
-
-                  />
-                   </div>
-                <div className="equip-allocation-right">
-                 <Transferq  dataSource={this.state.dataSource} dataSource2={this.state.dataSource2} gettransferright={this.gettransferright} gettransferleft={this.gettransferleft} Sourceflag1={this.state.Sourceflag1} Sourceflag2={this.state.Sourceflag2} changeSourceflag={this.changeSourceflag}/>
-                </div>
+                    <div className="equip-allocation-right">
+                        <Transferq  dataSource1={this.state.dataSource1} dataSource2={this.state.dataSource2}
+                                    changeSourceData={this.changeSourceData} search={this.search}/>
+                    </div>
             </div>
             </Modal>
-</span>
+            </span>
         )
     }
 
-    /** 分配点击事件 */
-    onclick=()=>{
-        console.log('进行分配');
-        this.setState({
-            visible:true,
-            devicename:this.props.clickName,
-            Sourceflag1:false,
-            Sourceflag2:false,
+    getTreeData = () => {
+        axios({
+            url: `${this.props.url.equipmentDept.dept}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                treeData: res
+            })
         })
-        /**默认第一个*/
-        //需要给初始第一个的部门的数据
-        this.getRightData()
-        console.log(this.props.clickName);
-        console.log(this.state.devicename);
+    }
+
+    search = (value, flag) => {
+        let {data1, data2} = this.state;
+        let data = flag ? data2 : data1;
+        let result = data.filter(item => this.filterOption(value, item) );
+        result = this.dataProcessing(result)
+        if(flag) {
+            this.setState({
+                dataSource2: result
+            })
+        } else {
+            this.setState({
+                dataSource1: result
+            })
+        }
+    }
+
+    /**根据设备名称或者规格型号进行搜索*/
+    filterOption = (inputValue, option) => {
+        let i = option.deviceName ? option.deviceName.indexOf(inputValue) > -1: false,
+            j = option.specification ? option.specification.indexOf(inputValue) > -1 : false;
+        return i || j;
     };
 
    /**保存事件*/
-   handleSave=()=>{
-       console.log('保存按钮')
-       this.setState({
-           visible:false,
-           dataSource:[],
-           dataSource2:[],
-           Sourceflag1:false,
-           Sourceflag2:false,
-       })
-
+   handleSave = () => {
+       let { dataSource2 } = this.state;
+       if(!dataSource2.length) {
+           message.info('已分配设备不能为空！');
+           return;
+       } else {
+           let deviceIds = [];
+           for( let i = 0; i < dataSource2.length; i++ ) {
+               deviceIds.push(dataSource2[i].deviceCode);
+           }
+           this.saveEvent(deviceIds);
+       }
    }
 
+    saveEvent = (deviceIds) => {
+       axios({
+           url: `${this.props.url.deviceProcess.assign}`,
+           method: 'put',
+           headers: {
+               'Authorization': this.props.url.Authorization
+           },
+           type: 'json',
+           params: {
+               deptId: this.state.deptCode,
+               proId: this.props.clickId
+           },
+           data: deviceIds
+       }).then( data => {
+           if(data.status === 200) {
+               message.info('保存成功！');
+               this.setState({
+                   visible:false,
+                   dataSource1:[],
+                   dataSource2:[],
+                   data1: [],
+                   data2: []
+               })
+           } else {
+               message.info(data.data.message);
+           }
+       }).catch( (error) => {
+           message.info( error && error.info ? error.info : '保存失败，请联系管理员！');
+       })
+    }
+
    /** 取消按钮 */
-   onCanCel=()=>{
-       console.log('分配取消')
+   onCanCel = () => {
        this.setState({
            visible:false,
-           Sourceflag1:false,
-           Sourceflag2:false,})
-       console.log(this.state.dataSource)
-       console.log(this.state.dataSource2)
-       console.log(this.state.Sourceflag2)
+           dataSource1:[],
+           dataSource2:[],
+           data1: [],
+           data2: []
+       })
    }
 
    /**获取数据*/
-   getRightData = (code, deviceName) => {
-
-       code = parseInt(code)
-       console.log(code)
-       console.log('调用获取数据接口')
-       this.setState({
-           deptCode:code
-       })
+   getRightData = (code) => {
+       if(code) {
+           code = parseInt(code);
+           this.setState({
+               deptCode:code
+           });
+       }
        axios({
-           url: `${this.props.url.SpotcheckPlan.getDeviceCount}`,
+           url: `${this.props.url.deviceProcess.getDeviceAssignment}`,
            method: 'get',
            headers: {
                'Authorization': this.props.url.Authorization
            },
            params:{
-               deptId:code
+               deptId:code,
+               proId: this.props.clickId
            }
        }).then((data) => {
            const res = data.data.data ? data.data.data : [];
-           var fakedataSource=[];
-           var fakedataSource2=[];
-           for(var i=0;i<20;i++)
-           {
-               fakedataSource.push({
-                   code:i,
-                   flag:0,
-                   index:i+1,
-                   Fixedassetscode:i,
-                   Devicename:'fake1',
-                   specification:'222-111',
-               })
-               fakedataSource2.push({
-                   code:i+20,
-                   flag:0,
-                   index:i+1,
-                   Fixedassetscode:i,
-                   Devicename:'fake2',
-                   specification:'111-222',
-               })
+           const dataSource1 = [], dataSource2 = [], data1 = [], data2 = [];
+           if (res && res.length) {
+               let i1 = 1, i2 = 1;
+               for(let i = 0; i < res.length; i++) {
+                   if(res[i].chosen){
+                       res[i]['index'] = i1++;
+                       res[i]['key'] = res[i].deviceCode.toString();
+                       data2.push(res[i]);
+                       dataSource2.push(res[i])
+                   } else {
+                       res[i]['index'] = i2++;
+                       res[i]['key'] = res[i].deviceCode.toString();
+                       data1.push(res[i]);
+                       dataSource1.push(res[i])
+                   }
+               }
            }
-           console.log(fakedataSource)
-           console.log(fakedataSource2)
            this.setState({
-               dataSource:fakedataSource,
-               dataSource2:fakedataSource2,
+               dataSource1: dataSource1,
+               dataSource2: dataSource2,
+               data1: data1,
+               data2: data2
            })
-
        }).catch(() => {
            message.info('查询失败，请刷新下页面！')
        });
    };
 
-  /**从子组件获取保存的穿梭框数据*/
-  gettransferright=(data)=>{
-      var rightchangedata = data.filter(e=>e.flag%2!==0);
-      console.log(rightchangedata)
-      console.log(data)
-      this.setState({
-          transferdataright:rightchangedata
-      })
-  };
-  gettransferleft=(data)=>{
-      var rightchangedata = data.filter(e=>e.flag%2!==0);
-      console.log(rightchangedata)
-      console.log(data)
-      this.setState({
-          transferdataleft:rightchangedata
-      })
+   /**处理数据，使数据的index每次都从1开始显示*/
+    dataProcessing = (data) => {
+        for(let i = 0; i < data.length; i++) {
+            data[i].index = i + 1;
+        }
+        return data;
     }
+
     /**树选择切换*/
     handleSelect = (code, data) => data.map((item) => {
         if (item.code === code) {
             item.isSelect = true;
-            this.setState({
-                deptCode:code
-            })
-            this.getRightData()
+            this.getRightData(code)
         } else {
             item.isSelect = false;
         }
@@ -194,17 +234,44 @@ class Allocation extends React.Component{
     });
 
     /**改变状态*/
-    changeSourceflag=()=>{
-        this.setState({
-            Sourceflag1:true,
-            Sourceflag2:true,
-        })
+    changeSourceData = (flag, ids) => {
+        let {dataSource1, dataSource2 } = this.state,
+            data1 = dataSource1, data2 = dataSource2;  //默认右移操作
+
+        //右移操作
+        if(flag) {
+            [data1, data2] = [dataSource2, dataSource1];
+        }
+        if(ids.length && dataSource1 && dataSource2) {
+            ids.forEach(id => {
+                let temp = data1.find(v => v.deviceCode === id );
+                //每次将移动的元素都放在第一个显示
+                data2.splice(0,0,temp);  //在数组头部新增一个元素
+                data1.splice(data1.findIndex(v => v.deviceCode === temp.deviceCode), 1);
+            })
+            let d1 = this.dataProcessing(data1), d2 = this.dataProcessing(data2);
+            if(flag) {
+                this.setState({
+                    dataSource1: d2,
+                    dataSource2: d1,
+                    data1: d1,
+                    data2: d2
+                })
+            } else {
+                this.setState({
+                    dataSource1: d1,
+                    dataSource2: d2,
+                    data1: d1,
+                    data2: d2
+                })
+            }
+        }
     }
-    /**下拉列表回调*/
-    handleChange2 = (value) =>{
+
+    handleChange = targetKeys => {
         this.setState({
-            deviceName:value
+            targetKeys: targetKeys
         })
-    }
+    };
 }
 export default Allocation

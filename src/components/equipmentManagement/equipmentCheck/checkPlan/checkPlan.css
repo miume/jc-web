@@ -59,13 +59,7 @@
     display: flex;
 }
 .checkp-depTreeSelect {
-        background: #bae7ff;
+    background: #bae7ff;
     border-radius:3px;
     color: rgba(0,0,0,0.65);
-    /*margin-right: -4px;*/
-}
-
-.checkp-tree{
-    padding-top: 15px;
-    padding-left: 20px;
 }
