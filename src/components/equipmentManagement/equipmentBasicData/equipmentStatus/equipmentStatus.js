@@ -81,7 +81,6 @@ class EquipmentStatus extends React.Component{
                         operation = {this.operation}
                         fetch={this.fetch}
                         data={this.state.dataSource}
-                        rowSelection={rowSelection}
                         modifyDataSource={this.modifyDataSource}
                         modifySelectedRowKeys={this.modifySelectedRowKeys}
                     />

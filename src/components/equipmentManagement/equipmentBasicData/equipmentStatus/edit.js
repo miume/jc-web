@@ -85,13 +85,11 @@ class Edit extends React.Component {
         this.setState({ colorVisible: true});
     }
     handleChangeColor = (color) => {
-        console.log(color.hex)
         this.setState({ background: color.hex });
     };
     handleColorCancel = () => {
         this.setState({
-            colorVisible: false,
-            background: ''
+            colorVisible: false
         });
     }
     handleColorOk = () => {

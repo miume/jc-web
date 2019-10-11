@@ -31,7 +31,7 @@ class equipmentStatusTable extends React.Component {
     }, {
         title: '颜色',
         dataIndex: 'color',
-        key: `code`,
+        key: `color`,
         align: 'center',
         editable: 1,
         width: '20%',
