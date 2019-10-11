@@ -19,14 +19,13 @@ class Edit extends React.Component {
             background: '',
             colorVisible: false
         }
-        this.handleEdit = this.handleEdit.bind(this)
-        this.handleCancel = this.handleCancel.bind(this)
-        this.handleOk = this.handleOk.bind(this)
-        this.onchange = this.onchange.bind(this)
-        this.handleChangeColor = this.handleChangeColor.bind(this)
-        this.handleColorCancel = this.handleColorCancel.bind(this)
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+        this.onchange = this.onchange.bind(this);
+        this.handleChangeColor = this.handleChangeColor.bind(this);
+        this.handleColorCancel = this.handleColorCancel.bind(this);
         this.handleColorOk = this.handleColorOk.bind(this)
-
     }
 
     render() {
@@ -138,7 +137,6 @@ class Edit extends React.Component {
             message.info("请输入设备状态名称")
             return
         }
-        console.log(saveData)
         axios({
             url : `${this.props.url.equipmentStatus.deviceStatus}`,
             method:'put',
@@ -177,8 +175,6 @@ class Edit extends React.Component {
             saveData: saveData
         })
     }
-
-
 }
 
 export default Edit

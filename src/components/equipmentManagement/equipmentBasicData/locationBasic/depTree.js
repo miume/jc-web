@@ -1,5 +1,5 @@
 import React from 'react';
-import { message} from 'antd';
+import {message, Spin} from 'antd';
 import axios from "axios";
 import TreeCard from "../../../BlockQuote/treeSelect";
 
@@ -10,6 +10,7 @@ class DepTree extends React.Component{
             depName:'',
             deptId:2,
             treeData:[],
+            loading: true
         };
 
         this.getTreeData=this.getTreeData.bind(this)
@@ -17,7 +18,7 @@ class DepTree extends React.Component{
     }
     render() {
         return(
-            <div>
+            <Spin spinning={this.state.loading} className="lB-left">
                 <TreeCard
                     getParams={this.getParams}
                     getTableData={this.props.getTableData}
@@ -28,9 +29,16 @@ class DepTree extends React.Component{
                     getTreeData={this.getTreeData}
                     treeData={this.state.treeData}
                 />
-            </div>
+            </Spin>
         )
     }
+
+    componentWillUnmount() {
+        this.setState = () => {
+            return ;
+        }
+    }
+
     /**获取参数*/
     getParams=(selectedkeys,e)=>{
         console.log(selectedkeys)
@@ -100,8 +108,7 @@ class DepTree extends React.Component{
                 }
                 this.setState({
                     treeData: dataSource,
-                },()=>{
-
+                    loading: false
                 })
             } else {
                 message.info('没有获取到数据')

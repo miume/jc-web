@@ -1,11 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, message, Popover, Steps, Row, Col, Input} from 'antd';
+import {Modal, message, Row, Col, Input} from 'antd';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import NewButton from "../../../BlockQuote/newButton";
-
-//用于编写弹出框的按钮应用
-const Step = Steps.Step
 
 class EditPart extends React.Component {
     constructor(props){
@@ -43,14 +40,14 @@ class EditPart extends React.Component {
                         <NewButton key="submit" handleClick={this.handleOk} name='确定' style='button' className='fa fa-check' />
                     ]}
                 >
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                    <Row type="flex" justify="start" >
                         <Col span={1.5} style={{paddingTop:"5px"}}>
                             所属部门 ：{this.props.deptName}
                         </Col>
                     </Row>
 
                     <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingTop:"5px"}}>
+                        <Col span={1.5} style={{paddingTop:"10px"}}>
                             位置名称 ：
                         </Col>
                         <Col span={10}>
@@ -59,7 +56,6 @@ class EditPart extends React.Component {
                                    key='1'
                                    name='locationName'
                                    defaultValue={this.props.locationName}
-                                   // value={this.state.locationName}
                                    onChange={this.onInputChange}
                             />
                         </Col>
@@ -67,7 +63,7 @@ class EditPart extends React.Component {
 
                     <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
 
-                        <Col span={1.5} style={{paddingTop:"5px",paddingLeft:"15px"}}>
+                        <Col span={1.5} style={{paddingTop:"10px",paddingLeft:"15px"}}>
                             ID卡号 ：
                         </Col>
                         <Col span={10} style={{position:"absolute",right:"170px"}}>
@@ -76,7 +72,6 @@ class EditPart extends React.Component {
                                    key='2'
                                    name='idCode'
                                    defaultValue={this.props.idCode}
-                                   // value={this.state.idCode}
                                    onChange={this.onInputChange}
                             />
                         </Col>

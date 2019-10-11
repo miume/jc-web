@@ -18,14 +18,13 @@ class AddModal extends React.Component {
             background: '',
             colorVisible: false
         }
-        this.handleAdd = this.handleAdd.bind(this)
-        this.handleCancel = this.handleCancel.bind(this)
-        this.handleOk = this.handleOk.bind(this)
-        this.onchange = this.onchange.bind(this)
-        this.handleChangeColor = this.handleChangeColor.bind(this)
-        this.handleColorCancel = this.handleColorCancel.bind(this)
-        this.handleColorOk = this.handleColorOk.bind(this)
-
+        this.handleAdd = this.handleAdd.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleOk = this.handleOk.bind(this);
+        this.onchange = this.onchange.bind(this);
+        this.handleChangeColor = this.handleChangeColor.bind(this);
+        this.handleColorCancel = this.handleColorCancel.bind(this);
+        this.handleColorOk = this.handleColorOk.bind(this);
     }
 
     render() {
@@ -104,11 +103,6 @@ class AddModal extends React.Component {
         });
     }
 
-
-
-
-
-
     handleAdd = () => {
         this.setState({
             visible: true
@@ -124,7 +118,6 @@ class AddModal extends React.Component {
             message.info("请输入设备状态名称")
             return
         }
-        console.log(saveData)
         axios({
             url : `${this.props.url.equipmentStatus.deviceStatus}`,
             method:'post',
@@ -163,8 +156,6 @@ class AddModal extends React.Component {
             saveData: saveData
         })
     }
-
-
 }
 
 export default AddModal

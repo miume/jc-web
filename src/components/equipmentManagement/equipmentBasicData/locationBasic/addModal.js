@@ -64,16 +64,6 @@ class AddModal extends React.Component {
 
     };
     fetch = () => {
-        /**flag为1时，将分页搜索位置0 */
-        // if(flag) {
-        //     var {pagination} = this.props.pagination;
-        //     pagination.current = 1;//设置当前页面为1
-        //     pagination.total = 0;//设置全部页面为0
-        //     this.setState({
-        //         pageChangeFlag: 0,
-        //         pagination:pagination
-        //     })
-        // }
         var params={
             id:this.props.deptCode,
             page:this.props.pagination.page,
@@ -112,14 +102,14 @@ class AddModal extends React.Component {
                         />
                     ]}
                 >
-                    <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
+                    <Row type="flex" justify="start" >
                         <Col span={1.5} style={{paddingTop:"5px"}}>
                             所属部门 ：{this.props.deptName}
                         </Col>
                     </Row>
 
                     <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
-                        <Col span={1.5} style={{paddingTop:"5px"}}>
+                        <Col span={1.5} style={{paddingTop:"10px"}}>
                             位置名称 ：
                         </Col>
                         <Col span={10}>
@@ -136,7 +126,7 @@ class AddModal extends React.Component {
 
                     <Row type="flex" justify="start" style={{paddingTop:"15px"}} >
 
-                        <Col span={1.5} style={{paddingTop:"5px",paddingLeft:"15px"}}>
+                        <Col span={1.5} style={{paddingTop:"10px",paddingLeft:"15px"}}>
                             ID卡号 ：
                         </Col>
                         <Col span={10} style={{position:"absolute",right:"170px"}}>

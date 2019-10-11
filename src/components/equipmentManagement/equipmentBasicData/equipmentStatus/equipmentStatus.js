@@ -6,7 +6,7 @@ import SearchCell from '../../../BlockQuote/search'
 import EquipmentStatusTable from './equipmentStatusTable'
 import home from "../../../commom/fns";
 import axios from "axios";
-import {message} from "antd";
+import {message, Spin} from "antd";
 
 class EquipmentStatus extends React.Component{
     url;
@@ -18,6 +18,7 @@ class EquipmentStatus extends React.Component{
             selectedRowKeys: [],
             searchContent:'',
             searchText: '',
+            loading: true
         }
         this.returnEqipmentBasicData = this.returnEqipmentBasicData.bind(this)
         this.deleteByIds = this.deleteByIds.bind(this)
@@ -29,6 +30,13 @@ class EquipmentStatus extends React.Component{
         this.searchEvent = this.searchEvent.bind(this)
         this.searchContentChange = this.searchContentChange.bind(this);
     }
+
+    componentWillUnmount() {
+        this.setState = () => {
+            return ;
+        }
+    }
+
     componentDidMount() {
         this.fetch();
     }
@@ -45,7 +53,7 @@ class EquipmentStatus extends React.Component{
         return(
             <div>
                 <Blockquote menu={current.menuParent} name="设备状态"  menu2='返回' returnDataEntry={this.returnEqipmentBasicData} flag={1}/>
-                <div style={{padding: '15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal
                         url={this.url}
                         fetch={this.fetch}
@@ -77,7 +85,7 @@ class EquipmentStatus extends React.Component{
                         modifyDataSource={this.modifyDataSource}
                         modifySelectedRowKeys={this.modifySelectedRowKeys}
                     />
-                </div>
+                </Spin>
             </div>
         )
     }
@@ -98,7 +106,7 @@ class EquipmentStatus extends React.Component{
                 var dataSource = []
                 for(var i = 0; i<res.length; i++){
                     dataSource.push({
-                        index: i,
+                        index: i + 1,
                         name: res[i].name,
                         code: res[i].code,
                         color: res[i].color,
@@ -106,12 +114,14 @@ class EquipmentStatus extends React.Component{
                 }
                 this.setState({
                     dataSource: dataSource,
-                    selectedRowKeys:[]
+                    selectedRowKeys:[],
+                    loading: false
                 });
             }else{
                 this.setState({
                     dataSource: [],
-                    selectedRowKeys:[]
+                    selectedRowKeys:[],
+                    loading: false
                 })
             }
         });
@@ -161,7 +171,7 @@ class EquipmentStatus extends React.Component{
                 var dataSource = []
                 for(var i = 0; i<res.length; i++){
                     dataSource.push({
-                        index: i,
+                        index: i + 1 ,
                         name: res[i].name,
                         code: res[i].code
                     })
