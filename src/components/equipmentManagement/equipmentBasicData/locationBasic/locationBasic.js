@@ -1,14 +1,13 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
 import axios from "axios";
-import {message} from "antd";
+import {message,Spin} from "antd";
 import './locationBasic.css'
 import home from "../../../commom/fns";
 import AddModal from "./addModal";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import TheTable from './theTable'
 import DepTree from "./depTree";
-
 
 class LocationBasic extends React.Component{
     constructor(props){
@@ -29,6 +28,7 @@ class LocationBasic extends React.Component{
             pageChangeFlag : 0,   //0表示分页 1 表示查询
             deptCode:2,
             deptName:'',
+            tableLoading: true
         };
 
         this.returnDataEntry = this.returnDataEntry.bind(this)
@@ -66,7 +66,7 @@ class LocationBasic extends React.Component{
                             />
                     </div>
                     {/*右边表格部分*/}
-                    <div className='lB-right'>
+                    <Spin spinning={this.state.tableLoading} wrapperClassName='lB-right'>
                         <AddModal
                             deptName={this.state.deptName}
                             deptCode={this.state.deptCode}
@@ -93,7 +93,7 @@ class LocationBasic extends React.Component{
                                 getTableData={this.getTableData}
                             />
                         </div>
-                    </div>
+                    </Spin>
                 </div>
             </div>
         )
@@ -190,11 +190,13 @@ class LocationBasic extends React.Component{
                         this.setState({
                             rightTableData: rightTableData,
                             pagination:pagination,
+                            tableLoading: false
                         });
                     } else {
                         this.setState({
                             rightTableData: [],
                             pagination:[],
+                            tableLoading: false
                         });
 
                     }

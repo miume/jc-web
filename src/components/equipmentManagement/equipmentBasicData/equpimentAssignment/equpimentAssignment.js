@@ -1,6 +1,6 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {message} from "antd";
+import {Card, message, Spin} from "antd";
 import Eqblock from "./eqblock";
 import './equpimentAssignment.css'
 import SearchCell from "../../../BlockQuote/search";
@@ -13,10 +13,13 @@ class EqupimentAssignment extends React.Component {
         super(props)
         this.state={
             processData:[],
-            TableDataSource:[],
-            clickName:'',
+            tableDataSource:[],  //存取根据工序id，条件模糊查询所有设备的结果
             pageChangeFlag: 0,   //0表示分页 1 表示查询
             searchContent: '',
+            loading: true,      //左菜单加载
+            tableFlag: true,    //右表格加载
+            clickId: -1,        //表示被点击的设备id
+            clickName: ''       //表示被点击设备的名称
         }
         this.pagination = {
             showTotal(total) {
@@ -25,7 +28,11 @@ class EqupimentAssignment extends React.Component {
             showSizeChanger: true
         }
     }
-
+    componentWillUnmount() {
+        this.setState = () => {
+            return ;
+        }
+    }
     componentDidMount() {
         this.fetch()
     }
@@ -38,32 +45,35 @@ class EqupimentAssignment extends React.Component {
         const menus = JSON.parse(localStorage.getItem('menus'))
         const operation = menus?menus.filter(e=>e.path===current.path)[0].menuList:null;
         this.operation = operation.filter(e=>e.path === baseData.path)[0].operations;
-
         return (
-
             <div>
                 <Blockquote menu={current.menuParent} name="设备工序分配" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div className="equip-total">
                     {/*左边菜单栏 */}
-                <div className="equpiment-left" >
-                        <div  className="equpiment-eqblocka">
-                        设备名称(请选择）
-                        </div>
-                    <div className="eqa-eqb">
-                       {
-                        this.state.processData.map(e=> {
-                            // console.log(e)
-                            return <Eqblock  colorFlag={e.colorFlag?"ed-blue":"ed-grey"} deviceName={e.deviceName} changeeqname={this.changeeqname} />
-                        })
-                       }
-                    </div>
-                </div>
+                    <Spin spinning={this.state.loading} wrapperClassName='equipment-left'>
+                        <Card
+                            bordered={false}
+                            style={{width: "100%",height: '100%'}}
+                            className='departmentCard'
+                            headStyle={{height:'10%'}}
+                            bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
+                            title={`所属工序`}>
+                            <div>
+                                {
+                                    this.state.processData.map(e=> {
+                                        return <Eqblock key={e.code} id={e.code}  colorFlag={e.code === parseInt(this.state.clickId)?"equipment-button ed-blue":"equipment-button ed-grey"}
+                                                        deviceName={e.ruleValue} changeEqname={this.changeEqname} />
+                                    })
+                                }
+                            </div>
+                        </Card>
+                    </Spin>
 
                     {/*右边表格*/}
-                    <div className="equpiment-right">
+                    <Spin spinning={this.state.tableFlag} wrapperClassName='equipment-right'>
                         {/*分配按钮 */}
-                        <Allocation processData={this.state.processData} url={this.url} clickName={this.state.clickName}/>
+                        <Allocation url={this.url} clickId={this.state.clickId} clickName={this.state.clickName} />
 
                         {/*搜索模块*/}
                         <SearchCell
@@ -75,37 +85,27 @@ class EqupimentAssignment extends React.Component {
                         />
 
                         {/*表格模块*/}
-                        <RightTable DataSource={this.state.TableDataSource}  pagination={this.pagination} handleTableChange={this.handleTableChange}/>
-
-                    </div>
-
-
-
+                        <RightTable dataSource={this.state.tableDataSource}  pagination={this.pagination} handleTableChange={this.handleTableChange}/>
+                    </Spin>
                 </div>
             </div>
         )
     }
     /**左边点击切换页面 */  /**-------需要输入参数部分*/
-    changeeqname = (e) =>{
-        // console.log(this.clickdeviceName)
-        var processData = this.state.processData
-        for (var i=0; i< processData.length; i++){
-            if(processData[i].deviceName===e){
-                processData[i].colorFlag = true
-            }else{
-                processData[i].colorFlag = false
-            }
-        }
+    changeEqname = (code,deviceName) =>{
         this.setState({
-            processData:processData
+            clickId:code,
+            clickName: deviceName
         })
         //需要输入参数
-        this.getTabledata()
+        this.getTableData({
+            proId: code
+        })
     }
     /**获取左边数据*/
     fetch=(params = {})=>{
         axios({
-            url: `${this.url.eqMaintenanceDataEntry.queryAll}`,
+            url: `${this.url.deviceProcess.getAll}`,
             method:'get',
             headers:{
                 'Authorization':this.url.Authorization
@@ -115,30 +115,26 @@ class EqupimentAssignment extends React.Component {
             },
         }).then((data)=>{
             const res=data.data.data;
-            if(res){
-                var deviceDatas = []
-                for(var i=0; i<res.length; i++){
-                    if(i===0){
-                        deviceDatas.push({
-                            deviceName: res[i],
-                            colorFlag:true
-                        })
-                    }else{
-                        deviceDatas.push({
-                            deviceName: res[i],
-                            colorFlag:false
-                        })
+            let {clickId,clickName} = this.props;
+            if(res && res.length){
+                for(var i = 0; i < res.length; i++){
+                    res[i]["index"] = i + 1;
+                    if( i === 0 ) {
+                        clickId = res[i].code;
+                        clickName = res[i].ruleValue;
                     }
                 }
-                // }//是序号从1开始
                 this.setState({
                     loading:false,
-                    processData:deviceDatas,
-                    clickName:res[0]
+                    processData:res,
+                    clickId : clickId,
+                    clickName: clickName
                 });
 
                 // 默认调用第一个工序内数据
-                this.getTabledata()
+                this.getTableData({
+                    proId: clickId
+                })
             }
         }).catch(()=>{
             message.info('刷新列表失败，请联系管理员！')
@@ -146,7 +142,7 @@ class EqupimentAssignment extends React.Component {
     }
 
     /**获取右边表格数据*/ /**-------需要输入参数部分*/
-    getTabledata=(params,flag)=>{
+    getTableData = (params,flag) => {
         if (flag) {
             this.setState({
                 pageChangeFlag: 0,
@@ -154,57 +150,68 @@ class EqupimentAssignment extends React.Component {
             })
         }
         axios({
-            url: `${this.url.eqMaintenanceDataEntry.queryAll}`,
+            url: `${this.url.deviceProcess.getDeviceByProIdByPage}`,
             method:'get',
             headers:{
                 'Authorization':this.url.Authorization
             },
-            params:{
-                ...params,
-            },
+            params: params
         }).then((data)=>{
             const res=data.data.data;
-            // 调整数据格式即可
-            if(res){
-                var fakedataSource=[];
-                for(var i=0;i<20;i++)
-                {
-                    fakedataSource.push({
-                        code:i,
-                        Deptcode:i,
-                        index:i+1,
-                        Fixedassetscode:i,
-                        Devicename:'fake1',
-                        specification:'222-111',
-                        IDcode:i,
-                        startdate:'2019-8-16',
-                        status:'运行',
-                        name:'运行',
-                        color:'green',
-                    })
-                }
-                this.setState({
-                    TableDataSource:fakedataSource
-                })
+            let tableDataSource = [], resList = res.list;
+            this.pagination.total=res?res.total:0;
+            if(resList && resList.length) {
+                tableDataSource = this.dataProcessing(res);
             }
-
+            this.setState({
+                tableDataSource:tableDataSource,
+                tableFlag: false
+            })
         }).catch(()=>{
             message.info('刷新列表失败，请联系管理员！')
         });
     }
+
+    /**数据处理*/
+    dataProcessing = (res) => {
+        const tableDataSource = [], resList = res.list;
+        for(let i = 0;i < resList.length; i++) {
+            let temp = resList[i];
+            tableDataSource.push({
+                index: (res.page - 1) * 10 + i + 1,
+                deptName: temp.deptName,
+                color: temp.color,
+                code: temp.productionProcessDeviceMap.code,
+                status: temp.status,
+                idCode: temp.productionProcessDeviceMap.idCode,
+                deptCode: temp.productionProcessDeviceMap.deptCode,
+                ruleValue: temp.productionProcessDeviceMap.ruleValue,
+                startDate: temp.productionProcessDeviceMap.startDate,
+                deviceName: temp.productionProcessDeviceMap.deviceName,
+                deviceCode: temp.productionProcessDeviceMap.deviceCode,
+                specification: temp.productionProcessDeviceMap.specification,
+                ruleDetailCode: temp.productionProcessDeviceMap.ruleDetailCode,
+                fixedassetsCode: temp.productionProcessDeviceMap.fixedassetsCode
+            })
+        }
+        return tableDataSource;
+    }
+
     /**分页和查询*/       /**-------需要输入参数部分*/
     handleTableChange = (pagination) => {
         this.pagination = pagination;
         const {pageChangeFlag} = this.state;
         //需要根据接口输入参数
         if (pageChangeFlag) {
-            this.getTabledata({
+            this.getTableData({
+                proId: this.props.clickId,
                 size: pagination.pageSize,
                 page: pagination.current,
                 condition: this.state.searchContent,
             })
         } else {
-            this.getTabledata({
+            this.getTableData({
+                proId: this.state.clickId,
                 size: pagination.pageSize,
                 page: pagination.current,
             })
@@ -213,7 +220,8 @@ class EqupimentAssignment extends React.Component {
     /**重置搜索调用*/    /**-------需要输入参数部分*/
     searchReset = () => {
         //需要输入参数，参数为默认的第一个工序
-        this.getTabledata({
+        this.getTableData({
+            proId: this.state.clickId
         }, 1)
     }
     /**搜索*/           /**-------需要输入参数部分*/
@@ -222,19 +230,21 @@ class EqupimentAssignment extends React.Component {
             pageChangeFlag: 1
         })
         //需要根据接口输入参数
-        this.getTabledata({
+        this.getTableData({
+            proId: this.state.clickId,
             condition: this.state.searchContent,
-
-        });
+            size: this.pagination.pageSize,
+            page: this.pagination.current,
+        }, 0);
     }
     /**返回数据录入页面 */
     returnDataEntry = () => {
         this.props.history.push({pathname: '/equipmentBasicData'});
     }
     /**搜索框回调函数*/
-    searchContentChange=(value)=>{
+    searchContentChange = (event) => {
         this.setState({
-            searchContent:value
+            searchContent:event.target.value
         })
     }
 }

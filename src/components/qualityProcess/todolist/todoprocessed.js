@@ -83,7 +83,7 @@ class TodoProcessed extends React.Component{
                         this.props.data?this.props.data.map(e=>{
                             var curId = this.props.data.curId;
                             /**visible===1 表示到当前用户进行审核  前面为已审核，后面则为未审核 */
-                            var flag = e.details.findIndex(e=>e.visible === 1)
+                            var flag = e.details.findIndex(e=>e.visible === 1);
                             var details = e.details;
                             var contents = '';
                             for(var i = 0; i < details.length; i++){

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table} from 'antd';
+import {Spin, Table} from 'antd';
 import home from '../../../commom/fns';
 import SearchCell from '../../../BlockQuote/search';
 import './rawAdd.css';
@@ -25,7 +25,6 @@ class RawMaterialApplication extends React.Component{
         }
         this.cancle = this.cancle.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
-        // this.handleTableChange = this.handleTableChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.columns = [{
@@ -44,7 +43,7 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'materialClass',
             key:'materialClass',
             width:'20%',
-            render:(text,record)=>{
+            render:(text)=>{
                 switch(text){
                     case 1: return '原材料';
                     case 2: return '中间件';
@@ -57,42 +56,13 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'serialNumber',
             key:'serialNumber',
             width:'34%',
-            // render:(text)=>{
-            //     if(text.length>24)
-            //         return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
-            //     else
-            //         return <span className='text-decoration' title={text}>{text}</span>
-            // }
-        }
-        // ,{
-        //     title:'数量',
-        //     dataIndex:'quantity',
-        //     key:'quantity',
-        //     width:'15%'
-        // }
-        ,{
+        }, {
             title:'重量',
             dataIndex:'weight',
-            key:'weight',
-            // width:'20%'
+            key:'weight'
         }]
-        // this.pagination = {
-        //     total: this.props.data.total,
-        //     showTotal(total) {
-        //       return `共${total}条记录`
-        //     } ,
-        //     showSizeChanger: true,
-        //   }
     }
-    /**监控表格的变化 */
-    // handleTableChange = (pagination) => {
-    //     this.props.fetch({
-    //       size: pagination.pageSize,
-    //       page: pagination.current,
-    //       orderField: 'id',
-    //       orderType: 'desc',
-    //     });
-    //   }
+
     /**监控搜索框的输入变化 */
     searchContentChange(e){
         const value = e.target.value;
@@ -127,15 +97,15 @@ class RawMaterialApplication extends React.Component{
         /**获取当前菜单的所有操作权限 */
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
-            <div style={{padding:'0 15px'}}>
+            <Spin spinning={this.props.loading} wrapperClassName='rightDiv-content'>
                 <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url}
                     flag={home.judgeOperation(this.operation,'SAVE')}
                 />
                 <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
-                fetch={this.props.fetch} searchContentChange={this.searchContentChange}
+                fetch={this.fetch} searchContentChange={this.searchContentChange}
                 flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                 <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={false} scroll={{ y: 398 }} bordered size='small'></Table>
-            </div>
+            </Spin>
         );
     }
 }

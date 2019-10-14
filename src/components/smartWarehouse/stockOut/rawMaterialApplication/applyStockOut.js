@@ -2,7 +2,6 @@ import React from 'react';
 import {Button,Modal,Table,Input,message} from 'antd';
 import CancleButton from '../../../BlockQuote/cancleButton';
 import Submit from '../../../BlockQuote/submit';
-// import SaveButton from '../../BlockQuote/saveButton';
 import './rawAdd.css';
 import axios from 'axios';
 // const data = [];
@@ -64,23 +63,11 @@ class ApplyStockOut extends React.Component{
                     return <span className='text-decoration'>{text}</span>
                 }
             }
-        // },{
-        //     title:'库存数量',
-        //     dataIndex:'quantity',
-        //     key:'quantity',
-        //     width:'10%'
         },{
             title:'库存重量',
             dataIndex:'weight',
             key:'weight',
             width:'10%'
-        // },{
-        //     title:'出库数量',
-        //     dataIndex:'outQuantity',
-        //     key:'outQuantity',
-        //     width:'15%',
-        //     render:(text,record)=>{return <Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />},
-        //     className:'tdStyle'
         },{
             title:'出库重量',
             dataIndex:'outWeight',
@@ -109,12 +96,7 @@ class ApplyStockOut extends React.Component{
         /**实现取消选中 */
         this.props.cancle();
     }
-    /**申请出库弹出框 点击送审按钮 */
-    // handleOk(){
-    //     this.setState({
-    //         visible:false
-    //     })
-    // }
+
     /**点击申请按钮，弹出弹出框 */
     apply(){
         const keys = this.props.selectedRowKeys;
@@ -123,7 +105,6 @@ class ApplyStockOut extends React.Component{
             var newD = d;
             for(var i = 0; i < keys.length;i++){
                 if(keys[i]===d.id){
-                    // newD['outQuantity']='';
                     newD['outWeight']='';
                     newD['index']=i+1;
                     outData.push(newD)
@@ -142,7 +123,6 @@ class ApplyStockOut extends React.Component{
         const id = e.target.id
         const newData = [...this.state.dataSource];
         const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
-        // console.log(newData[index].id )
         newData[index][name] = value.toString();
     }
     /**监控申请送审弹出框的visible */
@@ -159,7 +139,6 @@ class ApplyStockOut extends React.Component{
     }
      /**监控是否紧急 */
      urgentChange(checked){
-        //console.log(checked)
         this.setState({
             urgent:checked?1:0
         })
@@ -184,7 +163,6 @@ class ApplyStockOut extends React.Component{
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
         const commonBatchNumber = {
             createPersonId:createPersonId,
-            // isUrgent:this.state.urgent
         }
         const details = [];
         const data = this.state.dataSource;
@@ -201,8 +179,6 @@ class ApplyStockOut extends React.Component{
                 weight:parseInt(e.outWeight)
             })
         }
-        // const taskId = parseInt(this.state.process) !== -1?parseInt(this.state.process) :''
-        //console.log(taskId)
         axios.post(`${this.props.url.stockOut.repoOut}`,{
             commonBatchNumber:commonBatchNumber,
             details:details
@@ -213,7 +189,6 @@ class ApplyStockOut extends React.Component{
         }).then((data)=>{
             if(status){
                 const dataId = data.data.data?data.data.data.commonBatchNumber.id:null;
-                //console.log(dataId)
                 this.applyReview(dataId);
             }else{
                 message.info(data.data.message);
@@ -229,15 +204,12 @@ class ApplyStockOut extends React.Component{
     }
     /**送审 */
     applyReview(dataId){
-        //console.log(this.state.urgent)
-        // console.log(this.state.process)
         axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
             params:{
                 dataId:dataId,
-                // taskId:parseInt(this.state.process),
                 isUrgent:this.state.urgent
             }
         }).then((data)=>{
@@ -255,12 +227,11 @@ class ApplyStockOut extends React.Component{
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        // <SaveButton key='save' handleSave={this.handleSave} />,
                         <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} defaultChecked={false}/>
                     ]}
                 >
-                <div style={{height:'250px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' scroll={{y:200}} pagination={false} rowClassName={() => 'editable-row'}></Table>
+                <div style={{height:'50vh',overflow:'auto'}}>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>

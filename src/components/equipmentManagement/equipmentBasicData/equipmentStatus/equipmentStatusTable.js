@@ -4,7 +4,6 @@ import DeletaSpan from './deletaSpan'
 import './equipmentStatus.css'
 import Edit from './edit';
 
-
 class equipmentStatusTable extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +12,6 @@ class equipmentStatusTable extends React.Component {
         }
         this.cancel = this.cancel.bind(this);
         this.getFetch = this.getFetch.bind(this);
-
     }
 
     columns = [{
@@ -33,14 +31,13 @@ class equipmentStatusTable extends React.Component {
     }, {
         title: '颜色',
         dataIndex: 'color',
-        key: `code`,
+        key: `color`,
         align: 'center',
         editable: 1,
         width: '20%',
         render: color => {
             return <span><i style={{color: `${color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
-        },
-
+        }
     }, {
         title: '操作',
         dataIndex: 'code',
@@ -78,7 +75,6 @@ class equipmentStatusTable extends React.Component {
                 pagination={false}
                 size="small"
                 bordered
-                scroll={{y: 400}}
             />
         );
     }

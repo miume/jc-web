@@ -9,20 +9,20 @@ class RightTable extends React.Component{
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            sorter:(a,b) =>a.id-b.id,
+            sorter:(a,b) =>a.code-b.code,
             width:'10%',
         },{ title:'所属部门',
-            dataIndex: 'Deptcode' ,
+            dataIndex: 'deptName' ,
             width: '13%',
             align:'left',
         }, {
             title: '固定资产编号',
-            dataIndex: 'Fixedassetscode',
+            dataIndex: 'fixedassetsCode',
             width: '13%',
             align:'left',
         },{
             title: '设备名称',
-            dataIndex: 'Devicename',
+            dataIndex: 'deviceName',
             width: '13%',
             align:'left',
             editable: true
@@ -33,22 +33,22 @@ class RightTable extends React.Component{
             align:'left',
         },{
             title: 'ID卡号',
-            dataIndex: 'IDcode',
+            dataIndex: 'idCode',
             width: '15%',
             align:'left',
         },{
            title:'启动日期',
-            dataIndex:'startdate',
+            dataIndex:'startDate',
             width:'15%',
             align:'left',
         },{
             title:'设备状态',
             dataIndex:'status',
-            width:'left',
+            width:'15%',
             align:'left',
             render: (text, record) => {
                 return(
-                    <span>{record.name}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
+                    <span>{text}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
                 )
             }
         }]
@@ -58,9 +58,9 @@ class RightTable extends React.Component{
             <Table
                 columns={this.columns}
                 bordered
-                dataSource={this.props.DataSource}
+                rowKey={record => record.code}
+                dataSource={this.props.dataSource}
                 size="small"
-                style={{paddingTop:'5px'}}
                 pagination={this.props.pagination}
                 onChange={this.props.handleTableChange}
                     />
