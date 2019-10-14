@@ -4,6 +4,7 @@ import { Table,Popconfirm,Divider,message,InputNumber,Input,Form } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddButton from '../../../BlockQuote/newButton';
 import SearchCell from '../../../BlockQuote/search';
+import axios from "axios";
 
 const EditableContext = React.createContext();
 
@@ -59,22 +60,7 @@ class ProcessName extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            data:[{
-                key:1,
-                index:1,
-                processName:"测试工序",
-                type:"主材"
-            },{
-                key:2,
-                index:2,
-                processName:"测试工序",
-                type:"主材"
-            },{
-                key:3,
-                index:3,
-                processName:"测试工序",
-                type:"主材"
-            }],
+            data:[],
             editingKey:""
         }
         this.columns = [{
@@ -92,11 +78,17 @@ class ProcessName extends React.Component{
             editable: true,
         },{
             title: '所属类别',
-            dataIndex: 'type',
-            key: 'type',
+            dataIndex: 'types',
+            key: 'types',
             align:'center',
             width: '25%',
-            editable: true,
+            render:(text,record)=>{
+                if(text == 1){
+                    return "主材"
+                }else{
+                    return "辅材"
+                }
+            }
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -144,23 +136,68 @@ class ProcessName extends React.Component{
             editingKey:""
         })
     }
+
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+    }
+
+    componentDidMount(){
+        this.fetch();
+    }
+
+    fetch = ()=>{
+        axios({
+            url:`${this.url.precursorProcessType.all}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res
+                })
+            }
+        })
+    }
     save = (form,key) =>{
         form.validateFields((error,row)=>{
             if(error){
                 return;
             }
-            const newData = [...this.state.data];
-            const index = newData.findIndex(item=>key===item.key);
+            var newData = [...this.state.data];
+            var index = newData.findIndex(item=>key===item.key);
+            
             if(index >-1){
                 const item = newData[index];
                 newData.splice(index,1,{
                     ...item,
                     ...row,
                 });
-                this.setState({
-                    data:newData,
-                    editingKey:""
-                });
+                var data = newData[index];
+                delete data["index"];
+                axios({
+                    url:`${this.url.precursorProcessType.update}`,
+                    method:"put",
+                    headers:{
+                        'Authorization':this.url.Authorization
+                    },
+                    data:data,
+                }).then((data)=>{
+                    message.info("编辑成功");
+                    this.fetch()
+                    this.setState({
+                        data:newData,
+                        editingKey:""
+                    });
+                })
             }else{
                 newData.push(row);
                 this.setState({
@@ -206,7 +243,7 @@ class ProcessName extends React.Component{
                 <div style={{padding:'15px'}}>
                     <div className='clear' ></div>
                     <EditableContext.Provider value={this.props.form}>
-                        <Table components={components} columns={columns} rowSelection={{}} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                        <Table components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                     </EditableContext.Provider>
                 </div>
             </div>

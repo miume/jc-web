@@ -4,6 +4,7 @@ import WhiteSpace from '../../../BlockQuote/whiteSpace';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
 
+
 class Detail extends React.Component{
     url
     constructor(props){
@@ -16,6 +17,8 @@ class Detail extends React.Component{
             peopleName:"",
             radioValue:"",
             deviceSpotcheckModelsDetails:[],
+            previewVisible:false,
+            previewImage:'',
         }
     }
 
@@ -58,6 +61,15 @@ class Detail extends React.Component{
         visible: false
         });
     }
+    previewPreview = (e,src) =>{
+        this.setState({
+            previewImage: e,
+            previewVisible: true,
+        })
+    }
+    previewCancel = () =>{
+        this.setState({ previewVisible: false })
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         // const {deviceSpotcheckModelsDetails,deviceSpotcheckModelsHead,peopleName} = this.state.data;
@@ -90,9 +102,13 @@ class Detail extends React.Component{
                         this.state.deviceSpotcheckModelsDetails.map(e=>
                             <div key={e.code}>
                                 <span className="DetailName">{e.spotcheckContent}</span>
-                                <span className="DetailName">{e.spotcheckItems}</span>
+                                <span className="DetailName" title={e.spotcheckItems}>{e.spotcheckItems}</span>
                                 <span className="DetailName">{e.spotcheckPeriod}</span>
-                                <span className="DetailName">{e.spotcheckAddress}</span>
+                                <img style={{cursor:"pointer"}} onClick={this.previewPreview.bind(this,`http://47.107.237.60:3389/jc/common/spotCheck/model/${e.spotcheckAddress}`)} alt="图片未上传" className="Eqpicture" src={`http://47.107.237.60:3389/jc/common/spotCheck/model/${e.spotcheckAddress}`}/>
+                                <Modal visible={this.state.previewVisible} footer={null} onCancel={this.previewCancel}>
+                                    <img alt="图片未显示" style={{width:"100%"}} src={this.state.previewImage}/>
+                                </Modal>
+                                {/* <span className="DetailName">{e.spotcheckAddress}</span> */}
                             </div>
                         )
                     }

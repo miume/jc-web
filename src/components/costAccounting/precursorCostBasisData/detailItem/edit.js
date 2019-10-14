@@ -19,11 +19,52 @@ class AddModal extends React.Component{
             mn:null,
             co:null,
             ni:null,
-            metal:["Mn","Co","Ni"]
+            metal:[]
         }
     }
     showModal = () => {
-        this.setState({ visible: true });
+        axios({
+            url:`${this.url.precursorMaterialDetails.getRecordById}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:this.props.code}
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res)
+            var metal = [];
+            if(res["mn"]===1){
+                metal.push("Mn")
+            }
+            if(res["co"]===1){
+                metal.push("Co")
+            }
+            if(res["ni"]===1){
+                metal.push("Ni")
+            }
+            this.setState({
+                visible:true,
+                name:res.materialName,
+                types:res.types,
+                dataTypes:res.dataType,
+                process:res.processCode,
+                metal:metal
+            })
+        })
+        axios({
+            url:`${this.url.precursorMaterialDetails.getProcess}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{types:this.props.processCode}
+        }).then((data)=>{
+            const res = data.data.data;
+            this.setState({
+                processData:res
+            })
+        })
     };
     handleCancel = () =>{
         this.setState({
@@ -38,19 +79,20 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         var data = {
-            dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,
-            mn:this.state.metal.includes("Mn")?1:null,co:this.state.metal.includes("Co")?1:null,ni:this.state.metal.includes("Ni")?1:null
+            code:this.props.code,dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,
+            mn:this.state.metal.includes("Mn")?1:0,co:this.state.metal.includes("Co")?1:0,ni:this.state.metal.includes("Ni")?1:0
         };
         // console.log(data)
         axios({
-            url:`${this.url.precursorMaterialDetails.add}`,
-            method:"post",
+            url:`${this.url.precursorMaterialDetails.update}`,
+            method:"put",
             headers:{
                 'Authorization':this.url.Authorization
             },
             data:data
         }).then((data)=>{
-            message.info("新增成功");
+            // console.log(data)
+            message.info(data.data.message);
             this.props.fetch();
             this.setState({
                 visible:false,
@@ -61,6 +103,8 @@ class AddModal extends React.Component{
                 processData:[],
                 metal:["Mn","Co","Ni"]
             })
+        }).catch((error)=>{
+            message.info(error.data)
         })
     }
     onChange = (data)=>{
@@ -115,13 +159,13 @@ class AddModal extends React.Component{
         // const defaultCheckList = ["Ni","Co","Mn"]
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className="blue" onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    title="新增"
+                    title="编辑"
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
