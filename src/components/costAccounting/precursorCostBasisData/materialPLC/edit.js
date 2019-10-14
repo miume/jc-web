@@ -44,6 +44,22 @@ class AddModal extends React.Component{
                 plcAddress:res
             })
         })
+        axios({
+            url:`${this.url.matPlcMap.getRecordById}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:this.props.code}
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res)
+            this.setState({
+                visible:true,
+                materialCode:res.materialId,
+                plcCode:res.plcId
+            })
+        })
         this.setState({ visible: true });
     };
     handleCancel = () =>{
@@ -56,17 +72,17 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
-        var data = {materialCode:this.state.materialCode,plcCode:this.state.plcCode};
+        var data = {code:this.props.code,materialCode:this.state.materialCode,plcCode:this.state.plcCode};
         // console.log(data)
         axios({
             url:`${this.url.matPlcMap.matPlcMap}`,
-            method:"post",
+            method:"put",
             headers:{
                 'Authorization':this.url.Authorization
             },
             data:data
         }).then((data)=>{
-            message.info("新增成功");
+            message.info("编辑成功");
             this.props.fetch();
             this.setState({
                 visible:false,
@@ -92,13 +108,13 @@ class AddModal extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className="blue" onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    title="新增"
+                    title="编辑"
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,

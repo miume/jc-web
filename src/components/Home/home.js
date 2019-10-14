@@ -457,6 +457,77 @@ class Home extends Component {
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
                 updateState:`${server}/jc/common/productionBatchRule/UpdateState`
             },
+
+            /**统计周期 */
+            staticPeriod:{
+                add:`${server}/jc/common/precursorBasicDataStatPeriod/add`,
+                all:`${server}/jc/common/precursorBasicDataStatPeriod/all`,
+                delete:`${server}/jc/common/precursorBasicDataStatPeriod/delete`,
+                page:`${server}/jc/common/precursorBasicDataStatPeriod/page`,
+                update:`${server}/jc/common/precursorBasicDataStatPeriod/update`,
+                getRecordById:`${server}/jc/common/precursorBasicDataStatPeriod/getRecordById`
+            },
+            /**生产线 */
+            precursorProductionLine:{
+                add:`${server}/jc/common/precursorProductionLine/add`,
+                all:`${server}/jc/common/precursorProductionLine/all`,
+                delete:`${server}/jc/common/precursorProductionLine/delete`,
+                page:`${server}/jc/common/precursorProductionLine/page`,
+                update:`${server}/jc/common/precursorProductionLine/update`,
+                getRecordById:`${server}/jc/common/precursorProductionLine/getRecordById`
+            },
+            /**工序名称 */
+            precursorProcessType:{
+                add:`${server}/jc/common/precursorProcessType/add`,
+                all:`${server}/jc/common/precursorProcessType/all`,
+                delete:`${server}/jc/common/precursorProcessType/delete`,
+                page:`${server}/jc/common/precursorProcessType/page`,
+                update:`${server}/jc/common/precursorProcessType/update`
+            },
+            /**物料产线权重分配 */
+            precursorMaterialLineWeight:{
+                add:`${server}/jc/common/precursorMaterialLineWeight/add`,
+                delete:`${server}/jc/common/precursorMaterialLineWeight/delete`,
+                ids:`${server}/jc/common/precursorMaterialLineWeight/ids`,
+                page:`${server}/jc/common/precursorMaterialLineWeight/page`,
+                update:`${server}/jc/common/precursorMaterialLineWeight/update`
+            },
+            /**物料名称 */
+            precursorMaterialDetails:{
+                add:`${server}/jc/common/precursorMaterialDetails/add`,
+                delete:`${server}/jc/common/precursorMaterialDetails/delete`,
+                ids:`${server}/jc/common/precursorMaterialDetails/ids`,
+                page:`${server}/jc/common/precursorMaterialDetails/page`,
+                update:`${server}/jc/common/precursorMaterialDetails/update`,
+                getProcess:`${server}/jc/common/precursorMaterialDetails/getProcess`,
+                getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`
+            },
+            /**物料plc映射 */
+            matPlcMap:{
+                matPlcMap:`${server}/jc/common/matPlcMap`,
+                ids:`${server}/jc/common/matPlcMap/ids`,
+                page:`${server}/jc/common/matPlcMap/page`,
+                getRecordById:`${server}/jc/common/matPlcMap/getRecordById`
+            },
+            /**PLC地址 */
+            plcAddress:{
+                plcAddress:`${server}/jc/common/plcAddress`,
+                ids:`${server}/jc/common/plcAddress/ids`,
+                getRecordById:`${server}/jc/common/plcAddress/getRecordById`
+            },
+            /**VGA */
+            vga:{
+                vga:`${server}/jc/common/vga`,
+                ids:`${server}/jc/common/vga/ids`,
+                page:`${server}/jc/common/vga/page`,
+                getRecordById:`${server}/jc/common/vga/getRecordById`
+            },
+            /**VGA权重分配 */
+            vgaMap:{
+                vgaMap:`${server}/jc/common/vgaMap`,
+                ids:`${server}/jc/common/vgaMap/ids`,
+                page:`${server}/jc/common/vgaMap/page`
+            }
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

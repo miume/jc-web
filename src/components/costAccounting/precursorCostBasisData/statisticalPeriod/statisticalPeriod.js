@@ -4,82 +4,19 @@ import { Table,Popconfirm,Divider,message,InputNumber,Input,Form } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddButton from '../../../BlockQuote/newButton';
 import SearchCell from '../../../BlockQuote/search';
-
-const EditableContext = React.createContext();
-
-class EditableCell extends React.Component{
-    getInput = ()=>{
-        if(this.props.inputType === "number"){
-            return <InputNumber />;
-        }
-        return <Input />;
-    };
-
-    renderCell = ({getFieldDecorator})=>{
-        const {
-            editing,
-            dataIndex,
-            title,
-            inputType,
-            record,
-            index,
-            children,
-            ...restProps
-        } = this.props;
-        return (
-            <td {...restProps}>
-                {
-                    editing?(
-                        <Form.Item style={{margin:0}}>
-                            {
-                                getFieldDecorator(dataIndex,{
-                                    rules:[{
-                                        required:true,
-                                        message:`请输入${title}`
-                                    }],
-                                    initialValue:record[dataIndex],
-                                })(this.getInput())
-                            }
-                        </Form.Item>
-                    ):(
-                        children
-                    )
-                }
-            </td>
-        )
-    };
-
-    render(){
-        return <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>
-    }
-}
+import axios from "axios";
+import AddModal from "./addModal";
+import Edit from "./edit"
 
 class statisticalPeriod extends React.Component{
     url
+    operation
     constructor(props){
         super(props)
         this.state = {
-            data:[{
-                key:1,
-                index:1,
-                startTime:1,
-                periodName:"测试周期",
-                defaultTime:7,
-            },{
-                key:2,
-                index:2,
-                startTime:2,
-                periodName:"测试周期",
-                defaultTime:21,
-            },{
-                key:3,
-                index:3,
-                startTime:3,
-                periodName:"测试周期",
-                defaultTime:30,
-            }],
-            editingKey:""
-        }
+            loading:true,
+            data:[],
+        };
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
@@ -92,21 +29,18 @@ class statisticalPeriod extends React.Component{
             key: 'startTime',
             align:'center',
             width: '20%',
-            editable: true,
         },{
             title: '周期名称',
-            dataIndex: 'periodName',
-            key: 'periodName',
+            dataIndex: 'name',
+            key: 'name',
             align:'center',
             width: '20%',
-            editable: true,
         },{
             title: '默认时长(天)',
-            dataIndex: 'defaultTime',
-            key: 'defaultTime',
+            dataIndex: 'length',
+            key: 'length',
             align:'center',
             width: '20%',
-            editable: true,
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -114,140 +48,76 @@ class statisticalPeriod extends React.Component{
             align:'center',
             width: '20%',
             render:(text,record)=>{
-                const editable = this.isEditing(record)
                 return (
                     <span>
-                        <span>
-                            {editable ? (
-                                <span>
-                                    <EditableContext.Consumer>
-                                        {
-                                            form=>(
-                                                <a 
-                                                    onClick={()=>this.save(form,record.key)}
-                                                    style={{marginRight:8}}
-                                                >
-                                                保存
-                                                </a>
-                                            )
-                                        }
-                                    </EditableContext.Consumer>
-                                    <Popconfirm title="确定取消?" onConfirm={()=>this.cancel(record.key)}>
-                                        <a>取消</a>
-                                    </Popconfirm>
-                                </span>
-                            ):(
-                                <span className='blue' onClick={() => this.edit(record.index)}>编辑</span>
-                            )
-                            
-                            }
-                        </span>
+                        <Edit code={record.code} fetch={this.fetch}/>
                         <Divider type="vertical" />
-                        <span className="blue" onClick={this.delete.bind(this,record)}>删除</span>
+                        <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
+                            <span className="blue" href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
         }]
     }
-    isEditing = record=>record.index === this.state.editingKey;
 
-    cancel = () =>{
-        this.setState({
-            editingKey:""
-        })
-    }
-    save = (form,key) =>{
-        form.validateFields((error,row)=>{
-            if(error){
-                return;
-            }
-            const newData = [...this.state.data];
-            const index = newData.findIndex(item=>key===item.key);
-            if(index >-1){
-                const item = newData[index];
-                newData.splice(index,1,{
-                    ...item,
-                    ...row,
-                });
-                this.setState({
-                    data:newData,
-                    editingKey:""
-                });
-            }else{
-                newData.push(row);
-                this.setState({
-                    data:newData,
-                    editingKey:""
-                });
-            }
+    handleDelete = (id)=>{
+        // console.log(id)
+        axios({
+            url:`${this.url.staticPeriod.delete}`,
+            method:"delete",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:id}
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data)
         });
     }
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+    }
 
-    edit=(key)=>{
-        this.setState({
-            editingKey:key
-        })
+    componentDidMount(){
+        this.fetch();
     }
-    delete = (record)=>{
-        // console.log(record)
-        var data = this.state.data;
-        data.splice(record.index-1,1);
-        this.setState({
-            data:data
-        })
-    }
-    edit=(key)=>{
-        this.setState({
-            editingKey:key
-        })
-    }
-    add = ()=>{
-        var data = this.state.data;
-        var len = data.length;
-        data.push({
-                key:len+1,
-                index:len+1,
-                startTime:1,
-                periodName:"测试周期",
-                defaultTime:7,
-        });
-        this.setState({
-            data:data
+
+    fetch = ()=>{
+        axios({
+            url:`${this.url.staticPeriod.all}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res
+                })
+            }
         })
     }
     render(){
-        const components = {
-            body:{
-                cell:EditableCell,
-            }
-        };
-        const columns = this.columns.map(col=>{
-            if(!col.editable){
-                return col;
-            }
-            return {
-                ...col,
-                onCell:record=>({
-                    record,
-                    inputType:col.dataIndex === "defaultTime"?"number":"text",
-                    dataIndex:col.dataIndex,
-                    title:col.title,
-                    editing:this.isEditing(record),
-                }),
-            };
-        });
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddButton key="submit" handleClick={this.add} name='新增周期' className='fa fa-plus' />
-                    <SearchCell flag={true}/>
+                    <AddModal fetch = {this.fetch}/>
+                    {/* <SearchCell flag={true}/> */}
                     <div className='clear' ></div>
-                    <EditableContext.Provider value={this.props.form}>
-                        <Table components={components} columns={columns} rowSelection={{}} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
-                    </EditableContext.Provider>
+                    <Table columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered/>
                 </div>
             </div>
         )

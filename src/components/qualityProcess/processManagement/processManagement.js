@@ -93,7 +93,6 @@ class Management extends React.Component{
                         {record.commonBatchNumber.status === -1?<Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.commonBatchNumber.id)} okText="确定" cancelText="取消" >
                             <span className={this.judgeOperation(this.operation,'DELETE')?'blue':'hide'} href="#">删除</span>
                         </Popconfirm>:<span className={this.judgeOperation(this.operation,'DELETE')?'notClick':'hide'}>删除</span>}
-
                     </span>
                 );
             }
@@ -174,31 +173,31 @@ class Management extends React.Component{
         this.setState({searchContent:value});
     }
     searchEvent(){
-    const ope_name = this.state.searchContent;
-    axios({
-        url:`${this.url.processManagement.getAllByPage}`,
-        method:'get',
-        headers:{
-            'Authorization':this.Authorization
-        },
-        params:{
-            size: this.pagination.pageSize,
-            page: this.pagination.current,
-            taskName:ope_name
-        },
-        type:'json',
-    }).then((data)=>{
-        const res = data.data.data;
-        if(res&&res.list){
-            this.pagination.total=res.total;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
+        const ope_name = this.state.searchContent;
+        axios({
+            url:`${this.url.processManagement.getAllByPage}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                size: this.pagination.pageSize,
+                page: this.pagination.current,
+                taskName:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            const res = data.data.data;
+            if(res&&res.list){
+                this.pagination.total=res.total;
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.prePage)*10+i;
+                }
+                this.setState({
+                    dataSource: res.list,
+                });
             }
-            this.setState({
-                dataSource: res.list,
-            });
-        }
-    })
+        })
     };
     handleReset = clearFilters => () => {
         clearFilters();

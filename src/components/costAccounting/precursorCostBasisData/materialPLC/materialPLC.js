@@ -5,6 +5,8 @@ import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
+import axios from "axios";
+import Edit from "./edit"
 
 class MaterialPLC extends React.Component{
     url;
@@ -12,20 +14,16 @@ class MaterialPLC extends React.Component{
         super(props);
         this.state={
             visible:false,
-            data:[{
-                index:1,
-                name:"701#合成槽",
-                PLCaddress:"plc地址"
-            },{
-                index:2,
-                name:"701#合成槽",
-                PLCaddress:"plc地址1"
-            },{
-                index:3,
-                name:"701#合成槽",
-                PLCaddress:"plc地址2"
-            }]
-        }
+            data:[],
+            selectedRowKeys: [],
+            loading:true,
+            searchContent:'',
+        };
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.cancel=this.cancel.bind(this);
+        this.start=this.start.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -41,14 +39,14 @@ class MaterialPLC extends React.Component{
             width: '20%',
         },{
             title: '物料名称',
-            dataIndex: 'name',
-            key: 'name',
+            dataIndex: 'material',
+            key: 'material',
             align:'center',
             width: '30%',
         },{
             title: 'PLC地址表',
-            dataIndex: 'PLCaddress',
-            key: 'PLCaddress',
+            dataIndex: 'plcAddress',
+            key: 'plcAddress',
             align:'center',
             width: '30%',
         },{
@@ -60,28 +58,172 @@ class MaterialPLC extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className="blue">编辑</span>
+                        <Edit fetch={this.fetch} code={record.code}/>
                         <Divider type="vertical"/>
-                        <span className="blue">删除</span>
+                        <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
+                            <span className="blue" href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
         }]
+    };
+
+    handleDelete = (id)=>{
+        // console.log(id)
+        axios({
+            url:`${this.url.matPlcMap.matPlcMap}`,
+            method:"delete",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:id}
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+    };
+    start = () => {
+        const ids = this.state.selectedRowKeys;
+        // console.log(ids)
+        axios({
+            url:`${this.url.matPlcMap.ids}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            // console.log(data);
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+            message.info(data.data.message);
+            // if((this.pagination.total-1)%10===0){
+            //     this.pagination.current = this.pagination.current-1
+            // }
+            // this.handleTableChange(this.pagination);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data);
+        })
+    };
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
     }
+
+    componentDidMount(){
+        this.fetch();
+    }
+    fetch = ()=>{
+        axios({
+            url:`${this.url.matPlcMap.page}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            // console.log(data)
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res,
+                    searchContent:'',
+                })
+            }
+        })
+    }
+     /**实现全选 */
+    onSelectChange(selectedRowKeys) {
+        //   console.log(selectedRowKeys)
+        this.setState({ selectedRowKeys:selectedRowKeys });
+    }
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    };
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        axios({
+            url:`${this.url.matPlcMap.page}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                // size: this.pagination.pageSize,
+                // page: this.pagination.current,
+                condition:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            // const res = data.data.data;
+            // if(res&&res.list){
+            //     this.pagination.total=res.total;
+            //     for(var i = 1; i<=res.list.length; i++){
+            //         res.list[i-1]['index']=(res.prePage)*10+i;
+            //     }
+            //     this.setState({
+            //         dataSource: res.list,
+            //     });
+            // }
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res
+                })
+            }
+        })
+    };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
+        const {  selectedRowKeys } = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+            onSelect() {},
+            onSelectAll() {},
+            // getCheckboxProps: record => ({
+            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
+            //   }),
+          };
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <div style={{padding:'15px'}}>
-                    <AddModal />
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
-                        selectedRowKeys = {[1]}
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        deleteByIds={this.start}
+                        cancel={this.cancel}
+                        flag={true}
                     />
-                    <SearchCell flag={true}/>
+                    <SearchCell name='请输入物料名称/PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={{}} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </div>
             </div>
         )

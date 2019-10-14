@@ -35,5 +35,8 @@
     padding-left: 7px;
     margin-left: 20px;
     margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
     /* margin-top: 10px; */
 }

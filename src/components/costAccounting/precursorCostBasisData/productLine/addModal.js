@@ -1,17 +1,20 @@
 import React from "react";
-import { Button, Modal,Select,Form, Input,message,Icon } from 'antd';
+import { Button, Modal,Select,Form, Input,message,Icon,TimePicker } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
+import moment from 'moment';
 
+
+// const format = 'HH:mm';
 class AddModal extends React.Component{
     url;
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
             visible:false,
-            data:null,
+            name:null,
         }
     }
     showModal = () => {
@@ -20,32 +23,32 @@ class AddModal extends React.Component{
     handleCancel = () =>{
         this.setState({
             visible:false,
-            data:null,
+            name:null,
         })
-    }
+    };
     handleCreate = () =>{
-        var data = {vgaName:this.state.data};
+        var data = {name:this.state.name};
         // console.log(data)
         axios({
-            url:`${this.url.vga.vga}`,
+            url:`${this.url.precursorProductionLine.add}`,
             method:"post",
             headers:{
                 'Authorization':this.url.Authorization
             },
             data:data
         }).then((data)=>{
+            // console.log(data)
             message.info("新增成功");
             this.props.fetch();
             this.setState({
                 visible:false,
-                data:null,
+                name:null,
             })
         })
-        
     }
     change = (data)=>{
         this.setState({
-            data:data.target.value
+            name:data.target.value
         })
     }
     render(){
@@ -65,7 +68,7 @@ class AddModal extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    <Input id="name" onChange={this.change} value={this.state.data} placeholder="请输入vga点名称"/>
+                    <Input id="name" onChange={this.change} value={this.state.name} placeholder="请输入生产线名称"/>
                 </Modal>
             </span>
         )

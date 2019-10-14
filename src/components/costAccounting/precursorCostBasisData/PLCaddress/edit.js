@@ -5,18 +5,33 @@ import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 
-class AddModal extends React.Component{
+class Edit extends React.Component{
     url;
     constructor(props){
         super(props);
-        this.state={
+        this.state = {
             visible:false,
             data:null,
             description:null
         }
     }
-    showModal = () => {
-        this.setState({ visible: true });
+    showModal = () =>{
+        axios({
+            url:`${this.url.plcAddress.getRecordById}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:this.props.code}
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res)
+            this.setState({
+                visible:true,
+                data:res.address,
+                description:res.description
+            })
+        })
     };
     handleCancel = () =>{
         this.setState({
@@ -24,19 +39,29 @@ class AddModal extends React.Component{
             data:null,
             description:null
         })
-    }
+    };
+    change = (data) =>{
+        this.setState({
+            data:data.target.value
+        })
+    };
+    description = (data) =>{
+        this.setState({
+            description:data.target.value
+        })
+    };
     handleCreate = () =>{
-        var data = {address:this.state.data,description:this.state.description};
+        var data = {code:this.props.code,address:this.state.data,description:this.state.description};
         // console.log(data)
         axios({
             url:`${this.url.plcAddress.plcAddress}`,
-            method:"post",
+            method:"put",
             headers:{
                 'Authorization':this.url.Authorization
             },
             data:data
         }).then((data)=>{
-            message.info("新增成功");
+            message.info("编辑成功");
             this.props.fetch();
             this.setState({
                 visible:false,
@@ -44,29 +69,16 @@ class AddModal extends React.Component{
                 description:null
             })
         })
-        
-    }
-    change = (data)=>{
-        this.setState({
-            data:data.target.value
-        })
-    }
-    description = (data)=>{
-        this.setState({
-            description:data.target.value
-        })
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className="blue" onClick={this.showModal}>编辑</span>
                 <Modal
-                    visible={this.state.visible}
-                    closable={false}
-                    centered={true}
+                    title='编辑' visible={this.state.visible}
+                    closable={false} centered={true}
                     maskClosable={false}
-                    title="新增"
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
@@ -82,4 +94,4 @@ class AddModal extends React.Component{
     }
 }
 
-export default AddModal
+export default Edit
