@@ -143,9 +143,10 @@
     height: 35px;
     border-radius: 3px;
     line-height:35px;
-    /* padding-left: 7px; */
     display:inline-block;
-    width: 128px;
-    margin-left: 10px;
-    margin-top: -6.5px
+    width: 20%;
+    margin-left: 20px;
+    margin-top: -6.5px;
+    margin-bottom: 12px;
+    vertical-align:text-bottom
 }

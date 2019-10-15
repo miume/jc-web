@@ -5,6 +5,8 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import moment from "moment";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
+import PictureUp from './upload';
+import Tr from './editTr';
 
 const timeFormat = "YYYY-MM-DD"
 
@@ -52,7 +54,7 @@ class Edit extends React.Component{
         })
     };
 
-    onChange = (e)=>{
+    onChange = (e) => {
         this.setState({
             radioValue:e.target.value
         })
@@ -62,14 +64,14 @@ class Edit extends React.Component{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat(++this.state.deviceSpotcheckModelsDetails.length-1);
-        // this.state['fileList'+`${id}`] = []
+        this.state['fileList'+`${this.state.deviceSpotcheckModelsDetails.length-1}`] = [];
+        // console.log(this.state);
         form.setFieldsValue({
             keys: nextKeys,
         });
     };
 
     fetch = (id) => {
-        // console.log(id)
         axios({
             url:`${this.url.deviceSpot.checkDetail}`,
             method:"GET",
@@ -78,10 +80,9 @@ class Edit extends React.Component{
                 'Authorization':this.url.Authorization
             },
         }).then((data) => {
-            // console.log(data)
             const res = data.data.data;
-            // console.log(res)
             if(res){
+                const content = res.deviceSpotcheckModelsDetails
                 this.setState({
                     data : res,
                     // effectDate:res.deviceSpotcheckModelsHead.effectDate,
@@ -91,11 +92,47 @@ class Edit extends React.Component{
                     deviceSpotcheckModelsDetails:res.deviceSpotcheckModelsDetails,
                     date:res.deviceSpotcheckModelsHead.modelName.toString()
                 })
+                for(var i=0;i<content.length;i++){
+                    var fileList = `fileList${i}`
+                    let data = [{response:{}}]
+                    data[0].uid = content[i].spotcheckAddress
+                    data[0].url = `http://47.107.237.60:3389/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
+                    data[0].name = content[i].spotcheckAddress
+                    data[0].response.data = content[i].spotcheckAddress
+                    this.setState({
+                        [fileList]:data,
+                    })
+                }
+                // console.log(this.state);
             }
         }).catch((err)=>{
             console.log(err)
         })
     }
+
+    // getPic = (id) => {
+    //     // console.log(id)
+    //     axios({
+    //         url:`${this.url.deviceSpot.checkDetail}`,
+    //         method:"GET",
+    //         params:{id:id},
+    //         headers:{
+    //             'Authorization':this.url.Authorization
+    //         },
+    //     }).then((data) => {
+    //         // console.log(data)
+    //         const res = data.data.data;
+    //         // console.log(res)
+    //         if(res){
+    //             for(var i=0;i<res.length;i++){
+    //                 this.state[`fileList${i}`] = [res.deviceSpotcheckModelsDetails.spotcheckAddress]
+    //             }
+    //             // console.log(this.state)
+    //         }
+    //     }).catch((err)=>{
+    //         console.log(err)
+    //     })
+    // }
 
     onChangeTime = (date) =>{
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
@@ -105,7 +142,8 @@ class Edit extends React.Component{
         // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
     }
     showModal = () => {
-        this.fetch(this.props.code)
+        this.fetch(this.props.code);
+        // this.getPic(this.props.code);
         this.setState({ visible: true });
     };
 
@@ -140,7 +178,8 @@ class Edit extends React.Component{
                 deviceSpotcheckModelsDetails.push({})
             }
             for(var i=0;i<values.keys.length;i++){
-                deviceSpotcheckModelsDetails[i]["spotcheckAddress"] = values.address[values.keys[i]];
+                let file = `fileList${values.keys[i]}`
+                deviceSpotcheckModelsDetails[i]["spotcheckAddress"] = this.state[file].length === 0 ? null :this.state[file][0].response.data
                 deviceSpotcheckModelsDetails[i]["spotcheckContent"] = values.content[values.keys[i]];
                 deviceSpotcheckModelsDetails[i]["spotcheckItems"] = values.standard[values.keys[i]];
                 deviceSpotcheckModelsDetails[i]["spotcheckPeriod"] = values.frequency[values.keys[i]];
@@ -176,13 +215,13 @@ class Edit extends React.Component{
             })
         })
     }
+    handleChange = (fileList,k) =>{
+        this.setState({
+            [fileList]:k.fileList
+        })
+    }
 
     render(){
-        const { getFieldDecorator, getFieldValue } = this.props.form;
-        var array = [];
-        for(var i=0;i<this.state.deviceSpotcheckModelsDetails.length;i++){
-            array.push(i);
-        }
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
         const formItemLayoutWithOutLabel = {
@@ -191,66 +230,6 @@ class Edit extends React.Component{
                 sm: { span: 20, offset: 4 },
             },
         };
-        getFieldDecorator('keys', { initialValue: array });
-        const keys = getFieldValue('keys');
-        const formItems = keys.map((k,index)=>(
-            <div key={index}>
-                <div style={{display:"flex",justifyContent:"space-between"}}>
-                <Form.Item>
-                    {getFieldDecorator(`content[${k}]`,{
-                        validateTrigger: ['onChange', 'onBlur'],
-                        initialValue:this.state.deviceSpotcheckModelsDetails[k]?this.state.deviceSpotcheckModelsDetails[k].spotcheckContent:undefined
-                    })(
-                        <Input placeholder='请输入项目名称' style={{width:'150px'}}/>
-                    )}
-                </Form.Item>
-
-                <Form.Item>
-                    {getFieldDecorator(`standard[${k}]`,{
-                        validateTrigger: ['onChange', 'onBlur'],
-                        initialValue:this.state.deviceSpotcheckModelsDetails[k]?this.state.deviceSpotcheckModelsDetails[k].spotcheckItems:undefined
-                    })(
-                        <Input placeholder='请输入点检标准' style={{width:'150px'}}/>
-                    )}
-                </Form.Item>
-
-                <Form.Item>
-                    {getFieldDecorator(`frequency[${k}]`,{
-                        validateTrigger: ['onChange', 'onBlur'],
-                        initialValue:this.state.deviceSpotcheckModelsDetails[k]?this.state.deviceSpotcheckModelsDetails[k].spotcheckPeriod:undefined
-                    })(
-                        <Input placeholder='请输入点检周期' style={{width:'150px'}}/>
-                    )}
-                </Form.Item>
-
-                {/* <Form.Item style={{marginRight: 4 }}>
-                    {
-                        <Upload />
-                    }
-                </Form.Item> */}
-
-                <Form.Item>
-                    {getFieldDecorator(`address[${k}]`,{
-                        validateTrigger: ['onChange', 'onBlur'],
-                        initialValue:this.state.deviceSpotcheckModelsDetails[k]?this.state.deviceSpotcheckModelsDetails[k].spotcheckAddress:undefined
-                    })(
-                        <Input placeholder='图片' style={{width:'150px'}}/>
-                    )}
-                </Form.Item>
-
-                <Form.Item>
-                {keys.length > 1 ? (
-                    <Icon
-                        className="dynamic-delete-button"
-                        type="minus-circle-o"
-                        disabled={keys.length === 1}
-                        onClick={() => this.remove(k)}
-                    />
-                ) : null}
-                </Form.Item>
-                </div>
-            </div>
-        ))
         return(
             <span>
                 <span onClick={this.showModal} className="blue">编辑</span>
@@ -278,7 +257,7 @@ class Edit extends React.Component{
                             </div>
                         <Divider />
                         <div id="edit" style={{height:'360px'}}>
-                            {formItems}
+                            <Tr form={this.props.form} deviceSpotcheckModelsDetails={this.state.deviceSpotcheckModelsDetails} state = {this.state} handleChange={this.handleChange} remove={this.remove}/>
                             <Form.Item {...formItemLayoutWithOutLabel}>
                                 <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
                                 <Icon type="plus" /> 添加一行

@@ -7,6 +7,7 @@ import SaveButton from "../../../BlockQuote/saveButton";
 import "./checkTemplate.css";
 import moment from "moment";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
+import PictureUp from './upload';
 
 let id = 0;
 
@@ -19,6 +20,7 @@ class AddBut extends React.Component{
             visible:false,
             radioValue:false,
             date:"",
+            fileList0:[],
         }
 
     };
@@ -56,7 +58,7 @@ class AddBut extends React.Component{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
         const nextKeys = keys.concat(++id);
-        // this.state['fileList'+`${id}`] = []
+        this.state['fileList'+`${id}`] = [];
         form.setFieldsValue({
             keys: nextKeys,
         });
@@ -78,8 +80,22 @@ class AddBut extends React.Component{
         this.setState({ visible: true });
     };
 
+    handleChange = (fileList,k) =>{
+        // console.log(k.fileList)
+        this.setState({
+            [fileList]:k.fileList
+        })
+    }
+
     handleCancel = () => {
     // const form = this.formRef.props.form;
+    const keys = this.props.form.getFieldValue('keys');
+    for(var i =0;i<keys.length;i++){
+        let file = `fileList${keys[i]}`
+        this.setState({
+            [file]:[]
+        })
+    };
     this.props.form.resetFields();
     this.setState({ visible: false });
     // this.props.form.resetFields();
@@ -107,7 +123,8 @@ class AddBut extends React.Component{
                 deviceSpotcheckModelsDetails.push({})
             }
             for(var i=0;i<values.keys.length;i++){
-                deviceSpotcheckModelsDetails[i]["spotcheckAddress"] = values.address[values.keys[i]];
+                let file = `fileList${values.keys[i]}`
+                deviceSpotcheckModelsDetails[i]["spotcheckAddress"] = this.state[file].length === 0 ? null :this.state[file][0].response.data
                 deviceSpotcheckModelsDetails[i]["spotcheckContent"] = values.content[values.keys[i]];
                 deviceSpotcheckModelsDetails[i]["spotcheckItems"] = values.standard[values.keys[i]];
                 deviceSpotcheckModelsDetails[i]["spotcheckPeriod"] = values.frequency[values.keys[i]];
@@ -140,6 +157,13 @@ class AddBut extends React.Component{
                         deviceName:this.props.deviceName,
                         deptId:this.props.deptCode,
                     });
+                    const keys = this.props.form.getFieldValue('keys');
+                    for(var i =0;i<keys.length;i++){
+                        let file = `fileList${keys[i]}`
+                        this.setState({
+                            [file]:[]
+                        })
+                    };
                     this.props.form.resetFields();
                     this.setState({ visible: false});
                 }
@@ -193,12 +217,10 @@ class AddBut extends React.Component{
                     }
                 </Form.Item> */}
 
-                <Form.Item label="图片">
-                    {getFieldDecorator(`address[${k}]`,{
-                        validateTrigger: ['onChange', 'onBlur'],
-                    })(
-                        <Input placeholder='图片' style={{width:'150px'}}/>
-                    )}
+                <Form.Item style={{marginRight: 4 }}>
+                    {
+                        <PictureUp k={k} handleChange={this.handleChange} fileList={this.state[`fileList${k}`]}/>
+                    }
                 </Form.Item>
 
                 <Form.Item>
