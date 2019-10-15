@@ -1,6 +1,6 @@
 import React from 'react';
 import 'moment/locale/zh-cn';
-import {Button, Modal, message, Table,} from 'antd';
+import {Button, Modal, Table,} from 'antd';
 import "../batchSearch/batchSearch.css"
 import "./batchinfo.css"
 import CancleButton from "../../BlockQuote/cancleButton";
@@ -20,15 +20,19 @@ export default class PreviewBatch extends React.Component{
         }
     }
     showModal=()=>{
-        if(this.props.ifClick==='1'){
-            this.setState({
-                visible:true,
-                dataSource:datas,
-            })
-        }
-        else{
-            message.info(this.props.ifClick)
-        }
+        this.setState({
+            visible:true,
+            dataSource:datas,
+        })
+        // if(this.props.ifClick==='1'){
+        //     this.setState({
+        //         visible:true,
+        //         dataSource:datas,
+        //     })
+        // }
+        // else{
+        //     message.info(this.props.ifClick)
+        // }
     }
     handleCancel=()=>{
         this.setState({visible:false})

@@ -1,6 +1,5 @@
 import React from 'react';
-import {Table, Icon, Divider, message} from 'antd';
-import axios from "axios";
+import {Table} from 'antd';
 import Details from "./detail";
 import '../acceptOrders.css'
 
@@ -86,6 +85,7 @@ class TheTable extends React.Component {
         return (
             <div>
                 <Table
+                    rowKey={item => item.code}
                     dataSource={this.props.rightTableData}
                     pagination={this.props.pagination}
                     onChange={this.props.handleTableChange}

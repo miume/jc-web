@@ -18,7 +18,7 @@ class DepTree extends React.Component{
     }
     render() {
         return(
-            <Spin spinning={this.state.loading} className="lB-left">
+            <Spin spinning={this.state.loading}>
                 <TreeCard
                     getParams={this.getParams}
                     getTableData={this.props.getTableData}

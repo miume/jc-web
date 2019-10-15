@@ -1,13 +1,12 @@
 .eqMaintenance-DE-demo{
-    display: flex;                /*设置为flex布局*/
-    width: 100%;
+    padding: 15px;
+    height: 78vh;
+    display: flex;
 }
 .eqMaintenance-DE-left{
-    margin-left:15px;
     width: 20%;
-    height: 525px;
-    overflow-x:hidden;
-    overflow-y:auto;
+    height: 100%;
+    overflow:auto;
     border:1px solid #F5f5f5;
 }
 .eqMaintenance-DE-right{

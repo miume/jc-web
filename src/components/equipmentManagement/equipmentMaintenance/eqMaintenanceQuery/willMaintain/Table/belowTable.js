@@ -5,14 +5,20 @@ import '../willMaintain.css';
 //用于编写表格的显示样式
 
 class BelowTable extends React.Component {
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
+
     constructor(props) {
         super(props)
     }
     columns = [
         {
             title: '序号',
-            dataIndex: 'code',
-            key: 'code',
+            dataIndex: 'index',
+            key: 'index',
             width: '2px',
             align:'center',
         },
@@ -34,13 +40,15 @@ class BelowTable extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style = {{height:'200px'}}>
                 <Table
+                    rowKey={item => item.code}
                     dataSource={this.props.newRowData}
                     columns={this.columns}
                     size="small"
                     pagination={false}
                     bordered
+                    scroll={150}
                 />
             </div>);
     }

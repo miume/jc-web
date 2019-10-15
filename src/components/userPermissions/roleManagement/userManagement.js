@@ -66,7 +66,6 @@ class UserManagement extends React.Component {
         visible: true
       });
       this.getAssignedUsersByRoleId();
-    //   console.log(this.state.value)
     }
     /**确定给选中用户分配当前角色 */
     handleOk() {
@@ -99,12 +98,10 @@ class UserManagement extends React.Component {
     handleUnsignedInputChange(event){
         const target = event.target;
         const value =  target.value;
-        //console.log(value)
         if(target.checked === true )
             this.state.unsignedCheckIds.push(parseInt(value));
         else
             this.state.unsignedCheckIds.splice(this.state.unsignedCheckIds.findIndex(v => v=value),1);
-        // console.log(this.state.unsignedCheckIds)
     }
     handleAssignedInputChange(event){
         const target = event.target;
@@ -122,10 +119,8 @@ class UserManagement extends React.Component {
         else{
             let newState = {...this.state};
             let ids = newState.unsignedCheckIds;
-            // console.log(ids)
             ids.forEach(value => {
                 let changeRoles = newState.unsignedRole.find(v => v.id === value );
-                // console.log(changeRoles)
                 newState.assignedRole.splice(0,0,changeRoles)
                 newState.unsignedRole.splice(newState.unsignedRole.findIndex(v => v.id === changeRoles.id), 1)
             })
@@ -167,9 +162,6 @@ class UserManagement extends React.Component {
                 <header style={{width:"40%",marginRight:'19%'}}>
                     <li className="theHead">未被分配用户</li>
                 </header>
-                {/* <header style={{width:"19%"}}>
-                    <li className="theHead">操作</li>
-                </header> */}
                 <header style={{width:"40%"}}>
                     <li className="theHead">已被分配用户</li>
                 </header>

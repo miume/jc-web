@@ -28,6 +28,7 @@ class LocationBasic extends React.Component{
             pageChangeFlag : 0,   //0表示分页 1 表示查询
             deptCode:2,
             deptName:'',
+            loading: true,
             tableLoading: true
         };
 
@@ -57,16 +58,17 @@ class LocationBasic extends React.Component{
 
             <div>
                 <Blockquote menu={current.menuParent} name="位置基础信息"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div style={{padding: '15px'}} className="lB">
+                <div  className='equipment'>
                     {/*左边树部分*/}
-                    <div className="lB-left">
-                            <DepTree
-                                url={this.url}
-                                getTableData={this.getTableData}
-                            />
+                    <div  className="equipment-left">
+                        <DepTree
+                            key="depTree"
+                            url={this.url}
+                            getTableData={this.getTableData}
+                        />
                     </div>
                     {/*右边表格部分*/}
-                    <Spin spinning={this.state.tableLoading} wrapperClassName='lB-right'>
+                    <Spin spinning={this.state.tableLoading} wrapperClassName='equipment-right'>
                         <AddModal
                             deptName={this.state.deptName}
                             deptCode={this.state.deptCode}

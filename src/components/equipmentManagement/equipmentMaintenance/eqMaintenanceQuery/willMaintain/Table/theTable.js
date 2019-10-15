@@ -8,6 +8,12 @@ import '../willMaintain.css'
 //用于编写表格的显示样式
 
 class TheTable extends React.Component {
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
+
     constructor(props) {
         super(props)
         this.state={
@@ -79,6 +85,7 @@ class TheTable extends React.Component {
         return (
             <div style={{width:'100%'}}>
                 <Table
+                    rowKey={item => item.code}
                     dataSource={this.props.rightTableData}
                     pagination={this.props.pagination}
                     onChange={this.props.handleTableChange}
@@ -96,18 +103,15 @@ class TheTable extends React.Component {
             headers:{
                 'Authorization':this.props.url.Authorization
             },
-
             params:{
                 id:id,
             }
-
         }).then((data)=>{
             message.info(data.data.message);
             this.props.searchReset();//删除后重置信息
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });
-
     }
 
 }

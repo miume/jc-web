@@ -1,11 +1,8 @@
 import React from 'react';
-import {Modal, Input, DatePicker, TreeSelect,message, Table, Radio, InputNumber, Button} from 'antd';
+import {Modal, Input,message, Table, Radio, InputNumber, Button} from 'antd';
 import CancleButton from "../../../../BlockQuote/cancleButton";
 import axios from "axios";
-import moment from 'moment';
-import SaveButton from "../../../../BlockQuote/saveButton";
-const dateFormat = 'YYYY-MM-DD';
-const d2 = [];
+
 class DetailofMain extends React.Component{
     url = JSON.parse(localStorage.getItem('url'));
     ob = JSON.parse(localStorage.getItem('menuList'));
@@ -27,6 +24,7 @@ class DetailofMain extends React.Component{
         detail_head:'',
         deviceMaintenancePlansDetails:'',
     };
+
     handleMaintanceDetail=()=>{
 
         this.setState({detailVisible:true})
@@ -38,13 +36,13 @@ class DetailofMain extends React.Component{
                 },
             }).then((data) => {
             var res = data.data.data ? data.data.data : [];
-            ////console.log('res:',res)
             var detailNum=res.detailNum;
-            ////console.log('detailNum:',detailNum)
             var generateMaint=res.generateMaint;
+            for(let i = 0; i < res.deviceMaintenancePlansDetails.length; i++) {
+                res.deviceMaintenancePlansDetails[i]['index'] = i + 1;
+            }
             var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
             var deviceMaintenancePlansHead=res.deviceMaintenancePlansHead;
-            //////console.log('deviceMaintenancePlansHead',deviceMaintenancePlansHead)
             this.setState({
                 deviceNameAndNum:deviceMaintenancePlansHead.deviceName+'/'+deviceMaintenancePlansHead.fixedassetsCode,
                 PlanName1:deviceMaintenancePlansHead.planName,
@@ -59,22 +57,24 @@ class DetailofMain extends React.Component{
                 generateMaint:generateMaint,
                 detail_head:{deviceMaintenancePlansHead},
             })
-            ////console.log(this.state)
         })
     }
     handleCancel2=()=>{
         this.setState({detailVisible:false})
     }
+
+    /**生成保养单*/
     handleClick=()=>{
+        let {MaintenanceType} = this.state;
         const m=[];
-        for(var i=0;i<this.state.MaintenanceType.length;i++){
+        for(var i=0;i<MaintenanceType.length;i++){
             m.push({
-                code:this.state.MaintenanceType[i].itemsCode,
+                code:MaintenanceType[i].itemsCode,
                 deviceName:this.props.editorRecord.deviceName,
-                maintenanceContent:this.state.MaintenanceType[i].maintenanceContent,
-                maintenanceItems:this.state.MaintenanceType[i].maintenanceItems,
-                optType:this.state.MaintenanceType[i].optType,
-                planCode:this.state.MaintenanceType[i].planCode,
+                maintenanceContent:MaintenanceType[i].maintenanceContent,
+                maintenanceItems:MaintenanceType[i].maintenanceItems,
+                optType:MaintenanceType[i].optType,
+                planCode:MaintenanceType[i].planCode,
             })
         }
 
@@ -83,7 +83,7 @@ class DetailofMain extends React.Component{
             deviceMaintenancePlansHead:this.state.detail_head.deviceMaintenancePlansHead
 
         }
-        ////console.log(dataofmain)
+
         axios({
             url:`${this.props.url.DeviceMaintenancePlan.generatorMaint}`,
             method: 'post',
@@ -105,108 +105,105 @@ class DetailofMain extends React.Component{
 
     render(){
         return(
-
             <span>
                 <span onClick={this.handleMaintanceDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.detailVisible}
-                       width="1010px"
+                       width="1100px"
                        closable={false}
                        centered={true}
                        maskClosable={false}
                        footer={!this.state.generateMaint?[<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />]:
-                       [<CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />,
+                       [
+                           <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel2} />,
                            <Button onClick={this.handleClick} key='planid' className='green-button'><i className="fa fa-floppy-o" aria-hidden="true" style={{color:'white'}}></i>&nbsp;&nbsp;生成保养单</Button>]
                        }
                 >
-                    <div >
-                <div className='Rowofadd'>
-                    <div className='divofadd'>
-                        <b>计划名称</b>
-                        <Input
-                            id='Planname_add'
-                            disabled={true}
-                            placeholder='请输入'
-                            key="PlanName1" name="PlanName1"
-                            value={this.state.PlanName1}
-                        />
+                    <div>
+                    <div className='Rowofadd'>
+                        <div className='divofadd'>
+                            <b className='row-label'>计划名称:</b>
+                            <Input
+                                id='Planname_add'
+                                disabled={true}
+                                placeholder='请输入'
+                                key="PlanName1" name="PlanName1"
+                                value={this.state.PlanName1}
+                            />
+                        </div>
+                        <div className='divofadd'>
+                            <b className='row-label1'>所属部门:</b>
+                            <Input
+                                id='department_add'
+                                key="department"
+                                name="department"
+                                placeholder="请选择"
+                                style={{ width: 200 }}
+                                disabled={true}
+                                value={this.props.depName}
+                            />
+                        </div>
+                        <div className='divofadd'>
+                            <b className='row-label1'>设备名称/编号:</b>
+                            <Input
+                                id='deviceNameAndNum_add'
+                                key="deviceNameAndNum"
+                                name="deviceNameAndNum"
+                                style={{ width: 200 }}
+                                value={this.state.deviceNameAndNum}
+                                disabled={true}
+                            />
+                        </div>
                     </div>
-                    <div className='divofadd1'>
-                        <b>所属部门</b>
-                        <Input
-                            id='department_add'
-                            key="department"
-                            name="department"
-                            placeholder="请选择"
-                            style={{ width: 200 }}
-                            disabled={true}
-                            value={this.props.depName}
-                        />
+                    <div className='Rowofadd'>
+                        <div className='divofadd'>
+                            <b className='row-label'>保养周期:</b>
+                            <InputNumber
+                                id='MaintenancePeriod_add'
+                                style={{width:'200px'}}
+                                key="MaintenancePeriod"
+                                name="MaintenancePeriod"
+                                value={this.state.MaintenancePeriod}
+                                disabled={true}
+                                min={0}
+                            />
+                        </div>
+                        <div className='divofadd'>
+                            <b className='row-label1'>本次计划执行日期:</b>
+                            <Input
+                                id='ImplementDate_add'
+                                disabled={true}
+                                placeholder='请选择日期'
+                                key="ImplementDate" name="ImplementDate"
+                                value={this.state.ImplementDate}
+                            />
+                        </div>
+                        <div className='divofadd'>
+                            <b className='row-label1'>下次计划执行日期:</b>
+                            <div>{this.state.NextPlanDate}</div>
+                        </div>
                     </div>
-                    <div className='divofadd1'>
-                        <b>设备名称/编号</b>
-                        <Input
-                            id='deviceNameAndNum_add'
-                            key="deviceNameAndNum"
-                            name="deviceNameAndNum"
-                            style={{ width: 200 }}
-                            value={this.state.deviceNameAndNum}
-                            disabled={true}
-                        />
+                    <div className='row-table'>
+                            <b className='row-label'>保养项目:</b>
+                            <Table
+                                id='Mainname_add'
+                                rowKey={item => item.code}
+                                columns={this.columns}
+                                dataSource={this.state.MaintenanceType}
+                                size="small"
+                                scroll={{ y: 150 }}
+                                bordered={true}
+                                pagination={false}
+                            />
+                    </div>
+                    <div id='Effective_add' style={{display:'inline',paddingLeft: 10}}>
+                        <b className='row-label'>是否生效:</b>
+                        <Radio.Group disabled={true} value={this.state.Effective}>
+                            <Radio value={0}>生效</Radio>
+                            <Radio value={1}>失效</Radio>
+                        </Radio.Group>
                     </div>
                 </div>
-                <div className='Rowofadd'>
-                    <div className='divofadd'>
-                        <b>保养周期</b>
-                        <InputNumber
-                            id='MaintenancePeriod_add'
-                            style={{width:'200px'}}
-                            key="MaintenancePeriod"
-                            name="MaintenancePeriod"
-                            value={this.state.MaintenancePeriod}
-                            disabled={true}
-                            min={0}
-                        />
-                    </div>
-                    <div className='divofadd'>
-                        <b>本次计划执行日期</b>
-                        <Input
-                            id='ImplementDate_add'
-                            disabled={true}
-                            placeholder='请选择日期'
-                            key="ImplementDate" name="ImplementDate"
-                            value={this.state.ImplementDate}
-                        />
-                    </div>
-                    <div className='divofadd2'>
-                        <h4 id='NextPlanDate_add' key="NextPlanDate" name="NextPlanDate">
-                            <b>下次计划执行日期:</b>&nbsp;&nbsp;{this.state.NextPlanDate}
-                        </h4>
-                    </div>
-                </div>
-                <div className='Rowofadd'>
-                    <div className='divofadd'>
-                        <b>保养项目</b>
-                        <Table
-                            id='Mainname_add'
-                            key="Maintenancetype"
-                            name="Maintenancetype"
-                            columns={this.columns}
-                            dataSource={this.state.MaintenanceType}
-                            size="small"
-                            scroll={{ y: 240 }}
-                            bordered={true}
-                            pagination={false}
-                        />
-                    </div>
-                </div>
-                <div id='Effective_add' style={{display:'inline'}}>&nbsp;&nbsp;&nbsp;&nbsp;<b>是否生效:</b>&nbsp;&nbsp;
-                    <Radio.Group disabled={true} value={this.state.Effective}>
-                        <Radio value={0}>生效</Radio>
-                        <Radio value={1}>失效</Radio>
-                    </Radio.Group>
-                </div>
-            </div>
-                </Modal>
+                    </Modal>
             </span>
         )
     }
@@ -214,8 +211,8 @@ class DetailofMain extends React.Component{
     columns = [
         {
             title: '序号',
-            dataIndex: 'code',
-            key:'code',
+            dataIndex: 'index',
+            key:'index',
             width: "6%"
         },
         {

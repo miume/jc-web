@@ -27,7 +27,20 @@
     justify-content:start;
     align-items:center;
     margin:10px;
-    margin-top: 20px;
+}
+.row-label {
+    padding-right: 5px;
+    width: 70px;
+}
+.row-label1 {
+    padding-right: 5px;
+    width: 150px;
+    text-align: right;
+}
+.row-table {
+    display: flex;
+    margin:10px;
+    height: 200px;
 }
 .Rowofadd{
     display: flex;

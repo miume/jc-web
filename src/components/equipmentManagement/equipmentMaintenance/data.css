@@ -1,12 +1,12 @@
 .hover:hover{
     color:#0079FE;
   }
-  
-  .nav-card-child {
+
+.nav-card-child {
     border-radius: 1%;
     overflow: hidden;
   }
-  
+
   @media screen and (min-width: 1000px) {
     .nav-card {
       width: 25%;
@@ -46,12 +46,12 @@
       padding-right: 15px;
     }
   }
-  
+
   @media screen and (max-width: 650px) {
     .nav-card {
       width: 100%;
       padding: 10px 10px 10px 10px;
-     
+
       margin-bottom: 20px;
     }
     .card-parent {
@@ -82,13 +82,34 @@
   .dataPart-child-div p{
     padding : 40px;
   }
-  .dataPart-child-div p i{
+.dataPart-child-div p i{
     color: white;
   }
-  .dataPart-child-bottom{
+.dataPart-child-bottom{
     text-align: center;
     font-size: 14px;
     font-weight: 500;
     color: black;
     margin-top: 10px;
-  }
+}
+
+.equipment{
+    padding: 15px;
+    height: 78vh;
+    display: flex;
+}
+.equipment-query{
+  height: 70vh;
+  display: flex;
+}
+.equipment-left{
+    width: 20%;
+    height: 100%;
+    overflow:auto;
+    border:1px solid #F5f5f5;
+}
+.equipment-right{
+    width: 80%;
+    margin-left: 20px;
+    height: 100%;
+}

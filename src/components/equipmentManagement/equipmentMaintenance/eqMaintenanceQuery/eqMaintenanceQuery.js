@@ -6,8 +6,12 @@ import Completed from './completed/completed'
 import AcceptOrders from './acceptOrders/acceptOrders'
 import WillMaintain from './willMaintain/willMaintain'
 
-
 class EqMaintenanceQuery extends React.Component{
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
 
     constructor(props){
         super(props)
@@ -31,7 +35,6 @@ class EqMaintenanceQuery extends React.Component{
         const current = JSON.parse(localStorage.getItem('current')) ;
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
 
-
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="设备查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
@@ -45,6 +48,7 @@ class EqMaintenanceQuery extends React.Component{
                             pagination={this.state.pagination}
                             rightTableData={this.state.rightTableData}
                             depName={this.state.depName}
+                            loading = {this.state.loading}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={2} tab="已接单">
@@ -56,6 +60,7 @@ class EqMaintenanceQuery extends React.Component{
                             pagination={this.state.pagination}
                             rightTableData={this.state.rightTableData}
                             depName={this.state.depName}
+                            loading = {this.state.loading}
                         />
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab="已完成">
@@ -67,6 +72,7 @@ class EqMaintenanceQuery extends React.Component{
                                 this.state.rightTableData
                             }
                             depCode={this.state.depCode}
+                            loading = {this.state.loading}
                         />
                     </Tabs.TabPane>
                 </Tabs>
@@ -88,8 +94,9 @@ class EqMaintenanceQuery extends React.Component{
         }
     };
 
+    /**获取表格数据*/
     getTableData = (params) => {
-        this.setState({depCode:params.deptId,depName:params.depName,},()=> {
+        this.setState({depCode:params.deptId,depName:params.depName,loading: true},()=> {
             axios({
                 url: `${this.url.eqMaintenanceQuery.recordPage}`,
                 method: 'get',
@@ -100,9 +107,9 @@ class EqMaintenanceQuery extends React.Component{
             }).then((data) => {
                 const res = data.data.data ? data.data.data : [];
                 if (res && res.list) {
-                    var rightTableData = [];
-                    for (var i = 0; i < res.list.length; i++) {
-                        var arr = res.list[i];
+                    let rightTableData = [];
+                    for (let i = 0; i < res.list.length; i++) {
+                        let arr = res.list[i];
                         rightTableData.push({
                             index: i + 1 + (res.page - 1) * res.size,//序号
                             code: arr['code'],//保养单号
@@ -121,10 +128,12 @@ class EqMaintenanceQuery extends React.Component{
                     }//新建状态用来获得所需的查询条件
                     this.setState({
                         rightTableData: rightTableData,
+                        loading: false
                     });
                 } else {
                     this.setState({
                         rightTableData: [],
+                        loading: false
                     });
                 }
             }).catch(() => {

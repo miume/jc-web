@@ -119,12 +119,7 @@ class EquipmentArchive extends Component{//设备档案
          total:this.state.dataSource.length,
          showSizeChanger:true,//是否可以改变 pageSize
          showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-         onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-            //console.log('Current: ', current, '; PageSize: ', pageSize);
-          },
-          onChange(current) {//跳转，页码改变
-            //console.log('Current: ', current);
-          }
+         pageSizeOptions: ["10","20","50","100"]
      }
      this.onSelectChange=this.onSelectChange.bind(this);
      this.handleTableChange=this.handleTableChange.bind(this);

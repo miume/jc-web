@@ -10,6 +10,12 @@ import WhiteSpace from "../../../../../BlockQuote/whiteSpace";
 const Step = Steps.Step
 
 class Details extends React.Component {
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
+
     constructor(props) {
         super(props);
         this.state={
@@ -20,8 +26,8 @@ class Details extends React.Component {
         this.handleCancel = this.handleCancel.bind(this)
     }
 
-    render=(text, record)=> {
-        const customDot = (dot,{status,index})=>(
+    render = (text, record) => {
+        const customDot = (dot)=>(
             <Popover visible={this.state.visible1}>
                 {dot}
             </Popover>
@@ -85,7 +91,11 @@ class Details extends React.Component {
                 const res = data.data.data ? data.data.data : [];
                 if (res) {
                     const arrMes = res.deviceMaintenanceRecordDetails;
-                    var newRowData = arrMes
+                    var newRowData = arrMes;
+                    for(let i = 0; i < newRowData.length; i++) {
+                        newRowData[i]['index'] = i + 1;
+                    }
+                    console.log(newRowData)
                     this.setState({
                         visible: true,
                         newRowData: newRowData,

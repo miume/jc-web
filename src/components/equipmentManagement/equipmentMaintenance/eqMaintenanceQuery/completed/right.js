@@ -1,5 +1,5 @@
 import React from "react";
-import {Table} from "antd";
+import {Spin, Table} from "antd";
 import "./completed.css"
 import Detail from "./detailModal";
 import home from "../../../../commom/fns";
@@ -20,6 +20,12 @@ import SearchCell from "./search";
 // }
 
 class Right extends React.Component {
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
+
     url;
     operation
     componentDidMount() {
@@ -117,7 +123,6 @@ class Right extends React.Component {
                   <Detail
                       url={this.url}
                       code={record.code}
-                      // id={record.id}
                   />
                 )
 
@@ -132,9 +137,8 @@ class Right extends React.Component {
         /**获取当前菜单的所有操作权限 */
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
-            <div style={{background: 'rgb(255, 255, 255)'} }>
-                <div className="head" style={{paddingTop:10}} >
-                    </div>
+            <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
+                <div>
                     <SearchCell
                         name="单号/设备名称/编号..."
                         fetch={this.fetch}
@@ -144,26 +148,22 @@ class Right extends React.Component {
                         style={{marginTop:10}}
                         getLastMonthTime={this.props.getLastMonthTime}
                     />
-                    <div>
+                </div>
                 <Table size="small"
                        url={this.url}
+                       rowKey={item => item.code}
                        dataSource={this.props.rightTableData}
                        columns={this.columns}
                        bordered
                        pagination={this.pagination}
                        fetch={this.fetch}
-                        handleTableChange={this.handleTableChange}
+                       handleTableChange={this.handleTableChange}
                        judgeOperation = {home.judgeOperation}
                        operation = {this.operation}
-                       style={{marginTop:10}}
               />
-                    </div>
-
-            </div>
+            </Spin>
         );
-
     }
-
 
     /** 根据角色名称分页查询*/
     searchEvent(){
@@ -204,7 +204,7 @@ class Right extends React.Component {
         if(flag) {
             this.setState({
                 pageChangeFlag:0,
-                searchContent:'',
+                searchContent:''
             })
         }
     };

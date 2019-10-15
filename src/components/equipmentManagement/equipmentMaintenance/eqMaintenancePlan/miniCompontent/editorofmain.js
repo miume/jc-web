@@ -26,48 +26,31 @@ class EditorofMain extends React.Component{
         selectedRowKeys: [],
         MaintenanceDetail:[],
     };
-    setS=()=>{
 
+    setS=()=>{
+        let {editorRecord} = this.props;
         this.setState({
-            deviceNameAndNum:this.props.editorRecord.deviceName+'/#'+this.props.editorRecord.fixedassetsCode,
-            depName:this.props.editorRecord.depName,
-            PlanName1:this.props.editorRecord.planName,
-            whomade:this.props.editorRecord.setPeople,
-            depCode:this.props.editorRecord.depCode,
-            MaintenancePeriod:this.props.editorRecord.maintPeriod,
-            ImplementDate:this.props.editorRecord.planDate,
-            Effective:this.props.editorRecord.effFlag,
-            NextPlanDate:this.props.editorRecord.nextDate,
-            deviceName:this.props.editorRecord.deviceName,
-            fixedassetsCode:this.props.editorRecord.fixedassetsCode,
+            deviceNameAndNum:editorRecord.deviceName+'/#'+editorRecord.fixedassetsCode,
+            depName:editorRecord.depName,
+            PlanName1:editorRecord.planName,
+            whomade:editorRecord.setPeople,
+            depCode:editorRecord.depCode,
+            MaintenancePeriod:editorRecord.maintPeriod,
+            ImplementDate:editorRecord.planDate,
+            Effective:editorRecord.effFlag,
+            NextPlanDate:editorRecord.nextDate,
+            deviceName:editorRecord.deviceName,
+            fixedassetsCode:editorRecord.fixedassetsCode,
         })
     }
     onSelectChange =( selectedRowKeys, selectedRows) => {
-        //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
         this.setState({
             MaintenanceType:selectedRows,
-        },()=>{
-            //console.log(this.state.MaintenanceType);
         })
 
-        //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys });
     };
-    // onChange: (selectedRowKeys, selectedRows) => {
-    //     //console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    //     this.setState({
-    //         MaintenanceType:selectedRows,
-    //         selectedRowKeys:selectedRowKeys
-    //     })
-    //     //console.log(this.state.MaintenanceType);
-    // },
-    findkeys=()=>{
-        const x=this.props.editorRecord.MaintenanceType;
-        var y=[];
-        for(var i=0;i<x.length;i++){
-            y.push(x.index)
-        }
-    }
+
     render(){
         const dateFormat = 'YYYY-MM-DD';
         const { selectedRowKeys } = this.state;
@@ -79,108 +62,105 @@ class EditorofMain extends React.Component{
             <span>
                 <span onClick={this.handleMaintanceEditor} className="blue">编辑</span>
                 <Modal title='编辑' visible={this.state.editorVisible}
-                       width="1010px"
+                       width="1100px"
                        closable={false}
                        centered={true}
                        maskClosable={false}
                        footer={[<CancleButton key='back'  handleCancel={this.handleCancel2} />,
                            <SaveButton key="define" handleSave={this.handleCreate}/>,]}>
-                    <div >
-                <div className='Rowofadd'>
-                    <div className='divofadd'>
-                        <b>计划名称</b>
-                        <Input
-                            id='Planname_add'
-                            onChange={this.handlePlanName1Change}
-                            placeholder='请输入'
-                            key="PlanName1" name="PlanName1"
-                            value={this.state.PlanName1}
-                        />
-                    </div>
-                    <div className='divofadd1'>
-                        <b>所属部门</b>
-                        <Input
-                            id='department_add'
-                            key="department"
-                            name="department"
-                            placeholder="请选择"
-                            style={{ width: 200 }}
-                            value={this.props.depName}
-                            disabled={true}
-                        />
-                    </div>
-                    <div className='divofadd1'>
-                        <b>设备名称/编号</b>
-                        <TreeSelect
-                            id='deviceNameAndNum_add'
-                            key="deviceNameAndNum"
-                            name="deviceNameAndNum"
-                            style={{ width: 200 }}
-                            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                            placeholder="请选择"
-                            treeData={this.state.deviceNameAndNumdata}
-                            allowClear={true}
-                            value={this.state.deviceNameAndNum}
-                            onChange={this.handleDeviceNameAndNumChange}
-                            disabled={true}
-                        />
-                    </div>
-                </div>
-                <div className='Rowofadd'>
-                    <div className='divofadd'>
-                        <b>保养周期</b>
-                        <InputNumber
-                            id='MaintenancePeriod_add'
-                            placeholder='请输入天数'
-                            style={{width:'200px'}}
-                            defaultValue={0}
-                            key="MaintenancePeriod"
-                            name="MaintenancePeriod"
-                            value={this.state.MaintenancePeriod}
-                            onChange={this.handleMaintenancePeriodChange}
-                            min={0}
-                        />
-                    </div>
-                    <div className='divofadd'>
-                        <b>本次计划执行日期</b>
-                        <DatePicker
-                            id='ImplementDate_add'
-                            defaultValue={moment(this.state.ImplementDate, dateFormat)}
-                            onChange={this.handleImplementDateChange}
-                            placeholder='请选择日期'
-                            key="ImplementDate" name="ImplementDate"
-                        />
-                    </div>
-                    <div className='divofadd2'>
-                        <h4 id='NextPlanDate_add' key="NextPlanDate" name="NextPlanDate">
-                            <b>下次计划执行日期:</b>&nbsp;&nbsp;{this.state.NextPlanDate}
-                        </h4>
-                    </div>
-                </div>
-                <div className='Rowofadd'>
-                    <div className='divofadd'>
-                        <b>保养项目</b>
-                        <Table
-                            id='Mainname_add'
-                            rowKey={record => record.code}
-                            name="Maintenancetype"
-                            columns={this.columns}
-                            dataSource={this.props.MaintenanceType}
-                            size="small"
-                            selectedRowKeys={this.state.selectedRowKeys}
-                            scroll={{ y: 240 }}
-                            rowSelection={MaintenanceTypeSelection}
-                            bordered={true}
-                            pagination={false}
-                        />
-                    </div>
-                </div>
-                <div id='Effective_add' style={{display:'inline'}}>&nbsp;&nbsp;&nbsp;&nbsp;<b>是否生效:</b>&nbsp;&nbsp;
-                    <Radio.Group onChange={this.handleEffectiveChange} value={this.state.Effective}>
-                        <Radio value={0}>生效</Radio>
-                        <Radio value={1}>失效</Radio>
-                    </Radio.Group>
-                </div>
+                    <div>
+                        <div className='Rowofadd'>
+                            <div className='divofadd'>
+                                <b className='row-label'>计划名称</b>
+                                <Input
+                                    id='Planname_add'
+                                    onChange={this.handlePlanName1Change}
+                                    placeholder='请输入'
+                                    key="PlanName1" name="PlanName1"
+                                    value={this.state.PlanName1}
+                                />
+                            </div>
+                            <div className='divofadd'>
+                                <b className='row-label1'>所属部门</b>
+                                <Input
+                                    id='department_add'
+                                    key="department"
+                                    name="department"
+                                    placeholder="请选择"
+                                    style={{ width: 200 }}
+                                    value={this.props.depName}
+                                    disabled={true}
+                                />
+                            </div>
+                            <div className='divofadd'>
+                                <b className='row-label1'>设备名称/编号</b>
+                                <TreeSelect
+                                    id='deviceNameAndNum_add'
+                                    key="deviceNameAndNum"
+                                    name="deviceNameAndNum"
+                                    style={{ width: 200 }}
+                                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                    placeholder="请选择"
+                                    treeData={this.state.deviceNameAndNumdata}
+                                    allowClear={true}
+                                    value={this.state.deviceNameAndNum}
+                                    onChange={this.handleDeviceNameAndNumChange}
+                                    disabled={true}
+                                />
+                            </div>
+                        </div>
+                        <div className='Rowofadd'>
+                            <div className='divofadd'>
+                                <b className='row-label'>保养周期</b>
+                                <InputNumber
+                                    id='MaintenancePeriod_add'
+                                    placeholder='请输入天数'
+                                    style={{width:'200px'}}
+                                    defaultValue={0}
+                                    key="MaintenancePeriod"
+                                    name="MaintenancePeriod"
+                                    value={this.state.MaintenancePeriod}
+                                    onChange={this.handleMaintenancePeriodChange}
+                                    min={0}
+                                />
+                            </div>
+                            <div className='divofadd'>
+                                <b className='row-label1'>本次计划执行日期</b>
+                                <DatePicker
+                                    id='ImplementDate_add'
+                                    defaultValue={moment(this.state.ImplementDate, dateFormat)}
+                                    onChange={this.handleImplementDateChange}
+                                    placeholder='请选择日期'
+                                    key="ImplementDate" name="ImplementDate"
+                                />
+                            </div>
+                            <div className='divofadd'>
+                                <b className='row-label1'>下次计划执行日期:</b>
+                                <div>{this.state.NextPlanDate}</div>
+                            </div>
+                        </div>
+                        <div className='row-table'>
+                            <b className='row-label'>保养项目:</b>
+                            <Table
+                                id='Mainname_add'
+                                rowKey={record => record.code}
+                                name="Maintenancetype"
+                                columns={this.columns}
+                                dataSource={this.props.MaintenanceType}
+                                size="small"
+                                scroll={{ y: 150 }}
+                                rowSelection={MaintenanceTypeSelection}
+                                bordered={true}
+                                pagination={false}
+                            />
+                        </div>
+                        <div id='Effective_add' style={{display:'inline',paddingLeft: 10}}>
+                            <b className='row-label'>是否生效:</b>
+                            <Radio.Group onChange={this.handleEffectiveChange} value={this.state.Effective}>
+                                <Radio value={0}>生效</Radio>
+                                <Radio value={1}>失效</Radio>
+                            </Radio.Group>
+                        </div>
             </div>
                 </Modal>
             </span>

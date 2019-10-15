@@ -1,6 +1,5 @@
 import React from 'react';
-import {Table, Icon, Divider, message} from 'antd';
-import axios from "axios";
+import {Table} from 'antd';
 import '../acceptOrders.css';
 
 //用于编写表格的显示样式
@@ -35,13 +34,14 @@ class BelowTable extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{height: 200}}>
                 <Table
                     dataSource={this.props.newRowData}
                     columns={this.columns}
                     size="small"
                     pagination={false}
                     bordered
+                    scroll={{y: 170}}
                 />
             </div>);
     }
