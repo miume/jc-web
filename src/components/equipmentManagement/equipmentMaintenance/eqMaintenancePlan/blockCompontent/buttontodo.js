@@ -8,8 +8,7 @@ class ButtonToDd extends Component {
         MaintenanceType:[],
     }
 
-
-        render(){
+    render(){
         return(
             <div className='Buttontodo'style={{display:'flex'}}>
                 <Addmaintenance

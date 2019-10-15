@@ -26,9 +26,7 @@ class EditableCell extends React.Component {
             editing,
             dataIndex,
             title,
-            inputType,
             record,
-            index,
             ...restProps
         } = this.props;
         return (

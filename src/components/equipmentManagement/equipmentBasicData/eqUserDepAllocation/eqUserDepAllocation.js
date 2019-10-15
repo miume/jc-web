@@ -1,6 +1,6 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {message, Spin, Transfer} from "antd";
+import {message, Transfer} from "antd";
 import axios from "axios";
 import DepTree from "./depTree";
 import './eqUserDepAllocation.css'
@@ -26,16 +26,13 @@ class EqUserDepAllocation extends React.Component {
             <div>
                 <Blockquote menu={current.menuParent} name="设备部门用户分配" menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
-                <div  style={{padding: '15px',height: '78vh',display:"flex"}}>
-                    <Spin spinning={this.state.loading} wrapperClassName='eqUserDep-left'>
-                        <DepTree
-                            key="depTree"
-                            url={this.url}
-                            getTableData={this.getTableData}
-                        />
-                    </Spin>
-                    <div style={{width:'5%'}}></div>
-                    <div className='eqUserDep-right'>
+                <div className='equipment'>
+                    <DepTree
+                        key="depTree"
+                        url={this.url}
+                        getTableData={this.getTableData}
+                    />
+                    <div className='equipment-right'>
                     {/*<Spin spinning={this.state.transferLoading} wrapperClassName='eqUserDep-right'>*/}
                         <Transfer
                             rowKey={record => record.userId}

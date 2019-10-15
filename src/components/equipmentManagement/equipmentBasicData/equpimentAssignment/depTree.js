@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Tree} from 'antd';
+const { TreeNode } = Tree;
 
 class DepTree extends Component {
     constructor(props) {
@@ -124,24 +125,26 @@ class DepTree extends Component {
     }
 
     // 展开树节点
-    renderTreeNodes = data => data.map((item) => {
-        item.title = ( // 不处于编辑状态
-            <div className={item.isSelect?"checkp-depTreeSelect":""}>
+    renderTreeNodes = (data) => {
+        data.map((item) => {
+            item.title = ( // 不处于编辑状态
+                <div className={item.isSelect?"checkp-depTreeSelect":""}>
                 <span>
                     {item.value}
                 </span>
-            </div>
-        )
-        // 如果存在子节点，则继续调用，直到无子节点，再下一个层次节点
-        if (item.children) {
-            return (
-                <Tree.TreeNode title={item.title} key={item.code} dataRef={item}>
-                    {this.renderTreeNodes(item.children)}
-                </Tree.TreeNode>
-            );
-        }
-        return <Tree.TreeNode {...item} />;
-    })
+                </div>
+            )
+            // 如果存在子节点，则继续调用，直到无子节点，再下一个层次节点
+            if (item.children) {
+                return (
+                    <TreeNode title={item.title} key={item.code} dataRef={item}>
+                        {this.renderTreeNodes(item.children)}
+                    </TreeNode>
+                );
+            }
+            return <TreeNode {...item} />;
+        })
+    }
 }
 
 export default DepTree

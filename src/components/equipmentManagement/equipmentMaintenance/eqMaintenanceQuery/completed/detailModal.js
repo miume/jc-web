@@ -8,23 +8,26 @@ import "./completed.css"
 const Step = Steps.Step
 
 class Detail extends React.Component{
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
     url
-    ind = [];
     constructor(props){
         super(props)
         this.state = {
             visible: false,
             depCode:'2',
             dataSource : [],
-            // detailData:[],
             name:'',
             time:'',
             previewVisible:false,
             previewImage: '',
             detailData: {
-                deviceMaintenanceRecordHead:[],
+                deviceMaintenanceRecordHead: [],
                 deviceMaintenanceRecordDetails: [],
-                deviceMaintenanceAccessory:[],
+                deviceMaintenanceAccessory: [],
                 planData:''
             },
             abnormalContent:[]
@@ -34,7 +37,7 @@ class Detail extends React.Component{
         this.handleDetail = this.handleDetail.bind(this);
         this.footer = this.footer.bind(this)
     }
-    acolums=[{
+    colums1=[{
         title:'序号',
         key:'index',
         dataIndex:'index',
@@ -61,7 +64,7 @@ class Detail extends React.Component{
         width:160
     }
     ]
-    bcolums=[{
+    colums2=[{
         title:'序号',
         key:'index',
         dataIndex:'index',
@@ -146,7 +149,7 @@ class Detail extends React.Component{
             method:"GET",
         }).then((data) => {
             const res = data.data.data;
-            if(res){
+            if(res) {
                 this.setState({
                     data : res.content,
                     name : res.instructorName,
@@ -170,36 +173,23 @@ class Detail extends React.Component{
         }).then((data) => {
             const res=data.data.data ? data.data.data : [];
             if(res){
-                var detailData = this.state.detailData
-                const deviceMaintenanceRecordHead=res.deviceMaintenanceRecordHead
-                detailData.deviceMaintenanceRecordHead.push({
-                    planCode:deviceMaintenanceRecordHead.planCode,
-                    deviceName:deviceMaintenanceRecordHead.deviceName + '/#' + deviceMaintenanceRecordHead.fixedassetsCode,
-                    deptCode:deviceMaintenanceRecordHead.deptCode ,
-                    planDate:deviceMaintenanceRecordHead.planDate,
-                    receiveDate:deviceMaintenanceRecordHead.receiveDate,
-                    finishiDate:deviceMaintenanceRecordHead.finishiDate,
-                })
-                if(res.setPeople){
-                detailData.deviceMaintenanceRecordHead.push({
-                    setPeople:res.setPeople
-                })}
-                else{
-                    detailData.deviceMaintenanceRecordHead.push({
-                        setPeople:''
-                    })
-                    }
-                const deviceMaintenanceRecordDetails=res.deviceMaintenanceRecordDetails
+                var detailData = this.state.detailData;
+                const deviceMaintenanceRecordHead = res.deviceMaintenanceRecordHead;
+                deviceMaintenanceRecordHead['deviceName'] = deviceMaintenanceRecordHead.deviceName + '/#' + deviceMaintenanceRecordHead.fixedassetsCode;
+                deviceMaintenanceRecordHead['setPeople'] = res.setPeople ? res.setPeople : '';
+                detailData.deviceMaintenanceRecordHead.push(deviceMaintenanceRecordHead);
+                const deviceMaintenanceRecordDetails = res.deviceMaintenanceRecordDetails;
                 var abnormalContent = this.state.abnormalContent
-                for(var i = 0 ; i<deviceMaintenanceRecordDetails.length; i++){
-                    const arr = deviceMaintenanceRecordDetails[i]
-                    if(arr.mainValues===1){
+                for(var i = 0 ; i< deviceMaintenanceRecordDetails.length; i++){
+                    const arr = deviceMaintenanceRecordDetails[i];
+                    deviceMaintenanceRecordDetails[i]['index'] = i + 1;
+                    if(arr.mainValues === 1) {
                         abnormalContent.push(arr.mainContent)
                     }
                 }
-                detailData.deviceMaintenanceRecordDetails = deviceMaintenanceRecordDetails
-                const deviceMaintenanceAccessory=res.deviceMaintenanceAccessory
-                detailData.deviceMaintenanceAccessory =deviceMaintenanceAccessory
+                detailData.deviceMaintenanceRecordDetails = deviceMaintenanceRecordDetails;
+                const deviceMaintenanceAccessory = res.deviceMaintenanceAccessory
+                detailData.deviceMaintenanceAccessory = deviceMaintenanceAccessory
                 detailData.planData = '本次计划时间：' + deviceMaintenanceRecordHead.planDate
                 detailData.receiveDate = deviceMaintenanceRecordHead.receiveDate
                 detailData.finishiDate = deviceMaintenanceRecordHead.finishiDate
@@ -208,35 +198,10 @@ class Detail extends React.Component{
                     visible:true,
                     abnormalContent:abnormalContent
                 })
-            }else{
-
             }
-
         })
-        // this.fetch(this.props.batchNumberId)
-        // this.setState({
-        //     visible: true
-        // });
-        // const params ={
-        //     Id:this.props.planCode
-        // }
-        // axios({
-        //     url:`${this.props.url.eqmaintenance.recordDetail}`,
-        //     method:'get',
-        //     headers: {
-        //         'Authorization': this.props.url.Authorization
-        //     }
-        // }).then((data) => {
-        //     const res=data.data.data ? data.data.data : [];
-        //     if(res){
-        //         this.setState({detailData:res})
-        //         this.dateA="本次计划执行日期:"+this.state.detailData.deviceMaintenanceAccessory.receiveDate
-        //     }else{
-        //
-        //     }
-        //
-        // })
     }
+
     handleCancel() {
         this.setState({
             visible: false,
@@ -249,20 +214,18 @@ class Detail extends React.Component{
             abnormalContent:[]
         });
     }
+
     footer = () => {
-        const abnormalContent = this.state.abnormalContent
+        const abnormalContent = this.state.abnormalContent;
         if(abnormalContent.length===0){
             return null
         }else{
-
             return abnormalContent
         }
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        var adata={ };
-        var bdata={ };
-        const customDot = (dot,{status,index})=>(
+        const customDot = (dot)=>(
             <Popover visible={this.state.visible1} >
                 {dot}
             </Popover>
@@ -279,8 +242,8 @@ class Detail extends React.Component{
                        ]}
                 >
                     <div style={{maxHeight:'550px'}}>
-
                         <Table
+                            rowKey={item => item.code}
                             className="eqQueryCompleted-table"
                             size="small"
                             columns={this.columns}
@@ -297,29 +260,28 @@ class Detail extends React.Component{
                             <Step title="已完成" description= {this.state.detailData.finishiDate}/>
                         </Steps>
                         <WhiteSpace />
-                        <div style={{maxHeight:'150px',marginBottom:'2px',marginTop:'2px'}}>
+                        <div style={{height:'170px',marginBottom:'2px',marginTop:'2px'}}>
                             <Table
-
+                                rowKey={item => item.code}
                                 className="eqQueryCompleted-table"
                                 size="small"
-                                columns={this.acolums}
+                                columns={this.colums1}
                                 dataSource={this.state.detailData.deviceMaintenanceRecordDetails}
                                 bordered
                                 pagination={false}
-                               // style={{tr height:'10'}}
                                 scroll={{ y: 150 }}
-                                 footer={this.footer}
+                                footer={this.footer}
                             />
                         </div>
 
                         <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>配件使用</div>
-                        <div style={{maxHeight:'150px',marginTop:'10px'}}>
+                        <div style={{height:'170px',marginTop:'10px'}}>
                             <Table className="eqQueryCompleted-table"
+                                   rowKey={item => item.code}
                                    size="small"
-                                   columns={this.bcolums}
+                                   columns={this.colums2}
                                    dataSource={this.state.detailData.deviceMaintenanceAccessory}
                                    bordered
-                                 //  style={{marginTop:"20"}}
                                    pagination={false}
                                    scroll={{ y: 150 }}
                             />

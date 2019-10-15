@@ -1,19 +1,19 @@
 import React from "react";
-import {Layout} from "antd";
 import Right from "./right";
 import axios from "axios";
-import DepTree from "./depTree";
+import DepTree from "../../../../BlockQuote/department";
 import Home from "../../../../Home/home";
 
 class Completed extends React.Component{
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
+
     url;
     operation
-    componentDidMount() {
-        // this.fetch({
-        //     pageSize:10,
-        //     pageNumber:1,
-        // });
-    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -38,49 +38,45 @@ class Completed extends React.Component{
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        const {  Sider, Content } = Layout;
-        const { selectedRowKeys } = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-        };
         return (
-            <div className="eqQueryCompleted">
-                <Layout>
-                    <Sider theme='light' width={240} style={{background:"white",height:'525px'}}>
-                            <DepTree
-                              url={this.url}
-                              getTableData={this.props.getTableData}
-                               getLastMonthTime={this.getLastMonthTime}
-                            />
-                    </Sider>
-                    <Content  theme="light">
-                        <Right
-                          //  style={{marginLeft:10}}
-                            url={this.url}
-                            data={this.state.dataSource}
-                            pagination={this.state.pagination}
-                            fetch={this.fetch}
-                            modifyDataSource={this.modifyDataSource}
-                            handleTableChange={this.handleTableChange}
-                            handleDelete={this.handleDelete}
-                            judgeOperation = {Home.judgeOperation}
-                            operation = {this.operation}
-                            rightTableData={this.props.rightTableData}
-                            getTableData={this.props.getTableData}
-                            depCode={this.props.depCode}
-                            getLastMonthTime={this.getLastMonthTime}
-                        />
-                    </Content>
-                </Layout>
+            <div className='equipment-query'>
+                <DepTree
+                    key="depTree"
+                    treeName={'所属部门'}
+                    url={this.props.url}
+                    getTableData={this.getTableData}
+                />
+                <Right
+                    url={this.url}
+                    data={this.state.dataSource}
+                    loading = {this.props.loading}
+                    pagination={this.state.pagination}
+                    fetch={this.fetch}
+                    modifyDataSource={this.modifyDataSource}
+                    handleTableChange={this.handleTableChange}
+                    handleDelete={this.handleDelete}
+                    judgeOperation = {Home.judgeOperation}
+                    operation = {this.operation}
+                    rightTableData={this.props.rightTableData}
+                    getTableData={this.props.getTableData}
+                    depCode={this.props.depCode}
+                    getLastMonthTime={this.getLastMonthTime}
+                />
             </div>
 
         );
     }
 
-    getLastMonthTime = (month) =>{
-        var selectDate = this.state.selectDate
+    /**获取最近一个月已完成表格数据*/
+    getTableData = (params) => {
+        let date = this.getLastMonthTime(1);
+        params['statusId'] = 3;
+        params['startDate'] = date.datastr;
+        params['endDate'] = date.NowDate;
+        this.props.getTableData(params)
+    }
 
+    getLastMonthTime = (month) =>{
         var date=new Date();
         var strYear = date.getFullYear();
         var strDay = date.getDate();
@@ -119,10 +115,6 @@ class Completed extends React.Component{
         else if(month===12){
             strYear-=1;
         }
-        // strYear=2000;
-        // strMonth=2;
-        // strDay=31;
-//  strDay = daysInMonth[strMonth] >= strDay ? strDay : daysInMonth[strMonth];
         strDay = Math.min(strDay,daysInMonth[strMonth]);//三、前一个月日期不一定和今天同一号，例如3.31的前一个月日期是2.28；9.30前一个月日期是8.30
         if(strMonth<10)//给个位数的月、日补零
         {
@@ -154,9 +146,6 @@ class Completed extends React.Component{
                 condition:this.state.searchContent,
                 deptId:parseInt(this.state.depCode),
                 deviceId:this.props.record.code
-                // pageSize:pagination.pageSize,
-                // pageNumber:pagination.current,
-                // departmentName:this.state.searchContent
             })
         }else{
             this.fetch({
@@ -165,8 +154,6 @@ class Completed extends React.Component{
                 condition:this.state.depCode,
                 deptId:parseInt(this.state.code),
                 deviceId:this.props.record.code
-                // pageSize:pagination.pageSize,
-                // pageNumber:pagination.current,
             })
         }
     };

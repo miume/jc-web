@@ -34,10 +34,7 @@
 .eqQueryCompleted-table{
     text-align:center;
 }
-/*.eqQueryCompleted-table .tr{*/
-/*    padding:0px 0px;*/
-/*    word-break:break-word;*/
-/*}*/
+
 .eqQueryCompleted-step .ant-steps-item-description{
     width: 200px ;
     margin-left: 0px;

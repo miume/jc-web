@@ -18,7 +18,7 @@ class PermissionThead extends React.Component{
         this.handleMove(1,id);
     }
     handleMove(number,id) {
-        var middle = document.getElementById(`menu-${id}`)      
+        var middle = document.getElementById(`menu-${id}`)
         let count = 560;
         let gap = (count / 100);
         gap = gap.toFixed(0);
@@ -50,19 +50,19 @@ class PermissionThead extends React.Component{
         }
     }
     /**
-     * 
-     * @param {*代表二级菜单} menu2List 
-     * @param {*代表所有操作权限} operations 
-     * @param {*代表当前角色的所有菜单权限} auth 
-     * @param {*代表是否要隐藏向左向右icon 操作权限是否大于8} flag 
+     *
+     * @param {*代表二级菜单} menu2List
+     * @param {*代表所有操作权限} operations
+     * @param {*代表当前角色的所有菜单权限} auth
+     * @param {*代表是否要隐藏向左向右icon 操作权限是否大于8} flag
      */
     getCurrentMenu2(menu2List,operations,auth,flag){
         /**遍历二级菜单 */
         let menu2 = [];
-        if(menu2List.length > 0){ 
+        if(menu2List.length > 0){
           menu2 = menu2List.map(m2=>{
               //若二级菜单没有子菜单，则依次渲染二级菜单
-              if(m2.menuList.length === 0) 
+              if(m2.menuList.length === 0)
                  return this.menuAccordingToRoleAuth(m2,auth,operations,flag)
               else{
                   //若二级菜单有子菜单则如下面渲染 先渲染二级菜单，在渲染其子菜单
@@ -76,7 +76,7 @@ class PermissionThead extends React.Component{
                   return menu3
               }
           })
-        } 
+        }
         return menu2
     }
     //根据当前角色的权限选择二级和三级菜单的渲染方式
@@ -99,14 +99,13 @@ class PermissionThead extends React.Component{
     }
     //根据当前用户角色在子菜单下的操作权限 来确定input是否选中
     judgeInputAccordingToOperations(menu,operations){
-        let inputStyle = [];
-        inputStyle = operations?operations.map(op => {
+        let inputStyle = operations?operations.map(op => {
             let isChecked = menu.operations?menu.operations.find(mop => mop.id === op.id):false;
-            return <AuthInput key={op.id} value={op.id} id={menu.menuId.toString()} operationName={op.operationName} 
+            return <AuthInput key={op.id} value={op.id} id={menu.menuId.toString()} operationName={op.operationName}
                    checked={isChecked?true:false} change={this.props.change} />
-        }):null 
+        }):null
         return inputStyle;
-    } 
+    }
     render(){
         const auth = this.props.roleAuth;
         const operations = this.props.operations;

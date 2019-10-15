@@ -11,7 +11,7 @@ import DeleteOne from "./deleteOne";
 
 class BatchInfo extends React.Component{
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
             return ;
         }
     }
@@ -37,13 +37,6 @@ class BatchInfo extends React.Component{
         };
         this.pagination={
             showSizeChanger:true,
-            onShowSizeChange:(current, size)=>{
-                this.setState({
-                    params:{
-                        size:size,
-                        page:current,
-                    }})
-            },
             showTotal(total) {
                 return `共${total}条记录`
             },

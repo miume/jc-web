@@ -1,11 +1,10 @@
 import React from "react";
-import {message,Layout} from "antd";
 import './acceptOrders.css'
 import TheTable from "./Table/theTable";
-import axios from "axios";
 import SearchCell from "../../../../BlockQuote/search";
 import home from "../../../../commom/fns";
-import TreeCard from "../../../../BlockQuote/treeSelect";
+import DepTree from "../../../../BlockQuote/department";
+import {Spin} from "antd";
 
 //总的页面样式
 
@@ -31,85 +30,46 @@ class AcceptOrders extends React.Component{
     }
 
     render() {
-        const { Header, Sider, Content } = Layout;
         this.state.pagination=this.props.pagination;
-        this.url =this.props.url;
 
         return (
-            <div >
-                <Layout >
-                    <Sider width={240} style={{background:"white",height:'525px'}} >
-                        <div style={{width:'235px'}}>
-                            <TreeCard
-                                getParams={this.getParams}
-                                treeData={this.state.TreeData}
-                                getTableData={this.props.getTableData}
-                                defaultparams={{
-                                    deptId:2,
-                                    statusId:2,
-                                    depName:'锂电一',
-                                }}
-                                expandedKeys={this.state.expandedKeys}
-                                defaultSelectedKeys={['2']}
-                                params={{
-                                    deptId:this.state.deptId,
-                                    depName:this.state.depName,
-                                    statusId:2,
-                                }}
-                                onExpand={this.onExpand}
-                                treeName={'所属部门'}
-                                getTreeData={this.getTreeData}
-                            />
-                        </div>
-                    </Sider>
-                    <Layout >
-                        <Header style={{background:"white",lineHeight:4,height:58}}>
-                            <div className="ac-putright" >
-                                <SearchCell
-                                    name='单号/设备名称/编号'
-                                    fetch={this.fetch}
-                                    searchEvent={this.searchEvent}
-                                    searchContentChange={this.searchContentChange}
-                                    flag={home.judgeOperation(this.props.operation, 'QUERY')}
-                                    type={2}
-                                />
-
-                            </div>
-                        </Header >
-                        <Content style={{background:"white"}}>
-                            <div style={{background:"white"}}>
-                            <TheTable
-                                url={this.url}
-                                fetch={this.fetch}
-                                searchReset={this.searchReset}
-                                pagination={this.state.pagination}
-                                rightTableData={this.props.rightTableData}
-                                handleTableChange={this.handleTableChange}
-                            />
-                            </div>
-                        </Content>
-                    </Layout>
-                </Layout>
+            <div className='equipment-query'>
+                <DepTree
+                    key="depTree"
+                    treeName={'所属部门'}
+                    url={this.props.url}
+                    getTableData={this.getTableData}
+                />
+                <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
+                    <div>
+                        <SearchCell
+                            name='单号/设备名称/编号'
+                            fetch={this.fetch}
+                            searchEvent={this.searchEvent}
+                            searchContentChange={this.searchContentChange}
+                            flag={home.judgeOperation(this.props.operation,'QUERY')}
+                            type={1}
+                        />
+                    </div>
+                    <div className='clear' ></div>
+                    <TheTable
+                        url={this.props.url}
+                        fetch={this.fetch}
+                        searchReset={this.searchReset}
+                        getTableData={this.props.getTableData}
+                        pagination={this.state.pagination}
+                        rightTableData={this.props.rightTableData}
+                        handleTableChange={this.handleTableChange}
+                    />
+                </Spin>
             </div>
         );
     }
 
-    getParams=(selectedkeys,e)=>{
-        this.setState({
-            deptId:selectedkeys[0],
-            depName:e.node.props.value,
-        },()=>{
-            if(selectedkeys[0]){
-                const params = {
-                    deptId:this.state.deptId,
-                    statusId:2,
-                    depName:this.props.depName,
-                };
-                console.log(params)
-                this.props.getTableData(params)
-            }
-        })
-
+    /**获取已接单表格数据*/
+    getTableData = (params) => {
+        params['statusId'] = 2;
+        this.props.getTableData(params)
     }
 
     onExpand = (expandedKeys) => {//展开的时候更新一下
@@ -123,68 +83,6 @@ class AcceptOrders extends React.Component{
         this.setState({searchContent: value});
     };
 
-    getTreeData = () => {
-        // TODO: 调接口，获取数据
-        axios({
-            url: `${this.props.url.equipmentDept.dept}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            var dataSource = [{
-
-                title:'总公司',
-                key:0,
-                value: '总公司',
-                children: []
-            }];
-            if (res) {
-                var expandedKeys=['0'];
-                for (let i = 0; i < res.length; i++) {
-                    const arrParent = res[i].parent;
-                    var parenObj = {
-                        title:arrParent.name,
-                        value: arrParent.name,
-                        key:arrParent.code,
-                        children: [],
-                    };
-                    const arrSon = res[i].son;
-                    if(i === 0){
-                        expandedKeys.push(arrParent.code.toString())
-                    }
-                    for (let j = 0; j < arrSon.length; j++) {
-                        var arr = arrSon[j];
-                        if(i===0&&j===0){
-                            parenObj['children'].push({
-                                value: arr.name,
-                                children:[],
-                                title:arr.name,
-                                key:arr.code,
-                            });
-                        }else{
-                            parenObj['children'].push({
-                                value: arr.name,
-                                children: [],
-                                title:arr.name,
-                                key:arr.code,
-
-                            });
-                        }
-                    }
-                    dataSource[0].children.push(parenObj);
-                }
-                this.setState({
-                    TreeData: dataSource,
-                    expandedKeys: expandedKeys,
-                })
-            } else {
-                message.info('没有获取到数据')
-            }
-        });
-    };
-
     /**绑定搜索事件 */
     searchEvent = () => {
         this.setState({
@@ -196,7 +94,6 @@ class AcceptOrders extends React.Component{
             condition:this.state.searchContent,
             depName:this.props.depName,
         }
-        // this.props.getTableData(params);
         this.fetch(params,0);
     }
 

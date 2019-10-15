@@ -85,11 +85,7 @@ class PermissionManagement extends React.Component {
           visible: false
         });
     }
-    // handleCancel() {
-    //     this.setState({
-    //       visible: false
-    //     });
-    //   }
+
     change(event) {
         const target = event.target;
         /**获取操作id 二级菜单id */

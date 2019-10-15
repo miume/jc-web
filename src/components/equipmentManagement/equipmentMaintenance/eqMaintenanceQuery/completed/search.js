@@ -7,16 +7,13 @@ class SearchCell extends React.Component{
         this.state={
             selectState:'',
             selectTime:'',
-            //searchData:'',
             searchInput:'',
             LastIndexDate:'',
             NowIndexDate:'',
             LastDate:'',
             NowDate:'',
             date:{},
-            clickflaga:1,
-            clickflagb:0,
-            clickflagc:0,
+            clickFlag: 1
         }
 
         this.handleClicka=this.handleClicka.bind(this);
@@ -36,9 +33,7 @@ class SearchCell extends React.Component{
         }
         this.props.fetch(params)
         this.setState({
-            clickflagb:0,
-            clickflagc:0,
-            clickflaga:1,
+            clickFlag: 1,
             date:date
         })
 
@@ -53,9 +48,7 @@ class SearchCell extends React.Component{
             }
             this.props.fetch(params)
             this.setState({
-                clickflaga:0,
-                clickflagb:1,
-                clickflagc:0,
+                clickFlag: 2,
                 date:date
             })
         }
@@ -69,18 +62,12 @@ class SearchCell extends React.Component{
         }
         this.props.fetch(params)
         this.setState({
-            clickflaga:0,
-            clickflagb:0,
-            clickflagc:1,
-
+            clickFlag: 3,
             date:date
         })
     }
     dateArea = (date, dateString) => {
-        var NowIndexDate = this.state.NowIndexDate
-        var LastIndexDate = this.state.LastIndexDate
-        NowIndexDate = dateString[1]
-        LastIndexDate = dateString[0]
+        let NowIndexDate = dateString[1], LastIndexDate = dateString[0]
         this.setState({
             NowIndexDate:NowIndexDate,
             LastIndexDate:LastIndexDate,
@@ -123,64 +110,68 @@ class SearchCell extends React.Component{
         const Search = Input.Search;
         const {  RangePicker } = DatePicker;
         return(
-            //className={this.props.flag?'searchCell':'hide'}
-            <div >
+            <div style={{paddingBottom: '5px'}}>
                 <span style={{paddingTop: '7px'}}>&nbsp;&nbsp;默认：&nbsp;&nbsp;&nbsp;</span>
 
                 <Button
-                    className={this.state.clickflaga?"bd-blue":"bd-grey"}
-                    style={{height:30}}
+                    className={this.state.clickFlag === 1?"bd-blue":"bd-grey"}
+                    style={{height:30,marginRight: 5}}
                     onClick={this.handleClicka}
                     type="default"
-                >最近1月</Button>&nbsp;&nbsp;&nbsp;
+                >最近1月</Button>
 
                 <Button
-                    className={this.state.clickflagb?"bd-blue":"bd-grey"}
-                    style={{height:30}}
+                    className={this.state.clickFlag === 2?"bd-blue":"bd-grey"}
+                    style={{height:30,marginRight: 5}}
                     onClick={this.handleClickb}
                     type="default"
-                >最近3月</Button>&nbsp;&nbsp;&nbsp;
+                >最近3月</Button>
 
                 <Button
-                    className={this.state.clickflagc?"bd-blue":"bd-grey"}
-                    style={{height:30}}
+                    className={this.state.clickFlag === 3?"bd-blue":"bd-grey"}
+                    style={{height:30,marginRight: 80}}
                     onClick={this.handleClickc}
                     type="default"
-                >最近1年</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                >最近1年</Button>
 
-                保养时段：<RangePicker style={{width:210}} onChange={this.dateArea} value={[this.state.LastDate,this.state.NowDate]}  />&nbsp;&nbsp;
+
+                保养时段：<RangePicker style={{width:230}} onChange={this.dateArea}
+                        />&nbsp;&nbsp;
 
                 <Search
-                   //  id='search'
-                   // className = {`search-${type}`}
                     value={this.state.searchInput}
                     placeholder={this.props.name}
-                     onSearch={this.handleSearch}
-                     onChange={this.searchContentChange}
-                     enterButton
+                    onSearch={this.handleSearch}
+                    onChange={this.searchContentChange}
+                    enterButton
                     style={{ width: 200 }}
-                  //  searchContentChange={this.searchContentChange}
                     name='单号/设备名称/编号...'
                 />
-
                 <Button
                     type="primary"
-                    style={{marginLeft:10,width:70}}
+                    style={{marginLeft:5,float: 'right'}}
                     onClick={this.getFetch}
                     className='button'
                 ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
-
             </div>
         );
     }
 
+    /**重置*/
     getFetch = () => {
         this.setState({
             searchInput:'',
             LastDate:null,
             NowDate:null
         })
-        this.props.fetch({},1);
+        var date = this.props.getLastMonthTime(1);
+        var params = {
+            deptId:parseInt(this.props.depCode),
+            statusId:3,
+            startDate:date.datastr,
+            endDate:date.NowDate
+        }
+        this.props.fetch(params,1);
     }
 }
 export default SearchCell;

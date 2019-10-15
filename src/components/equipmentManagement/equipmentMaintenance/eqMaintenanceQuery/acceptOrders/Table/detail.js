@@ -86,7 +86,6 @@ class Details extends React.Component {
         }).then((data) => {
 
             const res = data.data.data.deviceMaintenanceRecordDetails ? data.data.data.deviceMaintenanceRecordDetails : [];
-            console.log(res)
             if (res) {
                 const arrMes = res;
                 var newRowData = arrMes

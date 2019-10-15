@@ -34,7 +34,6 @@ class TreeCard extends React.Component{
         if(!this.state.flag){
             if(data.length!==0){
                 var keys=[];
-
                 while(data[0].children.length!==0)
                 {
                     keys.push(data[0].key+'');
@@ -46,7 +45,6 @@ class TreeCard extends React.Component{
                 this.setState({
                     expandedKeys:keys,
                 });
-
             }
         }
     }
