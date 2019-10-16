@@ -344,20 +344,6 @@ class CheckSpan extends React.Component {
         interCheckData.testReportRecord.isQualified = detailIsQualified;
         interCheckData.testReportRecord.judger = this.props.menuList.userId;
         interCheckData.sampleDeliveringRecord.id = id;
-        // if(detailTestDTOS){
-        //     let flag = 0
-        //     for(let j=0; j<detailTestDTOS.length; j++){
-        //         if(detailTestDTOS[j].testResult !== ''||detailTestDTOS[j].testResult !== null||detailTestDTOS[j].testResult !== undefined){
-        //             flag = 1
-        //             break
-        //         }
-        //     }
-        //     console.log(flag)
-        //     if (flag === 0){
-        //         message.info('至少填写一个检测结果！');
-        //         return
-        //     }
-        // }
         if(detailIsQualified !== 0&&detailIsQualified !== 1){
             message.info('请点击合格或者不合格！');
             return

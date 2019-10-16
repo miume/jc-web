@@ -104,6 +104,7 @@ class InterTable extends React.Component{
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
             let checkSpanFlag = this.judgeCheckOperation(status);
+            //let checkSpanFlag = true;
             let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
             return (
                 <span>
@@ -180,7 +181,7 @@ class InterTable extends React.Component{
         }
     };
     judgeCheckOperation = (status) => {
-        if(status===-1||status===3){
+        if(status===-1||status===3||status===12){
             return true;
         }else{
             return false;

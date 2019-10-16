@@ -302,7 +302,7 @@ class RecordChecking extends React.Component{
         return (
             <span className={this.props.flag?'':'hide'}>
                 <Divider type='vertical' />
-                <span className={this.props.status===-1||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
+                <span className={this.props.status===-1||this.props.status===3||this.props.status===12?'blue':'notClick'} onClick={this.handleClick}>录检</span>
                 <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
                 maskClosable={false} centered={true}
                 footer={[

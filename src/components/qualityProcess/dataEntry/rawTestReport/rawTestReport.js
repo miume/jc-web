@@ -8,23 +8,7 @@ import SearchCell from '../../../BlockQuote/search';
 import RecordChecking from './recordChecking';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import Loss from '../../../BlockQuote/lossStatement';
-// const data = [];
-// for(var i = 1; i <= 20;i++){
-//     data.push({
-//         id:i,
-//         date:'2018-11-11 11:11:11',
-//         user:'张三',
-//         factory:'鹅厂',
-//         batchNumber:'YYYYH',
-//         textItem:'ca',
-//         notes:'ccc',
-//         type:0,
-//         receiveState:0,
-//         feedback:'sss',
-//         state:0,
-//         isUrgent:'紧急'
-//     })
-// }
+
 class RawTestReport extends React.Component{
     url
     status
@@ -218,7 +202,6 @@ class RawTestReport extends React.Component{
                 exceptionComment:e.sampleDeliveringRecord.exceptionComment,
                 type:e.sampleDeliveringRecord.type,
                 acceptStatus:'接受',
-                // acceptStatus:e.sampleDeliveringRecord.acceptStatus,
                 handleComment:e.sampleDeliveringRecord.handleComment,
                 status:e.commonBatchNumber?e.commonBatchNumber.status:0,
                 isUrgent:e.commonBatchNumber?e.commonBatchNumber.isUrgent:0,

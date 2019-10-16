@@ -121,9 +121,9 @@ class CheckPlan extends React.Component {
     //----------------------------------
 
     handleSelect = (code, data) => data.map((item) => {
-        // console.log(code,item)
         if (item.code === code) {
             item.isSelect = true;
+            this.getRightData(code,item.value,item.parentCode);
             this.setState({
                 departName:item.value,
                 deptCode:code,
@@ -132,8 +132,6 @@ class CheckPlan extends React.Component {
         } else {
             item.isSelect = false;
         }
-        //Tip: Must have, when a node is editable, and you click a button to make other node editable, the node which you don't save yet will be not editable, and its value should be defaultValue
-        // item.isSelect = false;
         if (item.children) {
             this.handleSelect(code, item.children)
         }

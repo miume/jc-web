@@ -163,6 +163,9 @@ class CheckModal extends React.Component{
     pass(){
         this.checkApply(1);
     }
+    temporaryPass = () => {
+        //this.checkApply(2);
+    }
     /**通过、不通过 */
     checkApply(status){
         const {reply} = this.state;
@@ -230,6 +233,7 @@ class CheckModal extends React.Component{
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                     <span key='check' className={this.props.flag?'hide':''} >
                         <NewButton key='fail' className='fa fa-times' name='不通过' handleClick={this.fail} />
+                        <NewButton key='temporaryPass' className='fa fa-check' name='暂通过' handleClick={this.temporaryPass} />
                         <NewButton key='pass' className='fa fa-check' name='通过' handleClick={this.pass} />
                     </span>
 

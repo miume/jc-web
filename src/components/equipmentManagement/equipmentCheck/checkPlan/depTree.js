@@ -139,7 +139,9 @@ class DepTree extends Component {
     };
 
     onSelect = (selectedKeys) => {
+        console.log(selectedKeys)
         var dataSource = this.state.dataSource;
+        console.log(dataSource)
         this.props.handleSelect(selectedKeys[0],dataSource);
     }
 

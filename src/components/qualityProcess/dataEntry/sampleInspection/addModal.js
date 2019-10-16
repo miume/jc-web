@@ -120,7 +120,6 @@ const CollectionCreateForm = Form.create()(
                         serialNumber:res
                       })
                 }
-
             })
 
             axios({
