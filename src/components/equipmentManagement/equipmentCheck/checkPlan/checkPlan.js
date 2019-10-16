@@ -121,11 +121,13 @@ class CheckPlan extends React.Component {
     //----------------------------------
 
     handleSelect = (code, data) => data.map((item) => {
+        // console.log(code,item)
         if (item.code === code) {
             item.isSelect = true;
             this.setState({
                 departName:item.value,
-                deptCode:code
+                deptCode:code,
+                parentCode:item.parentCode
             })
         } else {
             item.isSelect = false;
@@ -136,11 +138,13 @@ class CheckPlan extends React.Component {
             this.handleSelect(code, item.children)
         }
     });
-    getRightData = (code, deviceName) => {
+    getRightData = (code, deviceName,parentCode) => {
+        // console.log(code,deviceName)
 
         code = parseInt(code)
         this.setState({
-            deptCode:code
+            deptCode:code,
+            parentCode:parentCode
         })
         axios({
             url: `${this.url.equipmentArchive.device}/${code}`,
@@ -365,7 +369,7 @@ render(){
                     <div>
                         <div className="checkP_buttons">
                             <div className="checkp-left">
-                                <Add deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.departName} pagination={this.state.pagination}
+                                <Add parentCode={this.state.parentCode} deptCode={this.state.deptCode} deviceName={this.state.deviceName}  url={this.url}  departName={this.state.departName} pagination={this.state.pagination}
                                 fetch={this.getTableData}/>
                             </div>
                             <div className="check_right">

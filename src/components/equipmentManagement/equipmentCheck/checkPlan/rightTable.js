@@ -112,6 +112,7 @@ class RightTable extends React.Component {
                     size="small"
                     bordered
                     scroll={{y: 450}}
+                    rowKey={record => record.code}
                 />
             </div>
         )

@@ -32,7 +32,7 @@ class Add extends React.Component{
             },
             params: {
                 deptCode:this.props.deptCode,
-                deviceName:this.props.deviceName
+                deviceName:this.props.deviceName,
             }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
@@ -69,7 +69,7 @@ class Add extends React.Component{
         this.setState({visible: false})
     }
     render(){
-
+        // console.log(this.props)
         return(
             <span>
             <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
@@ -84,7 +84,7 @@ class Add extends React.Component{
                 footer={[
                     <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
             >
-                <TTable  dataSource={this.state.rightTableData} url={this.props.url} deptId={this.props.deptCode} deviceName={this.props.deviceName}
+                <TTable parentCode={this.props.parentCode} dataSource={this.state.rightTableData} url={this.props.url} deptId={this.props.deptCode} deviceName={this.props.deviceName}
                          fetch={this.props.fetch} fresh={this.fresh}/>
 
 

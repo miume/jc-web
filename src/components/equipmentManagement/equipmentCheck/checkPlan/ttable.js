@@ -66,10 +66,10 @@ class TTable extends React.Component{
             key: 'operation',
             align: 'left',
             render: (text, record) => {
-                console.log(record)
+                // console.log(record)
                 return (
                     <span>
-                    <MakePlan  flag={record.flag} url={this.props.url} record={record} deptId={this.props.deptId} deviceName={this.props.deviceName}
+                    <MakePlan parentCode={this.props.parentCode} flag={record.flag} url={this.props.url} record={record} deptId={this.props.deptId} deviceName={this.props.deviceName}
                      fetch={this.props.fetch} fresh={this.props.fresh}/>
                     </span>
                 );
@@ -84,7 +84,7 @@ class TTable extends React.Component{
                     size="default"
                     bordered
                     scroll={{ y: 450 }}
-
+                    rowKey={record => record.code}
                 />
             </div>
         )
