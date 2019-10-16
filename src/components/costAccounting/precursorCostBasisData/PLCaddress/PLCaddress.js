@@ -6,7 +6,7 @@ import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
-import Edit from "./edit"
+import Edit from "./edit";
 
 class PLCaddress extends React.Component{
     url;

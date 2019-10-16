@@ -33,7 +33,12 @@ class DepTree extends Component {
         // Tip: Must have, or the parent node will not expand automatically when you first add a child node
         this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
         this.getData();
-    }
+    };
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
 
     render() {
         return (
@@ -113,7 +118,8 @@ class DepTree extends Component {
                     dataSource[0].children.push(parenObj);
                 }
                 if (res[0] && res[0].son) {
-                    this.props.getRightData(res[0].son[0].code,'')
+                    // console.log(res[0])
+                    this.props.getRightData(res[0].son[0].code,'',res[0].parent["code"])
                     this.props.firstname(res[0].son[0]?res[0].son[0].name:'')
                 }
                 this.setState({

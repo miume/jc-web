@@ -424,7 +424,8 @@ class Home extends Component {
                 upload:`${server}/jc/common/deviceSpotCheck/upload`,
                 delete:`${server}/jc/common/deviceSpotCheck`,
                 getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`,
-                cancelLoad:`${server}/jc/common/deviceSpotCheck/cancelLoad`
+                cancelLoad:`${server}/jc/common/deviceSpotCheck/cancelLoad`,
+                getModelByDeviceName:`${server}/jc/common/deviceSpotCheck/getModelByDeviceName`
             },
             /**巡检计划 */
             devicePatrolPlan:{
