@@ -1,0 +1,26 @@
+.raw-material-date {
+    width: 240px;
+}
+
+.raw-material-select {
+    width: 70px;
+}
+
+.raw-material-detail {
+    padding: 10px;
+}
+
+.raw-material-detail-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom:  10px;
+}
+
+.raw-material-line-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.raw-material-line-footer-div {
+    margin: 0 20px;
+}

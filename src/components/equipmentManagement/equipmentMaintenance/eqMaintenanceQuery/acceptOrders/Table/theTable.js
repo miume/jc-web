@@ -29,8 +29,6 @@ class TheTable extends React.Component {
         {
             title: '设备名称/编号',
             dataIndex: 'deviceName',
-            key: 'deviceName',
-            sorter: (a, b) => a.index - b.index,
             width: '10px',
             align:'center',
         },

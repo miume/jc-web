@@ -30,7 +30,7 @@ class Detail extends React.Component{
                 deviceMaintenanceAccessory: [],
                 planData:''
             },
-            abnormalContent:[]
+            abnormalContent:''
         };
         this.fetch = this.fetch.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -110,8 +110,8 @@ class Detail extends React.Component{
         {
             title: '所属部门',
             align:'center',
-            key: 'deptCode',
-            dataIndex: 'deptCode',
+            key: 'depName',
+            dataIndex: 'depName',
             width:130,
         },
         {
@@ -168,25 +168,20 @@ class Detail extends React.Component{
                 'Authorization': this.props.url.Authorization
             },
             params:{
-                id:this.props.code
+                id:this.props.code.code
             }
         }).then((data) => {
             const res=data.data.data ? data.data.data : [];
             if(res){
-                var detailData = this.state.detailData;
+                let detailData = this.state.detailData;
                 const deviceMaintenanceRecordHead = res.deviceMaintenanceRecordHead;
                 deviceMaintenanceRecordHead['deviceName'] = deviceMaintenanceRecordHead.deviceName + '/#' + deviceMaintenanceRecordHead.fixedassetsCode;
                 deviceMaintenanceRecordHead['setPeople'] = res.setPeople ? res.setPeople : '';
+                deviceMaintenanceRecordHead['depName'] = this.props.code.depName;
                 detailData.deviceMaintenanceRecordHead.push(deviceMaintenanceRecordHead);
                 const deviceMaintenanceRecordDetails = res.deviceMaintenanceRecordDetails;
-                var abnormalContent = this.state.abnormalContent
-                for(var i = 0 ; i< deviceMaintenanceRecordDetails.length; i++){
-                    const arr = deviceMaintenanceRecordDetails[i];
-                    deviceMaintenanceRecordDetails[i]['index'] = i + 1;
-                    if(arr.mainValues === 1) {
-                        abnormalContent.push(arr.mainContent)
-                    }
-                }
+                let abnormalContent = deviceMaintenanceRecordHead.abnormalcontent;
+
                 detailData.deviceMaintenanceRecordDetails = deviceMaintenanceRecordDetails;
                 const deviceMaintenanceAccessory = res.deviceMaintenanceAccessory
                 detailData.deviceMaintenanceAccessory = deviceMaintenanceAccessory
@@ -217,11 +212,9 @@ class Detail extends React.Component{
 
     footer = () => {
         const abnormalContent = this.state.abnormalContent;
-        if(abnormalContent.length===0){
-            return null
-        }else{
-            return abnormalContent
-        }
+        return (
+            <div style={{textAlign: 'left'}}>{`备注：` + abnormalContent}</div>
+        )
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));

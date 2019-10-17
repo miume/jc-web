@@ -28,13 +28,21 @@ class WillMaintain extends React.Component{
             depName:'',
             deptId:'',
         };
-        this.fetch=this.fetch.bind(this);
+        this.pagination = {
+            showTotal(total) {
+                return `共${total}条记录`
+            },
+            showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
+        };
+        this.fetch = this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.searchReset=this.searchReset.bind(this);
+        this.getTableData=this.getTableData.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
     }
     render() {
-        this.state.pagination=this.props.pagination;
 
         return (
             <div className='equipment-query'>
@@ -58,10 +66,8 @@ class WillMaintain extends React.Component{
                     <div className='clear' ></div>
                     <TheTable
                         url={this.props.url}
-                        fetch={this.fetch}
-                        searchReset={this.searchReset}
-                        getTableData={this.props.getTableData}
-                        pagination={this.state.pagination}
+                        searchEvent={this.searchEvent}
+                        pagination={this.pagination}
                         rightTableData={this.props.rightTableData}
                         handleTableChange={this.handleTableChange}
                     />
@@ -76,89 +82,54 @@ class WillMaintain extends React.Component{
     }
 
     /**跟踪搜索事件变化 */
-    searchContentChange=(e)=>{
+    searchContentChange(e) {
         const value = e.target.value;
         this.setState({searchContent:value});
     }
-    onExpand = (expandedKeys) => {//展开的时候更新一下
-        this.expandedKeys = expandedKeys;
-        this.setState({expandedKeys: expandedKeys})
-    }
 
     /**绑定搜索事件 */
-    searchEvent = () => {
-        this.setState({
-            pageChangeFlag: 1
-        });
+    searchEvent() {
         const params={
-            deptId:parseInt(this.props.depCode),
+            deptId:parseInt(this.props.deptId),
             statusId:1,
             depName:this.props.depName,
             condition:this.state.searchContent,
-        }
-        // this.props.getTableData(params);
-        this.fetch(params,0);
+            page:this.pagination.current,
+            size:this.pagination.pageSize,
+        };
+        this.props.getTableData(params);
     }
 
     /**重置时重新加载数据*/
-    searchReset=()=>{
+    searchReset() {
+        this.setState({
+            searchContent: '' //将搜索框内容置空
+        });
         this.props.getTableData(
             {
-                deptId:parseInt(this.props.depCode),
+                deptId:parseInt(this.props.deptId),
                 statusId:1,
                 depName:this.props.depName,
+                page:this.pagination.current,
+                size:this.pagination.pageSize
             }
         )
     }
+
     /**分页查询*/
-    handleTableChange = (page) => {
-        const {pageChangeFlag} = this.state.pageChangeFlag;
-        if (pageChangeFlag) {
-            this.props.getTableData({
-                deptId:parseInt(this.props.depCode),
-                statusId: 1,
-                depName:this.props.depName,
-                condition:this.state.searchContent,
-                page:page.current,
-                size:page.pageSize,
-            })
-        } else {
-            this.props.getTableData({
-                deptId:parseInt(this.props.depCode),
-                statusId: 1,
-                depName:this.props.depName,
-                page:page.current,
-                size:page.pageSize,
-            })
-        }
+    handleTableChange(page) {
+        this.pagination = page;
+        this.props.getTableData({
+            deptId:parseInt(this.props.deptId),
+            statusId: 1,
+            condition:this.state.searchContent,
+            page:page.current,
+            size:page.pageSize,
+        })
     };
 
-    fetch = (params,flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;//设置当前页面为1
-            pagination.total = 0;//设置全部页面为0
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent:'',
-                pagination:pagination
-            })
-            this.searchReset();
-        }
-        else{
-            this.setState({
-                pageChangeFlag: 1
-            });
-            const params={
-                deptId:parseInt(this.props.depCode),
-                statusId:1,
-                depName:this.props.depName,
-                condition:this.state.searchContent,
-            }
-            this.props.getTableData(params);
-        }
-    };
-
+    fetch() {
+        this.searchReset();
+    }
 }
 export default WillMaintain

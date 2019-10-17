@@ -142,6 +142,7 @@ class EqMaintenancePlan extends React.Component{
                 var mainData=[];
                 for(var i=0;i<res.length;i++){
                     mainData.push({
+                        index: i + 1,
                         code:res[i].code,
                         deviceName:res[i].deviceName,
                         maintenanceItems:res[i].maintenanceItems,

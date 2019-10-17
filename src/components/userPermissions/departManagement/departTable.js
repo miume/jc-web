@@ -126,8 +126,6 @@ class DepartTable extends React.Component {
                         </span>
                     <DeletaSpan
                         record={record}
-                        fetch={this.props.fetch}
-                        pagination={this.props.pagination}
                         handleDelete={this.props.handleDelete}
                         flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                     />

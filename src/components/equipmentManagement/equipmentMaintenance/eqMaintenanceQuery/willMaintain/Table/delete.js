@@ -3,9 +3,6 @@ import {Divider, Popconfirm} from 'antd';
 
 //用于编写弹出框的按钮应用
 class Delete extends React.Component {
-    constructor(props) {
-        super(props);
-        }
     render(){
 
         return(
