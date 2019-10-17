@@ -107,7 +107,6 @@ class ContentTable extends React.Component {
     }
 
     handleTableChange=(page)=>{
-        console.log(page)
         const params={
             deptId: this.props.depCode,
             statusId: this.props.statusId,

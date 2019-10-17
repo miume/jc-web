@@ -45,7 +45,7 @@ class Details extends React.Component {
                     <InnerTable
                         code={this.props.record.code}
                         deviceName={this.props.record.deviceName}
-                        deptCode={this.props.record.deptCode}
+                        depName={this.props.record.depName}
                         planDate={this.props.record.planDate}
                         receiveDate={this.props.record.receiveDate}
                         maintPeople={this.props.record.maintPeople}

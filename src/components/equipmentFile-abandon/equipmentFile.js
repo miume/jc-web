@@ -120,7 +120,7 @@ class EquipmentArchive extends Component{//设备档案
          showSizeChanger:true,//是否可以改变 pageSize
          showTotal:(total)=>`共${total}条记录`,//显示共几条记录
          pageSizeOptions: ["10","20","50","100"]
-     }
+     };
      this.onSelectChange=this.onSelectChange.bind(this);
      this.handleTableChange=this.handleTableChange.bind(this);
      this.getAllRepairManufacturer=this.getAllRepairManufacturer.bind(this);

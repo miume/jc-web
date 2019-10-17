@@ -29,37 +29,31 @@ class TheTable extends React.Component {
             sorter: (a, b) => a.index - b.index,
             width: '10%',
             align:'center',
-        },
-        {
+        }, {
             title: '保养单号',
             dataIndex: 'code',
             key: 'code',
             width: '20%',
             align:'center',
-        },
-        {
+        }, {
             title: '设备名称/编号',
             dataIndex: 'deviceName',
             key: 'deviceName',
-            sorter: (a, b) => a.index - b.index,
             width: '20%',
             align:'center',
-        },
-        {
+        }, {
             title: '所属部门',
             dataIndex: 'depName',
             key: 'depName',
             width: '20%',
             align:'center',
-        },
-        {
+        }, {
             title: '本次计划执行日期',
             dataIndex: 'planDate',
             key: 'planDate',
             width: '20%',
             align:'center',
-        },
-        {
+        }, {
             title: '操作',
             dataIndex: 'move',
             key: 'move',
@@ -108,7 +102,7 @@ class TheTable extends React.Component {
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.props.searchReset();//删除后重置信息
+            this.props.searchEvent();//删除后重置信息
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });

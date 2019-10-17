@@ -1,8 +1,9 @@
 import React from "react";
 import Right from "./right";
-import axios from "axios";
 import DepTree from "../../../../BlockQuote/department";
-import Home from "../../../../Home/home";
+import home from "../../../../commom/fns";
+import {Spin} from "antd";
+import SearchCell from "./search";
 
 class Completed extends React.Component{
     componentWillUnmount() {
@@ -12,27 +13,26 @@ class Completed extends React.Component{
     }
 
     url;
-    operation
+    operation;
 
     constructor(props) {
         super(props);
         this.state = {
-            dataSource: [],
-            selectedRowKeys: [],
-            editingKey: '',
-            searchContent:'',
-            searchText: '',
-            eff_flag:1,
-            dateOneMonth:{},
-            pagination : {
-                showTotal(total) {
-                    return `共${total}条记录`
-                },
-                showSizeChanger:true
-            },
-            pageChangeFlag : 0,   //0表示分页 1 表示查询
+            searchContent:'', //保存input的内容
+            startDate: '',    //保存RangePicker组件的开始时间和结束时间
+            endDate: ''
         };
-        this.getLastMonthTime=this.getLastMonthTime.bind(this)
+        this.pagination = {
+            showTotal(total) {
+                return `共${total}条记录`
+            },
+            showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
+        };
+        this.fetch = this.fetch.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.getTableData=this.getTableData.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
     }
 
 
@@ -46,154 +46,80 @@ class Completed extends React.Component{
                     url={this.props.url}
                     getTableData={this.getTableData}
                 />
-                <Right
-                    url={this.url}
-                    data={this.state.dataSource}
-                    loading = {this.props.loading}
-                    pagination={this.state.pagination}
-                    fetch={this.fetch}
-                    modifyDataSource={this.modifyDataSource}
-                    handleTableChange={this.handleTableChange}
-                    handleDelete={this.handleDelete}
-                    judgeOperation = {Home.judgeOperation}
-                    operation = {this.operation}
-                    rightTableData={this.props.rightTableData}
-                    getTableData={this.props.getTableData}
-                    depCode={this.props.depCode}
-                    getLastMonthTime={this.getLastMonthTime}
-                />
+                <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
+                    <div>
+                        <SearchCell
+                            name="单号/设备名称/编号..."
+                            fetch={this.fetch}
+                            flag={home.judgeOperation(this.operation,'QUERY')}
+                            getTableData={this.getTableData}
+                            searchEvent = {this.searchEvent}
+                            deptId={this.props.deptId}
+                            style={{marginTop:10}}
+                        />
+                    </div>
+                    <Right
+                        url={this.props.url}
+                        searchEvent={this.searchEvent}
+                        pagination={this.pagination}
+                        rightTableData={this.props.rightTableData}
+                        handleTableChange={this.handleTableChange}
+                    />
+                </Spin>
             </div>
-
         );
     }
 
     /**获取最近一个月已完成表格数据*/
-    getTableData = (params) => {
-        let date = this.getLastMonthTime(1);
+    getTableData(params, flag) {
+        if(flag) {
+            this.setState({
+                flag: flag
+            })
+        }
+        if(!params.startDate && !params.endDate) {
+            let date = this.props.getLastMonthTime(flag ? flag : this.state.flag);
+            params['startDate'] = date.startDate;
+            params['endDate'] = date.endDate;
+        }
         params['statusId'] = 3;
-        params['startDate'] = date.datastr;
-        params['endDate'] = date.NowDate;
+        params['deptId'] = params['deptId'] ? params['deptId'] : this.props.deptId;
         this.props.getTableData(params)
     }
 
-    getLastMonthTime = (month) =>{
-        var date=new Date();
-        var strYear = date.getFullYear();
-        var strDay = date.getDate();
-        var strMonth = date.getMonth()+1;
-        var NowDate= strYear+"-"+strMonth+"-"+strDay;
-        //  1    2    3    4    5    6    7    8    9   10    11   12月
-        var daysInMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31];
-        //一、解决闰年平年的二月份天数   //平年28天、闰年29天//能被4整除且不能被100整除的为闰年,或能被100整除且能被400整除
-        if (((strYear % 4) === 0) && ((strYear % 100)!==0) || ((strYear % 400)===0)){
-            daysInMonth[2] = 29;
-        }
-        if(month===1){
-            if(strMonth - 1 === 0) //二、解决跨年问题
-            {
-                strYear -= 1;
-                strMonth = 12;
-            }
-            else
-            {
-                strMonth -= month;
-            }
-        }
-        else if(month===3){
-            if(strMonth - month<= 0) //二、解决跨年问题
-            {
-                strYear -= 1;
-                if(strMonth===1)strMonth=10;
-                else if(strMonth===2)strMonth=11;
-                else if(strMonth===3)strMonth=12;
-            }
-            else
-            {
-                strMonth -= month;
-            }
-        }
-        else if(month===12){
-            strYear-=1;
-        }
-        strDay = Math.min(strDay,daysInMonth[strMonth]);//三、前一个月日期不一定和今天同一号，例如3.31的前一个月日期是2.28；9.30前一个月日期是8.30
-        if(strMonth<10)//给个位数的月、日补零
-        {
-            strMonth="0"+strMonth;
-        }
-        if(strDay<10)
-        {
-            strDay="0"+strDay;
-        }
-        var datastr = strYear+"-"+strMonth+"-"+strDay;
-        return {
-            NowDate:NowDate,
-            datastr:datastr
-        }
+    /**分页查询*/
+    handleTableChange(page)  {
+        this.pagination = page;
+        const {searchContent, startDate, endDate} = this.state;
+        this.getTableData({
+            deptId: parseInt(this.props.deptId),
+            condition: searchContent,
+            page: page.current,
+            size: page.pageSize,
+            startDate: startDate,
+            endDate: endDate
+        })
+    };
+
+    searchEvent(params) {
+        this.setState({
+            searchContent: params.searchInput,
+            startDate: params.startDate,
+            endDate: params.endDate
+        });
+        console.log(params);
+        this.props.getTableData(params);
     }
 
-    /**---------------------- */
-    /**获取所有数据 getAllByPage */
-    handleTableChange = (pagination) => {
+    /**搜索重置*/
+    fetch({}, flag) {
         this.setState({
-            pagination:pagination
+            searchContent: '',
+            startDate: '',
+            endDate: ''
         });
-        const {pageChangeFlag} = this.state;
-        /**分页查询 */
-        if(pageChangeFlag){
-            this.fetch({
-                size:pagination.pageSize,
-                page:pagination.current,
-                condition:this.state.searchContent,
-                deptId:parseInt(this.state.depCode),
-                deviceId:this.props.record.code
-            })
-        }else{
-            this.fetch({
-                size:pagination.pageSize,
-                page:pagination.current,
-                condition:this.state.depCode,
-                deptId:parseInt(this.state.code),
-                deviceId:this.props.record.code
-            })
-        }
-    };
-
-
-    fetch = (params ,flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;
-            pagination.total = 0;
-            this.setState({
-                pageChangeFlag:0,
-                searchContent:'',
-                pagination:pagination
-            })
-        }
-        axios({
-            url: ' ' ,
-            method: 'get',
-            params: params,
-        }).then((data) => {
-            const res = data.data.data?data.data.data:[];
-            if(res&&res.list){
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i; // index: i + 1 + (res.page - 1) * res.size
-                }
-                const {pagination} = this.state;
-                pagination.total=res.total;
-                this.setState({
-                    dataSource: res.list,
-                    pagination:pagination,
-                });
-            }else{
-                this.setState({
-                    dataSource: []
-                })
-            }
-        });
-    };
+        this.getTableData({},flag);
+    }
 }
 export default Completed
 
