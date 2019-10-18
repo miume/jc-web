@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Input,DatePicker} from 'antd';
+import moment from "moment";
 class SearchCell extends React.Component {
     render(){
         const Search = Input.Search;
@@ -9,7 +10,7 @@ class SearchCell extends React.Component {
             {
                 this.props.timeFlag?
                 <span id='date-choose'>
-                <DatePicker className = {`search-${type}`} onChange={this.props.searchContentChange} placeholder='请选择日期' />
+                <DatePicker className = {`search-${type}`} value={this.props.date?moment(this.props.date):null} onChange={this.props.searchContentChange} placeholder='请选择日期' />
                 <Button type="primary" icon="search" className='time-search' onClick={this.props.searchEvent}></Button></span>:
                 <Search
                     id='search'

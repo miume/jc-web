@@ -14,24 +14,31 @@ class DrSpanModal extends React.Component {
         dataIndex: 'index',
         key: 'index',
         align:'center',
-        width: '20%',
+        width: '10%',
     },{
         title: '检测项目',
         dataIndex: 'testItemName',
         key: 'testItemName',
         align:'center',
-        width: '25%',
+        width: '20%',
     },{
         title: '检测结果',
         dataIndex: 'testResult',
         key: 'testResult',
         align:'center',
+        width: '30%',
+    },{
+        title:'标准',
+        dataIndex:'value',
+        key:'value',
+        align:'center',
+        width:'20%'
     },{
         title: '计量单位',
         dataIndex: 'unit',
         key: 'unit',
         align:'center',
-        width: '25%',
+        width: '20%',
     }];
     render() {
         const columns = this.columns.map((col) => {
@@ -72,7 +79,7 @@ class DrSpanModal extends React.Component {
                 <div className="interDetailTable">
                     <Table
                         className="interCursorDefault"
-                        rowKey={record => record.index}
+                        rowKey={record => record.id}
                         columns={columns}
                         dataSource={this.props.data.testDTOS}
                         pagination={{hideOnSinglePage:true,pageSize:100}}

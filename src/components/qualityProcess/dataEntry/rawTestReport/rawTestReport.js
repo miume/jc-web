@@ -28,15 +28,15 @@ class RawTestReport extends React.Component{
         this.state ={
             dataSource:[],
             searchContent : '',
-            pagination : {
-                showTotal(total) {
-                    return `共${total}条记录`
-                } ,
-                showSizeChanger:true,
-                pageSizeOptions: ["10","20","50","100"]
-              },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
             loading: true
+        }
+        this.pagination = {
+            showTotal(total) {
+                return `共${total}条记录`
+            } ,
+            showSizeChanger:true,
+                pageSizeOptions: ["10","20","50","100"]
         }
         this.fetch = this.fetch.bind(this);
         this.tableRecord = this.tableRecord.bind(this);
@@ -122,7 +122,8 @@ class RawTestReport extends React.Component{
                 return (
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
-                        <RecordChecking value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
+                        <RecordChecking title='录检' value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
+                        <RecordChecking title='修改' value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
                         <Divider type='vertical' />
                         <Loss statement={record.exceptionComment} name='异常备注' />
                         <Divider type='vertical' />
@@ -133,37 +134,21 @@ class RawTestReport extends React.Component{
         },]
     }
     handleTableChange(pagination){
-        this.setState({
-            pagination:pagination
-        })
-        const {pageChangeFlag} = this.state;
+        this.pagination = pagination;
         /**分页查询 */
-        if(pageChangeFlag){
-            this.fetch({
-                pageSize:pagination.pageSize,
-                pageNumber:pagination.current,
-                factoryName:this.state.searchContent
-            })
-        }else{
-            this.fetch({
-                pageSize:pagination.pageSize,
-                pageNumber:pagination.current,
-            })
-        }
-
+        this.fetch({
+            pageSize:pagination.pageSize,
+            pageNumber:pagination.current,
+            factoryName:this.state.searchContent
+        })
     }
     /**?factoryName=${this.state.searchContent} */
     /**flag表示为1时重置pageChangeFlag */
     fetch(params,flag){
         /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
         if(flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;
-            pagination.total = 0;
             this.setState({
-                pageChangeFlag:0,
-                searchContent:'',
-                pagination:pagination
+                searchContent:''
             })
         }
         axios.get(`${this.url.rawTestReport.getAllByPage}`,{
@@ -175,7 +160,7 @@ class RawTestReport extends React.Component{
             const res = data.data.data?data.data.data:[];
             if(res&&res.list){
                 this.dataProcessing(res)
-            }else{
+            } else {
                 this.setState({
                     dataSource:[],
                     loading: false
@@ -186,8 +171,6 @@ class RawTestReport extends React.Component{
     /**数据处理 */
     dataProcessing(res){
         var da = [];
-        const {pagination} = this.state;
-        pagination.total = res.total;
         for(var i = 1; i <= res.list.length; i++){
             var e = res.list[i-1];
             da.push({
@@ -210,7 +193,6 @@ class RawTestReport extends React.Component{
         }
         this.setState({
             dataSource:da,
-            pagination:pagination,
             loading: false
         })
     }
@@ -222,18 +204,19 @@ class RawTestReport extends React.Component{
         })
     }
     /**搜索功能 */
-    searchEvent(){
-        this.setState({
-            pageChangeFlag:1
-        })
-        this.fetch({
-            factoryName:this.state.searchContent
-        })
+    searchEvent() {
+        let {searchContent} = this.state;
+        if(searchContent) {
+            this.fetch({
+                factoryName: searchContent
+            })
+        }
     }
    /**返回数据录入页面 */
    returnDataEntry(){
-    this.props.history.push({pathname:'/dataEntry'});
-    }
+       this.props.history.push({pathname:'/dataEntry'});
+   }
+
    /**录检完成后，提示用户刚才录检的数据 */
    tableRecord(id){
        var {dataSource} = this.state;
@@ -261,6 +244,7 @@ class RawTestReport extends React.Component{
 
        })
    }
+
     render(){
         const current = JSON.parse(localStorage.getItem('dataEntry'));
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -273,11 +257,12 @@ class RawTestReport extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}
-                    fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
+                                fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                     <div className='clear'></div>
-                <Table rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource}
-                onChange={this.handleTableChange} pagination={this.state.pagination}
-                size='small' bordered rowClassName={(record)=>record.flag?'table-recorcd':''}/>
+                    <Table rowKey={record=>record.id} columns={this.columns}
+                           dataSource={this.state.dataSource} onChange={this.handleTableChange}
+                           pagination={this.pagination} size='small' bordered
+                           rowClassName={(record)=>record.flag?'table-recorcd':''}/>
                 </Spin>
             </div>
         );

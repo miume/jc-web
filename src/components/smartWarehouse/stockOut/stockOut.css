@@ -1,0 +1,19 @@
+.batchNumber {
+    height: 70px;
+    margin: 10px 0;
+}
+
+.batchNumber-div {
+    margin-bottom: 8px;
+}
+
+.batchNumber-select {
+    width: 110px;
+}
+
+.batchNumber-span {
+    display: inline-block;
+    width: 110px;
+    padding-left: 11px;
+    margin-right: 10px;
+}

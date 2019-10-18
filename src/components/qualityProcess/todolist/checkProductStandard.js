@@ -5,7 +5,6 @@ import HeadTable from '../../technologyCenter/productStandard/headTable';
 class CheckProductStandard extends React.Component{
     componentDidMount(){
         const {flag} = this.props;
-        // console.log(flag)
         var url = `${this.props.url.product.detailByCommonBatchId}`;
         if(flag===13) url = `${this.props.url.rawStandard.getStandard}`;
         this.getDataByBatchNumberId(this.props.batchNumberId,url);
@@ -23,25 +22,31 @@ class CheckProductStandard extends React.Component{
             dataIndex:'index',
             key:'index',
             align:'center',
-            width:'25%'
+            width:'20%'
         },{
             title:'检测项目',
             dataIndex:'name',
             key:'name',
             align:'center',
-            width:'25%'
+            width:'20%'
         },{
             title:'检测结果',
+            dataIndex:'testResult',
+            key:'testResult',
+            align:'center',
+            width:'20%'
+        },{
+            title:'标准',
             dataIndex:'value',
             key:'value',
             align:'center',
-            width:'25%'
+            width:'20%'
         },{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
             align:'center',
-            width:'25%'
+            width:'20%'
         },]
     }
 
