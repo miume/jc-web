@@ -6,9 +6,9 @@ import TodoProcessed from './todoprocessed';
 import BlockQuote from '../../BlockQuote/blockquote';
 const TabPane = Tabs.TabPane;
 class TodoList extends React.Component{
-    url
-    userId
-    operation
+    url;
+    userId;
+    operation;
     componentDidMount(){
         this.fetch();
         this.getHistory('');
@@ -23,13 +23,18 @@ class TodoList extends React.Component{
         this.state = {
             data:[],
             count : 0,
-            historyCount : 0
+            historyCount : 0,
+            loading: true,
+            historyLoading: true
         }
         this.fetch = this.fetch.bind(this);
         this.getHistory = this.getHistory.bind(this);
     }
     /**根据当前登陆用户id获取待办事项 */
-    fetch(){
+    fetch() {
+        this.setState({
+            loading: true
+        });
         axios.get(`${this.url.toDoList}/${this.userId}`,{
             headers:{
                 'Authorization':this.Authorization
@@ -38,16 +43,19 @@ class TodoList extends React.Component{
             const res = data.data.data;
             const count = res? res.length : 0;
             if(res) res['curId'] = this.userId;
-            //console.log(res)
             this.setState({
                 data:res,
-                count:count
+                count:count,
+                loading: false
             })
         })
     }
     /**根据当前用户id获取待办事项历史记录 */
     getHistory(date){
-        if(date===undefined) date = '';
+        this.setState({
+            historyLoading: true
+        });
+        if(date === undefined) date = '';
         axios.get(`${this.url.toDoList}/${this.userId}/history?date=${date}`,{},{
             headers:{
                 'Authorization':this.url.Authorization
@@ -57,6 +65,7 @@ class TodoList extends React.Component{
             if(res) res['curId'] = this.userId;
             this.setState({
                 historyRecord:res,
+                historyLoading: false
             })
         })
     }
@@ -72,12 +81,14 @@ class TodoList extends React.Component{
                  <Tabs defaultActiveKey='todo1'>
                      <TabPane key='todo1' tab={<span><i className="fa fa-bell-o" aria-hidden="true"></i> &nbsp;<Badge count={this.state.count} offset={[10,0]}><span>待处理</span></Badge></span>}>
                          <TodoProcessed url={this.url} data={this.state.data} fetch={this.fetch} getHistory={this.getHistory}
-                         operation={this.operation}
-                         /></TabPane>
+                                        operation={this.operation} loading={this.state.loading}
+                         />
+                     </TabPane>
                      <TabPane key='todo2' tab={<span><i className="fa fa-undo" aria-hidden="true"></i> &nbsp;历史记录</span>}>
                          <TodoProcessed url={this.url} data={this.state.historyRecord} getHistory={this.getHistory} fetch={this.fetch} flag={1}
-                         operation={this.operation}
-                         /></TabPane>
+                                        operation={this.operation} loading={this.state.historyLoading}
+                         />
+                     </TabPane>
                  </Tabs>
             </div>
         );

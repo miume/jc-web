@@ -102,8 +102,8 @@ class RawMaterialApplication extends React.Component{
                     flag={home.judgeOperation(this.operation,'SAVE')}
                 />
                 <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
-                fetch={this.fetch} searchContentChange={this.searchContentChange}
-                flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
+                            fetch={this.fetch} searchContentChange={this.searchContentChange}
+                            flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                 <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection} pagination={false} scroll={{ y: 398 }} bordered size='small'></Table>
             </Spin>
         );

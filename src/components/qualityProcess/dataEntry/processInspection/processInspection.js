@@ -49,7 +49,6 @@ class ProcessInspection extends React.Component{
             searchContent:'',
             allProductionProcess:[],
             detailData:[],
-            pageChangeFlag:0,        //0表示getAllPage分页查询，
             loading: true
         }
         this.fetch = this.fetch.bind(this);
@@ -144,25 +143,16 @@ class ProcessInspection extends React.Component{
     /**table变化时 */
     handleTableChange(pagination){
         this.pagination = pagination;
-        const {pageChangeFlag} = this.state;
-        if(pageChangeFlag){
-            this.fetch({
-                size:pagination.pageSize,
-                page:pagination.current,
-                personName:this.state.searchContent
-            })
-        }else{
-            this.fetch({
-                size:pagination.pageSize,
-                page:pagination.current,
-            })
-        }
+        this.fetch({
+            size:pagination.pageSize,
+            page:pagination.current,
+            personName:this.state.searchContent
+        })
     }
     /**分页查询 getAllByPage */
     fetch(params,flag){
         if(flag)
             this.setState({
-                pageChangeFlag:0,
                 searchContent:''
             })
         axios.get(`${this.url.procedure.getAllByPage}`,{
@@ -198,8 +188,6 @@ class ProcessInspection extends React.Component{
           params:{
             batchNumberIds:ids.toString()
           }
-        //   data:ids,
-        //   type:'json'
         }).then((data)=>{
             message.info(data.data.message);
             if(data.data.code===0){
@@ -252,19 +240,17 @@ class ProcessInspection extends React.Component{
   }
   /**实时跟踪搜索框内容的变化 */
   searchContentChange(e){
-    const value = e.target.value;
-    //console.log(value)
+      const value = e.target.value;
       this.setState({
           searchContent:value
       })
   }
   /**绑定搜索事件 */
   searchEvent(){
-      this.setState({
-          pageChangeFlag:1
-      })
       this.fetch({
-        personName:this.state.searchContent
+          size:this.pagination.pageSize,
+          page:this.pagination.current,
+          personName:this.state.searchContent
       });
   }
   /**获取所有产品线 productionProcess*/

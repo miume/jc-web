@@ -9,7 +9,7 @@ const columns = [{
     dataIndex: 'index',
     key: 'id',
     align:'center',
-    width: '20%',
+    width: '10%',
 },{
     title: '检测项目',
     dataIndex: 'testItemName',
@@ -23,11 +23,17 @@ const columns = [{
     align:'center',
     width: '30%',
 },{
+    title:'标准',
+    dataIndex:'value',
+    key:'value',
+    align:'center',
+    width:'20%'
+},{
     title: '计量单位',
     dataIndex: 'unit',
     key: 'unit',
     align:'center',
-    width: '30%',
+    width: '20%',
 }];
 class DetailModal extends React.Component {
     render() {
@@ -59,7 +65,7 @@ class DetailModal extends React.Component {
                            样品名称：<span>{data.topData?data.topData.materialName+'样品':''}</span>
                        </div>
                 </div>
-                <div className="rawTestReport-detail">
+                <div  style={{height:'280px'}}>
                     <Table
                         className="rawTestReport-detailModal"
                         rowKey={record => record.id}

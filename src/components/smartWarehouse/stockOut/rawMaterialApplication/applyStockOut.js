@@ -4,6 +4,7 @@ import CancleButton from '../../../BlockQuote/cancleButton';
 import Submit from '../../../BlockQuote/submit';
 import './rawAdd.css';
 import axios from 'axios';
+import BatchNumberSelect from "./batchNumberSelect";
 // const data = [];
 // for(var i = 1; i<=20; i++){
 //     data.push({
@@ -25,7 +26,8 @@ class ApplyStockOut extends React.Component{
             visible:false,
             visible1:false,
             process:-1,      //用来存取送审流程,
-            urgent:0
+            urgent:0,
+            batch: ''
         }
         this.columns = [{
             title:'序号',
@@ -77,7 +79,6 @@ class ApplyStockOut extends React.Component{
             className:'tdStyle'
         }]
         this.apply = this.apply.bind(this);
-        // this.handleOk = this.handleOk.bind(this);
         this.handleCancel =this.handleCancel.bind(this);
         this.save = this.save.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -87,11 +88,13 @@ class ApplyStockOut extends React.Component{
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
         this.applyReview = this.applyReview.bind(this);
+        this.getBatchNumber= this.getBatchNumber.bind(this);
     }
     /**申请出库弹出框 点击取消按钮 */
     handleCancel(){
         this.setState({
-            visible:false
+            visible:false,
+            batch: ''
         })
         /**实现取消选中 */
         this.props.cancle();
@@ -161,8 +164,14 @@ class ApplyStockOut extends React.Component{
     /**保存 */
     applyOut(status){
         const createPersonId = JSON.parse(localStorage.getItem('menuList')).userId;
+        let {batch} = this.state;
+        if(!batch) {
+            message.info('请先确定批次规则！')
+            return
+        }
         const commonBatchNumber = {
             createPersonId:createPersonId,
+            batch: this.state.batch
         }
         const details = [];
         const data = this.state.dataSource;
@@ -198,7 +207,8 @@ class ApplyStockOut extends React.Component{
         })
         this.setState({
             visible:false,
-            visible1:false
+            visible1:false,
+            batch: ''
         })
         this.props.cancle();
     }
@@ -218,19 +228,30 @@ class ApplyStockOut extends React.Component{
             message.info('审核失败，请联系管理员！')
         })
     }
+
+    /**在组件BatchNumberSelect中获取batchNumber批号显示*/
+    getBatchNumber(batch) {
+        this.setState({
+            batch: batch.join('')
+        })
+    }
+
     render(){
         this.toDoList = JSON.parse(localStorage.getItem('url')).toDoList
         return (
             <span className={this.props.flag?'':'hide'}>
-                <Button type='primary' size='default' style={{margin:'0 0 8px 0'}} className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'} onClick={this.apply} disabled={this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" ></i> 申请出库</Button>
+                <Button type='primary' size='default' style={{margin:'0 0 8px 0'}} className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'}
+                        onClick={this.apply} disabled={this.props.selectedRowKeys && this.props.selectedRowKeys.length>0?false:true}><i className="fa fa-plus-square" ></i> 申请出库</Button>
                 <Modal title='申请' visible={this.state.visible} centered={true}
                     closable= {false} width='1000px' maskClosable={false}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} defaultChecked={false}/>
+                        <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange}
+                                url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply} defaultChecked={false}/>
                     ]}
                 >
                 <div style={{height:'50vh',overflow:'auto'}}>
+                    <BatchNumberSelect url={this.props.url} batchNumber={this.state.batch} getBatchNumber={this.getBatchNumber}/>
                     <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
