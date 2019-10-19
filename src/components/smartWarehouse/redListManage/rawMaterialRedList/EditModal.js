@@ -101,7 +101,7 @@ class RawMaterialRedListEditModal extends React.Component{
         }
     }
     values.weightLoss=parseInt(v2);
-    console.log(values);
+    //console.log(values);
       
     return values;//用来得到编辑框中填写的新值
 }
