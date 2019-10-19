@@ -1,106 +1,74 @@
 import React from 'react';
 import {Button, DatePicker, Input} from 'antd';
+import moment from "moment";
 
 class SearchCell extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state={
-            selectState:'',
-            selectTime:'',
-            searchInput:'',
-            LastIndexDate:'',
-            NowIndexDate:'',
-            LastDate:'',
-            NowDate:'',
-            date:{},
-            clickFlag: 1
-        }
+            searchInput: '',
+            startDate: '',
+            endDate: '',
+            clickFlag: 1,
+            dateFormat: 'YYYY-MM-DD'
+        };
 
-        this.handleClicka=this.handleClicka.bind(this);
-        this.handleClickb=this.handleClickb.bind(this);
-        this.handleClickc=this.handleClickc.bind(this);
+        this.getFetch = this.getFetch.bind(this);
+        this.handleClickMonth=this.handleClickMonth.bind(this);
+        this.handleClickThreeMonth=this.handleClickThreeMonth.bind(this);
+        this.handleClickYear=this.handleClickYear.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
-        this.dateArea = this.dateArea.bind(this);
+        this.dateChange = this.dateChange.bind(this);
         this.searchContentChange=this.searchContentChange.bind(this);
     }
-    handleClicka=()=> {
-        var date = this.props.getLastMonthTime(1)
-        var params = {
-            deptId:parseInt(this.props.depCode),
-            statusId:3,
-            startDate:date.datastr,
-            endDate:date.NowDate
-        }
-        this.props.fetch(params)
-        this.setState({
-            clickFlag: 1,
-            date:date
-        })
 
-    }
-        handleClickb=()=>{
-            var date = this.props.getLastMonthTime(3)
-            var params = {
-                deptId:parseInt(this.props.depCode),
-                statusId:3,
-                startDate:date.datastr,
-                endDate:date.NowDate
-            }
-            this.props.fetch(params)
-            this.setState({
-                clickFlag: 2,
-                date:date
-            })
-        }
-    handleClickc=()=>{
-        var date = this.props.getLastMonthTime(12)
-        var params = {
-            deptId:parseInt(this.props.depCode),
-            statusId:3,
-            startDate:date.datastr,
-            endDate:date.NowDate
-        }
-        this.props.fetch(params)
+    /**点击最近一月*/
+    handleClickMonth() {
+        this.props.getTableData({}, 1)
         this.setState({
-            clickFlag: 3,
-            date:date
+            clickFlag: 1
         })
     }
-    dateArea = (date, dateString) => {
-        let NowIndexDate = dateString[1], LastIndexDate = dateString[0]
-        this.setState({
-            NowIndexDate:NowIndexDate,
-            LastIndexDate:LastIndexDate,
-            LastDate:date[0],
-            NowDate:date[1]
-        })
-    }
-    handleSearch=()=>{
-        var date = this.state.date
-        var NowIndexDate = this.state.NowIndexDate
-        var LastIndexDate = this.state.LastIndexDate
-        var pramas = {}
-        if(NowIndexDate!==''&&LastIndexDate!==''){
-            pramas ={
-                deptId:parseInt(this.props.depCode),
-                condition:this.state.searchInput,
-                startDate:LastIndexDate,
-                endDate:NowIndexDate,
-                statusId:3
-            }
-        }else{
-            pramas ={
-                deptId:parseInt(this.props.depCode),
-                condition:this.state.searchInput,
-                startDate:date.datastr,
-                endDate:date.NowDate,
-                statusId:3
-            }
-        }
-        this.props.getTableData(pramas)
 
+    /**点击最近三月*/
+    handleClickThreeMonth() {
+        this.props.getTableData({}, 3)
+        this.setState({
+            clickFlag: 3
+        })
+    }
+
+    /**点击最近一年*/
+    handleClickYear() {
+        this.props.getTableData({}, 12)
+        this.setState({
+            clickFlag: 12
+        })
+    }
+
+    /**时间组件RangePicker时间变化*/
+    dateChange(date, dateString) {
+        this.setState({
+            startDate:dateString[0],
+            endDate:dateString[1],
+        })
+    }
+
+    /**搜索事件*/
+    handleSearch() {
+        let {startDate, endDate, searchInput} = this.state;
+        let params = {};
+        if((startDate && endDate) || searchInput){
+            params ={
+                deptId:parseInt(this.props.deptId),
+                condition: searchInput,
+                startDate: startDate,
+                endDate: endDate,
+            };
+            this.props.getTableData(params)
+        }
 }
-    searchContentChange=(e)=>{
+    searchContentChange(e) {
         this.setState({
             searchInput: e.target.value,
         })
@@ -109,6 +77,8 @@ class SearchCell extends React.Component{
     render(){
         const Search = Input.Search;
         const {  RangePicker } = DatePicker;
+        const {startDate, endDate, dateFormat} = this.state;
+        const value = startDate === '' || endDate === '' ? null : [moment(startDate,dateFormat), moment(endDate,dateFormat)];
         return(
             <div style={{paddingBottom: '5px'}}>
                 <span style={{paddingTop: '7px'}}>&nbsp;&nbsp;默认：&nbsp;&nbsp;&nbsp;</span>
@@ -116,27 +86,26 @@ class SearchCell extends React.Component{
                 <Button
                     className={this.state.clickFlag === 1?"bd-blue":"bd-grey"}
                     style={{height:30,marginRight: 5}}
-                    onClick={this.handleClicka}
+                    onClick={this.handleClickMonth}
                     type="default"
                 >最近1月</Button>
 
                 <Button
-                    className={this.state.clickFlag === 2?"bd-blue":"bd-grey"}
+                    className={this.state.clickFlag === 3?"bd-blue":"bd-grey"}
                     style={{height:30,marginRight: 5}}
-                    onClick={this.handleClickb}
+                    onClick={this.handleClickThreeMonth}
                     type="default"
                 >最近3月</Button>
 
                 <Button
-                    className={this.state.clickFlag === 3?"bd-blue":"bd-grey"}
+                    className={this.state.clickFlag === 12?"bd-blue":"bd-grey"}
                     style={{height:30,marginRight: 80}}
-                    onClick={this.handleClickc}
+                    onClick={this.handleClickYear}
                     type="default"
                 >最近1年</Button>
 
 
-                保养时段：<RangePicker style={{width:230}} onChange={this.dateArea}
-                        />&nbsp;&nbsp;
+                保养时段：<RangePicker style={{width:230}} onChange={this.dateChange} placeholder={['开始时间','结束时间']} value={value}/>&nbsp;&nbsp;
 
                 <Search
                     value={this.state.searchInput}
@@ -158,20 +127,13 @@ class SearchCell extends React.Component{
     }
 
     /**重置*/
-    getFetch = () => {
+    getFetch() {
         this.setState({
             searchInput:'',
-            LastDate:null,
-            NowDate:null
-        })
-        var date = this.props.getLastMonthTime(1);
-        var params = {
-            deptId:parseInt(this.props.depCode),
-            statusId:3,
-            startDate:date.datastr,
-            endDate:date.NowDate
-        }
-        this.props.fetch(params,1);
+            startDate:'',
+            endDate:''
+        });
+        this.props.fetch({}, this.state.clickFlag);
     }
 }
 export default SearchCell;

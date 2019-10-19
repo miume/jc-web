@@ -33,7 +33,7 @@ class ProductInspection extends React.Component {
                 pageSizeOptions: ["10","20","50","100"]
             },
             pageChangeFlag : 0,   //0表示分页 1 表示查询
-            loading: false
+            loading: true
         };
         this.modifyDataSource=this.modifyDataSource.bind(this);
         this.fetch=this.fetch.bind(this);

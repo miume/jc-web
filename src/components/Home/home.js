@@ -424,7 +424,8 @@ class Home extends Component {
                 upload:`${server}/jc/common/deviceSpotCheck/upload`,
                 delete:`${server}/jc/common/deviceSpotCheck`,
                 getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`,
-                cancelLoad:`${server}/jc/common/deviceSpotCheck/cancelLoad`
+                cancelLoad:`${server}/jc/common/deviceSpotCheck/cancelLoad`,
+                getModelByDeviceName:`${server}/jc/common/deviceSpotCheck/getModelByDeviceName`
             },
             /**巡检计划 */
             devicePatrolPlan:{
@@ -455,7 +456,8 @@ class Home extends Component {
                 getAll:`${server}/jc/common/productionBatchRule/getAll`,
                 getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
-                updateState:`${server}/jc/common/productionBatchRule/UpdateState`
+                updateState:`${server}/jc/common/productionBatchRule/UpdateState`,
+                getAllInfos: `${server}/jc/common/productionBatchRule/getAllInfos`
             },
             /**统计周期 */
             staticPeriod:{

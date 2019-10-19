@@ -33,6 +33,7 @@ class RecordChecking extends React.Component{
         this.applyOut = this.applyOut.bind(this);
         this.checkData = this.checkData.bind(this);
         this.qualified = this.qualified.bind(this);
+        this.getFooter = this.getFooter.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.applyReview = this.applyReview.bind(this);
@@ -49,7 +50,7 @@ class RecordChecking extends React.Component{
             dataIndex:'index',
             key:'index',
             align:'center',
-            width:'20%'
+            width:'10%'
         },{
             title:'检测项目',
             dataIndex:'testItemName',
@@ -63,16 +64,21 @@ class RecordChecking extends React.Component{
             align:'center',
             width:'30%',
             render:(text,record)=>{
-                //<Input id={record.id} name='outQuantity' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库数量' onChange={this.save} />
                 return <Input id={record.id} name='testResult' placeholder='请输入检测结果' defaultValue={text} style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} className='stock-out-input' />
             }
+        },{
+            title:'标准',
+            dataIndex:'value',
+            key:'value',
+            align:'center',
+            width:'20%'
         },{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
             align:'left',
-            width:'30%'
-        },]
+            width:'20%'
+        }]
     }
     /**点击录检 弹出框显示 */
     handleClick(){
@@ -130,8 +136,7 @@ class RecordChecking extends React.Component{
     handleCancel(){
         this.setState({
             visible:false
-        })
-        this.getEditorData();
+        });
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){
@@ -293,53 +298,68 @@ class RecordChecking extends React.Component{
             if(flag) return <span className='text-decoration' title={text}>{text.substring(0,10)} </span>;
             else {
                 let te = text.split('-');
-                console.log(te)
                 return <span className='text-decoration' title={text}>{te[0]+'-'+te[1]+'-'+te[2]+'-'+te[3]}</span>;
             }
+        }
+    }
+
+    /**修改和录检见面 footer不一样*/
+    getFooter() {
+        let title = this.props.title;
+        if(title === '修改') {
+            return [
+                <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                <SaveButton key='save' handleSave={this.handleSave} />
+            ]
+        } else {
+            return (
+                [
+                    <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                    <SaveButton key='save' handleSave={this.handleSave} />,
+                    <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange}
+                            selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url}
+                            process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>
+                ]
+            )
         }
     }
     render(){
         return (
             <span className={this.props.flag?'':'hide'}>
                 <Divider type='vertical' />
-                <span className={this.props.status===-1||this.props.status===3?'blue':'notClick'} onClick={this.handleClick}>录检</span>
-                <Modal title='数据录检' visible={this.state.visible} style={{top:20}} closable={false}
-                maskClosable={false} centered={true}
-                footer={[
-                    <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                    <SaveButton key='save' handleSave={this.handleSave} />,
-                    <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url} process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}/>
-                ]}>
+                <span className={this.props.status===-1||this.props.status===3||this.props.status===12?'blue':'notClick'} onClick={this.handleClick}>{this.props.title}</span>
+                <Modal title={this.props.title} visible={this.state.visible} style={{top:20}} closable={false}
+                       maskClosable={false} centered={true}
+                       footer={this.getFooter()}
+                >
                 <div style={{height:'500px'}}>
-                <div className="interDrSpanModalTop">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>物料编码</th>
-                            <th>原材料</th>
-                            <th>送样日期</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>{this.state.topData?this.headData(this.state.topData.batchNumber):''}</td>
-                            <td>{this.state.topData?this.state.topData.materialName:''}</td>
-                            <td>{this.state.topData?this.headData(this.state.topData.b,1):''}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div className="interDrSpanModalMiddle">
-                       <div>
-                           样品名称：<span>{this.state.topData&&this.state.topData.materialName?this.state.topData.materialName+'样品':''}</span>
-                       </div>
-                       {/* <Button><i className="fa  fa-trash-o" style={{fontWeight:'bolder'}}></i>&nbsp;清空</Button> */}
-                       {/* <Button className='white-button' onClick={this.props.handleCancel}><i className="fa fa-trash-o" style={{fontWeight:'bolder'}}></i><span style={{fontWeight:'bolder'}}> 清空</span></Button> */}
-                </div>
-                <div style={{height:'350px'}}>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:250}} />
-                </div>
-                <CheckModal flag={this.state.flag} fail={this.state.fail} qualified={this.qualified} failed={this.failed}/>
+                    <div className="interDrSpanModalTop">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>物料编码</th>
+                                <th>原材料</th>
+                                <th>送样日期</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{this.state.topData?this.headData(this.state.topData.batchNumber):''}</td>
+                                <td>{this.state.topData?this.state.topData.materialName:''}</td>
+                                <td>{this.state.topData?this.headData(this.state.topData.b,1):''}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="interDrSpanModalMiddle">
+                           <div>
+                               样品名称：<span>{this.state.topData&&this.state.topData.materialName?this.state.topData.materialName+'样品':''}</span>
+                           </div>
+                    </div>
+                    <div style={{height:'350px'}}>
+                        <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:250}} />
+                    </div>
+                    <CheckModal flag={this.state.flag} fail={this.state.fail} qualified={this.qualified} failed={this.failed}/>
                 </div>
                 </Modal>
             </span>

@@ -101,14 +101,23 @@ class ProductTable extends React.Component{
                         <Divider type="vertical" />
                         {checkSpanFlag?(
                             <CheckSpan
+                                title={'录检'}
                                 menuList={this.props.menuList}
                                 fetch={this.props.fetch}
                                 batchNumberId={record.batchNumberId}
                                 url={this.props.url}
                             />
                         ):(
-                            <span  className="notClick">录检</span>
+                            <span className="notClick">录检</span>
                         )}
+                        <Divider type="vertical" />
+                        <CheckSpan
+                            title={'修改'}
+                            menuList={this.props.menuList}
+                            fetch={this.props.fetch}
+                            batchNumberId={record.batchNumberId}
+                            url={this.props.url}
+                        />
                     </span>
                     <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         <Divider type="vertical" />
@@ -181,7 +190,7 @@ class ProductTable extends React.Component{
         }
     };
     judgeCheckOperation = (status) => {
-        if(status===-1||status===3){
+        if(status===-1||status===3||status===12){
             return true;
         }else{
             return false;

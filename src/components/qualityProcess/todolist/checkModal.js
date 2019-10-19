@@ -1,3 +1,4 @@
+/**待办事项审核操作*/
 import React from 'react';
 import RawTest from './rawTest';
 import RedList from './redlist';
@@ -14,6 +15,7 @@ import CheckUnqualifiedTrack from './checkUnqualifiedTrack';
 import CkeckProductInspection from './checkProductInspection';
 import EqupimentGuidance from './equpimentGuidance';
 import axios from 'axios';
+
 class CheckModal extends React.Component{
     componentDidMount(){
         if(this.props.dataType===11){
@@ -37,6 +39,7 @@ class CheckModal extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         this.getReplyData = this.getReplyData.bind(this);
         this.setClassName = this.setClassName.bind(this);
+        this.temporaryPass = this.temporaryPass.bind(this);
         this.judgeUnqualifiedArea = this.judgeUnqualifiedArea.bind(this);
         this.getStockOutDetailData = this.getStockOutDetailData.bind(this);
     }
@@ -145,7 +148,6 @@ class CheckModal extends React.Component{
     }
     /**根据batchNumberId 查询审核记录 */
     getReplyData(e){
-        // console.log(e.target.value)
         const value = e.target.value;
         this.setState({
             reply:value
@@ -157,11 +159,20 @@ class CheckModal extends React.Component{
             visible:false
         })
     }
+
+    /**审核失败*/
     fail(){
         this.checkApply(0);
     }
+
+    /**审核通过*/
     pass(){
         this.checkApply(1);
+    }
+
+    /**暂时通过*/
+    temporaryPass()  {
+        this.checkApply(2);
     }
     /**通过、不通过 */
     checkApply(status){
@@ -170,7 +181,6 @@ class CheckModal extends React.Component{
             message.info('请输入审核意见！');
             return
         }
-        // console.log(`status=${status},reply=${reply}`)
         const userId = JSON.parse(localStorage.getItem('menuList')).userId;
         axios.put(`${this.props.url.toDoList}/${this.props.dataId}`,{},{
             headers:{
@@ -204,7 +214,6 @@ class CheckModal extends React.Component{
           }
         }).then(data=>{
           const res = data.data.data;
-        //   console.log(res)
           if(res){
             this.setState({
                 examineData : res
@@ -222,7 +231,6 @@ class CheckModal extends React.Component{
                     <NewButton name={this.props.flag?'详情':'审核'} className='fa fa-floppy-o' handleClick={this.handleCheck} ></NewButton>:
                     <NewButton name='审核' className={this.props.checkFlag?'fa fa-check':'hide'} handleClick={this.handleCheck} ></NewButton>
                 }
-                {/* <NewButton name={this.props.flag?'详情':'审核'} className={this.props.flag?'fa fa-floppy-o':'fa fa-check'} handleClick={this.handleCheck} ></NewButton> */}
                 <Modal visible={this.state.visible} title={this.props.flag?`${dataType[type]}`+'详情':`${dataType[type]}`+'审核'} centered={true}
                 closable={false} maskClosable={false} className={this.setClassName(type)}
                 /**this.props.dataType===2||this.props.dataType===7?'modal-xlg':'modal-md' */
@@ -230,11 +238,11 @@ class CheckModal extends React.Component{
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                     <span key='check' className={this.props.flag?'hide':''} >
                         <NewButton key='fail' className='fa fa-times' name='不通过' handleClick={this.fail} />
+                        <NewButton key='temporaryPass' className='fa fa-check' name='暂通过' handleClick={this.temporaryPass} />
                         <NewButton key='pass' className='fa fa-check' name='通过' handleClick={this.pass} />
                     </span>
 
-                ]}
-                >
+                ]}>
                     <div>
                     {
                         this.judgeType(this.props.dataType)
@@ -242,7 +250,6 @@ class CheckModal extends React.Component{
                     <div>
                     {
                         this.props.flag?
-                        /**this.props.dataType===2||this.props.dataType===7?0:1 */
                         <AllTester examineData={this.state.examineData} dataId={this.props.dataId} hide={this.setClassName(type,1)} />:
                         <textarea onChange={this.getReplyData} className='checkModalTest' placeholder='请输入审核意见'></textarea>
                     }

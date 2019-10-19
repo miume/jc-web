@@ -25,8 +25,8 @@ class InnerTable extends React.Component {
         },
         {
             title: '所属部门',
-            dataIndex: 'deptCode',
-            key: 'deptCode',
+            dataIndex: 'depName',
+            key: 'depName',
             width: '20%',
             align:'center',
         },
@@ -42,10 +42,10 @@ class InnerTable extends React.Component {
     dataSource=[
         {
             key:'1',
-            code: this.props.code,
-            deviceName: this.props.deviceName,
-            deptCode: this.props.deptCode,
-            planDate: this.props.planDate,
+            code: this.props.record.code,
+            deviceName: this.props.record.deviceName,
+            depName: this.props.record.depName,
+            planDate: this.props.record.planDate,
         }
         ];
     render() {

@@ -94,17 +94,14 @@ class Detail extends React.Component{
     }
     /**数据处理 */
     dataProcessing(res){
-        var details  = [];
-        var topData = {};
-        var testData = {};
-        var IsQualified = 0;
-        IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
-        topData={
+        let details  = [];
+        let IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
+        let topData={
             batchNumber: res.commonBatchNumber.batchNumber?res.commonBatchNumber.batchNumber:'',
             materialName: res.materialName?res.materialName:'',
             b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
         };
-        testData={
+        let testData={
             tester:res.tester?res.tester:'',
             testTime:res.testReportRecord?res.testReportRecord.judgeDate:'',
         }

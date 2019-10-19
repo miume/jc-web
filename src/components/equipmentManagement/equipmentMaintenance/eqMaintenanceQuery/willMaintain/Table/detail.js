@@ -48,11 +48,7 @@ class Details extends React.Component {
                 >
                     <div>
                         <InnerTable
-                            record={record}
-                            code={this.props.record.code}
-                            deviceName={this.props.record.deviceName}
-                            deptCode={this.props.record.deptCode}
-                            planDate={this.props.record.planDate}
+                            record={this.props.record}
                         />
                         <WhiteSpace />
                         <Steps current={0} progressDot={customDot}>
@@ -95,7 +91,6 @@ class Details extends React.Component {
                     for(let i = 0; i < newRowData.length; i++) {
                         newRowData[i]['index'] = i + 1;
                     }
-                    console.log(newRowData)
                     this.setState({
                         visible: true,
                         newRowData: newRowData,

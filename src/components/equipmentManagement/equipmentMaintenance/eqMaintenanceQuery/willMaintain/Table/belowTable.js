@@ -48,7 +48,7 @@ class BelowTable extends React.Component {
                     size="small"
                     pagination={false}
                     bordered
-                    scroll={150}
+                    scroll={{y:150}}
                 />
             </div>);
     }

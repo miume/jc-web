@@ -64,7 +64,6 @@ class Login extends React.Component {
       localStorage.setItem('authorization',res.headers.authorization);
       localStorage.setItem('menuList',JSON.stringify(res.data));
       history.push({pathname:'/home'});
-      console.log(res.data)
     })
     .catch( (error) => {
       this.setState({

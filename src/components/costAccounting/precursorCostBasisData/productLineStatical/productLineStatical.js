@@ -5,6 +5,7 @@ import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
+import axios from "axios";
 
 class ProductLineStatical extends React.Component{
     url;
@@ -12,26 +13,15 @@ class ProductLineStatical extends React.Component{
         super(props);
         this.state={
             visible:false,
-            data:[{
-                index:1,
-                materialName:"701#合成槽",
-                type:"主材",
-                process:"合成工序",
-                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
-            },{
-                index:2,
-                materialName:"701#合成槽",
-                type:"主材",
-                process:"合成工序",
-                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
-            },{
-                index:3,
-                materialName:"701#合成槽",
-                type:"主材",
-                process:"合成工序",
-                value:`1#产线 0.2,2#产线 0.3,3#产线 0.3,4#产线 0.2`
-            }]
+            data:[],
+            selectedRowKeys: [],
+            loading:true,
+            searchContent:'',
         }
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.cancel=this.cancel.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -53,24 +43,31 @@ class ProductLineStatical extends React.Component{
             width: '15%',
         },{
             title: '所属类别',
-            dataIndex: 'type',
-            key: 'type',
+            dataIndex: 'types',
+            key: 'types',
             align:'center',
             width: '20%',
+            render:(text,record)=>{
+                if(record.types===1){
+                    return "辅材"
+                }else{
+                    return "主材"
+                }
+            }
         },{
             title: '所属工序',
-            dataIndex: 'process',
-            key: 'process',
+            dataIndex: 'processName',
+            key: 'processName',
             align:'center',
             width: '20%',
         },{
             title: '产线/权重',
-            dataIndex: 'value',
-            key: 'value',
+            dataIndex: 'weightValue',
+            key: 'weightValue',
             align:'center',
             width: '25%',
             render:(text,record)=>{
-                var record = record.value.split(",");
+                var record = record.weightValue.split(",");
                 return(
                     record.map((item,index)=>{
                         return(<div key={index}>
@@ -95,7 +92,108 @@ class ProductLineStatical extends React.Component{
                 )
             }
         }]
+    };
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
     }
+
+    componentDidMount(){
+        this.fetch();
+    }
+
+    fetch = ()=>{
+        axios({
+            url:`${this.url.precursorMaterialLineWeight.page}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            for(var i=0;i<res.length;i++){
+                res[i].weightValue = res[i].weightDTOS.map((item)=>{
+                    return(
+                        item.lineName+"  "+item.weightValue
+                    )
+                }).join(",")
+            }
+            // console.log(res);
+            if(res.length!==0){
+                this.setState({
+                    data:res,
+                    searchContent:'',
+                })
+            }
+        })
+    }
+
+    /**实现全选 */
+    onSelectChange(selectedRowKeys) {
+        //   console.log(selectedRowKeys)
+        this.setState({ selectedRowKeys:selectedRowKeys });
+    }
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        axios({
+            url:`${this.url.precursorMaterialLineWeight.page}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                // size: this.pagination.pageSize,
+                // page: this.pagination.current,
+                condition:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            // const res = data.data.data;
+            // if(res&&res.list){
+            //     this.pagination.total=res.total;
+            //     for(var i = 1; i<=res.list.length; i++){
+            //         res.list[i-1]['index']=(res.prePage)*10+i;
+            //     }
+            //     this.setState({
+            //         dataSource: res.list,
+            //     });
+            // }
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            for(var i=0;i<res.length;i++){
+                res[i].weightValue = res[i].weightDTOS.map((item)=>{
+                    return(
+                        item.lineName+"  "+item.weightValue
+                    )
+                }).join(",")
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res
+                })
+            }
+        })
+    };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
@@ -107,7 +205,7 @@ class ProductLineStatical extends React.Component{
                     <DeleteByIds 
                         selectedRowKeys = {[1]}
                     />
-                    <SearchCell flag={true}/>
+                    <SearchCell name="请输入物料名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
                     <Table rowSelection={{}} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </div>

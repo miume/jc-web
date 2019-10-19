@@ -55,6 +55,12 @@ class Editor extends React.Component{
         })
     };
 
+
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+      }
     componentDidMount = () =>{
         this.fetch();
     }

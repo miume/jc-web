@@ -41,39 +41,20 @@ class CheckSpan extends React.Component {
         this.applyReview = this.applyReview.bind(this);
         this.modifyDetailData = this.modifyDetailData.bind(this);
         this.inputSave = this.inputSave.bind(this);
+        this.getFooter = this.getFooter.bind(this);
     }
     render() {
         const { visible } = this.state;
         return (
             <span>
-                <span  className="blue" onClick={this.handleCheck}>录检</span>
+                <span  className="blue" onClick={this.handleCheck}>{this.props.title}</span>
                 <Modal
-                    title="数据录检"
+                    title={`数据`+this.props.title}
                     visible={visible}
                     centered={true}
                     closable={false}
                     maskClosable={false}
-                    footer={[
-                        <CancleButton
-                            handleCancel = {this.handleCancel}
-                            key='cancel'
-                        />,
-                        <SaveButton
-                            handleSave={this.handleSave}
-                            key='save'
-                        />,
-                        <Submit
-                            key='submit'
-                            visible={this.state.subVisible}
-                            handleVisibleChange={this.handleVisibleChange}
-                            selectChange={this.selectChange}
-                            urgentChange={this.urgentChange}
-                            url={this.props.url}
-                            process={this.state.process}
-                            handleCancel={this.handleCancelApply}
-                            handleOk={this.handleOkApply}
-                        />
-                    ]}
+                    footer={this.getFooter()}
                 >
                     <div style={{height:550}}>
                         <CheckSpanModal
@@ -304,9 +285,30 @@ class CheckSpan extends React.Component {
         });
     }
 
-    /**---------------------- */
-    /**实现字段搜索功能 */
-    /**---------------------- */
+    /**修改和录检见面 footer不一样*/
+    getFooter() {
+        let title = this.props.title;
+        if(title === '修改') {
+            return [
+                <CancleButton handleCancel = {this.handleCancel} key='cancel'
+                />,
+                <SaveButton handleSave={this.handleSave} key='save'
+                />
+            ]
+        } else {
+            return (
+                [
+                    <CancleButton handleCancel = {this.handleCancel} key='cancel'/>,
+                    <SaveButton handleSave={this.handleSave} key='save'/>,
+                    <Submit key='submit' visible={this.state.subVisible}
+                            handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}
+                            urgentChange={this.urgentChange} url={this.props.url}
+                            process={this.state.process} handleCancel={this.handleCancelApply}
+                            handleOk={this.handleOkApply}/>
+                ]
+            )
+        }
+    }
 
 }
 
