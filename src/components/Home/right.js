@@ -37,7 +37,8 @@ import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/c
 import EnterStorage from '../smartWarehouse/enterStorage/enterStorage';
 import InventorManage from '../smartWarehouse/inventoryManage/inventorManage';
 import RedListManage from '../smartWarehouse/redListManage/redListManage';
-import LibraryManage from '../smartWarehouse/libraryManage/library'
+import LibraryManage from '../smartWarehouse/libraryManage/library';
+import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
 import RawStandard from '../technologyCenter/rawStandard/rawStandard';
 import ProductStandard from '../technologyCenter/productStandard/productStandard';
@@ -282,6 +283,9 @@ class Right extends React.Component {
             },{
                 path:"/processName",
                 component:ProcessName
+            },{
+                path:"/baseData",
+                component:MaterialBasic
             }]
         return (
             <div className="rightDiv">
