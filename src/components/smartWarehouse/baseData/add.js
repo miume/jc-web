@@ -42,6 +42,12 @@ class Add extends Component{
   
         const {form}=this.props;
         const {getFieldDecorator}=form;
+        const obj=this.props.editflag? {
+            initialValue:this.props.record.materialType,
+            rules:[{required:true,message:'请选择物料类型'}]
+        }:{
+            rules:[{required:true,message:'请选择物料类型'}]
+        };//判断物料类型是否显示初始值，编辑需要显示此条记录值，新增不需要
         return(
           <span>
                 {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
@@ -68,24 +74,13 @@ class Add extends Component{
                             )}
                         </FormItem>
                         <FormItem label='物料类型' wrapperCol={{span:18}} required>
-                            {this.props.editflag?getFieldDecorator('materialType',{
-                            initialValue:this.props.record.materialType,
-                            rules:[{required:true,message:'请选择物料类型'}]
-                            })(
+                            {getFieldDecorator('materialType',obj)(
                             <Select placeholder='请选择物料类型' >
                                 <Option key='1' value='1'>原材料</Option>
                                 <Option key='2' value='2'>中间品</Option>
                                 <Option key='3' value='3'>成品  </Option>
                             </Select> 
-                            ):getFieldDecorator('materialType',{
-                                rules:[{required:true,message:'请选择物料类型'}]
-                                })(
-                                <Select placeholder='请选择物料类型' >
-                                    <Option key='1' value='1'>原材料</Option>
-                                    <Option key='2' value='2'>中间品</Option>
-                                    <Option key='3' value='3'>成品  </Option>
-                                </Select> 
-                                )}
+                            )}
                         </FormItem>
                         <FormItem label='所含金属' wrapperCol={{span:18}} required>
                             {getFieldDecorator('metal',{
