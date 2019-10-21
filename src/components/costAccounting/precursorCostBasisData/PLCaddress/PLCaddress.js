@@ -1,6 +1,6 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message } from 'antd';
+import { Table,Popconfirm,Divider,message,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
@@ -147,6 +147,7 @@ class PLCaddress extends React.Component{
                 this.setState({
                     data:res,
                     searchContent:'',
+                    loading:false
                 })
             }
         })
@@ -210,6 +211,10 @@ class PLCaddress extends React.Component{
             }
         })
     };
+    /**返回数据录入页面 */
+    returnDataEntry = ()=>{
+        this.props.history.push({pathname: "/precursorCostBasisData"});
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
@@ -225,8 +230,9 @@ class PLCaddress extends React.Component{
           };
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                            returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys={this.state.selectedRowKeys}
@@ -236,8 +242,8 @@ class PLCaddress extends React.Component{
                     />
                     <SearchCell name='请输入PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
-                </div>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                </Spin>
             </div>
         )
     }

@@ -82,7 +82,7 @@ class Edit extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    <Input id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称"/>
+                    生产线名称：<Input id="name" style={{width:"80%"}} onChange={this.change} value={this.state.name} placeholder="请输入生产线名称"/>
                 </Modal>
             </span>
         )

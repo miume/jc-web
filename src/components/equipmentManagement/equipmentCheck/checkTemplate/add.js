@@ -82,6 +82,20 @@ class AddBut extends React.Component{
 
     handleChange = (fileList,k) =>{
         // console.log(k.fileList)
+        if(k.fileList.length === 0){
+            this.setState({
+                [fileList]:k.fileList
+            })
+            return;
+        }
+        const isJpgOrPng = k.fileList[0].type === "image/jpeg" || k.fileList[0].type === "image/png" || k.fileList[0].type === "image/jpg"|| k.fileList[0].type === "image/gif"|| k.fileList[0].type === "image/bmp";
+        if(!isJpgOrPng){
+            return;
+        }
+        const isLt1M = k.fileList[0].size/1024/1024<10;
+        if(!isLt1M){
+            return;
+        }
         this.setState({
             [fileList]:k.fileList
         })
@@ -97,7 +111,7 @@ class AddBut extends React.Component{
         })
     };
     this.props.form.resetFields();
-    this.setState({ visible: false });
+    this.setState({ visible: false,date:"", });
     // this.props.form.resetFields();
     // form.resetFields();
     };
@@ -161,11 +175,12 @@ class AddBut extends React.Component{
                     for(var i =0;i<keys.length;i++){
                         let file = `fileList${keys[i]}`
                         this.setState({
-                            [file]:[]
+                            [file]:[],
+                            
                         })
                     };
                     this.props.form.resetFields();
-                    this.setState({ visible: false});
+                    this.setState({ visible: false,date:""});
                 }
             })
         })
@@ -254,7 +269,7 @@ class AddBut extends React.Component{
                     <Form>
                         <span className="headers">所属部门：</span><span className="checkName">{this.props.deptName}</span>
                         <span className="headers">设备名称：</span><span className="checkName">{this.props.deviceName}</span>
-                        <span className="headers">模板名称：</span><span><Input style={{width:'200px'}} onChange={this.onChangeTime} placeholder="请输入名称"/></span>
+                        <span className="headers">模板名称：</span><span><Input style={{width:'200px'}} value={this.state.date} onChange={this.onChangeTime} placeholder="请输入名称"/></span>
                         <div className="radios">
                             模板状态：<Radio.Group onChange={this.onChange} value={this.state.radioValue}>
                             <Radio value={false}>生效</Radio>
