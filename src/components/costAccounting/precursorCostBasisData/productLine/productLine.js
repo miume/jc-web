@@ -1,6 +1,6 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message,InputNumber,Input,Form } from 'antd';
+import { Table,Popconfirm,Divider,message,InputNumber,Input,Form,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddButton from '../../../BlockQuote/newButton';
 import SearchCell from '../../../BlockQuote/search';
@@ -90,23 +90,29 @@ class statisticalPeriod extends React.Component{
             }
             if(res.length!==0){
                 this.setState({
-                    data:res
+                    data:res,
+                    loading:false
                 })
             }
         })
+    };
+    /**返回数据录入页面 */
+    returnDataEntry = ()=>{
+        this.props.history.push({pathname: "/precursorCostBasisData"});
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                            returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch = {this.fetch}/>
                     {/* <SearchCell flag={true}/> */}
                     <div className='clear' ></div>
-                    <Table columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered/>
-                </div>
+                    <Table pagination={false} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered/>
+                </Spin>
             </div>
         )
     }

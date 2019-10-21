@@ -343,7 +343,7 @@ const CollectionCreateForm = Form.create()(
                         <AddButton key="submit" handleClick={onCenter} name='提交' className='fa fa-check' />
                       ]}
                 >
-                    <BatchSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>
+                    
                     <Form horizontal='true'>
                         <FormItem wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('type', {
@@ -356,6 +356,7 @@ const CollectionCreateForm = Form.create()(
                                     </Select>
                                 )}
                         </FormItem>
+                        <BatchSelect batchRule={this.props.batchRule} onBatchCenter = {this.props.onBatchCenter}/>
                         <Col span={12} style={{display:"block"}}>
                             <FormItem  wrapperCol={{ span: 24 }}>
                                 {getFieldDecorator('date', {

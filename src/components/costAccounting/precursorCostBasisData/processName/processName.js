@@ -1,6 +1,6 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message,InputNumber,Input,Form } from 'antd';
+import { Table,Popconfirm,Divider,message,InputNumber,Input,Form,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddButton from '../../../BlockQuote/newButton';
 import SearchCell from '../../../BlockQuote/search';
@@ -61,7 +61,8 @@ class ProcessName extends React.Component{
         super(props)
         this.state = {
             data:[],
-            editingKey:""
+            editingKey:"",
+            loading:true
         }
         this.columns = [{
             title: '序号',
@@ -162,7 +163,8 @@ class ProcessName extends React.Component{
             }
             if(res.length!==0){
                 this.setState({
-                    data:res
+                    data:res,
+                    loading:false
                 })
             }
         })
@@ -212,6 +214,10 @@ class ProcessName extends React.Component{
         this.setState({
             editingKey:key
         })
+    };
+    /**返回数据录入页面 */
+    returnDataEntry = ()=>{
+        this.props.history.push({pathname: "/precursorCostBasisData"});
     }
 
     render(){
@@ -239,13 +245,14 @@ class ProcessName extends React.Component{
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                            returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <div className='clear' ></div>
                     <EditableContext.Provider value={this.props.form}>
-                        <Table components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                        <Table pagination={false} components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                     </EditableContext.Provider>
-                </div>
+                </Spin>
             </div>
         )
     }

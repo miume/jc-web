@@ -456,7 +456,8 @@ class Home extends Component {
                 getAll:`${server}/jc/common/productionBatchRule/getAll`,
                 getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
-                updateState:`${server}/jc/common/productionBatchRule/UpdateState`
+                updateState:`${server}/jc/common/productionBatchRule/UpdateState`,
+                getAllInfos:`${server}/jc/common/productionBatchRule/getAllInfos`
             },
             /**统计周期 */
             staticPeriod:{
@@ -490,7 +491,9 @@ class Home extends Component {
                 delete:`${server}/jc/common/precursorMaterialLineWeight/delete`,
                 ids:`${server}/jc/common/precursorMaterialLineWeight/ids`,
                 page:`${server}/jc/common/precursorMaterialLineWeight/page`,
-                update:`${server}/jc/common/precursorMaterialLineWeight/update`
+                update:`${server}/jc/common/precursorMaterialLineWeight/update`,
+                getMaterialName:`${server}/jc/common/precursorMaterialLineWeight/getMaterialName`,
+                getRecordById:`${server}/jc/common/precursorMaterialLineWeight/getRecordById`
             },
             /**物料名称 */
             precursorMaterialDetails:{
