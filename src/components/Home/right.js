@@ -287,8 +287,6 @@ class Right extends React.Component {
             },{
                 path:"/baseData",
                 component:MaterialBasic
-            }]
-
         }, {
             path: '/productLine',
             component: ProductLine
