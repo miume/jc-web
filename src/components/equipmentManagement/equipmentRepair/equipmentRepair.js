@@ -1,7 +1,7 @@
 import React from "react";
 import '../../Home/page.css';
 import BlockQuote from '../../BlockQuote/blockquote';
-import {message, Select, Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import WillRepair from "./willRepair/willRepair";
 import HaveRepair from "./haveRepair/haveRepair";
 import HaveJudge from "./haveJudge/haveJudge";
@@ -30,7 +30,6 @@ class equipmentRepair extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
-        const Option = Select.Option;
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>

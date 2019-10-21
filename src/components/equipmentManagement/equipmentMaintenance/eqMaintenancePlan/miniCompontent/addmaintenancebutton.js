@@ -30,27 +30,27 @@ class Addmaintenancebutton extends React.Component{
     columns = [
         {
             title: '序号',
-            dataIndex: 'code',
-            key:'code',
-            width: "7%"
+            dataIndex: 'index',
+            key:'index',
+            width: "10%"
         },
         {
             title: '保养项目',
             dataIndex: 'maintenanceItems',
             key:'maintenanceItems',
-            width: "25%"
+            width: "30%"
         },
         {
             title: '保养内容',
             dataIndex: 'maintenanceContent',
             key:'maintenanceContent',
-            width: "45%"
+            width: "30%"
         },
         {
             title: '频次',
             dataIndex: 'maintenanceFrequency',
             key:'maintenanceFrequency',
-            width: "35%",
+            width: "30%",
         },
     ];
     handleDeviceNameAndNumChange=(value)=>{
@@ -87,25 +87,31 @@ class Addmaintenancebutton extends React.Component{
         this.setState({NextPlanDate:Y+'-'+M+'-'+D})
     }
     handleMaintenancePeriodChange=(e)=>{
-        var re =/[1−9]+[0−9]∗]∗/
-        if(!re.test(e)&&e>=0){
-            this.setState({MaintenancePeriod:e})
-        }
-        else{
-            message.info("请输入整数字")
-        }
-
-        var date1=this.date1;
-        if(!date1){
-            date1 = (new Date()).getTime();
-        }
-        var date2=date1+(e * 24* 3600* 1000)
-        var time = new Date(date2);
-        let Y=time.getFullYear()
-        let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
-        let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
-        if(this.state.ImplementDate){
-            this.setState({NextPlanDate:Y+'-'+M+'-'+D})
+        if(e) {
+            var re =/[1−9]+[0−9]∗]∗/
+            if(!re.test(e)&&e>=0){
+                this.setState({MaintenancePeriod:e})
+            }
+            else{
+                message.info("请输入整数字")
+            }
+            var date1=this.date1;
+            if(!date1){
+                date1 = (new Date()).getTime();
+            }
+            var date2=date1+(e * 24* 3600* 1000)
+            var time = new Date(date2);
+            let Y=time.getFullYear()
+            let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
+            let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
+            if(this.state.ImplementDate){
+                this.setState({NextPlanDate:Y+'-'+M+'-'+D})
+            }
+        } else {
+            this.setState({
+                NextPlanDate: '',
+                MaintenancePeriod: ''
+            })
         }
     }
     handleEffectiveChange=(e)=>{
@@ -248,7 +254,7 @@ class Addmaintenancebutton extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title='新增数据'
-                    width='1010px'
+                    width='1100px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate}/>,
@@ -257,7 +263,7 @@ class Addmaintenancebutton extends React.Component{
                     <div >
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>计划名称</b>&nbsp;
+                        <b className='row-label'>计划名称:</b>&nbsp;
                         <Input
                             id='Planname_add'
                             onChange={this.handlePlanName1Change}
@@ -266,8 +272,8 @@ class Addmaintenancebutton extends React.Component{
                             value={this.state.PlanName1}
                         />
                     </div>
-                    <div className='divofadd1'>
-                        <b>所属部门</b>
+                    <div className='divofadd'>
+                        <b className='row-label1'>所属部门:</b>
                         <Input
                             id='department_add'
                             key="department"
@@ -278,8 +284,8 @@ class Addmaintenancebutton extends React.Component{
                             disabled={true}
                         />
                     </div>
-                    <div className='divofadd1'>
-                        <b>设备名称/编号</b>&nbsp;
+                    <div className='divofadd'>
+                        <b className='row-label1'>设备名称/编号:</b>&nbsp;
                         <TreeSelect
                             id='deviceNameAndNum_add'
                             key="deviceNameAndNum"
@@ -298,7 +304,7 @@ class Addmaintenancebutton extends React.Component{
                 </div>
                 <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>保养周期</b>&nbsp;
+                        <b className='row-label'>保养周期:</b>&nbsp;
                         <InputNumber
                             id='MaintenancePeriod_add'
                             placeholder='请输入天数'
@@ -312,7 +318,7 @@ class Addmaintenancebutton extends React.Component{
                         />
                     </div>
                     <div className='divofadd'>
-                        <b>本次计划执行日期</b>&nbsp;
+                        <b className='row-label1'>本次计划执行日期:</b>&nbsp;
                         <DatePicker
                             format={dateFormat}
                             id='ImplementDate_add'
@@ -322,30 +328,27 @@ class Addmaintenancebutton extends React.Component{
                             value={moment(`${this.state.ImplementDate}`, dateFormat)}
                         />
                     </div>
-                    <div className='divofadd2'>
-                        <h4 id='NextPlanDate_add' key="NextPlanDate" name="NextPlanDate">
-                            <b>下次计划执行日期:</b>&nbsp;&nbsp;{this.state.NextPlanDate}
-                        </h4>
-                    </div>
-                </div>
-                <div className='Rowofadd'>
                     <div className='divofadd'>
-                        <b>保养项目</b>&nbsp;
-                        <Table
-                            id='Mainname_add'
-                            key="Maintenancetype"
-                            name="Maintenancetype"
-                            columns={this.columns}
-                            dataSource={this.props.MaintenanceType}
-                            size="small"
-                            scroll={{ y: 240 }}
-                            rowSelection={MaintenanceTypeSelection}
-                            bordered={true}
-                            pagination={false}
-                        />
+                        <b className='row-label1'>下次计划执行日期:</b>
+                        <div>{this.state.NextPlanDate}</div>
                     </div>
                 </div>
-                <div id='Effective_add' style={{display:'inline'}}>&nbsp;&nbsp;&nbsp;&nbsp;<b>是否生效:</b>&nbsp;&nbsp;
+                <div className='row-table'>
+                    <b className='row-label'>保养项目:</b>
+                    <Table
+                        id='Mainname_add'
+                        rowKey={record => record.code}
+                        columns={this.columns}
+                        dataSource={this.props.MaintenanceType}
+                        size="small"
+                        scroll={{ y: 150 }}
+                        rowSelection={MaintenanceTypeSelection}
+                        bordered={true}
+                        pagination={false}
+                    />
+                </div>
+                <div id='Effective_add' style={{display:'inline',paddingLeft: 10}}>
+                    <b className='row-label'>是否生效:</b>
                     <Radio.Group onChange={this.handleEffectiveChange} value={this.state.Effective}>
                         <Radio value={0}>生效</Radio>
                         <Radio value={1}>失效</Radio>

@@ -64,18 +64,19 @@ class CheckSpan extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleClearButton = this.handleClearButton.bind(this);
         this.applyReview = this.applyReview.bind(this);
+        this.getFooter = this.getFooter.bind(this);
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '20%',
+            width: '10%',
         },{
             title: '检测项目',
             dataIndex: 'testItemName',
             key: 'testItemName',
             align:'center',
-            width: '25%',
+            width: '20%',
         },{
             title: '检测结果',
             dataIndex: 'testResult',
@@ -95,11 +96,17 @@ class CheckSpan extends React.Component {
                 )
             }
         },{
+            title:'标准',
+            dataIndex:'value',
+            key:'value',
+            align:'center',
+            width:'20%'
+        },{
             title: '计量单位',
             dataIndex: 'unit',
             key: 'unit',
             align:'center',
-            width: '25%',
+            width: '20%',
         }];
     }
     render() {
@@ -108,38 +115,17 @@ class CheckSpan extends React.Component {
 
         return (
             <span>
-                <span className="blue" onClick={this.handleCheck}>录检</span>
+                <span className="blue" onClick={this.handleCheck}>{this.props.title}</span>
                 <Modal
-                    title="数据录检"
+                    title={`数据`+this.props.title}
                     visible={visible}
                     centered={true}
                     closable={false}
                     maskClosable={false}
                     width="500px"
-                    footer={[
-                        <CancleButton
-                            handleCancel = {this.handleCancel}
-                            key='cancel'
-                        />,
-                        <SaveButton
-                            handleSave={this.handleSave}
-                            key='save'
-                        />,
-                        <Submit
-                            key='submit'
-                            visible={this.state.subVisible}
-                            handleVisibleChange={this.handleVisibleChange}
-                            selectChange={this.selectChange}
-                            urgentChange={this.urgentChange}
-                            url={this.props.url}
-                            process={this.state.process}
-                            handleCancel={this.handleCancelApply}
-                            handleOk={this.handleOkApply}
-                        />
-                    ]}
+                    footer={this.getFooter()}
                 >
                     <div style={{height:550}}>
-
                         <div className="interCheckModalTop">
                             <table>
                                 <thead>
@@ -172,7 +158,7 @@ class CheckSpan extends React.Component {
                                 dataSource={this.state.detailData.testDTOS}
                                 pagination={{hideOnSinglePage:true,pageSize:100}}
                                 size="small"
-                                scroll={{ y: 300 }}
+                                scroll={{ y: 150 }}
                                 bordered
                             />
                         </div>
@@ -185,6 +171,32 @@ class CheckSpan extends React.Component {
             </span>
         )
     }
+
+    /**修改和录检见面 footer不一样*/
+    getFooter() {
+        let title = this.props.title;
+        if(title === '修改') {
+            return [
+                <CancleButton handleCancel = {this.handleCancel} key='cancel'
+                />,
+                <SaveButton handleSave={this.handleSave} key='save'
+                />
+            ]
+        } else {
+            return (
+                [
+                    <CancleButton handleCancel = {this.handleCancel} key='cancel'/>,
+                    <SaveButton handleSave={this.handleSave} key='save'/>,
+                    <Submit key='submit' visible={this.state.subVisible}
+                            handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}
+                            urgentChange={this.urgentChange} url={this.props.url}
+                            process={this.state.process} handleCancel={this.handleCancelApply}
+                            handleOk={this.handleOkApply}/>
+                ]
+            )
+        }
+    }
+
     /**监控申请送审弹出框的visible */
     handleVisibleChange(visible){
         this.setState({

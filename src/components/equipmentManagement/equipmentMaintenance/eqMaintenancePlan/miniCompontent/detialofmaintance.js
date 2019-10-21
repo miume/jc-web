@@ -183,17 +183,17 @@ class DetailofMain extends React.Component{
                         </div>
                     </div>
                     <div className='row-table'>
-                            <b className='row-label'>保养项目:</b>
-                            <Table
-                                id='Mainname_add'
-                                rowKey={item => item.code}
-                                columns={this.columns}
-                                dataSource={this.state.MaintenanceType}
-                                size="small"
-                                scroll={{ y: 150 }}
-                                bordered={true}
-                                pagination={false}
-                            />
+                        <b className='row-label'>保养项目:</b>
+                        <Table
+                            id='Mainname_add'
+                            rowKey={item => item.code}
+                            columns={this.columns}
+                            dataSource={this.state.MaintenanceType}
+                            size="small"
+                            scroll={{ y: 150 }}
+                            bordered={true}
+                            pagination={false}
+                        />
                     </div>
                     <div id='Effective_add' style={{display:'inline',paddingLeft: 10}}>
                         <b className='row-label'>是否生效:</b>

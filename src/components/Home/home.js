@@ -458,6 +458,7 @@ class Home extends Component {
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
                 updateState:`${server}/jc/common/productionBatchRule/UpdateState`,
                 getAllInfos:`${server}/jc/common/productionBatchRule/getAllInfos`
+
             },
             /**统计周期 */
             staticPeriod:{

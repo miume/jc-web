@@ -37,7 +37,8 @@ import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/c
 import EnterStorage from '../smartWarehouse/enterStorage/enterStorage';
 import InventorManage from '../smartWarehouse/inventoryManage/inventorManage';
 import RedListManage from '../smartWarehouse/redListManage/redListManage';
-import LibraryManage from '../smartWarehouse/libraryManage/library'
+import LibraryManage from '../smartWarehouse/libraryManage/library';
+import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
 import RawStandard from '../technologyCenter/rawStandard/rawStandard';
 import ProductStandard from '../technologyCenter/productStandard/productStandard';
@@ -77,6 +78,7 @@ import XinsongVGA from "../costAccounting/precursorCostBasisData/xinsongVGA/xins
 import ProductLineStatical from "../costAccounting/precursorCostBasisData/productLineStatical/productLineStatical"
 import ProductLineVGA from "../costAccounting/precursorCostBasisData/productLineVGA/productLineVGA"
 import ProcessName from "../costAccounting/precursorCostBasisData/processName/processName"
+import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
 
 class Right extends React.Component {
     render() {
@@ -282,7 +284,169 @@ class Right extends React.Component {
             },{
                 path:"/processName",
                 component:ProcessName
-            }]
+            },{
+                path:"/baseData",
+                component:MaterialBasic
+        }, {
+            path: '/productLine',
+            component: ProductLine
+        }, {
+            path: '/sampleInspection',
+            component: SampleInspection
+        }, {
+            path: '/stockOut',
+            component: StockOut
+        }, {
+            path: '/enterStorage',
+            component: EnterStorage
+        }, {
+            path: '/inventorManage',
+            component: InventorManage
+        }, {
+            path: '/redListManage',
+            component: RedListManage
+        }, {
+            path: '/libraryManage',
+            component: LibraryManage
+        }, {
+            path: '/todoList',
+            component: TodoList
+        }, {
+            path: '/rawStandard',
+            component: RawStandard
+        }, {
+            path: '/productInspection',
+            component: ProductInspection
+        }, {
+            path: '/unqualifiedExamineTable',
+            component: UnqualifiedExamine
+        }, {
+            path: '/unqualifiedTrackTable',
+            component: UnqualifiedTrack
+        }, {
+            path: '/productStandard',
+            component: ProductStandard
+        }, {
+            path: '/equipmentGuidance',
+            component: Equipment
+        }, {
+            path: '/equipmentRepair',
+            component: EquipmentRepair
+        }, {
+            path: '/equipmentArchive',
+            component: EquipmentArchive
+        }, {
+            path: '/equipmentBasicData',
+            component: BaseData
+        }, {
+            path: '/departmentStruct',
+            component: DepartmentStruct
+        }, {
+            path: "/equipmentStatus",
+            component: EquipmentStatus
+        }, {
+            path: "/equipmentMaintenance",
+            component: EquipmentMaintenance
+        }, {
+            path: "/maintenanceDataEntry",
+            component: EqMaintenanceDataEntry
+        }, {
+            path: "/maintenancePlan",
+            component: EqMaintenancePlan
+        }, {
+            path: "/maintenanceQuery",
+            component: EqMaintenanceQuery
+        },{
+            path:"/equipmentCheck",
+            component:EquipmentCheck
+        },{
+            path:"/checkPlan",
+            component:CheckPlan
+        },{
+            path:"/checkQuery",
+            component:CheckQuery
+        },{
+            path:"/checkTemplate",
+            component:CheckTemplate
+        },{
+            path:"/equipmentArchiveManager",
+            component:EquipmentArchiveManager
+        },{
+            path:"/eqcomponentSearch",
+            component:EqcomponentSearch
+        },{
+            path:"/equipmentInspection",
+            component:EquipmentInspection
+        },{
+            path:"/inspectionTemplate",
+            component:InspectionTemplate
+        },{
+            path:"/inspectionPlan",
+            component:InspectionPlan
+        },{
+            path:"/inspectionQuery",
+            component:InspectionQuery
+        },{
+            path:"/locationBasic",
+            component:LocationBasic
+        },{
+            path:"/batchRule",
+            component:BatchRule
+        },{
+            path:"/batchInfo",
+            component:BatchInfo
+        },{
+            path:"/batchSearch",
+            component:BatchSearch
+        },{
+            path:"/equpimentAssignment",
+            component:EqupimentAssignment
+        },{
+            path:"/statisticAnalysis",
+             component:StatisticAnalysis
+        },{
+            path:"/checkStatistics",
+             component:CheckStatistics
+        },{
+            path:"/rawMaterialInput",
+            component:RawMaterialInput
+        },{
+            path:"/eqUserDepAllocation",
+            component:EqUserDepAllocation
+        },{
+            path:"/precursorCostBasisData",
+            component:PrecursorCostBasisData
+        },{
+            path:"/statisticalPeriod",
+            component:StatisticalPeriod
+        },{
+            path:"/BaseproductLine",
+            component:BaseProductLine
+        },{
+            path:"/detailItem",
+            component:DetailItem
+        },{
+            path:"/PLCaddress",
+            component:PLCaddress
+        },{
+            path:"/materialPLC",
+            component:MaterialPLC
+        },{
+            path:"/xinsongVGA",
+            component:XinsongVGA
+        },{
+            path:"/productLineStatical",
+            component:ProductLineStatical
+        },{
+            path:"/productLineVGA",
+            component:ProductLineVGA
+        },{
+            path:"/processName",
+            component:ProcessName
+        },{
+            path: '/rawMaterial',
+            component: RawMaterial
+        }];
         return (
             <div className="rightDiv">
                 <Switch>

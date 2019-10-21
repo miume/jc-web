@@ -168,7 +168,8 @@
 /*Bottom: 设置底部表格样式*/
 .interCheckModalBottom {
     padding-top: 50px;
-    padding-bottom: 20px
+    padding-bottom: 20px;
+    height: 280px;
 }
 .interCheckModalBottom table {
     cursor: default;

@@ -22,7 +22,7 @@ class Todo extends React.Component{
         this.handleMove(1);
     }
     handleMove(number) {
-        var middle = document.getElementById(`item2-${this.props.data.id}-${this.props.flag?1:0}`)        
+        var middle = document.getElementById(`item2-${this.props.data.id}-${this.props.flag?1:0}`)
         let count = 830;
         let gap = (count / 100);
         gap = gap.toFixed(0);
@@ -53,6 +53,7 @@ class Todo extends React.Component{
             },1)
         }
     }
+
     /**判断status 1 审核中 2 审核通过 3 审核未通过 */
     judge(status){
         switch(status){
@@ -97,13 +98,13 @@ class Todo extends React.Component{
                </div>
                <div className={`item3`} onClick={this.moveRight}><i className='fa fa-2x fa-caret-right'></i></div>
                <div className='item4'>
-               {   
+               {
                    this.props.flag?this.judge(this.props.data.status):null
                }
                {
                     <CheckModal dataId={this.props.data.id} url={this.props.url} fetch={this.props.fetch}
-                     getHistory={this.props.getHistory} flag={this.props.flag} 
-                     dataType={this.props.data.dataType} checkFlag={this.props.checkFlag} />
+                                getHistory={this.props.getHistory} flag={this.props.flag}
+                                dataType={this.props.data.dataType} checkFlag={this.props.checkFlag} />
                }
                </div>
            </div>

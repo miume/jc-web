@@ -23,14 +23,22 @@ class AcceptOrders extends React.Component{
             depName:'',
             deptId:'',
         };
+        this.pagination = {
+            showTotal(total) {
+                return `共${total}条记录`
+            },
+            showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
+        }
         this.fetch=this.fetch.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.searchReset=this.searchReset.bind(this);
+        this.getTableData=this.getTableData.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
     }
 
     render() {
-        this.state.pagination=this.props.pagination;
 
         return (
             <div className='equipment-query'>
@@ -48,7 +56,7 @@ class AcceptOrders extends React.Component{
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             flag={home.judgeOperation(this.props.operation,'QUERY')}
-                            type={1}
+                            type={2}
                         />
                     </div>
                     <div className='clear' ></div>
@@ -57,7 +65,7 @@ class AcceptOrders extends React.Component{
                         fetch={this.fetch}
                         searchReset={this.searchReset}
                         getTableData={this.props.getTableData}
-                        pagination={this.state.pagination}
+                        pagination={this.pagination}
                         rightTableData={this.props.rightTableData}
                         handleTableChange={this.handleTableChange}
                     />
@@ -67,96 +75,65 @@ class AcceptOrders extends React.Component{
     }
 
     /**获取已接单表格数据*/
-    getTableData = (params) => {
+    getTableData(params) {
         params['statusId'] = 2;
         this.props.getTableData(params)
     }
 
-    onExpand = (expandedKeys) => {//展开的时候更新一下
-        this.expandedKeys = expandedKeys;
-        this.setState({expandedKeys: expandedKeys})
-    }
-
     /**实时跟踪搜索框内容的变化 */
-    searchContentChange = (e) => {
+    searchContentChange(e) {
         const value = e.target.value;
         this.setState({searchContent: value});
     };
 
     /**绑定搜索事件 */
-    searchEvent = () => {
-        this.setState({
-            pageChangeFlag: 1
-        });
-        const params={
-            deptId:parseInt(this.props.depCode),
-            statusId:2,
-            condition:this.state.searchContent,
-            depName:this.props.depName,
-        }
-        this.fetch(params,0);
-    }
-
-    searchReset=()=>{
-        this.props.getTableData(
-            {
-                deptId:parseInt(this.props.depCode),
+    searchEvent() {
+        //如果输入框内容不为空，则进行查询操作
+        if(this.state.searchContent) {
+            const params={
+                deptId:parseInt(this.props.deptId),
                 statusId:2,
                 depName:this.props.depName,
+                condition:this.state.searchContent,
+                page:this.pagination.current,
+                size:this.pagination.pageSize,
+            };
+            this.props.getTableData(params);
+        }
+    }
+
+    /**重置时重新加载数据*/
+    searchReset() {
+        this.setState({
+            searchContent: '' //将搜索框内容置空
+        });
+        this.props.getTableData(
+            {
+                deptId:parseInt(this.props.deptId),
+                statusId:2,
+                depName:this.props.depName,
+                page:this.pagination.current,
+                size:this.pagination.pageSize
             }
         )
     }
+
     /**分页查询*/
-    handleTableChange = (page) => {
-        const {pageChangeFlag} = this.state.pageChangeFlag;
-        if (pageChangeFlag) {
-            this.props.getTableData({
-                deptId:parseInt(this.props.depCode),
-                statusId: 2,
-                condition:this.state.searchContent,
-                depName:this.props.depName,
-                page:page.current,
-                size:page.pageSize,
-            })
-        } else {
-            this.props.getTableData({
-                deptId:parseInt(this.props.depCode),
-                depName:this.props.depName,
-                statusId: 2,
-                page:page.current,
-                size:page.pageSize,
-            })
-        }
+    handleTableChange(page) {
+        this.pagination = page;
+        this.props.getTableData({
+            deptId:parseInt(this.props.deptId),
+            statusId: 2,
+            condition:this.state.searchContent,
+            page:page.current,
+            size:page.pageSize,
+        })
     };
 
-    fetch = (params,flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) {
-            var {pagination} = this.state;
-            pagination.current = 1;//设置当前页面为1
-            pagination.total = 0;//设置全部页面为0
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent:'',
-                pagination:pagination
-            })
-            this.searchReset();
-        }
-        else{
-            this.setState({
-                pageChangeFlag: 1
-            });
-            const params={
-                deptId:parseInt(this.props.depCode),
-                statusId:2,
-                condition:this.state.searchContent,
-                depName:this.props.depName,
-            }
-            this.props.getTableData(params);
-        }
-
-    };
-
+    /**传递给搜索组件的fetch方法，用来重置更新表格数据*/
+    fetch() {
+        this.searchReset();
+    }
 }
 
 export default AcceptOrders

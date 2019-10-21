@@ -4,3 +4,4 @@
 - 盘库管理（libraryManage）
 - 入库管理（enterStorage）
 - 红单管理（redListManage）
+- 物料基础（baseData）
