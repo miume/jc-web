@@ -4,21 +4,24 @@ import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
-import Tr from "./tr";
+import Tr from "./detailTr";
 
-class AddModal extends React.Component{
+class Edit extends React.Component{
     url;
     constructor(props){
         super(props);
         this.state={
+            data:[],
             visible:false,
             vgaName:undefined,
             vgaData:[],
             productLine:[],
             detail:{},
+            weightValue:[]
         }
     }
-    showModal = () => {
+    showModal = () =>{
+        var detail = {};
         axios({
             url:`${this.url.precursorProductionLine.all}`,
             method:"get",
@@ -28,17 +31,17 @@ class AddModal extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             // console.log(res);
-            var detail = {}
+            // var detail = {}
             for(var i=0;i<res.length;i++){
                 detail[res[i].code] = {};
                 detail[res[i].code]["checkbox"] = false
             }
             this.setState({
                 productLine:res,
-                detail:detail,
+                // detail:detail,
                 visible: true
             });
-        })
+        });
         axios({
             url:`${this.url.vga.page}`,
             method:"get",
@@ -51,6 +54,45 @@ class AddModal extends React.Component{
                 vgaData:res
             })
         })
+        axios({
+            url:`${this.url.vgaMap.getInfoByVgaId}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization,
+            },
+            params:{vgaId:this.props.code}
+        }).then((data)=>{
+            const res = data.data.data;
+            for(var i=0;i<res.lines.length;i++){
+                detail[res.lines[i].code]["value"] = res.lines[i].value;
+                detail[res.lines[i].code]["checkbox"] = true;
+            }
+            // console.log(detail);
+            this.setState({
+                detail:detail,
+                vgaName:res.vgaPoint.code,
+                weightValue:res.lines
+            })
+        })
+    }
+    getData = (data)=>{
+        let detail = this.state.detail;
+        detail[data.target.value]["checkbox"] = data.target.checked;
+        this.setState({
+            detail:detail
+        })
+    }
+    getValue = (data)=>{
+        let detail = this.state.detail;
+        detail[data.target.name]["value"] = data.target.value;
+        this.setState({
+            detail:detail
+        })
+    }
+    vgaSelect=(e)=>{
+        this.setState({
+            vgaName:e
+        })
     };
     handleCancel = () =>{
         this.setState({
@@ -62,7 +104,6 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
-        // console.log(this.state)
         var data = [];
         var i = 0;
         for(var key in this.state.detail){
@@ -77,33 +118,16 @@ class AddModal extends React.Component{
         // console.log(data)
         var count = 0
         for(var i=0;i<data.length;i++){
-            count+=data[i].weightValue
+            count+=parseFloat(data[i].weightValue)
         };
+        // console.log(count)
         if(count != 1){
             message.error("所选项权重相加应等于1");
             return
         }
-        // var data = {materialCode:this.state.materialName,processCode:this.state.processName,types:this.state.types,weightDTOS:[]};
-        // const detail = this.state.detail;
-        // var count = 0;
-        // var weightValue = [];
-        // for(var key in detail){
-        //     if(detail[key].checkbox == true){
-        //         var item = {};
-        //         item["lineCode"] = key;
-        //         item["weightValue"] = detail[key].value;
-        //         weightValue.push(item);
-        //         count+=parseFloat(detail[key].value);
-        //     };
-        // };
-        // if(count!=1){
-        //     message.error("所选项权值相加应等于1");
-        // }
-        // data.weightDTOS = weightValue;
-        // // console.log(data);
         axios({
             url:`${this.url.vgaMap.vgaMap}`,
-            method:"post",
+            method:"put",
             headers:{
                 'Authorization':this.url.Authorization,
             },
@@ -127,38 +151,17 @@ class AddModal extends React.Component{
             message.error(error.data)
         })
     }
-    getData = (data)=>{
-        let detail = this.state.detail;
-        detail[data.target.value]["checkbox"] = data.target.checked;
-        this.setState({
-            detail:detail
-        })
-    }
-    getValue = (data)=>{
-        let detail = this.state.detail;
-        detail[data.target.name]["value"] = data.target.value;
-        this.setState({
-            detail:detail
-        })
-    }
-
-    vgaSelect=(e)=>{
-        this.setState({
-            vgaName:e
-        })
-    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        // console.log(this.state.flag)
-        return(
+        return (
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className="blue" onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    title="新增"
+                    title="编辑"
                     width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
@@ -166,15 +169,15 @@ class AddModal extends React.Component{
                     ]}
                 >
                     <div>
-                    VGA点名称：<Select onChange={this.vgaSelect} value={this.state.vgaName} style={{ width:"20%"}} placeholder="请选择工序">
-                        {
-                            this.state.vgaData.map((item)=>{
-                                return (
-                                    <Select.Option value={item.code} key={item.code}>{item.vgaName}</Select.Option>
-                                )
-                            })
-                        }
-                    </Select>
+                        VGA点名称：<Select onChange={this.vgaSelect} value={this.state.vgaName} style={{ width:"20%"}} placeholder="请选择工序">
+                            {
+                                this.state.vgaData.map((item)=>{
+                                    return (
+                                        <Select.Option value={item.code} key={item.code}>{item.vgaName}</Select.Option>
+                                    )
+                                })
+                            }
+                        </Select>
                     </div>
                     <table className="productLine">
                         <thead className="productHead">
@@ -187,8 +190,16 @@ class AddModal extends React.Component{
                         <tbody>
                             {
                                 this.state.productLine.length!==0?this.state.productLine.map((value,item)=>{
+                                    var flag = null;
+                                    var WeiValue = null;
+                                    for(var i=0;i<this.state.weightValue.length;i++){
+                                        if(this.state.weightValue[i].code == value.code){
+                                            flag = "checked";
+                                            WeiValue = this.state.weightValue[i].value
+                                        }
+                                    }
                                     return(
-                                        <Tr getValue={this.getValue} getData={this.getData} value={value} key={item}/>
+                                        <Tr weightValue={this.state.weightValue} flag={flag} WeiValue={WeiValue} getValue={this.getValue} getData={this.getData} value={value} key={item}/>
                                     )
                                 }):null
                             }
@@ -200,4 +211,4 @@ class AddModal extends React.Component{
     }
 }
 
-export default AddModal
+export default Edit

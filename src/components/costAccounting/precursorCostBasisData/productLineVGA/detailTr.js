@@ -1,6 +1,5 @@
 import React from "react";
 import {Input} from "antd";
-import "./tr.css"
 
 class Tr extends React.Component{
     constructor(props){

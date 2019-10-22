@@ -37,19 +37,19 @@ class DetailItem extends React.Component{
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '16.6%',
+            width: '14.3%',
         },{
             title: '物料名称',
             dataIndex: 'materialName',
             key: 'materialName',
             align:'center',
-            width: '16.6%',
+            width: '14.3%',
         },{
             title: '所属类别',
             dataIndex: 'types',
             key: 'types',
             align:'center',
-            width: '16.6%',
+            width: '14.3%',
             render:(text,record)=>{
                 // console.log(text,record)
                 if(text == 1){
@@ -63,23 +63,36 @@ class DetailItem extends React.Component{
             dataIndex: 'processName',
             key: 'processName',
             align:'center',
-            width: '16.6%',
+            width: '14.3%',
         },{
             title: '所含金属',
             dataIndex: 'metal',
             key: 'metal',
             align:'center',
-            width: '16.6%',
+            width: '14.3%',
+        },{
+            title: '数据类别',
+            dataIndex: 'valueType',
+            key: 'valueType',
+            align:'center',
+            width: '14.3%',
+            render:(text,record)=>{
+                if(record.valueType === 0){
+                    return "体积"
+                }else{
+                    return "重量"
+                }
+            }
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
             align:'center',
-            width: '16.6%',
+            width: '14.3%',
             render:(text,record)=>{
                 return(
                     <span>
-                        <Edit code={record.code} fetch={this.fetch} processCode={record.processCode}/>
+                        <Edit code={record.code} fetch={this.fetch} processCode={record.processCode} types={record.types}/>
                         <Divider type="vertical"/>
                         <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
                             <span className="blue" href="#">删除</span>
