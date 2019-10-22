@@ -3,19 +3,23 @@ import "../equipmenRepair.css";
 import DepTree from "./depTree";
 import SearchCell from "../../../BlockQuote/search";
 import TheTable from "./theTable";
+import {Spin} from "antd";
 
 class IsRepair extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state={
-            pageChangeFlag:'',
             searchContent:'',
-        }
+        };
+        this.pagination = {
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10","20","50","100"]
+        };
     }
 
     render() {
         this.url=this.props.url;
-        this.state.pagination=this.props.pagination;
 
         return(
             <div style={{paddingTop: '1px'}} className="eRp">
@@ -26,12 +30,12 @@ class IsRepair extends React.Component{
                         getTableData={this.props.getTableData}
                     />
                 </div>
-                <div className='eRp-right'>
+                <Spin spinning={this.props.loading} wrapperClassName='eRp-right'>
                     <div className='eRp-putright'>
                         <SearchCell
                             name='关键字'
                             flag={true}
-                            fetch={this.fetch}
+                            fetch={this.searchReset}
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             type={2}
@@ -42,11 +46,11 @@ class IsRepair extends React.Component{
                         <TheTable
                             url={this.url}
                             rightTableData={this.props.rightTableData}
-                            pagination={this.state.pagination}
+                            pagination={this.pagination}
                             handleTableChange={this.handleTableChange}
                         />
                     </div>
-                </div>
+                </Spin>
             </div>
 
         );
@@ -55,67 +59,45 @@ class IsRepair extends React.Component{
     searchContentChange=(e)=>{
         const value = e.target.value;
         this.setState({searchContent:value});
-    }
+    };
+
     /**绑定搜索事件 */
     searchEvent = () => {
-        this.setState({
-            pageChangeFlag: 1
-        });
         const params={
             secondDeptId:this.props.secondDeptId,
             repairStatus:2,
             condition:this.state.searchContent,
-        }
-        this.fetch(params,0);
-    }
+            page: this.pagination.current,
+            size: this.pagination.pageSize
+        };
+        this.props.getTableData(params);
+    };
+
     /**重置时重新加载数据*/
     searchReset=()=>{
+        this.setState({
+            searchContent:''
+        });
         this.props.getTableData(
             {
                 secondDeptId:this.props.secondDeptId,
                 repairStatus:2,
             }
         )
-    }
+    };
+
     /**分页查询*/
     handleTableChange = (page) => {
-        const {pageChangeFlag} = this.state.pageChangeFlag;
-        if (pageChangeFlag) {
-            this.props.getTableData({
-                secondDeptId:this.props.secondDeptId,
-                repairStatus:2,
-                condition:this.state.searchContent,
-            })
-        } else {
-            this.props.getTableData({
-                secondDeptId:this.props.secondDeptId,
-                repairStatus:2,
-            })
-        }
-    };
-    fetch = (params,flag) => {
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        if(flag) {
-            var {pagination} = this.state;
-            // pagination.total = 0;//设置全部页面为0
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent:'',
-                pagination:pagination
-            })
-            this.searchReset();
-        }
-        else{
-            this.setState({
-                pageChangeFlag: 1
-            });
-            const params={
-                secondDeptId:this.props.secondDeptId,
-                repairStatus:2,
-                condition:this.state.searchContent,
-            }
-            this.props.getTableData(params);
-        }
+        this.pagination = page;
+        let {searchContent} = this.state;
+        let params = {
+            secondDeptId:this.props.secondDeptId,
+            repairStatus:2,
+            condition: searchContent,
+            page: page.current,
+            size: page.pageSize
+        };
+        this.props.getTableData(params)
     };
 }
 export default IsRepair

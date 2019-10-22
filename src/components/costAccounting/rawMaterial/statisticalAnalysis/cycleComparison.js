@@ -3,7 +3,6 @@
  * */
 import React from 'react';
 import {DatePicker, Select} from "antd";
-import ReactEcharts from 'echarts-for-react';
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import axios from 'axios';
@@ -66,7 +65,7 @@ class CycleComparison extends React.Component {
                     <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 </div>
                 <div className={'clear'}></div>
-                <ReactEcharts option={this.getOption()} />
+                {/*<ReactEcharts option={this.getOption()} />*/}
             </div>
         )
     }

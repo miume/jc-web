@@ -122,7 +122,7 @@ class TheTable extends React.Component{
                     pagination={this.props.pagination}
                     onChange={this.props.handleTableChange}
                     dataSource={this.props.rightTableData}
-                    // dataSource={this.dataSource}
+                    rowKey={record => record.code}
                     size="small"
                     bordered
                     scroll={{x: "1260px", y: 450 }}

@@ -5,7 +5,7 @@
   - 位置基础信息
   - 设备工序分配
 - 设备点检（equipmentCheck）
-- 设备巡检（equipmentCheck）
+- 设备巡检（**equipmentCheck**）
 - 设备保养（equipmentMaintenance）
 - 设备维修（equipmentRepair）
 - 统计分析（statisticAnalysis）
