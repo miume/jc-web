@@ -1,12 +1,12 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message } from 'antd';
+import { Table,Popconfirm,Divider,message,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
-// import Edit from "./edit";
+import Edit from "./edit";
 
 class ProductLineStatical extends React.Component{
     url;
@@ -67,7 +67,7 @@ class ProductLineStatical extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        {/* <Edit code = {record.materialCode} fetch = {this.fetch}/> */}
+                        <Edit code = {record.vgaPoint.code} fetch = {this.fetch}/>
                         <Divider type="vertical"/>
                         <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.vgaPoint.code)} okText="确定" cancelText="取消">
                             <span className="blue" href="#">删除</span>
@@ -159,6 +159,7 @@ class ProductLineStatical extends React.Component{
                 this.setState({
                     data:res,
                     searchContent:'',
+                    loading:false
                 })
             }
         })
@@ -249,7 +250,7 @@ class ProductLineStatical extends React.Component{
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys={this.state.selectedRowKeys}
@@ -257,10 +258,10 @@ class ProductLineStatical extends React.Component{
                         cancel={this.cancel}
                         flag={true}
                     />
-                    <SearchCell name="请输入物料名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
+                    <SearchCell name="请输入vga点名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
-                </div>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                </Spin>
             </div>
         )
     }

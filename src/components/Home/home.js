@@ -530,7 +530,8 @@ class Home extends Component {
             vgaMap:{
                 vgaMap:`${server}/jc/common/vgaMap`,
                 ids:`${server}/jc/common/vgaMap/ids`,
-                page:`${server}/jc/common/vgaMap/page`
+                page:`${server}/jc/common/vgaMap/page`,
+                getInfoByVgaId:`${server}/jc/common/vgaMap/getInfoByVgaId`
             },
             /**设备工序*/
             deviceProcess: {
