@@ -26,76 +26,65 @@ class Statistics extends React.Component {
             key: 'index',
             dataIndex: 'index',
             sorter: (a,b) => a.code - b.code,
-            width: '7%'
+            width: '5%'
         }, {
             title: '周期类型',
             key: 'periodName',
-            dataIndex: 'index',
+            dataIndex: 'periodName',
             width: '7%'
         }, {
             title: '期数',
-            key: 'lineName',
-            dataIndex: 'lineName',
+            key: 'periods',
+            dataIndex: 'periods',
             width: '7%'
         }, {
             title: '开始时间',
             key: 'start',
             dataIndex: 'start',
-            width: '7%'
+            width: '10%'
         }, {
             title: '结束时间',
             key: 'end',
             dataIndex: 'end',
-            width: '7%'
+            width: '10%'
+        }, {
+            title: '数据类别',
+            key: 'dataType',
+            dataIndex: 'dataType',
+            width: '9%'
         }, {
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
-            width: '7%'
+            width: '9%'
         }, {
             title: '重量(T)',
             key: 'weight',
             dataIndex: 'weight',
-            width: '7%'
-        }, {
-            title: 'Ni浓度',
-            key: 'NiConcentration',
-            dataIndex: 'NiConcentration',
-            width: '7%'
-        }, {
-            title: 'Co浓度',
-            key: 'CoConcentration',
-            dataIndex: 'CoConcentration',
-            width: '7%'
-        }, {
-            title: 'Mn浓度',
-            key: 'MnConcentration',
-            dataIndex: 'MnConcentration',
-            width: '7%'
+            width: '9%'
         }, {
             title: 'Ni金属量(T)',
             key: 'NiMetallicity',
             dataIndex: 'NiMetallicity',
-            width: '7%'
+            width: '9%'
         }, {
             title: 'Co金属量(T)',
             key: 'CoMetallicity',
             dataIndex: 'CoMetallicity',
-            width: '7%'
+            width: '9%'
         }, {
             title: 'Mn金属量(T)',
             key: 'MnMetallicity',
             dataIndex: 'MnMetallicity',
-            width: '7%'
+            width: '9%'
         },{
             title: '操作',
             key: 'code',
             dataIndex: 'code',
-            width: '20%',
+            width: '5%',
             render: (text, record) => {
-                const columns = this.columns.slice(5,13);
                 return (
-                    <Detail data={record} columns={columns}/>
+                    <Detail data={record}/>
                 )
             }
         }]
@@ -104,7 +93,7 @@ class Statistics extends React.Component {
     render() {
         return (
             <Table columns={this.columns} rowKey={record => record.code}  pagination={this.pagination}
-                   size={"small"} bordered scroll={{x: 1500}} dataSource={this.props.data}/>
+                   size={"small"} bordered dataSource={this.props.data}/>
         )
     }
 

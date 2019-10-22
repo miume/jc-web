@@ -1,15 +1,24 @@
+/**
+ * 周期对比曲线
+ * */
 import React from 'react';
 import {DatePicker, Select, Table} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
+import axios from 'axios';
 
 const {Option} = Select;
+const {RangePicker} = DatePicker;
 
-class LineStatistics extends React.Component {
+class ProductionLineComparison extends React.Component {
     componentWillUnmount() {
         this.setState(() => {
             return;
         })
+    }
+
+    componentDidMount() {
+        this.getProductionLine();
     }
 
     constructor(props) {
@@ -24,6 +33,7 @@ class LineStatistics extends React.Component {
         this.getFooter = this.getFooter.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.getProductionLine = this.getProductionLine.bind(this);
         this.columns = [{
             title: '序号',
             key: 'index',
@@ -79,8 +89,8 @@ class LineStatistics extends React.Component {
     }
 
     render() {
-        let {start, dateFormat} = this.state;
-        const value = start === undefined || start === "" ? null : moment(start, dateFormat);
+        const {start, end, dateFormat} = this.state;
+        const value = start === undefined || end === undefined || start === "" || end === "" ? null : [moment(start, dateFormat), moment(end, dateFormat)];
         return (
             <div className='staticalAnalysis'>
                 <div style={{float:'right'}}>
@@ -90,19 +100,27 @@ class LineStatistics extends React.Component {
                         <Option value={2}>月</Option>
                         <Option value={3}>年</Option>
                     </Select>
-                    <DatePicker placeholder={'请输入开始事件'} onChange={this.onChange}
-                                style={{marginRight: 10}}
-                                value={value}
-                                format={dateFormat}/>
+                    <Select className={'raw-material-select'}
+                            style={{marginRight: 10}} value={this.state.lineCode} onChange={this.selectChange}>
+                        <Option value={1}>产线1</Option>
+                        <Option value={2}>产线2</Option>
+                        <Option value={3}>产线3</Option>
+                    </Select>
+                    <RangePicker placeholder={["开始日期","结束日期"]}  onChange={this.onChange}
+                                 className={'raw-material-date'} style={{marginRight: 10}}
+                                 value={value}
+                                 format={dateFormat}
+                    />
                     <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 </div>
                 <div className={'clear'}></div>
-                <Table rowKey={record => record.code} dataSource={this.props.data}
-                       columns={this.columns} pagination={false}
-                       size={"small"} bordered
-                       footer={this.getFooter}/>
             </div>
         )
+    }
+
+    /**获取所有产品线*/
+    getProductionLine() {
+        axios.get(`${this.props.url.precursorProductionLine.all}`,)
     }
 
     /**切换分页*/
@@ -132,15 +150,17 @@ class LineStatistics extends React.Component {
     onChange(date, dateString) {
         console.log(dateString)
         this.setState({
-            start: dateString
+            start: dateString[0],
+            end: dateString[1]
         })
     }
 
     /**根据周期类型和开始事件进行搜索*/
     search() {
-        let {start, periodCode} = this.state;
-        console.log(start, periodCode)
+        let {start, end, periodCode} = this.state;
+        console.log(start, end, periodCode)
     }
 }
 
-export default LineStatistics;
+export default ProductionLineComparison;
+

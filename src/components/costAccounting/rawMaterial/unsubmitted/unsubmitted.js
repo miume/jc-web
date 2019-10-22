@@ -56,7 +56,7 @@ class UnSubmitted extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <span className='blue'>编辑</span>
+                        <span className='blue' onClick={() => this.props.handleClick(record)}>编辑</span>
                         <DeleteById id={text} handleDelete={this.handleDelete} flag={true}/>
                     </span>
                 )

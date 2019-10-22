@@ -1,7 +1,10 @@
 import React from 'react';
-import {Modal, Button,Tabs} from "antd";
+import {Tabs} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import LineStatistics from './lineStatistics';
+import CycleComparison from "./cycleComparison";
+import ProductionLineComparison from "./productionLineComparison";
+import BlockQuote from "../../../BlockQuote/blockquote";
 
 const {TabPane} = Tabs;
 
@@ -16,27 +19,32 @@ class StatisticalAnalysis extends React.Component {
         super(props);
         this.state = {
             visible: false
-        }
+        };
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
 
     render() {
+        this.url = JSON.parse(localStorage.getItem('url'));
+        this.current = JSON.parse(localStorage.getItem('current'));
         return (
-            <span className={this.props.flag? '' : 'hide'}>
-                <Button onClick={this.handleClick} type='ant-btn ant-btn-primary'>统计分析</Button>
-                <Modal visible={this.state.visible} centered={true} closable={false}
-                       title={'原料领用统计分析'} maskClosable={false} width={1000}
-                       footer={[<CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>]}>
+            <div>
+                <BlockQuote name={'统计分析'} menu={this.current.menuName}
+                            menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
+                <div className={'rightDiv-content'}>
                     <Tabs defaultActiveKey={'1'}>
                         <TabPane tab={'按产线统计'} key={'1'}>
-                            <LineStatistics />
+                            <LineStatistics url={this.url}/>
                         </TabPane>
-                        <TabPane tab={'周期对比曲线'} key={'2'}>1</TabPane>
-                        <TabPane tab={'产线对比曲线'} key={'3'}>1</TabPane>
+                        <TabPane tab={'周期对比曲线'} key={'2'}>
+                            <CycleComparison url={this.url}/>
+                        </TabPane>
+                        <TabPane tab={'产线对比曲线'} key={'3'}>
+                            <ProductionLineComparison url={this.url}/>
+                        </TabPane>
                     </Tabs>
-                </Modal>
-            </span>
+                </div>
+            </div>
         )
     }
 
@@ -47,11 +55,9 @@ class StatisticalAnalysis extends React.Component {
         })
     }
 
-    /**点击取消按钮*/
+    /**点击返回上一级*/
     handleCancel() {
-        this.setState({
-            visible: false
-        })
+        this.props.history.push({pathname: '/rawMaterial'})
     }
 }
 
