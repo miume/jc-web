@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import HeadTable from './headTable';
@@ -388,7 +388,13 @@ class AddProductStandard extends React.Component {
     }
 
     selectTestItem = () => {
-        const selectTestItems = this.state.selectTestItems
+        var selectTestItems = this.state.selectTestItems
+        if(selectTestItems.length === 0){
+            const allTestItem = this.props.allTestItem
+            for(var j=0;j<allTestItem.length;j++){
+               selectTestItems.push(allTestItem[j]['form'])
+            }
+        }
         var testItems = []
         for (var i = 0; i < selectTestItems.length; i++) {
             const form = selectTestItems[i].split('-')
