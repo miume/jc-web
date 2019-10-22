@@ -388,10 +388,16 @@ class AddProductStandard extends React.Component {
     }
 
     selectTestItem = () => {
-        const selectTestItems = this.state.selectTestItems
-        var testItems = []
+        let selectTestItems = this.state.selectTestItems;
+        if(selectTestItems.length === 0){
+            const allTestItem = this.props.allTestItem;
+            for(var j=0;j<allTestItem.length;j++){
+                selectTestItems.push(allTestItem[j]['form'])
+            }
+        }
+        var testItems = [];
         for (var i = 0; i < selectTestItems.length; i++) {
-            const form = selectTestItems[i].split('-')
+            const form = selectTestItems[i].split('-');
             testItems.push({
                 id: parseInt(form[0]),
                 name: form[1],

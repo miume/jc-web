@@ -6,6 +6,7 @@
     "ajv": "^6.0.0",
     "antd": "^3.10.1",
     "axios": "^0.18.0",
+    "echarts": "^4.4.0",
     "echarts-for-react": "^2.0.15-beta.1",
     "express": "^4.16.4",
     "lodash": "latest",
