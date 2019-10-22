@@ -6,6 +6,7 @@ import {DatePicker, Select} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import axios from 'axios';
+import ReactEcharts from 'echarts-for-react';
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -65,7 +66,7 @@ class CycleComparison extends React.Component {
                     <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 </div>
                 <div className={'clear'}></div>
-                {/*<ReactEcharts option={this.getOption()} />*/}
+                <ReactEcharts option={this.getOption()} style={{height: '500px'}}/>
             </div>
         )
     }
@@ -104,7 +105,7 @@ class CycleComparison extends React.Component {
                     feature: {
                         mark: {show: true},
                         dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        magicType: {show: true, type: ['line', 'bar']},
                         restore: {show: true},
                         saveAsImage: {show: true}
                     }
