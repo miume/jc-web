@@ -82,8 +82,8 @@ class TheTable extends React.Component{
         width: '150px',
     },{
         title: '评价时间',
-        dataIndex: 'finishTime',
-        key: 'finishTime',
+        dataIndex: 'evaluationTime',
+        key: 'evaluationTime',
         align:'center',
         editable: 1,
         width: '150px',
@@ -133,11 +133,11 @@ class TheTable extends React.Component{
         return(
             <div>
                 <Table
+                    rowKey={record => record.code}
                     columns={this.columns}
                     pagination={this.props.pagination}
                     onChange={this.props.handleTableChange}
                     dataSource={this.props.rightTableData}
-                    // dataSource={this.dataSource}
                     size="small"
                     bordered
                     scroll={{x:'1480px', y: 450 }}

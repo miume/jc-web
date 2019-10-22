@@ -110,6 +110,7 @@ class TheTable extends React.Component{
         return(
             <div>
                 <Table
+                    rowKey={record => record.code}
                     columns={this.columns}
                     pagination={this.props.pagination}
                     onChange={this.props.handleTableChange}

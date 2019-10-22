@@ -13,8 +13,8 @@ class DetailModal extends React.Component{
     }
     columns=[{
         title: '序号',
-        dataIndex: 'code',
-        key: 'code',
+        dataIndex: 'index',
+        key: 'index',
         sorter: (a, b) => a.index - b.index,
         align:'center',
         width: '80px',
@@ -132,7 +132,7 @@ class DetailModal extends React.Component{
                                 <Table
                                     columns={this.columns}
                                     dataSource={this.state.detailData}
-                                    // dataSource={this.dataSource}
+                                    rowKey={record => record.code}
                                     size="small"
                                     bordered
                                     pagination={false}
@@ -164,11 +164,12 @@ class DetailModal extends React.Component{
         }).then((data) => {
             const res = data.data.data.deviceRepairAccessory ? data.data.data.deviceRepairAccessory: [];
             if (res) {
-                const arrMes = res;
-                var newRowData = arrMes;
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['index'] = i + 1;
+                }
                 this.setState({
                     visible: true,
-                    detailData: newRowData,
+                    detailData: res,
                 })
             } else {
 

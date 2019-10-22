@@ -168,6 +168,8 @@ class Home extends Component {
                 deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
                 evaluations:`${server}/jc/common/deviceRepair/evaluations`,
                 getPage:`${server}/jc/common/deviceRepair/getPage`,
+                export:`${server}/jc/common/deviceRepair/export`,
+                download: `${server}/jc/common`
             },
             /**位置基础信息*/
             locationBasic:{
