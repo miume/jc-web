@@ -40,6 +40,8 @@ import RedListManage from '../smartWarehouse/redListManage/redListManage';
 import LibraryManage from '../smartWarehouse/libraryManage/library';
 import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
+import ExceptionHandling from '../technologyCenter/exceptionHandling/exceptionHandling';
+import ProcessParameters from '../technologyCenter/processParameters/processParameters';
 import RawStandard from '../technologyCenter/rawStandard/rawStandard';
 import ProductStandard from '../technologyCenter/productStandard/productStandard';
 import ProductInspection from '../qualityProcess/dataEntry/productInspection/productInspection';
@@ -82,6 +84,7 @@ import ProcessName from "../costAccounting/precursorCostBasisData/processName/pr
 import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
+import processParameters from "../technologyCenter/processParameters/processParameters";
 
 class Right extends React.Component {
     render() {
@@ -454,6 +457,12 @@ class Right extends React.Component {
         },{
             path: '/statisticalAnalysis',
             component: StatisticalAnalysis
+        },{
+            path: '/exceptionHandling',
+            component: ExceptionHandling
+        },{
+            path: '/processParameters',
+            component: ProcessParameters
         }];
         return (
             <div className="rightDiv">

@@ -2,7 +2,6 @@ import React from 'react';
 
 class IsQualified extends React.Component {
     render() {
-        //console.log(this.props.status)
         switch(this.props.status) {
             case 0:
                 return(
