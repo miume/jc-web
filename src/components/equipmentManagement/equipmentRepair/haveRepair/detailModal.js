@@ -127,7 +127,7 @@ class DetailModal extends React.Component{
 
                         <Divider dashed />
 
-                        <Row type="flex" justify="start" style={{}} >
+                        <Row type="flex" justify="start" style={{height: 150}} >
                             <Col span={1.5} style={{paddingLeft:"30px",paddingRight:"30px"}}>
                                 <div>
                                     <h4>配件使用</h4>
@@ -138,6 +138,7 @@ class DetailModal extends React.Component{
                                         size="small"
                                         bordered
                                         pagination={false}
+                                        scroll={{y:100}}
                                     />
                                 </div>
                             </Col>

@@ -16,7 +16,7 @@ class TreeCard extends React.Component{
             TreeData:[],
             defaultkey:[],
             flag:false
-        }
+        };
         this.returnDepKey = this.returnDepKey.bind(this)
         this.props.getTreeData()
     }

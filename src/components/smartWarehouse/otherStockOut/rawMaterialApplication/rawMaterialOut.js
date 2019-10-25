@@ -43,27 +43,37 @@ class RawMaterialOut extends React.Component {
             dataIndex: 'index',
             key: 'index',
             sorter: (a, b) => a.id - b.id,
-            width: '10%'
+            width: '7%'
         }, {
             title: '批号',
             dataIndex: 'batchNumber',
             key: 'batchNumber',
             width: '15%',
         }, {
+            title: '产线',
+            dataIndex: 'productionLine',
+            key: 'productionLine',
+            width: '10%',
+        }, {
+            title: '出库点',
+            dataIndex: 'stockOut',
+            key: 'stockOut',
+            width: '10%',
+        }, {
             title: '申请人',
             dataIndex: 'createPersonName',
             key: 'createPersonName',
-            width: '15%'
+            width: '10%'
         }, {
             title: '申请日期',
             dataIndex: 'createTime',
             key: 'createTime',
-            width: '16%'
+            width: '15%'
         }, {
             title: '审核状态',
             dataIndex: 'status',
             key: 'status',
-            width: '15%',
+            width: '10%',
             render: status => {
                 return this.status[status.toString()];
             },
@@ -71,7 +81,7 @@ class RawMaterialOut extends React.Component {
             title: '紧急',
             dataIndex: 'isUrgent',
             key: 'isUrgent',
-            width: '10%',
+            width: '7%',
             render: isUrgent => isUrgent ?
                 <span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span> :
                 <span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
@@ -104,7 +114,7 @@ class RawMaterialOut extends React.Component {
                </span>
                 );
             }
-            }]
+        }];
         this.pagination = {
             showTotal(total) {
                 return `共${total}条记录`
