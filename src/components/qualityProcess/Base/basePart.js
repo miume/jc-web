@@ -4,7 +4,7 @@ class BasePart extends React.Component{
 
     render(){
         return (
-           <div className='nav-card' style={{cursor:'pointer' ,display:'inline-block',height:'220px'}} id={this.props.path} onClick={this.props.click}>
+           <div className='nav-card dataPart' id={this.props.path} onClick={this.props.click}>
               <div className='nav-card-child' style={{border:'1px solid #1890ff'}} >
                  <div style={{width:'100%',height:'80%',backgroundColor:'#1890ff',textAlign:'center'}}>
                        <p style={{padding:'40px'}} id={this.props.path}>
