@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import {Table, message, Spin, Divider} from "antd";
+import AssayDetail from "./assayDetail"
 
 class Instrument extends React.Component{
     url
@@ -54,7 +55,7 @@ class Instrument extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className="blue">详情</span>
+                        <AssayDetail />
                     </span>
                 )
             }

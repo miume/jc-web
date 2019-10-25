@@ -1,7 +1,8 @@
 import React from "react";
-import {Modal, Table,Button} from "antd";
+import {Modal, Table,Button,Select} from "antd";
 import axios from 'axios';
 import CancleButton from "../../BlockQuote/cancleButton";
+import ReactEcharts from 'echarts-for-react';
 
 class InstrumentDetail extends React.Component{
     url;
@@ -74,6 +75,87 @@ class InstrumentDetail extends React.Component{
             picType:"primary",
         })
     }
+
+    getOption = () =>{
+        var labelOption = {
+            normal: {
+                show: true,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
+                    }
+                }
+            }
+        };
+        return (
+            {
+                color: ['#003366', '#006699', '#dc150c'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Ni', 'Co', 'Mn']
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        name: '周期数',
+                        axisTick: {show: false},
+                        data: ['2012', '2013', '2014', '2015', '2016']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '含量（T）',
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Ni',
+                        type: 'line',
+                        barGap: 0,
+                        label: labelOption,
+                        data: [320, 332, 301, 334, 390]
+                    },
+                    {
+                        name: 'Co',
+                        type: 'line',
+                        label: labelOption,
+                        data: [220, 182, 191, 234, 290]
+                    },
+                    {
+                        name: 'Mn',
+                        type: 'line',
+                        label: labelOption,
+                        data: [150, 232, 201, 154, 190]
+                    }
+                ]
+            }
+        )
+    };
+    handleChange = (e) =>{
+        console.log(e)
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
@@ -102,7 +184,12 @@ class InstrumentDetail extends React.Component{
                     <Table columns={this.column} dataSource={this.state.data} pagination={false} size="small" bordered rowKey={record=>record.type}/>
                     </div>
                     <div style={{display:this.state.pictureDisplay}}>
-                        11111
+                    请选择类型：<Select placeholder="请选择类型" defaultValue="PH" onChange={this.handleChange} style={{width:"120px"}}>
+                        <Select.Option value="PH">PH</Select.Option>
+                        <Select.Option value="温度">温度</Select.Option>
+                        <Select.Option value="氨气">氨气</Select.Option>
+                    </Select>
+                    <ReactEcharts option={this.getOption()}/>
                     </div>
                 </Modal>
             </div>

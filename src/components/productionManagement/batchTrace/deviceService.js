@@ -1,10 +1,10 @@
 import React from "react";
 import axios from "axios";
-import {Table, message, Spin, Divider} from "antd";
-import DeviceService from "./deviceService";
-import DeviceMaintenance from "./deviceMaintenance"
+import {Table, message, Spin, Divider, Modal} from "antd";
+import CancleButton from "../../BlockQuote/cancleButton";
+import ServiceDetail from "./serviceDetail"
 
-class Instrument extends React.Component{
+class DeviceService extends React.Component{
     url
     constructor(props){
         super(props);
@@ -16,6 +16,7 @@ class Instrument extends React.Component{
                 startTime:"2019-01-01  12:30",
                 endTime:"2019-01-01  12:30",
             }],
+            visible:false
         }
         this.column = [{
             title: '序号',
@@ -56,23 +57,42 @@ class Instrument extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <DeviceService />
-                        <Divider type="vertical"/>
-                        <DeviceMaintenance />
+                        <ServiceDetail />
                     </span>
                 )
             }
         }]
     }
-
+    handleDetail = () =>{
+        this.setState({
+            visible:true
+        })
+    }
+    handleCancel=()=>{
+        this.setState({
+            visible: false
+        });
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
-                <Table pagination={false} size="small" bordered  dataSource={this.state.data} columns={this.column} rowKey={record=>record.index}/>
+                <span onClick={this.handleDetail} className="blue">维修</span>
+                <Modal
+                    title='设备维修信息'
+                    visible={this.state.visible}
+                    width="800px"
+                    closable={false} centered={true}
+                    maskClosable={false}
+                        footer={[
+                            <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
+                        ]}
+                >
+                    <Table pagination={false} size="small" bordered  dataSource={this.state.data} columns={this.column} rowKey={record=>record.index}/>
+                </Modal>
             </span>
         )
     }
 }
 
-export default Instrument
+export default DeviceService
