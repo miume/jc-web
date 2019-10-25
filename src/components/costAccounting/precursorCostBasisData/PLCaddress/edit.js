@@ -85,9 +85,9 @@ class Edit extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    <Input id="name" onChange={this.change} value={this.state.data} placeholder="请输入PLC地址"/>
+                    PLC地址：<Input id="name" style={{width:"84%"}} onChange={this.change} value={this.state.data} placeholder="请输入PLC地址"/>
                     <br /><br />
-                    <Input id="description" onChange={this.description} value={this.state.description} placeholder="请输入地址说明"/>
+                    地址说明：<Input id="description" style={{width:"83%"}} onChange={this.description} value={this.state.description} placeholder="请输入地址说明"/>
                 </Modal>
             </span>
         )

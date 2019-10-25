@@ -7,8 +7,7 @@ class DetailModal extends React.Component{
         super(props)
         this.state={
             visible:false,
-            detailData:[],
-
+            detailData:[]
         }
     }
 

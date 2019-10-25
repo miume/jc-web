@@ -16,6 +16,52 @@ class Detail extends React.Component {
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.columns = [{
+            title: '物料名称',
+            key: 'materialName',
+            dataIndex: 'materialName',
+            width: '7%'
+        }, {
+            title: '重量(T)',
+            key: 'weight',
+            dataIndex: 'weight',
+            width: '7%'
+        },  {
+            title: '密度(g/ml)',
+            key: 'density',
+            dataIndex: 'density',
+            width: '7%'
+        },{
+            title: 'Ni浓度',
+            key: 'NiConcentration',
+            dataIndex: 'NiConcentration',
+            width: '7%'
+        }, {
+            title: 'Co浓度',
+            key: 'CoConcentration',
+            dataIndex: 'CoConcentration',
+            width: '7%'
+        }, {
+            title: 'Mn浓度',
+            key: 'MnConcentration',
+            dataIndex: 'MnConcentration',
+            width: '7%'
+        }, {
+            title: 'Ni金属量(T)',
+            key: 'NiMetallicity',
+            dataIndex: 'NiMetallicity',
+            width: '7%'
+        }, {
+            title: 'Co金属量(T)',
+            key: 'CoMetallicity',
+            dataIndex: 'CoMetallicity',
+            width: '7%'
+        }, {
+            title: 'Mn金属量(T)',
+            key: 'MnMetallicity',
+            dataIndex: 'MnMetallicity',
+            width: '7%'
+        }]
     }
 
     render() {
@@ -34,7 +80,7 @@ class Detail extends React.Component {
                             <div>{`开始时间：` + start}</div>
                             <div>{`结束时间：` + end}</div>
                         </div>
-                        <Table rowKey={record => record.code} dataSource={[this.props.data]} columns={this.props.columns}
+                        <Table rowKey={record => record.code} dataSource={[this.props.data]} columns={this.columns}
                                size={"small"} bordered pagination={false}/>
                     </div>
                 </Modal>

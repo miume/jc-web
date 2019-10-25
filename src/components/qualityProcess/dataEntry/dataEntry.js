@@ -53,7 +53,7 @@ class DataEntry extends React.Component{
     componentDidMount(){
         this.getData()
     }
-    current
+    current;
     constructor(props){
         super(props);
         this.state = {
@@ -61,21 +61,21 @@ class DataEntry extends React.Component{
             flag:0,
             path:'',
             clickButton:''
-        }
+        };
         this.click = this.click.bind(this);
         this.current = localStorage.getItem('current')?JSON.parse(localStorage.getItem('current')):null
         this.getData = this.getData.bind(this);
     }
-     click(e){
-         const path = e.target.id.split('-');
-         const dataEntry = {
+    click(e){
+        const path = e.target.id.split('-');
+        const dataEntry = {
             openKeys : this.current.menuId,
             menuName : path[1],
             menuParent : this.current.menuName,
             path : path[0]
-        }
-        localStorage.setItem('dataEntry',JSON.stringify(dataEntry))
-         this.props.history.push({pathname:path[0]})
+        };
+        localStorage.setItem('dataEntry',JSON.stringify(dataEntry));
+        this.props.history.push({pathname:path[0]})
     }
     getData(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path=== this.current.path)[0]:[];
@@ -87,7 +87,7 @@ class DataEntry extends React.Component{
                     path : `${m.path}-${m.menuName}`,
                     className : icon[index]
                 })
-            }):[]
+            }):[];
         this.setState({
             data : data
         })

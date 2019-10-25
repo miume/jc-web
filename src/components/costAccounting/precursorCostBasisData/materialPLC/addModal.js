@@ -105,7 +105,7 @@ class AddModal extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    <Select id="material" onChange={this.materialChange} value={this.state.materialCode} style={{width:"100%"}} placeholder="请选择物料点">
+                    物料点：<Select id="material" style={{width:"85%"}} onChange={this.materialChange} value={this.state.materialCode} placeholder="请选择物料点">
                         {
                             this.state.materialPonit.map((item)=>{
                                 return(
@@ -115,7 +115,7 @@ class AddModal extends React.Component{
                         }
                     </Select>
                     <br /><br />
-                    <Select id="plcAddress" onChange={this.plcChange} value={this.state.plcCode} style={{width:"100%"}} placeholder="请选择plc地址">
+                    plc地址：<Select id="plcAddress" style={{width:"84%"}} onChange={this.plcChange} value={this.state.plcCode} placeholder="请选择plc地址">
                         {
                             this.state.plcAddress.map((item)=>{
                                 return(

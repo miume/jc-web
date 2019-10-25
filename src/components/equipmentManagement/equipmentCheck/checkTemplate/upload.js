@@ -43,6 +43,19 @@ class PictureUp extends React.Component{
         })
     }
 
+    beforeUpload = (file) => {
+        const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png" || file.type === "image/jpg"|| file.type === "image/gif"|| file.type === "image/bmp";
+        if(!isJpgOrPng){
+            message.error("只能上传格式为jpg/jepg/png/bmp/gif的图片");
+        }
+        const isLt1M = file.size/1024/1024<10;
+        // console.log(isLt1M)
+        if(!isLt1M){
+            message.error("图片大小应小于10M");
+        }
+        return isJpgOrPng&&isLt1M;
+    }
+
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
@@ -57,6 +70,7 @@ class PictureUp extends React.Component{
                     onPreview={this.previewPreview}
                     onChange={this.props.handleChange.bind(this,`fileList${this.props.k}`)}
                     onRemove={this.onRemove}
+                    beforeUpload={this.beforeUpload}
                 >
                     {fileList.length === 1 ? null : <Button>
                         <Icon type="upload"/>上传图片

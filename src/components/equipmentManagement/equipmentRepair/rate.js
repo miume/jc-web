@@ -5,11 +5,11 @@ import AddButton from '../../BlockQuote/newButton';
 import WhiteSpace from '../../BlockQuote/whiteSpace';
 
 class RateNum extends React.Component{
-    constructor(props){
-        super(props)
+    constructor(props) {
+        super(props);
         this.state={
             visible : false
-        }
+        };
         this.handleDetail = this.handleDetail.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
         this.handleOk = this.handleOk.bind(this)

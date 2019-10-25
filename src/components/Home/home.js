@@ -168,6 +168,8 @@ class Home extends Component {
                 deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
                 evaluations:`${server}/jc/common/deviceRepair/evaluations`,
                 getPage:`${server}/jc/common/deviceRepair/getPage`,
+                export:`${server}/jc/common/deviceRepair/export`,
+                download: `${server}/jc/common`
             },
             /**位置基础信息*/
             locationBasic:{
@@ -280,7 +282,9 @@ class Home extends Component {
                 getStandard:`${server}/jc/common/techRawStandard`,
                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
                 addNewRaw:`${server}/jc/common/techRawStandard/addRaw`,
-
+                
+                getCurrentRawStandard:`${server}/jc/common/techRawStandard/getCurrentRawStandard`,
+                getItemsByRawId:`${server}/jc/common/techRawStandard/getItemsByRawId`
             },
             /**产品标准 */
             productStandard:{
@@ -301,6 +305,8 @@ class Home extends Component {
                 productStandard:`${server}/jc/common/techProductStandard`,
                 getAll:`${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass:`${server}/jc/common/techProductStandard/newClass`,
+
+                getAllProductCommonBatch:`${server}/jc/common/product/getAllProductCommonBatch`,
             },
             /**设备基本厂商*/
             equipmentManufacture:{
@@ -457,7 +463,8 @@ class Home extends Component {
                 getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
                 updateState:`${server}/jc/common/productionBatchRule/UpdateState`,
-                getAllInfos: `${server}/jc/common/productionBatchRule/getAllInfos`
+                getAllInfos:`${server}/jc/common/productionBatchRule/getAllInfos`
+
             },
             /**统计周期 */
             staticPeriod:{
@@ -491,7 +498,9 @@ class Home extends Component {
                 delete:`${server}/jc/common/precursorMaterialLineWeight/delete`,
                 ids:`${server}/jc/common/precursorMaterialLineWeight/ids`,
                 page:`${server}/jc/common/precursorMaterialLineWeight/page`,
-                update:`${server}/jc/common/precursorMaterialLineWeight/update`
+                update:`${server}/jc/common/precursorMaterialLineWeight/update`,
+                getMaterialName:`${server}/jc/common/precursorMaterialLineWeight/getMaterialName`,
+                getRecordById:`${server}/jc/common/precursorMaterialLineWeight/getRecordById`
             },
             /**物料名称 */
             precursorMaterialDetails:{
@@ -527,7 +536,8 @@ class Home extends Component {
             vgaMap:{
                 vgaMap:`${server}/jc/common/vgaMap`,
                 ids:`${server}/jc/common/vgaMap/ids`,
-                page:`${server}/jc/common/vgaMap/page`
+                page:`${server}/jc/common/vgaMap/page`,
+                getInfoByVgaId:`${server}/jc/common/vgaMap/getInfoByVgaId`
             },
             /**设备工序*/
             deviceProcess: {

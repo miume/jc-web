@@ -1,0 +1,13 @@
+.exception-table-add-div {
+    margin: 10px 5px;
+    display: flex;
+    height: 60px;
+}
+
+.exception-table-add-div span {
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 500;
+}

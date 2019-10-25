@@ -2,7 +2,7 @@ import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
 import {message, Transfer} from "antd";
 import axios from "axios";
-import DepTree from "./depTree";
+import DepTree from "../../../BlockQuote/department";
 import './eqUserDepAllocation.css'
 class EqUserDepAllocation extends React.Component {
     constructor(props) {
@@ -29,11 +29,11 @@ class EqUserDepAllocation extends React.Component {
                 <div className='equipment'>
                     <DepTree
                         key="depTree"
+                        treeName={'所属部门'}
                         url={this.url}
                         getTableData={this.getTableData}
                     />
                     <div className='equipment-right'>
-                    {/*<Spin spinning={this.state.transferLoading} wrapperClassName='eqUserDep-right'>*/}
                         <Transfer
                             rowKey={record => record.userId}
                             style={{
@@ -55,7 +55,6 @@ class EqUserDepAllocation extends React.Component {
                                 itemUnit: '项', itemsUnit: '项', searchPlaceholder: '请输入搜索内容'
                             }}
                         />
-                    {/*</Spin>*/}
                     </div>
                 </div>
             </div>

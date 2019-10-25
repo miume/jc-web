@@ -26,8 +26,6 @@ class StockOut extends React.Component{
             loading: true
         }
         this.url = JSON.parse(localStorage.getItem('url'));
-        // this.server = localStorage.getItem('remote');
-        // this.Authorization = localStorage.getItem('Authorization');
         this.handleChange = this.handleChange.bind(this);
         this.apply = this.apply.bind(this);
         this.outCheck = this.outCheck.bind(this);

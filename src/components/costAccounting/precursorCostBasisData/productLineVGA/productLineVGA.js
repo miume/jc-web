@@ -1,31 +1,28 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message } from 'antd';
+import { Table,Popconfirm,Divider,message,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
+import axios from "axios";
+import Edit from "./edit";
 
-class ProductLineVGA extends React.Component{
+class ProductLineStatical extends React.Component{
     url;
     constructor(props){
         super(props);
         this.state={
             visible:false,
-            data:[{
-                index:1,
-                VGApoint:"1号叫料点",
-                value:`1#产线  0.2,2#产线  0.3,3#产线  0.3,4#产线  0.2`
-            },{
-                index:2,
-                VGApoint:"2号叫料点",
-                value:`1#产线  0.2,2#产线  0.3,3#产线  0.3,4#产线  0.2`
-            },{
-                index:3,
-                VGApoint:"3号叫料点",
-                value:`1#产线  0.2,2#产线  0.3,3#产线  0.3,4#产线  0.2`
-            }]
+            data:[],
+            selectedRowKeys: [],
+            loading:true,
+            searchContent:'',
         }
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.cancel=this.cancel.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -41,25 +38,23 @@ class ProductLineVGA extends React.Component{
             width: '25%',
         },{
             title: 'VGA点',
-            dataIndex: 'VGApoint',
-            key: 'VGApoint',
+            dataIndex: 'vgaName',
+            key: 'vgaName',
             align:'center',
             width: '25%',
         },{
             title: '产线/权重',
-            dataIndex: 'value',
-            key: 'value',
+            dataIndex: 'weightValue',
+            key: 'weightValue',
             align:'center',
             width: '25%',
             render:(text,record)=>{
-                var record = record.value.split(",");
-                return (
+                var record = record.weightValue.split(",");
+                return(
                     record.map((item,index)=>{
-                        return(
-                            <div key={index}>
-                                {item}
-                            </div>
-                        )
+                        return(<div key={index}>
+                            {item}
+                        </div>)
                     })
                 )
             }
@@ -72,32 +67,204 @@ class ProductLineVGA extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className="blue">编辑</span>
+                        <Edit code = {record.vgaPoint.code} fetch = {this.fetch}/>
                         <Divider type="vertical"/>
-                        <span className="blue">删除</span>
+                        <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.vgaPoint.code)} okText="确定" cancelText="取消">
+                            <span className="blue" href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
         }]
+    };
+
+    handleDelete = (id)=>{
+        // console.log(id)
+        axios({
+            url:`${this.url.vgaMap.vgaMap}`,
+            method:"delete",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:id}
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+    };
+    start = () => {
+        const ids = this.state.selectedRowKeys;
+        // console.log(ids)
+        axios({
+            url:`${this.url.vgaMap.ids}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            // console.log(data);
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+            message.info(data.data.message);
+            // if((this.pagination.total-1)%10===0){
+            //     this.pagination.current = this.pagination.current-1
+            // }
+            // this.handleTableChange(this.pagination);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data);
+        })
+    };
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+    }
+
+    componentDidMount(){
+        this.fetch();
+    }
+
+    fetch = ()=>{
+        axios({
+            url:`${this.url.vgaMap.page}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            for(var i=0;i<res.length;i++){
+                res[i].weightValue = res[i].lines.map((item)=>{
+                    return(
+                        item.name+"  "+item.value
+                    )
+                }).join(",")
+            }
+            for(var i=0;i<res.length;i++){
+                res[i].vgaName = res[i].vgaPoint.vgaName
+            }
+            // console.log(res);
+            if(res.length!==0){
+                this.setState({
+                    data:res,
+                    searchContent:'',
+                    loading:false
+                })
+            }
+        })
+    }
+
+    /**实现全选 */
+    onSelectChange(selectedRowKeys) {
+        //   console.log(selectedRowKeys)
+        this.setState({ selectedRowKeys:selectedRowKeys });
+    }
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    searchEvent(){
+        const ope_name = this.state.searchContent;
+        axios({
+            url:`${this.url.vgaMap.page}`,
+            method:'get',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            params:{
+                // size: this.pagination.pageSize,
+                // page: this.pagination.current,
+                condition:ope_name
+            },
+            type:'json',
+        }).then((data)=>{
+            // const res = data.data.data;
+            // if(res&&res.list){
+            //     this.pagination.total=res.total;
+            //     for(var i = 1; i<=res.list.length; i++){
+            //         res.list[i-1]['index']=(res.prePage)*10+i;
+            //     }
+            //     this.setState({
+            //         dataSource: res.list,
+            //     });
+            // }
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            for(var i=0;i<res.length;i++){
+                res[i].weightValue = res[i].lines.map((item)=>{
+                    return(
+                        item.name+"  "+item.value
+                    )
+                }).join(",")
+            }
+            for(var i=0;i<res.length;i++){
+                res[i].vgaName = res[i].vgaPoint.vgaName
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res
+                })
+            }
+        })
+    };
+    /**返回数据录入页面 */
+    returnDataEntry = ()=>{
+        this.props.history.push({pathname: "/precursorCostBasisData"});
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
+        const {  selectedRowKeys } = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+            onSelect() {},
+            onSelectAll() {},
+            // getCheckboxProps: record => ({
+            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
+            //   }),
+          };
         return(
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div style={{padding:'15px'}}>
-                    <AddModal />
+                <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
+                            returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
-                        selectedRowKeys = {[1]}
+                        selectedRowKeys={this.state.selectedRowKeys}
+                        deleteByIds={this.start}
+                        cancel={this.cancel}
+                        flag={true}
                     />
-                    <SearchCell flag={true}/>
+                    <SearchCell name="请输入vga点名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={{}} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
-                </div>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                </Spin>
             </div>
         )
     }
 }
 
-export default ProductLineVGA
+export default ProductLineStatical

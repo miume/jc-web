@@ -106,11 +106,11 @@ class Edit extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    <Input id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称"/>
+                    周期名称：<Input style={{width:"84%"}} id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称"/>
                     <br /><br />
-                    <Input id="default" onChange={this.description} value={this.state.default} placeholder="请输入默认时长"/>
+                    默认时长：<Input style={{width:"84%"}} id="default" onChange={this.description} value={this.state.default} placeholder="请输入默认时长"/>
                     <br /><br />
-                    <TimePicker style={{width:"460px"}} id="startTime" value={this.state.startTime} onChange = {this.onChange} placeholder="请输入开始时刻"/>
+                    开始时刻：<TimePicker style={{width:"84%"}} id="startTime" value={this.state.startTime} onChange = {this.onChange} placeholder="请输入开始时刻"/>
                 </Modal>
             </span>
         )

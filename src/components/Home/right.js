@@ -34,12 +34,15 @@ import CheckPlan from "../equipmentManagement/equipmentCheck/checkPlan/checkPlan
 import CheckQuery from "../equipmentManagement/equipmentCheck/checkQuery/checkQuery";
 import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/checkTemplate";
 
+import OtherStockOut from '../smartWarehouse/otherStockOut/stockOut';
 import EnterStorage from '../smartWarehouse/enterStorage/enterStorage';
 import InventorManage from '../smartWarehouse/inventoryManage/inventorManage';
 import RedListManage from '../smartWarehouse/redListManage/redListManage';
 import LibraryManage from '../smartWarehouse/libraryManage/library';
 import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
+import ExceptionHandling from '../technologyCenter/exceptionHandling/exceptionHandling';
+import ProcessParameters from '../technologyCenter/processParameters/processParameters';
 import RawStandard from '../technologyCenter/rawStandard/rawStandard';
 import ProductStandard from '../technologyCenter/productStandard/productStandard';
 import ProductInspection from '../qualityProcess/dataEntry/productInspection/productInspection';
@@ -78,8 +81,16 @@ import XinsongVGA from "../costAccounting/precursorCostBasisData/xinsongVGA/xins
 import ProductLineStatical from "../costAccounting/precursorCostBasisData/productLineStatical/productLineStatical"
 import ProductLineVGA from "../costAccounting/precursorCostBasisData/productLineVGA/productLineVGA"
 import ProcessName from "../costAccounting/precursorCostBasisData/processName/processName"
+
 import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
 import StatisticalPeriodCost from '../positiveCost/statisticalPeriod/statisticalPeriodCost' 
+
+import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
+import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
+import processParameters from "../technologyCenter/processParameters/processParameters";
+
+import BatchTrace from "../productionManagement/batchTrace/batchTrace";
+
 
 import BaseInfoPositiveCost from '../positiveCost/baseInfo';
 import ProductLinePositiveCost from '../positiveCost/productLine/productLinePositiveCost';
@@ -135,8 +146,7 @@ class Right extends React.Component {
         }, {
             path: '/testItem',
             component: TestItem
-        },
-        {
+        }, {
             path: '/productLine',
             component: ProductLine
         }, {
@@ -145,6 +155,9 @@ class Right extends React.Component {
         }, {
             path: '/stockOut',
             component: StockOut
+        },{
+            path: '/otherStockOut',
+            component: OtherStockOut
         }, {
             path: '/enterStorage',
             component: EnterStorage
@@ -252,10 +265,10 @@ class Right extends React.Component {
             component:EqupimentAssignment
         },{
             path:"/statisticAnalysis",
-                component:StatisticAnalysis
+            component:StatisticAnalysis
         },{
             path:"/checkStatistics",
-                component:CheckStatistics
+            component:CheckStatistics
         },{
             path:"/rawMaterialInput",
             component:RawMaterialInput
@@ -478,6 +491,22 @@ class Right extends React.Component {
         },{
             path:'/materialTypePLCMeterCom',
             component:MaterialTypePLCMeterCom
+        },{
+            path: '/addModal',
+            component: AddModal
+        },{
+            path: '/statisticalAnalysis',
+            component: StatisticalAnalysis
+        },{
+            path:"/batchTrace",
+            component:BatchTrace
+        },{
+            path: '/exceptionHandling',
+            component: ExceptionHandling
+        },{
+            path: '/processParameters',
+            component: ProcessParameters
+
         }];
         return (
             <div className="rightDiv">

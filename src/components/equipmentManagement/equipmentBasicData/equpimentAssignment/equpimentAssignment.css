@@ -7,7 +7,6 @@
 .equipment-left{
     width: 20%;
     height: 100%;
-    overflow:auto;
     border:1px solid #F5f5f5;
 }
 .equipment-right{
@@ -15,7 +14,7 @@
      margin-left: 20px;
      height: 100%;
      padding: 5px;
-    overflow: auto;
+     overflow: auto;
  }
 .equpiment-eqblocka{
     height:50px;

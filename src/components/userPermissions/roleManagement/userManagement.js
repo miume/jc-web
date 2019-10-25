@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import './userManagement.css';
-import {Modal,Button,message} from 'antd';
+import {Modal,Button,message,Input} from 'antd';
 import NewButton from '../../BlockQuote/newButton';
 import CancleButton from '../../BlockQuote/cancleButton';
+
 /**测试假数据 */
 // const assignedRole : [
 //     {id:3, name : '张一'},
@@ -32,6 +33,7 @@ class UserManagement extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.moveRight = this.moveRight.bind(this);
         this.moveLeft = this.moveLeft.bind(this);
+        this.inputChange = this.inputChange.bind(this);
         this.state = {
             visible: false,
             value: this.props.value,
@@ -40,6 +42,8 @@ class UserManagement extends React.Component {
             unsignedCheckIds : [],
             assignedRole:[],
             unsignedRole:[],
+            assigned: [],
+            unsigned: []   //用来记录搜索的数据
         }
     }
     /**通过角色id查询已分配和未分配的用户 */
@@ -55,7 +59,9 @@ class UserManagement extends React.Component {
             let res = data.data.data;
             this.setState({
                 assignedRole : res?res.assigned:[],
-                unsignedRole : res?res.notAssigned:[]
+                unsignedRole : res?res.notAssigned:[],
+                assigned : res?res.assigned:[],
+                unsigned : res?res.notAssigned:[]
             })
         }).catch(()=>{
             message.info('查询失败，请联系管理员！')
@@ -123,8 +129,10 @@ class UserManagement extends React.Component {
                 let changeRoles = newState.unsignedRole.find(v => v.id === value );
                 newState.assignedRole.splice(0,0,changeRoles)
                 newState.unsignedRole.splice(newState.unsignedRole.findIndex(v => v.id === changeRoles.id), 1)
-            })
+            });
             newState.unsignedCheckIds.splice(0,ids.length); //右移以后，将未分配id清空
+            newState.unsigned = newState.unsignedRole;
+            newState.assigned = newState.assignedRole;
             this.setState(newState)
         }
     }
@@ -143,8 +151,24 @@ class UserManagement extends React.Component {
                 newState.assignedRole.splice(newState.assignedRole.findIndex(v => v.id === changeRoles.id), 1)
             })
             newState.assignedCheckIds.splice(0,ids.length); //左移以后 将已分配的ids清空
+            newState.unsigned = newState.unsignedRole;
+            newState.assigned = newState.assignedRole;
             this.setState(newState)
         }
+    }
+
+    /**监控input框的变化*/
+    inputChange(e) {
+        let target = e.target;
+        let {assigned, unsigned} = this.state, result = [];
+        if(target.name === 'unsignedRole') {
+            result = unsigned.filter(e => e.name.indexOf(target.value) > -1);
+        } else {
+            result = assigned.filter(e => e.name.indexOf(target.value) > -1);
+        }
+        this.setState({
+            [target.name]: result
+        })
     }
     render() {
       return (
@@ -167,6 +191,12 @@ class UserManagement extends React.Component {
                 </header>
 
                 <div className="contents" style={{width:"40%"}}>
+                    <Input
+                        placeholder="请输入用户名"
+                        style={{borderLeft:'none',borderRight:'none',borderTop:'none'}}
+                        name={'unsignedRole'}
+                        onChange={this.inputChange}
+                    />
 
                     {
                         this.state.unsignedRole.map((unsigned) => {
@@ -187,6 +217,12 @@ class UserManagement extends React.Component {
                 </div>
 
                 <div className="contents" style={{width:"40%"}}>
+                    <Input
+                        placeholder="请输入用户名"
+                        style={{borderLeft:'none',borderRight:'none',borderTop:'none'}}
+                        name={'assignedRole'}
+                        onChange={this.inputChange}
+                    />
                     {
                         this.state.assignedRole.map((assigned) => {
                             return (

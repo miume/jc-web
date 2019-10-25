@@ -37,12 +37,12 @@ class RawMaterialApplication extends React.Component{
             title:'物料名称',
             dataIndex:'materialName',
             key:'materialName',
-            width:'20%'
+            width:'15%'
         },{
             title:'物料类型',
             dataIndex:'materialClass',
             key:'materialClass',
-            width:'20%',
+            width:'15%',
             render:(text)=>{
                 switch(text){
                     case 1: return '原材料';
@@ -55,7 +55,7 @@ class RawMaterialApplication extends React.Component{
             title:'编号',
             dataIndex:'serialNumber',
             key:'serialNumber',
-            width:'34%',
+            width:'45%',
         }, {
             title:'重量',
             dataIndex:'weight',

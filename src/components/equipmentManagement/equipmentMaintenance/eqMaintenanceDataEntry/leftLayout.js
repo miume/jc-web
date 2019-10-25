@@ -21,7 +21,7 @@ class LeftLayout extends React.Component{
             deviceData: [],     //所有设备数据
             loading: true,      //表示左边树的加载情况
             tableLoading: true, //表格数据的加载情况
-        }
+        };
         this.fetch = this.fetch.bind(this);
         this.changeEqName = this.changeEqName.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -67,6 +67,9 @@ class LeftLayout extends React.Component{
 
     /**根据设备名称查询表格数据*/
     getTableData(params = {}) {
+        this.setState({
+            tableLoading: true
+        });
         axios({
             url: `${this.props.url.eqMaintenanceDataEntry.page}`,
             method:'get',
@@ -97,16 +100,16 @@ class LeftLayout extends React.Component{
         this.current=this.props.current
         this.operation = this.props.operation
         return(
-                <div className="eqMaintenance-DE-demo" >
-                    <Spin spinning={this.state.loading} wrapperClassName='eqMaintenance-DE-left'>
+                <div className='equipment'>
+                    <Spin spinning={this.state.loading} wrapperClassName='equipment-left'>
                         <Card
                             bordered={false}
                             style={{width: "100%",height: '100%'}}
                             className='departmentCard'
                             headStyle={{height:'10%'}}
-                            bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
+                            bodyStyle={{height:'65vh',padding: '6px 12px 0 12px',overflow:'auto'}}
                             title={`设备名称(请选择)`}>
-                            <div>
+                            <div className='equipment-tree'>
                                 {
                                     this.state.deviceData.map(e => {
                                         return <Eqblock key={e} id={e}  colorFlag={e === this.state.deviceName ? "equipment-button ed-blue" : "equipment-button ed-grey"}
@@ -116,18 +119,17 @@ class LeftLayout extends React.Component{
                             </div>
                         </Card>
                     </Spin>
-                    <div className="eqMaintenance-DE-right">
-                        <Right url={this.url}
-                               operation={this.operation}
-                               current={this.current}
-                               deviceData={this.state.deviceData}
-                               dataSource={this.state.dataSource}
-                               deviceName={this.state.deviceName}
-                               getTableData={this.getTableData}
-                               fetch={this.fetch}
-                               handleTableChange={this.handleTableChange}
-                               />
-                    </div>
+                    <Right url={this.url}
+                           tableLoading = {this.state.tableLoading}
+                           operation={this.operation}
+                           current={this.current}
+                           deviceData={this.state.deviceData}
+                           dataSource={this.state.dataSource}
+                           deviceName={this.state.deviceName}
+                           getTableData={this.getTableData}
+                           fetch={this.fetch}
+                           handleTableChange={this.handleTableChange}
+                           />
                 </div>
         )
 

@@ -35,15 +35,15 @@ class DepTree extends React.Component{
 
     render() {
         return(
-            <Spin spinning={this.state.loading} wrapperClassName='equipment-left'>
+            <Spin spinning={this.state.loading} wrapperClassName={'equipment-left'}>
                 <Card
                     bordered={false}
                     style={{width: "100%",height: '100%',display: 'inline-block'}}
                     className='departmentCard'
                     headStyle={{height:'10%'}}
-                    bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
+                    bodyStyle={{height:'65vh',padding: '6px 12px 0 12px',overflow:'auto'}}
                     title={`${this.props.treeName}(请选择)`}>
-                    <div>
+                    <div className='equipment-tree'>
                         <Tree
                             showLine={true}
                             expandedKeys={this.state.expandedKeys}
