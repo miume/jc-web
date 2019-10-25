@@ -9,7 +9,7 @@ const columns = [{
     dataIndex: 'index',
     key: 'id',
     align:'center',
-    width: '10%',
+    width: '8%',
 },{
     title: '检测项目',
     dataIndex: 'testItemName',
@@ -21,19 +21,33 @@ const columns = [{
     dataIndex: 'testResult',
     key: 'testResult',
     align:'center',
-    width: '30%',
+    width: '20%',
 },{
     title:'标准',
     dataIndex:'value',
     key:'value',
     align:'center',
-    width:'20%'
+    width:'15%'
 },{
     title: '计量单位',
     dataIndex: 'unit',
     key: 'unit',
     align:'center',
     width: '20%',
+},{
+    title: '状态',
+    dataIndex: 'isAudit',
+    key: 'isAudit',
+    width: '17%',
+    render: (text) => {
+        if(text === 1) {
+            return '未通过';
+        } else if(text === 0) {
+            return '通过'
+        } else {
+            return '未审核';
+        }
+    }
 }];
 class DetailModal extends React.Component {
     render() {

@@ -72,33 +72,8 @@ class RawTest extends React.Component{
             }
         })
     }
-    /**通过batchNumberId 查询审核人 */
-    // getAllTester(dataId){
-    //     axios({
-    //       url:`${this.props.url.toDoList}/${dataId}/result`,
-    //       method:'get',
-    //       headers:{
-    //         'Authorization':this.props.url.Authorization
-    //       }
-    //     }).then(data=>{
-    //       const res = data.data.data;
-    //     //   console.log(res)
-    //       if(res){
-    //         this.setState({
-    //             examineData : res
-    //         })
-    //       }
-    //   })
-    //   }
-    /**监控审核意见的变化 */
-    // textChange(e){
-    //     const value = e.target.value;
-    //     this.setState({
-    //         reply:value
-    //     })
-    // }
-    render(){
-        // this.props.getReplyData(this.state.reply);
+
+    render() {
         return (
             <DetailModal detail={this.state.data} dataId={this.props.dataId} checkFlag={1} />
         );
