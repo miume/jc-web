@@ -83,6 +83,8 @@ import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
 
+import BatchTrace from "../productionManagement/batchTrace/batchTrace";
+
 class Right extends React.Component {
     render() {
         const data = [{
@@ -454,6 +456,9 @@ class Right extends React.Component {
         },{
             path: '/statisticalAnalysis',
             component: StatisticalAnalysis
+        },{
+            path:"/batchTrace",
+            component:BatchTrace
         }];
         return (
             <div className="rightDiv">
