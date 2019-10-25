@@ -6,6 +6,7 @@ import {DatePicker, Select} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import axios from 'axios';
+import ReactEcharts from 'echarts-for-react';
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -65,7 +66,10 @@ class CycleComparison extends React.Component {
                     <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 </div>
                 <div className={'clear'}></div>
-                {/*<ReactEcharts option={this.getOption()} />*/}
+                <div className={'raw-material-canvas'}>
+                    <ReactEcharts option={this.getOption()}
+                                  style={{width: '100%',height:'80%'}}/>
+                </div>
             </div>
         )
     }
@@ -86,7 +90,7 @@ class CycleComparison extends React.Component {
         };
         return (
             {
-                color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+                color: ['#003366', '#006699', '#dc150c'],
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -94,7 +98,7 @@ class CycleComparison extends React.Component {
                     }
                 },
                 legend: {
-                    data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+                    data: ['Ni', 'Co', 'Mn']
                 },
                 toolbox: {
                     show: true,
@@ -104,7 +108,7 @@ class CycleComparison extends React.Component {
                     feature: {
                         mark: {show: true},
                         dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        magicType: {show: true, type: ['line', 'bar']},
                         restore: {show: true},
                         saveAsImage: {show: true}
                     }
@@ -113,40 +117,36 @@ class CycleComparison extends React.Component {
                 xAxis: [
                     {
                         type: 'category',
+                        name: '周期数',
                         axisTick: {show: false},
                         data: ['2012', '2013', '2014', '2015', '2016']
                     }
                 ],
                 yAxis: [
                     {
-                        type: 'value'
+                        type: 'value',
+                        name: '含量（T）',
                     }
                 ],
                 series: [
                     {
-                        name: 'Forest',
-                        type: 'bar',
+                        name: 'Ni',
+                        type: 'line',
                         barGap: 0,
                         label: labelOption,
                         data: [320, 332, 301, 334, 390]
                     },
                     {
-                        name: 'Steppe',
-                        type: 'bar',
+                        name: 'Co',
+                        type: 'line',
                         label: labelOption,
                         data: [220, 182, 191, 234, 290]
                     },
                     {
-                        name: 'Desert',
-                        type: 'bar',
+                        name: 'Mn',
+                        type: 'line',
                         label: labelOption,
                         data: [150, 232, 201, 154, 190]
-                    },
-                    {
-                        name: 'Wetland',
-                        type: 'bar',
-                        label: labelOption,
-                        data: [98, 77, 101, 99, 40]
                     }
                 ]
             }

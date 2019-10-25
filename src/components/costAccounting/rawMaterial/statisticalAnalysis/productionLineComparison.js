@@ -2,10 +2,11 @@
  * 周期对比曲线
  * */
 import React from 'react';
-import {DatePicker, Select, Table} from "antd";
+import {DatePicker, Select} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import axios from 'axios';
+import ReactEcharts from 'echarts-for-react';
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -30,6 +31,7 @@ class ProductionLineComparison extends React.Component {
             dateFormat: 'YYYY-MM-DD'
         };
         this.search = this.search.bind(this);
+        this.getOption = this.getOption.bind(this);
         this.getFooter = this.getFooter.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -114,7 +116,95 @@ class ProductionLineComparison extends React.Component {
                     <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 </div>
                 <div className={'clear'}></div>
+                <div className={'raw-material-canvas'}>
+                    <ReactEcharts option={this.getOption()}
+                                  style={{width: '100%',height:'80%'}}/>
+                </div>
+
             </div>
+        )
+    }
+
+    /**图表*/
+    getOption() {
+        var labelOption = {
+            normal: {
+                show: true,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
+                    }
+                }
+            }
+        };
+        return (
+            {
+                grid: {
+                    bottom: '30px',
+                    containLabel: true
+                },
+                color: ['#003366', '#006699', '#dc150c'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Ni', 'Co', 'Mn']
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        name: '产线',
+                        axisTick: {show: false},
+                        data: ['1#生产线', '2#生产线', '3#生产线', '4#生产线', '5#生产线']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '含量（T）',
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Ni',
+                        type: 'line',
+                        barGap: 0,
+                        label: labelOption,
+                        data: [320, 332, 301, 334, 390]
+                    },
+                    {
+                        name: 'Co',
+                        type: 'line',
+                        label: labelOption,
+                        data: [220, 182, 191, 234, 290]
+                    },
+                    {
+                        name: 'Mn',
+                        type: 'line',
+                        label: labelOption,
+                        data: [150, 232, 201, 154, 190]
+                    }
+                ]
+            }
         )
     }
 

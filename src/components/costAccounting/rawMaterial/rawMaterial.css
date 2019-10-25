@@ -25,9 +25,9 @@
     margin: 0 20px;
 }
 
-.staticalAnalysis {
-    height: 400px;
-}
+/*.staticalAnalysis {*/
+    /*height: 400px;*/
+/*}*/
 
 .raw-material-add {
     height: 650px;
@@ -62,4 +62,11 @@
 .raw-material-add-footer-bottom {
     display: flex;
     justify-content: space-between;
+}
+
+.raw-material-canvas {
+    display: flex;
+    justify-content: center;
+    height: 63vh;
+    align-items: center;
 }
