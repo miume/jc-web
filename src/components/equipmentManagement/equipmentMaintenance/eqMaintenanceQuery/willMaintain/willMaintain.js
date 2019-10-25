@@ -79,7 +79,7 @@ class WillMaintain extends React.Component{
     getTableData = (params) => {
         params['statusId'] = 1;
         this.props.getTableData(params)
-    }
+    };
 
     /**跟踪搜索事件变化 */
     searchContentChange(e) {

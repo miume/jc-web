@@ -93,30 +93,6 @@ class DetailModal extends React.Component{
     }
 
     handleDetail = () => {
-        // axios({
-        //     url:`${this.props.url.equipmentRepair.deviceRepairApplication}`,
-        //     method: 'get',
-        //     headers: {
-        //         'Authorization': this.props.url.Authorization
-        //     },
-        //     params:{
-        //         id: this.props.code
-        //     }
-        // }).then((data) => {
-        //     const res = data.data.data ? data.data.data : [];
-        //     if (res) {
-        //         const arrMes = res.deviceRepairAccessory;
-        //         var newRowData = arrMes
-        //         this.setState({
-        //             visible: true,
-        //             detailData: newRowData,
-        //         })
-        //     } else {
-        //
-        //     }
-        // }).catch(() => {
-        //     message.info('数据存在异常，请联系管理员！')
-        // });
         this.setState({
             visible: true
         });

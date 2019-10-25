@@ -115,10 +115,9 @@ class TheTable extends React.Component{
                     pagination={this.props.pagination}
                     onChange={this.props.handleTableChange}
                     dataSource={this.props.rightTableData}
-                    // dataSource={this.dataSource}
                     size="small"
                     bordered
-                    scroll={{x: "1100px", y: 450 }}
+                    scroll={{x: "1100px"}}
                 />
             </div>
         )

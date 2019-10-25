@@ -34,6 +34,7 @@ import CheckPlan from "../equipmentManagement/equipmentCheck/checkPlan/checkPlan
 import CheckQuery from "../equipmentManagement/equipmentCheck/checkQuery/checkQuery";
 import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/checkTemplate";
 
+import OtherStockOut from '../smartWarehouse/otherStockOut/stockOut';
 import EnterStorage from '../smartWarehouse/enterStorage/enterStorage';
 import InventorManage from '../smartWarehouse/inventoryManage/inventorManage';
 import RedListManage from '../smartWarehouse/redListManage/redListManage';
@@ -144,6 +145,9 @@ class Right extends React.Component {
         }, {
             path: '/stockOut',
             component: StockOut
+        },{
+            path: '/otherStockOut',
+            component: OtherStockOut
         }, {
             path: '/enterStorage',
             component: EnterStorage

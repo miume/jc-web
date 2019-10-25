@@ -7,7 +7,7 @@ import RawMaterialOut from './rawMaterialApplication/rawMaterialOut';
 import './stockOut.css';
 
 const TabPane = Tabs.TabPane;
-class StockOut extends React.Component{
+class OtherStockOut extends React.Component{
     url
     componentDidMount(){
         this.apply(1);
@@ -133,4 +133,4 @@ class StockOut extends React.Component{
         );
     }
 }
-export default StockOut;
+export default OtherStockOut;
