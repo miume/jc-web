@@ -90,8 +90,9 @@ class InterTable extends React.Component{
         key: 'commonBatchNumber.status',
         align:'center',
         width: '8%',
-        render:state => {
-            return this.props.status[state.toString()];
+        render:(state,record) => {
+            let text = record.isFullAudit === 0 ? '(未完成)' : '';
+            return `${this.props.status[state.toString()]}${text}`;
         }
     },{
         title: '操作',
@@ -113,7 +114,7 @@ class InterTable extends React.Component{
                             id={record.sampleDeliveringRecord.id}
                         />
                     ):(
-                        <span  className="notClick">详情</span>
+                        <span className="notClick">详情</span>
                     )}
                     <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         <Divider type="vertical" />

@@ -76,15 +76,18 @@ class CheckSpan extends React.Component {
             dataIndex: 'testItemName',
             key: 'testItemName',
             align:'center',
-            width: '20%',
+            width: '18%',
         },{
             title: '检测结果',
             dataIndex: 'testResult',
             key: 'testResult',
             align:'center',
-            width: '30%',
+            width: '20%',
             render: (text,record) => {
-                return(
+                if(record.isAudit === 1) {
+                    return text;
+                }
+                return (
                     <Input
                         id={record.id}
                         name='testResult'
@@ -100,13 +103,27 @@ class CheckSpan extends React.Component {
             dataIndex:'value',
             key:'value',
             align:'center',
-            width:'20%'
+            width:'15%'
         },{
             title: '计量单位',
             dataIndex: 'unit',
             key: 'unit',
             align:'center',
             width: '20%',
+        },{
+            title: '状态',
+            dataIndex: 'isAudit',
+            key: 'isAudit',
+            width: '17%',
+            render: (text) => {
+                if(text === 1) {
+                    return '未通过';
+                } else if(text === 0) {
+                    return '通过'
+                } else {
+                    return '未审核';
+                }
+            }
         }];
     }
     render() {
