@@ -56,7 +56,8 @@ class RawTest extends React.Component{
                                 testItemId:e.testItemResultRecord.testItemId,
                                 testItemName:e.name,
                                 testResult:e.testItemResultRecord.testResult,
-                                unit:e.unit
+                                unit:e.unit,
+                                isAudit: e.testItemResultRecord.isAudit
                             })
                     }
                 }
