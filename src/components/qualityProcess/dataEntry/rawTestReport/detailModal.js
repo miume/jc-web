@@ -9,7 +9,7 @@ const columns = [{
     dataIndex: 'index',
     key: 'id',
     align:'center',
-    width: '8%',
+    width: '20%',
 },{
     title: '检测项目',
     dataIndex: 'testItemName',
@@ -23,12 +23,6 @@ const columns = [{
     align:'center',
     width: '20%',
 },{
-    title:'标准',
-    dataIndex:'value',
-    key:'value',
-    align:'center',
-    width:'15%'
-},{
     title: '计量单位',
     dataIndex: 'unit',
     key: 'unit',
@@ -38,11 +32,11 @@ const columns = [{
     title: '状态',
     dataIndex: 'isAudit',
     key: 'isAudit',
-    width: '17%',
+    width: '20%',
     render: (text) => {
-        if(text === 1) {
+        if(text === 0) {
             return '未通过';
-        } else if(text === 0) {
+        } else if(text === 1) {
             return '通过'
         } else {
             return '未审核';
