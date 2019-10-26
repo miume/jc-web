@@ -70,13 +70,13 @@ class CheckSpan extends React.Component {
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '10%',
+            width: '20%',
         },{
             title: '检测项目',
             dataIndex: 'testItemName',
             key: 'testItemName',
             align:'center',
-            width: '18%',
+            width: '20%',
         },{
             title: '检测结果',
             dataIndex: 'testResult',
@@ -84,27 +84,21 @@ class CheckSpan extends React.Component {
             align:'center',
             width: '20%',
             render: (text,record) => {
-                if(record.isAudit === null) {
-                    return (
-                        <Input
-                            id={record.id}
-                            name='testResult'
-                            value = {text}
-                            placeholder='输入检测结果'
-                            style={{border:'0',paddingLeft:'10px'}}
-                            onChange={this.inputSave}
-                        />
-                    )
+                if(record.isAudit === 1) {
+                    return text;
                 }
-                return text;
+                return (
+                    <Input
+                        id={record.id}
+                        name='testResult'
+                        value = {text}
+                        placeholder='输入检测结果'
+                        style={{border:'0',paddingLeft:'10px'}}
+                        onChange={this.inputSave}
+                    />
+                )
 
             }
-        },{
-            title:'标准',
-            dataIndex:'value',
-            key:'value',
-            align:'center',
-            width:'15%'
         },{
             title: '计量单位',
             dataIndex: 'unit',
@@ -115,11 +109,11 @@ class CheckSpan extends React.Component {
             title: '状态',
             dataIndex: 'isAudit',
             key: 'isAudit',
-            width: '17%',
+            width: '20%',
             render: (text) => {
-                if(text === 1) {
+                if(text === 0) {
                     return '未通过';
-                } else if(text === 0) {
+                } else if(text === 1) {
                     return '通过'
                 } else {
                     return '未审核';

@@ -91,7 +91,7 @@ class InterTable extends React.Component{
         align:'center',
         width: '8%',
         render:(state,record) => {
-            let text = record.isFullAudit === 0 ? '(未完成)' : '';
+            let text = record.isFullAudit === 0 ? '(未完成)' : '(已完成)';
             return `${this.props.status[state.toString()]}${text}`;
         }
     },{
@@ -101,11 +101,11 @@ class InterTable extends React.Component{
         align:'center',
         width: '18%',
         render: (text,record) => {
-            const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
+            const isFullAudit = record.isFullAudit?record.isFullAudit:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
-            let checkSpanFlag = this.judgeCheckOperation(record.isFullAudit);
-            let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
+            let checkSpanFlag = this.judgeCheckOperation(isFullAudit);
+            let releaseSpanFlag = this.judgeReleaseOperation(isFullAudit,status);
             return (
                 <span>
                     {detailSpanFlag?(
@@ -198,12 +198,8 @@ class InterTable extends React.Component{
             return true;
         }
     };
-    judgeReleaseOperation = (isPublished,status) => {
-        if((isPublished===0||isPublished===null)&&(status===3||status===2)){
-            return true;
-        }else{
-            return false;
-        }
+    judgeReleaseOperation = (isFullAudit,status) => {
+        return isFullAudit === 1 && status === 2 ? true : false;
     };
     /**---------------------- */
     /**通过id查询详情 */

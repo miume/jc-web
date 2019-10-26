@@ -14,7 +14,7 @@ class DrSpanModal extends React.Component {
         dataIndex: 'index',
         key: 'index',
         align:'center',
-        width: '10%',
+        width: '20%',
     },{
         title: '检测项目',
         dataIndex: 'testItemName',
@@ -28,12 +28,6 @@ class DrSpanModal extends React.Component {
         align:'center',
         width: '20%',
     },{
-        title:'标准',
-        dataIndex:'value',
-        key:'value',
-        align:'center',
-        width:'15%'
-    },{
         title: '计量单位',
         dataIndex: 'unit',
         key: 'unit',
@@ -43,11 +37,11 @@ class DrSpanModal extends React.Component {
         title: '状态',
         dataIndex: 'isAudit',
         key: 'isAudit',
-        width: '15%',
+        width: '20%',
         render: (text) => {
-            if(text === 1) {
+            if(text === 0) {
                 return '未通过';
-            } else if(text === 0) {
+            } else if(text === 1) {
                 return '通过'
             } else {
                 return '未审核';
