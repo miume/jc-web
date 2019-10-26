@@ -351,7 +351,7 @@ const CollectionCreateForm = Form.create()(
                                 })(
                                     <Select onChange={this.selectChange} placeholder="请选择样品种类">
                                         <Option key="1" value="1">原材料</Option>
-                                        {/* <Option key="2" value="2">中间品</Option> */}
+                                        <Option key="2" value="2">中间品</Option>
                                         <Option key="3" value="3">成品</Option>
                                     </Select>
                                 )}
@@ -388,7 +388,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        {/* {(this.state.visible1===1||this.state.visible1===3)? */}
+                        {(this.state.visible1===1||this.state.visible1===3)?
                         <FormItem wrapperCol={{ span: 22 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
@@ -404,7 +404,7 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem> 
-                        {/* :(
+                        :(
                         <div>
                         <FormItem wrapperCol={{ span: 22 }}>
                             {getFieldDecorator('deliveryFactoryId', {
@@ -469,7 +469,7 @@ const CollectionCreateForm = Form.create()(
                         </FormItem>
                         </div>
                         )
-                        } */}
+                        }
                         {
                             this.state.visible1===3?
                         <div style={{ width: '460px',border:"1px solid #E4E4E4",padding:"10px"}} className="check-box">
