@@ -84,19 +84,20 @@ class CheckSpan extends React.Component {
             align:'center',
             width: '20%',
             render: (text,record) => {
-                if(record.isAudit === 1) {
-                    return text;
+                if(record.isAudit === null) {
+                    return (
+                        <Input
+                            id={record.id}
+                            name='testResult'
+                            value = {text}
+                            placeholder='输入检测结果'
+                            style={{border:'0',paddingLeft:'10px'}}
+                            onChange={this.inputSave}
+                        />
+                    )
                 }
-                return (
-                    <Input
-                        id={record.id}
-                        name='testResult'
-                        value = {text}
-                        placeholder='输入检测结果'
-                        style={{border:'0',paddingLeft:'10px'}}
-                        onChange={this.inputSave}
-                    />
-                )
+                return text;
+
             }
         },{
             title:'标准',
@@ -129,10 +130,10 @@ class CheckSpan extends React.Component {
     render() {
         const { visible } = this.state;
         const arr = this.state.detailData.topData.serialNumber.split('-');
-
+        const {flag} = this.props;
         return (
             <span>
-                <span className="blue" onClick={this.handleCheck}>{this.props.title}</span>
+                <span className={flag ? '' : "blue"} onClick={flag ? null : this.handleCheck}>{this.props.title}</span>
                 <Modal
                     title={`数据`+this.props.title}
                     visible={visible}
@@ -297,7 +298,8 @@ class CheckSpan extends React.Component {
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.name,
                             testResult:e.testItemResultRecord.testResult,
-                            unit:e.unit
+                            unit:e.unit,
+                            isAudit: e.testItemResultRecord.isAudit
                         })
                     }
                 }

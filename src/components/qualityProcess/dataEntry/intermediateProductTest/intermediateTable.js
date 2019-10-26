@@ -104,7 +104,7 @@ class InterTable extends React.Component{
             const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
-            let checkSpanFlag = this.judgeCheckOperation(status);
+            let checkSpanFlag = this.judgeCheckOperation(record.isFullAudit);
             let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
             return (
                 <span>
@@ -132,6 +132,7 @@ class InterTable extends React.Component{
                         )}
                         <Divider type="vertical" />
                         <CheckSpan
+                            flag={true}
                             title={'修改'}
                             pagination={this.props.pagination}
                             menuList={this.props.menuList}
@@ -191,10 +192,10 @@ class InterTable extends React.Component{
         }
     };
     judgeCheckOperation = (status) => {
-        if(status===-1||status===3||status===12){
-            return true;
-        }else{
+        if(status){
             return false;
+        }else{
+            return true;
         }
     };
     judgeReleaseOperation = (isPublished,status) => {
