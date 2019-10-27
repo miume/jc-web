@@ -1,10 +1,8 @@
 import React from "react";
-import { Button, Modal,Select,Form, Input,message,Icon,TimePicker } from 'antd';
+import {Modal, Input,message} from 'antd';
 import axios from 'axios';
-import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
-import moment from "moment";
 
 class Edit extends React.Component{
     url;
@@ -28,7 +26,7 @@ class Edit extends React.Component{
             // console.log(data.data.data)
             const res = data.data.data;
             // console.log(moment(res.startTime))
-            this.setState({ 
+            this.setState({
                 visible: true,
                 name:res.name,
             });

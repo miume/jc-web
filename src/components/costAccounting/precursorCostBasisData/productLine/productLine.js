@@ -1,9 +1,7 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message,InputNumber,Input,Form,Spin } from 'antd';
+import { Table,Popconfirm,Divider,message,Form,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
-import AddButton from '../../../BlockQuote/newButton';
-import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 import AddModal from "./addModal";
 import Edit from "./edit"

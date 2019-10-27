@@ -1,11 +1,9 @@
 import React from "react";
-import { Button, Modal,Select,Form, Input,message,Icon,TimePicker } from 'antd';
+import {Modal,Input,message,TimePicker } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
-import moment from 'moment';
-
 
 // const format = 'HH:mm';
 class AddModal extends React.Component{
