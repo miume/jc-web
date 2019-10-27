@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Modal,Select,Form, Input,message,Icon,Checkbox } from 'antd';
+import { Modal,Select, Input,message,Checkbox } from 'antd';
 import axios from 'axios';
-import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 

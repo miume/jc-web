@@ -92,7 +92,9 @@ class InterTable extends React.Component{
         width: '8%',
         render:(state,record) => {
             let text = record.isFullAudit === 0 ? '(未完成)' : '(已完成)';
-            return `${this.props.status[state.toString()]}${text}`;
+            if(state === 2 || state === 3)
+                return `${this.props.status[state.toString()]}${text}`;
+            return this.props.status[state.toString()];
         }
     },{
         title: '操作',

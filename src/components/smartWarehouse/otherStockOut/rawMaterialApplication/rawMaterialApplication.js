@@ -1,10 +1,12 @@
 import React from 'react';
-import {Icon, Select, Spin, Table} from 'antd';
+import {Icon, Select, Spin, Table, message} from 'antd';
 import home from '../../../commom/fns';
 import SearchCell from '../../../BlockQuote/search';
 import './rawAdd.css';
 import Submit from "../../../BlockQuote/checkSubmit";
+import axios from "axios";
 
+const {Option} = Select;
 const data = [];
 for(var i = 1; i<=20; i++){
     data.push({
@@ -24,17 +26,22 @@ class RawMaterialApplication extends React.Component{
         this.state = {
             searchContent:'',
             selectedRowKeys:[],
-            selectedRows: []
+            selectedRows: [],
+            productionLine: 'a',
+            endPosition: 'd'
         };
+        this.save = this.save.bind(this);
         this.clear = this.clear.bind(this);
         this.cancle = this.cancle.bind(this);
         this.delete = this.delete.bind(this);
-        this.selectChange = this.selectChange.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.renderContent = this.renderContent.bind(this);
         this.renderSerialNumber = this.renderSerialNumber.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
+        this.endPositionSelectChange = this.endPositionSelectChange.bind(this);
+        this.productionLineSelectChange = this.productionLineSelectChange.bind(this);
+        this.applySaveAndReview = this.applySaveAndReview.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -91,6 +98,7 @@ class RawMaterialApplication extends React.Component{
             searchContent:value
         })
     }
+
     /**根据货物名称进行搜索 */
     searchEvent(){
         this.props.fetch({
@@ -162,7 +170,7 @@ class RawMaterialApplication extends React.Component{
                                         fetch={this.fetch} searchContentChange={this.searchContentChange}
                                         flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                             <div className={'clear'}></div>
-                            <Table rowKey={record=>record.id} dataSource={data} columns={this.columns} rowSelection={rowSelection}
+                            <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection}
                                    pagination={false} scroll={{ y: '58vh' }} bordered size='small'></Table>
                         </div>
                         <div className='other-stock-out-right'>
@@ -191,11 +199,19 @@ class RawMaterialApplication extends React.Component{
                             </div>
                             <div className='other-stock-out-right-bottom'>
                                 <div>
-                                    <Select className='other-stock-out-right-select' placeholder={'请选择产线'} style={{marginRight: 10}} onChange={this.selectChange}></Select>
-                                    <Select className='other-stock-out-right-select' placeholder={'请选择出库点'} onChange={this.selectChange}></Select>
+                                    <Select defaultValue={'a'} className='other-stock-out-right-select' placeholder={'请选择产线'} style={{marginRight: 10}} onChange={this.productionLineSelectChange}>
+                                        <Option value='a'>产线一</Option>
+                                        <Option value='b'>产线二</Option>
+                                        <Option value='c'>产线三</Option>
+                                    </Select>
+                                    <Select defaultValue={'d'} className='other-stock-out-right-select' placeholder={'请选择出库点'} onChange={this.endPositionSelectChange}>
+                                        <Option value='d'>出库点一</Option>
+                                        <Option value='e'>出库点二</Option>
+                                        <Option value='f'>出库点三</Option>
+                                    </Select>
                                 </div>
 
-                                <Submit url={this.props.url}/>
+                                <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
                             </div>
                         </div>
                     </div>
@@ -245,8 +261,47 @@ class RawMaterialApplication extends React.Component{
     }
 
     /**监控下拉框的变化*/
-    selectChange(value) {
+    productionLineSelectChange(value) {
+        this.setState({
+            productionLine: value
+        })
+    }
 
+    endPositionSelectChange(value) {
+        this.setState({
+            endPosition: value
+        })
+    }
+
+    applySaveAndReview() {
+        const userName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).name:null;
+        let {productionLine, endPosition, selectedRows} = this.state, data = [];
+        for(let i = 0; i < selectedRows.length; i++) {
+            for(let j = 0; j < selectedRows[i].length; j++) {
+                data.push(selectedRows[i][j]);
+            }
+        }
+        let params = {
+            productionLine: productionLine,
+            endPosition: endPosition,
+            data: data,
+            createPersonName: userName
+        };
+        this.save(params);
+    }
+
+    save(params) {
+        axios({
+            url: `${this.props.url.stockOut.faker}`,
+            method: 'post',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            data: params,
+        }).then((data) => {
+            message.info(data.data.message);
+            this.clear(); //清空右边数据
+        });
     }
 
 }

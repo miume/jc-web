@@ -1,9 +1,7 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message,InputNumber,Input,Form,Spin } from 'antd';
+import { Table,Popconfirm,message,InputNumber,Input,Form,Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
-import AddButton from '../../../BlockQuote/newButton';
-import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 
 const EditableContext = React.createContext();
@@ -106,7 +104,7 @@ class ProcessName extends React.Component{
                                     <EditableContext.Consumer>
                                         {
                                             form=>(
-                                                <a 
+                                                <a
                                                     onClick={()=>this.save(form,record.key)}
                                                     style={{marginRight:8}}
                                                 >
@@ -122,7 +120,7 @@ class ProcessName extends React.Component{
                             ):(
                                 <span className='blue' onClick={() => this.edit(record.index)}>编辑</span>
                             )
-                            
+
                             }
                         </span>
                     </span>
@@ -176,7 +174,7 @@ class ProcessName extends React.Component{
             }
             var newData = [...this.state.data];
             var index = newData.findIndex(item=>key===item.key);
-            
+
             if(index >-1){
                 const item = newData[index];
                 newData.splice(index,1,{
