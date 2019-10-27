@@ -1,6 +1,8 @@
 import React,{Component} from 'react'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
 import Blockquote from '../../BlockQuote/blockquote'
+import DeleteByIds from '../../BlockQuote/deleteByIds'
+import SearchCell from '../../BlockQuote/search'
 import MaterialTypePLCMeterComAdd from './add'
 const data=[{
     id:1,
@@ -22,7 +24,8 @@ class MaterialTypePLCMeterCom extends Component{
         super(props);
         this.state={
             loading:false,
-            dataSource:data
+            dataSource:data,
+            selectedRowKeys:[]
         }
         this.columns=[{
             title:'序号',
@@ -34,25 +37,25 @@ class MaterialTypePLCMeterCom extends Component{
             title:'工序',
             dataIndex:'ownProcess',
             key:'ownProcess',
-            width:'15%',
+            width:'17%',
             align:'center'
         },{
             title:'物料种类名称',
             dataIndex:'materialTypeName',
             key:'materialTypeName',
-            width:'15%',
+            width:'17%',
             align:'center'
         },{
             title:'PLC地址',
             dataIndex:'plcAddress',
             key:'plcAddress',
-            width:'15%',
+            width:'18%',
             align:'center'
         },{
             title:'产线',
             dataIndex:'productline',
             key:'productline',
-            width:'15%',
+            width:'18%',
             align:'center'
         },{
             title:'操作',
@@ -73,23 +76,37 @@ class MaterialTypePLCMeterCom extends Component{
             }
         }]
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
+        this.onSelectChange=this.onSelectChange.bind(this);
     }
     //返回正极成本的基础数据部分
     returnBaseInfoPositive(){
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
+    onSelectChange(selectedRowKeys){
+        this.setState({
+            selectedRowKeys:selectedRowKeys
+        })
+    }
     render(){
         const current=JSON.parse(localStorage.getItem('current'));
+        const {selectedRowKeys}=this.state
+        const rowSelection={
+            selectedRowKeys,
+            onChange:this.onSelectChange
+        }
         return(
             <div>
                 <Blockquote menu={current.menuParent} name='物料种类PLC仪表对照表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <MaterialTypePLCMeterComAdd/>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true}/>
+                    <SearchCell name='请输入物料种类' flag={true}/>
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.dataSource}
                     size='small'
                     columns={this.columns}
+                    rowSelection={rowSelection}
                     bordered/>
                 </Spin>
             </div>

@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 import Blockquote from '../../BlockQuote/blockquote'
 import MaterialTypeAdd from './add'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
+import DeleteByIds from '../../BlockQuote/deleteByIds'
+import SearchCell from '../../BlockQuote/search'
 const data=[{
     id:1,
     index:1,
@@ -22,7 +24,8 @@ class MaterialTypePositive extends Component{
         super(props);
         this.state={
             loading:false,
-            dataSource:data
+            dataSource:data,
+            selectedRowKeys:[]
         }
         this.columns=[{
             title:'序号',
@@ -73,23 +76,44 @@ class MaterialTypePositive extends Component{
             }
         }]
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
+        this.onSelectChange=this.onSelectChange.bind(this);
+        this.judgeOperation=this.judgeOperation.bind(this);
     }
     //返回正极成本的基础数据部分
     returnBaseInfoPositive(){
         this.props.history.push({pathname:'/baseDataPositiveCost'});
     }
+    onSelectChange(selectedRowKeys){//监听复选框是否被选中
+        this.setState({
+            selectedRowKeys:selectedRowKeys
+        })
+    }
+    /*用来判断改用户有哪些操作权限*/
+    judgeOperation(operation,operationCode){
+        var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
+        return flag.length>0?true:false
+     }
     render(){
         const current=JSON.parse(localStorage.getItem('current'));
+        this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null 
+        const {selectedRowKeys}=this.state;
+        const rowSelection={
+            selectedRowKeys,
+            onChange:this.onSelectChange
+        }
         return(
             <div>
                 <Blockquote menu={current.menuParent} name='物料种类' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <MaterialTypeAdd/>
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true}/>
+                    <SearchCell name='请输入物料种类' flag={true}/>
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.dataSource}
                     size='small'
                     columns={this.columns}
+                    rowSelection={rowSelection}
                     bordered/>
                 </Spin>
             </div>

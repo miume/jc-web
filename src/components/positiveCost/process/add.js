@@ -8,7 +8,8 @@ class ProcessAdd extends Component{
         super(props);
         this.state={
             visible:false,
-            processName:''
+            processName:'',
+            count:0
         }
         this.showModal=this.showModal.bind(this);
         this.handleOk=this.handleOk.bind(this);
@@ -29,6 +30,7 @@ class ProcessAdd extends Component{
             visible:false
         })
         let {processName}=this.state;
+      
         this.handleCancel()
     }
     handleCancel(){

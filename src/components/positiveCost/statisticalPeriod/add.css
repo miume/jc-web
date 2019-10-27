@@ -7,8 +7,25 @@
     display: inline-block;
     margin-right: 4px;
     content: "*";
-    font-family: SimSun;
     line-height: 1;
     font-size: 14px;
     color: #f5222d;
+}
+
+
+.fontInfo{
+    font-family: 'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC';
+    font-weight: 650;
+    font-style: normal;
+    margin-left:100px 
+}
+.fontAttribute{
+    margin:20px;
+    text-align:center
+}
+.fontAttribute span{
+    display: inline-block;
+    width:160px;
+    text-align: right;
+    padding-right: 10px
 }
