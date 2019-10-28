@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import Blockquote from '../../BlockQuote/blockquote'
+import Blockquote from '../../../BlockQuote/blockquote'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
 import ProcessAdd from './add'
 

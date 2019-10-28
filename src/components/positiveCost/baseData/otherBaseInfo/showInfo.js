@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {Row,Col,Input} from 'antd'
 import '../statisticalPeriod/add.css'
-import SaveButton from '../../BlockQuote/saveButton'
+import SaveButton from '../../../BlockQuote/saveButton'
 class ShowInfo extends Component{
     constructor(props){
         super(props);

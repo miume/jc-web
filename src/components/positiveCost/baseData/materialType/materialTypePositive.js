@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
-import Blockquote from '../../BlockQuote/blockquote'
+import Blockquote from '../../../BlockQuote/blockquote'
 import MaterialTypeAdd from './add'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
-import DeleteByIds from '../../BlockQuote/deleteByIds'
-import SearchCell from '../../BlockQuote/search'
+import DeleteByIds from '../../../BlockQuote/deleteByIds'
+import SearchCell from '../../../BlockQuote/search'
 const data=[{
     id:1,
     index:1,
