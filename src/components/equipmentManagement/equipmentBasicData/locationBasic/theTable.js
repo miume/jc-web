@@ -58,7 +58,7 @@ class TheTable extends React.Component{
                         idCode={record.idCode}
                         deptName={this.props.deptName}
                         deptCode={this.props.deptCode}
-                        getTableData={this.props.getTableData}
+                        getTableData={this.props.fetch}
                         pagination={this.props.pagination}
                     />
                     <DeletaSpan
@@ -74,22 +74,18 @@ class TheTable extends React.Component{
     }];
     /**rowKey={record => record.code}用于选定需要批量删除的数据的ID*/
     render() {
-        const {selectedRowKeys,pagination} = this.state;
         return (
-            <div>
-                <Table
-                    columns={this.columns}
-                    rowKey={record => record.code}
-                    pagination={this.props.pagination}
-                    rowSelection={this.props.rowSelection}
-                    dataSource={this.props.rightTableData}
-                    onChange={this.handleTableChange}
-                    fixed='true'
-                    size="small"
-                    bordered
-                    scroll={{ y: 450 }}
-                />
-            </div>
+            <Table
+                columns={this.columns}
+                rowKey={record => record.code}
+                pagination={this.props.pagination}
+                rowSelection={this.props.rowSelection}
+                dataSource={this.props.rightTableData}
+                onChange={this.handleTableChange}
+                fixed='true'
+                size="small"
+                bordered
+            />
         );
     }
     handleDelete = (id) => {
@@ -104,7 +100,7 @@ class TheTable extends React.Component{
             }
         }).then((data)=>{
             message.info(data.data.message);
-            this.fetch();
+            this.props.fetch();
         }).catch(()=>{
             message.info('删除失败，请联系管理员！');
         });

@@ -114,7 +114,7 @@ class Role extends React.Component {
             },
             showSizeChanger:true,
             pageSizeOptions: ["10","20","50","100"]
-        }
+        };
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
@@ -213,7 +213,7 @@ class Role extends React.Component {
         this.setState({
             searchContent:'',
             pageChangeFlag:0
-        })
+        });
         this.fetch();
     }
     /**获取所有数据 getAllByPage */

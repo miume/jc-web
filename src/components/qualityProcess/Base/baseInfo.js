@@ -71,8 +71,8 @@ class BaseInfo extends React.Component{
                             <BasePart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className}></BasePart>
                         )
                     }
+                    </div>
                 </div>
-           </div>
            </div>
         );
     }

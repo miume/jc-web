@@ -82,9 +82,12 @@ class CheckSpan extends React.Component {
             dataIndex: 'testResult',
             key: 'testResult',
             align:'center',
-            width: '30%',
+            width: '20%',
             render: (text,record) => {
-                return(
+                if(record.isAudit === 1) {
+                    return text;
+                }
+                return (
                     <Input
                         id={record.id}
                         name='testResult'
@@ -94,28 +97,37 @@ class CheckSpan extends React.Component {
                         onChange={this.inputSave}
                     />
                 )
+
             }
-        },{
-            title:'标准',
-            dataIndex:'value',
-            key:'value',
-            align:'center',
-            width:'20%'
         },{
             title: '计量单位',
             dataIndex: 'unit',
             key: 'unit',
             align:'center',
             width: '20%',
+        },{
+            title: '状态',
+            dataIndex: 'isAudit',
+            key: 'isAudit',
+            width: '30%',
+            render: (text) => {
+                if(text === 0) {
+                    return '最近审核未通过';
+                } else if(text === 1) {
+                    return '通过'
+                } else {
+                    return '未审核';
+                }
+            }
         }];
     }
     render() {
         const { visible } = this.state;
         const arr = this.state.detailData.topData.serialNumber.split('-');
-
+        const {flag} = this.props;
         return (
             <span>
-                <span className="blue" onClick={this.handleCheck}>{this.props.title}</span>
+                <span className={flag ? '' : "blue"} onClick={flag ? null : this.handleCheck}>{this.props.title}</span>
                 <Modal
                     title={`数据`+this.props.title}
                     visible={visible}
@@ -280,7 +292,8 @@ class CheckSpan extends React.Component {
                             testItemId:e.testItemResultRecord.testItemId,
                             testItemName:e.name,
                             testResult:e.testItemResultRecord.testResult,
-                            unit:e.unit
+                            unit:e.unit,
+                            isAudit: e.testItemResultRecord.isAudit
                         })
                     }
                 }

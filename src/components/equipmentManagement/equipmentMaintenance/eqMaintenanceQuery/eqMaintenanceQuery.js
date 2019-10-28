@@ -23,7 +23,7 @@ class EqMaintenanceQuery extends React.Component{
             endDate: '',
             deptId2:'',
             deptId3:'',
-        }
+        };
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.tabsChange = this.tabsChange.bind(this);
@@ -94,10 +94,14 @@ class EqMaintenanceQuery extends React.Component{
         } else {
             code = deptId3;
         }
-        this.getTableData({
-            deptId:code,
-            statusId: key
-        });
+        this.setState({
+            rightTableData: []
+        }, () => {
+            this.getTableData({
+                deptId:code,
+                statusId: key
+            })
+        })
     };
 
     /**获取表格数据*/
@@ -130,8 +134,9 @@ class EqMaintenanceQuery extends React.Component{
                         endDate: params.endDate
                     })
                 } else {
-                    params['startDate'] = params.startDate;
-                    params['endDate'] = params.startDate;
+                    let {startDate, endDate} = this.state;
+                    params['startDate'] = startDate;
+                    params['endDate'] = endDate;
                 }
             }
             this.getData(params);

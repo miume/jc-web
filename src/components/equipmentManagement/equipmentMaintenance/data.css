@@ -105,11 +105,15 @@
 .equipment-left{
     width: 20%;
     height: 100%;
-    overflow:auto;
     border:1px solid #F5f5f5;
 }
 .equipment-right{
     width: 80%;
     margin-left: 20px;
     height: 100%;
+    overflow: auto;
+}
+
+.equipment-tree {
+  height: 70vh;
 }

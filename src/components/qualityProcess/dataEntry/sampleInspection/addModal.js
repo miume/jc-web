@@ -107,9 +107,9 @@ const CollectionCreateForm = Form.create()(
             })
 
             axios({
-                url: `${this.url.serialNumber.serialNumber}`,
+                url: `${this.url.rawStandard.getCurrentRawStandard}`,
                 method : 'get',
-                params : {materialClass:1},
+                // params : {materialClass:1},
                 headers:{
                     'Authorization': this.url.Authorization
                 },
@@ -388,7 +388,8 @@ const CollectionCreateForm = Form.create()(
                                 </Select>
                             )}
                         </FormItem>
-                        {(this.state.visible1===1||this.state.visible1===3)?<FormItem wrapperCol={{ span: 22 }}>
+                        {(this.state.visible1===1||this.state.visible1===3)?
+                        <FormItem wrapperCol={{ span: 22 }}>
                             {getFieldDecorator('deliveryFactoryId', {
                                 rules: [{ required: true, message: '请选择送样工厂' }],
                             })(
@@ -402,7 +403,8 @@ const CollectionCreateForm = Form.create()(
                                     }
                                 </Select>
                             )}
-                        </FormItem> :(
+                        </FormItem> 
+                        :(
                         <div>
                         <FormItem wrapperCol={{ span: 22 }}>
                             {getFieldDecorator('deliveryFactoryId', {
@@ -490,8 +492,9 @@ const CollectionCreateForm = Form.create()(
                                 <Select placeholder="请选择原材料标准" onChange={this.materialsItem}>
                                     {
                                         this.state.serialNumber.map(pe=>{
+                                            // console.log(pe)
                                             return(
-                                                <Option key={pe.id} value={pe.id}>{pe.materialName+" - "+pe.manufacturerName}</Option>
+                                                <Option key={pe.standandId} value={pe.standandId}>{pe.material.name+" - "+pe.manufacturer.name}</Option>
                                             )
                                         })
                                     }
@@ -559,11 +562,6 @@ class AddModal extends React.Component{
         })
     }
 
-    // onChangeItem = ()=>{
-    //     this.setState({
-    //         testItemIds:[]
-    //     })
-    // }
     showModal = () => {
         this.setState({ visible: true });
     };

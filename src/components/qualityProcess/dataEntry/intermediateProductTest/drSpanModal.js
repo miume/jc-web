@@ -26,19 +26,27 @@ class DrSpanModal extends React.Component {
         dataIndex: 'testResult',
         key: 'testResult',
         align:'center',
-        width: '30%',
-    },{
-        title:'标准',
-        dataIndex:'value',
-        key:'value',
-        align:'center',
-        width:'20%'
+        width: '20%',
     },{
         title: '计量单位',
         dataIndex: 'unit',
         key: 'unit',
         align:'center',
         width: '20%',
+    },{
+        title: '状态',
+        dataIndex: 'isAudit',
+        key: 'isAudit',
+        width: '30%',
+        render: (text) => {
+            if(text === 0) {
+                return '最近审核未通过';
+            } else if(text === 1) {
+                return '通过'
+            } else {
+                return '未审核';
+            }
+        }
     }];
     render() {
         const columns = this.columns.map((col) => {

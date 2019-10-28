@@ -30,7 +30,7 @@ class RawMaterialOut extends React.Component {
             searchContent: '',
             selectedRowKeys: [],
             pageChangeFlag: 0
-        }
+        };
         this.fetch = this.fetch.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -50,60 +50,60 @@ class RawMaterialOut extends React.Component {
             key: 'batchNumber',
             width: '15%',
         }, {
-                title: '申请人',
-                dataIndex: 'createPersonName',
-                key: 'createPersonName',
-                width: '15%'
-            }, {
-                title: '申请日期',
-                dataIndex: 'createTime',
-                key: 'createTime',
-                width: '16%'
-            }, {
-                title: '审核状态',
-                dataIndex: 'status',
-                key: 'status',
-                width: '15%',
-                render: status => {
-                    return this.status[status.toString()];
-                },
-            }, {
-                title: '紧急',
-                dataIndex: 'isUrgent',
-                key: 'isUrgent',
-                width: '10%',
-                render: isUrgent => isUrgent ?
-                    <span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span> :
-                    <span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
-            }, {
-                title: '操作',
-                dataIndex: 'id',
-                key: 'id',
-                render: (text, record) => {
-                    const status = record.status;
-                    const flag = home.judgeOperation(this.operation,'DELETE');
-                    return (
-                        <span>
-                        <Detail id={record.id} url={this.props.url}></Detail>
-                        <span className={flag?'':'hide'}>
-                        <Divider type='vertical'></Divider>
-                            {
-                                status === 0 || status === 1 || status === 2 || status === 3 ?
+            title: '申请人',
+            dataIndex: 'createPersonName',
+            key: 'createPersonName',
+            width: '15%'
+        }, {
+            title: '申请日期',
+            dataIndex: 'createTime',
+            key: 'createTime',
+            width: '16%'
+        }, {
+            title: '审核状态',
+            dataIndex: 'status',
+            key: 'status',
+            width: '15%',
+            render: status => {
+                return this.status[status.toString()];
+            },
+        }, {
+            title: '紧急',
+            dataIndex: 'isUrgent',
+            key: 'isUrgent',
+            width: '10%',
+            render: isUrgent => isUrgent ?
+                <span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span> :
+                <span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
+        }, {
+            title: '操作',
+            dataIndex: 'id',
+            key: 'id',
+            render: (text, record) => {
+                const status = record.status;
+                const flag = home.judgeOperation(this.operation,'DELETE');
+                return (
+                    <span>
+                    <Detail id={record.id} url={this.props.url}></Detail>
+                    <span className={flag?'':'hide'}>
+                    <Divider type='vertical'></Divider>
+                        {
+                            status === 0 || status === 1 || status === 2 || status === 3 ?
+                                <span
+                                    className={status === 0 || status === 1 || status === 2 || status === 3 ? 'notClick' : 'blue'}
+                                    id={record.id}>删除</span>
+                                :
+                                <Popconfirm title='确定删除' onConfirm={() => this.handleDelete(record.id)} okText='确定'
+                                            cancelText='取消'>
                                     <span
                                         className={status === 0 || status === 1 || status === 2 || status === 3 ? 'notClick' : 'blue'}
                                         id={record.id}>删除</span>
-                                    :
-                                    <Popconfirm title='确定删除' onConfirm={() => this.handleDelete(record.id)} okText='确定'
-                                                cancelText='取消'>
-                                        <span
-                                            className={status === 0 || status === 1 || status === 2 || status === 3 ? 'notClick' : 'blue'}
-                                            id={record.id}>删除</span>
-                                    </Popconfirm>
-                            }
-                        </span>
-                   </span>
-                    );
-                }
+                                </Popconfirm>
+                        }
+                    </span>
+               </span>
+                );
+            }
             }]
         this.pagination = {
             showTotal(total) {

@@ -113,8 +113,7 @@ class AddModal extends React.Component {
                             位置名称 ：
                         </Col>
                         <Col span={10}>
-                            <Input size="small"
-                                   style={{width:"313px"}}
+                            <Input style={{width:"313px"}}
                                    key='1'
                                    name='locationName'
                                    value={this.state.locationName}
@@ -130,8 +129,7 @@ class AddModal extends React.Component {
                             ID卡号 ：
                         </Col>
                         <Col span={10} style={{position:"absolute",right:"170px"}}>
-                            <Input size="small"
-                                   style={{width:"313px"}}
+                            <Input style={{width:"313px"}}
                                    key='2'
                                    name='idCode'
                                    value={this.state.idCode}

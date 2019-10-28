@@ -152,7 +152,6 @@ class Mmodal extends React.Component {
             selectedRowKeys,
             type:'radio',
             onChange:this.onSelectChange,
-
         };
 
         return(

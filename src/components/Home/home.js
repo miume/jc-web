@@ -184,8 +184,9 @@ class Home extends Component {
             stockOut:{
                 getAll:`${server}/jc/common/RepoStock`,
                 repoOut:`${server}/jc/common/repoOutApply`,
-                getAllStockByPage:`${server}/jc/common/RepoStock/pages`,
+                getAllStockByPage:`${server}/jc/common/RepoStock`,
                 repoOutApply:`${server}/jc/common/repoOutApply/pages`,
+                faker: `${server}/jc/common/faker`
             },
             /**待办事项 */
             toDoList:`${server}/jc/common/toDoList`,
@@ -283,6 +284,8 @@ class Home extends Component {
                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
                 addNewRaw:`${server}/jc/common/techRawStandard/addRaw`,
 
+                getCurrentRawStandard:`${server}/jc/common/techRawStandard/getCurrentRawStandard`,
+                getItemsByRawId:`${server}/jc/common/techRawStandard/getItemsByRawId`
             },
             /**产品标准 */
             productStandard:{
@@ -303,6 +306,8 @@ class Home extends Component {
                 productStandard:`${server}/jc/common/techProductStandard`,
                 getAll:`${server}/jc/common/techProductStandard/allClasses`,
                 addNewClass:`${server}/jc/common/techProductStandard/newClass`,
+
+                getAllProductCommonBatch:`${server}/jc/common/product/getAllProductCommonBatch`,
             },
             /**设备基本厂商*/
             equipmentManufacture:{

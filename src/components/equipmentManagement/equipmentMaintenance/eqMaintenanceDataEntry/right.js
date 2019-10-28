@@ -1,13 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import {Divider, message, Popconfirm, Table} from 'antd';
+import {Divider, message, Popconfirm, Spin, Table} from 'antd';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Add from './add';
 import SearchCell from '../../../BlockQuote/search';
 import home from '../../../commom/fns'
 import "./eqMaintenanceDataEntry.css"
 
-class Right extends React.Component{
+class  Right extends React.Component{
     componentWillUnmount() {
         this.setState = () => {
             return;
@@ -171,7 +171,6 @@ class Right extends React.Component{
     /**实现全选 */
     onSelectChange=(selectedRowKeys)=> {
         this.setState({ selectedRowKeys });
-        console.log(this.state.selectedRowKeys)
     }
     /**处理单条记录删除 */
     handleDelete = (id) => {
@@ -256,26 +255,24 @@ class Right extends React.Component{
         this.pagination.total = this.props.dataSource.length;
         const addFlag = home.judgeOperation(this.operation,'SAVE');
         return (
-                <div>
-                    <Add deviceData={this.props.deviceData} flag={addFlag}  url={this.props.url} getTableData={this.props.getTableData} deviceName={this.props.deviceName} />
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
-                                 flag={home.judgeOperation(this.operation,'DELETE')}
-                    />
-                    <SearchCell name='请输入保养数据或保养内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                                fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')} />
+            <Spin spinning={this.props.tableLoading} wrapperClassName="equipment-right">
+                <Add deviceData={this.props.deviceData} flag={addFlag}  url={this.props.url} getTableData={this.props.getTableData} deviceName={this.props.deviceName} />
+                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
+                             flag={home.judgeOperation(this.operation,'DELETE')}
+                />
+                <SearchCell name='请输入保养数据或保养内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
+                            fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')} />
 
-                    <Table rowKey={record => record.code}
-                           rowSelection={rowSelection}
-                           columns={this.columns}
-                           dataSource={this.props.dataSource}
-                           pagination={this.pagination}
-                           onChange={this.handleTableChange}
-                           size="small"
-                           bordered
-                           scroll={{ y: 380 }}
-                           style={{paddingTop:'5px'}}
-                    />
-                </div>
+                <Table rowKey={record => record.code}
+                       rowSelection={rowSelection}
+                       columns={this.columns}
+                       dataSource={this.props.dataSource}
+                       pagination={this.pagination}
+                       onChange={this.handleTableChange}
+                       size="small"
+                       bordered
+                />
+            </Spin>
         );
     }
 }
