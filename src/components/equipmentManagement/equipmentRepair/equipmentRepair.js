@@ -11,13 +11,17 @@ import axios from 'axios';
 class equipmentRepair extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            repairStatus:'',
+        this.state= {
+            repairStatus: 1,
             secondDeptId:'',
+            secondDeptId2:'',
+            secondDeptId3:'',
+            secondDeptId4:'',
             deptName:'',
             rightTableData:[],
             loading: true
-        }
+        };
+        this.getData = this.getData.bind(this);
     };
 
     render(){
@@ -43,7 +47,7 @@ class equipmentRepair extends React.Component{
                             getTableData={this.getTableData}
                             loading = {this.state.loading}
                             rightTableData={this.state.rightTableData}
-                            secondDeptId={this.state.secondDeptId}
+                            secondDeptId={this.state.secondDeptId2}
                         />
                     </Tabs.TabPane>
 
@@ -53,7 +57,7 @@ class equipmentRepair extends React.Component{
                             getTableData={this.getTableData}
                             loading = {this.state.loading}
                             rightTableData={this.state.rightTableData}
-                            secondDeptId={this.state.secondDeptId}
+                            secondDeptId={this.state.secondDeptId3}
                         />
                     </Tabs.TabPane>
 
@@ -63,7 +67,7 @@ class equipmentRepair extends React.Component{
                              getTableData={this.getTableData}
                              loading = {this.state.loading}
                              rightTableData={this.state.rightTableData}
-                             secondDeptId={this.state.secondDeptId}
+                             secondDeptId={this.state.secondDeptId4}
                          />
                     </Tabs.TabPane>
                 </Tabs>
@@ -72,23 +76,62 @@ class equipmentRepair extends React.Component{
     }
 
     returnEquKey = key => {
-        if(key==='1'||key==='2'||key==='3'||key==='4'){
-            this.getTableData({
-                secondDeptId:this.state.secondDeptId,
-                repairStatus:parseInt(key),
-                deptName:this.state.deptName,
-            })
+        let code,{secondDeptId,secondDeptId2,secondDeptId3,secondDeptId4} = this.state;
+        if(key === "1") {
+            code = secondDeptId;
+        } else if(key === "2") {
+            code = secondDeptId2;
+        } else if (key === "3") {
+            code = secondDeptId3;
+        } else {
+            code = secondDeptId4;
         }
+        this.setState({
+            rightTableData: []
+        }, () => {
+            this.getTableData({
+                secondDeptId: code,
+                repairStatus: parseInt(key)
+            })
+        });
     };
 
     /**获得表格数据*/
     getTableData = (params) => {
-        this.setState({
-            secondDeptId:params.secondDeptId,
-            repairStatus:params.repairStatus,
-                deptName:params.deptName,
-                loading:true
+        let secondDeptId =  params.deptId ? params.deptId : params.secondDeptId;
+        if(secondDeptId) {
+            if(params.depName) {
+                this.setState({
+                    depName:params.depName
+                })
+            }
+            params['secondDeptId'] = params['secondDeptId'] ? params['secondDeptId'] : params.deptId;
+            /**分别保存每一次点击部门的id*/
+            if(params.repairStatus === 1) {
+                this.setState({
+                    secondDeptId: secondDeptId
+                })
+            } else if (params.repairStatus === 2) {
+                this.setState({
+                    secondDeptId2: secondDeptId
+                })
+            } else if ((params.repairStatus === 3)){
+                this.setState({
+                    secondDeptId3: secondDeptId
+                });
+            } else {
+                this.setState({
+                    secondDeptId4: secondDeptId
+                });
+            }
+            this.setState({
+                loading: true
             });
+            this.getData(params);
+        }
+    };
+
+    getData(params) {
         axios({
             url: `${this.url.equipmentRepair.getPage}`,
             method: 'get',

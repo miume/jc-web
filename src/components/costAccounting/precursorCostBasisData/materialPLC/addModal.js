@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal,Select,Form, Input,message,Icon } from 'antd';
+import { Modal,Select,message } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
@@ -76,7 +76,7 @@ class AddModal extends React.Component{
                 plcCode:undefined
             })
         })
-        
+
     }
     materialChange = (data)=>{
         this.setState({

@@ -39,7 +39,6 @@ class CheckModal extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         this.getReplyData = this.getReplyData.bind(this);
         this.setClassName = this.setClassName.bind(this);
-        this.temporaryPass = this.temporaryPass.bind(this);
         this.judgeUnqualifiedArea = this.judgeUnqualifiedArea.bind(this);
         this.getStockOutDetailData = this.getStockOutDetailData.bind(this);
     }
@@ -132,7 +131,6 @@ class CheckModal extends React.Component{
                     })
                 }
             }
-            //console.log(detail)
             this.setState({
                 dataSource:detail
             })
@@ -170,10 +168,6 @@ class CheckModal extends React.Component{
         this.checkApply(1);
     }
 
-    /**暂时通过*/
-    temporaryPass()  {
-        this.checkApply(2);
-    }
     /**通过、不通过 */
     checkApply(status){
         const {reply} = this.state;
@@ -238,7 +232,6 @@ class CheckModal extends React.Component{
                     <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                     <span key='check' className={this.props.flag?'hide':''} >
                         <NewButton key='fail' className='fa fa-times' name='不通过' handleClick={this.fail} />
-                        <NewButton key='temporaryPass' className='fa fa-check' name='暂通过' handleClick={this.temporaryPass} />
                         <NewButton key='pass' className='fa fa-check' name='通过' handleClick={this.pass} />
                     </span>
 

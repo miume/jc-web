@@ -125,7 +125,7 @@ class TheTable extends React.Component{
                     rowKey={record => record.code}
                     size="small"
                     bordered
-                    scroll={{x: "1260px", y: 450 }}
+                    scroll={{x: "1260px"}}
                 />
             </div>
         )

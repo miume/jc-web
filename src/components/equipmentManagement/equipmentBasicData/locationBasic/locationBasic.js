@@ -7,11 +7,11 @@ import home from "../../../commom/fns";
 import AddModal from "./addModal";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import TheTable from './theTable'
-import DepTree from "./depTree";
+import DepTree from "../../../BlockQuote/department";
 
 class LocationBasic extends React.Component{
     constructor(props){
-        super(props)
+        super(props);
         this.state = {
             dataSource: [],
             selectedRowKeys: [],//存取所选中checkbox的ids
@@ -60,13 +60,12 @@ class LocationBasic extends React.Component{
                 <Blockquote menu={current.menuParent} name="位置基础信息"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div  className='equipment'>
                     {/*左边树部分*/}
-                    <div  className="equipment-left">
-                        <DepTree
-                            key="depTree"
-                            url={this.url}
-                            getTableData={this.getTableData}
-                        />
-                    </div>
+                    <DepTree
+                        key="depTree"
+                        treeName={'所属部门'}
+                        url={this.url}
+                        getTableData={this.getTableData}
+                    />
                     {/*右边表格部分*/}
                     <Spin spinning={this.state.tableLoading} wrapperClassName='equipment-right'>
                         <AddModal
@@ -75,7 +74,7 @@ class LocationBasic extends React.Component{
                             pagination={this.state.pagination}
                             url={this.url}
                             flag={home.judgeOperation(this.operation,'SAVE')}
-                            getTableData={this.getTableData}
+                            getTableData={this.fetch}
                         />
                         <DeleteByIds
                             selectedRowKeys={this.state.selectedRowKeys}
@@ -83,18 +82,17 @@ class LocationBasic extends React.Component{
                             cancel={this.cancel}
                             flag={home.judgeOperation(this.operation,'DELETE')}
                         />
-                        <div className='lB-shangbianju'>
-                            <TheTable
-                                url={this.url}
-                                pageChangeFlag={this.state.pageChangeFlag}
-                                pagination={this.state.pagination}
-                                rowSelection={rowSelection}
-                                deptName={this.state.deptName}
-                                deptCode={this.state.deptCode}
-                                rightTableData={this.state.rightTableData}
-                                getTableData={this.getTableData}
-                            />
-                        </div>
+                        <TheTable
+                            url={this.url}
+                            pageChangeFlag={this.state.pageChangeFlag}
+                            pagination={this.state.pagination}
+                            rowSelection={rowSelection}
+                            deptName={this.state.deptName}
+                            deptCode={this.state.deptCode}
+                            fetch = {this.fetch}
+                            rightTableData={this.state.rightTableData}
+                            getTableData={this.getTableData}
+                        />
                     </Spin>
                 </div>
             </div>
@@ -126,11 +124,11 @@ class LocationBasic extends React.Component{
     fetch = () => {
         /**flag为1时，将分页搜索位置0 */
         var params={
-            id:this.state.deptCode,
+            deptId:this.state.deptCode,
             page:this.state.pagination.page,
             size:10,
             depName:this.state.deptName,
-        }
+        };
         this.getTableData(params);
     };
 
@@ -147,67 +145,58 @@ class LocationBasic extends React.Component{
 
     /******************************获得表格数据********************************/
     getTableData = (params) => {
-        this.setState({deptCode:params.id,deptName:params.depName},()=> {
-            var paramid=[];
-            if(!params.id){
-                paramid={
-                    deptId:2,
-                    page:params.page,
-                    size:params.size,
-                }
-                this.setState({deptCode:2,})
-            }else{
-                paramid={
-                    deptId:params.id,
-                    page:params.page,
-                    size:params.size,
-                }
-            }
-                axios({
-                    url: `${this.url.locationBasic.getPage}`,
-                    method: 'get',
-                    headers: {
-                        'Authorization': this.url.Authorization
-                    },
-                    params: paramid,
-                }).then((data) => {
-                    const res = data.data.data ? data.data.data: [];
+        this.setState({
+            tableLoading: true,
+            deptCode:params.deptId,
+            deptName:params.depName
+        });
+        this.getData(params)
+    }
 
-                    if (res && res.list) {
-                        var rightTableData = [];
-                        for (var i = 0; i < res.list.length; i++) {
-                            var arr = res.list[i];
-                            rightTableData.push({
-                                index: i + 1 + (res.page - 1) * res.size,//序号
-                                code:arr["code"],
-                                deptId:arr["deptCode"],
-                                locationName:arr["locationName"],
-                                idCode:arr["idCode"],
-                                deptName: this.state.deptName,
-                            })
-                        }//新建状态用来获得所需的查询条件
-                        const{pagination}=this.state;
-                        pagination.total=res.total;
-                        pagination.page=res.page;
-                        this.setState({
-                            rightTableData: rightTableData,
-                            pagination:pagination,
-                            tableLoading: false
-                        });
-                    } else {
-                        this.setState({
-                            rightTableData: [],
-                            pagination:[],
-                            tableLoading: false
-                        });
+    getData(params) {
+        axios({
+            url: `${this.url.locationBasic.getPage}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data ? data.data.data: [];
 
-                    }
-                }).catch(() => {
-                    message.info('查询失败，请刷新下页面！')
-                })
+            if (res && res.list) {
+                var rightTableData = [];
+                for (var i = 0; i < res.list.length; i++) {
+                    var arr = res.list[i];
+                    rightTableData.push({
+                        index: i + 1 + (res.page - 1) * res.size,//序号
+                        code:arr["code"],
+                        deptId:arr["deptCode"],
+                        locationName:arr["locationName"],
+                        idCode:arr["idCode"],
+                        deptName: this.state.deptName,
+                    })
+                }//新建状态用来获得所需的查询条件
+                const{pagination}=this.state;
+                pagination.total=res.total;
+                pagination.page=res.page;
+                this.setState({
+                    rightTableData: rightTableData,
+                    pagination:pagination,
+                    tableLoading: false
+                });
+            } else {
+                this.setState({
+                    rightTableData: [],
+                    pagination:[],
+                    tableLoading: false
+                });
+
             }
-        )
-        }
+        }).catch(() => {
+            message.info('查询失败，请刷新下页面！')
+        })
+    }
 }
 
 export default LocationBasic

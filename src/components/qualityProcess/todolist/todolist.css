@@ -1,9 +1,11 @@
 .container{
     padding: 25px 15px 15px 15px;
+    height: 70vh;
     overflow: auto;
 }
 .historyContianer{
     padding: 0px 15px;
+    height: 70vh;
     overflow: auto;
 }
 .historySearch{

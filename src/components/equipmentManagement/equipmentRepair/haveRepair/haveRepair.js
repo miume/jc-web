@@ -1,5 +1,5 @@
 import React from "react";
-import DepTree from "./depTree";
+import DepTree from "../../../BlockQuote/department";
 import SearchCell from "../../../BlockQuote/search";
 import TheTable from "./theTable";
 import {Button, DatePicker, Spin, message} from 'antd';
@@ -9,8 +9,8 @@ import axios from "axios";
 const {RangePicker} = DatePicker;
 
 class HaveRepair extends React.Component{
-    constructor(props){
-        super(props)
+    constructor(props) {
+        super(props);
         this.state={
             pageChangeFlag:'',
             searchContent:'',
@@ -32,16 +32,15 @@ class HaveRepair extends React.Component{
         const {startTime, endTime, dateFormat} = this.state;
         const value = startTime === '' || endTime === '' ? null : [moment(startTime,dateFormat), moment(endTime,dateFormat)];
         return(
-            <div style={{paddingTop: '1px'}} className="eRp">
-                {/*左边树部分*/}
-                <div className="eRp-left">
-                    <DepTree
-                        url={this.url}
-                        getTableData={this.props.getTableData}
-                    />
-                </div>
-                <Spin spinning={this.props.loading} wrapperClassName='eRp-right'>
-                    <div className='eRp-putright'>
+            <div className='equipment-query'>
+                <DepTree
+                    key="depTree"
+                    treeName={'所属部门'}
+                    url={this.props.url}
+                    getTableData={this.getTableData}
+                />
+                <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
+                    <div>
                         <RangePicker style={{marginRight: 10}}
                                      onChange={this.dateChange}
                                      placeholder={['开始时间','结束时间']} value={value}/>
@@ -52,7 +51,7 @@ class HaveRepair extends React.Component{
                         </Button>
                         </span>
                         <SearchCell
-                            name='关键字'
+                            name='请输入设备名称'
                             flag={true}
                             fetch={this.searchReset}
                             searchEvent={this.searchEvent}
@@ -61,20 +60,23 @@ class HaveRepair extends React.Component{
                         />
 
                     </div>
-
-                    <div className='eRp-shangbianju'>
-                        <TheTable
-                            url={this.url}
-                            rightTableData={this.props.rightTableData}
-                            pagination={this.pagination}
-                            handleTableChange={this.handleTableChange}
-                        />
-                    </div>
+                    <div className='clear' ></div>
+                    <TheTable
+                        url={this.props.url}
+                        rightTableData={this.props.rightTableData}
+                        pagination={this.pagination}
+                        handleTableChange={this.handleTableChange}
+                    />
                 </Spin>
             </div>
 
         );
     }
+
+    getTableData = (params) => {
+        params['repairStatus'] = 3;
+        this.props.getTableData(params)
+    };
 
     /**跟踪日期变化*/
     dateChange(date,dateString) {

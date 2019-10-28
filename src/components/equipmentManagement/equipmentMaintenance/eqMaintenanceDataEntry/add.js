@@ -139,7 +139,7 @@ class Add extends React.Component {
                             <Col span={10}>
                                 {
                                     this.props.editorFlag ?
-                                        <Input size="small" disabled={true}  style={{width:"280px"}} value={this.props.deviceName}/> :
+                                        <Input disabled={true}  style={{width:"280px"}} value={this.props.deviceName}/> :
                                         <Select style={{width:"280px"}}  onChange={this.handleDeviceNameChange}  defaultValue={this.props.deviceName}>
                                             {
                                                 this.props.deviceData ? this.props.deviceData.map(e => {
@@ -154,7 +154,7 @@ class Add extends React.Component {
                                 保养项目:
                             </Col>
                             <Col span={10}>
-                                <Input size="small" placeholder="请输入保养项目" key='2'  style={{width:"280px"}}
+                                <Input placeholder="请输入保养项目" key='2'  style={{width:"280px"}}
                                        name="maintenanceItems" onChange={this.onInputChange}  value={this.props.maintenanceItems}/>
                             </Col>
                         </Row>
@@ -165,7 +165,7 @@ class Add extends React.Component {
                                 保养内容:
                             </Col>
                             <Col span={10} style={{paddingRight:"20px"}} >
-                                <Input size="small" placeholder="请输入保养内容"  key='3' name="maintenanceContent"
+                                <Input placeholder="请输入保养内容"  key='3' name="maintenanceContent"
                                        style={{width:"280px"}} onChange={this.onInputChange} value={this.props.maintenanceContent}/>
                             </Col>
 
@@ -185,7 +185,7 @@ class Add extends React.Component {
                                 &nbsp;&nbsp;&nbsp;频率:&nbsp;&nbsp;&nbsp;
                             </Col>
                             <Col span={10} style={{paddingRight:"20px"}}>
-                                <Input size="small" placeholder="请输入保养频率"  key='4' name="maintenanceFrequency"
+                                <Input placeholder="请输入保养频率"  key='4' name="maintenanceFrequency"
                                        style={{width:"280px"}} onChange={this.onInputChange} value={this.props.maintenanceFrequency}/>
                             </Col>
                         </Row>

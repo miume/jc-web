@@ -90,7 +90,10 @@ class InterTable extends React.Component{
         key: 'commonBatchNumber.status',
         align:'center',
         width: '8%',
-        render:state => {
+        render:(state,record) => {
+            let text = record.isFullAudit === 0 ? '(未完成)' : '(已完成)';
+            if(state === 2 || state === 3)
+                return `${this.props.status[state.toString()]}${text}`;
             return this.props.status[state.toString()];
         }
     },{
@@ -100,11 +103,11 @@ class InterTable extends React.Component{
         align:'center',
         width: '18%',
         render: (text,record) => {
-            const isPublished = record.commonBatchNumber?record.commonBatchNumber.isPublished:'';
+            const isFullAudit = record.isFullAudit?record.isFullAudit:'';
             const status = record.commonBatchNumber?record.commonBatchNumber.status:'';
             let detailSpanFlag = this.judgeDetailOperation(status);
-            let checkSpanFlag = this.judgeCheckOperation(status);
-            let releaseSpanFlag = this.judgeReleaseOperation(isPublished,status);
+            let checkSpanFlag = this.judgeCheckOperation(isFullAudit);
+            let releaseSpanFlag = this.judgeReleaseOperation(isFullAudit,status);
             return (
                 <span>
                     {detailSpanFlag?(
@@ -113,7 +116,7 @@ class InterTable extends React.Component{
                             id={record.sampleDeliveringRecord.id}
                         />
                     ):(
-                        <span  className="notClick">详情</span>
+                        <span className="notClick">详情</span>
                     )}
                     <span className={this.props.judgeOperation(this.props.operation,'UPDATE')?'':'hide'}>
                         <Divider type="vertical" />
@@ -131,6 +134,7 @@ class InterTable extends React.Component{
                         )}
                         <Divider type="vertical" />
                         <CheckSpan
+                            flag={true}
                             title={'修改'}
                             pagination={this.props.pagination}
                             menuList={this.props.menuList}
@@ -190,18 +194,14 @@ class InterTable extends React.Component{
         }
     };
     judgeCheckOperation = (status) => {
-        if(status===-1||status===3||status===12){
-            return true;
-        }else{
+        if(status){
             return false;
+        }else{
+            return true;
         }
     };
-    judgeReleaseOperation = (isPublished,status) => {
-        if((isPublished===0||isPublished===null)&&(status===3||status===2)){
-            return true;
-        }else{
-            return false;
-        }
+    judgeReleaseOperation = (isFullAudit,status) => {
+        return isFullAudit === 1 && status === 2 ? true : false;
     };
     /**---------------------- */
     /**通过id查询详情 */

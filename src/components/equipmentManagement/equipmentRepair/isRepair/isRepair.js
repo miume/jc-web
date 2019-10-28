@@ -1,9 +1,9 @@
 import React from "react";
 import "../equipmenRepair.css";
-import DepTree from "./depTree";
 import SearchCell from "../../../BlockQuote/search";
 import TheTable from "./theTable";
 import {Spin} from "antd";
+import DepTree from "../../../BlockQuote/department";
 
 class IsRepair extends React.Component{
     constructor(props){
@@ -19,42 +19,42 @@ class IsRepair extends React.Component{
     }
 
     render() {
-        this.url=this.props.url;
-
         return(
-            <div style={{paddingTop: '1px'}} className="eRp">
+            <div className="equipment-query">
                 {/*左边树部分*/}
-                <div className="eRp-left">
-                    <DepTree
-                        url={this.url}
-                        getTableData={this.props.getTableData}
+                <DepTree
+                    key="depTree"
+                    treeName={'所属部门'}
+                    url={this.props.url}
+                    getTableData={this.getTableData}
+                />
+                <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
+                    <SearchCell
+                        name='请输入设备名称'
+                        flag={true}
+                        fetch={this.searchReset}
+                        searchEvent={this.searchEvent}
+                        searchContentChange={this.searchContentChange}
+                        type={2}
                     />
-                </div>
-                <Spin spinning={this.props.loading} wrapperClassName='eRp-right'>
-                    <div className='eRp-putright'>
-                        <SearchCell
-                            name='关键字'
-                            flag={true}
-                            fetch={this.searchReset}
-                            searchEvent={this.searchEvent}
-                            searchContentChange={this.searchContentChange}
-                            type={2}
-                        />
-                    </div>
-
-                    <div className='eRp-shangbianju'>
-                        <TheTable
-                            url={this.url}
-                            rightTableData={this.props.rightTableData}
-                            pagination={this.pagination}
-                            handleTableChange={this.handleTableChange}
-                        />
-                    </div>
+                    <div className='clear' ></div>
+                    <TheTable
+                        url={this.props.url}
+                        rightTableData={this.props.rightTableData}
+                        pagination={this.pagination}
+                        handleTableChange={this.handleTableChange}
+                    />
                 </Spin>
             </div>
 
         );
     }
+
+    getTableData = (params) => {
+        params['repairStatus'] = 2;
+        this.props.getTableData(params)
+    };
+
     /**跟踪搜索事件变化 */
     searchContentChange=(e)=>{
         const value = e.target.value;

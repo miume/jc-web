@@ -36,8 +36,6 @@ code {
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: -1;
-    /* height: 92% !important;
-    width: 45% !important; */
     visibility: visible;
 }
 
@@ -199,7 +197,7 @@ button span {
     white-space: normal !important;
 }
 /* 输入框样式 */
-.ant-input {
+.rightDiv-content .ant-input {
     height: 35px !important;
 }
 .ant-input-lg {

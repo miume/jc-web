@@ -140,7 +140,7 @@ class TheTable extends React.Component{
                     dataSource={this.props.rightTableData}
                     size="small"
                     bordered
-                    scroll={{x:'1480px', y: 450 }}
+                    scroll={{x:'1480px'}}
                 />
             </div>
         )

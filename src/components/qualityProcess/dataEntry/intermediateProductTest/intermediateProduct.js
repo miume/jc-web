@@ -130,6 +130,9 @@ class InterProduct extends React.Component {
                 sortType: 'desc',
             }
         }
+        this.setState({
+            loading: true
+        });
         axios.get(`${this.url.intermediateProduct}/pages`,{
             headers:{
                 'Authorization':this.url.Authorization
