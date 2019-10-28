@@ -1,0 +1,62 @@
+.eqQueryCompleted-input {
+    width: 200px;
+    margin: 0 8px 8px 0;
+}
+.eqQueryCompleted{
+    background: white;
+}
+.eqQueryCompleted-head{
+    display: flex;
+}
+.eqQueryCompleted-title{
+    font-weight:bold ;
+    color:black;
+}
+.ant-layout-content{
+    background: white;
+}
+.eqQueryCompleted-table .ant-table-body  {
+    width: 100% !important;
+    margin: 0 !important;
+}
+.eqQueryCompleted-table .ant-table-thead tr th{
+    background-color:royalblue !important;
+    color:white !important;
+}
+.eqQueryCompleted-left{
+    margin-left:15px;
+    width: 20%;
+    height: 525px;
+    overflow-x:hidden;
+    overflow-y:auto;
+    border:1px solid #F5f5f5;
+}
+.eqQueryCompleted-table{
+    text-align:center;
+}
+
+.eqQueryCompleted-step .ant-steps-item-description{
+    width: 200px ;
+    margin-left: 0px;
+}
+
+.eqQueryCompleted-left-over{
+    /*background-color:royalblue; !important*/
+    max-height:450px !important;
+    overflow-x:auto;
+    overflow-y:auto;
+    width:300px;
+
+}
+
+.bd-blue{
+    border-color:#1890ff !important;
+    color: #1890ff !important;
+}
+.bd-grey{
+    border-color:grey  !important;
+    color:black !important;
+}
+/*.right{*/
+/*    width:200px;*/
+/*}*/

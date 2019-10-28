@@ -12,9 +12,7 @@ class Exit extends Component {
     constructor(props) {
         super(props);
         this.fetch = this.fetch.bind(this);
-        //this.logout = this.logout.bind(this);
         this.onClose = this.onClose.bind(this);
-        // this.getCount = this.getCount.bind(this);
         this.exitEvent = this.exitEvent.bind(this);
         this.gotodolist = this.gotodolist.bind(this);
         this.drawerEvent = this.drawerEvent.bind(this);
@@ -24,8 +22,7 @@ class Exit extends Component {
         this.state = {
             visible:false,
             count:0,
-            flag:0,
-            // content : <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} getCount={this.getCount} />
+            flag:0
         }
     }
     /**退出事件 */
@@ -89,11 +86,6 @@ class Exit extends Component {
             })
         })
     }
-    // getCount(){
-    //     const {count} = this.state;
-    //     console.log(count)
-    //     return count;
-    // }
 
     gotodolist(){
         this.setState({
@@ -121,7 +113,6 @@ class Exit extends Component {
         return (
             <div className="fr">
                 {this.state.flag?<Auth/>: <TopIcon exitEvent={this.exitEvent} versionInstruction={this.versionInstruction} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} />}
-                {/* <TopIcon exitEvent={this.exitEvent} userInstruction={this.userInstruction} drawerEvent={this.drawerEvent} count={this.state.count} /> */}
                 <Drawer title='待办事项' placement='right' visible={this.state.visible}
                 onClose={this.onClose} maskClosable={false} mask={false} width={400}
                 >
@@ -134,7 +125,7 @@ class Exit extends Component {
                             let contents = '';
                             let curId = this.props.userId;
                             for(let i = 0; i < e.details.length; i++){
-                                if(curId===e.details[i].userId) contents = e.details[i].responsibility;     
+                                if(curId===e.details[i].userId) contents = e.details[i].responsibility;
                             }
                             return (
                                 <TodoPart key={index} data={e.commonBatchNumber} contents={contents} gotodolist={this.gotodolist} />

@@ -1,0 +1,74 @@
+.thead{
+    background-color: #3369ff;
+    color:white;
+}
+.tbody tr td{
+    /* color:black;
+    border:1px solid grey; */
+    text-align: center;
+    color:#666;
+}
+.span{
+    color:black;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+}
+.checkMOdal{
+    border:3px solid #999999;
+    width:100px;
+    float:right;
+}
+.checkMOdal span{
+    display:block;
+    text-align:center;
+    height:50px;
+    border:1px solid #999999;
+    color:#999999;
+    margin:2px;
+    font-size:25px;
+    padding-top:4px;
+}
+.qulified{
+    border:3px solid #4BD863;
+    width:100px;
+    float:right;
+}
+.qulified span{
+    display:block;
+    text-align:center;
+    height:50px;
+    border:1px solid #4BD863;
+    color:#4BD863;
+    margin:2px;
+    font-size:25px;
+    padding-top:4px;
+}
+.failed{
+    border:3px solid #FF3B30;
+    width:100px;
+    float:right;
+}
+.failed span{
+    display:block;
+    text-align:center;
+    height:50px;
+    border:1px solid #FF3B30;
+    color:#FF3B30;
+    margin:2px;
+    font-size:25px;
+    padding-top:4px;
+}
+.statusDiv{
+    height:80px;
+    text-align: center;
+    line-height: 80px;
+}
+.table-recorcd{
+    background-color: #e3f7ff;
+}
+
+.rawTestReport-detailModal{
+    cursor: default;
+    /*height: 200px !important;*/
+}

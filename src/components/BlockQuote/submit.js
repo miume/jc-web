@@ -36,7 +36,7 @@ class Submit extends React.Component{
     /**渲染气泡卡片 Popover */
     render(){
         const Content = (
-            <div style={{width:'300px',height:'130px'}}> 
+            <div style={{width:'300px',height:'130px'}}>
                 <div>
                     <Select placeholder='请选择审核流程' style={{width:'240px',height:'40px'}} onChange={this.props.selectChange}>
                     {
@@ -59,11 +59,11 @@ class Submit extends React.Component{
         )
         return (
             <Popover title="设置审批细节"
-            placement="topRight"
-            content = {Content}
-            trigger="click"
-            visible={this.props.visible}
-            onVisibleChange={this.props.handleVisibleChange}
+                placement="topRight"
+                content = {Content}
+                trigger="click"
+                visible={this.props.visible}
+                onVisibleChange={this.props.handleVisibleChange}
             >
                 <Button type='primary' size='default' className='button' onClick={this.props.submitClick}><i className="fa fa-check"></i><span> 送审</span></Button>
             </Popover>

@@ -1,0 +1,80 @@
+.isDefault{
+    vertical-align: middle;
+    border: 1px solid #d9d9d9;
+    height: 30px;
+}
+.defaultRadio{
+    margin-left: 20px;
+}
+.batchTable {
+    display: block;
+    margin-top:10px;
+    width:100%;
+    overflow-x: hidden;
+    white-space: nowrap;
+    border-collapse: collapse;
+    max-height: 450px;
+}
+
+.batchTable .thead{
+    color: white;
+    text-align: left;
+}
+
+
+.batchTable .bactchHead tr th{
+    background: #1890ff !important;
+    height: 35px;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 15px;
+    width:130px;
+    max-width: 116.8px;
+    min-width: 116.8px;
+    /* width: 10%; */
+    border: 1px #e4e4e4 solid;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-sizing: border-box !important;
+}
+
+.batchTable  .thead tr :first-child{
+    border-top: none;
+    border-left:none;
+}
+.batchTable  .thead tr th:last-child{
+    border-top: none;
+    border-right:none;
+    width: 89px;
+    max-width: 89px;
+    min-width: 89px;
+}
+.batchTable  .thead tr :last-child{
+    border-top: none;
+    border-right:none;
+}
+.batchTable tbody {
+    max-height:280px;
+    overflow-y:scroll;
+    overflow-x: hidden;
+    display:block;
+}
+.batchTable tbody::-webkit-scrollbar{
+    display: none;
+}
+
+.batchTable tbody td{
+    height: 35px;
+    width:116.8px;
+    font-size: 14px;
+    text-align: left;
+    border: 1px #e4e4e4 solid;
+    box-sizing: border-box !important;
+    max-width: 116.8px;
+    min-width: 116.8px;
+}
+.batchTable tbody tr td:last-child{
+    width: 108.2px;
+    max-width: 108.2px;
+    min-width: 108.2px;
+}

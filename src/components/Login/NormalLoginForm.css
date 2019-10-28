@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import '../../../node_modules/antd/dist/antd.css';
 .login-form {
     width: 100%;
     margin: 20px !important;
@@ -12,5 +12,5 @@
   }
   .login-form input{
     width: 80%;
-    padding-left:15px; 
+    padding-left:15px;
   }

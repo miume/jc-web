@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import {Route, Switch, BrowserRouter} from 'react-router-dom';
 import Auth from '../src/components/auth/Auth';
 import Home from '../src/components/Home/home';
-import Login from '../src/components/Login/Login2';
+import Login from './components/Login/Login2';
 ReactDOM.render(
     <BrowserRouter>
         <div>

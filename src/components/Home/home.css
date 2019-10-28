@@ -1,9 +1,11 @@
 html, body, .parent {
     margin:0;
     padding:0;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     overflow-y: hidden;
     overflow-x: hidden;
+    position: relative;
 }
 .top {
     position: fixed;
@@ -13,7 +15,6 @@ html, body, .parent {
     height: 55px;
     z-index: 999;
     border-bottom:1px solid #cccccc;
-    /* background-color:  #333333; */
 }
 .left {
     position: fixed;
@@ -23,12 +24,10 @@ html, body, .parent {
     height: 100%;
     font-weight: 400;
     overflow: auto;
-    /* background-color: #20232b; */
 }
 .menu1 {
     width: 130px;
     height: 100%;
-    background: #20232b;
     color: #fff;
     background-color: #333333;
 }
@@ -39,10 +38,13 @@ html, body, .parent {
     left: 130px;
     right: 0;
     top: 60px;
-    height: 100%;
+    height: 91vh;
     background: #ffffff;
     border-top:#e9e9e9;
-    /* padding: 10px; */
+}
+.rightDiv-content {
+    padding: 15px;
+    height: 100%;
 }
 .top-left {
     padding-left: 10px;
@@ -98,24 +100,18 @@ input::-webkit-input-placeholder{
     color: #cccccc !important;
     font-size: 14px !important;
     text-align:left !important;
-  }
+}
 
 .iconHover {
-      text-align: center;
+    text-align: center;
 }
 .iconHover:hover {
    background-color: #1890ff;
    color: white;
 }
-.iconHover .topMask {
-    display: none;
+.toolTip {
+    font-weight: bold;
 }
-.iconHover:hover .topMask {
-    display: inline;
-    color: black !important;
-}
-
-
 .ant-menu-item-active {
     background-color: #1890ff !important;
 }
