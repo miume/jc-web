@@ -1,21 +1,14 @@
 import React,{Component} from 'react'
-import {Spin,Table,Popconfirm,Divider} from 'antd'
-import Blockquote from '../../BlockQuote/blockquote'
-import StatisticalPeriodAdd from './add'
+import {Spin,Table,Divider,Popconfirm} from 'antd'
+import Blockquote from '../../../BlockQuote/blockquote'
+import NewButton from '../../../BlockQuote/newButton'
+import ProductLineAdd from './add'
 const data=[{
     id:1,
     index:1,
-    cycleName:'日',
-    defaultDuration:'1',
-    startTime:'08:00'
-},{
-    id:2,
-    index:2,
-    cycleName:'日',
-    defaultDuration:'1',
-    startTime:'08:00'
+    productLineName:'F#生产线'
 }]
-class StatisticalPeriodCost extends Component{
+class ProductLinePositiveCost extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -29,21 +22,9 @@ class StatisticalPeriodCost extends Component{
             width:'10%',
             align:'center'
         },{
-            title:'周期名称',
-            dataIndex:'cycleName',
-            key:'cycleName',
-            width:'18%',
-            align:'center'
-        },{
-            title:'默认时长(天)',
-            dataIndex:'defaultDuration',
-            key:'defaultDuration',
-            width:'18%',
-            align:'center'
-        },{
-            title:'开始时刻',
-            dataIndex:'startTime',
-            key:'startTime',
+            title:'产线名称',
+            dataIndex:'productLineName',
+            key:'productLineName',
             width:'18%',
             align:'center'
         },{
@@ -55,7 +36,7 @@ class StatisticalPeriodCost extends Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <StatisticalPeriodAdd editflag={true} record={record}/>
+                        <ProductLineAdd record={record} editflag={true}/>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除?' okText='确定' cancelText='取消'>
                             <span className='blue'>删除</span>
@@ -74,18 +55,20 @@ class StatisticalPeriodCost extends Component{
         const current=JSON.parse(localStorage.getItem('current'));
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='统计周期' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={current.menuParent} name='生产线' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <StatisticalPeriodAdd/>
+                    <ProductLineAdd />
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.dataSource}
-                    size='small'
                     columns={this.columns}
+                    size='small'
                     bordered/>
                 </Spin>
+
+                
             </div>
         );
     }
 }
-export default StatisticalPeriodCost;
+export default ProductLinePositiveCost;

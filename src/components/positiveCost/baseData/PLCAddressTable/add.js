@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
-import NewButton from '../../BlockQuote/newButton'
-import CancleButton from '../../BlockQuote/cancleButton'
+import NewButton from '../../../BlockQuote/newButton'
+import CancleButton from '../../../BlockQuote/cancleButton'
 import {Modal} from 'antd'
 import AddModal from './addModal'
-class MaterialTypePLCMeterComAdd extends Component{
+class PLCAddressAdd extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -51,4 +51,4 @@ class MaterialTypePLCMeterComAdd extends Component{
         );
     }
 }
-export default MaterialTypePLCMeterComAdd
+export default PLCAddressAdd

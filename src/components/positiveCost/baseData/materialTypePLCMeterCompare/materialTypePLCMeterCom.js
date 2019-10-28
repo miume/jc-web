@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
-import Blockquote from '../../BlockQuote/blockquote'
-import DeleteByIds from '../../BlockQuote/deleteByIds'
-import SearchCell from '../../BlockQuote/search'
+import Blockquote from '../../../BlockQuote/blockquote'
+import DeleteByIds from '../../../BlockQuote/deleteByIds'
+import SearchCell from '../../../BlockQuote/search'
 import MaterialTypePLCMeterComAdd from './add'
 const data=[{
     id:1,

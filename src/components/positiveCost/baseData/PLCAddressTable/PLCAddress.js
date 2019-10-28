@@ -1,14 +1,19 @@
 import React,{Component} from 'react'
-import {Spin,Table,Divider,Popconfirm} from 'antd'
-import Blockquote from '../../BlockQuote/blockquote'
-import NewButton from '../../BlockQuote/newButton'
-import ProductLineAdd from './add'
+import {Spin,Table,Popconfirm,Divider} from 'antd'
+import Blockquote from '../../../BlockQuote/blockquote'
+import  PLCAddressAdd from './add'
 const data=[{
     id:1,
     index:1,
-    productLineName:'F#生产线'
+    plcAddressName:'plc地址',
+    addressDescription:'1#料仓数量',  
+},{
+    id:2,
+    index:2,
+    plcAddressName:'plc地址',
+    addressDescription:'1#料仓数量',
 }]
-class ProductLinePositiveCost extends Component{
+class PLCAddress extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -22,9 +27,15 @@ class ProductLinePositiveCost extends Component{
             width:'10%',
             align:'center'
         },{
-            title:'产线名称',
-            dataIndex:'productLineName',
-            key:'productLineName',
+            title:'PLC地址',
+            dataIndex:'plcAddressName',
+            key:'cycleName',
+            width:'18%',
+            align:'center'
+        },{
+            title:'地址说明',
+            dataIndex:'addressDescription',
+            key:'addressDescription',
             width:'18%',
             align:'center'
         },{
@@ -36,7 +47,7 @@ class ProductLinePositiveCost extends Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <ProductLineAdd record={record} editflag={true}/>
+                        < PLCAddressAdd editflag={true} record={record}/>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除?' okText='确定' cancelText='取消'>
                             <span className='blue'>删除</span>
@@ -55,20 +66,18 @@ class ProductLinePositiveCost extends Component{
         const current=JSON.parse(localStorage.getItem('current'));
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='生产线' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={current.menuParent} name='PLC地址表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <ProductLineAdd />
+                    < PLCAddressAdd/>
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.dataSource}
-                    columns={this.columns}
                     size='small'
+                    columns={this.columns}
                     bordered/>
                 </Spin>
-
-                
             </div>
         );
     }
 }
-export default ProductLinePositiveCost;
+export default PLCAddress;

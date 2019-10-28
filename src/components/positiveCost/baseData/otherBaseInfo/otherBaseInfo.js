@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import Blockquote from '../../BlockQuote/blockquote'
+import Blockquote from '../../../BlockQuote/blockquote'
 import ShowInfo from './showInfo'
 class OtherBaseInfo extends Component{
     constructor(props){

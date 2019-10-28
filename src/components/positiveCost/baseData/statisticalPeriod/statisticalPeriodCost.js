@@ -1,19 +1,21 @@
 import React,{Component} from 'react'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
-import Blockquote from '../../BlockQuote/blockquote'
-import  PLCAddressAdd from './add'
+import Blockquote from '../../../BlockQuote/blockquote'
+import StatisticalPeriodAdd from './add'
 const data=[{
     id:1,
     index:1,
-    plcAddressName:'plc地址',
-    addressDescription:'1#料仓数量',  
+    cycleName:'日',
+    defaultDuration:'1',
+    startTime:'08:00'
 },{
     id:2,
     index:2,
-    plcAddressName:'plc地址',
-    addressDescription:'1#料仓数量',
+    cycleName:'日',
+    defaultDuration:'1',
+    startTime:'08:00'
 }]
-class PLCAddress extends Component{
+class StatisticalPeriodCost extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -27,15 +29,21 @@ class PLCAddress extends Component{
             width:'10%',
             align:'center'
         },{
-            title:'PLC地址',
-            dataIndex:'plcAddressName',
+            title:'周期名称',
+            dataIndex:'cycleName',
             key:'cycleName',
             width:'18%',
             align:'center'
         },{
-            title:'地址说明',
-            dataIndex:'addressDescription',
-            key:'addressDescription',
+            title:'默认时长(天)',
+            dataIndex:'defaultDuration',
+            key:'defaultDuration',
+            width:'18%',
+            align:'center'
+        },{
+            title:'开始时刻',
+            dataIndex:'startTime',
+            key:'startTime',
             width:'18%',
             align:'center'
         },{
@@ -47,7 +55,7 @@ class PLCAddress extends Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        < PLCAddressAdd editflag={true} record={record}/>
+                        <StatisticalPeriodAdd editflag={true} record={record}/>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除?' okText='确定' cancelText='取消'>
                             <span className='blue'>删除</span>
@@ -66,9 +74,9 @@ class PLCAddress extends Component{
         const current=JSON.parse(localStorage.getItem('current'));
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='PLC地址表' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={current.menuParent} name='统计周期' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    < PLCAddressAdd/>
+                    <StatisticalPeriodAdd/>
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.dataSource}
@@ -80,4 +88,4 @@ class PLCAddress extends Component{
         );
     }
 }
-export default PLCAddress;
+export default StatisticalPeriodCost;
