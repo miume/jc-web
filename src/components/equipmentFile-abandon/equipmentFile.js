@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table,Divider,message} from 'antd';
+import {Table, Divider, message, Spin} from 'antd';
 import axios from 'axios';
 import Blockquote from '../BlockQuote/blockquote';
 //import NewButton from '../BlockQuote/newButton';
@@ -15,7 +15,7 @@ class EquipmentArchive extends Component{//设备档案
         this.getAllRepairManufacturer();
         this.getAllSupplyManufacturer();
         this.getAllEquipmentBaseInstrument();
-        
+
     }
     constructor(props){
         super(props);
@@ -27,7 +27,7 @@ class EquipmentArchive extends Component{//设备档案
             repairManufacturer:[],
             equipmentBaseInstrument:[],
             pageChangeFlag:0,//0表示getAllByPage分页，1表示搜索分页
-            
+
         }
         this.columns=[{
             title:'序号',
@@ -47,7 +47,7 @@ class EquipmentArchive extends Component{//设备档案
             key:'instrumentName',
             align:'center',
             width:'9%'
-            
+
         },{
             title:'安装日期',
             dataIndex:'installTime',
@@ -119,13 +119,8 @@ class EquipmentArchive extends Component{//设备档案
          total:this.state.dataSource.length,
          showSizeChanger:true,//是否可以改变 pageSize
          showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-         onShowSizeChange(current, pageSize) {//current是当前页数，pageSize是每页条数
-            //console.log('Current: ', current, '; PageSize: ', pageSize);
-          },
-          onChange(current) {//跳转，页码改变
-            //console.log('Current: ', current);
-          }
-     }
+         pageSizeOptions: ["10","20","50","100"]
+     };
      this.onSelectChange=this.onSelectChange.bind(this);
      this.handleTableChange=this.handleTableChange.bind(this);
      this.getAllRepairManufacturer=this.getAllRepairManufacturer.bind(this);
@@ -144,7 +139,7 @@ class EquipmentArchive extends Component{//设备档案
           if(pageChangeFlag){//为1代表搜索分页
                  this.searchEvent({
                     pageSize: pagination.pageSize,
-                    pageNumber: pagination.current,  
+                    pageNumber: pagination.current,
                  });
           }
           else{
@@ -229,7 +224,7 @@ class EquipmentArchive extends Component{//设备档案
             selectedRowKeys:[]
         });
     }
-   
+
     searchContentChange(e){
        const value=e.target.value;
     //    console.log(value);
@@ -244,7 +239,7 @@ class EquipmentArchive extends Component{//设备档案
        });
        this.fetch({name:name});
     }
-   
+
     getAllRepairManufacturer(){//获取所有维修厂家
         const type=2;
         axios({
@@ -319,18 +314,18 @@ class EquipmentArchive extends Component{//设备档案
         return(
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>
-                 <div style={{padding:'15px'}}>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Add  url={this.url} supplyManufacture={this.state.supplyManufacture} repairManufacture={this.state.repairManufacture} equipmentBaseInstrument={this.state.equipmentBaseInstrument} reset={this.reset} judgeOperation={this.judgeOperation} operation={this.operation}/> &nbsp;&nbsp;&nbsp;
                      <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={this.judgeOperation(this.operation,'DELETE')}/>
-                     
-                        <SearchCell 
+
+                        <SearchCell
                            name='请输入文档名称'
                            searchEvent={this.searchEvent}
                            searchContentChange={this.searchContentChange}
                            fetch={this.fetch}
                            flag={this.judgeOperation(this.operation,'QUERY')}
                         />
-                    
+
                    <Table
                       rowKey={record=>record.id}
                       columns={this.columns}
@@ -343,7 +338,7 @@ class EquipmentArchive extends Component{//设备档案
                       scroll={{y:400}}
                       >
                     </Table>
-                 </div>
+                </Spin>
             </div>
         );
     }

@@ -1,0 +1,10 @@
+.eqUserDep-left {
+    width: 28%;
+    height: 100%;
+    overflow:auto;
+    border:1px solid #F5f5f5;
+}
+.eqUserDep-right{
+    width: 67%;
+    height: 100%;
+}

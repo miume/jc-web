@@ -17,7 +17,7 @@ class Login extends React.Component {
     this.dataProcessing = this.dataProcessing.bind(this);
   }
   componentWillMount() {
-    //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718 
+    //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718
     // localStorage.setItem("remote1", "http://192.168.1.105:8080");     //模块二的局域网
     // localStorage.setItem("remote2", "http://192.168.1.105:8081");      //模块一的局域网
     // localStorage.setItem("remote3", "http://218.77.105.241:40080");
@@ -27,6 +27,8 @@ class Login extends React.Component {
     //localStorage.setItem("server", "http://192.168.5.231:8080");//模块二的外网
        //localStorage.setItem("server", "http://119.39.4.6:18080");//模块二的外网
       // localStorage.setItem("remote3", "http://218.77.105.241:40080");
+    //localStorage.setItem("server", "http://119.39.4.6:18080");//模块二的外网
+    // localStorage.setItem("remote3", "http://218.77.105.241:40080");
     // localStorage.setItem("remote", "http://127.0.0.1:8085");
 	localStorage.setItem("server", "http://192.168.190.161:8080");//模块二的server2服务器
   }
@@ -48,18 +50,17 @@ class Login extends React.Component {
   /**登陆接口调用 */
   handleSubmit(){
     const history = this.props.history;
-    const server = localStorage.getItem("server");  
+    const server = localStorage.getItem("server");
     let username = document.getElementById('userName').value;
     let password = document.getElementById('password').value;
     if(!this.beforeLogin(username,password)){
-      return 
+      return
     }
     this.setState({
       loading : true
     })
     axios.post(`${server}/jc/auth/login`,{username:username,password:password})
       .then(res => {
-      //console.log(res.data)
       /**如果登陆成功  则屏蔽enter键 */
       if(res.data){
           window.onkeydown = undefined
@@ -106,8 +107,8 @@ class Login extends React.Component {
             menuParent:e.menuName,
             menuName:e1.menuName,
             path:e1.path
-          }) 
-          i++; 
+          })
+          i++;
         }
       })
     })
@@ -131,21 +132,21 @@ class Login extends React.Component {
     window.onkeydown = f
   }
   render() {
-    // this.keyPress();
     return (
-      <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>  
+      <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
       <Spin spinning={this.state.loading}>
-        <div className='gutter-box' style={{minWidth: '290px'}}>
+        <div className='gutter-box'>
               <div className='login-box'>
-                <img src={require(`../Login/logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
-                <div style={{height:'10%'}}></div>
+                <img src={require(`./logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
+                <div className='login-blockquote'></div>
                 <div style={{padding: '0px 28px 0px 28px', height:'50%'}}>
                   <Input className='login-input' size='large' id='userName' prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)'}} />} placeholder="请输入用户名称" defaultValue={this.getDefault(0)}/>
-                  <div style={{height:'10%'}}></div>
+                  <div className='login-blockquote'></div>
                   <Input className='login-input' id='password' type='password' size='large' prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="请输入密码登录"  defaultValue={this.getDefault(1)} />
-                  <div style={{height:'10%'}}></div>
+                  <div className='login-blockquote'></div>
                   <Checkbox style={{float:'left'}} onChange={this.remindLogin} defaultChecked={document.cookie?true:false}>记住登录状态</Checkbox>
-                  <div style={{height:'20%'}}></div>
+                  <div className='login-blockquote'></div>
+                  <div className='login-blockquote'></div>
                   <Button size='large' type="primary" style={{width:'100%', fontSize:'14px'}} onClick={this.handleSubmit}>
                     登录
                   </Button>
@@ -153,8 +154,8 @@ class Login extends React.Component {
               </div>
         </div>
         </Spin>
-        <div style={{left:'0px',position:'fixed',height:'80px',width:'100%',bottom:'0px',textAlign:'center', fontSize:'11px'}} className='copy-right' id="copy-right">
-          <img src={require(`../Login/logo.png`)} style={{height:'38%'}} alt=''></img>
+        <div className='copy-right login-footer' id="copy-right">
+          <img src={require(`./logo.png`)} style={{height:'38%'}} alt=''></img>
           <br/>
           <div style={{height:'10%'}}></div>
           <span>长沙矿冶研究院智能技术研究所提供技术支持</span>
@@ -162,7 +163,7 @@ class Login extends React.Component {
       </div>
     );
   }
-  
+
 }
 
 export default withRouter(Login);

@@ -11,7 +11,7 @@ class Home extends Component {
             if(canvas !== null && canvas !== undefined) {
                 canvas.style.visibility='hidden';
                 clearInterval(showCanvas);
-            }    
+            }
         },100)
         /**统一管理status */
         const status = {
@@ -48,7 +48,6 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
-        console.log(server)
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -83,7 +82,6 @@ class Home extends Component {
                 getAllName:`${server}/jc/common/RepoStock/names`,
                 oneKeyStock:`${server}/jc/common/RepoStock/oneKeyStock`,
                 getAllPages:`${server}/jc/common/RepoStock/pages`,
-                //dsds,
                 realStock:`${server}/jc/common/sortout/realStock`,
                 stock:`${server}/jc/common/RepoDiffRecord/stock`
             },
@@ -139,11 +137,11 @@ class Home extends Component {
                 deleteById:`${server}/jc/auth/user/deleteById`,
                 update:`${server}/jc/auth/user/update`,
                 getAll:`${server}/jc/auth/user/getAll`,
-                deleteByIds:`${server}/jc/auth/user/deleteByIds`,    
+                deleteByIds:`${server}/jc/auth/user/deleteByIds`,
                 getAllByPage:`${server}/jc/auth/user/getAllByPage`,
                 search:`${server}/jc/auth/user/getUserByNameByPage`,
                 reset:`${server}/jc/auth/user/reset`,
-                
+
             },
             /**部门管理 */
             department:{
@@ -165,35 +163,15 @@ class Home extends Component {
                 updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
                 maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
             },
-            /**
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             * 设备维修*/
+            /**设备维修*/
             equipmentRepair:{
                 deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
                 evaluations:`${server}/jc/common/deviceRepair/evaluations`,
                 getPage:`${server}/jc/common/deviceRepair/getPage`,
+                export:`${server}/jc/common/deviceRepair/export`,
+                download: `${server}/jc/common`
             },
-            /**
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             * 位置基础信息*/
+            /**位置基础信息*/
             locationBasic:{
                 addBasicInfo:`${server}/jc/common/basicInfoLocation/addBasicInfo`,
                 deleteByIds:`${server}/jc/common/basicInfoLocation/deleteByIds`,
@@ -272,8 +250,8 @@ class Home extends Component {
             },
             /**原材料检验 */
             rawTestReport:{
-                rawTestReport:`${server}/jc/common/rawTestReport`, 
-                getById:`${server}/jc/common/rawTestReport/details`, 
+                rawTestReport:`${server}/jc/common/rawTestReport`,
+                getById:`${server}/jc/common/rawTestReport/details`,
                 getAllByPage:`${server}/jc/common/rawTestReport/pages`,
                 detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
             },
@@ -304,7 +282,7 @@ class Home extends Component {
                 getStandard:`${server}/jc/common/techRawStandard`,
                 rawItems:`${server}/jc/common/techRawStandard/rawItems`,//获取原材料主成分
                 addNewRaw:`${server}/jc/common/techRawStandard/addRaw`,
-                
+
             },
             /**产品标准 */
             productStandard:{
@@ -343,31 +321,7 @@ class Home extends Component {
             equipmentDept:{
                 dept:`${server}/jc/common/dept`
             },
-            /**设备保养
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             *
-             * */
+            /**设备保养*/
             eqMaintenanceQuery:{
                 recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`,
                 recordPage:`${server}/jc/common/maintenanceRecord/recordPage`,
@@ -471,7 +425,9 @@ class Home extends Component {
                 updateCheckModel:`${server}/jc/common/deviceSpotCheck/updateCheckModel`,
                 upload:`${server}/jc/common/deviceSpotCheck/upload`,
                 delete:`${server}/jc/common/deviceSpotCheck`,
-                getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`
+                getAllByDeviceName:`${server}/jc/common/deviceSpotCheck/getAllByDeviceName`,
+                cancelLoad:`${server}/jc/common/deviceSpotCheck/cancelLoad`,
+                getModelByDeviceName:`${server}/jc/common/deviceSpotCheck/getModelByDeviceName`
             },
             /**巡检计划 */
             devicePatrolPlan:{
@@ -502,10 +458,90 @@ class Home extends Component {
                 getAll:`${server}/jc/common/productionBatchRule/getAll`,
                 getDetail:`${server}/jc/common/productionBatchRule/getDetail`,
                 updateAll:`${server}/jc/common/productionBatchRule/updateAll`,
-                updateState:`${server}/jc/common/productionBatchRule/UpdateState`
+                updateState:`${server}/jc/common/productionBatchRule/UpdateState`,
+                getAllInfos:`${server}/jc/common/productionBatchRule/getAllInfos`
 
             },
-
+            /**统计周期 */
+            staticPeriod:{
+                add:`${server}/jc/common/precursorBasicDataStatPeriod/add`,
+                all:`${server}/jc/common/precursorBasicDataStatPeriod/all`,
+                delete:`${server}/jc/common/precursorBasicDataStatPeriod/delete`,
+                page:`${server}/jc/common/precursorBasicDataStatPeriod/page`,
+                update:`${server}/jc/common/precursorBasicDataStatPeriod/update`,
+                getRecordById:`${server}/jc/common/precursorBasicDataStatPeriod/getRecordById`
+            },
+            /**生产线 */
+            precursorProductionLine:{
+                add:`${server}/jc/common/precursorProductionLine/add`,
+                all:`${server}/jc/common/precursorProductionLine/all`,
+                delete:`${server}/jc/common/precursorProductionLine/delete`,
+                page:`${server}/jc/common/precursorProductionLine/page`,
+                update:`${server}/jc/common/precursorProductionLine/update`,
+                getRecordById:`${server}/jc/common/precursorProductionLine/getRecordById`
+            },
+            /**工序名称 */
+            precursorProcessType:{
+                add:`${server}/jc/common/precursorProcessType/add`,
+                all:`${server}/jc/common/precursorProcessType/all`,
+                delete:`${server}/jc/common/precursorProcessType/delete`,
+                page:`${server}/jc/common/precursorProcessType/page`,
+                update:`${server}/jc/common/precursorProcessType/update`
+            },
+            /**物料产线权重分配 */
+            precursorMaterialLineWeight:{
+                add:`${server}/jc/common/precursorMaterialLineWeight/add`,
+                delete:`${server}/jc/common/precursorMaterialLineWeight/delete`,
+                ids:`${server}/jc/common/precursorMaterialLineWeight/ids`,
+                page:`${server}/jc/common/precursorMaterialLineWeight/page`,
+                update:`${server}/jc/common/precursorMaterialLineWeight/update`,
+                getMaterialName:`${server}/jc/common/precursorMaterialLineWeight/getMaterialName`,
+                getRecordById:`${server}/jc/common/precursorMaterialLineWeight/getRecordById`
+            },
+            /**物料名称 */
+            precursorMaterialDetails:{
+                add:`${server}/jc/common/precursorMaterialDetails/add`,
+                delete:`${server}/jc/common/precursorMaterialDetails/delete`,
+                ids:`${server}/jc/common/precursorMaterialDetails/ids`,
+                page:`${server}/jc/common/precursorMaterialDetails/page`,
+                update:`${server}/jc/common/precursorMaterialDetails/update`,
+                getProcess:`${server}/jc/common/precursorMaterialDetails/getProcess`,
+                getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`
+            },
+            /**物料plc映射 */
+            matPlcMap:{
+                matPlcMap:`${server}/jc/common/matPlcMap`,
+                ids:`${server}/jc/common/matPlcMap/ids`,
+                page:`${server}/jc/common/matPlcMap/page`,
+                getRecordById:`${server}/jc/common/matPlcMap/getRecordById`
+            },
+            /**PLC地址 */
+            plcAddress:{
+                plcAddress:`${server}/jc/common/plcAddress`,
+                ids:`${server}/jc/common/plcAddress/ids`,
+                getRecordById:`${server}/jc/common/plcAddress/getRecordById`
+            },
+            /**VGA */
+            vga:{
+                vga:`${server}/jc/common/vga`,
+                ids:`${server}/jc/common/vga/ids`,
+                page:`${server}/jc/common/vga/page`,
+                getRecordById:`${server}/jc/common/vga/getRecordById`
+            },
+            /**VGA权重分配 */
+            vgaMap:{
+                vgaMap:`${server}/jc/common/vgaMap`,
+                ids:`${server}/jc/common/vgaMap/ids`,
+                page:`${server}/jc/common/vgaMap/page`,
+                getInfoByVgaId:`${server}/jc/common/vgaMap/getInfoByVgaId`
+            },
+            /**设备工序*/
+            deviceProcess: {
+                getAll: `${server}/jc/common/deviceProcess/getAllProcedure`,
+                getDeviceByProIdByPage: `${server}/jc/common/deviceProcess/getDeviceByProIdByPage`,
+                getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssignment`,
+                assign: `${server}/jc/common/deviceProcess/assign`
+            }
         }
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
@@ -533,5 +569,5 @@ class Home extends Component {
                 </div>
         );
     }
-} 
+}
 export default Home;

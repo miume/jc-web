@@ -1,0 +1,65 @@
+.raw-material-date {
+    width: 240px;
+}
+
+.raw-material-select {
+    width: 70px;
+}
+
+.raw-material-detail {
+    padding: 10px;
+}
+
+.raw-material-detail-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom:  10px;
+}
+
+.raw-material-line-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.raw-material-line-footer-div {
+    margin: 0 20px;
+}
+
+.staticalAnalysis {
+    height: 400px;
+}
+
+.raw-material-add {
+    height: 650px;
+}
+
+.raw-material-add-margin {
+    margin-top: 10px;
+}
+
+.raw-material-add-footer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.raw-material-add-footer-input {
+    width: 120px;
+}
+
+.raw-material-add-feed {
+    margin-top: 15px;
+}
+
+.raw-material-feed-data {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.raw-material-add-table {
+    height: 230px;
+}
+
+.raw-material-add-footer-bottom {
+    display: flex;
+    justify-content: space-between;
+}

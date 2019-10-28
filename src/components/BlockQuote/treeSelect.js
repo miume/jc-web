@@ -4,11 +4,6 @@ import "./blockquote.css"
 /*
     * 1.父组件必须传初始化的选择项，数据源，查询属性
     * dataSource,treeName,defaultparams,params,
-    *
-    *
-    *
-    *
-    *
     * */
 var defaultkey=[];
 
@@ -39,7 +34,6 @@ class TreeCard extends React.Component{
         if(!this.state.flag){
             if(data.length!==0){
                 var keys=[];
-
                 while(data[0].children.length!==0)
                 {
                     keys.push(data[0].key+'');
@@ -50,10 +44,7 @@ class TreeCard extends React.Component{
                 }
                 this.setState({
                     expandedKeys:keys,
-                },()=>{
-                    console.log(this.state.expandedKeys)
                 });
-
             }
         }
     }
@@ -62,10 +53,13 @@ class TreeCard extends React.Component{
     render() {
         return(
             <Card
-                style={{display:'inline-block',width: "100%"}}
+                bordered={false}
+                style={{width: "100%",height: '100%',display: 'inline-block'}}
                 className='departmentCard'
-                title={<p id='titledepartment1'><b fontSize="10px" id='titledepartmentselect'>{this.props.treeName}&nbsp;</b>(请选择)</p>} >
-                <div style={{overflowX:'auto', height:'400px'}}>
+                headStyle={{height:'10%'}}
+                bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
+                title={`${this.props.treeName}(请选择)`}>
+                <div>
                     <Tree
                         showLine={true}
                         expandedKeys={this.state.expandedKeys}

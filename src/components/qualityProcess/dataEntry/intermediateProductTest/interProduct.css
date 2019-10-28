@@ -1,0 +1,191 @@
+/*interProduct中公用默认*/
+.interCursorPointer {
+    cursor: pointer;
+}
+.interCursorDefault {
+    cursor: default;
+}
+/*
+    详情、发布中drSpanModal中样式
+    Top: 设置表格样式
+    middle: 设置样品名称
+    Bottom: 设置检验人、审核人等
+ */
+/*Top:设置表格样式*/
+.interDrSpanModalTop {
+    width: 100%;
+    cursor: default;
+}
+.interDrSpanModalTop table{
+    width:100%;
+    text-align: left;
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+}
+.interDrSpanModalTop table thead {
+    color: white;
+    background: #0079FE;
+    border: 1px solid  #E9E9E9;
+}
+.interDrSpanModalTop table thead tr th{
+    height: 30px;
+    font-size: 13px;
+    padding:5px;
+    border: 1px solid  #E9E9E9;
+}
+.interDrSpanModalTop table tbody tr td {
+    height: 30px;
+    font-size: 13px;
+    padding:5px;
+    border: 1px solid  #E9E9E9;
+}
+/*Middle:设置样品名称和清空按钮样式*/
+.interDrSpanModalMiddle {
+    width: 100%;
+    padding-top: 5px;
+    cursor: default;
+}
+.interDrSpanModalMiddle div{
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 14px;
+}
+/*Bottom:设置检验人、审核人等*/
+.interDrSpanModalBottom {
+    /*border: 1px solid black;*/
+    position:absolute;
+    bottom: 70px;
+    height: 200px;
+    width: 480px;
+    cursor: default;
+}
+.interDrSpanModalBottom .interDrSpanModalBottomFirst {
+    padding-top: 10px;
+    padding-bottom: 55px;
+    height: 50px;
+}
+.interDrSpanModalBottom .interDrSpanModalBottomFirst table {
+    float: left;
+}
+.interDrSpanDivider {
+    margin: 15px 0 !important;
+}
+
+.interDetailTable .ant-table-body {
+    max-height: 220px !important;
+}
+/*.interDrSpanModalBottom .ant-divider .ant-divider-horizontal{*/
+    /*margin: 20px 0 !important;*/
+/*}*/
+/*
+    详情中底部中detailStateModal
+
+ */
+/*设置表格样式*/
+.interStateDefaultModal{
+    /*border: 1px solid black;*/
+    width: 100%;
+    height: 100px;
+    color: #999999;
+    text-align: center;
+    line-height: 110px;
+}
+.interStateNoModal{
+    display: none;
+}
+.interDrSpanModalBottomSecond {
+    margin-top: -7px;
+    cursor: default;
+    height:80px;
+    overflow-y: auto;
+}
+.interStateModal table{
+    width: 100%;
+    float: left;
+    margin-bottom: 15px;
+    margin-top: -8px;
+    /*margin-top:-8px*/
+}
+.interPadding tr td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+/*
+    录检中checkSpanModal
+    Top:设置表格样式
+    Middle:设置样品名称和清空按钮样式
+    Bottom: 设置底部表格样式
+
+ */
+/*Top:设置表格样式*/
+.interCheckModalTop {
+    width: 100%;
+    cursor: default;
+}
+.interCheckModalTop table{
+    width:100%;
+    /*text-align: center;*/
+    border-collapse: collapse;
+    border: 1px solid  #E9E9E9;
+}
+.interCheckModalTop table thead {
+    color: white;
+    background: #0079FE;
+    border: 1px solid  #E9E9E9;
+}
+.interCheckModalTop table thead tr th{
+    height: 30px;
+    font-size: 13px;
+    border: 1px solid  #E9E9E9;
+    padding-left: 5px;
+}
+.interCheckModalTop table tbody tr td {
+    padding-left: 5px;
+    height: 30px;
+    font-size: 13px;
+    border: 1px solid  #E9E9E9;
+}
+/*Middle:设置样品名称和清空按钮样式*/
+.interCheckModalMiddle {
+    width: 100%;
+    padding-top: 5px;
+    cursor: default;
+}
+.interCheckModalMiddle div{
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.interCheckModalMiddle button {
+    color: #999999 ;
+    font-size: 14px ;
+    font-weight: bolder ;
+    font-family:'PingFangSC-Regular', 'PingFang SC' ;
+    background-color: white;
+    float:right;
+    margin-top:5px;
+}
+/*Bottom: 设置底部表格样式*/
+.interCheckModalBottom {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    height: 280px;
+}
+.interCheckModalBottom table {
+    cursor: default;
+}
+.interCheckModalBottom table input{
+    text-align: center;
+}
+
+.interCheckQualifiedModal {
+    cursor: pointer;
+    position:absolute;
+    bottom: 70px;
+    height: 200px;
+    width: 260px;
+    float: right;
+}
+
+
+

@@ -2,10 +2,9 @@
  * author：yangmei
  * date : 2019-05-26
  * */
-import React from 'react'
-import axios from 'axios'
-// import Auth from '.'
-import {Divider, Modal,message} from "antd";
+import React from 'react';
+import axios from 'axios';
+import {Divider, Modal, message, Tooltip} from "antd";
 import CancleButton from "../BlockQuote/cancleButton";
 import NewButton from "../BlockQuote/newButton";
 import ChangePasswordModal from "./changePasswordModal";
@@ -73,11 +72,14 @@ class ChangePassword extends React.Component{
     }
     render(){
         return (
-            <div className="fr userName">
-                <i className="fa fa-user-circle-o" aria-hidden="true"></i>
-                <span onClick={this.click}>{this.props.userName}</span>
-                <Divider type='vertical' />
-                <div className="topMask">修改密码</div>
+            <div>
+                <Tooltip placement="bottomLeft" title="修改密码" overlayClassName='toolTip'>
+                <div className="fr userName">
+                    <i className="fa fa-user-circle-o" aria-hidden="true"></i>
+                    <span onClick={this.click}>{this.props.userName}</span>
+                    <Divider type='vertical' />
+                </div>
+                </Tooltip>
                 <Modal visible={this.state.visible} title={'修改密码'}
                        closable={false} maskClosable={false} centered={true} className={'modal-sm'}
                        footer={[

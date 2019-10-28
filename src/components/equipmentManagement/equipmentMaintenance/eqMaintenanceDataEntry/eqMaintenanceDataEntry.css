@@ -1,0 +1,35 @@
+.eqMaintenance-DE-demo{
+    padding: 15px;
+    height: 78vh;
+    display: flex;
+}
+.eqMaintenance-DE-left{
+    width: 20%;
+    height: 100%;
+    overflow:auto;
+    border:1px solid #F5f5f5;
+}
+.eqMaintenance-DE-right{
+    width: 80%;
+    margin-left: 20px;
+    height: 100%;
+}
+.eqMaintenance-eqblocka{
+    height:50px;
+    width: 100%;
+    background:#F5F5F5;
+    text-align:center;
+    line-height: 50px;
+
+}
+.eqMaintenance-eqblockb{
+    width:804px;
+}
+
+.ed-blue{
+    border: 1px solid #0079FE;
+    color: #0079FE;
+}
+.ed-grey {
+    border: 1px solid rgba(228, 228, 228, 1);
+}

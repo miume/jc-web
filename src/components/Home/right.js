@@ -2,71 +2,86 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import QuickAccess from '../quickAccess/quickAccess';
 
-import Role from '../roleManagement/roleManagement';
-import Menu from '../menuMangement/menu';
-import User from '../userManage/userManage';
-import Management from '../processManagement/processManagement'
+import Role from '../userPermissions/roleManagement/roleManagement';
+import Menu from '../userPermissions/menuMangement/menu';
+import User from '../userPermissions/userManage/userManage';
+import Management from '../qualityProcess/processManagement/processManagement'
 
-import ProcessInspection from '../processInspection/processInspection'
-import SampleInspection from '../sampleInspection/sampleInspection'
-import Depart from '../departManagement/departManagement';
-import InterProduct from '../intermediateProductTest/intermediateProduct';
-import DataEntry from '../dataEntry/dataEntry';
-import EquipmentStatus from "../equipmentStatus/equipmentStatus";
-import BaseData from "../equipmentBasicData/baseData";
-import DepartmentStruct from '../departmentStruct/departmentStruct';
-import RawTestReport from '../rawTestReport/rawTestReport';
-import PurchaseCheckReport from '../purchaseCheckReport/purchaseCheckReport';
-import TodoList from '../todolist/todolist';
+import ProcessInspection from '../qualityProcess/dataEntry/processInspection/processInspection'
+import SampleInspection from '../qualityProcess/dataEntry/sampleInspection/sampleInspection'
+import Depart from '../userPermissions/departManagement/departManagement';
+import InterProduct from '../qualityProcess/dataEntry/intermediateProductTest/intermediateProduct';
+import DataEntry from '../qualityProcess/dataEntry/dataEntry';
+import EquipmentStatus from "../equipmentManagement/equipmentBasicData/equipmentStatus/equipmentStatus";
+import BaseData from "../equipmentManagement/equipmentBasicData/baseData";
+import DepartmentStruct from '../equipmentManagement/equipmentBasicData/departmentStruct/departmentStruct';
+import RawTestReport from '../qualityProcess/dataEntry/rawTestReport/rawTestReport';
+import PurchaseCheckReport from '../qualityProcess/dataEntry/purchaseCheckReport/purchaseCheckReport';
+import TodoList from '../qualityProcess/todolist/todolist';
+import PrecursorCostBasisData from "../costAccounting/precursorCostBasisData/basisData";
 
-import BaseInfo from '../Base/baseInfo';
-import DeliveryFactory from '../Base/devileryFactory/devileryFactory';//送样工厂
-import ProductLine from '../Base/productLine/productLine';//产品线
-import ProductProcess from '../Base/ProductProcess/productProcess';//产品工序
-import StatisticAnalysis from '../statisticAnalysis/statisticAnalysis'
-import CheckStatistics from '../checkStatistics/checkStatistics'
-// import  SamplePoint from '../Base/SamplePoint/samplePoint';//取样点
-import TestItem from '../Base/testItem/testItem';
-import OperationManagement from "../operationManagement/operationManagement";
-import StockOut from '../stockOut/stockOut';
-import EquipmentCheck from "../equipmentCheck/equipmentCheck";
-import CheckPlan from "../checkPlan/checkPlan";
-import CheckQuery from "../checkQuery/checkQuery";
-import CheckTemplate from "../checkTemplate/checkTemplate";
+import BaseInfo from '../qualityProcess/Base/baseInfo';
+import DeliveryFactory from '../qualityProcess/Base/devileryFactory/devileryFactory';//送样工厂
+import ProductLine from '../qualityProcess/Base/productLine/productLine';//产品线
+import ProductProcess from '../qualityProcess/Base/ProductProcess/productProcess';//产品工序
+import StatisticAnalysis from '../equipmentManagement/statisticAnalysis/statisticAnalysis'
+import CheckStatistics from '../equipmentManagement/statisticAnalysis/checkStatistics/checkStatistics'
+import TestItem from '../qualityProcess/Base/testItem/testItem';
+import OperationManagement from "../userPermissions/operationManagement/operationManagement";
+import StockOut from '../smartWarehouse/stockOut/stockOut';
+import EquipmentCheck from "../equipmentManagement/equipmentCheck/equipmentCheck";
+import CheckPlan from "../equipmentManagement/equipmentCheck/checkPlan/checkPlan";
+import CheckQuery from "../equipmentManagement/equipmentCheck/checkQuery/checkQuery";
+import CheckTemplate from "../equipmentManagement/equipmentCheck/checkTemplate/checkTemplate";
 
-import EnterStorage from '../enterStorage/enterStorage';
-import InventorManage from '../inventoryManage/inventorManage';
-import RedListManage from '../redListManage/redListManage';
-import LibraryManage from '../libraryManage/library'
+import EnterStorage from '../smartWarehouse/enterStorage/enterStorage';
+import InventorManage from '../smartWarehouse/inventoryManage/inventorManage';
+import RedListManage from '../smartWarehouse/redListManage/redListManage';
+import LibraryManage from '../smartWarehouse/libraryManage/library';
+import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
-import RawStandard from '../rawStandard/rawStandard';
-import ProductStandard from '../productStandard/productStandard';
-import ProductInspection from '../productInspection/productInspection';
-import UnqualifiedExamine from '../unqualifiedExamineTable/unqualifiedExamine';
-import UnqualifiedTrack from '../unqualifiedTrackTable/unqualifiedTrack';
+import RawStandard from '../technologyCenter/rawStandard/rawStandard';
+import ProductStandard from '../technologyCenter/productStandard/productStandard';
+import ProductInspection from '../qualityProcess/dataEntry/productInspection/productInspection';
+import UnqualifiedExamine from '../qualityProcess/dataEntry/unqualifiedExamineTable/unqualifiedExamine';
+import UnqualifiedTrack from '../qualityProcess/dataEntry/unqualifiedTrackTable/unqualifiedTrack';
 
-import Equipment from "../equipmentGuidance/equipmentGuidance"
-import EquipmentRepair from "../equipmentRepair/equipmentRepair"
-import EquipmentArchive from '../equipmentArchive/equipmentArchive';
-import EquipmentMaintenance from '../equipmentMaintenance/equipmentMaintenance'
-import EqMaintenanceDataEntry from '../eqMaintenanceDataEntry/eqMaintenanceDataEntry'
-import EqMaintenancePlan from '../eqMaintenancePlan/eqMaintenancePlan'
-import EqMaintenanceQuery from '../eqMaintenanceQuery/eqMaintenanceQuery'
-import EqupimentAssignment from '../equpimentAssignment/equpimentAssignment'
+import Equipment from "../equipmentManagement/equipmentGuidance/equipmentGuidance"
+import EquipmentRepair from "../equipmentManagement/equipmentRepair/equipmentRepair"
+import EquipmentArchive from '../equipmentManagement/equipmentArchive/equipmentArchive';
+import EquipmentMaintenance from '../equipmentManagement/equipmentMaintenance/equipmentMaintenance'
+import EqMaintenanceDataEntry from '../equipmentManagement/equipmentMaintenance/eqMaintenanceDataEntry/eqMaintenanceDataEntry'
+import EqMaintenancePlan from '../equipmentManagement/equipmentMaintenance/eqMaintenancePlan/eqMaintenancePlan'
+import EqMaintenanceQuery from '../equipmentManagement/equipmentMaintenance/eqMaintenanceQuery/eqMaintenanceQuery'
+import EqupimentAssignment from '../equipmentManagement/equipmentBasicData/equpimentAssignment/equpimentAssignment'
 
-import EquipmentArchiveManager from '../equipmentArchiveManager/equipmentArchiveManager'
-import EqcomponentSearch from '../eqcomponentSearch/eqcomponentSearch'
-import EquipmentInspection from '../equipmentInspection/equipmentInspection'
-import InspectionTemplate from '../inspectionTemplate/inspectionTemplate'
-import InspectionPlan from '../inspectionPlan/inspectionPlan'
-import InspectionQuery from '../inspectionQuery/inspectionQuery'
-import LocationBasic from "../locationBasic/locationBasic";
+import EquipmentArchiveManager from '../equipmentManagement/equipmentArchive/equipmentArchiveManager/equipmentArchiveManager'
+import EqcomponentSearch from '../equipmentManagement/equipmentArchive/eqcomponentSearch/eqcomponentSearch'
+import EquipmentInspection from '../equipmentManagement/equipmentInspection/equipmentInspection'
+import InspectionTemplate from '../equipmentManagement/equipmentInspection/inspectionTemplate/inspectionTemplate'
+import InspectionPlan from '../equipmentManagement/equipmentInspection/inspectionPlan/inspectionPlan'
+import InspectionQuery from '../equipmentManagement/equipmentInspection/inspectionQuery/inspectionQuery'
+import LocationBasic from "../equipmentManagement/equipmentBasicData/locationBasic/locationBasic";
 
-import BatchInfo from "../batchInfo/batchInfo"
-import BatchSearch from "../batchSearch/batchSearch"
-import BatchRule from  "../batchRule/batchRule"
-import RawMaterialInput from '../rawMaterialInput/rawMaterialInput'
-import EqUserDepAllocation from '../eqUserDepAllocation/eqUserDepAllocation'
+import BatchInfo from "../productionManagement/batchInfo/batchInfo"
+import BatchSearch from "../productionManagement/batchSearch/batchSearch"
+import BatchRule from "../productionManagement/batchRule/batchRule"
+import RawMaterialInput from '../technologyCenter/rawMaterialInput/rawMaterialInput'
+import EqUserDepAllocation from '../equipmentManagement/equipmentBasicData/eqUserDepAllocation/eqUserDepAllocation'
+
+import StatisticalPeriod from "../costAccounting/precursorCostBasisData/statisticalPeriod/statisticalPeriod"
+import BaseProductLine from "../costAccounting/precursorCostBasisData/productLine/productLine"
+import DetailItem from "../costAccounting/precursorCostBasisData/detailItem/detailItem"
+import PLCaddress from "../costAccounting/precursorCostBasisData/PLCaddress/PLCaddress"
+import MaterialPLC from "../costAccounting/precursorCostBasisData/materialPLC/materialPLC"
+import XinsongVGA from "../costAccounting/precursorCostBasisData/xinsongVGA/xinsongVGA"
+import ProductLineStatical from "../costAccounting/precursorCostBasisData/productLineStatical/productLineStatical"
+import ProductLineVGA from "../costAccounting/precursorCostBasisData/productLineVGA/productLineVGA"
+import ProcessName from "../costAccounting/precursorCostBasisData/processName/processName"
+
+import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
+import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
+import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
 
 class Right extends React.Component {
     render() {
@@ -115,134 +130,331 @@ class Right extends React.Component {
         }, {
             path: '/testItem',
             component: TestItem
-        },
-            {
-                path: '/productLine',
-                component: ProductLine
-            }, {
-                path: '/sampleInspection',
-                component: SampleInspection
-            }, {
-                path: '/stockOut',
-                component: StockOut
-            }, {
-                path: '/enterStorage',
-                component: EnterStorage
-            }, {
-                path: '/inventorManage',
-                component: InventorManage
-            }, {
-                path: '/redListManage',
-                component: RedListManage
-            }, {
-                path: '/libraryManage',
-                component: LibraryManage
-            }, {
-                path: '/todoList',
-                component: TodoList
-            }, {
-                path: '/rawStandard',
-                component: RawStandard
-            }, {
-                path: '/productInspection',
-                component: ProductInspection
-            }, {
-                path: '/unqualifiedExamineTable',
-                component: UnqualifiedExamine
-            }, {
-                path: '/unqualifiedTrackTable',
-                component: UnqualifiedTrack
-            }, {
-                path: '/productStandard',
-                component: ProductStandard
-            }, {
-                path: '/equipmentGuidance',
-                component: Equipment
-            }, {
-                path: '/equipmentRepair',
-                component: EquipmentRepair
-            }, {
-                path: '/equipmentArchive',
-                component: EquipmentArchive
-            }, {
-                path: '/equipmentBasicData',
-                component: BaseData
-            }, {
-                path: '/departmentStruct',
-                component: DepartmentStruct
-            }, {
-                path: "/equipmentStatus",
-                component: EquipmentStatus
-            }, {
-                path: "/equipmentMaintenance",
-                component: EquipmentMaintenance
-            }, {
-                path: "/maintenanceDataEntry",
-                component: EqMaintenanceDataEntry
-            }, {
-                path: "/maintenancePlan",
-                component: EqMaintenancePlan
-            }, {
-                path: "/maintenanceQuery",
-                component: EqMaintenanceQuery
-            },{
-                path:"/equipmentCheck",
-                component:EquipmentCheck
-            },{
-                path:"/checkPlan",
-                component:CheckPlan
-            },{
-                path:"/checkQuery",
-                component:CheckQuery
-            },{
-                path:"/checkTemplate",
-                component:CheckTemplate
-            },{
-                path:"/equipmentArchiveManager",
-                component:EquipmentArchiveManager
-            },{
-                path:"/eqcomponentSearch",
-                component:EqcomponentSearch
-            },{
-                path:"/equipmentInspection",
-                component:EquipmentInspection
-            },{
-                path:"/inspectionTemplate",
-                component:InspectionTemplate
-            },{
-                path:"/inspectionPlan",
-                component:InspectionPlan
-            },{
-                path:"/inspectionQuery",
-                component:InspectionQuery
-            },{
-                path:"/locationBasic",
-                component:LocationBasic
-            },{
-                path:"/batchRule",
-                component:BatchRule
-            },{
-                path:"/batchInfo",
-                component:BatchInfo
-            },{
-                path:"/batchSearch",
-                component:BatchSearch
-            },{
-                path:"/equpimentAssignment",
-                component:EqupimentAssignment
-            },{
-                path:"/statisticAnalysis",
-                 component:StatisticAnalysis
-            },{
-                path:"/checkStatistics",
-                 component:CheckStatistics
-            },{
-                path:"/rawMaterialInput",
-                component:RawMaterialInput
-            },{
-                path:"/eqUserDepAllocation",
-                component:EqUserDepAllocation
-            }]
+        }, {
+            path: '/productLine',
+            component: ProductLine
+        }, {
+            path: '/sampleInspection',
+            component: SampleInspection
+        }, {
+            path: '/stockOut',
+            component: StockOut
+        }, {
+            path: '/enterStorage',
+            component: EnterStorage
+        }, {
+            path: '/inventorManage',
+            component: InventorManage
+        }, {
+            path: '/redListManage',
+            component: RedListManage
+        }, {
+            path: '/libraryManage',
+            component: LibraryManage
+        }, {
+            path: '/todoList',
+            component: TodoList
+        }, {
+            path: '/rawStandard',
+            component: RawStandard
+        }, {
+            path: '/productInspection',
+            component: ProductInspection
+        }, {
+            path: '/unqualifiedExamineTable',
+            component: UnqualifiedExamine
+        }, {
+            path: '/unqualifiedTrackTable',
+            component: UnqualifiedTrack
+        }, {
+            path: '/productStandard',
+            component: ProductStandard
+        }, {
+            path: '/equipmentGuidance',
+            component: Equipment
+        }, {
+            path: '/equipmentRepair',
+            component: EquipmentRepair
+        }, {
+            path: '/equipmentArchive',
+            component: EquipmentArchive
+        }, {
+            path: '/equipmentBasicData',
+            component: BaseData
+        }, {
+            path: '/departmentStruct',
+            component: DepartmentStruct
+        }, {
+            path: "/equipmentStatus",
+            component: EquipmentStatus
+        }, {
+            path: "/equipmentMaintenance",
+            component: EquipmentMaintenance
+        }, {
+            path: "/maintenanceDataEntry",
+            component: EqMaintenanceDataEntry
+        }, {
+            path: "/maintenancePlan",
+            component: EqMaintenancePlan
+        }, {
+            path: "/maintenanceQuery",
+            component: EqMaintenanceQuery
+        },{
+            path:"/equipmentCheck",
+            component:EquipmentCheck
+        },{
+            path:"/checkPlan",
+            component:CheckPlan
+        },{
+            path:"/checkQuery",
+            component:CheckQuery
+        },{
+            path:"/checkTemplate",
+            component:CheckTemplate
+        },{
+            path:"/equipmentArchiveManager",
+            component:EquipmentArchiveManager
+        },{
+            path:"/eqcomponentSearch",
+            component:EqcomponentSearch
+        },{
+            path:"/equipmentInspection",
+            component:EquipmentInspection
+        },{
+            path:"/inspectionTemplate",
+            component:InspectionTemplate
+        },{
+            path:"/inspectionPlan",
+            component:InspectionPlan
+        },{
+            path:"/inspectionQuery",
+            component:InspectionQuery
+        },{
+            path:"/locationBasic",
+            component:LocationBasic
+        },{
+            path:"/batchRule",
+            component:BatchRule
+        },{
+            path:"/batchInfo",
+            component:BatchInfo
+        },{
+            path:"/batchSearch",
+            component:BatchSearch
+        },{
+            path:"/equpimentAssignment",
+            component:EqupimentAssignment
+        },{
+            path:"/statisticAnalysis",
+             component:StatisticAnalysis
+        },{
+            path:"/checkStatistics",
+             component:CheckStatistics
+        },{
+            path:"/rawMaterialInput",
+            component:RawMaterialInput
+        },{
+            path:"/eqUserDepAllocation",
+            component:EqUserDepAllocation
+        },{
+            path:"/precursorCostBasisData",
+            component:PrecursorCostBasisData
+        },{
+            path:"/statisticalPeriod",
+            component:StatisticalPeriod
+        },{
+            path:"/BaseproductLine",
+            component:BaseProductLine
+        },{
+            path:"/detailItem",
+            component:DetailItem
+        },{
+            path:"/PLCaddress",
+            component:PLCaddress
+        },{
+            path:"/materialPLC",
+            component:MaterialPLC
+        },{
+            path:"/xinsongVGA",
+            component:XinsongVGA
+        },{
+            path:"/productLineStatical",
+            component:ProductLineStatical
+        },{
+            path:"/productLineVGA",
+            component:ProductLineVGA
+        },{
+            path:"/processName",
+            component:ProcessName
+        },{
+            path:"/baseData",
+            component:MaterialBasic
+        }, {
+            path: '/productLine',
+            component: ProductLine
+        }, {
+            path: '/sampleInspection',
+            component: SampleInspection
+        }, {
+            path: '/stockOut',
+            component: StockOut
+        }, {
+            path: '/enterStorage',
+            component: EnterStorage
+        }, {
+            path: '/inventorManage',
+            component: InventorManage
+        }, {
+            path: '/redListManage',
+            component: RedListManage
+        }, {
+            path: '/libraryManage',
+            component: LibraryManage
+        }, {
+            path: '/todoList',
+            component: TodoList
+        }, {
+            path: '/rawStandard',
+            component: RawStandard
+        }, {
+            path: '/productInspection',
+            component: ProductInspection
+        }, {
+            path: '/unqualifiedExamineTable',
+            component: UnqualifiedExamine
+        }, {
+            path: '/unqualifiedTrackTable',
+            component: UnqualifiedTrack
+        }, {
+            path: '/productStandard',
+            component: ProductStandard
+        }, {
+            path: '/equipmentGuidance',
+            component: Equipment
+        }, {
+            path: '/equipmentRepair',
+            component: EquipmentRepair
+        }, {
+            path: '/equipmentArchive',
+            component: EquipmentArchive
+        }, {
+            path: '/equipmentBasicData',
+            component: BaseData
+        }, {
+            path: '/departmentStruct',
+            component: DepartmentStruct
+        }, {
+            path: "/equipmentStatus",
+            component: EquipmentStatus
+        }, {
+            path: "/equipmentMaintenance",
+            component: EquipmentMaintenance
+        }, {
+            path: "/maintenanceDataEntry",
+            component: EqMaintenanceDataEntry
+        }, {
+            path: "/maintenancePlan",
+            component: EqMaintenancePlan
+        }, {
+            path: "/maintenanceQuery",
+            component: EqMaintenanceQuery
+        },{
+            path:"/equipmentCheck",
+            component:EquipmentCheck
+        },{
+            path:"/checkPlan",
+            component:CheckPlan
+        },{
+            path:"/checkQuery",
+            component:CheckQuery
+        },{
+            path:"/checkTemplate",
+            component:CheckTemplate
+        },{
+            path:"/equipmentArchiveManager",
+            component:EquipmentArchiveManager
+        },{
+            path:"/eqcomponentSearch",
+            component:EqcomponentSearch
+        },{
+            path:"/equipmentInspection",
+            component:EquipmentInspection
+        },{
+            path:"/inspectionTemplate",
+            component:InspectionTemplate
+        },{
+            path:"/inspectionPlan",
+            component:InspectionPlan
+        },{
+            path:"/inspectionQuery",
+            component:InspectionQuery
+        },{
+            path:"/locationBasic",
+            component:LocationBasic
+        },{
+            path:"/batchRule",
+            component:BatchRule
+        },{
+            path:"/batchInfo",
+            component:BatchInfo
+        },{
+            path:"/batchSearch",
+            component:BatchSearch
+        },{
+            path:"/equpimentAssignment",
+            component:EqupimentAssignment
+        },{
+            path:"/statisticAnalysis",
+             component:StatisticAnalysis
+        },{
+            path:"/checkStatistics",
+             component:CheckStatistics
+        },{
+            path:"/rawMaterialInput",
+            component:RawMaterialInput
+        },{
+            path:"/eqUserDepAllocation",
+            component:EqUserDepAllocation
+        },{
+            path:"/precursorCostBasisData",
+            component:PrecursorCostBasisData
+        },{
+            path:"/statisticalPeriod",
+            component:StatisticalPeriod
+        },{
+            path:"/BaseproductLine",
+            component:BaseProductLine
+        },{
+            path:"/detailItem",
+            component:DetailItem
+        },{
+            path:"/PLCaddress",
+            component:PLCaddress
+        },{
+            path:"/materialPLC",
+            component:MaterialPLC
+        },{
+            path:"/xinsongVGA",
+            component:XinsongVGA
+        },{
+            path:"/productLineStatical",
+            component:ProductLineStatical
+        },{
+            path:"/productLineVGA",
+            component:ProductLineVGA
+        },{
+            path:"/processName",
+            component:ProcessName
+        },{
+            path: '/rawMaterial',
+            component: RawMaterial
+        },{
+            path: '/addModal',
+            component: AddModal
+        },{
+            path: '/statisticalAnalysis',
+            component: StatisticalAnalysis
+        }];
         return (
             <div className="rightDiv">
                 <Switch>
