@@ -546,6 +546,10 @@ class Home extends Component {
                 getDeviceByProIdByPage: `${server}/jc/common/deviceProcess/getDeviceByProIdByPage`,
                 getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssignment`,
                 assign: `${server}/jc/common/deviceProcess/assign`
+            },
+            /**出库点*/
+            endPosition: {
+                getAllByOutType: `${server}/jc/common/endPosition`
             }
         }
         localStorage.setItem('status',JSON.stringify(status));

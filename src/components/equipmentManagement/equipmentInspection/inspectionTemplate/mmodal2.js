@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Divider, Input, message, Modal, Popconfirm, Radio, Row, Select} from "antd";
+import {Col, Divider, Input, message, Modal, Popconfirm, Row, Select} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import home from "../../../commom/fns";
@@ -73,10 +73,7 @@ class Mmodal2 extends React.Component {
     }
     render() {
         const {Option} = Select;
-        this.column1 = [
-
-
-            {
+        this.column1 = [{
                 title: '序号',
                 dataIndex: 'index',
                 key: 'index',
@@ -92,7 +89,6 @@ class Mmodal2 extends React.Component {
                         <span>
                         <Innput record={record} onChange={this.onChange} value={record.patrolContent}
                                 changepatrolContent={this.changepatrolContent}/>
-
                     </span>
                     )
                 }
@@ -197,7 +193,7 @@ class Mmodal2 extends React.Component {
                  <Row>
                           <Col span={6} style={{paddingTop: 8}}>所属车间:&nbsp;&nbsp;&nbsp;{this.props.name}</Col>
                           <Col span={9}>
-                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;&nbsp;<Input Value={this.props.patrolName} size="small" onChange={this.valueChange}/> </div></Col>
+                              <div className="example-input">巡检模板名称:&nbsp;&nbsp;&nbsp;<Input Value={this.props.patrolName} onChange={this.valueChange}/> </div></Col>
                           <Col span={9}>
                               <div>
                                   检查类型:
@@ -211,9 +207,9 @@ class Mmodal2 extends React.Component {
                  </Row>
                   <Row type="flex" justify="start" style={{paddingTop:15,paddingBottom:15}}>
                      <Col span={6} > <div className="example-input2">制&nbsp;&nbsp;表&nbsp;&nbsp;人:&nbsp;&nbsp;&nbsp;
-                         <Input  Value={this.props.setPeople} size="small" name="setPeople" disabled/></div></Col>
+                         <Input  Value={this.props.setPeople} name="setPeople" disabled/></div></Col>
                           <Col span={9}><div className="example-input">制&nbsp;&nbsp;表&nbsp;&nbsp;日&nbsp;&nbsp;期:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                              <Input Value={this.props.tabulatedate} size="small"name="tabulatedate" disabled/> </div></Col>
+                              <Input Value={this.props.tabulatedate} name="tabulatedate" disabled/> </div></Col>
 
                  </Row>
 
@@ -270,10 +266,6 @@ class Mmodal2 extends React.Component {
                                  onChange={this.handleTableChange}
                                  bordered
                              />
-
-
-
-
                          </Modal>
                  </div>
                  </div>
@@ -355,7 +347,6 @@ class Mmodal2 extends React.Component {
 
 
     handleChange = (value) => {
-        console.log(value)
         this.setState({
             value: value,
             selectflag:1
@@ -369,7 +360,6 @@ class Mmodal2 extends React.Component {
                 checkType:'电气类'
             })
         }
-        console.log(this.state.checkType)
     }
 
     addtable = () => {
@@ -380,13 +370,12 @@ class Mmodal2 extends React.Component {
             index: current,
             patrolContent: '',
         })
-        console.log(this.state.leftDataSource)
         this.setState({
             current: current,
             leftdataflag:1,
             leftDataSource:dataSource
         })
-        console.log(this.state.leftDataSource)}
+        }
         else{
             const dataSource=this.state.leftDataSource
             const current = dataSource.length + 1
@@ -406,7 +395,6 @@ class Mmodal2 extends React.Component {
 
 
     addtable2 = () => {
-        console.log('右边表格增加1')
         this.setState({
             visible: true,
         });
@@ -421,11 +409,9 @@ class Mmodal2 extends React.Component {
             }
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
             this.pagination.total = res ? res.total : 0;
             this.pagination.current = res.page;
             if (res) {
-                console.log('11111')
                 var TableData = [];
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i]
@@ -440,7 +426,6 @@ class Mmodal2 extends React.Component {
                 this.setState({
                     dataSource3: TableData
                 })
-                console.log(TableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
@@ -475,7 +460,6 @@ class Mmodal2 extends React.Component {
         this.setState({
             dataSource2:dataSource2
         })
-        console.log(this.props.dataSource2)
         }else{
             const ids = this.state.selectedRows;
             const dataSource2=this.state.dataSource2
@@ -492,7 +476,6 @@ class Mmodal2 extends React.Component {
                 deptCode: this.state.selectedRows[0].deptCode,
 
             })
-            console.log(this.state.dataSource2)
             this.setState({
                 dataSource2:dataSource2
             })
@@ -512,33 +495,27 @@ class Mmodal2 extends React.Component {
         if(this.state.leftdataflag===0){
         const dataSource = [...this.props.leftDataSource];
         const LeftDataSource = dataSource.filter(item => item.index !== index)
-        console.log(LeftDataSource)
         var kkk = LeftDataSource;
         for (var i = 0; i < LeftDataSource.length; i++) {
             kkk[i].index = i + 1
         }
-        console.log(kkk)
         this.setState({
             leftDataSource: kkk,
             current: kkk.length,
             leftdataflag:1,
         })
-        console.log(this.props.leftDataSource)
         }else{
             const dataSource = [...this.state.leftDataSource];
             const LeftDataSource = dataSource.filter(item => item.index !== index)
-            console.log(LeftDataSource)
             var kkk = LeftDataSource;
             for (var i = 0; i < LeftDataSource.length; i++) {
                 kkk[i].index = i + 1
             }
-            console.log(kkk)
             this.setState({
                 leftDataSource: kkk,
                 current: kkk.length,
                 leftdataflag:1,
             })
-            console.log(this.props.leftDataSource)
         }
     };
 
@@ -547,13 +524,11 @@ class Mmodal2 extends React.Component {
         if(this.state.rightDataflag===0){
             const dataSource = [...this.props.dataSource2];
             const rightDataSource = dataSource.filter(item => item.index !== index)
-            console.log(rightDataSource)
             var kkk = rightDataSource;
             for (var i = 0; i < rightDataSource.length; i++) {
                 kkk[i].index = i + 1
             }
             var len = kkk.length
-            console.log(kkk)
             if (kkk.length === 0) {
                 len = 1;
             }
@@ -562,7 +537,6 @@ class Mmodal2 extends React.Component {
                 rightcurrent: len,
                 rightDataflag:1,
             })
-            console.log(this.props.dataSource2)
         }else{
             const dataSource = [...this.state.dataSource2];
             const rightDataSource = dataSource.filter(item => item.index !== index)

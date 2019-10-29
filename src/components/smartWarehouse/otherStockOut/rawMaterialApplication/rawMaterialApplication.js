@@ -27,12 +27,14 @@ class RawMaterialApplication extends React.Component{
             searchContent:'',
             selectedRowKeys:[],
             selectedRows: [],
-            productionLine: 'a',
-            endPosition: 'd'
+            productionLine: -1,
+            endPosition: -1,
+            productionLineData: [], //存取所有正极相关产品线数据
+            endPositionData: [],    //存取所有出库点数据
         };
         this.save = this.save.bind(this);
         this.clear = this.clear.bind(this);
-        this.cancle = this.cancle.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.delete = this.delete.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -42,6 +44,8 @@ class RawMaterialApplication extends React.Component{
         this.endPositionSelectChange = this.endPositionSelectChange.bind(this);
         this.productionLineSelectChange = this.productionLineSelectChange.bind(this);
         this.applySaveAndReview = this.applySaveAndReview.bind(this);
+        this.getProductLine = this.getProductLine.bind(this);
+        this.getEndPosition = this.getEndPosition.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -91,6 +95,222 @@ class RawMaterialApplication extends React.Component{
         }]
     }
 
+    render(){
+        const {index} = this.props;
+        const {selectedRowKeys} = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange:this.onSelectChange,
+        };
+        const current = JSON.parse(localStorage.getItem('current')) ;
+        /**获取当前菜单的所有操作权限 */
+        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        return (
+            this.renderContent(index,rowSelection)
+        );
+    }
+
+    componentDidMount() {
+        this.getProductLine();   //获取所有正极相关产品线
+        this.getEndPosition();   //获取所有出库点
+    }
+
+    /**根据表格选中数据来渲染右边送审数据*/
+    renderContent(index,rowSelection) {
+        if(index === 1) {
+            return (
+                <Spin spinning={this.props.loading} wrapperClassName='other-stock-out'>
+                    <div className='other-stock-out-container'>
+                        <div className='other-stock-out-div'>
+                            <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
+                                        fetch={this.searchEvent} searchContentChange={this.searchContentChange}
+                                        flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
+                            <div className={'clear'}></div>
+                            <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection}
+                                   pagination={false} scroll={{ y: '58vh' }} bordered size='small'></Table>
+                        </div>
+                        <div className='other-stock-out-right'>
+                            <div className='other-stock-out-right-head'>
+                                <button onClick={this.clear}>清空</button>
+                                <button>查占</button>
+                            </div>
+                            <div className='other-stock-out-right-list'>
+                                <div className='other-stock-out-right-list-overflow'>
+                                    <div className='other-stock-out-right-list-overflow1'>
+                                        {
+                                            this.state.selectedRows.length ? this.state.selectedRows.map((data,index) => {
+                                                if(data.length) {
+                                                    return (
+                                                        <div key={index} className={'other-stock-out-right-list-part'}>
+                                                            <div className={'other-stock-out-right-list-part-1 '}>{index+1}</div>
+                                                            <div className={'other-stock-out-right-list-part-10 '}>
+                                                                {this.renderSerialNumber(index,data)}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                            }) : null
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='other-stock-out-right-bottom'>
+                                <div>
+                                    <Select value={this.state.productionLine} className='other-stock-out-right-select' placeholder={'请选择产线'} style={{marginRight: 10}} onChange={this.productionLineSelectChange}>
+                                        {
+                                            this.state.productionLineData.map(e => <Option key={e.id} value={e.name}>{e.name}</Option>
+                                            )
+                                        }
+                                    </Select>
+                                    <Select value={this.state.endPosition} className='other-stock-out-right-select' placeholder={'请选择出库点'} onChange={this.endPositionSelectChange}>
+                                        {
+                                            this.state.endPositionData.map(e => <Option key={e.id} value={e.endPosition}>{e.endPosition}</Option> )
+                                        }
+                                    </Select>
+                                </div>
+
+                                <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
+                            </div>
+                        </div>
+                    </div>
+                </Spin>
+            )
+        } else {
+            return (
+                <Spin spinning={this.props.loading} wrapperClassName='rightDiv-content'>
+                    <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
+                                fetch={this.searchEvent} searchContentChange={this.searchContentChange}
+                                flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
+                    <div className={'clear'}></div>
+                    <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection}
+                           pagination={false} bordered size='small'></Table>
+                </Spin>
+            )
+        }
+    }
+
+    /**删除右边送审数据的一条数据*/
+    delete(parentIndex,index,id) {
+        let {selectedRowKeys, selectedRows} = this.state;
+        selectedRowKeys = selectedRowKeys.filter(e => e !== id);
+        selectedRows[parentIndex].pop(index);
+        this.setState({
+            selectedRowKeys: selectedRowKeys,
+            selectedRows: selectedRows
+        });
+    }
+
+    /**清空右边送审的数据*/
+    clear() {
+        this.setState({
+            selectedRowKeys: [],
+            selectedRows: []
+        });
+    }
+
+    /**渲染一条编号数据*/
+    renderSerialNumber(parentIndex,data) {
+        return data.map((e,index) =>
+            <div key={e.id} className='other-stock-out-right-list-item'>
+                <div className='other-stock-out-right-list-item-5'>{e.serialNumber}</div>
+                <div className='other-stock-out-right-list-item-1'><Icon type="close" onClick={() => this.delete(parentIndex,index,e.id)}/></div>
+                <div className='other-stock-out-right-list-item-1'><Icon type="check-circle" style={{color: '#00ff00'}}/></div>
+            </div>
+        )
+    }
+
+    /**监控产品线下拉框的变化*/
+    productionLineSelectChange(value) {
+        this.setState({
+            productionLine: value
+        })
+    }
+
+    /**监控出库点下拉框的变化*/
+    endPositionSelectChange(value) {
+        this.setState({
+            endPosition: value
+        })
+    }
+
+    /**对选择数据进行送审
+     * process代表送审流程
+     * urgent代表是否紧急
+     * */
+    applySaveAndReview(process,urgent) {
+        // console.log(process,urgent)
+        const userName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).name:null;
+        let {productionLine, endPosition, selectedRows} = this.state, data = [], date = new Date().toLocaleDateString().split('/').join('');
+
+        for(let i = 1; i <= selectedRows.length; i++) {
+            data.push({
+                groupName: date + i,
+                content: selectedRows[i-1]
+            })
+        }
+        let params = {
+            productionLine: productionLine,
+            endPosition: endPosition,
+            data: data,
+            createPersonName: userName
+        };
+        this.save(params);
+    }
+
+    /**送审右边显示编号数据*/
+    save(params) {
+        axios({
+            url: `${this.props.url.stockOut.faker}`,
+            method: 'post',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            data: params,
+        }).then((data) => {
+            message.info(data.data.message);
+            this.clear(); //清空右边数据
+        });
+    }
+
+    /**根据正极名称模糊查询产品线*/
+    getProductLine() {
+        axios({
+            url: `${this.props.url.productLine.search}`,
+            method: 'get',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            params: {
+                productLineName: '正极'
+            },
+        }).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                productionLineData: res.list,
+                productionLine: res.list ? res.list[0].name : -1
+            })
+        })
+    }
+
+    /**获取所有出库点的数据*/
+    getEndPosition() {
+        axios({
+            url: `${this.props.url.endPosition.getAllByOutType}`,
+            method: 'post',
+            headers:{
+                'Authorization': this.props.url.Authorization
+            },
+            data: {
+                outType: 1
+            },
+        }).then((data) => {
+            let res = data.data.data;
+            this.setState({
+                endPositionData: res,
+                endPosition: res ? res[0].endPosition : -1
+            })
+        })
+    }
+
     /**监控搜索框的输入变化 */
     searchContentChange(e){
         const value = e.target.value;
@@ -105,6 +325,7 @@ class RawMaterialApplication extends React.Component{
             materialName:this.state.searchContent
         });
     }
+
     /**监控checkbox选中的情况 对选中的数据进行处理*/
     onSelectChange(selectedRowKeys,selectedRows) {
         //(YS)代表前驱体 (TS)代表碳酸锂 两个前驱体和一个碳酸锂组合
@@ -140,168 +361,11 @@ class RawMaterialApplication extends React.Component{
             selectedRows: data
         })
     }
-    cancle(){
+
+    cancel(){
         this.setState({
             selectedRowKeys:[]
         })
-    }
-    render(){
-        const {index} = this.props;
-        const {selectedRowKeys} = this.state;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange:this.onSelectChange,
-        };
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        /**获取当前菜单的所有操作权限 */
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-        return (
-            this.renderContent(index,rowSelection)
-        );
-    }
-
-    renderContent(index,rowSelection) {
-        if(index === 1) {
-            return (
-                <Spin spinning={this.props.loading} wrapperClassName='other-stock-out'>
-                    <div className='other-stock-out-container'>
-                        <div className='other-stock-out-div'>
-                            <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
-                                        fetch={this.fetch} searchContentChange={this.searchContentChange}
-                                        flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
-                            <div className={'clear'}></div>
-                            <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection}
-                                   pagination={false} scroll={{ y: '58vh' }} bordered size='small'></Table>
-                        </div>
-                        <div className='other-stock-out-right'>
-                            <div className='other-stock-out-right-head'>
-                                <button onClick={this.clear}>清空</button>
-                                <button>查占</button>
-                            </div>
-                            <div className='other-stock-out-right-list'>
-                                <div className='other-stock-out-right-list-overflow'>
-                                    <div className='other-stock-out-right-list-overflow1'>
-                                        {
-                                            this.state.selectedRows.length ? this.state.selectedRows.map((data,index) => {
-                                                if(data.length) {
-                                                    return (
-                                                        <div key={index} className={'other-stock-out-right-list-part'}>
-                                                            <div className={'other-stock-out-right-list-part-1 '}>{index+1}</div>
-                                                            <div className={'other-stock-out-right-list-part-10 '}>
-                                                                {this.renderSerialNumber(index,data)}
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                            }) : null
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='other-stock-out-right-bottom'>
-                                <div>
-                                    <Select defaultValue={'a'} className='other-stock-out-right-select' placeholder={'请选择产线'} style={{marginRight: 10}} onChange={this.productionLineSelectChange}>
-                                        <Option value='a'>产线一</Option>
-                                        <Option value='b'>产线二</Option>
-                                        <Option value='c'>产线三</Option>
-                                    </Select>
-                                    <Select defaultValue={'d'} className='other-stock-out-right-select' placeholder={'请选择出库点'} onChange={this.endPositionSelectChange}>
-                                        <Option value='d'>出库点一</Option>
-                                        <Option value='e'>出库点二</Option>
-                                        <Option value='f'>出库点三</Option>
-                                    </Select>
-                                </div>
-
-                                <Submit url={this.props.url} applySaveAndReview={this.applySaveAndReview}/>
-                            </div>
-                        </div>
-                    </div>
-                </Spin>
-            )
-        } else {
-            return (
-                <Spin spinning={this.props.loading} wrapperClassName='rightDiv-content'>
-                    <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
-                                fetch={this.fetch} searchContentChange={this.searchContentChange}
-                                flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
-                    <div className={'clear'}></div>
-                    <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection}
-                           pagination={false} bordered size='small'></Table>
-                </Spin>
-            )
-        }
-    }
-
-    /**删除右边送审数据的一条数据*/
-    delete(parentIndex,index,id) {
-        let {selectedRowKeys, selectedRows} = this.state;
-        selectedRowKeys = selectedRowKeys.filter(e => e !== id);
-        selectedRows[parentIndex].pop(index);
-        this.setState({
-            selectedRowKeys: selectedRowKeys,
-            selectedRows: selectedRows
-        });
-    }
-
-    /**清空右边送审的数据*/
-    clear() {
-        this.setState({
-            selectedRowKeys: [],
-            selectedRows: []
-        });
-    }
-
-    renderSerialNumber(parentIndex,data) {
-        return data.map((e,index) =>
-            <div key={e.id} className='other-stock-out-right-list-item'>
-                <div className='other-stock-out-right-list-item-5'>{e.serialNumber}</div>
-                <div className='other-stock-out-right-list-item-1'><Icon type="close" onClick={() => this.delete(parentIndex,index,e.id)}/></div>
-                <div className='other-stock-out-right-list-item-1'><Icon type="check-circle" style={{color: '#00ff00'}}/></div>
-            </div>
-        )
-    }
-
-    /**监控下拉框的变化*/
-    productionLineSelectChange(value) {
-        this.setState({
-            productionLine: value
-        })
-    }
-
-    endPositionSelectChange(value) {
-        this.setState({
-            endPosition: value
-        })
-    }
-
-    applySaveAndReview() {
-        const userName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).name:null;
-        let {productionLine, endPosition, selectedRows} = this.state, data = [];
-        for(let i = 0; i < selectedRows.length; i++) {
-            for(let j = 0; j < selectedRows[i].length; j++) {
-                data.push(selectedRows[i][j]);
-            }
-        }
-        let params = {
-            productionLine: productionLine,
-            endPosition: endPosition,
-            data: data,
-            createPersonName: userName
-        };
-        this.save(params);
-    }
-
-    save(params) {
-        axios({
-            url: `${this.props.url.stockOut.faker}`,
-            method: 'post',
-            headers:{
-                'Authorization': this.props.url.Authorization
-            },
-            data: params,
-        }).then((data) => {
-            message.info(data.data.message);
-            this.clear(); //清空右边数据
-        });
     }
 
 }

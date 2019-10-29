@@ -29,7 +29,6 @@ class Editer extends React.Component {
             }
         }).then((data)=>{
             const res=data.data.data;
-            console.log(res);
             var detailData=[];
             var arr=res.devicePatrolModelsHead;
 
@@ -58,8 +57,6 @@ class Editer extends React.Component {
                     modelCode: arm['modelCode'],
                     patrolContent: arm['patrolContent']
                 })
-                console.log(i)
-                console.log(devicePatrolModelsItemDetailsList)
             }
 
             var devicePatrolModelsLocationDetails = [];
@@ -74,34 +71,32 @@ class Editer extends React.Component {
                 })
             }
 
-            console.log(detailData)
-            console.log(devicePatrolModelsItemDetailsList)
             this.setState({
                 detailData:detailData,
                 devicePatrolModelsItemDetailsList:devicePatrolModelsItemDetailsList,
                 devicePatrolModelsLocationDetails:devicePatrolModelsLocationDetails,
             })
-            console.log(this.state.detailData)
-            console.log(this.state.devicePatrolModelsItemDetailsList)
-            console.log(this.state.devicePatrolModelsLocationDetails)
         }).catch(()=>{
             message.info('刷新列表失败，请联系管理员！')
         });
     }
+
     onCanCel = () => {
         this.setState({visible: false})
-        console.log('visible11111')
     }
+
     changeleftSource=(id) => {
         this.setState({
             devicePatrolModelsItemDetailsList:id
         })
     }
+
     changevisible=()=>{
         this.setState({
             visible:false
         })
     }
+
     render(){
         return(
             <span>

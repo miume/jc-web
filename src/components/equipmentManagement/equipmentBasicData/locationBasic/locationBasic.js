@@ -58,7 +58,7 @@ class LocationBasic extends React.Component{
 
             <div>
                 <Blockquote menu={current.menuParent} name="位置基础信息"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div  className='equipment'>
+                <div className='equipment'>
                     {/*左边树部分*/}
                     <DepTree
                         key="depTree"

@@ -1,13 +1,14 @@
 import React from "react";
 import BlockQuote from '../../../BlockQuote/blockquote';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
-import { Table,Divider,Popconfirm,message } from 'antd';
+import {Table, Divider, Popconfirm, message, Spin} from 'antd';
 import '../../../Home/page.css';
 import AddBut from "./add";
 import TreeCard from "./treeCard";
 import axios from 'axios';
 import Detail from "./details";
 import Edit from "./edit";
+import DepTree from "../../../BlockQuote/department";
 
 class CheckTemplate extends React.Component{
     url
@@ -38,11 +39,11 @@ class CheckTemplate extends React.Component{
         this.getTableData = this.getTableData.bind(this);
         this.getTreeData = this.getTreeData.bind(this);
         this.pagination = {
-            total: this.state.dataSource.length,
             showTotal(total){
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ['10','20','50','100']
         };
         this.columns=[{
             title:"序号",
@@ -108,7 +109,6 @@ class CheckTemplate extends React.Component{
         }]
     }
     onSelectChange(selectedRowKeys) {
-        // console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     componentDidMount(){
@@ -187,9 +187,6 @@ class CheckTemplate extends React.Component{
             message.info(error.data)
         });
         setTimeout(() => {
-            // if((this.pagination.total-1)%10===0){
-            //     this.pagination.current = this.pagination.current-1
-            // }
             this.getTableData({
                 page:1,
                 size:10,
@@ -199,7 +196,6 @@ class CheckTemplate extends React.Component{
         }, 1000);
     };
     onSelect = (selectedKeys,info)=>{
-        // console.log(parseInt(selectedKeys))
         this.getTableData({
             page:1,
             size:10,
@@ -274,30 +270,34 @@ class CheckTemplate extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            // onSelect() {},
-            // onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <div style={{padding:'15px',display:'flex',margin:'15px'}}>
-                    <div style={{width:"20%"}}>
-                    <TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>
-                    <div style={{width:"80%",marginLeft:"15px"}}>
-                    <AddBut getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>
-                    <DeleteByIds
-                        selectedRowKeys={this.state.selectedRowKeys}
-                        loading={loading}
-                        cancel={this.cancel}
-                        deleteByIds={this.deleteByIds}
-                        flag={this.judgeOperation(this.operation,'DELETE')}
+                <div className='equipment'>
+                    <DepTree
+                        key="depTree"
+                        treeName={'所属部门'}
+                        url={this.url}
+                        getTableData={this.getTableData}
                     />
-                    <div className='clear'></div>
-                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.deviceSpotcheckModelsHead.code} dataSource={this.state.dataSource} columns={this.columns} bordered pagination={this.pagination}  scroll={{ y: 400 }}/>
-                    </div>
+                    {/*<div style={{width:"20%"}}>*/}
+                    {/*<TreeCard treeName={"所属部门"} onExpand={this.onExpand} expandedKeys={this.state.expandedKeys} getTableData={this.getTableData} onSelect = {this.onSelect} selectedKeys={this.state.selectedKeys} TreeData={this.state.TreeData}/></div>*/}
+                    {/*<div style={{width:"80%",marginLeft:"15px"}}>*/}
+                    {/*右边表格部分*/}
+                    <Spin spinning={this.state.tableLoading} wrapperClassName='equipment-right'>
+                        <AddBut getTableData={this.getTableData} info={this.state.lineData} deptCode={this.state.deptCode} deviceName={this.state.deviceName} deptName={this.state.deptName}/>
+                        <DeleteByIds
+                            selectedRowKeys={this.state.selectedRowKeys}
+                            loading={loading}
+                            cancel={this.cancel}
+                            deleteByIds={this.deleteByIds}
+                            flag={this.judgeOperation(this.operation,'DELETE')}
+                        />
+                        <div className='clear'></div>
+                        <Table rowSelection={rowSelection} size="small" rowKey={record => record.deviceSpotcheckModelsHead.code} dataSource={this.state.dataSource}
+                               columns={this.columns} bordered pagination={this.pagination}/>
+                    </Spin>
                 </div>
             </div>
         )
