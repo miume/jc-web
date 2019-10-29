@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-import NewButton from '../../BlockQuote/newButton'
-import CancleButton from '../../BlockQuote/cancleButton'
+import NewButton from '../../../BlockQuote/newButton'
+import CancleButton from '../../../BlockQuote/cancleButton'
 import  {Input,Row,Col,Modal } from 'antd'
 import AddModal from './addModal'
 class StatisticalPeriodAdd extends Component{

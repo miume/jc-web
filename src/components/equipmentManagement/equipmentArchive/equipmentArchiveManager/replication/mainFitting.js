@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {Button, Col, Divider, Input, message, Modal, Popconfirm, Row, Table} from 'antd';
 import CancleButton from "../../../../BlockQuote/cancleButton";
 import FittingDetail from './fittingDetail'
@@ -124,6 +124,7 @@ class MainFitting extends React.Component{
 
     }
     handleMainFitting = () => {
+        console.log(this.props.deviceName)
         axios({
             url:`${this.props.url.equipmentArchive.getAllMainByDeptCodeByDeviceName}?deviceName=${this.props.deviceName}`,
             method: 'get',

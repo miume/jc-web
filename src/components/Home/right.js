@@ -83,7 +83,7 @@ import ProductLineVGA from "../costAccounting/precursorCostBasisData/productLine
 import ProcessName from "../costAccounting/precursorCostBasisData/processName/processName"
 
 import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
-import StatisticalPeriodCost from '../positiveCost/statisticalPeriod/statisticalPeriodCost' 
+import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/statisticalPeriodCost' 
 
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
@@ -92,13 +92,15 @@ import processParameters from "../technologyCenter/processParameters/processPara
 import BatchTrace from "../productionManagement/batchTrace/batchTrace";
 
 
-import BaseInfoPositiveCost from '../positiveCost/baseInfo';
-import ProductLinePositiveCost from '../positiveCost/productLine/productLinePositiveCost';
-import ProcessPositiveCost from '../positiveCost/process/processPositiveCost';
-import MaterialTypePositive from '../positiveCost/materialType/materialTypePositive';
-import PLCAddress from '../positiveCost/PLCAddressTable/PLCAddress';
-import OtherBaseInfo from '../positiveCost/otherBaseInfo/otherBaseInfo'
-import MaterialTypePLCMeterCom from '../positiveCost/materialTypePLCMeterCompare/materialTypePLCMeterCom'
+import BaseInfoPositiveCost from '../positiveCost/baseData/baseInfo';
+import ProductLinePositiveCost from '../positiveCost/baseData/productLine/productLinePositiveCost';
+import ProcessPositiveCost from '../positiveCost/baseData/process/processPositiveCost';
+import MaterialTypePositive from '../positiveCost/baseData/materialType/materialTypePositive';
+import PLCAddress from '../positiveCost/baseData/PLCAddressTable/PLCAddress';
+import OtherBaseInfo from '../positiveCost/baseData/otherBaseInfo/otherBaseInfo'
+import MaterialTypePLCMeterCom from '../positiveCost/baseData/materialTypePLCMeterCompare/materialTypePLCMeterCom'
+import ProcessStatistics from '../costAccounting/processStatistics/processStatistic'
+import CostAccount from '../costAccounting/costAccount/costAccount'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -507,6 +509,12 @@ class Right extends React.Component {
             path: '/processParameters',
             component: ProcessParameters
 
+        },{
+            path:'/processStatistics',
+            component:ProcessStatistics
+        },{
+            path:'/productAccounting',
+            component:CostAccount
         }];
         return (
             <div className="rightDiv">

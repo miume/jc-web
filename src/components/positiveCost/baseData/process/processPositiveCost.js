@@ -1,23 +1,19 @@
 import React,{Component} from 'react'
-import Blockquote from '../../BlockQuote/blockquote'
-import MaterialTypeAdd from './add'
+import Blockquote from '../../../BlockQuote/blockquote'
 import {Spin,Table,Popconfirm,Divider} from 'antd'
+import ProcessAdd from './add'
+
 const data=[{
     id:1,
     index:1,
-    materialTypeName:'1#犁刀混',
-    ownProcess:'在线原料',
-    dataType:'PLC读取',
-    productline:'F#生产线，G#生产线'
+    processName:'二烧',
 },{
     id:2,
     index:2,
-    materialTypeName:'1#犁刀混',
-    ownProcess:'在线原料',
-    dataType:'PLC读取',
-    productline:'F#生产线，G#生产线'
+    processName:'在线原料',
+    
 }]
-class MaterialTypePositive extends Component{
+class ProcessPositiveCost extends Component{
     constructor(props){
         super(props);
         this.state={
@@ -31,39 +27,21 @@ class MaterialTypePositive extends Component{
             width:'10%',
             align:'center'
         },{
-            title:'物料种类名称',
-            dataIndex:'materialTypeName',
-            key:'materialTypeName',
-            width:'15%',
-            align:'center'
-        },{
-            title:'所属工序',
-            dataIndex:'ownProcess',
-            key:'ownProcess',
-            width:'15%',
-            align:'center'
-        },{
-            title:'数据类型',
-            dataIndex:'dataType',
-            key:'dataType',
-            width:'15%',
-            align:'center'
-        },{
-            title:'产线',
-            dataIndex:'productline',
-            key:'productline',
-            width:'15%',
+            title:'工序名称',
+            dataIndex:'processName',
+            key:'cycleName',
+            width:'18%',
             align:'center'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
-            width:'15%',
+            width:'18%',
             align:'center',
             render:(text,record)=>{
                 return(
                     <span>
-                        <MaterialTypeAdd editflag={true} record={record}/>
+                        <ProcessAdd editflag={true} record={record}/>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除?' okText='确定' cancelText='取消'>
                             <span className='blue'>删除</span>
@@ -71,6 +49,7 @@ class MaterialTypePositive extends Component{
                     </span>
                 );
             }
+
         }]
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
     }
@@ -82,9 +61,9 @@ class MaterialTypePositive extends Component{
         const current=JSON.parse(localStorage.getItem('current'));
         return(
             <div>
-                <Blockquote menu={current.menuParent} name='物料种类' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <Blockquote menu={current.menuParent} name='工序' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <MaterialTypeAdd/>
+                    <ProcessAdd/>
                     <Table
                     rowKey={record=>record.id}
                     dataSource={this.state.dataSource}
@@ -96,4 +75,4 @@ class MaterialTypePositive extends Component{
         );
     }
 }
-export default MaterialTypePositive;
+export default ProcessPositiveCost;

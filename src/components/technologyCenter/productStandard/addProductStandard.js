@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import HeadTable from './headTable';

@@ -1,14 +1,15 @@
 import React,{Component} from 'react'
-import NewButton from '../../BlockQuote/newButton'
-import CancleButton from '../../BlockQuote/cancleButton'
+import NewButton from '../../../BlockQuote/newButton'
+import CancleButton from '../../../BlockQuote/cancleButton'
 import {Modal,Row,Col,Input} from 'antd'
 import AddModal from './addModal'
-class ProductLineAdd extends Component{
+class ProcessAdd extends Component{
     constructor(props){
         super(props);
         this.state={
             visible:false,
-            productLineName:''
+            processName:'',
+            count:0
         }
         this.showModal=this.showModal.bind(this);
         this.handleOk=this.handleOk.bind(this);
@@ -28,7 +29,8 @@ class ProductLineAdd extends Component{
         this.setState({
             visible:false
         })
-        let {productLineName}=this.state;
+        let {processName}=this.state;
+      
         this.handleCancel()
     }
     handleCancel(){
@@ -40,12 +42,12 @@ class ProductLineAdd extends Component{
     init(){
         if(this.props.editflag){
             this.setState({
-                productLineName:this.props.record.productLineName
+                processName:this.props.record.processName
             })
         }
         else{
             this.setState({
-                productLineName:''
+                processName:''
             })
         }
     }
@@ -56,13 +58,13 @@ class ProductLineAdd extends Component{
         })
     }
     render(){
-        let {productLineName}=this.state;
+        let {processName}=this.state;
         return(
             <span>
                 {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
-                :<NewButton name='新增生产线' className='fa fa-plus' handleClick={this.showModal}/>}
+                :<NewButton name='新增工序' className='fa fa-plus' handleClick={this.showModal}/>}
                 <Modal
-                    title={this.props.editflag?'编辑生产线':'新增生产线'}
+                    title={this.props.editflag?'编辑工序':'新增工序'}
                     visible={this.state.visible}
                     closable={false}
                     maskClosable={false}
@@ -74,8 +76,8 @@ class ProductLineAdd extends Component{
                 >
                  <div>
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
-                        <Col className='imgRequire'>生产线名称</Col>
-                        <Col span={18}><Input name='productLineName' placeholder='请输入生产线名称' value={productLineName} onChange={this.inputChange}/></Col>
+                        <Col className='imgRequire'>工序名称</Col>
+                        <Col span={18}><Input name='processName' placeholder='请输入工序名称' value={processName} onChange={this.inputChange}/></Col>
                     </Row>
                   </div>
                 </Modal>
@@ -83,4 +85,4 @@ class ProductLineAdd extends Component{
         );
     }
 }
-export default ProductLineAdd
+export default ProcessAdd

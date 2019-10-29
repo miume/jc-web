@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
-import Blockquote from '../BlockQuote/blockquote';
-import '../qualityProcess/dataEntry/data.css';
-import DataPart from '../qualityProcess/dataEntry/dataPart';
+import Blockquote from '../../BlockQuote/blockquote';
+import '../../qualityProcess/dataEntry/data.css';
+import DataPart from '../../qualityProcess/dataEntry/dataPart';
 const data=[{
     id:1,
     name:'统计周期',

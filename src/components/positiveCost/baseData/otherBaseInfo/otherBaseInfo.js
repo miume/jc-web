@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-import Blockquote from '../../BlockQuote/blockquote'
-
+import Blockquote from '../../../BlockQuote/blockquote'
+import ShowInfo from './showInfo'
 class OtherBaseInfo extends Component{
     constructor(props){
         super(props);
@@ -46,6 +46,7 @@ class OtherBaseInfo extends Component{
         return(
             <div>
                 <Blockquote menu={current.menuParent} name='其他基本信息' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
+                <ShowInfo/>
             </div>
         );
     }
