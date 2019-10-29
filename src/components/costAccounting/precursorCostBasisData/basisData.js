@@ -5,7 +5,7 @@ import Blockquote from '../../BlockQuote/blockquote';
 
 const icon = [
     'fa fa-tasks fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
-    ,'fa fa-flask fa-5x'
+    ,'fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x','fa fa-flask fa-5x'
 ]
 
 class BaseData extends React.Component{
@@ -60,8 +60,8 @@ class BaseData extends React.Component{
                         ):null
 
                     }
+                    </div>
                 </div>
-           </div>
            </div>
         );
     }

@@ -47,7 +47,7 @@ class Edit extends React.Component{
                 })
             }
         }).catch((err)=>{
-            console.log(err)
+            message.error(err)
         })
     };
     //点击取消后的回调
@@ -157,11 +157,12 @@ class Edit extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
+                
                     <table className="batchTable">
                         <thead className="bactchHead">
                             <tr>
                                 {/* <th>序号</th> */}
-                                <th>批次代码</th>
+                                <th>规则代码</th>
                                 <th>说明</th>
                                 <th>是否默认</th>
                                 <th>操作</th>
