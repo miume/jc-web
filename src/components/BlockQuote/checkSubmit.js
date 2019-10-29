@@ -13,7 +13,7 @@ class Submit extends React.Component{
             process:-1,      //用来监控下拉框送审流程的变化
             visible:false,   //用来控制送审界面显示与否
             allProcess : [], //用来存取所有送审流程
-        }
+        };
         this.handleOk = this.handleOk.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.selectChange = this.selectChange.bind(this);
@@ -67,7 +67,7 @@ class Submit extends React.Component{
     /**渲染气泡卡片 Popover */
     render(){
         const Content = (
-            <div style={{width:'300px',height:'130px'}}> 
+            <div style={{width:'300px',height:'130px'}}>
                 <div>
                     <Select placeholder='请选择审核流程' style={{width:'240px',height:'40px'}} onChange={this.selectChange}>
                     {

@@ -57,14 +57,14 @@ class OtherStockOut extends React.Component{
            },
           }).then((data) => {
             const res = data.data.data;
-            if(res&&res.list){
-                for(var i = 1; i<=res.list.length; i++){
-                    var li = res.list[i-1];
-                    li['index'] = res.prePage*10+i
+            if(res){
+                for(var i = 1; i<=res.length; i++){
+                    var li = res[i-1];
+                    li['index'] = i;
                 }
-                res.list['total'] = res.total;
+                res['total'] = res.total;
                 this.setState({
-                    applyDataSource: res.list,
+                    applyDataSource: res,
                     loading: false
                 });
             }
@@ -100,7 +100,6 @@ class OtherStockOut extends React.Component{
                     })
                     if(status===2||status===3) selectedRowKeys.push(id);
                 }
-                res.list['total'] = res.total;
             }
             this.setState({
                 recordDataSource: out,

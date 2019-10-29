@@ -70,7 +70,7 @@ class CheckSpan extends React.Component {
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '20%',
+            width: '10%',
         },{
             title: '检测项目',
             dataIndex: 'testItemName',
@@ -109,10 +109,10 @@ class CheckSpan extends React.Component {
             title: '状态',
             dataIndex: 'isAudit',
             key: 'isAudit',
-            width: '20%',
+            width: '30%',
             render: (text) => {
                 if(text === 0) {
-                    return '未通过';
+                    return '最近审核未通过';
                 } else if(text === 1) {
                     return '通过'
                 } else {
