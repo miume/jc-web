@@ -18,7 +18,8 @@ class Login extends React.Component {
   }
   componentWillMount() {
     //http://192.168.1.105:8080 内网  下面是外网 2p277534k9.iok.la:58718
-    localStorage.setItem("server", "http://192.168.190.161:8080");//模块二的server2服务器
+    //localStorage.setItem("server", "http://192.168.190.161:8080");//模块二的server2服务器
+    localStorage.setItem("server", "http://47.107.237.60:3389");
   }
   /**实行记住密码 */
   remindLogin(e){
