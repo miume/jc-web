@@ -106,6 +106,10 @@ import OtherBaseInfo from '../positiveCost/baseData/otherBaseInfo/otherBaseInfo'
 import MaterialTypePLCMeterCom from '../positiveCost/baseData/materialTypePLCMeterCompare/materialTypePLCMeterCom'
 import ProcessStatistics from '../costAccounting/processStatistics/processStatistic'
 import CostAccount from '../costAccounting/costAccount/costAccount'
+import PositiveCostAccount from '../positiveCost/costAccout/costAccount'
+import PositiveProcessStatistics from '../positiveCost/positiveProcessStatistics/positiveProcessStatistics'
+import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
+import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -535,6 +539,18 @@ class Right extends React.Component {
         },{
             path:'/productAccounting',
             component:CostAccount
+        },{
+            path:'/positiveProductAccount',
+            component:PositiveCostAccount
+        },{
+            path:'/positiveProcess',
+            component:PositiveProcessStatistics
+        },{
+            path:'/costProcessAdd',
+            component:CostProcessAdd
+        },{
+            path:'/processStatisticalAnalysis',
+            component:ProcessStatisticalAnalysis
         }];
         return (
             <div className="rightDiv">
