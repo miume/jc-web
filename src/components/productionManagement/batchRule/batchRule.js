@@ -1,7 +1,7 @@
 import React from "react";
 import Blockquote from "../../BlockQuote/blockquote";
 import axios from "axios";
-import { Table,Switch,Icon } from 'antd';
+import { Table,Switch,Icon,Spin } from 'antd';
 import Edit from "./edit";
 
 class BatchRule extends React.Component{
@@ -19,7 +19,8 @@ class BatchRule extends React.Component{
             materialType:"",
             process:"",
             slot:"",
-            slotNumber:""
+            slotNumber:"",
+            loading:true,
         }
         this.columns=[{
             title: '序号',
@@ -117,7 +118,8 @@ class BatchRule extends React.Component{
                 materialType:res[6].defaultValue,
                 process:res[7].defaultValue,
                 slot:res[8].defaultValue,
-                slotNumber:res[9].defaultValue
+                slotNumber:res[9].defaultValue,
+                loading:false
             })
         })
     }
@@ -128,14 +130,14 @@ class BatchRule extends React.Component{
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="批次规则" />
-                <div className="batchTableRule" style={{padding: '15px'}}>
+                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <strong>代码示例：</strong><strong>{this.state.year}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.productType}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.month}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.serialNum}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.productModel}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.productLine}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.materialType}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.process}</strong>&nbsp;&nbsp;&nbsp;
                     <strong>{this.state.slot}&nbsp;&nbsp;&nbsp;</strong><strong style={{color:"red"}}>{this.state.slotNumber}</strong>
                     <Table pagination={{hideOnSinglePage:true}} columns={this.columns} dataSource={this.state.dataSource} scroll={{ y: 400 }} rowKey={record => record.code} size="small" bordered/>
-                </div>
+                </Spin>
             </div>
         )
     }

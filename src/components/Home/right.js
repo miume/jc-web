@@ -81,6 +81,11 @@ import XinsongVGA from "../costAccounting/precursorCostBasisData/xinsongVGA/xins
 import ProductLineStatical from "../costAccounting/precursorCostBasisData/productLineStatical/productLineStatical"
 import ProductLineVGA from "../costAccounting/precursorCostBasisData/productLineVGA/productLineVGA"
 import ProcessName from "../costAccounting/precursorCostBasisData/processName/processName"
+import ProductLineTank from "../costAccounting/precursorCostBasisData/productLineTank/productLineTank"
+import RawMaterialName from "../costAccounting/precursorCostBasisData/rawMaterialName/rawMaterialName"
+import RawMaterialWeight from "../costAccounting/precursorCostBasisData/rawMaterialWeight/rawMaterialWeight"
+import TankValue from "../costAccounting/precursorCostBasisData/tankValue/tankValue"
+import MaterialType from "../costAccounting/precursorCostBasisData/materialType/materialType"
 
 import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
 import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/statisticalPeriodCost' 
@@ -513,6 +518,21 @@ class Right extends React.Component {
             path: '/processParameters',
             component: ProcessParameters
 
+        },{
+            path:'/productLineTank',
+            component:ProductLineTank
+        },{
+            path:'/rawMaterialName',
+            component:RawMaterialName
+        },{
+            path:'/materialType',
+            component:MaterialType
+        },{
+            path:'/rawMaterialWeight',
+            component:RawMaterialWeight
+        },{
+            path:'/tankValue',
+            component:TankValue
         },{
             path:'/processStatistics',
             component:ProcessStatistics
