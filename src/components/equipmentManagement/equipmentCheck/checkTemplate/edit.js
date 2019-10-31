@@ -12,6 +12,7 @@ const timeFormat = "YYYY-MM-DD"
 
 class Edit extends React.Component{
     url
+    server
     constructor(props){
         super(props);
         this.state = {
@@ -96,7 +97,10 @@ class Edit extends React.Component{
                     var fileList = `fileList${i}`
                     let data = [{response:{}}]
                     data[0].uid = content[i].spotcheckAddress
-                    data[0].url = `http://47.107.237.60:3389/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
+                    // data[0].url = `http://47.107.237.60:3389/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
+                    data[0].url = `${this.server}/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
+                    // var newUrl = `${this.server}/jc/common/spotCheck/model/${content[i].spotcheckAddress}`
+                    // console.log(data[0].url,newUrl)
                     data[0].name = content[i].spotcheckAddress
                     data[0].response.data = content[i].spotcheckAddress
                     this.setState({
@@ -224,6 +228,7 @@ class Edit extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.ob = JSON.parse(localStorage.getItem('menuList'));
+        this.server = localStorage.getItem('server');
         const formItemLayoutWithOutLabel = {
             wrapperCol: {
                 xs: { span: 24, offset: 0 },
