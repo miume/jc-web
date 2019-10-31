@@ -4,6 +4,7 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
 import SaveButton from "../../../BlockQuote/saveButton";
 import AddLocationDetails from "./addLocationDetail";
+import NewButton from "../../../BlockQuote/newButton";
 const {Option} = Select;
 
 class EditorModal extends React.Component {
@@ -29,6 +30,8 @@ class EditorModal extends React.Component {
         this.addLocationItem = this.addLocationItem.bind(this);
         this.handleDeleteLocation = this.handleDeleteLocation.bind(this);
         this.renderLocationMove = this.renderLocationMove.bind(this);
+        this.handleAdd = this.handleAdd.bind(this);
+        this.renderTitle = this.renderTitle.bind(this);
         this.column1 = [{
             title:'序号',
             dataIndex:'index',
@@ -97,10 +100,11 @@ class EditorModal extends React.Component {
     }
 
     render() {
-        const {deptCode,workshop,patrolName,setPeople,tabulatedate} = this.props.record;
+        const {title,record} = this.props,
+              {deptCode,workshop,patrolName,setPeople,tabulatedate} = record ? record : {};
         return (
             <span>
-                <span className='blue' onClick={this.handleClick}>编辑</span>
+                {this.renderTitle(title)}
                 <Modal visible={this.state.visible} width={1000} centered={true} closable={false}
                        title={'详情'} maskClosable={false}
                        footer={[
@@ -156,7 +160,7 @@ class EditorModal extends React.Component {
                         </div>
                         <Table
                             columns={this.column2}
-                            rowKey={record => record.code}
+                            rowKey={record => record.index}
                             size="small"
                             dataSource={this.state.devicePatrolModelsLocationDetails}
                             bordered
@@ -168,6 +172,24 @@ class EditorModal extends React.Component {
                 </Modal>
             </span>
         )
+    }
+
+    /**根据父组件传过来的title*渲染新增按钮和编辑文本*/
+    renderTitle(title) {
+        if(title === '新增') {
+            return <NewButton handleClick={this.handleAdd} name='新增' className='fa fa-plus'/>
+        } else {
+            return <span className='blue' onClick={this.handleClick}>编辑</span>;
+        }
+    }
+
+    /**点击新增*/
+    handleAdd() {
+        let {checkType} = this.props.record;
+        this.setState({
+            visible: true,
+            checkType: checkType
+        })
     }
 
     /**点击详情*/
@@ -186,6 +208,7 @@ class EditorModal extends React.Component {
         })
     }
 
+    /**编辑，根据code获取详情数据*/
     getDetailData(code) {
         axios({
             url: `${this.props.url.devicePatrolModel.detail}`,
@@ -234,6 +257,7 @@ class EditorModal extends React.Component {
 
     }
 
+    /**编辑和新增数据*/
     handleSave() {
         let {record} = this.props,
             {devicePatrolModelsItemDetailsList,devicePatrolModelsLocationDetails,patrolName,checkType} = this.state,
@@ -242,21 +266,32 @@ class EditorModal extends React.Component {
                 patrolName: patrolName ? patrolName : record.patrolName,
                 code:record.code,
                 checkType:checkType,
-                tabulatedate: record.tabulatedate
+                tabulatedate: record.tabulatedate,
+                setPeople: record.setPeopleId
             };
+        if(!devicePatrolModelsHead.patrolName) {
+            message.info('请填写巡检模块名称！');
+            return
+        }
         let data = {
             devicePatrolModelsHead: devicePatrolModelsHead,
             devicePatrolModelsItemDetailsList: devicePatrolModelsItemDetailsList,
             devicePatrolModelsLocationDetails: devicePatrolModelsLocationDetails,
             setPeople: record.setPeople
-        }
+        };
         this.saveData(data);
     }
 
+    /**新增数据和更新数据*/
     saveData(data) {
+        let url = `${this.props.url.devicePatrolModel.update}`, method = 'put';
+        if(this.props.title) {
+            url = `${this.props.url.devicePatrolModel.add}`;
+            method = 'post';
+        }
         axios({
-            url: `${this.props.url.devicePatrolModel.update}`,
-            method: 'put',
+            url: url,
+            method: method,
             headers: {
                 'Authorization': this.props.url.Authorization
             },
@@ -264,6 +299,7 @@ class EditorModal extends React.Component {
             type: 'json'
         }).then((data) => {
             message.info(data.data.message);
+            this.props.searchEvent();
             this.cancel();
         })
     }

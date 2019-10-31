@@ -94,7 +94,7 @@ class EqUserDepAllocation extends React.Component {
                 loading: false
             })
         } else {
-            const depId = params && params.secondDeptId ? parseInt(params.secondDeptId) : -1
+            const depId = params && params.deptId ? parseInt(params.deptId) : -1
             axios({
                 url: `${this.url.appUserAuth.getUser}`,
                 method: 'get',

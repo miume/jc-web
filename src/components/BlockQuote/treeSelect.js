@@ -57,7 +57,7 @@ class TreeCard extends React.Component{
                 style={{width: "100%",height: '100%',display: 'inline-block'}}
                 className='departmentCard'
                 headStyle={{height:'10%'}}
-                bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
+                bodyStyle={{height:'65vh',padding: '6px 12px 0 12px',overflow:'auto'}}
                 title={`${this.props.treeName}(请选择)`}>
                 <div>
                     <Tree

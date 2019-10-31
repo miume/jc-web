@@ -32,7 +32,8 @@ export const column1=[{
     key:"code",
     width:"6%",
     render:(text,record)=>{
-        return(<InspectionDetailModal
+        return(
+            <InspectionDetailModal
             status={1}
             record={record}
         />)
@@ -186,8 +187,7 @@ export const acolums=[{
     key:'completedTime',
     align:'center',
     width:180
-}
-]
+}]
 export const willacolums=acolums.slice(0,6);
 export const doingacolums=acolums.slice(0,8);
 export const bcolums=[{
@@ -196,19 +196,19 @@ export const bcolums=[{
     dataIndex:'index',
     sorter: (a, b) => a.index - b.index,
     align:'center',
-    width:"5%",
+    width:"10%",
 },{
     title:'巡检内容',
     dataIndex:'InspectionContent',
     key:'InspectionContent',
     align:'center',
-    width:"50%"
+    width:"20%"
 },{
     title:'巡检项目',
     dataIndex:'InspectionItem',
     key:'InspectionItem',
     align:'center',
-    width:"45%"
+    width:"20%"
 },{
     title:'巡检结果',
     dataIndex:'inspectionResult',
@@ -220,32 +220,72 @@ export const bcolums=[{
     dataIndex:'reason',
     key:'reason',
     align:'center',
-    width:"25%"
+    width:"30%"
 }
 ]
-export const willbcolums=bcolums.slice(0,3);
-export const doingbcolums=bcolums.slice(0,2);
-export const ccolumns= [
-    {
+export const willbcolums = [{
+    title:'序号',
+    key:'index',
+    dataIndex:'index',
+    sorter: (a, b) => a.index - b.index,
+    align:'center',
+    width:"20%",
+},{
+    title:'巡检内容',
+    dataIndex:'InspectionContent',
+    key:'InspectionContent',
+    align:'center',
+    width:"40%"
+},{
+    title:'巡检项目',
+    dataIndex:'InspectionItem',
+    key:'InspectionItem',
+    align:'center',
+    width:"40%"
+}];
+export const doingbcolums= [{
+    title:'序号',
+    key:'index',
+    dataIndex:'index',
+    sorter: (a, b) => a.index - b.index,
+    align:'center',
+    width:"30%",
+},{
+    title:'巡检内容',
+    dataIndex:'InspectionContent',
+    key:'InspectionContent',
+    align:'center',
+    width:"70%"
+}];
+export const ccolumns= [{
         title: '序号',
         dataIndex: 'index',
         key: 'index',
         align:'center',
-        width:"5%",
-        height:0.5,
-    },
-    {
+        width:"20%",
+    }, {
         title: '巡检位置',
         dataIndex: 'inspectionLocation',
         key: 'inspectionLocation',
         align:'center',
-        width:"50%",
-    },
-    {
+        width:"40%",
+    }, {
         title: '打卡时间',
         align:'center',
         key: 'visitedTime',
         dataIndex: 'visitedTime',
-        width:"25%"
-    }]
-export const willccolumus=ccolumns.slice(0,2)
+        width:"40%"
+    }];
+export const willccolumus= [{
+    title: '序号',
+    dataIndex: 'index',
+    key: 'index',
+    align:'center',
+    width:"40%",
+}, {
+    title: '巡检位置',
+    dataIndex: 'inspectionLocation',
+    key: 'inspectionLocation',
+    align:'center',
+    width:"60%",
+}];

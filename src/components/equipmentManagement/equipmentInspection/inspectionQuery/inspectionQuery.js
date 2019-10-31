@@ -59,100 +59,97 @@ class InspectionQuery extends React.Component{
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="巡检查询"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div style={{padding: '15px',width:"100%"}}>
                     <Tabs onChange={this.returnEquKey} >
                         <Tabs.TabPane key={1} tab={(<b>待巡检</b>)}>
-                            <div className="inspectionQueryTree" >
-                                <TreeCard
-                                    style={{height:"150px"}}
-                                    treeName="所属部门"
-                                    treeData={this.state.TreeData}
-                                    getTreeData={this.getTreeData}
-                                    getTableData={this.getTableData}
-                                    getParams={this.getParams}
-                                />
-
-                            </div>
-                            <SearchPart
-                                handleSearch={this.handleSearch}
-
-                                getTableData={this.getTableData}
-                            />
-
-                            <div className="inspectionQueryTable">
-                                <Spin spinning={this.state.loading}>
-                                <Table
-                                    bordered
-                                    size={"small"}
-                                    columns={column1}
-                                    dataSource={this.state.RightTableData}
-                                    pagination={this.pagination}
-                                    onChange={this.handleSizeChange}
-                                /></Spin>
+                            <div className="equipment">
+                                <div className="equipment-left">
+                                    <TreeCard
+                                        treeName="所属部门"
+                                        treeData={this.state.TreeData}
+                                        getTreeData={this.getTreeData}
+                                        getTableData={this.getTableData}
+                                        getParams={this.getParams}
+                                    />
+                                </div>
+                                <Spin spinning={this.state.loading} wrapperClassName={'equipment-right'}>
+                                    <SearchPart
+                                        handleSearch={this.handleSearch}
+                                        getTableData={this.getTableData}
+                                    />
+                                    <Table
+                                        bordered
+                                        size={"small"}
+                                        columns={column1}
+                                        dataSource={this.state.RightTableData}
+                                        pagination={this.pagination}
+                                        onChange={this.handleSizeChange}
+                                        rowKey={record => record.key}
+                                    />
+                                </Spin>
                             </div>
 
                         </Tabs.TabPane>
                         <Tabs.TabPane key={2} tab={(<b>已接单</b>)}>
-                            <div className="inspectionQueryTree" >
-                                <TreeCard
-                                    treeName="所属部门"
-                                    treeData={this.state.TreeData}
-                                    getTreeData={this.getTreeData}
-                                    getTableData={this.getTableData}
-                                    getParams={this.getParams}
-                                />
-
-                            </div>
-                            <SearchPart
-                                handleSearch={this.handleSearch}
-                                getTableData={this.getTableData}/>
-                            <div className="inspectionQueryTable">
-                                <Spin spinning={this.state.loading}>
-                                <Table
-                                    bordered
-                                    size={"small"}
-                                    columns={column2}
-                                    dataSource={this.state.RightTableData}
-                                    pagination={this.pagination}
-                                    onChange={this.handleSizeChange}
-                                /></Spin>
+                            <div className="equipment">
+                                <div className="equipment-left">
+                                    <TreeCard
+                                        treeName="所属部门"
+                                        treeData={this.state.TreeData}
+                                        getTreeData={this.getTreeData}
+                                        getTableData={this.getTableData}
+                                        getParams={this.getParams}
+                                    />
+                                </div>
+                                <Spin spinning={this.state.loading} wrapperClassName={'equipment-right'}>
+                                    <SearchPart
+                                        handleSearch={this.handleSearch}
+                                        getTableData={this.getTableData}/>
+                                    <Table
+                                        bordered
+                                        size={"small"}
+                                        columns={column2}
+                                        dataSource={this.state.RightTableData}
+                                        pagination={this.pagination}
+                                        onChange={this.handleSizeChange}
+                                        rowKey={record => record.key}
+                                    />
+                                </Spin>
                             </div>
                         </Tabs.TabPane>
                         <Tabs.TabPane key={3} tab={(<b>已完成</b>)}>
-                            <div className="inspectionQueryTree">
-                                <TreeCard
-                                    treeName="所属部门"
-                                    treeData={this.state.TreeData}
-                                    getTreeData={this.getTreeData}
-                                    getTableData={this.getTableData}
-                                    getParams={this.getParams}
-                                />
-
-                            </div>
-                            <SearchPart
-                                handleSearch={this.handleSearch}
-                                getTableData={this.getTableData}
-                            />
-                            <div className="inspectionQueryTable">
-                                <Spin spinning={this.state.loading}>
-                                <Table
-                                    bordered
-                                    size={"small"}
-                                    columns={column3}
-                                    dataSource={this.state.RightTableData}
-                                    pagination={this.pagination}
-                                    onChange={this.handleSizeChange}
-                                /></Spin>
+                            <div className="equipment">
+                                <div className="equipment-left">
+                                    <TreeCard
+                                        treeName="所属部门"
+                                        treeData={this.state.TreeData}
+                                        getTreeData={this.getTreeData}
+                                        getTableData={this.getTableData}
+                                        getParams={this.getParams}
+                                    />
+                                </div>
+                                <Spin spinning={this.state.loading} wrapperClassName={'equipment-right'}>
+                                    <SearchPart
+                                        handleSearch={this.handleSearch}
+                                        getTableData={this.getTableData}
+                                    />
+                                    <Table
+                                        bordered
+                                        size={"small"}
+                                        columns={column3}
+                                        dataSource={this.state.RightTableData}
+                                        pagination={this.pagination}
+                                        onChange={this.handleSizeChange}
+                                        rowKey={record => record.key}
+                                    />
+                                </Spin>
                             </div>
                         </Tabs.TabPane>
                     </Tabs>
-                </div>
             </div>
         )
     }
     returnEquKey = key => {
         if(key==='1'||key==='2'||key==='3'){
-            //console.log(key);
             this.setState({
                 doingStatus:key,
                 loading:true,
@@ -163,7 +160,6 @@ class InspectionQuery extends React.Component{
 
     };
     getTreeData=()=>{
-        ////console.log('----------------------------------------')
         // TODO: 调接口，获取数据
         axios({
             url: `${this.url.equipmentDept.dept}`,
@@ -238,7 +234,6 @@ class InspectionQuery extends React.Component{
             params:params,
         }).then((data)=>{
             if(data.status===200){
-                //console.log(data.status);
                 if(data.data.code===0){
                     var result=data.data.data ? data.data.data.list : [];
                     if(result){
@@ -281,12 +276,12 @@ class InspectionQuery extends React.Component{
                 }
             }
             else{
-                // console.log(data)
                 message.info("网络错误，请重试");
                 this.setState({loading:false})
             }
         })
     };
+
     getParams=(selectedKey,e)=>{
         this.setState({
             deptId:selectedKey[0],

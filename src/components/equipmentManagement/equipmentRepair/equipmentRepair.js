@@ -19,8 +19,7 @@ class equipmentRepair extends React.Component{
             secondDeptId4:'',
             deptName:'',
             rightTableData:[],
-            loading: true,
-            total: 0
+            loading: true
         };
         this.getData = this.getData.bind(this);
     };
@@ -39,7 +38,6 @@ class equipmentRepair extends React.Component{
                             loading = {this.state.loading}
                             rightTableData={this.state.rightTableData}
                             secondDeptId={this.state.secondDeptId}
-                            total = {this.state.total}
                         />
                     </Tabs.TabPane>
 
@@ -50,7 +48,6 @@ class equipmentRepair extends React.Component{
                             loading = {this.state.loading}
                             rightTableData={this.state.rightTableData}
                             secondDeptId={this.state.secondDeptId2}
-                            total = {this.state.total}
                         />
                     </Tabs.TabPane>
 
@@ -61,7 +58,6 @@ class equipmentRepair extends React.Component{
                             loading = {this.state.loading}
                             rightTableData={this.state.rightTableData}
                             secondDeptId={this.state.secondDeptId3}
-                            total = {this.state.total}
                         />
                     </Tabs.TabPane>
 
@@ -72,7 +68,6 @@ class equipmentRepair extends React.Component{
                              loading = {this.state.loading}
                              rightTableData={this.state.rightTableData}
                              secondDeptId={this.state.secondDeptId4}
-                             total = {this.state.total}
                          />
                     </Tabs.TabPane>
                 </Tabs>
@@ -147,7 +142,8 @@ class equipmentRepair extends React.Component{
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
             if (res && res.list) {
-                var rightTableData = [], total = res.total;
+                var rightTableData = [];
+                rightTableData['total'] = res.total
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i];
                     var emergeStatus='';
@@ -183,8 +179,7 @@ class equipmentRepair extends React.Component{
                 }
                 this.setState({
                     rightTableData: rightTableData,
-                    loading: false,
-                    total: total
+                    loading: false
                 });
             } else {
                 this.setState({

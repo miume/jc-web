@@ -25,7 +25,6 @@ class InspectionDetailModal extends React.Component{
         const params={
             id:this.props.record.key,
         };
-        //console.log(params);
         axios({
             url:this.url.devicePatrolQuery.PatrolQueryDetail,
             method:"get",
@@ -34,7 +33,6 @@ class InspectionDetailModal extends React.Component{
             },
             params:params,
         }).then((data)=>{
-            //console.log(data);
             var data1=[];
             var data2=[];
             var data3=[];
@@ -91,7 +89,6 @@ class InspectionDetailModal extends React.Component{
                     devicePatrolPlanRecordLocationDetailsList:data3,
                     footer:footer1,
                 });
-                message.info(data.data.message);
                 this.setState({
                     visible:true,
                 })
@@ -126,6 +123,7 @@ class InspectionDetailModal extends React.Component{
                             bordered
                             dataSource={this.state.devicePatrolPlanRecordHead}
                             pagination={false}
+                            rowKey={record => record.key}
                         />
                         <WhiteSpace />
                         <b>巡检项目</b>
@@ -136,7 +134,7 @@ class InspectionDetailModal extends React.Component{
                             dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                             bordered
                             pagination={false}
-                            rowKey={record => record.code}
+                            rowKey={record => record.key}
                         /><div className="footerofdetail">{this.state.footer}</div>
 
                         <WhiteSpace />
@@ -147,7 +145,7 @@ class InspectionDetailModal extends React.Component{
                                    columns={willccolumus}
                                    bordered
                                    pagination={false}
-                                   rowKey={record => record.code}
+                                   rowKey={record => record.key}
                                    dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                             />
                         </div>
@@ -175,7 +173,7 @@ class InspectionDetailModal extends React.Component{
                             columns={doingacolums}
                             dataSource={this.state.devicePatrolPlanRecordHead}
                             bordered
-                            rowKey={record => record.code}
+                            rowKey={record => record.key}
                             pagination={false}
                             style={{marginBottom:"35"}}
                         />
@@ -188,7 +186,7 @@ class InspectionDetailModal extends React.Component{
                                 size="small"
                                 columns={doingbcolums}
                                 bordered
-                                rowKey={record => record.code}
+                                rowKey={record => record.key}
                                 dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                                 pagination={false}
                                 scroll={{ y: 150 }}
@@ -201,7 +199,7 @@ class InspectionDetailModal extends React.Component{
                                    size="small"
                                    columns={willccolumus}
                                    bordered
-                                   rowKey={record => record.code}
+                                   rowKey={record => record.key}
                                    dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                                    pagination={false}
                                    scroll={{ y: 50 }}
@@ -231,7 +229,7 @@ class InspectionDetailModal extends React.Component{
                             size="small"
                             columns={acolums}
                             bordered
-                            rowKey={record => record.code}
+                            rowKey={record => record.key}
                             dataSource={this.state.devicePatrolPlanRecordHead}
                             pagination={false}
                             style={{marginBottom:"35"}}
@@ -245,7 +243,7 @@ class InspectionDetailModal extends React.Component{
                                 size="small"
                                 columns={bcolums}
                                 bordered
-                                rowKey={record => record.code}
+                                rowKey={record => record.key}
                                 pagination={false}
                                 dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                                 scroll={{ y: 150 }}
@@ -258,7 +256,7 @@ class InspectionDetailModal extends React.Component{
                                    size="small"
                                    columns={ccolumns}
                                    bordered
-                                   rowKey={record => record.code}
+                                   rowKey={record => record.key}
                                    dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                                    pagination={false}
                                    scroll={{ y: 50 }}
