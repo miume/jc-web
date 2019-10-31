@@ -110,6 +110,8 @@ import PositiveCostAccount from '../positiveCost/costAccout/costAccount'
 import PositiveProcessStatistics from '../positiveCost/positiveProcessStatistics/positiveProcessStatistics'
 import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
 import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
+
+import ProductStorage from "../costAccounting/productStorage/productStorage"
 class Right extends React.Component {
     render() {
         const data = [{
@@ -551,6 +553,9 @@ class Right extends React.Component {
         },{
             path:'/processStatisticalAnalysis',
             component:ProcessStatisticalAnalysis
+        },{
+            path:"/productStorage",
+            component:ProductStorage
         }];
         return (
             <div className="rightDiv">

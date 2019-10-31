@@ -7,6 +7,7 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 
 class Detail extends React.Component{
     url
+    server
     constructor(props){
         super(props)
         this.state = {
@@ -72,6 +73,7 @@ class Detail extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
+        this.server = localStorage.getItem('server');
         // const {deviceSpotcheckModelsDetails,deviceSpotcheckModelsHead,peopleName} = this.state.data;
         return(
             <span>
@@ -104,7 +106,7 @@ class Detail extends React.Component{
                                 <span className="DetailName">{e.spotcheckContent}</span>
                                 <span className="DetailName" title={e.spotcheckItems}>{e.spotcheckItems}</span>
                                 <span className="DetailName">{e.spotcheckPeriod}</span>
-                                <img style={{cursor:"pointer"}} onClick={this.previewPreview.bind(this,`http://47.107.237.60:3389/jc/common/spotCheck/model/${e.spotcheckAddress}`)} alt="图片未上传" className="Eqpicture" src={`http://47.107.237.60:3389/jc/common/spotCheck/model/${e.spotcheckAddress}`}/>
+                                <img style={{cursor:"pointer"}} onClick={this.previewPreview.bind(this,`${this.server}/jc/common/spotCheck/model/${e.spotcheckAddress}`)} alt="图片未上传" className="Eqpicture" src={`${this.server}/jc/common/spotCheck/model/${e.spotcheckAddress}`}/>
                                 <Modal visible={this.state.previewVisible} footer={null} onCancel={this.previewCancel}>
                                     <img alt="图片未显示" style={{width:"100%"}} src={this.state.previewImage}/>
                                 </Modal>
