@@ -1,22 +1,20 @@
 import React from 'react';
-import {Button, Modal, Select, Form, Input, message, Icon, Col, Row, Upload, Radio, Divider, DatePicker} from 'antd';
+import {Modal, Select, Input, message, DatePicker, Table} from 'antd';
 import axios from 'axios';
 import AddButton from '../../../../BlockQuote/newButton';
 import CancleButton from "../../../../BlockQuote/cancleButton";
 import SaveButton from "../../../../BlockQuote/saveButton";
-import "../plan.css";
 import moment from "moment";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 class AddModal extends React.Component {
     url;
-
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
             radioValue: undefined,
-            date: undefined,
+            date: null,
             devicePatrolModelsItemDetailsList: [],
             devicePatrolModelsLocationDetails: [],
             templateName: "",
@@ -24,22 +22,48 @@ class AddModal extends React.Component {
             templateData: [],
             checkType: "",
             devicePatrolModelsHead: {}
-        }
+        };
         this.onChange = this.onChange.bind(this);
+        this.getTitle = this.getTitle.bind(this);
+        this.getTitle1 = this.getTitle1.bind(this);
+        this.column1 = [{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b) =>a.id-b.id,
+            width:'20%',
+        },{
+            title:'巡检项目',
+            dataIndex:'patrolItem',
+            key:'patrolItem',
+            width:'40%'
+        },{
+            title:'巡检内容',
+            dataIndex:'patrolContent',
+            key:'patrolContent',
+            width:'40%'
+        }];
+
+        this.column2 = [{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b) =>a.id-b.id,
+            width:'20%',
+        },{
+            title:'巡检位置',
+            dataIndex:'locationName',
+            key:'locationName',
+            width:'75%'
+        }]
     }
 
-    // onChange = (e)=>{
-    //     this.setState({
-    //         radioValue:e.target.value
-    //     })
-    // }
-    onChangeTime = (date, dateString) => {
-        // console.log(moment(date).format('YYYY-MM-DD'))
-        // console.log(moment(undefined).format('YYYY-MM-DD HH:mm:ss'))
+    onChangeTime = (date) => {
         this.setState({
             date: moment(date).format('YYYY-MM-DD')
         })
-    }
+    };
+
     showModal = () => {
         axios({
             url: `${this.url.devicePatrolModel.getAllByDeptCode}`,
@@ -47,28 +71,34 @@ class AddModal extends React.Component {
             params: {id: parseInt(this.props.deptCode)},
             type: "json"
         }).then((data) => {
-            var res = data.data.data;
+            let res = data.data.data;
             this.setState({
                 templateData: res
             })
-        })
+        });
         this.setState({visible: true});
     };
+
     handleCancel = () => {
         this.setState({
             visible: false,
             radioValue: undefined,
-            date: "",
+            date: null,
             devicePatrolModelsItemDetailsList: [],
             devicePatrolModelsLocationDetails: [],
-            templateName: "",
             planName: "",
             checkType: "",
             templateData: []
         });
     };
+
     handleCreate = () => {
-        console.log(parseInt(this.props.deptCode), this.state.planName, this.state.checkType, this.state.date, this.state.devicePatrolModelsHead.code)
+        const userId = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).userId:null;
+        const {planName,radioValue,date} = this.state;
+        if( !planName || !radioValue || !date) {
+            message.info('请确保计划名称、巡检模板名称以及计划日期不为空！');
+            return;
+        }
         axios({
             url: `${this.url.devicePatrolPlan.add}`,
             method: "post",
@@ -77,43 +107,35 @@ class AddModal extends React.Component {
             },
             params: {
                 deptId: parseInt(this.props.deptCode),
-                planName: this.state.planName,
+                planName: planName,
                 checkType: this.state.checkType === false ? 0 : 1,
-                planDate: this.state.date,
-                modelId: this.state.devicePatrolModelsHead.code,
-                userId: this.props.userId
+                planDate: date,
+                modelId: radioValue,
+                userId: userId
             },
             type: "json"
         }).then((data) => {
-            console.log(data)
             if (data.data.code !== 0) {
                 message.info('新增失败')
                 this.setState({
                     visible: false,
                     radioValue: undefined,
-                    date: "",
+                    date: null,
                     devicePatrolModelsItemDetailsList: [],
                     devicePatrolModelsLocationDetails: [],
-                    templateName: "",
                     planName: "",
                     checkType: "",
                     templateData: []
                 })
             } else {
                 message.info(data.data.message);
-                this.props.getTableData({
-                    page: this.props.pagination.current,
-                    size: this.props.pagination.pageSize,
-                    deptId: parseInt(this.props.deptCode),
-                    status: 0
-                })
+                this.props.getTableData();
                 this.setState({
                     visible: false,
                     radioValue: undefined,
-                    date: "",
+                    date: null,
                     devicePatrolModelsItemDetailsList: [],
                     devicePatrolModelsLocationDetails: [],
-                    templateName: "",
                     planName: "",
                     checkType: "",
                     templateData: []
@@ -128,8 +150,6 @@ class AddModal extends React.Component {
     }
 
     selectChange = (e) => {
-        // const value = e.target.value;
-        // console.log(e)
         axios({
             url: `${this.url.devicePatrolModel.detail}`,
             method: "get",
@@ -137,7 +157,12 @@ class AddModal extends React.Component {
             type: "json"
         }).then((data) => {
             var res = data.data.data;
-            // console.log(res);
+            for(let i = 0; i < res.devicePatrolModelsItemDetailsList.length; i++) {
+                res.devicePatrolModelsItemDetailsList[i]['index'] = i + 1;
+            }
+            for(let j = 0; j < res.devicePatrolModelsLocationDetails.length; j++) {
+                res.devicePatrolModelsLocationDetails[j]['index'] = j + 1;
+            }
             this.setState({
                 checkType: res.devicePatrolModelsHead.checkType,
                 devicePatrolModelsItemDetailsList: res.devicePatrolModelsItemDetailsList,
@@ -147,14 +172,19 @@ class AddModal extends React.Component {
         })
         this.setState({radioValue: e});
     }
-    checkChange = () => {
 
+    getTitle() {
+        return '巡检项目';
+    }
+
+    getTitle1() {
+        return '巡检区域';
     }
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         return (
-            <span>
+            <span className={this.props.status === 1 ? '' : 'hide'}>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus'/>
                 <Modal
                     visible={this.state.visible}
@@ -162,7 +192,7 @@ class AddModal extends React.Component {
                     centered={true}
                     maskClosable={false}
                     title="新增"
-                    width='800px'
+                    width='950px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check'/>,
@@ -170,64 +200,53 @@ class AddModal extends React.Component {
                 >
                     <div>
                         <span className="headers">所属车间：</span><span className="checkName">{this.props.deptName}</span>
-                        <span className="headers">计划名称：</span><span style={{width: "152px"}}><Input
-                        style={{width: "152px"}} placeholder="请输入计划名称" onChange={this.onChange}
-                        value={this.state.planName} className="checkName"/></span>
-                        <span className="headers">巡检模板名称：</span><span><Select value={this.state.radioValue}
-                                                                              placeholder="请选择巡检模板"
-                                                                              style={{width: "152px"}}
-                                                                              onChange={this.selectChange}>{
-                        this.state.templateData.map((value, item) => {
-                            return <Select.Option key="item"
-                                                  value={value.devicePatrolModelsHead.code}>{value.devicePatrolModelsHead.patrolName}</Select.Option>
-                        })
-                    }</Select></span>
+                        <span className="headers">计划名称：</span>
+                        <span>
+                            <Input placeholder="请输入计划名称" onChange={this.onChange}
+                                   value={this.state.planName} style={{width:200}}/>
+                        </span>
+                        <span className="headers1">巡检模板名称：</span>
+                        <span>
+                            <Select value={this.state.radioValue} placeholder="请选择巡检模板" style={{width: "200px"}} onChange={this.selectChange}>{
+                            this.state.templateData.map((value) => {
+                                return <Select.Option key="item"
+                                                      value={value.devicePatrolModelsHead.code}>{value.devicePatrolModelsHead.patrolName}</Select.Option>
+                            })}
+                            </Select>
+                        </span>
                     </div>
                     <div>
-                        <span className="headers">检查类型：</span><Input placeholder="请先选择巡检模板" disabled={true}
-                                                                     style={{width: "152px"}}
-                                                                     value={this.state.checkType === "" ? "" : this.state.checkType === true ? "电气类" : "机械类"}
-                                                                     onChange={this.checkChange} className="checkName"/>
-                        <span className="headers">计划日期：</span><span><DatePicker format="YYYY-MM-DD" locale={locale}
-                                                                                showTime={true} style={{width: '200px'}}
-                                                                                onChange={this.onChangeTime}
-                                                                                placeholder="请选择时间"/></span>
+                        <span className="headers">检查类型：</span>
+                        <span className="checkName">{this.state.radioValue ? this.state.checkType === true ? "电气类" : "机械类" : '请先选择巡检模板'}</span>
+                        <span className="headers">计划日期：</span>
+                        <span><DatePicker format="YYYY-MM-DD" locale={locale}
+                                          value={this.state.date ? moment(this.state.date) : null}
+                                          showTime={true} style={{width: '200px'}}
+                                          onChange={this.onChangeTime}
+                                          placeholder="请选择时间"/>
+                        </span>
                     </div>
-                    <div style={{display: "flex", marginTop: "8px"}}>
-                        <b className="headers">巡检项目：</b>
-                        <table className="planTable">
-                            <thead className="planHead">
-                                <tr><th>序号</th><th>巡检内容</th><th>巡检项目</th></tr>
-                            </thead>
-                            <tbody>
-                        {
-                            this.state.devicePatrolModelsItemDetailsList.map((value, item) => {
-                                return (<tr key={item}>
-                                    <td>{item}</td>
-                                    <td>{value.patrolContent}</td>
-                                    <td>{value.patrolItem}</td>
-                                </tr>)
-                            })
-                        }
-                            </tbody>
-                        </table>
-                        <b className="headers">巡检区域：</b>
-                        <table className="planTable">
-                            <thead className="planHead">
-                                <tr><th>序号</th><th>巡检位置</th></tr>
-                            </thead>
-                            <tbody>
-                        {
-                            this.state.devicePatrolModelsLocationDetails.map((value, item) => {
-                                return (<tr key={item}>
-                                    <td>{item}</td>
-                                    <td>{value.locationName}</td>
-                                </tr>)
-                            })
-                        }
-                            </tbody>
-                        </table>
-                        </div>
+                    <Table
+                        title = {this.getTitle}
+                        columns={this.column1}
+                        rowKey={record => record.code}
+                        size="small"
+                        dataSource={this.state.devicePatrolModelsItemDetailsList}
+                        bordered
+                        scroll={{y: 150}}
+                        pagination={false}
+                        className={'inspection-detail-table'}
+                    />
+                    <Table
+                        title = {this.getTitle1}
+                        columns={this.column2}
+                        rowKey={record => record.code}
+                        size="small"
+                        dataSource={this.state.devicePatrolModelsLocationDetails}
+                        bordered
+                        scroll={{y: 150}}
+                        pagination={false}
+                    />
                 </Modal>
             </span>
         )

@@ -4,9 +4,9 @@
     height: 150px;
 }
 .inspectionsearchPart{
-    width: 60%;
-    margin-left: 44%;
     display:flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
 }
 .inspectionQueryTable{
     right:15px;

@@ -1,12 +1,10 @@
 import React from 'react';
-import { Button, Modal,Select,Form, Input,message,Icon,Col, Row,Upload,Radio,Divider,DatePicker } from 'antd';
+import {Modal, Input, message, DatePicker, Table} from 'antd';
 import axios from 'axios';
-import AddButton from '../../../../BlockQuote/newButton';
 import CancleButton from "../../../../BlockQuote/cancleButton";
-import SaveButton from "../../../../BlockQuote/saveButton";
-import "../plan.css";
 import moment from "moment";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
+import SaveButton from "../../../../BlockQuote/saveButton";
 
 class Edit extends React.Component{
     url;
@@ -15,7 +13,6 @@ class Edit extends React.Component{
         this.state = {
             visible:false,
             planName:'',
-            // planDate:'',
             dastSource:{},
             modelName:"",
             checkType:"",
@@ -26,10 +23,40 @@ class Edit extends React.Component{
             devicePatrolPlanRecordLocationDetailsList:[]
         }
         this.onChange = this.onChange.bind(this);
+        this.getTitle = this.getTitle.bind(this);
+        this.getTitle1 = this.getTitle1.bind(this);
+        this.column1 = [{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b) =>a.id-b.id,
+            width:'20%',
+        },{
+            title:'巡检项目',
+            dataIndex:'patrolItem',
+            key:'patrolItem',
+            width:'40%'
+        },{
+            title:'巡检内容',
+            dataIndex:'patrolContent',
+            key:'patrolContent',
+            width:'40%'
+        }];
+
+        this.column2 = [{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b) =>a.id-b.id,
+            width:'20%',
+        },{
+            title:'巡检位置',
+            dataIndex:'locationName',
+            key:'locationName',
+            width:'75%'
+        }]
     }
-    onChangeTime = (date, dateString) =>{
-        // console.log(moment(date).format('YYYY-MM-DD'))
-        // console.log(moment(undefined).format('YYYY-MM-DD HH:mm:ss'))
+    onChangeTime = (date) =>{
         this.setState({
             planTime:moment(date).format('YYYY-MM-DD')
         })
@@ -55,12 +82,7 @@ class Edit extends React.Component{
                 })
               }else{
                 message.info(data.data.message);
-                this.props.getTableData({
-                    page:this.props.pagination.current,
-                    size:this.props.pagination.pageSize,
-                    deptId:parseInt(this.props.deptCode),
-                    status:0
-                })
+                this.props.getTableData();
                 this.setState({
                     visible: false,
                 });
@@ -74,7 +96,6 @@ class Edit extends React.Component{
     }
 
     showModal = () => {
-        // console.log(this.props.planId)
         axios({
             url:`${this.url.devicePatrolPlan.detail}`,
             method:"get",
@@ -82,8 +103,14 @@ class Edit extends React.Component{
             type:"json"
         }).then((data)=>{
             var res = data.data.data;
+            for(let i = 0; i < res.devicePatrolPlanRecordLocationDetailsList.length; i++) {
+                res.devicePatrolPlanRecordLocationDetailsList[i]['index'] = i + 1;
+            }
+            for(let j = 0; j < res.devicePatrolPlanRecordItemDetailsList.length; j++) {
+                res.devicePatrolPlanRecordItemDetailsList[j]['index'] = j + 1;
+            }
             this.setState({
-                dastSource:res,
+                deptName:res.detpName,
                 visible: true,
                 planName:res.devicePatrolPlanRecordHead.planName,
                 modelName:res.modelName,
@@ -97,6 +124,14 @@ class Edit extends React.Component{
         })
     };
 
+    getTitle() {
+        return '巡检项目';
+    }
+
+    getTitle1() {
+        return '巡检区域';
+    }
+
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
@@ -108,60 +143,46 @@ class Edit extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="编辑"
-                    width='800px'
+                    width='1000px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
                     <div>
-                        <span className="headers">所属车间：</span><span style={{backgroundColor:"#D6D6D6"}} className="checkName">{this.props.deptName}</span>
-                        <span className="headers">计划名称：</span><span style={{width:"152px"}}><Input style={{width:"152px"}} placeholder="请输入计划名称" onChange={this.onChange} value={this.state.planName} className="checkName" /></span>
-                        <span className="headers "style={{marginLeft:"10px"}}>巡检模板名称：</span><span style={{ width: "152px",backgroundColor:"#D6D6D6" }} className="checkName">{this.state.modelName}</span>
+                        <span className="headers">所属车间：</span><span className="checkName">{this.state.deptName}</span>
+                        <span className="headers">计划名称：</span><span><Input style={{width:"200px"}} placeholder="请输入计划名称" onChange={this.onChange} value={this.state.planName}/></span>
+                        <span className="headers1">巡检模板名称：</span><span className="checkName">{this.state.modelName}</span>
                     </div>
                     <div>
-                        <span className="headers">检查类型：</span><span style={{backgroundColor:"#D6D6D6"}} className="checkName">{this.state.checkType === false?"机械类":"电气类"}</span>
-                        <span className="headers">计划日期：</span><span style={{width:"152px"}}><DatePicker style={{width:"152px"}} format="YYYY-MM-DD" defaultValue={moment(this.state.planTime,'YYYY-MM-DD')} value={moment(this.state.planTime,'YYYY-MM-DD')} locale={locale} showTime={true} style={{width:'200px'}} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
-                        <span className="headers">制表人：</span><span style={{ width: "152px",backgroundColor:"#D6D6D6" }} className="checkName">{this.state.tabPeopleName===""?"空":this.state.tabPeopleName}</span>
+                        <span className="headers">检查类型：</span><span className="checkName">{this.state.checkType === false?"机械类":"电气类"}</span>
+                        <span className="headers">计划日期：</span><span><DatePicker format="YYYY-MM-DD" defaultValue={moment(this.state.planTime,'YYYY-MM-DD')} value={moment(this.state.planTime,'YYYY-MM-DD')} locale={locale} showTime={true} onChange={this.onChangeTime} placeholder="请选择时间"/></span>
+                        <span className="headers1">制表人：</span><span className="checkName">{this.state.tabPeopleName===""?"空":this.state.tabPeopleName}</span>
                     </div>
                     <div>
-                        <span className="headers">制表日期：</span><span style={{backgroundColor:"#D6D6D6"}} className="checkName">{this.state.tabulatedate===null?"空":this.state.tabulatedate}</span>
+                        <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulatedate===null?"空":this.state.tabulatedate}</span>
                     </div>
-                    <div style={{display:"flex",marginTop:"8px"}}>
-                        <b className="headers">巡检项目：</b>
-                        <table className="planTable">
-                            <thead className="planHead">
-                                <tr><th>序号</th><th>巡检内容</th><th>巡检项目</th></tr>
-                            </thead>
-                            <tbody>
-                        {
-                            this.state.devicePatrolPlanRecordItemDetailsList.map((value,item)=>{
-                                return (<tr key={item}>
-                                    <td>{item}</td>
-                                    <td>{value.patrolContent}</td>
-                                    <td>{value.patrolItem}</td>
-                                </tr>)
-                            })
-                        }
-                            </tbody>
-                        </table>
-                        <b className="headers">巡检区域：</b>
-                        <table className="planTable">
-                            <thead className="planHead">
-                                <tr><th>序号</th><th>巡检位置</th></tr>
-                            </thead>
-                            <tbody>
-                        {
-                            this.state.devicePatrolPlanRecordLocationDetailsList.map((value,item)=>{
-                                return (<tr key={item}>
-                                    <td>{item}</td>
-                                    <td>{value.locationName}</td>
-                                </tr>)
-                            })
-                        }
-                            </tbody>
-                        </table>
-                        </div>
+                    <Table
+                        title = {this.getTitle}
+                        columns={this.column1}
+                        rowKey={record => record.code}
+                        size="small"
+                        dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
+                        bordered
+                        scroll={{y: 150}}
+                        pagination={false}
+                        className={'inspection-detail-table'}
+                    />
+                    <Table
+                        title = {this.getTitle1}
+                        columns={this.column2}
+                        rowKey={record => record.code}
+                        size="small"
+                        dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
+                        bordered
+                        scroll={{y: 150}}
+                        pagination={false}
+                    />
                 </Modal>
             </span>
         )

@@ -1,14 +1,13 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-
 import "./inspectionTemplate.css"
 import axios from "axios";
-import {message, Select} from "antd";
-import Add from "./add";
-import SearchCell from "./searchCell";
+import {message, Select, Spin} from "antd";
+import SearchCell from "../../../BlockQuote/search";
 import home from "../../../commom/fns";
 import RightTable from "./rightTable";
 import DepTree from "../../../BlockQuote/department";
+import EditorModal from "./editorModal";
 
 class InspectionTemplate extends React.Component {
     constructor(props) {
@@ -20,7 +19,8 @@ class InspectionTemplate extends React.Component {
             deptCode: -1,
             deviceName: '',
             searchContent: '',
-            status: '',
+            status: '-1',
+            loading: true
         };
         this.pagination = {
             showTotal(total) {
@@ -29,7 +29,7 @@ class InspectionTemplate extends React.Component {
             showSizeChanger: true,
             pageSizeOptions: ["10","20","50","100"]
         };
-
+        this.reset = this.reset.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.getTableData = this.getTableData.bind(this);
@@ -41,24 +41,22 @@ class InspectionTemplate extends React.Component {
 
     render() {
         /*获取日期*/
-        var date = new Date();
-        var nowMonth = date.getMonth() + 1;
-        var strDate = date.getDate();
-        var seperator = "-";
-        if (nowMonth >= 1 && nowMonth <= 9) {
-            nowMonth = "0" + nowMonth;
-        }
-        if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
-        }
-        this.nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
+        let date = new Date().toLocaleDateString().split('/').join('-');
         const menuList1 = JSON.parse(localStorage.getItem('menuList'))
-        this.userName = menuList1.name
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('equipmentInspection'));
         const operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.menuName === current.menuParent)[0].menuList : null;
         this.operation = operation.filter(e => e.path === current.path)[0].operations;
         const {Option} = Select;
+        let {deptCode,deviceName } = this.state;
+        let record = {
+            deptCode: deptCode,
+            workshop: deviceName,
+            setPeople: menuList1.name,
+            setPeopleId: menuList1.userId,
+            tabulatedate: date,
+            checkType: 'false'
+        };
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="巡检模板" menu2='返回' returnDataEntry={this.returnDataEntry}
@@ -70,21 +68,15 @@ class InspectionTemplate extends React.Component {
                         url={this.url}
                         getTableData={this.clickDepartment}
                     />
-                    <div className="equipment-right">
+                    <Spin spinning={this.state.loading} wrapperClassName="equipment-right">
                         <div>
                             <div className="checkP_buttons">
                                 <div className="checkp-left">
-                                    <Add deptCode={this.state.deptCode} deviceName={this.state.deviceName}
-                                         url={this.url} departName={this.state.parentname} pagination={this.pagination}
-                                         fetch={this.getTableData} parentname={this.state.parentname}
-                                         name={this.state.name} operation={this.operation} userName={this.userName}
-                                         nowDate={this.nowDate}/>
-                                    {/*<DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}*/}
-                                    {/*             flag={home.judgeOperation(this.operation,'DELETE')}*/}
-                                    {/*/>*/}
+                                    <EditorModal title={'新增'} record={record}
+                                         url={this.url} searchEvent={this.searchEvent}/>
                                 </div>
                                 <div className="check_right">
-                                    <Select defaultValue="-1" style={{width: 120}} onChange={this.handleChange}>
+                                    <Select value={this.state.status} style={{width: 120}} onChange={this.handleChange}>
                                         <Option value='-1'>全部类型</Option>
                                         <Option value='0'>机械类</Option>
                                         <Option value='1'>电气类</Option>
@@ -92,9 +84,9 @@ class InspectionTemplate extends React.Component {
                                     <SearchCell
                                         name='请输入模版名称'
                                         flag={home.judgeOperation(this.operation, 'QUERY')}
-                                        searchEvent={this.searchEvent}
+                                        fetch={this.reset}
                                         searchContentChange={this.searchContentChange}
-                                        fetch={this.getTableData}
+                                        searchEvent = {this.searchEvent}
                                         deptId={this.state.deptCode}
                                         deviceName={this.state.deviceName}
                                     />
@@ -115,7 +107,7 @@ class InspectionTemplate extends React.Component {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </Spin>
                 </div>
             </div>
         )
@@ -139,8 +131,23 @@ class InspectionTemplate extends React.Component {
 
     }
 
+    /**重置*/
+    reset() {
+        this.setState({
+            status: '-1',
+            searchContent: ''
+        });
+        const {deptCode} = this.state;
+        this.getTableData({
+            deptId: deptCode
+        });
+    }
+
     /**获取右边表格数据*/
     getTableData(params) {
+        this.setState({
+            loading: true
+        });
         axios({
             url: `${this.url.devicePatrolModel.page}`,
             method: 'get',
@@ -152,6 +159,7 @@ class InspectionTemplate extends React.Component {
             const res = data.data.data ? data.data.data : [];
             if (res && res.list) {
                 var rightTableData = [];
+                this.pagination.total = res.list.length;
                 for (var i = 0; i < res.list.length; i++) {
                     var arr = res.list[i].devicePatrolModelsHead;
                     rightTableData.push({
@@ -167,12 +175,14 @@ class InspectionTemplate extends React.Component {
                     })
                 }
                 this.setState({
-                    rightTableData: rightTableData
+                    rightTableData: rightTableData,
+                    loading: false
                 });
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
                     rightTableData: [],
+                    loading: false
                 });
             }
         }).catch(() => {
@@ -196,18 +206,16 @@ class InspectionTemplate extends React.Component {
     };
 
     /**搜索事件*/
-    searchEvent = () => {
+    searchEvent() {
         const {deptCode,status,searchContent} = this.state;
-        if(searchContent) {
-            this.getTableData({
-                deptId: deptCode,
-                status: status,
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-                condition: searchContent
-            });
-        }
-    }
+        this.getTableData({
+            deptId: deptCode,
+            status: status,
+            size: this.pagination.pageSize,
+            page: this.pagination.current,
+            condition: searchContent
+        });
+    };
 
     /**跟踪input搜索框内容*/
     searchContentChange = (e) => {
@@ -223,29 +231,16 @@ class InspectionTemplate extends React.Component {
         this.searchEvent();
     };
 
-    /**批量删除*/
-    deleteByIds = (ids) => {
-        axios({
-            url: `${this.url.devicePatrolModel.deleteByIds}`,
-            method: 'Delete',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            data: ids,
-            type: 'json'
-        }).then((data) => {
-            message.info(data.data.message);
-            if (data.data.code === 0) {
-                this.searchEvent();
-            }
-        }).catch(() => {
-            message.info('删除错误，请联系管理员！')
-        })
-    }
-
     /**返回数据录入页面 */
     returnDataEntry() {
         this.props.history.push({pathname: '/equipmentInspection'});
+    }
+
+    /**销魂组件*/
+    componentWillUnmount() {
+        this.setState=()=>{
+            return;
+        }
     }
 }
 

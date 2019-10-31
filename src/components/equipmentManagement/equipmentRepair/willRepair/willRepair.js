@@ -12,6 +12,7 @@ class WillRepair extends React.Component{
             searchContent:''
         };
         this.pagination = {
+            total: this.props.rightTableData.total,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10","20","50","100"]
@@ -19,8 +20,6 @@ class WillRepair extends React.Component{
     }
     render() {
         this.url=this.props.url;
-        this.state.pagination=this.props.pagination;
-
         return(
             <div  className='equipment-query'>
                 {/*左边树部分*/}

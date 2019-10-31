@@ -47,14 +47,14 @@ class DetailModal extends React.Component {
     }
 
     render() {
-        const {workshop,patrolName,checkType,setPeople,tabulatedate} = this.props.record;
+        const {workshop,patrolName,checkTypeName,setPeople,tabulatedate} = this.props.record;
         return (
             <span>
-                <span className='blue' onClick={this.handleClick}>详情</span>
+                <span className='blue' onClick={this.handleClick}>编辑</span>
                 <Modal visible={this.state.visible} width={1000} centered={true} closable={false}
                        title={'详情'} maskClosable={false}
                        footer={[
-                            <CancleButton key='cancel' flag={true} handleCancel={this.cancel} />]}
+                           <CancleButton key='cancel' flag={true} handleCancel={this.cancel} />]}
                 >
                     <div>
                         <div className='inspection-detail-head'>
@@ -68,7 +68,7 @@ class DetailModal extends React.Component {
                             </div>
                             <div className='inspection-detail-div'>
                                 <span className='inspection-detail-div-span'>检查类型：</span>
-                                <span>{checkType}</span>
+                                <span>{checkTypeName}</span>
                             </div>
                         </div>
                         <div className='inspection-detail-head'>

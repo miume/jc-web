@@ -67,7 +67,7 @@ class DataEntry extends React.Component{
         this.getData = this.getData.bind(this);
     }
     click(e){
-        const path = e.target.id.split('-');
+        const path = e.currentTarget.id.split('-');
         const dataEntry = {
             openKeys : this.current.menuId,
             menuName : path[1],

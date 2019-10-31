@@ -1,9 +1,7 @@
 import React from 'react';
-import {Modal,Radio,Divider} from 'antd';
-import WhiteSpace from '../../../BlockQuote/whiteSpace';
+import {Modal, Table,message} from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import "./plan.css"
 
 class Detail extends React.Component{
     url
@@ -25,10 +23,41 @@ class Detail extends React.Component{
             setPeople:"",
             tabulatedate:""
         }
+        this.getTitle = this.getTitle.bind(this);
+        this.getTitle1 = this.getTitle1.bind(this);
+        this.column1 = [{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b) =>a.id-b.id,
+            width:'20%',
+        },{
+            title:'巡检项目',
+            dataIndex:'patrolItem',
+            key:'patrolItem',
+            width:'40%'
+        },{
+            title:'巡检内容',
+            dataIndex:'patrolContent',
+            key:'patrolContent',
+            width:'40%'
+        }];
+
+        this.column2 = [{
+            title:'序号',
+            dataIndex:'index',
+            key:'index',
+            sorter:(a,b) =>a.id-b.id,
+            width:'20%',
+        },{
+            title:'巡检位置',
+            dataIndex:'locationName',
+            key:'locationName',
+            width:'75%'
+        }]
     }
 
     fetch = (id) => {
-        // console.log(id)
         axios({
             url:`${this.url.devicePatrolPlan.detail}`,
             method:"GET",
@@ -37,25 +66,30 @@ class Detail extends React.Component{
                 'Authorization':this.url.Authorization
             },
         }).then((data) => {
-            // console.log(data)
             const res = data.data.data;
-            // console.log(res)
             if(res){
+                let {devicePatrolPlanRecordLocationDetailsList,devicePatrolPlanRecordItemDetailsList,devicePatrolPlanRecordHead} = res;
+                for(let i = 0; i < devicePatrolPlanRecordLocationDetailsList.length; i++) {
+                    devicePatrolPlanRecordLocationDetailsList[i]['index'] = i + 1;
+                }
+                for(let j = 0; j < devicePatrolPlanRecordItemDetailsList.length; j++) {
+                    devicePatrolPlanRecordItemDetailsList[j]['index'] = j + 1;
+                }
                 this.setState({
                     workshop:res.detpName,
                     data:res,
-                    devicePatrolPlanRecordLocationDetailsList:res.devicePatrolPlanRecordLocationDetailsList,
-                    devicePatrolPlanRecordItemDetailsList:res.devicePatrolPlanRecordItemDetailsList,
-                    planName:res.devicePatrolPlanRecordHead.planName,
-                    checkType:res.devicePatrolPlanRecordHead.checkType,
-                    planDate:res.devicePatrolPlanRecordHead.planTime,
+                    devicePatrolPlanRecordLocationDetailsList:devicePatrolPlanRecordLocationDetailsList,
+                    devicePatrolPlanRecordItemDetailsList:devicePatrolPlanRecordItemDetailsList,
+                    planName:devicePatrolPlanRecordHead.planName,
+                    checkType:devicePatrolPlanRecordHead.checkType,
+                    planDate:devicePatrolPlanRecordHead.planTime,
                     modelName:res.modelName,
-                    setPeople:res.devicePatrolPlanRecordHead.setPeople,
-                    tabulatedate:res.devicePatrolPlanRecordHead.tabulatedate
+                    setPeople:devicePatrolPlanRecordHead.setPeople,
+                    tabulatedate:devicePatrolPlanRecordHead.tabulatedate
                 })
             }
-        }).catch((err)=>{
-            console.log(err)
+        }).catch(()=>{
+            message.info('查询失败，请联系管理员！')
         })
     }
 
@@ -65,11 +99,20 @@ class Detail extends React.Component{
         this.setState({
           visible: true
         });
-    }
+    };
+
     handleCancel = () => {
         this.setState({
         visible: false
         });
+    }
+
+    getTitle() {
+        return '巡检项目';
+    }
+
+    getTitle1() {
+        return '巡检区域';
     }
 
     render(){
@@ -78,11 +121,11 @@ class Detail extends React.Component{
             <span>
                 <span onClick={this.handleDetail} className="blue">详情</span>
                 <Modal title='详情' visible={this.state.visible}
-                    width="800px"
+                    width="980px"
                     closable={false} centered={true}
                     maskClosable={false}
                     footer={[
-                        <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
+                        <CancleButton key='cancel' flag={1} handleCancel={this.handleCancel} />,
                     ]}
                 >
                     <div>
@@ -92,52 +135,37 @@ class Detail extends React.Component{
                         <div>
                             <span className="headers">检查类型：</span><span className="checkName">{this.state.checkType?"机械类":"电气类"}</span>
                             <span className="headers">计划日期：</span><span className="checkName">{this.state.planDate}</span>
-                            <span className="headers">制表人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span className="checkName">{this.state.setPeople?this.state.setPeople:"管理员"}</span>
+                            <span className="headers1">制表人：</span><span className="checkName">{this.state.setPeople?this.state.setPeople:"管理员"}</span>
                         </div>
                         <div>
                             <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulatedate?this.state.tabulatedate:"空"}</span>
                         </div>
-                        <div style={{display:"flex"}}>
-                        <b className="headers">巡检项目：</b>
-                        <table className="planTable">
-                            <thead className="planHead">
-                                <tr><th>序号</th><th>巡检内容</th><th>巡检项目</th></tr>
-                            </thead>
-                            <tbody>
-                        {
-                            this.state.devicePatrolPlanRecordItemDetailsList.map((value,item)=>{
-                                return (<tr key={item}>
-                                    <td>{item}</td>
-                                    <td>{value.patrolContent}</td>
-                                    <td>{value.patrolItem}</td>
-                                </tr>)
-                            })
-                        }
-                            </tbody>
-                        </table>
-                        <b className="headers">巡检区域：</b>
-                        <table className="planTable">
-                            <thead className="planHead">
-                                <tr><th>序号</th><th>巡检位置</th></tr>
-                            </thead>
-                            <tbody>
-                        {
-                            this.state.devicePatrolPlanRecordLocationDetailsList.map((value,item)=>{
-                                return (<tr key={item}>
-                                    <td>{item}</td>
-                                    <td>{value.locationName}</td>
-                                </tr>)
-                            })
-                        }
-                            </tbody>
-                        </table>
-                        </div>
+                        <Table
+                            title = {this.getTitle}
+                            columns={this.column1}
+                            rowKey={record => record.code}
+                            size="small"
+                            dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
+                            bordered
+                            scroll={{y: 150}}
+                            pagination={false}
+                            className={'inspection-detail-table'}
+                        />
+                        <Table
+                            title = {this.getTitle1}
+                            columns={this.column2}
+                            rowKey={record => record.code}
+                            size="small"
+                            dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
+                            bordered
+                            scroll={{y: 150}}
+                            pagination={false}
+                        />
                     </div>
                 </Modal>
             </span>
         )
     }
 }
-
 
 export default Detail

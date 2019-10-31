@@ -17,11 +17,9 @@ export default class SearchPart extends React.Component{
     }
     handleRangePickerChange=(value)=>{
         this.setState({RangePickerValue:value})
-        //console.log(value)
     }
     handleInputChange=(e)=>{
         this.setState({InputValue:e.target.value})
-        //console.log(e.target.value)
     }
     render(){
         return(

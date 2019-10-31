@@ -6,13 +6,17 @@
     border-radius: 3px;
     line-height:35px;
     padding-left: 7px;
-    margin-left: 0px;
-    margin-bottom: 10px;
-    /* margin-top: 10px; */
+    margin: 0 10px 20px 0;
 }
 .headers{
     display: inline-block;
-    margin-left: 5px;
+    text-align: right;
+    width: 90px;
+}
+.headers1{
+    display: inline-block;
+    text-align: right;
+    width: 110px;
 }
 .headersPerson{
     display: inline-block;

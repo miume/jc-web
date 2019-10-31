@@ -5,10 +5,7 @@
 
 import React from 'react';
 import {Button, Spin, Tabs} from "antd";
-import AddModal from './addModal/addModal';
 import BlockQuote from "../../BlockQuote/blockquote";
-import home from "../../commom/fns";
-import StatisticalAnalysis from "./statisticalAnalysis/statisticalAnalysis";
 import Search from "./search";
 import './rawMaterial.css';
 import UnSubmitted from './unsubmitted/unsubmitted';
@@ -106,7 +103,7 @@ class RawMaterial extends React.Component {
      * record用来区分编辑和新增
      * */
     handleClick(record = {}) {
-        let pathName = record && record.code ? `/addModal/${record.code}` : '/addModal'
+        let pathName = record && record.code ? `/addModal/${record.code}` : '/addModal';
         this.props.history.push({pathname: pathName})
     }
 
@@ -114,8 +111,6 @@ class RawMaterial extends React.Component {
     handleAnalysisClick() {
         this.props.history.push({pathname: '/statisticalAnalysis'})
     }
-
-
 }
 
 export default RawMaterial;

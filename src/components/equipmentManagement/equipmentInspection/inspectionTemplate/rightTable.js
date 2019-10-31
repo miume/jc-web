@@ -1,7 +1,7 @@
-import React from "react"
-import {Divider, Popconfirm, Table} from 'antd'
+import React from "react";
+import axios from 'axios';
+import {Divider, Popconfirm, Table,message} from 'antd'
 import home from '../../../commom/fns';
-import Editer from "./editer";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import "./inspectionTemplate.css"
 import DetailModal from "./detailModal";
@@ -84,10 +84,9 @@ class RightTable extends React.Component{
             onChange:this.onSelectChange,
         };
         return(
-            <div >
+            <div>
                 <div className="ins-tem-deleteByIds">
-                <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
-                             flag={1}   />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={1}/>
                 </div>
                     <Table
                         rowKey={record => record.code}
@@ -105,32 +104,44 @@ class RightTable extends React.Component{
 
     /**单挑记录删除*/
     handleDelete(id) {
-        this.props.deleteByIds([id]);
-        // axios({
-        //     url:`${this.props.url.devicePatrolModel.delete}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     },
-        //     params:{
-        //         id:id
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.searchEvent();
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.devicePatrolModel.delete}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                id:id
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.searchEvent();
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     };
 
     /**批量删除*/
-    deleteByIds =() =>  {
-        const ids = this.state.selectedRowKeys;
-        this.props.deleteByIds(ids)
+    deleteByIds = () => {
+        let ids = this.state.selectedRowKeys;
+        axios({
+            url: `${this.props.url.devicePatrolModel.deleteByIds}`,
+            method: 'Delete',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            data: ids,
+            type: 'json'
+        }).then((data) => {
+            message.info(data.data.message || '删除成功！');
+            this.props.searchEvent();
+        }).catch(() => {
+            message.info('删除错误，请联系管理员！')
+        })
     };
 
     /**取消批量删除 */
-    cancle() {
+    cancel() {
         setTimeout(() => {
             this.setState({
                 selectedRowKeys: [],

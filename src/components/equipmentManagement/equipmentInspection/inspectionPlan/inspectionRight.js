@@ -1,12 +1,12 @@
 import React from "react";
-import TheTable from "./Table/theTable";
-import SearchCell from "../../../../BlockQuote/search";
-import home from "../../../../commom/fns";
-import './willMaintain.css'
-import DepTree from "../../../../BlockQuote/department";
+import SearchCell from "../../../BlockQuote/search";
+import DepTree from "../../../BlockQuote/department";
 import {Spin} from "antd";
+import InspectionTable from "./inspectionTable";
+import AddModal from "./tab1/add";
+import DeleteByIds from "../../../BlockQuote/deleteByIds";
 
-class WillMaintain extends React.Component{
+class InspectionRight extends React.Component{
     componentWillUnmount() {
         this.setState(() => {
             return;
@@ -18,8 +18,10 @@ class WillMaintain extends React.Component{
         super(props);
         this.state = {
             searchContent:'',
+            selectedRowKeys: []
         };
         this.pagination = {
+            total: this.props.rightTableData.total,
             showTotal(total) {
                 return `共${total}条记录`
             },
@@ -34,9 +36,9 @@ class WillMaintain extends React.Component{
         this.handleTableChange = this.handleTableChange.bind(this);
     }
     render() {
-
+        const {status} = this.props;
         return (
-            <div className='equipment-query'>
+            <div className='equipment'>
                 <DepTree
                     key="depTree"
                     treeName={'所属部门'}
@@ -45,17 +47,25 @@ class WillMaintain extends React.Component{
                 />
                 <Spin spinning={this.props.loading} wrapperClassName='equipment-right'>
                     <div>
+                        <AddModal status={status} deptCode={this.props.deptCode} deptName={this.props.deviceName} getTableData={this.searchEvent}/>
+                        <DeleteByIds
+                            selectedRowKeys={this.state.selectedRowKeys}
+                            cancel={this.cancel}
+                            deleteByIds={this.deleteByIds}
+                            flag={status === 1 ? true : false}
+                        />
                         <SearchCell
-                            name='单号/设备名称/编号'
+                            name='请输入计划名称'
                             fetch={this.fetch}
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
-                            flag={home.judgeOperation(this.props.operation,'QUERY')}
+                            flag={true}
                             type={1}
                         />
                     </div>
                     <div className='clear' ></div>
-                    <TheTable
+                    <InspectionTable
+                        status = {status}
                         url={this.props.url}
                         searchEvent={this.searchEvent}
                         pagination={this.pagination}
@@ -68,7 +78,7 @@ class WillMaintain extends React.Component{
     }
 
     getTableData = (params) => {
-        params['statusId'] = 1;
+        params['status'] = this.props.status;
         this.props.getTableData(params)
     };
 
@@ -81,8 +91,8 @@ class WillMaintain extends React.Component{
     /**绑定搜索事件 */
     searchEvent() {
         const params={
-            deptId:parseInt(this.props.deptId),
-            statusId:1,
+            deptId:parseInt(this.props.deptCode),
+            status:this.props.status,
             depName:this.props.depName,
             condition:this.state.searchContent,
             page:this.pagination.current,
@@ -98,8 +108,8 @@ class WillMaintain extends React.Component{
         });
         this.props.getTableData(
             {
-                deptId:parseInt(this.props.deptId),
-                statusId:1,
+                deptId:parseInt(this.props.deptCode),
+                status:this.props.status,
                 depName:this.props.depName,
                 page:this.pagination.current,
                 size:this.pagination.pageSize
@@ -123,4 +133,4 @@ class WillMaintain extends React.Component{
         this.searchReset();
     }
 }
-export default WillMaintain
+export default InspectionRight;
