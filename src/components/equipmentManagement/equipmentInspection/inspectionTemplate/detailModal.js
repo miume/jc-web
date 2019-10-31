@@ -50,7 +50,7 @@ class DetailModal extends React.Component {
         const {workshop,patrolName,checkTypeName,setPeople,tabulatedate} = this.props.record;
         return (
             <span>
-                <span className='blue' onClick={this.handleClick}>编辑</span>
+                <span className='blue' onClick={this.handleClick}>详情</span>
                 <Modal visible={this.state.visible} width={1000} centered={true} closable={false}
                        title={'详情'} maskClosable={false}
                        footer={[
