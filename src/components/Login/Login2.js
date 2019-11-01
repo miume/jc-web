@@ -17,10 +17,10 @@ class Login extends React.Component {
     this.dataProcessing = this.dataProcessing.bind(this);
   }
   componentWillMount() {
-    localStorage.setItem("server", "http://47.107.237.60:3389");//模块二的外网
+    //localStorage.setItem("server", "http://47.107.237.60:3389");//模块二的外网
     //localStorage.setItem("server", "http://192.168.1.100:8080");
     // localStorage.setItem("server", "http://192.168.5.231:8080");//模块二的外网
-    //localStorage.setItem("server", "http://192.168.190.161:8080");//模块二的server2服务器
+    localStorage.setItem("server", "http://192.168.190.161:8080");//模块二的server2服务器
   }
   /**实行记住密码 */
   remindLogin(e){
