@@ -77,14 +77,14 @@ class Detail extends React.Component{
                        footer={[<CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>]}
                 >
                     <div>
-                        <span>成本名称：前驱体</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}>产品型号：1001</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}>周期：周</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}>期数：1</span>
+                        <span><b>成本名称：</b>前驱体</span>
+                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>产品型号：</b>1001</span>
+                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>周期：</b>周</span>
+                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>期数：</b>1</span>
                     </div>
                     <div>
-                        <span>开始时间：2019-01-01</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}>结束时间：2019-01-07</span>
+                        <span><b>开始时间：</b>2019-01-01</span>
+                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>结束时间：</b>2019-01-07</span>
                     </div>
                     <Divider />
                     <Table rowKey={record => record.code} dataSource={[this.props.data]} columns={this.columns}

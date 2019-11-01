@@ -112,6 +112,7 @@ import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
 import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
 
 import ProductStorage from "../costAccounting/productStorage/productStorage"
+import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
 class Right extends React.Component {
     render() {
         const data = [{
@@ -556,6 +557,9 @@ class Right extends React.Component {
         },{
             path:"/productStorage",
             component:ProductStorage
+        },{
+            path:'/productAddModal',
+            component:ProductAddModal
         }];
         return (
             <div className="rightDiv">

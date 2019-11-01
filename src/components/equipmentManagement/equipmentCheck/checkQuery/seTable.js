@@ -18,8 +18,8 @@ class SeTable extends React.Component{
             sorter:(a,b) =>a.id-b.id,
             width:'5%',
         },{ title: '点检时间',
-            dataIndex: 'scanTime' ,
-            key: 'scanTime',
+            dataIndex: 'finishTime' ,
+            key: 'finishTime',
             width: '19%',
             align:'left',
             editable: false

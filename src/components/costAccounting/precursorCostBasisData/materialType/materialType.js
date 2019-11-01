@@ -6,6 +6,7 @@ import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 import AddModal from "./addModal"
+import Edit from "./edit"
 
 class MaterialType extends React.Component{
     url;
@@ -37,16 +38,23 @@ class MaterialType extends React.Component{
             width: '20%',
         },{
             title: '材料类别',
-            dataIndex: 'materialType',
-            key: 'materialType',
+            dataIndex: 'materialTypeName',
+            key: 'materialTypeName',
             align:'center',
             width: '30%',
         },{
             title:"材料来源",
-            dataIndex: 'source',
-            key: 'source',
+            dataIndex: 'dataType',
+            key: 'dataType',
             align:'center',
             width: '30%',
+            render:(text,record)=>{
+                if(record.dataType == 0){
+                    return "仓库领料"
+                }else{
+                    return "补料"
+                }
+            }
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -56,13 +64,68 @@ class MaterialType extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className="blue">编辑</span>
+                        <Edit code={record.code} fetch={this.fetch}/>
                         <Divider type="vertical" />
-                        <span className="blue">删除</span>
+                        <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
+                            <span className="blue" href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
         }]
+    };
+
+    handleDelete = (id)=>{
+        // console.log(id)
+        axios({
+            url:`${this.url.precursorMaterialType.delete}`,
+            method:"delete",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:id}
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+    };
+
+    start = () => {
+        const ids = this.state.selectedRowKeys;
+        // console.log(ids)
+        axios({
+            url:`${this.url.precursorMaterialType.ids}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            // console.log(data);
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+            message.info(data.data.message);
+            // if((this.pagination.total-1)%10===0){
+            //     this.pagination.current = this.pagination.current-1
+            // }
+            // this.handleTableChange(this.pagination);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data);
+        })
+    };
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
     };
     /**实现全选 */
     onSelectChange = (selectedRowKeys)=>{
@@ -72,6 +135,38 @@ class MaterialType extends React.Component{
     /**返回数据录入页面 */
     returnDataEntry = ()=>{
         this.props.history.push({pathname: "/precursorCostBasisData"});
+    };
+    componentWillUnmount() {
+        this.setState = (state, callback) => {
+          return ;
+        }
+    }
+
+    componentDidMount(){
+        this.fetch();
+    };
+    fetch = ()=>{
+        axios({
+            url:`${this.url.precursorMaterialType.page}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+        }).then((data)=>{
+            // console.log(data)
+            const res = data.data.data.list;
+            // console.log(res)
+            for(var i = 1; i<=res.length; i++){
+                res[i-1]['index']=i;
+            }
+            if(res.length!==0){
+                this.setState({
+                    data:res,
+                    searchContent:'',
+                    loading:false
+                })
+            }
+        })
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -91,16 +186,16 @@ class MaterialType extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
-                    <AddModal />
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys={this.state.selectedRowKeys}
-                        // deleteByIds={this.start}
-                        // cancel={this.cancel}
+                        deleteByIds={this.start}
+                        cancel={this.cancel}
                         flag={true}
                     />
                     {/* <SearchCell name="请输入产线名称" flag={true}/> */}
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )
