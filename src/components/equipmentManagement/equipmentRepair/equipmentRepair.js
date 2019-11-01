@@ -175,7 +175,6 @@ class equipmentRepair extends React.Component{
                         emergeStatus:emergeStatus,//紧急程度
                         deptName:this.state.deptName,
                     })
-
                 }
                 this.setState({
                     rightTableData: rightTableData,

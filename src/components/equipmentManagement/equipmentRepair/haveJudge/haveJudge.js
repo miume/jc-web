@@ -18,8 +18,7 @@ class HaveJudge extends React.Component{
     }
 
     render() {
-        this.url=this.props.url;
-
+        this.pagination.total = this.props.rightTableData.total;
         return(
             <div className='equipment-query'>
                 <DepTree

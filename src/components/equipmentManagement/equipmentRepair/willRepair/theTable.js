@@ -103,7 +103,5 @@ class TheTable extends React.Component{
             </div>
         )
     };
-
-
 }
 export default TheTable
