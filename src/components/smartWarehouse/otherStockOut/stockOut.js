@@ -7,6 +7,56 @@ import RawMaterialOut from './rawMaterialApplication/rawMaterialOut';
 import './stockOut.css';
 
 const TabPane = Tabs.TabPane;
+const data1 = [{
+    index: 1,
+    materialClass: 1,
+    materialName: "Fe",
+    realWeight: null,
+    serialNumber: "MC/BN180808-WS001-RAW(TS)-Fe-0101-QDBX-60KG",
+    weight: 90,
+},{
+    index: 2,
+    materialClass: 1,
+    materialName: "锂",
+    realWeight: null,
+    serialNumber: "MC/BN190801-WS001-RAW(YS)-锂-0102-QDBX-60KG",
+    weight: 90
+},{
+    index: 3,
+    materialClass: 1,
+    materialName: "K",
+    realWeight: null,
+    serialNumber: "MC/BN180808-WS001-RAW(TS)-K-0102-QDBX-60KG",
+    weight: 90
+}, {
+    index: 4,
+    materialClass: 1,
+    materialName: "Fe2",
+    realWeight: null,
+    serialNumber: "MC/BN180808-WS001-RAW(YS)-Fe2-0103-QDBX-60KG",
+    weight: 90
+},{
+    index: 5,
+    materialClass: 1,
+    materialName: "SO4",
+    realWeight: null,
+    serialNumber: "MC/BN190801-WS001-RAW(YS)-SO4-0102-QDBX-60KG",
+    weight: 90
+},{
+    index: 6,
+    materialClass: 1,
+    materialName: "H2",
+    realWeight: null,
+    serialNumber: "MC/BN180808-WS001-RAW(TS)-H2-0102-QDBX-60KG",
+    weight: 90
+}, {
+    index: 7,
+    materialClass: 1,
+    materialName: "O2",
+    realWeight: null,
+    serialNumber: "MC/BN180808-WS001-RAW(YS)-O2-0103-QDBX-60KG",
+    weight: 90
+}];
 class OtherStockOut extends React.Component{
     url
     componentDidMount(){
@@ -63,11 +113,11 @@ class OtherStockOut extends React.Component{
                     li['index'] = i;
                 }
                 res['total'] = res.total;
-                this.setState({
-                    applyDataSource: res,
-                    loading: false
-                });
             }
+            this.setState({
+                applyDataSource: data1,
+                loading: false
+            });
           });
     }
     /**出库记录 */
