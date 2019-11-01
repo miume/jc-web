@@ -273,6 +273,16 @@ class RawMaterialApplication extends React.Component{
 
     /**根据正极名称模糊查询产品线*/
     getProductLine() {
+        let data1 = [{
+            id: 1,
+            name: '正极一'
+        },{
+            id: 2,
+                name: '正极二'
+        },{
+            id: 3,
+                name: '正极三'
+        }];
         axios({
             url: `${this.props.url.productLine.search}`,
             method: 'get',
@@ -285,8 +295,9 @@ class RawMaterialApplication extends React.Component{
         }).then((data) => {
             let res = data.data.data;
             this.setState({
-                productionLineData: res.list,
-                productionLine: res.list ? res.list[0].name : -1
+                productionLineData: res.list.length ? res.list : data1,
+                // productionLine: res.list ? res.list[0].name : -1
+                productionLine: res.list.length ? res.list[0].name : '正极一'
             })
         })
     }

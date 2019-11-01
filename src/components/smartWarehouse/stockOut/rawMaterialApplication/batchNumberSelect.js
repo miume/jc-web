@@ -19,7 +19,7 @@ class BatchNumberSelect extends React.Component {
             visible: false,
             data: [],
             batchNumber: [],
-            width: 1250
+            width: 900
         };
         this.handleClick = this.handleClick.bind(this);
         this.handleOk = this.handleOk.bind(this);
@@ -61,12 +61,12 @@ class BatchNumberSelect extends React.Component {
         }).then((data) => {
             let res = data.data.data, batchNumber = [];
             if(res && res.length) {
-                for(let i = 0; i < res.length; i++) {
+                for(let i = 0; i < 7; i++) {
                     batchNumber.push(res[i].defaultValue);
                 }
             }
             this.setState({
-                data: res,
+                data: res.slice(0,7),
                 batchNumber: batchNumber
             })
         })
