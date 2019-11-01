@@ -1,6 +1,9 @@
 import React,{Component} from 'react'
 import {Select,Input,DatePicker,Tabs}  from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
+import CancleButton from '../../../BlockQuote/cancleButton'
+import SaveButton from '../../../BlockQuote/saveButton'
+import NewButton from '../../../BlockQuote/newButton'
 import AddSearch from './addSearch'
 import SingleCrystal from './singleCrystal/singleCrystal'
 import MixSalt from './mixSalt/mixSalt'
@@ -41,6 +44,16 @@ class CostProcessAdd extends Component{
                         <TabPane key='5' tab='烘干工序'> <DryProcess/> </TabPane>
                         <TabPane key='6' tab='其他'> <Other/>  </TabPane>
                     </Tabs>
+                    <span style={{bottom:'10px',position:'absolute',left:'15px'}}>
+                    <CancleButton/>
+                    </span>
+                    <span style={{bottom:'0',position:'absolute',right:'15px'}}>
+                        
+                        <span >
+                            <SaveButton />
+                            <NewButton name='提交' />
+                        </span>
+                    </span>
                 </div>
             </div>
         )

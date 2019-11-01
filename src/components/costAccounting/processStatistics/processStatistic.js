@@ -5,12 +5,14 @@ import NewButton from '../../BlockQuote/newButton'
 import Search from './search'
 import PendSubmit from './pendSubmit/pendSubmit'
 import StatisticDone from './statisticDone/ststisticDone'
+
 const { TabPane } = Tabs;
+
 class ProcessStatistics extends Component{
     constructor(props){
         super(props);
         this.state={
-            loading:false
+            loading:false,
         }
         this.judgeOperation=this.judgeOperation.bind(this);
         this.handleAdd=this.handleAdd.bind(this);
@@ -39,7 +41,7 @@ class ProcessStatistics extends Component{
                     <div className='clear'></div>
                     <Tabs defaultActiveKey="1">
                         <TabPane tab='待提交' key='1'>
-                            <PendSubmit/>
+                            <PendSubmit history={this.props.history}/>
                         </TabPane>
                         <TabPane tab='已统计' key='2'>
                             <StatisticDone/>
