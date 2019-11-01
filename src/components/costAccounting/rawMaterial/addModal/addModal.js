@@ -63,7 +63,6 @@ class AddModal extends React.Component {
         this.setState({
             code: code
         })
-        console.log('code=',code)
     }
 
     constructor(props) {
