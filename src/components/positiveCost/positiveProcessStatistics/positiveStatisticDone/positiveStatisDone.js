@@ -1,4 +1,4 @@
-import React,{Componet, Component} from 'react'
+import React,{Component} from 'react'
 import {Spin,Table} from 'antd'
 import Detail from './detail'
 const data=[{
@@ -24,7 +24,7 @@ const data=[{
     Cometal:'7.1',
     Mnmetal:'7.6'
 }]
-class StatisticDone extends Component{//已统计
+class PositiveStatisticDone extends Component{//已统计
     constructor(props){
         super(props);
         this.state={
@@ -87,6 +87,7 @@ class StatisticDone extends Component{//已统计
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
                     <Table
+                    rowKey={record=>record.id}
                     dataSource={this.state.data}
                     columns={this.columns}
                     size='small'
@@ -96,4 +97,4 @@ class StatisticDone extends Component{//已统计
         );
     }
 }
-export default StatisticDone
+export default PositiveStatisticDone

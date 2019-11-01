@@ -16,7 +16,7 @@ const data=[{
     endTime:'2019-01-01',
 
 }]
-class PendSubmit extends Component{//待提交
+class PositivePendSubmit extends Component{//待提交
     constructor(props){
         super(props);
         this.state={
@@ -94,4 +94,4 @@ class PendSubmit extends Component{//待提交
         );
     }
 }
-export default PendSubmit
+export default PositivePendSubmit
