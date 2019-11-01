@@ -28,6 +28,7 @@
     border-top: none !important;
     border-bottom: none !important;
     box-sizing: border-box !important;
+    color: white
 }
 
 .productLine tbody td{

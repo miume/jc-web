@@ -65,7 +65,7 @@ class Detail extends  React.Component{
                         code: arr['code'],
                         fixedassetsCode: arr['fixedassetsCode'],
                         deviceName: arr['deviceName'],
-                        scanTime:arr['scanTime'],
+                        finishTime:arr['finishTime'],
                         spotcheckPeople:res.list[i].spotPeople,
                         confirmTime:arr['confirmTime'],
                         confirmPeople:res.list[i].confirmPeople,

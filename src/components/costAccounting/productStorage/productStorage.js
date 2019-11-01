@@ -37,7 +37,7 @@ class ProductStorage extends React.Component{
             flag: 1, //用来表示当前所在tab页
         };
         this.tabChange = this.tabChange.bind(this);
-        // this.handleClick = this.handleClick.bind(this);
+        this.handleClick = this.handleClick.bind(this);
         // this.handleAnalysisClick = this.handleAnalysisClick.bind(this);
         this.getUnSubmittedData = this.getUnSubmittedData.bind(this);
         this.getStatisticsData = this.getStatisticsData.bind(this);
@@ -49,7 +49,7 @@ class ProductStorage extends React.Component{
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    {/* <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.handleClick}/> */}
+                    <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.handleClick}/>
                     <Search flag={true}/>
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
@@ -86,6 +86,13 @@ class ProductStorage extends React.Component{
         } else {
             this.getStatisticsData();
         }
+    }
+    /**点击新增按钮
+     * record用来区分编辑和新增
+     * */
+    handleClick(record = {}) {
+        let pathName = record && record.code ? `/productAddModal/${record.code}` : '/productAddModal'
+        this.props.history.push({pathname: pathName})
     }
 }
 

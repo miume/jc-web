@@ -1,7 +1,6 @@
 import React from "react";
-import {Modal, Input,message,Select,Checkbox } from 'antd';
+import {Modal,Select,message,Input } from 'antd';
 import axios from 'axios';
-import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 
@@ -17,7 +16,22 @@ class AddModal extends React.Component{
         }
     }
     showModal = () => {
-        this.setState({ visible: true });
+        axios({
+            url:`${this.url.precursorMaterialType.getRecordById}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:this.props.code}
+        }).then((data)=>{
+            const res = data.data.data;
+            // console.log(res)
+            this.setState({
+                visible:true,
+                source:res.dataType,
+                type:res.materialTypeName
+            })
+        })
     };
     handleCancel = () =>{
         this.setState({
@@ -28,16 +42,16 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
-        var data = {dataType:this.state.source,materialTypeName:this.state.type};
+        var data = {code:this.props.code,dataType:this.state.source,materialTypeName:this.state.type};
         axios({
-            url:`${this.url.precursorMaterialType.add}`,
-            method:"post",
+            url:`${this.url.precursorMaterialType.update}`,
+            method:"put",
             headers:{
                 'Authorization':this.url.Authorization
             },
             data:data
         }).then((data)=>{
-            message.info("新增成功");
+            message.info("编辑成功");
             this.props.fetch();
             this.setState({
                 visible:false,
@@ -66,7 +80,7 @@ class AddModal extends React.Component{
         //   ];
         return(
             <span>
-                <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
+                <span className="blue" onClick={this.showModal}>编辑</span>
                 <Modal
                     visible={this.state.visible}
                     closable={false}
@@ -82,8 +96,8 @@ class AddModal extends React.Component{
                     材料类别：<Input value={this.state.type} onChange={this.onChange} placeholder="请输入材料类别" style={{width:"83%"}}/>
                     <br /><br/>
                     物料来源：<Select onChange={this.change} value={this.state.source} placeholder="请选择生产线" style={{width:"83%"}}>
-                        <Select.Option value="1">补料</Select.Option>
-                        <Select.Option value="0">仓库领料</Select.Option>
+                        <Select.Option value={1}>补料</Select.Option>
+                        <Select.Option value={0}>仓库领料</Select.Option>
                     </Select>
                 </Modal>
             </span>

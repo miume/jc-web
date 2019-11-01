@@ -92,24 +92,24 @@ class BatchSelect extends React.Component{
                         rumaterial:res[key]["defaultValue"]
                     })
                 }
-                if(res[key]["rule"]=="工序"){
-                    this.setState({
-                        process:res[key]["values"],
-                        ruprocess:res[key]["defaultValue"]
-                    })
-                }
-                if(res[key]["rule"]=="槽次"){
-                    this.setState({
-                        slot:res[key]["values"],
-                        ruslot:res[key]["defaultValue"]
-                    })
-                }
-                if(res[key]["rule"]=="槽号"){
-                    this.setState({
-                        slotNum:res[key]["values"],
-                        ruslotNum:res[key]["defaultValue"]
-                    })
-                }
+                // if(res[key]["rule"]=="工序"){
+                //     this.setState({
+                //         process:res[key]["values"],
+                //         ruprocess:res[key]["defaultValue"]
+                //     })
+                // }
+                // if(res[key]["rule"]=="槽次"){
+                //     this.setState({
+                //         slot:res[key]["values"],
+                //         ruslot:res[key]["defaultValue"]
+                //     })
+                // }
+                // if(res[key]["rule"]=="槽号"){
+                //     this.setState({
+                //         slotNum:res[key]["values"],
+                //         ruslotNum:res[key]["defaultValue"]
+                //     })
+                // }
             }
         })
         // axios({
@@ -234,7 +234,9 @@ class BatchSelect extends React.Component{
     }
     onCenter = ()=>{
         let batchRule = this.state.ruyear+""+this.state.rupro+""+this.state.rumon+""+this.state.ruser+""+this.state.ruproNum+""+this.state.ruproLin+
-        ""+this.state.rumaterial+""+this.state.ruprocess+""+this.state.ruslot+""+this.state.ruslotNum;
+        ""+this.state.rumaterial
+        // +""+this.state.ruprocess+""+this.state.ruslot+""+this.state.ruslotNum;
+        console.log(batchRule)
         this.props.onBatchCenter(batchRule);
         this.setState({
             visible:false,
@@ -286,21 +288,21 @@ class BatchSelect extends React.Component{
             rumaterial:e
         })
     }
-    changeProcess = (e) =>{
-        this.setState({
-            ruprocess:e
-        })
-    }
-    changeSlot = (e) =>{
-        this.setState({
-            ruslot:e
-        })
-    }
-    changeSlotNum = (e) =>{
-        this.setState({
-            ruslotNum:e
-        })
-    }
+    // changeProcess = (e) =>{
+    //     this.setState({
+    //         ruprocess:e
+    //     })
+    // }
+    // changeSlot = (e) =>{
+    //     this.setState({
+    //         ruslot:e
+    //     })
+    // }
+    // changeSlotNum = (e) =>{
+    //     this.setState({
+    //         ruslotNum:e
+    //     })
+    // }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         return(
@@ -310,7 +312,7 @@ class BatchSelect extends React.Component{
                     visible={this.state.visible}
                     closable={false}
                     title="批次规则"
-                    width="1200px"
+                    width="850px"
                     footer={[
                         <CancleButton key='back' handleCancel={this.onCancel}/>,
                         <AddButton key="submit" handleClick={this.onCenter} name='确定' className='fa fa-check' />
@@ -326,9 +328,9 @@ class BatchSelect extends React.Component{
                                 <th>产品型号</th>
                                 <th>生产线</th>
                                 <th>原材料类型</th>
-                                <th>工序</th>
+                                {/* <th>工序</th>
                                 <th>槽次</th>
-                                <th>槽号</th>
+                                <th>槽号</th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -368,7 +370,7 @@ class BatchSelect extends React.Component{
                                         return <Select.Option key={item} value={value}>{value}</Select.Option>
                                     })}
                                     </Select></td>
-                                <td><Select value={this.state.ruprocess} onChange={this.changeProcess} style={{width:"100%"}}>
+                                {/* <td><Select value={this.state.ruprocess} onChange={this.changeProcess} style={{width:"100%"}}>
                                     {this.state.process.map((value,item)=>{
                                         return <Select.Option key={item} value={value}>{value}</Select.Option>
                                     })}
@@ -382,7 +384,7 @@ class BatchSelect extends React.Component{
                                     {this.state.slotNum.map((value,item)=>{
                                         return <Select.Option key={item} value={value}>{value}</Select.Option>
                                     })}
-                                    </Select></td>
+                                    </Select></td> */}
                             </tr>
                         </tbody>
                     </table>

@@ -550,6 +550,35 @@ class Home extends Component {
             /**出库点*/
             endPosition: {
                 getAllByOutType: `${server}/jc/common/endPosition`
+            },
+            /**材料类别 */
+            precursorMaterialType:{
+                add:`${server}/jc/common/precursorMaterialType/add`,
+                all:`${server}/jc/common/precursorMaterialType/all`,
+                delete:`${server}/jc/common/precursorMaterialType/delete`,
+                getRecordById:`${server}/jc/common/precursorMaterialType/getRecordById`,
+                getRecordsByTypes:`${server}/jc/common/precursorMaterialType/getRecordsByTypes`,
+                ids:`${server}/jc/common/precursorMaterialType/ids`,
+                page:`${server}/jc/common/precursorMaterialType/page`,
+                update:`${server}/jc/common/precursorMaterialType/update`
+            },
+            /**生产线合成槽对照表 */
+            techLineCellMap:{
+                add:`${server}/jc/common/techLineCellMap/add`,
+                delete:`${server}/jc/common/techLineCellMap/delete`,
+                getRecordById:`${server}/jc/common/techLineCellMap/getRecordById`,
+                ids:`${server}/jc/common/techLineCellMap/ids`,
+                page:`${server}/jc/common/techLineCellMap/page`,
+                update:`${server}/jc/common/techLineCellMap/update`
+            },
+            /**原材料名称 */
+            precursorRawMaterial:{
+                add:`${server}/jc/common/precursorRawMaterial/add`,
+                deleteById:`${server}/jc/common/precursorRawMaterial/deleteById`,
+                deleteByIds:`${server}/jc/common/precursorRawMaterial/deleteByIds`,
+                getOne:`${server}/jc/common/precursorRawMaterial/getOne`,
+                page:`${server}/jc/common/precursorRawMaterial/page`,
+                update:`${server}/jc/common/precursorRawMaterial/update`
             }
         }
         localStorage.setItem('status',JSON.stringify(status));
