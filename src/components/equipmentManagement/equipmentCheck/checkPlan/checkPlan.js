@@ -127,7 +127,7 @@ class CheckPlan extends React.Component {
             this.setState({
                 departName:item.value,
                 deptCode:code,
-                parentCode:item.parentCode
+                parentCode:(item.parentCode===0||item.parentCode==='0')?code:item.parentCode
             })
         } else {
             item.isSelect = false;
