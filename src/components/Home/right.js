@@ -113,6 +113,11 @@ import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/stat
 
 import ProductStorage from "../costAccounting/productStorage/productStorage"
 import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
+import StorageStatistical from "../costAccounting/productStorage/statisticalAnalysis/statisticalAnalysis"
+
+import ExcipientStatistics from "../costAccounting/excipientStatistics/excipientStatistics"
+import ExcipientStatisticsAnalysis from "../costAccounting/excipientStatistics/statisticalAnalysis/statisticalAnalysis"
+import ExcipientStatisticsAddModal from "../costAccounting/excipientStatistics/addModal/addModal"
 class Right extends React.Component {
     render() {
         const data = [{
@@ -560,6 +565,18 @@ class Right extends React.Component {
         },{
             path:'/productAddModal',
             component:ProductAddModal
+        },{
+            path:"/storageStatistical",
+            component:StorageStatistical
+        },{
+            path:"/excipientStatistics",
+            component:ExcipientStatistics
+        },{
+            path:"/excipientStatisticsAnalysis",
+            component:ExcipientStatisticsAnalysis
+        },{
+            path:"/excipientStatisticsAddModal",
+            component:ExcipientStatisticsAddModal
         }];
         return (
             <div className="rightDiv">
