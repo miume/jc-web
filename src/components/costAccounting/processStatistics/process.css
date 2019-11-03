@@ -1,5 +1,4 @@
 
-
 .process-add-head-date{
     width: 220px;
     margin-right:15px
@@ -11,4 +10,15 @@
 .statis-processCompare-search{
    text-align: center
 }
+
+.process-statisDone-detail span{
+    margin-right: 100px
+}
+.process-statisDone-detail1 span{
+    margin-right: 20px
+}
+.process-add-process span{
+    margin-right: 10px
+}
+
 
