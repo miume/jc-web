@@ -2,27 +2,29 @@ import React from 'react';
 import {Button, Spin, Tabs} from "antd";
 import BlockQuote from "../../BlockQuote/blockquote";
 import NewButton from "../../BlockQuote/newButton";
+import Search from "./search";
 import Submitted from './submit/submit';
 import Statistics from './statistics/statistics';
-import Search from "./search"
 
 const {TabPane} = Tabs;
 const data = [{
-    code: 1,
-    index: 1,
+    code:1,
+    index:1,
     periodName: '周',
     lineName: 2,
     start: '2019-10-01',
     end: '2019-10-01',
-    name:"前驱体",
-    productType:"5503",
-    weight:"360",
-    Ni:"7.5",
-    Co:"7.1",
-    Mn:"7.6"
+    region:"入库量",
+    count:100,
+    ammonia:55,
+    alkali:45,
+    solution:"12#氨碱使用量",
+    weight:100,
+    ammConcent:5,
+    alkConcent:5,
 }]
 
-class ProductStorage extends React.Component{
+class ExcipientStatistics extends React.Component{
     url;
     componentWillUnmount() {
         this.setState(() => {
@@ -77,7 +79,7 @@ class ProductStorage extends React.Component{
     }
 
     /**标签页切换*/
-    tabChange(key) {
+    tabChange=(key)=>{
         console.log('标签页切换为：',key)
         this.setState({
             flag: key
@@ -89,15 +91,15 @@ class ProductStorage extends React.Component{
         }
     }
     statisticalAnalysis=()=>{
-        this.props.history.push({pathname:'/storageStatistical'})
+        this.props.history.push({pathname:'/excipientStatisticsAnalysis'})
     }
     /**点击新增按钮
      * record用来区分编辑和新增
      * */
     handleClick(record = {}) {
-        let pathName = record && record.code ? `/productAddModal/${record.code}` : '/productAddModal'
+        let pathName = record && record.code ? `/excipientStatisticsAddModal/${record.code}` : '/excipientStatisticsAddModal'
         this.props.history.push({pathname: pathName})
     }
 }
 
-export default ProductStorage
+export default ExcipientStatistics
