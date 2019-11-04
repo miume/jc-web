@@ -113,7 +113,8 @@ class Home extends Component {
                 getAll:`${server}/jc/common/sampleDeliveringRecord`,
                 accept:`${server}/jc/common/sampleDeliveringRecord/accept`,
                 getAllBypages:`${server}/jc/common/sampleDeliveringRecord/pages`,
-                rawStandard:`${server}/jc/common/sampleDeliveringRecord/rawStandard`
+                rawStandard:`${server}/jc/common/sampleDeliveringRecord/rawStandard`,
+                getPageByBatch:`${server}/jc/common/sampleDeliveringRecord/getPageByBatch`
             },
             /**设备指导 */
             instructor:{

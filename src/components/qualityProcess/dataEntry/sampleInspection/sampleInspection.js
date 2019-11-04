@@ -273,18 +273,19 @@ class SampleInspection extends React.Component {
 
     searchEvent(params = {}) {
         const ope_name = this.state.searchContent;
+        console.log(params)
         axios({
-            url: `${this.url.sampleInspection.getAllBypages}`,
+            url: `${this.url.sampleInspection.getPageByBatch}`,
             method: 'get',
             headers: {
                 'Authorization': this.Authorization
             },
             params: {
-                pageSize: params.pageSize,
-                pageNumber: params.pageNumber,
-                factoryName: ope_name,
-                sortField: 'id',
-                sortType: 'desc',
+                page: 1,
+                size: 10,
+                batch: ope_name,
+                // sortField: 'id',
+                // sortType: 'desc',
             },
             type: 'json',
         }).then((data) => {
@@ -294,7 +295,7 @@ class SampleInspection extends React.Component {
                 this.pagination.total = res.total;
                 this.pagination.current = res.pageNumber
                 for (var i = 1; i <= res.list.length; i++) {
-                    res.list[i - 1]['index'] = (res.prePage) * 10 + i;
+                    res.list[i - 1]['index'] = i;
                 }
                 this.setState({
                     dataSource: res.list,
@@ -417,7 +418,7 @@ class SampleInspection extends React.Component {
                         deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation, 'DELETE')}
                     />
-                    <SearchCell name='请输入工厂名' searchEvent={this.searchEvent}
+                    <SearchCell name='请输入编号' searchEvent={this.searchEvent}
                                 searchContentChange={this.searchContentChange} fetch={this.fetch}
                                 flag={this.judgeOperation(this.operation, 'QUERY')}/>
                     <div className='clear'></div>
