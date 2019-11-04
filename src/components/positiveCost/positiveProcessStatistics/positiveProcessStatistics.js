@@ -18,7 +18,7 @@ class PositiveProcessStatistics extends Component{
         this.statisticalAnalysis=this.statisticalAnalysis.bind(this);
     }
     handleAdd(){
-
+        this.props.history.push({pathname:'/positiveAdd'})
     }
     statisticalAnalysis(){
 
@@ -34,7 +34,7 @@ class PositiveProcessStatistics extends Component{
             <div>
                 <Blockquote name={current.menuName} menu={current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <NewButton name='新增' handleClick={this.handleAdd}/>
+                    <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd}/>
                     <NewButton name='统计分析' handleClick={this.statisticalAnalysis}/>
                     <Search flag={this.judgeOperation(this.operation,'QUERY')}/>
                     <div className='clear'></div>

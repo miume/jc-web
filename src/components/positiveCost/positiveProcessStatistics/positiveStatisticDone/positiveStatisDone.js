@@ -8,10 +8,7 @@ const data=[{
     beginTime:'2019-01-01',
     endTime:'2019-01-01',
     process:'单晶体配置',
-    subtotal:'360m³',
-    Nimetal:'7.5',
-    Cometal:'7.1',
-    Mnmetal:'7.6'
+    productLine:'F#生产线'
 },{
     id:'2',
     periodType:'周',
@@ -19,10 +16,7 @@ const data=[{
     beginTime:'2019-01-01',
     endTime:'2019-01-01',
     process:'单晶体配置',
-    subtotal:'360m³',
-    Nimetal:'7.5',
-    Cometal:'7.1',
-    Mnmetal:'7.6'
+    productLine:'F#生产线'
 }]
 class PositiveStatisticDone extends Component{//已统计
     constructor(props){
@@ -52,25 +46,13 @@ class PositiveStatisticDone extends Component{//已统计
             dataIndex:'endTime',
             key:'endTime'
         },{
-            title:'过程工序',
+            title:'工序',
             dataIndex:'process',
             key:'process'
         },{
-            title:'小计值',
-            dataIndex:'subtotal',
-            key:'subtotal'
-        },{
-            title:'Ni金属量(T)',
-            dataIndex:'Nimetal',
-            key:'Nimetal'
-        },{
-            title:'Co金属量(T)',
-            dataIndex:'Cometal',
-            key:'Cometal'
-        },{
-            title:'Mn金属量(T)',
-            dataIndex:'Mnmetal',
-            key:'Mnmetal'
+            title:'产线',
+            dataIndex:'productLine',
+            key:'productLine'
         },{
             title:'操作',
             dataIndex:'operation',

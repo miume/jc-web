@@ -113,6 +113,8 @@ import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/stat
 
 import ProductStorage from "../costAccounting/productStorage/productStorage"
 import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
+
+import PositiveAdd from '../positiveCost/positiveProcessStatistics/positiveAdd/positiveAdd'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -560,6 +562,9 @@ class Right extends React.Component {
         },{
             path:'/productAddModal',
             component:ProductAddModal
+        },{
+            path:'/positiveAdd',
+            component:PositiveAdd
         }];
         return (
             <div className="rightDiv">
