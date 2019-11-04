@@ -4,23 +4,23 @@ import CancleButton from '../../../BlockQuote/cancleButton'
 import '../../../costAccounting/processStatistics/process.css'
 
 const data=[{
-    id:'1',
-    solution:'Mn溶液',
-    volume:'100',
-    concentration:'5',
-    metal:'5'
+    index:'1',
+    materiaType:'前驱体',
+    pick:'100',
+    consume:'5',
+    balance:'5'
 },{
-    id:'2',
-    solution:'Co溶液',
-    volume:'100',
-    concentration:'5',
-    metal:'5'
+    index:'2',
+    materiaType:'碳酸锂',
+    pick:'100',
+    consume:'5',
+    balance:'5'
 },{
-    id:'3',
-    solution:'Ni溶液',
-    volume:'100',
-    concentration:'5',
-    metal:'5'
+    index:'3',
+    materiaType:'布料袋',
+    pick:'100',
+    consume:'5',
+    balance:'5'
 }]
 class Detail extends Component{
     constructor(props){
@@ -31,25 +31,25 @@ class Detail extends Component{
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id',
+            dataIndex:'index',
+            key:'index',
 
         },{
-            title:'溶液',
-            dataIndex:'solution',
-            key:'solution',
+            title:'物料种类',
+            dataIndex:'materiaType',
+            key:'materiaType',
         },{
-            title:'体积 (m³)',
-            dataIndex:'volume',
-            key:'volume',
+            title:'领料量(kg)',
+            dataIndex:'pick',
+            key:'pick',
         },{
-            title:'浓度 (g/L)',
-            dataIndex:'concentration',
-            key:'concentration',
+            title:'消耗量(kg)',
+            dataIndex:'consume',
+            key:'consume',
         },{
-            title:'金属量 (kg)',
-            dataIndex:'metal',
-            key:'metal',
+            title:'结存量(kg)',
+            dataIndex:'balance',
+            key:'balance',
         },]
         this.showModal=this.showModal.bind(this);
         this.detail=this.detail.bind(this);
@@ -73,7 +73,7 @@ class Detail extends Component{
             <span>
                 <span className='blue' onClick={this.showModal}>详情</span>
                 <Modal
-                 title='在制品详情'
+                 title='在制品管理详情'
                  width='1000px'
                  visible={this.state.visible}
                  closable={false} maskClosable={false} 
@@ -87,21 +87,21 @@ class Detail extends Component{
                         <span>开始时间 : {this.props.record.beginTime}</span>
                         <span>结束时间 : {this.props.record.endTime}</span>
                         <span>过程工序 : {this.props.record.process}</span>
+                        <span style={{display:'inline-block',marginTop:'10px'}}>产线 : {this.props.record.productLine}</span>
                     </div>
                     <div style={{marginTop:'30px'}}></div>
                     <Table
                     dataSource={this.state.data}
-                    rowKey={record=>record.id}
+                    rowKey={record=>record.index}
                     columns={this.columns}
                     footer={() => {
                         return(
                             <div className='process-statisDone-detail1'>
-                                <span >小计</span>
+                               <span >小计</span>
                                <span style={{float:'right'}}> 
-                                   <span >体积 : 100m³</span>
-                                <span >Ni : 5T</span>
-                                <span >Co : 5T</span>
-                                <span >Mn : 5T</span>
+                                    <span >总领料量 : 10kg</span>
+                                    <span >总消耗量 : 10kg</span>
+                                    <span >总结存量 : 10kg</span>
                                 </span>
                             </div>
                         );
