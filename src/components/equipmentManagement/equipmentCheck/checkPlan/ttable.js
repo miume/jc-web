@@ -83,7 +83,7 @@ class TTable extends React.Component{
                     columns={this.columns}
                     size="default"
                     bordered
-                    scroll={{ y: 450 }}
+                    scroll={{ y: 400 }}
                     rowKey={record => record.code}
                 />
             </div>
