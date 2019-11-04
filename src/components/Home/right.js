@@ -115,6 +115,11 @@ import ProductStorage from "../costAccounting/productStorage/productStorage"
 import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
 
 import PositiveAdd from '../positiveCost/positiveProcessStatistics/positiveAdd/positiveAdd'
+import StorageStatistical from "../costAccounting/productStorage/statisticalAnalysis/statisticalAnalysis"
+
+import ExcipientStatistics from "../costAccounting/excipientStatistics/excipientStatistics"
+import ExcipientStatisticsAnalysis from "../costAccounting/excipientStatistics/statisticalAnalysis/statisticalAnalysis"
+import ExcipientStatisticsAddModal from "../costAccounting/excipientStatistics/addModal/addModal"
 class Right extends React.Component {
     render() {
         const data = [{
@@ -565,6 +570,18 @@ class Right extends React.Component {
         },{
             path:'/positiveAdd',
             component:PositiveAdd
+        },{
+            path:"/storageStatistical",
+            component:StorageStatistical
+        },{
+            path:"/excipientStatistics",
+            component:ExcipientStatistics
+        },{
+            path:"/excipientStatisticsAnalysis",
+            component:ExcipientStatisticsAnalysis
+        },{
+            path:"/excipientStatisticsAddModal",
+            component:ExcipientStatisticsAddModal
         }];
         return (
             <div className="rightDiv">
