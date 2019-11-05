@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, DatePicker, Select} from "antd";
 import NewButton from "../../BlockQuote/newButton";
 import moment from "moment";
+import SelectPeriod from "./select";
 
 const {RangePicker} = DatePicker;
 const {Option} = Select;
@@ -24,12 +25,12 @@ class Search extends React.Component {
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
         this.onChange =this.onChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
     }
 
     render() {
         const {start, end, dateFormat} = this.state;
         const value = start === undefined || end === undefined || start === "" || end === "" ? null : [moment(start, dateFormat), moment(end, dateFormat)];
+        let {periodCode,staticPeriod} = this.props;
         return (
             <span className={this.props.flag?'searchCell':'hide'}>
                 <RangePicker placeholder={["开始日期","结束日期"]}  onChange={this.onChange}
@@ -37,12 +38,7 @@ class Search extends React.Component {
                              value={value}
                              format={dateFormat}
                 />
-                <Select className={'raw-material-select'}
-                        style={{marginRight: 10}} value={this.state.periodCode} onChange={this.selectChange}>
-                    <Option value={1}>周</Option>
-                    <Option value={2}>月</Option>
-                    <Option value={3}>年</Option>
-                </Select>
+                <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode} selectChange={this.props.selectChange}/>
                 <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 <Button
                     type="primary"
@@ -68,14 +64,6 @@ class Search extends React.Component {
         this.setState({
             start: dateString[0],
             end: dateString[1]
-        })
-    }
-
-    /**监控下拉框的变化*/
-    selectChange(value) {
-        console.log('select=',value)
-        this.setState({
-            periodCode: value
         })
     }
 

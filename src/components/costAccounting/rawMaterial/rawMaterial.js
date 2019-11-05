@@ -5,6 +5,7 @@
 
 import React from 'react';
 import {Button, Spin, Tabs} from "antd";
+import axios from 'axios';
 import BlockQuote from "../../BlockQuote/blockquote";
 import Search from "./search";
 import './rawMaterial.css';
@@ -40,24 +41,29 @@ class RawMaterial extends React.Component {
         this.state = {
             loading: false,
             flag: 1, //用来表示当前所在tab页
+            staticPeriod: [],
+            periodCode: ''
         };
         this.tabChange = this.tabChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleAnalysisClick = this.handleAnalysisClick.bind(this);
         this.getUnSubmittedData = this.getUnSubmittedData.bind(this);
         this.getStatisticsData = this.getStatisticsData.bind(this);
+        this.getAllStaticPeriod = this.getAllStaticPeriod.bind(this);
+        this.selectChange = this.selectChange.bind(this);
     }
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
+        let {loading,periodCode,staticPeriod} = this.state;
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <Spin spinning={loading} wrapperClassName='rightDiv-content'>
                     <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.handleClick}/>
                     <Button onClick={this.handleAnalysisClick} type='ant-btn ant-btn-primary'>统计分析</Button>
-                    <Search flag={true}/>
+                    <Search flag={true} periodCode={periodCode} staticPeriod={staticPeriod} selectChange={this.selectChange}/>
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
                         <TabPane tab={'待提交'} key={'1'}>
@@ -74,6 +80,28 @@ class RawMaterial extends React.Component {
 
     componentDidMount() {
         this.getUnSubmittedData();
+        this.getAllStaticPeriod();
+    }
+
+    /**获取所有统计周期数据*/
+    getAllStaticPeriod() {
+        axios({
+            url:`${this.url.staticPeriod.all}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data, periodCode = '';
+            if(res && res.length) {
+                periodCode = res[0].code;
+                this.setState({
+                    staticPeriod: res,
+                    periodCode: periodCode
+                })
+            }
+        })
+
     }
 
     /**界面加载获取未提交数据*/
@@ -88,7 +116,6 @@ class RawMaterial extends React.Component {
 
     /**标签页切换*/
     tabChange(key) {
-        console.log('标签页切换为：',key)
         this.setState({
             flag: key
         });
@@ -104,12 +131,29 @@ class RawMaterial extends React.Component {
      * */
     handleClick(record = {}) {
         let pathName = record && record.code ? `/addModal/${record.code}` : '/addModal';
-        this.props.history.push({pathname: pathName})
+        this.props.history.push({
+            pathname: pathName,
+            state: {
+                staticPeriod: this.state.staticPeriod
+            }
+        })
     }
 
     /**点击统计分析*/
     handleAnalysisClick() {
-        this.props.history.push({pathname: '/statisticalAnalysis'})
+        this.props.history.push({
+            pathname: '/statisticalAnalysis',
+            state: {
+                staticPeriod: this.state.staticPeriod
+            }
+        })
+    }
+
+    /**监控统计周期下拉框的变化*/
+    selectChange(value) {
+        this.setState({
+            periodCode: value
+        })
     }
 }
 

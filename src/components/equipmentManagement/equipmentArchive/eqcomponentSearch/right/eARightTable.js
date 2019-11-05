@@ -70,19 +70,15 @@ class EARightTable extends Component {
                     />
                     <Divider type="vertical"/>
                     <Edit
-                        // deviceName={this.props.deviceName}
-                        // getRightData={this.props.getRightData}
                         url={this.props.url}
                         comFlag={true}
                         record={record}
-                        // getTableData={this.props.getTableData}
                         depCode={this.props.depCode}
                         fetch={this.props.fetch}
                     />
                     <Delete
                         record={record}
                         flag={true}
-                        // flag={this.props.judgeOperation(this.props.operation,'DELETE')}
                         handleDelete={this.handleDelete}
                     />
                 </span>
@@ -191,15 +187,13 @@ class EARightTable extends Component {
         return (
             <div className="eA-right-bottom">
                 <Table
-                    // rowKey={record => record.code}
+                    rowKey={record => record.code}
                     rowSelection={this.props.rowSelection}
                     dataSource={this.props.dataSource}
                     columns={this.columns}
                     size="small"
                     bordered
-                    scroll={{y: 360}}
-
-                    onChange={this.props.handleTableChange}s
+                    onChange={this.props.handleTableChange}
                     pagination={this.props.pagination}
                 />
             </div>
