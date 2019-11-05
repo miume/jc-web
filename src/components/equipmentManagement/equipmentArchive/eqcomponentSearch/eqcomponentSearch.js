@@ -85,8 +85,6 @@ class EqcomponentSearch extends React.Component{
     }
     handleTableChange = (pagination) => {
         this.pagination = pagination;
-        const {pageChangeFlag} = this.state;
-        console.log(this.state.searchContent)
         if (this.state.flag===1) {
             this.getTableData({
                 size: pagination.pageSize,
@@ -95,7 +93,6 @@ class EqcomponentSearch extends React.Component{
                 accName: this.state.searchContent,
 
             })
-            console.log('11111111111')
         } else {
             this.getTableData2({
                 size: pagination.pageSize,
@@ -103,7 +100,6 @@ class EqcomponentSearch extends React.Component{
                 unitName: this.state.searchContent,
                 accName: this.state.searchContent,
             })
-            console.log('222222222')
         }
     };
 
@@ -149,7 +145,6 @@ class EqcomponentSearch extends React.Component{
                     rightTableData3: rightTableData,
                     deviceName: params.deviceName
                 });
-                console.log(rightTableData)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({
@@ -204,8 +199,6 @@ class EqcomponentSearch extends React.Component{
                     rightTableData2: rightTableData,
                     deviceName: params.deviceName
                 });
-                console.log(rightTableData)
-                console.log(this.state. rightTableData2)
             } else {
                 message.info('查询失败，请刷新下页面！')
                 this.setState({

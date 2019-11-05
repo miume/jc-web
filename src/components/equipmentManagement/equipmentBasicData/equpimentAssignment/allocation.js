@@ -117,7 +117,7 @@ class Allocation extends React.Component{
            }
            this.saveEvent(deviceIds);
        }
-   }
+   };
 
     saveEvent = (deviceIds) => {
        axios({
@@ -135,6 +135,9 @@ class Allocation extends React.Component{
        }).then( data => {
            if(data.status === 200) {
                message.info('保存成功！');
+               this.props.getTableData({
+                   proId: this.props.clickId
+               })
                this.setState({
                    visible:false,
                    dataSource1:[],

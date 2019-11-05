@@ -41,6 +41,12 @@ class InterTable extends React.Component{
             return deliveryFactoryName?deliveryFactoryName:'无';
         }
     },{
+        title: '编号',
+        dataIndex: 'batch',
+        key: 'batch',
+        align:'center',
+        width: '12%'
+    },{
         title: '批号',
         dataIndex: 'commonBatchNumber.batchNumber',
         key: 'commonBatchNumber.batchNumber',
@@ -89,7 +95,7 @@ class InterTable extends React.Component{
         dataIndex: 'commonBatchNumber.status',
         key: 'commonBatchNumber.status',
         align:'center',
-        width: '8%',
+        width: '10%',
         render:(state,record) => {
             let text = record.isFullAudit === 0 ? '(未完成)' : '(已完成)';
             if(state === 2 || state === 3)
@@ -182,6 +188,7 @@ class InterTable extends React.Component{
                 onChange={this.props.handleTableChange}
                 size="small"
                 bordered
+                scroll={{x:1600}}
             />
         );
     }

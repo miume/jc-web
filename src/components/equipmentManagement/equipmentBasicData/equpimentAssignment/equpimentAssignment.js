@@ -63,7 +63,7 @@ class EqupimentAssignment extends React.Component {
                                 {
                                     this.state.processData.map(e=> {
                                         return <Eqblock key={e.code} id={e.code}  colorFlag={e.code === parseInt(this.state.clickId)?"equipment-button ed-blue":"equipment-button ed-grey"}
-                                                        deviceName={e.ruleValue} changeEqname={this.changeEqname} />
+                                                        deviceName={e.ruleDesc} changeEqname={this.changeEqname} />
                                     })
                                 }
                             </div>
@@ -73,7 +73,7 @@ class EqupimentAssignment extends React.Component {
                     {/*右边表格*/}
                     <Spin spinning={this.state.tableFlag} wrapperClassName='equipment-right'>
                         {/*分配按钮 */}
-                        <Allocation url={this.url} clickId={this.state.clickId} clickName={this.state.clickName} />
+                        <Allocation url={this.url} clickId={this.state.clickId} clickName={this.state.clickName} getTableData={this.getTableData}/>
 
                         {/*搜索模块*/}
                         <SearchCell
@@ -121,7 +121,7 @@ class EqupimentAssignment extends React.Component {
                     res[i]["index"] = i + 1;
                     if( i === 0 ) {
                         clickId = res[i].code;
-                        clickName = res[i].ruleValue;
+                        clickName = res[i].ruleDesc;
                     }
                 }
                 this.setState({
@@ -149,6 +149,9 @@ class EqupimentAssignment extends React.Component {
                 searchContent: ''
             })
         }
+        this.setState({
+            tableFlag:true
+        });
         axios({
             url: `${this.url.deviceProcess.getDeviceByProIdByPage}`,
             method:'get',

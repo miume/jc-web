@@ -58,11 +58,12 @@ class AddModal extends React.Component {
     }
 
     componentDidMount() {
-        let path = window.location.pathname.split('/'),
-            code = path.length >= 2 ? path[2] : -1;
+        let location = this.props.location, path = location.pathname.split('/'), periodCode = '',
+            code = path.length >= 2 ? path[2] : -1, staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [];
         this.setState({
-            code: code
-        })
+            code: code,
+            staticPeriod: staticPeriod,
+        });
     }
 
     constructor(props) {
@@ -87,7 +88,7 @@ class AddModal extends React.Component {
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-content'}>
-                    <Search flag={true}/>
+                    <Search flag={true} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode}/>
                     <div className={'raw-material-add-margin'}>
                         <NewButton name={'获取出库数据'} handleClick={this.getStockOutData}/>
                         <Button className='white-button' onClick={this.getPreviousConcentration}>上期浓度</Button>

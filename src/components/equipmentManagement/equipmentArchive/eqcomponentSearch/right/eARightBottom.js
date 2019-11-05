@@ -33,30 +33,6 @@ class EARightBottom extends Component {
         };
         return (
             <div className="eA-right-bottom">
-                {/*<Add*/}
-                {/*    mainCode={this.props.mainCode}*/}
-                {/*    comFlag={this.props.comFlag}*/}
-                {/*    getRightData={this.props.getRightData}*/}
-                {/*    deviceName={this.props.deviceName}*/}
-                {/*    getTableData={this.props.getTableData}*/}
-                {/*    url={this.props.url}*/}
-                {/*    deptCode={this.props.depCode}*/}
-                {/*    addFlag={home.judgeOperation(this.operation, 'SAVE')}*/}
-                {/*    fetch={this.props.fetch}*/}
-                {/*/>*/}
-                {/*<DeleteByIds*/}
-                {/*    selectedRowKeys={this.state.selectedRowKeys}*/}
-                {/*    deleteByIds={this.deleteByIds}*/}
-                {/*    cancel={this.cancle}*/}
-                {/*    flag={home.judgeOperation(this.operation, 'DELETE')}*/}
-                {/*/>*/}
-
-
-                    {/*<Radio.Group defaultValue="部件" buttonStyle="solid"  onChange={this.radioChange}>*/}
-                    {/*    <Radio.Button value="部件">部件</Radio.Button>*/}
-                    {/*    <Radio.Button value="配件">配件</Radio.Button>*/}
-                    {/*</Radio.Group>*/}
-
                    <div className="eq-aM-search">  </div>
                 <div className="eq-amm-search">
                 <SearchCell
