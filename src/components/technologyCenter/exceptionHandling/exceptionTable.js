@@ -61,10 +61,16 @@ class ExceptionTable extends React.Component {
     }
 
     render() {
+        let {data,selectedRowKeys} = this.props;
+        this.pagination.total = data && data.length ? data.total : 0;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange:this.props.onSelectChange,
+        };
         return (
             <Table rowKey={record => record.code} size={"small"} bordered
                    columns={this.columns} pagination={this.pagination}
-                   dataSource={this.props.data}/>
+                   dataSource={data} rowSelection={rowSelection}/>
         )
     }
 
@@ -72,8 +78,8 @@ class ExceptionTable extends React.Component {
     judgeEditor(flag,record) {
         return (
             <span className={flag?'':'hide'}>
-                <AddModal flag={flag} url={this.url}
-                          data={record} title={'编辑'}/>
+                <AddModal flag={flag} url={this.props.url}
+                          data={record} title={'编辑'} getTableData={this.props.getTableData}/>
                 <Divider type="vertical" />
             </span>
         )
@@ -83,7 +89,7 @@ class ExceptionTable extends React.Component {
     deleteFlag(flag,record) {
         return (
             <span className={flag?'':'hide'}>
-                <Popconfirm title="确定删除?" onConfirm={()=>this.handleDelete(record.id)} okText="确定" cancelText="取消" >
+                <Popconfirm title="确定删除?" onConfirm={()=>this.props.handleDelete(record.code)} okText="确定" cancelText="取消" >
                     <span className='blue'>删除</span>
                 </Popconfirm>
             </span>

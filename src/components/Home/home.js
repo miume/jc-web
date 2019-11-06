@@ -48,6 +48,7 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
+        const server1 = localStorage.getItem('server1');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -580,8 +581,22 @@ class Home extends Component {
                 getOne:`${server}/jc/common/precursorRawMaterial/getOne`,
                 page:`${server}/jc/common/precursorRawMaterial/page`,
                 update:`${server}/jc/common/precursorRawMaterial/update`
+            },
+            /**异常处理模块*/
+            techException: {
+                getAll: `${server}/jc/common/techException/getAll`,
+                page: `${server}/jc/common/techException/page`,
+                techException: `${server}/jc/common/techException`,
+                deleteByIds: `${server}/jc/common/techException/ids`,
+            },
+            /**物料基础*/
+            materialInfo: {
+                page: `${server}/jc/repo/materialInfo/pages`,
+                add: `${server}/jc/repo/materialInfo/add`,
+                materialInfo: `${server}/jc/repo/materialInfo`,
+                all: `${server}/jc/repo/materialInfo/all`,
             }
-        }
+        };
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))

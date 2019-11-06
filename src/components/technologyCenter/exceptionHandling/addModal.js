@@ -22,6 +22,7 @@ class AddModal extends React.Component{
         this.handleCancel = this.handleCancel.bind(this);
         this.renderButton = this.renderButton.bind(this);
         this.editorInit = this.editorInit.bind(this);
+        this.saveData = this.saveData.bind(this);
     }
     render() {
         let {phenomenon, reason, process, proProcess} = this.state;
@@ -104,17 +105,36 @@ class AddModal extends React.Component{
     }
     /**新增一条记录 */
     handleOk() {
-        let {phenomenon, reason, process, proProcess} = this.state;
+        let {phenomenon, reason, process, proProcess} = this.state, {title} = this.props;
         let params = {
-            code: this.props.code,
+            code: this.props.data ? this.props.data.code : '',
             phenomenon: phenomenon,
             reason: reason,
             process: process,
             proProcess: proProcess
         };
-        console.log(params);
+        this.saveData(params,title);
+    }
+
+    /**更新数据或新增数据*/
+    saveData(params,title) {
+        axios({
+            url: `${this.props.url.techException.techException}`,
+            method: title === '编辑' ? 'put' : 'post',
+            header: {
+                'Authorization': this.props.url.Authorization
+            },
+            data: params
+        }).then((data) => {
+            message.info(data.data.message)
+            this.props.getTableData({
+                page: 1,
+                size: 10
+            });
+        });
         this.handleCancel()
     }
+
     /**对应新增确认取消 */
     handleCancel() {
         this.editorInit();
@@ -123,31 +143,9 @@ class AddModal extends React.Component{
         });
     }
 
-    add(){
-        // axios({
-        //     url : `${this.props.url.role.role}`,
-        //     process:'post',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     },
-        //     data:this.formRef.props.form.getFieldsValue(),
-        //     type:'json'
-        // }).then((data) => {
-        //     message.info(data.data.message);
-        //     this.props.fetch({
-        //         pageNumber: 1,
-        //         sortField: 'id',
-        //         sortType: 'desc',
-        //     });
-        // }).catch(function () {
-        //         message.info('新增失败，请联系管理员！');
-        //     });
-    }
-
     /**监控input变化*/
     inputChange(e) {
         let target = e.target, name = target.name, value = target.value;
-        console.log(name,value)
         this.setState({
             [name]: value
         })
