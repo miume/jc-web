@@ -84,7 +84,7 @@ class Detail extends React.Component{
                     checkType:devicePatrolPlanRecordHead.checkType,
                     planDate:devicePatrolPlanRecordHead.planTime,
                     modelName:res.modelName,
-                    setPeople:devicePatrolPlanRecordHead.setPeople,
+                    setPeople:res.tabPeopleName,
                     tabulatedate:devicePatrolPlanRecordHead.tabulatedate
                 })
             }
@@ -131,11 +131,11 @@ class Detail extends React.Component{
                     <div>
                         <span className="headers">所属车间：</span><span className="checkName">{this.state.workshop}</span>
                         <span className="headers">计划名称：</span><span className="checkName">{this.state.planName}</span>
-                        <span className="headers">巡检模板名称：</span><span className="checkName">{this.state.modelName}</span>
+                        <span className="headers1">巡检模板名称：</span><span className="checkName">{this.state.modelName}</span>
                         <div>
                             <span className="headers">检查类型：</span><span className="checkName">{this.state.checkType?"机械类":"电气类"}</span>
                             <span className="headers">计划日期：</span><span className="checkName">{this.state.planDate}</span>
-                            <span className="headers1">制表人：</span><span className="checkName">{this.state.setPeople?this.state.setPeople:"管理员"}</span>
+                            <span className="headers1">制表人：</span><span className="checkName">{this.state.setPeople?this.state.setPeople:"空"}</span>
                         </div>
                         <div>
                             <span className="headers">制表日期：</span><span className="checkName">{this.state.tabulatedate?this.state.tabulatedate:"空"}</span>
@@ -160,6 +160,7 @@ class Detail extends React.Component{
                             bordered
                             scroll={{y: 150}}
                             pagination={false}
+                            className={'inspection-detail-table'}
                         />
                     </div>
                 </Modal>

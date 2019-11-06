@@ -52,10 +52,8 @@ class SeDetail extends  React.Component{
             },
         }).then((data) => {
             const res = data.data.data ? data.data.data : [];
-            console.log(res)
 
             if (res) {
-                console.log('11111')
                 var detailData1 = [];
                 var arr1 = res.deviceSpotcheckRecordHead
                 if(arr1['editFlag']===0)
