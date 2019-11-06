@@ -60,7 +60,7 @@ class InspectionRight extends React.Component{
                             searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             flag={true}
-                            type={1}
+                            type={status}
                         />
                     </div>
                     <div className='clear' ></div>

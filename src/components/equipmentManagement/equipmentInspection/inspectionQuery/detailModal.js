@@ -19,6 +19,7 @@ class InspectionDetailModal extends React.Component{
         };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDetail = this.handleDetail.bind(this);
+        this.getFooter = this.getFooter.bind(this);
     }
     /**处理一条详情记录 */
     handleDetail() {
@@ -48,7 +49,7 @@ class InspectionDetailModal extends React.Component{
                 else {checktype1="null"}
                 const detpName=result.detpName;
                 const modelName=result.modelName;
-                const footer1 = `备注: ${devicePatrolPlanRecordHead.patrolComment}`;
+                const footer1 = `备注: ${devicePatrolPlanRecordHead.patrolComment ? devicePatrolPlanRecordHead.patrolComment : '无'}`;
                 const tabPeopleName=result.tabPeopleName;
                 data1.push({
                     key:devicePatrolPlanRecordHead.code,
@@ -101,6 +102,10 @@ class InspectionDetailModal extends React.Component{
     handleCancel() {
         this.setState({visible: false});
     }
+
+    getFooter() {
+        return this.state.footer ? this.state.footer : '无️';
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         if(this.props.status===1){
@@ -135,7 +140,8 @@ class InspectionDetailModal extends React.Component{
                             bordered
                             pagination={false}
                             rowKey={record => record.key}
-                        /><div className="footerofdetail">{this.state.footer}</div>
+                            footer={this.getFooter}
+                        />
 
                         <WhiteSpace />
                         <b>巡检区域</b>
@@ -190,7 +196,8 @@ class InspectionDetailModal extends React.Component{
                                 dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                                 pagination={false}
                                 scroll={{ y: 150 }}
-                            /><div className="footerofdetail">{this.state.footer}</div>
+                                footer={this.getFooter}
+                            />
                         </div>
                         <WhiteSpace />
                         <b>巡检区域</b>
@@ -202,7 +209,7 @@ class InspectionDetailModal extends React.Component{
                                    rowKey={record => record.key}
                                    dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                                    pagination={false}
-                                   scroll={{ y: 50 }}
+                                   scroll={{ y: 150 }}
                             />
                         </div>
                     </div>
@@ -247,7 +254,8 @@ class InspectionDetailModal extends React.Component{
                                 pagination={false}
                                 dataSource={this.state.devicePatrolPlanRecordItemDetailsList}
                                 scroll={{ y: 150 }}
-                            /><div className="footerofdetail">{this.state.footer}</div>
+                                footer={this.getFooter}
+                            />
                         </div>
                         <WhiteSpace />
                         <b>巡检区域</b>
@@ -259,7 +267,7 @@ class InspectionDetailModal extends React.Component{
                                    rowKey={record => record.key}
                                    dataSource={this.state.devicePatrolPlanRecordLocationDetailsList}
                                    pagination={false}
-                                   scroll={{ y: 50 }}
+                                   scroll={{ y: 150 }}
                             />
                         </div>
                     </div>

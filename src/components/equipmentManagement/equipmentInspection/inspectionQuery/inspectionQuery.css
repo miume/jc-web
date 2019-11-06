@@ -23,12 +23,10 @@
     width: 230px;
 }
 .thirdinspectiondetailtable{
-    max-height: 180px;
-    overflow: auto;
+    height: 200px;
 }
 .secondinspectiondetailtable{
-    overflow: auto;
-    max-height: 150px;
+    height: 200px;
 }
 
 .firstinspectiondetailtable .ant-table-thead tr th{

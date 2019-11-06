@@ -595,6 +595,10 @@ class Home extends Component {
                 add: `${server}/jc/repo/materialInfo/add`,
                 materialInfo: `${server}/jc/repo/materialInfo`,
                 all: `${server}/jc/repo/materialInfo/all`,
+            },
+            /**物料类型*/
+            materialType: {
+                all: `${server}/jc/repo/type/tree`,
             }
         };
         localStorage.setItem('status',JSON.stringify(status));

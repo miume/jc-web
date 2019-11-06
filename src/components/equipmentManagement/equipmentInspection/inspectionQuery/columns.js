@@ -133,7 +133,7 @@ export const column1=[{
      }
 }]
 export const acolums=[{
-    title:'巡检记录编号',
+    title:'巡检单号',
     key:'recordCode',
     dataIndex:'recordCode',
     sorter: (a, b) => a.index - b.index,
@@ -215,6 +215,9 @@ export const bcolums=[{
     key:'inspectionResult',
     align:'center',
     width:"20%",
+    render: (text) => {
+        return text === 0 ? '正常' : '异常';
+    }
 },{
     title:'异常原因',
     dataIndex:'reason',
