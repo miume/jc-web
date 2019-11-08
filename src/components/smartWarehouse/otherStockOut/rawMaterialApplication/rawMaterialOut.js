@@ -43,12 +43,12 @@ class RawMaterialOut extends React.Component {
             dataIndex: 'index',
             key: 'index',
             sorter: (a, b) => a.id - b.id,
-            width: '7%'
+            width: '10%'
         }, {
             title: '批号',
-            dataIndex: 'batchNumber',
-            key: 'batchNumber',
-            width: '15%',
+            dataIndex: 'orderNo',
+            key: 'orderNo',
+            width: '20%',
         }, {
             title: '产线',
             dataIndex: 'productionLine',
@@ -56,41 +56,49 @@ class RawMaterialOut extends React.Component {
             width: '10%',
         }, {
             title: '出库点',
-            dataIndex: 'stockOut',
-            key: 'stockOut',
+            dataIndex: 'endPosition',
+            key: 'endPosition',
             width: '10%',
         }, {
             title: '申请人',
-            dataIndex: 'createPersonName',
-            key: 'createPersonName',
+            dataIndex: 'createdPerson',
+            key: 'createdPerson',
             width: '10%'
         }, {
             title: '申请日期',
-            dataIndex: 'createTime',
-            key: 'createTime',
-            width: '15%'
+            dataIndex: 'createdTime',
+            key: 'createdTime',
+            width: '15%',
+            render: (text) => {
+                return text.slice(0,10);
+            }
         }, {
-            title: '审核状态',
-            dataIndex: 'status',
-            key: 'status',
+            title: '状态',
+            dataIndex: 'isFinished',
+            key: 'isFinished',
             width: '10%',
-            render: status => {
-                return this.status[status.toString()];
+            render: text => {
+                if(text === 0) {
+                    return '待出库';
+                } else if (text === 1) {
+                    return '已出库';
+                }
+                return '已保存';
             },
         }, {
-            title: '紧急',
-            dataIndex: 'isUrgent',
-            key: 'isUrgent',
-            width: '7%',
-            render: isUrgent => isUrgent ?
-                <span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span> :
-                <span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
-        }, {
+        //     title: '紧急',
+        //     dataIndex: 'isUrgent',
+        //     key: 'isUrgent',
+        //     width: '7%',
+        //     render: isUrgent => isUrgent ?
+        //         <span className='urgent'><i className="fa fa-circle" aria-hidden="true"></i> 紧急</span> :
+        //         <span><i className="fa fa-circle" aria-hidden="true"></i>正常</span>,
+        // }, {
             title: '操作',
             dataIndex: 'id',
             key: 'id',
             render: (text, record) => {
-                const status = record.status;
+                const status = record.isFinished;
                 const flag = home.judgeOperation(this.operation,'DELETE');
                 return (
                     <span>
@@ -98,16 +106,11 @@ class RawMaterialOut extends React.Component {
                     <span className={flag?'':'hide'}>
                     <Divider type='vertical'></Divider>
                         {
-                            status === 0 || status === 1 || status === 2 || status === 3 ?
-                                <span
-                                    className={status === 0 || status === 1 || status === 2 || status === 3 ? 'notClick' : 'blue'}
-                                    id={record.id}>删除</span>
-                                :
+                            status !== 2 ?
+                                <span className={'notClick'} id={record.id}>删除</span> :
                                 <Popconfirm title='确定删除' onConfirm={() => this.handleDelete(record.id)} okText='确定'
                                             cancelText='取消'>
-                                    <span
-                                        className={status === 0 || status === 1 || status === 2 || status === 3 ? 'notClick' : 'blue'}
-                                        id={record.id}>删除</span>
+                                    <span className={'blue'} id={record.id}>删除</span>
                                 </Popconfirm>
                         }
                     </span>
@@ -126,45 +129,35 @@ class RawMaterialOut extends React.Component {
     /**监控表格变化 */
     handleTableChange(pagination) {
         this.pagination = pagination;
-        const {pageChangeFlag} = this.state;
-        if (pageChangeFlag) {
-            this.props.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
-                personName: this.state.searchContent
-            })
-        } else {
-            this.props.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
-            })
-        }
+        this.props.fetch({
+            size: pagination.pageSize,
+            current: pagination.current,
+            createdPerson: this.state.searchContent
+        })
     }
     /**搜索的重置调用的fetch函数 */
-    fetch(status, flag) {
-        /**如果flag为1 则将分页搜索标志位置为0 并将搜索内容置为空 */
-        if (flag) {
-            this.setState({
-                pageChangeFlag: 0,
-                searchContent: ''
-            })
-        }
-        this.props.fetch();
+    fetch() {
+        /**将搜索内容置为空 */
+        this.setState({
+            searchContent: ''
+        });
+        this.props.fetch({
+            size: this.pagination.pageSize
+        });
     }
     /**单条记录删除 */
     handleDelete(id) {
         axios({
-            url: `${this.props.url.stockOut.repoOut}/${id}`,
+            url: `${this.props.url.stockOut.detail}/${id}`,
             method: 'Delete',
             headers: {
                 'Authorization': this.props.url.Authorization
             }
         }).then((data) => {
-            message.info(data.data.message);
+            message.info(data.data.mesg);
             this.props.fetch({
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-            })
+                size: this.pagination.pageSize
+            });
         }).catch(() => {
             message.info('删除失败，请联系管理员！')
         })
@@ -205,12 +198,10 @@ class RawMaterialOut extends React.Component {
     }
     /**根据货物名称进行搜索 */
     searchEvent() {
-        this.setState({
-            pageChangeFlag: 1
-        })
         this.props.fetch({
-            personName: this.state.searchContent
-        });
+            createdPerson: this.state.searchContent,
+            size: this.pagination.pageSize
+        })
     }
     /**监控checkbox的选中情况 */
     onSelectChange(selectedRowKeys) {
@@ -222,30 +213,30 @@ class RawMaterialOut extends React.Component {
     render() {
         const {selectedRowKeys} = this.state;
         this.status = JSON.parse(localStorage.getItem('status'))
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
-            getCheckboxProps: record => ({
-                disabled: record.status === 0 || record.status === 1 || record.status === 2 || record.status === 3
-            }),
-        };
+        // const rowSelection = {
+        //     selectedRowKeys,
+        //     onChange: this.onSelectChange,
+        //     getCheckboxProps: record => ({
+        //         disabled: record.status === 0 || record.status === 1 || record.status === 2 || record.status === 3
+        //     }),
+        // };
         this.pagination.total = this.props.data.total;
         const current = JSON.parse(localStorage.getItem('current')) ;
         /**获取当前菜单的所有操作权限 */
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <Spin spinning={this.props.loading} wrapperClassName='rightDiv-content'>
-                <DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel}
-                             selectedRowKeys={this.state.selectedRowKeys}
-                             flag={home.judgeOperation(this.operation,'DELETE')}
-                             />
+                {/*<DeleteByIds deleteByIds={this.deleteByIds} cancel={this.cancel}*/}
+                             {/*selectedRowKeys={this.state.selectedRowKeys}*/}
+                             {/*flag={home.judgeOperation(this.operation,'DELETE')}*/}
+                             {/*/>*/}
                 <SearchCell name='请输入申请人' type={this.props.index} fetch={this.fetch} searchEvent={this.searchEvent}
                             searchContentChange={this.searchContentChange}
                             flag={home.judgeOperation(this.operation,'QUERY')}
                             ></SearchCell>
                 <div className='clear'></div>
                 <Table rowKey={record => record.id} dataSource={this.props.data} columns={this.columns}
-                       rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange}
+                       pagination={this.pagination} onChange={this.handleTableChange}
                        size='small' bordered></Table>
             </Spin>
         );

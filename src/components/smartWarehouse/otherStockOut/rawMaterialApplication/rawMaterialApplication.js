@@ -7,19 +7,19 @@ import Submit from "../../../BlockQuote/checkSubmit";
 import axios from "axios";
 
 const {Option} = Select;
-const data = [];
-for(var i = 1; i<=20; i++){
-    data.push({
-        index:`${i}`,
-        id: i,
-        materialName:'钴锰矿',
-        materialClass:'钴锰矿一号',
-        batchNumberId:'ECT/314314',
-        quantity:'122',
-        weight:'22',
-        serialNumber: i%2 ? `MC/BN180808-WS001-RAW(YS)-K-0001-QDBX-60kg` : `MC/BN180808-WS001-RAW(TS)-K-0001-QDBX-60kg`
-    })
-}
+//const data = [];
+// for(var i = 1; i<=20; i++){
+//     data.push({
+//         index:`${i}`,
+//         id: i,
+//         materialName:'钴锰矿',
+//         materialClass:'钴锰矿一号',
+//         batchNumberId:'ECT/314314',
+//         quantity:'122',
+//         weight:'22',
+//         materialCode: i%2 ? `MC/BN180808-WS001-RAW(YS)-K-0001-QDBX-60kg` : `MC/BN180808-WS001-RAW(TS)-K-0001-QDBX-60kg`
+//     })
+// }
 class RawMaterialApplication extends React.Component{
     constructor(props){
         super(props);
@@ -32,6 +32,7 @@ class RawMaterialApplication extends React.Component{
             productionLineData: [], //存取所有正极相关产品线数据
             endPositionData: [],    //存取所有出库点数据
         };
+        this.reset = this.reset.bind(this);
         this.save = this.save.bind(this);
         this.clear = this.clear.bind(this);
         this.cancel = this.cancel.bind(this);
@@ -59,33 +60,16 @@ class RawMaterialApplication extends React.Component{
             width:'15%'
         },{
             title:'物料类型',
-            dataIndex:'materialClass',
-            key:'materialClass',
-            width:'15%',
-            render:(text)=>{
-                switch(text){
-                    case 1: return '原材料';
-                    case 2: return '中间件';
-                    case 3: return '成品';
-                    default:return '';
-                }
-            }
+            dataIndex:'materialType',
+            key:'materialType',
+            width:'15%'
         },{
             title:'编号',
-            dataIndex:'serialNumber',
-            key:'serialNumber',
+            dataIndex:'materialCode',
+            key:'materialCode',
             width:'48%',
             render: (text) => {
-                if(this.props.index === 1) {
-                    let value = text.split('-');
-                    return (
-                        value.length > 3 ?
-                            <span title={text}>{value.splice(0,4).join('-')+'...'}</span>:
-                            text
-                    )
-                } else {
-                    return text;
-                }
+                return <span title={text}>{text.split('-').slice(0,4).join('-')+ '...'}</span>
             }
         }, {
             title:'重量',
@@ -117,13 +101,13 @@ class RawMaterialApplication extends React.Component{
 
     /**根据表格选中数据来渲染右边送审数据*/
     renderContent(index,rowSelection) {
-        if(index === 1) {
+        if(index) {
             return (
                 <Spin spinning={this.props.loading} wrapperClassName='other-stock-out'>
                     <div className='other-stock-out-container'>
                         <div className='other-stock-out-div'>
                             <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}
-                                        fetch={this.searchEvent} searchContentChange={this.searchContentChange}
+                                        fetch={this.reset} searchContentChange={this.searchContentChange}
                                         flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                             <div className={'clear'}></div>
                             <Table rowKey={record=>record.id} dataSource={this.props.data} columns={this.columns} rowSelection={rowSelection}
@@ -132,7 +116,6 @@ class RawMaterialApplication extends React.Component{
                         <div className='other-stock-out-right'>
                             <div className='other-stock-out-right-head'>
                                 <button onClick={this.clear}>清空</button>
-                                <button>查占</button>
                             </div>
                             <div className='other-stock-out-right-list'>
                                 <div className='other-stock-out-right-list-overflow'>
@@ -157,13 +140,13 @@ class RawMaterialApplication extends React.Component{
                                 <div>
                                     <Select value={this.state.productionLine} className='other-stock-out-right-select' placeholder={'请选择产线'} style={{marginRight: 10}} onChange={this.productionLineSelectChange}>
                                         {
-                                            this.state.productionLineData.map(e => <Option key={e.id} value={e.name}>{e.name}</Option>
+                                            this.state.productionLineData.map(e => <Option key={e.id} value={e.id}>{e.name}</Option>
                                             )
                                         }
                                     </Select>
                                     <Select value={this.state.endPosition} className='other-stock-out-right-select' placeholder={'请选择出库点'} onChange={this.endPositionSelectChange}>
                                         {
-                                            this.state.endPositionData.map(e => <Option key={e.id} value={e.endPosition}>{e.endPosition}</Option> )
+                                            this.state.endPositionData.map(e => <Option key={e.id} value={e.id}>{e.endPosition}</Option> )
                                         }
                                     </Select>
                                 </div>
@@ -211,7 +194,7 @@ class RawMaterialApplication extends React.Component{
     renderSerialNumber(parentIndex,data) {
         return data.map((e,index) =>
             <div key={e.id} className='other-stock-out-right-list-item'>
-                <div className='other-stock-out-right-list-item-5'>{e.serialNumber}</div>
+                <div className='other-stock-out-right-list-item-5'>{e.materialCode}</div>
                 <div className='other-stock-out-right-list-item-1'><Icon type="close" onClick={() => this.delete(parentIndex,index,e.id)}/></div>
                 <div className='other-stock-out-right-list-item-1'><Icon type="check-circle" style={{color: '#00ff00'}}/></div>
             </div>
@@ -238,20 +221,19 @@ class RawMaterialApplication extends React.Component{
      * */
     applySaveAndReview(process,urgent) {
         // console.log(process,urgent)
-        const userName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).name:null;
-        let {productionLine, endPosition, selectedRows} = this.state, data = [], date = new Date().toLocaleDateString().split('/').join('');
+        const userId = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).userId:null;
+        let {productionLine, endPosition, selectedRows} = this.state, outLists = {}, date = new Date().toLocaleDateString().split('/').join('');
 
         for(let i = 1; i <= selectedRows.length; i++) {
-            data.push({
-                groupName: date + i,
-                content: selectedRows[i-1]
-            })
+            let ids = selectedRows[i-1].map(e => parseInt(e.id))
+            outLists[date+i] = ids
         }
         let params = {
-            productionLine: productionLine,
-            endPosition: endPosition,
-            data: data,
-            createPersonName: userName
+            productionLineId: productionLine,
+            endPositionId: endPosition,
+            outLists: outLists,
+            createdPersonId: userId,
+            outType: this.props.outType
         };
         this.save(params);
     }
@@ -259,30 +241,20 @@ class RawMaterialApplication extends React.Component{
     /**送审右边显示编号数据*/
     save(params) {
         axios({
-            url: `${this.props.url.stockOut.faker}`,
+            url: `${this.props.url.stockOut.save}`,
             method: 'post',
             headers:{
                 'Authorization': this.props.url.Authorization
             },
             data: params,
         }).then((data) => {
-            message.info(data.data.message);
+            message.info(data.data.mesg);
             this.clear(); //清空右边数据
         });
     }
 
     /**根据正极名称模糊查询产品线*/
     getProductLine() {
-        let data1 = [{
-            id: 1,
-            name: '正极一'
-        },{
-            id: 2,
-                name: '正极二'
-        },{
-            id: 3,
-                name: '正极三'
-        }];
         axios({
             url: `${this.props.url.productLine.search}`,
             method: 'get',
@@ -295,9 +267,8 @@ class RawMaterialApplication extends React.Component{
         }).then((data) => {
             let res = data.data.data;
             this.setState({
-                productionLineData: res.list.length ? res.list : data1,
-                // productionLine: res.list ? res.list[0].name : -1
-                productionLine: '正极一'
+                productionLineData: res.list.length ? res.list : [],
+                productionLine: res.list ? res.list[0].id : -1
             })
         })
     }
@@ -317,7 +288,7 @@ class RawMaterialApplication extends React.Component{
             let res = data.data.data;
             this.setState({
                 endPositionData: res,
-                endPosition: res ? res[0].endPosition : -1
+                endPosition: res ? res[0].id : -1
             })
         })
     }
@@ -333,7 +304,8 @@ class RawMaterialApplication extends React.Component{
     /**根据货物名称进行搜索 */
     searchEvent(){
         this.props.fetch({
-            materialName:this.state.searchContent
+            materialName:this.state.searchContent,
+            materialType: this.props.materialType
         });
     }
 
@@ -342,10 +314,10 @@ class RawMaterialApplication extends React.Component{
         //(YS)代表前驱体 (TS)代表碳酸锂 两个前驱体和一个碳酸锂组合
         let TS = [], YS = [];
         selectedRows.map(e => {
-            if(e.serialNumber.includes('(TS)')) {
+            if(e.materialCode.includes('(TS)')) {
                 TS.push(e);
             }
-            if(e.serialNumber.includes('(YS)')) {
+            if(e.materialCode.includes('(YS)')) {
                 YS.push(e);
             }
         });
@@ -377,6 +349,16 @@ class RawMaterialApplication extends React.Component{
         this.setState({
             selectedRowKeys:[]
         })
+    }
+
+    /**搜索重置事件*/
+    reset() {
+        this.setState({
+            materialName: '',
+        });
+        this.props.fetch({
+            materialType: this.props.materialType
+        });
     }
 
 }

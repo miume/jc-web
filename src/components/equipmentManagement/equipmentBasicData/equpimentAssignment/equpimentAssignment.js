@@ -1,6 +1,6 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {Card, message, Spin} from "antd";
+import {Card, Input, message, Spin} from "antd";
 import Eqblock from "./eqblock";
 import './equpimentAssignment.css'
 import SearchCell from "../../../BlockQuote/search";
@@ -27,6 +27,7 @@ class EqupimentAssignment extends React.Component {
             },
             showSizeChanger: true
         }
+        this.departmentSearch = this.departmentSearch.bind(this);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -60,6 +61,9 @@ class EqupimentAssignment extends React.Component {
                             bodyStyle={{height:'90%',padding: '6px 12px 0 12px',overflow:'auto'}}
                             title={`所属工序`}>
                             <div>
+                                <div style={{margin: 10}}>
+                                    <Input placeholder={'请输入设备名称'} onChange={this.departmentSearch} />
+                                </div>
                                 {
                                     this.state.processData.map(e=> {
                                         return <Eqblock key={e.code} id={e.code}  colorFlag={e.code === parseInt(this.state.clickId)?"equipment-button ed-blue":"equipment-button ed-grey"}
@@ -127,6 +131,7 @@ class EqupimentAssignment extends React.Component {
                 this.setState({
                     loading:false,
                     processData:res,
+                    searchProcessData: res,
                     clickId : clickId,
                     clickName: clickName
                 });
@@ -249,6 +254,21 @@ class EqupimentAssignment extends React.Component {
         this.setState({
             searchContent:event.target.value
         })
+    }
+
+    /**根据设备名称进行搜索*/
+    departmentSearch(e) {
+        let value = e.target.value, {searchProcessData} = this.state;
+        if(value) {
+            let data = searchProcessData.filter(e => e.ruleDesc.includes(value));
+            this.setState({
+                processData: data
+            })
+        } else {
+            this.setState({
+                processData: searchProcessData
+            })
+        }
     }
 }
 export default EqupimentAssignment

@@ -184,11 +184,9 @@ class Home extends Component {
             },
             /**出库管理 */
             stockOut:{
-                getAll:`${server}/jc/common/RepoStock`,
-                repoOut:`${server}/jc/common/repoOutApply`,
-                getAllStockByPage:`${server}/jc/common/RepoStock`,
-                repoOutApply:`${server}/jc/common/repoOutApply/pages`,
-                faker: `${server}/jc/common/faker`
+                pages:`${server}/jc/repo/outRecord/pages`,
+                save:`${server}/jc/repo/outRecord/out`,
+                detail: `${server}/jc/repo/outRecord`
             },
             /**待办事项 */
             toDoList:`${server}/jc/common/toDoList`,
@@ -239,11 +237,11 @@ class Home extends Component {
              },
              /**入库管理 */
              enterStorage: {
-                enterStorage:`${server}/jc/common/repoInRecord/pages`
+                enterStorage:`${server}/jc/repo/inRecord/pages`
               },
             /** 库存管理*/
             inventorManage:{
-                inventorManage:`${server}/jc/common/RepoStock/pages`
+                inventorManage:`${server}/jc/repo/stock/pages`
             },
             /**红单管理 */
             redList:{

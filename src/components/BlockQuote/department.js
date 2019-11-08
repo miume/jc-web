@@ -1,6 +1,7 @@
 import React from 'react';
-import {Card, Spin, Tree} from 'antd';
+import {Card, Input, Spin, Tree} from 'antd';
 import axios from "axios";
+const {Search} = Input;
 
 class DepTree extends React.Component{
     componentWillUnmount() {
@@ -21,6 +22,8 @@ class DepTree extends React.Component{
         this.onSelect = this.onSelect.bind(this);
         this.onExpand = this.onExpand.bind(this);
         this.getTreeData=this.getTreeData.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.filterTreeNode = this.filterTreeNode.bind(this);
     }
 
     /**组件退出后销毁组件，避免控制台抱错*/
@@ -44,13 +47,15 @@ class DepTree extends React.Component{
                     bodyStyle={{height:'65vh',padding: '6px 12px 0 12px',overflow:'auto'}}
                     title={`${this.props.treeName}(请选择)`}>
                     <div className='equipment-tree'>
+                        <Search style={{ marginBottom: 8 }} placeholder="请输入名称" onChange={this.onChange}/>
                         <Tree
                             showLine={true}
                             expandedKeys={this.state.expandedKeys}
                             selectedKeys={this.state.selectedKeys}
                             treeData={this.state.treeData}
                             onSelect={this.onSelect}
-                            onExpand={this.onExpand}
+                            //onExpand={this.onExpand}
+                            autoExpandParent = {true}
                         />
                     </div>
                 </Card>
@@ -76,11 +81,7 @@ class DepTree extends React.Component{
 
     /**对获取的部门数据进行处理*/
     dataProcessing(res) {
-        let dataSource = [{
-            title:'总公司',
-            key:'0',
-            children: []
-        }];
+        let dataSource = [];
         let depId = -1, depName = '',expandedKeys = ['0'],selectedKeys = [];
         for (let i = 0; i < res.length; i++) {
             const parent = res[i].parent;
@@ -106,10 +107,11 @@ class DepTree extends React.Component{
                     key:arr.code,
                 });
             }
-            dataSource[0].children.push(parenObj);
+            dataSource.push(parenObj);
         }
         this.setState({
             treeData: dataSource,
+            searchTreeData:dataSource,
             loading: false,
             selectedKeys: selectedKeys,
             expandedKeys: expandedKeys
@@ -134,6 +136,34 @@ class DepTree extends React.Component{
 
     onExpand(expandedKeys) {
         this.setState({expandedKeys: expandedKeys});
+    }
+
+    onChange(e) {
+        const { value } = e.target, {searchTreeData,expandedKeys} = this.state;
+        console.log(value)
+        if(value) {
+            let data = [];
+            searchTreeData.map(e => {
+                let children = e.children.filter(child => child.title.includes(value));
+                if(children.length) {
+                    data.push({
+                        title:e.title,
+                        key:e.title,
+                        children: children
+                    });
+                }
+            });
+            this.setState({
+                treeData: data
+            })
+        } else {
+            this.setState({
+                treeData: searchTreeData
+            })
+        }
+    };
+
+    filterTreeNode(node) {
     }
 }
 

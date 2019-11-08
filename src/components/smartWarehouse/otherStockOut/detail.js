@@ -30,37 +30,23 @@ class Detail extends React.Component{
             dataSource:[]
         };
         this.renderDetail = this.renderDetail.bind(this);
-        this.handleDetial = this.handleDetial.bind(this);
+        this.handleDetail = this.handleDetail.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.renderSerialNumber = this.renderSerialNumber.bind(this);
     }
     /**点击详情 显示弹出框 */
-    handleDetial(){
+    handleDetail(){
         axios({
-            url:`${this.props.url.stockOut.repoOut}/${this.props.id}`,
+            url:`${this.props.url.stockOut.detail}/${this.props.id}?type=true`,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
             }
         }).then((data)=>{
-            const res = data.data.data?data.data.data.details:[];
-            var detail = [];
-            if(res){
-                for(var i = 0; i < res.length; i++){
-                    var e = res[i];
-                    detail.push({
-                        index:`${i+1}`,
-                        serialNumber:e.repoBaseSerialNumber.serialNumber,
-                        materialName:e.repoBaseSerialNumber.materialName,
-                        meterialClass:e.repoBaseSerialNumber.materialClass,
-                        quantity:e.repoOutApply.quantity,
-                        weight:e.repoOutApply.weight
-                    })
-                }
-            }
+            const res = data.data.data?data.data.data:[];
             this.setState({
                 visible:true,
-                dataSource:detail
+                dataSource:res
             })
         })
     }
@@ -71,20 +57,23 @@ class Detail extends React.Component{
         })
     }
     render(){
-        const dataSource = data;
+        let {dataSource} = this.state, data = dataSource && dataSource['content'] ? dataSource['content'] : {};
         return (
             <span>
-                <span className='blue' onClick={this.handleDetial}>详情</span>
+                <span className='blue' onClick={this.handleDetail}>详情</span>
                 <Modal visible={this.state.visible} closable={false} maskCloseable={false}
                 width={600} title='出库详情' centered={true}
                 footer={[
                     <CancleButton key='back' flag={1} handleCancel={this.handleClick}/>
                 ]}
                 >
-                    {
-                        this.renderDetail(dataSource)
-                    }
-                {/*<StockTable dataSource={this.state.dataSource}/>*/}
+                     <div className='other-stock-out-detail'>
+                        <div className='other-stock-out-right-detail-overflow'>
+                            {
+                                this.renderDetail(data)
+                            }
+                        </div>
+                     </div>
                 </Modal>
             </span>
         );
@@ -92,30 +81,21 @@ class Detail extends React.Component{
 
     renderDetail(data) {
         return (
-            <div className='other-stock-out-detail'>
-                <div className='other-stock-out-right-detail-overflow'>
-                    {
-                        data ? data.map((data,index) => {
-                            if(data.length) {
-                                return (
-                                    <div key={index} className={'other-stock-out-right-list-part'}>
-                                        <div className={'other-stock-out-right-list-part-1 '}>{index+1}</div>
-                                        <div className={'other-stock-out-right-list-part-10 '}>
-                                            {this.renderSerialNumber(data)}
-                                        </div>
-                                    </div>
-                                )}
-                        }) : null
-                    }
+            Object.keys(data).map(e =>
+                <div key={e} className={'other-stock-out-right-list-part'}>
+                    <div className={'other-stock-out-right-list-part-1 '}>{e}</div>
+                    <div className={'other-stock-out-right-list-part-10 '}>
+                        {this.renderSerialNumber(data[e])}
+                    </div>
                 </div>
-            </div>
+            )
         )
     }
 
     renderSerialNumber(data) {
         return data.map((e) =>
             <div key={e.id} className='other-stock-out-right-list-item'>
-                {e.serialNumber}
+                {e.materialCode}
             </div>
         )
     }
