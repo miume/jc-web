@@ -22,7 +22,7 @@ class EqMaintenancePlan extends React.Component{
             deviceName:'',
             Opt_type:'',
             detailNum:'',
-            depCode: 2,
+            depCode: '',
             depName:'铜官制造一、二部-锂电一',
             Device:[],
             deviceNameandNum:'',
@@ -32,24 +32,23 @@ class EqMaintenancePlan extends React.Component{
             params:{},
             selectContent:-1,
             //控制分页
-            page:1,
-            size:10,
-            current:1,
-            total:'',
+            // page:1,
+            // size:10,
+            // current:1,
             loading: true
-        }
+        };
         this.pagination = {
             showSizeChanger:true,
-            total:this.state.total,
             showTotal(total) {
                 return `共${total}条记录`
             },
-        }
+        };
         this.returnDataEntry = this.returnDataEntry.bind(this)
         this.getTableData = this.getTableData.bind(this)
         this.SearchEvent = this.SearchEvent.bind(this)
         this.searchReset = this.searchReset.bind(this)
         this.clearMainType = this.clearMainType.bind(this)
+        this.modifySearchContent = this.modifySearchContent.bind(this);
     }
 
     render(){
@@ -98,7 +97,6 @@ class EqMaintenancePlan extends React.Component{
                             getTableData={this.getTableData}
                             getMaintType={this.getMaintType}
                             MaintenanceType={this.state.MaintenanceType}
-                            getDevice={this.getDevice}
                             Device={this.state.Device}
                             deviceName={this.state.deviceName}
                             Opt_type={this.state.Opt_type}
@@ -126,7 +124,7 @@ class EqMaintenancePlan extends React.Component{
         this.setState({
             MaintenanceType:[],
         })
-    }
+    };
 
     getMaintType=(params)=>{
         axios({
@@ -159,6 +157,79 @@ class EqMaintenancePlan extends React.Component{
             }
         })
     }
+
+     /**获取表格当前请求页数和每页显示数据数量*/
+     getTableSize = (current,size)=>{
+        this.setState({
+            size:size,
+            current:current,
+        })
+    }
+
+    /**获取表格数据*/
+    getTableData = (params = {
+        deptId:this.state.depCode,
+        statusId: this.state.selectContent,
+        condition:this.state.searchContent,
+        depName:this.state.deviceName,
+    }) => {
+        this.setState({
+            loading: true,
+            depCode: params.deptId,
+            deviceName: params.depName,
+        });
+        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        axios({
+            url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params:params,
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            const status=data.status;
+            if(status===200){
+                if (res && res.list) {
+                    let rightTableData = [];
+                    for (let i = 0; i < res.list.length; i++) {
+                        let e = res.list[i];
+                        let arr = e.deviceMaintenancePlansHead;
+                        rightTableData.push({
+                            index:(res.page-1)*res.size+i+1,
+                            code: arr['code'],
+                            planName:arr['planName'],
+                            fixedassetsCode:arr['fixedassetsCode'],
+                            deviceName:arr['deviceName'],
+                            deptCode:arr['deptCode'],
+                            maintPeriod:arr['maintPeriod'],
+                            planDate:arr['planDate'],
+                            nextDate:arr['nextDate'],
+                            setDate:arr['setDate'],
+                            setPeople:arr['setPeople'],
+                            editFlag:arr['editFlag'],
+                            effFlag:arr['effFlag'],//1代表'已生效'；
+                            whetherdelete:res.list[i].detailNum,
+                            depName:this.state.depName,
+                            deviceNameAndNum:arr['deviceName']+'/#'+arr['fixedassetsCode'],
+                            MaintenanceType:e.deviceMaintenanceItems,
+                            setPeopleName:e.setPeopleName
+                        })
+                    }
+                    this.pagination.total = res?res.total:0;
+                    this.setState({
+                        rightTableData: rightTableData,
+                        loading: false
+                    });
+                } else {
+                    message.info('未查询到结果，请联系管理员！');
+                }
+            }
+            else {
+                message.info("网络错误，请重试")
+            }
+        });
+    };
 
     getDevice = (params) => {
         axios({
@@ -207,111 +278,60 @@ class EqMaintenancePlan extends React.Component{
         })
     }
 
-     /**获取表格当前请求页数和每页显示数据数量*/
-     getTableSize = (current,size)=>{
-        this.setState({
-            size:size,
-            current:current,
-        })
-    }
-
-    /**获取表格数据*/
-    getTableData = (params) => {
-        this.setState({
-            loading: true
-        })
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
-        axios({
-            url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            params:params,
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            const status=data.status;
-            if(status===200){
-                if (res && res.list) {
-                    let rightTableData = [];
-                    for (let i = 0; i < res.list.length; i++) {
-                        let e = res.list[i];
-                        let arr = e.deviceMaintenancePlansHead;
-                        this.setState({depCode:arr['deptCode'],});
-                        rightTableData.push({
-                            index:(res.page-1)*res.size+i+1,
-                            code: arr['code'],
-                            planName:arr['planName'],
-                            fixedassetsCode:arr['fixedassetsCode'],
-                            deviceName:arr['deviceName'],
-                            deptCode:arr['deptCode'],
-                            maintPeriod:arr['maintPeriod'],
-                            planDate:arr['planDate'],
-                            nextDate:arr['nextDate'],
-                            setDate:arr['setDate'],
-                            setPeople:arr['setPeople'],
-                            editFlag:arr['editFlag'],
-                            effFlag:arr['effFlag'],//1代表'已生效'；
-                            whetherdelete:res.list[i].detailNum,
-                            depName:this.state.depName,
-                            deviceNameAndNum:arr['deviceName']+'/#'+arr['fixedassetsCode'],
-                            MaintenanceType:e.deviceMaintenanceItems,
-                            setPeopleName:e.setPeopleName
-                        })
-                    }
-                    this.pagination.total = res?res.total:0;
-                    this.setState({
-                        rightTableData: rightTableData,
-                        total:data.data.total,
-                        loading: false
-                    });
-                } else {
-                    message.info('未查询到结果，请联系管理员！');
-                }
-            }
-            else {
-                message.info("网络错误，请重试")
-            }
-        });
-    }
-
     /**监控下拉框变化*/
     selectEvent = (status) => {
         this.setState({
             selectContent:status,
-        },()=>{
-            this.getTableData({
-                condition:this.state.searchContent,
-                statusId:parseInt(status),
-                deptId: parseInt(this.state.depCode),
-                page:this.state.page,
-                size:this.state.size,
-            })
+        });
+        let {searchContent,depCode} = this.state;
+        this.getTableData({
+            condition: searchContent,
+            statusId: parseInt(status),
+            deptId: parseInt(depCode),
+            size: this.pagination.pageSize,
+            page: this.pagination.current
         })
+    };
+
+    /**监控输入框的变化*/
+    modifySearchContent(value) {
+        this.setState({
+            searchContent: value
+        });
     }
 
     /**搜索事件*/
     SearchEvent = (value) => {
-        this.setState({
-            searchContent:value,
-            deptId:this.state.deptId,
-            statusId:this.state.statusId,
-            page:this.state.page,
-        },()=>{
-            this.getTableData({
-                condition:value,
-                statusId:parseInt(this.state.selectContent),
-                deptId: parseInt(this.state.depCode),
-                page:parseInt(this.state.page),
-                size:this.state.size,
-            },this.state.depName)
+        let {selectContent,depCode} = this.state;
+        this.getTableData({
+            condition:value,
+            statusId:parseInt(selectContent),
+            deptId: parseInt(depCode),
+            size: this.pagination.pageSize,
+            page: this.pagination.current
         })
-        ;
+        // this.setState({
+        //     searchContent:value,
+        //     deptId:this.state.deptId,
+        //     statusId:this.state.statusId
+        // },()=>{
+        //     this.getTableData({
+        //         condition:value,
+        //         statusId:parseInt(this.state.selectContent),
+        //         deptId: parseInt(this.state.depCode),
+        //         page:parseInt(this.state.page),
+        //         size:this.state.size,
+        //     },this.state.depName)
+        // })
+        //;
     }
 
     /**搜索重置调用*/
     searchReset = () => {
-        this.setState({searchContent:''})
+        this.setState({
+            searchContent:'',
+            selectContent: -1
+        });
         this.getTableData({
             deptId: parseInt(this.state.depCode),
             statusId:-1,

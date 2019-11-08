@@ -54,8 +54,7 @@ class DepTree extends React.Component{
                             selectedKeys={this.state.selectedKeys}
                             treeData={this.state.treeData}
                             onSelect={this.onSelect}
-                            //onExpand={this.onExpand}
-                            autoExpandParent = {true}
+                            onExpand={this.onExpand}
                         />
                     </div>
                 </Card>
@@ -82,7 +81,7 @@ class DepTree extends React.Component{
     /**对获取的部门数据进行处理*/
     dataProcessing(res) {
         let dataSource = [];
-        let depId = -1, depName = '',expandedKeys = ['0'],selectedKeys = [];
+        let depId = -1, depName = '',expandedKeys = [], selectedKeys = [];
         for (let i = 0; i < res.length; i++) {
             const parent = res[i].parent;
             let parenObj = {
@@ -139,26 +138,31 @@ class DepTree extends React.Component{
     }
 
     onChange(e) {
-        const { value } = e.target, {searchTreeData,expandedKeys} = this.state;
-        console.log(value)
+        let { value } = e.target, {searchTreeData,expandedKeys} = this.state;
         if(value) {
-            let data = [];
-            searchTreeData.map(e => {
+            let data = [], i = 0;
+            searchTreeData.map((e) => {
                 let children = e.children.filter(child => child.title.includes(value));
                 if(children.length) {
+                    if(i === 0) {
+                        expandedKeys = [e.key.toString()];
+                        i++;
+                    }
                     data.push({
                         title:e.title,
-                        key:e.title,
+                        key:e.key,
                         children: children
                     });
                 }
             });
             this.setState({
-                treeData: data
+                treeData: data,
+                expandedKeys: expandedKeys
             })
         } else {
             this.setState({
-                treeData: searchTreeData
+                treeData: searchTreeData,
+                expandedKeys: expandedKeys
             })
         }
     };
