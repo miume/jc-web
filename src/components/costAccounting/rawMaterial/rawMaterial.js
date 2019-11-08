@@ -44,6 +44,7 @@ class RawMaterial extends React.Component {
             staticPeriod: [],
             periodCode: ''
         };
+        this.reset = this.reset.bind(this);
         this.tabChange = this.tabChange.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleAnalysisClick = this.handleAnalysisClick.bind(this);
@@ -56,14 +57,15 @@ class RawMaterial extends React.Component {
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let {loading,periodCode,staticPeriod} = this.state;
+        let {loading,currentStaticPeriod,staticPeriod} = this.state;
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
                 <Spin spinning={loading} wrapperClassName='rightDiv-content'>
                     <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.handleClick}/>
                     <Button onClick={this.handleAnalysisClick} type='ant-btn ant-btn-primary'>统计分析</Button>
-                    <Search flag={true} periodCode={periodCode} staticPeriod={staticPeriod} selectChange={this.selectChange}/>
+                    <Search flag={true} currentStaticPeriod={currentStaticPeriod} staticPeriod={staticPeriod}
+                            selectChange={this.selectChange} reset={this.reset}/>
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
                         <TabPane tab={'待提交'} key={'1'}>
@@ -92,16 +94,20 @@ class RawMaterial extends React.Component {
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            let res = data.data.data, periodCode = '';
+            let res = data.data.data;
             if(res && res.length) {
-                periodCode = res[0].code;
+                let {code,startTime,length} = res[0],
+                    currentStaticPeriod = {
+                        code: code,
+                        startTime: startTime,
+                        length: length
+                    };
                 this.setState({
                     staticPeriod: res,
-                    periodCode: periodCode
+                    currentStaticPeriod: currentStaticPeriod,
                 })
             }
         })
-
     }
 
     /**界面加载获取未提交数据*/
@@ -150,9 +156,28 @@ class RawMaterial extends React.Component {
     }
 
     /**监控统计周期下拉框的变化*/
-    selectChange(value) {
+    selectChange(value,option) {
+        let name = option.props.name.split('-'), {currentStaticPeriod} = this.state;
+        currentStaticPeriod['code'] = value;
+        currentStaticPeriod['startTime'] = name[0];
+        currentStaticPeriod['length'] = name[1];
+        console.log(currentStaticPeriod)
         this.setState({
-            periodCode: value
+            currentStaticPeriod: currentStaticPeriod
+        })
+    }
+
+    /**搜索重置事件*/
+    reset() {
+        let {staticPeriod} = this.state;
+        let {code,startTime,length} = staticPeriod[0],
+            currentStaticPeriod = {
+                code: code,
+                startTime: startTime,
+                length: length
+            };
+        this.setState({
+            currentStaticPeriod: currentStaticPeriod
         })
     }
 }

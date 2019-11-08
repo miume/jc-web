@@ -1,5 +1,5 @@
 import React from "react";
-import {Card, message, Spin} from 'antd';
+import {Card, Input, message, Spin} from 'antd';
 import "./eqMaintenanceDataEntry.css"
 import Eqblock from "../../equipmentBasicData/equpimentAssignment/eqblock";
 import axios from "axios";
@@ -25,6 +25,7 @@ class LeftLayout extends React.Component{
         this.fetch = this.fetch.bind(this);
         this.changeEqName = this.changeEqName.bind(this);
         this.getTableData = this.getTableData.bind(this);
+        this.departmentSearch = this.departmentSearch.bind(this);
     }
 
     componentDidMount() {
@@ -45,6 +46,7 @@ class LeftLayout extends React.Component{
             this.setState({
                 loading:false,
                 deviceData:res,
+                searchDeviceData: res,
                 deviceName: deviceName
             });
             this.getTableData({
@@ -59,7 +61,7 @@ class LeftLayout extends React.Component{
     changeEqName(name) {
         this.setState({
             deviceName :name
-        })
+        });
         this.getTableData({
             deviceName: name
         });
@@ -82,8 +84,6 @@ class LeftLayout extends React.Component{
             if(result && result.list){
                 for(let i = 1;i <= result.list.length; i++){
                     result.list[i-1]['index']=(result.page-1) * 10 + i;
-                    let temp = result.list[i-1]['optType'];
-                    result.list[i-1]['optType'] = temp ? '录入' : '勾选';
                 }
             }
             this.setState({
@@ -93,6 +93,21 @@ class LeftLayout extends React.Component{
         }).catch(()=>{
             message.info('获取表格数据失败，请联系管理员！')
         });
+    }
+
+    /**根据设备名称进行搜索*/
+    departmentSearch(e) {
+        let value = e.target.value, {searchDeviceData} = this.state;
+        if(value) {
+            let data = searchDeviceData.filter(e => e.includes(value));
+            this.setState({
+                deviceData: data
+            })
+        } else {
+            this.setState({
+                deviceData: searchDeviceData
+            })
+        }
     }
 
     render(){
@@ -110,6 +125,9 @@ class LeftLayout extends React.Component{
                             bodyStyle={{height:'65vh',padding: '6px 12px 0 12px',overflow:'auto'}}
                             title={`设备名称(请选择)`}>
                             <div className='equipment-tree'>
+                                <div style={{margin: 10}}>
+                                    <Input placeholder={'请输入设备名称'} onChange={this.departmentSearch} />
+                                </div>
                                 {
                                     this.state.deviceData.map(e => {
                                         return <Eqblock key={e} id={e}  colorFlag={e === this.state.deviceName ? "equipment-button ed-blue" : "equipment-button ed-grey"}

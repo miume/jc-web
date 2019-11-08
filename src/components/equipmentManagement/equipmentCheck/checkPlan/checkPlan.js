@@ -11,7 +11,7 @@ import home from "../../../commom/fns";
 
 class CheckPlan extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             dataSource: [],
             rightTopData: [],

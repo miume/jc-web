@@ -14,7 +14,7 @@ class SelectPeriod extends React.Component {
                     style={{width: 150,marginRight: 10}} value={periodCode} onChange={this.props.selectChange}>
                 {
                     staticPeriod ?
-                        staticPeriod.map(e => <Option key={e.code} value={e.code}>{e.name}</Option>) : null
+                        staticPeriod.map(e => <Option key={e.code} name={`${e.startTime}-${e.length}`} value={e.code}>{e.name}</Option>) : null
                 }
             </Select>
             )

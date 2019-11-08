@@ -4,8 +4,6 @@ import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import SelectPeriod from "../select";
 
-const {RangePicker} = DatePicker;
-
 class Search extends React.Component {
     componentWillUnmount() {
         this.setState(() => {
@@ -24,26 +22,25 @@ class Search extends React.Component {
         };
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
-        this.onChange =this.onChange.bind(this);
         this.inputChange = this.inputChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
+        this.endDateChange =this.endDateChange.bind(this);
+        this.startDateChange =this.startDateChange.bind(this);
     }
 
     render() {
         const {start, end, dateFormat,periodCode} = this.state;
-        const value = start === undefined || end === undefined || start === "" || end === "" ? null : [moment(start, dateFormat), moment(end, dateFormat)];
-        let {staticPeriod} = this.props, defaultPeriodCode = staticPeriod && staticPeriod.length ? staticPeriod[0].code : '';
+        let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
+            endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
+        let {staticPeriod} = this.props, {code,startTime,length} = staticPeriod && staticPeriod.length ? staticPeriod[0] : {};
         return (
             <span className={this.props.flag?'':'hide'}>
                 <span>周期：</span>
-                <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : defaultPeriodCode} selectChange={this.selectChange}/>
+                <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : code} selectChange={this.selectChange}/>
                 <span>期数：</span>
                 <Input placeholder={'请输入期数'} onChange={this.inputChange} style={{width:100, marginRight: 10}}/>
-                <RangePicker placeholder={["开始日期","结束日期"]}  onChange={this.onChange}
-                             className={'raw-material-date'} style={{marginRight: 10}}
-                             value={value}
-                             format={dateFormat}
-                />
+
+                <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange} style={{marginRight: 10}}/>
+                <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange} style={{marginRight: 10}}/>
                 <NewButton name={'确定'} handleClick={this.search}/>
                 <Button
                     type="primary"
@@ -65,15 +62,27 @@ class Search extends React.Component {
     }
 
     /**date时间范围变化监控*/
-    onChange(date, dateString) {
+    /**date时间范围变化监控*/
+    startDateChange(date, dateString) {
+        //根据this.props.length来确定end的默认值
+        let length = this.props.currentStaticPeriod ? this.props.currentStaticPeriod.length : 0,
+            end = new Date(dateString).getTime() + length * 24 * 3600 * 1000;
         this.setState({
-            start: dateString[0],
-            end: dateString[1]
+            start: dateString,
+            end: moment(end).format('YYYY-MM-DD')
+        })
+    }
+
+    endDateChange(date, dateString) {
+        this.setState({
+            end: dateString
         })
     }
 
     /**监控下拉框的变化*/
-    selectChange(value) {
+    selectChange(value, option) {
+        let name = option.props.name.split('-');
+        console.log(name)
         this.setState({
             periodCode: value
         })
