@@ -221,7 +221,7 @@ class RawMaterialApplication extends React.Component{
      * urgent代表是否紧急
      * */
     applySaveAndReview(process,urgent) {
-        // console.log(process,urgent)
+        console.log(process,urgent)
         const userId = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).userId:null;
         let {productionLine, endPosition, selectedRows} = this.state, outLists = {}, date = new Date().toLocaleDateString().split('/').join('');
 
@@ -236,11 +236,11 @@ class RawMaterialApplication extends React.Component{
             createdPersonId: userId,
             outType: this.props.outType
         };
-        this.save(params);
+        this.save(params,process,urgent);
     }
 
     /**送审右边显示编号数据*/
-    save(params) {
+    save(params,process,urgent) {
         axios({
             url: `${this.props.url.stockOut.save}`,
             method: 'post',
@@ -249,30 +249,28 @@ class RawMaterialApplication extends React.Component{
             },
             data: params,
         }).then((data) => {
-            message.info(data.data.mesg);
-            this.clear(); //清空右边数据
+            let dataId = data.data.data['applicationFormId'];
+            this.applyReview(dataId,process,urgent)
         });
     }
 
     /**送审 */
-    applyReview(dataId){
-        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
+    applyReview(dataId,process,urgent){
+        axios.post(`${this.props.url.toDoList}/${parseInt(process)}`,{},{
             headers:{
                 'Authorization':this.props.url.Authorization
             },
             params:{
-                dataId:dataId,
-                isUrgent:this.state.urgent
+                dataId: dataId,
+                isUrgent: urgent
             }
         }).then((data)=>{
             message.info(data.data.message);
-            // this.props.fetch();
+            this.clear(); //清空右边数据
         }).catch(()=>{
             message.info('审核失败，请联系管理员！')
         })
     }
-
-
 
     /**根据正极名称模糊查询产品线*/
     getProductLine() {

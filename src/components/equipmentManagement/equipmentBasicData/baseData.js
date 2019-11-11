@@ -28,24 +28,24 @@ class BaseData extends React.Component{
         this.getData = this.getData.bind(this);
     }
     click(e){
-        const path = e.target.id.split('-');
+        let currentTarget = e.currentTarget,
+            id = currentTarget.id.split('-');
         const dataEntry = {
-           openKeys : this.current.menuId,
-           menuName : path[1],
-           menuParent : this.current.menuName,
-           path : path[0]
-       }
-       localStorage.setItem('baseData',JSON.stringify(dataEntry))
-        this.props.history.push({pathname:path[0]})
+            menuName : id[1],
+            menuParent : this.current.menuName,
+            menuParentId: this.current.menuId,
+            menuId: parseInt(id[2])
+        };
+        localStorage.setItem('dataEntry',JSON.stringify(dataEntry));
+        this.props.history.push({pathname:id[0]})
    }
    getData(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path=== this.current.path)[0]:[];
         var data = menus&&menus.menuList?
             menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
                 return ({
-                    id : m.menuId,
                     name : m.menuName,
-                    path : `${m.path}-${m.menuName}`,
+                    id : `${m.path}-${m.menuName}-${m.menuId}`,
                     className : icon[index]
                 })
             }):[]
@@ -61,7 +61,7 @@ class BaseData extends React.Component{
                     <div className='card-parent'>
                     {
                         this.state.data?this.state.data.map(d=>
-                        <DataPart key={d.id} id={d.id} name={d.name} path={d.path} click={this.click} className={d.className} ></DataPart>
+                        <DataPart key={d.id} id={d.id} name={d.name} click={this.click} className={d.className}></DataPart>
                         ):null
 
                     }

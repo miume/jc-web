@@ -41,14 +41,16 @@ class Menu1List extends React.Component {
   }
   /**点击二级菜单 存取6个访问的二级菜单*/
   menuClick(event){
-    const path = event.key;
-    const menuName = event.item.props.children;
-    const menuParent = event.item.props.name;
+    let path = event.key,
+        menuName = event.item.props.children,
+        menuParent = event.item.props.name,
+        menuId = event.item.props.id;
     const current = {
       openKeys:localStorage.getItem('defaultOpenKeys'),
       menuName:menuName,
       menuParent:menuParent,
-      path:path
+      path:path,
+      menuId: menuId
     }
     /**selectedKeys 用来实时控制点击的二级菜单选中 */
     localStorage.setItem('selectedKeys',path)
@@ -70,7 +72,7 @@ class Menu1List extends React.Component {
         if(!repeat && menuClick.length<6){
           menuClick.push(current)
         }
-        /**如果之前没有访问过，且localStorage已经有6条访问记录 */   
+        /**如果之前没有访问过，且localStorage已经有6条访问记录 */
     }
     else{
       menuClick = [];
@@ -95,7 +97,7 @@ class Menu1List extends React.Component {
     //         {name: '用户管理',id:4,path: '/user'},
     //         {name: '部门管理',id:5,path: '/departManagement'}
     //       ]
-    //   }, 
+    //   },
     //   {
     //       id: 2,
     //       icon: 'job',
@@ -117,16 +119,16 @@ class Menu1List extends React.Component {
     return (
       /**判断localStorage中的数据是否存在，存在则渲染菜单，否则渲染验证组件 */
       <div className={localStorage.getItem('menuList')?'':'hide'}>
-        <Menu mode="inline" theme="dark" 
-              selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]} 
-              openKeys={localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[]}  
+        <Menu mode="inline" theme="dark"
+              selectedKeys={localStorage.getItem('selectedKeys')?[localStorage.getItem('selectedKeys')]:[]}
+              openKeys={localStorage.getItem('defaultOpenKeys')?[localStorage.getItem('defaultOpenKeys')]:[]}
               onOpenChange={this.onOpenChange} style={{width:130}}>
             {
               localStorage.getItem('menuList') && JSON.parse(localStorage.getItem('menuList')).menuList ? JSON.parse(localStorage.getItem('menuList')).menuList.map(v=> (
                 <SubMenu style={{backgroundColor: '#333333'}} key={v.menuId} title={<span style={{marginLeft:'-5px',color:'white',width:'80px',fontWeight:'bold'}}>{v.menuName}</span>}>
                 {
-                    v.menuList.map(v1 => 
-                      <Menu.Item key={v1.path} name={v.menuName} style={{color:'white',fontWeight:'bold'}} onClick={this.menuClick}>{v1.menuName}</Menu.Item>
+                    v.menuList.map(v1 =>
+                      <Menu.Item key={v1.path} id={v1.menuId} name={v.menuName} style={{color:'white',fontWeight:'bold'}} onClick={this.menuClick}>{v1.menuName}</Menu.Item>
                   )
                 }
                 </SubMenu>
@@ -134,7 +136,7 @@ class Menu1List extends React.Component {
             }
         </Menu>
       </div>
-   
+
     );
   }
 }
