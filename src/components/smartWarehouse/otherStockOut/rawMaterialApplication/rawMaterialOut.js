@@ -1,7 +1,7 @@
 import React from 'react';
 import {Table, Popconfirm, message, Divider, Spin} from 'antd';
 import SearchCell from '../../../BlockQuote/search';
-import DeleteByIds from '../../../BlockQuote/deleteByIds';
+//import DeleteByIds from '../../../BlockQuote/deleteByIds';
 import Detail from '../detail';
 import axios from 'axios';
 import home from '../../../commom/fns';

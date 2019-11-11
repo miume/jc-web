@@ -268,7 +268,7 @@ class RawMaterialApplication extends React.Component{
             let res = data.data.data;
             this.setState({
                 productionLineData: res.list.length ? res.list : [],
-                productionLine: res.list ? res.list[0].id : -1
+                productionLine: res.list && res.list[0] ? res.list[0].id : ''
             })
         })
     }

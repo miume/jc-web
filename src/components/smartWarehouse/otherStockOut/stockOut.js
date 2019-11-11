@@ -140,13 +140,13 @@ class OtherStockOut extends React.Component{
             },
             data: params
         }).then(data => {
-            let res = data.data.data;
-            if(res && res.records) {
-                for(let i = 0; i < res.records.length; i++) {
-                    res.records[i]['index'] = (res.current - 1) * 10 + i + 1;
+            let res = data.data;
+            if(res && res.data) {
+                for(let i = 0; i < res.data.length; i++) {
+                    res.data[i]['index'] =  i + 1;
                 }
                 this.setState({
-                    dataSource: res.records
+                    dataSource: res.data
                 })
             }
             this.setState({

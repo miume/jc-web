@@ -241,7 +241,7 @@ class Home extends Component {
               },
             /** 库存管理*/
             inventorManage:{
-                inventorManage:`${server}/jc/repo/stock/pages`
+                inventorManage:`${server}/jc/repo/stock/conditions`
             },
             /**红单管理 */
             redList:{
