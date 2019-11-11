@@ -46,8 +46,11 @@ class LocationBasic extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const current = JSON.parse(localStorage.getItem('current')) ;
-        this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+        const current = JSON.parse(localStorage.getItem('dataEntry'));
+        let operation = JSON.parse(localStorage.getItem('menus')) ?
+            JSON.parse(localStorage.getItem('menus')).filter(e => e.menuId === current.menuParentId):[],
+            click = operation.length ? operation[0]['menuList'] : [];
+        this.operation = click.length ? click.filter(e => e.menuId === current.menuId)[0].operations: [];
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
@@ -57,7 +60,7 @@ class LocationBasic extends React.Component{
         return (
 
             <div>
-                <Blockquote menu={current.menuParent} name="位置基础信息"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
+                <Blockquote menu={current.menuParent} name={current.menuName} menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
                 <div className='equipment'>
                     {/*左边树部分*/}
                     <DepTree
