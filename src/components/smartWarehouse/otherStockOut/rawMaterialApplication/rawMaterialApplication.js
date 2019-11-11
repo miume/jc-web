@@ -47,6 +47,7 @@ class RawMaterialApplication extends React.Component{
         this.applySaveAndReview = this.applySaveAndReview.bind(this);
         this.getProductLine = this.getProductLine.bind(this);
         this.getEndPosition = this.getEndPosition.bind(this);
+        this.applyReview = this.applyReview.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
@@ -252,6 +253,26 @@ class RawMaterialApplication extends React.Component{
             this.clear(); //清空右边数据
         });
     }
+
+    /**送审 */
+    applyReview(dataId){
+        axios.post(`${this.props.url.toDoList}/${parseInt(this.state.process)}`,{},{
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                dataId:dataId,
+                isUrgent:this.state.urgent
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            // this.props.fetch();
+        }).catch(()=>{
+            message.info('审核失败，请联系管理员！')
+        })
+    }
+
+
 
     /**根据正极名称模糊查询产品线*/
     getProductLine() {
