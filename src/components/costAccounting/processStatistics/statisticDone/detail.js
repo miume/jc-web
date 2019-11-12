@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import {Modal,Table} from 'antd'
 import CancleButton from '../../../BlockQuote/cancleButton'
 import '../process.css'
-
+import axios from 'axios'
 const data=[{
     id:'1',
     solution:'Mn溶液',
@@ -54,15 +54,28 @@ class Detail extends Component{
         this.showModal=this.showModal.bind(this);
         this.detail=this.detail.bind(this);
         this.back=this.back.bind(this);
+        this.getDetail=this.getDetail.bind(this)
+    }
+    getDetail(){
+        axios({
+            url:this.props.url.precursorGoodIn.statisticDetail,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                processDetailId:this.props.processDetailId
+            }
+        }).then((data)=>{
+
+        })
     }
     showModal(){
         this.setState({
             visible:true
         })
     }
-    detail(){
-
-    }
+  
     back(){
         this.setState({
             visible:false

@@ -37,16 +37,16 @@ class StatisticDone extends Component{//已统计
             key:'id'
         },{
             title:'周期类型',
-            dataIndex:'periodType',
-            key:'periodType'
-        },{
-            title:'期数',
             dataIndex:'period',
             key:'period'
         },{
+            title:'期数',
+            dataIndex:'LineName',
+            key:'LineName'
+        },{
             title:'开始时间',
-            dataIndex:'beginTime',
-            key:'beginTime'
+            dataIndex:'startTime',
+            key:'startTime'
         },{
             title:'结束时间',
             dataIndex:'endTime',
@@ -77,17 +77,19 @@ class StatisticDone extends Component{//已统计
             key:'operation',
             render:(text,record)=>{
                 return(
-                    <Detail record={record}/>
+                    <Detail record={record} url={this.props.url} processDetailId={record.id}/>
                 )
             }
         }]
     }
+
     render(){
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
                     <Table
-                    dataSource={this.state.data}
+                    rowKey={record=>record.id}
+                    dataSource={this.props.dataStatistic}
                     columns={this.columns}
                     size='small'
                     bordered/>

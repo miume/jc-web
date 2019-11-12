@@ -1,44 +1,35 @@
 import React,{Component} from 'react'
 import {Table,Spin,Popconfirm,Divider} from 'antd'
+import axios from 'axios'
 
-const data=[{
-    id:'1',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-
-},{
-    id:'2',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-
-}]
 class PendSubmit extends Component{//待提交
     constructor(props){
         super(props);
         this.state={
             loading:false,
-            data:data
+            pageChangeFlag:1,//用来判断是搜索还是获取表格数据
+        }
+        this.pagination={
+            showSizeChanger:true,//是否可以改变pageSize
+            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+            pageSizeOptions:['10','20','50','100']
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index'
         },{
             title:'周期类型',
-            dataIndex:'periodType',
-            key:'periodType'
-        },{
-            title:'期数',
             dataIndex:'period',
             key:'period'
         },{
+            title:'期数',
+            dataIndex:'lineName',
+            key:'lineName'
+        },{
             title:'开始时间',
-            dataIndex:'beginTime',
-            key:'beginTime'
+            dataIndex:'startTime',
+            key:'startTime'
         },{
             title:'结束时间',
             dataIndex:'endTime',
@@ -64,7 +55,18 @@ class PendSubmit extends Component{//待提交
         this.handleEdit=this.handleEdit.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
         this.judgeOperation=this.judgeOperation.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
     }
+
+    handleTableChange(pagination) {
+        this.pagination = pagination;
+        this.props.handleTableChange({
+            size:pagination.pageSize,
+            page:pagination.current
+        })
+    }
+
+
     handleEdit(){
         this.props.history.push({pathname:'/costProcessAdd'})
     }
@@ -76,17 +78,17 @@ class PendSubmit extends Component{//待提交
         return flag.length?true:false
     }
     render(){
-        
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-       
         return(
             <div>
                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                 <Table
-                    dataSource={this.state.data}
-                    rowKey={record=>record.id}
+                    dataSource={this.props.dataSubmit}
+                    rowKey={record=>record.code}
                     columns={this.columns}
+                    onChange={this.handleTableChange}
+                    pagination={this.pagination}
                     size='small'
                     bordered/>
                </Spin>

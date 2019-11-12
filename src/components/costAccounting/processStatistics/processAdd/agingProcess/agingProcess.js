@@ -1,8 +1,9 @@
 import React,{Component} from 'react'
-import {Table} from 'antd'
+import {Table,Input} from 'antd'
 import NewButton from '../../../../BlockQuote/newButton'
 import ReadRecipe from '../readRecipe'
 import SelectLine from '../selectProductline'
+import axios from 'axios'
 class AgingProcess extends Component{//陈化工序
     constructor(props){
         super(props);
@@ -11,52 +12,76 @@ class AgingProcess extends Component{//陈化工序
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index'
         },{
             title:'物料点名称',
-            dataIndex:'materialPointName',
-            key:'materialPointName'
+            dataIndex:'materialName',
+            key:'materialName'
         },{
             title:'体积(m³)/重量(T)',
-            dataIndex:'volume',
-            key:'volume'
+            dataIndex:'weiOrVol',
+            key:'weiOrVol',
+            width:'15%',
+            render:(text,record)=>{
+                if(record.dataType===1){
+                     return(
+                         <Input name={`${record.code}-${'weiOrVol'}`} onChange={this.inputChange}/>
+                     )
+                }
+             }
         },{
             title:'Ni(%)',
-            dataIndex:'Ni',
-            key:'Ni'
+            dataIndex:'niPotency',
+            key:'niPotency',
+            width:'15%',
+            render:(text,record)=>{
+                return(
+                    <Input name={`${record.code}-${'niPotency'}`} onChange={this.inputChange}/>
+                )
+            }
         },{
             title:'Co(%)',
-            dataIndex:'Co',
-            key:'Co'
+            dataIndex:'coPotency',
+            key:'coPotency',
+            width:'15%',
+            render:(text,record)=>{
+                return(
+                    <Input name={`${record.code}-${'coPotency'}`} onChange={this.inputChange}/>
+                )
+            }
         },{
             title:'Mn(%)',
-            dataIndex:'Mn',
-            key:'Mn'
+            dataIndex:'mnPotency',
+            key:'mnPotency',
+            width:'15%',
+            render:(text,record)=>{
+                return(
+                    <Input name={`${record.code}-${'mnPotency'}`} onChange={this.inputChange}/>
+                )
+            }
         },{
             title:'含固量(g/L)',
             dataIndex:'solidContent',
-            key:'solidContent'
+            key:'solidContent',
+            
         }]
-        this.handleSelect1=this.handleSelect1.bind(this);
-        this.handleSelect2=this.handleSelect2.bind(this);
-        this.handleSelect3=this.handleSelect3.bind(this);
-        this.handleSelect4=this.handleSelect4.bind(this);
+        this.handleSelect=this.handleSelect.bind(this);
         this.handleOk=this.handleOk.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.showModal=this.showModal.bind(this);
+        this.getLastPotency=this.getLastPotency.bind(this);
+        this.inputChange=this.inputChange.bind(this);
     }
-    handleSelect1(){
-        
-            }
-    handleSelect2(){
-        
+    handleSelect(value,name){//获取下拉框的id
+        let selectKey=name.key;//监听是第几个下拉框change了
+        let selectData=`${selectKey}-${value}`
+        this.props.getAge(this.props.processId,'',selectData)
     }
-    handleSelect3(){
-        
-    }
-    handleSelect4(){
-        
+    inputChange(e){
+        let value=e.target.value //获取到输入框填的值
+        let inputData=`${e.target.name}-${value}`
+        this.props.getAge(this.props.processId,inputData,'')
     }
     showModal(){
         this.setState({
@@ -73,16 +98,40 @@ class AgingProcess extends Component{//陈化工序
             visible:false
         })
     }
+    getLastPotency(){//获取上期浓度
+        
+        axios({
+            url:`${this.props.url.precursorGoodIn.getLastPotencyByProcessId}`,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                processId:this.props.processId
+            }
+        }).then(data=>{
+            //console.log(data.data)
+        })
+    }
     render(){
+        this.tableData = this.props.tagTableData&&this.props.tagTableData[3]&&this.props.tagTableData[3].materialDetails?this.props.tagTableData[3].materialDetails:[]
+        if (this.tableData && this.tableData.length) {
+            for (let i = 0; i < this .tableData.length; i++) {
+                this.tableData[i]['index'] = i + 1
+            }
+        }
+        this.header=this.props.tagTableData&&this.props.tagTableData[3]&&this.props.tagTableData[3].lineProDTOS?this.props.tagTableData[3].lineProDTOS:null
         return(
             <div>
                 <NewButton name='获取体积値'/>
-                <NewButton name='获取上期浓度'/>
+                <NewButton name='获取上期浓度' handleClick={this.getLastPotency}/>
                 <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible}/>
-                <SelectLine handleSelect1={this.handleSelect1} handleSelect2={this.handleSelect2} handleSelect3={this.handleSelect3} handleSelect4={this.handleSelect4}/>
-                <Table 
-                rowKey={record=>record.id}
+                <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
+                <Table
+                dataSource={this.tableData} 
+                rowKey={record=>record.code}
                 columns={this.columns}
+                pagination={false}
                 size='small' 
                 bordered/>
             </div>
