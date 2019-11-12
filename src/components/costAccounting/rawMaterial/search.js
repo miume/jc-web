@@ -1,10 +1,8 @@
 import React from 'react';
-import {Button, DatePicker, Select} from "antd";
+import {Button, DatePicker} from "antd";
 import NewButton from "../../BlockQuote/newButton";
 import moment from "moment";
-
-const {RangePicker} = DatePicker;
-const {Option} = Select;
+import SelectPeriod from "./select";
 
 class Search extends React.Component {
     componentWillUnmount() {
@@ -18,31 +16,25 @@ class Search extends React.Component {
         this.state = {
             start: '',
             end: '',        //记录日期组件的开始时间和结束时间
-            periodCode: 1,  //记录下拉框-周期类型编码
+            periodCode: '',  //记录下拉框-周期类型编码
             dateFormat: 'YYYY-MM-DD'
         };
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
-        this.onChange =this.onChange.bind(this);
-        this.selectChange = this.selectChange.bind(this);
+        this.endDateChange =this.endDateChange.bind(this);
+        this.startDateChange =this.startDateChange.bind(this);
     }
 
     render() {
         const {start, end, dateFormat} = this.state;
-        const value = start === undefined || end === undefined || start === "" || end === "" ? null : [moment(start, dateFormat), moment(end, dateFormat)];
+        let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
+            endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
+        let {currentStaticPeriod,staticPeriod} = this.props;
         return (
             <span className={this.props.flag?'searchCell':'hide'}>
-                <RangePicker placeholder={["开始日期","结束日期"]}  onChange={this.onChange}
-                             className={'raw-material-date'} style={{marginRight: 10}}
-                             value={value}
-                             format={dateFormat}
-                />
-                <Select className={'raw-material-select'}
-                        style={{marginRight: 10}} value={this.state.periodCode} onChange={this.selectChange}>
-                    <Option value={1}>周</Option>
-                    <Option value={2}>月</Option>
-                    <Option value={3}>年</Option>
-                </Select>
+                <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange} style={{marginRight: 10}}/>
+                <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange} style={{marginRight: 10}}/>
+                <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : ''} selectChange={this.props.selectChange}/>
                 <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
                 <Button
                     type="primary"
@@ -57,36 +49,38 @@ class Search extends React.Component {
     reset() {
         this.setState({
             start: '',
-            end: '',
-            periodCode: '周'
-        })
+            end: ''
+        });
+        this.props.reset();
     }
 
     /**date时间范围变化监控*/
-    onChange(date, dateString) {
-        console.log(date, dateString)
+    startDateChange(date, dateString) {
+        //根据this.props.length来确定end的默认值
+        let length = this.props.currentStaticPeriod ? this.props.currentStaticPeriod.length : 0,
+            end = new Date(dateString).getTime() + length * 24 * 3600 * 1000;
         this.setState({
-            start: dateString[0],
-            end: dateString[1]
+            start: dateString,
+            end: moment(end).format('YYYY-MM-DD')
         })
     }
 
-    /**监控下拉框的变化*/
-    selectChange(value) {
-        console.log('select=',value)
+    endDateChange(date, dateString) {
         this.setState({
-            periodCode: value
+            end: dateString
         })
     }
 
     /**搜索时间*/
     search() {
-        let {start, end, periodCode} = this.state;
+        let {start, end, periodCode} = this.state,
+            startTime = this.props.currentStaticPeriod ? this.props.currentStaticPeriod.startTime : '00:00:00';
         let params = {
-            start: start,
-            end: end,
+            start: start + ' ' + startTime,
+            end: end + ' ' + startTime,
             periodCode: periodCode
-        }
+        };
+        console.log(params)
     }
 }
 

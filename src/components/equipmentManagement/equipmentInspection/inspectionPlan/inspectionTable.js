@@ -102,13 +102,10 @@ class InspectionTable extends React.Component {
 
     handleDelete(id) {
         axios({
-            url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
+            url:`${this.props.url.devicePatrolPlan.delete}?planId=${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.url.Authorization
-            },
-            params:{
-                id:id,
             }
         }).then((data)=>{
             message.info(data.data.message);

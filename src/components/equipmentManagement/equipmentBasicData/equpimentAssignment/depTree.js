@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Tree} from 'antd';
-const { TreeNode } = Tree;
 
 class DepTree extends Component {
     constructor(props) {
@@ -16,21 +15,13 @@ class DepTree extends Component {
                 children: []
             }]
         };
-        this.getData = this.getData.bind(this)
-        this.onSelect = this.onSelect.bind(this)
-
-        this.onExpand = this.onExpand.bind(this)
-        this.renderTreeNodes = this.renderTreeNodes.bind(this)
-    }
-
-    componentDidMount() {
-        // Tip: Must have, or the parent node will not expand automatically when you first add a child node
-        this.onExpand([]); // 手动触发，否则会遇到第一次添加子节点不展开的Bug
+        this.onSelect = this.onSelect.bind(this);
+        this.onExpand = this.onExpand.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.treeData !== nextProps.treeData) {
-            this.getData(nextProps.treeData)
+            this.dataProcessing(nextProps.treeData)
         }
     }
 
@@ -39,112 +30,72 @@ class DepTree extends Component {
             <Tree
                 showLine
                 onSelect={this.onSelect}
+                treeData={this.state.dataSource}
                 expandedKeys={this.state.expandedKeys}
-                selectedKeys={[]}
+                selectedKeys={this.state.selectedKeys}
                 onExpand={this.onExpand}
             >
-                {this.renderTreeNodes(this.state.dataSource)}
             </Tree>
         )
     }
     /**
      * 获取数据渲染
      */
-    getData = (res) => {
-        var dataSource = [{
-            value: '总公司',
-            defaultValue: 'Root',
-            code: '0',
-            parentCode: '-1',
-            isEditable: false,
+    /**对获取的部门数据进行处理*/
+    dataProcessing = (res) => {
+        let dataSource = [{
+            title:'总公司',
+            key:'0',
             children: []
         }];
-        if (res) {
-            var expandedKeys = ["0"];
-            for (let i = 0; i < res.length; i++) {
-                const arrParent = res[i].parent;
-                var parenObj = {
-                    value: arrParent.name,
-                    defaultValue: arrParent.name,
-                    code: arrParent.code.toString(),
-                    parentCode: '0',
-                    isSelect: false,
+        let depId = -1, depName = '',expandedKeys = ['0'],selectedKeys = [];
+        for (let i = 0; i < res.length; i++) {
+            const parent = res[i].parent;
+            let parenObj = {
+                title:parent.name,
+                key:parent.code,
+                children: [],
+            };
+            if(i === 0) {
+                expandedKeys.push(parent.code.toString())
+            }
+            const son = res[i].son;
+            for (let j = 0; j < son.length; j++) {
+                let arr = son[j];
+                if(i===0 && j===0) {
+                    depId = arr.code;
+                    depName = arr.name;
+                    selectedKeys.push(arr.code.toString());
+                }
+                parenObj['children'].push({
                     children: [],
-                    parentname:'总公司'
-                };
-                if(i === 0){
-                    expandedKeys.push(arrParent.code.toString())
-                }
-                const arrSon = res[i].son;
-                for (let j = 0; j < arrSon.length; j++) {
-                    var arr = arrSon[j];
-                    if(i===0&&j===0){
-                        parenObj['children'].push({
-                            value: arr.name,
-                            defaultValue: arr.name,
-                            code: arr.code.toString(),
-                            parentCode: arr.parentCode.toString(),
-                            isSelect: true,
-                            children: [],
-                            parentname:arrParent.name
-                        });
-                    }else{
-                        parenObj['children'].push({
-                            value: arr.name,
-                            defaultValue: arr.name,
-                            code: arr.code.toString(),
-                            parentCode: arr.parentCode.toString(),
-                            isSelect: false,
-                            children: [],
-                            parentname:arrParent.name,
-                        });
-                    }
-                }
-                dataSource[0].children.push(parenObj);
+                    title:arr.name,
+                    key:arr.code,
+                });
             }
-            if (res[0] && res[0].son) {
-                this.props.getRightData(res[0].son[0].code,1)
-            }
-            this.setState({
-                dataSource: dataSource,
-                expandedKeys: expandedKeys
-            })
+            dataSource[0].children.push(parenObj);
         }
-    };
+        this.setState({
+            dataSource: dataSource,
+            selectedKeys: selectedKeys,
+            expandedKeys: expandedKeys
+        });
+        this.props.getRightData(depId);
+    }
 
     onSelect = (selectedKeys) => {
         var dataSource = this.state.dataSource;
+        this.setState({
+            selectedKeys: selectedKeys,
+        });
         this.props.handleSelect(selectedKeys[0],dataSource);
         this.props.getRightData(parseInt(selectedKeys[0]),'')
-    }
+    };
 
     // 展开/收起节点时触发
     onExpand = (expandedKeys) => {
-        this.expandedKeys = expandedKeys;
         this.setState({expandedKeys: expandedKeys})
-    }
-
-    // 展开树节点
-    renderTreeNodes = (data) => {
-        data.map((item) => {
-            item.title = ( // 不处于编辑状态
-                <div className={item.isSelect?"checkp-depTreeSelect":""}>
-                <span>
-                    {item.value}
-                </span>
-                </div>
-            )
-            // 如果存在子节点，则继续调用，直到无子节点，再下一个层次节点
-            if (item.children) {
-                return (
-                    <TreeNode title={item.title} key={item.code} dataRef={item}>
-                        {this.renderTreeNodes(item.children)}
-                    </TreeNode>
-                );
-            }
-            return <TreeNode {...item} />;
-        })
-    }
+    };
 }
 
 export default DepTree

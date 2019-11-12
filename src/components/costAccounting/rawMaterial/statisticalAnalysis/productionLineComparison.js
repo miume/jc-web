@@ -7,6 +7,7 @@ import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 import axios from 'axios';
 import ReactEcharts from 'echarts-for-react';
+import SelectPeriod from "../select";
 
 const {Option} = Select;
 const {RangePicker} = DatePicker;
@@ -91,17 +92,13 @@ class ProductionLineComparison extends React.Component {
     }
 
     render() {
-        const {start, end, dateFormat} = this.state;
+        let {start, end, dateFormat,periodCode} = this.state, {staticPeriod} = this.props,
+            defaultPeriodCode = staticPeriod && staticPeriod.length ? staticPeriod[0].code : '';
         const value = start === undefined || end === undefined || start === "" || end === "" ? null : [moment(start, dateFormat), moment(end, dateFormat)];
         return (
             <div className='staticalAnalysis'>
                 <div style={{float:'right'}}>
-                    <Select className={'raw-material-select'}
-                            style={{marginRight: 10}} value={this.state.periodCode} onChange={this.selectChange}>
-                        <Option value={1}>周</Option>
-                        <Option value={2}>月</Option>
-                        <Option value={3}>年</Option>
-                    </Select>
+                    <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : defaultPeriodCode} selectChange={this.selectChange}/>
                     <Select className={'raw-material-select'}
                             style={{marginRight: 10}} value={this.state.lineCode} onChange={this.selectChange}>
                         <Option value={1}>产线1</Option>

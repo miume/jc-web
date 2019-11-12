@@ -7,6 +7,7 @@ import AddTable from "./addTable";
 import FeedData from "./feedData";
 import SaveButton from "../../../BlockQuote/saveButton";
 import BlockQuote from '../../../BlockQuote/blockquote';
+import moment from "../search";
 
 const mixedSalt = [{
     code: 1,
@@ -51,24 +52,10 @@ const data = {
 };
 
 class AddModal extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
-    componentDidMount() {
-        let path = window.location.pathname.split('/'),
-            code = path.length >= 2 ? path[2] : -1;
-        this.setState({
-            code: code
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
         };
         this.getFeedData = this.getFeedData.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -87,7 +74,7 @@ class AddModal extends React.Component {
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-content'}>
-                    <Search flag={true}/>
+                    <Search flag={true} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode}/>
                     <div className={'raw-material-add-margin'}>
                         <NewButton name={'获取出库数据'} handleClick={this.getStockOutData}/>
                         <Button className='white-button' onClick={this.getPreviousConcentration}>上期浓度</Button>
@@ -107,6 +94,14 @@ class AddModal extends React.Component {
             </div>
 
         )
+    }
+    componentDidMount() {
+        let location = this.props.location, path = location.pathname.split('/'), periodCode = '',
+            code = path.length >= 2 ? path[2] : -1, staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [];
+        this.setState({
+            code: code,
+            staticPeriod: staticPeriod
+        });
     }
 
     /**点击补料按钮*/
@@ -149,6 +144,13 @@ class AddModal extends React.Component {
     feedDataChange(e) {
         let target = e.target, name = target.name.split('-'), value= target.value;
         console.log(name,value)
+    }
+
+    /**销毁组件*/
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

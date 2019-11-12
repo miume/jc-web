@@ -28,56 +28,34 @@ class ApplyStockOut extends React.Component{
             process:-1,      //用来存取送审流程,
             urgent:0,
             batch: ''
-        }
+        };
         this.columns = [{
             title:'序号',
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'5%'
+            width:'10%'
         },{
             title:'货物名称',
             dataIndex:'materialName',
             key:'materialName',
-            width:'12%'
+            width:'15%'
         },{
             title:'货物类型',
-            dataIndex:'materialClass',
-            key:'materialClass',
-            width:'13%',
-            render:(text)=>{
-                switch(text){
-                    case 1: return '原材料';
-                    case 2: return '中间件';
-                    case 3: return '成品';
-                    default:return '';
-                }
-            }
+            dataIndex:'materialType',
+            key:'materialType',
+            width:'15%'
         },{
             title:'编号',
-            dataIndex:'serialNumber',
-            key:'serialNumber',
-            width:'19%',
-            render:(text)=>{
-                if(text.length>24){
-                    return <span className='text-decoration' title={text}>{text.substring(0,24)}</span>
-                }else{
-                    return <span className='text-decoration'>{text}</span>
-                }
-            }
+            dataIndex:'materialCode',
+            key:'materialCode',
+            width:'50%'
         },{
             title:'库存重量',
             dataIndex:'weight',
             key:'weight',
             width:'10%'
-        },{
-            title:'出库重量',
-            dataIndex:'outWeight',
-            key:'outWeight',
-            width:'15%',
-            render:(text,record)=>{return <Input id={record.id} name='outWeight' style={{border:'none',width:'100%',height:'30px'}} placeholder='请输入出库重量' onChange={this.save} />},
-            className:'tdStyle'
-        }]
+        }];
         this.apply = this.apply.bind(this);
         this.handleCancel =this.handleCancel.bind(this);
         this.save = this.save.bind(this);
@@ -97,26 +75,15 @@ class ApplyStockOut extends React.Component{
             batch: ''
         })
         /**实现取消选中 */
-        this.props.cancle();
+        this.props.cancel();
     }
 
     /**点击申请按钮，弹出弹出框 */
     apply(){
-        const keys = this.props.selectedRowKeys;
-        var outData = [];
-        this.props.data.forEach(d=>{
-            var newD = d;
-            for(var i = 0; i < keys.length;i++){
-                if(keys[i]===d.id){
-                    newD['outWeight']='';
-                    newD['index']=i+1;
-                    outData.push(newD)
-                }
-            }
-        })
+        const {selectedRowKeys} = this.props;
         this.setState({
             visible:true,
-            dataSource:outData
+            dataSource:selectedRowKeys
         })
     }
     /**input框内容变化，实现自动保存数据 */
@@ -159,7 +126,7 @@ class ApplyStockOut extends React.Component{
         this.setState({
             visible1:false,
         })
-        this.props.cancle();
+        this.props.cancel();
     }
     /**保存 */
     applyOut(status){
@@ -237,7 +204,7 @@ class ApplyStockOut extends React.Component{
     }
 
     render(){
-        this.toDoList = JSON.parse(localStorage.getItem('url')).toDoList
+        this.toDoList = JSON.parse(localStorage.getItem('url')).toDoList;
         return (
             <span className={this.props.flag?'':'hide'}>
                 <Button type='primary' size='default' style={{margin:'0 0 8px 0'}} className={this.props.selectedRowKeys&&this.props.selectedRowKeys.length>0?'blue':'grey'}
@@ -252,7 +219,9 @@ class ApplyStockOut extends React.Component{
                 >
                 <div style={{height:'50vh',overflow:'auto'}}>
                     <BatchNumberSelect url={this.props.url} batchNumber={this.state.batch} getBatchNumber={this.getBatchNumber}/>
-                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.dataSource} bordered size='small' pagination={false} rowClassName={() => 'editable-row'}></Table>
+                    <Table className='stock-out' rowKey={record=>record.id} columns={this.columns}
+                           dataSource={this.state.dataSource} bordered size='small'
+                           pagination={false} rowClassName={() => 'editable-row'}></Table>
                 </div>
                 </Modal>
             </span>

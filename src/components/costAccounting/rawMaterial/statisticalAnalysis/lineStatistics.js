@@ -1,9 +1,8 @@
 import React from 'react';
-import {DatePicker, Select, Table} from "antd";
+import {DatePicker, Table} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
-
-const {Option} = Select;
+import SelectPeriod from "../select";
 
 class LineStatistics extends React.Component {
     componentWillUnmount() {
@@ -79,18 +78,14 @@ class LineStatistics extends React.Component {
     }
 
     render() {
-        let {start, dateFormat} = this.state;
+        let {start, dateFormat,periodCode} = this.state, {staticPeriod} = this.props,
+            defaultPeriodCode = staticPeriod && staticPeriod.length ? staticPeriod[0].code : '';
         const value = start === undefined || start === "" ? null : moment(start, dateFormat);
         return (
             <div className='staticalAnalysis'>
                 <div style={{float:'right'}}>
-                    <Select className={'raw-material-select'}
-                            style={{marginRight: 10}} value={this.state.periodCode} onChange={this.selectChange}>
-                        <Option value={1}>周</Option>
-                        <Option value={2}>月</Option>
-                        <Option value={3}>年</Option>
-                    </Select>
-                    <DatePicker placeholder={'请输入开始事件'} onChange={this.onChange}
+                    <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : defaultPeriodCode} selectChange={this.selectChange}/>
+                    <DatePicker placeholder={'请输入开始时间'} onChange={this.onChange}
                                 style={{marginRight: 10}}
                                 value={value}
                                 format={dateFormat}/>

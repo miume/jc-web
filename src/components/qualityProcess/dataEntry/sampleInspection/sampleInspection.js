@@ -273,18 +273,19 @@ class SampleInspection extends React.Component {
 
     searchEvent(params = {}) {
         const ope_name = this.state.searchContent;
+        console.log(params)
         axios({
-            url: `${this.url.sampleInspection.getAllBypages}`,
+            url: `${this.url.sampleInspection.getPageByBatch}`,
             method: 'get',
             headers: {
                 'Authorization': this.Authorization
             },
             params: {
-                pageSize: params.pageSize,
-                pageNumber: params.pageNumber,
-                factoryName: ope_name,
-                sortField: 'id',
-                sortType: 'desc',
+                page: params.page?params.page:1,
+                size: params.size?params.size:10,
+                batch: ope_name,
+                // sortField: 'id',
+                // sortType: 'desc',
             },
             type: 'json',
         }).then((data) => {
@@ -292,9 +293,9 @@ class SampleInspection extends React.Component {
             // console.log(res)
             if (res && res.list) {
                 this.pagination.total = res.total;
-                this.pagination.current = res.pageNumber
+                this.pagination.current = res.page
                 for (var i = 1; i <= res.list.length; i++) {
-                    res.list[i - 1]['index'] = (res.prePage) * 10 + i;
+                    res.list[i - 1]['index'] = (res.page-1)*10+i;
                 }
                 this.setState({
                     dataSource: res.list,
@@ -318,37 +319,43 @@ class SampleInspection extends React.Component {
 
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
+        console.log(pagination)
         const pageChangeFlag = this.state.pageChangeFlag;
         // console.log(pageChangeFlag)
         if (pageChangeFlag === 0) {
             this.fetch({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-                sortField: 'id',
-                sortType: 'desc',
+                size: pagination.pageSize,
+                page: pagination.current,
+                // sortField: 'id',
+                // sortType: 'desc',
             });
         } else {
             this.searchEvent({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
+                size: pagination.pageSize,
+                page: pagination.current,
             })
         }
 
     };
     fetch = (params = {}) => {
         axios({
-            url: `${this.url.sampleInspection.getAllBypages}`,
+            url: `${this.url.sampleInspection.getPageByBatch}`,
             method: 'get',
-            params: params,
+            params: {
+                page: params.page?params.page:1,
+                size: params.size?params.size:10,
+            },
             // type: 'json',
         }).then((data) => {
             const res = data.data.data;
+            // console.log(res,this.pagination.current)
             if (res && res.list) {
                 for (var i = 1; i <= res.list.length; i++) {
-                    res.list[i - 1]['index'] = (res.pageNumber - 1) * 10 + i;
+                    res.list[i - 1]['index'] = (res.page-1)*10+i;
                 }
                 this.pagination.total = res.total;
-                this.pagination.current = res.pageNumber;
+                this.pagination.current = res.page;
+                // console.log(res.list)
                 this.setState({
                     dataSource: res.list,
                     searchContent: '',
@@ -417,7 +424,7 @@ class SampleInspection extends React.Component {
                         deleteByIds={this.deleteByIds}
                         flag={this.judgeOperation(this.operation, 'DELETE')}
                     />
-                    <SearchCell name='请输入工厂名' searchEvent={this.searchEvent}
+                    <SearchCell name='请输入编号' searchEvent={this.searchEvent}
                                 searchContentChange={this.searchContentChange} fetch={this.fetch}
                                 flag={this.judgeOperation(this.operation, 'QUERY')}/>
                     <div className='clear'></div>

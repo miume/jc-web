@@ -27,32 +27,27 @@ class Addmaintenancebutton extends React.Component{
         }
     }
     date1='';
-    columns = [
-        {
+    columns = [{
             title: '序号',
             dataIndex: 'index',
             key:'index',
             width: "10%"
-        },
-        {
+        }, {
             title: '保养项目',
             dataIndex: 'maintenanceItems',
             key:'maintenanceItems',
-            width: "30%"
-        },
-        {
+            width: "20%"
+        }, {
             title: '保养内容',
             dataIndex: 'maintenanceContent',
             key:'maintenanceContent',
-            width: "30%"
-        },
-        {
+            width: "50%"
+        }, {
             title: '频次',
             dataIndex: 'maintenanceFrequency',
             key:'maintenanceFrequency',
-            width: "30%",
-        },
-    ];
+            width: "20%",
+        }];
     handleDeviceNameAndNumChange=(value)=>{
         if(value !== undefined){
             var jing=value.split('/#');
@@ -91,27 +86,26 @@ class Addmaintenancebutton extends React.Component{
             var re =/[1−9]+[0−9]∗]∗/
             if(!re.test(e)&&e>=0){
                 this.setState({MaintenancePeriod:e})
-            }
-            else{
-                message.info("请输入整数字")
-            }
-            var date1=this.date1;
-            if(!date1){
-                date1 = (new Date()).getTime();
-            }
-            var date2=date1+(e * 24* 3600* 1000)
-            var time = new Date(date2);
-            let Y=time.getFullYear()
-            let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
-            let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
-            if(this.state.ImplementDate){
-                this.setState({NextPlanDate:Y+'-'+M+'-'+D})
+                var date1=this.date1;
+                if(!date1){
+                    date1 = (new Date()).getTime();
+                }
+                var date2=date1+(e * 24* 3600* 1000)
+                var time = new Date(date2);
+                let Y=time.getFullYear()
+                let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
+                let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
+                if(this.state.ImplementDate){
+                    this.setState({NextPlanDate:Y+'-'+M+'-'+D})
+                }
+            } else {
+                this.setState({
+                    NextPlanDate: '',
+                    MaintenancePeriod: ''
+                })
             }
         } else {
-            this.setState({
-                NextPlanDate: '',
-                MaintenancePeriod: ''
-            })
+                message.info("请输入整数字")
         }
     }
     handleEffectiveChange=(e)=>{
@@ -186,27 +180,13 @@ class Addmaintenancebutton extends React.Component{
                     return;
                 } else{
                     this.handleCancel();
-                    this.props.getTableData({
-                        deptId: this.props.depCode,
-                        depName: this.props.depName,
-                        page:this.props.current,
-                        size:this.props.size,
-                    })
+                    this.props.getTableData()
                 }
 
             }).catch(function (err) {
                 message.info('新增失败，请联系管理员！')
             })
-
-        const params1={
-            deptId:this.props.depCode,
-            statusId:-1,
-            condition:this.props.condition,
-            page:1,
-            size:this.props.size,
-            depName:this.props.depName,
-        }
-        this.props.getTableData(params1)
+        this.props.getTableData()
     }
     handleCancel = () => {
         this.props.clearMainType()
@@ -260,7 +240,6 @@ class Addmaintenancebutton extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate}/>,
                     ]}
                 >
-                    <div >
                 <div className='Rowofadd'>
                     <div className='divofadd'>
                         <b className='row-label'>计划名称:</b>&nbsp;
@@ -354,7 +333,6 @@ class Addmaintenancebutton extends React.Component{
                         <Radio value={1}>失效</Radio>
                     </Radio.Group>
                 </div>
-            </div>
                 </Modal>
             </span>
         )

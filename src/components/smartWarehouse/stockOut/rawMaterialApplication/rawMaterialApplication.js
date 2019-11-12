@@ -23,7 +23,7 @@ class RawMaterialApplication extends React.Component{
             searchContent:'',
             selectedRowKeys:[]
         }
-        this.cancle = this.cancle.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
@@ -40,22 +40,17 @@ class RawMaterialApplication extends React.Component{
             width:'15%'
         },{
             title:'物料类型',
-            dataIndex:'materialClass',
-            key:'materialClass',
-            width:'15%',
-            render:(text)=>{
-                switch(text){
-                    case 1: return '原材料';
-                    case 2: return '中间件';
-                    case 3: return '成品';
-                    default:return '';
-                }
-            }
+            dataIndex:'materialType',
+            key:'materialType',
+            width:'15%'
         },{
             title:'编号',
-            dataIndex:'serialNumber',
-            key:'serialNumber',
+            dataIndex:'materialCode',
+            key:'materialCode',
             width:'45%',
+            render: (text) => {
+                return <span title={text}>{text.split('-').slice(0,4).join('-')+ '...'}</span>
+            }
         }, {
             title:'重量',
             dataIndex:'weight',
@@ -77,14 +72,16 @@ class RawMaterialApplication extends React.Component{
         });
     }
     /**监控checkbox选中的情况 */
-    onSelectChange(selectedRowKeys){
+    onSelectChange(selectedRowKeys,selectedRows){
         this.setState({
-            selectedRowKeys:selectedRowKeys
+            selectedRowKeys: selectedRowKeys,
+            selectedRow:selectedRows
         })
     }
-    cancle(){
+    cancel(){
         this.setState({
-            selectedRowKeys:[]
+            selectedRowKeys:[],
+            selectedRow: []
         })
     }
     render(){
@@ -98,7 +95,7 @@ class RawMaterialApplication extends React.Component{
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <Spin spinning={this.props.loading} wrapperClassName='rightDiv-content'>
-                <ApplyStockOut selectedRowKeys={this.state.selectedRowKeys} data={this.props.data} cancle={this.cancle} url={this.props.url}
+                <ApplyStockOut selectedRowKeys={this.state.selectedRow} cancel={this.cancel} url={this.props.url}
                     flag={home.judgeOperation(this.operation,'SAVE')}
                 />
                 <SearchCell name='请输入物料名称' searchEvent={this.searchEvent} type={this.props.index}

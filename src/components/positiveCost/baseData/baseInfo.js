@@ -43,9 +43,9 @@ class BaseInfoPositiveCost extends Component{
         super(props);
         this.click=this.click.bind(this);
    }
-   
+
    click(e){
-    const path=e.target.id;
+    const path=e.currentTarget.id;
     this.props.history.push({pathname:path});
    }
    render(){

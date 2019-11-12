@@ -97,14 +97,14 @@ class HaveRepair extends React.Component{
             endTime: endTime
         };
         axios({
-            url: `${this.url.equipmentRepair.export}`,
+            url: `${this.props.url.equipmentRepair.export}`,
             method: 'get',
             headers: {
-                'Authorization': this.url.Authorization
+                'Authorization': this.props.url.Authorization
             },
             params: params,
         }).then((data) => {
-            let url = `${this.url.equipmentRepair.download}${data.data.data}`;
+            let url = `${this.props.url.equipmentRepair.download}${data.data.data}`;
             let a = document.createElement('a');
             a.href = url;
             a.click();

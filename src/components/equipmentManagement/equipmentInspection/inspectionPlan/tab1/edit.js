@@ -182,6 +182,7 @@ class Edit extends React.Component{
                         bordered
                         scroll={{y: 150}}
                         pagination={false}
+                        className={'inspection-detail-table'}
                     />
                 </Modal>
             </span>

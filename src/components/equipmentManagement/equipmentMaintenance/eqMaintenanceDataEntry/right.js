@@ -71,7 +71,10 @@ class  Right extends React.Component{
             key: 'optType',
             width: '10%',
             align:'left',
-            editable: true
+            editable: true,
+            render: (text) => {
+                return text ? '录入' : '勾选';
+            }
         },{
             title:'频率',
             dataIndex:'maintenanceFrequency',

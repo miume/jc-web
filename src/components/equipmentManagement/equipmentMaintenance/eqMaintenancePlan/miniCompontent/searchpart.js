@@ -17,15 +17,13 @@ class Searchpart extends Component {
         this.setState({
             searchContent: value
         })
-
-        //console.log(value)
+        this.props.modifySearchContent(value);
     };
 
     searchEvent = () => {
         this.props.SearchEvent(this.state.searchContent)
-    }
+    };
     fetch = () => {
-
         this.setState({
             statusSelect:{key: "-1", label: "全部状态"},
             searchContent:''
@@ -37,12 +35,8 @@ class Searchpart extends Component {
     handleSelectChange=(value)=> {
         this.setState({statusSelect:value})
         this.props.selectEvent(value.key)
-        //console.log(value); // { key: "lucy", label: "Lucy (101)" }
-        ////console.log(this.state.statusSelect)
     }
     render(){
-
-
         const { Option } = Select;
         return(
             <div id='right_buttons' className='right_Buttontodo'>

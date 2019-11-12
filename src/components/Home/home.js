@@ -48,6 +48,7 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
+        const server1 = localStorage.getItem('server1');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -113,7 +114,8 @@ class Home extends Component {
                 getAll:`${server}/jc/common/sampleDeliveringRecord`,
                 accept:`${server}/jc/common/sampleDeliveringRecord/accept`,
                 getAllBypages:`${server}/jc/common/sampleDeliveringRecord/pages`,
-                rawStandard:`${server}/jc/common/sampleDeliveringRecord/rawStandard`
+                rawStandard:`${server}/jc/common/sampleDeliveringRecord/rawStandard`,
+                getPageByBatch:`${server}/jc/common/sampleDeliveringRecord/getPageByBatch`
             },
             /**设备指导 */
             instructor:{
@@ -182,11 +184,9 @@ class Home extends Component {
             },
             /**出库管理 */
             stockOut:{
-                getAll:`${server}/jc/common/RepoStock`,
-                repoOut:`${server}/jc/common/repoOutApply`,
-                getAllStockByPage:`${server}/jc/common/RepoStock`,
-                repoOutApply:`${server}/jc/common/repoOutApply/pages`,
-                faker: `${server}/jc/common/faker`
+                pages:`${server}/jc/repo/outRecord/pages`,
+                save:`${server}/jc/repo/outRecord/out`,
+                detail: `${server}/jc/repo/outRecord`
             },
             /**待办事项 */
             toDoList:`${server}/jc/common/toDoList`,
@@ -237,11 +237,11 @@ class Home extends Component {
              },
              /**入库管理 */
              enterStorage: {
-                enterStorage:`${server}/jc/common/repoInRecord/pages`
+                enterStorage:`${server}/jc/repo/inRecord/pages`
               },
             /** 库存管理*/
             inventorManage:{
-                inventorManage:`${server}/jc/common/RepoStock/pages`
+                inventorManage:`${server}/jc/repo/stock/conditions`
             },
             /**红单管理 */
             redList:{
@@ -592,10 +592,28 @@ class Home extends Component {
                 getLastPotencyByProcessId:`${server}/jc/common/goodIn/getLastPotencyByProcessId`,//获取上期浓度
                 statisticDetail:`${server}/jc/common/goodIn/statisticDetail`,
                 saveOrCommit:`${server}/jc/common/goodIn/saveOrCommit`,//点击保存提交
+            },
+
+            /**异常处理模块*/
+            techException: {
+                getAll: `${server}/jc/common/techException/getAll`,
+                page: `${server}/jc/common/techException/page`,
+                techException: `${server}/jc/common/techException`,
+                deleteByIds: `${server}/jc/common/techException/ids`,
+            },
+            /**物料基础*/
+            materialInfo: {
+                page: `${server}/jc/repo/materialInfo/pages`,
+                add: `${server}/jc/repo/materialInfo/add`,
+                materialInfo: `${server}/jc/repo/materialInfo`,
+                all: `${server}/jc/repo/materialInfo/all`,
+            },
+            /**物料类型*/
+            materialType: {
+                all: `${server}/jc/repo/type/tree`,
             }
-            
-            
-        }
+        };
+
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
