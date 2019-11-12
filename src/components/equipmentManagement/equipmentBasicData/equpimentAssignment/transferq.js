@@ -50,7 +50,7 @@ class Transferq extends React.Component{
                 <div className="eqa-transfer-left">
                     <Card title="待分配"
                           style={{width: "100%",height: '100%',display: 'inline-block'}}
-                          bodyStyle={{height:'90%',padding: '12px',overflow:'auto'}}>
+                          bodyStyle={{height:'65vh',padding: '12px',overflow:'auto'}}>
                         <div className='eqa-transfer-right-input'>
                             <Input
                                 placeholder="设备名称/规格型号"
@@ -75,7 +75,7 @@ class Transferq extends React.Component{
 
                 <div className="eqa-transfer-right">
                     <Card title="已分配"
-                          bodyStyle={{height:'90%',padding: '12px',overflow:'auto'}}
+                          bodyStyle={{height:'65vh',padding: '12px',overflow:'auto'}}
                           style={{width: "100%",height: '100%',display: 'inline-block'}}>
                         <div className='eqa-transfer-right-input'>
                             <Input placeholder="设备名称/规格型号" onChange={this.search2} className='eqa-transfer-right-input' />

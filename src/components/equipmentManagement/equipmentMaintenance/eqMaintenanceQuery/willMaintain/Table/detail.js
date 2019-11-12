@@ -26,7 +26,7 @@ class Details extends React.Component {
         this.handleCancel = this.handleCancel.bind(this)
     }
 
-    render = (text, record) => {
+    render = () => {
         const customDot = (dot)=>(
             <Popover visible={this.state.visible1}>
                 {dot}
@@ -86,8 +86,7 @@ class Details extends React.Component {
             }).then((data) => {
                 const res = data.data.data ? data.data.data : [];
                 if (res) {
-                    const arrMes = res.deviceMaintenanceRecordDetails;
-                    var newRowData = arrMes;
+                    let newRowData = res.deviceMaintenanceRecordDetails;
                     for(let i = 0; i < newRowData.length; i++) {
                         newRowData[i]['index'] = i + 1;
                     }
@@ -95,8 +94,6 @@ class Details extends React.Component {
                         visible: true,
                         newRowData: newRowData,
                     })
-                } else {
-
                 }
             }).catch(() => {
                 message.info('数据存在异常，请联系管理员！')

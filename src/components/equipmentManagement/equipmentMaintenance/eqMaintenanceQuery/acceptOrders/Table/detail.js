@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal, Button, message, Popover, Steps} from 'antd';
+import {Modal, message, Popover, Steps} from 'antd';
 import InnerTable from "./innerTable";
 import BelowTable from "./belowTable"
 import CancleButton from "../../../../../BlockQuote/cancleButton";
@@ -22,7 +22,7 @@ class Details extends React.Component {
     }
 
     render() {
-        const customDot = (dot,{status,index})=>(
+        const customDot = (dot,)=>(
             <Popover visible={this.state.visible1}>
                 {dot}
             </Popover>
@@ -84,17 +84,15 @@ class Details extends React.Component {
                 id: this.props.record.code
             }
         }).then((data) => {
-
             const res = data.data.data.deviceMaintenanceRecordDetails ? data.data.data.deviceMaintenanceRecordDetails : [];
             if (res) {
-                const arrMes = res;
-                var newRowData = arrMes
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['index'] = i + 1;
+                }
                 this.setState({
                     visible: true,
-                    newRowData: newRowData,
+                    newRowData: res,
                 })
-            } else {
-
             }
         }).catch(() => {
             message.info('数据存在异常，请联系管理员！')

@@ -3,7 +3,7 @@
     position: fixed;
     height: 150px;
 }
-.inspectionsearchPart{
+.inspectionSearchPart{
     display:flex;
     justify-content: flex-end;
     margin-bottom: 10px;
@@ -19,9 +19,7 @@
     cursor: pointer;
     color: deepskyblue;
 }
-#inspectionInput {
-    width: 230px;
-}
+
 .thirdinspectiondetailtable{
     height: 200px;
 }

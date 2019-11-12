@@ -70,7 +70,6 @@ class ContentTable extends React.Component {
                 <EditorofMain
                     editorRecord={record}
                     depCode={this.props.depCode}
-                    depName={this.props.depName}
                     getMaintType={this.props.getMaintType}
                     getDepartmentData={this.props.getDepartmentData}
                     MaintenanceType={this.props.MaintenanceType}
@@ -85,7 +84,6 @@ class ContentTable extends React.Component {
                     url={this.props.url}
                     editorRecord={record}
                     depCode={this.props.depCode}
-                    depName={this.props.depName}
                     deviceName={this.props.deviceName}
                     getTableData={this.props.getTableData}
                 />

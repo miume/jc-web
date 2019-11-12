@@ -86,8 +86,6 @@ class CheckStatistics extends React.Component{
                             url={this.url}
                             operation={this.operation}
                             handleSelect={this.handleSelect}
-
-
                         />
                     </div>
 

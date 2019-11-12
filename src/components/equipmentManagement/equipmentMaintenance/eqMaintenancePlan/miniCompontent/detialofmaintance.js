@@ -139,7 +139,7 @@ class DetailofMain extends React.Component{
                                 placeholder="请选择"
                                 style={{ width: 200 }}
                                 disabled={true}
-                                value={this.props.depName}
+                                value={this.props.deviceName}
                             />
                         </div>
                         <div className='divofadd'>
