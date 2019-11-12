@@ -3,19 +3,12 @@ import {Table,Select,Input,Popconfirm} from 'antd'
 import NewButton from '../../../../BlockQuote/newButton'
 
 const {Option}=Select;
-const data=[{
-    id:'1',
-    name:'合成',
-    weight:'12',
-    Ni:'12',
-    Co:'13',
-    Mn:'14'
-}]
+
 class Other extends Component{//烘干工序
     constructor(props){
         super(props);
         this.state={
-            data:data,
+           
             selectName:1,
             weight:'',
             Ni:'',
@@ -46,40 +39,42 @@ class Other extends Component{//烘干工序
             key:'weight',
             width:'15%',
             render:(text,record)=>{
-                
-                let weight=record.weight
-                return(
-                    <Input placeholder='请输入'  name='weight' defaultValue={weight} onChange={this.inputChange}/>
-                )
+                if(record.dataType===1){
+                    let weight=record.weight
+                    return(
+                        <Input placeholder='请输入'  name={`${record.index}-${'weight'}`} defaultValue={weight} onChange={this.inputChange}/>
+                    )
+                }
+               
             }
         },{
             title:'Ni(%)',
-            dataIndex:'Ni',
-            key:'Ni',
+            dataIndex:'niPotency',
+            key:'niPotency',
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name='Ni' defaultValue={record.Ni} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.index}-${'niPotency'}`} defaultValue={record.Ni} onChange={this.inputChange}/>
                 )
             }
         },{
             title:'Co(%)',
-            dataIndex:'Co',
-            key:'Co',
+            dataIndex:'coPotency',
+            key:'coPotency',
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name='Co' defaultValue={record.Co} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.index}-${'coPotency'}`} defaultValue={record.Co} onChange={this.inputChange}/>
                 )
             }
         },{
             title:'Mn(%)',
-            dataIndex:'Mn',
-            key:'Mn',
+            dataIndex:'mnPotency',
+            key:'mnPotency',
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name='Mn' defaultValue={record.Mn} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.code}-${'mnPotency'}`} defaultValue={record.Mn} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -147,14 +142,22 @@ class Other extends Component{//烘干工序
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
+        this.tableData = this.props.tagTableData&&this.props.tagTableData[5]&&this.props.tagTableData[5].materialDetails?this.props.tagTableData[5].materialDetails:[]
+        //console.log(this.props.tagTableData,this.props.tagTableData[5])
+        if (this.tableData && this.tableData.length) {
+            for (let i = 0; i < this .tableData.length; i++) {
+                this.tableData[i]['index'] = i + 1
+            }
+        }
         return(
             <div>
                 <NewButton name='新增' className='fa fa-plus' handleClick={this.handleOk}/>
                 <Table 
-                dataSource={this.state.data}
+                dataSource={this.tableData}
                 rowKey={record=>record.id}
                 columns={this.columns}
                 size='small' 
+                pagination={false}
                 bordered/>
             </div>
         );

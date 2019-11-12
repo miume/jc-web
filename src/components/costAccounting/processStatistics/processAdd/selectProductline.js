@@ -11,22 +11,20 @@ class SelectLine extends Component{
     render(){
         return(
             <span >
-                <span>1#线产品型号：</span>
-                <Select onChange={this.handleSelect1} placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
-                    <Option value={1}>5503</Option>
-                </Select>
-                <span>2#线产品型号：</span>
-                <Select onChange={this.handleSelect2} placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
-                    <Option value={1}>5503</Option>
-                </Select>
-                <span>3#线产品型号：</span>
-                <Select onChange={this.handleSelect3} placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
-                    <Option value={1}>5503</Option>
-                </Select>
-                <span>4#线产品型号：</span>
-                <Select onChange={this.handleSelect4} placeholder='请选择产线' style={{width:'100px'}}>
-                    <Option value={1}>5503</Option>
-                </Select>
+               
+                {
+                    this.props.headerData?this.props.headerData.map((data)=>{
+                        return(
+                            <span key={data.line.code}>
+                                <span >{data.line.name} : </span>
+                                <Select onChange={this.props.handleSelect} placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
+                                    <Option name={1} key={data.line.code} value={1}>5505</Option>
+                                    <Option name={2} key={data.line.code} value={2}>5505</Option>
+                                </Select>
+                            </span>
+                        )
+                    }):null
+                }
             </span>
         )
     }

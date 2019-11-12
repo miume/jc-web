@@ -6,9 +6,16 @@ class ProductLineCompare extends Component{//工序对比分析
     constructor(props){
         super(props);
         this.state={
-            loading:false
+            loading:false,
+            periodCode:this.props.periodCode?this.props.periodCode:1,
+            dateTime:'',
+            processCode:1,
         }
         this.getOption=this.getOption.bind(this);
+        this.selectPeriodChange=this.selectPeriodChange.bind(this);
+        this.selectProcessChange=this.selectProcessChange.bind(this);
+        this.dateChange=this.dateChange.bind(this);
+        this.search=this.search.bind(this);
     }
     getOption(){
         const option = {
@@ -21,7 +28,8 @@ class ProductLineCompare extends Component{//工序对比分析
         
             toolbox: {
                 feature: {
-                    saveAsImage: {}
+                    magicType:{show:true,type:['line','bar']},
+                    saveAsImage: {show:true}
                 }
             },
             xAxis: {
@@ -54,11 +62,34 @@ class ProductLineCompare extends Component{//工序对比分析
         };
         return option;        
     }
+    selectPeriodChange(value){
+        this.setState({
+            periodCode:value
+        })
+    }
+    selectProcessChange(value){
+        this.setState({
+            processCode:value
+        })
+    }
+    dateChange(date,dateString){
+        this.setState({
+            dateTime:dateString
+        })
+    }
+    search(){
+        let {periodCode,processCode,dateTime}=this.state;
+        let params={//点击确定，将params传给后台
+            periodCode:periodCode,
+            processCode:processCode,
+            dateTime:dateTime
+        }
+    }
     render(){
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                   <Search flag={true} lineFlag={true}/>
+                   <Search flag={true} lineFlag={true} staticPeriod={this.props.staticPeriod} process={this.props.process} periodCode={this.state.periodCode} processCode={this.state.processCode} selectPeriodChange={this.selectPeriodChange} selectProcessChange={this.selectProcessChange} dateChange={this.dateChange}/>
                    <ReactEcharts
                         option={this.getOption()}
                         style={{height: '350px', width: '800px',margin:'20px 100px 0 150px'}}

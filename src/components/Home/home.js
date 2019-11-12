@@ -580,6 +580,20 @@ class Home extends Component {
                 page:`${server}/jc/common/precursorRawMaterial/page`,
                 update:`${server}/jc/common/precursorRawMaterial/update`
             },
+            //前驱体在制品统计
+            precursorGoodIn:{
+                getPendSubmit:`${server}/jc/common/goodIn/page`,
+                getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
+                getAnalysisProcess:`${server}/jc/common/goodIn/analysisProcess`,//获取统计分析的工序分析
+                getAnalysisLine:`${server}/jc/common/goodIn/analysisLine`,//获取统计分析的产线分析
+                getLineNameByPeriod:`${server}/jc/common/goodIn/getLineNameByPeriod`,//获取期数
+                addComfirm:`${server}/jc/common/goodIn/addComfirm`,//新增确认
+                afterComfirm:`${server}/jc/common/goodIn/afterComfirm`,//新增确认后
+                getLastPotencyByProcessId:`${server}/jc/common/goodIn/getLastPotencyByProcessId`,//获取上期浓度
+                statisticDetail:`${server}/jc/common/goodIn/statisticDetail`,
+                saveOrCommit:`${server}/jc/common/goodIn/saveOrCommit`,//点击保存提交
+            },
+
             /**异常处理模块*/
             techException: {
                 getAll: `${server}/jc/common/techException/getAll`,
@@ -599,6 +613,7 @@ class Home extends Component {
                 all: `${server}/jc/repo/type/tree`,
             }
         };
+
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));
         localStorage.setItem('url',JSON.stringify(url))
