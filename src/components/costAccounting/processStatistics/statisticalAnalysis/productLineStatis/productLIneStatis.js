@@ -9,8 +9,8 @@ class ProductLineStatis extends Component{//产品线统计
             loading:false,
             date:'',
             data:[],
-            time:this.props.startTime,
-            periodCode:this.props.periodCode?this.props.periodCode:1,
+            time:'',
+            periodId:'',
         }
         this.columns=[{
             title:'序号',
@@ -59,7 +59,7 @@ class ProductLineStatis extends Component{//产品线统计
     }
     
     getTableData(){
-        let {date,time,periodCode}=this.state
+        let {date,time,periodId}=this.state
         let startTime=`${date} ${time}`
         axios({
             url:`${this.props.url.precursorGoodIn.getAnalysisLine}`,
@@ -68,7 +68,7 @@ class ProductLineStatis extends Component{//产品线统计
                 'Authorizaition':this.props.url.Authorization
             },
             params:{
-                periodId:periodCode,
+                periodId:periodId,
                 startTime:startTime
             }
         }).then((data)=>{
@@ -79,7 +79,7 @@ class ProductLineStatis extends Component{//产品线统计
     selectChange(value,name){
         let time=name.props.name
         this.setState({
-            periodCode:value,
+            periodId:value,
             time:time
         })
     }
@@ -90,10 +90,11 @@ class ProductLineStatis extends Component{//产品线统计
     }
 
     render(){
+        let periodCode=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].code : ''
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
-                    <Search flag={true} periodCode={this.state.periodCode} staticPeriod={this.props.staticPeriod} selectChange={this.selectChange} dateChange={this.dateChange} search={this.getTableData}/>
+                    <Search flag={true} periodCode={periodCode} staticPeriod={this.props.staticPeriod} selectChange={this.selectChange} dateChange={this.dateChange} search={this.getTableData}/>
                     <div className='clear'></div>
                     <Table
                     dataSource={this.state.data}
