@@ -26,7 +26,7 @@ class CostProcessAdd extends Component {
             endTime: '',
             startDate: '',
             endDate: '',
-            periodCode1: -1,//下拉框选择年月日
+            periodCode: -1,//下拉框选择周期id
             inputPeriod: '',
             tabKey: '1',
             startSecondTime: '',//周期对应的时分秒
@@ -58,11 +58,12 @@ class CostProcessAdd extends Component {
         };
       }
     componentDidMount() {
-        let staticPeriod=this.props.location.staticPeriod
-        let process=this.props.location.process
-        let length=this.props.location.staticPeriod&&this.props.location.staticPeriod[0]&&this.props.location.staticPeriod[0].length?this.props.location.staticPeriod[0].length:-1
-        let periodCode=this.props.location.staticPeriod&&this.props.location.staticPeriod[0]&&this.props.location.staticPeriod[0].code?this.props.location.staticPeriod[0].code:-1
-        let startTime=this.props.location.staticPeriod&&this.props.location.staticPeriod[0]&&this.props.location.staticPeriod[0].startTime?this.props.location.staticPeriod[0].startTime:-1
+        let {location}=this.props
+        let staticPeriod=location.staticPeriod
+        let process=location.process
+        let periodCode=staticPeriod&&staticPeriod[0]?staticPeriod[0].code:-1
+        let length=staticPeriod&&staticPeriod[0]?staticPeriod[0].length:-1
+        let startTime=staticPeriod&&staticPeriod[0]?staticPeriod[0].startTime:''
         this.setState({
             staticPeriod:staticPeriod,
             process:process,
@@ -147,9 +148,7 @@ class CostProcessAdd extends Component {
                 ...param
             }
         }).then((data) => {
-            console.log(data)
             let res = data.data.data;
-            console.log(res)
             if (res === null ||res === undefined) {
                 message.info('存在不一致的统计周期，需要进行修改！')
             }
@@ -165,7 +164,6 @@ class CostProcessAdd extends Component {
                     }
                 }).then((data) => {
                     let tagTable = data.data.data;
-                     console.log(tagTable)
                     if (tagTable && tagTable.goodInProcessDTOS) {
                         this.setState({
                             tagTableData: tagTable.goodInProcessDTOS,
@@ -192,20 +190,19 @@ class CostProcessAdd extends Component {
 
     getChange(tabKey,inputData,selectData) {
         if (inputData) {
-            console.log(inputData)
             let index=inputData.split('-')[0] //定位到是第几条数据
             let name=inputData.split('-')[1] //输入框内容变化的字段
             let value=inputData.split('-')[2]
             this.state.addData.goodInProcessDTOS[tabKey-1].materialDetails[index-1][name]=value
         }
         if(selectData){
-            console.log(selectData)
+            //console.log(selectData)
             let codeSelect=selectData.split('-')[0]//第几个下拉框
             let id=selectData.split('-')[1] //下拉框的哪个option
             this.state.addData.goodInProcessDTOS[tabKey-1].lineProDTOS[codeSelect-1]['product']=id
         }
         if(inputData && selectData){
-            console.log(inputData,selectData)
+           // console.log(inputData,selectData)
             let index=inputData.split('-')[0] //物料名字的编码
             let name=inputData.split('-')[1] //输入框内容变化的字段
             let value=inputData.split('-')[2]
@@ -218,10 +215,10 @@ class CostProcessAdd extends Component {
     }
     
     save() {
-        console.log(this.state.statisticId)
+        //console.log(this.state.statisticId)
         this.state.addData['periodId']=this.state.periodCode
         this.state.addData['lineName']=this.state.inputPeriod
-        console.log(this.state.periodCode,this.state.inputPeriod)
+       // console.log(this.state.periodCode,this.state.inputPeriod)
         axios({
             url:`${this.url.precursorGoodIn.saveOrCommit}`,
             method:'post',
@@ -250,13 +247,13 @@ class CostProcessAdd extends Component {
         this.dataComponent = [{
             component: <SingleCrystal tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSingleCrystal={this.getChange} />
         }, {
-            component: <MixSalt tagTableData={this.state.tagTableData} url={this.url} getMix={this.getChange} processId={this.state.tabKey}/>
+            component: <MixSalt tagTableData={this.state.tagTableData} url={this.url} getMix={this.getChange} processId={this.state.tabKey}  />
         }, {
             component: <SyntheticProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSynthesis={this.getChange} />
         }, {
-            component: <AgingProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getAge={this.getChange} />
+            component: <AgingProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getAge={this.getChange}  />
         }, {
-            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} />
+            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange}/>
         }, {
             component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} />
         }]

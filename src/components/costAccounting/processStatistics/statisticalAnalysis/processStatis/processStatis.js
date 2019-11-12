@@ -7,9 +7,9 @@ class ProcessStatis extends Component{//工序统计
         super(props);
         this.state={
             loading:false,
-            periodCode:this.props.periodCode?this.props.periodCode:-1,
+            periodId:'',
             date:'',
-            time:this.props.startSecondTime?this.props.startSecondTime:'',//startSecondTime是时分秒，需要拼接选择的日期
+            time:'',//startSecondTime是时分秒，需要拼接选择的日期
             data:[]
         }
         
@@ -59,7 +59,6 @@ class ProcessStatis extends Component{//工序统计
             key:'operation'
         }];
         this.selectChange=this.selectChange.bind(this);
-        this.dateChange=this.dateChange.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.onBlur=this.onBlur.bind(this)
         this.onChange=this.onChange.bind(this);
@@ -118,10 +117,11 @@ class ProcessStatis extends Component{//工序统计
       }
       
     render(){
+        let periodCode=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].code : ''
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
-                    <Search flag={true}  staticPeriod={this.props.staticPeriod} periodCode={this.state.periodCode} search={this.getTableData} selectChange={this.selectChange} onChange={this.onChange} onBlur={this.onBlur} onSearch={this.onSearch} onFocus={this.onFocus}/>
+                    <Search flag={true}  staticPeriod={this.props.staticPeriod} periodCode={periodCode} search={this.getTableData} selectChange={this.selectChange} onChange={this.onChange} onBlur={this.onBlur} onSearch={this.onSearch} onFocus={this.onFocus}/>
                     <div className='clear'></div>
                     <Table
                     dataSource={this.state.data}

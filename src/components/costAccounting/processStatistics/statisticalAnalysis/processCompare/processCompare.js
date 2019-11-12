@@ -7,9 +7,9 @@ class ProcessCompare extends Component{//工序对比分析
         super(props);
         this.state={
             loading:false,
-            periodCode:this.props.periodCode?this.props.periodCode:-1,
+            periodCode:'',
             dateTime:'',
-            processCode:1,
+            processCode:'',
             startSecondTime:this.props.startSecondTime?this.props.startSecondTime:'',
             startTime:'',
             endTime:'',
@@ -20,6 +20,9 @@ class ProcessCompare extends Component{//工序对比分析
         this.selectProcessChange=this.selectProcessChange.bind(this);
         this.dateChange=this.dateChange.bind(this);
         this.search=this.search.bind(this);
+    }
+    componentDidMount(){
+        //console.log(this.startSecondTime)
     }
     getOption(){
         const option = {
@@ -99,11 +102,12 @@ class ProcessCompare extends Component{//工序对比分析
         }
     }
     render(){
-        
+        let periodCode=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].code : ''
+        this.startSecondTime=this.props.staticPeriod && this.props.staticPeriod[0]?this.props.staticPeriod[0].startTime:''
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                   <Search flag={true} staticPeriod={this.props.staticPeriod} process={this.props.process} periodCode={this.state.periodCode} processCode={this.state.processCode} selectPeriodChange={this.selectPeriodChange} selectProcessChange={this.selectProcessChange} dateChange={this.dateChange}/>
+                   <Search flag={true} staticPeriod={this.props.staticPeriod} process={this.props.process} periodCode={periodCode} selectPeriodChange={this.selectPeriodChange} selectProcessChange={this.selectProcessChange} dateChange={this.dateChange}/>
                    <ReactEcharts
                         option={this.getOption()}
                         style={{height: '350px', width: '800px',margin:'20px 100px 0 150px'}}
