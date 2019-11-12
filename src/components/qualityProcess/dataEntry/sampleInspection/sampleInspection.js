@@ -319,15 +319,11 @@ class SampleInspection extends React.Component {
 
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
-        console.log(pagination)
         const pageChangeFlag = this.state.pageChangeFlag;
-        // console.log(pageChangeFlag)
         if (pageChangeFlag === 0) {
             this.fetch({
                 size: pagination.pageSize,
                 page: pagination.current,
-                // sortField: 'id',
-                // sortType: 'desc',
             });
         } else {
             this.searchEvent({

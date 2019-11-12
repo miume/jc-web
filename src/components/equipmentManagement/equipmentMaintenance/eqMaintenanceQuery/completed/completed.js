@@ -107,7 +107,6 @@ class Completed extends React.Component{
             startDate: params.startDate,
             endDate: params.endDate
         });
-        console.log(params);
         this.props.getTableData(params);
     }
 

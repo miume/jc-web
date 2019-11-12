@@ -32,7 +32,6 @@ class AddModal extends React.Component{
     };
     handleCreate = () =>{
         var data = {length:this.state.default,name:this.state.name,startTime:this.state.timeString};
-        // console.log(data)
         axios({
             url:`${this.url.staticPeriod.add}`,
             method:"post",
@@ -41,7 +40,6 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-            // console.log(data)
             if(this.props.data.length>7){
                 message.error("数据不能大于7条")
                 return;

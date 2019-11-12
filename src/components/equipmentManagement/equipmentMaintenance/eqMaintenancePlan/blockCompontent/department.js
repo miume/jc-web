@@ -76,7 +76,6 @@ class DepartmentCard extends React.Component{
                     page:1,
                     size:this.props.size,
                 }
-                //console.log(params)
                 this.props.getTableData(params)
             });
         }
@@ -124,7 +123,6 @@ class DepartmentCard extends React.Component{
                     }
                     dataSource[0].children.push(parenObj);
                 }
-                //console.log(dataSource)
                 this.setState({
                     dataSource: dataSource,
                     expandedKeys: expandedKeys,
