@@ -20,9 +20,8 @@ class EditorofMain extends React.Component{
         MaintenancePeriod:'',
         ImplementDate:'',
         NextPlanDate:'',
-        MaintenanceType:[],
         Effective:'',
-        MaintenanceDetail:[],
+        detailNum: ''
     };
 
     setS=()=>{
@@ -44,6 +43,10 @@ class EditorofMain extends React.Component{
 
     render(){
         const dateFormat = 'YYYY-MM-DD';
+        const rowSelection = {
+            selectedRowKeys: this.state.selectedRowKeys,
+            onChange: this.selectChange
+        };
         return(
             <span>
                 <span onClick={this.handleMaintanceEditor} className="blue">编辑</span>
@@ -129,14 +132,14 @@ class EditorofMain extends React.Component{
                             <b className='row-label'>保养项目:</b>
                             <Table
                                 id='Mainname_add'
-                                rowKey={record => record.code}
-                                name="Maintenancetype"
+                                rowKey={record => record.itemsCode}
                                 columns={this.columns}
-                                dataSource={this.state.MaintenanceType}
+                                dataSource={this.state.deviceMaintenanceItems}
                                 size="small"
                                 scroll={{ y: 150 }}
                                 bordered={true}
                                 pagination={false}
+                                rowSelection={rowSelection}
                             />
                         </div>
                         <div id='Effective_add' style={{display:'inline',paddingLeft: 10}}>
@@ -217,14 +220,23 @@ class EditorofMain extends React.Component{
             }
             this.props.getMaintType(params2)
             this.setS();
-            var deviceMaintenancePlansDetails=res.deviceMaintenancePlansDetails;
-            for(var i=0;i<deviceMaintenancePlansDetails.length;i++){
-                deviceMaintenancePlansDetails[i]['index'] = i + 1;
+            let {deviceMaintenancePlansDetails,deviceMaintenanceItems,detailNum} = res,
+                len = deviceMaintenancePlansDetails.length, selectedRowKeys = [], selectedRows = [];
+            for(let i = 0; i < deviceMaintenanceItems.length; i++) {
+                deviceMaintenanceItems[i]['index'] = i + 1;
+                let itemsCode = deviceMaintenanceItems[i].code;
+                deviceMaintenanceItems[i]['itemsCode'] = itemsCode;
+                delete deviceMaintenanceItems[i].code;
+                if( i < len && itemsCode === deviceMaintenancePlansDetails[i].itemsCode) {
+                    selectedRowKeys.push(itemsCode);
+                    selectedRows.push(deviceMaintenancePlansDetails[i])
+                }
             }
             this.setState({
-                MaintenanceType:deviceMaintenancePlansDetails,
-                deviceMaintenanceItems:res.deviceMaintenanceItems,
-                editorVisible:true
+                deviceMaintenanceItems:deviceMaintenanceItems,
+                editorVisible:true,
+                selectedRowKeys: selectedRowKeys,
+                detailNum: detailNum
             })
         })
     }
@@ -236,15 +248,8 @@ class EditorofMain extends React.Component{
     //点击保存
     handleCreate=()=>{
         const menuList = JSON.parse(localStorage.getItem('menuList'));
-        const {PlanName1, fixedassetsCode, deviceName, MaintenancePeriod, ImplementDate, NextPlanDate, Effective, MaintenanceType} = this.state;
-        let deviceMaintenanceItems = [];
-        for(let i = 0; i < MaintenanceType.length; i++) {
-            deviceMaintenanceItems.push({
-                itemsCode: MaintenanceType[i].itemsCode,
-                maintenanceContent: MaintenanceType[i].maintenanceContent,
-                maintenanceItems: MaintenanceType[i].maintenanceItems
-            })
-        }
+        const {PlanName1, fixedassetsCode, deviceName, MaintenancePeriod, ImplementDate, NextPlanDate, Effective, selectedRows,detailNum} = this.state;
+
         var objectdata = {
             deviceMaintenancePlansHead:{
                 "code":this.props.editorRecord.code,
@@ -258,9 +263,9 @@ class EditorofMain extends React.Component{
                 "setPeople":menuList.userId,
                 "effFlag": Effective,
             },
-            "deviceMaintenancePlansDetails": MaintenanceType,
-            "detailNum":1,
-        }
+            "deviceMaintenancePlansDetails": selectedRows,
+            "detailNum":detailNum,
+        };
 
         axios({
             url: `${this.props.url.DeviceMaintenancePlan.maintenanceUpdatePlan}`,
@@ -281,14 +286,13 @@ class EditorofMain extends React.Component{
             }
             this.props.getTableData(params)
         });
-        // const params1={
-        //     deptId:this.props.depCode,
-        //     statusId:-1,
-        //     pagination:this.pagination,
-        //     depName:this.props.depName,
-        // }
-        // this.props.getTableData(params1,)
-        // this.handleCancel2()
+    }
+
+    selectChange = (selectedRowKeys, selectedRows) => {
+        this.setState({
+            selectedRowKeys: selectedRowKeys,
+            selectedRows: selectedRows
+        })
     }
 
     columns = [

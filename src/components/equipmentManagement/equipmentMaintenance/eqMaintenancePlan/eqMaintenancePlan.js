@@ -167,7 +167,6 @@ class EqMaintenancePlan extends React.Component{
         condition:this.state.searchContent,
         depName:this.state.deviceName,
     }) => {
-        console.log(params)
         this.setState({
             loading: true,
             depCode: params.deptId
