@@ -67,8 +67,8 @@ export const column1=[{
      width:"10%",
 },{
     title: "接单时间",
-    dataIndex: "recivedTime",
-    key: "recivedTime",
+    dataIndex: "receiveTime",
+    key: "receiveTime",
      width:"13%",
 },{
     title:"操作",
@@ -111,8 +111,8 @@ export const column1=[{
      width:"10%",
 },{
     title: "接单时间",
-    dataIndex: "recivedTime",
-    key: "recivedTime",
+    dataIndex: "receiveTime",
+    key: "receiveTime",
      width:"13%",
 },{
     title:"完成时间",

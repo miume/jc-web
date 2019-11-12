@@ -16,15 +16,13 @@ class ButtonToDd extends Component {
                     params={this.props.params}
                     getTableData={this.props.getTableData}
                     depCode={this.props.depCode}
-                    depName={this.props.depName}
+                    deviceName={this.props.deviceName}
                     getMaintType={this.props.getMaintType}
                     clearMainType={this.props.clearMainType}
                     getDevice={this.props.getDevice}
                     Device={this.props.Device}
                     MaintenanceType={this.props.MaintenanceType}
                     statusId={this.props.statusId}
-                    size={this.state.size}
-                    current={this.state.current}
                 />
                 <Searchpart
                     id='searchpart'

@@ -74,7 +74,7 @@ class EditorofMain extends React.Component{
                                     name="department"
                                     placeholder="请选择"
                                     style={{ width: 200 }}
-                                    value={this.props.depName}
+                                    value={this.props.deviceName}
                                     disabled={true}
                                 />
                             </div>
@@ -169,23 +169,35 @@ class EditorofMain extends React.Component{
         this.setState({NextPlanDate:Y+'-'+M+'-'+D});
     }
     handleMaintenancePeriodChange=(e)=>{
-        var re =/[1−9]+[0−9]∗]∗/
-        if(!re.test(e)&&e>=0){
-            this.setState({MaintenancePeriod:e})
-        }
-        else{
+        if (e) {
+            var re = /[1−9]+[0−9]∗]∗/
+            if (!re.test(e) && e >= 0) {
+                this.setState({MaintenancePeriod: e})
+                var date1 = this.date1;
+                if (!date1) {
+                    date1 = (new Date()).getTime();
+                }
+                var date2 = date1 + (e * 24 * 3600 * 1000)
+                var time = new Date(date2);
+                let Y = time.getFullYear()
+                let M = (time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
+                let D = time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
+                if (this.state.ImplementDate) {
+                    this.setState({NextPlanDate: Y + '-' + M + '-' + D})
+                }
+            } else {
+                this.setState({
+                    NextPlanDate: '',
+                    MaintenancePeriod: ''
+                })
+            }
+        } else {
+            this.setState({
+                NextPlanDate: '',
+                MaintenancePeriod: ''
+            });
             message.info("请输入整数字")
         }
-        const date1=this.date1;
-        var date2=date1+(e * 24* 3600* 1000)
-        var time = new Date(date2);
-        let Y=time.getFullYear()
-        let M=(time.getMonth() + 1 < 10 ? '0' + (time.getMonth() + 1) : time.getMonth() + 1)
-        let D=time.getDate() < 10 ? '0' + time.getDate() + '' : time.getDate() + '' // 日
-        if(this.state.ImplementDate){
-            this.setState({NextPlanDate:Y+'-'+M+'-'+D})
-        }
-
     }
     handleEffectiveChange=(e)=>{
         this.setState({Effective:e.target.value})

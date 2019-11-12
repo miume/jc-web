@@ -41,14 +41,14 @@ class EqupimentAssignment extends React.Component {
     render() {
 
         this.url = JSON.parse(localStorage.getItem('url'));
-        const baseData = JSON.parse(localStorage.getItem('baseData'));
-        const current = JSON.parse(localStorage.getItem('current'));
-        const menus = JSON.parse(localStorage.getItem('menus'))
-        const operation = menus?menus.filter(e=>e.path===current.path)[0].menuList:null;
-        this.operation = operation.filter(e=>e.path === baseData.path)[0].operations;
+        const current = JSON.parse(localStorage.getItem('dataEntry'));
+        let operation = JSON.parse(localStorage.getItem('menus')) ?
+            JSON.parse(localStorage.getItem('menus')).filter(e => e.menuId === current.menuParentId):[],
+            click = operation.length ? operation[0]['menuList'] : [];
+        this.operation = click.length ? click.filter(e => e.menuId === current.menuId)[0].operations: [];
         return (
             <div>
-                <Blockquote menu={current.menuParent} name="设备工序分配" menu2='返回' returnDataEntry={this.returnDataEntry}
+                <Blockquote menu={current.menuParent} name={current.menuName} menu2='返回' returnDataEntry={this.returnDataEntry}
                             flag={1}/>
                 <div className="equip-total">
                     {/*左边菜单栏 */}

@@ -23,7 +23,6 @@ class EqMaintenancePlan extends React.Component{
             Opt_type:'',
             detailNum:'',
             depCode: '',
-            depName:'铜官制造一、二部-锂电一',
             Device:[],
             deviceNameandNum:'',
             //控制搜索
@@ -73,27 +72,22 @@ class EqMaintenancePlan extends React.Component{
                             modifySearchContent={this.modifySearchContent}
                             params={this.state.params}
                             depCode={this.state.depCode}
-                            depName={this.state.depName}
+                            deviceName={this.state.deviceName}
                             getMaintType={this.getMaintType}
                             clearMainType={this.clearMainType}
                             MaintenanceType={this.state.MaintenanceType}
                             getDevice={this.getDevice}
+                            Device = {this.state.Device}
                             //四个更新表格的方法
                             getTableData={this.getTableData}
                             SearchEvent={this.SearchEvent}
                             searchReset={this.searchReset}
                             selectEvent={this.selectEvent}
-                            Device={this.state.Device}
                             statusId={this.state.selectContent}
-                            page={this.state.page}
-                            size={this.state.size}
-                            current={this.state.current}
-                            condition={this.state.condition}
                         />
                         <ContentTable
                             url={this.url}
                             depCode={this.state.depCode}
-                            depName={this.state.depName}
                             getTableData={this.getTableData}
                             getMaintType={this.getMaintType}
                             MaintenanceType={this.state.MaintenanceType}
@@ -173,12 +167,16 @@ class EqMaintenancePlan extends React.Component{
         condition:this.state.searchContent,
         depName:this.state.deviceName,
     }) => {
+        console.log(params)
         this.setState({
             loading: true,
-            depCode: params.deptId,
-            deviceName: params.depName,
+            depCode: params.deptId
         });
-        /**flag为1时，清空搜索框的内容 以及将分页搜索位置0 */
+        if(params.depName) {
+            this.setState({
+                deviceName: params.depName
+            })
+        }
         axios({
             url: `${this.url.DeviceMaintenancePlan.maintenancePlanPage}`,
             method: 'get',
@@ -310,20 +308,6 @@ class EqMaintenancePlan extends React.Component{
             size: this.pagination.pageSize,
             page: this.pagination.current
         })
-        // this.setState({
-        //     searchContent:value,
-        //     deptId:this.state.deptId,
-        //     statusId:this.state.statusId
-        // },()=>{
-        //     this.getTableData({
-        //         condition:value,
-        //         statusId:parseInt(this.state.selectContent),
-        //         deptId: parseInt(this.state.depCode),
-        //         page:parseInt(this.state.page),
-        //         size:this.state.size,
-        //     },this.state.depName)
-        // })
-        //;
     }
 
     /**搜索重置调用*/

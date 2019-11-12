@@ -1,6 +1,6 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
-import {Button, Icon, message, Tabs} from "antd";
+import {Button, Icon, message} from "antd";
 import CheckTable from "./checktable"
 import DepTree from './depTree';
 import "./checkQuery.css"

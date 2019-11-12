@@ -28,7 +28,6 @@ class BatchTrace extends React.Component{
             searchText: ''
         }
         this.pagination = {
-            total: this.state.dataSource.length,
             showTotal(total){
                 return `共${total}条记录`
             },

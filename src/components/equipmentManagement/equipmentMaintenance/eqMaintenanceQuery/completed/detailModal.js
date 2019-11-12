@@ -180,10 +180,18 @@ class Detail extends React.Component{
                 deviceMaintenanceRecordHead['depName'] = this.props.code.depName;
                 detailData.deviceMaintenanceRecordHead.push(deviceMaintenanceRecordHead);
                 const deviceMaintenanceRecordDetails = res.deviceMaintenanceRecordDetails;
-                let abnormalContent = deviceMaintenanceRecordHead.abnormalcontent;
 
+                let abnormalContent = deviceMaintenanceRecordHead.abnormalcontent;
+                //增加index字段
+                for(let i = 0; i < deviceMaintenanceRecordDetails.length; i++) {
+                    deviceMaintenanceRecordDetails[i]['index'] = i + 1;
+                }
                 detailData.deviceMaintenanceRecordDetails = deviceMaintenanceRecordDetails;
-                const deviceMaintenanceAccessory = res.deviceMaintenanceAccessory
+                let deviceMaintenanceAccessory = res.deviceMaintenanceAccessory
+
+                for(let i = 0; i < deviceMaintenanceAccessory.length; i++) {
+                    deviceMaintenanceAccessory[i]['index'] = i + 1;
+                }
                 detailData.deviceMaintenanceAccessory = deviceMaintenanceAccessory
                 detailData.planData = '本次计划时间：' + deviceMaintenanceRecordHead.planDate
                 detailData.receiveDate = deviceMaintenanceRecordHead.receiveDate
