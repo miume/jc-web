@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {withRouter} from "react-router-dom";
 import TopIcon from './topIcon';
 import Auth from '../auth/Auth';
-import {Drawer} from 'antd';
+import {Drawer, message} from 'antd';
 import axios from 'axios';
 import TodoPart from './todopart';
 class Exit extends Component {
@@ -88,25 +88,33 @@ class Exit extends Component {
     }
 
     gotodolist(){
+        let flag = this.judgeCurrent();
+        if(!flag) {
+            message.info('您沒有权限，无法访问！');
+            return
+        }
         this.setState({
             visible:false
         })
-        this.judgeCurrent()
         this.props.history.push({pathname:'/todoList'})
     }
     /**用来判断 若直接从top 进入待办事项时，怎么正确渲染待办事项页面 */
     judgeCurrent(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path==='/todoList')[0]:[];
-        const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:[];
-        const current = {
-            openKeys:menus.parent,
-            menuName:menus.menuName,
-            menuParent:parentName,
-            path:menus.path
+        if(menus && menus.length) {
+            const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:[];
+            const current = {
+                openKeys:menus.parent,
+                menuName:menus.menuName,
+                menuParent:parentName,
+                path:menus.path
+            }
+            localStorage.setItem('selectedKeys',menus.path)
+            localStorage.setItem('defaultOpenKeys',[menus.parent])
+            localStorage.setItem('current',JSON.stringify(current));
+            return true;
         }
-        localStorage.setItem('selectedKeys',menus.path)
-        localStorage.setItem('defaultOpenKeys',[menus.parent])
-        localStorage.setItem('current',JSON.stringify(current));
+        return false
     }
     render() {
         let height1 = document.body.clientHeight - 150;
