@@ -44,8 +44,9 @@ html, body, .parent {
 }
 .rightDiv-content {
     padding: 15px;
-    height: 80vh;
-    overflow: auto;
+    height: 78vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .top-left {
     padding-left: 10px;
@@ -156,7 +157,8 @@ input::-webkit-input-placeholder{
     /* height:550px; */
     padding:1px;
     margin-top: 25px;
-    overflow-y:scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .drawer-part{
     height:120px;

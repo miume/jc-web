@@ -262,10 +262,6 @@ class Role extends React.Component {
                     loading: false
                 });
             }
-        }).catch((error)=>{
-            if(error.toString().indexOf("500")>0){
-                this.props.history.push({pathname:'/'});
-            }
         })
     }
     /**实时追踪新增弹出框 角色名称和角色描述的变化 */

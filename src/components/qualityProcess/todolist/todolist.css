@@ -1,12 +1,14 @@
 .container{
     padding: 25px 15px 15px 15px;
     height: 70vh;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .historyContianer{
     padding: 0px 15px;
     height: 70vh;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .historySearch{
     margin-bottom: 45px;

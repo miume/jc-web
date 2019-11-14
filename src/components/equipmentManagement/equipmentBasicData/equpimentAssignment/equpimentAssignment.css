@@ -1,6 +1,6 @@
 .equip-total{
     padding: 15px;
-    height: 78vh;
+    height: 80vh;
     display: flex;
 }
 
@@ -14,7 +14,8 @@
      margin-left: 20px;
      height: 100%;
      padding: 5px;
-     overflow: auto;
+     overflow-y: auto;
+     overflow-x: hidden;
  }
 .equpiment-eqblocka{
     height:50px;

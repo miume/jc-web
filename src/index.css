@@ -267,3 +267,8 @@ table .ant-select-selection,table .ant-input{
     float:right;
     padding-bottom:8px;
 }
+
+/**覆蓋表格滾動樣式*/
+.ant-table-body {
+    overflow: auto !important;
+}

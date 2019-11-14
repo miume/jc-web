@@ -91,7 +91,7 @@
 
 .equipment{
     padding: 15px;
-    height: 78vh;
+    height: 80vh;
     display: flex;
 }
 .equipment-query{
@@ -107,7 +107,8 @@
     width: 80%;
     margin-left: 20px;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .equipment-tree {
