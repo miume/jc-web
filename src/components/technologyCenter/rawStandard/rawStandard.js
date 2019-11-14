@@ -27,7 +27,6 @@ class RawStandard extends Component{
         this.getStandard=this.getStandard.bind(this);
     }
   onBlockChange(flag,content,id){//原材料那个块是否被选中，选中后发生的变化
-    //console.log(flag,content);
         if(flag===1){
             this.setState({
                 flag:flag,
@@ -60,7 +59,6 @@ class RawStandard extends Component{
   }
   getStandard(id,value){//获取设置标准界面的表格数据
     this.setState({flag:3});
-    //console.log('hdifhdi');
     axios({
         url:`${this.url.rawStandard.getStandard}`,
         method:'get',
@@ -74,7 +72,6 @@ class RawStandard extends Component{
       },
         type:'json'
     }).then(data=>{
-       // console.log(data);
         const res=data.data.data;
         var raw=[];
         var j=1;
@@ -91,14 +88,11 @@ class RawStandard extends Component{
                   });
             }
         }
-       //console.log(raw);
         this.setState({
             dataSource:raw,
             });
         });
     }
-
-
 
     clickToRaw(){//在生产厂家或设置标准界面点击回到原材料
          this.setState({
@@ -117,7 +111,6 @@ class RawStandard extends Component{
         this.url=JSON.parse(localStorage.getItem('url'));
         const current=JSON.parse(localStorage.getItem('current'));
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-        //console.log(current.menuName,current.menuParent);
            return(
             <div>
                 <Blockquote menu={current.menuParent} name={current.menuName}/>

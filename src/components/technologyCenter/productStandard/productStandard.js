@@ -326,8 +326,6 @@ class ProductStandard extends React.Component{
             return false
         }
     }
-    modifySelItemsFlag = () => {
-    }
 
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));

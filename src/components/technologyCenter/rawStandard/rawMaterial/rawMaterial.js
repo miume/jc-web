@@ -54,7 +54,6 @@ class RawMaterial extends Component {
             }
         })
             .then((data) => {
-                //console.log(data);
                 const res = data.data.data;
 
                 if (res) {
@@ -77,7 +76,6 @@ class RawMaterial extends Component {
             },
         }).then((data) => {
             const res = data.data.data;
-            // console.log(res);
             if (res) {
                 this.setState({rawData: res});
             }
@@ -87,9 +85,6 @@ class RawMaterial extends Component {
 
     //监听原材料那个块块是否被选中
     onBlockChange(e) {
-        // console.log( e.target);
-        // console.log(e.target.id);
-
         const rawMaterialId = e.target.id.split('-')[0];
         const name = e.target.id.split('-')[1];
         this.props.onBlockChange(2, name, rawMaterialId);
@@ -111,8 +106,6 @@ class RawMaterial extends Component {
             message.info('信息填写不完整!');
             return
         }
-        console.log(value['materialName'])
-        console.log(this.state.testItems.toString())
         axios({
             url: `${this.props.url.rawStandard.addNewRaw}?materialName=${value['materialName']}&testItemIds=${this.state.testItems.toString()}`,
             method: 'post',
@@ -121,7 +114,6 @@ class RawMaterial extends Component {
             },
 
         }).then(data => {
-            //console.log(data);
             message.info(data.data.message);
             this.fetch();
         }).catch(() => {
@@ -161,7 +153,6 @@ class RawMaterial extends Component {
             type: 'json'
         })
             .then(data => {
-                //console.log(data);
                 const res = data.data.data;
                 if (res) {
                     this.setState({
@@ -183,7 +174,6 @@ class RawMaterial extends Component {
             }
         }).then(data => {
                 const res = data.data.data;
-                //console.log(res);
                 if (res) {
                     this.setState({items: res});
                 }

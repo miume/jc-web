@@ -78,10 +78,6 @@ class Add extends React.Component {
     /**点击取消按钮，隐藏新增弹框*/
     onCanCel = () => {
         this.setState({
-            maintenanceItems: '',
-            maintenanceContent: '',
-            optType: 0,
-            maintenanceFrequency: '',
             visible:false
         });
     };

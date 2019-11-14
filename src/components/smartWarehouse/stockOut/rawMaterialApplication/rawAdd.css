@@ -33,13 +33,9 @@
     color:red;
   }
   .stock-out .ant-table-body .ant-table-tbody>tr>td{
-    padding :0 5px !important;
     height: 30px;
   }
   .stock-out .ant-table-body .ant-table-tbody>tr>td input{
     text-align: left !important;
   }
-  /*.stock-out .ant-table-body {*/
-    /*max-height: 250px !important;*/
-  /*}*/
 

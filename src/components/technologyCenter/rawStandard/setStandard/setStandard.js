@@ -39,7 +39,6 @@ class SetStandard extends Component{
     }
 
     showModal(){
-        // console.log(this.props.rawMaterialId);
         axios({
             url:`${this.props.url.rawStandard.rawItems}?rawId=${this.props.rawMaterialId}`,
             method:'get',
@@ -47,9 +46,7 @@ class SetStandard extends Component{
                'Authorization':this.props.url.Authorization
             }
         }).then(data=>{
-            // console.log(data);
             const res=data.data.data;
-           // console.log(res);
             if(res){
                 for(var i=0;i<res.length;i++){
                     res[i]['index']=i+1;
@@ -62,11 +59,9 @@ class SetStandard extends Component{
         });
     }
     inputChange(da){
-         //console.log(da);
           this.setState({data:da});
     }
     handleDate(d){
-       //console.log(d);
        this.setState({
            date:d
        });
@@ -86,7 +81,7 @@ class SetStandard extends Component{
         for(var i=0;i<data.length;i++){
               var raw=data[i];
               if(typeof(raw.value)==='undefined') {
-                  message.info('输入框填写不全!');
+                  message.info('设置标准未完成!');
                   return
               }
               rawStandards.push({
@@ -100,7 +95,7 @@ class SetStandard extends Component{
             effectiveTime:this.state.date ,
             rawManufacturerId:this.props.rawManufacturerId ,
             rawMaterialId: this.props.rawMaterialId
-        }
+        };
         const details={
             rawStandards:rawStandards,
             techniqueRawStandardRecord:techniqueRawStandardRecord
@@ -109,9 +104,7 @@ class SetStandard extends Component{
             commonBatchNumber:commonBatchNumber,
             details:details
         }
-        //console.log(saveData)
        this.handleSaveCheck(saveData,status);//根据status调用保存或送审接口
-        // return saveData;
     }
     clickSave(){//点击保存
         this.dataProcess(0);
@@ -120,7 +113,6 @@ class SetStandard extends Component{
         this.dataProcess(1);
     }
     handleSaveCheck(saveData,status){//保存接口
-        //console.log(saveData);
         this.setState({visible:false,popVisible:false});
         axios({
             url:`${this.props.url.rawStandard.getStandard}`,
@@ -132,7 +124,6 @@ class SetStandard extends Component{
             type:'json'
         })
         .then(data=>{
-           //console.log(data);
             const res=data.data.data;
             if(res){
                if(status===0){
@@ -145,9 +136,6 @@ class SetStandard extends Component{
                 const dataId=res.commonBatchNumber.id;//返回的batchnumberId
                 const taskId=this.state.checkSelectData;//选择的流程id'
                 this.getCheck(dataId,taskId);
-                // this.setState({
-                //     popVisible:false,
-                // });
                }
             }
         })
@@ -183,17 +171,14 @@ class SetStandard extends Component{
             },
         })
         .then(data=>{
-            //console.log(data);
              message.info(data.data.message);
             if(data.data.code===0){
                 this.props.getStandard(this.props.rawManufacturerId);
-                //this.props.onBlockChange(3,this.props.factory);//只有送审成功了，才会跳到设置标准那个表格界面
             }
         })
         .catch(()=>{
            message.info('送审失败，请联系管理员！');
         });
-
     }
 
     handleHide(){//送审气泡的取消
@@ -206,9 +191,7 @@ class SetStandard extends Component{
           popVisible:visible
         })
     }
-    checkRaw(e){//点击重新选择厂家调用的函数
-        //    const name=this.props.returnRaw();
-        //    console.log(name);
+    checkRaw(){//点击重新选择厂家调用的函数
             this.props.onBlockChange(2,'设置标准');//跳回原材料界面后，就不可以点击那个面板了
         }
     fetch(){
@@ -248,7 +231,7 @@ class SetStandard extends Component{
                             <Submit  key='submit' visible={this.state.popVisible} handleVisibleChange={this.handleVisibleChange} selectChange={this.selectChange}  handleCancel={this.handleHide} handleOk={this.clickCheck} process={this.state.checkSelectData} defaultChecked={false} url={this.props.url} urgentChange={this.urgentChange}/>
                         ]}
                     >
-                            <SetStandardModal data={this.state.data}  raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>
+                            <SetStandardModal data={this.state.data} raw={this.props.raw} factory={this.props.factory} inputChange={this.inputChange} handleDate={this.handleDate}/>
                     </Modal>
                 </div>
                 <div className='rawStandardPosition' onClick={this.checkRaw}>重新选择厂家</div>

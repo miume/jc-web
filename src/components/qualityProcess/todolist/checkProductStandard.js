@@ -53,12 +53,9 @@ class CheckProductStandard extends React.Component{
     getDataByBatchNumberId(id,url){
         axios({
             method: 'get',
-            url: url,
+            url: `${url}/${id}`,
             headers: {
                 'Authorization': this.props.url.Authorization
-            },
-            params: {
-                commonBatchId: id,
             }
         }).then((data) => {
             const res = data.data.data;
@@ -72,7 +69,6 @@ class CheckProductStandard extends React.Component{
 
     /**对详情、编辑数据进行处理 */
     detailDataProcessing(res){
-        console.log(res)
         var batchNumber = res.commonBatchNumber.batchNumber;
         var time = {
             createTime:res.commonBatchNumber.createTime,
