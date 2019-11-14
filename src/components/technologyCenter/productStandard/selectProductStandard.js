@@ -33,7 +33,6 @@ class SelectProductStandard extends React.Component{
     dataProcessing = (data) => {
         var option = []
         for (var i = 0; i < data.length; i++) {
-            //data[i]['index'] = i + 1;
             data[i]['value'] = '';
             data[i]['form'] = data[i].id + '-' + data[i].name + '-' + data[i].unit + '-' + data[i].value
             data[i]['check'] = true
@@ -47,15 +46,10 @@ class SelectProductStandard extends React.Component{
 
 
     render(){
-        // const data = [['','','批号'],this.props.productName,this.props.modalName];
         var height1 = document.body.clientHeight-350;
         return (
             <div className='product-standrad-bottom' style={{height:height1}}>
             {
-                // this.props.dataSource.length||this.props.standradFlag?
-                // <div>
-                //     <ProductStandardDetail data={this.props.dataSource} topData={data} url={this.props.url} />
-                // </div>:
                 <div className='product-standrad-img'>
                      <img src={require(`./standard.png`)} alt='图片加载失败'/>
                      <div className='product-standrad-img-p'>您还没建立任何标准</div>

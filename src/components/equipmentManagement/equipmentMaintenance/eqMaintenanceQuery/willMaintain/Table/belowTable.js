@@ -19,21 +19,21 @@ class BelowTable extends React.Component {
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            width: '2px',
+            width: '10%',
             align:'center',
         },
         {
             title: '保养项目',
             dataIndex: 'maintenanceItems',
             key: 'maintenanceItems',
-            width: '10px',
+            width: '20%',
             align:'center',
         },
         {
             title: '保养内容',
             dataIndex: 'maintenanceContent',
             key: 'maintenanceContent',
-            width: '10px',
+            width: '70%',
             align:'center',
         }
     ];

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {DatePicker,Input,Table} from 'antd';
+import {DatePicker,Table} from 'antd';
 import moment from 'moment';
+import Standard from "../../../BlockQuote/standard";
 class EditStandardModal extends Component{
     constructor(props){
         super(props);
@@ -10,23 +11,22 @@ class EditStandardModal extends Component{
             key:'index',
             sorter:(a,b)=>a.index-b.index,
             align:'center',
-            width:'18%'
-          
+            width:'25%'
+
         },{
             title:'检测项目',
             dataIndex:'name',
             key:'name',
             align:'center',
-            width:'22%'
+            width:'25%'
         },{
             title:'检测标准',
             dataIndex:'value',
             key:'value',
             align:'center',
+            width:'25%',
             render:(text,record)=>{
-                // console.log(text);
-                // console.log(record);
-                return(<Input id={record.id} name='value' defaultValue={text} placeholder='请输入检测标准' size="small" style={{border:'none',textAlign:'center'}} onChange={this.inputChange}/>)
+                return <Standard record={record} standardChange={this.standardChange} defaultValue={record.value}/>
             },
             className:'rawStandardTd'
         },{
@@ -34,32 +34,27 @@ class EditStandardModal extends Component{
             dataIndex:'unit',
             key:'unit',
             align:'center',
-            width:'22%'
+            width:'25%'
         }];
         this.handleDateChange=this.handleDateChange.bind(this);
-        this.inputChange=this.inputChange.bind(this);
         this.disabledDate=this.disabledDate.bind(this);
+        this.standardChange = this.standardChange.bind(this);
     }
-    inputChange(e){
-       const value=e.target.value;//输入框输入的值(检测标准)
-       const id=e.target.id;//检测项目的id
-       const name=e.target.name;//value
-       //console.log(value,id,name);
-       const newData=[...this.props.standardData];//未修改的数据
-       const index=newData.findIndex(item=>parseInt(id)===parseInt(item.id));
-       newData[index][name]=value;//加一个检测标准字段
-       //console.log(newData);
-       this.props.inputChange(newData);//修改后的数据
+
+    /**给每项设置标准*/
+    standardChange(index,value) {
+        let newData=[...this.props.standardData];
+        newData[index-1]['value'] = value;
+        this.props.inputChange(newData);
     }
+
     handleDateChange(date, dateString){
-        //console.log(dateString);
         this.props.handleDate(dateString);
     }
     disabledDate(current){
         return  current < moment().startOf('day');//不可选择今天以前的日期
     }
       render(){
-          
           return(
               <div>
                   <div className='rawStandardTop'>
@@ -82,7 +77,7 @@ class EditStandardModal extends Component{
                   </div>
                   <div style={{height:'15px'}}></div>
                   <div >
-                      <Table 
+                      <Table
                           rowKey={record=>record.index}
                           columns={this.columns}
                           dataSource={this.props.standardData}
@@ -94,15 +89,15 @@ class EditStandardModal extends Component{
                   </div>
                   <div style={{marginTop:'21px'}}>
                       {this.props.effectiveTime!==''?
-                        <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')} 
-                        onChange={this.handleDateChange} 
+                        <DatePicker defaultValue={moment((this.props.effectiveTime),'YYYY-MM-DD')}
+                        onChange={this.handleDateChange}
                         disabledDate={this.disabledDate}
-                        placeholder='请选择施行日期' 
+                        placeholder='请选择施行日期'
                         size='large' style={{width:'320px'}}/>
                       :''
                       }
                   </div>
-                 
+
               </div>
           );
       }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {DatePicker,Input,Table} from 'antd';
+import {DatePicker,Table} from 'antd';
 import moment from 'moment';
+import Standard from '../../../BlockQuote/standard';
 
 class SetStandardModal extends Component{
     constructor(props){
@@ -11,21 +12,22 @@ class SetStandardModal extends Component{
             key:'index',
             sorter:(a,b)=>a.index-b.index,
             align:'center',
-            width:'18%'
-          
+            width:'25%'
+
         },{
             title:'检测项目',
             dataIndex:'name',
             key:'name',
             align:'center',
-            width:'22%'
+            width:'25%'
         },{
             title:'检测标准',
             dataIndex:'value',
             key:'value',
             align:'center',
+            width:'25%',
             render:(text,record)=>{
-                return(<Input id={record.id} name='value' placeholder='请输入检测标准' size="small" style={{border:'none'}} onChange={this.inputChange}/>)
+                return <Standard record={record} standardChange={this.standardChange} defaultValue={'请选择标准'}/>
             },
             className:'rawStandardTd'
         },{
@@ -33,26 +35,24 @@ class SetStandardModal extends Component{
             dataIndex:'unit',
             key:'unit',
             align:'center',
-            width:'22%'
+            width:'25%'
         }];
         this.handleDateChange=this.handleDateChange.bind(this);
-        this.inputChange=this.inputChange.bind(this);
         this.disabledDate=this.disabledDate.bind(this);
+        this.standardChange = this.standardChange.bind(this);
     }
-    inputChange(e){
-       const value=e.target.value;//输入框输入的值(检测标准)
-       const id=e.target.id;//检测项目的id
-       const name=e.target.name;//value
-       const newData=[...this.props.data];
-       const index=newData.findIndex(item=>parseInt(id)===parseInt(item.id));
-       newData[index][name]=value;//加一个检测标准字段
-    //    console.log(newData);
-       this.props.inputChange(newData);
+
+    standardChange(index,value) {
+        let newData=[...this.props.data];
+        newData[index-1]['value'] = value;
+        this.props.inputChange(newData);
     }
+
+    /**监控日期的变化*/
     handleDateChange(date, dateString){
-        //console.log(dateString);
         this.props.handleDate(dateString);
     }
+
     disabledDate(current){
         return  current < moment().startOf('day');//不可选择今天以前的日期
     }
@@ -77,7 +77,7 @@ class SetStandardModal extends Component{
                   </div>
                   <div style={{height:'15px'}}></div>
                   <div >
-                      <Table 
+                      <Table
                           rowKey={record=>record.id}
                           columns={this.columns}
                           dataSource={this.props.data}
@@ -88,14 +88,13 @@ class SetStandardModal extends Component{
                         />
                   </div>
                   <div style={{marginTop:'15px'}}>
-                     <DatePicker 
-                        onChange={this.handleDateChange} 
+                     <DatePicker
+                        onChange={this.handleDateChange}
                         disabledDate={this.disabledDate}
-                        placeholder='请选择施行日期' 
+                        placeholder='请选择施行日期'
                         size='large' style={{width:'320px'}}
                     />
                   </div>
-                 
               </div>
           );
       }

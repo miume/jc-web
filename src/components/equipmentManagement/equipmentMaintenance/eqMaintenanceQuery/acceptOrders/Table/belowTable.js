@@ -8,26 +8,23 @@ class BelowTable extends React.Component {
     constructor(props) {
         super(props)
     }
-    columns = [
-        {
+    columns = [{
             title: '序号',
-            dataIndex: 'code',
-            key: 'code',
-            width: '2px',
+            dataIndex: 'index',
+            key: 'index',
+            width: '10%',
             align:'center',
-        },
-        {
+        }, {
             title: '保养项目',
             dataIndex: 'maintenanceItems',
             key: 'maintenanceItems',
-            width: '10px',
+            width: '20%',
             align:'center',
-        },
-        {
+        }, {
             title: '保养内容',
             dataIndex: 'maintenanceContent',
             key: 'maintenanceContent',
-            width: '10px',
+            width: '70%',
             align:'center',
         }
     ];
@@ -41,7 +38,7 @@ class BelowTable extends React.Component {
                     size="small"
                     pagination={false}
                     bordered
-                    scroll={{y: 170}}
+                    scroll={{y: 150}}
                 />
             </div>);
     }

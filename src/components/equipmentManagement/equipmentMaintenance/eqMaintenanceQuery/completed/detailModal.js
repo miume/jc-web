@@ -42,26 +42,23 @@ class Detail extends React.Component{
         key:'index',
         dataIndex:'index',
         sorter: (a, b) => a.index - b.index,
-        align:'center',
-        width:50
+        width:'10%'
     },{
         title:'保养项目',
         dataIndex:'maintenanceItems',
         key:'maintenanceItems',
-        align:'center',
-        width:160
+        width: '10%'
     },{
         title:'保养内容',
         dataIndex:'maintenanceContent',
         key:'maintenanceContent',
-        align:'center',
-        width:160
+        width: '60%'
     },{
         title:'保养情况',
         dataIndex:'mainContent',
         key:'mainContent',
         align:'center',
-        width:160
+        width: '20%'
     }
     ]
     colums2=[{
@@ -70,27 +67,23 @@ class Detail extends React.Component{
         dataIndex:'index',
         sorter: (a, b) => a.index - b.index,
         align:'center',
-        width:50
+        width:'10%'
     },{
         title:'配件名称',
         dataIndex:'name',
         key:'name',
-        align:'center',
-        width:160
+        width:'30%'
     },{
         title:'配件规格',
         dataIndex:'specification',
         key:'specification',
-        align:'center',
-        width:160
+        width:'30%'
     },{
         title:'配件数量',
         dataIndex:'counts',
         key:'counts',
-        align:'center',
-        width:160
-    }
-    ]
+        width:'30%'
+    }]
     columns= [
         {
             title: '保养单号',
@@ -98,7 +91,6 @@ class Detail extends React.Component{
             key: 'planCode',
             align:'center',
             width:130,
-            height:0.5,
         },
         {
             title: '设备名称/编号',
@@ -242,7 +234,7 @@ class Detail extends React.Component{
                            <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
                        ]}
                 >
-                    <div style={{maxHeight:'550px'}}>
+                    <div style={{maxHeight:'600px'}}>
                         <Table
                             rowKey={item => item.code}
                             className="eqQueryCompleted-table"
@@ -261,7 +253,7 @@ class Detail extends React.Component{
                             <Step title="已完成" description= {this.state.detailData.finishiDate}/>
                         </Steps>
                         <WhiteSpace />
-                        <div style={{height:'170px',marginBottom:'2px',marginTop:'2px'}}>
+                        <div style={{height:'200px',margin:'5px 0'}}>
                             <Table
                                 rowKey={item => item.code}
                                 className="eqQueryCompleted-table"
@@ -270,13 +262,13 @@ class Detail extends React.Component{
                                 dataSource={this.state.detailData.deviceMaintenanceRecordDetails}
                                 bordered
                                 pagination={false}
-                                scroll={{ y: 150 }}
+                                scroll={{ y: 110 }}
                                 footer={this.footer}
                             />
                         </div>
 
-                        <div className="eqQueryCompleted-title" style={{paddingTop:"5"}}>配件使用</div>
-                        <div style={{height:'170px',marginTop:'10px'}}>
+                        <div className="eqQueryCompleted-title" style={{padding:"5px 0"}}>配件使用</div>
+                        <div style={{height:'200px'}}>
                             <Table className="eqQueryCompleted-table"
                                    rowKey={item => item.code}
                                    size="small"
@@ -284,10 +276,9 @@ class Detail extends React.Component{
                                    dataSource={this.state.detailData.deviceMaintenanceAccessory}
                                    bordered
                                    pagination={false}
-                                   scroll={{ y: 150 }}
+                                   scroll={{ y: 110 }}
                             />
                         </div>
-
                     </div>
 
                 </Modal>

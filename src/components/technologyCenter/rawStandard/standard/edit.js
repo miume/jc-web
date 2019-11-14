@@ -47,7 +47,6 @@ class EditStandard extends Component{
     }
     getDetail(){//获取标准详情
         const batchNumberId=this.props.record.batchNumberId;
-        //console.log( batchNumberId);
         axios({
             url:`${this.props.url.rawStandard.getStandard}/${batchNumberId}`,
             method:'get',
@@ -56,11 +55,9 @@ class EditStandard extends Component{
             },
         })
         .then(data=>{
-            //console.log(data);
             const res= data.data.data.details.rawStandards;
             const createTime=data.data.data.commonBatchNumber.createTime;
             const effectiveTime=data.data.data.details.techniqueRawStandardRecord.effectiveTime;
-            //console.log(effectiveTime);
             if(res){
                 var raw=[];
                 for(var i=0;i<res.length;i++){
@@ -115,11 +112,9 @@ class EditStandard extends Component{
     }
 
     inputChange(da){
-      //  console.log(da);
           this.setState({standardData:da});
     }
     handleDate(d){
-       //console.log(d);
        this.setState({
            date:d
        });
@@ -194,7 +189,6 @@ class EditStandard extends Component{
             type:'json'
         })
         .then(data=>{
-            //console.log(data);
             const res=data.data.data;
             if(res){
                 if(status===0){
@@ -215,8 +209,6 @@ class EditStandard extends Component{
         });
     }
     handleDetailSaveCheck(saveData,status){//点击迭代的保存或送审
-        // console.log('yeirw');
-        console.log(saveData)
         this.setState({
             visible:false,
             popVisible:false
@@ -233,7 +225,6 @@ class EditStandard extends Component{
          .then((data)=>{
              const res=data.data.data;
             if(res){
-                console.log(res)
                 if(status===0){
                     message.info(data.data.message);
                     if(data.data.code===0){
@@ -276,14 +267,13 @@ class EditStandard extends Component{
             },
         })
         .then(data=>{
-            //console.log(data);
              message.info(data.data.message);
              if(data.data.code===0){
                 this.props.getStandard(this.props.rawManufacturerId);//只有送审成功了才会调这个接口，获取表格数据
              }
         })
         .catch(()=>{
-          // message.info('送审失败，请联系管理员！');
+            message.info('送审失败，请联系管理员！');
         });
 
     }
@@ -320,7 +310,8 @@ class EditStandard extends Component{
                             </span>
                         ])}
                     >
-                        {this.state.flag?(<EditStandardModal record={this.props.record} standardData={this.state.standardData} effectiveTime={this.state.effectiveTime} raw={this.props.raw} factory={this.props.factory} handleSave={this.handleSave} inputChange={this.inputChange} handleDate={this.handleDate}/>):
+                        {this.state.flag?(<EditStandardModal record={this.props.record} standardData={this.state.standardData} effectiveTime={this.state.effectiveTime} raw={this.props.raw}
+                                                             factory={this.props.factory} inputChange={this.inputChange} handleDate={this.handleDate}/>):
                         (<DetailModal data={this.state.standardData}  effectiveTime={this.state.effectiveTime} createTime={this.state.createTime} record={this.props.record} raw={this.props.raw} factory={this.props.factory} />)
                         }
                     </Modal>

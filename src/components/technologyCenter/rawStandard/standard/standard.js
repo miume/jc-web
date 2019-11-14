@@ -50,10 +50,8 @@ import EditStandard from './edit';
             width:'10%',
             align:'center',
             render:(text,record)=>{
-                //console.log(record.status);
                 let editFlag=this.judgeStatus(record.status);
                 let iterateFlag=this.judgeStatusIterate(record.status);//只有通过才能迭代
-               //console.log(record.isPublished);
                 return(
                     <span>
                         <EditStandard editFlag={editFlag} iterateFlag={iterateFlag} flag={true} url={this.props.url} record={record} raw={this.props.raw} factory={this.props.factory}  rawManufacturerId={this.props.rawManufacturerId} rawMaterialId={this.props.rawMaterialId} getStandard={this.props.getStandard} home1={this.props.home} operation1={this.props.operation}/>

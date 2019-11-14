@@ -6,7 +6,8 @@ import Submit from '../../BlockQuote/submit';
 import NewButton from '../../BlockQuote/newButton';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
-import {Modal, Input, Table, DatePicker, message, Checkbox, Form, Col} from 'antd';
+import {Modal, Table, DatePicker, message, Checkbox, Col} from 'antd';
+import Standard from "../../BlockQuote/standard";
 
 class AddProductStandard extends React.Component {
     constructor(props) {
@@ -26,9 +27,10 @@ class AddProductStandard extends React.Component {
             selectTestItems: [],
             testItems: [],
             batchNumberId:-1,
-            iteFlag:true
+            iteFlag:true,
+            checkAll: true
         }
-        this.save = this.save.bind(this);
+        this.standardChange = this.standardChange.bind(this);
         this.judge = this.judge.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -39,47 +41,47 @@ class AddProductStandard extends React.Component {
         this.urgentChange = this.urgentChange.bind(this);
         this.dateChange = this.dateChange.bind(this);
         this.submitClick = this.submitClick.bind(this);
-        this.dataProcessing = this.dataProcessing.bind(this);
         this.addDataProcessing = this.addDataProcessing.bind(this);
         this.detailDataProcessing = this.detailDataProcessing.bind(this);
         this.getDataByBatchNumberId = this.getDataByBatchNumberId.bind(this);
-        // this.disabledDateTime = this.disabledDateTime.bind(this);
         this.handleIteration = this.handleIteration.bind(this);
         this.disabledDate = this.disabledDate.bind(this);
         this.range = this.range.bind(this);
+        this.renderClassName = this.renderClassName.bind(this);
+        this.onCheckAllChange = this.onCheckAllChange.bind(this);
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align: 'left',
-            width: '25%'
+            width: '20%'
         }, {
             title: '检测项目',
             dataIndex: 'name',
             key: 'name',
-            align: 'left',
-            width: '25%'
+            width: '20%'
         }, {
-            title: '检测结果',
+            title: '检测标准',
             dataIndex: 'count',
             key: 'count',
-            align: 'left',
-            width: '25%',
+            width: '30%',
             render: (text, record) => {
-                if (this.state.flag === 1) {
+                let {flag} = this.props;
+                if (flag === 1) {
                     return text;
                 } else
-                    return <Input id={record.id} name='testResult' placeholder='请输入检测结果'
-                                  style={{width: '100%', height: '30px', border: 'none'}} defaultValue={text}
-                                  onChange={this.save} className='stock-out-input'/>
-            }
+                    return <Standard record={record} standardChange={this.standardChange} defaultValue={flag ? record.count : '请选择检测标准'}/>
+            },
+            className: this.renderClassName()
         }, {
             title: '计量单位',
             dataIndex: 'unit',
             key: 'unit',
-            align: 'left',
-            width: '25%'
-        },]
+            width: '30%'
+        }]
+    }
+
+    renderClassName() {
+        return this.props.flag === 1 ? '' : 'productStandardTd'
     }
 
     /**判断是新增 编辑 还是详情 */
@@ -98,20 +100,19 @@ class AddProductStandard extends React.Component {
 
     /**点击新增标准 弹出新增标准弹出框 */
     handleAdd() {
-        const flag = this.props.flag;
-        const id = this.props.batchNumberId;
-        if (flag) this.getDataByBatchNumberId(id);
+        let {flag,batchNumberId,option} = this.props;
+        if (flag) this.getDataByBatchNumberId(batchNumberId);
         this.setState({
             visible: true,
             flag: flag,
-            batchNumberId:id
+            batchNumberId:batchNumberId,
+            selectTestItems: option,
+            selectAllItems: option
         })
-        // else this.getAllTestItem();
     }
 
     /**详情或者编辑 通过batchNumberId查询数据 */
     getDataByBatchNumberId(id) {
-
         axios({
             method: 'get',
             url: this.props.url.product.detailByCommonBatchId,
@@ -162,15 +163,6 @@ class AddProductStandard extends React.Component {
     handleSave() {
         this.addDataProcessing(0);
     }
-    /**点击迭代保存按钮 */
-    // handleIteSave = () => {
-    //     this.setState({
-    //         flag:-1
-    //     },() => {
-    //         this.addDataProcessing(0);
-    //     })
-    // }
-
 
     /**点击取消按钮 */
     handleCancel() {
@@ -200,14 +192,6 @@ class AddProductStandard extends React.Component {
         this.addDataProcessing(1);
     }
 
-    // handleIteOkApply = () => {
-    //     this.setState({
-    //         flag:-1
-    //     },() => {
-    //         this.addDataProcessing(1);
-    //     })
-    // }
-
     /**监听送审界面 送审流程的变化 */
     selectChange(value) {
         this.setState({
@@ -224,18 +208,25 @@ class AddProductStandard extends React.Component {
 
     /**监听table数据的变化 */
     /**input框内容变化，实现自动保存数据 */
-    save(e) {
-        const value = e.target.value;
-        // const name = e.target.name;
-        const id = e.target.id;
-        const newData = [...this.state.testItems];
-        const index = newData.findIndex(item => parseInt(id) === parseInt(item.id));
-        newData[index]['count'] = value;
+    // save(e) {
+    //     const value = e.target.value;
+    //     const id = e.target.id;
+    //     const newData = [...this.state.testItems];
+    //     const index = newData.findIndex(item => parseInt(id) === parseInt(item.id));
+    //     newData[index]['count'] = value;
+    //     this.setState({
+    //         testItems: newData
+    //     })
+    // }
+
+    /**给每项设置标准 自动保存数据*/
+    standardChange(index,value) {
+        let {testItems} = this.state;
+        testItems[index-1]['count'] = value;
         this.setState({
-            testItems: newData
+            testItems: testItems
         })
     }
-
 
     /**监控新增标准 生效时间的选取 */
     dateChange(date, dateString) {
@@ -266,7 +257,6 @@ class AddProductStandard extends React.Component {
             items: items,
             effTime:date
         }
-        //console.log(details)
         this.handleCancel();
         this.applyOut(status, params);
     }
@@ -321,7 +311,6 @@ class AddProductStandard extends React.Component {
             }
         }).then((data) => {
             message.info(data.data.message);
-            // console.log(classId,productId)
             this.props.getAllProductStandard({
                 classId: classId,
                 productId: productId
@@ -345,46 +334,11 @@ class AddProductStandard extends React.Component {
         return current < moment().startOf('day');
     }
 
-
-    /**获取所有检测项目 */
-    getAllTestItem() {
-        axios({
-            url: `${this.props.url.testItems.testItems}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then(data => {
-            const res = data.data.data;
-            if (res) {
-                this.dataProcessing(res);
-            }
-        })
-    }
-
-    /**对数据进行处理 */
-    dataProcessing(data) {
-        var option = []
-        for (var i = 0; i < data.length; i++) {
-            //data[i]['index'] = i + 1;
-            data[i]['value'] = '';
-            data[i]['form'] = data[i].id + '-' + data[i].name + '-' + data[i].unit + '-' + data[i].value
-            data[i]['check'] = true
-            option.push(data[i].id)
-        }
-        this.setState({
-            option: option,
-            allTestItem: data,
-            selItemsFlag: 1
-        })
-    }
-
     checkboxChange = (value) => {
         // 获取复选框ID
         this.setState({
             selectTestItems: value
         })
-
     }
 
     selectTestItem = () => {
@@ -406,14 +360,18 @@ class AddProductStandard extends React.Component {
                 index: i + 1
             })
         }
-
-
         this.setState({
             selItemsFlag: false,
             testItems: testItems
         })
+    };
 
-
+    onCheckAllChange(e) {
+        let target = e.target;
+        this.setState({
+            checkAll: target.checked,
+            selectTestItems: target.checked ? this.state.selectAllItems : []
+        })
     }
 
     render() {
@@ -439,8 +397,6 @@ class AddProductStandard extends React.Component {
         const effectiveTime = this.state.time.effectiveTime;
         const flag = this.props.flag;
         const data = [this.props.data[0][1], this.props.data[1][1]];
-        // console.log(flag)
-        // console.log(this.props.selItemsFlag)
         return (
             <span>
                 {this.judge(flag)}
@@ -449,7 +405,7 @@ class AddProductStandard extends React.Component {
                        footer={this.state.flag === 1 ? detail : iteration}>
                 <div>
                     {
-                        this.props.selItemsFlag&&this.state.selItemsFlag ?
+                        this.props.selItemsFlag && this.state.selItemsFlag ?
                             <div>
                                 <Modal
                                     title="选择检测项目" visible={this.state.visible} closable={false} centered={true}
@@ -462,7 +418,16 @@ class AddProductStandard extends React.Component {
                                         ]
                                     }
                                 >
-                                    <Checkbox.Group style={{width: "100%"}} defaultValue={this.props.option}
+                                    <div>
+                                        <Checkbox
+                                            onChange={this.onCheckAllChange}
+                                            checked={this.state.checkAll}
+                                        >
+                                            全选
+                                        </Checkbox>
+
+                                    <br />
+                                    <Checkbox.Group style={{width: "100%"}} value = {this.state.selectTestItems}
                                                     onChange={this.checkboxChange}>
                                         {
                                             this.props.allTestItem?this.props.allTestItem.map(p =>
@@ -473,7 +438,7 @@ class AddProductStandard extends React.Component {
                                                 </Col>):null
                                         }
                                     </Checkbox.Group>
-
+                            </div>
                                 </Modal>
                             </div> :
                             <div>
@@ -515,7 +480,6 @@ class AddProductStandard extends React.Component {
                                             </div>
                                     }
                                 </div>
-
                             </div>
                     }
                 </div>
