@@ -302,13 +302,13 @@ class CostProcessAdd extends Component {
                 'Authorization': this.url.Authorization
             },
             params: {
-                statisticId: this.state.statisticId,
+                statisticId: this.props.location.editFlag?this.props.location.code:this.state.statisticId,
                 flag: flag
             },
             data: this.state.addData
 
         }).then(data => {
-            //console.log(data.data)
+            console.log(data.data)
             message.info(data.data.data)
         }).catch(()=>{
             message.info('新增失败!')
@@ -397,8 +397,8 @@ class CostProcessAdd extends Component {
                         </span>
                         <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
                             <span >
-                                <SaveButton handleSave={this.save} flagConfirm={!this.state.flagConfirm}/>
-                                <NewButton name='提交' handleClick={this.submit} flagConfirm={!this.state.flagConfirm}/>
+                                <SaveButton handleSave={this.save} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
+                                <NewButton name='提交' handleClick={this.submit} flagConfirm={this.props.location.editFlag?false:!this.state.flagConfirm}/>
                             </span>
                         </span>
                 </div>
