@@ -115,6 +115,7 @@ import ProductStorage from "../costAccounting/productStorage/productStorage"
 import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
 
 import PositiveAdd from '../positiveCost/positiveProcessStatistics/positiveAdd/positiveAdd'
+import PositiveStatistic from '../positiveCost/positiveProcessStatistics/positiveStatisAnaly/positiveStatistic'
 import StorageStatistical from "../costAccounting/productStorage/statisticalAnalysis/statisticalAnalysis"
 
 import ExcipientStatistics from "../costAccounting/excipientStatistics/excipientStatistics"
@@ -582,6 +583,9 @@ class Right extends React.Component {
         },{
             path:"/excipientStatisticsAddModal",
             component:ExcipientStatisticsAddModal
+        },{
+            path:'/positiveStatistic',
+            component:PositiveStatistic
         }];
         return (
             <div className="rightDiv">

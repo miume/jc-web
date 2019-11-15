@@ -50,7 +50,7 @@ class ReadRecipe extends Component{//读取配方
     render(){
         return(
             <span>
-                <NewButton name='读取配方' handleClick={this.props.showModal}/>
+                <NewButton name='读取配方' handleClick={this.props.showModal} flagConfirm={this.props.flagConfirm}/>
                 <Modal 
                 title='请选择您需要读取的配方数据'
                 visible={this.props.visible}

@@ -13,54 +13,60 @@ class SyntheticProcess extends Component{//合成工序
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            key:'index'
+            key:'index',
+            width:"5%"
         },{
             title:'合成槽号',
             dataIndex:'materialName',
-            key:'materialName'
+            key:'materialName',
+            width:"13%"
         },{
             title:'体积',
             dataIndex:'volume',
             key:'volume',
             width:'15%',
-            render:(text,record)=>{
-                if(record.dataType===1){
-                     return(
-                         <Input name={`${record.index}-${'volume'}`} onChange={this.inputChange}/>
-                     )
-                }
-             }
+            // render:(text,record)=>{
+            //     if(record.dataType===1){
+            //          return(
+            //              <Input name={`${record.index}-${'volume'}`} onChange={this.inputChange}/>
+            //          )
+            //     }
+            //  }
         },{
             title:'含固量(g/L)',
             dataIndex:'solidContent',
-            key:'solidContent'
+            key:'solidContent',
+            width:'15%',
         },{
             title:'Ni(%)',
             dataIndex:'niPotency',
             key:'niPotency',
-            render:(text,record)=>{
-                return(
-                    <Input name={`${record.index}-${'niPotency'}`} onChange={this.inputChange}/>
-                )
-            }
+            width:'15%',
+            // render:(text,record)=>{
+            //     return(
+            //         <Input name={`${record.index}-${'niPotency'}`} onChange={this.inputChange}/>
+            //     )
+            // }
         },{
             title:'Co(%)',
             dataIndex:'coPotency',
             key:'coPotency',
-            render:(text,record)=>{
-                return(
-                    <Input name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
-                )
-            }
+            width:'15%',
+            // render:(text,record)=>{
+            //     return(
+            //         <Input name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
+            //     )
+            // }
         },{
             title:'Mn(%)',
             dataIndex:'mnPotency',
             key:'mnPotency',
-            render:(text,record)=>{
-                return(
-                    <Input name={`${record.index}-${'mnPotency'}`} onChange={this.inputChange}/>
-                )
-            }
+            width:'15%',
+            // render:(text,record)=>{
+            //     return(
+            //         <Input name={`${record.index}-${'mnPotency'}`} onChange={this.inputChange}/>
+            //     )
+            // }
         }];
         this.handleSelect=this.handleSelect.bind(this);
         this.handleOk=this.handleOk.bind(this);
@@ -70,7 +76,7 @@ class SyntheticProcess extends Component{//合成工序
         this.inputChange=this.inputChange.bind(this);
     }
     handleSelect(value,name){//获取下拉框的id
-        let selectKey=name.key;//监听是第几个下拉框change了
+        let selectKey=name.props.name;//监听是第几个下拉框change了
         let selectData=`${selectKey}-${value}`
         this.props.getSynthesis(this.props.processId,'',selectData)
     }
@@ -119,14 +125,15 @@ class SyntheticProcess extends Component{//合成工序
         this.header=this.props.tagTableData&&this.props.tagTableData[2]&&this.props.tagTableData[2].lineProDTOS?this.props.tagTableData[2].lineProDTOS:null
         return(
             <div>
-                <NewButton name='上期浓度' handleClick={this.getLastPotency}/>
-                <ReadRecipe handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible}/>
+                <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
+                <ReadRecipe handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm}/>
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
                 <Table 
                 dataSource={this.tableData}
                 rowKey={record=>record.code}
                 columns={this.columns}
                 pagination={false}
+                scroll={{y:'220px'}}
                 size='small' 
                 bordered/>
             </div>

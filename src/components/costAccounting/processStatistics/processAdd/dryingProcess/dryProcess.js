@@ -13,11 +13,13 @@ class DryProcess extends Component{//烘干工序
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            key:'index'
+            key:'index',
+            width:'5%'
         },{
             title:'物料点',
             dataIndex:'materialName',
-            key:'materialName'
+            key:'materialName',
+            width:'13%'
         },{
             title:'重量',
             dataIndex:'weight',
@@ -26,7 +28,7 @@ class DryProcess extends Component{//烘干工序
             render:(text,record)=>{
                 if(record.dataType===1){
                      return(
-                         <Input name={`${record.code}-${'volume'}`} onChange={this.inputChange}/>
+                         <Input value={record.weight} name={`${record.index}-${'weight'}`} onChange={this.inputChange}/>
                      )
                 }
              }
@@ -37,7 +39,7 @@ class DryProcess extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input name={`${record.code}-${'niPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.niPotency} name={`${record.index}-${'niPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -47,7 +49,7 @@ class DryProcess extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input name={`${record.code}-${'coPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.coPotency} name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -57,7 +59,7 @@ class DryProcess extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input name={`${record.code}-${'mnPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.mnPotency} name={`${record.index}-${'mnPotency'}`} onChange={this.inputChange}/>
                 )
             }
         }];
@@ -69,7 +71,7 @@ class DryProcess extends Component{//烘干工序
         this.inputChange=this.inputChange.bind(this);
     }
     handleSelect(value,name){//获取下拉框的id
-        let selectKey=name.key;//监听是第几个下拉框change了
+        let selectKey=name.props.name;//监听是第几个下拉框change了
         let optionId=value;
         let selectData=`${selectKey}-${optionId}`
         this.props.getDry(this.props.processId,'',selectData)
@@ -122,15 +124,16 @@ class DryProcess extends Component{//烘干工序
 
         return(
             <div>
-                <NewButton name='获取重量値'/>
+                <NewButton name='获取重量値' flagConfirm={!this.props.flagConfirm}/>
                 {/* <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible}/> */}
-                <NewButton name='上期浓度' handleClick={this.getLastPotency}/>
+                <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
                 <Table
                 dataSource={this.tableData} 
                 rowKey={record=>record.code}
                 columns={this.columns}
                 pagination={false}
+                scroll={{y:'220px'}}
                 size='small' 
                 bordered/>
             </div>

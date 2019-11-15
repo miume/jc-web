@@ -22,20 +22,20 @@ class Search extends Component{//工序对比分析
                                 )
                             }):null
                         }
-                    </Select>
-                    <Select  placeholder={this.props.lineFlag?'请选择产线':'请选择过程工序'} style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectProcessChange}>
-                      
-                        {
-                            this.props.process?this.props.process.map(data=>{
-                                return(
-                                    <Option key={data.code} value={data.code}>{data.processName}</Option>
-                                )
-                            }
-                            ):null
+                </Select>
+                <Select  placeholder={this.props.lineFlag?'请选择产线':'请选择过程工序'} style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectProcessChange}>
+                    
+                    {
+                        this.props.process?this.props.process.map(data=>{
+                            return(
+                                <Option key={data.code} value={data.code}>{data.processName}</Option>
+                            )
                         }
-                    </Select>
-                    <DatePicker placeholder='统计时段' style={{width:'150px',marginRight:'10px'}} onChange={this.props.dateChange}/>
-                    <NewButton name='确定' handleClick={this.props.search}/>
+                        ):null
+                    }
+                </Select>
+                <DatePicker placeholder='统计时段' style={{width:'150px',marginRight:'10px'}} onChange={this.props.dateChange}/>
+                <NewButton name='确定' handleClick={this.props.search}/>
                 
             </div>
         );
