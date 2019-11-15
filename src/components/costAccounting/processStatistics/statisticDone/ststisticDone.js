@@ -28,69 +28,95 @@ class StatisticDone extends Component{//已统计
     constructor(props){
         super(props);
         this.state={
-            loading:false,
+            loading:true,
             data:data
+        }
+        this.pagination={
+            showSizeChanger:true,
+            showTotal:(total)=>`共${total}条记录`,
+            pageSizeOptions:['10','20','50','100']
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index',
+            width:'5%'
         },{
             title:'周期类型',
-            dataIndex:'period',
-            key:'period'
+            dataIndex:'periodName',
+            key:'periodName',
+            width:'8%'
         },{
             title:'期数',
-            dataIndex:'LineName',
-            key:'LineName'
+            dataIndex:'head.lineName',
+            key:'head.lineName',
+            width:'6%'
         },{
             title:'开始时间',
-            dataIndex:'startTime',
-            key:'startTime'
+            dataIndex:'head.startTime',
+            key:'head.startTime',
+            width:'12%'
         },{
             title:'结束时间',
-            dataIndex:'endTime',
-            key:'endTime'
+            dataIndex:'head.endTime',
+            key:'head.endTime',
+            width:'12%'
         },{
             title:'过程工序',
-            dataIndex:'process',
-            key:'process'
+            dataIndex:'processName',
+            key:'processName',
+            width:'9%'
         },{
             title:'小计值',
-            dataIndex:'subtotal',
-            key:'subtotal'
+            dataIndex:'total',
+            key:'total',
+            width:'8%'
         },{
             title:'Ni金属量(T)',
-            dataIndex:'Nimetal',
-            key:'Nimetal'
+            dataIndex:'totalNi',
+            key:'totalNi',
+            width:'10%'
         },{
             title:'Co金属量(T)',
-            dataIndex:'Cometal',
-            key:'Cometal'
+            dataIndex:'totalCo',
+            key:'totalCo',
+            width:'10%'
         },{
             title:'Mn金属量(T)',
-            dataIndex:'Mnmetal',
-            key:'Mnmetal'
+            dataIndex:'totalMn',
+            key:'totalMn',
+            width:'10%'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
             render:(text,record)=>{
                 return(
-                    <Detail record={record} url={this.props.url} processDetailId={record.id}/>
+                    <Detail record={record} url={this.props.url} processDetailId={record.index}/>
                 )
             }
         }]
+        this.handleTableChange=this.handleTableChange.bind(this);
     }
-
+    componentDidMount(){
+        this.props.getPagination('2',this.pagination)
+    }
+    handleTableChange(pagination){
+        this.props.handleTableChange({
+            size:pagination.pageSize,
+            page:pagination.current
+        })
+    }
     render(){
         return(
             <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
+                <Spin spinning={this.props.loadingStatis} wrapperClassName='rightContent-Div'>
                     <Table
-                    rowKey={record=>record.id}
+                    rowKey={record=>record.index}
                     dataSource={this.props.dataStatistic}
                     columns={this.columns}
+                    pagination={this.props.pagination}
+                    onChange={this.handleTableChange}
                     size='small'
                     bordered/>
                 </Spin>

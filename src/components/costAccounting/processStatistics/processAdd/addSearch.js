@@ -11,10 +11,11 @@ class AddSearch extends Component{
     }
     render(){
         let endDate=this.props.endDate?moment(this.props.endDate):null
+        let startDate=this.props.startDate?moment(this.props.startDate):null
         return(
             <div className={this.props.flag?'':'hide'}>
                 <span>周期 : </span>&nbsp;
-                <Select value={this.props.periodCode} className='process-add-head-select' style={{marginRight:'20px'}} onChange={this.props.selectChange}>
+                {this.props.editFlag?(<Input value={this.props.period} placeholder='周期' style={{width:'130px',marginRight:'20px'}} disabled={this.props.flagConfirm}/>):(<Select value={this.props.periodCode} className='process-add-head-select' style={{marginRight:'20px'}} onChange={this.props.selectChange} disabled={this.props.flagConfirm}>
                     {
                         this.props.staticPeriod?this.props.staticPeriod.map(data=>{
                             return(
@@ -22,15 +23,13 @@ class AddSearch extends Component{
                             )
                         }):null
                     }
-                </Select>
-                <span>期数 : </span>&nbsp;<Input value={this.props.inputPeriod} placeholder='请输入期数' style={{width:130,marginRight:'20px'}} onChange={this.props.inputChange}/>
-                <span>开始时间 : </span>&nbsp;<DatePicker  onChange={this.props.startChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择开始日期'/>
-                <span>结束时间 : </span>&nbsp;<DatePicker value={endDate} onChange={this.props.endChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择结束日期'/>
-                <NewButton name='确定'  handleClick={this.props.search}/>&nbsp;
-                <Button type='primary' className='button' onClick={this.props.reset}>
-                   <i className='fa fa-repeat'></i> 重置
-                </Button>
-        </div>
+                </Select>)}
+                <span>期数 : </span>&nbsp;<Input value={this.props.inputPeriod} placeholder='请输入期数' style={{width:130,marginRight:'20px'}} onChange={this.props.inputChange} disabled={this.props.flagConfirm}/>
+                <span>开始时间 : </span>&nbsp;<DatePicker value={startDate} onChange={this.props.startChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择开始日期' disabled={this.props.flagConfirm}/>
+                <span>结束时间 : </span>&nbsp;<DatePicker value={endDate} onChange={this.props.endChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择结束日期' disabled={this.props.flagConfirm}/>
+                <Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}} onClick={this.props.search} disabled={this.props.flagConfirm}>确定</Button>&nbsp;
+                <Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}} onClick={this.props.reset} disabled={this.props.flagConfirm}>重置</Button>
+            </div>
         );
     }
 }

@@ -31,7 +31,11 @@ class ProcessStatistics extends Component{
             startSecondTime:'',//時分秒
             length:-1,//根据选择的开始日期用长度计算结束日期
             time:'',
-            process:[]
+            process:[],
+            pagination:{},
+            paginationStatis:{},
+            loadingSubmit:true,
+            loadingStatis:true
         }
         this.getStaPeriod=this.getStaPeriod.bind(this);
         this.judgeOperation=this.judgeOperation.bind(this);
@@ -47,6 +51,7 @@ class ProcessStatistics extends Component{
         this.dateEndChange=this.dateEndChange.bind(this);
         this.handleTableChange=this.handleTableChange.bind(this);
         this.getAllProcess=this.getAllProcess.bind(this);
+        this.getPagination=this.getPagination.bind(this);
     }
 
     getStaPeriod(){//获取统计周期
@@ -74,7 +79,19 @@ class ProcessStatistics extends Component{
         })
         
     }
-  
+    getPagination(tabKey,pagination){
+       if(tabKey==='1'){
+            this.setState({
+                pagination:pagination
+            })
+       }
+        else{
+            this.setState({
+                paginationStatis:pagination
+            })
+        }
+       
+    }
     getPendSubmit(params={},periodCode){//获取待提交表格数据
         if(!periodCode) return
         axios({
@@ -97,12 +114,15 @@ class ProcessStatistics extends Component{
                 temp.push(goodsInProcessStatisticHead)//temp是一个对象数组
            }
            this.setState({
-               dataSubmit:temp
+               dataSubmit:temp,
+               pagination:{current:res.page?res.page:0,total:res.total?res.total:0},
+               loadingSubmit:false
            })
           }
         })
     }
     getStatisticPage(params={},periodCode){//获取已统计表格数据
+        if(!periodCode) return 
         axios({
             url:`${this.url.precursorGoodIn.getStatisticPage}`,
             method:'get',
@@ -115,9 +135,15 @@ class ProcessStatistics extends Component{
             }
         }).then((data)=>{
             let res=data.data.data;
+          //console.log(res)
            if(res&&res.list){
+               for(let i=0;i<res.list.length;i++){
+                    res.list[i]['index']=(res.page-1)*10+(i+1)
+               }
               this.setState({
-                  dataStatistic:res.list
+                  dataStatistic:res.list,
+                  loadingStatis:false,
+                  paginationStatis:{current:res.page,total:res.total?res.total:0}
               })
            }
         })
@@ -204,6 +230,7 @@ class ProcessStatistics extends Component{
         })
         this.getPendSubmit({},periodCode)
     }
+
     judgeOperation(operation,operationCode){
             var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
             return flag.length?true:false
@@ -213,10 +240,7 @@ class ProcessStatistics extends Component{
        this.props.history.push({
            pathname:'/costProcessAdd',
            process:process,
-           staticPeriod:staticPeriod,
-           periodCode:periodCode,
-           startSecondTime:startSecondTime,
-           length:length
+           staticPeriod:staticPeriod
         })
     }
     statisticalAnalysis(){
@@ -257,10 +281,10 @@ class ProcessStatistics extends Component{
                     <div className='clear'></div>
                     <Tabs defaultActiveKey="1" onChange={this.tabsChange}>
                         <TabPane tab='待提交' key='1'>
-                            <PendSubmit history={this.props.history} getPendSubmit={this.getPendSubmit} url={this.url} periodCode={this.state.periodCode} dataSubmit={this.state.dataSubmit} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search} handleTableChange={this.handleTableChange}/>
+                            <PendSubmit history={this.props.history} getPagination={this.getPagination} getPendSubmit={this.getPendSubmit} loadingSubmit={this.state.loadingSubmit} pagination={this.state.pagination} url={this.url} periodCode={this.state.periodCode} dataSubmit={this.state.dataSubmit} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search} handleTableChange={this.handleTableChange} process={this.state.process} staticPeriod={this.state.staticPeriod}/>
                         </TabPane>
                         <TabPane tab='已统计' key='2' >
-                            <StatisticDone getStatisticPage={this.getStatisticPage} url={this.url} periodCode={this.state.periodCode} dataStatistic={this.state.dataStatistic} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search}/>
+                            <StatisticDone getStatisticPage={this.getStatisticPage} getPagination={this.getPagination} pagination={this.state.paginationStatis} url={this.url} handleTableChange={this.handleTableChange} periodCode={this.state.periodCode} loadingStatis={this.state.loadingStatis} dataStatistic={this.state.dataStatistic} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search}/>
                         </TabPane>
                     </Tabs>
                 </Spin>

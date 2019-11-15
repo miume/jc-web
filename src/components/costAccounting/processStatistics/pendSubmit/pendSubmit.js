@@ -6,7 +6,6 @@ class PendSubmit extends Component{//待提交
     constructor(props){
         super(props);
         this.state={
-            loading:false,
             pageChangeFlag:1,//用来判断是搜索还是获取表格数据
         }
         this.pagination={
@@ -41,10 +40,10 @@ class PendSubmit extends Component{//待提交
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className={this.judgeOperation(this.operation,'UPDATE')?'blue':'hide'} onClick={this.handleEdit}>编辑</span>
+                        <span className={this.judgeOperation(this.operation,'UPDATE')?'blue':'hide'} onClick={()=>this.handleEdit(record,record.code)}>编辑</span>
                         {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical'/>:''}
                         <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
-                            <Popconfirm title='确定删除?' onConfirm={() => this.handleDelete(record.id)} okText="确定" cancelText="再想想" >
+                            <Popconfirm title='确定删除?' onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
                                 <span className='blue'>删除</span>
                             </Popconfirm>
                         </span>
@@ -57,8 +56,11 @@ class PendSubmit extends Component{//待提交
         this.judgeOperation=this.judgeOperation.bind(this);
         this.handleTableChange=this.handleTableChange.bind(this);
     }
-
+    componentDidMount(){
+        this.props.getPagination('1',this.pagination)
+    }
     handleTableChange(pagination) {
+        //console.log('change',pagination)
         this.pagination = pagination;
         this.props.handleTableChange({
             size:pagination.pageSize,
@@ -67,9 +69,18 @@ class PendSubmit extends Component{//待提交
     }
 
 
-    handleEdit(){
-        this.props.history.push({pathname:'/costProcessAdd'})
+    handleEdit(record,code){
+        let {process,staticPeriod}=this.props
+        this.props.history.push({
+            pathname:`/costProcessAdd/${code}`,
+            editFlag:true,
+            process:process,
+            staticPeriod:staticPeriod,
+            code:code
+        })
+
     }
+
     handleDelete(id){
 
     }
@@ -80,15 +91,17 @@ class PendSubmit extends Component{//待提交
     render(){
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+       // console.log(this.props.pagination)
         return(
             <div>
-               <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+               <Spin spinning={this.props.loadingSubmit} wrapperClassName='rightDiv-content'>
                 <Table
                     dataSource={this.props.dataSubmit}
                     rowKey={record=>record.code}
                     columns={this.columns}
                     onChange={this.handleTableChange}
-                    pagination={this.pagination}
+                    pagination={this.props.pagination}
+                    onChange={this.handleTableChange}
                     size='small'
                     bordered/>
                </Spin>

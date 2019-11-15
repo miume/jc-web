@@ -13,13 +13,18 @@ class SelectLine extends Component{
             <span >
                
                 {
-                    this.props.headerData?this.props.headerData.map((data)=>{
+                    this.props.headerData?this.props.headerData.map((data,index)=>{
                         return(
                             <span key={data.line.code}>
                                 <span >{data.line.name} : </span>
-                                <Select onChange={this.props.handleSelect} placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
-                                    <Option name={1} key={data.line.code} value={1}>5505</Option>
-                                    <Option name={2} key={data.line.code} value={2}>5505</Option>
+                                <Select onChange={this.props.handleSelect}  placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
+                                    {
+                                        data.products.map((pro,index1)=>{
+                                            return(
+                                                <Option key={pro} name={data.line.code} value={pro}>{pro}</Option>
+                                            )
+                                        })
+                                    }
                                 </Select>
                             </span>
                         )

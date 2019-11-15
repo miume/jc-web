@@ -13,11 +13,13 @@ class AgingProcess extends Component{//陈化工序
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            key:'index'
+            key:'index',
+            width:'5%'
         },{
             title:'物料点名称',
             dataIndex:'materialName',
-            key:'materialName'
+            key:'materialName',
+            width:'13%'
         },{
             title:'体积(m³)/重量(T)',
             dataIndex:'weiOrVol',
@@ -26,7 +28,7 @@ class AgingProcess extends Component{//陈化工序
             render:(text,record)=>{
                 if(record.dataType===1){
                      return(
-                         <Input name={`${record.code}-${'weiOrVol'}`} onChange={this.inputChange}/>
+                         <Input value={record.weiOrVol} name={`${record.index}-${'weiOrVol'}`} onChange={this.inputChange}/>
                      )
                 }
              }
@@ -37,7 +39,7 @@ class AgingProcess extends Component{//陈化工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input name={`${record.code}-${'niPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.niPotency} name={`${record.index}-${'niPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -47,7 +49,7 @@ class AgingProcess extends Component{//陈化工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input name={`${record.code}-${'coPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.coPotency} name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -57,13 +59,14 @@ class AgingProcess extends Component{//陈化工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input name={`${record.code}-${'mnPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.mnPotency} name={`${record.index}-${'mnPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
             title:'含固量(g/L)',
             dataIndex:'solidContent',
             key:'solidContent',
+            width:'10%'
             
         }]
         this.handleSelect=this.handleSelect.bind(this);
@@ -74,7 +77,7 @@ class AgingProcess extends Component{//陈化工序
         this.inputChange=this.inputChange.bind(this);
     }
     handleSelect(value,name){//获取下拉框的id
-        let selectKey=name.key;//监听是第几个下拉框change了
+        let selectKey=name.props.name;//监听是第几个下拉框change了
         let selectData=`${selectKey}-${value}`
         this.props.getAge(this.props.processId,'',selectData)
     }
@@ -123,15 +126,16 @@ class AgingProcess extends Component{//陈化工序
         this.header=this.props.tagTableData&&this.props.tagTableData[3]&&this.props.tagTableData[3].lineProDTOS?this.props.tagTableData[3].lineProDTOS:null
         return(
             <div>
-                <NewButton name='获取体积値'/>
-                <NewButton name='获取上期浓度' handleClick={this.getLastPotency}/>
-                <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible}/>
+                <NewButton name='获取体积値' flagConfirm={!this.props.flagConfirm}/>
+                <NewButton name='获取上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
+                <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm}/>
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
                 <Table
                 dataSource={this.tableData} 
                 rowKey={record=>record.code}
                 columns={this.columns}
                 pagination={false}
+                scroll={{y:'220px'}}
                 size='small' 
                 bordered/>
             </div>

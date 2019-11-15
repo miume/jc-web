@@ -28,7 +28,7 @@ class PositiveAdd extends Component{
     render(){
         return(
             <div>
-                <Blockquote name='新增数据'  menu='正极成本' menu2='在制品管理' returnDataEntry={this.back}/>
+                <Blockquote name={this.props.location.editFlag?'编辑数据':'新增数据'}  menu='正极成本' menu2='在制品管理' returnDataEntry={this.back}/>
                 <div className='rightDiv-content'>
                     <Search/>
                     <Tabs defaultActiveKey='1'>

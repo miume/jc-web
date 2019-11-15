@@ -6,13 +6,11 @@ import axios from 'axios'
 class SingleCrystal extends Component {//单晶体配置
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
-            key: 'index'
+            key: 'index',
+            width:'5%'
         }, {
             title: '溶液',
             dataIndex: 'materialName',
@@ -25,8 +23,9 @@ class SingleCrystal extends Component {//单晶体配置
             width: '25%',
             render:(text,record)=>{
                if(record.dataType===1){
+
                     return(
-                        <Input name={`${record.index}-${'volume'}`}  onChange={this.inputChange}/>
+                        <Input  name={`${record.index}-${'volume'}`}  onChange={this.inputChange}/>
                     )
                }
             }
@@ -34,10 +33,10 @@ class SingleCrystal extends Component {//单晶体配置
             title: '本期浓度',
             dataIndex: 'monPotency',
             key: 'monPotency',
+            width:'30%',
             render: (text, record) => {
-                
                 return (
-                    <Input name={`${record.index}-${'monPotency'}`}  onChange={this.inputChange}/>
+                    <Input value={record.monPotency} name={`${record.index}-${'monPotency'}`}  onChange={this.inputChange}/>
                 )
             }
         }];
@@ -83,13 +82,14 @@ class SingleCrystal extends Component {//单晶体配置
         
         return (
             <div>
-                <NewButton name='获取体积值' />
-                <NewButton name='获取上期浓度' handleClick={this.getLastPotency} />
+                <NewButton name='获取体积值' flagConfirm={!this.props.flagConfirm}/>
+                <NewButton name='获取上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
                 <Table
                     dataSource={this.tableData}
                     rowKey={record => record.code}
                     columns={this.columns}
                     pagination={false}
+                    scroll={{y:'220px'}}
                     size='small'
                     bordered />
             </div>

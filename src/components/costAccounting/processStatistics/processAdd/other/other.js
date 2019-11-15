@@ -8,18 +8,14 @@ class Other extends Component{//烘干工序
     constructor(props){
         super(props);
         this.state={
-           
             selectName:1,
-            weight:'',
-            Ni:'',
-            Co:'',
-            Mn:'',
-            params:[]
+            params:[],
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'id',
-            key:'id'
+            dataIndex:'index',
+            key:'index',
+            width:'5%'
         },{
             title:'名称',
             dataIndex:'name',
@@ -27,9 +23,9 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Select placeholder='请选择' onChange={this.selectChange} defaultValue={record.name} style={{width:'158px'}}>
-                        <Option value={1}>合成</Option>
-                        <Option value={2}>烘干</Option>
+                    <Select placeholder='请选择' onChange={this.selectChange}  style={{width:'158px'}}>
+                        <Option name={`${record.index}-${'name'}`} value={1}>合成</Option>
+                        <Option name={`${record.index}-${'name'}`} value={2}>烘干</Option>
                     </Select>
                 )
             }
@@ -39,12 +35,12 @@ class Other extends Component{//烘干工序
             key:'weight',
             width:'15%',
             render:(text,record)=>{
-                if(record.dataType===1){
-                    let weight=record.weight
-                    return(
-                        <Input placeholder='请输入'  name={`${record.index}-${'weight'}`} defaultValue={weight} onChange={this.inputChange}/>
-                    )
-                }
+                // if(record.dataType===1){
+                //     let weight=record.weight
+                // }
+                return(
+                    <Input placeholder='请输入'  name={`${record.index}-${'weight'}`} defaultValue={record.weight} onChange={this.inputChange}/>
+                )
                
             }
         },{
@@ -54,7 +50,7 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name={`${record.index}-${'niPotency'}`} defaultValue={record.Ni} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.index}-${'niPotency'}`} defaultValue={record.niPotency} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -64,7 +60,7 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name={`${record.index}-${'coPotency'}`} defaultValue={record.Co} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.index}-${'coPotency'}`} defaultValue={record.coPotency} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -74,13 +70,14 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name={`${record.code}-${'mnPotency'}`} defaultValue={record.Mn} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.index}-${'mnPotency'}`} defaultValue={record.mnPotency} onChange={this.inputChange}/>
                 )
             }
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
+            width:'10%',
             render:(text,record)=>{
                 return(
                     
@@ -98,39 +95,21 @@ class Other extends Component{//烘干工序
         this.inputChange=this.inputChange.bind(this);
         this.selectChange=this.selectChange.bind(this);
     }
-    inputChange(e){//监听表格里面的输入框变化,name是个变量，有好几个
-        let name=e.target.name,value=e.target.value
-        this.setState({
-            [name]:value
-        })
-    }
-    selectChange(value){//监听表格里面的下拉框变化，下拉框只有一个，在state写好名字，change改变value值就行
-        this.setState({
-            selectName:value
-        })
-    }
-    handleOk(){
-        let {data,weight,Ni,Co,Mn,selectName,params}=this.state;
-        data.push({
-            id:data.length+1,
-            name:'',
-            weight:'',
-            Ni:'',
-            Co:'',
-            Mn:''
-        })
-        params.push({//将新增传的值给后台
-            selectName:selectName,
-            weight:weight,
-            Ni:Ni,
-            CO:Co,
-            Mn:Mn
-        })
-       this.setState({
-           data:data,
-           params:params
-       })
 
+    inputChange(e){//监听表格里面的输入框变化
+       console.log(e.target.name,e.target.value)
+        let value=e.target.value;
+        let inputData=`${e.target.name}-${value}`
+        this.props.getOther(this.props.processId,inputData,'')
+    }
+    selectChange(value,name){//监听表格里面的下拉框变化，下拉框只有一个，在state写好名字，change改变value值就行
+        
+      // console.log(value,name)
+        //let daIndex=//下拉框对应的dataIndex
+        this.props.otherSelectChange(this.props.processId,name.props.name,value)
+    }
+    handleOk(){//在父组件处理新增
+        this.props.handleOtherAdd()
     }
     handleDelete(id){
 
@@ -143,7 +122,6 @@ class Other extends Component{//烘干工序
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         this.tableData = this.props.tagTableData&&this.props.tagTableData[5]&&this.props.tagTableData[5].materialDetails?this.props.tagTableData[5].materialDetails:[]
-        //console.log(this.props.tagTableData,this.props.tagTableData[5])
         if (this.tableData && this.tableData.length) {
             for (let i = 0; i < this .tableData.length; i++) {
                 this.tableData[i]['index'] = i + 1
@@ -151,10 +129,10 @@ class Other extends Component{//烘干工序
         }
         return(
             <div>
-                <NewButton name='新增' className='fa fa-plus' handleClick={this.handleOk}/>
+                <NewButton name='新增' className='fa fa-plus' handleClick={this.handleOk} flagConfirm={!this.props.flagConfirm}/>
                 <Table 
                 dataSource={this.tableData}
-                rowKey={record=>record.id}
+                rowKey={record=>record.index}
                 columns={this.columns}
                 size='small' 
                 pagination={false}

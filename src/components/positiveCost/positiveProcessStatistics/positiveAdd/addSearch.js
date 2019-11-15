@@ -21,9 +21,9 @@ class Search extends Component{
                 </Select>
                 <DatePicker placeholder='周期开始时间' style={{width:'220px',marginRight:'20px'}}/>
                 <DatePicker placeholder='周期结束时间' style={{width:'220px',marginRight:'20px'}}/>
-                <NewButton name='确定' className='fa fa-search'/>
+                <NewButton name='确定' />
                 <Button
-                type='primary'><i className='fa fa-repeat'></i> 重置</Button>
+                type='primary'>重置</Button>
             
             </div>
         )

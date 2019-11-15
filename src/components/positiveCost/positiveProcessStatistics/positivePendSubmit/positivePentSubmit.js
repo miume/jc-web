@@ -66,7 +66,9 @@ class PositivePendSubmit extends Component{//待提交
         this.judgeOperation=this.judgeOperation.bind(this);
     }
     handleEdit(){
-        this.props.history.push({pathname:'/costProcessAdd'})
+        this.props.history.push({
+            pathname:'/positiveAdd',
+            editFlag:true})
     }
     handleDelete(id){
 

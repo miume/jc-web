@@ -52,7 +52,6 @@ class Detail extends Component{
             key:'metal',
         },]
         this.showModal=this.showModal.bind(this);
-        this.detail=this.detail.bind(this);
         this.back=this.back.bind(this);
         this.getDetail=this.getDetail.bind(this)
     }
