@@ -100,8 +100,8 @@ class Exit extends Component {
     }
     /**用来判断 若直接从top 进入待办事项时，怎么正确渲染待办事项页面 */
     judgeCurrent(){
-        const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path==='/todoList')[0]:[];
-        if(menus && menus.length) {
+        const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path==='/todoList')[0]:{};
+        if(menus) {
             const parentName = JSON.parse(localStorage.getItem('menuList'))?JSON.parse(localStorage.getItem('menuList')).menuList.filter(e=>e.menuId===menus.parent)[0].menuName:[];
             const current = {
                 openKeys:menus.parent,
