@@ -390,17 +390,18 @@ class CostProcessAdd extends Component {
                             }) : null
                         }
                     </Tabs>
-                    <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}>
-                        <CancleButton handleCancel={this.cancel} />
-                    </span>
-                    <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
-
-                        <span >
-                            <SaveButton handleSave={this.save} flagConfirm={!this.state.flagConfirm}/>
-                            <NewButton name='提交' handleClick={this.submit} flagConfirm={!this.state.flagConfirm}/>
-                        </span>
-                    </span>
                 </Spin>
+                <div>
+                        <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}>
+                            <CancleButton handleCancel={this.cancel} />
+                        </span>
+                        <span style={{ bottom: '0', position: 'absolute', right: '15px' }}>
+                            <span >
+                                <SaveButton handleSave={this.save} flagConfirm={!this.state.flagConfirm}/>
+                                <NewButton name='提交' handleClick={this.submit} flagConfirm={!this.state.flagConfirm}/>
+                            </span>
+                        </span>
+                </div>
             </div>
         )
     }
