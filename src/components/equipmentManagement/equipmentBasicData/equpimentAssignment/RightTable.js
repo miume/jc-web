@@ -11,47 +11,40 @@ class RightTable extends React.Component{
             dataIndex:'index',
             sorter:(a,b) =>a.code-b.code,
             width:'10%',
-        },{ title:'所属部门',
+        },{
+            title:'所属部门',
             dataIndex: 'deptName' ,
             width: '13%',
-            align:'left',
         }, {
             title: '固定资产编号',
             dataIndex: 'fixedassetsCode',
             width: '13%',
-            align:'left',
         },{
             title: '设备名称',
             dataIndex: 'deviceName',
-            width: '13%',
-            align:'left',
-            editable: true
+            width: '13%'
         }, {
             title: '规格型号',
             dataIndex: 'specification',
-            width: '13%',
-            align:'left',
+            width: '13%'
         },{
             title: 'ID卡号',
             dataIndex: 'idCode',
             width: '15%',
-            align:'left',
         },{
            title:'启动日期',
             dataIndex:'startDate',
-            width:'15%',
-            align:'left',
+            width:'15%'
         },{
             title:'设备状态',
             dataIndex:'status',
             width:'15%',
-            align:'left',
             render: (text, record) => {
                 return(
                     <span>{text}&nbsp;&nbsp;<i style={{color: `${record.color}`}} className="fa fa-circle" aria-hidden="true"></i></span>
                 )
             }
-        }]
+        }];
 
         return(
             <div>

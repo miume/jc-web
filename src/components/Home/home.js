@@ -48,7 +48,6 @@ class Home extends Component {
             '15':'设备指导'
         }
         const server = localStorage.getItem('server');
-        const server1 = localStorage.getItem('server1');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -543,9 +542,10 @@ class Home extends Component {
             /**设备工序*/
             deviceProcess: {
                 getAll: `${server}/jc/common/deviceProcess/getAllProcedure`,
-                getDeviceByProIdByPage: `${server}/jc/common/deviceProcess/getDeviceByProIdByPage`,
-                getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssignment`,
-                assign: `${server}/jc/common/deviceProcess/assign`
+                getPageByProcessDeptId: `${server}/jc/common/deviceProcess/getPageByProcessDeptId`,
+                getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssign`,
+                assign: `${server}/jc/common/deviceProcess/assign`,
+                getAllByDept: `${server}/jc/common/deptProcess/getAllByDept`,
             },
             /**出库点*/
             endPosition: {

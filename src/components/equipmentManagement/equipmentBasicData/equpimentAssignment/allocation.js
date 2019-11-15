@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, message, Modal} from "antd";
+import {Button, message, Modal, Select, Spin} from "antd";
 import SaveButton from "../../../BlockQuote/saveButton";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import DepTree from "../../../BlockQuote/department";
@@ -18,10 +18,13 @@ class Allocation extends React.Component{
             dataSource1:[],
             dataSource2:[],
             deviceName:[],
+            processDeptId: '',
+            loading: true
         };
         this.search = this.search.bind(this);
         this.onclick = this.onclick.bind(this);
         this.onCanCel = this.onCanCel.bind(this);
+        this.selectChange = this.selectChange.bind(this);
         this.getRightData = this.getRightData.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
         this.changeSourceData = this.changeSourceData.bind(this);
@@ -30,33 +33,35 @@ class Allocation extends React.Component{
     /** 分配点击事件 */
     onclick() {
         this.setState({
-            visible:true,
-            deviceName:this.props.clickName,
+            visible:true
         });
+        let {processData} = this.props,
+            processDeptId = processData && processData.length ? processData[0].code : '';
+        this.setState({
+            processDeptId: processDeptId
+        });
+        this.getRightData(processDeptId);
     };
 
     render() {
+        let {processData} = this.props, {processDeptId,loading} = this.state;
         return(
             <span>
-            <Button type="primary" onClick={this.onclick}>分配</Button>
+            <Button type="primary" onClick={this.onclick}  disabled={!processData.length>0}>分配</Button>
             <Modal visible={this.state.visible} closable={false}
-                   centered={true} maskClosable={false}
-                    width="90vw" height="60vh"   title="设备工序分配"
+                   maskClosable={false}
+                    width="1100px" title="设备工序分配"
                     footer={[ <SaveButton key="save" handleSave={this.handleSave }/>,
                               <CancleButton key='cancel' handleCancel={this.onCanCel} />]}
             >
-                <p><span>工序名称:&nbsp;&nbsp;&nbsp;</span>{this.props.clickName}</p>
-                <div className="equipment">
-                    <DepTree
-                        key="depTree"
-                        treeName={'所属部门'}
-                        url={this.props.url}
-                        getTableData={this.getRightData} />
-                    <div className="equipment-right">
-                        <Transferq  dataSource1={this.state.dataSource1} dataSource2={this.state.dataSource2}
-                                    changeSourceData={this.changeSourceData} search={this.search}/>
-                    </div>
-            </div>
+                <div style={{marginBottom: 10}}>
+                    <span>所属车间:&nbsp;&nbsp;&nbsp;{this.props.clickName}</span>
+                    <Select style={{width: 200,marginLeft: 40}} value={processDeptId} onChange={this.selectChange}>{this.renderSelect(processData)}</Select>
+                </div>
+                <Spin spinning={loading}>
+                    <Transferq  dataSource1={this.state.dataSource1} dataSource2={this.state.dataSource2}
+                                changeSourceData={this.changeSourceData} search={this.search}/>
+            </Spin>
             </Modal>
             </span>
         )
@@ -87,7 +92,7 @@ class Allocation extends React.Component{
 
    /**保存事件*/
    handleSave = () => {
-       let { dataSource2 } = this.state;
+       let { dataSource2, processDeptId} = this.state;
        if(!dataSource2.length) {
            message.info('已分配设备不能为空！');
            return;
@@ -96,29 +101,22 @@ class Allocation extends React.Component{
            for( let i = 0; i < dataSource2.length; i++ ) {
                deviceIds.push(dataSource2[i].deviceCode);
            }
-           this.saveEvent(deviceIds);
+           this.saveEvent(deviceIds,processDeptId);
        }
    };
 
-    saveEvent = (deviceIds) => {
+   saveEvent = (deviceIds,processDeptId) => {
        axios({
-           url: `${this.props.url.deviceProcess.assign}`,
+           url: `${this.props.url.deviceProcess.assign}?processDeptId=${processDeptId}`,
            method: 'put',
            headers: {
                'Authorization': this.props.url.Authorization
            },
            type: 'json',
-           params: {
-               deptId: this.state.deptCode,
-               proId: this.props.clickId
-           },
            data: deviceIds
        }).then( data => {
            if(data.status === 200) {
                message.info('保存成功！');
-               this.props.getTableData({
-                   proId: this.props.clickId
-               })
                this.setState({
                    visible:false,
                    dataSource1:[],
@@ -146,39 +144,29 @@ class Allocation extends React.Component{
    }
 
    /**获取数据*/
-   getRightData(params) {
-       let code = params && params.deptId ? params.deptId : '';
-       if(code) {
-           code = parseInt(code);
-           this.setState({
-               deptCode:code
-           });
-       }
+   getRightData(value) {
+       this.setState({
+           loading: true
+       });
        axios({
-           url: `${this.props.url.deviceProcess.getDeviceAssignment}`,
+           url: `${this.props.url.deviceProcess.getDeviceAssignment}?processDeptId=${value}`,
            method: 'get',
            headers: {
                'Authorization': this.props.url.Authorization
-           },
-           params:{
-               deptId:code,
-               proId: this.props.clickId
            }
        }).then((data) => {
            const res = data.data.data ? data.data.data : [];
-           const dataSource1 = [], dataSource2 = [], data1 = [], data2 = [];
+           let dataSource1 = [], dataSource2 = [];
            if (res && res.length) {
                let i1 = 1, i2 = 1;
                for(let i = 0; i < res.length; i++) {
                    if(res[i].chosen){
                        res[i]['index'] = i1++;
-                       res[i]['key'] = res[i].deviceCode.toString();
-                       data2.push(res[i]);
+                       res[i]['key'] = res[i].deviceCode ? res[i].deviceCode.toString() : '';
                        dataSource2.push(res[i])
                    } else {
                        res[i]['index'] = i2++;
-                       res[i]['key'] = res[i].deviceCode.toString();
-                       data1.push(res[i]);
+                       res[i]['key'] = res[i].deviceCode ? res[i].deviceCode.toString() : '';
                        dataSource1.push(res[i])
                    }
                }
@@ -186,8 +174,9 @@ class Allocation extends React.Component{
            this.setState({
                dataSource1: dataSource1,
                dataSource2: dataSource2,
-               data1: data1,
-               data2: data2
+               data1: dataSource1,
+               data2: dataSource2,
+               loading: false
            })
        }).catch(() => {
            message.info('查询失败，请刷新下页面！')
@@ -195,11 +184,27 @@ class Allocation extends React.Component{
    };
 
    /**处理数据，使数据的index每次都从1开始显示*/
-    dataProcessing(data) {
+   dataProcessing(data) {
         for(let i = 0; i < data.length; i++) {
             data[i].index = i + 1;
         }
         return data;
+    }
+
+    /**监控下拉框工序的变化*/
+    selectChange(value) {
+        this.setState({
+            processDeptId: value
+        });
+        this.getRightData(value);
+    }
+
+    /**渲染下拉框option*/
+    renderSelect(data) {
+        if(data && data.length) {
+            return data.map(e => <Select.Option key={e.code} value={e.code}>{e.processName}</Select.Option>)
+        }
+        return null;
     }
 
     /**改变状态*/
@@ -234,6 +239,12 @@ class Allocation extends React.Component{
                     data2: d2
                 })
             }
+        }
+    }
+
+    componentWillUnmount() {
+        this.setState = () => {
+            return;
         }
     }
 }

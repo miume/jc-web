@@ -56,7 +56,7 @@ import EquipmentMaintenance from '../equipmentManagement/equipmentMaintenance/eq
 import EqMaintenanceDataEntry from '../equipmentManagement/equipmentMaintenance/eqMaintenanceDataEntry/eqMaintenanceDataEntry'
 import EqMaintenancePlan from '../equipmentManagement/equipmentMaintenance/eqMaintenancePlan/eqMaintenancePlan'
 import EqMaintenanceQuery from '../equipmentManagement/equipmentMaintenance/eqMaintenanceQuery/eqMaintenanceQuery'
-import EqupimentAssignment from '../equipmentManagement/equipmentBasicData/equpimentAssignment/equpimentAssignment'
+import EqupimentAssignment from '../equipmentManagement/equipmentBasicData/equpimentAssignment/equipmentProcessAssignment'
 
 import EquipmentArchiveManager from '../equipmentManagement/equipmentArchive/equipmentArchiveManager/equipmentArchiveManager'
 import EqcomponentSearch from '../equipmentManagement/equipmentArchive/eqcomponentSearch/eqcomponentSearch'
@@ -88,7 +88,7 @@ import TankValue from "../costAccounting/precursorCostBasisData/tankValue/tankVa
 import MaterialType from "../costAccounting/precursorCostBasisData/materialType/materialType"
 
 import RawMaterial from '../costAccounting/rawMaterial/rawMaterial';
-import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/statisticalPeriodCost' 
+import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/statisticalPeriodCost'
 
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
