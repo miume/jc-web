@@ -1,38 +1,44 @@
 import React from 'react';
 import axios from 'axios';
-import {Modal,Table, Input,message,Divider} from 'antd';
+import {Modal, Table, message, Divider, Input} from 'antd';
 import CancleButton from '../../../BlockQuote/cancleButton';
 import SaveButton from '../../../BlockQuote/saveButton';
-import CheckModal from '../../../BlockQuote/checkModal';
 import Submit from '../../../BlockQuote/submit';
-// import NewButton from '../BlockQuote/newButton';
-// const data = [];
-// for(let i = 1; i <=10; i++){
-//     data.push({
-//         id:i,
-//         testItem:`Ca${i}`,
-//         result:'',
-//         unit:'g/ml'
+
+// const data1 = [],isQualified = [];
+// for(let i = 1; i <=20; i++){
+//     isQualified.push('');
+//     data1.push({
+//         index: i,
+//         id: i,
+//         name:`Ca${i}`,
+//         testResult:'',
+//         unit:'g/ml',
+//         value: `>${i}`,
+//         isValid: ''
 //     })
 // }
-class RecordChecking extends React.Component{
-    constructor(props){
+const GREATER_OR_EQUAL_TO = '≥', GREATER = '>',
+    LESS_THAN_OR_EQUAL_TO = '≤', LESS_THAN = '<',
+    BETWEEN = '~',RANGE = '±';
+
+class RecordChecking extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             visible:false,
-            detail:[],
+            detail: [],
             topData:{},
             visible1:false,  //用来控制送审弹出框
             process:-1,      //审核流程
             urgent:0,         //紧急 1 正常 0
-            IsQualified:-1
-        }
+            isQualified: '',
+            isQualifiedArr: []
+        };
         this.save = this.save.bind(this);
-        this.failed = this.failed.bind(this);
         this.headData = this.headData.bind(this);
         this.applyOut = this.applyOut.bind(this);
         this.checkData = this.checkData.bind(this);
-        this.qualified = this.qualified.bind(this);
         this.getFooter = this.getFooter.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -43,50 +49,59 @@ class RecordChecking extends React.Component{
         this.getEditorData = this.getEditorData.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
         this.recordChecking = this.recordChecking.bind(this);
+        this.checkIfQualified = this.checkIfQualified.bind(this);
         this.handleCancelApply = this.handleCancelApply.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
         this.columns = [{
             title:'序号',
             dataIndex:'index',
             key:'index',
-            align:'center',
             width:'10%'
         },{
             title:'检测项目',
-            dataIndex:'testItemName',
-            key:'testItemName',
-            align:'center',
+            dataIndex:'name',
+            key:'name',
             width:'20%'
         },{
             title:'检测结果',
-            dataIndex:'testResult',
-            key:'testResult',
-            align:'center',
-            width:'30%',
+            dataIndex:'testItemResultRecord.testResult',
+            key:'testItemResultRecord.testResult',
+            width:'20%',
             render:(text,record)=>{
-                return <Input id={record.id} name='testResult' placeholder='请输入检测结果' defaultValue={text} style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} className='stock-out-input' />
+                return <Input id={record.id} name={record.index} placeholder='请输入' defaultValue={text}
+                              style={{width:'100%',height:'30px',border:'none'}} onChange={this.save} className='stock-out-input' />
             }
         },{
             title:'标准',
             dataIndex:'value',
             key:'value',
-            align:'center',
             width:'20%'
         },{
             title:'计量单位',
             dataIndex:'unit',
             key:'unit',
-            align:'left',
-            width:'20%'
+            width:'17%'
+        },{
+            title:'状态',
+            dataIndex:'testItemResultRecord.isValid',
+            key:'testItemResultRecord.isValid',
+            width:'13%',
+            render: (text) => {
+                if(text === 0) {
+                    return <span style={{color: 'red'}}>不合格</span>
+                }
+                if(text === 1) {
+                    return <span style={{color: 'green'}}>合格</span>
+                }
+                return '';
+            }
         }]
     }
     /**点击录检 弹出框显示 */
     handleClick(){
         this.getEditorData();
         this.setState({
-            visible:true,
-            flag:0,       //1 表示合格 0 表示正常
-            fail:0        //1表示不合格 0 表示正常
+            visible:true
         })
     }
     /**通过id获取数据 */
@@ -97,36 +112,36 @@ class RecordChecking extends React.Component{
             }
         }).then((data)=>{
             const res = data.data.data;
-            let details  = [];
             let topData = {};
-            let {flag,fail} = this.state;
-            if(res){
-                let IsQualified = res.testReportRecord?res.testReportRecord.IsQualified:0;
-                if(IsQualified) flag = 1; else fail = 1;
+            if(res) {
+                let isQualified = res.testReportRecord ? res.testReportRecord.isQualified:0 ,isQualifiedArr = [];
                 topData={
                     batchNumber: res.serialNumber?res.serialNumber:'',
                     materialName: res.materialName?res.materialName:'',
                     b:res.sampleDeliveringRecord?res.sampleDeliveringRecord.sampleDeliveringDate:''
                 };
-                if(res.testDTOS){
-                    for(let i = 0; i < res.testDTOS.length; i++){
-                        let e = res.testDTOS[i];
-                            details.push({
-                                index:`${i+1}`,
-                                id:e.testItemResultRecord.id,
-                                testItemId:e.testItemResultRecord.testItemId,
-                                testItemName:e.name,
-                                testResult:e.testItemResultRecord.testResult?e.testItemResultRecord.testResult:'',
-                                unit:e.unit
-                            })
+                if(res.testDTOS) {
+                    for(let i = 0; i < res.testDTOS.length; i++) {
+                        res.testDTOS[i]['index'] = i + 1;
+                        isQualifiedArr.push(res.testDTOS[i].testItemResultRecord.isValid)
+                        // let e = res.testDTOS[i];
+                        //     details.push({
+                        //         index:`${i+1}`,
+                        //         id:e.testItemResultRecord.id,
+                        //         testItemId:e.testItemResultRecord.testItemId,
+                        //         name:e.name,
+                        //         testResult:e.testItemResultRecord.testResult?e.testItemResultRecord.testResult:'',
+                        //         unit:e.unit,
+                        //         value: e.value,
+                        //         isValid: e.testItemResultRecord.isValid //用来表示合格与不合格（默认为不合格）
+                        //     })
                     }
                 }
                 this.setState({
-                    detail:details,
-                    detailData:details,
-                    topData:topData,
-                    flag:flag,
-                    fail:fail
+                    detail: res.testDTOS,
+                    topData: topData,
+                    isQualified: isQualified,
+                    isQualifiedArr: isQualifiedArr
                 })
             }
         })
@@ -140,30 +155,50 @@ class RecordChecking extends React.Component{
     }
     /**input框内容变化，实现自动保存数据 */
     save(e){
-        const value = e.target.value;
-        const name = e.target.name;
-        const id = e.target.id
-        const newData = [...this.state.detail];
-        const index = newData.findIndex(item=> parseInt(id) === parseInt(item.id));
-        newData[index][name] = value;
+        let target = e.target, value = target.value, index = e.target.name - 1,
+            {detail,isQualifiedArr} = this.state, standard = detail[index]['value'], isValid = '';
+        if(typeof e.target.value === 'number') value = value.toString();
+        value = value.replace(/[^\d\.]/g, "");
+        detail[index]['testItemResultRecord']['testResult'] = value;
+        if(standard) {
+            let flag = this.checkIfQualified(value,standard);
+            isValid = flag ? '合格' : '不合格';
+        }
+        if(!value) {
+            isValid = '';
+        }
+        detail[index]['isValid'] = isValid
+        isQualifiedArr[index] = isValid;
         this.setState({
-            detail:newData
+            detail: detail,
+            isQualifiedArr: isQualifiedArr
         })
     }
-    /**点击合格 */
-    qualified(){
-        this.setState({
-            flag:1,
-            fail:0
-        })
+
+    /**检验是否合格
+     * value是否符合标准
+     * */
+    checkIfQualified(value,standard) {
+        value = parseFloat(value);
+        if(standard) {
+            if(standard[0] === GREATER_OR_EQUAL_TO) {         //大于等于
+                return value >= parseFloat(standard.slice(1));
+            } else if(standard[0] === GREATER) {
+                return value > parseFloat(standard.slice(1)); //大于
+            } else if(standard[0] === LESS_THAN_OR_EQUAL_TO) {
+                return value <= parseFloat(standard.slice(1));//小于等于
+            } else if(standard[0] === LESS_THAN) {
+                return value < parseFloat(standard.slice(1)); //小于
+            } else if(standard.indexOf(RANGE) > -1) {         //a ± b
+                let index = value.indexOf(RANGE), lowerLimit = parseFloat(standard.slice(0,index)), upperLimit = parseFloat(standard.slice(index + 1));
+                return value >= (lowerLimit - upperLimit) && value <= (lowerLimit + upperLimit);
+            } else {                                          //a~b
+                let index = value.indexOf(BETWEEN), lowerLimit = parseFloat(standard.slice(0,index)), upperLimit = parseFloat(standard.slice(index + 1));
+                return value >= lowerLimit && value <= upperLimit;
+            }
+        }
     }
-    /**点击不合格 */
-    failed(){
-        this.setState({
-            flag:0,
-            fail:1
-        })
-    }
+
     /**监控申请送审弹出框的visible */
     handleVisibleChange(visible){
         this.setState({
@@ -196,46 +231,32 @@ class RecordChecking extends React.Component{
     handleSave(){
         this.checkData(0);
     }
+
+    /**检查保存数据*/
     checkData(status){
-        let {detail,fail,flag,IsQualified} = this.state;
-        let flag1 = 1;
-        if(IsQualified === -1 && flag === 0 && fail === 0){
-            flag1 = 0;
-            message.info('请点击合格或者不合格！');
-            return
-        }
+        let {detail,isQualified} = this.state;
         if(detail){
-            let count = 0
-            for(let i = 0; i < detail.length; i++){
-                if(detail[i].testResult === ''){
+            let count = 0;
+            for(let i = 0; i < detail.length; i++) {
+                let e = detail[i]['testItemResultRecord'];
+                if(e.isAudit === 0) {
+                    isQualified = 0;
+                }
+
+                if(!e.testResult){
                     count++
                 }
             }
             if(count === detail.length){
-                flag1 = 0;
                 message.info('必须录入一个检测结果！');
                 return
             }
         }
-        if(flag1){
-            this.applyOut(status);
-        }
+        console.log(detail)
+        //this.applyOut(status,testDTOS,isQualified);
     }
     /**保存 */
-    applyOut(status){
-        let {detail,flag,IsQualified} = this.state;
-        if(flag) IsQualified = 1; else IsQualified = 0;
-        let testDTOS = [];
-        for(let i=0; i<detail.length;i++ )
-        {
-            let e = detail[i];
-            testDTOS.push({
-                testItemResultRecord:{
-                    id:e.id,
-                    testResult:e.testResult
-                }
-            })
-        }
+    applyOut(status,testDTOS,isQualified){
         const judger = JSON.parse(localStorage.getItem('menuList')).userId;
         axios.put(`${this.props.url.rawTestReport.rawTestReport}`,{
             testDTOS:testDTOS,
@@ -243,7 +264,7 @@ class RecordChecking extends React.Component{
                 id:this.props.value
             },
             testReportRecord:{
-                isQualified:IsQualified,
+                isQualified:isQualified,
                 judger:judger
             },
         },{
@@ -283,6 +304,7 @@ class RecordChecking extends React.Component{
             message.info('审核失败，请联系管理员！')
         })
     }
+
     /**点击录检按钮 */
     recordChecking(){
         this.setState({
@@ -356,10 +378,10 @@ class RecordChecking extends React.Component{
                                样品名称：<span>{this.state.topData&&this.state.topData.materialName?this.state.topData.materialName+'样品':''}</span>
                            </div>
                     </div>
-                    <div style={{height:'350px'}}>
-                        <Table className='stock-out' rowKey={record=>record.id} columns={this.columns} dataSource={this.state.detail} pagination={false} size='small' bordered scroll={{y:250}} />
+                    <div style={{height:'400px'}}>
+                        <Table className='stock-out' rowKey={record=>record.testItemResultRecord.id} columns={this.columns} dataSource={this.state.detail}
+                               pagination={false} size='small' bordered scroll={{y:345}} />
                     </div>
-                    <CheckModal flag={this.state.flag} fail={this.state.fail} qualified={this.qualified} failed={this.failed}/>
                 </div>
                 </Modal>
             </span>

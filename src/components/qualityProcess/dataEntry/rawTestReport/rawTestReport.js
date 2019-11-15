@@ -123,7 +123,6 @@ class RawTestReport extends React.Component{
                     <span>
                         <Detail value={text}  url={this.url} status={record.status} id={record.batchNumberId} allStatus={this.status}/>
                         <RecordChecking title='录检' value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
-                        <RecordChecking title='修改' value={text} url={this.url} status={record.status} tableRecord={this.tableRecord} flag={editorFlag}/>
                         <Divider type='vertical' />
                         <Loss statement={record.exceptionComment} name='异常备注' />
                         <Divider type='vertical' />
@@ -151,6 +150,9 @@ class RawTestReport extends React.Component{
                 searchContent:''
             })
         }
+        this.setState({
+            loading: true
+        })
         axios.get(`${this.url.rawTestReport.getAllByPage}`,{
             headers:{
                 'Authorization':this.url.Authorization
@@ -257,7 +259,7 @@ class RawTestReport extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回' flag={1} returnDataEntry={this.returnDataEntry}></BlockQuote>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <SearchCell name='请输入工厂名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}
-                                fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
+                                fetch={this.fetch} flag={home.judgeOperation(this.operation,'QUERY')}></SearchCell>
                     <div className='clear'></div>
                     <Table rowKey={record=>record.id} columns={this.columns}
                            dataSource={this.state.dataSource} onChange={this.handleTableChange}
