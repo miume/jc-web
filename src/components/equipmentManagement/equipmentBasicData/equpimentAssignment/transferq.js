@@ -17,12 +17,12 @@ class Transferq extends React.Component{
         const columns = [{
             title:'序号',
             dataIndex:'index',
-            key:'deviceCode',
+            key:'index',
             width:"15%"
         },{
             title:'固定资产编号',
-            dataIndex:'fixedassets',
-            key:'fixedassets',
+            dataIndex:'fixedassetsCode',
+            key:'fixedassetsCode',
             width:"35%"
         },{
             title:'设备名称',
@@ -57,7 +57,7 @@ class Transferq extends React.Component{
                                 onChange={this.search1}
                             />
                         </div>
-                        <Table rowKey={record => record.deviceCode} columns={columns} size="small" dataSource={this.props.dataSource1}  scroll={{ y: 340 }}
+                        <Table rowKey={record => record.deviceCode} columns={columns} size="small" dataSource={this.props.dataSource1}  scroll={{ y: 450 }}
                                rowSelection={rowSelection} bordered={false} pagination={false}/>
                     </Card>
                 </div>
@@ -81,7 +81,7 @@ class Transferq extends React.Component{
                             <Input placeholder="设备名称/规格型号" onChange={this.search2} className='eqa-transfer-right-input' />
                         </div>
                         <Table rowKey={record => record.deviceCode} columns={columns} size="small" dataSource={this.props.dataSource2}
-                               rowSelection={rowSelection2} bordered={false} pagination={false} scroll={{ y: 340 }}/>
+                               rowSelection={rowSelection2} bordered={false} pagination={false} scroll={{ y: 450 }}/>
                     </Card>
                 </div>
             </div>
