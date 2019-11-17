@@ -40,6 +40,8 @@ class CostProcessAdd extends Component {
             addData: {},
             statisticId: '',
             flagConfirm: false,
+            otherFlag:false,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上
+            
         }
 
         this.returnProcess = this.returnProcess.bind(this);
@@ -222,7 +224,7 @@ class CostProcessAdd extends Component {
                     }
                 }).then((data) => {
                     let tagTable = data.data.data;
-                    console.log(tagTable)
+                   // console.log(tagTable)
                     if (tagTable && tagTable.goodInProcessDTOS) {
                         this.setState({
                             tagTableData: tagTable.goodInProcessDTOS,
@@ -235,10 +237,12 @@ class CostProcessAdd extends Component {
     }
     reset() {//重置清空搜索框的值
         this.setState({
-            beginTime: '',
-            endTime: '',
-            periodCode: 1,
-            inputPeriod: ''
+            // startTime: '',
+            // endTime: '',
+            // periodCode: '',
+            // inputPeriod: '',
+            startDate:'',
+            endDate:''
         })
     }
     tabChange(key) {
@@ -257,37 +261,46 @@ class CostProcessAdd extends Component {
             mnPotency:''
         })
         this.setState({
-            tagTableData: tagTableData
+            tagTableData: tagTableData,
+            otherFlag:true
         })
     }
-    getChange(tabKey, inputData, selectData) {
+    getChange(tabKey, inputData, selectData) {//获取到下拉框，输入框填的值
+        let {addData}=this.state
         if (inputData) {
             let index = inputData.split('-')[0] //定位到是第几条数据
             let name = inputData.split('-')[1] //输入框内容变化的字段
             let value = inputData.split('-')[2]
-            this.state.addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+            addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
         }
         if (selectData) {
             let codeSelect = selectData.split('-')[0]//第几个下拉框
             let id = selectData.split('-')[1] //下拉框的哪个option
-           this.state.addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
+           addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
         }
         if (inputData && selectData) {
             let index = inputData.split('-')[0] //物料名字的编码
             let name = inputData.split('-')[1] //输入框内容变化的字段
             let value = inputData.split('-')[2]
-            this.state.addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+            addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
             let codeSelect = selectData.split('-')[0]//第几个下拉框
             let id = selectData.split('-')[1] //下拉框的哪个option
-            this.state.addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
+            addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
         }
+        this.setState({
+            addData:addData
+        })
+      
     }
     otherSelectChange(tabKey,name,value){
      //name是下拉框对应的dataIndex和第几条记录,value对应的是选的option的value
+        let {addData}=this.state
         let codeRecord=name.split('-')[0]
         let maName=name.split('-')[1]
-        this.state.addData.goodInProcessDTOS[tabKey-1].materialDetails[codeRecord-1][maName]=value
-
+        addData.goodInProcessDTOS[tabKey-1].materialDetails[codeRecord-1][maName]=value
+        this.setState({
+            addData:addData
+        })
     }
 
     save(f) {
@@ -308,17 +321,16 @@ class CostProcessAdd extends Component {
             data: this.state.addData
 
         }).then(data => {
-            console.log(data.data)
+           // console.log(data.data)
             message.info(data.data.data)
         }).catch(()=>{
             message.info('新增失败!')
         })
     }
     submit() {
-        let {addData}=this.state
+        let {addData,otherFlag}=this.state
         let data=addData.goodInProcessDTOS
         for(let i=0;i<data.length;i++){//第一层是遍历哪个tag
-            if(i==1||i==2) continue //混合盐与合成工序只读不改，无需遍历
                 if(i===0){//单晶体
                     for(let j=0;j<data[i].materialDetails.length;j++){
                         if(!data[i].materialDetails[j]['monPotency']){
@@ -327,9 +339,23 @@ class CostProcessAdd extends Component {
                         }
                     }
                 }
+                if(i==1||i==2){
+                    for(let j=0;j<data[i].lineProDTOS.length;j++){
+                        if(!data[i].lineProDTOS[j]['product']){
+                            message.info('信息填写不完整!')
+                            return
+                        }
+                    }
+                }
                 else if(i===3){//陈化
                     for(let j=0;j<data[i].materialDetails.length;j++){
                         if(!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
+                            message.info('信息填写不完整!')
+                            return
+                        }
+                    }
+                    for(let j=0;j<data[i].lineProDTOS.length;j++){
+                        if(!data[i].lineProDTOS[j]['product']){
                             message.info('信息填写不完整!')
                             return
                         }
@@ -343,22 +369,85 @@ class CostProcessAdd extends Component {
                             return
                         }
                     }
-                  
-                }
-                else if(i===5){
-                    for(let j=0;j<data[i].materialDetails.length;j++){
-                        if(!data[i].materialDetails[j]['weight']||!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
+                    for(let j=0;j<data[i].lineProDTOS.length;j++){
+                        if(!data[i].lineProDTOS[j]['product']){
                             message.info('信息填写不完整!')
                             return
                         }
                     }
                   
                 }
+                else if(i===5&&otherFlag){
+                    for(let j=0;j<data[i].materialDetails.length;j++){
+                        if(!data[i].materialDetails[j]['weight']||!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
+                            message.info('信息填写不完整!')
+                            return
+                        }
+                    }
+                }
             }
-        
        this.save(1)
     }
     cancel() {
+        let {addData,otherFlag}=this.state
+        for(let i=0;i<addData.goodInProcessDTOS.length;i++){
+            if(i===0){
+                for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
+                    if(addData.goodInProcessDTOS[i].materialDetails[j]['monPotency']!==0){
+                        addData.goodInProcessDTOS[i].materialDetails[j]['monPotency']=0
+                    }
+                }
+            }
+            else if(i===1||i===2){
+              for(let j=0;j<addData.goodInProcessDTOS[i].lineProDTOS.length;j++){
+                if(!addData.goodInProcessDTOS[i].lineProDTOS[j]['product']){
+                    addData.goodInProcessDTOS[i].lineProDTOS[j]['product']=null
+                }
+              }
+            }
+            else if(i===3){
+               for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
+                if(addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']!==0){
+                    addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']=0;
+                    addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']=0;
+                    addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']=0;
+                }
+               }
+               for(let j=0;j<addData.goodInProcessDTOS[i].lineProDTOS.length;j++){
+                   if(!addData.goodInProcessDTOS[i].lineProDTOS[j]['product']){
+                    addData.goodInProcessDTOS[i].lineProDTOS[j]['product']=null
+                   }
+               }
+            }
+            else if(i===4){
+               for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
+                if(addData.goodInProcessDTOS[i].materialDetails[j]['weight'] !==0||addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']!==0){
+                    addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']=0;
+                    addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']=0;
+                    addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']=0;
+                    addData.goodInProcessDTOS[i].materialDetails[j]['weight']=0;
+                }
+               }
+               for(let j=0;j<addData.goodInProcessDTOS[i].lineProDTOS.length;j++){
+                if(!addData.goodInProcessDTOS[i].lineProDTOS[j]['product']){
+                 addData.goodInProcessDTOS[i].lineProDTOS[j]['product']=null
+                }
+            }
+            }
+            else if(i===5 && otherFlag){
+                for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
+                 if(addData.goodInProcessDTOS[i].materialDetails[j]['weight']!==0||addData[i].materialDetails[j]['mnPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']!==0){
+                     addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']=0;
+                     addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']=0;
+                     addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']=0;
+                     addData.goodInProcessDTOS[i].materialDetails[j]['weight']=0;
+                 }
+                }
+             }
+        }
+        this.setState({
+            addData:addData
+        })
 
     }
     render() {
