@@ -149,10 +149,11 @@ class MaterialBasic extends Component{
                     temp.push(completeType[j]['typeName']);
                 }
                 if(ni !== '0') metal.push('ni');
-                if(co !== '0') metal.push('ni');
-                if(mn !== '0') metal.push('ni');
+                if(co !== '0') metal.push('co');
+                if(mn !== '0') metal.push('mn');
+                records[i]['material'] = completeType[completeType.length-1]['typeName'];
                 records[i]['materialType'] = temp.join('-');
-                records[i]['metal'] = metal
+                records[i]['metal'] = metal;
                 records[i]['index'] = (res.current - 1) * 10 + i + 1;
                 records[i]['materialTypeId'] = parseInt(completeType[completeType.length - 1].id);
             }

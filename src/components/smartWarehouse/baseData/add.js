@@ -48,7 +48,7 @@ class Add extends Component{
             let temp = {
                 title: res[i]['typeName'],
                 key: res[i]['id'],
-                value: res[i]['id'],
+                value: res[i]['typeName']+'-'+res[i]['id'],
                 children: []
             }, children = res[i]['children'];
 
@@ -74,11 +74,13 @@ class Add extends Component{
             message.info('物料名称和物料类型不能为空！');
             return;
         } else {
+            values.materialTypeId = values.materialTypeId.split('-')[1];
             values['ni'] = values.metal.indexOf('ni') > -1 ? 1 : 0;
             values['co'] = values.metal.indexOf('co') > -1 ? 1 : 0;
             values['mn'] = values.metal.indexOf('mn') > -1 ? 1 : 0;
             delete values['metal'];
-            this.handleData(values)
+            console.log(values)
+            //this.handleData(values)
         }
     }
 
@@ -109,10 +111,9 @@ class Add extends Component{
     }
 
     render(){
-        const {form}=this.props;
-        const {getFieldDecorator}=form;
-        const obj=this.props.editFlag? {
-            initialValue:this.props.record.materialTypeId,
+        let {form,record}=this.props,{getFieldDecorator}=form,
+            obj=this.props.editFlag? {
+            initialValue: record.material + '-'+ record.materialTypeId,
             rules:[{required:true,message:'请选择物料类型'}]
         }:{
             initialValue: '',
