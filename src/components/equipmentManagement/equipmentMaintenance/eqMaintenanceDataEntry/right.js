@@ -89,16 +89,17 @@ class  Right extends React.Component{
             key:'operation',
             align:'left',
             render: (text,record) => {
-                let update = home.judgeOperation(this.operation,'UPDATE')
+                // let update = home.judgeOperation(this.operation,'UPDATE');
                 return (
                     <span>
-                        <Add editorFlag={true} flag={update} deviceName={this.props.deviceName} code={record.code} url={this.props.url} getTableData={this.props.getTableData } fetch={this.props.fetch}
+                        <Add editorFlag={true} flag={true} deviceName={this.props.deviceName} code={record.code} url={this.props.url} getTableData={this.props.getTableData } fetch={this.props.fetch}
                                   maintenanceContent={record.maintenanceContent}
                                   maintenanceFrequency={record.maintenanceFrequency}
                                   maintenanceItems={record.maintenanceItems}
                                   optType={record.optType}
                         />
-                        {home.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
+                        {/*{home.judgeOperation(this.operation,'DELETE')?*/}
+                        <Divider type='vertical' />
                         <span className={home.judgeOperation(this.operation,'DELETE')?'':'hide'}>
                             <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
                                 <span className='blue'>删除</span>
@@ -254,17 +255,17 @@ class  Right extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange:this.onSelectChange,
-        };
+        }, addFlag = true;
         this.pagination.total = this.props.dataSource.length;
-        const addFlag = home.judgeOperation(this.operation,'SAVE');
+        // const addFlag = home.judgeOperation(this.operation,'SAVE');
         return (
             <Spin spinning={this.props.tableLoading} wrapperClassName="equipment-right">
                 <Add deviceData={this.props.deviceData} flag={addFlag}  url={this.props.url} getTableData={this.props.getTableData} deviceName={this.props.deviceName} />
                 <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancle}
-                             flag={home.judgeOperation(this.operation,'DELETE')}
+                             flag={true}
                 />
                 <SearchCell name='请输入保养数据或保养内容' searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}
-                            fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')} />
+                            fetch={this.reset} flag={true} />
 
                 <Table rowKey={record => record.code}
                        rowSelection={rowSelection}
