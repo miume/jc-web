@@ -2,7 +2,7 @@ import React from 'react';
 import Blockquote from "../../../BlockQuote/blockquote";
 import DepTree from "../../../BlockQuote/department";
 import AddModal from "./addaModal";
-import {Spin} from "antd";
+import {message, Spin} from "antd";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import ProcessTable from "./processTable";
 import axios from "axios";
@@ -17,8 +17,11 @@ class EquipmentProcessName extends React.Component {
             deptId: '',
             loading: true
         };
+        this.deleteByIds = this.deleteByIds.bind(this);
         this.getTableData = this.getTableData.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
@@ -68,6 +71,7 @@ class EquipmentProcessName extends React.Component {
                             deptId={deptId}
                             rightTableData={rightTableData}
                             getTableData={this.getTableData}
+                            handleTableChange={this.handleTableChange}
                         />
                     </Spin>
                 </div>
@@ -75,13 +79,21 @@ class EquipmentProcessName extends React.Component {
         )
     }
 
-    getTableData(params) {
+    getTableData(params = {}) {
         let {deptId, depName} = params;
         if(depName) {
             this.setState({
                 deptId: deptId,
                 deptName: depName
             });
+        }
+        if(!deptId) {
+            let {deptId} = this.state, {current,pageSize} = this.pagination;
+            params = {
+                deptId: deptId,
+                size: pageSize,
+                page: current
+            }
         }
         this.setState({
             loading: true
@@ -110,9 +122,38 @@ class EquipmentProcessName extends React.Component {
         })
     }
 
-    onSelectChange(selectedRowKeys){
+    onSelectChange(selectedRowKeys) {
         this.setState({ selectedRowKeys });
     };
+
+    deleteByIds() {
+        let {selectedRowKeys} = this.state;
+        axios({
+            url:`${this.url.equipmentProcessName.deptProcess}/ids`,
+            method:'delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            data:selectedRowKeys,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.getTableData();
+        }).catch((error)=>{
+            message.info(error.data.message)
+        });
+    }
+
+    /**分页*/
+    handleTableChange(pagination) {
+        this.pagination = pagination;
+        this.getTableData();
+    }
+
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/equipmentBasicData'});
+    }
 
     componentWillUnmount() {
         this.setState = () => {

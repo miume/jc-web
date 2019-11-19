@@ -33,6 +33,7 @@ class EqupimentAssignment extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.searchReset = this.searchReset.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
+        this.returnDataEntry = this.returnDataEntry.bind(this);
     }
 
     render() {
@@ -186,6 +187,11 @@ class EqupimentAssignment extends React.Component {
         this.getTableData({
             processDeptId: processDeptId
         });
+    }
+
+    /**返回数据录入页面 */
+    returnDataEntry(){
+        this.props.history.push({pathname:'/equipmentBasicData'});
     }
 
     componentWillUnmount() {

@@ -5,8 +5,7 @@ import AddModal from "./addaModal";
 
 class ProcessTable extends React.Component{
     constructor(props){
-        super(props)
-        this.handleTableChange = this.handleTableChange.bind(this);
+        super(props);
     }
 
     columns = [{
@@ -58,7 +57,7 @@ class ProcessTable extends React.Component{
                 pagination={this.props.pagination}
                 rowSelection={this.props.rowSelection}
                 dataSource={this.props.rightTableData}
-                onChange={this.handleTableChange}
+                onChange={this.props.handleTableChange}
                 size="small"
                 bordered
             />
@@ -66,7 +65,7 @@ class ProcessTable extends React.Component{
     }
     handleDelete = (id) => {
         axios({
-            url:`${this.props.url.equipmentProcessName.deptProcess}/${id}`,
+            url:`${this.props.url.equipmentProcessName.deptProcess}?id=${id}`,
             method:'Delete',
             headers:{
                 'Authorization':this.props.url.Authorization
@@ -81,29 +80,6 @@ class ProcessTable extends React.Component{
         });
 
     }
-
-    fetch = () => {
-    };
-
-
-    handleTableChange = (page) => {
-        const {pageChangeFlag} = this.props.pageChangeFlag;
-        if (pageChangeFlag) {
-            this.props.getTableData({
-                id:parseInt(this.props.deptCode),
-                page:page.current,
-                size:page.pageSize,
-                depName:this.props.deptName,
-            })
-        } else {
-            this.props.getTableData({
-                id:parseInt(this.props.deptCode),
-                page:page.current,
-                size:page.pageSize,
-                depName:this.props.deptName,
-            })
-        }
-    };
 }
 
 export  default ProcessTable
