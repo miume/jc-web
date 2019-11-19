@@ -76,7 +76,6 @@ class AddModal extends React.Component {
                 <div className={'rightDiv-content'}>
                     <Search flag={true} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode}/>
                     <div className={'raw-material-add-margin'}>
-                        <NewButton name={'获取出库数据'} handleClick={this.getStockOutData}/>
                         <Button className='white-button' onClick={this.getPreviousConcentration}>上期浓度</Button>
                         <Button className='white-button' style={{width:86}} onClick={this.getFeedData}>补料</Button>
                     </div>

@@ -65,6 +65,8 @@ import InspectionTemplate from '../equipmentManagement/equipmentInspection/inspe
 import InspectionPlan from '../equipmentManagement/equipmentInspection/inspectionPlan/inspectionPlan'
 import InspectionQuery from '../equipmentManagement/equipmentInspection/inspectionQuery/inspectionQuery'
 import LocationBasic from "../equipmentManagement/equipmentBasicData/locationBasic/locationBasic";
+import EquipmentProcessName from '../equipmentManagement/equipmentBasicData/processName/processName';
+import UserProcessAssignment from '../equipmentManagement/equipmentBasicData/userProcessAssignment/userProcessAssignment';
 
 import BatchInfo from "../productionManagement/batchInfo/batchInfo"
 import BatchSearch from "../productionManagement/batchSearch/batchSearch"
@@ -92,7 +94,7 @@ import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/st
 
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
-import processParameters from "../technologyCenter/processParameters/processParameters";
+// import processParameters from "../technologyCenter/processParameters/processParameters";
 
 import BatchTrace from "../productionManagement/batchTrace/batchTrace";
 
@@ -229,6 +231,12 @@ class Right extends React.Component {
             path: "/equipmentStatus",
             component: EquipmentStatus
         }, {
+            path: "/equipmentProcessName",
+            component: EquipmentProcessName
+        },{
+            path: "/userProcessAssignment",
+            component: UserProcessAssignment
+        },{
             path: "/equipmentMaintenance",
             component: EquipmentMaintenance
         }, {

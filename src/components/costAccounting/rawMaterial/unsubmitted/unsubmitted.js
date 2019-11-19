@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {Table} from "antd";
 import DeleteById from "../../../BlockQuote/deleteById";
 
@@ -15,23 +16,15 @@ class UnSubmitted extends React.Component {
             visible: false
         };
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleTableChange = this.handleTableChange.bind(this);
-        this.pagination = {
-            total: this.props.data.length,
-            showSizeChanger: true,//是否可以改变 pageSize
-            showTotal: (total) => `共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10","20","50","100"]
-        };
         this.columns = [{
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            sorter: (a,b) => a.code - b.code,
             width: '10%'
         }, {
             title: '周期类型',
-            key: 'periodName',
-            dataIndex: 'periodName',
+            key: 'name',
+            dataIndex: 'name',
             width: '10%'
         }, {
             title: '期数',
@@ -40,13 +33,14 @@ class UnSubmitted extends React.Component {
             width: '20%'
         }, {
             title: '开始时间',
-            key: 'start',
-            dataIndex: 'start',
-            width: '20%'
+            key: 'startTime',
+            dataIndex: 'startTime',
+            width: '20%',
+            sorter: (a,b) => a.startTime - b.startTime,
         }, {
             title: '结束时间',
-            key: 'end',
-            dataIndex: 'end',
+            key: 'endTime',
+            dataIndex: 'endTime',
             width: '20%'
         }, {
             title: '操作',
@@ -67,20 +61,23 @@ class UnSubmitted extends React.Component {
     render() {
         return (
             <Table rowKey={record => record.code} dataSource={this.props.data}
-                   columns={this.columns} pagination={this.pagination}
-                   onChange={this.handleTableChange}
-                    size={"small"} bordered/>
+                   columns={this.columns} pagination={this.props.pagination}
+                   onChange={this.props.handleTableChange}
+                   size={"small"} bordered/>
         )
     }
 
     /**单条记录删除*/
     handleDelete(id) {
-
-    }
-
-    /**切换分页*/
-    handleTableChange(pagination) {
-        console.log(pagination)
+    //     axios({
+    //         url: `${this.props.url.rawMaterial.delete}/id=${id}`,
+    //         method: 'DELETE',
+    //         headers: {
+    //             Authorizaion: this.props.url.Authorizaion
+    //         }
+    //     }).then((data) => {
+    //
+    //     })
     }
 }
 

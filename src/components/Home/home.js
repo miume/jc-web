@@ -3,6 +3,7 @@ import './home.css';
 import Top from './top';
 import Left from './left';
 import Right from './right';
+import EquipmentProcessName from "../equipmentManagement/equipmentBasicData/processName/processName";
 class Home extends Component {
     componentWillMount() {
         let canvas;
@@ -612,6 +613,21 @@ class Home extends Component {
             /**物料类型*/
             materialType: {
                 all: `${server}/jc/repo/type/tree`,
+            },
+            /**原料领用*/
+            rawMaterial: {
+                getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`
+            },
+            /**部门分配工序（工序名称）*/
+            equipmentProcessName: {
+                deptProcess: `${server}/jc/common/deptProcess`,
+                page: `${server}/jc/common/deptProcess/page`,
+                deleteByIds: `${server}/jc/common/deptProcess/ids`
+            },
+            /**用户工序名称*/
+            userProcessName: {
+                userProcess: `${server}/jc/common/userProcess`,
             }
         };
 
