@@ -5,82 +5,36 @@ import moment from "moment";
 import SelectPeriod from "./select";
 
 class Search extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
-            start: '',
-            end: '',        //记录日期组件的开始时间和结束时间
-            periodCode: '',  //记录下拉框-周期类型编码
             dateFormat: 'YYYY-MM-DD'
         };
-        this.reset = this.reset.bind(this);
-        this.search = this.search.bind(this);
-        this.endDateChange =this.endDateChange.bind(this);
-        this.startDateChange =this.startDateChange.bind(this);
     }
 
     render() {
-        const {start, end, dateFormat} = this.state;
-        let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
-            endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
-        let {currentStaticPeriod,staticPeriod} = this.props;
+        let {startTime, endTime,currentStaticPeriod,staticPeriod,flag} = this.props, {dateFormat} = this.state;
+        let startValue = startTime === undefined || startTime === "" ? null : moment(startTime, dateFormat),
+            endValue = endTime === undefined || endTime === "" ? null : moment(endTime, dateFormat);
         return (
-            <span className={this.props.flag?'searchCell':'hide'}>
-                <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange} style={{marginRight: 10}}/>
-                <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange} style={{marginRight: 10}}/>
+            <span className={flag?'searchCell':'hide'}>
+                <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.props.startDateChange} style={{marginRight: 10}}/>
+                <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.props.endDateChange} style={{marginRight: 10}}/>
                 <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : ''} selectChange={this.props.selectChange}/>
-                <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
+                <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.props.search}/>
                 <Button
                     type="primary"
-                    onClick={this.reset}
+                    onClick={this.props.reset}
                     className='button'
                 ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
             </span>
         )
     }
 
-    /**重置事件*/
-    reset() {
-        this.setState({
-            start: '',
-            end: ''
-        });
-        this.props.reset();
-    }
-
-    /**date时间范围变化监控*/
-    startDateChange(date, dateString) {
-        //根据this.props.length来确定end的默认值
-        let length = this.props.currentStaticPeriod ? this.props.currentStaticPeriod.length : 0,
-            end = new Date(dateString).getTime() + length * 24 * 3600 * 1000;
-        this.setState({
-            start: dateString,
-            end: moment(end).format('YYYY-MM-DD')
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
         })
-    }
-
-    endDateChange(date, dateString) {
-        this.setState({
-            end: dateString
-        })
-    }
-
-    /**搜索时间*/
-    search() {
-        let {start, end, periodCode} = this.state,
-            startTime = this.props.currentStaticPeriod ? this.props.currentStaticPeriod.startTime : '00:00:00';
-        let params = {
-            start: start + ' ' + startTime,
-            end: end + ' ' + startTime,
-            periodCode: periodCode
-        };
-        console.log(params)
     }
 }
 

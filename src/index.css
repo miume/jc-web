@@ -62,7 +62,7 @@ table .blue {
 i {
     font-weight: bolder;
 }
-.ant-pagination.ant-table-pagination.mini {
+.ant-pagination.ant-table-pagination {
     text-align: right !important;
 }
 

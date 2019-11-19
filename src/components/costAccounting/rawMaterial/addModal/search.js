@@ -18,7 +18,8 @@ class Search extends React.Component {
             end: '',        //记录日期组件的开始时间和结束时间
             periodCode: '',  //记录下拉框-周期类型编码
             dateFormat: 'YYYY-MM-DD',
-            periods: ''     //记录输入框期数的变化
+            periods: '',     //记录输入框期数的变化
+            disabled: false
         };
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
@@ -28,25 +29,20 @@ class Search extends React.Component {
     }
 
     render() {
-        const {start, end, dateFormat,periodCode} = this.state;
+        const {start, end, dateFormat,periodCode,disabled} = this.state;
         let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
             endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
-        let {staticPeriod} = this.props, {code,startTime,length} = staticPeriod && staticPeriod.length ? staticPeriod[0] : {};
+        let {staticPeriod} = this.props, {code} = staticPeriod && staticPeriod.length ? staticPeriod[0] : {};
         return (
             <span className={this.props.flag?'':'hide'}>
                 <span>周期：</span>
                 <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : code} selectChange={this.selectChange}/>
                 <span>期数：</span>
-                <Input placeholder={'请输入期数'} onChange={this.inputChange} style={{width:100, marginRight: 10}}/>
+                <Input placeholder={'请输入期数'} onChange={this.inputChange} style={{width:170, marginRight: 10}}/>
 
                 <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange} style={{marginRight: 10}}/>
                 <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange} style={{marginRight: 10}}/>
                 <NewButton name={'确定'} handleClick={this.search}/>
-                <Button
-                    type="primary"
-                    onClick={this.reset}
-                    className='button'
-                ><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
             </span>
         )
     }
@@ -105,6 +101,9 @@ class Search extends React.Component {
             periodCode: periodCode,
             periods: periods
         };
+        this.setState({
+            disabled: true
+        })
         console.log(params)
     }
 }

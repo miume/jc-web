@@ -135,7 +135,7 @@ class LocationBasic extends React.Component{
         this.getTableData(params);
     };
 
-    onSelectChange = (selectedRowKeys,a) => {
+    onSelectChange = (selectedRowKeys) => {
         this.setState({ selectedRowKeys });
     };
     cancel() {
