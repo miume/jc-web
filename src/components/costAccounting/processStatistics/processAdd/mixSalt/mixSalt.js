@@ -8,7 +8,6 @@ class MixSalt extends Component{//混合盐配置
         super(props);
         this.state={
             visible:false,
-            lineSelect:'',//检测产线的下拉框
         }
         this.columns=[{
             title:'序号',
@@ -75,9 +74,6 @@ class MixSalt extends Component{//混合盐配置
         let optionId=value;
         let selectData=`${selectKey}-${optionId}`
         this.props.getMix(this.props.processId,'',selectData)
-        // this.setState({
-        //     lineSelect:value
-        // })
     }
     inputChange(e){
         let value=e.target.value //获取到输入框填的值
@@ -112,15 +108,20 @@ class MixSalt extends Component{//混合盐配置
             <div>
                 <NewButton name='获取体积値' flagConfirm={!this.props.flagConfirm}/>
                 <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm}/>
-                <SelectLine headerData={this.header} handleSelect={this.handleSelect} line={this.header && this.header[0]?this.header[0]:''}/>
-                <Table 
-                dataSource={this.tableData}
-                rowKey={record=>record.code}
-                columns={this.columns}
-                pagination={false}
-                size='small' 
-                scroll={{y:'220px'}}
-                bordered/>
+                <SelectLine headerData={this.header} handleSelect={this.handleSelect} />
+                <div className='clear'></div>
+                <div style={{display:'flex'}}> 
+                    <Table 
+                        dataSource={this.tableData}
+                        rowKey={record=>record.code}
+                        columns={this.columns}
+                        pagination={false}
+                        size='small' 
+                        scroll={{y:'250px'}}
+                        style={{flex:'1',height:'60vh'}}
+                        bordered
+                    />
+                </div>
             </div>
         );
     }

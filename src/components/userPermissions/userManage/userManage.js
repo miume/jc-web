@@ -312,7 +312,7 @@ class User extends React.Component{
           this.pagination.total=res.total?res.total:0;
           this.pagination.current=res.pageNum;//点击重置再点搜索，回到第一页，下面分页也该是第一页,pageNum代表当前在哪一页，0和1都是第一页
           for(var i=1;i<=res.list.length;i++){
-            res.list[i-1]['index']=res.prePage*10+i;
+            res.list[i-1]['index']=res.prePage*res.size+i;
         }
             dataSource = res.list
         this.setState({

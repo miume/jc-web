@@ -86,6 +86,9 @@ class statisticalPeriod extends React.Component{
     }
 
     fetch = ()=>{
+        this.setState({
+            loading:true
+        })
         axios({
             url:`${this.url.staticPeriod.all}`,
             method:"get",
@@ -94,7 +97,6 @@ class statisticalPeriod extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             for(var i = 1; i<=res.length; i++){
                 res[i-1]['index']=i;
             }
@@ -118,7 +120,7 @@ class statisticalPeriod extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
-                    <AddModal data={this.state.data} fetch = {this.fetch}/>
+                    <AddModal data={this.state.data} fetch = {this.fetch} url={this.url}/>
                     {/* <SearchCell flag={true}/> */}
                     <div className='clear' ></div>
                     <Table pagination={false} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered/>

@@ -7,7 +7,6 @@ import SaveButton from "../../../BlockQuote/saveButton";
 
 // const format = 'HH:mm';
 class AddModal extends React.Component{
-    url;
     constructor(props){
         super(props);
         this.state = {
@@ -33,14 +32,14 @@ class AddModal extends React.Component{
     handleCreate = () =>{
         var data = {length:this.state.default,name:this.state.name,startTime:this.state.timeString};
         axios({
-            url:`${this.url.staticPeriod.add}`,
+            url:`${this.props.url.staticPeriod.add}`,
             method:"post",
             headers:{
-                'Authorization':this.url.Authorization
+                'Authorization':this.props.url.Authorization
             },
             data:data
         }).then((data)=>{
-            if(this.props.data.length>7){
+            if(this.props.data.length>=7){
                 message.error("数据不能大于7条")
                 return;
             }
@@ -61,7 +60,6 @@ class AddModal extends React.Component{
         })
     }
     onChange = (time,timeString)=>{
-        // console.log(time);
         this.setState({
             startTime:time,
             timeString:timeString
@@ -73,7 +71,6 @@ class AddModal extends React.Component{
         })
     }
     render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
