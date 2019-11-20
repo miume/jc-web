@@ -85,11 +85,10 @@ class UserProcessAssignment extends React.Component {
             if(res && res.list) {
                 for(let i = 0; i < res.list.length; i++) {
                     let processes = res.list[i]['processes'],
-                        processName = processes.length > 1 ? processes.reduce((pre,next) => {
-                        return pre.processName + ',' + next.processName
-                    }) : (processes.length === 1 ? processes[0].processName : '');
+                        processName = [];
+                    processes.map(e => processName.push(e.processName));   
                     res.list[i]['index'] = i + 1;
-                    res.list[i]['processName'] = processName;
+                    res.list[i]['processName'] = processName.join(',');
                 }
                 this.pagination.total = res.total;
                 this.setState({
