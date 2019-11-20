@@ -1,35 +1,13 @@
 import React,{Componet, Component} from 'react'
 import {Spin,Table} from 'antd'
 import Detail from './detail'
-const data=[{
-    id:'1',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-    process:'单晶体配置',
-    subtotal:'360m³',
-    Nimetal:'7.5',
-    Cometal:'7.1',
-    Mnmetal:'7.6'
-},{
-    id:'2',
-    periodType:'周',
-    period:'10',
-    beginTime:'2019-01-01',
-    endTime:'2019-01-01',
-    process:'单晶体配置',
-    subtotal:'360m³',
-    Nimetal:'7.5',
-    Cometal:'7.1',
-    Mnmetal:'7.6'
-}]
+import '../process.css'
+
 class StatisticDone extends Component{//已统计
     constructor(props){
         super(props);
         this.state={
             loading:true,
-            data:data
         }
         this.pagination={
             showSizeChanger:true,
@@ -92,7 +70,7 @@ class StatisticDone extends Component{//已统计
             key:'operation',
             render:(text,record)=>{
                 return(
-                    <Detail record={record} url={this.props.url} processDetailId={record.index}/>
+                    <Detail record={record} url={this.props.url} processDetailId={record.detail.code} />
                 )
             }
         }]
@@ -110,7 +88,7 @@ class StatisticDone extends Component{//已统计
     render(){
         return(
             <div>
-                <Spin spinning={this.props.loadingStatis} wrapperClassName='rightContent-Div'>
+                <Spin spinning={this.props.loadingStatis} >
                     <Table
                     rowKey={record=>record.index}
                     dataSource={this.props.dataStatistic}

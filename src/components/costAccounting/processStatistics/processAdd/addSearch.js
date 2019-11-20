@@ -28,7 +28,6 @@ class AddSearch extends Component{
                 <span>开始时间 : </span>&nbsp;<DatePicker value={startDate} onChange={this.props.startChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择开始日期' disabled={this.props.flagConfirm}/>
                 <span>结束时间 : </span>&nbsp;<DatePicker value={endDate} onChange={this.props.endChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择结束日期' disabled={this.props.flagConfirm}/>
                 <Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}} onClick={this.props.search} disabled={this.props.flagConfirm}>确定</Button>&nbsp;
-                <Button type='primary' className='button' style={this.props.editFlag?{display:'none'}:{}} onClick={this.props.reset} disabled={this.props.flagConfirm}>重置</Button>
             </div>
         );
     }

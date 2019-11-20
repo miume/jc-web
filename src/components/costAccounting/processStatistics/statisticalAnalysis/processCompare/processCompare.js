@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import {Spin} from 'antd'
 import Search from './compareSearch'
 import ReactEcharts from 'echarts-for-react';
+import '../../process.css'
 class ProcessCompare extends Component{//工序对比分析
     constructor(props){
         super(props);
@@ -108,10 +109,12 @@ class ProcessCompare extends Component{//工序对比分析
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                    <Search flag={true} staticPeriod={this.props.staticPeriod} process={this.props.process} periodCode={periodCode} selectPeriodChange={this.selectPeriodChange} selectProcessChange={this.selectProcessChange} dateChange={this.dateChange}/>
-                   <ReactEcharts
+                  <div className='statis-processCompare-echarts'>
+                    <ReactEcharts
                         option={this.getOption()}
-                        style={{height: '350px', width: '800px',margin:'20px 100px 0 150px'}}
-                        />
+                        style={{width:'100%',height: '80%'}}
+                    />
+                  </div>
                 </Spin>
             </div>
         );

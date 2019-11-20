@@ -1,6 +1,6 @@
 
 .process-add-head-date{
-    width: 220px;
+    width: 200px;
     margin-right:15px
 }
 .process-add-head-select{
@@ -19,6 +19,16 @@
 }
 .process-add-process span{
     margin-right: 10px
+}
+
+.process{
+    padding:15px
+}
+.statis-processCompare-echarts{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    height:63vh;
 }
 
 

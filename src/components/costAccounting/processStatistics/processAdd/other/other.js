@@ -82,7 +82,7 @@ class Other extends Component{//烘干工序
                 return(
                     
                     <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
-                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='再想想'>
+                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.index)} okText='确定' cancelText='再想想'>
                             <span className='blue'>删除</span>
                         </Popconfirm>
                     </span>
@@ -112,7 +112,7 @@ class Other extends Component{//烘干工序
         this.props.handleOtherAdd()
     }
     handleDelete(id){
-
+        this.props.handleOtherDelete(id)
     }
     judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];

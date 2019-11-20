@@ -23,7 +23,7 @@ class Search extends Component{//工序对比分析
                             }):null
                         }
                 </Select>
-                <Select  placeholder={this.props.lineFlag?'请选择产线':'请选择过程工序'} style={{width:'150px',marginRight:'10px'}} onChange={this.props.selectProcessChange}>
+                <Select  placeholder={this.props.lineFlag?'请选择产线':'请选择过程工序'} style={{width:'200px',marginRight:'10px'}} onChange={this.props.selectProcessChange}>
                     
                     {
                         this.props.process?this.props.process.map(data=>{
@@ -34,7 +34,8 @@ class Search extends Component{//工序对比分析
                         ):null
                     }
                 </Select>
-                <DatePicker placeholder='统计时段' style={{width:'150px',marginRight:'10px'}} onChange={this.props.dateChange}/>
+                <DatePicker placeholder='开始时间' style={{width:'200px'}} onChange={this.props.dateChange}/>
+                &nbsp;<span>~</span>&nbsp;<DatePicker placeholder='开始时间截止' style={{width:'200px'}} />
                 <NewButton name='确定' handleClick={this.props.search}/>
                 
             </div>

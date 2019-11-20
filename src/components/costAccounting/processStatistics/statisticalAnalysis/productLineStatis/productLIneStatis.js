@@ -7,9 +7,8 @@ class ProductLineStatis extends Component{//产品线统计
         super(props);
         this.state={
             loading:false,
-            date:'',
             data:[],
-            time:'',
+            startTime:'',
             periodId:'',
         }
         this.columns=[{
@@ -55,12 +54,12 @@ class ProductLineStatis extends Component{//产品线统计
         }];
         this.getTableData=this.getTableData.bind(this);
         this.selectChange=this.selectChange.bind(this);
-        this.dateChange=this.dateChange.bind(this);
+        this.onSearch=this.onSearch.bind(this);
+        this.timeChange=this.timeChange.bind(this);
     }
     
     getTableData(){
-        let {date,time,periodId}=this.state
-        let startTime=`${date} ${time}`
+        let {startTime,periodId}=this.state
         axios({
             url:`${this.props.url.precursorGoodIn.getAnalysisLine}`,
             method:'get',
@@ -76,25 +75,28 @@ class ProductLineStatis extends Component{//产品线统计
             console.log(res)
         })
     }
-    selectChange(value,name){
-        let time=name.props.name
+    selectChange(value){
         this.setState({
             periodId:value,
-            time:time
         })
-    }
-    dateChange(date,dateString){
-        this.setState({
-            date:dateString
-        })
+        this.props.getStartTime(value)
     }
 
+    onSearch(value){
+
+    }
+    timeChange(value){
+        console.log(value)
+        this.setState({
+            startTime:value
+        })
+    }
     render(){
-        let periodCode=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].code : ''
+        let time=this.props.time?this.props.time:null
         return(
             <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
-                    <Search flag={true} periodCode={periodCode} staticPeriod={this.props.staticPeriod} selectChange={this.selectChange} dateChange={this.dateChange} search={this.getTableData}/>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                    <Search flag={true} periodCode={this.props.periodCode?this.props.periodCode:''}  staticPeriod={this.props.staticPeriod} time={this.state.time?this.state.time:time} selectChange={this.selectChange}  confirm={this.getTableData} onSearch={this.onSearch} timeChange={this.timeChange}/>
                     <div className='clear'></div>
                     <Table
                     dataSource={this.state.data}
