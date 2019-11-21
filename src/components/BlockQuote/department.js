@@ -80,6 +80,7 @@ class DepTree extends React.Component{
 
     /**对获取的部门数据进行处理*/
     dataProcessing(res) {
+        console.log('1')
         let dataSource = [];
         let depId = -1, depName = '',expandedKeys = [], selectedKeys = [];
         for (let i = 0; i < res.length; i++) {

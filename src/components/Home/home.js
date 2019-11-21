@@ -595,7 +595,9 @@ class Home extends Component {
                 saveOrCommit:`${server}/jc/common/goodIn/saveOrCommit`,//点击保存提交
                 commitDetail:`${server}/jc/common/goodIn/commitDetail`,//待提交编辑详情
                 delete:`${server}/jc/common/goodIn`,
-                getStartTime:`${server}/jc/common/goodIn/getStartTime`
+                getStartTime:`${server}/jc/common/goodIn/getStartTime`,
+                processCompare:`${server}/jc/common/goodIn/processCompare`,
+                lineCompare:`${server}/jc/common/goodIn/lineCompare`
             },
 
             /**异常处理模块*/
