@@ -23,6 +23,7 @@ class Distribution extends React.Component {
             visible: true
         })
     }
+
     fetch = () => {
         axios({
             url: `${this.url.appUserAuth.getAllAuth}`,
@@ -31,7 +32,6 @@ class Distribution extends React.Component {
                 'Authorization': this.Authorization
             },
         }).then((data) => {
-            // console.log(data)
             const res = data.data.data;
             if (res) {
                 this.setState({
@@ -39,6 +39,7 @@ class Distribution extends React.Component {
                 })
             }
         });
+
         axios({
             url: `${this.url.appUserAuth.getAuthByUserId}`,
             method: "get",
@@ -58,13 +59,14 @@ class Distribution extends React.Component {
                 })
             }
         })
-
     }
+
     handleCancel = () => {
         this.setState({
             visible: false
         })
     }
+
     handleCreate = () => {
         axios({
             url: `${this.url.appUserAuth.update}`,
@@ -83,13 +85,12 @@ class Distribution extends React.Component {
             }
         }).catch(() => {
             message.info('分配失败，请联系管理员！')
-        })
-
-
+        });
         this.setState({
             visible: false
         })
     }
+
     selectBox = (e) => {
         const code = parseInt(e.target.value)
         var authIds = this.state.authIds
@@ -113,7 +114,7 @@ class Distribution extends React.Component {
                     title='分配' visible={this.state.visible}
                     closable={false} centered={true}
                     maskClosable={false}
-                    width='500px'
+                    width='450px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check'/>,

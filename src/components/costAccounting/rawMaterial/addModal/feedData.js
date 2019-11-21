@@ -54,6 +54,12 @@ class FeedData extends React.Component {
             visible: false
         })
     }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
 }
 
 export default FeedData;

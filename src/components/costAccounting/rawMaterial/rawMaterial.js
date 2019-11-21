@@ -134,13 +134,13 @@ class RawMaterial extends React.Component {
             time = currentStaticPeriod ? currentStaticPeriod.startTime : '00:00:00';
         params['size'] = pageSize;
         params['page'] = current;
-        params['startTime'] = startTime ? startTime + ' ' + time : '';
-        params['endTime'] = endTime ? endTime + ' ' + time : '';
+        params['startTime'] = params['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
+        params['endTime'] = params['endTime'] === '' ? '' : (endTime ? endTime + ' ' + time : '');
         params['periodCode'] = params['periodCode'] ? params['periodCode'] : periodCode;
-        console.log(params)
         this.unSubmittedData(params);
     }
 
+    /**获取待提交数据*/
     unSubmittedData(params) {
         axios({
             url: `${this.url.rawMaterial.getUncommittedData}`,
@@ -234,7 +234,6 @@ class RawMaterial extends React.Component {
     /**搜索时间*/
     search() {
         this.getUnSubmittedData();
-
     }
 
     /**监控统计周期下拉框的变化*/
@@ -243,7 +242,6 @@ class RawMaterial extends React.Component {
         currentStaticPeriod['code'] = value;
         currentStaticPeriod['startTime'] = name[0];
         currentStaticPeriod['length'] = name[1];
-        console.log(currentStaticPeriod)
         this.setState({
             currentStaticPeriod: currentStaticPeriod
         });
@@ -255,7 +253,7 @@ class RawMaterial extends React.Component {
     /**搜索重置事件*/
     reset() {
         let {staticPeriod} = this.state;
-        let {code,startTime,length} = staticPeriod[0],
+        let {code,startTime,length} = staticPeriod.length ? staticPeriod[0] : {},
             currentStaticPeriod = {
                 code: code,
                 startTime: startTime,
@@ -265,7 +263,12 @@ class RawMaterial extends React.Component {
             startTime: '',
             endTime: '',
             currentStaticPeriod: currentStaticPeriod
-        })
+        });
+        this.getUnSubmittedData({
+            startTime: '',
+            endTime: '',
+            periodCode: code
+        });
     }
 
     /**销毁组件*/
