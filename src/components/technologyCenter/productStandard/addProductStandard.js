@@ -65,7 +65,7 @@ class AddProductStandard extends React.Component {
             key: 'count',
             width: '30%',
             render: (text, record) => {
-                let {flag} = this.props;
+                let {flag} = this.state;
                 if (flag === 1) {
                     return text;
                 } else

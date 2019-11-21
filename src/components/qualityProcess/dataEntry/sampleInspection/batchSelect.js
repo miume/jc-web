@@ -1,5 +1,5 @@
 import React from "react";
-import {Modal,Button,Select,Table} from "antd";
+import {Modal,Button,Select} from "antd";
 import axios from "axios";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import AddButton from '../../../BlockQuote/newButton';
