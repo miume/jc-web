@@ -16,14 +16,15 @@
 .check-Sa{
     display:flex;
     width:100%;
-    padding-top: 15px;
+    padding: 15px;
 }
 .check-Sa-right{
+    display: flex;
     width: 80%;
     margin-left: 20px;
-    height: 525px;
-    padding: 5px;
-    display: flex;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 /*.check-Sa-right .calandern .ant-fullcalendar-fullscreen .ant-fullcalendar .ant-fullcalendar-calendar-body .ant-fullcalendar-table{*/
 /*    min-height: 76px;*/

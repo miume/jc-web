@@ -1,9 +1,11 @@
 import React from "react";
 import Blockquote from "../../../BlockQuote/blockquote";
 import "./checkStatistics.css"
-import DepTree from "../../equipmentBasicData/equpimentAssignment/depTree";
+//import DepTree from "../../equipmentBasicData/equpimentAssignment/depTree";
+import DepTree from '../../../BlockQuote/department'
+import NewButton from '../../../BlockQuote/newButton'
 import axios from "axios";
-import {message,Calendar, Badge} from "antd";
+import {message,Calendar, Badge,Input} from "antd";
 function getListData(value) {
     let listData;
     switch (value.date()) {
@@ -67,6 +69,7 @@ class CheckStatistics extends React.Component{
     constructor(props){
         super(props)
         this.returnDataEntry = this.returnDataEntry.bind(this)
+        this.inputChange=this.inputChange.bind(this);
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -76,56 +79,57 @@ class CheckStatistics extends React.Component{
         return (
             <div>
                 <Blockquote menu={current.menuParent} name="点检统计"  menu2='返回' returnDataEntry={this.returnDataEntry} flag={1}/>
-                <div className="check-Sa" style={{padding: '15px'}} >
-                    <div  className="check-Sa-tree">
-                        <div  className="check-Sa-TT">
-                            设备名称(请选择）
+                <div className='equipment' >
+                    <DepTree
+                        treeName={'所属部门'}
+                        getTableData={this.getRightData}
+                        url={this.url}
+                    />
+                    <div className="equipment-right">
+                        <div>
+                            <Input />
+                            <NewButton name='确定' />
                         </div>
-                        <DepTree
-                            getRightData={this.getRightData}
-                            url={this.url}
-                            operation={this.operation}
-                            handleSelect={this.handleSelect}
-                        />
+                        <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} onPanelChange={this.onPanelChange} />                       
                     </div>
-
-
-                    <div className="check-Sa-right">
-                        <div className="calander">
-                        <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} onPanelChange={this.onPanelChange}/>
-                        </div>
-                    </div>
-            </div>
+                </div>
+             
             </div>
         )
     }
 
     /**获取右侧数据*/
-    getRightData = (code, deviceName) => {
-
-        this.setState({
-            deptCode:code
-        })
-        axios({
-            url: `${this.url.SpotcheckPlan.getDeviceCount}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.url.Authorization
-            },
-            params:{
-                deptId:code
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-        }).catch(() => {
-            message.info('查询失败，请刷新下页面！')
-        });
+    getRightData = (params) => {
+        console.log(params)
+        // this.setState({
+        //     deptCode:code
+        // })
+        // axios({
+        //     url: `${this.url.SpotcheckPlan.getDeviceCount}`,
+        //     method: 'get',
+        //     headers: {
+        //         'Authorization': this.url.Authorization
+        //     },
+        //     params:{
+        //         deptId:code
+        //     }
+        // }).then((data) => {
+        //     const res = data.data.data ? data.data.data : [];
+        //     console.log(res)
+        // }).catch(() => {
+        //     message.info('查询失败，请刷新下页面！')
+        // });
     };
     onPanelChange=(value,mode)=>{
         console.log(mode);
         console.log(value);
     }
+    inputChange(e){
 
+    }
+    confirm(){
+
+    }
     /**返回数据录入页面 */
     returnDataEntry(){
         this.props.history.push({pathname:'/statisticAnalysis'})

@@ -1,96 +1,96 @@
 import React from "react";
-import {Modal, Input,message,TimePicker } from 'antd';
+import { Modal, Input, message, TimePicker } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import moment from "moment";
 
-class Edit extends React.Component{
+class Edit extends React.Component {
     url;
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            visible:false,
-            startTime:null,
-            name:null,
-            default:null,
-            timeString:null
+            visible: false,
+            startTime: null,
+            name: null,
+            default: null,
+            timeString: null
         }
     }
     showModal = () => {
         // console.log(this.props.code)
         axios({
-            url:`${this.url.staticPeriod.getRecordById}`,
-            method:"get",
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.staticPeriod.getRecordById}`,
+            method: "get",
+            headers: {
+                'Authorization': this.url.Authorization
             },
-            params:{id:this.props.code}
-        }).then((data)=>{
+            params: { id: this.props.code }
+        }).then((data) => {
             // console.log(data.data.data)
             const res = data.data.data;
             // console.log(moment(res.startTime))
             this.setState({
                 visible: true,
-                startTime:moment(res.startTime,"HH:mm:ss"),
-                name:res.name,
-                default:res.length,
-                timeString:res.startTime
+                startTime: moment(res.startTime, "HH:mm:ss"),
+                name: res.name,
+                default: res.length,
+                timeString: res.startTime
             });
         })
     };
-    handleCancel = () =>{
+    handleCancel = () => {
         this.setState({
-            visible:false,
-            startTime:null,
-            name:null,
-            default:null,
-            timeString:null
+            visible: false,
+            startTime: null,
+            name: null,
+            default: null,
+            timeString: null
         })
     };
-    handleCreate = () =>{
-        var data = {code:this.props.code,length:this.state.default,name:this.state.name,startTime:this.state.timeString};
+    handleCreate = () => {
+        var data = { code: this.props.code, length: this.state.default, name: this.state.name, startTime: this.state.timeString };
         // console.log(data)
         axios({
-            url:`${this.url.staticPeriod.update}`,
-            method:"put",
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.staticPeriod.update}`,
+            method: "put",
+            headers: {
+                'Authorization': this.url.Authorization
             },
-            data:data
-        }).then((data)=>{
+            data: data
+        }).then((data) => {
             // console.log(data)
             message.info("编辑成功");
             this.props.fetch();
             this.setState({
-                visible:false,
-                startTime:null,
-                name:null,
-                default:null,
-                timeString:null
+                visible: false,
+                startTime: null,
+                name: null,
+                default: null,
+                timeString: null
             })
         })
     }
-    change = (data)=>{
+    change = (data) => {
         this.setState({
-            name:data.target.value
+            name: data.target.value
         })
     }
-    onChange = (time,timeString)=>{
+    onChange = (time, timeString) => {
         // console.log(time);
         this.setState({
-            startTime:time,
-            timeString:timeString
+            startTime: time,
+            timeString: timeString
         })
     }
-    description = (data)=>{
+    description = (data) => {
         this.setState({
-            default:data.target.value
+            default: data.target.value
         })
     }
-    render(){
+    render() {
         this.url = JSON.parse(localStorage.getItem('url'));
-        return(
+        return (
             <span>
                 <span className="blue" onClick={this.showModal}>编辑</span>
                 <Modal
@@ -101,15 +101,15 @@ class Edit extends React.Component{
                     title="编辑"
                     width='500px'
                     footer={[
-                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                        <CancleButton key='back' handleCancel={this.handleCancel} />,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    周期名称：<Input style={{width:"84%"}} id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称"/>
+                    周期名称：<Input style={{ width: "84%" }} id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称" />
                     <br /><br />
-                    默认时长：<Input style={{width:"84%"}} id="default" onChange={this.description} value={this.state.default} placeholder="请输入默认时长"/>
+                    默认时长：<Input style={{ width: "84%" }} id="default" onChange={this.description} value={this.state.default} placeholder="请输入默认时长" />
                     <br /><br />
-                    开始时刻：<TimePicker style={{width:"84%"}} id="startTime" value={this.state.startTime} onChange = {this.onChange} placeholder="请输入开始时刻"/>
+                    开始时刻：<TimePicker style={{ width: "84%" }} id="startTime" value={this.state.startTime} onChange={this.onChange} placeholder="请输入开始时刻" />
                 </Modal>
             </span>
         )

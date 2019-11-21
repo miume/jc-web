@@ -61,16 +61,17 @@ class ProcessStatistics extends Component {
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            let res = data.data.data, periodCode = '', length = -1
+            let res = data.data.data, periodCode = '', length = -1,time=''
             if (res && res.length) {
                 periodCode = res[0].code
                 length = res[0].length
+                time=res[0].startTime
             }
             this.setState({
                 staticPeriod: res,
                 periodCode: periodCode,
                 length: length,
-                startSecondTime: res[0].startTime,
+                startSecondTime: time,
             })
             this.getPendSubmit({}, periodCode)
 
