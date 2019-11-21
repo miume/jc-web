@@ -2,19 +2,28 @@ import React,{Component} from 'react'
 import {Spin} from 'antd'
 import Search from '../processCompare/compareSearch'
 import ReactEcharts from 'echarts-for-react';
+import '../../process.css'
+import moment from 'moment'
+import axios from 'axios'
 class ProductLineCompare extends Component{//工序对比分析
     constructor(props){
         super(props);
         this.state={
             loading:false,
-            periodCode:'',
-            dateTime:'',
-            processCode:'',
+            periodCode:this.props.periodCode,
+            startDate:'',
+            endDate:'',
+            startTime:'',
+            endTime:'',
+            lineCode:'',
+            length:this.props.length,
+            startSecondTime:this.props.startSecondTime
         }
         this.getOption=this.getOption.bind(this);
         this.selectPeriodChange=this.selectPeriodChange.bind(this);
-        this.selectProcessChange=this.selectProcessChange.bind(this);
-        this.dateChange=this.dateChange.bind(this);
+        this.selectLineChange=this.selectLineChange.bind(this);
+        this.startChange=this.startChange.bind(this);
+        this.endChange=this.endChange.bind(this);
         this.search=this.search.bind(this);
     }
     componentDidMount(){
@@ -65,40 +74,69 @@ class ProductLineCompare extends Component{//工序对比分析
         };
         return option;        
     }
-    selectPeriodChange(value){
+    selectPeriodChange(value,name){
+        let name1=name.props.name.split('-')
+        let startSecondTime=name1[0],
+            length=name[1]
         this.setState({
-            periodCode:value
+            periodCode:value,
+            length:length,
+            startSecondTime:startSecondTime
         })
     }
-    selectProcessChange(value){
+    selectLineChange(value){
         this.setState({
-            processCode:value
+            lineCode:value
         })
     }
-    dateChange(date,dateString){
+    startChange(date,dateString){
+        let {startSecondTime,length}=this.state
+        let time=new Date(Date.parse(dateString)+length*24*3600*1000)
+        let end=moment(time).format('YYYY-MM-DD')
         this.setState({
-            dateTime:dateString
+            startTime:`${dateString} ${startSecondTime}`,
+            startDate:dateString,
+            endDate:end,
+            endTime:`${end} ${startSecondTime}`
+        })
+    }
+    endChange(date,dateString){
+        let {startSecondTime}=this.state
+        this.setState({
+            endDate:dateString,
+            endTime:`${dateString} ${startSecondTime}`
         })
     }
     search(){
-        let {periodCode,processCode,dateTime}=this.state;
-        let params={//点击确定，将params传给后台
-            periodCode:periodCode,
-            processCode:processCode,
-            dateTime:dateTime
-        }
+        let {periodCode,processCode,startTime,endTime}=this.state;
+        axios({
+            url:this.props.url.precursorGoodIn.lineCompare,
+            method:'get',
+            headers:{
+                'Authorization' :this.props.url.Authorization
+            },
+            params:{
+                periodId:periodCode,
+                lineId:processCode,
+                startTime:startTime,
+                endTime:endTime
+            }
+        }).then(data=>{
+            //console.log(data)
+        })
     }
     render(){
-        let periodCode=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].code : ''
         this.startSecondTime=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].startTime : ''
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                   <Search flag={true} lineFlag={true} staticPeriod={this.props.staticPeriod} process={this.props.process} periodCode={periodCode} selectPeriodChange={this.selectPeriodChange} selectProcessChange={this.selectProcessChange} dateChange={this.dateChange}/>
-                   <ReactEcharts
+                   <Search flag={true} lineFlag={true}  periodCode={this.props.periodCode} staticPeriod={this.props.staticPeriod} productLine={this.props.productLine} lineCode={this.state.lineCode} selectPeriodChange={this.selectPeriodChange} selectLineChange={this.selectLineChange} startChange={this.startChange} endChange={this.endChange} endDate={this.state.endDate} search={this.search}/>
+                   <div className='statis-processCompare-echarts'> 
+                    <ReactEcharts
                         option={this.getOption()}
-                        style={{height: '350px', width: '800px',margin:'20px 100px 0 150px'}}
+                        style={{width:'100%',height:'80%'}}
                         />
+                  </div>
                 </Spin>
             </div>
         );

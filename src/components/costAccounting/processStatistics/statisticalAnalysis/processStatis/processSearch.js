@@ -9,13 +9,14 @@ class Search extends Component{
     }
     
     render(){
+        let time=this.props.time?[...new Set(JSON.parse(JSON.stringify(this.props.time)))]:null //es6数组去重
         return(
             <div className={this.props.flag?'searchCell':'hide'}>
-                <Select value={this.props.periodCode} style={{width:'120px',marginRight:'10px'}} onChange={this.props.selectChange}>
+                <Select defaultValue={this.props.periodCode} style={{width:'120px',marginRight:'10px'}} onChange={this.props.selectChange}>
                         {
                             this.props.staticPeriod?this.props.staticPeriod.map(e=>{
                                 return(
-                                    <Option key={e.code} name={e.startTime} value={e.code}>{e.name}</Option>
+                                    <Option key={e.code}  value={e.code}>{e.name}</Option>
                                 )
                             }):null
                         }
@@ -25,20 +26,22 @@ class Search extends Component{
                     showSearch
                     style={{ width: 200 ,marginRight:'10px'}}
                     placeholder="请选择周期开始时间"
-                    optionFilterProp="children"
-                    onChange={this.props.onChange}
-                    onFocus={this.props.onFocus}
-                    onBlur={this.props.onBlur}
+                    // optionFilterProp="children"
+                    onChange={this.props.timeChange}
                     onSearch={this.props.onSearch}
-                    filterOption={(input, option) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
+                    // filterOption={(input, option) =>
+                    // option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    // }
                 >
-                    <Option value={1}>2017-09-10</Option>
-                    <Option value={2}>2011-09-09</Option>
-                    <Option value={3}>2013-09-08</Option>
+                    {
+                        time?time.map((data,index)=>{
+                            return(
+                                <Option key={index} value={data}>{data}</Option>
+                            )
+                        }):null
+                    }
                 </Select>
-                <NewButton name='确定' handleClick={this.props.search}/>
+                <NewButton name='确定' handleClick={this.props.confirm}/>
             </div>
         )
     }

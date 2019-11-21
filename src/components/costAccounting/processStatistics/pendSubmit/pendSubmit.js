@@ -1,15 +1,13 @@
 import React,{Component} from 'react'
-import {Table,Spin,Popconfirm,Divider} from 'antd'
+import {Table,Spin,Popconfirm,Divider,message} from 'antd'
 import axios from 'axios'
-
+import '../process.css'
 class PendSubmit extends Component{//待提交
     constructor(props){
         super(props);
-        this.state={
-            pageChangeFlag:1,//用来判断是搜索还是获取表格数据
-        }
         this.pagination={
             showSizeChanger:true,//是否可以改变pageSize
+            onShowSizeChange:this.onShowSizeChange,
             showTotal:(total)=>`共${total}条记录`,//显示共几条记录
             pageSizeOptions:['10','20','50','100']
         }
@@ -55,19 +53,22 @@ class PendSubmit extends Component{//待提交
         this.handleDelete=this.handleDelete.bind(this);
         this.judgeOperation=this.judgeOperation.bind(this);
         this.handleTableChange=this.handleTableChange.bind(this);
+        this.onShowSizeChange=this.onShowSizeChange.bind(this);
     }
     componentDidMount(){
         this.props.getPagination('1',this.pagination)
     }
     handleTableChange(pagination) {
-        //console.log('change',pagination)
+        console.log('change',pagination)
         this.pagination = pagination;
         this.props.handleTableChange({
             size:pagination.pageSize,
             page:pagination.current
         })
     }
-
+     onShowSizeChange(current, pageSize) {
+        console.log(current, pageSize);
+      }
 
     handleEdit(record,code){
         let {process,staticPeriod}=this.props
@@ -82,7 +83,21 @@ class PendSubmit extends Component{//待提交
     }
 
     handleDelete(id){
-
+        axios({
+            url:`${this.props.url.precursorGoodIn.delete}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                stasticId:id
+            }
+        }).then((data)=>{
+            message.info(data.data.message)
+            this.props.getPendSubmit({},this.props.periodCode)
+        }).catch(()=>{
+            message.info('删除失败!')
+        })
     }
     judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
@@ -94,7 +109,7 @@ class PendSubmit extends Component{//待提交
        // console.log(this.props.pagination)
         return(
             <div>
-               <Spin spinning={this.props.loadingSubmit} wrapperClassName='rightDiv-content'>
+               <Spin spinning={this.props.loadingSubmit} >
                 <Table
                     dataSource={this.props.dataSubmit}
                     rowKey={record=>record.code}

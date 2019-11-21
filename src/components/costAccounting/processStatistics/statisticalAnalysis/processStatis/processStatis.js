@@ -9,8 +9,9 @@ class ProcessStatis extends Component{//工序统计
             loading:false,
             periodId:'',
             date:'',
-            time:'',//startSecondTime是时分秒，需要拼接选择的日期
-            data:[]
+            time:'',
+            data:[],
+            startTime:''
         }
         
         this.columns=[{
@@ -60,15 +61,12 @@ class ProcessStatis extends Component{//工序统计
         }];
         this.selectChange=this.selectChange.bind(this);
         this.getTableData=this.getTableData.bind(this);
-        this.onBlur=this.onBlur.bind(this)
-        this.onChange=this.onChange.bind(this);
-        this.onFocus=this.onFocus.bind(this);
+        this.timeChange=this.timeChange.bind(this);
         this.onSearch=this.onSearch.bind(this);
     }
 
     getTableData(){
-        let {time,date}=this.state
-        let startTime=`${date} ${time}`
+       let {periodId,startTime}=this.state
         axios({
             url:`${this.props.url.precursorGoodIn.getAnalysisProcess}`,
             method:'get',
@@ -77,14 +75,14 @@ class ProcessStatis extends Component{//工序统计
             },
             params:{
                 // ...params,
-                periodId:this.state.periodCode,
+                periodId:this.state.periodId,
                 startTime:startTime
             }
         }).then((data)=>{
             let res=data.data.data
             if(res&&res.list){
                 for(let i=0;i<res.list.length;i++){
-                    res.list['index']=(res.page-1)*10+(i+1)
+                    res.list['index']=(res.page-1)*res.size+(i+1)
                 }
                 this.setState({
                     data:res.list
@@ -92,36 +90,31 @@ class ProcessStatis extends Component{//工序统计
             }
         })
     }
-    selectChange(value,name){
-        let time=name.props.name
+ 
+    selectChange(value){
         this.setState({
-            periodCode:value,
-            time:time
+            periodId:value,
         })
+        this.props.getStartTime(value)
     }
 
-    onChange(value) {
-        console.log(`selected ${value}`);
-      }
-      
-    onBlur() {
-        console.log('blur');
-      }
-      
-    onFocus() {
-        console.log('focus');
+    timeChange(value) {
+        console.log(`selected ${value}`);//显示的是最终内容
+        this.setState({
+            startTime:value
+        })
       }
       
     onSearch(val) {
-        console.log('search:', val);
+        //console.log('search:', val); //显示的是搜索框输入的内容
       }
-      
+
     render(){
-        let periodCode=this.props.staticPeriod && this.props.staticPeriod[0] ? this.props.staticPeriod[0].code : ''
+       let time=this.props.time?this.props.time:null
         return(
             <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
-                    <Search flag={true}  staticPeriod={this.props.staticPeriod} periodCode={periodCode} search={this.getTableData} selectChange={this.selectChange} onChange={this.onChange} onBlur={this.onBlur} onSearch={this.onSearch} onFocus={this.onFocus}/>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                    <Search flag={true}  staticPeriod={this.props.staticPeriod} time={this.state.time?this.state.time:time} periodCode={this.props.periodCode?this.props.periodCode:''} confirm={this.getTableData} selectChange={this.selectChange} timeChange={this.timeChange}  onSearch={this.onSearch}/>
                     <div className='clear'></div>
                     <Table
                     dataSource={this.state.data}

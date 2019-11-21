@@ -128,14 +128,19 @@ class DryProcess extends Component{//烘干工序
                 {/* <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible}/> */}
                 <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
-                <Table
-                dataSource={this.tableData} 
-                rowKey={record=>record.code}
-                columns={this.columns}
-                pagination={false}
-                scroll={{y:'220px'}}
-                size='small' 
-                bordered/>
+                <div className='clear'></div>
+                <div style={{display:'flex'}}> 
+                    <Table 
+                        dataSource={this.tableData}
+                        rowKey={record=>record.code}
+                        columns={this.columns}
+                        pagination={false}
+                        size='small' 
+                        scroll={{y:'250px'}}
+                        style={{flex:'1',height:'60vh'}}
+                        bordered
+                    />
+                </div>
             </div>
         );
     }

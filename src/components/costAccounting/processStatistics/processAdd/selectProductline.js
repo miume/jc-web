@@ -9,13 +9,13 @@ class SelectLine extends Component{
     }
     render(){
         return(
-            <span >
+            <span style={{float:'right'}}>
                 {
                     this.props.headerData?this.props.headerData.map((data)=>{
                         return(
                             <span key={data.line.code}>
                                 <span >{data.line.name} : </span>
-                                <Select  onChange={this.props.handleSelect}  placeholder='请选择产线' style={{width:'100px',marginRight:'10px'}}>
+                                <Select  onChange={this.props.handleSelect}  placeholder='请选择产线' style={{width:'120px',marginRight:'10px',}}>
                                     {
                                         data.products.map((pro)=>{
                                             return(

@@ -16,8 +16,8 @@ const {RangePicker}=DatePicker;
         let startDate=this.props.startDate?moment(this.props.startDate):null;
         return(
             <span className={this.props.flag?'searchCell':'hide'} >
-                    <span>开始时间 : </span>&nbsp;<DatePicker value={startDate} onChange={this.props.dateStartChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择开始日期'/>
-                    <span>结束时间 : </span>&nbsp;<DatePicker value={endDate} onChange={this.props.dateEndChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择结束日期'/>
+                    <span>开始时间 : </span>&nbsp;<DatePicker value={startDate} onChange={this.props.dateStartChange} className='process-add-head-date' placeholder='请选择开始日期'/>
+                     &nbsp;<span>~</span>&nbsp;<DatePicker value={endDate} onChange={this.props.dateEndChange} className='process-add-head-date' style={{marginRight:'20px'}} placeholder='请选择开始结束日期'/>
                     <Select value={this.props.periodCode} style={{width:120,marginRight:'10px'}} onChange={this.props.selectChange}>
                         {
                             this.props.staticPeriod?this.props.staticPeriod.map(e=>{
