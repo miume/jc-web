@@ -11,11 +11,11 @@ import SearchCell from '../../BlockQuote/search';
 /**这是个令牌，每次调用接口都将其放在header里 */
 
 class Menu extends React.Component{
-    server
-    url
-    operation
+    server;
+    url;
+    operation;
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
       }
@@ -23,28 +23,26 @@ class Menu extends React.Component{
         super(props);
         this.state = {
           dataSource: [],
-          pagination:[],
           selectedRowKeys: [],
           loading: true,
           searchContent:'',
           searchText: '',
-          fatherMenu:[],
-          searchContent1:'',
+          treeData:[]
       };
+      this.reset = this.reset.bind(this);
+      this.getTableData = this.getTableData.bind(this);
       this.handleTableChange=this.handleTableChange.bind(this);
-      this.start=this.start.bind(this);
+      this.deleteByIds=this.deleteByIds.bind(this);
       this.cancel=this.cancel.bind(this);
       this.fetch=this.fetch.bind(this);
       this.modifyDataSource=this.modifyDataSource.bind(this);
       this.searchContentChange = this.searchContentChange.bind(this);
       this.searchEvent = this.searchEvent.bind(this);
-      this.getAllFatherMenu = this.getAllFatherMenu.bind(this);
-      this.searchContentChange1 = this.searchContentChange1.bind(this)
-      this.searchFatherEvent = this.searchFatherEvent.bind(this);
       this.judgeOperation = this.judgeOperation.bind(this);
+      this.getAllMenus = this.getAllMenus.bind(this);
+      this.treeDataProcessing = this.treeDataProcessing.bind(this);
 
       this.pagination = {
-          total: this.state.dataSource.length,
           showTotal(total){
               return `共${total}条记录`
           },
@@ -59,45 +57,11 @@ class Menu extends React.Component{
         return flag.length>0?true:false
     }
 
-  /**获取查询时菜单名称的实时变化 */
-  searchContentChange1(e){
-    const value = e.target.value;
-    this.setState({searchContent1:value});
-}
-    searchFatherEvent(){
-        const ope_name = this.state.searchContent1;
-        axios({
-            url:`${this.url.menu.findByParentNameLikeByPage}`,
-            method:'get',
-            headers:{
-                'Authorization':this.url.Authorization
-            },
-            params:{
-                pageSize: this.pagination.pageSize,
-                pageNumber: this.pagination.current,
-                parentMenuName:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            const res = data.data.data;
-            if(res&&res.list){
-                this.pagination.total=res.total;
-                for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.prePage)*10+i;
-                }
-                this.setState({
-                    dataSource: res.list,
-                });
-            }
-        }).catch((error)=>{
-                message.info(error.data.message)
-            })
-    };
   render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
-       this.server = localStorage.getItem('remote');
-       const current = JSON.parse(localStorage.getItem('current')) ;
-       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
+      this.url = JSON.parse(localStorage.getItem('url'));
+      this.server = localStorage.getItem('remote');
+      const current = JSON.parse(localStorage.getItem('current')) ;
+      this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
       const { loading, selectedRowKeys } = this.state;
       const rowSelection = {
         selectedRowKeys,
@@ -108,18 +72,19 @@ class Menu extends React.Component{
           <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
           <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
             <AddModal
+                url={this.url}
                 fetch={this.fetch}
-                fatherMenu = {this.state.fatherMenu}
+                treeData={this.state.treeData}
                 flag={this.judgeOperation(this.operation,'SAVE')}
             />
             <DeleteByIds
                 selectedRowKeys={this.state.selectedRowKeys}
-                deleteByIds={this.start}
+                deleteByIds={this.deleteByIds}
                 loading={loading}
                 cancel={this.cancel}
                 flag={this.judgeOperation(this.operation,'DELETE')}
             />
-                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.fetch} flag={this.judgeOperation(this.operation,'QUERY')}/>
+                <SearchCell name='请输入菜单名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} flag={this.judgeOperation(this.operation,'QUERY')}/>
         <div className='clear' ></div>
         <MenuTable
             data={this.state.dataSource}
@@ -128,9 +93,6 @@ class Menu extends React.Component{
             fetch={this.fetch}
             modifyDataSource={this.modifyDataSource}
             handleTableChange={this.handleTableChange}
-            fatherMenu = {this.state.fatherMenu}
-            searchContentChange1 = {this.searchContentChange1}
-            searchFatherEvent = {this.searchFatherEvent}
             judgeOperation = {this.judgeOperation}
             operation = {this.operation}
         />
@@ -139,75 +101,100 @@ class Menu extends React.Component{
     )
   }
 
+  componentDidMount() {
+      this.fetch();
+      this.getAllMenus();
+  }
+
     /**修改父组件的数据 */
     modifySelectedRowKeys = (data) => {
       this.setState({selectedRowKeys:data});
-  };
+    };
+
     modifyDataSource = (data) => {
       this.setState({dataSource:data});
-  };
-  /**获取所有数据 getAllByPage */
-    handleTableChange = (pagination) => {
-      this.fetch({
-        pageSize: pagination.pageSize,
-        pageNumber: pagination.current,
-        sortField: 'id',
-        sortType: 'asc',
-      });
-    //   console.log(pagination)
+    };
+
+    /**获取所有数据 getAllByPage */
+    handleTableChange(pagination)  {
+        this.pagination = pagination;
+        this.fetch();
   };
 
-    fetch = (params = {}) => {
-      this.getAllFatherMenu();
-      this.setState({ loading: true });
+    /**获取表格数据*/
+    fetch(params = {}) {
+        this.setState({ loading: true });
+        let {searchContent} = this.state, {pageSize,current} = this.pagination;
+        params = {
+            menuName: params['menuName'] === '' ? '' : searchContent,
+            pageSize: pageSize ? pageSize : 10,
+            pageNumber: current ? current : 1
+        };
+        this.getTableData(params);
+   };
+
+    getTableData(params) {
+        axios({
+            url: `${this.url.menu.findAllByPage}`,
+            method: 'get',
+            headers:{
+                'Authorization': this.url.Authorization
+            },
+            params: params,
+        }).then((data) => {
+            const res = data.data.data;
+            let dataSource = [];
+            if(res&&res.list) {
+                this.pagination.total=res.total;
+                for(let i = 1; i<=res.list.length; i++) {
+                    res.list[i-1]['index'] = (res['prePage']) * res['pageSize'] + i;
+                }
+                dataSource = res.list;
+                this.setState({
+                    loading: false,
+                    dataSource: dataSource,
+                    selectedRowKeys: [],
+                });
+            }
+        })
+    }
+
+    /**查询所有菜单*/
+    getAllMenus() {
       axios({
-          url: `${this.url.menu.findAllByPage}`,
-          method: 'get',
+          url:`${this.url.menu.getAll}`,
+          method:'get',
           headers:{
               'Authorization': this.url.Authorization
           },
-          params: params,
-      }).then((data) => {
-          const res = data.data.data;
-          let dataSource = [];
-          if(res&&res.list){
-            this.pagination.total=res.total;
-            this.pagination.current=res.pageNumber;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
-            }
-              dataSource = res.list;
-            this.setState({
-                loading: false,
-                dataSource: dataSource,
-                searchContent:'',
-                selectedRowKeys: [],
-            });
-          }
-      })
-  };
-    componentDidMount() {
-      this.fetch();
-  }
-  /**获取所有父菜单 */
-  getAllFatherMenu(){
-    axios({
-      url:`${this.url.menu.findByMenuType}`,
-      method:'get',
-      headers:{
-        'Authorization': this.url.Authorization
-        },
-    }).then((data)=>{
-      const res = data.data.data;
-      if(res){
-        this.setState({
-            fatherMenu:res
+      }).then((data)=>{
+          let res = data.data.data, treeData = this.treeDataProcessing(res);
+          this.setState({
+              treeData: treeData
           })
-      }
-    })
-  }
-    start = () => {
-      const ids = this.state.selectedRowKeys;
+      })
+    }
+
+    /**处理所有菜单数据*/
+    treeDataProcessing(res,result = []) {
+        for(let i = 0; i < res.length; i++) {
+            let temp = {
+                title: res[i]['menuName'],
+                key: res[i]['menuId'],
+                value: res[i]['menuName']+'-'+res[i]['menuId'],
+                children: []
+            }, children = res[i]['menuList'];
+
+            children = children && children.length ? this.treeDataProcessing(children,[]) : [];
+            temp.children = children;
+            result.push(temp)
+        }
+        return result;
+    }
+
+    /**批量删除*/
+    deleteByIds() {
+      let ids = this.state.selectedRowKeys;
       axios({
           url:`${this.url.menu.deleteByIds}`,
           method:'delete',
@@ -223,9 +210,12 @@ class Menu extends React.Component{
           message.info(error.data.message)
       });
   };
-    onSelectChange = (selectedRowKeys) => {
-      this.setState({ selectedRowKeys });
-  };
+
+    /**监控表格数据选择*/
+    onSelectChange(selectedRowKeys) {
+         this.setState({ selectedRowKeys });
+    };
+
     cancel() {
       setTimeout(() => {
           this.setState({
@@ -234,39 +224,26 @@ class Menu extends React.Component{
           });
       }, 1000);
   }
+
+    /**搜索事件*/
     searchEvent(){
-      const ope_name = this.state.searchContent;
-      axios({
-          url:`${this.url.menu.findAllByPage}`,
-          method:'get',
-          headers:{
-              'Authorization':this.url.Authorization
-          },
-          params:{
-            pageSize: this.pagination.pageSize,
-            //   pageNumber: this.pagination.current,
-              menuName:ope_name
-          },
-          type:'json',
-      }).then((data)=>{
-          const res = data.data.data;
-          if(res&&res.list){
-            this.pagination.total=res.total;
-            for(var i = 1; i<=res.list.length; i++){
-                res.list[i-1]['index']=(res.prePage)*10+i;
-            }
-            this.setState({
-                dataSource: res.list,
-            });
-          }
-      }).catch((error)=>{
-              message.info(error.data.message)
-          })
-  };
+        this.fetch();
+     };
+
     /**获取查询时菜单名称的实时变化 */
     searchContentChange(e){
       const value = e.target.value;
       this.setState({searchContent:value});
-  }
+    }
+
+    /**重置操作*/
+    reset() {
+        this.setState({
+            searchContent: ''
+        });
+        this.fetch({
+            menuName: ''
+        })
+    }
 }
 export default Menu;

@@ -2,17 +2,6 @@ import React from 'react';
 import {Input, Table} from "antd";
 
 class FeedDataTable extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
-    componentDidMount() {
-        let {flag,data} = this.props;
-        this.columns = this.renderColumns(flag,data);
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -165,6 +154,11 @@ class FeedDataTable extends React.Component {
         )
     }
 
+    componentDidMount() {
+        let {flag,data} = this.props;
+        this.columns = this.renderColumns(flag,data);
+    }
+
     /**根据flag渲染columns*/
     renderColumns(flag,data) {
         let columns = this.columns1;
@@ -197,6 +191,12 @@ class FeedDataTable extends React.Component {
     handleCancel() {
         this.setState({
             visible: false
+        })
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
         })
     }
 }

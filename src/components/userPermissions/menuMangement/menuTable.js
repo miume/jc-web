@@ -1,8 +1,7 @@
 import React from 'react';
-import {Table, Input, Popconfirm, Form, Divider, message,Select,Icon} from 'antd';
+import {Table, Input, Popconfirm, Form, Divider, message,Select} from 'antd';
 import DeletaSpan from './deleteSpan';
 import axios from "axios";
-import SearchFather from './searchCell'
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -17,7 +16,7 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
     getInput = () => {
-        if (this.props.inputType === 'select' && this.props.record.parent !== -1) {
+        if (this.props.type === 'select' && this.props.record.parent !== -1) {
             return <Select >
               {
                 this.props.fathermenu.map(de=>{
@@ -28,7 +27,7 @@ class EditableCell extends React.Component {
               }
         </Select>;
         }
-        return <Input disabled= {this.props.inputType === 'select' && this.props.record.parent===-1?true:false}/>;
+        return <Input disabled= {this.props.type === 'select' && this.props.record.parent===-1?true:false}/>;
     };
     render() {
         const {
@@ -185,9 +184,9 @@ class MenuTable extends React.Component{
         align:'center',
         width: '20%',
         render:(text, record)=>{
-            if(record.menuType===1){
+            if(record['menuType'] === 1){
                 return '父菜单'
-            }else if(record.menuType>=2){
+            } else if(record['menuType'] >= 2) {
                 return '子菜单'
             }
         }
@@ -197,17 +196,7 @@ class MenuTable extends React.Component{
         key: 'parentName',
         align:'center',
         editable: 1,
-        width: '20%',
-        // filterDropdown: () => (
-        //     <div className="custom-filter-dropdown">
-        //       <SearchFather  searchEvent={this.props.searchFatherEvent} searchContentChange={this.props.searchContentChange1} fetch={this.props.fetch}/>
-        //     </div>
-        //   ),
-        // filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-        // onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-        // render:(text,record)=>{
-        //     return record.parentName
-        // },
+        width: '20%'
     }];
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -225,7 +214,7 @@ class MenuTable extends React.Component{
             return {
               ...col,
               onCell: record => ({
-                inputType:col.dataIndex === 'parent' ? 'select' : 'text',
+                type:col.dataIndex === 'parent' ? 'select' : 'text',
                 record:record,
                 editable:col.editable,
                 dataIndex:col.dataIndex,
@@ -278,16 +267,6 @@ class MenuTable extends React.Component{
                 data['parent'] = row.parent
             }
             data['menuName'] = row.menuName
-            // const newData = [...this.props.data];
-            // const index = newData.findIndex(item => id === item.id);
-            // if (index > -1) {
-            //     const item = newData[index];
-            //     newData.splice(index, 1, {
-            //         ...item,
-            //         ...row,
-            //     });
-            //     const data = row;
-            //     data['id'] = id.toString()
                 axios({
                     url:`${this.url.menu.add}`,
                     method:'put',
@@ -298,19 +277,12 @@ class MenuTable extends React.Component{
                     type:'json'
                 }).then((data)=>{
                     message.info(data.data.message);
-                    // this.props.modifyDataSource(newData);
                 }).catch((error)=>{
                     message.info(error.data.message);
                 });
 
                 this.setState({ editingKey: '' });
                 this.getFetch(this.props.pagination)
-            // }
-            // else {
-            //     newData.push(row);
-            //     this.props.modifyDataSource(newData);
-            //     this.setState({ editingKey: '' });
-            // }
         });
     }
 

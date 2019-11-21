@@ -8,9 +8,9 @@ class SelectPeriod extends React.Component {
     }
 
     render() {
-        let {periodCode,staticPeriod} = this.props;
+        let {periodCode,staticPeriod,disabled} = this.props;
         return (
-            <Select className={'raw-material-select'}
+            <Select className={'raw-material-select'} disabled={disabled}
                     style={{width: 150,marginRight: 10}} value={periodCode} onChange={this.props.selectChange}>
                 {
                     staticPeriod ?

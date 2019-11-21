@@ -48,6 +48,7 @@
 
 .raw-material-add-feed {
     margin-top: 15px;
+    height: 200px;
 }
 
 .raw-material-feed-data {
@@ -62,6 +63,7 @@
 .raw-material-add-footer-bottom {
     display: flex;
     justify-content: space-between;
+    padding: 0 15px;
 }
 
 .raw-material-canvas {

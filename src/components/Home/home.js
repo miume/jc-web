@@ -621,7 +621,10 @@ class Home extends Component {
             /**原料领用*/
             rawMaterial: {
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
-                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`
+                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+                period: `${server}/jc/common/materialDeliveryStatistic/period`,
+                getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
+                getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {

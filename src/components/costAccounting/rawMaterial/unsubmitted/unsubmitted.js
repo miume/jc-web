@@ -1,15 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 import {Table} from "antd";
 import DeleteById from "../../../BlockQuote/deleteById";
 
 class UnSubmitted extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -78,6 +71,12 @@ class UnSubmitted extends React.Component {
     //     }).then((data) => {
     //
     //     })
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

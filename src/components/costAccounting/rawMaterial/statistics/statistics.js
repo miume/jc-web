@@ -3,12 +3,6 @@ import {Table} from "antd";
 import Detail from './detail';
 
 class Statistics extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -100,6 +94,12 @@ class Statistics extends React.Component {
     /**单条记录删除*/
     handleDelete(id) {
 
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

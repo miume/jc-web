@@ -64,11 +64,7 @@ class Role extends React.Component {
     url
     operation
     componentDidMount() {
-      this.fetch({
-          pageNumber: 1,
-          sortField: 'id',
-          sortType: 'desc',
-      });
+      this.fetch();
     }
     /**用来解决控制台报错 */
     componentWillUnmount() {
@@ -99,7 +95,8 @@ class Role extends React.Component {
         this.roleUpdate = this.roleUpdate.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
-        this.confrimCancel = this.confrimCancel.bind(this);
+        this.getTableData = this.getTableData.bind(this);
+        this.confirmCancel = this.confirmCancel.bind(this);
         this.userManagement = this.userManagement.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.userManagement = this.userManagement.bind(this);
@@ -158,8 +155,6 @@ class Role extends React.Component {
           }]
         }
       render() {
-          /**这是个令牌，每次调用接口都将其放在header里 */
-          // this.Authorization = localStorage.getItem('Authorization');
           /**这是服务器网址及端口 */
           this.url = JSON.parse(localStorage.getItem('url'));
           const current = JSON.parse(localStorage.getItem('current')) ;
@@ -197,7 +192,7 @@ class Role extends React.Component {
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Add flag={flag} fetch={this.fetch} url={this.url} />
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confrimCancel} flag={home.judgeOperation(this.operation,'DELETE')} />
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.confirmCancel} flag={home.judgeOperation(this.operation,'DELETE')} />
                     <SearchCell name='请输入角色名称' searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} fetch={this.reset} flag={home.judgeOperation(this.operation,'QUERY')} />
                     <div className='clear'></div>
                     <Table rowKey={record => record.id} dataSource={this.state.dataSource} columns={columns}
@@ -209,37 +204,39 @@ class Role extends React.Component {
     }
     /**重置 */
     reset(){
-        this.pagination.current = 1;
         this.setState({
-            searchContent:'',
-            pageChangeFlag:0
+            searchContent: ''
         });
-        this.fetch();
+        this.fetch({},1);
     }
+
     /**获取所有数据 getAllByPage */
     handleTableChange = (pagination) => {
         this.pagination = pagination;
-        const {pageChangeFlag} = this.state;
-        /**区分是否是 搜索分页内容 */
-        if(pageChangeFlag){
-            this.fetch({
-                roleName:this.state.searchContent,
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-                sortField: 'id',
-                sortType: 'desc',
-            });
-        }else{
-            this.fetch({
-                pageSize: pagination.pageSize,
-                pageNumber: pagination.current,
-                sortField: 'id',
-                sortType: 'desc',
-            });
-        }
+        this.fetch();
+    };
+
+    /**getAllByPage 获取分页数据
+     * params查询参数
+     * flag表示重置操作
+     * */
+    fetch(params = {},flag) {
+        let {pageSize,current} = this.pagination, {searchContent} = this.state;
+        params = {
+            roleName: flag ? '' : searchContent,
+            pageSize: pageSize ? pageSize : 10,
+            pageNumber: current ? current : 1,
+            sortField: 'id',
+            sortType: 'desc',
+        };
+        this.setState({
+            loading: true
+        });
+        this.getTableData(params);
     }
-    /**getAllByPage 获取分页数据 */
-    fetch(params){
+
+    /**获取表格数据*/
+    getTableData(params) {
         axios({
             url: `${this.url.role.getRolesByPage}` ,
             method: 'get',
@@ -250,27 +247,32 @@ class Role extends React.Component {
         }).then((data) => {
             const res = data.data.data;
             let dataSource = [];
-            if(res&&res.list){
-                this.pagination.total=res?res.total:0;
+            if(res&&res.list) {
+                this.pagination.total = res ? res.total : 0;
                 for(let i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=res.prePage*10+i;
+                    res.list[i-1]['index']=res['prePage'] * res['pageSize'] + i;
                 }
                 dataSource = res.list;
                 this.setState({
                     dataSource: dataSource,
-                    selectedRowKeys:[],
-                    loading: false
+                    selectedRowKeys:[]
                 });
             }
+            this.setState({
+                loading: false
+            })
         })
     }
     /**实时追踪新增弹出框 角色名称和角色描述的变化 */
+
     handleRoleNameChange(e) {
         this.setState({roleName : e.target.value})
     }
+
     handleRoleDescriptionChange(e) {
         this.setState({roleDescription : e.target.value})
     }
+
     /**根据id处理单条记录删除 */
     handleDelete(id){
         axios({
@@ -282,17 +284,13 @@ class Role extends React.Component {
         }).then((data)=>{
             message.info(data.data.message);
             if(data.data.code===0){
-                this.fetch({
-                    pageSize: this.pagination.pageSize,
-                    pageNumber: this.pagination.current,
-                    sortField: 'id',
-                    sortType: 'desc',
-                });
+                this.fetch();
             }
         }).catch(()=>{
             message.info('删除失败，请联系管理员！')
         })
     }
+
     /**判断单元格td是否可编辑 */
     isEditing = (record) => {
         return record.id === this.state.editingKey;
@@ -301,6 +299,7 @@ class Role extends React.Component {
     edit(id) {
         this.setState({ editingKey: id });
     }
+
     /**实现编辑操作 */
     save(form, id) {
         /**row代表修改后的数据  item 代表原始数据 */
@@ -326,6 +325,7 @@ class Role extends React.Component {
             }
         });
     }
+
     roleUpdate(data,newData){
         axios({
             url:`${this.url.role.role}`,
@@ -345,6 +345,7 @@ class Role extends React.Component {
             message.info('保存失败，请联系管理员！');
         })
     }
+
     /**编辑 确定取消 */
     cancel(){
         this.setState({ editingKey: '' });
@@ -364,23 +365,20 @@ class Role extends React.Component {
         }).then((data)=>{
             message.info(data.data.message);
             if(data.data.code===0){
-                this.fetch({
-                    pageSize: this.pagination.pageSize,
-                    pageNumber: this.pagination.current,
-                    sortField: 'id',
-                    sortType: 'desc',
-                });
+                this.fetch();
             }
         }).catch(()=>{
             message.info('删除错误，请联系管理员！')
         })
     }
+
     /**对应于批量删除时，确认取消删除 并实现checkbox选中为空 */
-    confrimCancel(){
+    confirmCancel(){
         this.setState({
             selectedRowKeys:[]
         })
     }
+
     /**成员管理 */
     userManagement(){
         this.setState({
@@ -397,15 +395,10 @@ class Role extends React.Component {
         this.setState({searchContent:value});
     }
     /** 根据角色名称分页查询*/
-    searchEvent(){
-        const roleName = this.state.searchContent;
-        this.setState({
-            pageChangeFlag:1
-        })
-        this.fetch({
-            roleName:roleName,
-        });
+    searchEvent() {
+        this.fetch();
     }
+
     /**判断编辑操作*/
     judgeEditor(editable,flag,record){
         return (
@@ -430,6 +423,7 @@ class Role extends React.Component {
             </span>
         )
     }
+
     /**删除*/
     deleteFlag(flag,record){
         return (
