@@ -403,7 +403,6 @@ class User extends React.Component{
         })
             .then((data)=>{
                 message.info(data.data.message);
-                //console.log(this.pagination);
                 if(data.data.code===0){
                     if(this.pagination.total%10===1){
                         this.pagination.current=this.pagination.current-1;
@@ -437,7 +436,6 @@ class User extends React.Component{
             type:'json'
         })
         .then((data)=>{
-          //console.log(data);
           message.info(data.data.message);
           if(data.data.code===0){//即操作成功
             if(this.pagination.total%10===1){//当前页只剩一条然后删除的话，此页没有数据，则会跳到其前一页

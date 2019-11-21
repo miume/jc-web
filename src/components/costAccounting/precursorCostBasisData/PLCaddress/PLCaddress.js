@@ -18,12 +18,14 @@ class PLCaddress extends React.Component{
             selectedRowKeys: [],
             loading:true,
             searchContent:'',
+            searchFlag:1,//用来判断是搜索分页还是getAll分页
         }
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);
         this.start=this.start.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -121,7 +123,7 @@ class PLCaddress extends React.Component{
         })
     };
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
@@ -129,27 +131,47 @@ class PLCaddress extends React.Component{
     componentDidMount(){
         this.fetch();
     }
-
-    fetch = ()=>{
+    handleTableChange(pagination){
+        let {searchFlag}=this.state
+        this.pagination=pagination
+        if(searchFlag===1){
+            this.searchEvent({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
+        else{
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
+    }
+    fetch = (params={})=>{
+        this.setState({
+            loading:true
+        })
         axios({
             url:`${this.url.plcAddress.plcAddress}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
+            params:params
         }).then((data)=>{
-            const res = data.data.data.list;
+            const res = data.data.data;
             // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
+            if(res&&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.page-1)*res.pageSize+i;
+                }
             }
-            if(res.length!==0){
                 this.setState({
-                    data:res,
+                    data:res.list,
                     searchContent:'',
                     loading:false
                 })
-            }
+            
         })
     }
     // rowSelected(selectedRowKeys){

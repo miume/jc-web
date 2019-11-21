@@ -12,10 +12,10 @@ class AddModal extends React.Component{
         super(props);
         this.state={
             visible:false,
-            types:undefined,
-            processName:undefined,
+            types:'',
+            processName:'',
             processData:[],
-            materialName:undefined,
+            materialName:'',
             materialData:[],
             productLine:[],
             detail:{},
@@ -47,23 +47,27 @@ class AddModal extends React.Component{
     handleCancel = () =>{
         this.setState({
             visible:false,
-            types:undefined,
-            processName:undefined,
+            types:'',
+            processName:'',
             processData:[],
-            materialName:undefined,
+            materialName:'',
             materialData:[],
             productLine:[],
             detail:{},
         })
     }
-    handleCreate = () =>{
-        var data = {materialCode:this.state.materialName,processCode:this.state.processName,types:this.state.types,weightDTOS:[]};
-        const detail = this.state.detail;
-        var count = 0;
-        var weightValue = [];
-        for(var key in detail){
+    handleCreate = () =>{//新增确定
+        let {materialName,processName,types,detail}=this.state
+        if(materialName===''||processName===''||types===''){
+            message.info('信息填写不完整!')
+            return
+        }
+        var data = {materialCode:materialName,processCode:processName,types:types,weightDTOS:[]};
+        let count = 0;
+        let weightValue = [];
+        for(let key in detail){
             if(detail[key].checkbox == true){
-                var item = {};
+                let item = {};
                 item["lineCode"] = key;
                 item["weightValue"] = detail[key].value;
                 weightValue.push(item);
@@ -72,6 +76,10 @@ class AddModal extends React.Component{
         };
         if(count!=1){
             message.error("所选项权值相加应等于1");
+        }
+        if(count===0){
+            message.info('信息填写不完整!')
+            return
         }
         data.weightDTOS = weightValue;
         // console.log(data);
@@ -88,20 +96,20 @@ class AddModal extends React.Component{
                 message.error(data.data.message);
                 return
             }
-            message.info("新增成功");
+            message.info("新增成功!");
             this.props.fetch();
             this.setState({
                 visible:false,
-                types:undefined,
-                processName:undefined,
+                types:'',
+                processName:'',
                 processData:[],
-                materialName:undefined,
+                materialName:'',
                 materialData:[],
                 productLine:[],
                 detail:{},
             })
         }).catch((error)=>{
-            message.error(error.data)
+            message.error('新增失败，请联系管理员!')
         })
     }
     handleChange=(e)=>{
@@ -116,8 +124,8 @@ class AddModal extends React.Component{
             const res = data.data.data;
             this.setState({
                 processData:res,
-                processName:undefined,
-                materialName:undefined,
+                processName:'',
+                materialName:'',
                 materialData:[],
             })
         })
@@ -151,7 +159,7 @@ class AddModal extends React.Component{
             const res = data.data.data;
             this.setState({
                 materialData:res,
-                materialName:undefined,
+                materialName:'',
             })
         })
         this.setState({
