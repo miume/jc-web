@@ -8,7 +8,7 @@ import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
 import Edit from "./edit";
 
-class ProductLineStatical extends React.Component{
+class ProductLineStatical extends React.Component{//物料产线权重分配
     url;
     constructor(props){
         super(props);
@@ -18,6 +18,7 @@ class ProductLineStatical extends React.Component{
             selectedRowKeys: [],
             loading:true,
             searchContent:'',
+            searchFlag:1,//用来判断是搜索分页还是getAll分页
         }
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);
@@ -120,12 +121,21 @@ class ProductLineStatical extends React.Component{
             this.handleTableChange(this.pagination);
         }, 1000);
     };
-    /**获取所有数据 getAllByPage */
+    /**页面切换调用的函数*/
     handleTableChange = (pagination) => {
-        this.fetch({
-            size: pagination.pageSize,
-            page: pagination.current,
-        });
+        let {searchFlag}=this.state
+        if(searchFlag===0){
+            this.fetch({
+                size: pagination.pageSize,
+                page: pagination.current,
+            });
+        }
+        else{
+            this.searchEvent({
+                size: pagination.pageSize,
+                page: pagination.current,
+            })
+        }
     };
     start = () => {
         const ids = this.state.selectedRowKeys;
@@ -134,7 +144,7 @@ class ProductLineStatical extends React.Component{
             url:`${this.url.precursorMaterialLineWeight.ids}`,
             method:'delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             data:ids,
             type:'json'
@@ -165,6 +175,10 @@ class ProductLineStatical extends React.Component{
     }
 
     fetch = (params = {})=>{
+        this.setState({
+            loading:true,
+            searchFlag:0
+        })
         axios({
             url:`${this.url.precursorMaterialLineWeight.page}`,
             method:"get",
@@ -173,34 +187,35 @@ class ProductLineStatical extends React.Component{
             },
             params: params,
         }).then((data)=>{
-            const res = data.data.data.list;
-            this.pagination.total=data.data.data.total;
-            this.pagination.current = data.data.data.page;
+            const dataRes=data.data.data
+            const res =  dataRes.list;
+            this.pagination.total=dataRes &&dataRes.total?dataRes.total:0;
+            this.pagination.current = dataRes &&dataRes.page?dataRes.page:1;
             // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
+            if(dataRes&&res){
+                for(var i = 1; i<=res.length; i++){
+                    res[i-1]['index']=(dataRes.page-1)*dataRes.size+i;
+                }
+                for(var i=0;i<res.length;i++){
+                    res[i].weightValue = res[i].weightDTOS.map((item)=>{
+                        return(
+                            item.lineName+"  "+item.weightValue
+                        )
+                    }).join(",")
+                }
             }
-            for(var i=0;i<res.length;i++){
-                res[i].weightValue = res[i].weightDTOS.map((item)=>{
-                    return(
-                        item.lineName+"  "+item.weightValue
-                    )
-                }).join(",")
-            }
-            // console.log(res);
-            if(res.length!==0){
                 this.setState({
                     data:res,
                     searchContent:'',
-                    loading:false
+                    loading:false,
+                    selectedRowKeys:[]
                 })
-            }
+            
         })
     }
 
     /**实现全选 */
     onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -215,49 +230,56 @@ class ProductLineStatical extends React.Component{
         const value = e.target.value;
         this.setState({searchContent:value});
     }
-    searchEvent(){
+    searchEvent(params={}){
         const ope_name = this.state.searchContent;
-        axios({
-            url:`${this.url.precursorMaterialLineWeight.page}`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                size: this.pagination.pageSize,
-                page: this.pagination.current,
-                condition:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            // const res = data.data.data;
-            // if(res&&res.list){
-            //     this.pagination.total=res.total;
-            //     for(var i = 1; i<=res.list.length; i++){
-            //         res.list[i-1]['index']=(res.prePage)*10+i;
-            //     }
-            //     this.setState({
-            //         dataSource: res.list,
-            //     });
-            // }
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            for(var i=0;i<res.length;i++){
-                res[i].weightValue = res[i].weightDTOS.map((item)=>{
-                    return(
-                        item.lineName+"  "+item.weightValue
-                    )
-                }).join(",")
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res
-                })
-            }
+        this.fetch({
+            ...params,
+            condition:ope_name
         })
+        this.setState({
+            searchFlag:1
+        })
+        // axios({
+        //     url:`${this.url.precursorMaterialLineWeight.page}`,
+        //     method:'get',
+        //     headers:{
+        //         'Authorization':this.Authorization
+        //     },
+        //     params:{
+        //         size: this.pagination.pageSize,
+        //         page: this.pagination.current,
+        //         condition:ope_name
+        //     },
+        //     type:'json',
+        // }).then((data)=>{
+        //     // const res = data.data.data;
+        //     // if(res&&res.list){
+        //     //     this.pagination.total=res.total;
+        //     //     for(var i = 1; i<=res.list.length; i++){
+        //     //         res.list[i-1]['index']=(res.prePage)*10+i;
+        //     //     }
+        //     //     this.setState({
+        //     //         dataSource: res.list,
+        //     //     });
+        //     // }
+        //     const res = data.data.data.list;
+        //     // console.log(res)
+        //     for(var i = 1; i<=res.length; i++){
+        //         res[i-1]['index']=i;
+        //     }
+        //     for(var i=0;i<res.length;i++){
+        //         res[i].weightValue = res[i].weightDTOS.map((item)=>{
+        //             return(
+        //                 item.lineName+"  "+item.weightValue
+        //             )
+        //         }).join(",")
+        //     }
+        //     if(res.length!==0){
+        //         this.setState({
+        //             data:res
+        //         })
+        //     }
+        // })
     };
     /**返回数据录入页面 */
     returnDataEntry = ()=>{

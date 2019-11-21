@@ -419,7 +419,7 @@ class CostProcessAdd extends Component {
                         {
                             this.props.location.process ? this.props.location.process.map((data, index) => {
                                 return (
-                                    <TabPane key={data.code} tab={data.processName}>{this.dataComponent[index].component}</TabPane>
+                                    <TabPane key={data.code} tab={data.processName}>{this.dataComponent[index]&&this.dataComponent[index].component?this.dataComponent[index].component:''}</TabPane>
                                 )
                             }) : null
                         }

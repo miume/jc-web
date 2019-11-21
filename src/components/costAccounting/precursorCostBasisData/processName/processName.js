@@ -79,7 +79,7 @@ class ProcessName extends React.Component {
             key: 'types',
             width: '25%',
             render: (text, record) => {
-                if (text == 1) {
+                if (text == 0) {
                     return "主材"
                 } else {
                     return "辅材"

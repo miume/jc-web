@@ -59,7 +59,7 @@ class PendSubmit extends Component{//待提交
         this.props.getPagination('1',this.pagination)
     }
     handleTableChange(pagination) {
-        console.log('change',pagination)
+       // console.log('change',pagination)
         this.pagination = pagination;
         this.props.handleTableChange({
             size:pagination.pageSize,
@@ -67,7 +67,7 @@ class PendSubmit extends Component{//待提交
         })
     }
      onShowSizeChange(current, pageSize) {
-        console.log(current, pageSize);
+        //console.log(current, pageSize);
       }
 
     handleEdit(record,code){

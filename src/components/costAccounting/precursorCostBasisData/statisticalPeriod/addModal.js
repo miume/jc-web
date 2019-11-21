@@ -12,9 +12,9 @@ class AddModal extends React.Component {
         this.state = {
             visible: false,
             startTime: null,
-            name: null,
-            default: null,
-            timeString: null
+            name: '',
+            default: '',
+            timeString: ''
         }
     }
     showModal = () => {
@@ -24,17 +24,23 @@ class AddModal extends React.Component {
         this.setState({
             visible: false,
             startTime: null,
-            name: null,
-            default: null,
-            timeString: null
+            name: '',
+            default: '',
+            timeString: ''
         })
     };
     handleCreate = () => {
-        var data = { length: this.state.default, name: this.state.name, startTime: this.state.timeString };
+        let {name,timeString}=this.state
+        if(!this.state.default||!name||!timeString){
+            message.info('信息填写不完整!')
+            return
+        }
         if (this.props.data.length >= 7) {
             message.error("数据不能大于7条")
             return;
         }
+        var data = { length: this.state.default, name:name, startTime: timeString };
+      
         axios({
             url: `${this.props.url.staticPeriod.add}`,
             method: "post",
@@ -43,15 +49,14 @@ class AddModal extends React.Component {
             },
             data: data
         }).then((data) => {
-
-            message.info("新增成功");
+            message.info(data.data.message);
             this.props.fetch();
             this.setState({
                 visible: false,
                 startTime: null,
-                name: null,
-                default: null,
-                timeString: null
+                name: '',
+                default: '',
+                timeString: ''
             })
         })
     }

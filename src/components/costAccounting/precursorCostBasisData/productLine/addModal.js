@@ -26,6 +26,9 @@ class AddModal extends React.Component {
     };
     handleCreate = () => {
         var data = { name: this.state.name };
+        if(!this.state.name){
+            message.info('信息填写不完整!')
+        }
         // console.log(data)
         axios({
             url: `${this.url.precursorProductionLine.add}`,
@@ -36,7 +39,7 @@ class AddModal extends React.Component {
             data: data
         }).then((data) => {
             // console.log(data)
-            message.info("新增成功");
+            message.info(data.data.message);
             this.props.fetch();
             this.setState({
                 visible: false,
