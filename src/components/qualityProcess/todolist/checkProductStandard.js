@@ -4,10 +4,10 @@ import {message, Table} from 'antd';
 import HeadTable from '../../technologyCenter/productStandard/headTable';
 class CheckProductStandard extends React.Component{
     componentDidMount(){
-        const {flag} = this.props;
-        var url = `${this.props.url.product.detailByCommonBatchId}`;
-        if(flag===13) url = `${this.props.url.rawStandard.getStandard}`;
-        this.getDataByBatchNumberId(this.props.batchNumberId,url);
+        const {flag,batchNumberId} = this.props;
+        var url = `${this.props.url.product.detailByCommonBatchId}?commonBatchId=${batchNumberId}`;
+        if(flag===13) url = `${this.props.url.rawStandard.getStandard}/${batchNumberId}`;
+        this.getDataByBatchNumberId(batchNumberId,url);
     }
     constructor(props){
         super(props);
@@ -43,7 +43,7 @@ class CheckProductStandard extends React.Component{
     getDataByBatchNumberId(id,url){
         axios({
             method: 'get',
-            url: `${url}/${id}`,
+            url: `${url}`,
             headers: {
                 'Authorization': this.props.url.Authorization
             }

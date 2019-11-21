@@ -3,7 +3,7 @@
     cursor: not-allowed;
 }
 .check-box{
-    height: 150px;
+    height: 203px;
     overflow-y:scroll;
 }
 .check-box::-webkit-scrollbar{

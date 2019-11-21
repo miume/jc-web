@@ -11,7 +11,7 @@ class ProductStandardDetail extends React.Component{
             dataIndex:'index',
             key:'index',
             sorter:(a,b)=>a.index-b.index,
-            width:'5%',
+            width:'10%',
         },{
             title:'批号',
             dataIndex:'commonBath',

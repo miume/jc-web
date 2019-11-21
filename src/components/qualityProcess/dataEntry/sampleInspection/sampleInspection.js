@@ -35,31 +35,29 @@ class SampleInspection extends React.Component {
             dataSource: [],
             selectedRowKeys: [],    //多选框key
             loading: true,
-            pagination: [],
             searchContent: '',
             clicked: false,
             Contentvalue: '',
-            pageChangeFlag: 0 //0为fetch，1为search
         };
+        this.reset = this.reset.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.fetch = this.fetch.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.deleteByIds = this.deleteByIds.bind(this);
-        // this.handleDelete = this.handleDelete.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.handleRefuse = this.handleRefuse.bind(this);
         this.contentChange = this.contentChange.bind(this);
         this.judgeOperation = this.judgeOperation.bind(this);
         this.pagination = {
-            total: this.state.dataSource.length,
             showTotal(total) {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
             pageSizeOptions: ["10","20","50","100"]
-        }
+        };
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
@@ -204,6 +202,7 @@ class SampleInspection extends React.Component {
         return flag.length > 0 ? true : false
     }
 
+    /**点击拒绝*/
     handleRefuse(id) {
         axios({
             url: `${this.url.sampleInspection.accept}`,
@@ -226,6 +225,7 @@ class SampleInspection extends React.Component {
         }, 1000);
     }
 
+    /**点击接受*/
     handleAccept = (id) => {
         axios({
             url: `${this.url.sampleInspection.accept}`,
@@ -243,10 +243,12 @@ class SampleInspection extends React.Component {
             message.info(error.data)
         });
         setTimeout(() => {
-            this.handleTableChange(this.pagination);
+            this.fetch();
         }, 1000);
     }
-    handleDelete = (id) => {
+
+    /**单条记录删除*/
+    handleDelete(id) {
         axios({
             url: `${this.url.sampleInspection.getAll}/${id}`,
             method: 'Delete',
@@ -259,10 +261,7 @@ class SampleInspection extends React.Component {
             message.info(error.data)
         });
         setTimeout(() => {
-            if ((this.pagination.total - 1) % 10 === 0) {
-                this.pagination.current = this.pagination.current - 1
-            }
-            this.handleTableChange(this.pagination);
+            this.fetch();
         }, 1000);
     }
 
@@ -271,44 +270,9 @@ class SampleInspection extends React.Component {
         this.props.history.push({pathname: '/dataEntry'});
     }
 
-    searchEvent(params = {}) {
-        const ope_name = this.state.searchContent;
-        console.log(params)
-        axios({
-            url: `${this.url.sampleInspection.getPageByBatch}`,
-            method: 'get',
-            headers: {
-                'Authorization': this.Authorization
-            },
-            params: {
-                page: params.page?params.page:1,
-                size: params.size?params.size:10,
-                batch: ope_name,
-                // sortField: 'id',
-                // sortType: 'desc',
-            },
-            type: 'json',
-        }).then((data) => {
-            const res = data.data.data;
-            // console.log(res)
-            if (res && res.list) {
-                this.pagination.total = res.total;
-                this.pagination.current = res.page
-                for (var i = 1; i <= res.list.length; i++) {
-                    res.list[i - 1]['index'] = (res.page-1)*10+i;
-                }
-                this.setState({
-                    dataSource: res.list,
-                    pageChangeFlag: 1
-                });
-            } else {
-                this.setState({
-                    dataSource: null,
-                    pageChangeFlag: 1
-                })
-            }
-        })
-
+    /**搜索事件*/
+    searchEvent() {
+        this.fetch();
     };
 
     /**获取查询时菜单名称的实时变化 */
@@ -317,55 +281,59 @@ class SampleInspection extends React.Component {
         this.setState({searchContent: value});
     }
 
-    /**获取所有数据 getAllByPage */
-    handleTableChange = (pagination) => {
-        const pageChangeFlag = this.state.pageChangeFlag;
-        if (pageChangeFlag === 0) {
-            this.fetch({
-                size: pagination.pageSize,
-                page: pagination.current,
-            });
-        } else {
-            this.searchEvent({
-                size: pagination.pageSize,
-                page: pagination.current,
-            })
-        }
+    /**重置操作*/
+    reset() {
+        this.setState({
+            searchContent: ''
+        });
+        this.fetch();
+    }
 
+    /**获取所有数据 getAllByPage */
+    handleTableChange(pagination) {
+        this.pagination = pagination;
+        this.fetch();
     };
-    fetch = (params = {}) => {
+
+    fetch(params = {},flag) {
+        let {current,pageSize} = this.pagination, {searchContent} = this.state;
+        params = {
+            batch: flag ? '' : searchContent,
+            page: current ? current : 1,
+            size: pageSize ? pageSize : 10,
+            sortField: 'id',
+            sortType: 'desc',
+        };
+        this.setState({
+            loading: true
+        });
+        this.getTableData(params);
+    };
+
+    /**获取表格数据*/
+    getTableData(params) {
         axios({
             url: `${this.url.sampleInspection.getPageByBatch}`,
             method: 'get',
-            params: {
-                page: params.page?params.page:1,
-                size: params.size?params.size:10,
-            },
-            // type: 'json',
+            params
         }).then((data) => {
             const res = data.data.data;
-            // console.log(res,this.pagination.current)
             if (res && res.list) {
                 for (var i = 1; i <= res.list.length; i++) {
                     res.list[i - 1]['index'] = (res.page-1)*10+i;
                 }
                 this.pagination.total = res.total;
-                this.pagination.current = res.page;
-                // console.log(res.list)
                 this.setState({
-                    dataSource: res.list,
-                    searchContent: '',
-                    selectedRowKeys: [],
-                    pageChangeFlag: 0
+                    dataSource: res.list
                 });
             }
             this.setState({
                 loading: false
             })
         })
-    };
-    onSelectChange = (selectedRowKeys) => {
-        //console.log('selectedRowKeys changed: ', selectedRowKeys);
+    }
+
+    onSelectChange(selectedRowKeys)  {
         this.setState({selectedRowKeys});
     };
 
