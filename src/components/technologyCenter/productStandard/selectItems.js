@@ -27,7 +27,7 @@ class SelectItems extends React.Component{
     }
 
     render(){
-        let {checkAll,selectTestItems,allTestItem,visible} = this.state, {data,url,type} = this.props;
+        let {selectTestItems,allTestItem,visible,selectAllItems} = this.state, {data,url,type} = this.props;
         return (
             <span>
                 {this.renderButton(type)}
@@ -37,7 +37,7 @@ class SelectItems extends React.Component{
                 footer={this.renderFooter(type,url,data)}
             >
                 <div>
-                    <Checkbox onChange={this.onCheckAllChange} checked={checkAll}>全选</Checkbox>
+                    <Checkbox onChange={this.onCheckAllChange} checked={!selectTestItems || selectTestItems.length === selectAllItems.length ? true : false}>全选</Checkbox>
                     <br />
                     <Checkbox.Group style={{width: "100%"}} value = {selectTestItems} onChange={this.checkboxChange}>
                         {
@@ -95,8 +95,7 @@ class SelectItems extends React.Component{
         this.setState({
             selectAllItems: option,
             allTestItem: data,
-            selectTestItems: selectTestItems ? selectTestItems : option,
-            checked: !selectTestItems || selectTestItems.length === option.length ? true : false
+            selectTestItems: selectTestItems ? selectTestItems : option
         })
     }
 
