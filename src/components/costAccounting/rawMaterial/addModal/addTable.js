@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Table} from "antd";
+import {Button, Input, Table} from "antd";
 const data=[{
     index:1,
     code:1,
@@ -65,8 +65,13 @@ class AddTable extends React.Component {
     }
 
     render() {
+        let {visible} = this.props;
         return (
-            <div className={'raw-material-add-table'}>
+            <div className={visible ? 'raw-material-add-table' : 'hide'}>
+                <div className={'raw-material-add-margin'}>
+                    <Button className='white-button' onClick={this.getPreviousConcentration}>上期浓度</Button>
+                    <Button className='white-button' style={{width:86}} onClick={this.getFeedData}>补料</Button>
+                </div>
                 <Table size={"small"} columns={this.columns} bordered dataSource={data}
                        pagination={false} rowKey={record => record.code}
                        footer={this.getFooter} scroll={{y:150}}/>
@@ -91,6 +96,12 @@ class AddTable extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

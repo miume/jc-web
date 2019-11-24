@@ -11,6 +11,7 @@ class RawTest extends React.Component{
             case 9:  url = `${this.props.url.rawTestReport.rawTestReport}/detailsByBatchNumberId?id=${dataId}`; break;
             case 10: url =  `${this.props.url.intermediateProduct}/detailsByBatchNumberId/${dataId}`; break;
             case 13: url = `${this.props.url.rawStandard.getStandard}/${dataId}`; break;
+            // case 14: url = `${this.props.url.rawStandard.getStandard}/${dataId}`; break;
             default: url = ''; break;
         }
         this.getData(url);

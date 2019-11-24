@@ -1,20 +1,20 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,message,InputNumber,Input,Form,Spin } from 'antd';
+import { Table, Popconfirm, message, InputNumber, Input, Form, Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import axios from "axios";
 
 const EditableContext = React.createContext();
 
-class EditableCell extends React.Component{
-    getInput = ()=>{
-        if(this.props.inputType === "number"){
+class EditableCell extends React.Component {
+    getInput = () => {
+        if (this.props.inputType === "number") {
             return <InputNumber />;
         }
         return <Input />;
     };
 
-    renderCell = ({getFieldDecorator})=>{
+    renderCell = ({ getFieldDecorator }) => {
         const {
             editing,
             dataIndex,
@@ -28,73 +28,69 @@ class EditableCell extends React.Component{
         return (
             <td {...restProps}>
                 {
-                    editing?(
-                        <Form.Item style={{margin:0}}>
+                    editing ? (
+                        <Form.Item style={{ margin: 0 }}>
                             {
-                                getFieldDecorator(dataIndex,{
-                                    rules:[{
-                                        required:true,
-                                        message:`请输入${title}`
+                                getFieldDecorator(dataIndex, {
+                                    rules: [{
+                                        required: true,
+                                        message: `请输入${title}`
                                     }],
-                                    initialValue:record[dataIndex],
+                                    initialValue: record[dataIndex],
                                 })(this.getInput())
                             }
                         </Form.Item>
-                    ):(
-                        children
-                    )
+                    ) : (
+                            children
+                        )
                 }
             </td>
         )
     };
 
-    render(){
+    render() {
         return <EditableContext.Consumer>{this.renderCell}</EditableContext.Consumer>
     }
 }
 
-class ProcessName extends React.Component{
+class ProcessName extends React.Component {
     url
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            data:[],
-            editingKey:"",
-            loading:true
+            data: [],
+            editingKey: "",
+            loading: true
         }
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
-            width: '25%',
-        },{
+            width: '25%'
+        }, {
             title: '工序名称',
             dataIndex: 'processName',
             key: 'periodName',
-            align:'center',
             width: '25%',
             editable: true,
-        },{
+        }, {
             title: '所属类别',
             dataIndex: 'types',
             key: 'types',
-            align:'center',
             width: '25%',
-            render:(text,record)=>{
-                if(text == 1){
+            render: (text, record) => {
+                if (text == 0) {
                     return "主材"
-                }else{
+                } else {
                     return "辅材"
                 }
             }
-        },{
+        }, {
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
             width: '25%',
-            render:(text,record)=>{
+            render: (text, record) => {
                 const editable = this.isEditing(record)
                 return (
                     <span>
@@ -103,23 +99,23 @@ class ProcessName extends React.Component{
                                 <span>
                                     <EditableContext.Consumer>
                                         {
-                                            form=>(
-                                                <a
-                                                    onClick={()=>this.save(form,record.key)}
-                                                    style={{marginRight:8}}
+                                            form => (
+                                                <span className='blue'
+                                                    onClick={() => this.save(form, record.key)}
+                                                    style={{ marginRight: 8 }}
                                                 >
-                                                保存
-                                                </a>
+                                                    保存
+                                                </span>
                                             )
                                         }
                                     </EditableContext.Consumer>
-                                    <Popconfirm title="确定取消?" onConfirm={()=>this.cancel(record.key)}>
-                                        <a>取消</a>
+                                    <Popconfirm title="确定取消?" okText='确定' cancelText='取消' onConfirm={() => this.cancel(record.key)}>
+                                        <span className='blue'>取消</span>
                                     </Popconfirm>
                                 </span>
-                            ):(
-                                <span className='blue' onClick={() => this.edit(record.index)}>编辑</span>
-                            )
+                            ) : (
+                                    <span className='blue' onClick={() => this.edit(record.index)}>编辑</span>
+                                )
 
                             }
                         </span>
@@ -128,127 +124,130 @@ class ProcessName extends React.Component{
             }
         }]
     }
-    isEditing = record=>record.index === this.state.editingKey;
+    isEditing = record => record.index === this.state.editingKey;
 
-    cancel = () =>{
+    cancel = () => {
         this.setState({
-            editingKey:""
+            editingKey: ""
         })
     }
 
     componentWillUnmount() {
         this.setState = (state, callback) => {
-          return ;
+            return;
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetch();
     }
 
-    fetch = ()=>{
+    fetch = () => {
+        this.setState({
+            loading: true
+        })
         axios({
-            url:`${this.url.precursorProcessType.all}`,
-            method:"get",
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.precursorProcessType.all}`,
+            method: "get",
+            headers: {
+                'Authorization': this.url.Authorization
             },
-        }).then((data)=>{
+        }).then((data) => {
             const res = data.data.data;
             // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
+            for (var i = 1; i <= res.length; i++) {
+                res[i - 1]['index'] = i;
             }
-            if(res.length!==0){
+            if (res.length !== 0) {
                 this.setState({
-                    data:res,
-                    loading:false
+                    data: res,
+                    loading: false
                 })
             }
         })
     }
-    save = (form,key) =>{
-        form.validateFields((error,row)=>{
-            if(error){
+    save = (form, key) => {
+        form.validateFields((error, row) => {
+            if (error) {
                 return;
             }
             var newData = [...this.state.data];
-            var index = newData.findIndex(item=>key===item.key);
+            var index = newData.findIndex(item => key === item.key);
 
-            if(index >-1){
+            if (index > -1) {
                 const item = newData[index];
-                newData.splice(index,1,{
+                newData.splice(index, 1, {
                     ...item,
                     ...row,
                 });
                 var data = newData[index];
                 delete data["index"];
                 axios({
-                    url:`${this.url.precursorProcessType.update}`,
-                    method:"put",
-                    headers:{
-                        'Authorization':this.url.Authorization
+                    url: `${this.url.precursorProcessType.update}`,
+                    method: "put",
+                    headers: {
+                        'Authorization': this.url.Authorization
                     },
-                    data:data,
-                }).then((data)=>{
+                    data: data,
+                }).then((data) => {
                     message.info("编辑成功");
                     this.fetch()
                     this.setState({
-                        data:newData,
-                        editingKey:""
+                        data: newData,
+                        editingKey: ""
                     });
                 })
-            }else{
+            } else {
                 newData.push(row);
                 this.setState({
-                    data:newData,
-                    editingKey:""
+                    data: newData,
+                    editingKey: ""
                 });
             }
         });
     }
 
-    edit=(key)=>{
+    edit = (key) => {
         this.setState({
-            editingKey:key
+            editingKey: key
         })
     };
     /**返回数据录入页面 */
-    returnDataEntry = ()=>{
-        this.props.history.push({pathname: "/precursorCostBasisData"});
+    returnDataEntry = () => {
+        this.props.history.push({ pathname: "/precursorCostBasisData" });
     }
 
-    render(){
+    render() {
         const components = {
-            body:{
-                cell:EditableCell,
+            body: {
+                cell: EditableCell,
             }
         };
-        const columns = this.columns.map(col=>{
-            if(!col.editable){
+        const columns = this.columns.map(col => {
+            if (!col.editable) {
                 return col;
             }
             return {
                 ...col,
-                onCell:record=>({
+                onCell: record => ({
                     record,
-                    inputType:col.dataIndex === "defaultTime"?"number":"text",
-                    dataIndex:col.dataIndex,
-                    title:col.title,
-                    editing:this.isEditing(record),
+                    inputType: col.dataIndex === "defaultTime" ? "number" : "text",
+                    dataIndex: col.dataIndex,
+                    title: col.title,
+                    editing: this.isEditing(record),
                 }),
             };
         });
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
-        return(
+        return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
-                            returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
+                    returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <div className='clear' ></div>
                     <EditableContext.Provider value={this.props.form}>
-                        <Table pagination={false} components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                        <Table pagination={false} components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered />
                     </EditableContext.Provider>
                 </Spin>
             </div>

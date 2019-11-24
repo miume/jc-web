@@ -18,6 +18,7 @@ class DetailItem extends React.Component{
             selectedRowKeys: [],
             loading:true,
             searchContent:'',
+            searchFlag:1, //用来判断是搜索分页还是getAll分页
         }
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);
@@ -25,6 +26,7 @@ class DetailItem extends React.Component{
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
         this.returnDataEntry = this.returnDataEntry.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -115,11 +117,11 @@ class DetailItem extends React.Component{
             message.info(data.data.message);
             this.fetch();
         }).catch((error)=>{
-            message.info(error.data)
+            message.info('删除失败，请联系管理员!')
         });
     }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
@@ -128,45 +130,49 @@ class DetailItem extends React.Component{
         this.fetch();
     }
 
-    fetch = ()=>{
+    fetch = (params={})=>{
+        this.setState({
+            loading:true,
+            searchFlag:0
+        })
         axios({
             url:`${this.url.precursorMaterialDetails.page}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
+            params:params
         }).then((data)=>{
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            for(var i=0;i<res.length;i++){
-                res[i]["metal"] = ""
-            }
-            for(var i=0;i<res.length;i++){
-                if(res[i]["mn"] == 1){
-                    res[i]["metal"]+="mn "
+            let res=data.data.data
+            if(res &&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.page-1)*res.size+i;
                 }
-                if(res[i]["co"] == 1){
-                    res[i]["metal"]+="co "
+                for(var i=0;i<res.list.length;i++){
+                    res.list[i]["metal"] = ""
                 }
-                if(res[i]["ni"] == 1){
-                    res[i]["metal"]+="ni "
+                for(var i=0;i<res.list.length;i++){
+                    if(res.list[i]["mn"] == 1){
+                        res.list[i]["metal"]+="mn "
+                    }
+                    if(res.list[i]["co"] == 1){
+                        res.list[i]["metal"]+="co "
+                    }
+                    if(res.list[i]["ni"] == 1){
+                        res.list[i]["metal"]+="ni "
+                    }
                 }
-            }
-            for(var i=0;i<res.length;i++){
-                if(res[i]["metal"] == ""){
-                    res[i]["metal"] = "无"
+                for(var i=0;i<res.list.length;i++){
+                    if(res.list[i]["metal"] == ""){
+                        res.list[i]["metal"] = "无"
+                    }
                 }
-            }
-            if(res.length!==0){
                 this.setState({
-                    data:res,
+                    data:res.list,
                     searchContent:'',
                     loading:false
                 })
-            }
+          }
         })
     }
     start = () => {
@@ -198,7 +204,6 @@ class DetailItem extends React.Component{
     };
     /**实现全选 */
     onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -217,62 +222,32 @@ class DetailItem extends React.Component{
     returnDataEntry() {
         this.props.history.push({pathname: "/precursorCostBasisData"});
     }
-    searchEvent(){
+    searchEvent(params={}){
         const ope_name = this.state.searchContent;
-        axios({
-            url:`${this.url.precursorMaterialDetails.page}`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                // size: this.pagination.pageSize,
-                // page: this.pagination.current,
-                condition:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            // const res = data.data.data;
-            // if(res&&res.list){
-            //     this.pagination.total=res.total;
-            //     for(var i = 1; i<=res.list.length; i++){
-            //         res.list[i-1]['index']=(res.prePage)*10+i;
-            //     }
-            //     this.setState({
-            //         dataSource: res.list,
-            //     });
-            // }
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            for(var i=0;i<res.length;i++){
-                res[i]["metal"] = ""
-            }
-            for(var i=0;i<res.length;i++){
-                if(res[i]["mn"] == 1){
-                    res[i]["metal"]+="mn "
-                }
-                if(res[i]["co"] == 1){
-                    res[i]["metal"]+="co "
-                }
-                if(res[i]["ni"] == 1){
-                    res[i]["metal"]+="ni "
-                }
-            }
-            for(var i=0;i<res.length;i++){
-                if(res[i]["metal"] == ""){
-                    res[i]["metal"] = "无"
-                }
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res
-                })
-            }
+        this.fetch({
+            ...params,
+            condition:ope_name
+        })
+        this.setState({
+            searchFlag:1,
         })
     };
+    handleTableChange(pagination){
+        let {searchFlag}=this.state
+        this.pagination=pagination;
+        if(searchFlag){
+            this.searchEvent({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
+        else{
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
+    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
@@ -300,7 +275,7 @@ class DetailItem extends React.Component{
                     />
                     <SearchCell name="请输入物料名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} onChange={this.handleTableChange} size="small" bordered/>
                 </Spin>
             </div>
         )

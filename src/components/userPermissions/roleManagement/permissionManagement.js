@@ -47,6 +47,7 @@ class PermissionManagement extends React.Component {
             })
         })
     }
+
     /** 获取所有操作权限*/
     getAllAuth(){
         const url = `${this.props.url.operation.getAll}`;
@@ -73,8 +74,7 @@ class PermissionManagement extends React.Component {
                 'Authorization':this.props.Authorization
             }
         }).then(data=>{
-            var res = data.data.data;
-            var roleAuth = res?data.data.data.authorities:[];
+            let res = data.data.data,roleAuth = res?data.data.data.authorities:[];
             this.setState({
                 roleAuth:roleAuth
             })
@@ -144,12 +144,12 @@ class PermissionManagement extends React.Component {
             <span>
                 <span  className='blue' onClick={this.showModal} value={this.state.value}>权限管理</span>
                 <Modal title='编辑权限' visible={this.state.visible} centered={true}
-                closable={false} maskClosable={false} destroyOnClose='true' width={820}
+                closable={false} maskClosable={false} destroyOnClose='true' width={900}
                 footer={[
                     <CancleButton key='back' handleCancel={this.handleOk} flag={1}/>
                   ]}
                    >
-                <div className='permissionContanier'>
+                <div className='permissionContainer'>
                 {/**实现用div布局，显示table */}
                     <div className='permissionTable'>
                         <PermissionThead />

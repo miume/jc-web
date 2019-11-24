@@ -16,13 +16,13 @@
 }
 .rawStandardTop table thead tr th{
     font-size: 13px;
-    padding-left:5px;
+    padding:5px;
     border:1px solid #E9E9E9;
     height: 30px;
 }
 .rawStandardTop table tbody tr td{
     font-size: 13px;
-    padding-left:5px;
+    padding:5px;
     border:1px solid #E9E9E9;
     height: 30px;
 }

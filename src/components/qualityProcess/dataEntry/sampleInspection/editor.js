@@ -62,7 +62,7 @@ class Editor extends React.Component{
         this.fetch();
     }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
@@ -81,7 +81,6 @@ class Editor extends React.Component{
                     person:res
                   })
             }
-
         })
 
         axios({
@@ -113,7 +112,6 @@ class Editor extends React.Component{
                     items:res
                   })
             }
-
         })
 
         axios({
@@ -252,7 +250,6 @@ class Editor extends React.Component{
                     oldMaterials:value
                 })
             }
-
         })
     }
 
@@ -367,18 +364,6 @@ class Editor extends React.Component{
         })
     }
 
-    // onFocus = ()=>{
-    //     this.setState({
-    //         oldfactor:null
-    //     })
-    // }
-
-    // onMouseEnter = ()=>{
-    //     this.setState({
-    //         oldMaterials:null
-    //     })
-    // }
-
     changeItems = (value) =>{
         this.setState({
             oldTestItems:value
@@ -437,9 +422,8 @@ class Editor extends React.Component{
                 <span onClick={this.showModal} className='blue'>编辑</span>
                 <Modal title='编辑' visible={this.state.visible}
                     closable={false}
-                    width="500px"
+                    width="550px"
                     maskClosable={false}
-                    style={{zIndex:"9999"}}
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.onCreate} className='fa fa-check' />,

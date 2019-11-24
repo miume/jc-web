@@ -18,7 +18,6 @@ class ProcessStatistics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
             staticPeriod: [],
             periodCode: '',
             dataSubmit: [],
@@ -62,17 +61,17 @@ class ProcessStatistics extends Component {
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            let res = data.data.data, periodCode = '', length = -1
+            let res = data.data.data, periodCode = '', length = -1,time=''
             if (res && res.length) {
                 periodCode = res[0].code
                 length = res[0].length
+                time=res[0].startTime
             }
             this.setState({
                 staticPeriod: res,
                 periodCode: periodCode,
                 length: length,
-                startSecondTime: res[0].startTime,
-                loading: false
+                startSecondTime: time,
             })
             this.getPendSubmit({}, periodCode)
 
@@ -94,6 +93,9 @@ class ProcessStatistics extends Component {
     }
     getPendSubmit(params = {}, periodCode) {//获取待提交表格数据
         if (!periodCode) return
+        this.setState({
+            loadingSubmit: true
+        })
         axios({
             url: `${this.url.precursorGoodIn.getPendSubmit}`,
             method: 'get',
@@ -109,7 +111,7 @@ class ProcessStatistics extends Component {
             if (res && res.list) {
                 for (let i = 0; i < res.list.length; i++) {
                     let goodsInProcessStatisticHead = res.list[i].goodsInProcessStatisticHead//goodsInProcessStatisticHead是一个对象
-                    goodsInProcessStatisticHead['index'] = (res.page - 1) * 10 + (i + 1)
+                    goodsInProcessStatisticHead['index'] = (res.page - 1) * res.size + (i + 1)
                     goodsInProcessStatisticHead['period'] = res.list[i].period
                     temp.push(goodsInProcessStatisticHead)//temp是一个对象数组
                 }
@@ -138,7 +140,7 @@ class ProcessStatistics extends Component {
             //console.log(res)
             if (res && res.list) {
                 for (let i = 0; i < res.list.length; i++) {
-                    res.list[i]['index'] = (res.page - 1) * 10 + (i + 1)
+                    res.list[i]['index'] = (res.page - 1) * res.size + (i + 1)
                 }
                 this.setState({
                     dataStatistic: res.list,
@@ -222,13 +224,14 @@ class ProcessStatistics extends Component {
 
     }
     reset() {//重置清空搜索框的值,调用获取表格数据接口
-        let { periodCode, staticPeriod } = this.state
+        let { staticPeriod } = this.state
+        let periodCode=staticPeriod && staticPeriod[0]?staticPeriod[0].code:''
         this.setState({
             startDate: '',
             endDate: '',
             periodCode: staticPeriod && staticPeriod[0] ? staticPeriod[0].code : ''
         })
-        this.getPendSubmit({}, periodCode)
+        this.getPendSubmit({size:10,page:1}, periodCode)
     }
 
     judgeOperation(operation, operationCode) {
@@ -274,7 +277,7 @@ class ProcessStatistics extends Component {
         return (
             <div>
                 <Blockquote name={current.menuName} menu={current.menuParent} />
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <div className='rightDiv-content'>
                     <NewButton name='新增' className='fa fa-plus' handleClick={this.handleAdd} />
                     <Button type='primary' onClick={this.statisticalAnalysis} >统计分析</Button>
                     <Search flag={this.judgeOperation(this.operation, 'QUERY')} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} dateStartChange={this.dateStartChange} dateEndChange={this.dateEndChange} search={this.search} reset={this.reset} selectChange={this.selectChange} startDate={this.state.startDate} endDate={this.state.endDate} />
@@ -287,7 +290,7 @@ class ProcessStatistics extends Component {
                             <StatisticDone getStatisticPage={this.getStatisticPage} getPagination={this.getPagination} pagination={this.state.paginationStatis} url={this.url} handleTableChange={this.handleTableChange} periodCode={this.state.periodCode} loadingStatis={this.state.loadingStatis} dataStatistic={this.state.dataStatistic} startTime={this.state.startTime} endTime={this.state.endTime} search={this.search} />
                         </TabPane>
                     </Tabs>
-                </Spin>
+                </div>
             </div>
         );
     }

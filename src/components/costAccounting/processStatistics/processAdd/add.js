@@ -17,7 +17,6 @@ import moment from 'moment'
 const { Option } = Select;
 const { TabPane } = Tabs;
 
-
 class CostProcessAdd extends Component {
     constructor(props) {
         super(props);
@@ -41,12 +40,10 @@ class CostProcessAdd extends Component {
             statisticId: '',
             flagConfirm: false,
             otherFlag:false,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上
-            
-        }
 
+        }
         this.returnProcess = this.returnProcess.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
-        this.reset = this.reset.bind(this);
         this.startChange = this.startChange.bind(this);
         this.endChange = this.endChange.bind(this);
         this.inputChange = this.inputChange.bind(this);
@@ -57,6 +54,7 @@ class CostProcessAdd extends Component {
         this.submit = this.submit.bind(this);
         this.save = this.save.bind(this);
         this.handleOtherAdd=this.handleOtherAdd.bind(this);
+        this.handleOtherDelete=this.handleOtherDelete.bind(this);
         this.otherSelectChange=this.otherSelectChange.bind(this);
         this.editData=this.editData.bind(this);
     }
@@ -93,7 +91,6 @@ class CostProcessAdd extends Component {
     editData(){
         axios({
             url:`${this.url.precursorGoodIn.commitDetail}`,
-            //url:'http://192.168.1.102:8082/goodIn/commitDetail',
             method:'get',
             headers:{
                 'Authorization':this.url.Authorization
@@ -108,7 +105,8 @@ class CostProcessAdd extends Component {
                 if (tagTable && tagTable.goodInProcessDTOS) {
                     this.setState({
                         tagTableData: tagTable.goodInProcessDTOS,
-                        addData: tagTable
+                        addData: tagTable,
+                        editDataOrigin:[]
                     })
                 }
                 this.setState({
@@ -118,7 +116,6 @@ class CostProcessAdd extends Component {
                     inputPeriod:tagTable.lineName,
                     endDate:tagTable.endTime.split(' ')[0],
                     startDate:tagTable.startTime.split(' ')[0],
-                    loading:false
                 })
             }
         })
@@ -138,7 +135,6 @@ class CostProcessAdd extends Component {
             if (res) {
                 this.setState({
                     inputPeriod: res,
-                    loading:false
                 })
             }
         })
@@ -163,8 +159,9 @@ class CostProcessAdd extends Component {
     }
 
     selectChange(value, name) {
-        let time = name.props.name.split('-')[0]
-        let length = name.props.name.split('-')[1]
+        name = name.props.name.split('-')
+        let time = name[0],
+            length = name[1]
         this.setState({
             periodCode: value,
             length: length,
@@ -192,7 +189,6 @@ class CostProcessAdd extends Component {
         }
         axios({
             url: `${this.url.precursorGoodIn.addComfirm}`,
-            //url:'http://192.168.1.102:8082/goodIn/addComfirm',
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
@@ -202,7 +198,6 @@ class CostProcessAdd extends Component {
             }
         }).then((data) => {
             let res = data.data.data;
-            //console.log(res)
             if (res === null || res === undefined) {
                 message.info('存在不一致的统计周期，需要进行修改！')
             }
@@ -217,7 +212,6 @@ class CostProcessAdd extends Component {
                 }
                 axios({
                     url: `${this.url.precursorGoodIn.afterComfirm}`,
-                    //url:'http://192.168.1.102:8082/goodIn/afterComfirm',
                     method: 'post',
                     headers: {
                         'Authorization': this.url.Authorization
@@ -228,23 +222,15 @@ class CostProcessAdd extends Component {
                     if (tagTable && tagTable.goodInProcessDTOS) {
                         this.setState({
                             tagTableData: tagTable.goodInProcessDTOS,
-                            addData: tagTable
+                            addData: tagTable,
+                            //addDataOrigin: JSON.parse(JSON.stringify(tagTable.goodInProcessDTOS)) 深拷贝值
                         })
                     }
                 })
             }
         })
     }
-    reset() {//重置清空搜索框的值
-        this.setState({
-            // startTime: '',
-            // endTime: '',
-            // periodCode: '',
-            // inputPeriod: '',
-            startDate:'',
-            endDate:''
-        })
-    }
+
     tabChange(key) {
         this.setState({
             tabKey: key
@@ -265,26 +251,37 @@ class CostProcessAdd extends Component {
             otherFlag:true
         })
     }
-    getChange(tabKey, inputData, selectData) {//获取到下拉框，输入框填的值
+    handleOtherDelete(id){
+        let {tagTableData}=this.state
+        tagTableData[5].materialDetails=tagTableData[5].materialDetails.filter(data=>data.index!==id)
+       this.setState({
+           tagTableData:tagTableData
+       })
+    }
+    getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
         let {addData}=this.state
         if (inputData) {
-            let index = inputData.split('-')[0] //定位到是第几条数据
-            let name = inputData.split('-')[1] //输入框内容变化的字段
-            let value = inputData.split('-')[2]
+            inputData = inputData.split('-');
+            let index = inputData[0],    //定位到是第几条数据
+                name = inputData[1],     //输入框内容变化的字段
+                value = inputData[2];
             addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
         }
         if (selectData) {
-            let codeSelect = selectData.split('-')[0]//第几个下拉框
-            let id = selectData.split('-')[1] //下拉框的哪个option
+            selectData= selectData.split('-')
+            let codeSelect = selectData[0],    //第几个下拉框
+                        id = selectData[1]     //下拉框的哪个option
            addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
         }
         if (inputData && selectData) {
-            let index = inputData.split('-')[0] //物料名字的编码
-            let name = inputData.split('-')[1] //输入框内容变化的字段
-            let value = inputData.split('-')[2]
+            inputData=inputData.split('-')
+            let index = inputData[0],    //物料名字的编码
+                 name = inputData[1] ,   //输入框内容变化的字段
+                value = inputData[2]
             addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
-            let codeSelect = selectData.split('-')[0]//第几个下拉框
-            let id = selectData.split('-')[1] //下拉框的哪个option
+            selectData=selectData.split('-')
+            let codeSelect = selectData[0],  //第几个下拉框
+                        id = selectData[1]    //下拉框的哪个option
             addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
         }
         this.setState({
@@ -309,7 +306,6 @@ class CostProcessAdd extends Component {
         this.state.addData['lineName'] = this.state.inputPeriod
         axios({
             url: `${this.url.precursorGoodIn.saveOrCommit}`,
-            //url:'http://192.168.1.102:8082/goodIn/saveOrCommit',
             method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
@@ -321,11 +317,16 @@ class CostProcessAdd extends Component {
             data: this.state.addData
 
         }).then(data => {
-           // console.log(data.data)
+        //    console.log(data)
             message.info(data.data.data)
+            if(data.data.code===0){
+                this.props.history.push({pathname:'/processStatistics'})
+            }
+           
         }).catch(()=>{
             message.info('新增失败!')
         })
+        
     }
     submit() {
         let {addData,otherFlag}=this.state
@@ -389,68 +390,12 @@ class CostProcessAdd extends Component {
        this.save(1)
     }
     cancel() {
-        let {addData,otherFlag}=this.state
-        for(let i=0;i<addData.goodInProcessDTOS.length;i++){
-            if(i===0){
-                for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
-                    if(addData.goodInProcessDTOS[i].materialDetails[j]['monPotency']!==0){
-                        addData.goodInProcessDTOS[i].materialDetails[j]['monPotency']=0
-                    }
-                }
-            }
-            else if(i===1||i===2){
-              for(let j=0;j<addData.goodInProcessDTOS[i].lineProDTOS.length;j++){
-                if(!addData.goodInProcessDTOS[i].lineProDTOS[j]['product']){
-                    addData.goodInProcessDTOS[i].lineProDTOS[j]['product']=null
-                }
-              }
-            }
-            else if(i===3){
-               for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
-                if(addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']!==0){
-                    addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']=0;
-                    addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']=0;
-                    addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']=0;
-                }
-               }
-               for(let j=0;j<addData.goodInProcessDTOS[i].lineProDTOS.length;j++){
-                   if(!addData.goodInProcessDTOS[i].lineProDTOS[j]['product']){
-                    addData.goodInProcessDTOS[i].lineProDTOS[j]['product']=null
-                   }
-               }
-            }
-            else if(i===4){
-               for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
-                if(addData.goodInProcessDTOS[i].materialDetails[j]['weight'] !==0||addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']!==0){
-                    addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']=0;
-                    addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']=0;
-                    addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']=0;
-                    addData.goodInProcessDTOS[i].materialDetails[j]['weight']=0;
-                }
-               }
-               for(let j=0;j<addData.goodInProcessDTOS[i].lineProDTOS.length;j++){
-                if(!addData.goodInProcessDTOS[i].lineProDTOS[j]['product']){
-                 addData.goodInProcessDTOS[i].lineProDTOS[j]['product']=null
-                }
-            }
-            }
-            else if(i===5 && otherFlag){
-                for(let j=0;j<addData.goodInProcessDTOS[i].materialDetails.length;j++){
-                 if(addData.goodInProcessDTOS[i].materialDetails[j]['weight']!==0||addData[i].materialDetails[j]['mnPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']!==0||addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']!==0){
-                     addData.goodInProcessDTOS[i].materialDetails[j]['mnPotency']=0;
-                     addData.goodInProcessDTOS[i].materialDetails[j]['coPotency']=0;
-                     addData.goodInProcessDTOS[i].materialDetails[j]['niPotency']=0;
-                     addData.goodInProcessDTOS[i].materialDetails[j]['weight']=0;
-                 }
-                }
-             }
-        }
-        this.setState({
-            addData:addData
-        })
+
+       this.props.history.push('/processStatistics')
 
     }
     render() {
+       // console.log(this.state.addDataOrigin)
         this.url = JSON.parse(localStorage.getItem('url'))
         this.dataComponent = [{
             component: <SingleCrystal tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSingleCrystal={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
@@ -463,23 +408,23 @@ class CostProcessAdd extends Component {
         }, {
             component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd} handleOtherDelete={this.handleOtherDelete} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]
         return (
             <div >
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='前驱体成本核算管理' menu2='在制品统计' returnDataEntry={this.returnProcess} />
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <div  className='rightDiv-content'>
                     <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange} search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod} endDate={this.state.endDate} startDate={this.state.startDate}/>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         {
                             this.props.location.process ? this.props.location.process.map((data, index) => {
                                 return (
-                                    <TabPane key={data.code} tab={data.processName}>{this.dataComponent[index].component}</TabPane>
+                                    <TabPane key={data.code} tab={data.processName}>{this.dataComponent[index]&&this.dataComponent[index].component?this.dataComponent[index].component:''}</TabPane>
                                 )
                             }) : null
                         }
                     </Tabs>
-                </Spin>
+                </div>
                 <div>
                         <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}>
                             <CancleButton handleCancel={this.cancel} />

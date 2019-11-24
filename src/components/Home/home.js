@@ -594,6 +594,10 @@ class Home extends Component {
                 statisticDetail:`${server}/jc/common/goodIn/statisticDetail`,
                 saveOrCommit:`${server}/jc/common/goodIn/saveOrCommit`,//点击保存提交
                 commitDetail:`${server}/jc/common/goodIn/commitDetail`,//待提交编辑详情
+                delete:`${server}/jc/common/goodIn`,
+                getStartTime:`${server}/jc/common/goodIn/getStartTime`,
+                processCompare:`${server}/jc/common/goodIn/processCompare`,
+                lineCompare:`${server}/jc/common/goodIn/lineCompare`
             },
 
             /**异常处理模块*/
@@ -617,7 +621,10 @@ class Home extends Component {
             /**原料领用*/
             rawMaterial: {
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
-                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`
+                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+                period: `${server}/jc/common/materialDeliveryStatistic/period`,
+                getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
+                getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {

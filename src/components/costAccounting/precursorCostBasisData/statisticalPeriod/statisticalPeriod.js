@@ -1,56 +1,56 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message,Form,Spin } from 'antd';
+import { Table, Popconfirm, Divider, message, Form, Spin } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import axios from "axios";
 import AddModal from "./addModal";
 import Edit from "./edit"
 
-class statisticalPeriod extends React.Component{
+class statisticalPeriod extends React.Component {
     url
     operation
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            loading:true,
-            data:[],
+            loading: true,
+            data: [],
         };
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
+            align: 'center',
             width: '20%',
-        },{
+        }, {
             title: '开始时间',
             dataIndex: 'startTime',
             key: 'startTime',
-            align:'center',
+            align: 'center',
             width: '20%',
-        },{
+        }, {
             title: '周期名称',
             dataIndex: 'name',
             key: 'name',
-            align:'center',
+            align: 'center',
             width: '20%',
-        },{
+        }, {
             title: '默认时长(天)',
             dataIndex: 'length',
             key: 'length',
-            align:'center',
+            align: 'center',
             width: '20%',
-        },{
+        }, {
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
+            align: 'center',
             width: '20%',
-            render:(text,record)=>{
+            render: (text, record) => {
                 return (
                     <span>
-                        <Edit code={record.code} fetch={this.fetch}/>
+                        <Edit code={record.code} fetch={this.fetch} />
                         <Divider type="vertical" />
-                        <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
+                        <Popconfirm title="确定删除？" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="取消">
                             <span className="blue" href="#">删除</span>
                         </Popconfirm>
                     </span>
@@ -59,69 +59,71 @@ class statisticalPeriod extends React.Component{
         }]
     }
 
-    handleDelete = (id)=>{
+    handleDelete = (id) => {
         // console.log(id)
         axios({
-            url:`${this.url.staticPeriod.delete}`,
-            method:"delete",
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.staticPeriod.delete}`,
+            method: "delete",
+            headers: {
+                'Authorization': this.url.Authorization
             },
-            params:{id:id}
-        }).then((data)=>{
+            params: { id: id }
+        }).then((data) => {
             message.info(data.data.message);
             this.fetch();
-        }).catch((error)=>{
+        }).catch((error) => {
             message.info(error.data)
         });
     }
     componentWillUnmount() {
         this.setState = (state, callback) => {
-          return ;
+            return;
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetch();
     }
 
-    fetch = ()=>{
+    fetch = () => {
+        this.setState({
+            loading: true
+        })
         axios({
-            url:`${this.url.staticPeriod.all}`,
-            method:"get",
-            headers:{
-                'Authorization':this.url.Authorization
+            url: `${this.url.staticPeriod.all}`,
+            method: "get",
+            headers: {
+                'Authorization': this.url.Authorization
             },
-        }).then((data)=>{
+        }).then((data) => {
             const res = data.data.data;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
+            for (var i = 1; i <= res.length; i++) {
+                res[i - 1]['index'] = i;
             }
-            if(res.length!==0){
+            if (res.length !== 0) {
                 this.setState({
-                    data:res,
-                    loading:false
+                    data: res,
+                    loading: false
                 })
             }
         })
     };
     /**返回数据录入页面 */
-    returnDataEntry = ()=>{
-        this.props.history.push({pathname: "/precursorCostBasisData"});
+    returnDataEntry = () => {
+        this.props.history.push({ pathname: "/precursorCostBasisData" });
     }
-    render(){
+    render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
-        return(
+        return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
-                            returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
-                <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
-                    <AddModal data={this.state.data} fetch = {this.fetch}/>
+                    returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                    <AddModal data={this.state.data} fetch={this.fetch} url={this.url} />
                     {/* <SearchCell flag={true}/> */}
                     <div className='clear' ></div>
-                    <Table pagination={false} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered/>
+                    <Table pagination={false} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered />
                 </Spin>
             </div>
         )

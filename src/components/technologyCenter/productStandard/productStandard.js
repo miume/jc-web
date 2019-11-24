@@ -90,6 +90,7 @@ class ProductStandard extends React.Component{
             if(res){
                 this.setState({
                     allProduct:res,
+                    allProductCopy:res,
                 })
             }
         })
@@ -98,15 +99,15 @@ class ProductStandard extends React.Component{
     getAllSelectModal(params,ids){
         if(ids){
             /**modalArr保存型号的一个分支 父元素-子元素-子元素。。。 */
-            var {modalArr} = this.state;
-            var arr = {
-                id:ids[0],
-                name:ids[1]
-            }
+            let {modalArr} = this.state,
+                arr = {
+                    id:ids[0],
+                    name:ids[1]
+                };
             modalArr.push(arr)
             this.setState({
                 modalArr:modalArr,
-            })
+            });
             this.recentModal(ids);
         }
         axios.get(`${this.url.productStandard.getAll}`,{
@@ -166,6 +167,7 @@ class ProductStandard extends React.Component{
         }
 
     }
+
     /**点击成品新增 */
     clickI(e){
         /**通过点击新增确定 找到input value值 */
@@ -178,6 +180,7 @@ class ProductStandard extends React.Component{
             this.addProduct(value);
         }
     }
+
     /**成品新增事件 */
     addProduct(value){
         axios({
@@ -201,6 +204,7 @@ class ProductStandard extends React.Component{
             message.info('新增失败，请联系管理员！')
         })
     }
+
     /**搜索事件
      * flag=1 表示成品搜索
      * flag=2 表示型号搜索
@@ -213,15 +217,15 @@ class ProductStandard extends React.Component{
         }else if(flag===2){
             const {selectedModal} = this.state;
             this.getAllSelectModal({
-                name:value,
-                parentId:selectedModal[0]?selectedModal[0]:-1
+                name: value,
+                parentId: selectedModal[0]?selectedModal[0]:-1
             });
         }else{
             const {selectProduct,selectedModal} = this.state;
              /**设置设置标准 搜素标注位1 */
              this.setState({
                 standradFlag:1
-            })
+            });
             this.getAllProductStandard({
                 classId:parseInt(selectedModal[0]),
                 productId:parseInt(selectProduct[0]),
@@ -231,16 +235,21 @@ class ProductStandard extends React.Component{
     }
     /**根据成品名称进行搜索 */
     productSearch(value){
-        axios.get(`${this.url.serialNumber.serialNumber}/factors?materialClass=3&materialName=${value}`,{
-            headers:{
-                Authorization:this.url.Authorization
-            },
-        }).then((data)=>{
-            const res = data.data.data;
-            this.setState({
-                allProduct:res
-            })
+        let {allProductCopy} = this.state,
+            searchProduct = allProductCopy.filter(e => e.name.includes(value));
+        this.setState({
+            allProduct: searchProduct.length ? searchProduct : allProductCopy
         })
+        // axios.get(`${this.url.serialNumber.serialNumber}/factors?materialClass=3&materialName=${value}`,{
+        //     headers:{
+        //         Authorization:this.url.Authorization
+        //     },
+        // }).then((data)=>{
+        //     const res = data.data.data;
+        //     this.setState({
+        //         allProduct:res
+        //     })
+        // })
     }
     /**搜索重置接口
      * flag:1 代表成品搜索
