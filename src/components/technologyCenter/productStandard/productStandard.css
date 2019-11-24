@@ -309,8 +309,8 @@
 }
 /**型号新增*/
 .modal-add-table{
-    max-height:430px;
-    margin:20px 0 0 0;
+    height:340px;
+    margin:15px 0 0 0;
 }
 /*.modal-add-table .ant-table{*/
     /*max-height: 200px !important;*/
@@ -361,6 +361,11 @@
 }
 
 .productStandardTd{
-    padding:0px !important;
+    padding:5px !important;
+}
+
+.product-standard-select-items {
+    display: flex;
+    justify-content: flex-end;
 }
 

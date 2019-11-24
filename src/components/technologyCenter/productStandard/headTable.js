@@ -31,8 +31,8 @@ class HeadTable extends React.Component{
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{data&&data[0]?data[0]:''}</td>
-                        <td>{data&&data[1]?data[1]:''}</td>
+                        <td>{data&&data[0]?data[0][1]:''}</td>
+                        <td>{data&&data[1]?data[1][1]:''}</td>
                     </tr>
                 </tbody>
             </table>

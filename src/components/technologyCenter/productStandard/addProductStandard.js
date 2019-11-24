@@ -2,12 +2,13 @@
 import axios from 'axios';
 import moment from 'moment';
 import HeadTable from './headTable';
-import Submit from '../../BlockQuote/submit';
+import Submit from '../../BlockQuote/checkSubmit';
 import NewButton from '../../BlockQuote/newButton';
 import SaveButton from '../../BlockQuote/saveButton';
 import CancleButton from '../../BlockQuote/cancleButton';
-import {Modal, Table, DatePicker, message, Checkbox, Col} from 'antd';
+import {Modal, Table, DatePicker, message} from 'antd';
 import Standard from "../../BlockQuote/standard";
+import SelectItems from "./selectItems";
 
 class AddProductStandard extends React.Component {
     constructor(props) {
@@ -15,32 +16,23 @@ class AddProductStandard extends React.Component {
         this.state = {
             date: '',          //监控新增标准 的生效日期
             visible: false,    //控制新增弹出框
-            visible1: false,   //控制送审弹出框
-            process: -1,       //监听送审流程
-            urgent: 0,         //监听送审的状态 0紧急还是1正常
             allTestItem: [],   //保存所有受检项目
             batchNumber: '',   //用来存取详情、编辑时的batchNumber
             time: {},           //用来存储详情、编辑时的生效时间和创建时间
-            selItemsFlag: true,
-            label: [],
             option: [],
-            selectTestItems: [],
-            testItems: [],
+            selectTestItems: [],//选中标准选项id
+            testItems: [],      //选中标准选项
             batchNumberId:-1,
-            iteFlag:true,
             checkAll: true
         }
+        this.reSelectItems = this.reSelectItems.bind(this);
         this.standardChange = this.standardChange.bind(this);
         this.judge = this.judge.bind(this);
         this.handleAdd = this.handleAdd.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleOkApply = this.handleOkApply.bind(this);
-        this.handleCancelApply = this.handleCancelApply.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.urgentChange = this.urgentChange.bind(this);
         this.dateChange = this.dateChange.bind(this);
-        this.submitClick = this.submitClick.bind(this);
         this.addDataProcessing = this.addDataProcessing.bind(this);
         this.detailDataProcessing = this.detailDataProcessing.bind(this);
         this.getDataByBatchNumberId = this.getDataByBatchNumberId.bind(this);
@@ -48,12 +40,12 @@ class AddProductStandard extends React.Component {
         this.disabledDate = this.disabledDate.bind(this);
         this.range = this.range.bind(this);
         this.renderClassName = this.renderClassName.bind(this);
-        this.onCheckAllChange = this.onCheckAllChange.bind(this);
+        this.renderDatePicker = this.renderDatePicker.bind(this);
         this.columns = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            width: '20%'
+            width: '10%'
         }, {
             title: '检测项目',
             dataIndex: 'name',
@@ -69,9 +61,9 @@ class AddProductStandard extends React.Component {
                 if (flag === 1) {
                     return text;
                 } else
-                    return <Standard record={record} standardChange={this.standardChange} defaultValue={flag ? record.count : '请选择检测标准'}/>
+                    return <Standard record={record} standardChange={this.standardChange} defaultValue={text ? text : '请选择检测标准'}/>
             },
-            className: this.renderClassName()
+            className: 'productStandardTd'
         }, {
             title: '计量单位',
             dataIndex: 'unit',
@@ -105,9 +97,9 @@ class AddProductStandard extends React.Component {
         this.setState({
             visible: true,
             flag: flag,
-            batchNumberId:batchNumberId,
-            selectTestItems: option,
-            selectAllItems: option
+            batchNumberId: batchNumberId,
+            selectTestItems: option,  //默认所有选项
+            selectAllItems: option    //默认选中所有
         })
     }
 
@@ -134,18 +126,23 @@ class AddProductStandard extends React.Component {
 
     /**对详情、编辑数据进行处理 */
     detailDataProcessing(res) {
-        var batchNumber = res.commonBatchNumber.batchNumber;
-        var time = {
-            createTime: res.commonBatchNumber.createTime,
-            effectiveTime: res.techniqueProductNewStandardRecord.effectiveTime
-        }
-        for (var i = 0; i < res.items.length; i++) {
+        let batchNumber = res.commonBatchNumber.batchNumber,
+            time = {
+                createTime: res.commonBatchNumber.createTime,
+                effectiveTime: res.techniqueProductNewStandardRecord.effectiveTime
+        }, selectTestItems = [];
+        for (let i = 0; i < res.items.length; i++) {
             res.items[i]['index'] = i+1;
+            let data = res.items[i];
+            selectTestItems.push(
+                data.id + '-' + data.name + '-' + data.unit + '-' + ''
+            )
         }
         this.setState({
             batchNumber: batchNumber,
             date:time.effectiveTime,
             testItems: res.items,
+            selectTestItems: selectTestItems,
             time: time,
         })
     }
@@ -154,11 +151,17 @@ class AddProductStandard extends React.Component {
     handleIteration() {
         /**将详情置为编辑 */
         this.setState({
-            flag: 2,
-            iteFlag:false
+            flag: 2
         })
     }
 
+    /**重新选择项目*/
+    reSelectItems(testItems,selectTestItems) {
+        this.setState({
+            testItems: testItems,
+            selectTestItems: selectTestItems
+        })
+    }
     /**点击保存按钮 */
     handleSave() {
         this.addDataProcessing(0);
@@ -167,57 +170,14 @@ class AddProductStandard extends React.Component {
     /**点击取消按钮 */
     handleCancel() {
         this.setState({
-            visible: false,
-            visible1: false,
-            iteFlag:true
+            visible: false
         });
     }
 
-    /**点击送审按钮 弹出送审界面 */
-    submitClick() {
-        this.setState({
-            visible1: true
-        })
-    }
-
-    /**点击取消送审 */
-    handleCancelApply() {
-        this.setState({
-            visible1: false
-        })
-    }
-
     /**点击确定送审 */
-    handleOkApply() {
-        this.addDataProcessing(1);
+    handleOkApply(process,urgent) {
+        this.addDataProcessing(1,process,urgent);
     }
-
-    /**监听送审界面 送审流程的变化 */
-    selectChange(value) {
-        this.setState({
-            process: value
-        })
-    }
-
-    /**监听送审界面switch 正常 紧急与否 */
-    urgentChange(value) {
-        this.setState({
-            urgent: value ? 1 : 0
-        })
-    }
-
-    /**监听table数据的变化 */
-    /**input框内容变化，实现自动保存数据 */
-    // save(e) {
-    //     const value = e.target.value;
-    //     const id = e.target.id;
-    //     const newData = [...this.state.testItems];
-    //     const index = newData.findIndex(item => parseInt(id) === parseInt(item.id));
-    //     newData[index]['count'] = value;
-    //     this.setState({
-    //         testItems: newData
-    //     })
-    // }
 
     /**给每项设置标准 自动保存数据*/
     standardChange(index,value) {
@@ -236,15 +196,14 @@ class AddProductStandard extends React.Component {
     }
 
     /**对保存或送审的数据进行处理 */
-    addDataProcessing(status) {
+    addDataProcessing(status,process='',urgent='') {
         const {date} = this.state;
         if (date === '') {
             message.info('生效日期不能为空！');
             return
         }
-        var items = [];
-        const data = this.state.testItems;
-        for (var i = 0; i < data.length; i++) {
+        let items = [], data = this.state.testItems;
+        for (let i = 0; i < data.length; i++) {
             items.push({
                 id: data[i].id,
                 count: data[i].count ? data[i].count : '无'
@@ -256,24 +215,21 @@ class AddProductStandard extends React.Component {
             classId: parseInt(this.props.data[1][0]),
             items: items,
             effTime:date
-        }
+        };
         this.handleCancel();
-        this.applyOut(status, params);
+        this.applyOut(status, params,process,urgent);
     }
 
     /**保存  新增请求方法是post 编辑请求方法是put */
     applyOut(status, params) {
         axios({
             type: 'json',
-            method: this.state.flag&&this.state.iteFlag ? 'put' : 'post',
-            url: this.state.flag&&this.state.iteFlag?this.props.url.product.updateByCommonBatchId:this.props.url.product.addStandard,
+            method: 'post',
+            url: this.props.url.product.addStandard,
             headers: {
                 'Authorization': this.props.url.Authorization
             },
-            params: this.state.flag&&this.state.iteFlag?{
-                commonBatchId: this.state.batchNumberId,
-                effTime:params.effTime
-            }:{
+            params: {
                 createUser: params.createUser,
                 productId:params.productId,
                 classId:params.classId,
@@ -289,10 +245,7 @@ class AddProductStandard extends React.Component {
                 this.props.getAllProductStandard({
                     classId: params.classId,
                     productId: params.productId
-                })
-                this.setState({
-                    iteFlag:true
-                })
+                });
             }
         }).catch(() => {
             message.info('保存失败，请联系管理员！')
@@ -314,7 +267,7 @@ class AddProductStandard extends React.Component {
             this.props.getAllProductStandard({
                 classId: classId,
                 productId: productId
-            })
+            });
             this.handleCancel();
         }).catch(() => {
             message.info('审核失败，请联系管理员！')
@@ -341,152 +294,84 @@ class AddProductStandard extends React.Component {
         })
     }
 
-    selectTestItem = () => {
-        let selectTestItems = this.state.selectTestItems;
-        if(selectTestItems.length === 0){
-            const allTestItem = this.props.allTestItem;
-            for(var j=0;j<allTestItem.length;j++){
-                selectTestItems.push(allTestItem[j]['form'])
-            }
-        }
-        var testItems = [];
-        for (var i = 0; i < selectTestItems.length; i++) {
-            const form = selectTestItems[i].split('-');
-            testItems.push({
-                id: parseInt(form[0]),
-                name: form[1],
-                unit: form[2],
-                value: form[3],
-                index: i + 1
-            })
-        }
-        this.setState({
-            selItemsFlag: false,
-            testItems: testItems
-        })
-    };
-
-    onCheckAllChange(e) {
-        let target = e.target;
-        this.setState({
-            checkAll: target.checked,
-            selectTestItems: target.checked ? this.state.selectAllItems : []
-        })
-    }
-
     render() {
-        const status = this.props.status;
+        let format = "YYYY-MM-DD",effectiveTime = this.state.time.effectiveTime,
+            {status,url} = this.props, {flag,testItems,selectTestItems,visible,batchNumber} = this.state,
+            data = [this.props.data[0][1], this.props.data[1][1]];
         /**详情  只有status===2 审核通过的数据可以迭代 */
         const detail = status === 2 ? [
                 <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
                 <NewButton key='submit' handleClick={this.handleIteration} name={'迭代'} className='fa fa-level-up'/>
             ] :
             [
-                <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
+                <CancleButton key='cancel' handleCancel={this.handleCancel} flag={1}/>,
             ];
         /**详情对应迭代后的按钮组合以及编辑、新增 */
         const iteration = [
             <CancleButton key='back' handleCancel={this.handleCancel}/>,
             <SaveButton key='save' handleSave={this.handleSave}/>,
-            <Submit key='submit' visible={this.state.visible1} handleVisibleChange={this.handleVisibleChange}
-                    selectChange={this.selectChange} urgentChange={this.urgentChange} url={this.props.url}
-                    process={this.state.process} handleCancel={this.handleCancelApply} handleOk={this.handleOkApply}
-                    submitClick={this.submitClick}/>
-        ]
-        const format = "YYYY-MM-DD";
-        const effectiveTime = this.state.time.effectiveTime;
-        const flag = this.props.flag;
-        const data = [this.props.data[0][1], this.props.data[1][1]];
+            <Submit key='submit' url={this.props.url}
+                    applySaveAndReview={this.handleOkApply}/>
+        ];
         return (
             <span>
-                {this.judge(flag)}
-                <Modal title={this.judge(flag, 1)} visible={this.state.visible} closable={false} centered={true}
+                {this.judge(this.props.flag)}
+                <Modal title={this.judge(flag, 1)} visible={visible} closable={false} centered={true}
                        maskClosable={false}
-                       footer={this.state.flag === 1 ? detail : iteration}>
+                       footer={flag === 1 ? detail : iteration}>
                 <div>
-                    {
-                        this.props.selItemsFlag && this.state.selItemsFlag ?
-                            <div>
-                                <Modal
-                                    title="选择检测项目" visible={this.state.visible} closable={false} centered={true}
-                                    maskClosable={false}
-                                    footer={
-                                        [
-                                            <CancleButton key='cancle' handleCancel={this.handleCancel} flag={1}/>,
-                                            <NewButton key='submit' handleClick={this.selectTestItem} name={'选择'}
-                                                       className='fa fa-level-up'/>
-                                        ]
-                                    }
-                                >
-                                    <div>
-                                        <Checkbox
-                                            onChange={this.onCheckAllChange}
-                                            checked={this.state.checkAll}
-                                        >
-                                            全选
-                                        </Checkbox>
-
-                                    <br />
-                                    <Checkbox.Group style={{width: "100%"}} value = {this.state.selectTestItems}
-                                                    onChange={this.checkboxChange}>
-                                        {
-                                            this.props.allTestItem?this.props.allTestItem.map(p =>
-                                                <Col key={p.id} span={8}>
-                                                    <Checkbox
-                                                        value={p.form}
-                                                    >{p.name}</Checkbox>
-                                                </Col>):null
-                                        }
-                                    </Checkbox.Group>
-                            </div>
-                                </Modal>
-                            </div> :
-                            <div>
-                                <HeadTable flag={this.props.flag} data={data} batchNumber={this.state.batchNumber}/>
-                                <div className='modal-add-table'>
-                                    <Table className={this.props.flag === 1 ? '' : 'stock-out'}
-                                           rowKey={record => record.id}
-                                           columns={this.columns} dataSource={this.state.testItems}
-                                           pagination={false} size='small' bordered
-                                           scroll={{y: this.props.flag === 1 ? 228 : 251}}>
-                                    </Table>
-                                </div>
-                                <div style={{height: 10}}></div>
-                                <div style={{height: 70}}>
-                                    {
-                                        this.state.flag === 1 ?
-                                            <div className='modal-detail-p'>
-                                                <p>{`生效时间：${this.state.time.effectiveTime ? this.state.time.effectiveTime : ''}`}</p>
-                                                <p>{`编制日期：${this.state.time.createTime ? this.state.time.createTime : ''}`}</p>
-                                            </div> :
-                                            <div>
-                                                {
-                                                    this.props.flag ?
-                                                        typeof(effectiveTime) != 'undefined' ?
-                                                            <DatePicker placeholder='请选择生效日期' onChange={this.dateChange}
-                                                                        size='large' className='modal-add-date'
-                                                                        disabledDate={this.disabledDate}
-                                                                        defaultValue={moment(effectiveTime, format)}
-                                                                        allowClear
-                                                                        format={format}
-                                                            /> : ''
-                                                        :
-                                                        <DatePicker placeholder='请选择生效日期' onChange={this.dateChange}
-                                                                    size='large' className='modal-add-date'
-                                                                    disabledDate={this.disabledDate}
-                                                                    allowClear
-                                                                    format={format}/>
-                                                }
-                                            </div>
-                                    }
-                                </div>
-                            </div>
-                    }
+                    <HeadTable flag={flag} data={data} batchNumber={batchNumber}/>
+                    <div className='modal-add-table'>
+                        <div className={flag === 1 ? 'hide' : 'product-standard-select-items'}>
+                            <SelectItems type={'reSelect'} testItems={testItems} selectTestItems={selectTestItems} url={url} reSelectItems={this.reSelectItems}/>
+                        </div>
+                        <div style={{height: 340}}>
+                            <Table
+                                   rowKey={record => record.id}
+                                   columns={this.columns} dataSource={testItems}
+                                   pagination={false} size='small' bordered
+                                   scroll={{y: flag ? 265 : 245}}>
+                            </Table>
+                        </div>
+                    </div>
+                    <div style={{height: 10}}></div>
+                    <div>
+                        {
+                            flag === 1 ?
+                                <div className='modal-detail-p'>
+                                    <p>{`生效时间：${this.state.time.effectiveTime ? this.state.time.effectiveTime : ''}`}</p>
+                                    <p>{`编制日期：${this.state.time.createTime ? this.state.time.createTime : ''}`}</p>
+                                </div> : this.renderDatePicker(flag,effectiveTime,format)
+                        }
+                </div>
                 </div>
                 </Modal>
             </span>
         )
     }
+
+    /**渲染日期选择*/
+    renderDatePicker(flag,effectiveTime,format) {
+        if(flag) {
+            return (
+                typeof(effectiveTime) != 'undefined' ?
+                    <DatePicker placeholder='请选择生效日期' onChange={this.dateChange}
+                                size='large' className='modal-add-date'
+                                disabledDate={this.disabledDate}
+                                defaultValue={moment(effectiveTime, format)}
+                                allowClear
+                                format={format}
+                    /> : '')
+        }
+        return (
+            <DatePicker placeholder='请选择生效日期' onChange={this.dateChange}
+                        size='large' className='modal-add-date'
+                        disabledDate={this.disabledDate}
+                        allowClear
+                        format={format}/>
+        )
+    }
+
 }
 
 export default AddProductStandard;

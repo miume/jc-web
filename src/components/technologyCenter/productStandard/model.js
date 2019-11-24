@@ -42,12 +42,9 @@ class SelectModal extends React.Component{
             },ids)
         }else{
             this.props.getAllProductStandard({
-                classId:parseInt(ids[0]) 
+                classId:parseInt(ids[0])
             },ids)
         }
-        // const parentNode = e.target.parentNode;
-        // parentNode.style.backgroundColor = '#0091ff';
-        // console.log(e.target.parentNode.className)
     }
     /**点击型号新增 */
     clickI(e){
@@ -130,13 +127,13 @@ class SelectModal extends React.Component{
                     let pre = middle.scrollLeft;
                     if(count < 5) {
                         count -= 1;
-                        middle.scrollLeft += (number === 1 ? 1 : -1);    
+                        middle.scrollLeft += (number === 1 ? 1 : -1);
                     }
                     else {
                         count -= gap;
                         middle.scrollLeft += (number === 1 ? Number(gap) : -Number(gap));
                     }
-                    
+
                     if(count <= 0 || pre === middle.scrollLeft) {
                         // console.log(`middle.scrollLeft=${middle.scrollLeft}-pre=${pre}`)
                         clearInterval(interval);
@@ -164,7 +161,7 @@ class SelectModal extends React.Component{
     }
     render(){
         const count = this.props.modalArr?this.props.modalArr.length:0;
-        /**测试数据 用来测试左右移动 
+        /**测试数据 用来测试左右移动
         var modalArr = [];
         for(var i = 0; i < 10; i++ )
             modalArr.push({
@@ -203,14 +200,14 @@ class SelectModal extends React.Component{
                             <Block key={e.id} name={e.name} id={`${e.id}-${e.name}`} onBlockChange={this.blockClick} isLeaf={!e.isLeaf} />
                         );
                     }):null
-                }   
+                }
                     <span className={this.props.addFlag?'':'hide'}>
-                        <Block flag={1} name='型号' onBlockChange={this.blockClick} add={this.state.add} 
+                        <Block flag={1} name='型号' onBlockChange={this.blockClick} add={this.state.add}
                             clickI={this.clickI} id={-1} visible={this.state.visible} onChange={this.onChange}
                             handleCancel={this.handleCancel} handleOk={this.handleOk}
                             />
                     </span>
-                    
+
                 </div>
             </div>
         );

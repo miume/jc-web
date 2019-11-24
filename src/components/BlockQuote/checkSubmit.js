@@ -90,11 +90,11 @@ class Submit extends React.Component{
         )
         return (
             <Popover title="设置审批细节"
-            placement="topRight"
-            content = {Content}
-            trigger="click"
-            visible={this.state.visible}
-            onVisibleChange={this.handleVisibleChange}
+                placement="topRight"
+                content = {Content}
+                trigger="click"
+                visible={this.state.visible}
+                onVisibleChange={this.handleVisibleChange}
             >
                 <Button type='primary' size='default' className='button'><i className="fa fa-check"></i><span> 送审</span></Button>
             </Popover>

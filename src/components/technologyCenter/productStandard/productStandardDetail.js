@@ -1,6 +1,7 @@
 import React from 'react';
 import {Table,Divider} from 'antd';
 import AddProductStandard from './addProductStandard';
+import AddModal from "./addModal";
 class ProductStandardDetail extends React.Component{
     status
     constructor(props){
@@ -41,15 +42,15 @@ class ProductStandardDetail extends React.Component{
             key:'commonBatchId',
             width:'10%',
             render:(text,record)=>{
-                const status = record.audit;
-                const isPublished = record.isPublished;
+                let {audit,isPublished} = record;
                 return(
                     <span className={isPublished?'product-table-span':''}>
-                        <AddProductStandard flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard} />
+                        <AddProductStandard selItemsFlag={false} flag={1} batchNumberId={text} url={this.props.url} data={this.props.topData} status={audit} getAllProductStandard={this.props.getAllProductStandard}/>
                         <span className={this.props.editorFlag?'':'hide'}>
                             <Divider type='vertical'/>
                         </span>
-                        <AddProductStandard selItemsFlag={false} flag={2} editorFlag={this.props.editorFlag} batchNumberId={text} url={this.props.url} data={this.props.topData} status={status} getAllProductStandard={this.props.getAllProductStandard}/>
+                        <AddModal flag={1} editorFlag={this.props.editorFlag} batchNumberId={text} url={this.props.url} data={this.props.topData}
+                                  status={audit} getAllProductStandard={this.props.getAllProductStandard} title={'编辑'}/>
                         <span className={isPublished?'product-table-span-on':'hide'}><span>实施中</span></span>
                     </span>
                 );

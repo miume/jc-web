@@ -32,6 +32,7 @@
   .urgent{
     color:red;
   }
+
   .stock-out .ant-table-body .ant-table-tbody>tr>td{
     height: 30px;
   }
