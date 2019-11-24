@@ -88,7 +88,7 @@ class SelectItems extends React.Component{
         let option = [],{selectTestItems} = this.props;
         for (let i = 0; i < data.length; i++) {
             data[i]['value'] = '';
-            data[i]['form'] = data[i].id + '-' + data[i].name + '-' + data[i].unit + '-' + data[i].value;
+            data[i]['form'] = data[i].id + ',' + data[i].name + ',' + data[i].unit + ',' + data[i].value;
             data[i]['check'] = true;
             option.push(data[i]['form'])
         }
@@ -128,7 +128,7 @@ class SelectItems extends React.Component{
         if(!testItems) {
             testItems = []
             for (let i = 0; i < selectTestItems.length; i++) {
-                let form = selectTestItems[i].split('-');
+                let form = selectTestItems[i].split(',');
                 testItems.push({
                     id: parseInt(form[0]),
                     name: form[1],
