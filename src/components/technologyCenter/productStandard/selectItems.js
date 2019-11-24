@@ -141,7 +141,7 @@ class SelectItems extends React.Component{
         } else {
             let temp = [];
             for (let i = 0; i < selectTestItems.length; i++) {
-                let form = selectTestItems[i].split('-'),
+                let form = selectTestItems[i].split(','),
                     filterItems = testItems.filter(e => e.id === parseInt(form[0]));
                 if(filterItems.length) {
                     temp.push(filterItems[0])
