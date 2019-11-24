@@ -330,7 +330,7 @@ class AddProductStandard extends React.Component {
                                    rowKey={record => record.id}
                                    columns={this.columns} dataSource={testItems}
                                    pagination={false} size='small' bordered
-                                   scroll={{y: flag ? 265 : 245}}>
+                                   scroll={{y: flag === 1 ? 265 : 245}}>
                             </Table>
                         </div>
                     </div>

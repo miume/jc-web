@@ -163,7 +163,7 @@ class AddModal extends React.Component{
             res.items[i]['index'] = i+1;
             let data = res.items[i];
             selectTestItems.push(
-                data.id + '-' + data.name + '-' + data.unit + '-' + ''
+                data.id + ',' + data.name + ',' + data.unit + ',' + ''
             )
         }
         this.setState({
