@@ -4,7 +4,7 @@ import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
-
+import '../tankValue/tank.css'
 class AddModal extends React.Component{
     url;
     constructor(props){
@@ -19,13 +19,14 @@ class AddModal extends React.Component{
             mn:null,
             co:null,
             ni:null,
-            metal:["Mn","Co","Ni"],
+            metal:["Mn","Co","Ni"], //默认全都勾选
             valueType:undefined,
         }
     }
     showModal = () => {
         this.setState({ visible: true });
     };
+      
     handleCancel = () =>{
         this.setState({
             visible:false,
@@ -39,10 +40,16 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
+        let {dataTypes,name,process,types,valueType,metal}=this.state
         var data = {
-            dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,valueType:this.state.valueType,
+            dataType:dataTypes,materialName:name,processCode:process,types:types,valueType:valueType,
             mn:this.state.metal.includes("Mn")?1:null,co:this.state.metal.includes("Co")?1:null,ni:this.state.metal.includes("Ni")?1:null
         };
+        if(!dataTypes||!name||!process||!types||!valueType||metal.length===0){
+            message.error('信息填写不完整!')
+            return
+        }
+
         // console.log(data)
         axios({
             url:`${this.url.precursorMaterialDetails.add}`,
@@ -101,7 +108,7 @@ class AddModal extends React.Component{
         })
     }
     checkChange = (value)=>{
-        // console.log(value)
+         console.log(value)
         this.setState({
             metal:value
         })
@@ -130,36 +137,36 @@ class AddModal extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="新增"
-                    width='500px'
+                    width='400px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    物料点名称：<Input id="name" style={{width:"79.8%"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
+                    <span className='tank-add-span'>物料点名称：</span><Input id="name" style={{width:"250px"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
                     <br />
                     <br />
-                    数据类型：<Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"83%"}}>
+                    <span className='tank-add-span'> 数据类型：</span><Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"250px"}}>
                         <Select.Option value={1}>输入</Select.Option>
                         <Select.Option value={0}>读取</Select.Option>
                     </Select>
                     <br />
                     <br />
-                    所属类别：<Select className="selectType" value={this.state.types} onChange={this.typesChange} placeholder="请选择所属类别" style={{width:"83%"}}>
+                    <span className='tank-add-span'>所属类别：</span><Select className="selectType" value={this.state.types} onChange={this.typesChange} placeholder="请选择所属类别" style={{width:"250px"}}>
                         <Select.Option value={0}>主材</Select.Option>
                         <Select.Option value={1}>辅材</Select.Option>
                     </Select>
                     <br />
                     <br />
-                    所属工序：<Select className="selectType" value={this.state.process} onChange={this.processChange} placeholder="请选择所属工序" style={{width:"83%"}}>
-                        {this.state.processData.map((item)=>{
+                    <span className='tank-add-span'>所属工序：</span><Select className="selectType" value={this.state.process} onChange={this.processChange} placeholder="请选择所属工序" style={{width:"250px"}}>
+                        {this.state.processData?this.state.processData.map((item)=>{
                             return <Select.Option key={item.code} value={item.code}>{item.processName}</Select.Option>
-                        })}
+                        }):null}
                     </Select>
                     <br /><br />
-                    所含金属：<Checkbox.Group options={plainOptions} value={this.state.metal} onChange = {this.checkChange}></Checkbox.Group>
+                    <span className='tank-add-span'>所含金属：</span><Checkbox.Group options={plainOptions} value={this.state.metal} onChange = {this.checkChange}></Checkbox.Group>
                     <br /><br />
-                    数据类型：<Select className="selectType" value={this.state.valueType} onChange={this.valueChange} placeholder="请选择数据类型" style={{width:"83%"}}>
+                    <span className='tank-add-span'>数据类型：</span><Select className="selectType" value={this.state.valueType} onChange={this.valueChange} placeholder="请选择数据类型" style={{width:"250px"}}>
                         <Select.Option value={0}>体积</Select.Option>
                         <Select.Option value={1}>重量</Select.Option>
                     </Select>

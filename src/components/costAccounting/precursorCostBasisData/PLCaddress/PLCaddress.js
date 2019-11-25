@@ -1,6 +1,6 @@
 import React from "react";
 import '../../../Home/page.css';
-import { Table,Popconfirm,Divider,message,Spin } from 'antd';
+import { Table,Popconfirm,Divider,message,Spin,Upload, Button, Icon } from 'antd';
 import BlockQuote from '../../../BlockQuote/blockquote';
 import AddModal from './addModal';
 import DeleteByIds from '../../../BlockQuote/deleteByIds';
@@ -160,10 +160,10 @@ class PLCaddress extends React.Component{
             params:params
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             if(res&&res.list){
+                this.pagination.total = res.total ? res.total : 0;
                 for(var i = 1; i<=res.list.length; i++){
-                    res.list[i-1]['index']=(res.page-1)*res.pageSize+i;
+                    res.list[i-1]['index']=(res.page-1)*res.size+i;
                 }
             }
                 this.setState({
@@ -196,41 +196,14 @@ class PLCaddress extends React.Component{
         const value = e.target.value;
         this.setState({searchContent:value});
     }
-    searchEvent(){
+    searchEvent(params={}){
         const ope_name = this.state.searchContent;
-        axios({
-            url:`${this.url.plcAddress.plcAddress}`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                // size: this.pagination.pageSize,
-                // page: this.pagination.current,
-                condition:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            // const res = data.data.data;
-            // if(res&&res.list){
-            //     this.pagination.total=res.total;
-            //     for(var i = 1; i<=res.list.length; i++){
-            //         res.list[i-1]['index']=(res.prePage)*10+i;
-            //     }
-            //     this.setState({
-            //         dataSource: res.list,
-            //     });
-            // }
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res
-                })
-            }
+        this.fetch({
+            ...params,
+            condition:ope_name
+        })
+        this.setState({
+            searchFlag:1
         })
     };
     /**返回数据录入页面 */
@@ -261,10 +234,15 @@ class PLCaddress extends React.Component{
                         deleteByIds={this.start}
                         cancel={this.cancel}
                         flag={true}
-                    />
+                    /> &nbsp;&nbsp;&nbsp;
+                     {/* <Upload > */}
+                        <Button type='primary'>
+                            <Icon type="upload" />导入
+                        </Button>
+                    {/* </Upload> */}
                     <SearchCell name='请输入PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

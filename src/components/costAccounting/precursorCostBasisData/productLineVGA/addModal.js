@@ -12,7 +12,7 @@ class AddModal extends React.Component{
         super(props);
         this.state={
             visible:false,
-            vgaName:undefined,
+            vgaName:'',
             vgaData:[],
             productLine:[],
             detail:{},
@@ -55,14 +55,17 @@ class AddModal extends React.Component{
     handleCancel = () =>{
         this.setState({
             visible:false,
-            vgaName:undefined,
+            vgaName:'',
             vgaData:[],
             productLine:[],
             detail:{},
         })
     }
     handleCreate = () =>{
-        // console.log(this.state)
+        if(!this.state.vgaName){
+            message.info('信息不完整!')
+            return
+        }
         var data = [];
         var i = 0;
         for(var key in this.state.detail){
@@ -79,10 +82,15 @@ class AddModal extends React.Component{
         for(var i=0;i<data.length;i++){
             count+=data[i].weightValue
         };
+        if(count===0){
+            message.error('未分配权重!');
+            return
+        }
         if(count != 1){
             message.error("所选项权重相加应等于1");
             return
         }
+       
         // var data = {materialCode:this.state.materialName,processCode:this.state.processName,types:this.state.types,weightDTOS:[]};
         // const detail = this.state.detail;
         // var count = 0;

@@ -73,6 +73,10 @@ class MaterialType extends React.Component{
                 )
             }
         }]
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.cancel=this.cancel.bind(this);
+        this.start=this.start.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
     };
 
     handleDelete = (id)=>{
@@ -127,15 +131,13 @@ class MaterialType extends React.Component{
             });
         }, 1000);
     };
+
     /**实现全选 */
     onSelectChange = (selectedRowKeys)=>{
         //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
-    /**返回数据录入页面 */
-    returnDataEntry = ()=>{
-        this.props.history.push({pathname: "/precursorCostBasisData"});
-    };
+
     componentWillUnmount() {
         this.setState = (state, callback) => {
           return ;
@@ -145,29 +147,52 @@ class MaterialType extends React.Component{
     componentDidMount(){
         this.fetch();
     };
-    fetch = ()=>{
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.fetch()
+    }
+    fetch = (params={},flag)=>{
+        this.setState({
+            loading:true
+        })
+        let {searchContent}=this.state,
+            {pageSize,current}=this.pagination
+             params={
+                condition:flag?'':searchContent,
+                size:pageSize,
+                page:current
+            }
         axios({
             url:`${this.url.precursorMaterialType.page}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
+            params
         }).then((data)=>{
-            // console.log(data)
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            if(res.length!==0){
+            const res=data.data.data;
+            let dataSource = [];
+            if(res&&res.list) {
+                this.pagination.total = res.total ? res.total : 0;
+                for (let i = 1; i <= res.list.length; i++) {
+                    res.list[i - 1]['index'] = (res['page']-1) * res['size'] + i;
+                }
+                dataSource = res.list;
                 this.setState({
-                    data:res,
-                    searchContent:'',
-                    loading:false
+                    data: dataSource
                 })
             }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
         })
     }
+    /**返回数据录入页面 */
+    returnDataEntry = ()=>{
+        this.props.history.push({pathname: "/precursorCostBasisData"});
+    };
+
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('precursorCostBasisData'));
@@ -193,9 +218,8 @@ class MaterialType extends React.Component{
                         cancel={this.cancel}
                         flag={true}
                     />
-                    {/* <SearchCell name="请输入产线名称" flag={true}/> */}
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} onChange={this.handleTableChange} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

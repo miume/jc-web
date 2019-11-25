@@ -491,7 +491,8 @@ class Home extends Component {
                 all:`${server}/jc/common/precursorProcessType/all`,
                 delete:`${server}/jc/common/precursorProcessType/delete`,
                 page:`${server}/jc/common/precursorProcessType/page`,
-                update:`${server}/jc/common/precursorProcessType/update`
+                update:`${server}/jc/common/precursorProcessType/update`,
+                getByType:`${server}/jc/common/precursorProcessType/getByType`//根据主材辅材选择工序
             },
             /**物料产线权重分配 */
             precursorMaterialLineWeight:{
@@ -511,7 +512,9 @@ class Home extends Component {
                 page:`${server}/jc/common/precursorMaterialDetails/page`,
                 update:`${server}/jc/common/precursorMaterialDetails/update`,
                 getProcess:`${server}/jc/common/precursorMaterialDetails/getProcess`,
-                getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`
+                getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`,
+                all:`${server}/jc/common/precursorMaterialDetails/all`,
+                getMaterialByProcessType:`${server}/jc/common/precursorMaterialDetails/getMaterialByProcessType`
             },
             /**物料plc映射 */
             matPlcMap:{
@@ -579,7 +582,26 @@ class Home extends Component {
                 deleteByIds:`${server}/jc/common/precursorRawMaterial/deleteByIds`,
                 getOne:`${server}/jc/common/precursorRawMaterial/getOne`,
                 page:`${server}/jc/common/precursorRawMaterial/page`,
-                update:`${server}/jc/common/precursorRawMaterial/update`
+                update:`${server}/jc/common/precursorRawMaterial/update`,
+                all:`${server}/jc/common/precursorRawMaterial/all`
+            },
+            /**原材料产线权重分配*/
+            precursorRawmaterialLineWeight:{
+                page:`${server}/jc/common/precursorRawmaterialLineWeight/page`,
+                ids:`${server}/jc/common/precursorRawmaterialLineWeight/ids`,
+                delete:`${server}/jc/common/precursorRawmaterialLineWeight/delete`,
+                add:`${server}/jc/common/precursorRawmaterialLineWeight/add`,
+                getRecordById:`${server}/jc/common/precursorRawmaterialLineWeight/getRecordById`,
+                update:`${server}/jc/common/precursorRawmaterialLineWeight/update`
+            },
+            /**合成槽体积値*/
+            precursorCompoundCellVolumes:{
+                page:`${server}/jc/common/precursorCompoundCellVolumes/page`,
+                ids:`${server}/jc/common/precursorCompoundCellVolumes/ids`,
+                delete:`${server}/jc/common/precursorCompoundCellVolumes/delete`,
+                getRecordById:`${server}/jc/common/precursorCompoundCellVolumes/getRecordById`,
+                update:`${server}/jc/common/precursorCompoundCellVolumes/update`,
+                add:`${server}/jc/common/precursorCompoundCellVolumes/add`
             },
             //前驱体在制品统计
             precursorGoodIn:{
