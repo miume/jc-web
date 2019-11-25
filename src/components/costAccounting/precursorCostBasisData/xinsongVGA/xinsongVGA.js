@@ -24,6 +24,7 @@ class PLCaddress extends React.Component{
         this.start=this.start.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -36,19 +37,19 @@ class PLCaddress extends React.Component{
             dataIndex: 'index',
             key: 'index',
             align:'center',
-            width: '33%',
+            width: '32%',
         },{
             title: 'VGA点名称',
             dataIndex: 'vgaName',
             key: 'vgaName',
             align:'center',
-            width: '33%',
+            width: '32%',
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
             align:'center',
-            width: '33%',
+            width: '32%',
             render:(text,record)=>{
                 return(
                     <span>
@@ -86,7 +87,7 @@ class PLCaddress extends React.Component{
             url:`${this.url.vga.ids}`,
             method:'delete',
             headers:{
-                'Authorization':this.Authorization
+                'Authorization':this.url.Authorization
             },
             data:ids,
             type:'json'
@@ -107,7 +108,7 @@ class PLCaddress extends React.Component{
         })
     };
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
@@ -116,27 +117,41 @@ class PLCaddress extends React.Component{
         this.fetch();
     }
 
-    fetch = ()=>{
+    fetch = (params={},flag)=>{
+        this.setState({
+            loading:true
+        })
+        let {searchContent}=this.state,
+            {pageSize,current}=this.pagination
+             params={
+                condition:flag?'':searchContent,
+                size:pageSize,
+                page:current
+            }
         axios({
             url:`${this.url.vga.page}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
+            params
         }).then((data)=>{
-            // console.log(data)
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            if(res.length!==0){
+            const res=data.data.data;
+            let dataSource = [];
+            if(res&&res.list) {
+                this.pagination.total = res.total ? res.total : 0;
+                for (let i = 1; i <= res.list.length; i++) {
+                    res.list[i - 1]['index'] = (res['page']-1) * res['size'] + i;
+                }
+                dataSource = res.list;
                 this.setState({
-                    data:res,
-                    searchContent:'',
-                    loading:false
+                    data: dataSource
                 })
             }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
         })
     }
     // rowSelected(selectedRowKeys){
@@ -162,45 +177,15 @@ class PLCaddress extends React.Component{
         this.setState({searchContent:value});
     }
     searchEvent(){
-        const ope_name = this.state.searchContent;
-        axios({
-            url:`${this.url.vga.page}`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                // size: this.pagination.pageSize,
-                // page: this.pagination.current,
-                condition:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            // const res = data.data.data;
-            // if(res&&res.list){
-            //     this.pagination.total=res.total;
-            //     for(var i = 1; i<=res.list.length; i++){
-            //         res.list[i-1]['index']=(res.prePage)*10+i;
-            //     }
-            //     this.setState({
-            //         dataSource: res.list,
-            //     });
-            // }
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res
-                })
-            }
-        })
+        this.fetch()
     };
     /**返回数据录入页面 */
     returnDataEntry = ()=>{
         this.props.history.push({pathname: "/precursorCostBasisData"});
+    }
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.fetch()
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -221,15 +206,11 @@ class PLCaddress extends React.Component{
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
-                    <DeleteByIds 
-                        selectedRowKeys={this.state.selectedRowKeys}
-                        deleteByIds={this.start}
-                        cancel={this.cancel}
-                        flag={true}
-                    />
+                   
                     <SearchCell name='请输入PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange
+                    } scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

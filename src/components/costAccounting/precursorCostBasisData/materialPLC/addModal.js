@@ -13,24 +13,38 @@ class AddModal extends React.Component{
             visible:false,
             materialPonit:[],
             plcAddress:[],
-            materialCode:undefined,
-            plcCode:undefined
+            materialCode:'',
+            plcCode:''
         }
+        this.getMaterialPoint=this.getMaterialPoint.bind(this);
+        this.getPlcAddress=this.getPlcAddress.bind(this);
     }
-    showModal = () => {
+    componentWillUnmount(){
+        this.setState = () => {
+            return ;
+          }
+    }
+    componentDidMount(){
+        this.getMaterialPoint()
+        this.getPlcAddress()
+    }
+    getMaterialPoint(){
         axios({
-            url:`${this.url.precursorMaterialDetails.page}`,
+            url:`${this.url.precursorMaterialDetails.all}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
         }).then((data)=>{
-            const res = data.data.data.list;
-            // console.log(res)
+            const res=data.data.data
+        if(res){
             this.setState({
                 materialPonit:res
             })
+        }
         });
+    }
+    getPlcAddress(){
         axios({
             url:`${this.url.plcAddress.plcAddress}`,
             method:"get",
@@ -44,6 +58,8 @@ class AddModal extends React.Component{
                 plcAddress:res
             })
         })
+    }
+    showModal = () => {
         this.setState({ visible: true });
     };
     handleCancel = () =>{
@@ -51,13 +67,18 @@ class AddModal extends React.Component{
             visible:false,
             materialPonit:[],
             plcAddress:[],
-            materialCode:undefined,
-            plcCode:undefined
+            materialCode:'',
+            plcCode:''
         })
     }
     handleCreate = () =>{
-        var data = {materialCode:this.state.materialCode,plcCode:this.state.plcCode};
-        // console.log(data)
+        let {materialCode,plcCode}=this.state
+        if(materialCode===''||plcCode===''){
+            message.info('信息填写不完整!')
+            return
+        }
+        
+        var data = {materialCode:materialCode,plcCode:plcCode};
         axios({
             url:`${this.url.matPlcMap.matPlcMap}`,
             method:"post",
@@ -66,14 +87,17 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-            message.info("新增成功");
-            this.props.fetch();
+           
+            if(data.data.code===0){
+                message.info("新增成功");
+                this.props.fetch();
+            }
             this.setState({
                 visible:false,
                 materialPonit:[],
                 plcAddress:[],
-                materialCode:undefined,
-                plcCode:undefined
+                materialCode:'',
+                plcCode:''
             })
         })
 
@@ -107,21 +131,21 @@ class AddModal extends React.Component{
                 >
                     物料点：<Select id="material" style={{width:"85%"}} onChange={this.materialChange} value={this.state.materialCode} placeholder="请选择物料点">
                         {
-                            this.state.materialPonit.map((item)=>{
+                            this.state.materialPonit?this.state.materialPonit.map((item)=>{
                                 return(
                                     <Select.Option key={item.code} value={item.code}>{item.materialName}</Select.Option>
                                 )
-                            })
+                            }):null
                         }
                     </Select>
                     <br /><br />
                     plc地址：<Select id="plcAddress" style={{width:"84%"}} onChange={this.plcChange} value={this.state.plcCode} placeholder="请选择plc地址">
                         {
-                            this.state.plcAddress.map((item)=>{
+                            this.state.plcAddress?this.state.plcAddress.map((item)=>{
                                 return(
                                     <Select.Option key={item.code} value={item.code}>{item.address}</Select.Option>
                                 )
-                            })
+                            }):null
                         }
                     </Select>
                 </Modal>

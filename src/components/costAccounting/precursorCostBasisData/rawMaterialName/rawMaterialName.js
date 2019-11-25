@@ -12,15 +12,7 @@ class RawMaterialName extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            data:[{
-                index:1,
-                materialName:"混合盐溶液",
-                source:"补料",
-                materialType:"混合盐溶液",
-                metal:"Ni,Co,Mn",
-                materialPhase:"溶液",
-                method:"手工领料"
-            }],
+            data:[],
             visible:false,
             selectedRowKeys: [],
             loading:false,
@@ -84,19 +76,130 @@ class RawMaterialName extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <span className="blue">编辑</span>
+                        <AddModal editFlag={true} fetch={this.fetch}/>
                         <Divider type="vertical" />
                         <span className="blue">删除</span>
                     </span>
                 )
             }
         }]
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.cancel=this.cancel.bind(this);
+        this.start=this.start.bind(this);
+        this.searchContentChange = this.searchContentChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
     };
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.fetch()
+    }
+    handleDelete = (id)=>{
+        // console.log(id)
+        axios({
+            url:`${this.url.precursorRawMaterial.deleteById}`,
+            method:"delete",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{id:id}
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data)
+        });
+    }
+    start = () => {
+        const ids = this.state.selectedRowKeys;
+        // console.log(ids)
+        axios({
+            url:`${this.url.precursorRawMaterial.deleteByIds}`,
+            method:'delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            // console.log(data);
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+            message.info(data.data.message);
+            this.fetch();
+        }).catch((error)=>{
+            message.info(error.data);
+        })
+    };
+    componentWillUnmount() {
+        this.setState = () => {
+          return ;
+        }
+    }
+
+    componentDidMount(){
+        this.fetch();
+    }
+    fetch = (params={},flag)=>{
+        this.setState({
+            loading:true
+        })
+        let {searchContent}=this.state,
+            {pageSize,current}=this.pagination
+             params={
+                condition:flag?'':searchContent,
+                size:pageSize,
+                page:current
+            }
+        axios({
+            url:`${this.url.precursorRawMaterial.page}`,
+            method:"get",
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params
+        }).then((data)=>{
+            const res=data.data.data;
+            console.log(res)
+            let dataSource = [];
+            if(res&&res.list) {
+                this.pagination.total = res.total ? res.total : 0;
+                for (let i = 1; i <= res.list.length; i++) {
+                    res.list[i - 1]['index'] = (res['page']-1) * res['size'] + i;
+                }
+                dataSource = res.list;
+                this.setState({
+                    data: dataSource
+                })
+            }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
+        })
+    }
     /**实现全选 */
     onSelectChange = (selectedRowKeys)=>{
         //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
+    cancel() {
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
+    searchContentChange(e){
+        const value = e.target.value;
+        this.setState({searchContent:value});
+    }
+    searchEvent(){
+        this.fetch()
+    };
     /**返回数据录入页面 */
     returnDataEntry = ()=>{
         this.props.history.push({pathname: "/precursorCostBasisData"});
@@ -119,7 +222,7 @@ class RawMaterialName extends React.Component{
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2='返回'
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
-                    <AddModal />
+                    <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys={this.state.selectedRowKeys}
                         // deleteByIds={this.start}
@@ -128,7 +231,7 @@ class RawMaterialName extends React.Component{
                     />
                     <SearchCell name="请输入原材料名称" flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} onChange={this.handleTableChange} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

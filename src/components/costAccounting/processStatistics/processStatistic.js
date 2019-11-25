@@ -256,10 +256,13 @@ class ProcessStatistics extends Component {
     }
     getAllProcess() {//获取新增标签页的所有工序标签
         axios({
-            url: `${this.url.precursorProcessType.all}`,
+            url: `${this.url.precursorProcessType.getByType}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
+            },
+            params:{
+                flag:0
             }
         }).then((data) => {
             let res = data.data.data;

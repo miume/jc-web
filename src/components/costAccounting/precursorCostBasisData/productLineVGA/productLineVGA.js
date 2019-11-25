@@ -23,6 +23,7 @@ class ProductLineStatical extends React.Component{
         this.cancel=this.cancel.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -122,7 +123,7 @@ class ProductLineStatical extends React.Component{
         })
     };
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
@@ -130,38 +131,55 @@ class ProductLineStatical extends React.Component{
     componentDidMount(){
         this.fetch();
     }
-
-    fetch = ()=>{
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.fetch()
+    }
+    fetch = (params={},flag)=>{
+        this.setState({
+            loading:true
+        })
+        let {searchContent}=this.state,
+            {pageSize,current}=this.pagination
+            params={
+                condition:flag?'':searchContent,
+                size:pageSize,
+                page:current
+            }
         axios({
             url:`${this.url.vgaMap.page}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
+            params
         }).then((data)=>{
-            const res = data.data.data.list;
+            const dataRes=data.data.data
+            const res = dataRes&&dataRes.list?dataRes.list:null;
             // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
+         if(dataRes &&res){
+            this.pagination.total = dataRes.total ? dataRes.total : 0;
+            for (let i = 1; i <= res.length; i++) {
+                res[i - 1]['index'] = (dataRes['page']-1) * dataRes['size'] + i;
             }
-            for(var i=0;i<res.length;i++){
+            for(let i=0;i<res.length;i++){
                 res[i].weightValue = res[i].lines.map((item)=>{
                     return(
                         item.name+"  "+item.value
                     )
                 }).join(",")
             }
-            for(var i=0;i<res.length;i++){
+            for(let i=0;i<res.length;i++){
                 res[i].vgaName = res[i].vgaPoint.vgaName
             }
-            // console.log(res);
-            if(res.length!==0){
+            this.setState({
+                data:res,
+            })
+         }
                 this.setState({
-                    data:res,
                     searchContent:'',
                     loading:false
                 })
-            }
         })
     }
 
@@ -183,51 +201,8 @@ class ProductLineStatical extends React.Component{
         this.setState({searchContent:value});
     }
     searchEvent(){
-        const ope_name = this.state.searchContent;
-        axios({
-            url:`${this.url.vgaMap.page}`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                // size: this.pagination.pageSize,
-                // page: this.pagination.current,
-                condition:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            // const res = data.data.data;
-            // if(res&&res.list){
-            //     this.pagination.total=res.total;
-            //     for(var i = 1; i<=res.list.length; i++){
-            //         res.list[i-1]['index']=(res.prePage)*10+i;
-            //     }
-            //     this.setState({
-            //         dataSource: res.list,
-            //     });
-            // }
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            for(var i=0;i<res.length;i++){
-                res[i].weightValue = res[i].lines.map((item)=>{
-                    return(
-                        item.name+"  "+item.value
-                    )
-                }).join(",")
-            }
-            for(var i=0;i<res.length;i++){
-                res[i].vgaName = res[i].vgaPoint.vgaName
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res
-                })
-            }
-        })
+        //const ope_name = this.state.searchContent;
+       this.fetch()
     };
     /**返回数据录入页面 */
     returnDataEntry = ()=>{
@@ -260,7 +235,7 @@ class ProductLineStatical extends React.Component{
                     />
                     <SearchCell name="请输入vga点名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} onChange={this.handleTableChange} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

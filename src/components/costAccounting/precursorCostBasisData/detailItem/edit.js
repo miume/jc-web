@@ -80,11 +80,16 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
+        let {dataTypes,name,process,types,valueType,metal}=this.state
         var data = {
             code:this.props.code,dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,
             mn:this.state.metal.includes("Mn")?1:0,co:this.state.metal.includes("Co")?1:0,ni:this.state.metal.includes("Ni")?1:0
         };
         // console.log(data)
+        if(!dataTypes||!name||!process||!types||!valueType||metal.length===0){
+            message.error('信息填写不完整!')
+            return
+        }
         axios({
             url:`${this.url.precursorMaterialDetails.update}`,
             method:"put",
@@ -180,7 +185,7 @@ class AddModal extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    物料点名称：<Input id="name" style={{width:"79.8%"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
+                    物料名称：<Input id="name" style={{width:"83%"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
                     <br />
                     <br />
                     数据类型：<Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"83%"}}>

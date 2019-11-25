@@ -29,6 +29,10 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         var data = {dataType:this.state.source,materialTypeName:this.state.type};
+        if(!this.state.source||!this.state.type){
+            message.error('信息填写不完整!')
+            return
+        }
         axios({
             url:`${this.url.precursorMaterialType.add}`,
             method:"post",
