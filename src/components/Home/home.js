@@ -458,7 +458,10 @@ class Home extends Component {
                 getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
                 save:`${server}/jc/common/productionBatchInfo/save`
             },
-
+            /**批次追溯*/
+            productionBatchRetrospect:{
+                page:`${server}/jc/common/productionBatchRetrospect/page`
+            },
             /**批次规则 */
             productionBatchRule:{
                 getAll:`${server}/jc/common/productionBatchRule/getAll`,
@@ -584,7 +587,7 @@ class Home extends Component {
                 getOne:`${server}/jc/common/precursorRawMaterial/getOne`,
                 page:`${server}/jc/common/precursorRawMaterial/page`,
                 update:`${server}/jc/common/precursorRawMaterial/update`,
-                all:`${server}/jc/common/precursorRawMaterial/all`
+                all:`${server}/jc/common/precursorRawMaterial/all`,
             },
             /**原材料产线权重分配*/
             precursorRawmaterialLineWeight:{
@@ -658,7 +661,11 @@ class Home extends Component {
             /**用户工序名称*/
             userProcessName: {
                 userProcess: `${server}/jc/common/userProcess`,
-            }
+            },
+            /**正极基础统计周期*/
+            positiveStatic:{
+
+            },
         };
 
         localStorage.setItem('status',JSON.stringify(status));

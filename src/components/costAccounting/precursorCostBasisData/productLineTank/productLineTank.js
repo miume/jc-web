@@ -29,27 +29,26 @@ class ProductLineTank extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
             width: '20%',
         },{
             title: '生产线',
-            dataIndex: 'productLine',
-            key: 'productLine',
-            align:'center',
-            width: '30%',
+            dataIndex: 'lineName',
+            key: 'lineName',
+            width: '15%',
         },{
             title:"合成槽",
-            dataIndex: 'tank',
-            key: 'tank',
-            align:'center',
-            width: '30%',
+            dataIndex: 'materialDTOS.materialName',
+            key: 'materialDTOS.materialName',
+            width: '50%',
             render:(text,record)=>{
-                let data = record.tank.split(",");
+                let data=record.materialDTOS
                 return(
                     data.map((item,index)=>{
-                        return(<div key={index}>
-                            {item}
-                        </div>)
+                        return(
+                            <span key={item.materialCode}>&nbsp;{index!==0?',':''}
+                                {item.materialName}
+                            </span>
+                        )
                     })
                 )
             }
@@ -57,12 +56,11 @@ class ProductLineTank extends React.Component{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
             width: '20%',
             render:(text,record)=>{
                 return(
                     <span>
-                        <AddModal fetch={this.fetch} editFlag={true}/>
+                        <AddModal fetch={this.fetch} editFlag={true} code={record.lineCode}/>
                         <Divider type="vertical" />
                         <Popconfirm title="确定删除？" onConfirm={()=>this.handleDelete(record.code)} okText="确定" cancelText="取消">
                             <span className="blue" >删除</span>
@@ -111,13 +109,13 @@ class ProductLineTank extends React.Component{
             params
         }).then((data)=>{
             const res=data.data.data;
-            console.log(res)
             let dataSource = [];
             if(res&&res.list) {
                 this.pagination.total = res.total ? res.total : 0;
                 for (let i = 1; i <= res.list.length; i++) {
                     res.list[i - 1]['index'] = (res['page']-1) * res['size'] + i;
                 }
+               
                 dataSource = res.list;
                 this.setState({
                     data: dataSource
@@ -222,7 +220,7 @@ class ProductLineTank extends React.Component{
                     />
                     <SearchCell name="请输入产线名称" flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

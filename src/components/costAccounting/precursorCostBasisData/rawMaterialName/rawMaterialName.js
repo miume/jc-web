@@ -29,44 +29,62 @@ class RawMaterialName extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
             width: '12.5%',
         },{
             title: '原材料名称',
             dataIndex: 'materialName',
             key: 'materialName',
-            align:'center',
             width: '12.5%',
         },{
             title:"材料来源",
-            dataIndex: 'source',
-            key: 'source',
-            align:'center',
+            dataIndex: 'dataType',
+            key: 'dataType',
             width: '12.5%',
+            render:(text,record)=>{
+                if(record.dataType===0){
+                    return '仓库领料'
+                }
+                else{
+                    return '补料'
+                }
+            }
         },{
             title:"材料类别",
-            dataIndex: 'materialType',
-            key: 'materialType',
-            align:'center',
+            dataIndex: 'typeName',
+            key: 'typeName',
             width: '12.5%',
         },{
             title:"所属金属",
             dataIndex: 'metal',
             key: 'metal',
-            align:'center',
             width: '12.5%',
+            
         },{
             title:"材料物相",
-            dataIndex: 'materialPhase',
-            key: 'materialPhase',
-            align:'center',
+            dataIndex: 'phaseType',
+            key: 'phaseType',
             width: '12.5%',
+            render:(text,record)=>{
+                if(record.phaseType===0){
+                    return '溶液'
+                }
+                else{
+                    return '晶体'
+                }
+            }
         },{
             title:"领料方式",
-            dataIndex: 'method',
-            key: 'method',
-            align:'center',
+            dataIndex: 'pickingType',
+            key: 'pickingType',
             width: '12.5%',
+            render:(text,record)=>{
+                if(record.pickingType===0){
+                    return '手工领料'
+                }
+                else{
+                    return 'AGV叫料'
+                }
+            }
         },{
             title: '操作',
             dataIndex: 'operation',
@@ -76,9 +94,11 @@ class RawMaterialName extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <AddModal editFlag={true} fetch={this.fetch}/>
+                        <AddModal editFlag={true} fetch={this.fetch} code={record.code}/>
                         <Divider type="vertical" />
-                        <span className="blue">删除</span>
+                        <Popconfirm title="确定删除？" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="取消">
+                            <span className="blue" href="#">删除</span>
+                        </Popconfirm>
                     </span>
                 )
             }
@@ -122,7 +142,6 @@ class RawMaterialName extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
@@ -162,12 +181,31 @@ class RawMaterialName extends React.Component{
             params
         }).then((data)=>{
             const res=data.data.data;
-            console.log(res)
+            //console.log(res)
             let dataSource = [];
             if(res&&res.list) {
                 this.pagination.total = res.total ? res.total : 0;
                 for (let i = 1; i <= res.list.length; i++) {
                     res.list[i - 1]['index'] = (res['page']-1) * res['size'] + i;
+                }
+                for (let i = 0; i < res.list.length; i++) {
+                    res.list[i]["metal"] = ""
+                }
+                for (let i = 0; i < res.list.length; i++) {
+                    if (res.list[i]["mnFlag"] === true) {
+                        res.list[i]["metal"] += "mn "
+                    }
+                    if (res.list[i]["coFlag"] === true) {
+                        res.list[i]["metal"] += "co "
+                    }
+                    if (res.list[i]["niFlag"] === true) {
+                        res.list[i]["metal"] += "ni "
+                    }
+                }
+                for (let i = 0; i < res.list.length; i++) {
+                    if (res.list[i]["metal"] == "") {
+                        res.list[i]["metal"] = "无"
+                    }
                 }
                 dataSource = res.list;
                 this.setState({

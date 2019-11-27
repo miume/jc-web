@@ -5,6 +5,7 @@ import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import '../tankValue/tank.css'
+import { lang } from "moment";
 const {Option}=Select
 const {Group}=Checkbox
 class AddModal extends React.Component{
@@ -13,7 +14,8 @@ class AddModal extends React.Component{
         super(props);
         this.state = {
             visible:false,
-            productLine:'',
+            productLine:undefined,
+            lineName:undefined,
             tank:[],
             line:[],
             materiaNameData:[]
@@ -25,6 +27,7 @@ class AddModal extends React.Component{
     componentDidMount(){
         this.getAllLine()
         this.getMaterial()
+        
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -74,12 +77,22 @@ class AddModal extends React.Component{
               'Authorization':this.url.Authorization
             },
             params:{
-                processCode:3
+                id:this.props.code
             }
           }).then((data)=>{
             const res = data.data.data;
            if(res){
-                
+               let data=res.materialDTOS
+               let newData=[]
+               for(let i=0;i<res.materialDTOS.length;i++){
+                    let da=`${res.materialDTOS[i]['materialCode']}-${res.materialDTOS[i]['materialName']}`
+                    newData.push(da)
+               }
+                this.setState({
+                    productLine:res.lineCode,
+                    lineName:res.lineName,
+                    tank:newData
+                })
             }
           })
     }
@@ -92,26 +105,28 @@ class AddModal extends React.Component{
     handleCancel = () =>{
         this.setState({
             visible:false,
-            productLine:'',
+            productLine:undefined,
             tank:[],
+            lineName:undefined,
         })
     }
     handleCreate = () =>{
         
-        let {productLine,tank}=this.state
+        let {productLine,tank,lineName}=this.state
         if(!productLine||tank.length===0){
             message.error('信息填写不完整!')
             return
         }
-        let data={lineCode:productLine,materialDTOS:[]}
-        let mate={}
+        let data={lineCode:productLine,lineName:lineName,materialDTOS:[]}
+        
         for(let i=0;i<tank.length;i++){
+            let mate={}
             mate['materialCode']=tank[i].split('-')[0]
-            mate['materialName']=tank[i].split('-')[0]
+            mate['materialName']=tank[i].split('-')[1]
             data.materialDTOS.push(mate)
         }
         axios({
-            url:`${this.url.techLineCellMap.add}`,
+            url:this.props.editFlag?`${this.url.techLineCellMap.update}`:`${this.url.techLineCellMap.add}`,
             method:this.props.editFlag?"put":"post",
             headers:{
                 'Authorization':this.url.Authorization
@@ -122,19 +137,27 @@ class AddModal extends React.Component{
                 message.info("操作成功");
                 this.props.fetch();
             }
+            else{
+                message.info(data.data.message);
+            }
             this.setState({
                 visible:false,
-                productLine:'',
+                productLine:undefined,
+                lineName:undefined,
                 tank:[],
             })
+        }).catch(error=>{
+           message.error('操作失败，请联系管理员!')
         })
         this.setState({
             visible:false,
         })
     }
-    change = (data)=>{
+    change = (value,name)=>{
+        let lineName=name.props.name
         this.setState({
-            productLine:data
+            productLine:value,
+            lineName:lineName
         })
     }
     onChange = (e)=>{
@@ -165,11 +188,11 @@ class AddModal extends React.Component{
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                     生产线：<Select onChange={this.change}  placeholder="请选择生产线" style={{width:"400px"}}>
+                     生产线：<Select onChange={this.change} value={this.state.productLine} placeholder="请选择生产线" style={{width:"400px"}}>
                         {
                             this.state.line?this.state.line.map((data)=>{
                                 return(
-                                    <Option key={data.code} value={data.code}>{data.name}</Option>
+                                    <Option key={data.code} value={data.code} name={data.name}>{data.name}</Option>
                                 )
                             }):null
                         }
