@@ -179,36 +179,36 @@ class AddModal extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="编辑"
-                    width='500px'
+                    width='400px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
-                    物料名称：<Input id="name" style={{width:"83%"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
+                    <span className='tank-add-span'>物料名称：</span><Input id="name" style={{width:"250px"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
                     <br />
                     <br />
-                    数据类型：<Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"83%"}}>
+                    <span className='tank-add-span'>数据类型：</span><Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"250px"}}>
                         <Select.Option value={1}>输入</Select.Option>
                         <Select.Option value={0}>读取</Select.Option>
                     </Select>
                     <br />
                     <br />
-                    所属类别：<Select className="selectType" value={this.state.types} onChange={this.typesChange} placeholder="请选择所属类别" style={{width:"83%"}}>
+                    <span className='tank-add-span'>所属类别：</span><Select className="selectType" value={this.state.types} onChange={this.typesChange} placeholder="请选择所属类别" style={{width:"250px"}}>
                         <Select.Option value={0}>主材</Select.Option>
                         <Select.Option value={1}>辅材</Select.Option>
                     </Select>
                     <br />
                     <br />
-                    所属工序：<Select className="selectType" value={this.state.process} onChange={this.processChange} placeholder="请选择所属工序" style={{width:"83%"}}>
+                    <span className='tank-add-span'>所属工序：</span><Select className="selectType" value={this.state.process} onChange={this.processChange} placeholder="请选择所属工序" style={{width:"250px"}}>
                         {this.state.processData.map((item)=>{
                             return <Select.Option key={item.code} value={item.code}>{item.processName}</Select.Option>
                         })}
                     </Select>
                     <br /><br />
-                    所含金属：<Checkbox.Group options={plainOptions} value={this.state.metal} onChange = {this.checkChange}></Checkbox.Group>
+                    <span className='tank-add-span'>所含金属：</span><Checkbox.Group options={plainOptions} value={this.state.metal} onChange = {this.checkChange}></Checkbox.Group>
                     <br /><br />
-                    <div>数据类型：<Select className="selectType" value={this.state.valueType} onChange={this.valueChange} placeholder="请选择数据类型" style={{width:"83%"}}>
+                    <div><span className='tank-add-span'>数据类型：</span><Select className="selectType" value={this.state.valueType} onChange={this.valueChange} placeholder="请选择数据类型" style={{width:"250px"}}>
                         <Select.Option value={0}>体积</Select.Option>
                         <Select.Option value={1}>重量</Select.Option>
                     </Select>
