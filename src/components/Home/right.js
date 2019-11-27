@@ -66,7 +66,7 @@ import InspectionPlan from '../equipmentManagement/equipmentInspection/inspectio
 import InspectionQuery from '../equipmentManagement/equipmentInspection/inspectionQuery/inspectionQuery'
 import LocationBasic from "../equipmentManagement/equipmentBasicData/locationBasic/locationBasic";
 
-import BatchInfo from "../productionManagement/batchInfo/batchInfo"
+import BatchInfo from "../productionManagement/batchMessage/batchMessage"
 import BatchSearch from "../productionManagement/batchSearch/batchSearch"
 import BatchRule from "../productionManagement/batchRule/batchRule"
 import RawMaterialInput from '../technologyCenter/rawMaterialInput/rawMaterialInput'

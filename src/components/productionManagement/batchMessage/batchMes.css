@@ -1,0 +1,13 @@
+.batchSelect{
+    display: block;
+    float: right;
+    width: 50%;
+}
+.endSelect{
+    display: inline-block;
+    /* float: left; */
+    width: 50%;
+}
+.batchAll{
+    margin-top: 10px;
+}

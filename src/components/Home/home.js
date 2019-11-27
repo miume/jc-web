@@ -448,7 +448,7 @@ class Home extends Component {
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
             },
-
+            /**批次信息 */
             productionBatchInfo:{
                 getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
                 deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
@@ -456,7 +456,8 @@ class Home extends Component {
                 addOne:`${server}/jc/common/productionBatchInfo/addOne`,
                 updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
                 getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
-                getAllRule:`${server}/jc/common/productionBatchRule/getAll`
+                getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
+                save:`${server}/jc/common/productionBatchInfo/save`
             },
 
             /**批次规则 */
