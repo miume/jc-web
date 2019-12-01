@@ -43,7 +43,6 @@ class AddModal extends React.Component{
                 id:this.props.code
             }
         }).then(data=>{
-            console.log(data.data)
             let res=data.data.data
             if(res){
                 let metal=[]
@@ -60,7 +59,7 @@ class AddModal extends React.Component{
                     dataType:res.dataType,
                     materialName:res.materialName,
                     materialPhase:res.phaseType,
-                    //materialType:,
+                    materialType:res.typesCode,
                     pickingType:res.pickingType,
                     metal:metal
                 })
@@ -102,13 +101,13 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         let {materialName,dataType,materialPhase,pickingType,materialType,metal}=this.state
-        if(!materialName||(dataType!==0&&dataType!==1)||(materialPhase!==0&&materialPhase!==1)||(pickingType!==0&&pickingType!==1)||(materialType!==0&&materialType!==1)||metal.length===0){
+        if(!materialName||(dataType!==0&&dataType!==1)||(materialPhase!==0&&materialPhase!==1)||(pickingType!==0&&pickingType!==1)||(!materialType)||metal.length===0){
             message.error('信息填写不完整!')
             return
         }
         let data={
             coFlag:metal.includes('Co')?1:0,
-            //code: 0,
+            code: this.props.editFlag?this.props.code:'',
             dataType: dataType,
             materialName: materialName,
             mnFlag: metal.includes('Mn')?1:0,
@@ -118,7 +117,7 @@ class AddModal extends React.Component{
             typesCode: materialType
           }
           axios({
-            url:this.url.precursorRawMaterial.add,
+            url:this.props.editFlag?this.url.precursorRawMaterial.update:this.url.precursorRawMaterial.add,
             method:this.props.editFlag?"put":"post",
             headers:{
                 'Authorization':this.url.Authorization,
@@ -132,6 +131,8 @@ class AddModal extends React.Component{
             else{
                 message.error(data.data.message)
             }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
         })
         this.setState({
             visible:false,

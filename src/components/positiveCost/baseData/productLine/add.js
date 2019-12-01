@@ -1,8 +1,9 @@
 import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import {Modal,Row,Col,Input} from 'antd'
+import {Modal,Row,Col,Input,message} from 'antd'
 import AddModal from './addModal'
+import axios from 'axios'
 class ProductLineAdd extends Component{
     constructor(props){
         super(props);
@@ -19,6 +20,11 @@ class ProductLineAdd extends Component{
     componentDidMount(){
         this.init();
     }
+    componentWillUnmount(){
+        this.setState=()=>{
+            return
+        }
+    }
     showModal(){
         this.setState({
             visible:true
@@ -29,6 +35,32 @@ class ProductLineAdd extends Component{
             visible:false
         })
         let {productLineName}=this.state;
+        let data={
+            code:this.props.editflag?this.props.code:'',
+            name:productLineName
+        }
+        if(!productLineName){
+            message.info('信息填写不完整!')
+            return
+        }
+        axios({
+            url:this.props.editflag?this.props.url.positiveProductline.update:this.props.url.positiveProductline.add,
+            method:this.props.editflag?'put':'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data:data
+        }).then(data=>{
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.props.getTableData()
+            }
+            else{
+                message.info(data.data.message)
+            }
+        }).catch(error=>{
+            console.log('操作失败，请联系管理员!')
+        })
         this.handleCancel()
     }
     handleCancel(){

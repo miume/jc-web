@@ -50,8 +50,15 @@ class AddModal extends React.Component{
             endDate:undefined,
             today:undefined
         }
+        this.getAddData=this.getAddData.bind(this);
     }
     showModal = () =>{
+        this.getAddData()
+        this.setState({
+            visible:true
+        })
+    }
+    getAddData(){//获取新增默认值
         axios({
             url:`${this.url.productionBatchRule.getAllInfos}`,
             method:"get",
@@ -109,20 +116,20 @@ class AddModal extends React.Component{
                         processVal:res[i].defaultValue
                     })
                 }
-                if(res[i].rule=="槽次"){
+                if(res[i].rule=="槽次"){//根据是否启用决定是否显示
                     this.setState({
                         slot:res[i].values,
                         slotVal:res[i].defaultValue
                     })
                 }
-                if(res[i].rule=="槽号"){
+                if(res[i].rule=="槽号"){//合成工序才可显示
                     this.setState({
                         slotNum:res[i].values,
                         slotNumVal:res[i].defaultValue
                     })
                 }
             }
-            let now = new Date();
+            let now = new Date();//当前时间
             let hour = now.getHours();
             let minutes = now.getMinutes();
             let seconds = now.getSeconds();
@@ -150,12 +157,12 @@ class AddModal extends React.Component{
             var today = currentdate+" "+time;
             // console.log(today);
             this.setState({
-                visible:true,
                 nowTime:time,
                 today:today
             })
         })
     }
+
     handleCancel = ()=>{
         this.setState({
             visible:false,
@@ -163,14 +170,20 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = ()=>{
-        // console.log(this.state)
-        var data = {productionBatchInfo:{process:this.state.processVal,year:this.state.yearVal,month:this.state.monthVal,
-            productionModel:this.state.productNumVal,material:this.state.materialTypeVal,cellnum:this.state.slotNumVal,
-            startTime:this.state.nowDate,productionType:this.state.productTypeVal,serialNumber:this.state.serialNumVal,
-            productionLine:this.state.productLineVal,slotnum:this.state.slotVal,timepoint:this.state.nowTime,
-            editFlag:0
-        },endTime:this.state.endDate,startTime:this.state.nowDate,modifyTime:this.state.today,setTime:this.state.today}
-        console.log(data)
+        if(this.state.serialNumVal!=='001'){
+            message.error('流水号选择001时才可新增!')
+            return
+        }
+        let data = {
+            productionBatchInfo:{
+                process:this.state.processVal,year:this.state.yearVal,month:this.state.monthVal,
+                productionModel:this.state.productNumVal,material:this.state.materialTypeVal,cellnum:this.state.slotNumVal,
+                startTime:this.state.nowDate,productionType:this.state.productTypeVal,serialNumber:this.state.serialNumVal,
+                productionLine:this.state.productLineVal,slotnum:this.state.slotVal,timepoint:this.state.nowTime,
+                editFlag:0
+           },
+            startTime:this.state.nowDate
+        }
         axios({
             url:`${this.url.productionBatchInfo.save}`,
             method:"post",
@@ -179,9 +192,10 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-            console.log(data)
+           if(data.data.code===0){
             message.info("新增成功");
             this.props.fetch();
+           }
             this.setState({
                 visible:false,
                 nowDate:null
@@ -192,7 +206,7 @@ class AddModal extends React.Component{
             })
         })
     }
-    processChange=(e)=>{
+    processChange=(e)=>{//工序
         this.setState({
             processVal:e
         })
@@ -202,7 +216,7 @@ class AddModal extends React.Component{
             yearVal:e
         })
     }
-    productTypeChange=(e)=>{
+    productTypeChange=(e)=>{//产品类型
         this.setState({
             productTypeVal:e
         })
@@ -212,12 +226,13 @@ class AddModal extends React.Component{
             monthVal:e
         })
     }
-    serialChange=(e)=>{
+    serialChange=(e)=>{//流水号
+        console.log(e==='001')
         this.setState({
             serialNumVal:e
         })
     }
-    productNumChange=(e)=>{
+    productNumChange=(e)=>{//产品型号
         this.setState({
             productNumVal:e
         })
@@ -232,12 +247,12 @@ class AddModal extends React.Component{
             materialTypeVal:e
         })
     }
-    slotChange=(e)=>{
+    slotChange=(e)=>{//槽次
         this.setState({
             slotVal:e
         })
     }
-    slotNumChange=(e)=>{
+    slotNumChange=(e)=>{//槽号
         this.setState({
             slotNumVal:e
         })
@@ -369,7 +384,7 @@ class AddModal extends React.Component{
                                 }
                         </Select></span>
                     </div>
-                    <div className="batchAll">
+                    <div className={this.state.processVal==='合成工序'?"batchAll":'batchInfo-add-hide'}>
                         槽号：<Select id="slotNum" style={{width:"30%",marginLeft:"45px"}} value={this.state.slotNumVal} onChange={this.slotNumChange} placeholder="请选择槽号">
                                 {
                                     this.state.slotNum.map((item)=>{
@@ -379,13 +394,9 @@ class AddModal extends React.Component{
                                     })
                                 }
                         </Select>
-                        <span className="batchSelect">时间点：&nbsp;&nbsp;&nbsp;&nbsp;<TimePicker disabled value={moment(this.state.nowTime,"HH:mm:ss")} style={{width:"65%"}} onChange={this.timeChange} placeholder="请选择时间"/></span>
+                        <span className="batchSelect">时间点：&nbsp;&nbsp;&nbsp;&nbsp;<TimePicker  value={moment(this.state.nowTime,"HH:mm:ss")} style={{width:"65%"}} onChange={this.timeChange} placeholder="请选择时间"/></span>
                     </div>
-                    <div className="batchAll">
-                    <span className="endSelect">结束时间：&nbsp;&nbsp;&nbsp;&nbsp;<DatePicker locale={locale} format="YYYY-MM-DD HH:mm:ss" showTime={true}
-                                                                disabled={this.state.serialNumVal=="001"?false:true} value={this.state.endDate?moment(this.state.endDate) : null}
-                                                                onChange={this.endChange} style={{width:"170px"}} placeholder="请选择结束时间"/></span>
-                    </div>
+                   
                 </Modal>
             </span>
         )

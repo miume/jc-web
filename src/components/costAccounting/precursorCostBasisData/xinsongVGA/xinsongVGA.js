@@ -210,7 +210,7 @@ class PLCaddress extends React.Component{
                     <SearchCell name='请输入PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
                     <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange
-                    } scroll={{ y: 400 }} size="small" bordered/>
+                    } size="small" bordered/>
                 </Spin>
             </div>
         )
