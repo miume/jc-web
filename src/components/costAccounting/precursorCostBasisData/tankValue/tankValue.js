@@ -211,7 +211,7 @@ class TankValue extends React.Component{
                     />
                     <SearchCell name="请输入合成槽号" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} onChange={this.handleTableChange} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )

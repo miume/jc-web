@@ -1,17 +1,108 @@
 import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import {Modal} from 'antd'
+import {Modal,Select,Row,Col,message} from 'antd'
 import AddModal from './addModal'
+import axios from 'axios'
+const {Option}=Select
 class MaterialTypePLCMeterComAdd extends Component{
     constructor(props){
         super(props);
         this.state={
-            visible:false
+            visible:false,
+            code: undefined,
+            lineCode: undefined,
+            materialCode: undefined,
+            plcCode: undefined,
+            processCode: undefined,
+            lineData:[],
+            processData:[],
+            plcData:[],
+            materialData:[]
         }
         this.showModal=this.showModal.bind(this);
         this.handleAdd=this.handleAdd.bind(this);
         this.handleAddCancel=this.handleAddCancel.bind(this);
+        this.selectChange=this.selectChange.bind(this);
+        this.getLine=this.getLine.bind(this);
+        this.getProcess=this.getProcess.bind(this);
+        this.getPlc=this.getPlc.bind(this);
+        this.getMaterial=this.getMaterial.bind(this);
+    }
+    componentDidMount(){
+        this.getLine()
+        this.getMaterial()
+        this.getPlc()
+        this.getProcess()
+      }
+      componentWillUnmount() {
+        this.setState = () => {
+          return ;
+        }
+      }
+    getProcess(){
+        axios({
+            url:`${this.props.url.positiveProcess.all}`,
+            method:'get',
+            headers:{
+              'Authorization':this.props.url.Authorization
+          },
+          }).then((data)=>{
+            const res = data.data.data;
+           if(res){
+                this.setState({
+                    processData:res
+                })
+            }
+          })
+    }
+    getLine(){
+        axios({
+            url:`${this.props.url.positiveProductline.all}`,
+            method:'get',
+            headers:{
+              'Authorization':this.props.url.Authorization
+          },
+          }).then((data)=>{
+            const res = data.data.data;
+           if(res){
+                this.setState({
+                    lineData:res
+                })
+            }
+          })
+    }
+    getPlc(){
+        axios({
+            url:`${this.props.url.positivePlcSddress.all}`,
+            method:'get',
+            headers:{
+              'Authorization':this.props.url.Authorization
+          },
+          }).then((data)=>{
+            const res = data.data.data;
+           if(res){
+                this.setState({
+                    plcData:res
+                })
+            }
+          })
+    }
+    getMaterial(){
+        axios({
+            url:`${this.props.url.positiveMaterialType.all}`,
+            method:'get',
+            headers:{
+              'Authorization':this.props.url.Authorization
+          },
+          }).then((data)=>{
+            const res = data.data.data;
+           if(res){
+                this.setState({
+                    materialData:res
+                })
+            }
+          })
     }
     showModal(){
         this.setState({
@@ -19,14 +110,52 @@ class MaterialTypePLCMeterComAdd extends Component{
         })
     }
     handleAdd(){
-        this.setState({
-            visible:false
+        let {lineCode,plcCode,materialCode,processCode}=this.state
+        if(!lineCode||!plcCode||!materialCode||!processCode){
+            message.error('信息填写不完整!')
+            return
+        }
+        let data={
+            code: this.props.editflag?this.props.code:'',
+            lineCode: lineCode,
+            materialCode: materialCode,
+            plcCode: plcCode,
+            processCode: processCode,
+        }
+        axios({
+            url:this.props.editFlag?this.props.url.positivePlcCompare.update:this.props.url.positivePlcCompare.add,
+            method:this.props.editFlag?"put":"post",
+            headers:{
+                'Authorization':this.props.url.Authorization,
+            },
+            data:data
+        }).then(data=>{
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.props.getTableData()
+            }
+            else{
+                message.error(data.data.message)
+            }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
         })
+        this.handleAddCancel()
     }
     handleAddCancel(){
         this.setState({
-            visible:false
+            visible:false,
+            lineCode: undefined,
+            materialCode: undefined,
+            plcCode: undefined,
+            processCode: undefined
         })
+    }
+    selectChange(value,name){
+         name=name.props.name
+         this.setState({
+             [name]:value
+         })
     }
     render(){
         
@@ -45,7 +174,62 @@ class MaterialTypePLCMeterComAdd extends Component{
                         <NewButton key='ok' handleClick={this.handleAdd} className='fa fa-check' name='确定'/>
                     ]}
                 >
-                    <AddModal record={this.props.record} editflag={this.props.editflag}/>
+                    <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
+                        <Col className='imgRequire'>产线 : </Col>
+                        <Col span={18}>
+                            <Select placeholder='请选择产线'value={this.state.lineCode} style={{width:307.5}} onChange={this.selectChange}>
+                                {
+                                    this.state.lineData?this.state.lineData.map(data=>{
+                                        return(
+                                            <Option key={data.code} value={data.code}  name='lineCode' >{data.name}</Option>
+                                        )
+                                    }):null
+                                }
+                            </Select>
+                        </Col>
+                    </Row>
+                    <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
+                        <Col className='imgRequire'>所属工序 : </Col>
+                        <Col span={18}>
+                            <Select placeholder='请选择所属工序'  value={this.state.processCode} style={{width:307.5}} onChange={this.selectChange}>
+                                {
+                                    this.state.processData?this.state.processData.map(data=>{
+                                        return(
+                                            <Option key={data.code} value={data.code} name='processCode'>{data.processName}</Option>
+                                        )
+                                    }):null
+                                }
+                            </Select>
+                        </Col>
+                    </Row>
+                    <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
+                        <Col  className='imgRequire'>物料种类 : </Col>
+                        <Col span={18}>
+                            <Select placeholder='请选择物料种类' value={this.state.materialCode} style={{width:307.5}} onChange={this.selectChange}>
+                                {
+                                    this.state.materialData?this.state.materialData.map(data=>{
+                                        return(
+                                            <Option key={data.materialCode} name='materialCode' value={data.materialCode}>{data.materialName}</Option>
+                                        )
+                                    }):null
+                                }
+                            </Select>
+                        </Col>
+                    </Row>
+                    <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
+                        <Col  className='imgRequire'>PLC地址 : </Col>
+                        <Col span={18}>
+                            <Select placeholder='请选择PLC地址'  value={this.state.plcCode} style={{width:307.5}} onChange={this.selectChange}>
+                                {
+                                    this.state.plcData?this.state.plcData.map(data=>{
+                                        return(
+                                            <Option key={data.code} value={data.code} name='plcCode'>{data.plcAddress}</Option>
+                                        )
+                                    }):null
+                                }
+                            </Select>
+                        </Col>
+                    </Row>
                 </Modal>
             </span>
         );

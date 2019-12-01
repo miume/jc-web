@@ -92,6 +92,7 @@ class RawMaterialWeight extends React.Component{
                 )
             }
         }]
+        this.handleTableChange=this.handleTableChange.bind(this);
     };
 
     componentWillUnmount() {
@@ -124,7 +125,6 @@ class RawMaterialWeight extends React.Component{
             params
         }).then((data)=>{
             const res=data.data.data;
-            console.log(res)
             let dataSource = [];
             if(res&&res.list) {
                 this.pagination.total = res.total ? res.total : 0;
@@ -212,6 +212,10 @@ class RawMaterialWeight extends React.Component{
     searchEvent(){
         this.fetch()
     };
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.fetch()
+    }
     /**返回数据录入页面 */
     returnDataEntry = ()=>{
         this.props.history.push({pathname: "/precursorCostBasisData"});
@@ -241,9 +245,10 @@ class RawMaterialWeight extends React.Component{
                             cancel={this.cancel}
                             flag={true}
                         />
-                    <SearchCell name="请输入原材料名称" flag={true}/>
+                    <SearchCell name="请输入原材料名称" flag={true} searchEvent={this.searchEvent}
+                      searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} onChange={this.handleTableChange} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
                 </Spin>
             </div>
         )

@@ -1,42 +1,69 @@
 import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import  {Input,Row,Col,Modal } from 'antd'
+import  {Input,Row,Col,Modal ,message, TimePicker} from 'antd'
 import AddModal from './addModal'
+import axios from 'axios'
+import locale from 'antd/lib/date-picker/locale/zh_CN'
+import moment from 'moment'
 class StatisticalPeriodAdd extends Component{
     constructor(props){
         super(props);
         this.state={
             visible:false,
-            cycleName:'',
-            defaultDuration:'',
-            startTime:''
+            cycleName:undefined,
+            defaultDuration:undefined,
+            startTime:undefined,
+            time:undefined
         }
         this.showModal=this.showModal.bind(this);
         this.handleOk=this.handleOk.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
         this.inputChange=this.inputChange.bind(this);
         this.init=this.init.bind(this);
+        this.dateChange=this.dateChange.bind(this);
     }
-    componentDidMount() {
-        this.init();
-    }
+
     showModal(){
+        this.init()
         this.setState({
             visible:true
         })
     }
     handleOk(){
-        this.setState({
-            visible:false
-        })
+        if(this.props.data.length>=7){
+            message.error('数据不能大于7条!')
+            return
+        }
         let {cycleName,defaultDuration,startTime}=this.state;
+        if(!cycleName||!defaultDuration||!startTime){
+            message.info('信息填写不完整!')
+            return
+        }
         let params = {
-            cycleName:cycleName,
-            defaultDuration:defaultDuration,
+            code:this.props.editflag?this.props.code:'',
+            name:cycleName,
+            length:defaultDuration,
             startTime:startTime
         };
-       //console.log(params)
+        axios({
+            url:this.props.editflag?this.props.url.positiveStatic.update:this.props.url.positiveStatic.add,
+            method:this.props.editflag?'put':'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data:params
+        }).then(data=>{
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.props.getTableData()
+            }
+            else{
+                message.info(data.data.message)
+            }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
+        })
         this.handleCancel()
     }
     handleCancel(){
@@ -53,19 +80,27 @@ class StatisticalPeriodAdd extends Component{
          [name]:value
      })
     }
+    dateChange(time,timeString){
+        this.setState({
+            startTime:timeString,
+            time:time
+        })
+    }
     init(){//点击取消时，将填写的内容置空
         if(this.props.editflag){//根据editflag判断是新增还是编辑
             this.setState({
-                cycleName:this.props.record.cycleName,
-                defaultDuration:this.props.record.defaultDuration,
-                startTime:this.props.record.startTime
+                cycleName:this.props.record.name,
+                defaultDuration:this.props.record.length,
+                startTime:this.props.record.startTime,
+                time:moment(this.props.record.startTime, "HH:mm:ss")
             })
         }
         else{
             this.setState({
-                cycleName:'',
-                defaultDuration:'',
-                startTime:''
+                cycleName:undefined,
+                defaultDuration:undefined,
+                startTime:undefined,
+                time:undefined
             })
         }
     }
@@ -97,7 +132,7 @@ class StatisticalPeriodAdd extends Component{
                     </Row>
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col  className='imgRequire'>开始时刻:</Col>
-                        <Col span={18}><Input placeholder='请输入开始时刻' name='startTime' value={startTime} onChange={this.inputChange}/></Col>
+                        <Col span={18}><TimePicker locale={locale} placeholder='请输入开始时刻' value={this.state.time} style={{width:'307px'}}   onChange={this.dateChange}/></Col>
                     </Row>
                  </div>
                 </Modal>

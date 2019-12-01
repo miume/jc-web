@@ -1,15 +1,15 @@
 import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import {Modal,Row,Col,Input} from 'antd'
+import {Modal,Row,Col,Input,message} from 'antd'
 import AddModal from './addModal'
+import axios from 'axios'
 class ProcessAdd extends Component{
     constructor(props){
         super(props);
         this.state={
             visible:false,
             processName:'',
-            count:0
         }
         this.showModal=this.showModal.bind(this);
         this.handleOk=this.handleOk.bind(this);
@@ -30,7 +30,28 @@ class ProcessAdd extends Component{
             visible:false
         })
         let {processName}=this.state;
-      
+        let data={
+            code:this.props.editflag?this.props.code:'',
+            processName:processName
+        }
+        axios({
+            url:this.props.editflag?this.props.url.positiveProcess.update:this.props.url.positiveProcess.add,
+            method:this.props.editflag?'put':'post',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data:data
+        }).then(data=>{
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.props.getTableData()
+            }
+            else{
+                message.info(data.data.message)
+            }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
+        })
         this.handleCancel()
     }
     handleCancel(){
