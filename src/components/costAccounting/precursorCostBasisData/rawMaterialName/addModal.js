@@ -14,15 +14,15 @@ class AddModal extends React.Component{
             visible:false,
             dataType:undefined,//物料来源,0:默认，仓库领料，1：补料
             materialName:undefined,//原材料名称
-            source:undefined,
             materialPhase:undefined,//物相 0：默认，溶液，1：晶体
             materialTypeData:[],
-            materialType:undefined,
+            materialType:undefined,//材料类别
             pickingType:undefined,//领料方式 0：默认，手工领料，1：AGV叫料
             metal:[],//所含金属
             method:undefined,
         }
         this.getMaterialType=this.getMaterialType.bind(this);
+        this.getEditData=this.getEditData.bind(this);
     }
     componentDidMount(){
         this.getMaterialType()
@@ -31,6 +31,40 @@ class AddModal extends React.Component{
         this.setState=()=>{
             return
         }
+    }
+    getEditData(){
+        axios({
+            url:this.url.precursorRawMaterial.getOne,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{
+                id:this.props.code
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                let metal=[]
+                if(res.coFlag){
+                    metal.push('Co')
+                }
+                if(res.mnFlag){
+                    metal.push('Mn')
+                }
+                if(res.niFlag){
+                    metal.push('Ni')
+                }
+                this.setState({
+                    dataType:res.dataType,
+                    materialName:res.materialName,
+                    materialPhase:res.phaseType,
+                    materialType:res.typesCode,
+                    pickingType:res.pickingType,
+                    metal:metal
+                })
+            }
+        })
     }
     getMaterialType(){
         axios({
@@ -50,6 +84,9 @@ class AddModal extends React.Component{
     }
     showModal = () => {
         this.setState({ visible: true });
+        if(this.props.editFlag){
+            this.getEditData()
+        }
     };
     handleCancel = () =>{
         this.setState({
@@ -64,13 +101,13 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         let {materialName,dataType,materialPhase,pickingType,materialType,metal}=this.state
-        if(!materialName||(dataType!==0&&dataType!==1)||(materialPhase!==0&&materialPhase!==1)||(pickingType!==0&&pickingType!==1)||(materialType!==0&&materialType!==1)||metal.length===0){
+        if(!materialName||(dataType!==0&&dataType!==1)||(materialPhase!==0&&materialPhase!==1)||(pickingType!==0&&pickingType!==1)||(!materialType)||metal.length===0){
             message.error('信息填写不完整!')
             return
         }
         let data={
             coFlag:metal.includes('Co')?1:0,
-            //code: 0,
+            code: this.props.editFlag?this.props.code:'',
             dataType: dataType,
             materialName: materialName,
             mnFlag: metal.includes('Mn')?1:0,
@@ -80,7 +117,7 @@ class AddModal extends React.Component{
             typesCode: materialType
           }
           axios({
-            url:this.url.precursorRawMaterial.add,
+            url:this.props.editFlag?this.url.precursorRawMaterial.update:this.url.precursorRawMaterial.add,
             method:this.props.editFlag?"put":"post",
             headers:{
                 'Authorization':this.url.Authorization,
@@ -91,6 +128,11 @@ class AddModal extends React.Component{
                 message.info('操作成功!')
                 this.props.fetch()
             }
+            else{
+                message.error(data.data.message)
+            }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
         })
         this.setState({
             visible:false,
@@ -128,7 +170,6 @@ class AddModal extends React.Component{
         })
     }
     onChange = (data)=>{//所含金属
-        console.log(data)
         this.setState({
             metal:data
         })
@@ -142,7 +183,7 @@ class AddModal extends React.Component{
           ];
         return(
             <span>
-                {this.props.editFlag?<span className="blue">编辑</span>:
+                {this.props.editFlag?<span className="blue" onClick={this.showModal}>编辑</span>:
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />}
                 <Modal
                     visible={this.state.visible}
@@ -150,28 +191,28 @@ class AddModal extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title={this.props.editFlag?"编辑":"新增"}
-                    width='500px'
+                    width='400px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
                     ]}
                 >
                    <span className='tank-add-span'>原材料名称：</span>
-                   <Input value={this.state.materialName} onChange={this.nameChange} placeholder="请输入原材料名称" style={{width:"300px"}}/>
+                   <Input value={this.state.materialName} onChange={this.nameChange} placeholder="请输入原材料名称" style={{width:"250px"}}/>
                     <br /><br />
                     <span className='tank-add-span'>物料来源：</span>
-                    <Select onChange={this.change} value={this.state.dataType} placeholder="请选择物料来源" style={{width:"300px"}}>
+                    <Select onChange={this.change} value={this.state.dataType} placeholder="请选择物料来源" style={{width:"250px"}}>
                         <Select.Option value={0}>仓库领料</Select.Option>
                         <Select.Option value={1}>补料</Select.Option>
                     </Select>
                     <br /><br />
                     <span className='tank-add-span'>材料物相：</span>
-                    <Select onChange={this.PhaChange} value={this.state.materialPhase} placeholder="请选择材料物相" style={{width:"300px"}}>
+                    <Select onChange={this.PhaChange} value={this.state.materialPhase} placeholder="请选择材料物相" style={{width:"250px"}}>
                         <Select.Option value={0}>溶液</Select.Option>
                         <Select.Option value={1}>晶体</Select.Option>
                     </Select>
                     <br /><br />
-                    <span className='tank-add-span'>材料类别：</span><Select onChange={this.typeChange} value={this.state.materialType} placeholder="请选择材料类别" style={{width:"300px"}}>
+                    <span className='tank-add-span'>材料类别：</span><Select onChange={this.typeChange} value={this.state.materialType} placeholder="请选择材料类别" style={{width:"250px"}}>
                         {
                             this.state.materialTypeData?this.state.materialTypeData.map((data)=>{
                                 return(
@@ -181,10 +222,10 @@ class AddModal extends React.Component{
                         }
                     </Select>
                     <br /><br />
-                    <span className='tank-add-span'>所含金属：</span><Checkbox.Group options={options} onChange={this.onChange} value={this.state.metal} style={{width:'300px'}}></Checkbox.Group>
+                    <span className='tank-add-span'>所含金属：</span><Checkbox.Group options={options} onChange={this.onChange} value={this.state.metal} style={{width:'250px'}}></Checkbox.Group>
                     <br /><br />
                     <span className='tank-add-span'>领料方式: </span>
-                    <Select onChange={this.metChange} value={this.state.pickingType} placeholder="请选择领料方式" style={{width:"300px"}}>
+                    <Select onChange={this.metChange} value={this.state.pickingType} placeholder="请选择领料方式" style={{width:"250px"}}>
                         <Select.Option value={0}>手工领料</Select.Option>
                         <Select.Option value={1}>VGA叫点</Select.Option>
                     </Select>

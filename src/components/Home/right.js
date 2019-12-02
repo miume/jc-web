@@ -69,7 +69,7 @@ import LocationBasic from "../equipmentManagement/equipmentBasicData/locationBas
 import EquipmentProcessName from '../equipmentManagement/equipmentBasicData/processName/processName';
 import UserProcessAssignment from '../equipmentManagement/equipmentBasicData/userProcessAssignment/userProcessAssignment';
 
-import BatchInfo from "../productionManagement/batchInfo/batchInfo"
+import BatchInfo from "../productionManagement/batchMessage/batchMessage"
 import BatchSearch from "../productionManagement/batchSearch/batchSearch"
 import BatchRule from "../productionManagement/batchRule/batchRule"
 import RawMaterialInput from '../technologyCenter/rawMaterialInput/rawMaterialInput'

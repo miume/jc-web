@@ -1,0 +1,22 @@
+.batchSelect{
+    display: block;
+    float: right;
+    width: 50%;
+}
+.endSelect{
+    display: inline-block;
+    /* float: left; */
+    width: 50%;
+}
+.batchAll{
+    margin-top: 10px;
+}
+.batchInfo-edit-span{
+    display: inline-block;
+    width:95px;
+    text-align: right;
+    margin-right:10px;
+}
+.batchInfo-add-hide{
+    display: none
+}

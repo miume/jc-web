@@ -447,7 +447,7 @@ class Home extends Component {
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
             },
-
+            /**批次信息 */
             productionBatchInfo:{
                 getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
                 deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
@@ -455,9 +455,16 @@ class Home extends Component {
                 addOne:`${server}/jc/common/productionBatchInfo/addOne`,
                 updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
                 getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
-                getAllRule:`${server}/jc/common/productionBatchRule/getAll`
+                getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
+                save:`${server}/jc/common/productionBatchInfo/save`,
+                getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
+                ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
+                preview:`${server}/jc/common/productionBatchInfo/preview`
             },
-
+            /**批次追溯*/
+            productionBatchRetrospect:{
+                page:`${server}/jc/common/productionBatchRetrospect/page`
+            },
             /**批次规则 */
             productionBatchRule:{
                 getAll:`${server}/jc/common/productionBatchRule/getAll`,
@@ -584,7 +591,7 @@ class Home extends Component {
                 getOne:`${server}/jc/common/precursorRawMaterial/getOne`,
                 page:`${server}/jc/common/precursorRawMaterial/page`,
                 update:`${server}/jc/common/precursorRawMaterial/update`,
-                all:`${server}/jc/common/precursorRawMaterial/all`
+                all:`${server}/jc/common/precursorRawMaterial/all`,
             },
             /**原材料产线权重分配*/
             precursorRawmaterialLineWeight:{
@@ -665,6 +672,55 @@ class Home extends Component {
                 delete: `${server}/jc/common/processParam/delete`,
                 detail: `${server}/jc/common/processParam/detail`,
                 saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
+            },
+            /**正极基础统计周期*/
+            positiveStatic:{
+                all:`${server}/jc/common/anodeBasicDataStatPeriod/all`,
+                add:`${server}/jc/common/anodeBasicDataStatPeriod/add`,
+                update:`${server}/jc/common/anodeBasicDataStatPeriod/update`,
+                delete:`${server}/jc/common/anodeBasicDataStatPeriod/delete`
+            },
+            /**正极基础生产线*/
+            positiveProductline:{
+                all:`${server}/jc/common/anodeProductionLine/all`,
+                add:`${server}/jc/common/anodeProductionLine/add`,
+                update:`${server}/jc/common/anodeProductionLine/update`,
+                delete:`${server}/jc/common/anodeProductionLine/delete`
+            },
+            /**正极基础工序*/
+            positiveProcess:{
+                all:`${server}/jc/common/anodeProcessType/all`,
+                add:`${server}/jc/common/anodeProcessType/add`,
+                update:`${server}/jc/common/anodeProcessType/update`,
+                delete:`${server}/jc/common/anodeProcessType/delete`,
+                page:`${server}/jc/common/anodeProcessType/page`
+            },
+            /**正极基础物料种类*/
+            positiveMaterialType:{
+                all:`${server}/jc/common/anodeMaterialTypes/all`,
+                add:`${server}/jc/common/anodeMaterialTypes/add`,
+                update:`${server}/jc/common/anodeMaterialTypes/update`,
+                delete:`${server}/jc/common/anodeMaterialTypes/delete`,
+                page:`${server}/jc/common/anodeMaterialTypes/page`
+            },
+            /**正极基础plc地址*/
+            positivePlcSddress:{
+                all:`${server}/jc/common/anodePlcAddress/all`,
+                add:`${server}/jc/common/anodePlcAddress/add`,
+                update:`${server}/jc/common/anodePlcAddress/update`,
+                delete:`${server}/jc/common/anodePlcAddress/delete`,
+                page:`${server}/jc/common/anodePlcAddress/page`,
+                ids:`${server}/jc/common/anodePlcAddress/ids`,
+                getRecordById:`${server}/jc/common/anodePlcAddress/getRecordById`
+            },
+            /**正及基础物料种类plc仪表对照*/
+            positivePlcCompare:{
+                all:`${server}/jc/common/anodeMatPlcMap/all`,
+                add:`${server}/jc/common/anodeMatPlcMap/add`,
+                update:`${server}/jc/common/anodeMatPlcMap/update`,
+                delete:`${server}/jc/common/anodeMatPlcMap/delete`,
+                page:`${server}/jc/common/anodeMatPlcMap/page`,
+                ids:`${server}/jc/common/anodeMatPlcMap/ids`
             }
         };
 
