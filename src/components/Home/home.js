@@ -580,7 +580,8 @@ class Home extends Component {
                 getRecordById:`${server}/jc/common/techLineCellMap/getRecordById`,
                 ids:`${server}/jc/common/techLineCellMap/ids`,
                 page:`${server}/jc/common/techLineCellMap/page`,
-                update:`${server}/jc/common/techLineCellMap/update`
+                update:`${server}/jc/common/techLineCellMap/update`,
+                byIds:`${server}/jc/common/techLineCellMap/byIds`
             },
             /**原材料名称 */
             precursorRawMaterial:{
@@ -610,7 +611,7 @@ class Home extends Component {
                 update:`${server}/jc/common/precursorCompoundCellVolumes/update`,
                 add:`${server}/jc/common/precursorCompoundCellVolumes/add`
             },
-            //前驱体在制品统计
+            /**前驱体在制品统计*/
             precursorGoodIn:{
                 getPendSubmit:`${server}/jc/common/goodIn/page`,
                 getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
@@ -664,6 +665,13 @@ class Home extends Component {
             /**用户工序名称*/
             userProcessName: {
                 userProcess: `${server}/jc/common/userProcess`,
+            },
+            /**工艺参数*/
+            processParam: {
+                page: `${server}/jc/common/processParam/page`,
+                delete: `${server}/jc/common/processParam/delete`,
+                detail: `${server}/jc/common/processParam/detail`,
+                saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
             },
             /**正极基础统计周期*/
             positiveStatic:{

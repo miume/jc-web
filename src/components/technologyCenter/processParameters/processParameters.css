@@ -11,15 +11,17 @@
 
 .process-parameters-add-div {
     display: flex;
-    margin: 10px;
+    justify-content: space-between;
+    margin: 5px 10px;
 }
 
-.process-parameters-add-div span {
+.process-parameters-add-div-span {
     display: inline-block;
-    width: 100px;
+    width: 110px;
     text-align: right;
     font-size: 14px;
     font-weight: 500;
+    line-height: 35px;
 }
 
 .process-parameters-detail-top {
@@ -66,4 +68,19 @@
     overflow: hidden;
     justify-content: space-between;
     flex-direction: row;
+}
+
+.process-params-table-part {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0;
+}
+
+.process-params-table-part-td {
+    padding: 8px 2px !important;
+}
+
+.process-params-table-part-symbol {
+    display: inline-block;
+    margin: 3px;
 }

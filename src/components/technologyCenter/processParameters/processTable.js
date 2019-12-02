@@ -1,26 +1,15 @@
 import React from 'react';
-import {Divider, Table} from "antd";
+import axios from 'axios';
+import {Divider, Table, message} from "antd";
 import DeleteById from "../../BlockQuote/deleteById";
-import AddModal from "./addModal";
 import DetailModal from "./detail/detailModal";
 
 class ProcessTable extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
-        this.state = {
-            visible: false,
-            selectedRowKeys: []
-        };
         this.judgeOperation = this.judgeOperation.bind(this);
         this.judgeEditor = this.judgeEditor.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.onSelectChange = this.onSelectChange.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
             showSizeChanger: true,//是否可以改变 pageSize
@@ -40,8 +29,8 @@ class ProcessTable extends React.Component {
             width: '10%'
         }, {
             title: '使用车间',
-            key: 'plantName',
-            dataIndex: 'plantName',
+            key: 'deptName',
+            dataIndex: 'deptName',
             width: '10%'
         }, {
             title: '工序',
@@ -60,8 +49,8 @@ class ProcessTable extends React.Component {
             width: '12%'
         }, {
             title: '编制人',
-            key: 'preparer',
-            dataIndex: 'preparer',
+            key: 'prepareName',
+            dataIndex: 'prepareName',
             width: '12%'
         }, {
             title: '编制时间',
@@ -82,13 +71,14 @@ class ProcessTable extends React.Component {
     }
 
     render() {
-        const {selectedRowKeys} = this.state;
-        const rowSelection = {
+        let {data,selectedRowKeys} = this.props,
+            rowSelection = {
             selectedRowKeys,
-            onChange:this.onSelectChange,
+            onChange:this.props.onSelectChange,
         };
+        this.pagination.total = data ? data['total'] : 0;
         return (
-            <Table rowKey={record => record.code} dataSource={this.props.data}
+            <Table rowKey={record => record.code} dataSource={data}
                    columns={this.columns} pagination={this.pagination}
                    onChange={this.handleTableChange} rowSelection={rowSelection}
                    size={"small"} bordered/>
@@ -98,13 +88,13 @@ class ProcessTable extends React.Component {
     /**根据不同tabs页面渲染不同操作*/
     judgeOperation(status,update,deleteFlag,record) {
         //待审核和审核中 已驳回
-        if(status === '2' || status === '3' || status === '5' ) {
+        if(status === '1' || status === '2' || status === '4' ) {
             return (
                 <DetailModal data={record}/>
             )
         }
         //已通过
-        if(status === '4' ) {
+        if(status === '3' ) {
             return (
                 <span>
                     <span className='blue'>发布</span>
@@ -114,13 +104,12 @@ class ProcessTable extends React.Component {
             )
         }
         //已发布
-        if(status === '6') {
+        if(status === '5') {
             return (
                 <span>
                     <DetailModal data={record}/>
                     <Divider type='vertical'/>
-                    <AddModal flag={update}
-                              data={record} title={'复制新建'}/>
+                    <span className={'blue'}>编辑</span>
                 </span>
             )
         }
@@ -137,26 +126,35 @@ class ProcessTable extends React.Component {
     judgeEditor(flag,record) {
         return (
             <span className={flag?'':'hide'}>
-                <AddModal flag={flag}
-                          data={record} title={'编辑'}/>
+                <span className={'blue'} onClick={() =>this.props.handleAdd(record.code)}>编辑</span>
             </span>
         )
     }
 
     /**单条记录删除*/
     handleDelete(id) {
-
+        axios({
+            url: `${this.props.url.processParam.delete}/${id}`,
+            method: 'DELETE',
+            headers: {
+                'Authorization': this.props.url.Authorizaion
+            }
+        }).then((data) => {
+            message.info(data.data.message);
+            this.props.fetch();
+        })
     }
 
     /**切换分页*/
     handleTableChange(pagination) {
-        console.log(pagination)
+        this.pagination = pagination;
+        this.props.fetch(pagination);
     }
 
-    /**table checkbox选中*/
-    onSelectChange(selectedRowKeys) {
-        this.setState({ selectedRowKeys });
-        console.log(this.state.selectedRowKeys)
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 
