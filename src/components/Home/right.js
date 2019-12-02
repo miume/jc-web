@@ -41,6 +41,7 @@ import RedListManage from '../smartWarehouse/redListManage/redListManage';
 import LibraryManage from '../smartWarehouse/libraryManage/library';
 import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
+import ProcessParamAddModal from '../technologyCenter/processParameters/add/processParamAdd'
 import ExceptionHandling from '../technologyCenter/exceptionHandling/exceptionHandling';
 import ProcessParameters from '../technologyCenter/processParameters/processParameters';
 import RawStandard from '../technologyCenter/rawStandard/rawStandard';
@@ -594,6 +595,9 @@ class Right extends React.Component {
         },{
             path:'/positiveStatistic',
             component:PositiveStatistic
+        },{
+            path: '/processParamsAdd',
+            component: ProcessParamAddModal
         }];
         return (
             <div className="rightDiv">

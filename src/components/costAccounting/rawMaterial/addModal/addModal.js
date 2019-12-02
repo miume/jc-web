@@ -79,7 +79,7 @@ class AddModal extends React.Component {
             <div>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
-                <div className={'rightDiv-content'}>
+                <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} lineName={lineName}
                             selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent}/>
                     <AddTable visible={headVisible} inputChange={this.inputChange}/>
@@ -106,7 +106,7 @@ class AddModal extends React.Component {
             staticPeriod: staticPeriod,
             currentStaticPeriod: currentStaticPeriod
         });
-        if(currentStaticPeriod.code) {
+        if(currentStaticPeriod && currentStaticPeriod.code) {
             this.getPreLineName(currentStaticPeriod.code);
         }
     }
