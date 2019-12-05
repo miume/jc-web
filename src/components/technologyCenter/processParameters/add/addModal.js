@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input, Select, DatePicker, TreeSelect, Checkbox, Col} from "antd";
+import {Input, Select, DatePicker, TreeSelect, Checkbox, Col, message} from "antd";
 import NewButton from '../../../BlockQuote/newButton';
 import axios from "axios";
 import moment from "moment";
@@ -22,10 +22,13 @@ class AddModal extends React.Component{
         this.dataProcessing = this.dataProcessing.bind(this);
         this.getTreeData = this.getTreeData.bind(this);
         this.getProcess = this.getProcess.bind(this);
+        this.processChange = this.processChange.bind(this);
+        this.disabledExpiryDate = this.disabledExpiryDate.bind(this);
+        this.disabledEffectiveDate = this.disabledEffectiveDate.bind(this);
     }
     render() {
-        let {treeData,processData,plantCode} = this.state,
-            {productionData,productionLineData,code,headChange,head,disabled,
+        let {treeData,processData} = this.state,
+            {productionData,productionLineData,code,headChange,head,disabled,lines,productClass,productClassName,
             effectiveDateChange,expiryDateChange,productionLineChange,productClassChange} = this.props;
         return (
             <div>
@@ -46,7 +49,7 @@ class AddModal extends React.Component{
                             showSearch
                             name={'plantCode'}
                             style={{ width: 200 }}
-                            value={plantCode}
+                            value={head['deptName']?`${head['deptName']}-${head['plantCode']}`:undefined}
                             treeCheckStrictly={true}
                             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                             treeData={treeData}
@@ -61,39 +64,39 @@ class AddModal extends React.Component{
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span'>生效日期：</span>
                         <DatePicker name={'effectiveDate'} value={head['effectiveDate'] ? moment(head['effectiveDate']) : null} placeholder={'请选择生效日期'} onChange={effectiveDateChange}
-                                    showTime format="YYYY-MM-DD HH:mm:ss" style={{width: 200}}/>
+                                    showTime format="YYYY-MM-DD HH:mm:ss" disabledDate={this.disabledEffectiveDate} style={{width: 200}}/>
                     </div>
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span'>失效日期：</span>
                         <DatePicker name={'expiryDate'} value={head['expiryDate'] ? moment(head['expiryDate']) : null} placeholder={'请选择失效日期'} onChange={expiryDateChange}
-                                    showTime format="YYYY-MM-DD HH:mm:ss" style={{width: 200}}/>
+                                    showTime format="YYYY-MM-DD HH:mm:ss" disabledDate={this.disabledExpiryDate} style={{width: 200}}/>
                     </div>
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span'>工序：</span>
-                        <Select name={'processCode'} value={head['processCode'] ? head['processCode'].toString() : ''} disabled={disabled} onChange={this.props.processChange} style={{width: 200}} placeholder={'请选择工序'}>
+                        <Select name={'processCode'} value={head['processCode'] ? head['processCode'].toString() : undefined} disabled={disabled} onChange={this.processChange} style={{width: 200}} placeholder={'请选择工序'}>
                             {
                                 processData ? processData.map(e => e) : null
                             }
                         </Select>
                     </div>
                 </div>
-                <div className={code === 50 || code === 47 ? '' : 'hide'}>
+                <div className={code === 50 || code === 48 ? '' : 'hide'}>
                     <div className='process-parameters-add-div'>
                         <div className='process-parameters-add-div'>
                             <span className='process-parameters-add-div-span'>生产品种：</span>
-                            <Select style={{width: 200}} placeholder={'请选择'} onChange={productClassChange}>
+                            <Select style={{width: 200}} value={productClass?`${productClass}-${productClassName}`:undefined} placeholder={'请选择'} onChange={productClassChange}>
                                 {
-                                    productionData ? productionData.map(e => e) : null
+                                    productionData ? productionData.map(e => <Option key={e.code} value={`${e.code}-${e.ruleDesc}`}>{e.ruleDesc}</Option>) : null
                                 }
                             </Select>
                         </div>
                     </div>
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span' style={{marginLeft:20}}>生产线：</span>
-                        <Checkbox.Group style={{ width: '100%',lineHeight:'30px'}} onChange={productionLineChange}>
+                        <Checkbox.Group style={{ width: '100%',lineHeight:'30px'}} value={lines} onChange={productionLineChange}>
                             {
                                 productionLineData ? productionLineData.map(e => {
-                                    return <Col span={2} key={e.code}><Checkbox value={`${e.code}-${e.name}`}>{e.name}</Checkbox></Col>
+                                    return <Col span={2} key={e.code}><Checkbox value={e.code}>{e.name}</Checkbox></Col>
                                 }) : null
                             }
                         </Checkbox.Group>
@@ -210,6 +213,34 @@ class AddModal extends React.Component{
             });
             this.props.plantCodeChange(value)
         }
+    }
+
+    processChange(value) {
+        value = parseInt(value);
+        if(value === 50 && !this.props.head['plantCode']) {
+            message.info('陈化新增，请先选择使用车间！');
+            return
+        }
+        if(value === 48 || value === 49 || value === 50) {
+            this.setState({
+                processCode: value.toString()
+            });
+            this.props.processChange(value);
+        } else if(value === 47) {
+            message.info('净前统一用净后标准，请重新选择！')
+        } else {
+            message.info('暂无标准，请重新选择！')
+        }
+    }
+
+    disabledEffectiveDate(current) {
+        let {head} = this.props;
+        return current && current >= moment(head['expiryDate'],'YYYY-MM-DD');
+    }
+
+    disabledExpiryDate(current) {
+        let {head} = this.props;
+        return current && current <= moment(head['effectiveDate'],'YYYY-MM-DD');
     }
 
     /**对应新增确认取消 */

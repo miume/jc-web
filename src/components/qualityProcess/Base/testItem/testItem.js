@@ -262,7 +262,6 @@ class TestItem extends React.Component{
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
-       // console.log(ids);
         axios({
             url:`${this.url.testItems.testItems}`,
             method:'Delete',
@@ -273,7 +272,6 @@ class TestItem extends React.Component{
             type:'json'
         })
         .then((data)=>{
-         // console.log(data);
           message.info(data.data.message);
           this.fetch();
           this.setState({
@@ -360,7 +358,6 @@ class TestItem extends React.Component{
       //根据用户名称分页查询
       searchEvent(){
            const testItemName=this.state.searchContent;
-          // console.log(this.pagination);
            axios({
              url:`${this.url.testItems.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
@@ -393,10 +390,8 @@ class TestItem extends React.Component{
            });
       }
       judgeOperation(operation,operationCode){
-        //console.log(operation)
         if(operation===null) return false
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
-        //console.log(flag)
         return flag.length>0?true:false
     }
    render(){
@@ -405,13 +400,7 @@ class TestItem extends React.Component{
        const {selectedRowKeys}=this.state;
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
-            selectedRowKeys,
-            onSelect() {
-              // console.log(record, selected, selectedRows);
-            },
-            onSelectAll() {
-              // console.log(selected, selectedRows, changeRows);
-            },
+            selectedRowKeys
         };
         const components={
             body:{

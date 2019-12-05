@@ -108,7 +108,7 @@ class CostProcessAdd extends Component {
         })
         this.getLineNameByPeriod(periodCode ? periodCode : null)
        }
-     
+
     }
     returnProcess() {//点击返回在制品统计界面
         this.props.history.push({ pathname: '/processStatistics' })
@@ -311,7 +311,7 @@ class CostProcessAdd extends Component {
         this.setState({
             addData:addData
         })
-      
+
     }
     otherSelectChange(tabKey,name,value){
      //name是下拉框对应的第几条记录,value对应的是选的option的value即code
@@ -352,11 +352,11 @@ class CostProcessAdd extends Component {
                 })
                 this.props.history.push({pathname:'/processStatistics'})
             }
-           
+
         }).catch(()=>{
             message.info('新增失败!')
         })
-        
+
     }
     submit() {//提交需要所有空缺都填完整
         let {addData,otherFlag,otherData}=this.state
@@ -390,7 +390,7 @@ class CostProcessAdd extends Component {
                             message.info('陈化工序信息填写不完整!')
                             return
                         }
-                    }          
+                    }
                 }
                 else if(i===4){//烘干
                     for(let j=0;j<data[i].materialDetails.length;j++){

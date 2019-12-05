@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {message } from 'antd';
-import PurchaseModal from "../dataEntry/purchaseCheckReport/purchaseModal";
+import PurchaseModal from "../../dataEntry/purchaseCheckReport/purchaseModal";
 class CheckUnqualifiedTrack extends React.Component{
     componentDidMount(){
         this.getDetailData();
@@ -44,19 +44,13 @@ class CheckUnqualifiedTrack extends React.Component{
             },
         }).then((data)=>{
             const detail = data.data.data;
-            console.log(data)
             if(detail){
                 //  进货数据组装
-                var headData = [];
-                var tbodyData = [];
-                var judger = '';
-                var judgement = '';
-                var topData = {};
-                topData = detail.details.unqualifiedHead;
-                console.log(topData)
-                let detailHead = detail.details.standard;
-                for(var i=0; i<detailHead.length; i++){
-                    var item = detailHead[i].split(',');
+                let headData = [],tbodyData = [],judger = '',judgement = '',
+                    topData = detail.details.unqualifiedHead,
+                    detailHead = detail.details.standard;
+                for(let i=0; i<detailHead.length; i++){
+                    let item = detailHead[i].split(',');
                     headData.push({
                         id: i,
                         testItem: item[0],
@@ -64,11 +58,9 @@ class CheckUnqualifiedTrack extends React.Component{
                         rawTestItemStandard: item[2],
                     })
                 }
-                let detailTbody = detail.details.unqualifiedData;
-                var index = 0
-                for(var key in detailTbody){
-                    var items = detailTbody[key];
-                    var tbodyMiddleData = {};
+                let detailTbody = detail.details.unqualifiedData,index = 0;
+                for(let key in detailTbody){
+                    let items = detailTbody[key],tbodyMiddleData = {};
                     items.map((e,index) => {
                         tbodyMiddleData[index] = {
                             'isValid':e.isValid,
@@ -96,8 +88,6 @@ class CheckUnqualifiedTrack extends React.Component{
                         topData: topData,
                     },
                     visible: true,
-                },()=>{
-                    console.log(this.state.checkData)
                 })
             }else{
                 message.info('查询数据为空，请联系管理员')

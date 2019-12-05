@@ -220,7 +220,6 @@ class ProductProcess extends React.Component{
          type:'json'
         })
         .then((data)=>{
-          //console.log(data);
           message.info(data.data.message);
           this.fetch();
         })
@@ -297,7 +296,6 @@ class ProductProcess extends React.Component{
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();
-            //console.log(data);
             axios({
               url:`${this.url.productionProcess.productionProcess}`,
               method:'put',
@@ -308,9 +306,7 @@ class ProductProcess extends React.Component{
               type:'json'
             })
             .then((data)=>{
-              // console.log(data);
               message.info(data.data.message);
-              //this.fetch();
               if(data.data.code===0){//仅当返回成功时，才改变数据
                   this.setState({dataSource: newData,});
               }
@@ -337,7 +333,6 @@ class ProductProcess extends React.Component{
       //根据用户名称分页查询
       searchEvent(){
            const name=this.state.searchContent;
-           //console.log(username);
            axios({
              url:`${this.url.productionProcess.search}`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
@@ -381,13 +376,7 @@ class ProductProcess extends React.Component{
         const {selectedRowKeys}=this.state;
         const rowSelection = {//checkbox
             onChange:this.onSelectChange,
-            selectedRowKeys,
-            onSelect() {
-              // console.log(record, selected, selectedRows);
-            },
-            onSelectAll() {
-              // console.log(selected, selectedRows, changeRows);
-            },
+            selectedRowKeys
         };
         const components={
             body:{

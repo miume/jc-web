@@ -72,7 +72,6 @@ class MaterialPLC extends React.Component{
     };
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.matPlcMap.matPlcMap}`,
             method:"delete",
@@ -89,7 +88,6 @@ class MaterialPLC extends React.Component{
     };
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.matPlcMap.ids}`,
             method:'delete',
@@ -99,7 +97,6 @@ class MaterialPLC extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
@@ -153,26 +150,24 @@ class MaterialPLC extends React.Component{
             params:params
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             this.pagination.total=res&&res.total?res.total:0
            if(res &&res.list){
                 for(var i = 1; i<=res.list.length; i++){
                     res.list[i-1]['index']=(res.page-1)*res.size+i;
                 }
            }
-            
+
             this.setState({
                 data:res.list,
                 searchContent:'',
                 loading:false,
-                
+
             })
-            
+
         })
     }
      /**实现全选 */
     onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -200,7 +195,7 @@ class MaterialPLC extends React.Component{
         this.setState({
             searchFlag:1
         })
-       
+
     };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -221,7 +216,7 @@ class MaterialPLC extends React.Component{
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
-                    <DeleteByIds 
+                    <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.start}
                         cancel={this.cancel}

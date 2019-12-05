@@ -18,9 +18,9 @@ class MainIngredient extends React.Component {
             render: (text,record) => {
                 return (
                     <span style={{display:'flex'}}>
-                        <Input name={`zy-niMax-${record.index}`} onChange={this.props.inputChange} placeholder='请输入上限'/>
+                        <Input name={`zy-niMax-${record.index}-float`} value={text} onChange={this.props.inputChange} placeholder='请输入上限'/>
                         <span className='process-params-table-part-symbol'>~</span>
-                        <Input  name={`zy-niMin-${record.index}`} onChange={this.props.inputChange} placeholder='请输入下限'/>
+                        <Input  name={`zy-niMin-${record.index}-float`} value={record['niMin']} onChange={this.props.inputChange} placeholder='请输入下限'/>
                     </span>
                 )
             },
@@ -33,9 +33,9 @@ class MainIngredient extends React.Component {
             render: (text,record) => {
                 return (
                     <span style={{display:'flex'}}>
-                        <Input name={`zy-coMax-${record.index}`} onChange={this.props.inputChange} placeholder='请输入上限'/>
+                        <Input name={`zy-coMax-${record.index}-float`} value={text} onChange={this.props.inputChange} placeholder='请输入上限'/>
                         <span className='process-params-table-part-symbol'>~</span>
-                        <Input  name={`zy-coMin-${record.index}`} onChange={this.props.inputChange} placeholder='请输入下限'/>
+                        <Input  name={`zy-coMin-${record.index}-float`} value={record['coMin']} onChange={this.props.inputChange} placeholder='请输入下限'/>
                     </span>
                 )
             },
@@ -48,9 +48,9 @@ class MainIngredient extends React.Component {
             render: (text,record) => {
                 return (
                     <span style={{display:'flex'}}>
-                        <Input name={`zy-mnMax-${record.index}`} onChange={this.props.inputChange} placeholder='请输入上限'/>
+                        <Input name={`zy-mnMax-${record.index}-float`} value={text} onChange={this.props.inputChange} placeholder='请输入上限'/>
                         <span className='process-params-table-part-symbol'>~</span>
-                        <Input  name={`zy-mnMin-${record.index}`} onChange={this.props.inputChange} placeholder='请输入下限'/>
+                        <Input  name={`zy-mnMin-${record.index}-float`} value={record['mnMin']} onChange={this.props.inputChange} placeholder='请输入下限'/>
                     </span>
                 )
             },
@@ -67,7 +67,7 @@ class MainIngredient extends React.Component {
     }
 
     render() {
-        let {data,liquidChange} = this.props;
+        let {data,zyDetail,liquidChange} = this.props;
         return (
             <div>
                 <NewButton handleClick={this.props.add} name='新增' className='fa fa-plus'/>
@@ -75,7 +75,7 @@ class MainIngredient extends React.Component {
                        pagination={false} bordered size={'small'}/>
                 <div style={{marginTop:5}}>
                     <span>Zr(g/L)：</span>
-                    <Input name={'zrStandard'} onChange={liquidChange} style={{width:100}}/> ± <Input name={'zrBias'} onChange={liquidChange} style={{width:100}}/>
+                    <Input name={'zrStandard-int'} value={zyDetail['zrStandard']} onChange={liquidChange} style={{width:100}}/> ± <Input name={'zrBias-int'} value={zyDetail['zrBias']} onChange={liquidChange} style={{width:100}}/>
                 </div>
             </div>
         )

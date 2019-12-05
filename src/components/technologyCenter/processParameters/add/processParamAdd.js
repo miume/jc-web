@@ -29,7 +29,10 @@ class ProcessParamAddModal extends React.Component {
             productionData: [],
             productionLineData: [],
             head: {},
+            deviceData: [],    //陈化-生产设备数据
             loading: false,
+            lines: [],                //净后即陈化 生产线
+            productClass: undefined,  //净后即陈化 生产品种
         };
         this.saveData = this.saveData.bind(this);
         this.headChange = this.headChange.bind(this);
@@ -38,6 +41,7 @@ class ProcessParamAddModal extends React.Component {
         this.addDetail = this.addDetail.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.inputChange = this.inputChange.bind(this);
+        this.choiceTemplate = this.choiceTemplate.bind(this);
         this.getDetailById = this.getDetailById.bind(this);
         this.initialAddData = this.initialAddData.bind(this);
         this.textAreaChange = this.textAreaChange.bind(this);
@@ -55,6 +59,7 @@ class ProcessParamAddModal extends React.Component {
         this.addExceptionDisposes = this.addExceptionDisposes.bind(this);
         this.deleteExceptionDisposes = this.deleteExceptionDisposes.bind(this);
         this.processExceptionDisposes = this.processExceptionDisposes.bind(this);
+        this.hcProductionLineChange = this.hcProductionLineChange.bind(this);
         this.liquidChange = this.liquidChange.bind(this);
         this.equipmentChange = this.equipmentChange.bind(this);
         this.expiryDateChange = this.expiryDateChange.bind(this);
@@ -62,13 +67,18 @@ class ProcessParamAddModal extends React.Component {
         this.productionLineChange = this.productionLineChange.bind(this);
         this.productClassChange = this.productClassChange.bind(this);
         this.applySaveAndReview = this.applySaveAndReview.bind(this);
+        this.intInputChange = this.intInputChange.bind(this);
+        this.floatInputChange = this.floatInputChange.bind(this);
+        this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.getDeviceByDeptCode = this.getDeviceByDeptCode.bind(this);
     }
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {processCode,detail,exceptionDisposes,mediate,components,devices,productionData,productionLineData,head,loading,disabled} = this.state,
+            {processCode,detail,exceptionDisposes,mediate,components,devices, proAndLines,zyDetail,lines,productClass,productClassName,mediateMemo,processParamsMemo,
+            productionData,productionLineData,head,loading,disabled,deviceData,chMoment} = this.state,
             data = this.processExceptionDisposes(exceptionDisposes),
             mediateData = this.processExceptionDisposes(mediate),
             componentsData = this.processExceptionDisposes(components),
@@ -79,13 +89,13 @@ class ProcessParamAddModal extends React.Component {
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-add-content'}>
                     <AddModal head={head} code={processCode} disabled={disabled} url={this.url} headChange={this.headChange} processChange={this.processChange} plantCodeChange={this.plantCodeChange} productionLineChange={this.productionLineChange}
-                              productionData={productionData} productionLineData={productionLineData} effectiveDateChange={this.effectiveDateChange} expiryDateChange={this.expiryDateChange} productClassChange={this.productClassChange}/>
-                    <Synthesis code={processCode} url={this.url} detail={detail} data={data} mediateData={mediateData}
+                              lines={lines} productClass={productClass} productClassName={productClassName} productionData={productionData} productionLineData={productionLineData} effectiveDateChange={this.effectiveDateChange} expiryDateChange={this.expiryDateChange} productClassChange={this.productClassChange}/>
+                    <Synthesis code={processCode} url={this.url} detail={detail} data={data} mediateData={mediateData} proAndLines={proAndLines} memo={processParamsMemo} mediateMemo={mediateMemo}
                                addDetail={this.addDetail} addMediateItem={this.addMediateItem} inputChange={this.inputChange} deleteItem={this.deleteItem} textAreaChange={this.textAreaChange}
-                               deleteMediateItem={this.deleteMediateItem} addExceptionDisposes={this.addExceptionDisposes} deleteExceptionDisposes={this.deleteExceptionDisposes}
-                               memoChange={this.memoChange}/>
-                    <Liquid code={processCode} components={componentsData} inputChange={this.textAreaChange} liquidChange={this.liquidChange} add={this.addComponentsItem} deleteItems={this.deleteComponentsItem}/>
-                    <AgedWashing code={processCode} url={this.url} inputChange={this.textAreaChange} memoChange={this.memoChange} equipmentChange={this.equipmentChange} data={devicesData} add={this.addDevicesItem} deleteItem={this.deleteDevicesItem}/>
+                               deleteMediateItem={this.deleteMediateItem} addExceptionDisposes={this.addExceptionDisposes} deleteExceptionDisposes={this.deleteExceptionDisposes} choiceTemplate={this.choiceTemplate}
+                               memoChange={this.memoChange} productClassChange={this.productClassChange} linesChange={this.hcProductionLineChange} productionData={productionData} productionLineData={productionLineData}/>
+                    <Liquid code={processCode} components={componentsData} zyDetail={zyDetail} inputChange={this.textAreaChange} liquidChange={this.liquidChange} add={this.addComponentsItem} deleteItems={this.deleteComponentsItem}/>
+                    <AgedWashing code={processCode} deviceData={deviceData} chMoment={chMoment} inputChange={this.textAreaChange} memoChange={this.memoChange} equipmentChange={this.equipmentChange} data={devicesData} add={this.addDevicesItem} deleteItem={this.deleteDevicesItem}/>
                 </Spin>
 
                 <div className='raw-material-add-footer-bottom'>
@@ -107,7 +117,6 @@ class ProcessParamAddModal extends React.Component {
         } else {
             this.initialAddData();
         }
-
         this.getProduction();
         this.getProductionLine();
     }
@@ -130,23 +139,20 @@ class ProcessParamAddModal extends React.Component {
                 "flowStandard2": 0,
                 "nitrogenFlowBias": 0,
                 "nitrogenFlowStandard": 0,
-                "processCode": 0,
-                "productionCode": 0,
                 "rotateSpeedBias": 0,
                 "rotateSpeedStandard": 0,
                 "sizeD30Bias": 0,
                 "sizeD30Standard": 0,
-                "sizeD70": "",
-                "sizeD90": "",
+                "sizeD70": "0",
+                "sizeD90": "0",
                 "solidContainingContentBias": 0,
                 "solidContainingContentStandard": 0,
                 "temperatureBias": 0,
                 "temperatureStandard": 0
             }, exceptionDisposesItems = {
                 "phenomenon": "",
-                "processCode": 0,
-                "processMode": "",
                 "reason": "",
+                "processMode": "",
                 "relatedProductionProcess": ""
             }, mediateItem = {
                 "frequency": "",
@@ -156,13 +162,12 @@ class ProcessParamAddModal extends React.Component {
             }, componentsItem = {
                 "coMax": 0,
                 "coMin": 0,
-                "code": 0,
                 "mnMax": 0,
                 "mnMin": 0,
                 "niMax": 0,
                 "niMin": 0,
             }, devicesItem = {
-                "processCode": 0,
+                "deviceCode": "",
                 "techParameters": ""
             }, head = {
                 "dateOfFiling": moment(date).format('YYYY-MM-DD HH:mm:ss'),
@@ -171,31 +176,36 @@ class ProcessParamAddModal extends React.Component {
                 "expiryDate": "",
                 "plantCode": '',
                 "preparer": userId,
-                "processCode": 0,
+                "processCode": '',
                 "processNum": "",
                 "statusFlag": "0"
             }, zyDetail = {
-                "ca": "",
-                "cd": "",
+                "ca": "0",
+                "cd": "0",
                 "comment": "",
-                "fe": "",
+                "fe": "0",
                 "highBias": 0,
                 "highStandard": 0,
-                "mg": "",
+                "mg": "0",
                 "stirTimeBias": 0,
                 "stirTimeStandard": 0,
                 "temperatureBias": 0,
                 "temperatureStandard": 0,
-                "zn": "",
+                "zn": "0",
                 "zrBias": 0,
                 "zrStandard": 0
-            },
+            },proAndLinesItems = {  //工艺参数（生产品种和生产线）
+                lines: [],
+                productClass: '',
+                productClassName: ''
+            }, proAndLines = [],
             detail = [],exceptionDisposes = [],mediate = [], components = [],devices = [];
-        detail.push(item);
-        exceptionDisposes.push(JSON.parse(JSON.stringify(exceptionDisposesItems)));
-        mediate.push(JSON.parse(JSON.stringify(mediateItem)));
-        components.push(JSON.parse(JSON.stringify(componentsItem)));
-        devices.push(JSON.parse(JSON.stringify(devicesItem)));
+        detail.push(item);                                              //合成-工艺参数表格数据
+        exceptionDisposes.push(JSON.parse(JSON.stringify(exceptionDisposesItems)));  //合成-异常处理表格数据
+        mediate.push(JSON.parse(JSON.stringify(mediateItem)));           //合成-中间品表格数据
+        components.push(JSON.parse(JSON.stringify(componentsItem)));     //制液主成分表格数据
+        devices.push(JSON.parse(JSON.stringify(devicesItem)));           //陈化表格数据
+        proAndLines.push(JSON.parse(JSON.stringify(proAndLinesItems)));  //合成-工艺参数（生产品种和生产线）
         this.setState({
             item: item,
             detail: detail,
@@ -208,10 +218,13 @@ class ProcessParamAddModal extends React.Component {
             devices: devices,
             devicesItem: devicesItem,
             head: head,
-            zyDetail: zyDetail
+            zyDetail: zyDetail,
+            proAndLines: proAndLines,
+            proAndLinesItems: proAndLinesItems,
         });
     }
 
+    /**编辑*/
     getDetailById(id) {
         this.setState({
             loading: true
@@ -223,14 +236,50 @@ class ProcessParamAddModal extends React.Component {
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            let res = data.data.data, head = res['head'];
-            console.log(head)
+            let res = data.data.data;
+            if (data.data.code === 0) {
+                let head = res['head'], {processName, processCode, plantCode} = head,
+                    proAndLine = res['proAndLine'], {lines, productClass, productClassName} = proAndLine;
+                head['deptName'] = res['deptName'];
+                if (processName === '制液') {
+                    let {components, detail} = res['zy'];
+                    this.setState({
+                        components: components,
+                        zyDetail: detail,
+                        lines: lines,
+                        productClass: productClass,
+                        productClassName: productClassName
+                    })
+                } else if (processName === '陈化洗涤') {
+                    let {devices, detail} = res['ch'];
+                    this.setState({
+                        devices: devices,
+                        chMoment: detail ? detail['comment'] : '',
+                        lines: lines,
+                        productClass: productClass,
+                        productClassName: productClassName
+                    });
+                    this.getDeviceByDeptCode(plantCode);
+                } else {
+                    let {gy, exceptionDisposes, zjp} = res['hc'];
+                    this.setState({
+                        mediate: zjp['mediate'],
+                        mediateMemo: zjp['memo'],
+                        exceptionDisposes: exceptionDisposes,
+                        detail: gy['details'],
+                        processParamsMemo: gy['memo'],
+                        proAndLines: gy['proAndLines']
+                    })
+                }
+                this.setState({
+                    head: head,
+                    processCode: processCode,
+                    disabled: true
+                })
+            }
             this.setState({
-                head: head,
-                processCode: head['processCode'],
-                disabled: true,
                 loading: false
-            })
+            });
         })
     }
 
@@ -252,7 +301,7 @@ class ProcessParamAddModal extends React.Component {
                     )
                 }
                 this.setState({
-                    productionData: productionData
+                    productionData: res
                 })
             }
         });
@@ -274,6 +323,24 @@ class ProcessParamAddModal extends React.Component {
                 })
             }
         })
+    }
+
+    /**通过车间code和工序code查询陈化-生产设备*/
+    getDeviceByDeptCode(id) {
+        axios({
+            url: `${this.url.deviceProcess.getDeviceByDeptCode}?deptId=${id}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            const res = data.data.data ? data.data.data : [];
+            if (res) {
+                this.setState({
+                    deviceData: res
+                })
+            }
+        });
     }
 
     /**监控新增表头的变化(编号，版次)*/
@@ -304,45 +371,57 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**监控工序的变化*/
+    /**监控表头工序的变化*/
     processChange(value) {
-        value = parseInt(value);
         let {head} = this.state;
         head['processCode'] = value;
         this.setState({
             processCode: value,
             head: head
-        })
+        });
+        //如果使用车间code和工序code都存在，则查询陈化-生产设备
+        if(value === 50) {
+            if(head['plantCode']) {
+                this.getDeviceByDeptCode(head['plantCode']);
+            } else {
+                message.info('新增陈化数据，请先选择使用车间');
+            }
+        }
     }
 
-    /**监控使用车间的变化*/
+    /**监控表头使用车间的变化*/
     plantCodeChange(value) {
-        let {head} = this.state;
-        head['plantCode'] = value.split('-')[1];
+        let {head} = this.state, val = value.split('-');
+        head['plantCode'] = val[1];
+        head['deptName'] = val[0];
         this.setState({
             head: head
-        })
+        });
     }
 
-    /**新增工艺参数数据*/
+    /**新增合成-工艺参数数据（表格数据以及生产品种和生产线）*/
     addDetail() {
-        let {item,detail} = this.state;
+        let {item,detail,proAndLinesItems,proAndLines} = this.state;
         detail.push(item);
+        proAndLines.push(proAndLinesItems)
         this.setState({
-            detail: detail
+            detail: detail,
+            proAndLines: proAndLines
         })
     }
 
-    /**删除指定一条工艺参数*/
+    /**删除合成-指定一条工艺参数*/
     deleteItem(index) {
-        let {detail} = this.state;
+        let {detail,proAndLines} = this.state;
         detail.pop(index-1);
+        proAndLines.pop(index-1);
         this.setState({
-            detail: detail
+            detail: detail,
+            proAndLines: proAndLines
         })
     }
 
-    /**新增异常处理数据*/
+    /**新增合成-异常处理数据*/
     addExceptionDisposes() {
         let {exceptionDisposesItems,exceptionDisposes} = this.state;
         exceptionDisposes.push(JSON.parse(JSON.stringify(exceptionDisposesItems)));
@@ -351,7 +430,7 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**删除指定一条工艺参数*/
+    /**删除合成-指定一条工艺参数*/
     deleteExceptionDisposes(index) {
         let {exceptionDisposes} = this.state;
         exceptionDisposes.pop(index-1);
@@ -368,7 +447,7 @@ class ProcessParamAddModal extends React.Component {
         return data;
     }
 
-    /**新增中间品标准*/
+    /**新增合成中间品标准*/
     addMediateItem() {
         let {mediateItem,mediate} = this.state;
         mediate.push(JSON.parse(JSON.stringify(mediateItem)));
@@ -377,7 +456,7 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**删除中间品标准一条数据*/
+    /**删除合成-中间品标准一条数据*/
     deleteMediateItem(index) {
         let {mediate} = this.state;
         mediate.pop(index-1);
@@ -386,7 +465,7 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**新增主成分标准*/
+    /**新增制液-主成分标准*/
     addComponentsItem() {
         let {componentsItem,components} = this.state;
         components.push(JSON.parse(JSON.stringify(componentsItem)));
@@ -395,7 +474,7 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**删除主成分一条数据*/
+    /**删除制液-主成分一条数据*/
     deleteComponentsItem(index) {
         let {components} = this.state;
         components.pop(index-1);
@@ -404,7 +483,7 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**新增主成分标准*/
+    /**新增陈化-表格数据*/
     addDevicesItem() {
         let {devicesItem,devices} = this.state;
         devices.push(JSON.parse(JSON.stringify(devicesItem)));
@@ -413,7 +492,7 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**删除主成分一条数据*/
+    /**删除陈化-表格一条数据*/
     deleteDevicesItem(index) {
         let {devices} = this.state;
         devices.pop(index-1);
@@ -425,21 +504,37 @@ class ProcessParamAddModal extends React.Component {
     /**统一监控工艺参数的input框变化*/
     inputChange(e) {
         let target = e.target, value = target.value,  tar = target.name.split('-'),
-            name = tar[0], index = tar[1], {detail} = this.state;
-        if(typeof value === 'number') value = value.toString();
-        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+            name = tar[0], index = tar[1], type = tar[2] ? tar[2] : '', {detail} = this.state;
+        if(type === 'int') {
+            value = this.intInputChange();
+        } else if(type === 'float') {
+            value = this.floatInputChange(value,name)
+        }
         detail[index-1][name] = value;
         this.setState({
             detail: detail
         })
     }
 
+    /**只准输入数字*/
+    intInputChange(value) {
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d]/g, "");  //只准输入数字
+        return value;
+    }
+
+    /**（只准输入数字和小数点）*/
+    floatInputChange(value) {
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        return value;
+    }
+
     /**统一监控异常处理、中间品标准、主成分（制液）、陈化洗涤的textArea框变化*/
     textAreaChange(e) {
         let target = e.target, value = target.value,  tar = target.name.split('-'),
-            obj = tar[0] ,name = tar[1], index = tar[2],
+            obj = tar[0] ,name = tar[1], index = tar[2], type = tar[3] ? tar[3] : '',
             {exceptionDisposes,mediate,components,devices} = this.state;
-
         if(obj === 'hc') {  //合成
             exceptionDisposes[index-1][name] = value;
             this.setState({
@@ -456,14 +551,17 @@ class ProcessParamAddModal extends React.Component {
                 devices: devices
             })
         } else {
-            components[index-1][name] = value;  //制液
+            if(type === 'float') {
+                value = this.floatInputChange(value);
+            }
+            components[index-1][name] = value;  //制液(主成分)
             this.setState({
                 components: components
             })
         }
     }
 
-    /**监控中间品-memo的变化*/
+    /**监控合成-中间品-memo的变化*/
     memoChange(e) {
         let target = e.target, name = target.name, value = target.value
         this.setState({
@@ -473,7 +571,11 @@ class ProcessParamAddModal extends React.Component {
 
     /**监控制液表格之外所有input框值的变化*/
     liquidChange(e) {
-        let target = e.target, name = target.name, value = target.value, {zyDetail} = this.state;
+        let target = e.target, tar = target.name.split('-'), value = target.value, {zyDetail} = this.state,
+        name = tar[0], type = tar[1] ? tar[1] : '';
+        if(type === 'int') {
+            value = this.intInputChange(value);
+        }
         zyDetail[name] = value;
         this.setState({
             zyDetail: zyDetail
@@ -482,29 +584,54 @@ class ProcessParamAddModal extends React.Component {
 
     /**监控生产线变化*/
     productionLineChange(value) {
-        let lines = [];
-        for(let i = 0; i < value.length; i++) {
-            let val = value[i].split('-');
-            lines.push({
-                code: val[0],
-                name: val[1]
-            })
-        }
         this.setState({
-            lines: lines
+            lines: value
+        })
+    }
+
+    /**监控合成-生产线的变化*/
+    hcProductionLineChange(index,value) {
+        let {proAndLines} = this.state;
+        proAndLines[index]['lines'] = value;
+        this.setState({
+            proAndLines: proAndLines
         })
     }
 
     /**监控生产品种的变化*/
-    productClassChange(value) {
-        this.setState({
-            productClass: parseInt(value)
-        })
+    productClassChange(value,option) {
+        let val = value.split('-'), index = option.props.name;
+        if(index === undefined) {
+            this.setState({
+                productClass: val[0],
+                productClassName: val[1]
+            })
+        } else {  //合成-生产品种的变化
+            let {proAndLines} = this.state;
+            proAndLines[index]['productClass'] = val[0];
+            proAndLines[index]['productClassName'] = val[1];
+            this.setState({
+                proAndLines: proAndLines
+            })
+        }
     }
 
     /**监控陈化洗涤-生产设备下拉框变化*/
     equipmentChange(value,option) {
-        console.log(value,option)
+        let index = option.props.name, {devices} = this.state;
+        devices[index-1]['deviceCode'] = value;
+        this.setState({
+            devices: devices
+        })
+    }
+
+    /**合成-异常处理-模版选择*/
+    choiceTemplate(index,selectedRows) {
+        let {exceptionDisposes} = this.state;
+        exceptionDisposes.splice(index-1,1,selectedRows);
+        this.setState({
+            exceptionDisposes: exceptionDisposes
+        })
     }
 
     /**点击取消新增*/
@@ -514,32 +641,41 @@ class ProcessParamAddModal extends React.Component {
 
     /**送审*/
     applySaveAndReview(process,urgent) {
-
+        this.saveDataProcessing(1,process,urgent);
     }
 
     /**点击保存新增
      * 根据所选工序来确定新增数据
      * */
     handleSave() {
-        let {processCode,head,components,zyDetail,lines,productClass,
-            exceptionDisposes,details,processParamsMemo,mediate,mediateMemo,
-            devices,chMoment} = this.state, data = {};
+        this.saveDataProcessing(0);
+    }
 
+    /**处理新增和编辑数据*/
+    saveDataProcessing(flag,process,urgent) {
+        let {processCode,head,components,zyDetail,lines,productClass,productClassName,proAndLines,
+            exceptionDisposes,detail,processParamsMemo,mediate,mediateMemo,
+            devices,chMoment} = this.state, data = {};
+        delete head['deptName']
         if(!this.checkObj(head)) {
             message.info('请将新增数据填写完整！');
             return
         }
-        if(processCode === 47) {       //制液新增
-            if(this.checkArr(components) && this.checkObj(zyDetail) && this.checkObj(lines) && productClass) {
+        if(processCode === 48) {       //制液新增(净后)
+            head['processName'] = '制液';
+            if(this.checkArr(components) && this.checkObj(zyDetail)
+                && productClass && productClassName && lines.length) {
                 data = {
                     head: head,
+                    processName: '制液',
                     zy: {
                         components: components,
-                        detail: zyDetail,
-                        proAndLine: {
-                            lines: lines,
-                            productClass: productClass
-                        }
+                        detail: zyDetail
+                    },
+                    proAndLine: {
+                        lines: lines,
+                        productClass: productClass,
+                        productClassName: productClassName
                     }
                 }
             } else {
@@ -548,17 +684,22 @@ class ProcessParamAddModal extends React.Component {
             }
 
         } else if(processCode === 49) {//合成新增
-            if(this.checkArr(exceptionDisposes) && this.checkArr(details) && this.checkArr(mediate)) {
+            head['processName'] = '合成';
+            if(this.checkArr(exceptionDisposes) && this.checkArr(detail) && this.checkArr(mediate) && this.checkArr(proAndLines)) {
                 data = {
                     head: head,
-                    exceptionDisposes: exceptionDisposes,
-                    gy: {
-                        details: details,
-                        memo: processParamsMemo
-                    },
-                    zjp: {
-                        mediate: mediate,
-                        memo: mediateMemo
+                    processName: '合成',
+                    hc: {
+                        exceptionDisposes: exceptionDisposes,
+                        gy: {
+                            details: detail,
+                            memo: processParamsMemo,
+                            proAndLines: proAndLines
+                        },
+                        zjp: {
+                            mediate: mediate,
+                            memo: mediateMemo
+                        }
                     }
                 }
             } else {
@@ -567,12 +708,21 @@ class ProcessParamAddModal extends React.Component {
             }
 
         } else if(processCode === 50) {//陈化洗涤新增
-            if(this.checkArr(devices)) {
+            head['processName'] = '陈化洗涤';
+            if(this.checkArr(devices) && productClass && productClassName && lines.length) {
                 data = {
                     head: head,
-                    devices: devices,
-                    detail: {
-                        comment: chMoment,
+                    processName: '陈化洗涤',
+                    ch: {
+                        devices: devices,
+                        detail: {
+                            comment: chMoment,
+                        }
+                    },
+                    proAndLine: {
+                        lines: lines,
+                        productClass: productClass,
+                        productClassName: productClassName
                     }
                 }
             } else {
@@ -580,18 +730,40 @@ class ProcessParamAddModal extends React.Component {
                 return
             }
         }
-        this.saveData(data);
-        this.handleCancel();
+        //flag = 1 代表送审
+        if(flag) {
+            data['auditId'] = process;  //审核流程id
+            data['isUrgent'] = urgent;  //审核是否紧急
+        }
+        this.saveData(data,flag);
     }
 
+    /**保存或送审
+     * flag = 0 代表保存
+     * flag = 1 代表送审
+     * */
+    saveData(data,flag) {
+        axios({
+            url: `${this.url.processParam.saveOrCommit}?flag=${flag}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data
+        }).then(data => {
+            message.info(data.data.message)
+            if(data.data.code === 0) {
+                this.handleCancel();
+            }
+        })
+    }
+
+    /**检验数组中属性是否有为空*/
     checkArr(arr) {
-        if(arr.length) {
-            for(let i = 0; i < arr; i++) {
-                for(let j in arr[i]) {
-                    if(arr[i][j] === '') {
-                        message.info('请将数据填写完整！');
-                        return false;
-                    }
+        if(arr && arr.length) {
+            for(let i in arr) {
+                if(!this.checkObj(arr[i])) {
+                    return false;
                 }
             }
             return true;
@@ -599,27 +771,15 @@ class ProcessParamAddModal extends React.Component {
         return false;
     }
 
+    /**检验对象中属性值是否有为空*/
     checkObj(obj) {
         if(obj === {}) return false;
         for(let i in obj) {
-            if(obj[i] === '' || obj[i] === undefined) {
+            if(i !== 'comment' && (obj[i] === '' || obj[i] === undefined || (Array.isArray(obj[i]) && !obj[i].length))) {
                 return false;
             }
         }
         return true;
-    }
-
-    saveData(data) {
-        axios({
-            url: `${this.url.processParam.saveOrCommit}?flag=0`,
-            method: 'post',
-            headers: {
-                'Authorization': this.url.Authorizaion
-            },
-            data
-        }).then(data => {
-            message.info(data.data.message)
-        })
     }
 
     /**销毁组件*/

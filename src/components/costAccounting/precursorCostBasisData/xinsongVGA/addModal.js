@@ -25,7 +25,6 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         var data = {vgaName:this.state.data};
-        // console.log(data)
         if(!this.state.data){
             message.info('信息填写不完整!')
             return

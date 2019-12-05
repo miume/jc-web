@@ -1,12 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-import {Divider, Table, message} from "antd";
+import {Divider, Table, message, Popconfirm} from "antd";
 import DeleteById from "../../BlockQuote/deleteById";
 import DetailModal from "./detail/detailModal";
 
 class ProcessTable extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            head: {}
+        };
+        this.publish = this.publish.bind(this);
         this.judgeOperation = this.judgeOperation.bind(this);
         this.judgeEditor = this.judgeEditor.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -62,44 +66,51 @@ class ProcessTable extends React.Component {
             key: 'code',
             dataIndex: 'code',
             render: (text, record) => {
-                let {update,deleteFlag,status} = this.props;
+                let {update,deleteFlag,status,url} = this.props;
                 return (
-                    this.judgeOperation(status,update,deleteFlag,record)
+                    this.judgeOperation(status,update,deleteFlag,record.code,url)
                 )
             }
         }]
     }
 
     render() {
-        let {data,selectedRowKeys} = this.props,
+        let {data,selectedRowKeys,status} = this.props,
             rowSelection = {
-            selectedRowKeys,
+            selectedRowKeys: selectedRowKeys,
             onChange:this.props.onSelectChange,
         };
         this.pagination.total = data ? data['total'] : 0;
         return (
-            <Table rowKey={record => record.code} dataSource={data}
+            status === '0' ?
+                <Table rowKey={record => record.code} dataSource={data}
                    columns={this.columns} pagination={this.pagination}
                    onChange={this.handleTableChange} rowSelection={rowSelection}
-                   size={"small"} bordered/>
+                   size={"small"} bordered/> :
+                <Table rowKey={record => record.code} dataSource={data}
+                       columns={this.columns} pagination={this.pagination}
+                       onChange={this.handleTableChange}
+                       size={"small"} bordered/>
         )
     }
 
     /**根据不同tabs页面渲染不同操作*/
-    judgeOperation(status,update,deleteFlag,record) {
+    judgeOperation(status,update,deleteFlag,code,url) {
         //待审核和审核中 已驳回
         if(status === '1' || status === '2' || status === '4' ) {
             return (
-                <DetailModal data={record}/>
+                <DetailModal code={code} url={url} status={status}/>
             )
         }
         //已通过
         if(status === '3' ) {
             return (
                 <span>
-                    <span className='blue'>发布</span>
+                    <Popconfirm title="确认发布?" onConfirm={() => this.publish(code)} okText="确定" cancelText="取消" >
+                        <span className='blue'>发布</span>
+                    </Popconfirm>
                     <Divider type='vertical'/>
-                    <DetailModal data={record}/>
+                    <DetailModal code={code} url={url} status={status}/>
                 </span>
             )
         }
@@ -107,26 +118,26 @@ class ProcessTable extends React.Component {
         if(status === '5') {
             return (
                 <span>
-                    <DetailModal data={record}/>
+                    <DetailModal code={code} url={url} status={status}/>
                     <Divider type='vertical'/>
-                    <span className={'blue'}>编辑</span>
+                    <span className={'blue'} onClick={() =>this.props.handleAdd(code)}>复制新建</span>
                 </span>
             )
         }
         //未提交
         return (
             <span>
-                {this.judgeEditor(update,record)}
-                <DeleteById id={record.code} handleDelete={this.handleDelete} flag={deleteFlag}/>
+                {this.judgeEditor(update,code)}
+                <DeleteById id={code} handleDelete={this.handleDelete} flag={deleteFlag}/>
             </span>
         )
     }
 
     /**判断编辑操作*/
-    judgeEditor(flag,record) {
+    judgeEditor(flag,code) {
         return (
             <span className={flag?'':'hide'}>
-                <span className={'blue'} onClick={() =>this.props.handleAdd(record.code)}>编辑</span>
+                <span className={'blue'} onClick={() =>this.props.handleAdd(code)}>编辑</span>
             </span>
         )
     }
@@ -136,6 +147,20 @@ class ProcessTable extends React.Component {
         axios({
             url: `${this.props.url.processParam.delete}/${id}`,
             method: 'DELETE',
+            headers: {
+                'Authorization': this.props.url.Authorizaion
+            }
+        }).then((data) => {
+            message.info(data.data.message);
+            this.props.fetch();
+        })
+    }
+
+    /**发布*/
+    publish(code) {
+        axios({
+            url: `${this.props.url.processParam.publish}?id=${code}`,
+            method: 'put',
             headers: {
                 'Authorization': this.props.url.Authorizaion
             }

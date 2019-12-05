@@ -223,7 +223,6 @@ class ProductLine extends React.Component{
          type:'json'
         })
         .then((data)=>{
-          //console.log(data);
           message.info(data.data.message);
           this.fetch();
         })
@@ -234,7 +233,6 @@ class ProductLine extends React.Component{
       }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
-        //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys });
      }
      rowSelected(selectedRowKeys){//？
@@ -247,7 +245,6 @@ class ProductLine extends React.Component{
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
-       // console.log(ids);
         axios({
             url:`${this.url.productLine.productLine}`,
             method:'Delete',
@@ -258,7 +255,6 @@ class ProductLine extends React.Component{
             type:'json'
         })
         .then((data)=>{
-         // console.log(data);
           message.info(data.data.message);
           this.fetch();
           this.setState({
@@ -266,7 +262,6 @@ class ProductLine extends React.Component{
           });
         })//处理成功
         .catch(()=>{
-         // console.log(error);
           message.info('删除失败，请联系管理员！')
         });//处理异常
 
@@ -311,7 +306,6 @@ class ProductLine extends React.Component{
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();
-            //console.log(data);
             axios({
               url:`${this.url.productLine.productLine}`,
               method:'put',
@@ -322,9 +316,7 @@ class ProductLine extends React.Component{
               type:'json'
             })
             .then((data)=>{
-              // console.log(data);
               message.info(data.data.message);
-              //this.fetch();
               if(data.data.code===0){
                     this.setState({dataSource: newData,});
               }
@@ -367,7 +359,6 @@ class ProductLine extends React.Component{
            })
            .then((data)=>{
              const res=data.data.data;
-             //console.log(res);
              this.pagination.totlal=res?res.total:0;
              this.pagination.current=res.pageNum;
              if(res&&res.list){
@@ -387,7 +378,6 @@ class ProductLine extends React.Component{
       }
       judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
-        //console.log(flag);
         return flag.length>0?true:false
     }
    render(){

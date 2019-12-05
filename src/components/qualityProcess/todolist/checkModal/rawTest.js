@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import DetailModal from '../dataEntry/rawTestReport/detailModal';
+import DetailModal from '../../dataEntry/rawTestReport/detailModal';
 class RawTest extends React.Component{
     componentDidMount(){
         const dataId = this.props.dataId;

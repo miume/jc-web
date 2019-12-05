@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import {message } from 'antd';
-import PurchaseModal from "../dataEntry/purchaseCheckReport/purchaseModal";
-import DrSpanModal from '../dataEntry/productInspection/drSpanModal';
+import PurchaseModal from "../../dataEntry/purchaseCheckReport/purchaseModal";
+import DrSpanModal from '../../dataEntry/productInspection/drSpanModal';
 
 class CheckUnqualified extends React.Component{
     componentDidMount(){

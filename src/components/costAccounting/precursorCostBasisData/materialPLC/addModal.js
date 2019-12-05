@@ -53,7 +53,6 @@ class AddModal extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data.list;
-            // console.log(res)
             this.setState({
                 plcAddress:res
             })
@@ -77,7 +76,7 @@ class AddModal extends React.Component{
             message.info('信息填写不完整!')
             return
         }
-        
+
         var data = {materialCode:materialCode,plcCode:plcCode};
         axios({
             url:`${this.url.matPlcMap.matPlcMap}`,
@@ -87,7 +86,7 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-           
+
             if(data.data.code===0){
                 message.info("新增成功");
                 this.props.fetch();

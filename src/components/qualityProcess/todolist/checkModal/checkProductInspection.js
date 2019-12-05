@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import DrSpanModal from '../dataEntry/productInspection/drSpanModal';
+import DrSpanModal from '../../dataEntry/productInspection/drSpanModal';
 
 class CkeckProductInspection extends React.Component{
     componentDidMount(){

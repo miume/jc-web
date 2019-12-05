@@ -154,7 +154,6 @@ class ProcessName extends React.Component {
             },
         }).then((data) => {
             const res = data.data.data;
-            // console.log(res)
             for (var i = 1; i <= res.length; i++) {
                 res[i - 1]['index'] = i;
             }

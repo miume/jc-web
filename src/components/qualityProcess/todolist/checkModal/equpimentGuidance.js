@@ -1,8 +1,8 @@
 import React from 'react';
-import WhiteSpace from '../../BlockQuote/whiteSpace';
+import WhiteSpace from '../../../BlockQuote/whiteSpace';
 import axios from 'axios';
-import "../../equipmentManagement/equipmentGuidance/equiptment.css";
-import Preview from '../../equipmentManagement/equipmentGuidance/preview'
+import "../../../equipmentManagement/equipmentGuidance/equiptment.css";
+import Preview from "../../../equipmentManagement/equipmentGuidance/preview";
 
 class Detail extends React.Component{
     constructor(props){

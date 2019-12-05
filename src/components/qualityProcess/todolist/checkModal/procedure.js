@@ -57,7 +57,6 @@ class Procedure extends React.Component{
                     testItems = items[0]+','+items[1]+'...';
                     return <span className='text-decoration' title={text}>{testItems.length > 10 ? items[0]+'...' : testItems}</span>;
                 }else{
-                  testItems = text;
                   return text;
                 }
               }
@@ -148,12 +147,6 @@ class Procedure extends React.Component{
                 <div className='checkModalDiv'>
                     <Table rowKey={record=>record.procedureTestRecord.id} columns={this.columns} dataSource={this.state.data} size='small' pagination={false} scroll={{y:188}} bordered></Table>
                 </div>
-                {/* <div className={this.props.flag && this.state.examineData?'':'hide'}>
-                    <AllTester examineData={this.state.examineData} dataId={this.props.dataId} />
-                </div> */}
-                {/* <div className={this.props.flag?'hide':''} >
-                    <textarea onChange={this.textChange} className='checkModalTest' placeholder='请输入审核意见'></textarea>
-                </div> */}
             </div>
         );
     }

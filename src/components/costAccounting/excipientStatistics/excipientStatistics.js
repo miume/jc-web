@@ -80,7 +80,6 @@ class ExcipientStatistics extends React.Component{
 
     /**标签页切换*/
     tabChange=(key)=>{
-        console.log('标签页切换为：',key)
         this.setState({
             flag: key
         });
@@ -90,9 +89,11 @@ class ExcipientStatistics extends React.Component{
             this.getStatisticsData();
         }
     }
+
     statisticalAnalysis=()=>{
         this.props.history.push({pathname:'/excipientStatisticsAnalysis'})
     }
+
     /**点击新增按钮
      * record用来区分编辑和新增
      * */
