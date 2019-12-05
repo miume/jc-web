@@ -186,6 +186,7 @@ class Edit extends React.Component{
                     maskClosable={false}
                     title="编辑"
                     width='620px'
+                    height='450px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
                         <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
@@ -262,7 +263,7 @@ class Edit extends React.Component{
                         <Select placeholder='槽次' style={{width:'170px'}} value={slotVal} disabled></Select>
                        
                     </div>
-                    <div className={processVal==='合成工序'?"batchAll":'hide'}>
+                    <div className={processVal==='HC'?"batchAll":'hide'}>
                         <span className='batchInfo-edit-span'>槽号 : </span>
                         <Select placeholder='槽号' style={{width:'170px'}} value={slotNumVal} disabled></Select>
                         <span className='batchInfo-edit-span'>时间点 : </span>

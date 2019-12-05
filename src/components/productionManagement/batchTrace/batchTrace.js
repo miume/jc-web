@@ -12,16 +12,7 @@ class BatchTrace extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            dataSource: [{
-                index:"1",
-                batchNumber:"19M01001806TE4S",
-                process:"JH",
-                createTime:"2019-01-01  12:30",
-                person:"张三",
-                status:"进行中",
-                startTime:"2019-01-01  12:30",
-                endTime:"2019-01-01  12:30",
-            }],
+            dataSource: [],
             selectedRowKeys: [],
             loading: true,
             searchContent:'',
@@ -38,55 +29,36 @@ class BatchTrace extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
             width: '11%',
         },{
             title: '批次信息',
-            dataIndex: 'batchNumber',
-            key: 'batchNumber',
-            align:'center',
-            width: '11%',
-        },{
-            title: '工序',
-            dataIndex: 'process',
-            key: 'process',
-            align:'center',
+            dataIndex: 'batch',
+            key: 'batch',
             width: '11%',
         },{
             title: '批次生成时间',
             dataIndex: 'createTime',
             key: 'createTime',
-            align:'center',
             width: '11%',
         },{
             title: '生成人',
-            dataIndex: 'person',
-            key: 'person',
-            align:'center',
-            width: '11%',
-        },{
-            title: '状态',
-            dataIndex: 'status',
-            key: 'status',
-            align:'center',
+            dataIndex: 'creater',
+            key: 'creater',
             width: '11%',
         },{
             title: '开始时间',
             dataIndex: 'startTime',
             key: 'startTime',
-            align:'center',
             width: '11%',
         },{
             title: '结束时间',
             dataIndex: 'endTime',
             key: 'endTime',
-            align:'center',
             width: '11%',
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
             width: '11%',
             render:(text,record)=>{
                 return(
@@ -96,6 +68,69 @@ class BatchTrace extends React.Component{
                 )
             }
         }]
+        this.pagination={
+            showSizeChanger:true,
+            showTotal:(total)=>`共${total}条记录`,
+            pageSizeOptions:['10','20','50','100']
+        }
+        this.getTableData=this.getTableData.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this);
+        this.searchContentChange=this.searchContentChange.bind(this);
+        this.searchEvent=this.searchEvent.bind(this);
+    }
+    handleTableChange(pagination){
+        this.pagination=pagination
+        this.getTableData()
+    }
+    componentDidMount(){
+        this.getTableData()
+    }
+    componentWillUnmount() {
+        this.setState = () => {
+          return ;
+        }
+      }
+    getTableData(){
+        this.setState({
+            loading:true
+        })
+        let {current,pageSize}=this.pagination,
+            {searchContent}=this.state
+        axios({
+            url:this.url.productionBatchRetrospect.page,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{
+                condition:searchContent,
+                size:pageSize,
+                page:current
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res&&res.list){
+                for(let i=0;i<res.list.length;i++){
+                    res.list[i]['index']=(res.page-1)*res.size+(i+1)
+                }
+                this.setState({
+                    dataSource:res.list,
+                })
+            }
+            this.setState({
+                loading:false,
+                searchContent:''
+            })
+        })
+    }
+    searchContentChange(e){
+        let value=e.target.value
+        this.setState({
+            searchContent:value
+        })
+    }
+    searchEvent(){
+        this.getTableData()
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -103,10 +138,20 @@ class BatchTrace extends React.Component{
         return(
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}></BlockQuote>
-                <div className="batchSearch_page" style={{padding: '15px'}}>
-                    <SearchCell flag={true} name="请输入批次信息"/>
-                    <Table size="small" bordered  dataSource={this.state.dataSource} columns={this.column} rowKey={record=>record.index}/>
-                </div>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
+                <SearchCell name='请输入批次信息' flag={true}
+                    searchContentChange={this.searchContentChange}
+                    searchEvent={this.searchEvent}
+                    fetch={this.getTableData}
+                />
+                <div className='clear' ></div>
+                    <Table size="small" bordered  
+                    dataSource={this.state.dataSource} 
+                    columns={this.column} 
+                    pagination={this.pagination}
+                    onChange={this.handleTableChange}
+                    rowKey={record=>record.index}/>
+                </Spin>
             </div>
         )
     }

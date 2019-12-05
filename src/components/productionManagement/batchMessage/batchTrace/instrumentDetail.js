@@ -5,7 +5,6 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 import ReactEcharts from 'echarts-for-react';
 
 class InstrumentDetail extends React.Component{
-    url;
     constructor(props){
         super(props);
         this.state={
@@ -157,7 +156,6 @@ class InstrumentDetail extends React.Component{
         console.log(e)
     }
     render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <div>
                 <span onClick={this.handleDetail} className="blue">详情</span>

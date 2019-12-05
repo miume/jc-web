@@ -34,8 +34,13 @@ const data=[{
     className:'fa fa-ils fa-5x'
 },{
     id:7,
-    name:'其他基本信息',
+    name:'其他基本数据',
     path:'/otherBaseInfo',
+    className:'fa fa-file-o fa-5x'
+},{
+    id:8,
+    name:'产品型号',
+    path:'/modelPositiveCost',
     className:'fa fa-file-o fa-5x'
 }];
 class BaseInfoPositiveCost extends Component{
