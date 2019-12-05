@@ -30,7 +30,7 @@
 }
 
 .process-parameters-detail-top div {
-    width: 200px;
+    width: 300px;
     text-align: left;
     margin: 10px;
 }
@@ -83,4 +83,17 @@
 .process-params-table-part-symbol {
     display: inline-block;
     margin: 3px;
+}
+
+.process-params-detail-text {
+    margin-top: 10px;
+    border: 1px solid #e8e8e8;
+    height: 50px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.process-params-detail-table-overflow {
+    height: 370px;
+    overflow: auto;
 }

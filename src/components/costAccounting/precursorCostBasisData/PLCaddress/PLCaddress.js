@@ -51,8 +51,7 @@ class PLCaddress extends React.Component{
             key: 'description',
             align:'center',
             width: '30%',
-            render:(text,record)=>{
-                // console.log(record)
+            render:(text)=>{
                 if(text == undefined){
                     return "无"
                 }else{
@@ -80,7 +79,6 @@ class PLCaddress extends React.Component{
     }
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.plcAddress.plcAddress}`,
             method:"delete",
@@ -97,7 +95,6 @@ class PLCaddress extends React.Component{
     }
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.plcAddress.ids}`,
             method:'delete',
@@ -107,7 +104,6 @@ class PLCaddress extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
@@ -171,7 +167,7 @@ class PLCaddress extends React.Component{
                     searchContent:'',
                     loading:false
                 })
-            
+
         })
     }
     // rowSelected(selectedRowKeys){
@@ -181,7 +177,6 @@ class PLCaddress extends React.Component{
     //   }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -229,7 +224,7 @@ class PLCaddress extends React.Component{
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
-                    <DeleteByIds 
+                    <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.start}
                         cancel={this.cancel}

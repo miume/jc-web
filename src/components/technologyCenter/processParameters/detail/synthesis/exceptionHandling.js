@@ -34,16 +34,20 @@ class ExceptionHandling extends React.Component {
             width: '22%'
         }, {
             title: '相关产品处理',
-            key: 'RelatedProductionProcess',
-            dataIndex: 'RelatedProductionProcess',
+            key: 'relatedProductionProcess',
+            dataIndex: 'relatedProductionProcess',
             width: '22%'
         }]
     }
 
     render() {
+        let {data} = this.props;
+        for(let i = 0; i < data.length; i++) {
+            data[i]['index'] = i + 1;
+        }
         return (
             <div>
-                <Table rowKey={record => record.code} dataSource={this.props.data}
+                <Table rowKey={record => record.code} dataSource={data}
                        columns={this.columns} pagination={false}
                        scroll={{y:200}}
                        size={"small"} bordered/>

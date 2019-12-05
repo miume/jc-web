@@ -10,19 +10,21 @@ class Synthesis extends React.Component {
     }
 
     render() {
-        let {url,code,detail,data,mediateData,addDetail,inputChange,deleteItem,textAreaChange,addExceptionDisposes,deleteExceptionDisposes,
-            addMediateItem,deleteMediateItem,memoChange} = this.props;
+        let {url,code,detail,data,mediateData,addDetail,inputChange,deleteItem,textAreaChange,addExceptionDisposes,deleteExceptionDisposes,mediateMemo,memo,
+            addMediateItem,deleteMediateItem,memoChange,proAndLines,productClassChange,linesChange,productionData,productionLineData,choiceTemplate} = this.props;
         return (
             <div className={code === 49 ? '' : 'hide' }>
                 <Tabs onChange={this.returnEquKey} >
                     <Tabs.TabPane key={1} tab={(<b>工艺参数</b>)}>
-                        <ProcessParams detail={detail} addDetail={addDetail} inputChange={inputChange} memoChange={memoChange} url={url} deleteItem={deleteItem} />
+                        <ProcessParams detail={detail} proAndLines={proAndLines} memo={memo} addDetail={addDetail} inputChange={inputChange} linesChange={linesChange}
+                                       memoChange={memoChange} url={url} deleteItem={deleteItem} productClassChange={productClassChange}
+                                       productionData={productionData} productionLineData={productionLineData}/>
                     </Tabs.TabPane>
                     <Tabs.TabPane key={2} tab={(<b>异常处理</b>)}>
-                        <ExceptionHandling data={data} inputChange={textAreaChange} addExceptionDisposes={addExceptionDisposes} url={url} deleteExceptionDisposes={deleteExceptionDisposes}/>
+                        <ExceptionHandling data={data} inputChange={textAreaChange} choiceTemplate={choiceTemplate} addExceptionDisposes={addExceptionDisposes} url={url} deleteExceptionDisposes={deleteExceptionDisposes}/>
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab={(<b>中间品标准</b>)}>
-                        <IntermediateStandards data={mediateData} addMediateItem={addMediateItem} deleteMediateItem={deleteMediateItem} url={url}  inputChange={textAreaChange} memoChange={memoChange}/>
+                        <IntermediateStandards data={mediateData} memo={mediateMemo}  addMediateItem={addMediateItem} deleteMediateItem={deleteMediateItem} url={url}  inputChange={textAreaChange} memoChange={memoChange}/>
                     </Tabs.TabPane>
                 </Tabs>
             </div>

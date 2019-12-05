@@ -65,7 +65,6 @@ class PLCaddress extends React.Component{
     }
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.vga.vga}`,
             method:"delete",
@@ -82,7 +81,6 @@ class PLCaddress extends React.Component{
     }
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.vga.ids}`,
             method:'delete',
@@ -92,7 +90,6 @@ class PLCaddress extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
@@ -161,7 +158,6 @@ class PLCaddress extends React.Component{
     //   }
       /**实现全选 */
       onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -206,7 +202,7 @@ class PLCaddress extends React.Component{
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
-                   
+
                     <SearchCell name='请输入PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
                     <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange

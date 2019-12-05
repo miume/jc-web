@@ -17,7 +17,7 @@ class IntermediateStandards extends React.Component {
             key: 'item',
             width: '20%',
             render: (text,record) => {
-                return <TextArea rows={2} name={`zjp-item-${record.index}`}/>
+                return <TextArea rows={2} value={text} name={`zjp-item-${record.index}`} onChange={this.props.inputChange}/>
             }
         },{
             title: '取样点',
@@ -25,7 +25,7 @@ class IntermediateStandards extends React.Component {
             key: 'samplePlace',
             width: '20%',
             render: (text,record) => {
-                return <TextArea rows={2} name={`zjp-samplePlace-${record.index}`}/>
+                return <TextArea rows={2} value={text} name={`zjp-samplePlace-${record.index}`} onChange={this.props.inputChange}/>
             }
         },{
             title: '频次',
@@ -33,7 +33,7 @@ class IntermediateStandards extends React.Component {
             key: 'frequency',
             width: '20%',
             render: (text,record) => {
-                return <TextArea rows={2} name={`zjp-processMode-${record.index}`}/>
+                return <TextArea rows={2} value={text} name={`zjp-frequency-${record.index}`} onChange={this.props.inputChange}/>
             }
         },{
             title: '标准',
@@ -41,7 +41,7 @@ class IntermediateStandards extends React.Component {
             key: 'standards',
             width: '20%',
             render: (text,record) => {
-                return <TextArea rows={2} name={`zjp-standards-${record.index}`}/>
+                return <TextArea rows={2} value={text} name={`zjp-standards-${record.index}`} onChange={this.props.inputChange}/>
             }
         },{
             title: '操作',
@@ -55,14 +55,14 @@ class IntermediateStandards extends React.Component {
     }
 
     render() {
-        let {data,memoChange,addMediateItem} = this.props;
+        let {data,memoChange,addMediateItem,memo} = this.props;
         return (
             <div>
                 <NewButton handleClick={addMediateItem} name='新增' className='fa fa-plus'/>
                 <Table dataSource={data} rowKey={record => record.index} columns={this.columns}
                        pagination={false} bordered size={'small'}/>
                 <div style={{marginTop:5}}>
-                    <TextArea rows={2} name={`mediateMemo`} placeholder={'请输入备注'} onChange={memoChange}/>
+                    <TextArea rows={2} name={`mediateMemo`} value={memo} placeholder={'请输入备注'} onChange={memoChange}/>
                 </div>
             </div>
         )

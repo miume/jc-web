@@ -47,7 +47,7 @@ class AllTester extends React.Component{
     }
     handleMove(number) {
         /**滚动区域范围 */
-        var middle = document.getElementById(`check-detail-div`+this.props.dataId);    
+        var middle = document.getElementById(`check-detail-div`+this.props.dataId);
         /**每次滚动的长度 */
         let count = this.props.hide?417:364.5;
         let gap = (count / 100);
@@ -82,7 +82,7 @@ class AllTester extends React.Component{
         const examineData = this.props.examineData;
         const count = examineData?examineData.length:0;
         return (
-            <div className={examineData?'check-detail':'hide'}>
+            <div className={count?'check-detail':'hide'}>
                 <div className={this.props.hide?'check-detail-div1':'check-detail-div'} id={`check-detail-div`+this.props.dataId}>
                     <div className='check-detail-div-hidden'>
                     {

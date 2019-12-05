@@ -4,34 +4,29 @@ import MainIngredient from "./mainIngredient";
 import Others from "./others";
 import Impurities from "./impurities";
 
-class Liquid extends React.Component {
+class LiquidDetail extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        let {url,code,components,zyDetail,add,deleteItems,inputChange,liquidChange} = this.props;
+        let {zy} = this.props,{components, detail} = zy;
         return (
-            <div className={code === 48 ? '' : 'hide' }>
+            <div style={{height: 300}}>
                 <Tabs onChange={this.returnEquKey} >
                     <Tabs.TabPane key={1} tab={(<b>主成分</b>)}>
-                        <MainIngredient data={components} add={add} inputChange={inputChange} liquidChange={liquidChange}
-                                        delete={deleteItems} zyDetail={zyDetail}/>
+                        <MainIngredient data={components} zyDetail={detail}/>
                     </Tabs.TabPane>
                     <Tabs.TabPane key={2} tab={(<b>杂质成分</b>)}>
-                        <Impurities inputChange={liquidChange} url={url} data={zyDetail}/>
+                        <Impurities data={detail}/>
                     </Tabs.TabPane>
                     <Tabs.TabPane key={3} tab={(<b>其它</b>)}>
-                        <Others inputChange={liquidChange} data={zyDetail}/>
+                        <Others data={detail}/>
                     </Tabs.TabPane>
                 </Tabs>
             </div>
         )
     }
-
-    componentWillUnmount() {
-        this.setState(() => null)
-    }
 }
 
-export default Liquid;
+export default LiquidDetail;

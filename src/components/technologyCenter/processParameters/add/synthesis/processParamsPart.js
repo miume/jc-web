@@ -7,12 +7,8 @@ class ProcessParamsPart extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            productionData: [],
-            productionLineData: [],
-            productionLineCode: ''
+
         };
-        this.getProduction = this.getProduction.bind(this);
-        this.getProductionLine = this.getProductionLine.bind(this);
         this.productionLineChange = this.productionLineChange.bind(this);
         this.getSynthesisSlotNumber= this.getSynthesisSlotNumber.bind(this);
         this.columns = [{
@@ -23,9 +19,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`flowStandard1-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`flowStandard1-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`flowBias1-${record.index}`} value={record.flowBias1} onChange={this.props.inputChange}/>
+                        <Input name={`flowBias1-${record.index}-float`} value={record.flowBias1} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -38,9 +34,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`flowStandard2-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`flowStandard2-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`flowBias2-${record.index}`} value={record.flowBias2} onChange={this.props.inputChange}/>
+                        <Input name={`flowBias2-${record.index}-float`} value={record.flowBias2} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -53,9 +49,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`rotateSpeedStandard-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`rotateSpeedStandard-${record.index}-int`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`rotateSpeedBias-${record.index}`} value={record['rotateSpeedBias']} onChange={this.props.inputChange}/>
+                        <Input name={`rotateSpeedBias-${record.index}-int`} value={record['rotateSpeedBias']} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -68,9 +64,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`temperatureStandard-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`temperatureStandard-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`temperatureBias-${record.index}`} value={record['temperatureBias']} onChange={this.props.inputChange}/>
+                        <Input name={`temperatureBias-${record.index}-float`} value={record['temperatureBias']} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -83,9 +79,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`basicityStandard-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`basicityStandard-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`basicityBias-${record.index}`} value={record['basicityBias']} onChange={this.props.inputChange}/>
+                        <Input name={`basicityBias-${record.index}-float`} value={record['basicityBias']} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -98,9 +94,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`nitrogenFlowStandard-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`nitrogenFlowStandard-${record.index}-int`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`nitrogenFlowBias-${record.index}`} value={record['nitrogenFlowBias']} onChange={this.props.inputChange}/>
+                        <Input name={`nitrogenFlowBias-${record.index}-int`} value={record['nitrogenFlowBias']} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -122,9 +118,9 @@ class ProcessParamsPart extends React.Component {
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
-                        <Input name={`sizeD30Standard-${record.index}`} value={text} onChange={this.props.inputChange}/>
+                        <Input name={`sizeD30Standard-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
                         <span className='process-params-table-part-symbol'>±</span>
-                        <Input name={`sizeD30Bias-${record.index}`} value={record['sizeD30Bias']} onChange={this.props.inputChange}/>
+                        <Input name={`sizeD30Bias-${record.index}-float`} value={record['sizeD30Bias']} onChange={this.props.inputChange}/>
                     </div>
                 )
             },
@@ -142,8 +138,8 @@ class ProcessParamsPart extends React.Component {
     }
 
     render() {
-        let {productionData,productionLineData,materialData} = this.state, {detail,memoChange} = this.props,
-            index = detail ? detail[0]['index'] : -1,
+        let {materialData} = this.state,
+            {detail,inputChange,proAndLines,productClassChange,productionData,productionLineData,index} = this.props,
             productionLineClass = {
                 display: 'flex',
                 flexDirection: 'space-between',
@@ -156,16 +152,24 @@ class ProcessParamsPart extends React.Component {
             <div className={'process-params-table-part'}>
                 <div>
                     <span>生产品种：</span>
-                    <Select style={{width: 200}} placeholder={'请选择'}>
-                        {
-                            productionData ? productionData.map(e => e) : null
-                        }
-                    </Select>
+                    {
+                        proAndLines['productClass'] ?
+                            <Select style={{width: 200}} placeholder={'请选择'} defaultValue={`${proAndLines['productClass']}-${proAndLines['productClassName']}`} onChange={productClassChange}>
+                                {
+                                    productionData ? productionData.map(e => <Option key={e.code} name={index} value={`${e.code}-${e.ruleDesc}`}>{e.ruleDesc}</Option>) : null
+                                }
+                            </Select>:
+                            <Select style={{width: 200}} placeholder={'请选择'} onChange={productClassChange}>
+                                {
+                                    productionData ? productionData.map(e => <Option key={e.code} name={index} value={`${e.code}-${e.ruleDesc}`}>{e.ruleDesc}</Option>) : null
+                                }
+                            </Select>
+                    }
                     <span style={{float: 'right'}} className='blue' onClick={() => this.props.deleteItem(index)}>删除</span>
                 </div>
                 <div style={productionLineClass}>
                     <span style={productionLineSpan}>生产线：</span>
-                    <Checkbox.Group style={{ width: '100%',lineHeight: '20px'}} onChange={this.productionLineChange}>
+                    <Checkbox.Group style={{ width: '100%',lineHeight: '20px'}} value={proAndLines['lines']} onChange={this.productionLineChange}>
                         {
                             productionLineData ? productionLineData.map(e => {
                                 return <Col span={2} key={e.code}><Checkbox value={e.code}>{e.name}</Checkbox></Col>
@@ -182,64 +186,23 @@ class ProcessParamsPart extends React.Component {
                 <Table dataSource={detail} columns={this.columns} size={'small'}
                        rowKey={record => record.index} bordered pagination={false}/>
                 <div style={{marginTop:5}}>
-                    <TextArea rows={2} name={`processParamsMemo`} placeholder={'请输入备注'} onChange={memoChange}/>
+                    <TextArea rows={2} value={detail[0]['comment']} name={`comment-1`} placeholder={'请输入备注'} onChange={inputChange}/>
                 </div>
             </div>
         )
     }
 
-    componentDidMount() {
-        this.getProduction();
-        this.getProductionLine();
-    }
-
-    /**获取生产品种*/
-    getProduction() {
-        axios({
-            url: `${this.props.url.productionBatchRule.getDetail}?code=5`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [], productionData = [];
-            if (res) {
-                for(let i = 0; i < res.length; i++) {
-                    let e = res[i];
-                    productionData.push(
-                        <Option key={e.code}>{e.ruleDesc}</Option>
-                    )
-                }
-                this.setState({
-                    productionData: productionData
-                })
-            }
-        });
-    }
-
-    getProductionLine() {
-        axios({
-            url: `${this.props.url.precursorProductionLine.all}?code=5`,
-            method: 'get',
-            headers: {
-                'Authorization': this.props.url.Authorization
-            }
-        }).then((data) => {
-            const res = data.data.data ? data.data.data : [];
-            if(res) {
-                this.setState({
-                    productionLineData: res
-                })
-            }
-        })
+    componentWillReceiveProps(nextProps) {
+        let lines = nextProps['proAndLines']['lines'];
+        if(lines.length) {
+            this.getSynthesisSlotNumber(lines);
+        }
     }
 
     /**监控生产线的变化*/
     productionLineChange(value) {
         this.getSynthesisSlotNumber(value);
-        this.setState({
-            productionLineCode: value
-        })
+        this.props.linesChange(this.props.index,value);
     }
 
     /**根据生产线id获取合成槽号*/

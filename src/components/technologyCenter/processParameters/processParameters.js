@@ -9,7 +9,7 @@ import NewButton from "../../BlockQuote/newButton";
 import home from "../../commom/fns";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import axios from "axios";
-import {Spin, Tabs} from "antd";
+import {Spin, Tabs, message} from "antd";
 import ProcessTable from "./processTable";
 import './processParameters.css';
 import SearchCell from "../../BlockQuote/search";
@@ -68,22 +68,23 @@ class processParameters extends React.Component {
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'0'} onChange={this.tabChange}>
                         <TabPane tab={'未提交'} key={'0'}>
-                            <ProcessTable status={'0'} url={this.url} data={data} fetch={this.fetch} update={addFlag} deleteFlag={deleteFlag} selectedRowKeys={selectedRowKeys} handleAdd={this.handleAdd}/>
+                            <ProcessTable status={'0'} url={this.url} data={data} fetch={this.fetch} update={addFlag} onSelectChange={this.onSelectChange}
+                                          deleteFlag={deleteFlag} selectedRowKeys={selectedRowKeys} handleAdd={this.handleAdd}/>
                         </TabPane>
                         <TabPane tab={'待审核'} key={'1'}>
-                            <ProcessTable status={'1'} data={data} update={addFlag} deleteFlag={deleteFlag}/>
+                            <ProcessTable status={'1'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag}/>
                         </TabPane>
                         <TabPane tab={'审核中'} key={'2'}>
-                            <ProcessTable status={'2'} data={data} update={addFlag} deleteFlag={deleteFlag}/>
+                            <ProcessTable status={'2'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag}/>
                         </TabPane>
                         <TabPane tab={'已通过'} key={'3'}>
-                            <ProcessTable status={'3'} data={data} update={addFlag} deleteFlag={deleteFlag}/>
+                            <ProcessTable status={'3'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag} fetch={this.fetch}/>
                         </TabPane>
                         <TabPane tab={'已驳回'} key={'4'}>
-                            <ProcessTable status={'4'} data={data} update={addFlag} deleteFlag={deleteFlag}/>
+                            <ProcessTable status={'4'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag}/>
                         </TabPane>
                         <TabPane tab={'已发布'} key={'5'}>
-                            <ProcessTable status={'5'} data={data} update={addFlag} deleteFlag={deleteFlag}/>
+                            <ProcessTable status={'5'} url={this.url} data={data} update={addFlag} deleteFlag={deleteFlag} handleAdd={this.handleAdd}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -117,7 +118,6 @@ class processParameters extends React.Component {
                 page: pagination ? pagination.current : 1,
                 size: pagination ? pagination.pageSize : 10
             };
-        console.log(key,params)
         this.getTableData(params);
     }
 
@@ -150,7 +150,8 @@ class processParameters extends React.Component {
                 })
             }
             this.setState({
-                loading: false
+                loading: false,
+                selectedRowKeys: []
             });
         });
     }
@@ -179,27 +180,22 @@ class processParameters extends React.Component {
 
     deleteByIds() {
         const ids = this.state.selectedRowKeys;
-        // axios({
-        //     url:`${this.url.role.role}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.url.Authorization
-        //     },
-        //     data:ids,
-        //     type:'json'
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     if(data.data.code===0){
-        //         this.fetch({
-        //             pageSize: this.pagination.pageSize,
-        //             pageNumber: this.pagination.current,
-        //             sortField: 'id',
-        //             sortType: 'desc',
-        //         });
-        //     }
-        // }).catch(()=>{
-        //     message.info('删除错误，请联系管理员！')
-        // })
+        axios({
+            url:`${this.url.processParam.deleteByIds}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            data:ids,
+            type:'json'
+        }).then((data)=>{
+            message.info(data.data.message);
+            if(data.data.code === 0){
+                this.fetch();
+            }
+        }).catch(()=>{
+            message.info('删除错误，请联系管理员！')
+        })
     }
 
     searchContentChange(e) {
@@ -223,7 +219,9 @@ class processParameters extends React.Component {
 
     /**table checkbox选中*/
     onSelectChange(selectedRowKeys) {
-        this.setState({ selectedRowKeys });
+        this.setState({
+            selectedRowKeys: selectedRowKeys
+        });
     }
 
     componentWillUnmount() {

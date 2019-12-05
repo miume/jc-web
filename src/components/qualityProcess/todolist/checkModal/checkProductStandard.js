@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {message, Table} from 'antd';
-import HeadTable from '../../technologyCenter/productStandard/headTable';
+import HeadTable from '../../../technologyCenter/productStandard/headTable';
 class CheckProductStandard extends React.Component{
     componentDidMount(){
         const {flag,batchNumberId} = this.props;

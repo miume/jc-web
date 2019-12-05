@@ -83,7 +83,7 @@ class CostProcessAdd extends Component {
         })
         this.getLineNameByPeriod(periodCode ? periodCode : null)
        }
-     
+
     }
     returnProcess() {//点击返回在制品统计界面
         this.props.history.push({ pathname: '/processStatistics' })
@@ -287,7 +287,7 @@ class CostProcessAdd extends Component {
         this.setState({
             addData:addData
         })
-      
+
     }
     otherSelectChange(tabKey,name,value){
      //name是下拉框对应的dataIndex和第几条记录,value对应的是选的option的value
@@ -322,11 +322,11 @@ class CostProcessAdd extends Component {
             if(data.data.code===0){
                 this.props.history.push({pathname:'/processStatistics'})
             }
-           
+
         }).catch(()=>{
             message.info('新增失败!')
         })
-        
+
     }
     submit() {
         let {addData,otherFlag}=this.state
@@ -361,7 +361,7 @@ class CostProcessAdd extends Component {
                             return
                         }
                     }
-                  
+
                 }
                 else if(i===4){//烘干
                     for(let j=0;j<data[i].materialDetails.length;j++){
@@ -376,7 +376,7 @@ class CostProcessAdd extends Component {
                             return
                         }
                     }
-                  
+
                 }
                 else if(i===5&&otherFlag){
                     for(let j=0;j<data[i].materialDetails.length;j++){

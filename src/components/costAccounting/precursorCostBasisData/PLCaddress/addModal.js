@@ -30,7 +30,6 @@ class AddModal extends React.Component{
         if(!this.state.data){
             message.info('信息填写不完整!')
         }
-        // console.log(data)
         axios({
             url:`${this.url.plcAddress.plcAddress}`,
             method:"post",

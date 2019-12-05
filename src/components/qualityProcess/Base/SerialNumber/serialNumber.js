@@ -133,8 +133,6 @@ class SerialNumber extends React.Component{
       width: '33%',
       align:'center',
       render : (text, record) =>  {
-        //console.log(text);
-        //console.log(record);
         const editable = this.isEditing(record);
         return (
             <span>
@@ -205,8 +203,6 @@ class SerialNumber extends React.Component{
 
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
-      //console.log(id);
-
         axios({
           url:`${this.server}/jc/samplePoint?id=${id}`,
           method:'Delete',
@@ -217,7 +213,6 @@ class SerialNumber extends React.Component{
          type:'json'
         })
         .then((data)=>{
-          //console.log(data);
           message.info(data.data.message);
           this.fetch();
         })
@@ -228,7 +223,6 @@ class SerialNumber extends React.Component{
       }
     //实现checkbox全选
     onSelectChange(selectedRowKeys) {
-        //console.log('selectedRowKeys changed: ', selectedRowKeys);
         this.setState({ selectedRowKeys:selectedRowKeys });
      }
 
@@ -236,7 +230,6 @@ class SerialNumber extends React.Component{
     /**批量删除弹出框确认函数 */
     deleteByIds() {
         const ids = this.state.selectedRowKeys;//删除的几行的id
-       // console.log(ids);
         axios({
             url:`${this.server}/jc/samplePoint/deleteByIds`,
             method:'Delete',
@@ -247,12 +240,10 @@ class SerialNumber extends React.Component{
             type:'json'
         })
         .then((data)=>{
-         // console.log(data);
           message.info(data.data.message);
           this.fetch();
         })//处理成功
         .catch(()=>{
-         // console.log(error);
           message.info('删除失败，请联系管理员！')
         });//处理异常
 
@@ -296,7 +287,6 @@ class SerialNumber extends React.Component{
             const data=row;
             /**将id变成字符串 */
             data['id']=id.toString();
-            //console.log(data);
             axios({
               url:`${this.server}/jc/samplePoint/update`,
               method:'post',
@@ -307,12 +297,10 @@ class SerialNumber extends React.Component{
               type:'json'
             })
             .then((data)=>{
-              // console.log(data);
               message.info(data.data.message);
               this.fetch();
             })
             .catch(()=>{
-             // console.log(error.data);
               message.info('编辑失败，请联系管理员！');
             });
             this.setState({ dataSource: newData, editingKey: '' });
@@ -338,7 +326,6 @@ class SerialNumber extends React.Component{
       //根据用户名称分页查询
       searchEvent(){
            const samplePointName=this.state.searchContent;
-           //console.log(username);
            axios({
              url:`${this.server}/jc/samplePoint/getNameLikeByPage`,//${variable}是字符串模板，es6使用反引号``创建字符串
              method:'get',
@@ -374,13 +361,7 @@ class SerialNumber extends React.Component{
 /**这是个令牌，每次调用接口都将其放在header里 */
        this.Authorization=localStorage.getItem('Authorization');
         const rowSelection = {//checkbox
-            onChange:this.onSelectChange,
-            onSelect() {
-              // console.log(record, selected, selectedRows);
-            },
-            onSelectAll() {
-              // console.log(selected, selectedRows, changeRows);
-            },
+            onChange:this.onSelectChange
         };
 
         const components={

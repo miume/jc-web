@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {message } from 'antd';
-import PurchaseModal from "../dataEntry/purchaseCheckReport/purchaseModal";
+import PurchaseModal from "../../dataEntry/purchaseCheckReport/purchaseModal";
 
 class CheckPurchase extends React.Component{
     componentDidMount(){

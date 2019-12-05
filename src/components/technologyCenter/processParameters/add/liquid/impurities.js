@@ -15,27 +15,27 @@ class Impurities extends React.Component {
                 <div className='process-parameters-add-div'>
                     <div>
                         <span>Ca：</span>
-                        <Input name={'Ca'} onChange={inputChange} style={{width:100}}/>
+                        <Input name={'ca'} value={data['ca']} onChange={inputChange} style={{width:100}}/>
                     </div>
                     <div>
                         <span>Mg：</span>
-                        <Input name={'Mg'} onChange={inputChange} style={{width:100}}/>
+                        <Input name={'mg'} value={data['mg']} onChange={inputChange} style={{width:100}}/>
                     </div>
                     <div>
                         <span>Fe：</span>
-                        <Input name={'Fe'} onChange={inputChange} style={{width:100}}/>
+                        <Input name={'fe'} value={data['fe']} onChange={inputChange} style={{width:100}}/>
                     </div>
                     <div>
                         <span>Zn：</span>
-                        <Input name={'Zn'} onChange={inputChange} style={{width:100}}/>
+                        <Input name={'zn'} value={data['zn']} onChange={inputChange} style={{width:100}}/>
                     </div>
                     <div>
                         <span>Cd：</span>
-                        <Input name={'Cd'} onChange={inputChange} style={{width:100}}/>
+                        <Input name={'cd'} value={data['cd']} onChange={inputChange} style={{width:100}}/>
                     </div>
                 </div>
                 <div style={{marginTop:10}}>
-                    <TextArea rows={2} name={`moment`} placeholder={'请输入备注'} onChange={inputChange}/>
+                    <TextArea rows={2} name={`comment`} value={data['comment']} placeholder={'请输入备注'} onChange={inputChange}/>
                 </div>
             </div>
         )

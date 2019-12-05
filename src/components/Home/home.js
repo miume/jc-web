@@ -3,7 +3,6 @@ import './home.css';
 import Top from './top';
 import Left from './left';
 import Right from './right';
-import EquipmentProcessName from "../equipmentManagement/equipmentBasicData/processName/processName";
 class Home extends Component {
     componentWillMount() {
         let canvas;
@@ -46,8 +45,9 @@ class Home extends Component {
             '12': '不合格追踪数据',
             '13':'原材料标准',
             '14':'成品标准',
-            '15':'设备指导'
-        }
+            '15':'设备指导',
+            '16': '工艺参数'
+        };
         const server = localStorage.getItem('server');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
@@ -557,6 +557,7 @@ class Home extends Component {
                 getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssign`,
                 assign: `${server}/jc/common/deviceProcess/assign`,
                 getAllByDept: `${server}/jc/common/deptProcess/getAllByDept`,
+                getDeviceByDeptCode: `${server}/jc/common/deviceProcess/getDeviceByDeptCode`,
             },
             /**出库点*/
             endPosition: {
@@ -671,7 +672,10 @@ class Home extends Component {
                 page: `${server}/jc/common/processParam/page`,
                 delete: `${server}/jc/common/processParam/delete`,
                 detail: `${server}/jc/common/processParam/detail`,
+                publish: `${server}/jc/common/processParam/publish`,
+                detailByBatch: `${server}/jc/common/processParam/detailByBatch`,
                 saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
+                deleteByIds: `${server}/jc/common/processParam/deleteByIds`
             },
             /**正极基础统计周期*/
             positiveStatic:{
