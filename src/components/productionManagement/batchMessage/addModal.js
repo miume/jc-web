@@ -122,12 +122,12 @@ class AddModal extends React.Component{
                         slotVal:res[i].defaultValue
                     })
                 }
-                if(res[i].rule=="槽号"){//合成工序才可显示
-                    this.setState({
-                        slotNum:res[i].values,
-                        slotNumVal:res[i].defaultValue
-                    })
-                }
+                // if(res[i].rule=="槽号"){//合成工序才可显示
+                //     this.setState({
+                //         slotNum:res[i].values,
+                //         slotNumVal:res[i].defaultValue
+                //     })
+                // }
             }
             let now = new Date();//当前时间
             let hour = now.getHours();
@@ -174,13 +174,14 @@ class AddModal extends React.Component{
             message.error('流水号选择001时才可新增!')
             return
         }
+        let setPeople=JSON.parse(localStorage.getItem('menuList')).name
         let data = {
             productionBatchInfo:{
                 process:this.state.processVal,year:this.state.yearVal,month:this.state.monthVal,
-                productionModel:this.state.productNumVal,material:this.state.materialTypeVal,cellnum:this.state.slotNumVal,
+                productionModel:this.state.productNumVal,material:this.state.materialTypeVal,cellNum:this.state.slotNumVal,
                 startTime:this.state.nowDate,productionType:this.state.productTypeVal,serialNumber:this.state.serialNumVal,
                 productionLine:this.state.productLineVal,slotnum:this.state.slotVal,timepoint:this.state.nowTime,
-                editFlag:0
+                editFlag:0,setPeople:setPeople
            },
             startTime:this.state.nowDate
         }
@@ -210,6 +211,23 @@ class AddModal extends React.Component{
         this.setState({
             processVal:e
         })
+        if(e==='HC'){//根据工序获取槽号
+            axios({
+                url:this.url.productionBatchRule.getDetail,
+                method:'get',
+                headers:{
+                    'Authorization':this.url.Authorization
+                },
+                params:{
+                    code:10
+                }
+            }).then(data=>{
+                let res=data.data.data
+                this.setState({
+                    slotNum:res
+                })
+            })
+        }
     }
     yearChange=(e)=>{
         this.setState({
@@ -227,7 +245,6 @@ class AddModal extends React.Component{
         })
     }
     serialChange=(e)=>{//流水号
-        console.log(e==='001')
         this.setState({
             serialNumVal:e
         })
@@ -253,6 +270,7 @@ class AddModal extends React.Component{
         })
     }
     slotNumChange=(e)=>{//槽号
+        console.log(e)
         this.setState({
             slotNumVal:e
         })
@@ -278,127 +296,129 @@ class AddModal extends React.Component{
         return(
             <span>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
-                <Modal
-                    visible={this.state.visible}
-                    closable={false}
-                    centered={true}
-                    maskClosable={false}
-                    title="新增"
-                    width='600px'
-                    footer={[
-                        <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
-                    ]}
-                >
-                    <div className="batchAll">
-                        工序：<Select id="process" style={{width:"30%",marginLeft:"45px"}} value={this.state.processVal} onChange={this.processChange} placeholder="请选择工序">
-                                {
-                                    this.state.process.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select>
-                        <span className="batchSelect">开始时间：<DatePicker locale={locale} format="YYYY-MM-DD HH:mm:ss" showTime={true}
-                                                                disabled={this.state.serialNumVal=="001"?false:true} value={this.state.nowDate?moment(this.state.nowDate) : null}
-                                                                onChange={this.startChange} style={{width:"180px"}} placeholder="请选择开始时间"/></span>
-                    </div>
-                    <div className="batchAll">
-                        年份：<Select id="year" style={{width:"30%",marginLeft:"45px"}} value={this.state.yearVal} onChange={this.yearChange} placeholder="请选择年份">
-                                {
-                                    this.state.year.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select>
-                        <span className="batchSelect">产品类型：<Select style={{width:"65%"}} id="productType" value={this.state.productTypeVal} onChange={this.productTypeChange} placeholder="请选择产品类型">
-                                {
-                                    this.state.productType.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select></span>
-                    </div>
-                    <div className="batchAll">
-                        月份：<Select id="month" style={{width:"30%",marginLeft:"45px"}} value={this.state.monthVal} onChange={this.monthChange} placeholder="请选择月份">
-                                {
-                                    this.state.month.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select>
-                        <span className="batchSelect">流水号：&nbsp;&nbsp;&nbsp;&nbsp;<Select style={{width:"65%"}} id="serialNum" value={this.state.serialNumVal} onChange={this.serialChange} placeholder="请选择流水号">
-                                {
-                                    this.state.serialNum.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select></span>
-                    </div>
-                    <div className="batchAll">
-                        产品型号：&nbsp;&nbsp;&nbsp;&nbsp;<Select id="productNum" style={{width:"30%"}} value={this.state.productNumVal} onChange={this.productNumChange} placeholder="请选择产品型号">
-                                {
-                                    this.state.productNum.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select>
-                        <span className="batchSelect">生产线：&nbsp;&nbsp;&nbsp;&nbsp;<Select style={{width:"65%"}} id="productLine" value={this.state.productLineVal} onChange={this.productLineChange} placeholder="请选择生产线">
-                                {
-                                    this.state.productLine.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select></span>
-                    </div>
-                    <div className="batchAll">
-                        原材料类型：<Select id="materialType" style={{width:"30%",marginLeft:"2px"}} value={this.state.materialTypeVal} onChange={this.materialTypeChange} placeholder="请选择原材料类型">
-                                {
-                                    this.state.materialType.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select>
-                        <span className="batchSelect">槽次：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Select style={{width:"65%",marginLeft:"2px"}} id="slot" value={this.state.slotVal} onChange={this.slotChange} placeholder="请选择槽次">
-                                {
-                                    this.state.slot.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select></span>
-                    </div>
-                    <div className={this.state.processVal==='合成工序'?"batchAll":'batchInfo-add-hide'}>
-                        槽号：<Select id="slotNum" style={{width:"30%",marginLeft:"45px"}} value={this.state.slotNumVal} onChange={this.slotNumChange} placeholder="请选择槽号">
-                                {
-                                    this.state.slotNum.map((item)=>{
-                                        return(
-                                            <Option key={item} value={item}>{item}</Option>
-                                        )
-                                    })
-                                }
-                        </Select>
-                        <span className="batchSelect">时间点：&nbsp;&nbsp;&nbsp;&nbsp;<TimePicker  value={moment(this.state.nowTime,"HH:mm:ss")} style={{width:"65%"}} onChange={this.timeChange} placeholder="请选择时间"/></span>
-                    </div>
-                   
-                </Modal>
-            </span>
+                    <Modal
+                        visible={this.state.visible}
+                        closable={false}
+                        centered={true}
+                        maskClosable={false}
+                        title="新增"
+                        width='600px'
+                        centered={true}
+                        footer={[
+                            <CancleButton key='back' handleCancel={this.handleCancel}/>,
+                            <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        ]}
+                    >
+                        <div style={{height:'280px'}}>
+                            <div className="batchAll">
+                                工序：<Select id="process" style={{width:"30%",marginLeft:"45px"}} value={this.state.processVal} onChange={this.processChange} placeholder="请选择工序">
+                                        {
+                                            this.state.process.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select>
+                                <span className="batchSelect">开始时间：<DatePicker locale={locale} format="YYYY-MM-DD HH:mm:ss" showTime={true}
+                                                                        disabled={this.state.serialNumVal=="001"?false:true} value={this.state.nowDate?moment(this.state.nowDate) : null}
+                                                                        onChange={this.startChange} style={{width:"180px"}} placeholder="请选择开始时间"/></span>
+                            </div>
+                            <div className="batchAll">
+                                年份：<Select id="year" style={{width:"30%",marginLeft:"45px"}} value={this.state.yearVal} onChange={this.yearChange} placeholder="请选择年份">
+                                        {
+                                            this.state.year.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select>
+                                <span className="batchSelect">产品类型：<Select style={{width:"65%"}} id="productType" value={this.state.productTypeVal} onChange={this.productTypeChange} placeholder="请选择产品类型">
+                                        {
+                                            this.state.productType.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select></span>
+                            </div>
+                            <div className="batchAll">
+                                月份：<Select id="month" style={{width:"30%",marginLeft:"45px"}} value={this.state.monthVal} onChange={this.monthChange} placeholder="请选择月份">
+                                        {
+                                            this.state.month.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select>
+                                <span className="batchSelect">流水号：&nbsp;&nbsp;&nbsp;&nbsp;<Select style={{width:"65%"}} id="serialNum" value={this.state.serialNumVal} onChange={this.serialChange} placeholder="请选择流水号">
+                                        {
+                                            this.state.serialNum.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select></span>
+                            </div>
+                            <div className="batchAll">
+                                产品型号：&nbsp;&nbsp;&nbsp;&nbsp;<Select id="productNum" style={{width:"30%"}} value={this.state.productNumVal} onChange={this.productNumChange} placeholder="请选择产品型号">
+                                        {
+                                            this.state.productNum.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select>
+                                <span className="batchSelect">生产线：&nbsp;&nbsp;&nbsp;&nbsp;<Select style={{width:"65%"}} id="productLine" value={this.state.productLineVal} onChange={this.productLineChange} placeholder="请选择生产线">
+                                        {
+                                            this.state.productLine.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select></span>
+                            </div>
+                            <div className="batchAll">
+                                原材料类型：<Select id="materialType" style={{width:"30%",marginLeft:"2px"}} value={this.state.materialTypeVal} onChange={this.materialTypeChange} placeholder="请选择原材料类型">
+                                        {
+                                            this.state.materialType.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select>
+                                <span className="batchSelect">槽次：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Select style={{width:"65%",marginLeft:"2px"}} id="slot" value={this.state.slotVal} onChange={this.slotChange} placeholder="请选择槽次">
+                                        {
+                                            this.state.slot.map((item)=>{
+                                                return(
+                                                    <Option key={item} value={item}>{item}</Option>
+                                                )
+                                            })
+                                        }
+                                </Select></span>
+                            </div>
+                            <div className={this.state.processVal==='HC'?"batchAll":'batchInfo-add-hide'}>
+                                槽号：<Select id="slotNum" style={{width:"30%",marginLeft:"45px"}} value={this.state.slotNumVal} onChange={this.slotNumChange} placeholder="请选择槽号">
+                                        {
+                                            this.state.slotNum?this.state.slotNum.map((item)=>{
+                                                return(
+                                                    <Option key={item.code} value={item.ruleValue}>{item.ruleValue}</Option>
+                                                )
+                                            }):null
+                                        }
+                                </Select>
+                                <span className="batchSelect">时间点：&nbsp;&nbsp;&nbsp;&nbsp;<TimePicker  value={moment(this.state.nowTime,"HH:mm:ss")} style={{width:"65%"}} onChange={this.timeChange} placeholder="请选择时间"/></span>
+                            </div>
+                        </div>
+                    </Modal>
+                </span>
         )
     }
 }

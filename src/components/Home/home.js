@@ -459,7 +459,9 @@ class Home extends Component {
                 save:`${server}/jc/common/productionBatchInfo/save`,
                 getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
                 ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
-                preview:`${server}/jc/common/productionBatchInfo/preview`
+                preview:`${server}/jc/common/productionBatchInfo/preview`,
+                getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
+                getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`
             },
             /**批次追溯*/
             productionBatchRetrospect:{
@@ -721,6 +723,19 @@ class Home extends Component {
                 delete:`${server}/jc/common/anodeMatPlcMap/delete`,
                 page:`${server}/jc/common/anodeMatPlcMap/page`,
                 ids:`${server}/jc/common/anodeMatPlcMap/ids`
+            },
+            /**正极产品型号*/
+            positiveModel:{
+                all:`${server}/jc/common/anodeProductionType/all`,
+                add:`${server}/jc/common/anodeProductionType/add`,
+                delete:`${server}/jc/common/anodeProductionType/delete`,
+                update:`${server}/jc/common/anodeProductionType/update`
+            },
+            /**正极其他数据*/
+            positiveOther:{
+                getCurrent:`${server}/jc/common/anodeOthers/getCurrent`,
+                add:`${server}/jc/common/anodeOthers/add`,
+                update:`${server}/jc/common/anodeOthers/update`
             }
         };
 

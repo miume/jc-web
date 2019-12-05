@@ -137,7 +137,6 @@ import EditStandard from './edit';
                         rowClassName={(record)=>record.isPublished===1?'rawStandardTableRow':''}
                         size='small'
                         bordered
-                        scroll={{y:230}}
                     />
                 </div>
            </div>

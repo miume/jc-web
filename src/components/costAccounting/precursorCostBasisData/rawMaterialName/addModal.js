@@ -21,17 +21,9 @@ class AddModal extends React.Component{
             metal:[],//所含金属
             method:undefined,
         }
-        this.getMaterialType=this.getMaterialType.bind(this);
         this.getEditData=this.getEditData.bind(this);
     }
-    componentDidMount(){
-        this.getMaterialType()
-    }
-    componentWillUnmount(){
-        this.setState=()=>{
-            return
-        }
-    }
+
     getEditData(){
         axios({
             url:this.url.precursorRawMaterial.getOne,
@@ -66,22 +58,7 @@ class AddModal extends React.Component{
             }
         })
     }
-    getMaterialType(){
-        axios({
-            url:`${this.url.precursorMaterialType.all}`,
-            method:'get',
-            headers:{
-              'Authorization':this.url.Authorization
-          },
-          }).then((data)=>{
-            const res = data.data.data;
-           if(res){
-                this.setState({
-                    materialTypeData:res
-                })
-            }
-          })
-    }
+  
     showModal = () => {
         this.setState({ visible: true });
         if(this.props.editFlag){
@@ -145,6 +122,23 @@ class AddModal extends React.Component{
         })
     }
     change = (data)=>{
+        axios({
+            url:this.url.precursorMaterialType.getRecordsByTypes,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization,
+            },
+            params:{
+                dataType:data
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    materialTypeData:res
+                })
+            }
+        })
         this.setState({
             dataType:data
         })
@@ -155,6 +149,8 @@ class AddModal extends React.Component{
         })
     }
     typeChange=(data)=>{
+        let {dataType}=this.state
+        
         this.setState({
             materialType:data
         })
