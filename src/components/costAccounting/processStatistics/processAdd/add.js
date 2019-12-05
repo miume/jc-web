@@ -16,12 +16,38 @@ import moment from 'moment'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
-
+const otherData=[{
+    id:1,
+    alkPotency: 0,
+    alkValue: 0,
+    alkaliFlag: 0,
+    ammPotency: 0,
+    ammValue: 0,
+    ammoniaFlag: 0,
+    co: 1,
+    coPotency: 0,
+    code: 0,
+    dataType: 1,
+    index: 1,
+    materialName: '',
+    mn: 1,
+    mnPotency: 0,
+    monPotency: 0,
+    ni: 1,
+    niPotency: 0,
+    processCode: 6,
+    solidContent: 0,
+    types: 0,
+    valueType: 0,
+    volume: 0,
+    weiOrVol: 0,
+    weight: 0
+}]
 class CostProcessAdd extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading:true,
+            loading:false,
             startTime: '',
             endTime: '',
             startDate: '',
@@ -39,8 +65,8 @@ class CostProcessAdd extends Component {
             addData: {},
             statisticId: '',
             flagConfirm: false,
-            otherFlag:false,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上
-
+            otherFlag:true,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上
+            otherData:otherData
         }
         this.returnProcess = this.returnProcess.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
@@ -54,12 +80,11 @@ class CostProcessAdd extends Component {
         this.submit = this.submit.bind(this);
         this.save = this.save.bind(this);
         this.handleOtherAdd=this.handleOtherAdd.bind(this);
-        this.handleOtherDelete=this.handleOtherDelete.bind(this);
         this.otherSelectChange=this.otherSelectChange.bind(this);
         this.editData=this.editData.bind(this);
     }
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
             return;
         };
     }
@@ -88,7 +113,10 @@ class CostProcessAdd extends Component {
     returnProcess() {//点击返回在制品统计界面
         this.props.history.push({ pathname: '/processStatistics' })
     }
-    editData(){
+    editData(){//获取编辑数据
+        this.setState({
+            loading:true
+        })
         axios({
             url:`${this.url.precursorGoodIn.commitDetail}`,
             method:'get',
@@ -100,7 +128,8 @@ class CostProcessAdd extends Component {
             }
         }).then((data)=>{
             let tagTable = data.data.data;
-           // console.log(tagTable)
+            console.log(data)
+           console.log(tagTable)
             if(tagTable){
                 if (tagTable && tagTable.goodInProcessDTOS) {
                     this.setState({
@@ -116,6 +145,7 @@ class CostProcessAdd extends Component {
                     inputPeriod:tagTable.lineName,
                     endDate:tagTable.endTime.split(' ')[0],
                     startDate:tagTable.startTime.split(' ')[0],
+                    loading:false
                 })
             }
         })
@@ -176,6 +206,9 @@ class CostProcessAdd extends Component {
         })
     }
     addConfirm() {//点击确定
+        this.setState({
+            loading:true
+        })
         let { startTime, endTime, periodCode, inputPeriod } = this.state
         if(!startTime|| !endTime|| !periodCode|| !inputPeriod){
             message.info('信息不完整!') //在点确定的时候做下判断，必须4个都填了，才能点击确定
@@ -218,11 +251,11 @@ class CostProcessAdd extends Component {
                     }
                 }).then((data) => {
                     let tagTable = data.data.data;
-                   // console.log(tagTable)
                     if (tagTable && tagTable.goodInProcessDTOS) {
                         this.setState({
                             tagTableData: tagTable.goodInProcessDTOS,
                             addData: tagTable,
+                            loading:false
                             //addDataOrigin: JSON.parse(JSON.stringify(tagTable.goodInProcessDTOS)) 深拷贝值
                         })
                     }
@@ -236,36 +269,27 @@ class CostProcessAdd extends Component {
             tabKey: key
         })
     }
-    handleOtherAdd(){//其他标签页的新增放到父组件来处理
-        let {tagTableData}=this.state
-        tagTableData[5].materialDetails.push({
-            index:tagTableData[5].materialDetails.length+1,
-            name:'',
-            weight:'',
-            niPotency:'',
-            coPotency:'',
-            mnPotency:''
-        })
+    handleOtherAdd(data){//其他标签页的新增放到父组件来处理 
         this.setState({
-            tagTableData: tagTableData,
-            otherFlag:true
+            otherFlag:true,
+            otherData:data
         })
     }
-    handleOtherDelete(id){
-        let {tagTableData}=this.state
-        tagTableData[5].materialDetails=tagTableData[5].materialDetails.filter(data=>data.index!==id)
-       this.setState({
-           tagTableData:tagTableData
-       })
-    }
+ 
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
-        let {addData}=this.state
+        let {addData,otherData,otherFlag}=this.state
         if (inputData) {
             inputData = inputData.split('-');
             let index = inputData[0],    //定位到是第几条数据
                 name = inputData[1],     //输入框内容变化的字段
                 value = inputData[2];
-            addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+            if(otherFlag){
+                otherData[index - 1][name]=value
+                addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
+            }
+            else{
+                addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+            }
         }
         if (selectData) {
             selectData= selectData.split('-')
@@ -290,18 +314,22 @@ class CostProcessAdd extends Component {
 
     }
     otherSelectChange(tabKey,name,value){
-     //name是下拉框对应的dataIndex和第几条记录,value对应的是选的option的value
-        let {addData}=this.state
-        let codeRecord=name.split('-')[0]
-        let maName=name.split('-')[1]
-        addData.goodInProcessDTOS[tabKey-1].materialDetails[codeRecord-1][maName]=value
+     //name是下拉框对应的第几条记录,value对应的是选的option的value即code
+        let {otherData}=this.state
+        let codeRecord=name.props.name
+        let materialName=name.props.children
+        otherData[codeRecord-1]['materialName']=materialName
+        otherData[codeRecord-1]['code']=value
         this.setState({
-            addData:addData
+           otherData:otherData
         })
     }
 
     save(f) {
-        let flag=(f==1?1:0)
+        this.setState({
+            loading:true
+        })
+        let flag=(f===1?1:0)
         this.state.addData['periodId'] = this.state.periodCode
         this.state.addData['lineName'] = this.state.inputPeriod
         axios({
@@ -317,9 +345,11 @@ class CostProcessAdd extends Component {
             data: this.state.addData
 
         }).then(data => {
-        //    console.log(data)
             message.info(data.data.data)
             if(data.data.code===0){
+                this.setState({
+                    loading:false
+                })
                 this.props.history.push({pathname:'/processStatistics'})
             }
 
@@ -328,14 +358,14 @@ class CostProcessAdd extends Component {
         })
 
     }
-    submit() {
-        let {addData,otherFlag}=this.state
+    submit() {//提交需要所有空缺都填完整
+        let {addData,otherFlag,otherData}=this.state
         let data=addData.goodInProcessDTOS
         for(let i=0;i<data.length;i++){//第一层是遍历哪个tag
                 if(i===0){//单晶体
                     for(let j=0;j<data[i].materialDetails.length;j++){
                         if(!data[i].materialDetails[j]['monPotency']){
-                            message.info('信息填写不完整!')
+                            message.info('单晶体配置信息填写不完整!')
                             return
                         }
                     }
@@ -343,7 +373,7 @@ class CostProcessAdd extends Component {
                 if(i==1||i==2){
                     for(let j=0;j<data[i].lineProDTOS.length;j++){
                         if(!data[i].lineProDTOS[j]['product']){
-                            message.info('信息填写不完整!')
+                            message.info('单晶体配置信息填写不完整!')
                             return
                         }
                     }
@@ -351,37 +381,35 @@ class CostProcessAdd extends Component {
                 else if(i===3){//陈化
                     for(let j=0;j<data[i].materialDetails.length;j++){
                         if(!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
-                            message.info('信息填写不完整!')
+                            message.info('陈化工序信息填写不完整!')
                             return
                         }
                     }
                     for(let j=0;j<data[i].lineProDTOS.length;j++){
                         if(!data[i].lineProDTOS[j]['product']){
-                            message.info('信息填写不完整!')
+                            message.info('陈化工序信息填写不完整!')
                             return
                         }
                     }
-
                 }
                 else if(i===4){//烘干
                     for(let j=0;j<data[i].materialDetails.length;j++){
                         if(!data[i].materialDetails[j]['weight']||!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
-                            message.info('信息填写不完整!')
+                            message.info('烘干工序信息填写不完整!')
                             return
                         }
                     }
                     for(let j=0;j<data[i].lineProDTOS.length;j++){
                         if(!data[i].lineProDTOS[j]['product']){
-                            message.info('信息填写不完整!')
+                            message.info('烘干工序信息填写不完整!')
                             return
                         }
-                    }
-
+                    }                 
                 }
                 else if(i===5&&otherFlag){
-                    for(let j=0;j<data[i].materialDetails.length;j++){
-                        if(!data[i].materialDetails[j]['weight']||!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
-                            message.info('信息填写不完整!')
+                    for(let j=0;j<otherData.length;j++){
+                        if(!otherData[j]['materialName']||!otherData[j]['weight']||!otherData[j]['mnPotency']||!otherData[j]['coPotency']||!otherData[j]['niPotency']){
+                            message.info('其他信息填写不完整!')
                             return
                         }
                     }
@@ -390,9 +418,7 @@ class CostProcessAdd extends Component {
        this.save(1)
     }
     cancel() {
-
        this.props.history.push('/processStatistics')
-
     }
     render() {
        // console.log(this.state.addDataOrigin)
@@ -408,12 +434,12 @@ class CostProcessAdd extends Component {
         }, {
             component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd} handleOtherDelete={this.handleOtherDelete} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]
         return (
             <div >
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='前驱体成本核算管理' menu2='在制品统计' returnDataEntry={this.returnProcess} />
-                <div  className='rightDiv-content'>
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange} search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod} endDate={this.state.endDate} startDate={this.state.startDate}/>
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         {
@@ -424,7 +450,7 @@ class CostProcessAdd extends Component {
                             }) : null
                         }
                     </Tabs>
-                </div>
+                </Spin>
                 <div>
                         <span style={{ bottom: '10px', position: 'absolute', left: '15px' }}>
                             <CancleButton handleCancel={this.cancel} />

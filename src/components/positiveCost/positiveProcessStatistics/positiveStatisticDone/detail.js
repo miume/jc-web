@@ -79,15 +79,17 @@ class Detail extends Component{
                  closable={false} maskClosable={false} 
                  centered={true} 
                  footer={[
-                    <CancleButton flag={true} handleCancel={this.back}/>
+                    <CancleButton key='cancel' flag={true} handleCancel={this.back}/>
                 ]}>
                     <div className='process-statisDone-detail'>
                         <span >周期 : {this.props.record.periodType}</span>
-                        <span >期数 : {this.props.record.period}</span>
                         <span>开始时间 : {this.props.record.beginTime}</span>
                         <span>结束时间 : {this.props.record.endTime}</span>
+                    </div>
+                    <div className='process-statisDone-detail'>
                         <span>过程工序 : {this.props.record.process}</span>
-                        <span style={{display:'inline-block',marginTop:'10px'}}>产线 : {this.props.record.productLine}</span>
+                        <span >产线 : {this.props.record.productLine}</span>
+                        <span>产品型号 : {this.props.record.process}</span>
                     </div>
                     <div style={{marginTop:'30px'}}></div>
                     <Table
@@ -106,6 +108,7 @@ class Detail extends Component{
                             </div>
                         );
                     }}
+                    pagination={false}
                     size='small'
                     bordered/>
                 </Modal>

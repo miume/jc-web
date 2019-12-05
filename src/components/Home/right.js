@@ -113,7 +113,7 @@ import PositiveCostAccount from '../positiveCost/costAccout/costAccount'
 import PositiveProcessStatistics from '../positiveCost/positiveProcessStatistics/positiveProcessStatistics'
 import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
 import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
-
+import ModelPositiveCost from '../positiveCost/baseData/productModel/model'
 import ProductStorage from "../costAccounting/productStorage/productStorage"
 import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
 
@@ -510,6 +510,9 @@ class Right extends React.Component {
         },{
             path:'/processPositiveCost',
             component:ProcessPositiveCost
+        },{
+            path:'/modelPositiveCost',
+            component:ModelPositiveCost
         },{
             path:'/materialTypePositive',
             component:MaterialTypePositive

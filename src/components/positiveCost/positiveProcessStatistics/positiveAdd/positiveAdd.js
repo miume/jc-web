@@ -26,11 +26,12 @@ class PositiveAdd extends Component{
         this.props.history.push({pathname:'/positiveProcess'})
     }
     render(){
+        this.url=JSON.parse(localStorage.getItem('url'))
         return(
             <div>
                 <Blockquote name={this.props.location.editFlag?'编辑数据':'新增数据'}  menu='正极成本' menu2='在制品管理' returnDataEntry={this.back}/>
                 <div className='rightDiv-content'>
-                    <Search/>
+                    <Search url={this.url}/>
                     <Tabs defaultActiveKey='1'>
                         <TabPane key='1' tab='在线原料'>< OnlineIngredients/></TabPane>
                         <TabPane key='2' tab='预混(犁刀混)'><PremixedCoulterMixed/></TabPane>

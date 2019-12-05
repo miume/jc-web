@@ -3,7 +3,7 @@ import React from "react";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import SearchCell from '../../../BlockQuote/search';
 import axios from "axios";
-import {Table, message, Spin, Divider,Modal} from "antd";
+import {Table, message, Spin, Divider,Modal,Button} from "antd";
 import BlockQuote from '../../../BlockQuote/blockquote';
 import Detail from "./detail";
 import NewButton from '../../../BlockQuote/newButton'
@@ -14,21 +14,13 @@ class BatchInfoTrace extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            dataSource: [{
-                index:"1",
-                batchNumber:"19M01001806TE4S",
-                process:"JH",
-                createTime:"2019-01-01  12:30",
-                person:"张三",
-                status:"进行中",
-                startTime:"2019-01-01  12:30",
-                endTime:"2019-01-01  12:30",
-            }],
+            dataSource: [],
             selectedRowKeys: [],
-            loading: true,
+            loading: false,
             searchContent:'',
             searchText: '',
-            visible:false
+            visible:false,
+            batchId:undefined
         }
         this.pagination = {
             showTotal(total){
@@ -41,80 +33,61 @@ class BatchInfoTrace extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
             width: '5%',
         },{
             title: '批次信息',
-            dataIndex: 'batchNumber',
-            key: 'batchNumber',
-            align:'center',
-            width: '11%',
-        },{
-            title: '工序',
-            dataIndex: 'process',
-            key: 'process',
-            align:'center',
+            dataIndex: 'batch',
+            key: 'batch',
             width: '11%',
         },{
             title: '批次生成时间',
             dataIndex: 'createTime',
             key: 'createTime',
-            align:'center',
             width: '11%',
         },{
             title: '生成人',
-            dataIndex: 'person',
-            key: 'person',
-            align:'center',
+            dataIndex: 'createName',
+            key: 'createName',
             width: '8%',
-        },{
-            title: '状态',
-            dataIndex: 'status',
-            key: 'status',
-            align:'center',
-            width: '10%',
-            render: (text, record) => {
-                if (record.statusFlag === false) {
-                    return (<span><span style={{color:'rgb(75,216,99)'}}><i className='fa fa-circle'></i></span>&nbsp;进行中</span>)
-                } else {
-                    return (<span><span  style={{color:'rgb(184,231,255)'}}><i className='fa fa-circle'></i></span>&nbsp;已完成</span>)
-                }
-            }
         },{
             title: '开始时间',
             dataIndex: 'startTime',
             key: 'startTime',
-            align:'center',
             width: '11%',
         },{
             title: '结束时间',
             dataIndex: 'endTime',
             key: 'endTime',
-            align:'center',
             width: '11%',
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
-            width: '8%',
+            width: '7%',
             render:(text,record)=>{
                 return(
                     <span>
-                        <Detail />
+                        <Detail batchId={this.state.batchId} url={this.url}/>
                     </span>
                 )
             }
         }]
-        this.showModal=this.showModal.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
+        this.handleCreate=this.handleCreate.bind(this);
     }
-    showModal(){
-        let userId=JSON.parse(localStorage.getItem('menuList')).userId
-        console.log(userId)
-        let params={
-            userId:userId,
-            batch:this.props.batch
+    componentDidMount(){
+        this.props.onRef(this)//ref使得父组件可以使用子组件的方法
+    }
+
+    handleCreate(){
+        this.setState({
+            loading:true
+        })
+        let userName=JSON.parse(localStorage.getItem('menuList')).name,
+            {batchData}=this.props,
+             params={
+            creater:userName,
+            batch:batchData[0].batch
         }
         axios({
             url:this.url. productionBatchInfo.preview,
@@ -124,48 +97,58 @@ class BatchInfoTrace extends React.Component{
             },
             params:params
         }).then(data=>{
-            console.log(data.data.data)
-        }).catch()
-
+            if(data.data.code===0){
+                let res=[data.data.data],
+                     batchId=data.data.data.code
+                for(let i=0;i<res.length;i++){
+                    res[i]['index']=i+1
+                }
+                this.setState({
+                    batchId:batchId,
+                    dataSource:res,
+                    loading:false
+                })
+            }
+        }).catch(error=>{
+            message.error('操作失败，请联系管理员!')
+        })
         this.setState({
-            visible:true
+            visible:false
         })
     }
+   
     handleCancel(){
         this.setState({
             visible:false
         })
     }
-    handleCreate(){
-
-    }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         const current = JSON.parse(localStorage.getItem('current'));
-        
         return(
             <span>
-                <NewButton name='批次追溯预览' handleClick={this.showModal}/>
-                <Modal
-                title='批次追溯预览'
-                visible={this.state.visible}
-                closable={false}
-                centered={true}
-                maskClosable={false}
-                width='800px'
-                footer={[
-                    <CancleButton key='back' handleCancel={this.handleCancel} flag={true}/>
-                    
-                ]}
-                >
-                    <Table  
-                        dataSource={this.state.dataSource} 
-                        columns={this.column}
-                        rowKey={record=>record.index} 
-                        pagination={false}
-                        size="small" bordered
-                    />
-                </Modal>
+                <Button type='primary' onClick={this.props.showModal} disabled={!this.props.selectedRowKeys.length>0}>批次追溯预览</Button>
+                <Spin spinning={this.state.loading}>
+                    <Modal
+                    title='批次追溯预览'
+                    visible={this.props.visiable}
+                    closable={false}
+                    centered={true}
+                    maskClosable={false}
+                    width='850px'
+                    footer={[
+                        <CancleButton key='back' handleCancel={this.props.handleBack} flag={true}/>                
+                    ]}
+                    >
+                        <Table  
+                            dataSource={this.state.dataSource} 
+                            columns={this.column}
+                            rowKey={record=>record.index} 
+                            pagination={false}
+                            size="small" bordered
+                        />
+                    </Modal>
+                </Spin>
             </span>
         )
     }

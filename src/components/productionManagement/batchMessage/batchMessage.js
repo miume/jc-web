@@ -24,7 +24,9 @@ class BatchMessage extends React.Component {
             loading: true,
             searchContent: '',
             searchFlag: 1,//判断是搜索分页还是获取表格数据分页
-            batch:''
+            batch:'',
+            batchData:undefined,
+            visiable1:false //批次追溯的modal
         }
         this.pagination = {
             total: this.state.data.length,
@@ -111,6 +113,8 @@ class BatchMessage extends React.Component {
         this.searchEvent=this.searchEvent.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
+        this.handleBack=this.handleBack.bind(this);
+        this.showModal=this.showModal.bind(this);
     }
     componentDidMount() {
         this.fetch();
@@ -139,6 +143,7 @@ class BatchMessage extends React.Component {
             }
         }).then((data) => {
             const res = data.data.data;
+            //console.log(res)
             if (res && res.list) {
                 var data = [];
                 for (var i = 0; i < res.list.length; i++) {
@@ -163,21 +168,13 @@ class BatchMessage extends React.Component {
     }
 
     onSelectChange = (selectedRowKeys,data) => {
-         console.log(selectedRowKeys,data)
-         for(let i=0;i<data.length-1;i++){
-            if(data[i].batch!==data[i+1].batch){
-                message.error('您选的批次不同，不可生成批次追溯!')
-                break;
-            }
-         }
+         //console.log(selectedRowKeys,data)
+         
         this.setState({ 
             selectedRowKeys: selectedRowKeys ,
+            batchData:data
         });
-        if(data&&data[0]){
-            this.setState({
-                batch:data[0].batch
-            })
-        }
+       
     }
     //根据id处理单条记录删除
     handleDelete(id){
@@ -187,6 +184,9 @@ class BatchMessage extends React.Component {
           headers:{
             'Authorization':this.url.Authorization
           },
+          params:{
+              code:id
+          }
         })
         .then((data)=>{
           message.info(data.data.message);
@@ -265,7 +265,28 @@ class BatchMessage extends React.Component {
                     data: data,
                 })
             }
-        }).catch()
+        }).catch(()=>{
+            message.error('操作失败，请联系管理员!')
+        })
+    }
+    showModal(){
+        let {batchData}=this.state
+        for(let i=0;i<batchData.length-1;i++){
+            if(batchData[i].batch!==batchData[i+1].batch){
+                message.error('您选的批次不同，不可生成批次追溯!')
+                return
+            }
+         }
+         this.setState({
+            visiable1:true
+        })
+       this.child.handleCreate()
+    }
+    handleBack(value){//处理批次追溯预览的返回
+        this.setState({
+            selectedRowKeys:[],
+            visiable1:false
+        })
     }
     render() {
         const current = JSON.parse(localStorage.getItem('current'));
@@ -280,7 +301,9 @@ class BatchMessage extends React.Component {
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch} />
                     <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel} flag={true} />&nbsp;&nbsp;&nbsp;
-                    <BatchInfoTrace batch={this.state.batch}/>
+                    <BatchInfoTrace batchData={this.state.batchData} handleBack={this.handleBack} onRef={(ref)=>{ this.child = ref}} 
+                                    showModal={this.showModal} visiable={this.state.visiable1}
+                                    selectedRowKeys={this.state.selectedRowKeys}/>
                     <SearchCell name='请输入批次信息' flag={true} fetch={this.fetch} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}/>
                     <div className='clear' ></div>
                     <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered />
