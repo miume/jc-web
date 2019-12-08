@@ -80,7 +80,6 @@ class ProductLineStatical extends React.Component{
     };
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.vgaMap.vgaMap}`,
             method:"delete",
@@ -97,7 +96,6 @@ class ProductLineStatical extends React.Component{
     };
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.vgaMap.ids}`,
             method:'delete',
@@ -107,16 +105,11 @@ class ProductLineStatical extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
             });
             message.info(data.data.message);
-            // if((this.pagination.total-1)%10===0){
-            //     this.pagination.current = this.pagination.current-1
-            // }
-            // this.handleTableChange(this.pagination);
             this.fetch();
         }).catch((error)=>{
             message.info(error.data);
@@ -156,7 +149,6 @@ class ProductLineStatical extends React.Component{
         }).then((data)=>{
             const dataRes=data.data.data
             const res = dataRes&&dataRes.list?dataRes.list:null;
-            // console.log(res)
          if(dataRes &&res){
             this.pagination.total = dataRes.total ? dataRes.total : 0;
             for (let i = 1; i <= res.length; i++) {
@@ -185,7 +177,6 @@ class ProductLineStatical extends React.Component{
 
     /**实现全选 */
     onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -217,9 +208,6 @@ class ProductLineStatical extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
@@ -235,7 +223,7 @@ class ProductLineStatical extends React.Component{
                     />
                     <SearchCell name="请输入vga点名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} onChange={this.handleTableChange} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.vgaPoint.code} dataSource={this.state.data} onChange={this.handleTableChange} size="small" bordered/>
                 </Spin>
             </div>
         )

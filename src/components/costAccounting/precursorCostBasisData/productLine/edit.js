@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Input, message } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
 class Edit extends React.Component {
     url;
@@ -14,7 +14,6 @@ class Edit extends React.Component {
         }
     }
     showModal = () => {
-        // console.log(this.props.code)
         axios({
             url: `${this.url.precursorProductionLine.getRecordById}`,
             method: "get",
@@ -23,9 +22,7 @@ class Edit extends React.Component {
             },
             params: { id: this.props.code }
         }).then((data) => {
-            // console.log(data.data.data)
             const res = data.data.data;
-            // console.log(moment(res.startTime))
             this.setState({
                 visible: true,
                 name: res.name,
@@ -40,7 +37,6 @@ class Edit extends React.Component {
     };
     handleCreate = () => {
         var data = { code: this.props.code, name: this.state.name };
-        // console.log(data)
         axios({
             url: `${this.url.precursorProductionLine.update}`,
             method: "put",
@@ -49,7 +45,6 @@ class Edit extends React.Component {
             },
             data: data
         }).then((data) => {
-            // console.log(data)
             message.info("编辑成功");
             this.props.fetch();
             this.setState({
@@ -77,7 +72,7 @@ class Edit extends React.Component {
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel} />,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     生产线名称：<Input id="name" style={{ width: "80%" }} onChange={this.change} value={this.state.name} placeholder="请输入生产线名称" />

@@ -14,8 +14,7 @@ class DetailItem extends React.Component {
         super(props);
         this.state = {
             visiable: false,
-            dataZhu: [],//主材数据
-            dataFu: [],//辅材数据
+            data: [],
             selectedRowKeys: [],
             loading: true,
             searchContent: '',
@@ -31,7 +30,7 @@ class DetailItem extends React.Component {
         this.handleTableChange = this.handleTableChange.bind(this);
         this.radioChange = this.radioChange.bind(this);
         this.pagination = {
-            total: this.state.radioValue===0?this.state.dataZhu.length:this.state.dataFu.length,
+            total: this.state.data.length,
             showTotal(total) {
                 return `共${total}条记录`
             },
@@ -49,30 +48,14 @@ class DetailItem extends React.Component {
             key: 'materialName',
             align: 'center',
             width: '14.3%',
-        },
-        // {
-        //     title: '所属类别',
-        //     dataIndex: 'types',
-        //     key: 'types',
-        //     align:'center',
-        //     width: '14.3%',
-        //     render:(text,record)=>{
-        //         // console.log(text,record)
-        //         if(text == 1){
-        //             return "辅材"
-        //         }else{
-        //             return "主材"
-        //         }
-        //     }
-        // },
-        {
+        }, {
             title: '所属工序',
             dataIndex: 'processName',
             key: 'processName',
             align: 'center',
             width: '14.3%',
         }, {
-            title: '所含金属',
+            title: '所含元素',
             dataIndex: 'metal',
             key: 'metal',
             align: 'center',
@@ -110,7 +93,6 @@ class DetailItem extends React.Component {
         }]
     }
     handleDelete = (id) => {
-        // console.log(id)
         axios({
             url: `${this.url.precursorMaterialDetails.delete}`,
             method: "delete",
@@ -135,13 +117,19 @@ class DetailItem extends React.Component {
         this.fetch();
     }
 
-    fetch = (params = {}) => {
+    fetch = (params = {}, type) => {
+        console.log(type)
+        type = type === undefined ? 0 : type
+        params = {
+            ...params,
+            type: type
+        }
         this.setState({
             loading: true,
             searchFlag: 0
         })
         axios({
-            url: `${this.url.precursorMaterialDetails.page}`,
+            url: `${this.url.precursorMaterialDetails.byTypes}`,
             method: "get",
             headers: {
                 'Authorization': this.url.Authorization
@@ -149,14 +137,10 @@ class DetailItem extends React.Component {
             params: params
         }).then((data) => {
             let res = data.data.data
-            //console.log(res)
-            
             if (res && res.list) {
-                let dataZhu=[],
-                dataFu=[]
                 for (let i = 1; i <= res.list.length; i++) {
                     res.list[i - 1]['index'] = (res.page - 1) * res.size + i;
-                   
+
                 }
                 for (let i = 0; i < res.list.length; i++) {
                     res.list[i]["metal"] = ""
@@ -177,18 +161,9 @@ class DetailItem extends React.Component {
                         res.list[i]["metal"] = "无"
                     }
                 }
-                for(let i = 0; i < res.list.length; i++){
-                    if(res.list[i]['types']===0){
-                        dataZhu.push(res.list[i])
-                    }
-                    else{
-                        dataFu.push(res.list[i])
-                    }
-                }
-                this.pagination.total = res && res.total ?res.total:0
+                this.pagination.total = res && res.total ? res.total : 0
                 this.setState({
-                    dataZhu:dataZhu,
-                    dataFu:dataFu,
+                    data: res.list,
                     searchContent: '',
                     loading: false
                 })
@@ -201,7 +176,7 @@ class DetailItem extends React.Component {
             url: `${this.url.precursorMaterialDetails.ids}`,
             method: 'delete',
             headers: {
-                'Authorization': this.Authorization
+                'Authorization': this.url.Authorization
             },
             data: ids,
             type: 'json'
@@ -247,7 +222,7 @@ class DetailItem extends React.Component {
         })
     };
     handleTableChange(pagination) {
-        let { searchFlag } = this.state
+        let { searchFlag, radioValue } = this.state
         this.pagination = pagination;
         if (searchFlag) {
             this.searchEvent({
@@ -259,13 +234,18 @@ class DetailItem extends React.Component {
             this.fetch({
                 size: pagination.pageSize,
                 page: pagination.current
-            })
+            }, radioValue)
         }
     }
     radioChange(e) {
         this.setState({
             radioValue: e.target.value
         })
+        let { pageSize, current } = this.pagination
+        this.fetch({
+            page: current,
+            size: pageSize,
+        }, e.target.value)
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -276,9 +256,6 @@ class DetailItem extends React.Component {
             onChange: this.onSelectChange,
             onSelect() { },
             onSelectAll() { },
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
         };
         return (
             <div>
@@ -299,7 +276,7 @@ class DetailItem extends React.Component {
                     </Radio.Group>
                     <SearchCell name="请输入物料名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.radioValue === 0 ? this.state.dataZhu : this.state.dataFu} scroll={{ y: 400 }} onChange={this.handleTableChange} size="small" bordered />
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange} size="small" bordered />
                 </Spin>
             </div>
         )

@@ -2,7 +2,7 @@ import React from "react";
 import {Modal,Select,message,Input } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
 class AddModal extends React.Component{
     url;
@@ -25,7 +25,6 @@ class AddModal extends React.Component{
             params:{id:this.props.code}
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             this.setState({
                 visible:true,
                 source:res.dataType,
@@ -73,11 +72,6 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        // const options = [
-        //     { label: 'Apple', value: 'Apple' },
-        //     { label: 'Pear', value: 'Pear' },
-        //     { label: 'Orange', value: 'Orange' },
-        //   ];
         return(
             <span>
                 <span className="blue" onClick={this.showModal}>编辑</span>
@@ -90,7 +84,7 @@ class AddModal extends React.Component{
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     材料类别：<Input value={this.state.type} onChange={this.onChange} placeholder="请输入材料类别" style={{width:"83%"}}/>

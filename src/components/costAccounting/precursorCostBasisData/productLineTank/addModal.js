@@ -3,7 +3,7 @@ import {Modal, Input,message,Select,Checkbox,Col } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import '../tankValue/tank.css'
 import { lang } from "moment";
 const {Option}=Select
@@ -185,7 +185,7 @@ class AddModal extends React.Component{
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                      生产线：<Select onChange={this.change} value={this.state.productLine} placeholder="请选择生产线" style={{width:"400px"}}>

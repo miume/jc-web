@@ -50,6 +50,91 @@ class InstrumentDetail extends React.Component{
         this.setState({
             visible:true
         })
+        axios({
+            url:this.props.url.productionBatchInfo.getInstrument,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                instrumentCode:this.props.record.instrumentCode
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                let dataSource=[{
+                    type:'PH',
+                    minValue:res.phValueMin,
+                    maxValue:res.phValueMax,
+                    averageValue:res.phValueAvg
+                },{
+                    type:'温度(℃)',
+                    minValue:res.temperatureMin,
+                    maxValue:res.temperatureMax,
+                    averageValue:res.temperatureAvg
+                },{
+                    type:'盐流量1(kg/h)',
+                    minValue:res.saltFlow1Min,
+                    maxValue:res.saltFlow1Max,
+                    averageValue:res.saltFlow1Avg
+                },{
+                    type:'盐流量2(kg/h)',
+                    minValue:res.saltFlow2Min,
+                    maxValue:res.saltFlow2Max,
+                    averageValue:res.saltFlow2Avg
+                },{
+                    type:'盐流量3(kg/h)',
+                    minValue:res.saltFlow3Min,
+                    maxValue:res.saltFlow3Max,
+                    averageValue:res.saltFlow3Avg
+                },{
+                    type:'盐流量4(kg/h)',
+                    minValue:res.saltFlow4Min,
+                    maxValue:res.saltFlow4Max,
+                    averageValue:res.saltFlow4Avg
+                },{
+                    type:'氨碱1(kg/h)',
+                    minValue:res.ammoniaBases1Min,
+                    maxValue:res.ammoniaBases1Max,
+                    averageValue:res.ammoniaBases1Avg
+                },{
+                    type:'氨碱2(kg/h)',
+                    minValue:res.ammoniaBases2Min,
+                    maxValue:res.ammoniaBases2Max,
+                    averageValue:res.ammoniaBases2Avg
+                },{
+                    type:'氨水(kg/h)',
+                    minValue:res.ammoniaWaterMin,
+                    maxValue:res.ammoniaWaterMax,
+                    averageValue:res.ammoniaWaterAvg
+                },{
+                    type:'氨气(kpa)',
+                    minValue:res.ammoniaGasMin,
+                    maxValue:res.ammoniaGasMax,
+                    averageValue:res.ammoniaGasAvg
+                },{
+                    type:'含固量(g/l)',
+                    minValue:res.solidContainingContentMin,
+                    maxValue:res.solidContainingContentMax,
+                    averageValue:res.solidContainingContentAvg
+                },{
+                    type:'变频器显示(Hz)',
+                    minValue:res.transducerShowMin,
+                    maxValue:res.transducerShowMax,
+                    averageValue:res.transducerShowAvg
+                },
+                {
+                    type:'3c测量值',
+                    minValue:res.measured3cMin,
+                    maxValue:res.measured3cMax,
+                    averageValue:res.measured3cAvg
+                }]
+                this.setState({
+                    cellNum:res.cellNum,
+                    data:dataSource
+                })
+            }
+        })
     }
     handleCancel = ()=>{
         this.setState({
@@ -57,7 +142,6 @@ class InstrumentDetail extends React.Component{
         });
     }
     valueChange=()=>{
-        // console.log(111)
         this.setState({
             tableDisplay:"block",
             pictureDisplay:"none",
@@ -66,13 +150,23 @@ class InstrumentDetail extends React.Component{
         })
     }
     picChange=()=>{
-        // console.log(111)
         this.setState({
             tableDisplay:"none",
             pictureDisplay:"block",
             valueType:"default",
             picType:"primary",
         })
+        axios({
+            url:this.props.url.productionBatchInfo.getInstrumentChart,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                startTime:this.props.record.startTime,
+                endTime:this.props.record.endTime
+            }
+        }).then(data=>{})
     }
 
     getOption = () =>{

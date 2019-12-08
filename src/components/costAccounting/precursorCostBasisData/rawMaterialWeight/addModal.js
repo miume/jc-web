@@ -3,16 +3,16 @@ import {Modal,Select,message } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import Tr from './tr'
 const {Option}=Select;
 class AddModal extends Component{
     constructor(props){
         super(props)
         this.state={
-            materialName:'',//物料点名称
-            materialType:'',//材料类别
-            dataType:'',//物料来源
+            materialName:undefined,//物料点名称
+            materialType:undefined,//材料类别
+            dataType:undefined,//物料来源
             visible:false,
             materialTypeData:[],
             materialNameData:[],
@@ -150,9 +150,9 @@ class AddModal extends Component{
     handleCancel(){
         this.setState({
             visible:false,
-            materialName:'',//物料点名称
-            materialType:'',//材料类别
-            dataType:'',//物料来源
+            materialName:undefined,//物料点名称
+            materialType:undefined,//材料类别
+            dataType:undefined,//物料来源
             detail:{},
             productLine:[]
         })
@@ -170,7 +170,6 @@ class AddModal extends Component{
             weightDTOS: []
             },
             count=0,weightValue=[]
-            console.log(detail)
         for(let key in detail){
             if(detail[key].checkbox===true){
                 let item={};
@@ -202,14 +201,7 @@ class AddModal extends Component{
             }
             message.info("操作成功!");
             this.props.fetch();
-            this.setState({
-                visible:false,
-                detail:{},
-                materialName:'',//物料点名称
-                materialType:'',//材料类别
-                dataType:'',//物料来源
-                productLine:[]
-            })
+            this.handleCancel()
         }).catch((error)=>{
             message.error('操作失败，请联系管理员!')
         })
@@ -232,7 +224,6 @@ class AddModal extends Component{
         })
     }
     render(){
-       // console.log(this.state.detail)
         return(
             <span>
                 {this.props.editFlag?<span className='blue' onClick={this.showModal}>编辑</span>
@@ -246,7 +237,7 @@ class AddModal extends Component{
                     width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     <div>

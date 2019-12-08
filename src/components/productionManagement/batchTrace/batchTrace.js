@@ -63,7 +63,7 @@ class BatchTrace extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <Detail />
+                        <Detail url={this.url} code={record.code}/>
                     </span>
                 )
             }

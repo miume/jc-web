@@ -3,7 +3,7 @@ import {Modal, Input,message,Select,Checkbox } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import './tank.css'
 const {Option}=Select
 class AddModal extends React.Component{
@@ -13,9 +13,9 @@ class AddModal extends React.Component{
         this.state = {
             visible:false,
             data:null,
-            productLine:'',
-            tank:'',
-            valueVolume:'',
+            productLine:undefined,
+            tank:undefined,
+            valueVolume:undefined,
             lineData:[],
             tankData:[]
         }
@@ -76,9 +76,9 @@ class AddModal extends React.Component{
     };
     handleCancel = () =>{
         this.setState({
-            productLine:'',
-            tank:'',
-            valueVolume:'',
+            productLine:undefined,
+            tank:undefined,
+            valueVolume:undefined,
             visible:false
         })
     }
@@ -106,12 +106,7 @@ class AddModal extends React.Component{
         }).catch(error=>{
             message.error('操作失败，请联系管理员!')
         })
-        this.setState({
-            visible:false,
-            productLine:'',
-            tank:'',
-            valueVolume:'',
-        })
+        this.handleCancel()
     }
     change = (data)=>{//生产线
         this.setState({
@@ -160,7 +155,7 @@ class AddModal extends React.Component{
                     width='400px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                    <span className='tank-add-span'> 生产线：</span><Select onChange={this.change} value={this.state.productLine} placeholder="请选择生产线" style={{width:"250px"}}>

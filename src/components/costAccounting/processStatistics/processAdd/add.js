@@ -128,8 +128,6 @@ class CostProcessAdd extends Component {
             }
         }).then((data)=>{
             let tagTable = data.data.data;
-            console.log(data)
-           console.log(tagTable)
             if(tagTable){
                 if (tagTable && tagTable.goodInProcessDTOS) {
                     this.setState({

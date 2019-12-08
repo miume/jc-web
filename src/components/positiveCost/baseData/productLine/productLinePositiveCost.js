@@ -112,6 +112,7 @@ class ProductLinePositiveCost extends Component{
                     rowKey={record=>record.code}
                     dataSource={this.state.dataSource}
                     columns={this.columns}
+                    pagination={false}
                     size='small'
                     bordered/>
                 </Spin>

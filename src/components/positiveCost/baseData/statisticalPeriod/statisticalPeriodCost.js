@@ -120,6 +120,7 @@ class StatisticalPeriodCost extends Component{
                     dataSource={this.state.dataSource}
                     size='small'
                     columns={this.columns}
+                    pagination={false}
                     bordered/>
                 </Spin>
             </div>

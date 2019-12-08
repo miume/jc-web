@@ -4,61 +4,57 @@ import {Table, message, Spin, Divider} from "antd";
 import DeviceService from "./deviceService";
 import DeviceMaintenance from "./deviceMaintenance"
 
-class Instrument extends React.Component{
-    url
+class Device extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            data : [{
-                index:"1",
-                batchNumber:"19M01001806TE4S",
-                slot:"JH",
-                startTime:"2019-01-01  12:30",
-                endTime:"2019-01-01  12:30",
-            }],
+        
         }
         this.column = [{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
-            width: '9%',
+            width: '5%',
         },{
             title: '批次信息',
-            dataIndex: 'batchNumber',
-            key: 'batchNumber',
-            align:'center',
-            width: '19%',
+            dataIndex: 'batch',
+            key: 'batch',
+            width: '16%',
         },{
-            title: '合成槽号',
-            dataIndex: 'slot',
-            key: 'slot',
-            align:'center',
-            width: '15%',
+            title: '工序',
+            dataIndex: 'ruleValue',
+            key: 'ruleValue',
+            width: '8%',
         },{
             title: '工序开始时间',
             dataIndex: 'startTime',
             key: 'startTime',
-            align:'center',
-            width: '19%',
+            width: '16.5%',
         },{
             title: '工序结束时间',
             dataIndex: 'endTime',
             key: 'endTime',
-            align:'center',
-            width: '19%',
+            width: '16.5%',
+        },{
+            title: '固定资产编码',
+            dataIndex: 'fixedassetsCode',
+            key: 'fixedassetsCode',
+            width: '12%',
+        },{
+            title: '规格型号',
+            dataIndex: 'specification',
+            key: 'specification',
+            width: '12%',
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            align:'center',
-            width: '19%',
             render:(text,record)=>{
                 return(
                     <span>
-                        <DeviceService />
+                        <DeviceService url={this.props.url}/>
                         <Divider type="vertical"/>
-                        <DeviceMaintenance />
+                        <DeviceMaintenance url={this.props.url}/>
                     </span>
                 )
             }
@@ -66,13 +62,12 @@ class Instrument extends React.Component{
     }
 
     render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
-                <Table pagination={false} size="small" bordered  dataSource={this.state.data} columns={this.column} rowKey={record=>record.index}/>
+                <Table pagination={false} size="small" bordered  dataSource={this.props.deviceData} columns={this.column} rowKey={record=>record.index}/>
             </span>
         )
     }
 }
 
-export default Instrument
+export default Device

@@ -153,7 +153,6 @@ class MaterialPLC extends React.Component{
             params:params
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             this.pagination.total=res&&res.total?res.total:0
            if(res &&res.list){
                 for(var i = 1; i<=res.list.length; i++){
@@ -172,7 +171,6 @@ class MaterialPLC extends React.Component{
     }
      /**实现全选 */
     onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -211,9 +209,6 @@ class MaterialPLC extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
@@ -229,7 +224,7 @@ class MaterialPLC extends React.Component{
                     />
                     <SearchCell name='请输入物料名称/PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange}  size="small" bordered/>
                 </Spin>
             </div>
         )

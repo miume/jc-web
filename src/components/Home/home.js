@@ -461,7 +461,8 @@ class Home extends Component {
                 ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
                 preview:`${server}/jc/common/productionBatchInfo/preview`,
                 getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
-                getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`
+                getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
+                getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
             },
             /**批次追溯*/
             productionBatchRetrospect:{
@@ -523,7 +524,8 @@ class Home extends Component {
                 getProcess:`${server}/jc/common/precursorMaterialDetails/getProcess`,
                 getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`,
                 all:`${server}/jc/common/precursorMaterialDetails/all`,
-                getMaterialByProcessType:`${server}/jc/common/precursorMaterialDetails/getMaterialByProcessType`
+                getMaterialByProcessType:`${server}/jc/common/precursorMaterialDetails/getMaterialByProcessType`,
+                byTypes:`${server}/jc/common/precursorMaterialDetails/byTypes`
             },
             /**物料plc映射 */
             matPlcMap:{
