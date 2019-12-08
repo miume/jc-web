@@ -3,7 +3,7 @@ import {Modal, Input,message,Select,Checkbox } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import '../tankValue/tank.css'
 const {Option}=Select
 class AddModal extends React.Component{
@@ -190,7 +190,7 @@ class AddModal extends React.Component{
                     width='400px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>
                     ]}
                 >
                    <span className='tank-add-span'>原材料名称：</span>

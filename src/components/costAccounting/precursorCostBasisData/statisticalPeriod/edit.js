@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Input, message, TimePicker } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import moment from "moment";
 
 class Edit extends React.Component {
@@ -18,7 +18,6 @@ class Edit extends React.Component {
         }
     }
     showModal = () => {
-        // console.log(this.props.code)
         axios({
             url: `${this.url.staticPeriod.getRecordById}`,
             method: "get",
@@ -27,9 +26,7 @@ class Edit extends React.Component {
             },
             params: { id: this.props.code }
         }).then((data) => {
-            // console.log(data.data.data)
             const res = data.data.data;
-            // console.log(moment(res.startTime))
             this.setState({
                 visible: true,
                 startTime: moment(res.startTime, "HH:mm:ss"),
@@ -50,7 +47,6 @@ class Edit extends React.Component {
     };
     handleCreate = () => {
         var data = { code: this.props.code, length: this.state.default, name: this.state.name, startTime: this.state.timeString };
-        // console.log(data)
         axios({
             url: `${this.url.staticPeriod.update}`,
             method: "put",
@@ -59,7 +55,6 @@ class Edit extends React.Component {
             },
             data: data
         }).then((data) => {
-            // console.log(data)
             message.info("编辑成功");
             this.props.fetch();
             this.setState({
@@ -77,7 +72,6 @@ class Edit extends React.Component {
         })
     }
     onChange = (time, timeString) => {
-        // console.log(time);
         this.setState({
             startTime: time,
             timeString: timeString
@@ -102,7 +96,7 @@ class Edit extends React.Component {
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel} />,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     周期名称：<Input style={{ width: "84%" }} id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称" />

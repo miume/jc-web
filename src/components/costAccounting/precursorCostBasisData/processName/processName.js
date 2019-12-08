@@ -246,7 +246,7 @@ class ProcessName extends React.Component {
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <div className='clear' ></div>
                     <EditableContext.Provider value={this.props.form}>
-                        <Table pagination={false} components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered />
+                        <Table pagination={false} components={components} columns={columns} rowKey={record => record.index} dataSource={this.state.data}  size="small" bordered />
                     </EditableContext.Provider>
                 </Spin>
             </div>

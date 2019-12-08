@@ -41,13 +41,7 @@ class ProcessPositiveCost extends Component{
                 );
             }
         }]
-        this.pagination={
-            total:this.state.dataSource.length,
-            showTotal(total){
-                return `共${total}条记录`
-            },
-            showSizeChanger: true,
-        }
+
         this.returnBaseInfoPositive=this.returnBaseInfoPositive.bind(this);
         this.getTableData=this.getTableData.bind(this);
     }
@@ -64,21 +58,20 @@ class ProcessPositiveCost extends Component{
             loading:true
         })
         axios({
-            url:this.url. positiveProcess.page,
+            url:this.url. positiveProcess.all,
             method:'get',
             headers:{
                 'Authorization':this.url.Authorization
             }
         }).then(data=>{
             let res=data.data.data
-            if(res&&res.list){
-                this.pagination.total=res.total?res.total:0
-                for(let i=0;i<res.list.length;i++){
-                    res.list[i]['index']=(res.page-1)*res.size+(i+1);
+            if(res){
+                for(let i=0;i<res.length;i++){
+                    res[i]['index']=(i+1);
                 }
 
                 this.setState({
-                    dataSource:res.list
+                    dataSource:res
                 })
             }
             this.setState({
@@ -87,7 +80,6 @@ class ProcessPositiveCost extends Component{
         })
     }
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url. positiveProcess.delete}`,
             method:"delete",
@@ -117,7 +109,7 @@ class ProcessPositiveCost extends Component{
                     <Table
                     rowKey={record=>record.code}
                     dataSource={this.state.dataSource}
-                    pagination={this.pagination}
+                    pagination={false}
                     size='small'
                     columns={this.columns}
                     bordered/>

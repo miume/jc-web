@@ -115,7 +115,6 @@ class RawMaterialName extends React.Component{
         this.fetch()
     }
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.precursorRawMaterial.deleteById}`,
             method:"delete",
@@ -132,7 +131,6 @@ class RawMaterialName extends React.Component{
     }
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.precursorRawMaterial.deleteByIds}`,
             method:'delete',
@@ -142,12 +140,16 @@ class RawMaterialName extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
+            if(data.data.code===0){
+                this.setState({
+                    selectedRowKeys: [],
+                    loading: false,
+                });
+                this.fetch();
+            }
+           else{
             message.info(data.data.message);
-            this.fetch();
+           }
         }).catch((error)=>{
             message.info(error.data);
         })
@@ -181,7 +183,6 @@ class RawMaterialName extends React.Component{
             params
         }).then((data)=>{
             const res=data.data.data;
-            //console.log(res)
             let dataSource = [];
             if(res&&res.list) {
                 this.pagination.total = res.total ? res.total : 0;
@@ -220,7 +221,6 @@ class RawMaterialName extends React.Component{
     }
     /**实现全选 */
     onSelectChange = (selectedRowKeys)=>{
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -251,9 +251,6 @@ class RawMaterialName extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
@@ -263,13 +260,13 @@ class RawMaterialName extends React.Component{
                     <AddModal fetch={this.fetch}/>
                     <DeleteByIds 
                         selectedRowKeys={this.state.selectedRowKeys}
-                        // deleteByIds={this.start}
-                        // cancel={this.cancel}
+                        deleteByIds={this.start}
+                        cancel={this.cancel}
                         flag={true}
                     />
                     <SearchCell name="请输入原材料名称" flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} onChange={this.handleTableChange} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} onChange={this.handleTableChange} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )

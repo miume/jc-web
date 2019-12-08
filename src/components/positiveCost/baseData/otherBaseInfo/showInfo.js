@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Button,Input,Popconfirm} from 'antd'
+import {Button,Input,Popconfirm,message} from 'antd'
 import '../statisticalPeriod/add.css'
 import SaveButton from '../../../BlockQuote/saveButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
@@ -19,7 +19,9 @@ class ShowInfo extends Component{
             highMixingMachineWeight: undefined,
             matchingCoefficientPrecursors: undefined,
             matchingCoefficientLithiumCarbonate: undefined,
-            matchingCoefficientHopPocket: undefined
+            matchingCoefficientHopPocket: undefined,
+            addFlag:true ,//用来判断调新增还是编辑接口
+            code:undefined
         }
         this.inputChange=this.inputChange.bind(this);
         this.getCurrent=this.getCurrent.bind(this);
@@ -44,8 +46,10 @@ class ShowInfo extends Component{
             }
         }).then(data=>{
             let res=data.data.data
-            if(res){
+            if(res){//返回的数据不为空，会返回一个code，调用编辑接口
                 this.setState({
+                    code:res.code,
+                    addFlag:false,
                     bagWeight: res.bagWeight,
                     bowlFillWeight: res.bowlFillWeight,
                     bowlNum: res.bowlNum,
@@ -59,10 +63,15 @@ class ShowInfo extends Component{
                     matchingCoefficientHopPocket: res.matchingCoefficientHopPocket
                 })
             }
+            else{//如果返回的数据为null，此时要新增一条数据，调用新增接口
+                this.setState({
+                    addFlag:true
+                })
+            }
         })
     }
     handleSave(){
-        let {bagWeight,bowlFillWeight,bowlNum,burningLossRate,smashWeight,
+        let {code,addFlag,bagWeight,bowlFillWeight,bowlNum,burningLossRate,smashWeight,
             presinteringWeight,secondSinteringWeight,highMixingMachineWeight,
             matchingCoefficientPrecursors,matchingCoefficientLithiumCarbonate,matchingCoefficientHopPocket}=this.state,
             data={
@@ -71,12 +80,20 @@ class ShowInfo extends Component{
                 highMixingMachineWeight: highMixingMachineWeight,matchingCoefficientPrecursors: matchingCoefficientPrecursors,
                 matchingCoefficientLithiumCarbonate: matchingCoefficientLithiumCarbonate,matchingCoefficientHopPocket: matchingCoefficientHopPocket
             }
+            for(let key in data){
+                if(data[key]===undefined){
+                    console.log(key,data[key])
+                    message.error('信息填写不完整!')
+                    return
+                }
+            }
+            data['code']=addFlag?'':code
         this.setState({
             flag:true
         })
         axios({
-            url:this.url.positiveOther.add,
-            method:'post',
+            url:this.state.addFlag?this.url.positiveOther.add:this.url.positiveOther.update,
+            method:this.state.addFlag?'post':'put',
             headers:{
                 'Authorization':this.url.Authorization
             },
@@ -123,20 +140,20 @@ class ShowInfo extends Component{
                 </div>
                 <div className='fontAttribute'>
                     <span >每排钵数 :</span>
-                    <Input placeholder='请输入' name='bowlNum' value={bowlNum} suffix="kg" style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
+                    <Input placeholder='请输入' name='bowlNum' value={bowlNum}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
                     <span >二烧正压输送每罐重量 :</span>
                     <Input placeholder='请输入' name='secondSinteringWeight' value={secondSinteringWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={flag}/>
                 </div>
                 <div className='fontAttribute'>
                     <span >烧损系数 :</span>
-                    <Input placeholder='请输入' name='burningLossRate' value={burningLossRate} suffix="kg" style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
+                    <Input placeholder='请输入' name='burningLossRate' value={burningLossRate}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
                     <span >高混机每批进料量 :</span>
                     <Input placeholder='请输入' name='highMixingMachineWeight' value={highMixingMachineWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={flag}/>
                 </div>
                 <div className='fontInfo'>预混配比系数</div>
                 <div className='fontAttribute'>
                     <span >前驱体 :</span>
-                    <Input placeholder='请输入' name='matchingCoefficientPrecursors' value={matchingCoefficientPrecursors} uffix="kg" style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
+                    <Input placeholder='请输入' name='matchingCoefficientPrecursors' value={matchingCoefficientPrecursors} suffix="kg" style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
                     <span >碳酸锂 :</span>
                     <Input placeholder='请输入' name='matchingCoefficientLithiumCarbonate' value={matchingCoefficientLithiumCarbonate} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={flag}/>
                 </div>

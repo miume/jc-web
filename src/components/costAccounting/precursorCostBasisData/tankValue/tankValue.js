@@ -103,7 +103,6 @@ class TankValue extends React.Component{
         }).then((data)=>{
             const dataRes=data.data.data
             const res = dataRes&&dataRes.list?dataRes.list:null;
-           // console.log(res)
          if(dataRes &&res){
             this.pagination.total = dataRes.total ? dataRes.total : 0;
             for (let i = 1; i <= res.length; i++) {
@@ -122,11 +121,9 @@ class TankValue extends React.Component{
     }
     /**实现全选 */
     onSelectChange = (selectedRowKeys)=>{
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url. precursorCompoundCellVolumes.delete}`,
             method:"delete",
@@ -143,7 +140,6 @@ class TankValue extends React.Component{
     };
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url. precursorCompoundCellVolumes.ids}`,
             method:'delete',
@@ -193,9 +189,6 @@ class TankValue extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>

@@ -80,7 +80,6 @@ class MaterialType extends React.Component{
     };
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.precursorMaterialType.delete}`,
             method:"delete",
@@ -98,7 +97,6 @@ class MaterialType extends React.Component{
 
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.precursorMaterialType.ids}`,
             method:'delete',
@@ -108,16 +106,11 @@ class MaterialType extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
             });
             message.info(data.data.message);
-            // if((this.pagination.total-1)%10===0){
-            //     this.pagination.current = this.pagination.current-1
-            // }
-            // this.handleTableChange(this.pagination);
             this.fetch();
         }).catch((error)=>{
             message.info(error.data);
@@ -134,7 +127,6 @@ class MaterialType extends React.Component{
 
     /**实现全选 */
     onSelectChange = (selectedRowKeys)=>{
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
 
@@ -202,9 +194,6 @@ class MaterialType extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
@@ -219,7 +208,7 @@ class MaterialType extends React.Component{
                         flag={true}
                     />
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} onChange={this.handleTableChange} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} onChange={this.handleTableChange} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )

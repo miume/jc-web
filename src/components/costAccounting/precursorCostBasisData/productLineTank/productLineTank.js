@@ -220,7 +220,7 @@ class ProductLineTank extends React.Component{
                     />
                     <SearchCell name="请输入产线名称" flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )

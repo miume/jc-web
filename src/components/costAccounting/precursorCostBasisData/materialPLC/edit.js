@@ -2,7 +2,7 @@ import React from "react";
 import {Modal,Select,message } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
 class AddModal extends React.Component{
     url;
@@ -25,7 +25,6 @@ class AddModal extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data.list;
-            // console.log(res)
             this.setState({
                 materialPonit:res
             })
@@ -38,7 +37,6 @@ class AddModal extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data.list;
-            // console.log(res)
             this.setState({
                 plcAddress:res
             })
@@ -52,7 +50,6 @@ class AddModal extends React.Component{
             params:{id:this.props.code}
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             this.setState({
                 visible:true,
                 materialCode:res.materialId,
@@ -72,7 +69,6 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         var data = {code:this.props.code,materialCode:this.state.materialCode,plcCode:this.state.plcCode};
-        // console.log(data)
         axios({
             url:`${this.url.matPlcMap.matPlcMap}`,
             method:"put",
@@ -117,7 +113,7 @@ class AddModal extends React.Component{
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     物料点：<Select id="material" onChange={this.materialChange} value={this.state.materialCode} style={{width:"85%"}} placeholder="请选择物料点">

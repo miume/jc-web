@@ -2,7 +2,7 @@ import React from "react";
 import {Modal,Select,message } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import ProTable from "./detailTr";
 
 class Edit extends React.Component{
@@ -52,7 +52,6 @@ class Edit extends React.Component{
             message.error("所选项权值相加应等于1");
         }
         data.weightDTOS = weightValue;
-        console.log(data);
         axios({
             url:`${this.url.precursorMaterialLineWeight.update}`,
             method:"put",
@@ -61,7 +60,6 @@ class Edit extends React.Component{
             },
             data:data
         }).then((data)=>{
-            // console.log(data);
             if(data.data.code!=0){
                 message.error(data.data.message);
                 return
@@ -151,8 +149,6 @@ class Edit extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res);
-            // var detail = {}
             for(var i=0;i<res.length;i++){
                 detail[res[i].code] = {};
                 detail[res[i].code]["checkbox"] = false
@@ -176,8 +172,6 @@ class Edit extends React.Component{
                 detail[res.weightDTOS[i].lineCode]["value"] = res.weightDTOS[i].weightValue
                 detail[res.weightDTOS[i].lineCode]["checkbox"] = true
             }
-            // console.log(res);
-            // console.log(detail)
             axios({
                 url:`${this.url.precursorMaterialDetails.getProcess}`,
                 method:"get",
@@ -187,7 +181,6 @@ class Edit extends React.Component{
                 params:{types:res.types}
             }).then((data)=>{
                 const res = data.data.data;
-                // console.log(res)
                 this.setState({
                     processData:res,
                     detail:detail
@@ -202,7 +195,6 @@ class Edit extends React.Component{
                 params:{types:res.types,processCode:res.processCode}
             }).then((data)=>{
                 const res = data.data.data;
-                // console.log(res)
                 this.setState({
                     materialData:res,
                 })
@@ -229,7 +221,7 @@ class Edit extends React.Component{
                     width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     <div>
