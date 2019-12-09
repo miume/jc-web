@@ -262,7 +262,7 @@ class EqMaintenancePlan extends React.Component{
                             DevicetreeData[o].children.push({
                                 key:res[j].code,
                                 title:res[j].fixedassetsCode,
-                                value:res[j].deviceName+'/#'+res[j].fixedassetsCode,
+                                value:res[j].deviceName+'/#'+res[j].fixedassetsCode+'/#'+res[j].code,
                                 children: [],
                             })
                         }

@@ -18,8 +18,10 @@ class Search extends React.Component {
             endValue = endTime === undefined || endTime === "" ? null : moment(endTime, dateFormat);
         return (
             <span className={flag?'searchCell':'hide'}>
-                <DatePicker placeholder={"请选择开始起始日期"} value={startValue} onChange={this.props.startDateChange} style={{marginRight: 10}}/>
-                <DatePicker placeholder={"请选择开始结束日期"} value={endValue} onChange={this.props.endDateChange} style={{marginRight: 10}}/>
+                <span>开始时间：</span>
+                <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.props.startDateChange}/>
+                <span style={{padding: '0 5px'}}>~</span>
+                <DatePicker placeholder={"请选择开始日期"} value={endValue} onChange={this.props.endDateChange} style={{marginRight: 10}}/>
                 <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : ''} selectChange={this.props.selectChange}/>
                 <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.props.search}/>
                 <Button

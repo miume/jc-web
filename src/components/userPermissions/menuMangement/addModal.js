@@ -61,6 +61,17 @@ const CollectionCreateForm = Form.create()(
                                </FormItem>
                                :  null
                        }
+                          {
+                              this.props.visible1 === true ?
+                                  <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 24 }}>
+                                      {getFieldDecorator('path', {
+                                          rules: [{ required: false}],
+                                      })(
+                                          <Input placeholder='请输入路径名称' style={{height:35}}/>
+                                      )}
+                                  </FormItem>
+                                  :  null
+                          }
                     </Form>
                 </Modal>
             );
@@ -109,7 +120,8 @@ class AddModal extends React.Component {
             }
             let data = {
                 menuName: values.menuName,
-                parent: values.parent ? values.parent.split('-')[1] : -1
+                parent: values.parent ? values.parent.split('-')[1] : -1,
+                path: values.path,
             };
             this.addMenu(data)
             form.resetFields();
@@ -150,7 +162,6 @@ class AddModal extends React.Component {
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
                     treeData={this.props.treeData}
-                    fatherMenu = {this.props.fatherMenu}
                     visible1={this.state.visible1}
                     selectChange={this.selectChange}
                 />

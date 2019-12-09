@@ -68,7 +68,6 @@ class AddModal extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.feedDataChange = this.feedDataChange.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
-        this.getPreviousConcentration = this.getPreviousConcentration.bind(this);
     }
 
     render() {
@@ -186,11 +185,6 @@ class AddModal extends React.Component {
             let res = data.data.data;
             console.log(res)
         })
-    }
-
-    /**获取上期浓度*/
-    getPreviousConcentration() {
-
     }
 
     /**点击取消新增*/
