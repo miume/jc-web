@@ -653,7 +653,7 @@ class Home extends Component {
             materialType: {
                 all: `${server}/jc/repo/type/tree`,
             },
-            /**原料领用*/
+            /**前驱体原料领用*/
             rawMaterial: {
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
                 deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
@@ -742,6 +742,20 @@ class Home extends Component {
                 getCurrent:`${server}/jc/common/anodeOthers/getCurrent`,
                 add:`${server}/jc/common/anodeOthers/add`,
                 update:`${server}/jc/common/anodeOthers/update`
+            },
+            /**前驱体辅料统计*/
+            auxiliary: {
+                auxiliary:`${server}/jc/common/auxiliary`,
+                getPageUnCommit:`${server}/jc/common/auxiliary/getPageUnCommit`,
+                getPageCommit:`${server}/jc/common/auxiliary/getPageCommit`,
+                nextPeroidNumber:`${server}/jc/common/auxiliary/nextPeroidNumber`,
+                addConfirm:`${server}/jc/common/auxiliary/addComfirm`,
+                afterConfirm:`${server}/jc/common/auxiliary/afterComfirm`,
+                lineCur:`${server}/jc/common/auxiliary/lineCur`,
+                processCur:`${server}/jc/common/auxiliary/processCur`,
+                saveOrCommit:`${server}/jc/common/auxiliary/saveOrCommit`,
+                stasticByLine:`${server}/jc/common/auxiliary/stasticByLine`,
+                stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
             }
         };
 
