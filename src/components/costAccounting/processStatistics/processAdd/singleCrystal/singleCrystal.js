@@ -68,7 +68,6 @@ class SingleCrystal extends Component {//单晶体配置
        
         let value=e.target.value //获取到输入框填的值
        let inputData=`${e.target.name}-${value}`
-       // this.tableData[code]['currentConcentration'] = value;//修改第几行的哪个字段数据
        this.props.getSingleCrystal(this.props.processId,inputData,'')
 
     }

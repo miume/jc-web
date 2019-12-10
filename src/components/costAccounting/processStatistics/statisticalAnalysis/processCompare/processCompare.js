@@ -18,6 +18,10 @@ class ProcessCompare extends Component{//工序对比分析
             startTime:'',
             endTime:'',
             length:this.props.length,
+            xData:[],//期数
+            seriesDataNi:[],
+            seriesDataCo:[],
+            seriesDataMn:[],//niCoMn对应的值
         }
         this.getOption=this.getOption.bind(this);
         this.selectPeriodChange=this.selectPeriodChange.bind(this);
@@ -27,25 +31,17 @@ class ProcessCompare extends Component{//工序对比分析
         this.search=this.search.bind(this);
     }
     getOption(){
+        let {xData,seriesDataCo,seriesDataMn,seriesDataNi}=this.state
         const option = {
-            // title: {
-            //     text: ''
-            // },
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
                 data:['Ni','Co','Mn']
             },
-            // grid: {
-            //     top: '16%',   // 等价于 y: '16%'
-            //     left: '5%', 
-            //     right: '5%',
-            //     bottom: '3%',
-            //     containLabel: true
-            // },
             toolbox: {
                 feature: {
+                    dataView: {show: true, readOnly: false},
                     magicType:{show:true,type:['line','bar']},
                     saveAsImage: {show:true}
                 }
@@ -54,7 +50,7 @@ class ProcessCompare extends Component{//工序对比分析
                 type: 'category',
                 name:'周期数',
                 boundaryGap: false,
-                data: ['59','60','61','63','64','70']
+                data: xData
             },
             yAxis: {
                 type: 'value',
@@ -64,17 +60,17 @@ class ProcessCompare extends Component{//工序对比分析
                 {
                     name:'Ni',
                     type:'line',
-                    data:[24, 25, 57, 35, 32, 20]
+                   data:seriesDataNi
                 },
                 {
                     name:'Co',
                     type:'line',
-                    data:[26, 28, 51, 48, 19, 17]
+                   data:seriesDataCo
                 },
                 {
                     name:'Mn',
                     type:'line',
-                    data:[9, 26, 28, 52, 48, 18]
+                   data:seriesDataMn
                 },
             ]
         };
@@ -128,7 +124,25 @@ class ProcessCompare extends Component{//工序对比分析
                 endTime:endTime
             }
         }).then(data=>{
-           // console.log(data)
+            let res=data.data.data
+           if(res){
+                let xData=[],
+                    seriesDataNi=[],
+                    seriesDataCo=[],
+                    seriesDataMn=[]
+                for(let i=0;i<res.length;i++){
+                    seriesDataNi.push(res[i].ni)
+                    seriesDataCo.push(res[i].co)
+                    seriesDataMn.push(res[i].mn)
+                    xData.push(res[i].periodNum)
+                }
+                this.setState({
+                    xData:xData,
+                    seriesDataNi:seriesDataNi,
+                    seriesDataCo:seriesDataCo,
+                    seriesDataMn:seriesDataMn,
+                })
+           }
         })
     }
     render(){

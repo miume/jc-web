@@ -164,6 +164,8 @@ class Home extends Component {
                 records: `${server}/jc/common/maintenanceRecord/records`,
                 updateRecord: `${server}/jc/common/maintenanceRecord/updateRecord`,
                 maintenanceRecord:`${server}/jc/common/ maintenanceRecord`,
+                byConditions:`${server}/jc/common/maintenanceRecord/byConditions`,
+                recordDetail:`${server}/jc/common/maintenanceRecord/recordDetail`
             },
             /**设备维修*/
             equipmentRepair:{
@@ -171,7 +173,9 @@ class Home extends Component {
                 evaluations:`${server}/jc/common/deviceRepair/evaluations`,
                 getPage:`${server}/jc/common/deviceRepair/getPage`,
                 export:`${server}/jc/common/deviceRepair/export`,
-                download: `${server}/jc/common`
+                download: `${server}/jc/common`,
+                byConditions:`${server}/jc/common/deviceRepair/byConditions`,
+                deviceRepairApplication:`${server}/jc/common/deviceRepair/deviceRepairApplication`
             },
             /**位置基础信息*/
             locationBasic:{
@@ -614,7 +618,8 @@ class Home extends Component {
                 delete:`${server}/jc/common/precursorCompoundCellVolumes/delete`,
                 getRecordById:`${server}/jc/common/precursorCompoundCellVolumes/getRecordById`,
                 update:`${server}/jc/common/precursorCompoundCellVolumes/update`,
-                add:`${server}/jc/common/precursorCompoundCellVolumes/add`
+                add:`${server}/jc/common/precursorCompoundCellVolumes/add`,
+                getHC:`${server}/jc/common/precursorMaterialDetails/getHC`
             },
             /**前驱体在制品统计*/
             precursorGoodIn:{

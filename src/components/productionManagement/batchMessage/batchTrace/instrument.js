@@ -6,9 +6,6 @@ import InstrumentDetail from "./instrumentDetail"
 class Instrument extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            data : [],
-        }
         this.column = [{
             title: '序号',
             dataIndex: 'index',
@@ -42,7 +39,7 @@ class Instrument extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <InstrumentDetail instrumentCode={record.instrumentCode} url={this.props.url}/>
+                        <InstrumentDetail instrumentCode={record.instrumentCode} url={this.props.url} record={record}/>
                     </span>
                 )
             }

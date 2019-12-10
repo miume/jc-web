@@ -52,9 +52,9 @@ class Device extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <DeviceService url={this.props.url}/>
+                        <DeviceService url={this.props.url} record={record}/>
                         <Divider type="vertical"/>
-                        <DeviceMaintenance url={this.props.url}/>
+                        <DeviceMaintenance url={this.props.url} record={record}/>
                     </span>
                 )
             }

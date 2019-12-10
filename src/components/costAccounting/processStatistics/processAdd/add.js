@@ -65,7 +65,7 @@ class CostProcessAdd extends Component {
             addData: {},
             statisticId: '',
             flagConfirm: false,
-            otherFlag:true,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上
+            otherFlag:true,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上,因为默认是有一行的，所以flag为true
             otherData:otherData
         }
         this.returnProcess = this.returnProcess.bind(this);
@@ -254,7 +254,6 @@ class CostProcessAdd extends Component {
                             tagTableData: tagTable.goodInProcessDTOS,
                             addData: tagTable,
                             loading:false
-                            //addDataOrigin: JSON.parse(JSON.stringify(tagTable.goodInProcessDTOS)) 深拷贝值
                         })
                     }
                 })
@@ -281,7 +280,7 @@ class CostProcessAdd extends Component {
             let index = inputData[0],    //定位到是第几条数据
                 name = inputData[1],     //输入框内容变化的字段
                 value = inputData[2];
-            if(otherFlag){
+            if(tabKey===6&&otherFlag){
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
@@ -360,56 +359,33 @@ class CostProcessAdd extends Component {
         let {addData,otherFlag,otherData}=this.state
         let data=addData.goodInProcessDTOS
         for(let i=0;i<data.length;i++){//第一层是遍历哪个tag
-                if(i===0){//单晶体
+            if(i!==0&&i!==5){//遍历头部的下拉框
+                for(let j=0;j<data[i].lineProDTOS.length;j++){
+                    if(data[i].lineProDTOS[j]['product']===null){
+                        message.info('信息填写不完整!')
+                        return
+                    }
+                }
+            }
+                if(i===0||i===3||i===4){//只有单晶体，陈化，烘干要遍历表格
                     for(let j=0;j<data[i].materialDetails.length;j++){
-                        if(!data[i].materialDetails[j]['monPotency']){
-                            message.info('单晶体配置信息填写不完整!')
-                            return
+                        for(let key in data[i].materialDetails[j]){
+                            if(data[i].materialDetails[j][key]===undefined||data[i].materialDetails[j][key]===null){
+                                message.info('信息填写不完整!')
+                                return
+                            }
                         }
                     }
                 }
-                if(i==1||i==2){
-                    for(let j=0;j<data[i].lineProDTOS.length;j++){
-                        if(!data[i].lineProDTOS[j]['product']){
-                            message.info('单晶体配置信息填写不完整!')
-                            return
-                        }
-                    }
-                }
-                else if(i===3){//陈化
-                    for(let j=0;j<data[i].materialDetails.length;j++){
-                        if(!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
-                            message.info('陈化工序信息填写不完整!')
-                            return
-                        }
-                    }
-                    for(let j=0;j<data[i].lineProDTOS.length;j++){
-                        if(!data[i].lineProDTOS[j]['product']){
-                            message.info('陈化工序信息填写不完整!')
-                            return
-                        }
-                    }
-                }
-                else if(i===4){//烘干
-                    for(let j=0;j<data[i].materialDetails.length;j++){
-                        if(!data[i].materialDetails[j]['weight']||!data[i].materialDetails[j]['mnPotency']||!data[i].materialDetails[j]['coPotency']||!data[i].materialDetails[j]['niPotency']){
-                            message.info('烘干工序信息填写不完整!')
-                            return
-                        }
-                    }
-                    for(let j=0;j<data[i].lineProDTOS.length;j++){
-                        if(!data[i].lineProDTOS[j]['product']){
-                            message.info('烘干工序信息填写不完整!')
-                            return
-                        }
-                    }                 
-                }
-                else if(i===5&&otherFlag){
+                
+                 if(i===5&&otherFlag){
                     for(let j=0;j<otherData.length;j++){
-                        if(!otherData[j]['materialName']||!otherData[j]['weight']||!otherData[j]['mnPotency']||!otherData[j]['coPotency']||!otherData[j]['niPotency']){
+                        for(let key in otherData.length){
+                        if(otherData[j][key]===undefined||otherData[j][key]===null){
                             message.info('其他信息填写不完整!')
                             return
                         }
+                      }
                     }
                 }
             }

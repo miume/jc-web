@@ -38,7 +38,6 @@ class Detail extends React.Component{
                 batchId:batchId
             }
         }).then(data=>{
-            console.log(data)
             let res=data.data.data  //一个对象，里面有三个数组
            if(res){
               if(res.batchInstrumentMapList){

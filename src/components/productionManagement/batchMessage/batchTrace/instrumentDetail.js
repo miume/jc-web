@@ -8,17 +8,16 @@ class InstrumentDetail extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            data:[{
-                type:"PH",
-                minValue:"14",
-                maxValue:"14",
-                averageValue:"14"
-            }],
+            data:[],
             visible:false,
             tableDisplay:"block",
             pictureDisplay:"none",
             valueType:"primary",
-            picType:"default"
+            picType:"default",
+            xData:[],
+            seriesData:[],
+            selectValue:'phValue',
+            selectName:undefined
         };
         this.column = [{
             title: '类型',
@@ -163,13 +162,30 @@ class InstrumentDetail extends React.Component{
                 'Authorization':this.props.url.Authorization
             },
             params:{
+                cellNum:this.state.cellNum,
                 startTime:this.props.record.startTime,
                 endTime:this.props.record.endTime
             }
-        }).then(data=>{})
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                let xData=[],
+                    seriesData=[]
+                for(let i=0;i<res.length;i++){
+                    seriesData.push(res[i].phValue)
+                    xData.push(res[i].sampleTime)
+                }
+                this.setState({
+                    xData:xData,
+                    seriesData:seriesData,
+                    res:res
+                })
+            }
+        })
     }
 
     getOption = () =>{
+        let {xData,seriesData,selectValue,selectName}=this.state
         var labelOption = {
             normal: {
                 show: true,
@@ -184,7 +200,7 @@ class InstrumentDetail extends React.Component{
         };
         return (
             {
-                color: ['#003366', '#006699', '#dc150c'],
+                color: [ '#dc150c'],
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -192,7 +208,7 @@ class InstrumentDetail extends React.Component{
                     }
                 },
                 legend: {
-                    data: ['Ni', 'Co', 'Mn']
+                    data: [selectName]
                 },
                 toolbox: {
                     show: true,
@@ -212,8 +228,8 @@ class InstrumentDetail extends React.Component{
                     {
                         type: 'category',
                         name: '周期数',
-                        axisTick: {show: false},
-                        data: ['2012', '2013', '2014', '2015', '2016']
+                        //axisTick: {show: false},
+                        data: xData
                     }
                 ],
                 yAxis: [
@@ -224,30 +240,26 @@ class InstrumentDetail extends React.Component{
                 ],
                 series: [
                     {
-                        name: 'Ni',
+                        name: selectName,
                         type: 'line',
-                        barGap: 0,
-                        label: labelOption,
-                        data: [320, 332, 301, 334, 390]
+                        data: seriesData
                     },
-                    {
-                        name: 'Co',
-                        type: 'line',
-                        label: labelOption,
-                        data: [220, 182, 191, 234, 290]
-                    },
-                    {
-                        name: 'Mn',
-                        type: 'line',
-                        label: labelOption,
-                        data: [150, 232, 201, 154, 190]
-                    }
+                  
                 ]
             }
         )
     };
-    handleChange = (e) =>{
-        console.log(e)
+    selectChange = (value,name) =>{
+        let {res}=this.state,
+            seriesData=[]
+        for(let i=0;i<res.length;i++){
+            seriesData.push(res[i][value])
+        }
+        this.setState({
+            selectName:name.props.children,
+            selectValue:value,
+            seriesData:seriesData
+        })
     }
     render(){
         return(
@@ -263,25 +275,38 @@ class InstrumentDetail extends React.Component{
                             <CancleButton key='cancle' flag={1} handleCancel={this.handleCancel} />,
                         ]}
                 >
-                    批次信息：<span>19M01001806TE4S</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                    合成槽号：<span>00001</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style={{float:"right",display:"inlineBlock"}}>
-                    <Button type={this.state.valueType} style={{width:"80px",height:"35px"}} onClick={this.valueChange}>统计值</Button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Button type={this.state.picType} style={{width:"80px",height:"35px"}} onClick={this.picChange}>图表</Button>
-                    </span>
-                    <br /><br />
-                    <div style={{display:this.state.tableDisplay}}>
-                    <Table columns={this.column} dataSource={this.state.data} pagination={false} size="small" bordered rowKey={record=>record.type}/>
-                    </div>
-                    <div style={{display:this.state.pictureDisplay}}>
-                    请选择类型：<Select placeholder="请选择类型" defaultValue="PH" onChange={this.handleChange} style={{width:"120px"}}>
-                        <Select.Option value="PH">PH</Select.Option>
-                        <Select.Option value="温度">温度</Select.Option>
-                        <Select.Option value="氨气">氨气</Select.Option>
-                    </Select>
-                    <ReactEcharts option={this.getOption()}/>
+                    <div style={{height:'615px'}}>
+                        批次信息：<span>{this.props.record.batch}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        合成槽号：<span>{this.state.cellNum}</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span style={{float:"right",display:"inlineBlock"}}>
+                        <Button type={this.state.valueType} style={{width:"80px",height:"35px"}} onClick={this.valueChange}>统计值</Button>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <Button type={this.state.picType} style={{width:"80px",height:"35px"}} onClick={this.picChange}>图表</Button>
+                        </span>
+                        <br /><br />
+                        <div style={{display:this.state.tableDisplay}}>
+                            <Table columns={this.column} dataSource={this.state.data} pagination={false} size="small" bordered rowKey={record=>record.type}/>
+                        </div>
+                        <div style={{display:this.state.pictureDisplay}}>
+                            请选择类型：
+                            <Select placeholder="请选择类型" defaultValue="PH" onChange={this.selectChange} style={{width:"120px"}}>
+                                <Select.Option value="phValue">PH</Select.Option>
+                                <Select.Option value="temperature">温度(℃)</Select.Option>
+                                <Select.Option value="saltFlow1">盐流量1(kg/h)</Select.Option>
+                                <Select.Option value="saltFlow2">盐流量2(kg/h)</Select.Option>
+                                <Select.Option value="saltFlow3">盐流量3(kg/h)</Select.Option>
+                                <Select.Option value="saltFlow4">盐流量4(kg/h)</Select.Option>
+                                <Select.Option value="ammoniaBases1">氨碱1(kg/h)</Select.Option>
+                                <Select.Option value="ammoniaBases2">氨碱2(kg/h)</Select.Option>
+                                <Select.Option value="ammoniaWater">氨水(kg/h)</Select.Option>
+                                <Select.Option value="ammoniaGas">氨气(kpa)</Select.Option>
+                                <Select.Option value="solidContainingContent">含固量(g/l)</Select.Option>
+                                <Select.Option value="transducerShow">变频器显示(Hz)</Select.Option>
+                                <Select.Option value="measured3c">3c测量值</Select.Option>
+                            </Select>
+                            <div className='statis-processCompare-echarts'><ReactEcharts option={this.getOption()} style={{width:'100%',height: '100%'}}/></div>
+                        </div>
                     </div>
                 </Modal>
             </div>

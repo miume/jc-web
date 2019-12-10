@@ -20,44 +20,40 @@ class ProcessStatis extends Component{//工序统计
             key:'id'
         },{
             title:'周期类型',
-            dataIndex:'periodType',
-            key:'periodType'
+            dataIndex:'periodName',
+            key:'periodName'
         },{
             title:'期数',
-            dataIndex:'period',
-            key:'period'
+            dataIndex:'head.lineName',
+            key:'head.lineName'
         },{
             title:'开始时间',
-            dataIndex:'beginTime',
-            key:'beginTime'
+            dataIndex:'head.startTime',
+            key:'head.startTime'
         },{
             title:'结束时间',
-            dataIndex:'endTime',
-            key:'endTime'
+            dataIndex:'head.endTime',
+            key:'head.endTime'
         },{
             title:'过程工序',
-            dataIndex:'process',
-            key:'process'
+            dataIndex:'processName',
+            key:'processName'
         },{
             title:'小计值',
-            dataIndex:'subtotal',
-            key:'subtotal'
+            dataIndex:'total',
+            key:'total'
         },{
             title:'Ni金属量(T)',
-            dataIndex:'Nimetal',
-            key:'Nimetal'
+            dataIndex:'totalNi',
+            key:'totalNi'
         },{
             title:'Co金属量(T)',
-            dataIndex:'Cometal',
-            key:'Cometal'
+            dataIndex:'totalCo',
+            key:'totalCo'
         },{
             title:'Mn金属量(T)',
-            dataIndex:'Mnmetal',
-            key:'Mnmetal'
-        },{
-            title:'操作',
-            dataIndex:'operation',
-            key:'operation'
+            dataIndex:'totalMn',
+            key:'totalMn'
         }];
         this.selectChange=this.selectChange.bind(this);
         this.getTableData=this.getTableData.bind(this);
@@ -66,7 +62,8 @@ class ProcessStatis extends Component{//工序统计
     }
 
     getTableData(){
-       let {periodId,startTime}=this.state
+       let {startTime}=this.state
+       let periodId=this.state.periodId?this.state.periodId:this.props.periodCode
         axios({
             url:`${this.props.url.precursorGoodIn.getAnalysisProcess}`,
             method:'get',
@@ -75,17 +72,17 @@ class ProcessStatis extends Component{//工序统计
             },
             params:{
                 // ...params,
-                periodId:this.state.periodId,
+                periodId:periodId,
                 startTime:startTime
             }
         }).then((data)=>{
             let res=data.data.data
-            if(res&&res.list){
-                for(let i=0;i<res.list.length;i++){
-                    res.list['index']=(res.page-1)*res.size+(i+1)
+            if(res&&res.details){
+                for(let i=0;i<res.details.length;i++){
+                    res.details[i]['id']=(i+1)
                 }
                 this.setState({
-                    data:res.list
+                    data:res.details
                 })
             }
         })
@@ -99,7 +96,6 @@ class ProcessStatis extends Component{//工序统计
     }
 
     timeChange(value) {
-        console.log(`selected ${value}`);//显示的是最终内容
         this.setState({
             startTime:value
         })
@@ -114,7 +110,7 @@ class ProcessStatis extends Component{//工序统计
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <Search flag={true}  staticPeriod={this.props.staticPeriod} time={this.state.time?this.state.time:time} periodCode={this.props.periodCode?this.props.periodCode:''} confirm={this.getTableData} selectChange={this.selectChange} timeChange={this.timeChange}  onSearch={this.onSearch}/>
+                    <Search flag={true}  staticPeriod={this.props.staticPeriod} time={this.state.time?this.state.time:time} periodCode={this.state.periodId?this.state.periodId:this.props.periodCode} confirm={this.getTableData} selectChange={this.selectChange} timeChange={this.timeChange}  onSearch={this.onSearch}/>
                     <div className='clear'></div>
                     <Table
                     dataSource={this.state.data}

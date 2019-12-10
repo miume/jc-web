@@ -16,17 +16,17 @@ class AddModal extends React.Component{
             productLine:undefined,
             tank:undefined,
             valueVolume:undefined,
+            materialName:undefined,
             lineData:[],
             tankData:[]
         }
         this.getLine=this.getLine.bind(this);
+        this.getHC=this.getHC.bind(this);
         this.editData=this.editData.bind(this);
     }
     componentDidMount(){
-        // this.getMaterialType()
-        // this.getmaterialName()
         this.getLine()
-      
+        this.getHC()
     }
     componentWillUnmount(){
         this.setState=()=>{
@@ -43,7 +43,21 @@ class AddModal extends React.Component{
         }).then((data)=>{
             const res = data.data.data;
             this.setState({
-                lineData:res,
+                lineData:res
+            });
+        })
+    }
+    getHC(){//合成槽号(合成工序下的物料点名称)
+        axios({
+            url:`${this.props.url.precursorCompoundCellVolumes.getHC}`,
+            method:"get",
+            headers:{
+                'Authorization':this.props.url.Authorization,
+            },
+        }).then((data)=>{
+            const res = data.data.data;
+            this.setState({
+                tankData:res
             });
         })
     }
@@ -59,6 +73,7 @@ class AddModal extends React.Component{
             }
         }).then(data=>{
             let res=data.data.data
+            console.log(res)
             if(res){
                 this.setState({
                     productLine:res.lineCode,
@@ -83,7 +98,7 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
-        let {productLine,tank,valueVolume}=this.state
+        let {productLine,tank,valueVolume,materialName}=this.state
         if(productLine===''||tank===''||valueVolume===''){
             message.error('信息填写不完整!')
             return
@@ -92,7 +107,8 @@ class AddModal extends React.Component{
             code:this.props.editFlag?this.props.code:'',
             lineCode: productLine,
             materialCode: tank,
-            volumesValue: valueVolume
+            volumesValue: valueVolume,
+            materialName:materialName
         }
         axios({
             url:this.props.url.precursorCompoundCellVolumes.add,
@@ -102,7 +118,13 @@ class AddModal extends React.Component{
             },
             data:data
         }).then(data=>{
-
+            if(data.data.code===0){
+                message.info('操作成功!')
+                this.props.fetch()
+            }
+            else{
+                message.error(data.data.message)
+            }
         }).catch(error=>{
             message.error('操作失败，请联系管理员!')
         })
@@ -112,36 +134,20 @@ class AddModal extends React.Component{
         this.setState({
             productLine:data
         })
-        axios({
-            url:this.props.url.techLineCellMap.getRecordById,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            params:{
-                id:data
-            }
-        }).then(data=>{
-            console.log(data)
-        })
     }
-    onChange = (data)=>{//合成槽号
+    onChange = (data,name)=>{//合成槽号
         this.setState({
-            tank:data
+            tank:data,
+            materialName:name.props.children
         })
     }
-    valueChange = (data)=>{
+    valueChange = (data)=>{//体积値
         this.setState({
             valueVolume:data.target.value
         })
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const options = [
-            { label: 'Apple', value: 'Apple' },
-            { label: 'Pear', value: 'Pear' },
-            { label: 'Orange', value: 'Orange' },
-          ];
         return(
             <span>
                {this.props.editFlag? <span className='blue' onClick={this.showModal}>编辑</span>
@@ -173,7 +179,7 @@ class AddModal extends React.Component{
                         {
                             this.state.tankData?this.state.tankData.map(data=>{
                                 return(
-                                    <Option>{}</Option>
+                                    <Option key={data.code} value={data.code}>{data.materialName}</Option>
                                 )
                             }):null
                         }
