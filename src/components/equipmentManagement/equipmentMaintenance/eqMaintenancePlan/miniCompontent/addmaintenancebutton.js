@@ -55,7 +55,8 @@ class Addmaintenancebutton extends React.Component {
             this.setState({
                 deviceName: jing[0] ? jing[0] : '',
                 fixedassetsCode: jing[1] ? jing[1] : '',
-                deviceNameAndNum: value
+                deviceCode: jing[2] ? jing[2] : '',
+                deviceNameAndNum: jing[0]+'/#'+jing[1]
             }, () => {
                 if (!this.state.fixedassetsCode) {
                     message.info("请选择固定编号！")
@@ -169,6 +170,7 @@ class Addmaintenancebutton extends React.Component {
                 "setPeople": this.state.whomade,
                 "effFlag": this.state.Effective,
                 "editFlag": 1,
+                "deviceCode": parseInt(this.state.deviceCode)
             },
             "deviceMaintenanceItems": this.state.MaintenanceType,
         }

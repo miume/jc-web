@@ -2,7 +2,7 @@ import React from "react";
 import { Modal,Select, Input,message,Checkbox } from 'antd';
 import axios from 'axios';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
 class AddModal extends React.Component{
     url;
@@ -32,7 +32,6 @@ class AddModal extends React.Component{
             params:{id:this.props.code}
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res)
             var metal = [];
             if(res["mn"]===1){
                 metal.push("Mn")
@@ -62,7 +61,6 @@ class AddModal extends React.Component{
             params:{types:this.props.types}
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res,this.props.processCode)
             this.setState({
                 processData:res
             })
@@ -80,11 +78,15 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
+        let {dataTypes,name,process,types,valueType,metal}=this.state
         var data = {
             code:this.props.code,dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,
             mn:this.state.metal.includes("Mn")?1:0,co:this.state.metal.includes("Co")?1:0,ni:this.state.metal.includes("Ni")?1:0
         };
-        // console.log(data)
+        if(!dataTypes||!name||!process||!types||!valueType||metal.length===0){
+            message.error('信息填写不完整!')
+            return
+        }
         axios({
             url:`${this.url.precursorMaterialDetails.update}`,
             method:"put",
@@ -93,7 +95,6 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-            // console.log(data)
             message.info(data.data.message);
             this.props.fetch();
             this.setState({
@@ -139,13 +140,11 @@ class AddModal extends React.Component{
         })
     }
     processChange = (value) =>{
-        // console.log(value)
         this.setState({
             process:value
         })
     }
     checkChange = (value)=>{
-        // console.log(value)
         this.setState({
             metal:value
         })
@@ -164,7 +163,6 @@ class AddModal extends React.Component{
         },{
             label:"Mn",value:"Mn"
         }];
-        // const defaultCheckList = ["Ni","Co","Mn"]
         return(
             <span>
                 <span className="blue" onClick={this.showModal}>编辑</span>
@@ -174,36 +172,36 @@ class AddModal extends React.Component{
                     centered={true}
                     maskClosable={false}
                     title="编辑"
-                    width='500px'
+                    width='400px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
-                    物料点名称：<Input id="name" style={{width:"79.8%"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
+                    <span className='tank-add-span'>物料名称：</span><Input id="name" style={{width:"250px"}} onChange={this.onChange} value={this.state.name} placeholder="请输入物料点名称"/>
                     <br />
                     <br />
-                    数据类型：<Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"83%"}}>
+                    <span className='tank-add-span'>数据类型：</span><Select className="selectType" value={this.state.dataTypes} onChange={this.handleChange} placeholder="请选择数据类型" style={{width:"250px"}}>
                         <Select.Option value={1}>输入</Select.Option>
                         <Select.Option value={0}>读取</Select.Option>
                     </Select>
                     <br />
                     <br />
-                    所属类别：<Select className="selectType" value={this.state.types} onChange={this.typesChange} placeholder="请选择所属类别" style={{width:"83%"}}>
+                    <span className='tank-add-span'>所属类别：</span><Select className="selectType" value={this.state.types} onChange={this.typesChange} placeholder="请选择所属类别" style={{width:"250px"}}>
                         <Select.Option value={0}>主材</Select.Option>
                         <Select.Option value={1}>辅材</Select.Option>
                     </Select>
                     <br />
                     <br />
-                    所属工序：<Select className="selectType" value={this.state.process} onChange={this.processChange} placeholder="请选择所属工序" style={{width:"83%"}}>
+                    <span className='tank-add-span'>所属工序：</span><Select className="selectType" value={this.state.process} onChange={this.processChange} placeholder="请选择所属工序" style={{width:"250px"}}>
                         {this.state.processData.map((item)=>{
                             return <Select.Option key={item.code} value={item.code}>{item.processName}</Select.Option>
                         })}
                     </Select>
                     <br /><br />
-                    所含金属：<Checkbox.Group options={plainOptions} value={this.state.metal} onChange = {this.checkChange}></Checkbox.Group>
+                    <span className='tank-add-span'>所含金属：</span><Checkbox.Group options={plainOptions} value={this.state.metal} onChange = {this.checkChange}></Checkbox.Group>
                     <br /><br />
-                    <div>数据类型：<Select className="selectType" value={this.state.valueType} onChange={this.valueChange} placeholder="请选择数据类型" style={{width:"83%"}}>
+                    <div><span className='tank-add-span'>数据类型：</span><Select className="selectType" value={this.state.valueType} onChange={this.valueChange} placeholder="请选择数据类型" style={{width:"250px"}}>
                         <Select.Option value={0}>体积</Select.Option>
                         <Select.Option value={1}>重量</Select.Option>
                     </Select>

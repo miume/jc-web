@@ -202,8 +202,6 @@ class DeliveryFactory extends React.Component{
 
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
-      //console.log(id);
-        //const dataSource = this.state.dataSource;
         axios({
           url:`${this.url.deliveryFactory.deliveryFactory}/${id}`,
           method:'Delete',
@@ -214,7 +212,6 @@ class DeliveryFactory extends React.Component{
          type:'json'
         })
         .then((data)=>{
-          //console.log(data);
           message.info(data.data.message);
           this.fetch();
         })
@@ -235,7 +232,6 @@ class DeliveryFactory extends React.Component{
           type:'json'
       })
       .then((data)=>{
-       // console.log(data);
         message.info(data.data.message);
         if(data.data.code===0){
           if(this.pagination.total%10===1){
@@ -254,7 +250,6 @@ class DeliveryFactory extends React.Component{
         });
       })//处理成功
       .catch(()=>{
-       // console.log(error);
         message.info('删除失败，请联系管理员！')
       });//处理异常
    }

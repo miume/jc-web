@@ -79,8 +79,7 @@ class Add extends Component{
             values['co'] = values.metal.indexOf('co') > -1 ? 1 : 0;
             values['mn'] = values.metal.indexOf('mn') > -1 ? 1 : 0;
             delete values['metal'];
-            console.log(values)
-            //this.handleData(values)
+            this.handleData(values)
         }
     }
 

@@ -3,7 +3,7 @@ import {Modal, Input,message } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
 class AddModal extends React.Component{
     url;
@@ -27,7 +27,9 @@ class AddModal extends React.Component{
     }
     handleCreate = () =>{
         var data = {address:this.state.data,description:this.state.description};
-        // console.log(data)
+        if(!this.state.data){
+            message.info('信息填写不完整!')
+        }
         axios({
             url:`${this.url.plcAddress.plcAddress}`,
             method:"post",
@@ -70,7 +72,7 @@ class AddModal extends React.Component{
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     PLC地址：<Input id="name" style={{width:"84%"}} onChange={this.change} value={this.state.data} placeholder="请输入PLC地址"/>

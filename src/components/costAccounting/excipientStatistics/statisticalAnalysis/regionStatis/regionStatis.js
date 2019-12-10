@@ -1,12 +1,13 @@
 import React,{Component} from 'react'
 import {Spin,Table} from 'antd'
 import Search from '../producuLineStatis/productLineSearch'
+
 class ProcessStatis extends Component{//工序统计
-    constructor(props){
+    constructor(props) {
         super(props);
-        this.state={
-            loading:false
-        }
+        this.state = {
+            periodCode: ''
+        };
         this.columns=[{
             title:'序号',
             dataIndex:'id',
@@ -45,18 +46,33 @@ class ProcessStatis extends Component{//工序统计
             key:'Cometal'
         }]
     }
-    render(){
-        return(
-            <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightContent-Div'>
-                    <Search flag={true}/>
-                    <Table
-                    columns={this.columns}
-                    size='small'
-                    bordered/>
-                </Spin>
+    render() {
+        let {staticPeriod} = this.props, {periodCode} = this.state;;
+        return (
+            <div className='rightContent-Div'>
+                <Search flag={true} staticPeriod={staticPeriod} periodCode={periodCode}/>
+                <Table
+                columns={this.columns}
+                size='small'
+                bordered/>
             </div>
         );
+    }
+
+    componentDidMount() {
+        let {staticPeriod} = this.props;
+        if(staticPeriod.length) {
+            this.setState({
+                periodCode: staticPeriod[0].code
+            })
+        }
+    }
+
+    periodsChange(value) {
+        console.log(value)
+        this.setState({
+            periodCode: value
+        })
     }
 }
 export default ProcessStatis;

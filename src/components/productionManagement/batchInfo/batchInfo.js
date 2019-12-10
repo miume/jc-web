@@ -151,6 +151,7 @@ class BatchInfo extends React.Component{
                     'Authorization':this.Authorization
                 },
                 data:ids,
+                
                 type:'json'
             }).then((data)=>{
                 console.log(data.data.message)

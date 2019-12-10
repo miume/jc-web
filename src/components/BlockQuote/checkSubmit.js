@@ -3,9 +3,6 @@ import axios from 'axios';
 import {Popover,Button,Select, Switch} from 'antd';
 const Option = Select.Option;
 class Submit extends React.Component{
-    componentDidMount(){
-        this.getAllProcess();
-    }
     constructor(props){
         super(props);
         this.state = {
@@ -21,6 +18,11 @@ class Submit extends React.Component{
         this.getAllProcess = this.getAllProcess.bind(this);
         this.handleVisibleChange = this.handleVisibleChange.bind(this);
     }
+
+    componentDidMount(){
+        this.getAllProcess();
+    }
+
     /**点击送审按钮 弹出送审气泡 */
     handleVisibleChange(visible){
         this.setState({
@@ -99,6 +101,13 @@ class Submit extends React.Component{
                 <Button type='primary' size='default' className='button'><i className="fa fa-check"></i><span> 送审</span></Button>
             </Popover>
         );
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+                return;
+            }
+        )
     }
 }
 export default Submit;

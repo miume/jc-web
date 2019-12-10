@@ -62,7 +62,7 @@ class Menu extends React.Component{
       this.server = localStorage.getItem('remote');
       const current = JSON.parse(localStorage.getItem('current')) ;
       this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
-      const { loading, selectedRowKeys } = this.state;
+      const { loading, selectedRowKeys, treeData } = this.state;
       const rowSelection = {
         selectedRowKeys,
         onChange: this.onSelectChange,
@@ -95,6 +95,7 @@ class Menu extends React.Component{
             handleTableChange={this.handleTableChange}
             judgeOperation = {this.judgeOperation}
             operation = {this.operation}
+            treeData={treeData}
         />
           </Spin>
       </div>

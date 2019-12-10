@@ -3,7 +3,7 @@ import {Modal,Select,message } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import Tr from "./tr";
 
 class AddModal extends React.Component{
@@ -12,14 +12,13 @@ class AddModal extends React.Component{
         super(props);
         this.state={
             visible:false,
-            types:'',
-            processName:'',
+            types:undefined,
+            processName:undefined,
             processData:[],
-            materialName:'',
+            materialName:undefined,
             materialData:[],
             productLine:[],
             detail:{},
-            // flag:(function(){return 1})()
         }
     }
     showModal = () => {
@@ -47,10 +46,10 @@ class AddModal extends React.Component{
     handleCancel = () =>{
         this.setState({
             visible:false,
-            types:'',
-            processName:'',
+            types:undefined,
+            processName:undefined,
             processData:[],
-            materialName:'',
+            materialName:undefined,
             materialData:[],
             productLine:[],
             detail:{},
@@ -82,7 +81,6 @@ class AddModal extends React.Component{
             return
         }
         data.weightDTOS = weightValue;
-        // console.log(data);
         axios({
             url:`${this.url.precursorMaterialLineWeight.add}`,
             method:"post",
@@ -91,23 +89,13 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-            // console.log(data);
             if(data.data.code!=0){
                 message.error(data.data.message);
                 return
             }
             message.info("新增成功!");
             this.props.fetch();
-            this.setState({
-                visible:false,
-                types:'',
-                processName:'',
-                processData:[],
-                materialName:'',
-                materialData:[],
-                productLine:[],
-                detail:{},
-            })
+            this.handleCancel()
         }).catch((error)=>{
             message.error('新增失败，请联系管理员!')
         })
@@ -174,7 +162,6 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        // console.log(this.state.flag)
         return(
             <span>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
@@ -187,7 +174,7 @@ class AddModal extends React.Component{
                     width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     <div>

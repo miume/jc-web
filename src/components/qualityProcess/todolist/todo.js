@@ -2,7 +2,7 @@ import React from 'react';
 import Part from './part';
 import Line from './line';
 import CheckModal from './checkModal';
-// import DetailModal from './detailModal';
+
 class Todo extends React.Component{
     status
     constructor(props){

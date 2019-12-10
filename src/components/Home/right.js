@@ -41,6 +41,7 @@ import RedListManage from '../smartWarehouse/redListManage/redListManage';
 import LibraryManage from '../smartWarehouse/libraryManage/library';
 import MaterialBasic from '../smartWarehouse/baseData/materialBasicInformationTable'
 
+import ProcessParamAddModal from '../technologyCenter/processParameters/add/processParamAdd'
 import ExceptionHandling from '../technologyCenter/exceptionHandling/exceptionHandling';
 import ProcessParameters from '../technologyCenter/processParameters/processParameters';
 import RawStandard from '../technologyCenter/rawStandard/rawStandard';
@@ -68,7 +69,7 @@ import LocationBasic from "../equipmentManagement/equipmentBasicData/locationBas
 import EquipmentProcessName from '../equipmentManagement/equipmentBasicData/processName/processName';
 import UserProcessAssignment from '../equipmentManagement/equipmentBasicData/userProcessAssignment/userProcessAssignment';
 
-import BatchInfo from "../productionManagement/batchInfo/batchInfo"
+import BatchInfo from "../productionManagement/batchMessage/batchMessage"
 import BatchSearch from "../productionManagement/batchSearch/batchSearch"
 import BatchRule from "../productionManagement/batchRule/batchRule"
 import RawMaterialInput from '../technologyCenter/rawMaterialInput/rawMaterialInput'
@@ -112,7 +113,7 @@ import PositiveCostAccount from '../positiveCost/costAccout/costAccount'
 import PositiveProcessStatistics from '../positiveCost/positiveProcessStatistics/positiveProcessStatistics'
 import CostProcessAdd from '../costAccounting/processStatistics/processAdd/add'
 import ProcessStatisticalAnalysis from '../costAccounting/processStatistics/statisticalAnalysis/statisticalAnalysis'
-
+import ModelPositiveCost from '../positiveCost/baseData/productModel/model'
 import ProductStorage from "../costAccounting/productStorage/productStorage"
 import ProductAddModal from "../costAccounting/productStorage/addModal/addModal"
 
@@ -510,6 +511,9 @@ class Right extends React.Component {
             path:'/processPositiveCost',
             component:ProcessPositiveCost
         },{
+            path:'/modelPositiveCost',
+            component:ModelPositiveCost
+        },{
             path:'/materialTypePositive',
             component:MaterialTypePositive
         },{
@@ -594,6 +598,9 @@ class Right extends React.Component {
         },{
             path:'/positiveStatistic',
             component:PositiveStatistic
+        },{
+            path: '/processParamsAdd',
+            component: ProcessParamAddModal
         }];
         return (
             <div className="rightDiv">

@@ -3,29 +3,43 @@ import {Table,Select,Input,Popconfirm} from 'antd'
 import NewButton from '../../../../BlockQuote/newButton'
 
 const {Option}=Select;
-
+const data=[{
+    id:1,
+    materialName:'',
+    weight:0,
+    niPotency:0,
+    coPotency:0,
+    mnPotency:0
+}]
 class Other extends Component{//烘干工序
     constructor(props){
         super(props);
         this.state={
             selectName:1,
-            params:[],
+            materialData:[],
+            materialCode:undefined,
+            data:data
         }
         this.columns=[{
             title:'序号',
-            dataIndex:'index',
-            key:'index',
+            dataIndex:'id',
+            key:'id',
             width:'5%'
         },{
             title:'名称',
-            dataIndex:'name',
-            key:'name',
+            dataIndex:'materialName',
+            key:'materialName',
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Select placeholder='请选择' onChange={this.selectChange}  style={{width:'158px'}}>
-                        <Option name={`${record.index}-${'name'}`} value={1}>合成</Option>
-                        <Option name={`${record.index}-${'name'}`} value={2}>烘干</Option>
+                    <Select placeholder='请选择' onChange={this.selectChange} value={this.state.materialCode} style={{width:'158px'}}>
+                        {
+                            this.state.materialData?this.state.materialData.map(item=>{
+                                return(
+                                    <Option key={item.code} value={item.code} name={record.id}>{item.materialName}</Option>
+                                )
+                            }):null
+                        }
                     </Select>
                 )
             }
@@ -39,7 +53,7 @@ class Other extends Component{//烘干工序
                 //     let weight=record.weight
                 // }
                 return(
-                    <Input placeholder='请输入'  name={`${record.index}-${'weight'}`} defaultValue={record.weight} onChange={this.inputChange}/>
+                    <Input placeholder='请输入'  name={`${record.id}-${'weight'}`} defaultValue={record.weight} onChange={this.inputChange}/>
                 )
                
             }
@@ -50,7 +64,7 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name={`${record.index}-${'niPotency'}`} defaultValue={record.niPotency} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.id}-${'niPotency'}`} defaultValue={record.niPotency} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -60,7 +74,7 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name={`${record.index}-${'coPotency'}`} defaultValue={record.coPotency} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.id}-${'coPotency'}`} defaultValue={record.coPotency} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -70,7 +84,7 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input placeholder='请输入' name={`${record.index}-${'mnPotency'}`} defaultValue={record.mnPotency} onChange={this.inputChange}/>
+                    <Input placeholder='请输入' name={`${record.id}-${'mnPotency'}`} defaultValue={record.mnPotency} onChange={this.inputChange}/>
                 )
             }
         },{
@@ -80,9 +94,8 @@ class Other extends Component{//烘干工序
             width:'10%',
             render:(text,record)=>{
                 return(
-                    
                     <span className={this.judgeOperation(this.operation,'DELETE')?'':'hide'}>
-                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.index)} okText='确定' cancelText='再想想'>
+                        <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.id)} okText='确定' cancelText='再想想'>
                             <span className='blue'>删除</span>
                         </Popconfirm>
                     </span>
@@ -95,24 +108,62 @@ class Other extends Component{//烘干工序
         this.inputChange=this.inputChange.bind(this);
         this.selectChange=this.selectChange.bind(this);
     }
-
+    componentDidMount(){
+        console.log(this.tableData)
+        this.setState({
+            materialData:this.tableData
+        })
+    }
     inputChange(e){//监听表格里面的输入框变化
-       console.log(e.target.name,e.target.value)
         let value=e.target.value;
         let inputData=`${e.target.name}-${value}`
         this.props.getOther(this.props.processId,inputData,'')
     }
-    selectChange(value,name){//监听表格里面的下拉框变化，下拉框只有一个，在state写好名字，change改变value值就行
-        
-      // console.log(value,name)
-        //let daIndex=//下拉框对应的dataIndex
-        this.props.otherSelectChange(this.props.processId,name.props.name,value)
+    selectChange(value,name){
+        this.setState({
+            materialCode:value
+        })
+        this.props.otherSelectChange(this.props.processId,name,value)
     }
     handleOk(){//在父组件处理新增
-        this.props.handleOtherAdd()
+        let {data}=this.state
+        data.push({
+            id:data.length+1,
+            alkPotency: 0,
+            alkValue: 0,
+            alkaliFlag: 0,
+            ammPotency: 0,
+            ammValue: 0,
+            ammoniaFlag: 0,
+            co: 1,
+            coPotency: 0,
+            code: 0,
+            dataType: 1,
+            materialName: '',
+            mn: 1,
+            mnPotency: 0,
+            monPotency: 0,
+            ni: 1,
+            niPotency: 0,
+            processCode: 6,
+            solidContent: 0,
+            types: 0,
+            valueType: 0,
+            volume: 0,
+            weiOrVol: 0,
+            weight: 0
+        })
+        this.setState({
+            data:data
+        })
+        this.props.handleOtherAdd(data)
     }
     handleDelete(id){
-        this.props.handleOtherDelete(id)
+       let {data}=this.state
+       data=data.filter(item=>item.id!==id)
+       this.setState({
+           data:data
+       })
     }
     judgeOperation(operation,operationCode){
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[];
@@ -122,17 +173,17 @@ class Other extends Component{//烘干工序
         const current=JSON.parse(localStorage.getItem('current'))
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null
         this.tableData = this.props.tagTableData&&this.props.tagTableData[5]&&this.props.tagTableData[5].materialDetails?this.props.tagTableData[5].materialDetails:[]
-        if (this.tableData && this.tableData.length) {
-            for (let i = 0; i < this .tableData.length; i++) {
-                this.tableData[i]['index'] = i + 1
-            }
-        }
+        // if (this.tableData && this.tableData.length) {
+        //     for (let i = 0; i < this .tableData.length; i++) {
+        //         this.tableData[i]['index'] = i + 1
+        //     }
+        // }
         return(
             <div>
                 <NewButton name='新增' className='fa fa-plus' handleClick={this.handleOk} flagConfirm={!this.props.flagConfirm}/>
                 <Table 
-                dataSource={this.tableData}
-                rowKey={record=>record.index}
+                dataSource={this.state.data}
+                rowKey={record=>record.id}
                 columns={this.columns}
                 size='small' 
                 pagination={false}

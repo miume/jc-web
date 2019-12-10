@@ -3,9 +3,8 @@ import { Modal, Input, message, TimePicker } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
-// const format = 'HH:mm';
 class AddModal extends React.Component {
     constructor(props) {
         super(props);
@@ -89,7 +88,7 @@ class AddModal extends React.Component {
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel} />,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     周期名称：<Input style={{ width: "84%" }} id="name" onChange={this.change} value={this.state.name} placeholder="请输入周期名称" />

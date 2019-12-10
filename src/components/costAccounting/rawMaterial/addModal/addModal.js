@@ -68,7 +68,6 @@ class AddModal extends React.Component {
         this.searchEvent = this.searchEvent.bind(this);
         this.feedDataChange = this.feedDataChange.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
-        this.getPreviousConcentration = this.getPreviousConcentration.bind(this);
     }
 
     render() {
@@ -79,7 +78,7 @@ class AddModal extends React.Component {
             <div>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
-                <div className={'rightDiv-content'}>
+                <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} lineName={lineName}
                             selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent}/>
                     <AddTable visible={headVisible} inputChange={this.inputChange}/>
@@ -106,7 +105,7 @@ class AddModal extends React.Component {
             staticPeriod: staticPeriod,
             currentStaticPeriod: currentStaticPeriod
         });
-        if(currentStaticPeriod.code) {
+        if(currentStaticPeriod && currentStaticPeriod.code) {
             this.getPreLineName(currentStaticPeriod.code);
         }
     }
@@ -186,11 +185,6 @@ class AddModal extends React.Component {
             let res = data.data.data;
             console.log(res)
         })
-    }
-
-    /**获取上期浓度*/
-    getPreviousConcentration() {
-
     }
 
     /**点击取消新增*/

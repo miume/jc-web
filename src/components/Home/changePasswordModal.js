@@ -49,7 +49,7 @@ class ChangePasswordModal extends React.Component{
                         <Input placeholder={'请输入旧密码'} type={'password'}/>
                     )}
                 </FormItem>
-                <FormItem wrapperCol={{span:24}} label={'新密码'} required>
+                <FormItem wrapperCol={{span:24}} label={'新密码'} hasFeedback>
                     {getFieldDecorator('newPassword',{
                         rules:[{required:true,message:'请输入新密码'},
                                {validator:this.validateToNextPassword}]
@@ -57,7 +57,7 @@ class ChangePasswordModal extends React.Component{
                         <Input placeholder={'请输入新密码'} type={'password'}/>
                     )}
                 </FormItem>
-                <FormItem wrapperCol={{span:24}} label={'确定新密码'} required>
+                <FormItem wrapperCol={{span:24}} label={'确定新密码'} hasFeedback>
                     {getFieldDecorator('confirm',{
                         rules:[{required:true,message:'请确认新密码'},
                             {validator:this.compareToFirstPassword}]
