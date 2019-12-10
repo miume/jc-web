@@ -3,7 +3,7 @@ import {Modal,Select,message } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 import Tr from "./tr";
 
 class AddModal extends React.Component{
@@ -27,7 +27,6 @@ class AddModal extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res);
             var detail = {}
             for(var i=0;i<res.length;i++){
                 detail[res[i].code] = {};
@@ -62,27 +61,32 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = () =>{
-        // console.log(this.state)
-        var data = [];
-        var i = 0;
+        if(!this.state.vgaName){
+            message.info('信息不完整!')
+            return
+        }
+        let data = [],
+            i = 0,
+            count=0;
         for(var key in this.state.detail){
             if(this.state.detail[key].checkbox === true){
                 data.push({});
                 data[i].lineCode = key;
-                data[i].weightValue = this.state.detail[key].value;
+                data[i].weightValue = this.state.detail[key].value;//是字符串类型
+                count+=parseFloat(data[i].weightValue)
                 data[i].vgaCode = this.state.vgaName;
                 i++
             };
         };
-        // console.log(data)
-        var count = 0
-        for(var i=0;i<data.length;i++){
-            count+=data[i].weightValue
-        };
+        if(count===0){
+            message.error('未分配权重!');
+            return
+        }
         if(count != 1){
             message.error("所选项权重相加应等于1");
             return
         }
+       
         // var data = {materialCode:this.state.materialName,processCode:this.state.processName,types:this.state.types,weightDTOS:[]};
         // const detail = this.state.detail;
         // var count = 0;
@@ -109,7 +113,6 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-            // console.log(data);
             if(data.data.code!=0){
                 message.error(data.data.message);
                 return
@@ -149,7 +152,6 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        // console.log(this.state.flag)
         return(
             <span>
                 <AddButton handleClick={this.showModal} name='新增' className='fa fa-plus' />
@@ -162,7 +164,7 @@ class AddModal extends React.Component{
                     width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     <div>

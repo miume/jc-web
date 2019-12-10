@@ -3,7 +3,6 @@ import './home.css';
 import Top from './top';
 import Left from './left';
 import Right from './right';
-import EquipmentProcessName from "../equipmentManagement/equipmentBasicData/processName/processName";
 class Home extends Component {
     componentWillMount() {
         let canvas;
@@ -46,8 +45,9 @@ class Home extends Component {
             '12': '不合格追踪数据',
             '13':'原材料标准',
             '14':'成品标准',
-            '15':'设备指导'
-        }
+            '15':'设备指导',
+            '16': '工艺参数'
+        };
         const server = localStorage.getItem('server');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
@@ -447,7 +447,7 @@ class Home extends Component {
                 getRepairTable:`${server}/jc/common/deviceRepair/getRepairByDeptCodeAndDeviceId`,
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
             },
-
+            /**批次信息 */
             productionBatchInfo:{
                 getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
                 deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
@@ -455,9 +455,19 @@ class Home extends Component {
                 addOne:`${server}/jc/common/productionBatchInfo/addOne`,
                 updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
                 getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
-                getAllRule:`${server}/jc/common/productionBatchRule/getAll`
+                getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
+                save:`${server}/jc/common/productionBatchInfo/save`,
+                getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
+                ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
+                preview:`${server}/jc/common/productionBatchInfo/preview`,
+                getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
+                getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
+                getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
             },
-
+            /**批次追溯*/
+            productionBatchRetrospect:{
+                page:`${server}/jc/common/productionBatchRetrospect/page`
+            },
             /**批次规则 */
             productionBatchRule:{
                 getAll:`${server}/jc/common/productionBatchRule/getAll`,
@@ -491,7 +501,8 @@ class Home extends Component {
                 all:`${server}/jc/common/precursorProcessType/all`,
                 delete:`${server}/jc/common/precursorProcessType/delete`,
                 page:`${server}/jc/common/precursorProcessType/page`,
-                update:`${server}/jc/common/precursorProcessType/update`
+                update:`${server}/jc/common/precursorProcessType/update`,
+                getByType:`${server}/jc/common/precursorProcessType/getByType`//根据主材辅材选择工序
             },
             /**物料产线权重分配 */
             precursorMaterialLineWeight:{
@@ -511,7 +522,10 @@ class Home extends Component {
                 page:`${server}/jc/common/precursorMaterialDetails/page`,
                 update:`${server}/jc/common/precursorMaterialDetails/update`,
                 getProcess:`${server}/jc/common/precursorMaterialDetails/getProcess`,
-                getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`
+                getRecordById:`${server}/jc/common/precursorMaterialDetails/getRecordById`,
+                all:`${server}/jc/common/precursorMaterialDetails/all`,
+                getMaterialByProcessType:`${server}/jc/common/precursorMaterialDetails/getMaterialByProcessType`,
+                byTypes:`${server}/jc/common/precursorMaterialDetails/byTypes`
             },
             /**物料plc映射 */
             matPlcMap:{
@@ -547,6 +561,7 @@ class Home extends Component {
                 getDeviceAssignment: `${server}/jc/common/deviceProcess/getDeviceAssign`,
                 assign: `${server}/jc/common/deviceProcess/assign`,
                 getAllByDept: `${server}/jc/common/deptProcess/getAllByDept`,
+                getDeviceByDeptCode: `${server}/jc/common/deviceProcess/getDeviceByDeptCode`,
             },
             /**出库点*/
             endPosition: {
@@ -570,7 +585,8 @@ class Home extends Component {
                 getRecordById:`${server}/jc/common/techLineCellMap/getRecordById`,
                 ids:`${server}/jc/common/techLineCellMap/ids`,
                 page:`${server}/jc/common/techLineCellMap/page`,
-                update:`${server}/jc/common/techLineCellMap/update`
+                update:`${server}/jc/common/techLineCellMap/update`,
+                byIds:`${server}/jc/common/techLineCellMap/byIds`
             },
             /**原材料名称 */
             precursorRawMaterial:{
@@ -579,9 +595,28 @@ class Home extends Component {
                 deleteByIds:`${server}/jc/common/precursorRawMaterial/deleteByIds`,
                 getOne:`${server}/jc/common/precursorRawMaterial/getOne`,
                 page:`${server}/jc/common/precursorRawMaterial/page`,
-                update:`${server}/jc/common/precursorRawMaterial/update`
+                update:`${server}/jc/common/precursorRawMaterial/update`,
+                all:`${server}/jc/common/precursorRawMaterial/all`,
             },
-            //前驱体在制品统计
+            /**原材料产线权重分配*/
+            precursorRawmaterialLineWeight:{
+                page:`${server}/jc/common/precursorRawmaterialLineWeight/page`,
+                ids:`${server}/jc/common/precursorRawmaterialLineWeight/ids`,
+                delete:`${server}/jc/common/precursorRawmaterialLineWeight/delete`,
+                add:`${server}/jc/common/precursorRawmaterialLineWeight/add`,
+                getRecordById:`${server}/jc/common/precursorRawmaterialLineWeight/getRecordById`,
+                update:`${server}/jc/common/precursorRawmaterialLineWeight/update`
+            },
+            /**合成槽体积値*/
+            precursorCompoundCellVolumes:{
+                page:`${server}/jc/common/precursorCompoundCellVolumes/page`,
+                ids:`${server}/jc/common/precursorCompoundCellVolumes/ids`,
+                delete:`${server}/jc/common/precursorCompoundCellVolumes/delete`,
+                getRecordById:`${server}/jc/common/precursorCompoundCellVolumes/getRecordById`,
+                update:`${server}/jc/common/precursorCompoundCellVolumes/update`,
+                add:`${server}/jc/common/precursorCompoundCellVolumes/add`
+            },
+            /**前驱体在制品统计*/
             precursorGoodIn:{
                 getPendSubmit:`${server}/jc/common/goodIn/page`,
                 getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
@@ -618,7 +653,7 @@ class Home extends Component {
             materialType: {
                 all: `${server}/jc/repo/type/tree`,
             },
-            /**原料领用*/
+            /**前驱体原料领用*/
             rawMaterial: {
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
                 deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
@@ -635,6 +670,92 @@ class Home extends Component {
             /**用户工序名称*/
             userProcessName: {
                 userProcess: `${server}/jc/common/userProcess`,
+            },
+            /**工艺参数*/
+            processParam: {
+                page: `${server}/jc/common/processParam/page`,
+                delete: `${server}/jc/common/processParam/delete`,
+                detail: `${server}/jc/common/processParam/detail`,
+                publish: `${server}/jc/common/processParam/publish`,
+                detailByBatch: `${server}/jc/common/processParam/detailByBatch`,
+                saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
+                deleteByIds: `${server}/jc/common/processParam/deleteByIds`
+            },
+            /**正极基础统计周期*/
+            positiveStatic:{
+                all:`${server}/jc/common/anodeBasicDataStatPeriod/all`,
+                add:`${server}/jc/common/anodeBasicDataStatPeriod/add`,
+                update:`${server}/jc/common/anodeBasicDataStatPeriod/update`,
+                delete:`${server}/jc/common/anodeBasicDataStatPeriod/delete`
+            },
+            /**正极基础生产线*/
+            positiveProductline:{
+                all:`${server}/jc/common/anodeProductionLine/all`,
+                add:`${server}/jc/common/anodeProductionLine/add`,
+                update:`${server}/jc/common/anodeProductionLine/update`,
+                delete:`${server}/jc/common/anodeProductionLine/delete`
+            },
+            /**正极基础工序*/
+            positiveProcess:{
+                all:`${server}/jc/common/anodeProcessType/all`,
+                add:`${server}/jc/common/anodeProcessType/add`,
+                update:`${server}/jc/common/anodeProcessType/update`,
+                delete:`${server}/jc/common/anodeProcessType/delete`,
+                page:`${server}/jc/common/anodeProcessType/page`
+            },
+            /**正极基础物料种类*/
+            positiveMaterialType:{
+                all:`${server}/jc/common/anodeMaterialTypes/all`,
+                add:`${server}/jc/common/anodeMaterialTypes/add`,
+                update:`${server}/jc/common/anodeMaterialTypes/update`,
+                delete:`${server}/jc/common/anodeMaterialTypes/delete`,
+                page:`${server}/jc/common/anodeMaterialTypes/page`
+            },
+            /**正极基础plc地址*/
+            positivePlcSddress:{
+                all:`${server}/jc/common/anodePlcAddress/all`,
+                add:`${server}/jc/common/anodePlcAddress/add`,
+                update:`${server}/jc/common/anodePlcAddress/update`,
+                delete:`${server}/jc/common/anodePlcAddress/delete`,
+                page:`${server}/jc/common/anodePlcAddress/page`,
+                ids:`${server}/jc/common/anodePlcAddress/ids`,
+                getRecordById:`${server}/jc/common/anodePlcAddress/getRecordById`
+            },
+            /**正及基础物料种类plc仪表对照*/
+            positivePlcCompare:{
+                all:`${server}/jc/common/anodeMatPlcMap/all`,
+                add:`${server}/jc/common/anodeMatPlcMap/add`,
+                update:`${server}/jc/common/anodeMatPlcMap/update`,
+                delete:`${server}/jc/common/anodeMatPlcMap/delete`,
+                page:`${server}/jc/common/anodeMatPlcMap/page`,
+                ids:`${server}/jc/common/anodeMatPlcMap/ids`
+            },
+            /**正极产品型号*/
+            positiveModel:{
+                all:`${server}/jc/common/anodeProductionType/all`,
+                add:`${server}/jc/common/anodeProductionType/add`,
+                delete:`${server}/jc/common/anodeProductionType/delete`,
+                update:`${server}/jc/common/anodeProductionType/update`
+            },
+            /**正极其他数据*/
+            positiveOther:{
+                getCurrent:`${server}/jc/common/anodeOthers/getCurrent`,
+                add:`${server}/jc/common/anodeOthers/add`,
+                update:`${server}/jc/common/anodeOthers/update`
+            },
+            /**前驱体辅料统计*/
+            auxiliary: {
+                auxiliary:`${server}/jc/common/auxiliary`,
+                getPageUnCommit:`${server}/jc/common/auxiliary/getPageUnCommit`,
+                getPageCommit:`${server}/jc/common/auxiliary/getPageCommit`,
+                nextPeroidNumber:`${server}/jc/common/auxiliary/nextPeroidNumber`,
+                addConfirm:`${server}/jc/common/auxiliary/addComfirm`,
+                afterConfirm:`${server}/jc/common/auxiliary/afterComfirm`,
+                lineCur:`${server}/jc/common/auxiliary/lineCur`,
+                processCur:`${server}/jc/common/auxiliary/processCur`,
+                saveOrCommit:`${server}/jc/common/auxiliary/saveOrCommit`,
+                stasticByLine:`${server}/jc/common/auxiliary/stasticByLine`,
+                stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
             }
         };
 

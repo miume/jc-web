@@ -48,6 +48,14 @@ html, body, .parent {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.rightDiv-add-content {
+    padding: 15px;
+    height: 72vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .top-left {
     padding-left: 10px;
 }

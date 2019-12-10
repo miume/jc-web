@@ -239,47 +239,7 @@ class ProductLineStatical extends React.Component{//物料产线权重分配
         this.setState({
             searchFlag:1
         })
-        // axios({
-        //     url:`${this.url.precursorMaterialLineWeight.page}`,
-        //     method:'get',
-        //     headers:{
-        //         'Authorization':this.Authorization
-        //     },
-        //     params:{
-        //         size: this.pagination.pageSize,
-        //         page: this.pagination.current,
-        //         condition:ope_name
-        //     },
-        //     type:'json',
-        // }).then((data)=>{
-        //     // const res = data.data.data;
-        //     // if(res&&res.list){
-        //     //     this.pagination.total=res.total;
-        //     //     for(var i = 1; i<=res.list.length; i++){
-        //     //         res.list[i-1]['index']=(res.prePage)*10+i;
-        //     //     }
-        //     //     this.setState({
-        //     //         dataSource: res.list,
-        //     //     });
-        //     // }
-        //     const res = data.data.data.list;
-        //     // console.log(res)
-        //     for(var i = 1; i<=res.length; i++){
-        //         res[i-1]['index']=i;
-        //     }
-        //     for(var i=0;i<res.length;i++){
-        //         res[i].weightValue = res[i].weightDTOS.map((item)=>{
-        //             return(
-        //                 item.lineName+"  "+item.weightValue
-        //             )
-        //         }).join(",")
-        //     }
-        //     if(res.length!==0){
-        //         this.setState({
-        //             data:res
-        //         })
-        //     }
-        // })
+
     };
     /**返回数据录入页面 */
     returnDataEntry = ()=>{

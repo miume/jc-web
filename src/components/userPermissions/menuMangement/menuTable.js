@@ -1,5 +1,5 @@
 import React from 'react';
-import {Table, Input, Popconfirm, Form, Divider, message,Select} from 'antd';
+import {Table, Input, Popconfirm, Form, Divider, message, Select, TreeSelect} from 'antd';
 import DeletaSpan from './deleteSpan';
 import axios from "axios";
 
@@ -17,15 +17,16 @@ const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
     getInput = () => {
         if (this.props.type === 'select' && this.props.record.parent !== -1) {
-            return <Select >
-              {
-                this.props.fathermenu.map(de=>{
-                  return (//这个.id是根据后端部门getAll传过来的字段名称决定的
-                    <Option key={de.id} value={de.id}>{de.menuName}</Option>
-                  );
-                })
-              }
-        </Select>;
+            return (
+                <TreeSelect
+                    showSearch
+                    style={{ width: '170px' }}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    treeData={this.props.treedata}
+                    placeholder="请选择父菜单"
+                    treeDefaultExpandAll
+                />
+            )
         }
         return <Input disabled= {this.props.type === 'select' && this.props.record.parent===-1?true:false}/>;
     };
@@ -50,7 +51,7 @@ class EditableCell extends React.Component {
                                             required: true,
                                             message: `Please Input ${title}!`,
                                         }],
-                                        initialValue: record[dataIndex]===-1?"无父菜单":record[dataIndex],
+                                        initialValue: record[dataIndex]===-1?"无父菜单": dataIndex === 'parent' ? `${record['parentName']}-${record[dataIndex]}` : record[dataIndex],
                                     })(this.getInput())}
                                 </FormItem>
                             ) : restProps.children}
@@ -220,7 +221,7 @@ class MenuTable extends React.Component{
                 dataIndex:col.dataIndex,
                 title:col.title,
                 editing:this.isEditing(record),
-                fathermenu:this.props.fatherMenu
+                treedata:this.props.treeData
               }),
             };
           });
@@ -264,7 +265,7 @@ class MenuTable extends React.Component{
             if(row.parent === '无父菜单'){
                 data['parent'] = -1
             }else{
-                data['parent'] = row.parent
+                data['parent'] = parseInt(row.parent.split('-')[1]);
             }
             data['menuName'] = row.menuName
                 axios({
@@ -277,12 +278,12 @@ class MenuTable extends React.Component{
                     type:'json'
                 }).then((data)=>{
                     message.info(data.data.message);
+                    this.getFetch(this.props.pagination)
                 }).catch((error)=>{
                     message.info(error.data.message);
                 });
 
                 this.setState({ editingKey: '' });
-                this.getFetch(this.props.pagination)
         });
     }
 

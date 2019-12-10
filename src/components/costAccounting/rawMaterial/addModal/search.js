@@ -13,9 +13,7 @@ class Search extends React.Component {
             periodCode: '',  //记录下拉框-周期类型编码
             dateFormat: 'YYYY-MM-DD',
             periods: '',     //记录输入框期数的变化
-            disabled: false
         };
-        this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.endDateChange =this.endDateChange.bind(this);
@@ -23,16 +21,16 @@ class Search extends React.Component {
     }
 
     render() {
-        const {start, end, dateFormat,disabled} = this.state;
-        let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
-            endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
-        let {staticPeriod,lineName,currentStaticPeriod} = this.props;
+        let {start, end, dateFormat,periodCode} = this.state,
+            startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
+            endValue = end === undefined || end === "" ? null : moment(end, dateFormat),
+            {staticPeriod,periods,currentStaticPeriod,disabled} = this.props;
         return (
             <span className={this.props.flag?'':'hide'}>
                 <span>周期：</span>
-                <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : ''} selectChange={this.props.selectChange} disabled={disabled}/>
+                <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : periodCode} selectChange={this.props.selectChange} disabled={disabled}/>
                 <span>期数：</span>
-                <Input placeholder={'请输入期数'} name={'lineName'} value={lineName} onChange={this.props.inputChange} disabled={disabled} style={{width:170, marginRight: 10}}/>
+                <Input placeholder={'请输入期数'} name={'periods'} defaultValue={periods} onChange={this.inputChange} disabled={disabled} style={{width:170, marginRight: 10}}/>
                 <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange} style={{marginRight: 10}} disabled={disabled}/>
                 <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange} style={{marginRight: 10}} disabled={disabled}/>
                 <NewButton name={'确定'} handleClick={this.search} flagConfirm={disabled}/>
@@ -40,14 +38,16 @@ class Search extends React.Component {
         )
     }
 
-    /**重置事件*/
-    reset() {
-        this.setState({
-            start: '',
-            end: '',
-            periodCode: '周',
-            lineName: ''
-        })
+    componentWillReceiveProps(nextProps) {
+        if (this.props.head !== nextProps.head) {
+            let {periodCode,periods,startTime,endTime} = nextProps.head;
+            this.setState({
+                periodCode: periodCode,
+                periods: periods,
+                start: startTime,
+                end: endTime
+            })
+        }
     }
 
     /**date时间范围变化监控*/
@@ -69,9 +69,7 @@ class Search extends React.Component {
     }
 
     /**监控下拉框的变化*/
-    selectChange(value, option) {
-        let name = option.props.name.split('-');
-        console.log(name)
+    selectChange(value) {
         this.setState({
             periodCode: value
         })
@@ -80,27 +78,26 @@ class Search extends React.Component {
     /**监控输入框期数的变化*/
     inputChange(e) {
         let value = e.target.value;
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d]/g, "");  //只准输入数字
         this.setState({
-            lineName: value
+            periods: value
         })
     }
 
     /**搜索时间*/
     search() {
-        let {start, end} = this.state, {lineName,currentStaticPeriod} = this.props,{code,startTime} = currentStaticPeriod;
-        if(!start || !end || !lineName) {
+        let {start, end, periods} = this.state, {currentStaticPeriod} = this.props,{code,startTime} = currentStaticPeriod;
+        if(!start || !end || !periods) {
             message.info('信息不完全！');
             return
         }
         let params = {
             startTime: start + ' ' + startTime,
             endTime: end + ' ' + startTime,
-            lineName: lineName,
+            periods: periods,
             periodCode: code
         };
-        this.setState({
-            disabled: true
-        });
         this.props.searchEvent(params);
     }
 

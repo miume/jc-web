@@ -61,7 +61,7 @@ class ProductStandardDetail extends React.Component{
         var height1 = document.body.clientHeight-350;
         return (
             <div className='standard-table' style={{height:height1}}>
-                <Table columns={this.columns} pagination={false} size='small' scroll={{y:300}}
+                <Table columns={this.columns} pagination={false} size='small'
                 rowKey={record=>record.commonBatchId}  dataSource={this.props.data} bordered
                 rowClassName={(record)=>record.isPublished?'table-implemention':''}
                 />

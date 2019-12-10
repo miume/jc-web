@@ -3,9 +3,9 @@ import { Modal, Input, message } from 'antd';
 import axios from 'axios';
 import AddButton from '../../../BlockQuote/newButton';
 import CancleButton from "../../../BlockQuote/cancleButton";
-import SaveButton from "../../../BlockQuote/saveButton";
+import NewButton from "../../../BlockQuote/newButton";
 
-// const format = 'HH:mm';
+
 class AddModal extends React.Component {
     url;
     constructor(props) {
@@ -29,7 +29,6 @@ class AddModal extends React.Component {
         if(!this.state.name){
             message.info('信息填写不完整!')
         }
-        // console.log(data)
         axios({
             url: `${this.url.precursorProductionLine.add}`,
             method: "post",
@@ -38,7 +37,6 @@ class AddModal extends React.Component {
             },
             data: data
         }).then((data) => {
-            // console.log(data)
             message.info(data.data.message);
             this.props.fetch();
             this.setState({
@@ -66,7 +64,7 @@ class AddModal extends React.Component {
                     width='500px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel} />,
-                        <SaveButton key="define" handleSave={this.handleCreate} className='fa fa-check' />,
+                        <NewButton key="define" handleClick={this.handleCreate} className='fa fa-check' name='确定'/>,
                     ]}
                 >
                     生产线名称：<Input id="name" style={{ width: "80%" }} onChange={this.change} value={this.state.name} placeholder="请输入生产线名称" />

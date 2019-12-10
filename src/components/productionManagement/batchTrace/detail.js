@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal,Tabs} from 'antd';
+import {Modal,Tabs,message} from 'antd';
 import WhiteSpace from '../../BlockQuote/whiteSpace';
 import axios from 'axios';
 import CancleButton from "../../BlockQuote/cancleButton";
@@ -9,12 +9,13 @@ import Device from "./device";
 
 const TabPane=Tabs.TabPane;
 class Detail extends React.Component{
-    url
     constructor(props){
         super(props);
         this.state={
             visible : false,
-            data : [],
+            instrumentData:[],
+            deviceData:[],
+            assayData:[]
         }
     }
     callback=(key)=>{
@@ -23,6 +24,44 @@ class Detail extends React.Component{
     handleDetail = () =>{
         this.setState({
             visible:true
+        })
+        axios({
+            url:this.props.url.productionBatchInfo.getDetail,
+            method:'get',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            params:{
+                batchId:this.props.code
+            }
+        }).then(data=>{
+            let res=data.data.data //是一个对象，里面有三个数组
+            if(res&&res.batchInstrumentMapList){
+                for(let i=0;i<res.batchInstrumentMapList.length;i++){
+                    res.batchInstrumentMapList[i]['index']=i+1
+                    this.setState({
+                        instrumentData:res.batchInstrumentMapList,
+                    })
+                }
+            }
+            if(res&&res.batchDeviceMapList){
+                for(let i=0;i<res.batchDeviceMapList.length;i++){
+                    res.batchDeviceMapList[i]['index']=i+1
+                }
+                this.setState({
+                    deviceData:res.batchDeviceMapList,
+                })
+            }
+            if(res&&res.batchAssayMapList){
+                for(let i=0;i<res.batchAssayMapList.length;i++){
+                    res.batchAssayMapList[i]['index']=i+1
+                }
+                this.setState({
+                    assayData:res.batchAssayMapList
+                })
+            }
+        }).catch(()=>{
+           message.error('操作失败，请联系管理员!')
         })
     }
     handleCancel=()=>{
@@ -46,13 +85,13 @@ class Detail extends React.Component{
                 >
                         <Tabs defaultActiveKey='1' onChange={()=>this.callback}>
                             <TabPane tab={<span>仪器仪表数据</span>} key='1'>
-                                <Instrument type={1}/>
+                                <Instrument type={1} instrumentData={this.state.instrumentData} url={this.props.url}/>
                             </TabPane>
                             <TabPane tab={<span>设备维修保养数据</span>} key='2'>
-                                <Device type={2}/>
+                                <Device type={2} deviceData={this.state.deviceData} url={this.props.url}/>
                             </TabPane>
                             <TabPane tab={<span>化验数据</span>} key='3'>
-                                <Assay type={3}/>
+                                <Assay type={3} assayData={this.state.assayData} url={this.props.url}/>
                             </TabPane>
                         </Tabs>
                 </Modal>

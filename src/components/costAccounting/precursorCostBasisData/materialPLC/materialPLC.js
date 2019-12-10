@@ -18,12 +18,14 @@ class MaterialPLC extends React.Component{
             selectedRowKeys: [],
             loading:true,
             searchContent:'',
+            searchFlag:1//用来判断是搜索分页还是getAll分页
         };
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);
         this.start=this.start.bind(this);
         this.searchContentChange = this.searchContentChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleTableChange=this.handleTableChange.bind(this)
         this.pagination = {
             total: this.state.data.length,
             showTotal(total){
@@ -70,7 +72,6 @@ class MaterialPLC extends React.Component{
     };
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.matPlcMap.matPlcMap}`,
             method:"delete",
@@ -87,7 +88,6 @@ class MaterialPLC extends React.Component{
     };
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.matPlcMap.ids}`,
             method:'delete',
@@ -97,7 +97,6 @@ class MaterialPLC extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
@@ -113,7 +112,7 @@ class MaterialPLC extends React.Component{
         })
     };
     componentWillUnmount() {
-        this.setState = (state, callback) => {
+        this.setState = () => {
           return ;
         }
     }
@@ -121,32 +120,54 @@ class MaterialPLC extends React.Component{
     componentDidMount(){
         this.fetch();
     }
-    fetch = ()=>{
+    handleTableChange(pagination){
+        let {searchFlag}=this.state
+        this.pagination=pagination
+        if(searchFlag===1){
+            this.searchEvent({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
+        else{
+            this.fetch({
+                size:pagination.pageSize,
+                page:pagination.current
+            })
+        }
+    }
+    fetch = (params={})=>{
+        this.setState({
+            loading:true,
+            searchFlag:0
+        })
         axios({
             url:`${this.url.matPlcMap.page}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
+            params:params
         }).then((data)=>{
-            // console.log(data)
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res,
-                    searchContent:'',
-                    loading:false
-                })
-            }
+            const res = data.data.data;
+            this.pagination.total=res&&res.total?res.total:0
+           if(res &&res.list){
+                for(var i = 1; i<=res.list.length; i++){
+                    res.list[i-1]['index']=(res.page-1)*res.size+i;
+                }
+           }
+
+            this.setState({
+                data:res.list,
+                searchContent:'',
+                loading:false,
+
+            })
+
         })
     }
      /**实现全选 */
     onSelectChange(selectedRowKeys) {
-        //   console.log(selectedRowKeys)
         this.setState({ selectedRowKeys:selectedRowKeys });
     }
     cancel() {
@@ -165,42 +186,16 @@ class MaterialPLC extends React.Component{
     returnDataEntry = ()=>{
         this.props.history.push({pathname: "/precursorCostBasisData"});
     }
-    searchEvent(){
+    searchEvent(params={}){
         const ope_name = this.state.searchContent;
-        axios({
-            url:`${this.url.matPlcMap.page}`,
-            method:'get',
-            headers:{
-                'Authorization':this.Authorization
-            },
-            params:{
-                // size: this.pagination.pageSize,
-                // page: this.pagination.current,
-                condition:ope_name
-            },
-            type:'json',
-        }).then((data)=>{
-            // const res = data.data.data;
-            // if(res&&res.list){
-            //     this.pagination.total=res.total;
-            //     for(var i = 1; i<=res.list.length; i++){
-            //         res.list[i-1]['index']=(res.prePage)*10+i;
-            //     }
-            //     this.setState({
-            //         dataSource: res.list,
-            //     });
-            // }
-            const res = data.data.data.list;
-            // console.log(res)
-            for(var i = 1; i<=res.length; i++){
-                res[i-1]['index']=i;
-            }
-            if(res.length!==0){
-                this.setState({
-                    data:res
-                })
-            }
+        this.fetch({
+            ...params,
+            condition:ope_name
         })
+        this.setState({
+            searchFlag:1
+        })
+
     };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -211,9 +206,6 @@ class MaterialPLC extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
@@ -221,7 +213,7 @@ class MaterialPLC extends React.Component{
                             returnDataEntry={this.returnDataEntry} flag={1}></BlockQuote>
                 <Spin spinning={this.state.loading}  wrapperClassName='rightDiv-content'>
                     <AddModal fetch={this.fetch}/>
-                    <DeleteByIds 
+                    <DeleteByIds
                         selectedRowKeys={this.state.selectedRowKeys}
                         deleteByIds={this.start}
                         cancel={this.cancel}
@@ -229,7 +221,7 @@ class MaterialPLC extends React.Component{
                     />
                     <SearchCell name='请输入物料名称/PLC地址' flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
+                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange}  size="small" bordered/>
                 </Spin>
             </div>
         )

@@ -1,27 +1,28 @@
 /**待办事项审核操作*/
 import React from 'react';
-import RawTest from './rawTest';
-import RedList from './redlist';
+import RawTest from './checkModal/rawTest';
+import RedList from './checkModal/redlist';
 import {Modal,message} from 'antd';
-import Procedure from './procedure';
-import CheckPurchase from './checkPurchase';
+import Procedure from './checkModal/procedure';
+import CheckPurchase from './checkModal/checkPurchase';
 import AllTester from '../../BlockQuote/allTester';
 import NewButton from '../../BlockQuote/newButton';
 import StockTable from '../../smartWarehouse/stockOut/detailTable';
-import CheckUnqualified from './checkUnqualified';
+import CheckUnqualified from './checkModal/checkUnqualified';
 import CancleButton from '../../BlockQuote/cancleButton';
-import CheckProductStandard from './checkProductStandard';
-import CheckUnqualifiedTrack from './checkUnqualifiedTrack';
-import CkeckProductInspection from './checkProductInspection';
-import EqupimentGuidance from './equpimentGuidance';
+import CheckProductStandard from './checkModal/checkProductStandard';
+import CheckUnqualifiedTrack from './checkModal/checkUnqualifiedTrack';
+import CkeckProductInspection from './checkModal/checkProductInspection';
+import EqupimentGuidance from './checkModal/equpimentGuidance';
 import axios from 'axios';
+import ProcessParams from "./checkModal/processParams";
 
 class CheckModal extends React.Component{
     componentDidMount(){
-        if(this.props.dataType===11){
+        if(this.props.dataType === 11){
             this.judgeUnqualifiedArea();
         }
-        if(this.props.dataType===4){
+        if(this.props.dataType === 4){
             this.getStockOutDetailData();
         }
     }
@@ -59,7 +60,8 @@ class CheckModal extends React.Component{
             case 12: return <CheckUnqualifiedTrack url={this.props.url} dataId={this.props.dataId} flag={this.props.flag}/>;
             case 13:
             case 14: return <CheckProductStandard url={this.props.url} batchNumberId={this.props.dataId} flag={type} />;
-            case 15: return <EqupimentGuidance  url={this.props.url} batchNumberId={this.props.dataId}/>
+            case 15: return <EqupimentGuidance url={this.props.url} batchNumberId={this.props.dataId}/>;
+            case 16: return <ProcessParams url={this.props.url} batchNumberId={this.props.dataId}/>;
             default: return '' ;
         }
     }
@@ -82,7 +84,8 @@ class CheckModal extends React.Component{
             case 2:
             case 7:
             case 12: return flag?0:'modal-xlg';
-            case 15: return '.modal-600'
+            case 15: return '.modal-600';
+            case 16: return 'modal-xlg';
             default: return flag?1:'modal-md' ;
         }
     }
@@ -108,6 +111,7 @@ class CheckModal extends React.Component{
             message.info('打开失败，请联系管理员！')
         })
     };
+
     getStockOutDetailData(){
         axios({
             url:`${this.props.url.stockOut.repoOut}/${this.props.dataId}`,
