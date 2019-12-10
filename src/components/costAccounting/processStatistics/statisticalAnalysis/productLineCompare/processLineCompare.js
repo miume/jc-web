@@ -17,7 +17,11 @@ class ProductLineCompare extends Component{//工序对比分析
             endTime:'',
             lineCode:'',
             length:this.props.length,
-            startSecondTime:this.props.startSecondTime
+            startSecondTime:this.props.startSecondTime,
+            xData:[],//期数
+            seriesDataNi:[],
+            seriesDataCo:[],
+            seriesDataMn:[],//niCoMn对应的值
         }
         this.getOption=this.getOption.bind(this);
         this.selectPeriodChange=this.selectPeriodChange.bind(this);
@@ -30,6 +34,7 @@ class ProductLineCompare extends Component{//工序对比分析
       //console.log(this.startSecondTime)
     }
     getOption(){
+        let {xData,seriesDataCo,seriesDataMn,seriesDataNi}=this.state
         const option = {
             tooltip: {
                 trigger: 'axis'
@@ -41,14 +46,15 @@ class ProductLineCompare extends Component{//工序对比分析
             toolbox: {
                 feature: {
                     magicType:{show:true,type:['line','bar']},
-                    saveAsImage: {show:true}
+                    saveAsImage: {show:true},
+                    dataView: {show: true, readOnly: false},
                 }
             },
             xAxis: {
                 type: 'category',
                 name:'周期数',
                 boundaryGap: false,
-                data: ['59','60','61','63','64','70']
+                data: xData
             },
             yAxis: {
                 type: 'value',
@@ -58,17 +64,17 @@ class ProductLineCompare extends Component{//工序对比分析
                 {
                     name:'Ni',
                     type:'line',
-                    data:[24, 25, 57, 35, 32, 20]
+                    data:seriesDataNi
                 },
                 {
                     name:'Co',
                     type:'line',
-                    data:[26, 28, 51, 48, 19, 17]
+                    data:seriesDataCo
                 },
                 {
                     name:'Mn',
                     type:'line',
-                    data:[9, 26, 28, 52, 48, 18]
+                    data:seriesDataMn
                 },
             ]
         };
@@ -108,7 +114,7 @@ class ProductLineCompare extends Component{//工序对比分析
         })
     }
     search(){
-        let {periodCode,processCode,startTime,endTime}=this.state;
+        let {periodCode,lineCode,startTime,endTime}=this.state;
         axios({
             url:this.props.url.precursorGoodIn.lineCompare,
             method:'get',
@@ -117,12 +123,30 @@ class ProductLineCompare extends Component{//工序对比分析
             },
             params:{
                 periodId:periodCode,
-                lineId:processCode,
+                lineId:lineCode,
                 startTime:startTime,
                 endTime:endTime
             }
         }).then(data=>{
-            //console.log(data)
+            let res=data.data.data
+            if(res){
+                let xData=[],
+                    seriesDataNi=[],
+                    seriesDataCo=[],
+                    seriesDataMn=[]
+                for(let i=0;i<res.length;i++){
+                    seriesDataNi.push(res[i].ni)
+                    seriesDataCo.push(res[i].co)
+                    seriesDataMn.push(res[i].mn)
+                    xData.push(res[i].periodNum)
+                }
+                this.setState({
+                    xData:xData,
+                    seriesDataNi:seriesDataNi,
+                    seriesDataCo:seriesDataCo,
+                    seriesDataMn:seriesDataMn,
+                })
+           }
         })
     }
     render(){

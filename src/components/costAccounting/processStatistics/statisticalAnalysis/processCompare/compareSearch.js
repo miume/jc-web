@@ -46,7 +46,7 @@ class Search extends Component{//工序对比分析
                 </Select>
                }
                 <DatePicker  placeholder='开始时间' style={{width:'200px'}} onChange={this.props.startChange}/>
-                &nbsp;<span>~</span>&nbsp;<DatePicker value={endDate} placeholder='开始时间截止' style={{width:'200px',marginRight:'10px'}} onChange={this.props.endChange}/>
+                &nbsp;<span>~</span>&nbsp;<DatePicker  value={endDate} placeholder='开始时间截止' style={{width:'200px',marginRight:'10px'}} onChange={this.props.endChange}/>
                 <NewButton name='确定' handleClick={this.props.search}/>
                 
             </div>

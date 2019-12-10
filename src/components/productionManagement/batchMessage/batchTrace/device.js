@@ -7,15 +7,6 @@ import DeviceMaintenance from "./deviceMaintenance"
 class Device extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-            data : [{
-                index:"1",
-                batchNumber:"19M01001806TE4S",
-                slot:"JH",
-                startTime:"2019-01-01  12:30",
-                endTime:"2019-01-01  12:30",
-            }],
-        }
         this.column = [{
             title: '序号',
             dataIndex: 'index',
@@ -58,9 +49,9 @@ class Device extends React.Component{
             render:(text,record)=>{
                 return(
                     <span>
-                        <DeviceService url={this.props.url}/>
+                        <DeviceService url={this.props.url} record={record}/>
                         <Divider type="vertical"/>
-                        <DeviceMaintenance url={this.props.url}/>
+                        <DeviceMaintenance url={this.props.url} record={record}/>
                     </span>
                 )
             }

@@ -46,8 +46,8 @@ class BatchInfoTrace extends React.Component{
             width: '11%',
         },{
             title: '生成人',
-            dataIndex: 'createName',
-            key: 'createName',
+            dataIndex: 'creater',
+            key: 'creater',
             width: '8%',
         },{
             title: '开始时间',

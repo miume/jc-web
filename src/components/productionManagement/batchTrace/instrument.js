@@ -4,7 +4,6 @@ import {Table, message, Spin, Divider} from "antd";
 import InstrumentDetail from "./instrumentDetail"
 
 class Instrument extends React.Component{
-    url
     constructor(props){
         super(props);
         this.state={
@@ -51,7 +50,6 @@ class Instrument extends React.Component{
     }
 
     render(){
-        this.url = JSON.parse(localStorage.getItem('url'));
         return(
             <span>
                 <Table pagination={false} size="small" bordered  dataSource={this.props.instrumentData} columns={this.column} rowKey={record=>record.index}/>

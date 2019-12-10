@@ -19,7 +19,6 @@ class Detail extends React.Component{
         }
     }
     callback=(key)=>{
-        console.log(key);
     }
     handleDetail = () =>{
         this.setState({

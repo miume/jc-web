@@ -249,8 +249,6 @@ class RawMaterialName extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            onSelect() {},
-            onSelectAll() {},
           };
         return(
             <div>
@@ -266,7 +264,7 @@ class RawMaterialName extends React.Component{
                     />
                     <SearchCell name="请输入原材料名称" flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} onChange={this.handleTableChange} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data}  size="small" bordered/>
+                    <Table rowSelection={rowSelection} onChange={this.handleTableChange} pagination={this.pagination} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )
