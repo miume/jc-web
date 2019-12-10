@@ -542,7 +542,8 @@ class Home extends Component {
             plcAddress:{
                 plcAddress:`${server}/jc/common/plcAddress`,
                 ids:`${server}/jc/common/plcAddress/ids`,
-                getRecordById:`${server}/jc/common/plcAddress/getRecordById`
+                getRecordById:`${server}/jc/common/plcAddress/getRecordById`,
+                all:`${server}/jc/common/plcAddress/all`
             },
             /**VGA */
             vga:{

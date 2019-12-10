@@ -46,13 +46,13 @@ class AddModal extends React.Component{
     }
     getPlcAddress(){
         axios({
-            url:`${this.url.plcAddress.plcAddress}`,
+            url:`${this.url.plcAddress.all}`,
             method:"get",
             headers:{
                 'Authorization':this.url.Authorization
             },
         }).then((data)=>{
-            const res = data.data.data.list;
+            const res = data.data.data;
             this.setState({
                 plcAddress:res
             })
