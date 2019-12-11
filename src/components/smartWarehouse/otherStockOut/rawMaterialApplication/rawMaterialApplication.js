@@ -69,9 +69,9 @@ class RawMaterialApplication extends React.Component{
             dataIndex:'materialCode',
             key:'materialCode',
             width:'48%',
-            render: (text) => {
-                return <span title={text}>{text.split('-').slice(0,4).join('-')+ '...'}</span>
-            }
+            // render: (text) => {
+            //     return <span title={text}>{text.split('-').slice(0,4).join('-')+ '...'}</span>
+            // }
         }, {
             title:'重量',
             dataIndex:'weight',

@@ -4,11 +4,6 @@ import Detail from './detail';
 import Search from "../search";
 
 class Statistics extends React.Component{
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
     constructor(props){
         super(props);
         this.state = {
@@ -24,7 +19,7 @@ class Statistics extends React.Component{
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            width: '10%'
+            width: '6%'
         }, {
             title: '周期类型',
             key: 'periodName',
@@ -39,12 +34,12 @@ class Statistics extends React.Component{
             title: '开始时间',
             key: 'head.startTime',
             dataIndex: 'head.startTime',
-            width: '10%'
+            width: '14%'
         }, {
             title: '结束时间',
             key: 'head.endTime',
             dataIndex: 'head.endTime',
-            width: '10%'
+            width: '14%'
         }, {
             title: '区域',
             key: 'processName',
@@ -69,10 +64,10 @@ class Statistics extends React.Component{
             title: '操作',
             key: 'processTotal.code',
             dataIndex: 'processTotal.code',
-            width: '10%',
+            width: '6%',
             render: (text, record) => {
                 return (
-                    <Detail data={record}/>
+                    <Detail code={text} type={record.processTotal.processCode} url={this.props.url}/>
                 )
             }
         }]
@@ -80,9 +75,15 @@ class Statistics extends React.Component{
 
     render() {
         return(
-            <Table columns={this.columns} rowKey={record => record.index}  pagination={this.pagination}
+            <Table columns={this.columns} rowKey={record => record.processTotal.code}  pagination={this.pagination}
                    size={"small"} bordered dataSource={this.props.data}/>
         )
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

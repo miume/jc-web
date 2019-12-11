@@ -1,6 +1,5 @@
 import React from "react";
-import {Button, Divider,Table, Select, Input,Spin} from "antd";
-import NewButton from "../../../../BlockQuote/newButton";
+import {Table, Input, Button} from "antd";
 
 class WorkShop extends React.Component{
     url;
@@ -24,29 +23,29 @@ class WorkShop extends React.Component{
             key:'monPotency'
         },{
             title:'氨浓度(%)',
-            dataIndex:'ammValue',
-            key:'ammValue',
+            dataIndex:'ammPotency',
+            key:'ammPotency',
             render: (text,record) => {
                 return record['ammoniaFlag'] ?
-                    <Input name={`ammValue-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
+                    <Input name={`ammPotency-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }
         },{
             title:'碱浓度(%)',
-            dataIndex:'alkValue',
-            key:'alkValue',
+            dataIndex:'alkPotency',
+            key:'alkPotency',
             render: (text,record) => {
                 return record['alkaliFlag'] ?
-                    <Input name={`alkValue-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
+                    <Input name={`alkPotency-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }
         }]
     }
     render() {
-        let {data} = this.props;
+        let {data,getVolume,status} = this.props;
         return(
             <div>
-                <NewButton name={'获取体积值'}/>
+                <Button type='ant-btn ant-btn-primary' onClick={() => getVolume(status,'volume')} style={{marginBottom: 10}}>获取体积值</Button>
                 <Table
                     dataSource={data}
                     rowKey={record => record.code}
