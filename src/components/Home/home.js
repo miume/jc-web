@@ -773,6 +773,22 @@ class Home extends Component {
                 saveOrCommit:`${server1}/auxiliary/saveOrCommit`,
                 stasticByLine:`${server1}/auxiliary/stasticByLine`,
                 stasticByProcess:`${server1}/auxiliary/stasticByProcess`,
+                getVolumeWeight: `${server1}/goodIn/getVolumeWeight`
+            },
+            productStorage: {
+                getAllBatch:`${server}/jc/common/getAllBatch`,
+                auxiliary:`${server}/jc/common/auxiliary`,
+                detail:`${server}/jc/common/productStorage/detail`,
+                getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
+                getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
+                nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
+                addConfirm:`${server}/jc/common/productStorage/addComfirm`,
+                afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
+                lineCur:`${server}/jc/common/productStorage/lineCur`,
+                processCur:`${server}/jc/common/productStorage/processCur`,
+                saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
+                stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
+                stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             }
         };
 

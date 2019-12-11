@@ -1,179 +1,216 @@
 import React from "react";
 import NewButton from "../../../BlockQuote/newButton";
-import {Button, Divider,Table, Select, Input} from "antd";
+import {Spin, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import BlockQuote from '../../../BlockQuote/blockquote';
-import {withRouter} from "react-router-dom";
+import Search from "../../rawMaterial/addModal/search";
+import AddTable from "./addTable";
+import axios from 'axios';
 
 
 class AddModal extends React.Component{
-    url;
     constructor(props){
         super(props);
-        this.state={
-            data:[{
-                index:1,
-                name:"前驱体",
-                model:10001,
-                batch:102,
-                time:"2019-01-07",
-                weight:70,
-                Ni:5,
-                Co:5,
-                Mn:5
-            }],
-            cycle:undefined,
-            periods:undefined,
-            startTime:undefined,
-            endTime:undefined,
+        this.state = {
+            visible: false,
+            disabled: false,
+            loading: false,
+            data: []
         };
-        this.pagination = {
-            total: this.state.data.length,
-            showTotal(total){
-                return `共${total}条记录`
-            },
-            showSizeChanger: true,
-        };
-        this.columns=[{
-            title: '序号',
-            dataIndex: 'index',
-            key: 'index',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: '成品名称',
-            dataIndex: 'name',
-            key: 'name',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: '产品型号',
-            dataIndex: 'model',
-            key: 'model',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: '批号',
-            dataIndex: 'batch',
-            key: 'batch',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: '入库时间',
-            dataIndex: 'time',
-            key: 'time',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: '重量(T)',
-            dataIndex: 'weight',
-            key: 'weight',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: 'Ni(%)',
-            dataIndex: 'Ni',
-            key: 'Ni',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: 'Co(%)',
-            dataIndex: 'Co',
-            key: 'Co',
-            align:'center',
-            width: '11.11%',
-        },{
-            title: 'Mn(%)',
-            dataIndex: 'Mn',
-            key: 'Mn',
-            align:'center',
-            width: '11.11%',
-        }]
-    };
-    /**周期 */
-    cycleChange = (data)=>{
-        this.setState({
-            cycle:data
-        })
-    }
-    /**期数 */
-    periodsChange = (data)=>{
-        this.setState({
-            periods:data.target.value
-        })
-    }
-    /** 开始时间*/
-    startChange=(data)=>{
-        this.setState({
-            startTime:data.target.value
-        })
-    }
-    /**结束时间 */
-    endChange=(data)=>{
-        this.setState({
-            endTime:data.target.value
-        })
-    }
-    /**确定 */
-    yes=()=>{
-
-    }
-    /**重置 */
-    reset=()=>{
-
-    }
-    /**入库单获取 */
-    require=()=>{
-
+        this.addItem = this.addItem.bind(this);
+        this.inputChange = this.inputChange.bind(this);
+        this.searchEvent = this.searchEvent.bind(this);
+        this.getPreLineName = this.getPreLineName.bind(this);
     };
 
-    /**点击取消新增*/
-    handleCancel=()=> {
-        this.props.history.push({pathname: "/productStorage"})
-    };
-
-    /**点击保存新增*/
-    handleSave=()=>{
-        this.handleCancel();
-    };
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let name = this.state.code > -1 ? '编辑数据' : '新增数据';
+        let name = this.state.code > -1 ? '编辑数据' : '新增数据',
+            {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data} = this.state;
         return(
-            <div>
+            <Spin spinning={loading}>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-content'}>
+                    <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange}/>
+                    <AddTable visible={visible} data={data} add={this.addItem}/>
+                </div>
+                <div className='raw-material-add-footer-bottom'>
+                    <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
                     <div>
-                        <span style={{width:"5%",display:"inlineBlock"}}>周期：<Select style={{width:"10%"}} onChange={this.cycleChange} placeholder="请选择周期" value={this.state.cycle}><Select.Option value="0">周</Select.Option>
-                        <Select.Option value="1">月</Select.Option>
-                        <Select.Option value="2">年</Select.Option>
-                        </Select>
-                        </span>
-                        <span style={{width:"5%",display:"inlineBlock",marginLeft:"20px"}}>期数：<Input style={{width:"10%"}} value={this.state.periods} onChange={this.periodsChange} placeholder="请输入期数"/></span>
-                        <span style={{width:"5%",display:"inlineBlock",marginLeft:"20px"}}>开始时间：<Input style={{width:"10%"}} value={this.state.startTime} onChange={this.startChange} placeholder="请选择时间"/></span>
-                        <span style={{width:"5%",display:"inlineBlock",marginLeft:"20px"}}>结束时间：<Input style={{width:"10%"}} value={this.state.endTime} onChange={this.endChange} placeholder="请选择时间"/></span>
-                        <span style={{width:"5%",display:"inlineBlock",marginLeft:"20px"}}><Button style={{width:"10%"}} type="primary" onChange={this.yes}>确定</Button></span>
-                        <span style={{width:"5%",display:"inlineBlock",marginLeft:"20px"}}><Button style={{width:"10%"}} onChange={this.reset}>重置</Button></span>
-                    </div>
-                    <br /><br />
-                    <Button type="primary" onChange={this.require}>入库单获取</Button>
-                    <br /><br />
-                    <Table pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data} scroll={{ y: 400 }} size="small" bordered/>
-                    <Divider type="horizontal"/>
-                    <div className='raw-material-add-footer-bottom'>
-                        <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
-                        <div>
-                            <SaveButton key='save'/>
-                            <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleSave}/>
-                        </div>
+                        <SaveButton key='save'/>
+                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleSave}/>
                     </div>
                 </div>
-            </div>
+            </Spin>
         )
+    }
+
+    /**获取路由传递的数据*/
+    componentDidMount() {
+        let location = this.props.location;
+        if(location) {
+            let path = location.pathname.split('/'),
+                code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
+                currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
+            this.setState({
+                code: code,
+                staticPeriod: staticPeriod
+            });
+            if(code) {
+                this.afterConfirm(code);
+            } else {
+                this.setState({
+                    currentStaticPeriod: currentStaticPeriod
+                });
+                if(currentStaticPeriod && currentStaticPeriod.code) {
+                    this.getPreLineName(currentStaticPeriod.code);
+                }
+            }
+        }
+    }
+
+    /**根据周期获取上期期数*/
+    getPreLineName(periodCode) {
+        axios({
+            url: `${this.url.auxiliary.nextPeroidNumber}?periodId=${periodCode}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorizaion
+            }
+        }).then((data) => {
+            let periods = data.data ? data.data.data : '';
+            this.setState({
+                periods: periods
+            })
+        })
+    }
+
+    /**监控统计周期下拉框的变化*/
+    selectChange(value,option) {
+        let name = option.props.name.split('-'),
+            currentStaticPeriod = {
+                code: value,
+                startTime: name[0],
+                length: parseInt(name[1])
+            };
+        this.setState({
+            currentStaticPeriod: currentStaticPeriod
+        });
+        this.getPreLineName(value);
+    }
+
+    searchEvent(params) {
+        console.log(params)
+        params['lineName'] = params['periods'];
+        delete params['periods'];
+        this.addConfirm(params)
+    }
+
+    /**监控所有input输入框的变化*/
+    inputChange(e) {
+        let tar = e.target.name.split('-'), value = e.target.value,
+            name = tar[0], index = tar[1] ? tar[1] : '', type = tar[2] ? parseInt(tar[2]) : '',
+            {gqDetails2,cjDetails3,fcDetails4} = this.state;
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(index) {
+            index = parseInt(index)-1;
+            if(type === 2) {   //更新罐区input的数据
+                gqDetails2[index][name] = value;
+                this.setState({
+                    gqDetails2: gqDetails2
+                })
+            } else if(type === 3) { //更新车间input的数据
+                cjDetails3[index][name] = value;
+                this.setState({
+                    cjDetails3: cjDetails3
+                })
+            } else {              //更新辅料消耗量input的数据
+                fcDetails4[index][name] = value;
+                this.setState({
+                    fcDetails4: fcDetails4
+                })
+            }
+        } else {
+            this.setState({
+                [name]: value
+            })
+        }
+    }
+
+    /**表头新增*/
+    addConfirm(da) {
+        axios({
+            url: `${this.url.productStorage.addConfirm}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data: da
+        }).then((data) => {
+            let res = data.data.data;
+            if (res === null || res === undefined) {
+                message.info('存在不一致的统计周期，需要进行修改！')
+            }
+            else {
+                this.setState({
+                    id: res
+                })
+            }
+        })
+    }
+
+    addItem() {
+        let {data} = this.state,
+            item = {
+                "batch": "",
+                "coConcentration": 0,
+                "coMetallicity": 0,
+                "code": 0,
+                "lineCode": 0,
+                "mnConcentration": 0,
+                "mnMetallicity": 0,
+                "niConcentration": 0,
+                "niMetallicity": 0,
+                "productionTypeCode": "",
+                "productionTypeName": "",
+                "statisticCode": 0,
+                "storageTime": "",
+                "weights": 0
+            };
+        data.push(item);
+        this.setState({
+            data
+        })
+    }
+
+    /**表头新增成功之后获取表格数据*/
+    afterConfirm(id) {
+        let url = id ? `${this.url.auxiliary.afterConfirm}?id=${id}` : `${this.url.auxiliary.afterConfirm}`;
+        axios({
+            url: url,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if(res && res['processDTOS']) {
+                this.tableDataProcessing(res);
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 
-export default withRouter(AddModal)
+export default AddModal;

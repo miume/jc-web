@@ -16,6 +16,7 @@ class AddModal extends React.Component{
             disabled: false,
             loading: false
         };
+        this.getVolume = this.getVolume.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
         this.afterConfirm = this.afterConfirm.bind(this);
         this.selectChange = this.selectChange.bind(this);
@@ -27,6 +28,7 @@ class AddModal extends React.Component{
         this.searchEvent = this.searchEvent.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
+        this.getVolumeOrWeight = this.getVolumeOrWeight.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
         this.tableDataProcessing = this.tableDataProcessing.bind(this);
     };
@@ -44,7 +46,8 @@ class AddModal extends React.Component{
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
                             selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange}/>
                     <div className={visible ? '' : 'hide'}>
-                        <AddTabs ammValue={ammValue} alkValue={alkValue} gqDetails2={gqDetails2} cjDetails3={cjDetails3} fcDetails4={fcDetails4} inputChange={this.inputChange}/>
+                        <AddTabs ammValue={ammValue} alkValue={alkValue} gqDetails2={gqDetails2} cjDetails3={cjDetails3} fcDetails4={fcDetails4}
+                                 inputChange={this.inputChange} getVolume={this.getVolume}/>
                     </div>
                 </div>
                 <div className='raw-material-add-footer-bottom'>
@@ -60,21 +63,24 @@ class AddModal extends React.Component{
 
     /**获取路由传递的数据*/
     componentDidMount() {
-        let location = this.props.location, path = location.pathname.split('/'),
-            code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
-            currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
-        this.setState({
-            code: code,
-            staticPeriod: staticPeriod
-        });
-        if(code) {
-            this.afterConfirm(code);
-        } else {
+        let location = this.props.location;
+        if(location) {
+            let path = location.pathname.split('/'),
+                code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
+                currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
             this.setState({
-                currentStaticPeriod: currentStaticPeriod
+                code: code,
+                staticPeriod: staticPeriod
             });
-            if(currentStaticPeriod && currentStaticPeriod.code) {
-                this.getPreLineName(currentStaticPeriod.code);
+            if(code) {
+                this.afterConfirm(code);
+            } else {
+                this.setState({
+                    currentStaticPeriod: currentStaticPeriod
+                });
+                if(currentStaticPeriod && currentStaticPeriod.code) {
+                    this.getPreLineName(currentStaticPeriod.code);
+                }
             }
         }
     }
@@ -221,6 +227,47 @@ class AddModal extends React.Component{
             data[i]['index'] = i + 1;
         }
         return data
+    }
+
+    /**
+     * 点击获取体积值，获取重量值按钮，获取数据，更新表格数据
+     * index 代表第几条数据
+     * type === 'volume' 代表获取体积值 'weight' 代表获取重量值
+     * */
+    getVolume(index,type) {
+        index = parseInt(index) - 1;
+        let {res} = this.state, processId = res['processDTOS'][index]['processId'];
+        axios({
+            url: `${this.url.auxiliary.getVolumeWeight}?processId=${processId}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            this.getVolumeOrWeight(res,index,type);
+        })
+    }
+
+    getVolumeOrWeight(data,index,type) {
+        let {gqDetails2,cjDetails3,fcDetails4} = this.state, temp, name = '';
+        if(index === 1) {         //罐区
+            temp = gqDetails2;
+            name = 'gqDetails2';
+        } else if (index === 2) { //车间
+            temp = cjDetails3;
+            name = 'cjDetails3';
+        } else {                  //辅料消耗量
+            temp = fcDetails4;
+            name = 'fcDetails4';
+        }
+        for(let i = 0; i < temp.length; i++) {
+            temp[i][type] = data[i]['value']
+        }
+        this.setState({
+            [name]: temp
+        })
+
     }
 
     /**点击取消新增*/

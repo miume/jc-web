@@ -39,13 +39,15 @@ class ExcipientStatisticalAnalysis extends Component{//辅料统计的统计分�
 
     /**获取路由传递的数据*/
     componentDidMount() {
-        let location = this.props.location,
-            staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
-            periodsCode = staticPeriod ? staticPeriod[0]['code'] : undefined;
-        this.setState({
-            staticPeriod: staticPeriod,
-            periodsCode: periodsCode
-        });
+        let location = this.props.location;
+        if(location) {
+            let staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
+                periodsCode = staticPeriod ? staticPeriod[0]['code'] : undefined;
+            this.setState({
+                staticPeriod: staticPeriod,
+                periodsCode: periodsCode
+            });
+        }
     }
 }
 export default ExcipientStatisticalAnalysis

@@ -50,7 +50,6 @@ class ExcipientStatistics extends React.Component{
         this.selectChange = this.selectChange.bind(this);
         this.getAllStaticPeriod = this.getAllStaticPeriod.bind(this);
         this.getUnSubmittedData = this.getUnSubmittedData.bind(this);
-        this.getStatisticsData = this.getStatisticsData.bind(this);
         this.statisticalAnalysis = this.statisticalAnalysis.bind(this);
     }
     render(){
@@ -164,11 +163,6 @@ class ExcipientStatistics extends React.Component{
                 loading: false
             })
         })
-    }
-
-    /**获取已统计数据*/
-    getStatisticsData() {
-
     }
 
     /**标签页切换*/

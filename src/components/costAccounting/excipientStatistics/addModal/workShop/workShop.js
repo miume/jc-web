@@ -1,6 +1,5 @@
 import React from "react";
-import {Table, Input} from "antd";
-import NewButton from "../../../../BlockQuote/newButton";
+import {Table, Input, Button} from "antd";
 
 class WorkShop extends React.Component{
     url;
@@ -43,10 +42,10 @@ class WorkShop extends React.Component{
         }]
     }
     render() {
-        let {data} = this.props;
+        let {data,getVolume,status} = this.props;
         return(
             <div>
-                <NewButton name={'获取体积值'}/>
+                <Button type='ant-btn ant-btn-primary' onClick={() => getVolume(status,'volume')} style={{marginBottom: 10}}>获取体积值</Button>
                 <Table
                     dataSource={data}
                     rowKey={record => record.code}
