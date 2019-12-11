@@ -1,59 +1,22 @@
 import React from 'react';
 import {Modal, Table, Divider} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
+import axios from "axios";
+import {columns1,columns2,columns3} from './columns';
 
 class Detail extends React.Component{
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props){
         super(props);
         this.state = {
             visible: false
         };
+        this.getFooter = this.getFooter.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.columns = [{
-            title: '序号',
-            key: 'index',
-            dataIndex: 'index',
-            width: '14.28%'
-        }, {
-            title: '溶液',
-            key: 'solution',
-            dataIndex: 'solution',
-            width: '14.28%'
-        },  {
-            title: '重量(T)',
-            key: 'weight',
-            dataIndex: 'weight',
-            width: '14.28%'
-        },{
-            title: '氨浓度(%)',
-            key: 'ammConcent',
-            dataIndex: 'ammConcent',
-            width: '14.28%'
-        }, {
-            title: '碱浓度(%)',
-            key: 'alkConcent',
-            dataIndex: 'alkConcent',
-            width: '14.28%'
-        }, {
-            title: '氨量(T)',
-            key: 'ammonia',
-            dataIndex: 'ammonia',
-            width: '14.28%'
-        }, {
-            title: '碱量(T)',
-            key: 'alkali',
-            dataIndex: 'alkali',
-            width: '14.28%'
-        }]
+        this.getDetailData = this.getDetailData.bind(this);
     }
-    render(){
+    render() {
+        let {head,processTotal,processes} = this.state;
         return(
             <span>
                 <span className='blue' onClick={this.handleClick}>详情</span>
@@ -61,18 +24,19 @@ class Detail extends React.Component{
                        width={'900px'} centered={true} closable={false}
                        footer={[<CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>]}
                 >
-                    <div>
-                        <span><b>周期：</b>周</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>期数：</b>1</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>开始时间：</b>2019-01-01</span>
-                        <span style={{marginLeft:"100px",display:"inlineBlock"}}><b>结束时间：</b>2019-01-07</span>
+                    <div className='excipient-statistics-detail-display'>
+                        <div><b>周期：</b>{head ? head.periodName : ''}</div>
+                        <div><b>期数：</b>{head ? head.periods : ''}</div>
+                        <div><b>区域：</b>{head ? head.processName : ''}</div>
                     </div>
-                    <div>
-                        <span><b>区域：</b>入库量</span>
+                    <div className='excipient-statistics-detail-display'>
+                        <div><b>开始时间：</b>{head ? head.startTime : ''}</div>
+                        <div><b>结束时间：</b>{head ? head.endTime : ''}</div>
+                        <div></div>
                     </div>
                     <Divider />
-                    <Table rowKey={record => record.code} dataSource={[this.props.data]} columns={this.columns}
-                               size={"small"} bordered pagination={false}/>
+                    <Table rowKey={record => record.process.code} dataSource={processes} columns={this.columns}
+                           size={"small"} bordered pagination={false} footer={this.getFooter}/>
                 </Modal>
             </span>
         )
@@ -80,15 +44,67 @@ class Detail extends React.Component{
 
     /**点击详情按钮*/
     handleClick() {
+        let {code,type} = this.props;
+        if(type === 7) {
+            this.columns = columns1;  //入库量
+        } else if(type === 8 || type === 9) {
+            this.columns = columns2;  //罐区和车间
+        }  else {
+            this.columns = columns3;  //辅料消耗量
+        }
+        this.getDetailData(code);
         this.setState({
             visible: true
         })
+    }
+
+    getDetailData(code) {
+        axios({
+            url: `${this.props.url.auxiliary.detail}?id=${code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if(res) {
+                let {head,processTotal,processes} = res;
+                head['periodName'] = res['periodName'];
+                head['processName'] = res['processName'];
+                for(let i = 0; i < processes.length; i++) {
+                    processes[i]['index'] = i + 1;
+                }
+                this.setState({
+                    head,
+                    processes,
+                    processTotal
+                })
+            }
+        })
+    }
+
+    getFooter() {
+        let {processTotal} = this.state;
+        return (
+            <div className='excipient-statistics-detail-footer'>
+                <div>小计</div>
+                <div>{`重量：${processTotal ? processTotal['totals'] : ''}`}</div>
+                <div>{`氨量：${processTotal ? processTotal['ammoniaValue'] : ''}`}</div>
+                <div>{`碱量：${processTotal ? processTotal['alkaliValue'] : ''}`}</div>
+            </div>
+        )
     }
 
     /**点击取消按钮*/
     handleCancel() {
         this.setState({
             visible: false
+        })
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
         })
     }
 }

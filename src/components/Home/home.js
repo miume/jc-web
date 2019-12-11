@@ -48,7 +48,7 @@ class Home extends Component {
             '15':'设备指导',
             '16': '工艺参数'
         };
-        const server = localStorage.getItem('server');
+        const server = localStorage.getItem('server'), server1 = 'http://10.168.1.160:8082';
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -744,18 +744,35 @@ class Home extends Component {
                 update:`${server}/jc/common/anodeOthers/update`
             },
             /**前驱体辅料统计*/
+            // auxiliary: {
+            //     getDate:`${server}/jc/common/getDate`,
+            //     auxiliary:`${server}/jc/common/auxiliary`,
+            //     detail:`${server}/jc/common/auxiliary/detail`,
+            //     getPageUnCommit:`${server}/jc/common/auxiliary/getPageUnCommit`,
+            //     getPageCommit:`${server}/jc/common/auxiliary/getPageCommit`,
+            //     nextPeroidNumber:`${server}/jc/common/auxiliary/nextPeroidNumber`,
+            //     addConfirm:`${server}/jc/common/auxiliary/addComfirm`,
+            //     afterConfirm:`${server}/jc/common/auxiliary/afterComfirm`,
+            //     lineCur:`${server}/jc/common/auxiliary/lineCur`,
+            //     processCur:`${server}/jc/common/auxiliary/processCur`,
+            //     saveOrCommit:`${server}/jc/common/auxiliary/saveOrCommit`,
+            //     stasticByLine:`${server}/jc/common/auxiliary/stasticByLine`,
+            //     stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
+            // }
             auxiliary: {
-                auxiliary:`${server}/jc/common/auxiliary`,
-                getPageUnCommit:`${server}/jc/common/auxiliary/getPageUnCommit`,
-                getPageCommit:`${server}/jc/common/auxiliary/getPageCommit`,
-                nextPeroidNumber:`${server}/jc/common/auxiliary/nextPeroidNumber`,
-                addConfirm:`${server}/jc/common/auxiliary/addComfirm`,
-                afterConfirm:`${server}/jc/common/auxiliary/afterComfirm`,
-                lineCur:`${server}/jc/common/auxiliary/lineCur`,
-                processCur:`${server}/jc/common/auxiliary/processCur`,
-                saveOrCommit:`${server}/jc/common/auxiliary/saveOrCommit`,
-                stasticByLine:`${server}/jc/common/auxiliary/stasticByLine`,
-                stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
+                getDate: `${server1}/auxiliary/getDate`,
+                auxiliary:`${server1}/auxiliary`,
+                detail:`${server1}/auxiliary/detail`,
+                getPageUnCommit:`${server1}/auxiliary/getPageUnCommit`,
+                getPageCommit:`${server1}/auxiliary/getPageCommit`,
+                nextPeroidNumber:`${server1}/auxiliary/nextPeroidNumber`,
+                addConfirm:`${server1}/auxiliary/addComfirm`,
+                afterConfirm:`${server1}/auxiliary/afterComfirm`,
+                lineCur:`${server1}/auxiliary/lineCur`,
+                processCur:`${server1}/auxiliary/processCur`,
+                saveOrCommit:`${server1}/auxiliary/saveOrCommit`,
+                stasticByLine:`${server1}/auxiliary/stasticByLine`,
+                stasticByProcess:`${server1}/auxiliary/stasticByProcess`,
             }
         };
 

@@ -20,20 +20,20 @@ class Consumption extends React.Component{
             key:'weight'
         },{
             title:'氨浓度(%)',
-            dataIndex:'ammValue',
-            key:'ammValue',
+            dataIndex:'ammPotency',
+            key:'ammPotency',
             render: (text,record) => {
                 return record['alkaliFlag'] ?
-                    <Input name={`alkValue-${record['index']}-4`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
+                    <Input name={`ammPotency-${record['index']}-4`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }
         },{
             title:'碱浓度(%)',
-            dataIndex:'alkValue',
-            key:'alkValue',
+            dataIndex:'alkPotency',
+            key:'alkPotency',
             render: (text,record) => {
                 return record['alkaliFlag'] ?
-                    <Input name={`alkValue-${record['index']}-4`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
+                    <Input name={`alkPotency-${record['index']}-4`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }
         }]

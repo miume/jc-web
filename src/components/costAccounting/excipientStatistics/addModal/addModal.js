@@ -6,14 +6,15 @@ import BlockQuote from '../../../BlockQuote/blockquote';
 import Search from "../../rawMaterial/addModal/search";
 import axios from "axios";
 import AddTabs from "./addTabs";
-import {message} from "antd";
+import {message, Spin} from "antd";
 
 class AddModal extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             visible: false,
-            disabled: false
+            disabled: false,
+            loading: false
         };
         this.addConfirm = this.addConfirm.bind(this);
         this.afterConfirm = this.afterConfirm.bind(this);
@@ -24,7 +25,6 @@ class AddModal extends React.Component{
         this.handleCommit = this.handleCommit.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
-        this.getDetailData = this.getDetailData.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
         this.dataProcessing = this.dataProcessing.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
@@ -35,14 +35,14 @@ class AddModal extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {staticPeriod,periods,currentStaticPeriod,visible,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,disabled,head} = this.state;
+            {staticPeriod,periods,currentStaticPeriod,visible,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,disabled,head,loading} = this.state;
         return(
-            <div>
+            <Spin spinning={loading}>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange}/>
                     <div className={visible ? '' : 'hide'}>
                         <AddTabs ammValue={ammValue} alkValue={alkValue} gqDetails2={gqDetails2} cjDetails3={cjDetails3} fcDetails4={fcDetails4} inputChange={this.inputChange}/>
                     </div>
@@ -54,7 +54,7 @@ class AddModal extends React.Component{
                         <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
                     </div>
                 </div>
-            </div>
+            </Spin>
         )
     }
 
@@ -95,11 +95,6 @@ class AddModal extends React.Component{
         })
     }
 
-    /**编辑 通过id获取表格数据*/
-    getDetailData(code) {
-        console.log(code)
-    }
-
     /**监控统计周期下拉框的变化*/
     selectChange(value,option) {
         let name = option.props.name.split('-'),
@@ -125,7 +120,9 @@ class AddModal extends React.Component{
             {gqDetails2,cjDetails3,fcDetails4} = this.state;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         if(index) {
+            index = parseInt(index)-1;
             if(type === 2) {   //更新罐区input的数据
                 gqDetails2[index][name] = value;
                 this.setState({
@@ -150,22 +147,23 @@ class AddModal extends React.Component{
     }
 
     /**表头新增*/
-    addConfirm(data) {
+    addConfirm(da) {
         axios({
             url: `${this.url.auxiliary.addConfirm}`,
             method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
             },
-            data
+            data: da
         }).then((data) => {
             let res = data.data.data;
             if (res === null || res === undefined) {
                 message.info('存在不一致的统计周期，需要进行修改！')
             }
             else {
+                da['code'] = res;
                 this.setState({
-                    head: data
+                    head: da
                 });
                 this.afterConfirm();
             }
@@ -173,9 +171,10 @@ class AddModal extends React.Component{
     }
 
     /**表头新增成功之后获取表格数据*/
-    afterConfirm(id = null) {
+    afterConfirm(id) {
+        let url = id ? `${this.url.auxiliary.afterConfirm}?id=${id}` : `${this.url.auxiliary.afterConfirm}`;
         axios({
-            url: `${this.url.auxiliary.afterConfirm}?id=${id}`,
+            url: url,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
@@ -192,24 +191,28 @@ class AddModal extends React.Component{
     tableDataProcessing(res) {
         let {processDTOS} = res,ammValue,alkValue,gqDetails2 = [],cjDetails3 = [],fcDetails4 = [];
         if(processDTOS.length) {
-            ammValue = processDTOS[0]['materialDetails'][0]['ammValue']; //氨入库量
-                alkValue = processDTOS[0]['materialDetails'][1]['alkValue']; //碱入库量
-                gqDetails2 = processDTOS[1]['materialDetails'];          //罐区
-                cjDetails3 = processDTOS[1]['materialDetails'];           //车间
-                fcDetails4 = processDTOS[1]['materialDetails'];           //辅材消耗量
+            ammValue = processDTOS[0]['materialDetails'][0]['weight']; //氨入库量
+            alkValue = processDTOS[0]['materialDetails'][1]['weight']; //碱入库量
+            gqDetails2 = processDTOS[1]['materialDetails'];          //罐区
+            cjDetails3 = processDTOS[2]['materialDetails'];           //车间
+            fcDetails4 = processDTOS[3]['materialDetails'];           //辅材消耗量
         }
         this.setState({
             res: res,
             visible: true,
             ammValue: ammValue,
             alkValue: alkValue,
-            head: res['head'],
-            periods: res['head']['periods'],
             gqDetails2: this.dataProcessing(gqDetails2),
             cjDetails3: this.dataProcessing(cjDetails3),
             fcDetails4: this.dataProcessing(fcDetails4),
             disabled: true
-        })
+        });
+        if(res['head']) {
+            this.setState({
+                head: res['head'],
+                periods: res['head']['periods']
+            })
+        }
     }
 
     /**给表格数据加index字段*/
@@ -236,13 +239,13 @@ class AddModal extends React.Component{
     };
 
     saveDataProcessing(flag) {
-        let {res,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4} = this.state;
-        res['processDTOS'][0]['materialDetails'][0]['ammValue'] = ammValue;
-        res['processDTOS'][0]['materialDetails'][1]['alkValue'] = alkValue; //碱入库量
+        let {res,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,head} = this.state;
+        res['processDTOS'][0]['materialDetails'][0]['weight'] = ammValue;
+        res['processDTOS'][0]['materialDetails'][1]['weight'] = alkValue; //碱入库量
         res['processDTOS'][1]['materialDetails'] = gqDetails2;         //罐区
         res['processDTOS'][2]['materialDetails'] = cjDetails3;          //车间
         res['processDTOS'][3]['materialDetails'] = fcDetails4;
-        console.log(res)
+        res['head'] = head;
         this.saveOrCommit(res,flag);
     }
 
@@ -251,6 +254,9 @@ class AddModal extends React.Component{
      * flag = 0 -保存
      */
     saveOrCommit(data,flag) {
+        this.setState({
+            loading: true
+        });
         axios({
             url: `${this.url.auxiliary.saveOrCommit}?flag=${flag}`,
             method: 'post',
@@ -260,6 +266,9 @@ class AddModal extends React.Component{
             data
         }).then((data) => {
             message.info(data.data.message);
+            this.setState({
+                loading: false
+            });
             if(data.data.code === 0) {
                 this.handleCancel();
             }

@@ -64,7 +64,7 @@ class CycleComparison extends React.Component {
 
     /**图表*/
     getOption() {
-        var labelOption = {
+        let labelOption = {
             normal: {
                 show: true,
                 formatter: '{c}  {name|{a}}',

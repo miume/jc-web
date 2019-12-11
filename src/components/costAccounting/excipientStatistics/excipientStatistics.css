@@ -2,3 +2,18 @@
     display: flex;
     justify-content: space-around;
 }
+
+.excipient-statistics-detail-display {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.excipient-statistics-detail-display div{
+    width: 250px;
+}
+
+.excipient-statistics-detail-footer {
+    display: flex;
+    justify-content: space-between;
+}

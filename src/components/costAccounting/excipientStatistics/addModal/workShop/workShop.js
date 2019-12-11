@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Divider,Table, Select, Input,Spin} from "antd";
+import {Table, Input} from "antd";
 import NewButton from "../../../../BlockQuote/newButton";
 
 class WorkShop extends React.Component{
@@ -24,20 +24,20 @@ class WorkShop extends React.Component{
             key:'monPotency'
         },{
             title:'氨浓度(%)',
-            dataIndex:'ammValue',
-            key:'ammValue',
+            dataIndex:'ammPotency',
+            key:'ammPotency',
             render: (text,record) => {
                 return record['ammoniaFlag'] ?
-                    <Input name={`ammValue-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
+                    <Input name={`ammPotency-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }
         },{
             title:'碱浓度(%)',
-            dataIndex:'alkValue',
-            key:'alkValue',
+            dataIndex:'alkPotency',
+            key:'alkPotency',
             render: (text,record) => {
                 return record['alkaliFlag'] ?
-                    <Input name={`alkValue-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
+                    <Input name={`alkPotency-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }
         }]

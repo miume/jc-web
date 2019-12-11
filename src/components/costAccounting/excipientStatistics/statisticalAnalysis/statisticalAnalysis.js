@@ -20,16 +20,19 @@ class ExcipientStatisticalAnalysis extends Component{//辅料统计的统计分�
         this.props.history.push({pathname:'/excipientStatistics'})
     }
     render() {
-        let {staticPeriod} = this.state;
-        return(
+        let {staticPeriod,periodsCode} = this.state;
+        this.url = JSON.parse(localStorage.getItem('url'));
+        return (
             <div>
                 <Blockquote name='统计分析' menu='前驱体成本核算管理' menu2='辅料统计' returnDataEntry={this.returnProcess}/>
-                <Tabs defaultActiveKey='1'>
-                    <TabPane key='1' tab='区域统计列表'><RegionStatis staticPeriod={staticPeriod}/></TabPane>
-                    <TabPane key='2' tab='产线统计列表'><ProductLineStatis/> </TabPane>
-                    <TabPane key='3' tab='区域统计曲线'><RegionCompare/> </TabPane>
-                    <TabPane key='4' tab='产线统计曲线'><ProductLineCompare/> </TabPane>
-                </Tabs>
+                <div className='rightDiv-content'>
+                    <Tabs defaultActiveKey='1'>
+                        <TabPane key='1' tab='区域统计列表'><RegionStatis staticPeriod={staticPeriod} periodCode={periodsCode} url={this.url}/></TabPane>
+                        <TabPane key='2' tab='产线统计列表'><ProductLineStatis staticPeriod={staticPeriod} periodCode={periodsCode} url={this.url}/> </TabPane>
+                        <TabPane key='3' tab='区域统计曲线'><RegionCompare staticPeriod={staticPeriod} periodCode={periodsCode} url={this.url}/> </TabPane>
+                        <TabPane key='4' tab='产线统计曲线'><ProductLineCompare staticPeriod={staticPeriod} periodCode={periodsCode} url={this.url}/> </TabPane>
+                    </Tabs>
+                </div>
             </div>
         );
     }
@@ -38,10 +41,10 @@ class ExcipientStatisticalAnalysis extends Component{//辅料统计的统计分�
     componentDidMount() {
         let location = this.props.location,
             staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
-            currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
+            periodsCode = staticPeriod ? staticPeriod[0]['code'] : undefined;
         this.setState({
             staticPeriod: staticPeriod,
-            currentStaticPeriod: currentStaticPeriod
+            periodsCode: periodsCode
         });
     }
 }

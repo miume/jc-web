@@ -13,11 +13,11 @@ class Storage extends React.Component{
             <div className='excipient-statistics-add-display'>
                 <div>
                     <span>氨入库量：</span>
-                    <Input style={{width:"200px"}} name={'ammValue'} value={ammValue} onChange={inputChange}/>
+                    <Input style={{width:"200px"}} name={'ammValue'} value={ammValue} onChange={inputChange} addonAfter="T"/>
                 </div>
                 <div>
                     <span>碱入库量：</span>
-                    <Input style={{width:"200px"}} name={'alkValue'} value={alkValue} onChange={inputChange}/>
+                    <Input style={{width:"200px"}} name={'alkValue'} value={alkValue} onChange={inputChange} addonAfter="T"/>
                 </div>
             </div>
         )
