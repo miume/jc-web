@@ -35,7 +35,8 @@ class ExcipientStatistics extends React.Component{
             flag: false, //用来表示当前所在tab页
             staticPeriod: [],
             periodCode: '',
-            dataSource: [],
+            submittedData: [],
+            unSubmittedData: [],
             startTime: '',
             endTime: '',
             currentStaticPeriod: {}
@@ -49,13 +50,12 @@ class ExcipientStatistics extends React.Component{
         this.selectChange = this.selectChange.bind(this);
         this.getAllStaticPeriod = this.getAllStaticPeriod.bind(this);
         this.getUnSubmittedData = this.getUnSubmittedData.bind(this);
-        this.getStatisticsData = this.getStatisticsData.bind(this);
         this.statisticalAnalysis = this.statisticalAnalysis.bind(this);
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let {loading,currentStaticPeriod,staticPeriod,dataSource,startTime,endTime} = this.state;
+        let {loading,currentStaticPeriod,staticPeriod,unSubmittedData,submittedData,startTime,endTime} = this.state;
         return(
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
@@ -68,10 +68,10 @@ class ExcipientStatistics extends React.Component{
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
                         <TabPane tab={'待提交'} key={'1'}>
-                            <Submitted data={dataSource} url={this.url} handleClick={this.handleClick} getUnSubmittedData={this.getUnSubmittedData}/>
+                            <Submitted data={unSubmittedData} url={this.url} handleClick={this.handleClick} getUnSubmittedData={this.getUnSubmittedData}/>
                         </TabPane>
                         <TabPane tab={'已统计'} key={'2'}>
-                            <Statistics data={dataSource} getUnSubmittedData={this.getUnSubmittedData}/>
+                            <Statistics data={submittedData} getUnSubmittedData={this.getUnSubmittedData}  url={this.url}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -134,7 +134,6 @@ class ExcipientStatistics extends React.Component{
 
     /**获取待提交数据*/
     unSubmittedData(params,da) {
-        console.log(params,da);
         let url = da['flag'] ? `${this.url.auxiliary.getPageCommit}` : `${this.url.auxiliary.getPageUnCommit}`;
         axios({
             url: `${url}?page=${params.page}&size=${params.size}`,
@@ -150,20 +149,20 @@ class ExcipientStatistics extends React.Component{
                 for(let i = 0; i < res.list.length; i++) {
                     res.list[i]['index'] = i + 1;
                 }
-                this.setState({
-                    dataSource: res.list
-                })
-                console.log(res.list)
+                if(da['flag']) {  //已统计数据
+                    this.setState({
+                        submittedData: res.list
+                    })
+                } else {   //待提交数据
+                    this.setState({
+                        unSubmittedData: res.list
+                    })
+                }
             }
             this.setState({
                 loading: false
             })
         })
-    }
-
-    /**获取已统计数据*/
-    getStatisticsData() {
-
     }
 
     /**标签页切换*/

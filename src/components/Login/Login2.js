@@ -1,9 +1,10 @@
 ﻿import React from 'react';
-import { Input, Icon, Button, Checkbox,message,Spin } from 'antd';
+import {message, Spin, Tabs} from 'antd';
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 import 'antd/dist/antd.css';
 import './Login2.css';
+import LoginItem from "./loginItem";
 class Login extends React.Component {
   constructor(props){
     super(props);
@@ -11,6 +12,7 @@ class Login extends React.Component {
       loading : false,
       flag:true
     }
+
     this.getDefault = this.getDefault.bind(this);
     this.beforeLogin = this.beforeLogin.bind(this);
     this.remindLogin = this.remindLogin.bind(this);
@@ -41,38 +43,38 @@ class Login extends React.Component {
   }
   /**登陆接口调用 */
   handleSubmit(){
-    const history = this.props.history;
-    const server = localStorage.getItem("server");
-    let username = document.getElementById('userName').value;
-    let password = document.getElementById('password').value;
+    let history = this.props.history,
+        server = localStorage.getItem("server"),
+        username = document.getElementById('userName').value,
+        password = document.getElementById('password').value;
     if(!this.beforeLogin(username,password)){
       return
     }
     this.setState({
       loading : true
-    })
+    });
     axios.post(`${server}/jc/auth/login`,{username:username,password:password})
       .then(res => {
-      /**如果登陆成功  则屏蔽enter键 */
-      if(res.data){
-          window.onkeydown = undefined
-          if(res.data && res.data.menuList)
-              this.dataProcessing(res.data)
-      }
-      //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
-      localStorage.setItem('authorization',res.headers.authorization);
-      localStorage.setItem('menuList',JSON.stringify(res.data));
-      history.push({pathname:'/home'});
-    })
+          /**如果登陆成功  则屏蔽enter键 */
+          if(res.data){
+              window.onkeydown = undefined
+              if(res.data && res.data.menuList)
+                  this.dataProcessing(res.data)
+          }
+          //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
+          localStorage.setItem('authorization',res.headers.authorization);
+          localStorage.setItem('menuList',JSON.stringify(res.data));
+          history.push({pathname:'/home'});
+        })
     .catch( (error) => {
-      this.setState({
-        loading : false
-      })
-      if(error.toString().indexOf("Network Error")>0){
-        message.info("服务器未响应!");
-      }else{
-        message.info('账号或密码有误，请重新输入！');
-      }
+        this.setState({
+          loading : false
+        })
+        if(error.toString().indexOf("Network Error")>0){
+          message.info("服务器未响应!");
+        }else{
+          message.info('账号或密码有误，请重新输入！');
+        }
     });
   }
   /**登陆前先对数据进行验证 */
@@ -80,7 +82,7 @@ class Login extends React.Component {
     if(username === '' || password === '' ){
       this.setState({
         loading : false
-      })
+      });
       message.info('请先填写账号和密码！');
       return false
     }
@@ -88,8 +90,8 @@ class Login extends React.Component {
   }
   /**登陆成功后对返回的数据进行处理 */
   dataProcessing(data){
-    var i = 1;
-    var quickAccess = [],menus=[];
+    let i = 1,
+        quickAccess = [],menus=[];
     data.menuList.forEach(e=>{
       e.menuList.forEach(e1=>{
         menus.push(e1)
@@ -120,7 +122,7 @@ class Login extends React.Component {
     /**实现enter键登陆 */
     const f = (e) => {
       if(e.keyCode===13){this.handleSubmit();}
-    }
+    };
     window.onkeydown = f
   }
   handleInfo(){
@@ -150,7 +152,19 @@ class Login extends React.Component {
                   </Button>
                   <div className='login-blockquote'></div>
                   <div className='info' onClick={this.handleInfo}><span>{this.state.flag?'<<<':'>>>'}</span>&nbsp;&nbsp;{this.state.flag?'更多信息':'隐藏信息'}</div>
+
+                <div className={'login-box-content'}>
+                  <Tabs defaultActiveKey={'1'}>
+                    <Tabs.TabPane tab='火法' key='1'>
+                      <LoginItem remindLogin={this.remindLogin} getDefault={this.getDefault} handleSubmit={this.handleSubmit}/>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab='湿法' key='2'>
+                      <LoginItem remindLogin={this.remindLogin} getDefault={this.getDefault} handleSubmit={this.handleSubmit}/>
+                    </Tabs.TabPane>
+                  </Tabs>
+
                 </div>
+
               </div>
         </div>
         </Spin>

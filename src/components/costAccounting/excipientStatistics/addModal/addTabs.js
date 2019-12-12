@@ -11,20 +11,20 @@ class AddTabs extends React.Component {
     }
 
     render() {
-        const {ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,inputChange} = this.props;
+        const {ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,inputChange,getVolume} = this.props;
         return (
             <Tabs defaultActiveKey={'1'}>
                 <TabPane tab={'入库量'} key={'1'}>
                     <Storage ammValue={ammValue} alkValue={alkValue} inputChange={inputChange}/>
                 </TabPane>
                 <TabPane tab={'灌区'} key={'2'}>
-                    <WorkShop data={gqDetails2} inputChange={inputChange} status={2}/>
+                    <WorkShop data={gqDetails2} inputChange={inputChange} getVolume={getVolume} status={2}/>
                 </TabPane>
                 <TabPane tab={'车间'} key={'3'}>
-                    <WorkShop data={cjDetails3} inputChange={inputChange} status={3}/>
+                    <WorkShop data={cjDetails3} inputChange={inputChange} getVolume={getVolume} status={3}/>
                 </TabPane>
                 <TabPane tab={'辅料消耗量'} key={'4'}>
-                    <Consumption data={fcDetails4} inputChange={inputChange}/>
+                    <Consumption data={fcDetails4} inputChange={inputChange} getVolume={getVolume} status={4}/>
                 </TabPane>
             </Tabs>
         )

@@ -11,11 +11,9 @@ class Search extends React.Component {
             start: '',
             end: '',        //记录日期组件的开始时间和结束时间
             periodCode: '',  //记录下拉框-周期类型编码
-            dateFormat: 'YYYY-MM-DD',
-            periods: '',     //记录输入框期数的变化
+            dateFormat: 'YYYY-MM-DD'
         };
         this.search = this.search.bind(this);
-        this.inputChange = this.inputChange.bind(this);
         this.endDateChange =this.endDateChange.bind(this);
         this.startDateChange =this.startDateChange.bind(this);
     }
@@ -30,7 +28,7 @@ class Search extends React.Component {
                 <span>周期：</span>
                 <SelectPeriod staticPeriod={staticPeriod} periodCode={currentStaticPeriod ? currentStaticPeriod.code : periodCode} selectChange={this.props.selectChange} disabled={disabled}/>
                 <span>期数：</span>
-                <Input placeholder={'请输入期数'} name={'periods'} defaultValue={periods} onChange={this.inputChange} disabled={disabled} style={{width:170, marginRight: 10}}/>
+                <Input placeholder={'请输入期数'} name={'periods'} defaultValue={periods} onChange={this.props.inputChange} disabled={disabled} style={{width:170, marginRight: 10}}/>
                 <DatePicker placeholder={"请选择开始日期"} value={startValue} onChange={this.startDateChange} style={{marginRight: 10}} disabled={disabled}/>
                 <DatePicker placeholder={"请选择结束日期"} value={endValue} onChange={this.endDateChange} style={{marginRight: 10}} disabled={disabled}/>
                 <NewButton name={'确定'} handleClick={this.search} flagConfirm={disabled}/>
@@ -58,7 +56,7 @@ class Search extends React.Component {
             end = new Date(dateString).getTime() + length * 24 * 3600 * 1000;
         this.setState({
             start: dateString,
-            end: moment(end).format('YYYY-MM-DD')
+            end: dateString ? moment(end).format('YYYY-MM-DD') : ''
         })
     }
 
@@ -68,37 +66,31 @@ class Search extends React.Component {
         })
     }
 
-    /**监控下拉框的变化*/
-    selectChange(value) {
-        this.setState({
-            periodCode: value
-        })
-    }
-
-    /**监控输入框期数的变化*/
-    inputChange(e) {
-        let value = e.target.value;
-        if(typeof value === 'number') value = value.toString();
-        value =  value.replace(/[^\d]/g, "");  //只准输入数字
-        this.setState({
-            periods: value
-        })
-    }
-
     /**搜索时间*/
     search() {
-        let {start, end, periods} = this.state, {currentStaticPeriod} = this.props,{code,startTime} = currentStaticPeriod;
-        if(!start || !end || !periods) {
+        let {currentStaticPeriod,periods} = this.props;
+        if(currentStaticPeriod && periods) {
+            let {start, end} = this.state,
+                {code,startTime} = currentStaticPeriod;
+            if(periods === 0) {
+                message.info('期数不能为0！');
+                return
+            }
+            if(!start || !end || !periods || !code) {
+                message.info('信息不完全！');
+                return
+            }
+            let params = {
+                startTime: start + ' ' + startTime,
+                endTime: end + ' ' + startTime,
+                periods: periods,
+                periodCode: code
+            };
+            this.props.searchEvent(params);
+        } else {
             message.info('信息不完全！');
             return
         }
-        let params = {
-            startTime: start + ' ' + startTime,
-            endTime: end + ' ' + startTime,
-            periods: periods,
-            periodCode: code
-        };
-        this.props.searchEvent(params);
     }
 
     componentWillUnmount() {
