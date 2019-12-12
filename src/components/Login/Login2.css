@@ -62,6 +62,14 @@ body {
   .login-blockquote {
     height: 15px;
   }
+  .info{
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #999999;
+    cursor: pointer;
+  }
+
 
   .login-box-content {
     padding: 10px;

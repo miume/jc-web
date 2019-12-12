@@ -13,7 +13,7 @@ class Instrument extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            width: '9%',
+            width: '10%',
         },{
             title: '批次信息',
             dataIndex: 'batch',
@@ -38,7 +38,7 @@ class Instrument extends React.Component{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            width: '19%',
+            width: '18%',
             render:(text,record)=>{
                 return(
                     <span>
@@ -52,7 +52,7 @@ class Instrument extends React.Component{
     render(){
         return(
             <span>
-                <Table pagination={false} size="small" bordered  dataSource={this.props.instrumentData} columns={this.column} rowKey={record=>record.index}/>
+                <Table pagination={false} size="small" bordered scroll={{y:250}} dataSource={this.props.instrumentData} columns={this.column} rowKey={record=>record.index}/>
             </span>
         )
     }

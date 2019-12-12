@@ -82,6 +82,9 @@ class CostProcessAdd extends Component {
         this.handleOtherAdd=this.handleOtherAdd.bind(this);
         this.otherSelectChange=this.otherSelectChange.bind(this);
         this.editData=this.editData.bind(this);
+        this.alterData=this.alterData.bind(this);
+        this.weightAlterData=this.weightAlterData.bind(this);
+        this.getLastPotency=this.getLastPotency.bind(this);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -231,6 +234,9 @@ class CostProcessAdd extends Component {
             let res = data.data.data;
             if (res === null || res === undefined) {
                 message.info('存在不一致的统计周期，需要进行修改！')
+                this.setState({
+                    loading:false
+                })
             }
             else {
                 this.setState({
@@ -321,7 +327,110 @@ class CostProcessAdd extends Component {
            otherData:otherData
         })
     }
-
+    alterData(tabKey,value){//根据获取到的读取配方，修改表格数据
+        let niPoency= value[0].ni,
+            coPotency=value[0].co,
+            mnPotency=value[0].mn,
+            solidContent=value[0].solidContent
+        let {tagTableData}=this.state
+        if(tabKey==='2'){//混合盐
+            for (let i = 0; i < tagTableData[tabKey-1].materialDetails.length; i++) {
+                tagTableData[tabKey-1].materialDetails[i]['niPotency'] = niPoency
+                tagTableData[tabKey-1].materialDetails[i]['coPotency'] = coPotency
+                tagTableData[tabKey-1].materialDetails[i]['mnPotency'] = mnPotency
+            }
+        }
+        else{//合成和陈化
+            for (let i = 0; i < tagTableData[tabKey-1].materialDetails.length; i++) {
+                tagTableData[tabKey-1].materialDetails[i]['solidContent'] = solidContent
+            }
+        }
+        this.setState({
+            tagTableData:tagTableData
+        })
+    }
+    weightAlterData(tabKey,item){//获取体积，重量修改表格数据
+        let {tagTableData}=this.state
+        axios({
+            url:this.url.precursorGoodIn.getVolume,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            },
+            params:{
+                processId:tabKey
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+              
+                if(tabKey==='4'||tabKey==='5'){
+                    for(let i=0;i<res.length;i++){
+                        for(let j=0;j<tagTableData[tabKey-1].materialDetails.length;j++){
+                             if(res[i].code===tagTableData[tabKey-1].materialDetails[j].code){
+                                 tagTableData[tabKey-1].materialDetails[j][item]=res[i].value
+                                 continue
+                             }
+                        }
+                     }
+                }
+                else{
+                    for(let i=0;i<tagTableData[tabKey-1].materialDetails.length;i++){
+                        tagTableData[tabKey-1].materialDetails[i][item]=res[i].value
+                    }
+                }
+                this.setState({
+                    tagTableData:tagTableData
+                })
+            }
+        })   
+    }
+    getLastPotency(tabKey){//获取上期浓度修改表格数据
+        let {tagTableData}=this.state
+        axios({
+            url: `${this.url.precursorGoodIn.getLastPotencyByProcessId}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params: {
+                processId: tabKey
+            }
+        }).then(data => {
+            let res = data.data.data
+            if (res) {
+               for(let i=0;i<res.length;i++){
+                    if(tagTableData[tabKey-1].materialDetails[i]['mn']===1){
+                       if(tabKey==='1'){
+                        tagTableData[tabKey-1].materialDetails[i]['monPotency']=res[i].mnConcentration
+                       }
+                       else{
+                        tagTableData[tabKey-1].materialDetails[i]['mnPotency']=res[i].mnConcentration
+                       }
+                    }
+                    if(tagTableData[tabKey-1].materialDetails[i]['ni']===1){
+                        if(tabKey==='1'){
+                            tagTableData[tabKey-1].materialDetails[i]['monPotency']=res[i].niConcentration
+                        }
+                        else{
+                            tagTableData[tabKey-1].materialDetails[i]['niPotency']=res[i].niConcentration
+                        }
+                    }
+                    if(tagTableData[tabKey-1].materialDetails[i]['co']===1){
+                       if(tabKey==='1'){
+                        tagTableData[tabKey-1].materialDetails[i]['monPotency']=res[i].coConcentration
+                       }
+                       else{
+                        tagTableData[tabKey-1].materialDetails[i]['coPotency']=res[i].coConcentration
+                       }
+                    }
+                }
+                this.setState({
+                    tagTableData:tagTableData
+                })
+            }
+        })
+    }
     save(f) {
         this.setState({
             loading:true
@@ -367,7 +476,7 @@ class CostProcessAdd extends Component {
                     }
                 }
             }
-                if(i===0||i===3||i===4){//只有单晶体，陈化，烘干要遍历表格
+                if(i===0||i===2||i===3||i===4){//只有单晶体，合成,陈化，烘干要遍历表格
                     for(let j=0;j<data[i].materialDetails.length;j++){
                         for(let key in data[i].materialDetails[j]){
                             if(data[i].materialDetails[j][key]===undefined||data[i].materialDetails[j][key]===null){
@@ -398,15 +507,15 @@ class CostProcessAdd extends Component {
        // console.log(this.state.addDataOrigin)
         this.url = JSON.parse(localStorage.getItem('url'))
         this.dataComponent = [{
-            component: <SingleCrystal tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSingleCrystal={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <SingleCrystal tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSingleCrystal={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <MixSalt tagTableData={this.state.tagTableData} url={this.url} getMix={this.getChange} processId={this.state.tabKey} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <MixSalt tagTableData={this.state.tagTableData} url={this.url} getMix={this.getChange} alterData={this.alterData} processId={this.state.tabKey} weightAlterData={this.weightAlterData} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <SyntheticProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSynthesis={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <SyntheticProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData} processId={this.state.tabKey} getSynthesis={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <AgingProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getAge={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <AgingProcess tagTableData={this.state.tagTableData} url={this.url} alterData={this.alterData} processId={this.state.tabKey} getAge={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
             component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]

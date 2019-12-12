@@ -100,7 +100,6 @@ class ProductLineStatical extends React.Component{//物料产线权重分配
     };
 
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.precursorMaterialLineWeight.delete}`,
             method:"delete",
@@ -139,7 +138,6 @@ class ProductLineStatical extends React.Component{//物料产线权重分配
     };
     start = () => {
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.precursorMaterialLineWeight.ids}`,
             method:'delete',
@@ -149,16 +147,11 @@ class ProductLineStatical extends React.Component{//物料产线权重分配
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
             });
             message.info(data.data.message);
-            // if((this.pagination.total-1)%10===0){
-            //     this.pagination.current = this.pagination.current-1
-            // }
-            // this.handleTableChange(this.pagination);
             this.fetch();
         }).catch((error)=>{
             message.info(error.data);
@@ -191,7 +184,6 @@ class ProductLineStatical extends React.Component{//物料产线权重分配
             const res =  dataRes.list;
             this.pagination.total=dataRes &&dataRes.total?dataRes.total:0;
             this.pagination.current = dataRes &&dataRes.page?dataRes.page:1;
-            // console.log(res)
             if(dataRes&&res){
                 for(var i = 1; i<=res.length; i++){
                     res[i-1]['index']=(dataRes.page-1)*dataRes.size+i;
@@ -254,9 +246,6 @@ class ProductLineStatical extends React.Component{//物料产线权重分配
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>

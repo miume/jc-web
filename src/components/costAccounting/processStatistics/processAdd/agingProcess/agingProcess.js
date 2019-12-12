@@ -8,7 +8,10 @@ class AgingProcess extends Component{//陈化工序
     constructor(props){
         super(props);
         this.state={
-            visible:false
+            visible:false,
+            data:[],
+            selectedRowKeys:[],
+            selectValue:undefined
         }
         this.columns=[{
             title:'序号',
@@ -26,12 +29,17 @@ class AgingProcess extends Component{//陈化工序
             key:'weiOrVol',
             width:'15%',
             render:(text,record)=>{
-                if(record.dataType===1){
+                if(record.dataType===1){//手工输入数据
                      return(
                          <Input value={record.weiOrVol} name={`${record.index}-${'weiOrVol'}`} onChange={this.inputChange}/>
-                     )
+                        )
                 }
-             }
+                else{
+                    return(
+                        <span>{record.weiOrVol}</span>
+                    )
+                }
+            }
         },{
             title:'Ni(%)',
             dataIndex:'niPotency',
@@ -66,8 +74,12 @@ class AgingProcess extends Component{//陈化工序
             title:'含固量(g/L)',
             dataIndex:'solidContent',
             key:'solidContent',
-            width:'10%'
-            
+            width:'10%',
+            render:(text,record)=>{
+                return(
+                    <span>{record.solidContent}</span>
+                )
+            }       
         }]
         this.handleSelect=this.handleSelect.bind(this);
         this.handleOk=this.handleOk.bind(this);
@@ -75,6 +87,9 @@ class AgingProcess extends Component{//陈化工序
         this.showModal=this.showModal.bind(this);
         this.getLastPotency=this.getLastPotency.bind(this);
         this.inputChange=this.inputChange.bind(this);
+        this.getSy=this.getSy.bind(this);
+        this.onSelectChange=this.onSelectChange.bind(this);
+        this.getWeight=this.getWeight.bind(this);
     }
     handleSelect(value,name){//获取下拉框的id
         let selectKey=name.props.name;//监听是第几个下拉框change了
@@ -90,31 +105,52 @@ class AgingProcess extends Component{//陈化工序
         this.setState({
             visible:true
         })
+        this.getSy();
+    }
+    onSelectChange(selectedRowKeys,value) {
+        this.setState({ 
+            selectedRowKeys:selectedRowKeys,
+            selectValue:value 
+        });
     }
     handleOk(){
         this.setState({
-            visible:false
+            visible:false,
+            selectedRowKeys:[]
         })
+        let {selectValue}=this.state
+        this.props.alterData(this.props.processId,selectValue)
     }
     handleCancel(){
         this.setState({
-            visible:false
+            visible:false,
+            selectedRowKeys:[]
         })
     }
-    getLastPotency(){//获取上期浓度
-        
+    getLastPotency() {//获取上期浓度
+        this.props.getLastPotency(this.props.processId)
+    }
+    getSy(){ //获取陈化配方
         axios({
-            url:`${this.props.url.precursorGoodIn.getLastPotencyByProcessId}`,
+            url:this.props.url.processParam.compoundRecipe,
             method:'get',
             headers:{
                 'Authorization':this.props.url.Authorization
-            },
-            params:{
-                processId:this.props.processId
             }
         }).then(data=>{
-            //console.log(data.data)
+            let res=data.data.data
+            if(res&&res.list){
+                for(let i=0;i<res.list.length;i++){
+                    res.list[i]['id']=(res.page-1)*(res.size)+(i+1)
+                }
+                this.setState({
+                    data:res.list
+                })
+            }
         })
+    }
+    getWeight(){
+        this.props.weightAlterData(this.props.processId,'weiOrVol')
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[3]&&this.props.tagTableData[3].materialDetails?this.props.tagTableData[3].materialDetails:[]
@@ -124,11 +160,16 @@ class AgingProcess extends Component{//陈化工序
             }
         }
         this.header=this.props.tagTableData&&this.props.tagTableData[3]&&this.props.tagTableData[3].lineProDTOS?this.props.tagTableData[3].lineProDTOS:null
+        const {selectedRowKeys}=this.state;
+        const rowSelection = {//checkbox
+            selectedRowKeys,
+            onChange:this.onSelectChange,
+        };
         return(
             <div>
-                <NewButton name='获取体积値' flagConfirm={!this.props.flagConfirm}/>
+                <NewButton name='获取体积値' flagConfirm={!this.props.flagConfirm}  handleClick={this.getWeight}/>
                 <NewButton name='获取上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
-                <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm}/>
+                <ReadRecipe rowSelection={rowSelection} flag={true} data={this.state.data} handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible} flagConfirm={!this.props.flagConfirm}/>
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
                 <div className='clear'></div>
                 <div style={{display:'flex'}}> 

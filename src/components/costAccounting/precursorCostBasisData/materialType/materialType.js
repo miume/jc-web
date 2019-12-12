@@ -13,11 +13,7 @@ class MaterialType extends React.Component{
     constructor(props){
         super(props);
         this.state={
-            data:[{
-                index:1,
-                materialType:"混合盐溶液",
-                source:"补料",
-            }],
+            data:[],
             visible:false,
             selectedRowKeys: [],
             loading:false,
@@ -192,8 +188,6 @@ class MaterialType extends React.Component{
         const rowSelection = {
             selectedRowKeys,
             onChange: this.onSelectChange,
-            onSelect() {},
-            onSelectAll() {},
           };
         return(
             <div>
@@ -208,7 +202,7 @@ class MaterialType extends React.Component{
                         flag={true}
                     />
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} onChange={this.handleTableChange} dataSource={this.state.data}  size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.code} onChange={this.handleTableChange} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )

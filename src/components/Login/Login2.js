@@ -70,24 +70,22 @@ class Login extends React.Component {
     localStorage.setItem('menus',JSON.stringify(menus));
     localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
   }
-
   render() {
-    let {username,password,loading} = this.state;
+    let {loading} = this.state;
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
       <Spin spinning={loading}>
         <div className='gutter-box'>
               <div className='login-box'>
                 <img src={require(`./logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
+                <div className='login-blockquote'></div>
                 <div className={'login-box-content'}>
                   <Tabs>
                     <Tabs.TabPane tab='火法' key='1'></Tabs.TabPane>
                     <Tabs.TabPane tab='湿法' key='2'></Tabs.TabPane>
                   </Tabs>
-                  <LoginItem loginIn={this.loginIn} username={username} password={password}
-                             inputChange={this.inputChange} handleSubmit={this.handleSubmit}/>
+                  <LoginItem loginIn={this.loginIn}/>
                 </div>
-
               </div>
         </div>
         </Spin>

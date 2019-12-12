@@ -6,44 +6,77 @@ import CancleButton from '../../../BlockQuote/cancleButton'
 class ReadRecipe extends Component{//读取配方
     constructor(props){
         super(props);
-        this.columns=[{
+        this.columns=!this.props.flag?[{
             title:'序号',
             dataIndex:'id',
             key:'id'
         },{
             title:'工艺参数名称',
-            dataIndex:'processParameter',
-            key:'processParameter'
+            dataIndex:'head.processName',
+            key:'head.processName'
         },{
             title:'使用车间',
-            dataIndex:'useWorkshop',
-            key:'useWorkshop'
+            dataIndex:'deptName',
+            key:'deptName'
         },{
             title:'工序',
-            dataIndex:'process',
-            key:'process'
+            dataIndex:'processName',
+            key:'processName'
         },{
             title:'生效日期',
-            dataIndex:'effectiveDate',
-            key:'effectiveDate'
+            dataIndex:'head.effectiveDate',
+            key:'head.effectiveDate'
         },{
             title:'生产品种',
-            dataIndex:'productVariety',
-            key:'productVariety'
+            dataIndex:'product',
+            key:'product'
         },{
             title:'Ni(g/L)',
-            dataIndex:'',
-            key:'Ni'
+            dataIndex:'ni',
+            key:'ni'
         },{
             title:'Co(g/L)',
-            dataIndex:'Co',
-            key:'Co'
+            dataIndex:'co',
+            key:'co'
         },{
             title:'Mn(g/L)',
-            dataIndex:'Mn',
-            key:'Mn'
+            dataIndex:'mn',
+            key:'mn'
+        }]:[{
+            title:'序号',
+            dataIndex:'id',
+            key:'id'
+        },{
+            title:'工艺参数名称',
+            dataIndex:'head.processName',
+            key:'head.processName'
+        },{
+            title:'使用车间',
+            dataIndex:'deptName',
+            key:'deptName'
+        },{
+            title:'工序',
+            dataIndex:'processName',
+            key:'processName'
+        },{
+            title:'生效日期',
+            dataIndex:'head.effectiveDate',
+            key:'head.effectiveDate'
+        },{
+            title:'生产品种',
+            dataIndex:'product',
+            key:'product'
+        },{
+            title:'含固量(g/L)',
+            dataIndex:'solidContent',
+            key:'solidContent'
         }]
-       
+        this.pagination = {
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10","20","50","100"]
+        }
+        
     }
    
   
@@ -63,7 +96,13 @@ class ReadRecipe extends Component{//读取配方
                     <NewButton key='ok' handleClick={this.props.handleOk} name='确定'/>
                 ]}>
                 <Table
+                dataSource={this.props.data}
+                rowKey={record=>record.id}
+                pagination={this.pagination}
+                onChange={this.props.handleTableChange}
                 columns={this.columns}
+                rowSelection={this.props.rowSelection}
+                filterMultiple={false}
                 size='small'
                 bordered/>
                 </Modal>

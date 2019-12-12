@@ -19,7 +19,8 @@ class AddModal extends Component{
             productLine:[],
             detail:{},
             recordData:{},
-            weightDto:{}
+            weightDto:{},
+            nameFlag:true
         }
         this.showModal=this.showModal.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
@@ -34,7 +35,6 @@ class AddModal extends Component{
     }
     componentDidMount(){
         this.getMaterialType()
-        this.getmaterialName()
         this.getLine()
        
     }
@@ -87,13 +87,16 @@ class AddModal extends Component{
             }
           })
     }
-    getmaterialName(){
+    getmaterialName(value){//根据材料类别获取
         axios({
-            url:`${this.props.url.precursorRawMaterial.all}`,
+            url:`${this.props.url.precursorRawMaterial.byType}`,
             method:'get',
             headers:{
               'Authorization':this.props.url.Authorization
-          },
+            },
+            params:{
+                type:value
+            }
           }).then((data)=>{
             const res = data.data.data;
             
@@ -144,8 +147,10 @@ class AddModal extends Component{
     }
     materialTypeSelect(value){
         this.setState({
-            materialType:value
+            materialType:value,
+            nameFlag:false
         })
+        this.getmaterialName(value)
     }
     handleCancel(){
         this.setState({
@@ -224,6 +229,7 @@ class AddModal extends Component{
         })
     }
     render(){
+        let {nameFlag}=this.state
         return(
             <span>
                 {this.props.editFlag?<span className='blue' onClick={this.showModal}>编辑</span>
@@ -254,7 +260,7 @@ class AddModal extends Component{
                                 }):null
                             }
                         </Select>&nbsp;&nbsp;&nbsp;
-                        原材料名称：<Select onChange={this.materialNameSelect} value={this.state.materialName} style={{ width:"20%"}} placeholder="请选择物料点名称">
+                        原材料名称：<Select onChange={this.materialNameSelect} value={this.state.materialName} style={{ width:"20%"}} placeholder="请选择原材料名称" disabled={nameFlag}>
                             {
                                 this.state.materialNameData?this.state.materialNameData.map(data=>{
                                     return(
