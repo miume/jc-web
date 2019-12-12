@@ -8,18 +8,20 @@ class Login extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      loading : false
+      loading : false,
+      flag:true
     }
     this.getDefault = this.getDefault.bind(this);
     this.beforeLogin = this.beforeLogin.bind(this);
     this.remindLogin = this.remindLogin.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.dataProcessing = this.dataProcessing.bind(this);
+    this.handleInfo=this.handleInfo.bind(this);
   }
   componentWillMount() {
-    //localStorage.setItem("server", "http://47.107.237.60:3389");//外网
+    localStorage.setItem("server", "http://47.107.237.60:3389");//外网
     //localStorage.setItem("server", "http://119.39.4.6:18080");//jcweb
-    localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
+   // localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
     //localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
   }
   /**实行记住密码 */
@@ -121,6 +123,12 @@ class Login extends React.Component {
     }
     window.onkeydown = f
   }
+  handleInfo(){
+    let {flag}=this.state
+    this.setState({
+      flag:!flag
+    })
+  }
   render() {
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
@@ -140,6 +148,8 @@ class Login extends React.Component {
                   <Button size='large' type="primary" style={{width:'100%', fontSize:'14px'}} onClick={this.handleSubmit}>
                     登录
                   </Button>
+                  <div className='login-blockquote'></div>
+                  <div className='info' onClick={this.handleInfo}><span>{this.state.flag?'<<<':'>>>'}</span>&nbsp;&nbsp;{this.state.flag?'更多信息':'隐藏信息'}</div>
                 </div>
               </div>
         </div>

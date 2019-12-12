@@ -10,12 +10,12 @@ class Instrument extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            width: '9%',
+            width: '6%',
         },{
             title: '批次信息',
             dataIndex: 'batch',
             key: 'batch',
-            width: '19%',
+            width: '21%',
         },{
             title: '合成槽号',
             dataIndex: 'cellNum',
@@ -25,17 +25,17 @@ class Instrument extends React.Component{
             title: '工序开始时间',
             dataIndex: 'startTime',
             key: 'startTime',
-            width: '19%',
+            width: '22%',
         },{
             title: '工序结束时间',
             dataIndex: 'endTime',
             key: 'endTime',
-            width: '19%',
+            width: '22%',
         },{
             title: '操作',
             dataIndex: 'operation',
             key: 'operation',
-            width: '19%',
+            width: '15%',
             render:(text,record)=>{
                 return(
                     <span>
@@ -49,7 +49,7 @@ class Instrument extends React.Component{
     render(){
         return(
             <span>
-                <Table pagination={false} size="small" bordered  dataSource={this.props.instrumentData} columns={this.column} rowKey={record=>record.code}/>
+                <Table pagination={false} size="small" bordered  dataSource={this.props.instrumentData} columns={this.column} rowKey={record=>record.code} scroll={{y:250}}/>
             </span>
         )
     }

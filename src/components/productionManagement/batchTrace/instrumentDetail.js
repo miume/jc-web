@@ -12,15 +12,18 @@ class InstrumentDetail extends React.Component{
             visible:false,
             tableDisplay:"block",
             pictureDisplay:"none",
+            detailTableDisplay:'none',
             valueType:"primary",
             picType:"default",
+            detailType:'default',
             batch:undefined,
             cellNum:undefined,
             xData:[],
             seriesData:[],
             selectValue:'phValue',
             selectName:'PH',
-            res:undefined  //图表的数据
+            res:undefined ,//图表的数据
+            detailData:[]//图表明细数据
         };
         this.column = [{
             title: '类型',
@@ -43,6 +46,78 @@ class InstrumentDetail extends React.Component{
             key: 'averageValue',
             width: '25%',
         }]
+        this.column1=[{
+            title: '序号',
+            dataIndex: 'index',
+            key: 'index',
+            width: '4%',
+        },{
+            title: '时间',
+            dataIndex: 'sampleTime',
+            key: 'sampleTime',
+            width: '10%',
+        },{
+            title: 'PH',
+            dataIndex: 'phValue',
+            key: 'phValue',
+            width: '5%',
+        },{
+            title: '温度(℃)',
+            dataIndex: 'temperature',
+            key: 'temperature',
+            width: '5%',
+        },{
+            title: '盐流量1(kg/h)',
+            dataIndex: 'saltFlow1',
+            key: 'saltFlow1',
+            width: '6%',
+        },{
+            title: '盐流量2(kg/h)',
+            dataIndex: 'saltFlow2',
+            key: 'saltFlow2',
+            width: '6%',
+        },{
+            title: '盐流量3(kg/h)',
+            dataIndex: 'saltFlow3',
+            key: 'saltFlow3',
+            width: '6%',
+        },{
+            title: '盐流量4(kg/h)',
+            dataIndex: 'saltFlow4',
+            key: 'saltFlow4',
+            width: '6%',
+        },{
+            title: '氨碱1(kg/h)',
+            dataIndex: 'ammoniaBases1',
+            key: 'ammoniaBases1',
+            width: '6%',
+        },{
+            title: '氨碱2(kg/h)',
+            dataIndex: 'ammoniaBases2',
+            key: 'ammoniaBases2',
+            width: '7%',
+        },{
+            title: '氨水(kg/h)',
+            dataIndex: 'ammoniaWater',
+            key: 'ammoniaWater',
+            width: '5%',
+        },{
+            title: '氨气(kpa)',
+            dataIndex: 'ammoniaGas',
+            key: 'ammoniaGas',
+            width: '5%',
+        },{
+            title: '含固量(g/l)',
+            dataIndex: 'solidContainingContent',
+            key: 'solidContainingContent',
+            width: '7%',
+        },{
+            title: '变频器显示(Hz)',
+            dataIndex: 'transducerShow',
+            key: 'transducerShow',
+            width: '7%',
+        }]
+        this.detaiTableChange=this.detaiTableChange.bind(this);
     }
     handleDetail = () =>{
         this.setState({
@@ -121,18 +196,51 @@ class InstrumentDetail extends React.Component{
                     maxValue:res.transducerShowMax,
                     averageValue:res.transducerShowAvg
                 },
-                {
-                    type:'3c测量值',
-                    minValue:res.measured3cMin,
-                    maxValue:res.measured3cMax,
-                    averageValue:res.measured3cAvg
-                }]
+                // {
+                //     type:'3c测量值',
+                //     minValue:res.measured3cMin,
+                //     maxValue:res.measured3cMax,
+                //     averageValue:res.measured3cAvg
+                // }
+            ]
                 this.setState({
                     cellNum:res.cellNum,
                     data:dataSource
                 })
+                axios({
+                    url:this.props.url.productionBatchInfo.getInstrumentChart,
+                    method:'get',
+                    headers:{
+                        'Authorization':this.props.url.Authorization
+                    },
+                    params:{
+                        cellNum:res.cellNum,
+                        startTime:this.props.record.startTime,
+                        endTime:this.props.record.endTime
+                    }
+                }).then(data=>{
+                    let res=data.data.data
+                    if(res){
+                        let xData=[],
+                        seriesData=[]
+                        for(let i=0;i<res.length;i++){
+                            seriesData.push(res[i].phValue) //默认显示ph
+                            xData.push(res[i].sampleTime)
+                           res[i]['index']=(i+1)
+                        }
+                        this.setState({
+                            xData:xData,
+                            seriesData:seriesData,
+                            res:res,
+                            detailData:res
+                        })
+                    }
+                })
+                
             }
         })
+
+       
     }
     handleCancel = ()=>{
         this.setState({
@@ -143,46 +251,34 @@ class InstrumentDetail extends React.Component{
         this.setState({
             tableDisplay:"block",
             pictureDisplay:"none",
+            detailTableDisplay:'none',
             valueType:"primary",
             picType:"default",
+            detailType:'default'
         })
     }
     picChange=()=>{
         this.setState({
             tableDisplay:"none",
             pictureDisplay:"block",
+            detailTableDisplay:'none',
             valueType:"default",
             picType:"primary",
+            detailType:'default'
         })
-        axios({
-            url:this.props.url.productionBatchInfo.getInstrumentChart,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            params:{
-                cellNum:this.state.cellNum,
-                startTime:this.props.record.startTime,
-                endTime:this.props.record.endTime
-            }
-        }).then(data=>{
-            let res=data.data.data
-            if(res){
-                let xData=[],
-                seriesData=[]
-                for(let i=0;i<res.length;i++){
-                    seriesData.push(res[i].phValue) //默认显示ph
-                    xData.push(res[i].sampleTime)
-                }
-                this.setState({
-                    xData:xData,
-                    seriesData:seriesData,
-                    res:res
-                })
-            }
+        
+        
+    }
+    detaiTableChange(){
+        this.setState({
+            tableDisplay:"none",
+            pictureDisplay:"none",
+            detailTableDisplay:'block',
+            valueType:"default",
+            picType:"default",
+            detailType:'primary'
         })
     }
-
     getOption = () =>{
         let{xData,selectValue,seriesData,selectName}=this.state
         var labelOption = {
@@ -255,7 +351,7 @@ class InstrumentDetail extends React.Component{
         let seriesData=[]
         name=name.props.children
         for(let i=0;i<res.length;i++){
-            seriesData.push(res[i][value])
+            seriesData.push(res[i][value])  
         }
         this.setState({
             selectValue:value,
@@ -282,8 +378,10 @@ class InstrumentDetail extends React.Component{
                         合成槽号：<span>{this.state.cellNum}</span>&nbsp;&nbsp;&nbsp;&nbsp;
                         <span style={{float:"right",display:"inlineBlock"}}>
                         <Button type={this.state.valueType} style={{width:"80px",height:"35px"}} onClick={this.valueChange}>统计值</Button>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;
                         <Button type={this.state.picType} style={{width:"80px",height:"35px"}} onClick={this.picChange}>图表</Button>
+                        &nbsp;&nbsp;
+                        <Button type={this.state.detailType} style={{width:"80px",height:"35px"}} onClick={this.detaiTableChange}>表格显示</Button>
                         </span>
                         <br /><br />
                         <div style={{display:this.state.tableDisplay}}>
@@ -306,7 +404,11 @@ class InstrumentDetail extends React.Component{
                                 <Select.Option value="transducerShow">变频器显示(Hz)</Select.Option>
                                 <Select.Option value="measured3c">3c测量值</Select.Option>
                             </Select>
-                            <div className='statis-processCompare-echarts'><ReactEcharts option={this.getOption()} style={{width:'100%',height: '100%'}}/></div>
+                            <br /><br />
+                            <div className='statis-processCompare-echarts' ><ReactEcharts option={this.getOption()} style={{width:'100%',height: '100%'}}/></div>  
+                        </div>
+                        <div style={{display:this.state.detailTableDisplay}} >
+                              <Table columns={this.column1} dataSource={this.state.detailData} pagination={false} size="small" bordered rowKey={record=>record.index}/>
                         </div>
                     </div>
                 </Modal>

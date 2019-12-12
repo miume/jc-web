@@ -149,7 +149,6 @@ class TankValue extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
