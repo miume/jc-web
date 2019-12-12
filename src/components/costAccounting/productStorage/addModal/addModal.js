@@ -8,7 +8,6 @@ import Search from "../../rawMaterial/addModal/search";
 import AddTable from "./addTable";
 import axios from 'axios';
 
-
 class AddModal extends React.Component{
     constructor(props){
         super(props);
@@ -16,11 +15,19 @@ class AddModal extends React.Component{
             visible: false,
             disabled: false,
             loading: false,
-            data: []
+            data: [],
+            batchData: [], //存储所有批次信息
         };
         this.addItem = this.addItem.bind(this);
+        this.getAllBatch = this.getAllBatch.bind(this);
+        this.batchChange = this.batchChange.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+        this.saveOrCommit = this.saveOrCommit.bind(this);
+        this.handleCommit = this.handleCommit.bind(this);
+        this.getDetailData = this.getDetailData.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
     };
 
@@ -28,21 +35,21 @@ class AddModal extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data} = this.state;
+            {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData} = this.state;
         return(
             <Spin spinning={loading}>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
-                <div className={'rightDiv-content'}>
+                <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
                             selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange}/>
-                    <AddTable visible={visible} data={data} add={this.addItem}/>
+                    <AddTable visible={visible} data={data} batchData={batchData} batchChange={this.batchChange} add={this.addItem} inputChange={this.inputChange}/>
                 </div>
                 <div className='raw-material-add-footer-bottom'>
                     <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
                     <div>
-                        <SaveButton key='save'/>
-                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleSave}/>
+                        <SaveButton key='save' handleSave={this.handleSave}/>
+                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
                     </div>
                 </div>
             </Spin>
@@ -61,7 +68,7 @@ class AddModal extends React.Component{
                 staticPeriod: staticPeriod
             });
             if(code) {
-                this.afterConfirm(code);
+                this.getDetailData(code);
             } else {
                 this.setState({
                     currentStaticPeriod: currentStaticPeriod
@@ -73,10 +80,31 @@ class AddModal extends React.Component{
         }
     }
 
+    getDetailData(code) {
+        axios({
+            url: `${this.url.productStorage.editDetail}?id=${code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorizaion
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if(res && res['head']) {
+                let {head, pageInfo} = res;
+                this.setState({
+                    data: pageInfo,
+                    head: head,
+                    visible: true,
+                    disabled: true
+                })
+            }
+        })
+    }
+
     /**根据周期获取上期期数*/
     getPreLineName(periodCode) {
         axios({
-            url: `${this.url.auxiliary.nextPeroidNumber}?periodId=${periodCode}`,
+            url: `${this.url.productStorage.nextPeriod}?periodId=${periodCode}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorizaion
@@ -104,43 +132,40 @@ class AddModal extends React.Component{
     }
 
     searchEvent(params) {
-        console.log(params)
         params['lineName'] = params['periods'];
         delete params['periods'];
-        this.addConfirm(params)
+        this.addConfirm(params);
     }
 
     /**监控所有input输入框的变化*/
     inputChange(e) {
         let tar = e.target.name.split('-'), value = e.target.value,
-            name = tar[0], index = tar[1] ? tar[1] : '', type = tar[2] ? parseInt(tar[2]) : '',
-            {gqDetails2,cjDetails3,fcDetails4} = this.state;
+            name = tar[0], index = tar[1] ? tar[1] : '',
+            {data} = this.state;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
         value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
-        if(index) {
-            index = parseInt(index)-1;
-            if(type === 2) {   //更新罐区input的数据
-                gqDetails2[index][name] = value;
-                this.setState({
-                    gqDetails2: gqDetails2
-                })
-            } else if(type === 3) { //更新车间input的数据
-                cjDetails3[index][name] = value;
-                this.setState({
-                    cjDetails3: cjDetails3
-                })
-            } else {              //更新辅料消耗量input的数据
-                fcDetails4[index][name] = value;
-                this.setState({
-                    fcDetails4: fcDetails4
-                })
-            }
-        } else {
+        if(index === '') {
             this.setState({
                 [name]: value
             })
+        } else {
+            data[index-1][name] = value;
+            this.setState({
+                data
+            })
         }
+    }
+
+    /**监控批号的变化*/
+    batchChange(value,option) {
+        let name = option.props.name.split('-'), index = name[0], {data} = this.state;
+        value = name[1];
+        data[index-1]['batch'] = value;
+        this.setState({
+            data
+        })
+
     }
 
     /**表头新增*/
@@ -158,8 +183,28 @@ class AddModal extends React.Component{
                 message.info('存在不一致的统计周期，需要进行修改！')
             }
             else {
+                this.getAllBatch();
                 this.setState({
-                    id: res
+                    id: res,
+                    visible: true
+                })
+            }
+        })
+    }
+
+    /**获取所有批号*/
+    getAllBatch() {
+        axios({
+            url: `${this.url.productStorage.getAllBatch}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+        }).then((data) => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    batchData: res
                 })
             }
         })
@@ -168,6 +213,7 @@ class AddModal extends React.Component{
     addItem() {
         let {data} = this.state,
             item = {
+                "index": data.length+1,
                 "batch": "",
                 "coConcentration": 0,
                 "coMetallicity": 0,
@@ -189,19 +235,49 @@ class AddModal extends React.Component{
         })
     }
 
-    /**表头新增成功之后获取表格数据*/
-    afterConfirm(id) {
-        let url = id ? `${this.url.auxiliary.afterConfirm}?id=${id}` : `${this.url.auxiliary.afterConfirm}`;
+    /**点击取消新增*/
+    handleCancel() {
+        this.props.history.push({pathname: "/excipientStatistics"})
+    };
+
+    /**点击保存新增*/
+    handleSave() {
+        this.saveDataProcessing(0);
+    };
+
+    /**点击保存新增*/
+    handleCommit() {
+        this.saveDataProcessing(1);
+    };
+
+    saveDataProcessing(flag) {
+        let {data,id} = this.state;
+        console.log(data)
+        this.saveOrCommit(data,flag,id);
+    }
+
+    /**保存或提交*
+     * flag = 1 - 提交
+     * flag = 0 -保存
+     */
+    saveOrCommit(data,flag,id) {
+        this.setState({
+            loading: true
+        });
         axios({
-            url: url,
-            method: 'get',
+            url: `${this.url.productStorage.saveOrCommit}?flag=${flag}&id=${id}`,
+            method: 'post',
             headers: {
                 'Authorization': this.url.Authorization
-            }
+            },
+            data
         }).then((data) => {
-            let res = data.data.data;
-            if(res && res['processDTOS']) {
-                this.tableDataProcessing(res);
+            message.info(data.data.message);
+            this.setState({
+                loading: false
+            });
+            if(data.data.code === 0) {
+                this.handleCancel();
             }
         })
     }

@@ -38,10 +38,10 @@ class Search extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.head !== nextProps.head) {
-            let {periodCode,periods,startTime,endTime} = nextProps.head;
+            let {periodCode,periods,lineName,startTime,endTime} = nextProps.head;
             this.setState({
                 periodCode: periodCode,
-                periods: periods,
+                periods: periods ? periods : lineName,
                 start: startTime,
                 end: endTime
             })

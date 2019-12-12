@@ -6,7 +6,7 @@ import Submitted from './submit/submit';
 import Statistics from './statistics/statistics';
 import Search from "../rawMaterial/search";
 import axios from "axios";
-import moment from "../excipientStatistics/excipientStatistics";
+import moment from "moment";
 
 const {TabPane} = Tabs;
 // const data = [{
@@ -120,9 +120,9 @@ class ProductStorage extends React.Component{
             time = currentStaticPeriod ? currentStaticPeriod.startTime : '00:00:00',
             params = {
                 size: pagination ? pagination.pageSize : 10,
-                page: pagination ? pagination.current : 1
+                page: pagination ? pagination.current : 1,
+                flag: flag === '' ? this.state.flag : flag
             };
-        data['flag'] = flag === '' ? this.state.flag : flag;
         data['startTime'] = data['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
         data['endTime'] = data['endTime'] === '' ? '' : (endTime ? endTime + ' ' + time : '');
         data['periodCode'] = data['periodCode'] ? data['periodCode'] : periodCode;
@@ -131,7 +131,7 @@ class ProductStorage extends React.Component{
 
     /**获取待提交数据*/
     unSubmittedData(params,da) {
-        let url = da['flag'] ? `${this.url.productStorage.getPageCommit}` : `${this.url.productStorage.getPageUnCommit}`;
+        let url = params['flag'] ? `${this.url.productStorage.getPageCommit}` : `${this.url.productStorage.getPageUnCommit}`;
         axios({
             url: `${url}?page=${params.page}&size=${params.size}`,
             method: 'post',

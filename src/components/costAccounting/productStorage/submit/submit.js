@@ -36,28 +36,28 @@ class UnSubmitted extends React.Component {
             width: '10%'
         }, {
             title: '期数',
-            key: 'lineName',
-            dataIndex: 'lineName',
+            key: 'head.lineName',
+            dataIndex: 'head.lineName',
             width: '20%'
         }, {
             title: '开始时间',
-            key: 'start',
-            dataIndex: 'start',
+            key: 'head.startTime',
+            dataIndex: 'head.startTime',
             width: '20%'
         }, {
             title: '结束时间',
-            key: 'end',
-            dataIndex: 'end',
+            key: 'head.endTime',
+            dataIndex: 'head.endTime',
             width: '20%'
         }, {
             title: '操作',
-            key: 'code',
-            dataIndex: 'code',
+            key: 'head.code',
+            dataIndex: 'head.code',
             width: '20%',
-            render: (text, record) => {
+            render: (text) => {
                 return (
                     <span>
-                        <span className='blue' onClick={() => this.props.handleClick(record)}>编辑</span>
+                        <span className='blue' onClick={() => this.props.handleClick(text)}>编辑</span>
                         <DeleteById id={text} handleDelete={this.handleDelete} flag={true}/>
                     </span>
                 )
@@ -67,14 +67,10 @@ class UnSubmitted extends React.Component {
 
     render() {
         return (
-            <span>
-                {/* <Search flag={true}/>
-                <div className='clear' ></div> */}
-                <Table rowKey={record => record.code} dataSource={this.props.data}
-                        columns={this.columns} pagination={this.pagination}
-                        onChange={this.handleTableChange}
-                        size={"small"} bordered/>
-            </span>
+            <Table rowKey={record => record.head.code} dataSource={this.props.data}
+                   columns={this.columns} pagination={this.pagination}
+                   onChange={this.handleTableChange}
+                   size={"small"} bordered/>
         )
     }
 
@@ -85,7 +81,7 @@ class UnSubmitted extends React.Component {
 
     /**切换分页*/
     handleTableChange(pagination) {
-        console.log(pagination)
+        this.props.getUnSubmittedData('',{},pagination)
     }
 }
 

@@ -60,11 +60,16 @@ body {
     font-size: 11px;
   }
   .login-blockquote {
-    height: 10%;
+    height: 15px;
   }
 
   .login-box-content {
     padding: 10px;
+  }
+
+  .login-spin {
+    padding: 0px 28px 0px 28px;
+    height: 200px;
   }
 
   @media only screen and (max-height: 666px) {

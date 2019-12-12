@@ -3,29 +3,28 @@ import {Table} from "antd";
 import Detail from './detail';
 import Search from "../search";
 
-class Statistics extends React.Component{
+class Statistics extends React.Component {
     componentWillUnmount() {
         this.setState(() => {
             return;
         })
     }
-    constructor(props){
+
+    constructor(props) {
         super(props);
         this.state = {
             visible: false
         };
-        this.handleDelete = this.handleDelete.bind(this);
         this.pagination = {
-            total: this.props.data.length,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10","20","50","100"]
+            pageSizeOptions: ["10", "20", "50", "100"]
         };
         this.columns = [{
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            sorter: (a,b) => a.code - b.code,
+            sorter: (a, b) => a.code - b.code,
             width: '5%'
         }, {
             title: '周期类型',
@@ -77,7 +76,7 @@ class Statistics extends React.Component{
             key: 'Mn',
             dataIndex: 'Mn',
             width: '9%'
-        },{
+        }, {
             title: '操作',
             key: 'code',
             dataIndex: 'code',
@@ -90,19 +89,11 @@ class Statistics extends React.Component{
         }]
     }
 
-    render(){
-        return(
-            <span>
-                {/* <Search flag={true}/>
-                <div className='clear' ></div> */}
-                <Table columns={this.columns} rowKey={record => record.code}  pagination={this.pagination}
-                size={"small"} bordered dataSource={this.props.data}/>
-            </span>
+    render() {
+        return (
+            <Table columns={this.columns} rowKey={record => record.code} pagination={this.pagination}
+                   size={"small"} bordered dataSource={this.props.data}/>
         )
-    }
-    /**单条记录删除*/
-    handleDelete(id) {
-
     }
 }
 

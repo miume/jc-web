@@ -11,133 +11,81 @@ class Login extends React.Component {
     this.state = {
       loading : false
     };
-    this.getDefault = this.getDefault.bind(this);
-    this.beforeLogin = this.beforeLogin.bind(this);
-    this.remindLogin = this.remindLogin.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.loginIn = this.loginIn.bind(this);
     this.dataProcessing = this.dataProcessing.bind(this);
   }
   componentWillMount() {
-    //localStorage.setItem("server", "http://47.107.237.60:3389");//外网
+    localStorage.setItem("server", "http://47.107.237.60:3389");//外网
     //localStorage.setItem("server", "http://119.39.4.6:18080");//jcweb
-    localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
     //localStorage.setItem("server", "http://192.168.190.161:8080");//Jcweb1
   }
-  /**实行记住密码 */
-  remindLogin(e){
-    let username = document.getElementById('userName').value;
-    let password = document.getElementById('password').value;
-    /**点击记住密码 将登陆名和密码存入localStorage中   取消记住密码，则从localStorage中删除 */
-    if(e.target.checked){
-        if(username === '' && password === ''){
-            message.info('请先填写用户名和密码！')
-        }else{
-             document.cookie = `${username}-${password}`;
-        }
-    }else{
-      document.cookie = '';
-    }
-  }
-  /**登陆接口调用 */
-  handleSubmit(){
-    let history = this.props.history,
-        server = localStorage.getItem("server"),
-        username = document.getElementById('userName').value,
-        password = document.getElementById('password').value;
-    if(!this.beforeLogin(username,password)){
-      return
-    }
-    this.setState({
-      loading : true
-    });
-    axios.post(`${server}/jc/auth/login`,{username:username,password:password})
-      .then(res => {
-          /**如果登陆成功  则屏蔽enter键 */
-          if(res.data){
-              window.onkeydown = undefined
-              if(res.data && res.data.menuList)
-                  this.dataProcessing(res.data)
-          }
-          //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
-          localStorage.setItem('authorization',res.headers.authorization);
-          localStorage.setItem('menuList',JSON.stringify(res.data));
-          history.push({pathname:'/home'});
-        })
-    .catch( (error) => {
-        this.setState({
-          loading : false
-        })
-        if(error.toString().indexOf("Network Error")>0){
-          message.info("服务器未响应!");
-        }else{
-          message.info('账号或密码有误，请重新输入！');
-        }
-    });
-  }
-  /**登陆前先对数据进行验证 */
-  beforeLogin(username,password){
-    if(username === '' || password === '' ){
+
+  loginIn(username,password) {
+      let history = this.props.history, server = localStorage.getItem('server');
       this.setState({
-        loading : false
+        loading : true
       });
-      message.info('请先填写账号和密码！');
-      return false
+      axios.post(`${server}/jc/auth/login`,{username:username,password:password})
+          .then(res => {
+              /**如果登陆成功  则屏蔽enter键 */
+              if(res.data){
+                window.onkeydown = undefined;
+                if(res.data && res.data.menuList)
+                  this.dataProcessing(res.data)
+              }
+              //将token令牌存在localStorage中，后面调接口可直接通过localStorage.getItem('Authorization')
+              localStorage.setItem('authorization',res.headers.authorization);
+              localStorage.setItem('menuList',JSON.stringify(res.data));
+              history.push({pathname:'/home'});
+          })
+          .catch( (error) => {
+              this.setState({
+                loading : false
+              });
+              if(error.toString().indexOf("Network Error")>0){
+                message.info("服务器未响应!");
+              }else{
+                message.info('账号或密码有误，请重新输入！');
+              }
+          });
     }
-    return true
-  }
+
   /**登陆成功后对返回的数据进行处理 */
   dataProcessing(data){
-    let i = 1,
-        quickAccess = [],menus=[];
-    data.menuList.forEach(e=>{
-      e.menuList.forEach(e1=>{
-        menus.push(e1)
-        if(i <= 6){
-          quickAccess.push({
-            openKeys:e.menuId,
-            menuParent:e.menuName,
-            menuName:e1.menuName,
-            path:e1.path
-          })
-          i++;
-        }
-      })
-    })
-  localStorage.setItem('menus',JSON.stringify(menus));
-  localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
+      let i = 1, quickAccess = [],menus=[];
+      data.menuList.forEach(e=>{
+        e.menuList.forEach(e1=>{
+          menus.push(e1)
+          if(i <= 6){
+            quickAccess.push({
+              openKeys:e.menuId,
+              menuParent:e.menuName,
+              menuName:e1.menuName,
+              path:e1.path
+            });
+            i++;
+          }
+        })
+      });
+    localStorage.setItem('menus',JSON.stringify(menus));
+    localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
   }
-  /**实现记录密码和用户名 */
-  getDefault(flag){
-    var text = document.cookie.split('-');
-    if(text.length>1&&text[flag]){
-      return text[flag];
-    }else{
-      return '';
-    }
-  }
-  componentDidMount() {
-    /**实现enter键登陆 */
-    const f = (e) => {
-      if(e.keyCode===13){this.handleSubmit();}
-    };
-    window.onkeydown = f
-  }
+
   render() {
+    let {username,password,loading} = this.state;
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
-      <Spin spinning={this.state.loading}>
+      <Spin spinning={loading}>
         <div className='gutter-box'>
               <div className='login-box'>
                 <img src={require(`./logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
                 <div className={'login-box-content'}>
-                  <Tabs defaultActiveKey={'1'}>
-                    <Tabs.TabPane tab='火法' key='1'>
-                      <LoginItem remindLogin={this.remindLogin} getDefault={this.getDefault} handleSubmit={this.handleSubmit}/>
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab='湿法' key='2'>
-                      <LoginItem remindLogin={this.remindLogin} getDefault={this.getDefault} handleSubmit={this.handleSubmit}/>
-                    </Tabs.TabPane>
+                  <Tabs>
+                    <Tabs.TabPane tab='火法' key='1'></Tabs.TabPane>
+                    <Tabs.TabPane tab='湿法' key='2'></Tabs.TabPane>
                   </Tabs>
+                  <LoginItem loginIn={this.loginIn} username={username} password={password}
+                             inputChange={this.inputChange} handleSubmit={this.handleSubmit}/>
                 </div>
 
               </div>

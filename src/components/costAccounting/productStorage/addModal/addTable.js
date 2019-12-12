@@ -1,7 +1,7 @@
 import React from "react";
 import NewButton from "../../../BlockQuote/newButton";
-import {Table} from "antd";
-
+import {Input, Select, Table} from "antd";
+const {Option} = Select;
 
 class AddTable extends React.Component{
     constructor(props){
@@ -10,63 +10,75 @@ class AddTable extends React.Component{
             title: '序号',
             dataIndex: 'index',
             key: 'index',
-            align:'center',
             width: '11.11%',
         },{
             title: '成品名称',
-            dataIndex: 'name',
-            key: 'name',
-            align:'center',
+            dataIndex: 'productionTypeName',
+            key: 'productionTypeName',
             width: '11.11%',
-        },{
-            title: '产品型号',
-            dataIndex: 'model',
-            key: 'model',
-            align:'center',
-            width: '11.11%',
+            render: (text,record) => {
+                return <Input name={`productionTypeName-${record.index}`} value={text} placeholder={'请输入成品名称'} onChange={this.props.inputChange}/>
+            }
         },{
             title: '批号',
             dataIndex: 'batch',
             key: 'batch',
-            align:'center',
-            width: '11.11%',
+            width: '22%',
+            render: (text,record) => {
+                let {batchData} = this.props;
+                return (
+                    <Select placeholder='请选择批号' onChange={this.props.batchChange} style={{width:'100%'}}>
+                        {
+                            batchData ? batchData.map(e => <Option key={e.code} name={`${record.index}-${e.batch}`} value={e.code}>{e.batch}</Option>) : null
+                        }
+                    </Select>
+                )
+            }
         },{
             title: '入库时间',
-            dataIndex: 'time',
-            key: 'time',
-            align:'center',
+            dataIndex: 'storageTime',
+            key: 'storageTime',
             width: '11.11%',
         },{
             title: '重量(T)',
-            dataIndex: 'weight',
-            key: 'weight',
-            align:'center',
+            dataIndex: 'weights',
+            key: 'weights',
             width: '11.11%',
+            render: (text,record) => {
+                return <Input name={`weights-${record.index}`} value={text} onChange={this.props.inputChange}/>
+            }
         },{
             title: 'Ni(%)',
-            dataIndex: 'Ni',
-            key: 'Ni',
-            align:'center',
+            dataIndex: 'niConcentration',
+            key: 'niConcentration',
             width: '11.11%',
+            render: (text,record) => {
+                return <Input name={`niConcentration-${record.index}`} value={text} onChange={this.props.inputChange}/>
+            }
         },{
             title: 'Co(%)',
-            dataIndex: 'Co',
-            key: 'Co',
-            align:'center',
+            dataIndex: 'coConcentration',
+            key: 'coConcentration',
             width: '11.11%',
+            render: (text,record) => {
+                return <Input name={`coConcentration-${record.index}`} value={text} onChange={this.props.inputChange}/>
+            }
         },{
             title: 'Mn(%)',
-            dataIndex: 'Mn',
-            key: 'Mn',
-            align:'center',
+            dataIndex: 'mnConcentration',
+            key: 'mnConcentration',
             width: '11.11%',
+            render: (text,record) => {
+                return <Input name={`mnConcentration-${record.index}`} value={text} onChange={this.props.inputChange}/>
+            }
         }]
     };
 
     render() {
-        let {data,visible} = this.props;
+        let {data,visible,add} = this.props;
         return(
             <div className={visible ? '' : 'hide'}>
+                <NewButton name='新增' handleClick={add} className='fa fa-plus'/>
                 <Table pagination={this.pagination} columns={this.columns} rowKey={record => record.index}
                        dataSource={data} size="small" bordered pagination={false}/>
             </div>
