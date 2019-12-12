@@ -27,6 +27,7 @@ import ProductProcess from '../qualityProcess/Base/ProductProcess/productProcess
 import StatisticAnalysis from '../equipmentManagement/statisticAnalysis/statisticAnalysis'
 import CheckStatistics from '../equipmentManagement/statisticAnalysis/checkStatistics/checkStatistics'
 import TestItem from '../qualityProcess/Base/testItem/testItem';
+import TestMaterial from '../qualityProcess/Base/testMaterial/tastMaterial'
 import OperationManagement from "../userPermissions/operationManagement/operationManagement";
 import StockOut from '../smartWarehouse/stockOut/stockOut';
 import EquipmentCheck from "../equipmentManagement/equipmentCheck/equipmentCheck";
@@ -174,6 +175,9 @@ class Right extends React.Component {
         }, {
             path: '/productLine',
             component: ProductLine
+        },{
+            path: '/testMaterial',
+            component: TestMaterial
         }, {
             path: '/sampleInspection',
             component: SampleInspection
