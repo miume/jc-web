@@ -31,6 +31,11 @@ class DryProcess extends Component{//烘干工序
                          <Input value={record.weight} name={`${record.index}-${'weight'}`} onChange={this.inputChange}/>
                      )
                 }
+                else{
+                    return(
+                        <span>{record.weight}</span>
+                    )
+                }
              }
         },{
             title:'Ni(%)',
@@ -69,6 +74,7 @@ class DryProcess extends Component{//烘干工序
         this.showModal=this.showModal.bind(this);
         this.getLastPotency=this.getLastPotency.bind(this);
         this.inputChange=this.inputChange.bind(this);
+        this.getWeight=this.getWeight.bind(this)
     }
     handleSelect(value,name){//获取下拉框的id
         let selectKey=name.props.name;//监听是第几个下拉框change了
@@ -98,20 +104,11 @@ class DryProcess extends Component{//烘干工序
             visible:false
         })
     }
-    getLastPotency(){//获取上期浓度
-        
-        axios({
-            url:`${this.props.url.precursorGoodIn.getLastPotencyByProcessId}`,
-            method:'get',
-            headers:{
-                'Authorization':this.props.url.Authorization
-            },
-            params:{
-                processId:this.props.processId
-            }
-        }).then(data=>{
-            //console.log(data.data)
-        })
+    getLastPotency() {//获取上期浓度
+        this.props.getLastPotency(this.props.processId)
+    }
+    getWeight(){
+        this.props.weightAlterData(this.props.processId,'weight')
     }
     render(){
         this.tableData = this.props.tagTableData&&this.props.tagTableData[4]&&this.props.tagTableData[4].materialDetails?this.props.tagTableData[4].materialDetails:[]
@@ -124,8 +121,7 @@ class DryProcess extends Component{//烘干工序
 
         return(
             <div>
-                <NewButton name='获取重量値' flagConfirm={!this.props.flagConfirm}/>
-                {/* <ReadRecipe  handleCancel={this.handleCancel} handleOk={this.handleOk} showModal={this.showModal} visible={this.state.visible}/> */}
+                <NewButton name='获取重量値' flagConfirm={!this.props.flagConfirm}  handleClick={this.getWeight}/>
                 <NewButton name='上期浓度' handleClick={this.getLastPotency} flagConfirm={!this.props.flagConfirm}/>
                 <SelectLine handleSelect={this.handleSelect} headerData={this.header}/>
                 <div className='clear'></div>

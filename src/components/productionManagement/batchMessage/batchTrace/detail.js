@@ -20,7 +20,6 @@ class Detail extends React.Component{
         }
     }
     tabChange=(key)=>{
-        console.log(key);
     }
     handleDetail = () =>{
         this.setState({

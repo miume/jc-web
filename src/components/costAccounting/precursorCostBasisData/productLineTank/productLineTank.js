@@ -128,7 +128,6 @@ class ProductLineTank extends React.Component{
         })
     }
     handleDelete = (id)=>{
-        // console.log(id)
         axios({
             url:`${this.url.techLineCellMap.delete}`,
             method:"delete",
@@ -145,7 +144,6 @@ class ProductLineTank extends React.Component{
     }
     start = () => {//批量删除
         const ids = this.state.selectedRowKeys;
-        // console.log(ids)
         axios({
             url:`${this.url.techLineCellMap.ids}`,
             method:'delete',
@@ -155,16 +153,11 @@ class ProductLineTank extends React.Component{
             data:ids,
             type:'json'
         }).then((data)=>{
-            // console.log(data);
             this.setState({
                 selectedRowKeys: [],
                 loading: false,
             });
             message.info(data.data.message);
-            // if((this.pagination.total-1)%10===0){
-            //     this.pagination.current = this.pagination.current-1
-            // }
-            // this.handleTableChange(this.pagination);
             this.fetch();
         }).catch((error)=>{
             message.info(error.data);
@@ -202,9 +195,6 @@ class ProductLineTank extends React.Component{
             onChange: this.onSelectChange,
             onSelect() {},
             onSelectAll() {},
-            // getCheckboxProps: record => ({
-            //     disabled: record.commonBatchNumber.status === 2, // Column configuration not to be checked
-            //   }),
           };
         return(
             <div>
@@ -220,7 +210,7 @@ class ProductLineTank extends React.Component{
                     />
                     <SearchCell name="请输入产线名称" flag={true}/>
                     <div className='clear' ></div>
-                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.index} dataSource={this.state.data}  size="small" bordered/>
+                    <Table rowSelection={rowSelection} pagination={this.pagination} columns={this.columns} rowKey={record => record.lineCode} dataSource={this.state.data}  size="small" bordered/>
                 </Spin>
             </div>
         )

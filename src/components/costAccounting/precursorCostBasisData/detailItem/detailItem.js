@@ -118,7 +118,6 @@ class DetailItem extends React.Component {
     }
 
     fetch = (params = {}, type) => {
-        console.log(type)
         type = type === undefined ? 0 : type
         params = {
             ...params,
