@@ -263,7 +263,7 @@ class Home extends Component {
                 intermediateProduct:`${server}/jc/common/middleProductionDetection`,
                 details:`${server}/jc/common/middleProductionDetection/details`,
             },
-            
+
             /**成品检验 */
             productInspection:{
                 pages:`${server}/jc/common/productRecord/pages`,
@@ -773,8 +773,11 @@ class Home extends Component {
                 getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
             },
             // productStorage: {
+            //     getDate:`${server}/jc/common/productStorage/getDate`,
+            //     delete: ${server}/jc/common/productStorage/delete`,
             //     getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
             //     detail:`${server}/jc/common/productStorage/detail`,
+            //     editDetail:`${server}/jc/common/productStorage/editDetail`,
             //     getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
             //     getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
             //     nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
@@ -787,15 +790,18 @@ class Home extends Component {
             //     stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             // }
             productStorage: {
+                getDate:`${server1}/productStorage/getDate`,
+                delete: `${server1}/productStorage/delete`,
                 getAllBatch:`${server1}/productStorage/getAllBatch`,
+                detail:`${server1}/productStorage/detail`,
                 editDetail:`${server1}/productStorage/editDetail`,
                 getPageUnCommit:`${server1}/productStorage/pageUnCommit`,
                 getPageCommit:`${server1}/productStorage/pageCommit`,
                 nextPeriod:`${server1}/productStorage/nextPeriod`,
                 addConfirm:`${server1}/productStorage/addComfirm`,
-                afterConfirm:`${server1}/productStorage/afterComfirm`,
+                getPeriodAndTime:`${server1}/productStorage/getPeriodAndTime`,
                 lineCur:`${server1}/productStorage/lineCur`,
-                processCur:`${server1}/productStorage/processCur`,
+                periodCur:`${server1}/productStorage/periodCur`,
                 saveOrCommit:`${server1}/productStorage/saveOrCommit`,
                 stasticByLine:`${server1}/productStorage/stasticByLine`,
                 stasticByProcess:`${server1}/productStorage/stasticByProcess`,

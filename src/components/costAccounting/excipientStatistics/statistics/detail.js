@@ -16,7 +16,7 @@ class Detail extends React.Component{
         this.getDetailData = this.getDetailData.bind(this);
     }
     render() {
-        let {head,processTotal,processes} = this.state;
+        let {head,processes} = this.state;
         return(
             <span>
                 <span className='blue' onClick={this.handleClick}>详情</span>

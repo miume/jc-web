@@ -1,71 +1,152 @@
 import React,{Component} from 'react'
 import {Spin} from 'antd'
-import Search from '../productComparsion/compareSearch'
+import Search from '../../../excipientStatistics/statisticalAnalysis/productLineCompare/compareSearch';
 import ReactEcharts from 'echarts-for-react';
+import axios from "axios";
+
 class ProductLineCompare extends Component{//工序对比分析
     constructor(props){
         super(props);
-        this.state={
-            loading:false
-        }
-        this.getOption=this.getOption.bind(this);
-    }
-    getOption(){
-        const option = {
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data:['Ni','Co','Mn']
-            },
-        
-            toolbox: {
-                feature: {
-                    saveAsImage: {}
-                }
-            },
-            xAxis: {
-                type: 'category',
-                name:'周期数',
-                boundaryGap: false,
-                data: ['59','60','61','63','64','70']
-            },
-            yAxis: {
-                type: 'value',
-                name:'含量(T)'
-            },
-            series: [
-                {
-                    name:'Ni',
-                    type:'line',
-                    data:[24, 25, 57, 35, 32, 20]
-                },
-                {
-                    name:'Co',
-                    type:'line',
-                    data:[26, 28, 51, 48, 19, 17]
-                },
-                {
-                    name:'Mn',
-                    type:'line',
-                    data:[9, 26, 28, 52, 48, 18]
-                },
-            ]
+        this.state = {
+            loading:false,
+            xData: [],
+            alkData: [],
+            ammData: []
         };
-        return option;        
+        this.getOption = this.getOption.bind(this);
+        this.getTableData = this.getTableData.bind(this);
     }
-    render(){
+
+    render() {
+        let {staticPeriod,productionLineData} = this.props, {xData,niData,coData,mnData,loading} = this.state;
         return(
-            <div>
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                   <Search flag={true} lineFlag={true}/>
-                   <ReactEcharts
-                        option={this.getOption()}
-                        style={{height: '350px', width: '800px',margin:'20px 100px 0 150px'}}
-                        />
-                </Spin>
-            </div>
+            <Spin spinning={loading} wrapperClassName='rightDiv-content'>
+                <Search flag={true} staticPeriod={staticPeriod}
+                        productionLineData={productionLineData} search={this.getTableData}/>
+                <div className='clear'></div>
+                <div className={'raw-material-canvas'}>
+                    <ReactEcharts option={this.getOption(xData,niData,coData,mnData)}
+                                  style={{width: '100%',height:'80%'}}/>
+                </div>
+            </Spin>
         );
     }
+
+    getTableData(params,lineId) {
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: `${this.props.url.productStorage.periodCur}?lineId=${lineId}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            data: params
+        }).then((data) => {
+            let res = data.data.data, xData = [], niData = [], coData = [], mnData = [];
+            if(res && res.length) {
+                for(let i = 0; i < res.length; i++) {
+                    let e = res[i];
+                    xData.push(e['periodNum']);
+                    niData.push(e['ni']);
+                    coData.push(e['co']);
+                    mnData.push(e['mn']);
+                }
+            }
+            this.setState({
+                xData,
+                niData,
+                coData,
+                mnData,
+                loading: false
+            })
+        });
+    }
+
+    getOption(xData,niData,coData,mnData) {
+        let labelOption = {
+                normal: {
+                    show: true,
+                    formatter: '{c}  {name|{a}}',
+                    fontSize: 16,
+                    rich: {
+                        name: {
+                            textBorderColor: '#fff'
+                        }
+                    }
+                }
+            },
+            option = (
+                {
+                    color: ['#003366', '#dc150c', '#58a0a8'],
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data:['Ni','Co','Mn']
+                    },
+                    toolbox: {
+                        show: true,
+                        orient: 'vertical',
+                        left: 'right',
+                        top: 'center',
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            name: '周期数',
+                            axisTick: {show: false},
+                            data: xData
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '含量（T）',
+                        }
+                    ],
+                    series: [
+                        {
+                            name: 'Ni',
+                            type: 'line',
+                            barGap: 0,
+                            label: labelOption,
+                            data: niData
+                        },
+                        {
+                            name: 'Co',
+                            type: 'line',
+                            label: labelOption,
+                            data: coData
+                        },
+                        {
+                            name: 'Mn',
+                            type: 'line',
+                            label: labelOption,
+                            data: mnData
+                        }
+                    ]
+                }
+            );
+        return option;
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
 }
-export default ProductLineCompare 
+export default ProductLineCompare

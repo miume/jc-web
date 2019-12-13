@@ -65,10 +65,10 @@ class ProductStorage extends React.Component{
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
                         <TabPane tab={'待提交'} key={'1'}>
-                            <Submitted data={unSubmittedData} handleClick={this.handleClick}/>
+                            <Submitted data={unSubmittedData} handleClick={this.handleClick} url={this.url} getUnSubmittedData={this.getUnSubmittedData}/>
                         </TabPane>
                         <TabPane tab={'已统计'} key={'2'}>
-                            <Statistics data={submittedData}/>
+                            <Statistics data={submittedData} url={this.url} getUnSubmittedData={this.getUnSubmittedData}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -112,6 +112,9 @@ class ProductStorage extends React.Component{
 
     /**界面加载获取未提交数据*/
     getUnSubmittedData(flag = '',data = {},pagination) {
+        if(pagination) {
+            this.pagination = pagination;
+        }
         this.setState({
             loading: true
         });
@@ -119,8 +122,8 @@ class ProductStorage extends React.Component{
             periodCode = currentStaticPeriod ? currentStaticPeriod.code : '',
             time = currentStaticPeriod ? currentStaticPeriod.startTime : '00:00:00',
             params = {
-                size: pagination ? pagination.pageSize : 10,
-                page: pagination ? pagination.current : 1,
+                size: this.pagination ? this.pagination.pageSize : 10,
+                page: this.pagination ? this.pagination.current : 1,
                 flag: flag === '' ? this.state.flag : flag
             };
         data['startTime'] = data['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
@@ -146,7 +149,7 @@ class ProductStorage extends React.Component{
                 for(let i = 0; i < res.list.length; i++) {
                     res.list[i]['index'] = i + 1;
                 }
-                if(da['flag']) {  //已统计数据
+                if(params['flag']) {  //已统计数据
                     this.setState({
                         submittedData: res.list
                     })
@@ -171,6 +174,7 @@ class ProductStorage extends React.Component{
         this.setState({
             flag: flag
         });
+        this.pagination = undefined;
         this.getUnSubmittedData(flag);
     }
 
