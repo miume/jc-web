@@ -19,32 +19,32 @@ class Statistics extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            sorter: (a,b) => a.code - b.code,
+            sorter: (a,b) => a.index - b.index,
             width: '5%'
         }, {
             title: '周期类型',
-            key: 'periodName',
-            dataIndex: 'periodName',
+            key: 'headDTO.name',
+            dataIndex: 'headDTO.name',
             width: '7%'
         }, {
             title: '期数',
-            key: 'periods',
-            dataIndex: 'periods',
+            key: 'headDTO.lineName',
+            dataIndex: 'headDTO.lineName',
             width: '7%'
         }, {
             title: '开始时间',
-            key: 'start',
-            dataIndex: 'start',
+            key: 'headDTO.startTime',
+            dataIndex: 'headDTO.startTime',
             width: '10%'
         }, {
             title: '结束时间',
-            key: 'end',
-            dataIndex: 'end',
+            key: 'headDTO.endTime',
+            dataIndex: 'headDTO.endTime',
             width: '10%'
         }, {
             title: '数据类别',
-            key: 'dataType',
-            dataIndex: 'dataType',
+            key: 'data.materialTypeName',
+            dataIndex: 'data.materialTypeName',
             width: '9%'
         }, {
             title: '物料名称',
@@ -53,32 +53,32 @@ class Statistics extends React.Component {
             width: '9%'
         }, {
             title: '重量(T)',
-            key: 'weight',
-            dataIndex: 'weight',
+            key: 'data.totals',
+            dataIndex: 'data.totals',
             width: '9%'
         }, {
             title: 'Ni金属量(T)',
-            key: 'NiMetallicity',
-            dataIndex: 'NiMetallicity',
+            key: 'data.niValue',
+            dataIndex: 'data.niValue',
             width: '9%'
         }, {
             title: 'Co金属量(T)',
-            key: 'CoMetallicity',
-            dataIndex: 'CoMetallicity',
+            key: 'data.coValue',
+            dataIndex: 'data.coValue',
             width: '9%'
         }, {
             title: 'Mn金属量(T)',
-            key: 'MnMetallicity',
-            dataIndex: 'MnMetallicity',
+            key: 'data.mnValue',
+            dataIndex: 'data.mnValue',
             width: '9%'
         },{
             title: '操作',
-            key: 'code',
-            dataIndex: 'code',
+            key: 'data.materialTypeCode',
+            dataIndex: 'data.materialTypeCode',
             width: '5%',
             render: (text, record) => {
                 return (
-                    <Detail data={record}/>
+                    <Detail url={this.props.url} head={record.headDTO} materialTypeCode={text} statisticCode={record.headDTO.code}/>
                 )
             }
         }]
@@ -86,7 +86,7 @@ class Statistics extends React.Component {
 
     render() {
         return (
-            <Table columns={this.columns} rowKey={record => record.code}  pagination={this.pagination}
+            <Table columns={this.columns} rowKey={record => record.data.code}  pagination={this.pagination}
                    size={"small"} bordered dataSource={this.props.data}/>
         )
     }

@@ -602,7 +602,8 @@ class Home extends Component {
                 page:`${server}/jc/common/precursorRawMaterial/page`,
                 update:`${server}/jc/common/precursorRawMaterial/update`,
                 all:`${server}/jc/common/precursorRawMaterial/all`,
-                byType:`${server}/jc/common/precursorRawMaterial/byType`
+                byType:`${server}/jc/common/precursorRawMaterial/byType`,
+                byDataType:`${server}/jc/common/precursorRawMaterial/getByDatatype`
             },
             /**原材料产线权重分配*/
             precursorRawmaterialLineWeight:{
@@ -681,9 +682,12 @@ class Home extends Component {
             },
             /**前驱体原料领用*/
             rawMaterial: {
+                detail: `${server}/jc/common/materialDeliveryStatistic/detail`,
+                statDetail: `${server}/jc/common/materialDeliveryStatistic/statDetail`,
+                saveOrCommit: `${server}/jc/common/materialDeliveryStatistic/save`,
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
                 getCommittedData: `${server}/jc/common/materialDeliveryStatistic/statistic`,
-                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+                deleteById: `${server}/jc/common/materialDeliveryStatistic/deleteByStatCode`,
                 period: `${server}/jc/common/materialDeliveryStatistic/period`,
                 getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
                 supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
@@ -709,8 +713,8 @@ class Home extends Component {
                 detailByBatch: `${server}/jc/common/processParam/detailByBatch`,
                 saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
                 deleteByIds: `${server}/jc/common/processParam/deleteByIds`,
-                mixRecipe:`${server}/processParam/mixRecipe`, //混合盐读取配方
-                compoundRecipe:`${server}/processParam/compoundRecipe`
+                mixRecipe:`${server}/jc/common/processParam/mixRecipe`, //混合盐读取配方
+                compoundRecipe:`${server}/jc/common/processParam/compoundRecipe`
             },
             /**正极基础统计周期*/
             positiveStatic:{
@@ -792,6 +796,9 @@ class Home extends Component {
                 getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
             },
             productStorage: {
+                getDate:`${server}/jc/common/productStorage/getDate`,
+                delete: `${server}/jc/common/productStorage/delete`,
+                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
                 getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
                 detail:`${server}/jc/common/productStorage/detail`,
                 getDate:`${server}/jc/common/productStorage/getDate`,
@@ -808,20 +815,6 @@ class Home extends Component {
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             },
-            // productStorage: {
-            //     getAllBatch:`${server1}/productStorage/getAllBatch`,
-            //     editDetail:`${server1}/productStorage/editDetail`,
-            //     getPageUnCommit:`${server1}/productStorage/pageUnCommit`,
-            //     getPageCommit:`${server1}/productStorage/pageCommit`,
-            //     nextPeriod:`${server1}/productStorage/nextPeriod`,
-            //     addConfirm:`${server1}/productStorage/addComfirm`,
-            //     afterConfirm:`${server1}/productStorage/afterComfirm`,
-            //     lineCur:`${server1}/productStorage/lineCur`,
-            //     processCur:`${server1}/productStorage/processCur`,
-            //     saveOrCommit:`${server1}/productStorage/saveOrCommit`,
-            //     stasticByLine:`${server1}/productStorage/stasticByLine`,
-            //     stasticByProcess:`${server1}/productStorage/stasticByProcess`,
-            // },
             /**质量基础受检物料*/
             testMaterial:{
                 page:`${server}/jc/common/detectItem/page`,

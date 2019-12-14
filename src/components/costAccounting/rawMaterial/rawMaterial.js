@@ -15,21 +15,21 @@ import NewButton from "../../BlockQuote/newButton";
 import moment from "moment";
 
 const {TabPane} = Tabs;
-const data = [{
-    code: 1,
-    index: 1,
-    periodName: '周',
-    dataType: '补料',
-    density:1,
-    lineName: 2,
-    start: '2019-10-01',
-    end: '2019-10-01',
-    materialName: '混合盐',
-    weight: 20,
-    NiConcentration: 1,
-    CoConcentration: 1,
-    MnConcentration: 1
-}];
+// const data = [{
+//     code: 1,
+//     index: 1,
+//     periodName: '周',
+//     dataType: '补料',
+//     density:1,
+//     lineName: 2,
+//     start: '2019-10-01',
+//     end: '2019-10-01',
+//     materialName: '混合盐',
+//     weight: 20,
+//     NiConcentration: 1,
+//     CoConcentration: 1,
+//     MnConcentration: 1
+// }];
 class RawMaterial extends React.Component {
     constructor(props) {
         super(props);
@@ -40,7 +40,8 @@ class RawMaterial extends React.Component {
             periodCode: '',
             data: [],
             startTime: '',
-            endTime: ''
+            endTime: '',
+            committedData: []
         };
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
@@ -67,7 +68,7 @@ class RawMaterial extends React.Component {
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let {loading,currentStaticPeriod,staticPeriod,data,startTime,endTime} = this.state;
+        let {loading,currentStaticPeriod,staticPeriod,data,startTime,endTime,committedData} = this.state;
         return (
             <div>
                 <BlockQuote name={this.current.menuName} menu={this.current.menuParent}/>
@@ -78,13 +79,13 @@ class RawMaterial extends React.Component {
                             selectChange={this.selectChange} reset={this.reset} getTableData = {this.getUnSubmittedData} endDateChange={this.endDateChange}
                             startDateChange={this.startDateChange} search={this.search} reset={this.reset}/>
                     <div className='clear' ></div>
-                    <Tabs defaultActiveKey={'1'} onChange={this.tabChange}>
-                        <TabPane tab={'待提交'} key={'1'}>
+                    <Tabs defaultActiveKey={'0'} onChange={this.tabChange}>
+                        <TabPane tab={'待提交'} key={'0'}>
                             <UnSubmitted data={data} handleClick={this.handleClick} pagination={this.pagination}
                                          handleTableChange={this.handleUnSubmittedTableChange} url={this.url}/>
                         </TabPane>
-                        <TabPane tab={'已统计'} key={'2'}>
-                            <Statistics data={data}/>
+                        <TabPane tab={'已统计'} key={'1'}>
+                            <Statistics data={committedData} url={this.url}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -117,7 +118,7 @@ class RawMaterial extends React.Component {
                     staticPeriod: res,
                     currentStaticPeriod: currentStaticPeriod,
                 });
-                this.getUnSubmittedData({
+                this.getUnSubmittedData(0,{
                     periodCode: currentStaticPeriod ? currentStaticPeriod.code : '',
                 });
             }
@@ -125,7 +126,7 @@ class RawMaterial extends React.Component {
     }
 
     /**界面加载获取未提交数据*/
-    getUnSubmittedData(params = {}) {
+    getUnSubmittedData(flag,params = {}) {
         this.setState({
             loading: true
         });
@@ -137,7 +138,11 @@ class RawMaterial extends React.Component {
         params['startTime'] = params['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
         params['endTime'] = params['endTime'] === '' ? '' : (endTime ? endTime + ' ' + time : '');
         params['periodCode'] = params['periodCode'] ? params['periodCode'] : periodCode;
-        this.unSubmittedData(params);
+        if(flag) {
+            this.getStatisticsData(params);
+        } else {
+            this.unSubmittedData(params);
+        }
     }
 
     /**获取待提交数据*/
@@ -167,35 +172,43 @@ class RawMaterial extends React.Component {
 
     handleUnSubmittedTableChange(pagination) {
         this.pagination = pagination;
-        let {startTime,endTime} = this.state;
-        this.getUnSubmittedData({
-            startTime: startTime,
-            endTime: endTime
-        });
+        this.getUnSubmittedData();
     }
 
     /**获取已统计数据*/
     getStatisticsData() {
-
+        axios({
+            url: `${this.url.rawMaterial.getCommittedData}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if(res) {
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['index'] = i + 1;
+                }
+                this.setState({
+                    committedData: res
+                })
+            }
+            this.setState({
+                loading: false
+            })
+        })
     }
 
     /**标签页切换*/
     tabChange(key) {
-        this.setState({
-            flag: key
-        });
-        if(key === '1') {
-            this.getUnSubmittedData();
-        } else {
-            this.getStatisticsData();
-        }
+        this.getUnSubmittedData(parseInt(key));
     }
 
     /**点击新增按钮
      * record用来区分编辑和新增
      * */
-    handleClick(record = {}) {
-        let pathName = record && record.code ? `/addModal/${record.code}` : '/addModal';
+    handleClick(code) {
+        let pathName = typeof code === 'number' ? `/addModal/${code}` : '/addModal';
         this.props.history.push({
             pathname: pathName,
             state: {

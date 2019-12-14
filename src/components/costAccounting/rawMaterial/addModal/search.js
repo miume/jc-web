@@ -20,10 +20,17 @@ class Search extends React.Component {
     }
 
     render() {
-        let {start, end, dateFormat,periodCode} = this.state,
-            startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
-            endValue = end === undefined || end === "" ? null : moment(end, dateFormat),
-            {staticPeriod,periods,currentStaticPeriod,disabled} = this.props;
+        let {start, end, dateFormat,periodCode} = this.state,{staticPeriod,periods,currentStaticPeriod,disabled,head} = this.props;
+        if(head) {
+            start = head['startTime'];
+            end = head['endTime'];
+            periods = head['lineName'] ? head['lineName'] : head['periods'];
+            periodCode = head['periodCode'];
+            disabled = true;
+        }
+        let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),
+            endValue = end === undefined || end === "" ? null : moment(end, dateFormat);
+
         return (
             <span className={this.props.flag?'':'hide'}>
                 <span>周期：</span>

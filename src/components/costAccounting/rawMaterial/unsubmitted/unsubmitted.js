@@ -1,5 +1,6 @@
 import React from 'react';
-import {Table} from "antd";
+import {Table, message} from "antd";
+import axios from 'axios';
 import DeleteById from "../../../BlockQuote/deleteById";
 
 class UnSubmitted extends React.Component {
@@ -40,11 +41,11 @@ class UnSubmitted extends React.Component {
             key: 'code',
             dataIndex: 'code',
             width: '20%',
-            render: (text, record) => {
+            render: (text) => {
                 return (
                     <span>
-                        <span className='blue' onClick={() => this.props.handleClick(record)}>编辑</span>
-                        <DeleteById id={text} handleDelete={this.handleDelete} flag={true}/>
+                        <span className='blue' onClick={() => this.props.handleClick(text)}>编辑</span>
+                        <DeleteById id={text} handleDelete={() => this.handleDelete(text)} flag={true}/>
                     </span>
                 )
             }
@@ -62,15 +63,16 @@ class UnSubmitted extends React.Component {
 
     /**单条记录删除*/
     handleDelete(id) {
-    //     axios({
-    //         url: `${this.props.url.rawMaterial.delete}/id=${id}`,
-    //         method: 'DELETE',
-    //         headers: {
-    //             Authorizaion: this.props.url.Authorizaion
-    //         }
-    //     }).then((data) => {
-    //
-    //     })
+        axios({
+            url: `${this.props.url.rawMaterial.deleteById}?statisticCode=${id}`,
+            method: 'DELETE',
+            headers: {
+                'Authorization': this.props.url.Authorizaion
+            }
+        }).then((data) => {
+            message.info(data.data.message);
+            // this.props.handleTableChange();
+        })
     }
 
     componentWillUnmount() {
