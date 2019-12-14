@@ -10,6 +10,11 @@ class UnSubmitted extends React.Component {
             visible: false
         };
         this.handleDelete = this.handleDelete.bind(this);
+        this.pagination = {
+            showSizeChanger: true,//是否可以改变 pageSize
+            showTotal: (total) => `共${total}条记录`,//显示共几条记录
+            pageSizeOptions: ["10","20","50","100"]
+        };
         this.columns = [{
             title: '序号',
             key: 'index',
@@ -53,9 +58,11 @@ class UnSubmitted extends React.Component {
     }
 
     render() {
+        let {data} = this.props;
+        this.pagination.total = data && data.total ? data.total : 0;
         return (
-            <Table rowKey={record => record.code} dataSource={this.props.data}
-                   columns={this.columns} pagination={this.props.pagination}
+            <Table rowKey={record => record.code} dataSource={data}
+                   columns={this.columns} pagination={this.pagination}
                    onChange={this.props.handleTableChange}
                    size={"small"} bordered/>
         )
@@ -71,7 +78,7 @@ class UnSubmitted extends React.Component {
             }
         }).then((data) => {
             message.info(data.data.message);
-            // this.props.handleTableChange();
+            this.props.handleTableChange(this.pagination);
         })
     }
 

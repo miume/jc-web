@@ -1,140 +1,198 @@
 import React from 'react';
-import {DatePicker, Table} from "antd";
-import NewButton from "../../../BlockQuote/newButton";
-import moment from "moment";
-import SelectPeriod from "../select";
+import {Spin, Table} from "antd";
+import axios from "axios";
+import Search from "../../excipientStatistics/statisticalAnalysis/producuLineStatis/productLineSearch";
 
 class LineStatistics extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
-            visible: false,
-            periodCode: 1,  //记录下拉框-周期类型编码
-            start: '',      //记录事件组件的value值
-            dateFormat: 'YYYY-MM-DD'
+            visible: false
         };
-        this.search = this.search.bind(this);
         this.getFooter = this.getFooter.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.onChange = this.onChange.bind(this);
+        this.getTableData = this.getTableData.bind(this);
+        this.getDateRange = this.getDateRange.bind(this);
+        this.periodsChange = this.periodsChange.bind(this);
+        this.startTimeChange = this.startTimeChange.bind(this);
         this.columns = [{
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            sorter: (a,b) => a.code - b.code,
-            width: '10%'
+            width: '7%'
         }, {
             title: '周期类型',
-            key: 'periodName',
-            dataIndex: 'periodName',
-            width: '10%'
+            key: 'periodType',
+            dataIndex: 'periodType',
+            width: '9%'
         }, {
             title: '期数',
-            key: 'periods',
-            dataIndex: 'periods',
-            width: '10%'
+            key: 'periodNum',
+            dataIndex: 'periodNum',
+            width: '7%'
         }, {
             title: '开始时间',
-            key: 'start',
-            dataIndex: 'start',
-            width: '10%'
+            key: 'startTime',
+            dataIndex: 'startTime',
+            width: '16%'
         }, {
             title: '结束时间',
-            key: 'end',
-            dataIndex: 'end',
-            width: '10%'
+            key: 'endTime',
+            dataIndex: 'endTime',
+            width: '16%'
         } , {
             title: '产线',
-            key: 'lineName',
-            dataIndex: 'lineName',
-            width: '10%'
+            key: 'productionLine',
+            dataIndex: 'productionLine',
+            width: '9%'
         }, {
             title: '小计(T)',
             key: 'totals',
             dataIndex: 'totals',
-            width: '10%'
+            width: '9%'
         }, {
             title: 'Ni(T)',
-            key: 'NiMetallicity',
-            dataIndex: 'NiMetallicity',
-            width: '10%'
+            key: 'niValue',
+            dataIndex: 'niValue',
+            width: '9%'
         }, {
             title: 'Co(T)',
-            key: 'CoMetallicity',
-            dataIndex: 'CoMetallicity',
-            width: '10%'
+            key: 'coValue',
+            dataIndex: 'coValue',
+            width: '9%'
         }, {
             title: 'Mn(T)',
-            key: 'MnMetallicity',
-            dataIndex: 'MnMetallicity',
-            width: '10%'
+            key: 'mnValue',
+            dataIndex: 'mnValue',
+            width: '9%'
         }]
     }
 
     render() {
-        let {start, dateFormat,periodCode} = this.state, {staticPeriod} = this.props,
-            defaultPeriodCode = staticPeriod && staticPeriod.length ? staticPeriod[0].code : '';
-        const value = start === undefined || start === "" ? null : moment(start, dateFormat);
+        let {staticPeriod} = this.props, {loading,periodCode,dateRange,startTime,data} = this.state;
         return (
-            <div className='staticalAnalysis'>
-                <div style={{float:'right'}}>
-                    <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : defaultPeriodCode} selectChange={this.selectChange}/>
-                    <DatePicker placeholder={'请输入开始时间'} onChange={this.onChange}
-                                style={{marginRight: 10}}
-                                value={value}
-                                format={dateFormat}/>
-                    <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
-                </div>
+            <Spin spinning={loading} wrapperClassName='rightContent-Div'>
+                <Search flag={true} staticPeriod={staticPeriod} periodCode={periodCode} periodsChange={this.periodsChange}
+                        dateRange={dateRange} startTime={startTime} startTimeChange={this.startTimeChange}/>
                 <div className={'clear'}></div>
-                <Table rowKey={record => record.code} dataSource={this.props.data}
+                <Table rowKey={record => record.index} dataSource={data}
                        columns={this.columns} pagination={false}
                        size={"small"} bordered
                        footer={this.getFooter}/>
-            </div>
+            </Spin>
         )
     }
 
-    /**切换分页*/
-    getFooter(data) {
-        return (
-            <div className='raw-material-line-footer'>
-                <div>总计</div>
-                <div className='raw-material-line-footer'>
-                    <div className='raw-material-line-footer-div'>{`重量：100T`}</div>
-                    <div className='raw-material-line-footer-div'>{`Ni金属量：5T`}</div>
-                    <div className='raw-material-line-footer-div'>{`Co金属量：5T`}</div>
-                    <div className='raw-material-line-footer-div'>{`Mn金属量：5T`}</div>
-                </div>
-            </div>
-        )
+    /**监控父组件periodCode的变化*/
+    componentWillReceiveProps(nextProps, nextContext) {
+        let {periodCode} = nextProps;
+        if(periodCode) {
+            this.setState({
+                periodCode: periodCode
+            });
+            this.getDateRange(periodCode);
+        }
     }
 
-    /**监控下拉框的变化*/
-    selectChange(value) {
-        console.log('select=',value)
+    /**根据统计周期code查询所有开始时间*/
+    getDateRange(periodCode) {
+        axios({
+            url: `${this.props.url.rawMaterial.getDate}?periodId=${periodCode}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if(res && res.length) {
+                this.setState({
+                    dateRange: res,
+                    startTime: res[0]
+                });
+                this.getTableData({
+                    startTime: res[0],
+                    periodCode: periodCode
+                })
+            } else {
+                this.setState({
+                    dateRange: [],
+                    startTime: '',
+                    data: [],
+                    loading: false
+                })
+            }
+        })
+    }
+
+    getTableData(params) {
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: `${this.props.url.rawMaterial.byLineStat}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params
+        }).then((data) => {
+            let res = data.data.data;
+            if(res) {
+                let {byLineTotals,lineStatDTOS} = res;
+                for(let i = 0; i < lineStatDTOS.length; i++) {
+                    lineStatDTOS[i]['index'] = i + 1;
+                }
+                this.setState({
+                    data: lineStatDTOS,
+                    total: byLineTotals,
+                    loading: false
+                })
+            } else {
+                this.setState({
+                    data: [],
+                    loading: false
+                })
+            }
+        });
+    }
+
+    /**监控开始时间的变化*/
+    startTimeChange(value) {
+        this.setState({
+            startTime: value
+        });
+        this.getTableData({
+            startTime: value,
+            periodCode: this.state.periodCode
+        })
+    }
+
+    /**监控统计周期的变化*/
+    periodsChange(value) {
         this.setState({
             periodCode: value
-        })
+        });
+        this.getDateRange(value);
     }
 
-    /**date时间范围变化监控*/
-    onChange(date, dateString) {
-        console.log(dateString)
-        this.setState({
-            start: dateString
-        })
+    getFooter() {
+        let {total,data} = this.state;
+        return (
+            data && data.length ?
+                <div className='excipient-statistics-detail-footer'>
+                    <div>小计</div>
+                    <div>{`重量：${total['totals']}`}</div>
+                    <div>{`Ni金属量：${total['niValue']}`}</div>
+                    <div>{`Co金属量：${total['coValue']}`}</div>
+                    <div>{`Mn金属量：${total['mnValue']}`}</div>
+                </div> : null
+        )
     }
 
-    /**根据周期类型和开始事件进行搜索*/
-    search() {
-        let {start, periodCode} = this.state;
-        console.log(start, periodCode)
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

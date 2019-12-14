@@ -8,9 +8,7 @@ class Statistics extends React.Component {
         this.state = {
             visible: false
         };
-        this.handleDelete = this.handleDelete.bind(this);
         this.pagination = {
-            total: this.props.data.length,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10","20","50","100"]
@@ -43,13 +41,13 @@ class Statistics extends React.Component {
             width: '10%'
         }, {
             title: '数据类别',
-            key: 'data.materialTypeName',
-            dataIndex: 'data.materialTypeName',
+            key: 'materialTypeName',
+            dataIndex: 'materialTypeName',
             width: '9%'
         }, {
             title: '物料名称',
-            key: 'materialName',
-            dataIndex: 'materialName',
+            key: 'data.materialTypeName',
+            dataIndex: 'data.materialTypeName',
             width: '9%'
         }, {
             title: '重量(T)',
@@ -85,15 +83,12 @@ class Statistics extends React.Component {
     }
 
     render() {
+        let {data} = this.props;
+        this.pagination.total = data && data.total ? data.total : 0;
         return (
-            <Table columns={this.columns} rowKey={record => record.data.code}  pagination={this.pagination}
-                   size={"small"} bordered dataSource={this.props.data}/>
+            <Table columns={this.columns} rowKey={record => record.data.code} pagination={this.pagination}
+                   size={"small"} bordered dataSource={data} onChange={this.props.handleTableChange}/>
         )
-    }
-
-    /**单条记录删除*/
-    handleDelete(id) {
-
     }
 
     componentWillUnmount() {

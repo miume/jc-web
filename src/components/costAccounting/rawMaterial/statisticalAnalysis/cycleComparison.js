@@ -2,197 +2,150 @@
  * 周期对比曲线
  * */
 import React from 'react';
-import {DatePicker} from "antd";
-import NewButton from "../../../BlockQuote/newButton";
-import moment from "moment";
 import axios from 'axios';
 import ReactEcharts from 'echarts-for-react';
-import SelectPeriod from "../select";
-
-const {RangePicker} = DatePicker;
+import Search from "../../excipientStatistics/statisticalAnalysis/productLineCompare/compareSearch";
+import {Spin} from "antd";
 
 class CycleComparison extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loading: false
+        };
+        this.getOption = this.getOption.bind(this);
+        this.getTableData = this.getTableData.bind(this);
+    }
+    render() {
+        let {staticPeriod,productionLineData} = this.props, {xData,niData,coData,mnData,loading} = this.state;
+        return (
+            <Spin spinning={loading} wrapperClassName='rightDiv-content'>
+                <Search flag={true} staticPeriod={staticPeriod}
+                        productionLineData={productionLineData} search={this.getTableData}/>
+                <div className={'clear'}></div>
+                <div className={'raw-material-canvas'}>
+                    <ReactEcharts option={this.getOption(xData,niData,coData,mnData)}
+                                  style={{width: '100%',height:'80%'}}/>
+                </div>
+            </Spin>
+        )
+    }
+
+    getTableData(params,lineId) {
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: `${this.props.url.rawMaterial.periodCompare}?lineCode=${lineId}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.props.url.Authorization
+            },
+            params
+        }).then((data) => {
+            let res = data.data.data, xData = [], niData = [], coData = [], mnData = [];
+            if(res && res.length) {
+                for(let i = 0; i < res.length; i++) {
+                    let e = res[i];
+                    xData.push(e['periods']);
+                    niData.push(e['niValue']);
+                    coData.push(e['coValue']);
+                    mnData.push(e['mnValue']);
+                }
+            }
+            this.setState({
+                xData,
+                niData,
+                coData,
+                mnData,
+                loading: false
+            })
+        });
+    }
+
+    getOption(xData,niData,coData,mnData) {
+        let labelOption = {
+                normal: {
+                    show: true,
+                    formatter: '{c}  {name|{a}}',
+                    fontSize: 16,
+                    rich: {
+                        name: {
+                            textBorderColor: '#fff'
+                        }
+                    }
+                }
+            },
+            option = (
+                {
+                    color: ['#003366', '#dc150c', '#58a0a8'],
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    legend: {
+                        data:['Ni','Co','Mn']
+                    },
+                    toolbox: {
+                        show: true,
+                        orient: 'vertical',
+                        left: 'right',
+                        top: 'center',
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            name: '周期数',
+                            axisTick: {show: false},
+                            data: xData
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value',
+                            name: '含量（T）',
+                        }
+                    ],
+                    series: [
+                        {
+                            name: 'Ni',
+                            type: 'line',
+                            barGap: 0,
+                            label: labelOption,
+                            data: niData
+                        },
+                        {
+                            name: 'Co',
+                            type: 'line',
+                            label: labelOption,
+                            data: coData
+                        },
+                        {
+                            name: 'Mn',
+                            type: 'line',
+                            label: labelOption,
+                            data: mnData
+                        }
+                    ]
+                }
+            );
+        return option;
+    }
+
     componentWillUnmount() {
         this.setState(() => {
             return;
         })
-    }
-
-    componentDidMount() {
-        this.getProductionLine();
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            visible: false,
-            periodCode: '',  //记录下拉框-周期类型编码
-            start: '',      //记录事件组件的value值
-            dateFormat: 'YYYY-MM-DD',
-            productionLine: []
-        };
-        this.search = this.search.bind(this);
-        this.getOption = this.getOption.bind(this);
-        this.getFooter = this.getFooter.bind(this);
-        this.selectChange = this.selectChange.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.getProductionLine = this.getProductionLine.bind(this);
-    }
-    render() {
-        let {start, end, dateFormat,periodCode} = this.state, {staticPeriod} = this.props,
-            defaultPeriodCode = staticPeriod && staticPeriod.length ? staticPeriod[0].code : '';
-        const value = start === undefined || end === undefined || start === "" || end === "" ? null : [moment(start, dateFormat), moment(end, dateFormat)];
-        return (
-            <div className='staticalAnalysis'>
-                <div style={{float:'right'}}>
-                    <SelectPeriod staticPeriod={staticPeriod} periodCode={periodCode ? periodCode : defaultPeriodCode} selectChange={this.selectChange}/>
-                    <RangePicker placeholder={["开始日期","结束日期"]}  onChange={this.onChange}
-                                 className={'raw-material-date'} style={{marginRight: 10}}
-                                 value={value}
-                                 format={dateFormat}
-                    />
-                    <NewButton name={'查询'} className={'fa fa-search'} handleClick={this.search}/>
-                </div>
-                <div className={'clear'}></div>
-                <div className={'raw-material-canvas'}>
-                    <ReactEcharts option={this.getOption()}
-                                  style={{width: '100%',height:'80%'}}/>
-                </div>
-            </div>
-        )
-    }
-
-    /**图表*/
-    getOption() {
-        let labelOption = {
-            normal: {
-                show: true,
-                formatter: '{c}  {name|{a}}',
-                fontSize: 16,
-                rich: {
-                    name: {
-                        textBorderColor: '#fff'
-                    }
-                }
-            }
-        };
-        return (
-            {
-                color: ['#003366', '#006699', '#dc150c'],
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                legend: {
-                    data: ['Ni', 'Co', 'Mn']
-                },
-                toolbox: {
-                    show: true,
-                    orient: 'vertical',
-                    left: 'right',
-                    top: 'center',
-                    feature: {
-                        mark: {show: true},
-                        dataView: {show: true, readOnly: false},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
-                        saveAsImage: {show: true}
-                    }
-                },
-                calculable: true,
-                xAxis: [
-                    {
-                        type: 'category',
-                        name: '周期数',
-                        axisTick: {show: false},
-                        data: ['2012', '2013', '2014', '2015', '2016']
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        name: '含量（T）',
-                    }
-                ],
-                series: [
-                    {
-                        name: 'Ni',
-                        type: 'line',
-                        barGap: 0,
-                        label: labelOption,
-                        data: [320, 332, 301, 334, 390]
-                    },
-                    {
-                        name: 'Co',
-                        type: 'line',
-                        label: labelOption,
-                        data: [220, 182, 191, 234, 290]
-                    },
-                    {
-                        name: 'Mn',
-                        type: 'line',
-                        label: labelOption,
-                        data: [150, 232, 201, 154, 190]
-                    }
-                ]
-            }
-        )
-    }
-
-    /**获取所有产品线*/
-    getProductionLine() {
-        axios.get(`${this.props.url.precursorProductionLine.all}`,{}, {
-            headers:{
-                'Authorization':this.props.url.Authorization,
-            },
-        }).then(data => {
-            let res = data.data.data;
-            if(res && res.length) {
-                this.setState({
-                    productionLine: res
-                })
-            }
-        })
-    }
-
-    /**切换分页*/
-    getFooter(data) {
-        return (
-            <div className='raw-material-line-footer'>
-                <div>总计</div>
-                <div className='raw-material-line-footer'>
-                    <div className='raw-material-line-footer-div'>{`重量：100T`}</div>
-                    <div className='raw-material-line-footer-div'>{`Ni金属量：5T`}</div>
-                    <div className='raw-material-line-footer-div'>{`Co金属量：5T`}</div>
-                    <div className='raw-material-line-footer-div'>{`Mn金属量：5T`}</div>
-                </div>
-            </div>
-        )
-    }
-
-    /**监控下拉框的变化*/
-    selectChange(value) {
-        console.log('select=',value)
-        this.setState({
-            periodCode: value
-        })
-    }
-
-    /**date时间范围变化监控*/
-    onChange(date, dateString) {
-        console.log(dateString)
-        this.setState({
-            start: dateString[0],
-            end: dateString[1]
-        })
-    }
-
-    /**根据周期类型和开始事件进行搜索*/
-    search() {
-        let {start, end, periodCode} = this.state;
-        console.log(start, end, periodCode)
     }
 }
 

@@ -209,7 +209,6 @@ class AddModal extends React.Component {
             data: params
         }).then((data) => {
             let code = data.data.data;
-            console.log(code)
             if(code) {
                 this.setState({
                     code: code,   //表示返回的统计编码
@@ -268,7 +267,6 @@ class AddModal extends React.Component {
             params
         }).then(data => {
             let res = data.data.data;
-            console.log(res)
         })
     }
 
@@ -283,13 +281,13 @@ class AddModal extends React.Component {
             value = e.target.value, {stockOutDTOS} = this.state;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         if(index > -1) {
             stockOutDTOS[index-1][name] = value;
             this.setState({
                 stockOutDTOS
             });
-            console.log(stockOutDTOS)
         }
         this.setState({
             [name]: value
@@ -303,7 +301,8 @@ class AddModal extends React.Component {
             value= target.value, {saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.state;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         if(type === 'mixedSalt') {        //混合盐
             saltMixtureLiquorDTOS[index-1][name] = value;
             this.setState({
@@ -369,7 +368,6 @@ class AddModal extends React.Component {
                 stockOutDTOS: stockOutDTOS,
                 statisticCode: code
             };
-            console.log(data)
         this.saveOrCommit(data);
     }
 
