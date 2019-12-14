@@ -48,7 +48,7 @@ class Home extends Component {
             '15':'设备指导',
             '16': '工艺参数'
         };
-        const server = localStorage.getItem('server'),server1='http://10.168.1.160:8082';
+        const server = localStorage.getItem('server'),server1='http://10.168.1.191:8082';
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -263,7 +263,7 @@ class Home extends Component {
                 intermediateProduct:`${server}/jc/common/middleProductionDetection`,
                 details:`${server}/jc/common/middleProductionDetection/details`,
             },
-            
+
             /**成品检验 */
             productInspection:{
                 pages:`${server}/jc/common/productRecord/pages`,
@@ -666,10 +666,13 @@ class Home extends Component {
             /**前驱体原料领用*/
             rawMaterial: {
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+                getCommittedData: `${server}/jc/common/materialDeliveryStatistic/statistic`,
                 deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
                 period: `${server}/jc/common/materialDeliveryStatistic/period`,
                 getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
+                supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
                 getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
+                lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {
@@ -772,33 +775,22 @@ class Home extends Component {
                 stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
                 getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
             },
-            // productStorage: {
-            //     getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
-            //     detail:`${server}/jc/common/productStorage/detail`,
-            //     getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
-            //     getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
-            //     nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
-            //     addConfirm:`${server}/jc/common/productStorage/addComfirm`,
-            //     afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
-            //     lineCur:`${server}/jc/common/productStorage/lineCur`,
-            //     processCur:`${server}/jc/common/productStorage/processCur`,
-            //     saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
-            //     stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
-            //     stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
-            // }
             productStorage: {
-                getAllBatch:`${server1}/productStorage/getAllBatch`,
-                editDetail:`${server1}/productStorage/editDetail`,
-                getPageUnCommit:`${server1}/productStorage/pageUnCommit`,
-                getPageCommit:`${server1}/productStorage/pageCommit`,
-                nextPeriod:`${server1}/productStorage/nextPeriod`,
-                addConfirm:`${server1}/productStorage/addComfirm`,
-                afterConfirm:`${server1}/productStorage/afterComfirm`,
-                lineCur:`${server1}/productStorage/lineCur`,
-                processCur:`${server1}/productStorage/processCur`,
-                saveOrCommit:`${server1}/productStorage/saveOrCommit`,
-                stasticByLine:`${server1}/productStorage/stasticByLine`,
-                stasticByProcess:`${server1}/productStorage/stasticByProcess`,
+                getDate:`${server}/jc/common/productStorage/getDate`,
+                delete: `${server}/jc/common/productStorage/delete`,
+                getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
+                detail:`${server}/jc/common/productStorage/detail`,
+                editDetail:`${server}/jc/common/productStorage/editDetail`,
+                getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
+                getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
+                nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
+                addConfirm:`${server}/jc/common/productStorage/addComfirm`,
+                afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
+                lineCur:`${server}/jc/common/productStorage/lineCur`,
+                processCur:`${server}/jc/common/productStorage/processCur`,
+                saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
+                stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
+                stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             },
             testMaterial:{
                 page:`${server}/jc/common/detectItem/page`,

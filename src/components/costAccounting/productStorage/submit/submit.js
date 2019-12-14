@@ -1,15 +1,10 @@
 import React from 'react';
-import {Table} from "antd";
+import {message, Table} from "antd";
 import DeleteById from "../../../BlockQuote/deleteById";
 import Search from "../search";
+import axios from "axios";
 
 class UnSubmitted extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +13,6 @@ class UnSubmitted extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.pagination = {
-            total: this.props.data.length,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10","20","50","100"]
@@ -66,8 +60,10 @@ class UnSubmitted extends React.Component {
     }
 
     render() {
+        let {data} = this.props;
+        this.pagination.total =  (data && data.total) ? data.total : 0;
         return (
-            <Table rowKey={record => record.head.code} dataSource={this.props.data}
+            <Table rowKey={record => record.head.code} dataSource={data}
                    columns={this.columns} pagination={this.pagination}
                    onChange={this.handleTableChange}
                    size={"small"} bordered/>
@@ -76,12 +72,29 @@ class UnSubmitted extends React.Component {
 
     /**单条记录删除*/
     handleDelete(id) {
-
+        axios({
+            url:`${this.props.url.productStorage.delete}?id=${id}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            }
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.props.getUnSubmittedData();//删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 
     /**切换分页*/
     handleTableChange(pagination) {
         this.props.getUnSubmittedData('',{},pagination)
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 

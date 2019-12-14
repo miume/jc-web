@@ -133,7 +133,7 @@ class InterProduct extends React.Component {
         this.setState({
             loading: true
         });
-        axios.get(`${this.url.intermediateProduct}/pages`,{
+        axios.get(`${this.url.intermediateProduct.intermediateProduct}/pages`,{
             headers:{
                 'Authorization':this.url.Authorization
             },
