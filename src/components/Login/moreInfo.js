@@ -8,6 +8,7 @@ class MoreInfo extends React.Component {
         super(props)
         this.state={
             infoFlag:true,
+            problemFlag:false
         }
     }
     click=()=>{
@@ -16,7 +17,9 @@ class MoreInfo extends React.Component {
             infoFlag:!infoFlag
         })
     }
-    
+    problem=()=>{
+
+    }
     
     render() {
         return (
@@ -25,11 +28,11 @@ class MoreInfo extends React.Component {
                 <hr/>
                 <span className='login-info-font' >系统访问要求</span>
                 <hr/>
-                <div className='login-info-font-p'>推荐浏览器：Chrome浏览器/Microsoft Edge/360极速模式</div>
+                <p className='login-info-font-p'>推荐浏览器：Chrome浏览器/Microsoft Edge/360极速模式</p>
                 <p className='login-info-font-p'>支持浏览器：FireFox浏览器/Opera浏览器/Safari浏览器器等</p>
                 <div style={{height:'200px'}}></div>
-                <div style={{textAlign:'center',bottom:'10px'}}>
-                    <span className='blue'>常见问题</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div style={{textAlign:'center'}}>
+                    <span className='blue' onClick={this.problem}>常见问题</span>&nbsp;&nbsp;&nbsp;&nbsp;
                     <span className='blue'>使用帮助</span>
                 </div>
             </div>

@@ -84,9 +84,7 @@ class DryProcess extends Component{//烘干工序
 
     }
     inputChange(e){
-        let value=e.target.value //获取到输入框填的值
-        let inputData=`${e.target.name}-${value}`
-        this.props.getDry(this.props.processId,inputData,'')
+        this.props.getDry(this.props.processId,e,'')
     }
 
     showModal(){
@@ -132,7 +130,7 @@ class DryProcess extends Component{//烘干工序
                         columns={this.columns}
                         pagination={false}
                         size='small' 
-                        scroll={{y:'250px'}}
+                        scroll={{y:'42vh'}}
                         style={{flex:'1',height:'60vh'}}
                         bordered
                     />

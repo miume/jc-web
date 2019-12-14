@@ -819,6 +819,7 @@ class Home extends Component {
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
                 getPeriodAndTime:`${server}/jc/common/productStorage/getPeriodAndTime`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
+                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
             },
             /**质量基础受检物料*/
             testMaterial:{

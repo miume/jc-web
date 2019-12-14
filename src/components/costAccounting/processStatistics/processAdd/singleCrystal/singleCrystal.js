@@ -50,9 +50,8 @@ class SingleCrystal extends Component {//单晶体配置
     }
     inputChange(e){//要定位到是第几条数据发生了变化，点击父组件保存时，要把填写的数据（没有改动的要传原来的数据）都保存起来并传给父组件
         //获取到输入框变化的code值-字段名      
-        let value=e.target.value //获取到输入框填的值
-       let inputData=`${e.target.name}-${value}`
-       this.props.getSingleCrystal(this.props.processId,inputData,'')
+       
+       this.props.getSingleCrystal(this.props.processId,e,'')
 
     }
     render() {
@@ -72,7 +71,7 @@ class SingleCrystal extends Component {//单晶体配置
                     rowKey={record => record.code}
                     columns={this.columns}
                     pagination={false}
-                    scroll={{y:'220px'}}
+                    scroll={{y:'42vh'}}
                     size='small'
                     bordered />
             </div>
