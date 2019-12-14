@@ -48,7 +48,7 @@ class Home extends Component {
             '15':'设备指导',
             '16': '工艺参数'
         };
-        const server = localStorage.getItem('server'),server1='http://10.168.1.191:8082';
+        const server = localStorage.getItem('server');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -467,6 +467,7 @@ class Home extends Component {
                 getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
                 getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
             },
+           
             /**批次追溯*/
             productionBatchRetrospect:{
                 page:`${server}/jc/common/productionBatchRetrospect/page`
@@ -623,6 +624,24 @@ class Home extends Component {
                 getHC:`${server}/jc/common/precursorMaterialDetails/getHC`
             },
             /**前驱体在制品统计*/
+            // precursorGoodIn:{
+            //     getPendSubmit:`${server1}/goodIn/page`,
+            //     getStatisticPage:`${server1}/goodIn/statisticPage`,
+            //     getAnalysisProcess:`${server1}/goodIn/analysisProcess`,//获取统计分析的工序分析
+            //     getAnalysisLine:`${server1}/goodIn/analysisLine`,//获取统计分析的产线分析
+            //     getLineNameByPeriod:`${server1}/goodIn/getLineNameByPeriod`,//获取期数
+            //     addComfirm:`${server1}/goodIn/addComfirm`,//新增确认
+            //     afterComfirm:`${server}/goodIn/afterComfirm`,//新增确认后
+            //     getLastPotencyByProcessId:`${server1}/goodIn/getLastPotencyByProcessId`,//获取上期浓度
+            //     statisticDetail:`${server1}/goodIn/statisticDetail`,
+            //     saveOrCommit:`${server1}/goodIn/saveOrCommit`,//点击保存提交
+            //     commitDetail:`${server1}/goodIn/commitDetail`,//待提交编辑详情
+            //     delete:`${server1}/goodIn`,
+            //     getStartTime:`${server1}/goodIn/getStartTime`,
+            //     processCompare:`${server1}/goodIn/processCompare`,
+            //     lineCompare:`${server1}/goodIn/lineCompare`,
+            //     getVolume:`${server1}/goodIn/getVolumeWeight` //获取体积
+            // },
             precursorGoodIn:{
                 getPendSubmit:`${server}/jc/common/goodIn/page`,
                 getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
@@ -773,10 +792,10 @@ class Home extends Component {
                 getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
             },
             productStorage: {
-                getDate:`${server}/jc/common/productStorage/getDate`,
-                delete: `${server}/jc/common/productStorage/delete`,
                 getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
                 detail:`${server}/jc/common/productStorage/detail`,
+                getDate:`${server}/jc/common/productStorage/getDate`,
+                delete: `${server}/jc/common/productStorage/delete`,
                 editDetail:`${server}/jc/common/productStorage/editDetail`,
                 getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
                 getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
@@ -789,11 +808,32 @@ class Home extends Component {
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             },
+            // productStorage: {
+            //     getAllBatch:`${server1}/productStorage/getAllBatch`,
+            //     editDetail:`${server1}/productStorage/editDetail`,
+            //     getPageUnCommit:`${server1}/productStorage/pageUnCommit`,
+            //     getPageCommit:`${server1}/productStorage/pageCommit`,
+            //     nextPeriod:`${server1}/productStorage/nextPeriod`,
+            //     addConfirm:`${server1}/productStorage/addComfirm`,
+            //     afterConfirm:`${server1}/productStorage/afterComfirm`,
+            //     lineCur:`${server1}/productStorage/lineCur`,
+            //     processCur:`${server1}/productStorage/processCur`,
+            //     saveOrCommit:`${server1}/productStorage/saveOrCommit`,
+            //     stasticByLine:`${server1}/productStorage/stasticByLine`,
+            //     stasticByProcess:`${server1}/productStorage/stasticByProcess`,
+            // },
+            /**质量基础受检物料*/
             testMaterial:{
                 page:`${server}/jc/common/detectItem/page`,
                 add:`${server}/jc/common/detectItem`,
-                delete:`${server}/jc/common/detectItem`,
-                ids:`${server}/jc/common/detectItem/deleteByIds`
+                ids:`${server}/jc/common/detectItem/deleteByIds`,
+                all:`${server}/jc/common/detectItem`
+            },
+            /**前驱体成本核算*/
+            costAccount:{
+                getDate:`${server}/jc/common/precursorCostAccount/getStartDate`,
+                mainMatConfirm:`${server}/jc/common/precursorCostAccount/mainMatConfirm`,
+                auxMatConfirm:`${server}/jc/common/precursorCostAccount/auxMatConfirm`
             }
         };
 

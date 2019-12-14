@@ -1,20 +1,22 @@
 import React from 'react';
 import { Input, Icon, Button, Checkbox, message} from 'antd';
-
+import MoreInfo from './moreInfo'
 class LoginItem extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            infoFlag:true
         };
         this.beforeLogin = this.beforeLogin.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.remindLogin = this.remindLogin.bind(this);
-        this.dataProcessing = this.dataProcessing.bind(this);
+        this.dataProcessing = this.dataProcessing.bind(this);  
+        this.handleInfo=this.handleInfo.bind(this);
     }
-
+ 
     render() {
         let {username,password} = this.state;
         return (
@@ -31,6 +33,9 @@ class LoginItem extends React.Component {
                 <Button size='large' type="primary" style={{width:'100%', fontSize:'14px'}} onClick={this.handleSubmit}>
                     登录
                 </Button>
+                <div className='login-blockquote'></div>
+                <div onClick={this.handleInfo} className='login-info'><span>{this.state.infoFlag?'<<<':'>>>'}</span>&nbsp;&nbsp;{this.state.infoFlag?'更多信息':'隐藏信息'}</div>
+                {/* <MoreInfo handleInfo={this.props.handleInfo}/> */}
             </div>
         );
     }
@@ -98,7 +103,13 @@ class LoginItem extends React.Component {
             [name]: value
         })
     }
-
+    handleInfo(){
+        let {infoFlag}=this.state
+        this.setState({
+            infoFlag:!infoFlag
+        })
+        this.props.handleInfo(!infoFlag)
+    }
     componentDidMount() {
         /**实现enter键登陆 */
         const f = (e) => {
