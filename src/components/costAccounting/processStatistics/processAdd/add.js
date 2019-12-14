@@ -66,7 +66,10 @@ class CostProcessAdd extends Component {
             statisticId: '',
             flagConfirm: false,
             otherFlag:true,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上,因为默认是有一行的，所以flag为true
-            otherData:otherData
+            otherData:otherData,
+            giveEndDate:undefined,
+            disabledDateFlag:false,
+            lengthSub:undefined
         }
         this.returnProcess = this.returnProcess.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
@@ -85,6 +88,7 @@ class CostProcessAdd extends Component {
         this.alterData=this.alterData.bind(this);
         this.weightAlterData=this.weightAlterData.bind(this);
         this.getLastPotency=this.getLastPotency.bind(this);
+        this.disabledDate=this.disabledDate.bind(this);
     }
     componentWillUnmount() {
         this.setState = () => {
@@ -165,22 +169,40 @@ class CostProcessAdd extends Component {
             let res = data.data.data
             if (res) {
                 this.setState({
-                    inputPeriod: res,
+                    inputPeriod: res.period,
+                    giveEndDate:res.endTime.split(' ')[0]
                 })
             }
         })
     }
     startChange(date, dateString) {
-        let { startSecondTime, length } = this.state
+        let { startSecondTime, length ,giveEndDate} = this.state
         let time = new Date(Date.parse(dateString) + 3600 * 24 * 1000 * length)//将日期转为毫秒
         let endDate = moment(time).format('YYYY-MM-DD')
-        this.setState({
+        let date1=Date.parse(dateString),date2=Date.parse(giveEndDate),dateSub=Math.abs(date1-date2),
+            lengthSub=Math.floor(dateSub / (24 * 3600 * 1000))
+        if(lengthSub>1){//选择的开始时间与给的上一期结束时间间隔天数，大于1天要给提示
+            this.setState({
+                disabledDateFlag:true,
+                lengthSub:lengthSub
+            })
+        }
+        this.setState({ 
             startDate: dateString,
             endDate: endDate,
             startTime: `${dateString} ${startSecondTime}`,
             endTime: `${endDate} ${startSecondTime}`,
         })
     }
+    disabledDate(current) {
+        let {giveEndDate}=this.state
+        let time = new Date(Date.parse(giveEndDate) + 3600 * 24 * 1000 )//将日期转为毫秒
+        let endDate = moment(time).format('YYYY-MM-DD')
+        //小于给定时间不能选
+        return current&&current<=moment(endDate)
+      }
+      
+      
     endChange(date, dateString) {
         let { startSecondTime } = this.state
         this.setState({
@@ -504,7 +526,6 @@ class CostProcessAdd extends Component {
        this.props.history.push('/processStatistics')
     }
     render() {
-       // console.log(this.state.addDataOrigin)
         this.url = JSON.parse(localStorage.getItem('url'))
         this.dataComponent = [{
             component: <SingleCrystal tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getSingleCrystal={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
@@ -523,7 +544,11 @@ class CostProcessAdd extends Component {
             <div >
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='前驱体成本核算管理' menu2='在制品统计' returnDataEntry={this.returnProcess} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm} staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange} search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod} endDate={this.state.endDate} startDate={this.state.startDate}/>
+                    <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm} 
+                        staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange} 
+                        search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod} 
+                        endDate={this.state.endDate} startDate={this.state.startDate} disabledDate={this.disabledDate} subLength={this.state.lengthSub} disabledDateFlag={this.state.disabledDateFlag}
+                    />
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
                         {
                             this.props.location.process ? this.props.location.process.map((data, index) => {

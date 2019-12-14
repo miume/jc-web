@@ -138,7 +138,7 @@ class TestMaterial extends React.Component{
                     </Popconfirm>
                   </span>
                 ) : (
-                  <span className='blue' onClick={() => this.edit(record.id)}>编辑</span>
+                  <span className='blue' onClick={() => this.edit(record.code)}>编辑</span>
                 )}
               </span>
               {this.judgeOperation(this.operation,'DELETE')?<Divider type='vertical' />:''}
@@ -201,7 +201,7 @@ class TestMaterial extends React.Component{
     //根据id处理单条记录删除
     handleDelete(id){//id代表的是这条记录的id
         axios({
-          url:`${this.url.testMaterial.delete}`,
+          url:`${this.url.testMaterial.add}`,
           method:'Delete',
           headers:{
             'Authorization':this.url.Authorization
@@ -264,7 +264,7 @@ class TestMaterial extends React.Component{
     //编辑
     //判断单元格是否可编辑
     isEditing (record)  {
-        return record.id === this.state.editingKey;
+        return record.code === this.state.editingKey;
       };
 
       edit(id) {

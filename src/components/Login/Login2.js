@@ -5,14 +5,17 @@ import axios from 'axios'
 import 'antd/dist/antd.css';
 import './Login2.css';
 import LoginItem from "./loginItem";
+import MoreInfo from './moreInfo'
 class Login extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      loading : false
+      loading : false,
+      infoFlag:true
     };
     this.loginIn = this.loginIn.bind(this);
     this.dataProcessing = this.dataProcessing.bind(this);
+    this.handleInfo=this.handleInfo.bind(this);
   }
   componentWillMount() {
     localStorage.setItem("server", "http://47.107.237.60:3389");//外网
@@ -70,12 +73,18 @@ class Login extends React.Component {
     localStorage.setItem('menus',JSON.stringify(menus));
     localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
   }
+  handleInfo(infoFlag){  
+    this.setState({
+        infoFlag:infoFlag,  
+    })
+}
   render() {
-    let {loading} = this.state;
+    let {loading,infoFlag} = this.state;
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
-      <Spin spinning={loading}>
+      <Spin spinning={loading} >
         <div className='gutter-box'>
+              <MoreInfo infoFlag={infoFlag}/>
               <div className='login-box'>
                 <img src={require(`./logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
                 <div className='login-blockquote'></div>
@@ -84,7 +93,7 @@ class Login extends React.Component {
                     <Tabs.TabPane tab='火法' key='1'></Tabs.TabPane>
                     <Tabs.TabPane tab='湿法' key='2'></Tabs.TabPane>
                   </Tabs>
-                  <LoginItem loginIn={this.loginIn}/>
+                  <LoginItem loginIn={this.loginIn} handleInfo={this.handleInfo}/>
                 </div>
               </div>
         </div>

@@ -153,9 +153,7 @@ class AddModal extends React.Component{
                 seconds = "0"+seconds;
             }
             var time = hour+":"+minutes+":"+seconds;
-            // console.log(time)
             var today = currentdate+" "+time;
-            // console.log(today);
             this.setState({
                 nowTime:time,
                 today:today
@@ -270,7 +268,6 @@ class AddModal extends React.Component{
         })
     }
     slotNumChange=(e)=>{//槽号
-        console.log(e)
         this.setState({
             slotNumVal:e
         })
