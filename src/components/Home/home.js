@@ -259,10 +259,7 @@ class Home extends Component {
                 detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
             },
             /**中间品录检 */
-            intermediateProduct:{
-                intermediateProduct:`${server}/jc/common/middleProductionDetection`,
-                details:`${server}/jc/common/middleProductionDetection/details`,
-            },
+            intermediateProduct: `${server}/jc/common/middleProductionDetection`,
 
             /**成品检验 */
             productInspection:{
