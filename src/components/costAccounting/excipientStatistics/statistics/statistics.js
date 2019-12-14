@@ -9,8 +9,8 @@ class Statistics extends React.Component{
         this.state = {
             visible: false
         };
+        this.tableChange = this.tableChange.bind(this);
         this.pagination = {
-            total: this.props.data.total,
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
             pageSizeOptions: ["10","20","50","100"]
@@ -74,10 +74,16 @@ class Statistics extends React.Component{
     }
 
     render() {
-        return(
+        let {data} = this.props;
+        this.pagination.total =  (data && data.total) ? data.total : 0;
+        return (
             <Table columns={this.columns} rowKey={record => record.processTotal.code}  pagination={this.pagination}
-                   size={"small"} bordered dataSource={this.props.data}/>
+                   size={"small"} bordered dataSource={data} onChange={this.tableChange}/>
         )
+    }
+
+    tableChange(pagination) {
+        this.props.getUnSubmittedData('',{},pagination);
     }
 
     componentWillUnmount() {

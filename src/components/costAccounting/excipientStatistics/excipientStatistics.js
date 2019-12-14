@@ -71,7 +71,7 @@ class ExcipientStatistics extends React.Component{
                             <Submitted data={unSubmittedData} url={this.url} handleClick={this.handleClick} getUnSubmittedData={this.getUnSubmittedData}/>
                         </TabPane>
                         <TabPane tab={'已统计'} key={'2'}>
-                            <Statistics data={submittedData} getUnSubmittedData={this.getUnSubmittedData}  url={this.url}/>
+                            <Statistics data={submittedData} getUnSubmittedData={this.getUnSubmittedData} url={this.url}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -118,12 +118,15 @@ class ExcipientStatistics extends React.Component{
         this.setState({
             loading: true
         });
+        if(pagination) {
+            this.pagination = pagination;
+        }
         let {currentStaticPeriod,startTime,endTime} = this.state,
             periodCode = currentStaticPeriod ? currentStaticPeriod.code : '',
             time = currentStaticPeriod ? currentStaticPeriod.startTime : '00:00:00',
             params = {
-                size: pagination ? pagination.pageSize : 10,
-                page: pagination ? pagination.current : 1
+                size: this.pagination ? this.pagination.pageSize : 10,
+                page: this.pagination ? this.pagination.current : 1,
             };
         data['flag'] = flag === '' ? this.state.flag : flag;
         data['startTime'] = data['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
@@ -174,6 +177,7 @@ class ExcipientStatistics extends React.Component{
         this.setState({
             flag: flag
         });
+        this.pagination = undefined;
         this.getUnSubmittedData(flag);
     }
 

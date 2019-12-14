@@ -108,6 +108,7 @@ class ProcessStatis extends Component{//工序统计
                 })
             } else {
                 this.setState({
+                    dateRange: [],
                     startTime: '',
                     data: []
                 })

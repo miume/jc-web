@@ -19,6 +19,7 @@ class AddModal extends React.Component{
             batchData: [], //存储所有批次信息
         };
         this.addItem = this.addItem.bind(this);
+        this.selectChange = this.selectChange.bind(this);
         this.getAllBatch = this.getAllBatch.bind(this);
         this.batchChange = this.batchChange.bind(this);
         this.inputChange = this.inputChange.bind(this);
@@ -34,8 +35,8 @@ class AddModal extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData} = this.state;
+        let {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData,id} = this.state,
+            name = id > -1 ? '编辑数据' : '新增数据';
         return(
             <Spin spinning={loading}>
                 <BlockQuote name={name} menu={this.current.menuName}
@@ -58,17 +59,18 @@ class AddModal extends React.Component{
 
     /**获取路由传递的数据*/
     componentDidMount() {
+        this.getAllBatch();
         let location = this.props.location;
         if(location) {
             let path = location.pathname.split('/'),
-                code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
+                id = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
                 currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
             this.setState({
-                code: code,
+                id: id,
                 staticPeriod: staticPeriod
             });
-            if(code) {
-                this.getDetailData(code);
+            if(id) {
+                this.getDetailData(id);
             } else {
                 this.setState({
                     currentStaticPeriod: currentStaticPeriod
@@ -91,6 +93,9 @@ class AddModal extends React.Component{
             let res = data.data.data;
             if(res && res['head']) {
                 let {head, pageInfo} = res;
+                for(let i = 0; i < pageInfo.length; i++) {
+                    pageInfo[i]['index'] = i + 1;
+                }
                 this.setState({
                     data: pageInfo,
                     head: head,
@@ -140,11 +145,16 @@ class AddModal extends React.Component{
     /**监控所有input输入框的变化*/
     inputChange(e) {
         let tar = e.target.name.split('-'), value = e.target.value,
-            name = tar[0], index = tar[1] ? tar[1] : '',
+            name = tar[0], index = tar[1] ? tar[1] : '', type = tar[2] ? tar[2] : '',
             {data} = this.state;
         if(typeof value === 'number') value = value.toString();
-        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(type === 'int') {
+            value =  value.replace(/[^\d\.]/g, "");  //只准输入数字
+            value = value === '' ? '' : parseInt(value);  //将字符串转为整型
+        } else if (type === 'float') {
+            value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        }
         if(index === '') {
             this.setState({
                 [name]: value
@@ -183,7 +193,6 @@ class AddModal extends React.Component{
                 message.info('存在不一致的统计周期，需要进行修改！')
             }
             else {
-                this.getAllBatch();
                 this.setState({
                     id: res,
                     visible: true
@@ -214,7 +223,7 @@ class AddModal extends React.Component{
         let {data} = this.state,
             item = {
                 "index": data.length+1,
-                "batch": "",
+                "batch": undefined,
                 "coConcentration": 0,
                 "coMetallicity": 0,
                 "code": 0,
@@ -237,7 +246,7 @@ class AddModal extends React.Component{
 
     /**点击取消新增*/
     handleCancel() {
-        this.props.history.push({pathname: "/excipientStatistics"})
+        this.props.history.push({pathname: "/productStorage"})
     };
 
     /**点击保存新增*/
@@ -252,7 +261,6 @@ class AddModal extends React.Component{
 
     saveDataProcessing(flag) {
         let {data,id} = this.state;
-        console.log(data)
         this.saveOrCommit(data,flag,id);
     }
 

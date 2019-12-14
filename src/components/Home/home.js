@@ -48,7 +48,7 @@ class Home extends Component {
             '15':'设备指导',
             '16': '工艺参数'
         };
-        const server = localStorage.getItem('server'),server1='http://10.168.1.160:8082',server2='http://10.168.1.191:8082';
+        const server = localStorage.getItem('server');
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -259,11 +259,8 @@ class Home extends Component {
                 detailsByBatchNumberId:`${server}/jc/common/rawTestReport/detailsByBatchNumberId`,
             },
             /**中间品录检 */
-            intermediateProduct:{
-                intermediateProduct:`${server}/jc/common/middleProductionDetection`,
-                details:`${server}/jc/common/middleProductionDetection/details`,
-            },
-            
+            intermediateProduct: `${server}/jc/common/middleProductionDetection`,
+
             /**成品检验 */
             productInspection:{
                 pages:`${server}/jc/common/productRecord/pages`,
@@ -454,38 +451,23 @@ class Home extends Component {
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
             },
             /**批次信息 */
-            // productionBatchInfo:{
-            //     getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
-            //     deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
-            //     deletes:`${server}/jc/common/productionBatchInfo/delSomeByCodes`,
-            //     addOne:`${server}/jc/common/productionBatchInfo/addOne`,
-            //     updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
-            //     getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
-            //     getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
-            //     save:`${server}/jc/common/productionBatchInfo/save`,
-            //     getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
-            //     ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
-            //     preview:`${server}/jc/common/productionBatchInfo/preview`,
-            //     getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
-            //     getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
-            //     getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
-            // },
             productionBatchInfo:{
-                getAll:`${server2}/productionBatchInfo/getAllInfo`,
-                deleteOne:`${server2}/productionBatchInfo/delOneByCode`,
-                deletes:`${server2}/productionBatchInfo/delSomeByCodes`,
-                addOne:`${server2}/productionBatchInfo/addOne`,
-                updateOne:`${server2}/productionBatchInfo/updateByCode`,
-                getAddRule:`${server2}/productionBatchRule/getAllInfos`,
-                getAllRule:`${server2}/productionBatchRule/getAll`,
-                save:`${server2}/productionBatchInfo/save`,
-                getAllInfoByCondition:`${server2}/productionBatchInfo/getAllInfoByCondition`,
-                ByCode:`${server2}/productionBatchInfo/ByCode`,
-                preview:`${server}/productionBatchInfo/preview`,
-                getDetail:`${server2}/productionBatchInfo/getDetail`,
-                getInstrument:`${server2}/productionBatchInfo/getInstrument`,
-                getInstrumentChart:`${server2}/productionBatchInfo/getInstrumentChart`
+                getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
+                deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
+                deletes:`${server}/jc/common/productionBatchInfo/delSomeByCodes`,
+                addOne:`${server}/jc/common/productionBatchInfo/addOne`,
+                updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
+                getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
+                getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
+                save:`${server}/jc/common/productionBatchInfo/save`,
+                getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
+                ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
+                preview:`${server}/jc/common/productionBatchInfo/preview`,
+                getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
+                getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
+                getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
             },
+           
             /**批次追溯*/
             productionBatchRetrospect:{
                 page:`${server}/jc/common/productionBatchRetrospect/page`
@@ -700,10 +682,13 @@ class Home extends Component {
             /**前驱体原料领用*/
             rawMaterial: {
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+                getCommittedData: `${server}/jc/common/materialDeliveryStatistic/statistic`,
                 deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
                 period: `${server}/jc/common/materialDeliveryStatistic/period`,
                 getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
+                supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
                 getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
+                lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {
@@ -724,8 +709,8 @@ class Home extends Component {
                 detailByBatch: `${server}/jc/common/processParam/detailByBatch`,
                 saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
                 deleteByIds: `${server}/jc/common/processParam/deleteByIds`,
-                mixRecipe:`${server1}/processParam/mixRecipe`, //混合盐读取配方
-                compoundRecipe:`${server1}/processParam/compoundRecipe`
+                mixRecipe:`${server}/processParam/mixRecipe`, //混合盐读取配方
+                compoundRecipe:`${server}/processParam/compoundRecipe`
             },
             /**正极基础统计周期*/
             positiveStatic:{
@@ -809,6 +794,9 @@ class Home extends Component {
             productStorage: {
                 getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
                 detail:`${server}/jc/common/productStorage/detail`,
+                getDate:`${server}/jc/common/productStorage/getDate`,
+                delete: `${server}/jc/common/productStorage/delete`,
+                editDetail:`${server}/jc/common/productStorage/editDetail`,
                 getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
                 getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
                 nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
@@ -841,7 +829,7 @@ class Home extends Component {
                 ids:`${server}/jc/common/detectItem/deleteByIds`,
                 all:`${server}/jc/common/detectItem`
             },
-            /**成本核算*/
+            /**前驱体成本核算*/
             costAccount:{
                 getDate:`${server}/jc/common/precursorCostAccount/getStartDate`,
                 mainMatConfirm:`${server}/jc/common/precursorCostAccount/mainMatConfirm`,

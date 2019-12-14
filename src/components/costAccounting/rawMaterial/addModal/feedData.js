@@ -21,20 +21,20 @@ class FeedData extends React.Component {
     }
 
     render() {
-        const {data} = this.props;
+        const {saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.props;
         return (
             <div className={this.props.flag? 'raw-material-add-feed' : 'hide'}>
                 <div className='raw-material-feed-data'>补料数据</div>
                 <Divider type={"horizontal"}/>
                 <Tabs defaultActiveKey={'1'}>
                     <TabPane tab={'混合盐溶液'} key={'1'}>
-                        <FeedDataTable data={data} feedDataChange={this.props.feedDataChange}/>
+                        <FeedDataTable data={saltMixtureLiquorDTOS} feedDataChange={this.props.feedDataChange}/>
                     </TabPane>
                     <TabPane tab={'晶体'} key={'2'}>
-                        <FeedDataTable data={data} flag='crystal' feedDataChange={this.props.feedDataChange}/>
+                        <FeedDataTable data={crystalsDTOS} flag='crystal' feedDataChange={this.props.feedDataChange}/>
                     </TabPane>
                     <TabPane tab={'单晶体溶液'} key={'3'}>
-                        <FeedDataTable data={data} flag='singleCrystal' feedDataChange={this.props.feedDataChange}/>
+                        <FeedDataTable data={singleCrystalLiquorDTOS} flag='singleCrystal' feedDataChange={this.props.feedDataChange}/>
                     </TabPane>
                 </Tabs>
             </div>

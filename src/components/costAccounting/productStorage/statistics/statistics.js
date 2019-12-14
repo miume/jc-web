@@ -1,20 +1,14 @@
 import React from 'react';
 import {Table} from "antd";
 import Detail from './detail';
-import Search from "../search";
 
 class Statistics extends React.Component {
-    componentWillUnmount() {
-        this.setState(() => {
-            return;
-        })
-    }
-
     constructor(props) {
         super(props);
         this.state = {
             visible: false
         };
+        this.tableChange = this.tableChange.bind(this);
         this.pagination = {
             showSizeChanger: true,//是否可以改变 pageSize
             showTotal: (total) => `共${total}条记录`,//显示共几条记录
@@ -24,7 +18,7 @@ class Statistics extends React.Component {
             title: '序号',
             key: 'index',
             dataIndex: 'index',
-            sorter: (a, b) => a.code - b.code,
+            sorter: (a, b) => a.index - b.index,
             width: '5%'
         }, {
             title: '周期类型',
@@ -33,67 +27,79 @@ class Statistics extends React.Component {
             width: '7%'
         }, {
             title: '期数',
-            key: 'periods',
-            dataIndex: 'periods',
+            key: 'list.periods',
+            dataIndex: 'list.periods',
             width: '7%'
         }, {
             title: '开始时间',
-            key: 'start',
-            dataIndex: 'start',
+            key: 'head.startTime',
+            dataIndex: 'head.startTime',
             width: '10%'
         }, {
             title: '结束时间',
-            key: 'end',
-            dataIndex: 'end',
+            key: 'head.endTime',
+            dataIndex: 'head.endTime',
             width: '10%'
         }, {
             title: '成品名称',
-            key: 'name',
-            dataIndex: 'name',
+            key: 'list.productionTypeName',
+            dataIndex: 'list.productionTypeName',
             width: '9%'
         }, {
             title: '产品类型',
-            key: 'productType',
-            dataIndex: 'productType',
+            key: 'list.productionTypeCode',
+            dataIndex: 'list.productionTypeCode',
             width: '9%'
         }, {
             title: '重量(T)',
-            key: 'weight',
-            dataIndex: 'weight',
+            key: 'list.totals',
+            dataIndex: 'list.totals',
             width: '9%'
         }, {
             title: 'Ni金属量(T)',
-            key: 'Ni',
-            dataIndex: 'Ni',
+            key: 'list.niValue',
+            dataIndex: 'list.niValue',
             width: '9%'
         }, {
             title: 'Co金属量(T)',
-            key: 'Co',
-            dataIndex: 'Co',
+            key: 'list.coValue',
+            dataIndex: 'list.coValue',
             width: '9%'
         }, {
             title: 'Mn金属量(T)',
-            key: 'Mn',
-            dataIndex: 'Mn',
+            key: 'list.mnValue',
+            dataIndex: 'list.mnValue',
             width: '9%'
         }, {
             title: '操作',
-            key: 'code',
-            dataIndex: 'code',
+            key: 'list.code',
+            dataIndex: 'list.code',
             width: '5%',
-            render: (text, record) => {
+            render: (text) => {
                 return (
-                    <Detail data={record}/>
+                    <Detail code={text} url={this.props.url}/>
                 )
             }
         }]
     }
 
     render() {
+        let {data} = this.props;
+        this.pagination.total =  (data && data.total) ? data.total : 0;
         return (
-            <Table columns={this.columns} rowKey={record => record.code} pagination={this.pagination}
-                   size={"small"} bordered dataSource={this.props.data}/>
+            <Table columns={this.columns} rowKey={record => record.list.code} pagination={this.pagination}
+                   size={"small"} bordered dataSource={data} onChange={this.tableChange}/>
         )
+    }
+
+    tableChange(pagination) {
+        this.props.getUnSubmittedData('',{},pagination);
+    }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
     }
 }
 
