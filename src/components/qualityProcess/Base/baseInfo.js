@@ -22,18 +22,13 @@ const data=[{
     name:'产品线',
     path:'/productLine',
     className:'fa fa-sitemap fa-5x'
+},{
+    id:5,
+    name:'受检物料',
+    path: '/testMaterial',
+    className:'fa fa-sitemap fa-5x'
 }]
-// const active={
-//     backgroundcolor:'#00b4f0',//点击的时候按钮变成蓝色
-// }
-// const noActive={
-//     backgroundcolor:'#ebebeb',//未点击的时候是灰白色
-// }
-// var style={//按钮风格
-//      width:'230px',height:'100px',
-//      backgroundcolor:'#ebebeb',margin:'25px',
-//      border:'solid 1px black'
-// }
+
 class BaseInfo extends React.Component{
     constructor(props){
         super(props);

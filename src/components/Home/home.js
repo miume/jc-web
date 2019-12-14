@@ -791,6 +791,12 @@ class Home extends Component {
                 saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
+            },
+            testMaterial:{
+                page:`${server}/jc/common/detectItem/page`,
+                add:`${server}/jc/common/detectItem`,
+                delete:`${server}/jc/common/detectItem`,
+                ids:`${server}/jc/common/detectItem/deleteByIds`
             }
         };
 
