@@ -48,7 +48,7 @@ class Home extends Component {
             '15':'设备指导',
             '16': '工艺参数'
         };
-        const server = localStorage.getItem('server'),server1='http://10.168.1.160:8082';
+        const server = localStorage.getItem('server'),server1='http://10.168.1.160:8082',server2='http://10.168.1.191:8082';
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -454,21 +454,37 @@ class Home extends Component {
                 getRepairDetail:`${server}/jc/common/deviceRepair/deviceRepairApplication`,
             },
             /**批次信息 */
+            // productionBatchInfo:{
+            //     getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
+            //     deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
+            //     deletes:`${server}/jc/common/productionBatchInfo/delSomeByCodes`,
+            //     addOne:`${server}/jc/common/productionBatchInfo/addOne`,
+            //     updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
+            //     getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
+            //     getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
+            //     save:`${server}/jc/common/productionBatchInfo/save`,
+            //     getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
+            //     ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
+            //     preview:`${server}/jc/common/productionBatchInfo/preview`,
+            //     getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
+            //     getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
+            //     getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
+            // },
             productionBatchInfo:{
-                getAll:`${server}/jc/common/productionBatchInfo/getAllInfo`,
-                deleteOne:`${server}/jc/common/productionBatchInfo/delOneByCode`,
-                deletes:`${server}/jc/common/productionBatchInfo/delSomeByCodes`,
-                addOne:`${server}/jc/common/productionBatchInfo/addOne`,
-                updateOne:`${server}/jc/common/productionBatchInfo/updateByCode`,
-                getAddRule:`${server}/jc/common/productionBatchRule/getAllInfos`,
-                getAllRule:`${server}/jc/common/productionBatchRule/getAll`,
-                save:`${server}/jc/common/productionBatchInfo/save`,
-                getAllInfoByCondition:`${server}/jc/common/productionBatchInfo/getAllInfoByCondition`,
-                ByCode:`${server}/jc/common/productionBatchInfo/ByCode`,
-                preview:`${server}/jc/common/productionBatchInfo/preview`,
-                getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
-                getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
-                getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
+                getAll:`${server2}/productionBatchInfo/getAllInfo`,
+                deleteOne:`${server2}/productionBatchInfo/delOneByCode`,
+                deletes:`${server2}/productionBatchInfo/delSomeByCodes`,
+                addOne:`${server2}/productionBatchInfo/addOne`,
+                updateOne:`${server2}/productionBatchInfo/updateByCode`,
+                getAddRule:`${server2}/productionBatchRule/getAllInfos`,
+                getAllRule:`${server2}/productionBatchRule/getAll`,
+                save:`${server2}/productionBatchInfo/save`,
+                getAllInfoByCondition:`${server2}/productionBatchInfo/getAllInfoByCondition`,
+                ByCode:`${server2}/productionBatchInfo/ByCode`,
+                preview:`${server}/productionBatchInfo/preview`,
+                getDetail:`${server2}/productionBatchInfo/getDetail`,
+                getInstrument:`${server2}/productionBatchInfo/getInstrument`,
+                getInstrumentChart:`${server2}/productionBatchInfo/getInstrumentChart`
             },
             /**批次追溯*/
             productionBatchRetrospect:{
@@ -626,23 +642,41 @@ class Home extends Component {
                 getHC:`${server}/jc/common/precursorMaterialDetails/getHC`
             },
             /**前驱体在制品统计*/
+            // precursorGoodIn:{
+            //     getPendSubmit:`${server1}/goodIn/page`,
+            //     getStatisticPage:`${server1}/goodIn/statisticPage`,
+            //     getAnalysisProcess:`${server1}/goodIn/analysisProcess`,//获取统计分析的工序分析
+            //     getAnalysisLine:`${server1}/goodIn/analysisLine`,//获取统计分析的产线分析
+            //     getLineNameByPeriod:`${server1}/goodIn/getLineNameByPeriod`,//获取期数
+            //     addComfirm:`${server1}/goodIn/addComfirm`,//新增确认
+            //     afterComfirm:`${server}/goodIn/afterComfirm`,//新增确认后
+            //     getLastPotencyByProcessId:`${server1}/goodIn/getLastPotencyByProcessId`,//获取上期浓度
+            //     statisticDetail:`${server1}/goodIn/statisticDetail`,
+            //     saveOrCommit:`${server1}/goodIn/saveOrCommit`,//点击保存提交
+            //     commitDetail:`${server1}/goodIn/commitDetail`,//待提交编辑详情
+            //     delete:`${server1}/goodIn`,
+            //     getStartTime:`${server1}/goodIn/getStartTime`,
+            //     processCompare:`${server1}/goodIn/processCompare`,
+            //     lineCompare:`${server1}/goodIn/lineCompare`,
+            //     getVolume:`${server1}/goodIn/getVolumeWeight` //获取体积
+            // },
             precursorGoodIn:{
-                getPendSubmit:`${server1}/goodIn/page`,
-                getStatisticPage:`${server1}/goodIn/statisticPage`,
-                getAnalysisProcess:`${server1}/goodIn/analysisProcess`,//获取统计分析的工序分析
-                getAnalysisLine:`${server1}/goodIn/analysisLine`,//获取统计分析的产线分析
-                getLineNameByPeriod:`${server1}/goodIn/getLineNameByPeriod`,//获取期数
-                addComfirm:`${server1}/goodIn/addComfirm`,//新增确认
-                afterComfirm:`${server}/goodIn/afterComfirm`,//新增确认后
-                getLastPotencyByProcessId:`${server1}/goodIn/getLastPotencyByProcessId`,//获取上期浓度
-                statisticDetail:`${server1}/goodIn/statisticDetail`,
-                saveOrCommit:`${server1}/goodIn/saveOrCommit`,//点击保存提交
-                commitDetail:`${server1}/goodIn/commitDetail`,//待提交编辑详情
-                delete:`${server1}/goodIn`,
-                getStartTime:`${server1}/goodIn/getStartTime`,
-                processCompare:`${server1}/goodIn/processCompare`,
-                lineCompare:`${server1}/goodIn/lineCompare`,
-                getVolume:`${server1}/goodIn/getVolumeWeight` //获取体积
+                getPendSubmit:`${server}/jc/common/goodIn/page`,
+                getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
+                getAnalysisProcess:`${server}/jc/common/goodIn/analysisProcess`,//获取统计分析的工序分析
+                getAnalysisLine:`${server}/jc/common/goodIn/analysisLine`,//获取统计分析的产线分析
+                getLineNameByPeriod:`${server}/jc/common/goodIn/getLineNameByPeriod`,//获取期数
+                addComfirm:`${server}/jc/common/goodIn/addComfirm`,//新增确认
+                afterComfirm:`${server}/jc/common/goodIn/afterComfirm`,//新增确认后
+                getLastPotencyByProcessId:`${server}/jc/common/goodIn/getLastPotencyByProcessId`,//获取上期浓度
+                statisticDetail:`${server}/jc/common/goodIn/statisticDetail`,
+                saveOrCommit:`${server}/jc/common/goodIn/saveOrCommit`,//点击保存提交
+                commitDetail:`${server}/jc/common/goodIn/commitDetail`,//待提交编辑详情
+                delete:`${server}/jc/common/goodIn`,
+                getStartTime:`${server}/jc/common/goodIn/getStartTime`,
+                processCompare:`${server}/jc/common/goodIn/processCompare`,
+                lineCompare:`${server}/jc/common/goodIn/lineCompare`,
+                getVolume:`${server}/jc/common/goodIn/getVolumeWeight` //获取体积
             },
 
             /**异常处理模块*/
@@ -772,39 +806,46 @@ class Home extends Component {
                 stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
                 getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
             },
-            // productStorage: {
-            //     getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
-            //     detail:`${server}/jc/common/productStorage/detail`,
-            //     getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
-            //     getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
-            //     nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
-            //     addConfirm:`${server}/jc/common/productStorage/addComfirm`,
-            //     afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
-            //     lineCur:`${server}/jc/common/productStorage/lineCur`,
-            //     processCur:`${server}/jc/common/productStorage/processCur`,
-            //     saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
-            //     stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
-            //     stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
-            // }
             productStorage: {
-                getAllBatch:`${server1}/productStorage/getAllBatch`,
-                editDetail:`${server1}/productStorage/editDetail`,
-                getPageUnCommit:`${server1}/productStorage/pageUnCommit`,
-                getPageCommit:`${server1}/productStorage/pageCommit`,
-                nextPeriod:`${server1}/productStorage/nextPeriod`,
-                addConfirm:`${server1}/productStorage/addComfirm`,
-                afterConfirm:`${server1}/productStorage/afterComfirm`,
-                lineCur:`${server1}/productStorage/lineCur`,
-                processCur:`${server1}/productStorage/processCur`,
-                saveOrCommit:`${server1}/productStorage/saveOrCommit`,
-                stasticByLine:`${server1}/productStorage/stasticByLine`,
-                stasticByProcess:`${server1}/productStorage/stasticByProcess`,
+                getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
+                detail:`${server}/jc/common/productStorage/detail`,
+                getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
+                getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
+                nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
+                addConfirm:`${server}/jc/common/productStorage/addComfirm`,
+                afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
+                lineCur:`${server}/jc/common/productStorage/lineCur`,
+                processCur:`${server}/jc/common/productStorage/processCur`,
+                saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
+                stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
+                stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             },
+            // productStorage: {
+            //     getAllBatch:`${server1}/productStorage/getAllBatch`,
+            //     editDetail:`${server1}/productStorage/editDetail`,
+            //     getPageUnCommit:`${server1}/productStorage/pageUnCommit`,
+            //     getPageCommit:`${server1}/productStorage/pageCommit`,
+            //     nextPeriod:`${server1}/productStorage/nextPeriod`,
+            //     addConfirm:`${server1}/productStorage/addComfirm`,
+            //     afterConfirm:`${server1}/productStorage/afterComfirm`,
+            //     lineCur:`${server1}/productStorage/lineCur`,
+            //     processCur:`${server1}/productStorage/processCur`,
+            //     saveOrCommit:`${server1}/productStorage/saveOrCommit`,
+            //     stasticByLine:`${server1}/productStorage/stasticByLine`,
+            //     stasticByProcess:`${server1}/productStorage/stasticByProcess`,
+            // },
+            /**质量基础受检物料*/
             testMaterial:{
                 page:`${server}/jc/common/detectItem/page`,
                 add:`${server}/jc/common/detectItem`,
-                delete:`${server}/jc/common/detectItem`,
-                ids:`${server}/jc/common/detectItem/deleteByIds`
+                ids:`${server}/jc/common/detectItem/deleteByIds`,
+                all:`${server}/jc/common/detectItem`
+            },
+            /**成本核算*/
+            costAccount:{
+                getDate:`${server}/jc/common/precursorCostAccount/getStartDate`,
+                mainMatConfirm:`${server}/jc/common/precursorCostAccount/mainMatConfirm`,
+                auxMatConfirm:`${server}/jc/common/precursorCostAccount/auxMatConfirm`
             }
         };
 

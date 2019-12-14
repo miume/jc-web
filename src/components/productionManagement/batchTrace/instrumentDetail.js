@@ -385,7 +385,7 @@ class InstrumentDetail extends React.Component{
                         </span>
                         <br /><br />
                         <div style={{display:this.state.tableDisplay}}>
-                        <Table columns={this.column} dataSource={this.state.data} pagination={false} size="small" bordered rowKey={record=>record.type}/>
+                        <Table columns={this.column} scroll={{y:500}}  dataSource={this.state.data} pagination={false} size="small" bordered rowKey={record=>record.type}/>
                         </div>
                         <div style={{display:this.state.pictureDisplay}}>
                             请选择类型：
@@ -402,13 +402,13 @@ class InstrumentDetail extends React.Component{
                                 <Select.Option value="ammoniaGas">氨气(kpa)</Select.Option>
                                 <Select.Option value="solidContainingContent">含固量(g/l)</Select.Option>
                                 <Select.Option value="transducerShow">变频器显示(Hz)</Select.Option>
-                                <Select.Option value="measured3c">3c测量值</Select.Option>
+                                {/* <Select.Option value="measured3c">3c测量值</Select.Option> */}
                             </Select>
                             <br /><br />
                             <div className='statis-processCompare-echarts' ><ReactEcharts option={this.getOption()} style={{width:'100%',height: '100%'}}/></div>  
                         </div>
                         <div style={{display:this.state.detailTableDisplay}} >
-                              <Table columns={this.column1} dataSource={this.state.detailData} pagination={false} size="small" bordered rowKey={record=>record.index}/>
+                              <Table columns={this.column1} scroll={{y:500}}  dataSource={this.state.detailData} pagination={false} size="small" bordered rowKey={record=>record.index}/>
                         </div>
                     </div>
                 </Modal>

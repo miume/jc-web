@@ -8,7 +8,6 @@ import "./batchMes.css";
 import moment from "moment";
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
-
 const Option = Select.Option;
 class Edit extends React.Component{
     componentWillUnmount() {
@@ -43,11 +42,13 @@ class Edit extends React.Component{
             setTime:undefined,
             modifyPeople:undefined,
             modifyTime:undefined,
-            data:undefined
+            data:undefined,
+            endTime:null
         }
         this.getEditData=this.getEditData.bind(this);
         this.getData=this.getData.bind(this);
         this.selectChange=this.selectChange.bind(this);
+        this.endDateChange=this.endDateChange.bind(this)
     }
     showModal = () =>{
         this.getEditData()
@@ -68,7 +69,6 @@ class Edit extends React.Component{
                 code:this.props.code
             }
         }).then(data=>{
-            console.log(data)
             let res=data.data.data
             if(res && res.productionBatchInfo){
                 this.setState({
@@ -91,7 +91,8 @@ class Edit extends React.Component{
                     setPeople:res.productionBatchInfo.setPeople,
                     setTime:res.productionBatchInfo.setTime,
                     modifyPeople:res.modify_people,
-                    modifyTime:res.productionBatchInfo.modifyTime
+                    modifyTime:res.productionBatchInfo.modifyTime,
+                    endTime:res.productionBatchInfo.endTime
                 })
             }
         })
@@ -137,11 +138,11 @@ class Edit extends React.Component{
         })
     }
     handleCreate = ()=>{
-        let {data,yearVal,monthVal,serialNumVal}=this.state
+        let {data,yearVal,monthVal,serialNumVal,endTime}=this.state
         data['year']=yearVal
         data['month']=monthVal
         data['serialNumVal']=serialNumVal
-        //console.log(data)
+        data['endTime']=endTime
         axios({
             url:this.url.productionBatchInfo.updateOne,
             method:'post',
@@ -160,7 +161,7 @@ class Edit extends React.Component{
             else{
                 message.error(data.data.message)
             }
-           // this.handleCancel()
+            this.handleCancel()
         }).catch(error=>{
             message.error('操作失败，请联系管理员!')
         })
@@ -171,11 +172,15 @@ class Edit extends React.Component{
             [name]:value
         })
     }
-   
+   endDateChange(time,timeString){
+    this.setState({
+        endTime:timeString
+    })
+   }
     render(){
         let {serialNum,year,month,yearVal,monthVal,startTime,serialNumVal,processVal,productLineVal,
             materialTypeVal,slotNumVal,slotVal,timePointVal,productTypeVal,productNumVal,
-            setPeople,setTime,modifyPeople,modifyTime}=this.state
+            setPeople,setTime,modifyPeople,modifyTime,endTime}=this.state
         return(
             <span>
                 <span className="blue" onClick={this.showModal}>编辑</span>
@@ -194,25 +199,19 @@ class Edit extends React.Component{
                 >
                     <div className="batchAll ">
                         <span className='batchInfo-edit-span'>开始时间 :</span>
-                        <DatePicker placeholder='开始时间' showTime={{ format: 'HH:mm:ss' }} format="YYYY-MM-DD HH:mm:ss"
+                        <DatePicker locale={locale} placeholder='开始时间' showTime={{ format: 'HH:mm:ss' }} format="YYYY-MM-DD HH:mm:ss"
                                     style={{width:'170px'}} value={moment(startTime)} disabled/>
-                        <span className='batchInfo-edit-span'>批次生成人:</span>
-                        <Input placeholder='批次生成人' style={{width:'170px'}} value={setPeople} disabled/>
+                        <span className='batchInfo-edit-span'>结束时间 :</span>
+                        <DatePicker locale={locale} placeholder='结束时间' showTime={{ format: 'HH:mm:ss' }} format="YYYY-MM-DD HH:mm:ss"
+                                    style={{width:'170px'}}  value={endTime?moment(endTime):undefined} onChange={this.endDateChange}/>
                     </div>
                     <div className="batchAll ">
                         <span className='batchInfo-edit-span'>批次生成时间 : </span>
                         <DatePicker placeholder='批次生成时间' showTime={{ format: 'HH:mm:ss' }} format="YYYY-MM-DD HH:mm:ss"
                                     style={{width:'170px'}} value={moment(setTime)} disabled/>
-                        <span className='batchInfo-edit-span'>年份 : </span>
-                        <Select placeholder='年份' style={{width:'170px'}} value={yearVal} onChange={this.selectChange}>
-                            {
-                                year?year.map(item=>{
-                                    return(
-                                        <Option key={item} value={item} name='yearVal'>{item}</Option>
-                                    )
-                                }):null
-                            }
-                        </Select>
+                        <span className='batchInfo-edit-span'>批次生成人:</span>
+                        <Input placeholder='批次生成人' style={{width:'170px'}} value={setPeople} disabled/>
+                        
                     </div>
                     <div className="batchAll ">
                         <span className='batchInfo-edit-span'>月份 : </span>
@@ -237,8 +236,16 @@ class Edit extends React.Component{
                         </Select>
                     </div>
                     <div className="batchAll ">
-                        <span className='batchInfo-edit-span'>产品型号 : </span>
-                        <Select placeholder='产品型号' style={{width:'170px'}} value={productNumVal} disabled></Select>
+                        <span className='batchInfo-edit-span'>年份 : </span>
+                        <Select placeholder='年份' style={{width:'170px'}} value={yearVal} onChange={this.selectChange}>
+                            {
+                                year?year.map(item=>{
+                                    return(
+                                        <Option key={item} value={item} name='yearVal'>{item}</Option>
+                                    )
+                                }):null
+                            }
+                        </Select>
                         <span className='batchInfo-edit-span'>产品类型 : </span>
                         <Select placeholder='产品类型' style={{width:'170px'}} value={productTypeVal} disabled></Select>
                     </div>
@@ -259,18 +266,19 @@ class Edit extends React.Component{
                     <div className="batchAll ">
                         <span className='batchInfo-edit-span'>工序 : </span>
                         <Select placeholder='工序' style={{width:'170px'}} value={processVal} disabled></Select>
-                        <span className='batchInfo-edit-span'>槽次 : </span>
-                        <Select placeholder='槽次' style={{width:'170px'}} value={slotVal} disabled></Select>
-                       
+                        <span className='batchInfo-edit-span'>产品型号 : </span>
+                        <Select placeholder='产品型号' style={{width:'170px'}} value={productNumVal} disabled></Select>      
                     </div>
                     <div className={processVal==='HC'?"batchAll":'hide'}>
                         <span className='batchInfo-edit-span'>槽号 : </span>
                         <Select placeholder='槽号' style={{width:'170px'}} value={slotNumVal} disabled></Select>
                         <span className='batchInfo-edit-span'>时间点 : </span>
                         <TimePicker placeholder='时间点' style={{width:'170px'}} value={moment(timePointVal)} disabled/>
-                        
                     </div>
-                    
+                    <div className="batchAll ">
+                    <span className='batchInfo-edit-span'>槽次 : </span>
+                        <Select placeholder='槽次' style={{width:'170px'}} value={slotVal} disabled></Select>
+                    </div>
                 </Modal>
             </span>
         )
