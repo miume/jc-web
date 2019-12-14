@@ -624,22 +624,22 @@ class Home extends Component {
             },
             /**前驱体在制品统计*/
             precursorGoodIn:{
-                getPendSubmit:`${server1}/goodIn/page`,
-                getStatisticPage:`${server1}/goodIn/statisticPage`,
-                getAnalysisProcess:`${server1}/goodIn/analysisProcess`,//获取统计分析的工序分析
-                getAnalysisLine:`${server1}/goodIn/analysisLine`,//获取统计分析的产线分析
-                getLineNameByPeriod:`${server1}/goodIn/getLineNameByPeriod`,//获取期数
-                addComfirm:`${server1}/goodIn/addComfirm`,//新增确认
-                afterComfirm:`${server}/goodIn/afterComfirm`,//新增确认后
-                getLastPotencyByProcessId:`${server1}/goodIn/getLastPotencyByProcessId`,//获取上期浓度
-                statisticDetail:`${server1}/goodIn/statisticDetail`,
-                saveOrCommit:`${server1}/goodIn/saveOrCommit`,//点击保存提交
-                commitDetail:`${server1}/goodIn/commitDetail`,//待提交编辑详情
-                delete:`${server1}/goodIn`,
-                getStartTime:`${server1}/goodIn/getStartTime`,
-                processCompare:`${server1}/goodIn/processCompare`,
-                lineCompare:`${server1}/goodIn/lineCompare`,
-                getVolume:`${server1}/goodIn/getVolumeWeight` //获取体积
+                getPendSubmit:`${server}/jc/common/goodIn/page`,
+                getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
+                getAnalysisProcess:`${server}/jc/common/goodIn/analysisProcess`,//获取统计分析的工序分析
+                getAnalysisLine:`${server}/jc/common/goodIn/analysisLine`,//获取统计分析的产线分析
+                getLineNameByPeriod:`${server}/jc/common/goodIn/getLineNameByPeriod`,//获取期数
+                addComfirm:`${server}/jc/common/goodIn/addComfirm`,//新增确认
+                afterComfirm:`${server}/jc/common/goodIn/afterComfirm`,//新增确认后
+                getLastPotencyByProcessId:`${server}/jc/common/goodIn/getLastPotencyByProcessId`,//获取上期浓度
+                statisticDetail:`${server}/jc/common/goodIn/statisticDetail`,
+                saveOrCommit:`${server}/jc/common/goodIn/saveOrCommit`,//点击保存提交
+                commitDetail:`${server}/jc/common/goodIn/commitDetail`,//待提交编辑详情
+                delete:`${server}/jc/common/goodIn`,
+                getStartTime:`${server}/jc/common/goodIn/getStartTime`,
+                processCompare:`${server}/jc/common/goodIn/processCompare`,
+                lineCompare:`${server}/jc/common/goodIn/lineCompare`,
+                getVolume:`${server}/jc/common/goodIn/getVolumeWeight` //获取体积
             },
 
             /**异常处理模块*/
@@ -690,8 +690,8 @@ class Home extends Component {
                 detailByBatch: `${server}/jc/common/processParam/detailByBatch`,
                 saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
                 deleteByIds: `${server}/jc/common/processParam/deleteByIds`,
-                mixRecipe:`${server1}/processParam/mixRecipe`, //混合盐读取配方
-                compoundRecipe:`${server1}/processParam/compoundRecipe`
+                mixRecipe:`${server}/processParam/mixRecipe`, //混合盐读取配方
+                compoundRecipe:`${server}/processParam/compoundRecipe`
             },
             /**正极基础统计周期*/
             positiveStatic:{
