@@ -149,7 +149,7 @@ class Detail extends React.Component {
     render() {
         let {head} = this.props;
         if(head) {
-            var {periodName, lineName, startTime, endTime} = head
+            var {name, lineName, startTime, endTime} = head
         }
         return (
             <span>
@@ -160,7 +160,7 @@ class Detail extends React.Component {
                 >
                     <div className={'raw-material-detail'}>
                         <div className={'raw-material-detail-head'}>
-                            <div>{`周期：` + periodName}</div>
+                            <div>{`周期：` + name}</div>
                             <div>{`期数：` + lineName}</div>
                             <div>{`开始时间：` + startTime}</div>
                             <div>{`结束时间：` + endTime}</div>

@@ -505,10 +505,12 @@ class ProcessParamAddModal extends React.Component {
     inputChange(e) {
         let target = e.target, value = target.value,  tar = target.name.split('-'),
             name = tar[0], index = tar[1], type = tar[2] ? tar[2] : '', {detail} = this.state;
-        if(type === 'int') {
-            value = this.intInputChange();
-        } else if(type === 'float') {
-            value = this.floatInputChange(value,name)
+        if(value) {
+            if(type === 'int') {
+                value = this.intInputChange(value);
+            } else if(type === 'float') {
+                value = this.floatInputChange(value,name)
+            }
         }
         detail[index-1][name] = value;
         this.setState({
@@ -573,7 +575,7 @@ class ProcessParamAddModal extends React.Component {
     liquidChange(e) {
         let target = e.target, tar = target.name.split('-'), value = target.value, {zyDetail} = this.state,
         name = tar[0], type = tar[1] ? tar[1] : '';
-        if(type === 'int') {
+        if(value && type === 'int') {
             value = this.intInputChange(value);
         }
         zyDetail[name] = value;
