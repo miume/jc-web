@@ -127,7 +127,8 @@ class AddModal extends React.Component{
             {gqDetails2,cjDetails3,fcDetails4} = this.state;
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型 //将字符串转为浮点型
         if(index) {
             index = parseInt(index)-1;
             if(type === 2) {   //更新罐区input的数据

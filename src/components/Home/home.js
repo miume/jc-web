@@ -467,7 +467,7 @@ class Home extends Component {
                 getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
                 getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
             },
-           
+
             /**批次追溯*/
             productionBatchRetrospect:{
                 page:`${server}/jc/common/productionBatchRetrospect/page`
@@ -683,6 +683,8 @@ class Home extends Component {
             /**前驱体原料领用*/
             rawMaterial: {
                 detail: `${server}/jc/common/materialDeliveryStatistic/detail`,
+                getDate: `${server}/jc/common/materialDeliveryStatistic/getDate`,
+                byLineStat: `${server}/jc/common/materialDeliveryStatistic/byLineStat`,
                 statDetail: `${server}/jc/common/materialDeliveryStatistic/statDetail`,
                 saveOrCommit: `${server}/jc/common/materialDeliveryStatistic/save`,
                 getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
@@ -690,6 +692,8 @@ class Home extends Component {
                 deleteById: `${server}/jc/common/materialDeliveryStatistic/deleteByStatCode`,
                 period: `${server}/jc/common/materialDeliveryStatistic/period`,
                 getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
+                periodCompare: `${server}/jc/common/materialDeliveryStatistic/periodCompare`,
+                lineCompare: `${server}/jc/common/materialDeliveryStatistic/lineCompare`,
                 supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
                 getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
                 lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
@@ -780,7 +784,7 @@ class Home extends Component {
             },
             /**前驱体辅料统计*/
             auxiliary: {
-                getDate:`${server}/jc/common/getDate`,
+                getDate:`${server}/jc/common/auxiliary/getDate`,
                 auxiliary:`${server}/jc/common/auxiliary`,
                 detail:`${server}/jc/common/auxiliary/detail`,
                 getPageUnCommit:`${server}/jc/common/auxiliary/getPageUnCommit`,
@@ -795,14 +799,14 @@ class Home extends Component {
                 stasticByProcess:`${server}/jc/common/auxiliary/stasticByProcess`,
                 getVolumeWeight: `${server}/jc/common/goodIn/getVolumeWeight`
             },
+            /**成品入库*/
             productStorage: {
                 getDate:`${server}/jc/common/productStorage/getDate`,
                 delete: `${server}/jc/common/productStorage/delete`,
                 nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
                 getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
                 detail:`${server}/jc/common/productStorage/detail`,
-                getDate:`${server}/jc/common/productStorage/getDate`,
-                delete: `${server}/jc/common/productStorage/delete`,
+                periodCur:`${server}/jc/common/productStorage/periodCur`,
                 editDetail:`${server}/jc/common/productStorage/editDetail`,
                 getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
                 getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
@@ -813,6 +817,7 @@ class Home extends Component {
                 processCur:`${server}/jc/common/productStorage/processCur`,
                 saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
+                getPeriodAndTime:`${server}/jc/common/productStorage/getPeriodAndTime`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
             },
             /**质量基础受检物料*/

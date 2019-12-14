@@ -4,7 +4,7 @@ import Search from './compareSearch'
 import ReactEcharts from 'echarts-for-react';
 import axios from "axios";
 class ProcessCompare extends Component{//工序对比分析
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             loading:false

@@ -35,7 +35,7 @@ class RawMaterial extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            flag: 1, //用来表示当前所在tab页
+            key: 0, //用来表示当前所在tab页
             staticPeriod: [],
             periodCode: '',
             data: [],
@@ -43,6 +43,8 @@ class RawMaterial extends React.Component {
             endTime: '',
             committedData: []
         };
+        this.pagination = {};
+        this.pagination1 = {};
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
         this.endDateChange =this.endDateChange.bind(this);
@@ -56,13 +58,7 @@ class RawMaterial extends React.Component {
         this.selectChange = this.selectChange.bind(this);
         this.handleUnSubmittedTableChange = this.handleUnSubmittedTableChange.bind(this);
         this.unSubmittedData = this.unSubmittedData.bind(this);
-        this.pagination = {
-            current:1,
-            pageSize: 10,
-            showSizeChanger: true,//是否可以改变 pageSize
-            showTotal: (total) => `共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10","20","50","100"]
-        };
+        this.handleSubmittedTableChange = this.handleSubmittedTableChange.bind(this);
     }
 
     render() {
@@ -77,15 +73,15 @@ class RawMaterial extends React.Component {
                     <Button onClick={this.handleAnalysisClick} type='ant-btn ant-btn-primary'>统计分析</Button>
                     <Search flag={true} currentStaticPeriod={currentStaticPeriod} staticPeriod={staticPeriod} startTime={startTime} endTime={endTime}
                             selectChange={this.selectChange} reset={this.reset} getTableData = {this.getUnSubmittedData} endDateChange={this.endDateChange}
-                            startDateChange={this.startDateChange} search={this.search} reset={this.reset}/>
+                            startDateChange={this.startDateChange} search={this.search}/>
                     <div className='clear' ></div>
                     <Tabs defaultActiveKey={'0'} onChange={this.tabChange}>
                         <TabPane tab={'待提交'} key={'0'}>
-                            <UnSubmitted data={data} handleClick={this.handleClick} pagination={this.pagination}
+                            <UnSubmitted data={data} handleClick={this.handleClick}
                                          handleTableChange={this.handleUnSubmittedTableChange} url={this.url}/>
                         </TabPane>
                         <TabPane tab={'已统计'} key={'1'}>
-                            <Statistics data={committedData} url={this.url}/>
+                            <Statistics data={committedData} url={this.url} handleTableChange={this.handleSubmittedTableChange}/>
                         </TabPane>
                     </Tabs>
                 </Spin>
@@ -130,17 +126,22 @@ class RawMaterial extends React.Component {
         this.setState({
             loading: true
         });
-        let {pageSize, current} = this.pagination, {currentStaticPeriod,startTime,endTime} = this.state,
+        let {currentStaticPeriod,startTime,endTime,type} = this.state,
             periodCode = currentStaticPeriod ? currentStaticPeriod.code : '',
             time = currentStaticPeriod ? currentStaticPeriod.startTime : '00:00:00';
-        params['size'] = pageSize;
-        params['page'] = current;
+        flag = flag === undefined ? type : flag;
         params['startTime'] = params['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
         params['endTime'] = params['endTime'] === '' ? '' : (endTime ? endTime + ' ' + time : '');
         params['periodCode'] = params['periodCode'] ? params['periodCode'] : periodCode;
         if(flag) {
+            let {pageSize, current} = this.pagination1;
+            params['size'] = pageSize ? pageSize : 10;
+            params['page'] = current ? current : 1;
             this.getStatisticsData(params);
         } else {
+            let {pageSize, current} = this.pagination;
+            params['size'] = pageSize ? pageSize : 10;
+            params['page'] = current ? current : 1;
             this.unSubmittedData(params);
         }
     }
@@ -158,8 +159,9 @@ class RawMaterial extends React.Component {
             let res = data.data.data;
             if(res && res.list) {
                 for(let i = 0; i < res.list.length; i++) {
-                    res.list[i]['index'] = i + 1;
+                    res['list'][i]['index'] = (res.page-1) * 10 + i + 1;
                 }
+                res.list.total = res['total'];
                 this.setState({
                     data: res.list
                 })
@@ -172,23 +174,30 @@ class RawMaterial extends React.Component {
 
     handleUnSubmittedTableChange(pagination) {
         this.pagination = pagination;
-        this.getUnSubmittedData();
+        this.getUnSubmittedData(0);
+    }
+
+    handleSubmittedTableChange(pagination) {
+        this.pagination1 = pagination;
+        this.getUnSubmittedData(1);
     }
 
     /**获取已统计数据*/
-    getStatisticsData() {
+    getStatisticsData(params) {
         axios({
             url: `${this.url.rawMaterial.getCommittedData}`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorization
-            }
+            },
+            params
         }).then((data) => {
             let res = data.data.data;
             if(res) {
                 for(let i = 0; i < res.length; i++) {
-                    res[i]['index'] = i + 1;
+                    res[i]['index'] = (res.page-1) * 10 + i + 1;
                 }
+                res.list.total = res['total'];
                 this.setState({
                     committedData: res
                 })
@@ -201,6 +210,10 @@ class RawMaterial extends React.Component {
 
     /**标签页切换*/
     tabChange(key) {
+        this.setState({
+            type: parseInt(key)
+        });
+
         this.getUnSubmittedData(parseInt(key));
     }
 
@@ -277,10 +290,9 @@ class RawMaterial extends React.Component {
             endTime: '',
             currentStaticPeriod: currentStaticPeriod
         });
-        this.getUnSubmittedData({
+        this.getUnSubmittedData(undefined,{
             startTime: '',
             endTime: '',
-            periodCode: code
         });
     }
 

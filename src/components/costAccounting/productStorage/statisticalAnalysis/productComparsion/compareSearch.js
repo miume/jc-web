@@ -111,11 +111,11 @@ class Search extends Component{//工序对比分析
 
     search() {
         let {periodCode,lines,params} = this.state;
-        params['periodCode'] = periodCode;
         if(!periodCode || !lines.length || !params['lineName']) {
             message.info('请选择完整条件！');
             return
         }
+        params['periodCode'] = periodCode;
         this.props.search(params,lines)
     }
 

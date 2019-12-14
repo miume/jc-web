@@ -13,7 +13,7 @@ class ProductLineStatis extends Component{//产品线统计
         this.getTableData = this.getTableData.bind(this);
         this.getDateRange = this.getDateRange.bind(this);
         this.periodsChange = this.periodsChange.bind(this);
-        this.startTimeChange = this.startTimeChange.bind(this)
+        this.startTimeChange = this.startTimeChange.bind(this);
         this.columns=[{
             title:'序号',
             dataIndex:'index',
