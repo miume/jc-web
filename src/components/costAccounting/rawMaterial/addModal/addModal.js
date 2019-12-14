@@ -9,86 +9,62 @@ import SaveButton from "../../../BlockQuote/saveButton";
 import BlockQuote from '../../../BlockQuote/blockquote';
 import axios from 'axios';
 
-// const mixedSalt = [{
-//     code: 1,
-//     materialName: '混合盐'
-// }];
-//
-// const crystalData = [{
-//     code: 1,
-//     materialName: 'Ni晶体',
-// },{
-//     code: 2,
-//     materialName: 'Co晶体',
-// }];
-//
-// const singleCrystalData = [{
-//     code: 1,
-//     materialName: 'Ni溶液',
-// },{
-//     code: 2,
-//     materialName: 'Co溶液',
-// }];
-// const data = {
-//     code: 1,
-//     index: 1,
-//     periodName: '周',
-//     dataType: '补料',
-//     density:1,
-//     lineName: 2,
-//     start: '2019-10-01',
-//     end: '2019-10-01',
-//     materialName: '物料名称',
-//     weight: 20,
-//     NiConcentration: 1,
-//     CoConcentration: 1,
-//     MnConcentration: 1,
-//     NiMetallicity: 1,
-//     CoMetallicity: 1,
-//     MnMetallicity: 1,
-//     mixedSalt:mixedSalt,
-//     crystal: crystalData,
-//     singleCrystal: singleCrystalData
-// };
-
 class AddModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visible: false,
             headVisible: false,
-            data: []
+            data: [],
+            endDate: '',
+            stockOutDTOS: [],           //出库数据
+            saltMixtureLiquorDTOS: [],  //混合盐
+            crystalsDTOS: [],           //晶体
+            singleCrystalLiquorDTOS: [],//单晶体
+            rawMaterialData: []
         };
+        this.addItem = this.addItem.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.getFeedData = this.getFeedData.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleCommit = this.handleCommit.bind(this);
+        this.saveDataProcessing = this.saveDataProcessing.bind(this);
+        this.saveOrCommit = this.saveOrCommit.bind(this);
         this.getStockOutData = this.getStockOutData.bind(this);
         this.inputChange = this.inputChange.bind(this);
         this.searchEvent = this.searchEvent.bind(this);
+        this.outStockTime = this.outStockTime.bind(this);
         this.feedDataChange = this.feedDataChange.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
+        this.addIndexToTable = this.addIndexToTable.bind(this);
+        this.materialNameChange = this.materialNameChange.bind(this);
+        this.getPrecursorRawMaterial = this.getPrecursorRawMaterial.bind(this);
+        this.getPreviousConcentration = this.getPreviousConcentration.bind(this);
     }
 
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let name = this.state.code > -1 ? '编辑数据' : '新增数据', {data,staticPeriod,lineName,currentStaticPeriod,visible,headVisible} = this.state;
+        let name = this.state.code > -1 ? '编辑数据' : '新增数据',
+            {staticPeriod,lineName,currentStaticPeriod,visible,headVisible,rawMaterialData,
+                endDate, stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.state;
         return (
             <div>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
-                <div className={'rightDiv-add-content'}>
-                    <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} lineName={lineName}
+                <div className={'rightDiv-content'}>
+                    <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={lineName} disabledDate={endDate}
                             selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent}/>
-                    <AddTable visible={headVisible} inputChange={this.inputChange}/>
-                    <FeedData flag={visible} data={data} feedDataChange={this.feedDataChange}/>
+                    <AddTable visible={headVisible} data={stockOutDTOS} rawMaterialData={rawMaterialData} materialNameChange={this.materialNameChange} outStockTime={this.outStockTime}
+                              inputChange={this.inputChange} addItem={this.addItem} getFeedData={this.getFeedData} getPreviousConcentration={this.getPreviousConcentration}/>
+                    <FeedData flag={visible} saltMixtureLiquorDTOS={saltMixtureLiquorDTOS} crystalsDTOS={crystalsDTOS} singleCrystalLiquorDTOS={singleCrystalLiquorDTOS} feedDataChange={this.feedDataChange}/>
                 </div>
                 <div className='raw-material-add-footer-bottom'>
                     <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
                     <div>
-                        <SaveButton key='save'/>
-                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleSave}/>
+                        <SaveButton key='save' handleSave={this.handleSave}/>
+                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
                     </div>
                 </div>
             </div>
@@ -97,16 +73,20 @@ class AddModal extends React.Component {
 
     /**获取路由传递的数据*/
     componentDidMount() {
-        let location = this.props.location, path = location.pathname.split('/'),
-            code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
-            currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
-        this.setState({
-            code: code,
-            staticPeriod: staticPeriod,
-            currentStaticPeriod: currentStaticPeriod
-        });
-        if(currentStaticPeriod && currentStaticPeriod.code) {
-            this.getPreLineName(currentStaticPeriod.code);
+        let location = this.props.location;
+        if(location) {
+            let path = location.pathname.split('/'),
+                code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
+                currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
+            this.setState({
+                code: code,
+                staticPeriod: staticPeriod,
+                currentStaticPeriod: currentStaticPeriod
+            });
+            if(currentStaticPeriod && currentStaticPeriod.code) {
+                this.getPreLineName(currentStaticPeriod.code);
+            }
+            this.getPrecursorRawMaterial();
         }
     }
 
@@ -119,9 +99,29 @@ class AddModal extends React.Component {
                 'Authorization': this.url.Authorizaion
             }
         }).then((data) => {
-            let lineName = data.data ? data.data.data : '';
+            let res = data.data ? data.data.data : '';
+            if(res && res.length) {
+                let {periods,entDate} = res[0];
+                this.setState({
+                    endDate: entDate,
+                    lineName: periods,
+                })
+            }
+        })
+    }
+
+    /**获取成本核算-原材料名称*/
+    getPrecursorRawMaterial() {
+        axios({
+            url: `${this.url.precursorRawMaterial.all}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorizaion
+            }
+        }).then((data) => {
+            let res = data.data ? data.data.data : [];
             this.setState({
-                lineName: lineName
+                rawMaterialData: res
             })
         })
     }
@@ -135,41 +135,80 @@ class AddModal extends React.Component {
         this.setState({
             currentStaticPeriod: currentStaticPeriod
         });
+        this.getPreLineName(value);
+    }
+
+    materialNameChange(value,option) {
+        let val = option.props.name.split('-'), index = val[0], materialName = val[1], {stockOutDTOS} = this.state;
+        stockOutDTOS[index]['materialCode'] = parseInt(value);
+        stockOutDTOS[index]['materialName'] = materialName;
+        this.setState({
+            stockOutDTOS
+        })
+    }
+
+    outStockTime(date,dateString) {
+        console.log(date,dateString)
     }
 
     searchEvent(params) {
-        console.log(params)
-        this.setState({
-            headVisible: true
-        });
-        this.getStockOutData(params)
-        // axios({
-        //     url: `${this.url.rawMaterial.getAddData}`,
-        //     method: 'post',
-        //     headers: {
-        //         'Authorization': this.url.Authorization
-        //     },
-        //     data: params
-        // }).then((data) => {
-        //     let code = data.data.data;
-        //     console.log(code)
-        //     if(code) {
-        //         this.setState({
-        //             code: code,   //表示返回的统计编码
-        //             headVisible: true
-        //         });
-        //         this.getStockOutData(params)
-        //     } else {
-        //         message.info('存在不一致的统计周期！')
-        //     }
-        // })
+        params['lineName'] = params['periods'];
+        delete params['periods'];
+        axios({
+            url: `${this.url.rawMaterial.getAddData}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data: params
+        }).then((data) => {
+            let code = data.data.data;
+            console.log(code)
+            if(code) {
+                this.setState({
+                    statisticCode: code,   //表示返回的统计编码
+                    headVisible: true
+                });
+                this.getStockOutData(params)
+            } else {
+                message.info('存在不一致的统计周期！')
+            }
+        })
     }
 
     /**点击补料按钮*/
     getFeedData() {
         this.setState({
             visible: true
+        });
+        let {currentStaticPeriod} = this.state, {code} = currentStaticPeriod;
+        axios({
+            url: `${this.url.rawMaterial.supplementary}?periodCode=${code}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.length) {
+                let saltMixtureLiquorDTOS = this.addIndexToTable(res[0]),
+                    crystalsDTOS = this.addIndexToTable(res[1]),
+                    singleCrystalLiquorDTOS = this.addIndexToTable(res[2]);
+                this.setState({
+                    saltMixtureLiquorDTOS,  //混合盐
+                    crystalsDTOS,           //晶体
+                    singleCrystalLiquorDTOS,//单晶体
+                })
+            }
         })
+    }
+
+    /**给表格数据加index字段*/
+    addIndexToTable(data) {
+        for(let i = 0; i < data.length; i++) {
+            data[i]['index'] = i + 1;
+        }
+        return data;
     }
 
     /**点击获取出库数据*/
@@ -192,14 +231,19 @@ class AddModal extends React.Component {
         this.props.history.push({pathname: '/rawMaterial'})
     }
 
-    /**点击保存新增*/
-    handleSave() {
-        this.handleCancel();
-    }
-
     /**监控NiSO4溶液、CoSO4溶液、MnSO4溶液量的变化*/
     inputChange(e) {
-        let name = e.target.name, value = e.target.value;
+        let val = e.target.name.split('-'), name = val[0], index = val[1] ? val[1] : -1,
+            value = e.target.value, {stockOutDTOS} = this.state;
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(index > -1) {
+            stockOutDTOS[index-1][name] = value;
+            this.setState({
+                stockOutDTOS
+            });
+        }
         this.setState({
             [name]: value
         })
@@ -207,8 +251,105 @@ class AddModal extends React.Component {
 
     /**补料数据变化*/
     feedDataChange(e) {
-        let target = e.target, name = target.name.split('-'), value= target.value;
-        console.log(name,value)
+        let target = e.target, val = target.name.split('-'),
+            type = val[0], index = val[1], name = val[2],
+            value= target.value, {saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.state;
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(type === 'mixedSalt') {        //混合盐
+            saltMixtureLiquorDTOS[index-1][name] = value;
+            this.setState({
+                saltMixtureLiquorDTOS
+            })
+        } else if(type === 'crystal') {  //晶体
+            crystalsDTOS[index-1][name] = value;
+            this.setState({
+                crystalsDTOS
+            })
+        } else {                        //单晶体
+            singleCrystalLiquorDTOS[index-1][name] = value;
+            this.setState({
+                singleCrystalLiquorDTOS
+            })
+        }
+    }
+
+    /**出库数据新增*/
+    addItem() {
+        let {stockOutDTOS} = this.state,
+            item = {
+            "index": stockOutDTOS.length+1,
+            "callMaterialPoint": "",
+            "materialBatch": "",
+            "materialCode": 0,
+            "materialName": "",
+            "materialTypeCode": 0,
+            "outStockTime": "",
+            "weight": ""
+        };
+        stockOutDTOS.push(item);
+        this.setState({
+            stockOutDTOS
+        })
+    }
+
+    getPreviousConcentration() {
+
+    }
+
+    /**点击保存新增*/
+    handleSave() {
+        this.saveDataProcessing(0);
+    };
+
+    /**点击保存新增*/
+    handleCommit() {
+        this.saveDataProcessing(1);
+    };
+
+    saveDataProcessing(flag) {
+        let {stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS,coConcentration,mnConcentration,niConcentration,lineName,statisticCode} = this.state,
+            data = {
+                coConcentration: coConcentration,
+                crystalsDTOS: crystalsDTOS,
+                flag: flag,
+                mnConcentration: mnConcentration,
+                niConcentration: niConcentration,
+                periods: lineName,
+                saltMixtureLiquorDTOS: saltMixtureLiquorDTOS,
+                singleCrystalLiquorDTOS: singleCrystalLiquorDTOS,
+                stockOutDTOS: stockOutDTOS,
+                statisticCode: statisticCode
+            };
+            console.log(data)
+        this.saveOrCommit(data);
+    }
+
+    /**保存或提交*
+     * flag = 1 - 提交
+     * flag = 0 -保存
+     */
+    saveOrCommit(data) {
+        this.setState({
+            loading: true
+        });
+        axios({
+            url: `${this.url.rawMaterial.saveOrCommit}`,
+            method: 'post',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            data
+        }).then((data) => {
+            message.info(data.data.message);
+            this.setState({
+                loading: false
+            });
+            if(data.data.code === 0) {
+                this.handleCancel();
+            }
+        })
     }
 
     /**销毁组件*/
