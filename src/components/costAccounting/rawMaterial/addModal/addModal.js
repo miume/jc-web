@@ -29,6 +29,7 @@ class AddModal extends React.Component {
         this.handleCancel = this.handleCancel.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleCommit = this.handleCommit.bind(this);
+        this.getDetailData = this.getDetailData.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
         this.saveOrCommit = this.saveOrCommit.bind(this);
         this.getStockOutData = this.getStockOutData.bind(this);
@@ -47,17 +48,18 @@ class AddModal extends React.Component {
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {staticPeriod,lineName,currentStaticPeriod,visible,headVisible,rawMaterialData,
+            {staticPeriod,lineName,currentStaticPeriod,visible,headVisible,rawMaterialData,head,niConcentration,coConcentration,mnConcentration,
                 endDate, stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.state;
         return (
             <div>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
-                <div className={'rightDiv-content'}>
+                <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={lineName} disabledDate={endDate}
-                            selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent}/>
+                            selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent} head={head}z/>
                     <AddTable visible={headVisible} data={stockOutDTOS} rawMaterialData={rawMaterialData} materialNameChange={this.materialNameChange} outStockTime={this.outStockTime}
-                              inputChange={this.inputChange} addItem={this.addItem} getFeedData={this.getFeedData} getPreviousConcentration={this.getPreviousConcentration}/>
+                              inputChange={this.inputChange} addItem={this.addItem} getFeedData={this.getFeedData} getPreviousConcentration={this.getPreviousConcentration}
+                              niConcentration={niConcentration} coConcentration={coConcentration} mnConcentration={mnConcentration}/>
                     <FeedData flag={visible} saltMixtureLiquorDTOS={saltMixtureLiquorDTOS} crystalsDTOS={crystalsDTOS} singleCrystalLiquorDTOS={singleCrystalLiquorDTOS} feedDataChange={this.feedDataChange}/>
                 </div>
                 <div className='raw-material-add-footer-bottom'>
@@ -78,15 +80,22 @@ class AddModal extends React.Component {
             let path = location.pathname.split('/'),
                 code = path.length >= 2 ? path[2] : '', staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
                 currentStaticPeriod = staticPeriod ? staticPeriod[0] : {};
-            this.setState({
-                code: code,
-                staticPeriod: staticPeriod,
-                currentStaticPeriod: currentStaticPeriod
-            });
-            if(currentStaticPeriod && currentStaticPeriod.code) {
-                this.getPreLineName(currentStaticPeriod.code);
-            }
+
             this.getPrecursorRawMaterial();
+            if(code) {
+                this.getDetailData(code);
+                this.setState({
+                    code: code
+                });
+            } else {
+                this.setState({
+                    staticPeriod: staticPeriod,
+                    currentStaticPeriod: currentStaticPeriod
+                });
+                if(currentStaticPeriod && currentStaticPeriod.code) {
+                    this.getPreLineName(currentStaticPeriod.code);
+                }
+            }
         }
     }
 
@@ -110,10 +119,39 @@ class AddModal extends React.Component {
         })
     }
 
+    getDetailData(code) {
+        axios({
+            url: `${this.url.rawMaterial.detail}?statisticCode=${code}`,
+            method:'get',
+            headers:{
+                'Authorization':this.url.Authorization
+            }
+        }).then((data)=>{
+            let res = data.data.data;
+            if(res) {
+                let {crystalsDTOS,singleCrystalLiquorDTOS,head,periodName,
+                    stockOutDTOS,mnConcentration,coConcentration,niConcentration,saltMixtureLiquorDTOS} = res;
+                head['periodCode'] = periodName;
+                this.setState({
+                    visible: true,
+                    headVisible: true,
+                    head: head,
+                    coConcentration: coConcentration,
+                    crystalsDTOS: this.addIndexToTable(crystalsDTOS),
+                    mnConcentration: mnConcentration,
+                    niConcentration: niConcentration,
+                    stockOutDTOS: this.addIndexToTable(stockOutDTOS),
+                    saltMixtureLiquorDTOS: this.addIndexToTable(saltMixtureLiquorDTOS),
+                    singleCrystalLiquorDTOS: this.addIndexToTable(singleCrystalLiquorDTOS),
+                })
+            }
+        })
+    }
+
     /**获取成本核算-原材料名称*/
     getPrecursorRawMaterial() {
         axios({
-            url: `${this.url.precursorRawMaterial.all}`,
+            url: `${this.url.precursorRawMaterial.byDataType}?flag=0`,
             method: 'get',
             headers: {
                 'Authorization': this.url.Authorizaion
@@ -128,10 +166,12 @@ class AddModal extends React.Component {
 
     /**监控统计周期下拉框的变化*/
     selectChange(value,option) {
-        let name = option.props.name.split('-'), {currentStaticPeriod} = this.state;
-        currentStaticPeriod['code'] = value;
-        currentStaticPeriod['startTime'] = name[0];
-        currentStaticPeriod['length'] = name[1];
+        let name = option.props.name.split('-'),
+            currentStaticPeriod = {
+                code: value,
+                startTime: name[0],
+                length: name[1]
+            };
         this.setState({
             currentStaticPeriod: currentStaticPeriod
         });
@@ -139,16 +179,22 @@ class AddModal extends React.Component {
     }
 
     materialNameChange(value,option) {
-        let val = option.props.name.split('-'), index = val[0], materialName = val[1], {stockOutDTOS} = this.state;
-        stockOutDTOS[index]['materialCode'] = parseInt(value);
-        stockOutDTOS[index]['materialName'] = materialName;
+        let val = option.props.name.split('-'), index = val[0], materialName = val[1], materialTypeCode = val[2], {stockOutDTOS} = this.state;
+        stockOutDTOS[index-1]['materialCode'] = parseInt(value);
+        stockOutDTOS[index-1]['materialName'] = materialName;
+        stockOutDTOS[index-1]['materialTypeCode'] = materialTypeCode;
         this.setState({
             stockOutDTOS
         })
     }
 
-    outStockTime(date,dateString) {
-        console.log(date,dateString)
+    /**监控出库数据的变化*/
+    outStockTime(index,dateString) {
+        let {stockOutDTOS} = this.state;
+        stockOutDTOS[index-1]['outStockTime'] = dateString;
+        this.setState({
+            stockOutDTOS
+        })
     }
 
     searchEvent(params) {
@@ -166,7 +212,7 @@ class AddModal extends React.Component {
             console.log(code)
             if(code) {
                 this.setState({
-                    statisticCode: code,   //表示返回的统计编码
+                    code: code,   //表示返回的统计编码
                     headVisible: true
                 });
                 this.getStockOutData(params)
@@ -181,7 +227,7 @@ class AddModal extends React.Component {
         this.setState({
             visible: true
         });
-        let {currentStaticPeriod} = this.state, {code} = currentStaticPeriod;
+        let {currentStaticPeriod,head} = this.state, code =  currentStaticPeriod ? currentStaticPeriod['code'] : head['periodCode'];
         axios({
             url: `${this.url.rawMaterial.supplementary}?periodCode=${code}`,
             method: 'get',
@@ -243,6 +289,7 @@ class AddModal extends React.Component {
             this.setState({
                 stockOutDTOS
             });
+            console.log(stockOutDTOS)
         }
         this.setState({
             [name]: value
@@ -282,7 +329,7 @@ class AddModal extends React.Component {
             "index": stockOutDTOS.length+1,
             "callMaterialPoint": "",
             "materialBatch": "",
-            "materialCode": 0,
+            "materialCode": undefined,
             "materialName": "",
             "materialTypeCode": 0,
             "outStockTime": "",
@@ -309,18 +356,18 @@ class AddModal extends React.Component {
     };
 
     saveDataProcessing(flag) {
-        let {stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS,coConcentration,mnConcentration,niConcentration,lineName,statisticCode} = this.state,
+        let {stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS,coConcentration,mnConcentration,niConcentration,lineName,code,head} = this.state,
             data = {
                 coConcentration: coConcentration,
                 crystalsDTOS: crystalsDTOS,
                 flag: flag,
                 mnConcentration: mnConcentration,
                 niConcentration: niConcentration,
-                periods: lineName,
+                periods: lineName ? lineName : head['lineName'],
                 saltMixtureLiquorDTOS: saltMixtureLiquorDTOS,
                 singleCrystalLiquorDTOS: singleCrystalLiquorDTOS,
                 stockOutDTOS: stockOutDTOS,
-                statisticCode: statisticCode
+                statisticCode: code
             };
             console.log(data)
         this.saveOrCommit(data);

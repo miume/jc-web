@@ -48,7 +48,7 @@ class Home extends Component {
             '15':'设备指导',
             '16': '工艺参数'
         };
-        const server = localStorage.getItem('server'),server1='http://10.168.1.191:8082';
+        const server = localStorage.getItem('server'),server1='http://10.168.1.160:8082';
         this.Authorization = localStorage.getItem('authorization');
         const url = {
             Authorization:this.Authorization,
@@ -601,7 +601,8 @@ class Home extends Component {
                 page:`${server}/jc/common/precursorRawMaterial/page`,
                 update:`${server}/jc/common/precursorRawMaterial/update`,
                 all:`${server}/jc/common/precursorRawMaterial/all`,
-                byType:`${server}/jc/common/precursorRawMaterial/byType`
+                byType:`${server}/jc/common/precursorRawMaterial/byType`,
+                byDataType:`${server1}/precursorRawMaterial/getByDatatype`
             },
             /**原材料产线权重分配*/
             precursorRawmaterialLineWeight:{
@@ -661,15 +662,30 @@ class Home extends Component {
                 all: `${server}/jc/repo/type/tree`,
             },
             /**前驱体原料领用*/
+            // rawMaterial: {
+            //     detail: `${server}/jc/common/materialDeliveryStatistic/detail`,
+            //     statDetail: `${server}/jc/common/materialDeliveryStatistic/statDetail`,
+            //     getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
+            //     getCommittedData: `${server}/jc/common/materialDeliveryStatistic/statistic`,
+            //     deleteById: `${server}/jc/common/materialDeliveryStatistic/deleteByStatCode`,
+            //     period: `${server}/jc/common/materialDeliveryStatistic/period`,
+            //     getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
+            //     supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
+            //     getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
+            //     lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
+            // },
             rawMaterial: {
-                getUncommittedData: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
-                getCommittedData: `${server}/jc/common/materialDeliveryStatistic/statistic`,
-                deleteById: `${server}/jc/common/materialDeliveryStatistic/uncommitted`,
-                period: `${server}/jc/common/materialDeliveryStatistic/period`,
-                getAddData: `${server}/jc/common/materialDeliveryStatistic/add`,
-                supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
-                getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
-                lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
+                detail: `${server1}/materialDeliveryStatistic/detail`,
+                statDetail: `${server1}/materialDeliveryStatistic/statDetail`,
+                saveOrCommit: `${server1}/materialDeliveryStatistic/save`,
+                getUncommittedData: `${server1}/materialDeliveryStatistic/uncommitted`,
+                getCommittedData: `${server1}/materialDeliveryStatistic/statistic`,
+                deleteById: `${server1}/materialDeliveryStatistic/deleteByStatCode`,
+                period: `${server1}/materialDeliveryStatistic/period`,
+                getAddData: `${server1}/materialDeliveryStatistic/add`,
+                supplementary: `${server1}/materialDeliveryStatistic/supplementary`,
+                getStockOutData: `${server1}/materialDeliveryStatistic/stockOutData`,
+                lastPeriodConcentrations: `${server1}/materialDeliveryStatistic/lastPeriodConcentrations`,
             },
             /**部门分配工序（工序名称）*/
             equipmentProcessName: {
@@ -775,6 +791,7 @@ class Home extends Component {
             productStorage: {
                 getDate:`${server}/jc/common/productStorage/getDate`,
                 delete: `${server}/jc/common/productStorage/delete`,
+                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
                 getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
                 detail:`${server}/jc/common/productStorage/detail`,
                 editDetail:`${server}/jc/common/productStorage/editDetail`,

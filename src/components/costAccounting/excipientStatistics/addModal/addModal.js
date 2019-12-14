@@ -37,14 +37,14 @@ class AddModal extends React.Component{
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
-            {staticPeriod,periods,currentStaticPeriod,visible,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,disabled,head,loading} = this.state;
+            {staticPeriod,periods,currentStaticPeriod,visible,ammValue,alkValue,gqDetails2,cjDetails3,fcDetails4,disabled,head,loading,endDate} = this.state;
         return(
             <Spin spinning={loading}>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} endDate={endDate}/>
                     <div className={visible ? '' : 'hide'}>
                         <AddTabs ammValue={ammValue} alkValue={alkValue} gqDetails2={gqDetails2} cjDetails3={cjDetails3} fcDetails4={fcDetails4}
                                  inputChange={this.inputChange} getVolume={this.getVolume}/>
@@ -94,9 +94,10 @@ class AddModal extends React.Component{
                 'Authorization': this.url.Authorizaion
             }
         }).then((data) => {
-            let periods = data.data ? data.data.data : '';
+            let res = data.data ? data.data.data : {};
             this.setState({
-                periods: periods
+                periods: res['period'],
+                endDate: res['endTime']
             })
         })
     }
@@ -215,8 +216,7 @@ class AddModal extends React.Component{
         });
         if(res['head']) {
             this.setState({
-                head: res['head'],
-                periods: res['head']['periods']
+                head: res['head']
             })
         }
     }

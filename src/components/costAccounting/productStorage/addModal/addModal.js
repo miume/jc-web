@@ -35,7 +35,7 @@ class AddModal extends React.Component{
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
         this.current = JSON.parse(localStorage.getItem('current'));
-        let {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData,id} = this.state,
+        let {staticPeriod,periods,currentStaticPeriod,visible,disabled,head,loading,data,batchData,id,endDate} = this.state,
             name = id > -1 ? '编辑数据' : '新增数据';
         return(
             <Spin spinning={loading}>
@@ -43,7 +43,7 @@ class AddModal extends React.Component{
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} endDate={endDate}/>
                     <AddTable visible={visible} data={data} batchData={batchData} batchChange={this.batchChange} add={this.addItem} inputChange={this.inputChange}/>
                 </div>
                 <div className='raw-material-add-footer-bottom'>
@@ -115,9 +115,10 @@ class AddModal extends React.Component{
                 'Authorization': this.url.Authorizaion
             }
         }).then((data) => {
-            let periods = data.data ? data.data.data : '';
+            let res = data.data ? data.data.data : {};
             this.setState({
-                periods: periods
+                periods: res['period'],
+                endDate: res['endTime']
             })
         })
     }

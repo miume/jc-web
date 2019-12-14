@@ -1,6 +1,7 @@
 import React from 'react';
-import {Button, Input, Table, Select, DatePicker} from "antd";
+import {Button, Input, Table, Select} from "antd";
 import NewButton from "../../../BlockQuote/newButton";
+import DateSelect from './dateSelect';
 const {Option} = Select;
 
 class AddTable extends React.Component {
@@ -12,45 +13,44 @@ class AddTable extends React.Component {
             key: 'index',
             dataIndex: 'index',
             sorter: (a,b) => a.index - b.index,
-            width:'16.6%'
+            width:'10%'
         }, {
             title: '物料名称',
             key: 'materialCode',
             dataIndex: 'materialCode',
-            width:'16.6%',
+            width:'20%',
             render: (text,record) => {
                 let {rawMaterialData} = this.props;
                 return (
                     rawMaterialData ?
-                        <Select value={text} onChange={this.props.materialNameChange}>
+                        <Select value={text} placeholder={'请选择物料名称'} onChange={this.props.materialNameChange} style={{width:'100%'}}>
                             {
-                                rawMaterialData.map(e => <Option key={e.code} name={`${record.index}-${e.typeName}`} value={e.code}>{e.typeName}</Option>)
+                                rawMaterialData.map(e => <Option key={e.code} name={`${record.index}-${e.materialName}-${e.typesCode}`} value={e.code}>{e.materialName}</Option>)
                             }
                         </Select>: null
                 )
-                // return <Input value={text} placeholder={'物料名称'} name={`materialName-${record.index}`} onChange={this.props.inputChange} />
             }
         }, {
             title: '物料编码',
             key: 'materialBatch',
             dataIndex: 'materialBatch',
-            width:'16.6%',
+            width:'20%',
             render: (text,record) => {
-                return <Input value={text} placeholder={'物料名称'} name={`materialBatch-${record.index}`} onChange={this.props.inputChange} />
+                return <Input value={text} placeholder={'物料编码'} name={`materialBatch-${record.index}`} onChange={this.props.inputChange} />
             }
         }, {
             title: '出库时间',
             key: 'outStockTime',
             dataIndex: 'outStockTime',
-            width:'16.6%',
+            width:'20%',
             render: (text,record) => {
-                return <DatePicker showTime name={'1'} onChange={this.props.outStockTime}/>
+                return <DateSelect index={record.index} date={text} outStockTime={this.props.outStockTime}/>
         }
         }, {
             title: '重量(T)',
             key: 'weight',
             dataIndex: 'weight',
-            width:'16.6%',
+            width:'15%',
             render: (text,record) => {
                 return <Input value={text} placeholder={'重量'} name={`weight-${record.index}`} onChange={this.props.inputChange} />
             }
@@ -58,7 +58,7 @@ class AddTable extends React.Component {
             title: '叫料点',
             key: 'callMaterialPoint',
             dataIndex: 'callMaterialPoint',
-            width:'16.6%',
+            width:'15%',
             render: (text,record) => {
                 return <Input value={text} placeholder={'叫料点'} name={`callMaterialPoint-${record.index}`} onChange={this.props.inputChange} />
             }
@@ -82,20 +82,25 @@ class AddTable extends React.Component {
         )
     }
 
+    onOk() {
+        console.log(arguments)
+    }
+
     getFooter() {
+        let {niConcentration,coConcentration,mnConcentration} = this.props;
         return (
             <div className={'raw-material-add-footer'}>
                 <div>
                     <label>NiSO4溶液：</label>
-                    <Input placeholder='请输入' name='niConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
+                    <Input placeholder='请输入' value={niConcentration} name='niConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
                 </div>
                 <div>
                     <label>CoSO4溶液：</label>
-                    <Input placeholder='请输入' name='coConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
+                    <Input placeholder='请输入' value={coConcentration} name='coConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
                 </div>
                 <div>
                     <label>MnSO4溶液：</label>
-                    <Input placeholder='请输入' name='mnConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
+                    <Input placeholder='请输入' value={mnConcentration} name='mnConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
                 </div>
             </div>
         )
