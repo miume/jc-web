@@ -73,7 +73,7 @@ class AssayDetail extends React.Component{
         let {sampleCode,assayTypeId}=this.props.record
         if(assayTypeId===2){//中间品
             axios({
-                url:`${this.props.url.intermediateProduct.details}/${sampleCode}`,
+                url:`${this.props.url.intermediateProduct}/details/${sampleCode}`,
                 method:'get',
                 headers:{
                     'Authorization':this.props.url.Authorization

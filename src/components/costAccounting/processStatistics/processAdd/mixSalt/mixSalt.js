@@ -162,7 +162,7 @@ class MixSalt extends Component{//混合盐配置
                         columns={this.columns}
                         pagination={false}
                         size='small' 
-                        scroll={{y:'250px'}}
+                        scroll={{y:'42vh'}}
                         style={{flex:'1',height:'60vh'}}
                         bordered
                     />

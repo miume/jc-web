@@ -142,6 +142,15 @@ class CostProcessAdd extends Component {
                         addData: tagTable,
                         editDataOrigin:[]
                     })
+                    if(tagTable.goodInProcessDTOS[5].materialDetails){
+                        let re=tagTable.goodInProcessDTOS[5].materialDetails
+                        for(let i=0;i<re.length;i++){
+                            re[i]['id']=i+1
+                        }
+                        this.setState({
+                            otherData:re
+                        })
+                    }
                 }
                 this.setState({
                     startTime:tagTable.startTime,
@@ -195,9 +204,9 @@ class CostProcessAdd extends Component {
         })
     }
     disabledDate(current) {
-        let {giveEndDate}=this.state
-        let time = new Date(Date.parse(giveEndDate) + 3600 * 24 * 1000 )//将日期转为毫秒
-        let endDate = moment(time).format('YYYY-MM-DD')
+        let {giveEndDate}=this.state,
+            time = new Date(Date.parse(giveEndDate) + 3600 * 24 * 1000 ),//将日期转为毫秒
+            endDate = moment(time).format('YYYY-MM-DD')
         //小于给定时间不能选
         return current&&current<=moment(endDate)
       }
@@ -304,16 +313,16 @@ class CostProcessAdd extends Component {
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
         let {addData,otherData,otherFlag}=this.state
         if (inputData) {
-            inputData = inputData.split('-');
+            let value = inputData.target.value;
+            inputData = inputData.target.name.split('-');
             let index = inputData[0],    //定位到是第几条数据
-                name = inputData[1],     //输入框内容变化的字段
-                value = inputData[2];
+                name = inputData[1]     //输入框内容变化的字段  
             if(tabKey===6&&otherFlag){
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else{
-                addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+                addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value===''?'':parseFloat(value)
             }
         }
         if (selectData) {
@@ -323,11 +332,11 @@ class CostProcessAdd extends Component {
            addData.goodInProcessDTOS[tabKey - 1].lineProDTOS[codeSelect-1]['product'] = id
         }
         if (inputData && selectData) {
-            inputData=inputData.split('-')
-            let index = inputData[0],    //物料名字的编码
-                 name = inputData[1] ,   //输入框内容变化的字段
-                value = inputData[2]
-            addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+            let value = inputData.target.value;
+            inputData = inputData.target.name.split('-');
+            let index = inputData[0],    //定位到是第几条数据
+                name = inputData[1]    //输入框内容变化的字段
+            addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value===''?'':parseFloat(value)
             selectData=selectData.split('-')
             let codeSelect = selectData[0],  //第几个下拉框
                         id = selectData[1]    //下拉框的哪个option
@@ -384,9 +393,14 @@ class CostProcessAdd extends Component {
             }
         }).then(data=>{
             let res=data.data.data
+            if(data.data.code===0){
+                message.info('获取成功!')
+            }
+            else{
+                message.error(data.data.message)
+            }
             if(res){
-              
-                if(tabKey==='4'||tabKey==='5'){
+                if(tabKey==='4'||tabKey==='5'){//陈化，烘干
                     for(let i=0;i<res.length;i++){
                         for(let j=0;j<tagTableData[tabKey-1].materialDetails.length;j++){
                              if(res[i].code===tagTableData[tabKey-1].materialDetails[j].code){
@@ -538,7 +552,7 @@ class CostProcessAdd extends Component {
         }, {
             component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <Other tagTableData={this.state.tagTableData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]
         return (
             <div >

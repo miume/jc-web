@@ -18,7 +18,7 @@ class Other extends Component{//烘干工序
             selectName:1,
             materialData:[],
             materialCode:undefined,
-            data:data
+            data:this.props.otherData?this.props.otherData:data
         }
         this.columns=[{
             title:'序号',
@@ -109,15 +109,19 @@ class Other extends Component{//烘干工序
         this.selectChange=this.selectChange.bind(this);
     }
     componentDidMount(){
-        console.log(this.tableData)
         this.setState({
             materialData:this.tableData
         })
+        console.log(this.props.otherData)
+
+        // if(this.props.otherData){
+        //     this.setState({
+        //         data:this.props.otherData
+        //     })
+        // }
     }
     inputChange(e){//监听表格里面的输入框变化
-        let value=e.target.value;
-        let inputData=`${e.target.name}-${value}`
-        this.props.getOther(this.props.processId,inputData,'')
+        this.props.getOther(this.props.processId,e,'')
     }
     selectChange(value,name){
         this.setState({
@@ -187,6 +191,8 @@ class Other extends Component{//烘干工序
                 columns={this.columns}
                 size='small' 
                 pagination={false}
+                scroll={{y:'42vh'}}
+                style={{flex:'1',height:'60vh'}}
                 bordered/>
             </div>
         );

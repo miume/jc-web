@@ -807,6 +807,7 @@ class Home extends Component {
                 saveOrCommit:`${server}/jc/common/productStorage/saveOrCommit`,
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
+                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
             },
             // productStorage: {
             //     getAllBatch:`${server1}/productStorage/getAllBatch`,
