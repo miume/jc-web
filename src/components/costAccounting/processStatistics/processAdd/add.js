@@ -196,6 +196,7 @@ class CostProcessAdd extends Component {
                 lengthSub:lengthSub
             })
         }
+        this.disabledEndDate(endDate)
         this.setState({ 
             startDate: dateString,
             endDate: endDate,
@@ -204,13 +205,11 @@ class CostProcessAdd extends Component {
         })
     }
     disabledDate(current) {
-        let {giveEndDate}=this.state,
-            time = new Date(Date.parse(giveEndDate) + 3600 * 24 * 1000 ),//将日期转为毫秒
-            endDate = moment(time).format('YYYY-MM-DD')
+        let {giveEndDate}=this.state
         //小于给定时间不能选
-        return current&&current<=moment(endDate)
+        return  current && current < moment(giveEndDate).add(1,'d');
       }
-      
+
       
     endChange(date, dateString) {
         let { startSecondTime } = this.state
