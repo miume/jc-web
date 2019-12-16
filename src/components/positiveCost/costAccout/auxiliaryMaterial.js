@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import {Table,Button,Spin,Select} from 'antd'
-import SearchCell from '../../BlockQuote/search'
+import Search from '../../costAccounting/costAccount/search'
 const {Option}=Select;
+
 class PositiveAuxiliaryMaterial extends Component{
     constructor(props){
         super(props);
@@ -71,13 +72,7 @@ class PositiveAuxiliaryMaterial extends Component{
         return(
             <div>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                   
-                    <SearchCell timeFlag={true} flag={this.judgeOperation(this.operation,'QUERY')}/>
-                    <Select  defaultValue='周' style={{width:120,float:'right',paddingRight:'10px'}}>
-                            <Option key='week' value='周'>周</Option>
-                            <Option key='month' value='月'>月</Option>
-                            <Option key='year' value='年'>年</Option>
-                    </Select>
+                    <Search staticPeriod={this.props.period} flag={true} periodCode={this.props.periodCode?this.props.periodCode:this.state.periodCode}/>
                     <Table
                     rowKey={record=>record.id}
                     columns={this.columns} 
