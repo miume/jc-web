@@ -3,22 +3,15 @@ import {Table,Select,Input,Popconfirm} from 'antd'
 import NewButton from '../../../../BlockQuote/newButton'
 
 const {Option}=Select;
-const data=[{
-    id:1,
-    materialName:'',
-    weight:0,
-    niPotency:0,
-    coPotency:0,
-    mnPotency:0
-}]
-class Other extends Component{//烘干工序
+
+class Other extends Component{//其他工序
     constructor(props){
         super(props);
         this.state={
             selectName:1,
             materialData:[],
             materialCode:undefined,
-            data:this.props.otherData?this.props.otherData:data
+            data:this.props.otherData.length!==0?this.props.otherData:[]
         }
         this.columns=[{
             title:'序号',
@@ -32,9 +25,9 @@ class Other extends Component{//烘干工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Select placeholder='请选择' onChange={this.selectChange} value={this.state.materialCode} style={{width:'158px'}}>
+                    <Select placeholder='请选择' onChange={this.selectChange} value={this.props.otherData&&this.props.otherData[record.id-1].code?this.props.otherData[record.id-1].code:undefined} style={{width:'158px'}}>
                         {
-                            this.state.materialData?this.state.materialData.map(item=>{
+                            this.props.otherMaterial?this.props.otherMaterial.map(item=>{
                                 return(
                                     <Option key={item.code} value={item.code} name={record.id}>{item.materialName}</Option>
                                 )
@@ -49,9 +42,6 @@ class Other extends Component{//烘干工序
             key:'weight',
             width:'15%',
             render:(text,record)=>{
-                // if(record.dataType===1){
-                //     let weight=record.weight
-                // }
                 return(
                     <Input placeholder='请输入'  name={`${record.id}-${'weight'}`} defaultValue={record.weight} onChange={this.inputChange}/>
                 )
@@ -112,13 +102,6 @@ class Other extends Component{//烘干工序
         this.setState({
             materialData:this.tableData
         })
-        console.log(this.props.otherData)
-
-        // if(this.props.otherData){
-        //     this.setState({
-        //         data:this.props.otherData
-        //     })
-        // }
     }
     inputChange(e){//监听表格里面的输入框变化
         this.props.getOther(this.props.processId,e,'')

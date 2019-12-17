@@ -46,23 +46,23 @@ class StatisticDone extends Component{//已统计
             width:'9%'
         },{
             title:'小计值',
-            dataIndex:'total',
-            key:'total',
+            dataIndex:'detail.totals',
+            key:'detail.totals',
             width:'8%'
         },{
             title:'Ni金属量(T)',
-            dataIndex:'totalNi',
-            key:'totalNi',
+            dataIndex:'detail.niValue',
+            key:'detail.niValue',
             width:'10%'
         },{
             title:'Co金属量(T)',
-            dataIndex:'totalCo',
-            key:'totalCo',
+            dataIndex:'detail.coValue',
+            key:'detail.coValue',
             width:'10%'
         },{
             title:'Mn金属量(T)',
-            dataIndex:'totalMn',
-            key:'totalMn',
+            dataIndex:'detail.mnValue',
+            key:'detail.mnValue',
             width:'10%'
         },{
             title:'操作',
@@ -70,7 +70,7 @@ class StatisticDone extends Component{//已统计
             key:'operation',
             render:(text,record)=>{
                 return(
-                    <Detail record={record} url={this.props.url} processDetailId={record.detail.code} />
+                    <Detail record={record} url={this.props.url} processDetailId={record.detail.code} processCode={record.detail.processCode}/>
                 )
             }
         }]

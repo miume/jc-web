@@ -19,8 +19,7 @@ class AddModal extends Component{
             productLine:[],
             detail:{},
             recordData:{},
-            weightDto:{},
-            nameFlag:true
+            weightDto:{}
         }
         this.showModal=this.showModal.bind(this);
         this.handleCancel=this.handleCancel.bind(this);
@@ -33,18 +32,13 @@ class AddModal extends Component{
         this.getLine=this.getLine.bind(this);
         this.getRecordById=this.getRecordById.bind(this);
     }
-    componentDidMount(){
-        this.getMaterialType()
-        this.getLine()
-       
-    }
+
     componentWillUnmount(){
         this.setState=()=>{
             return
         }
     }
-    getRecordById(){//根据id获取一条记录
-        let {detail}=this.state
+    getRecordById(detail){//根据id获取一条记录
         axios({
             url:`${this.props.url.precursorRawmaterialLineWeight.getRecordById}`,
             method:'get',
@@ -56,28 +50,38 @@ class AddModal extends Component{
           }
           }).then((data)=>{
             const res = data.data.data;
-           if(res && res.weightDTOS){
-               for(let i =0;i<res.weightDTOS.length;i++){
-                    detail[res.weightDTOS[i].lineCode]['weightValue']=res.weightDTOS[i].weightValue
-                    detail[res.weightDTOS[i].lineCode]['checkbox']=true
+            console.log(detail)
+           if(res ){
+               if(res.weightDTOS){
+                   for(let i =0;i<res.weightDTOS.length;i++){
+                       console.log(res.weightDTOS[i])
+                       detail[res.weightDTOS[i].lineCode]['value']=parseFloat(res.weightDTOS[i].weightValue)
+                       detail[res.weightDTOS[i].lineCode]['checkbox']=true
+                   }
+                   console.log(detail)
                }
-                this.setState({
-                    dataType:res.dataType,
-                    materialName:res.materialCode,
-                    materialType:res.materialTypeCode,
-                    weightDto:res.weightDTOS,
-                    detail:detail
-                })
+               this.setState({
+                   dataType:res.dataType,
+                   materialName:res.materialCode,
+                   materialType:res.materialTypeCode,
+                   weightDto:res.weightDTOS,
+                   detail:detail
+               })
+               this.getmaterialName(res.materialTypeCode)
+               this.getMaterialType(res.dataType)
             }
           })
     }
-    getMaterialType(){
+    getMaterialType(value){
         axios({
-            url:`${this.props.url.precursorMaterialType.all}`,
+            url:`${this.props.url.precursorMaterialType.getRecordsByTypes}`,
             method:'get',
             headers:{
               'Authorization':this.props.url.Authorization
           },
+            params:{
+                dataType:value
+            }
           }).then((data)=>{
             const res = data.data.data;
            if(res){
@@ -123,32 +127,33 @@ class AddModal extends Component{
             }
             this.setState({
                 productLine:res,
-                detail:detail,
-            });
+                detail:detail
+            })
+            if(this.props.editFlag){
+                this.getRecordById(detail)
+            }
         })
     }
     showModal(){
-        if(this.props.editFlag){
-            this.getRecordById()
-        }
+        this.getLine()
         this.setState({
             visible:true
         })
     }
     dataTypeChange(value){
         this.setState({
-            dataType:value
+            dataType:value,
         })
+        this.getMaterialType(value)
     }
     materialNameSelect(value){
         this.setState({
             materialName:value
         })
     }
-    materialTypeSelect(value){
+    materialTypeSelect(value){//材料类别
         this.setState({
             materialType:value,
-            nameFlag:false
         })
         this.getmaterialName(value)
     }
@@ -164,7 +169,7 @@ class AddModal extends Component{
     }
     handleCreate(){
         let {dataType,materialName,materialType,detail}=this.state
-        if((dataType==='')||materialName===''||!materialType===''){
+        if(dataType===undefined||materialName===undefined||materialType===undefined){
             message.error('信息填写不完整!')
             return
         }
@@ -190,10 +195,11 @@ class AddModal extends Component{
         }
         if(count!==1){
             message.error('所选项权值相加应等于1')
+            return
         }
         data.weightDTOS=weightValue
         axios({
-            url:`${this.props.url.precursorRawmaterialLineWeight.add}`,
+            url:this.props.editFlag?this.props.url.precursorRawmaterialLineWeight.update:this.props.url.precursorRawmaterialLineWeight.add,
             method:this.props.editFlag?'put':'post',
             headers:{
                 'Authorization':this.props.url.Authorization,
@@ -202,6 +208,7 @@ class AddModal extends Component{
         }).then((data)=>{
             if(data.data.code!==0){
                 message.error(data.data.message);
+                this.handleCancel()
                 return
             }
             message.info("操作成功!");
@@ -216,6 +223,7 @@ class AddModal extends Component{
     }
     getData = (data)=>{//复选框
         let detail = this.state.detail;
+        console.log(detail,data.target.value)
         detail[data.target.value]["checkbox"] = data.target.checked;
         this.setState({
             detail:detail
@@ -229,7 +237,7 @@ class AddModal extends Component{
         })
     }
     render(){
-        let {nameFlag}=this.state
+        let {nameFlag,typeFlag}=this.state,{editFlag}=this.props
         return(
             <span>
                 {this.props.editFlag?<span className='blue' onClick={this.showModal}>编辑</span>
@@ -247,11 +255,11 @@ class AddModal extends Component{
                     ]}
                 >
                     <div>
-                        物料来源：<Select onChange={this.dataTypeChange} value={this.state.dataType} style={{ width:"20%"}} placeholder="请选择物料来源">
+                        物料来源：<Select onChange={this.dataTypeChange} value={this.state.dataType} style={{ width:"20%"}} placeholder="请选择物料来源" disabled={editFlag?true:false}>
                         <Option key={1} value={1}>补料</Option>
                         <Option key={0} value={0}>仓库领料</Option>
                         </Select>&nbsp;&nbsp;&nbsp;
-                        材料类别：<Select onChange={this.materialTypeSelect} value={this.state.materialType} style={{ width:"20%"}} placeholder="请选择材料类别">
+                        材料类别：<Select onChange={this.materialTypeSelect} value={this.state.materialType} style={{ width:"20%"}} placeholder="请选择材料类别" disabled={editFlag?true:false}>
                             {
                                 this.state.materialTypeData?this.state.materialTypeData.map(data=>{
                                     return(
@@ -260,7 +268,7 @@ class AddModal extends Component{
                                 }):null
                             }
                         </Select>&nbsp;&nbsp;&nbsp;
-                        原材料名称：<Select onChange={this.materialNameSelect} value={this.state.materialName} style={{ width:"20%"}} placeholder="请选择原材料名称" disabled={nameFlag}>
+                        原材料名称：<Select onChange={this.materialNameSelect} value={this.state.materialName} style={{ width:"20%"}} placeholder="请选择原材料名称" disabled={editFlag?true:false}>
                             {
                                 this.state.materialNameData?this.state.materialNameData.map(data=>{
                                     return(

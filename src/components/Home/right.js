@@ -96,11 +96,10 @@ import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/st
 
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
+
 // import processParameters from "../technologyCenter/processParameters/processParameters";
 
 import BatchTrace from "../productionManagement/batchTrace/batchTrace";
-
-
 import BaseInfoPositiveCost from '../positiveCost/baseData/baseInfo';
 import ProductLinePositiveCost from '../positiveCost/baseData/productLine/productLinePositiveCost';
 import ProcessPositiveCost from '../positiveCost/baseData/process/processPositiveCost';
@@ -125,10 +124,14 @@ import StorageStatistical from "../costAccounting/productStorage/statisticalAnal
 import ExcipientStatistics from "../costAccounting/excipientStatistics/excipientStatistics"
 import ExcipientStatisticsAnalysis from "../costAccounting/excipientStatistics/statisticalAnalysis/statisticalAnalysis"
 import ExcipientStatisticsAddModal from "../costAccounting/excipientStatistics/addModal/addModal"
+
+import Operation from '../fireQuality/operationManage/operationManage'
+
 import InspectionManagement from "../fireQuality/inspectionManagement/inspectionManagement";
 import CheckItem from "../powerCheck/checkItem/checkItem";
 import PowerCheck from "../powerCheck/powerCheck/powerCheck";
 import PowerCheckTemplate from "../powerCheck/checkTemplate/checkTemplate";
+
 class Right extends React.Component {
     render() {
         const data = [{
@@ -610,6 +613,9 @@ class Right extends React.Component {
             path: '/processParamsAdd',
             component: ProcessParamAddModal
         },{
+            path:'/operationManual',
+            component:Operation
+        },{
             path: '/checkItem',
             component: CheckItem
         },{
@@ -621,6 +627,7 @@ class Right extends React.Component {
         },{
             path: '/inspectionManagement',
             component: InspectionManagement
+
         }];
         return (
             <div className="rightDiv">
