@@ -25,7 +25,7 @@ class Search extends React.Component {
             start = head['startTime'];
             end = head['endTime'];
             periods = head['lineName'] ? head['lineName'] : head['periods'];
-            periodCode = head['periodCode'];
+            periodCode = head['periodName'] ? head['periodName'] : head['periodCode'];
             disabled = true;
         }
         let startValue = start === undefined || start === "" ? null : moment(start, dateFormat),

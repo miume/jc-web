@@ -34,7 +34,7 @@ export let columns2 = [{
         title: '溶液',
         key: 'materialName',
         dataIndex: 'materialName',
-        width: '20%'
+        width: '15%'
     }, {
         title: '体积(m³)',
         key: 'process.volumes',
@@ -44,7 +44,7 @@ export let columns2 = [{
         title: '密度(T/m³)',
         key: 'process.density',
         dataIndex: 'process.density',
-        width: '10%'
+        width: '15%'
     },{
         title: '重量(T)',
         key: 'process.totals',

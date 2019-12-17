@@ -8,7 +8,6 @@ import TreeCard from "./treeCard";
 import axios from 'axios';
 import Detail from "./details";
 import Edit from "./edit";
-import DepTree from "../../../BlockQuote/department";
 
 class CheckTemplate extends React.Component{
     url
@@ -33,7 +32,6 @@ class CheckTemplate extends React.Component{
             deviceName:"",
             deptName:"",
             tableLoading:true,
-            loading:true
         };
         this.onSelectChange = this.onSelectChange.bind(this);
         this.cancel=this.cancel.bind(this);

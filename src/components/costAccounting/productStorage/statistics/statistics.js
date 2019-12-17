@@ -46,7 +46,7 @@ class Statistics extends React.Component {
             dataIndex: 'list.productionTypeName',
             width: '9%'
         }, {
-            title: '产品类型',
+            title: '产品型号',
             key: 'list.productionTypeCode',
             dataIndex: 'list.productionTypeCode',
             width: '9%'
@@ -93,7 +93,7 @@ class Statistics extends React.Component {
     }
 
     tableChange(pagination) {
-        this.props.getUnSubmittedData('',{},pagination);
+        this.props.getUnSubmittedData(true,{},pagination);
     }
 
     componentWillUnmount() {

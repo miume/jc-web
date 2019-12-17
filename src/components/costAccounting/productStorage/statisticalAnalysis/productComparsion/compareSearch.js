@@ -30,8 +30,8 @@ class Search extends Component{//工序对比分析
                         dropdownMatchSelectWidth={false} dropdownStyle={{width: 400}}>
                     {
                         lineNameData ?
-                            lineNameData.map(e =>
-                                <Option key={e.code} value={`${e.lineName}/${e.startTime}/${e.endTime}`} disabled={e.disabled}>
+                            lineNameData.map((e,index) =>
+                                <Option key={index} value={`${e.lineName}/${e.startTime}/${e.endTime}`} disabled={e.disabled}>
                                     <div>
                                         <span style={{padding: '0 10',display:'inline-block',width: 40}}>{e.lineName}</span>
                                         <span style={{padding: '0 10',display:'inline-block',width: 170}}>{e.startTime}</span>
@@ -86,8 +86,10 @@ class Search extends Component{//工序对比分析
 
     /**根据统计周期获取周期数*/
     getPeriodAndTime(periodId) {
+        let {type} = this.props,
+            url = type ? `${this.props.url.productStorage.getPeriodAndTime}?peroidId=${periodId}` : `${this.props.url.rawMaterial.getPeriodAndTime}?periodId=${periodId}`;
         axios({
-            url: `${this.props.url.productStorage.getPeriodAndTime}?peroidId=${periodId}`,
+            url: url,
             method: 'get',
             headers: {
                 'Authorization': this.props.url.Authorization
@@ -95,6 +97,9 @@ class Search extends Component{//工序对比分析
         }).then((data) => {
             let res = data.data.data;
             if(res && res.length) {
+                for(let i = 0; i < res.length; i++) {
+                    res[i]['lineName'] = res[i]['periodNum'];
+                }
                 res.splice(0,0,{
                     "code": -1,
                     "lineName": "期数",

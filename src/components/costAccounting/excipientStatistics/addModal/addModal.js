@@ -31,6 +31,7 @@ class AddModal extends React.Component{
         this.getVolumeOrWeight = this.getVolumeOrWeight.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
         this.tableDataProcessing = this.tableDataProcessing.bind(this);
+        this.inputNumberChange = this.inputNumberChange.bind(this);
     };
 
     render(){
@@ -44,7 +45,7 @@ class AddModal extends React.Component{
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} endDate={endDate}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} disabledDate={endDate}/>
                     <div className={visible ? '' : 'hide'}>
                         <AddTabs ammValue={ammValue} alkValue={alkValue} gqDetails2={gqDetails2} cjDetails3={cjDetails3} fcDetails4={fcDetails4}
                                  inputChange={this.inputChange} getVolume={this.getVolume}/>
@@ -125,10 +126,12 @@ class AddModal extends React.Component{
         let tar = e.target.name.split('-'), value = e.target.value,
             name = tar[0], index = tar[1] ? tar[1] : '', type = tar[2] ? parseInt(tar[2]) : '',
             {gqDetails2,cjDetails3,fcDetails4} = this.state;
-        if(typeof value === 'number') value = value.toString();
-        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型 //将字符串转为浮点型
+        if(type && name !== 'monPotency') {
+            value = this.inputNumberChange(value);
+            if(value === undefined) {
+                return
+            }
+        }
         if(index) {
             index = parseInt(index)-1;
             if(type === 2) {   //更新罐区input的数据
@@ -154,6 +157,19 @@ class AddModal extends React.Component{
         }
     }
 
+    /**监控浓度变化，只能输入0到1*/
+    inputNumberChange(value) {
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value < 0 || value > 1) {
+            message.info('只能输入0到1之间的数字！');
+            return undefined
+        }
+        return value;
+    }
+
     /**表头新增*/
     addConfirm(da) {
         axios({
@@ -165,10 +181,12 @@ class AddModal extends React.Component{
             data: da
         }).then((data) => {
             let res = data.data.data;
-            if (res === null || res === undefined) {
+            if(res === -1) {
+                message.info('存在同一期数未提交的数据，不能新增！');
+                return
+            } else if (res === null || res === undefined) {
                 message.info('存在不一致的统计周期，需要进行修改！')
-            }
-            else {
+            } else {
                 da['code'] = res;
                 this.setState({
                     head: da
@@ -199,8 +217,8 @@ class AddModal extends React.Component{
     tableDataProcessing(res) {
         let {processDTOS} = res,ammValue,alkValue,gqDetails2 = [],cjDetails3 = [],fcDetails4 = [];
         if(processDTOS.length) {
-            ammValue = processDTOS[0]['materialDetails'][0]['weight']; //氨入库量
-            alkValue = processDTOS[0]['materialDetails'][1]['weight']; //碱入库量
+            ammValue = processDTOS[0]['materialDetails'][0] ? processDTOS[0]['materialDetails'][0]['weight'] : 0; //氨入库量
+            alkValue = processDTOS[0]['materialDetails'][1] ? processDTOS[0]['materialDetails'][1]['weight'] : 0; //碱入库量
             gqDetails2 = processDTOS[1]['materialDetails'];          //罐区
             cjDetails3 = processDTOS[2]['materialDetails'];           //车间
             fcDetails4 = processDTOS[3]['materialDetails'];           //辅材消耗量
