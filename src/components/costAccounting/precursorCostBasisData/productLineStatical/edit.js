@@ -217,7 +217,7 @@ class Edit extends React.Component{
                     closable={false}
                     centered={true}
                     maskClosable={false}
-                    title="新增"
+                    title="编辑"
                     width='800px'
                     footer={[
                         <CancleButton key='back' handleCancel={this.handleCancel}/>,

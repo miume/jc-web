@@ -125,6 +125,9 @@ class ProcessStatistics extends Component {
     }
     getStatisticPage(params = {}, periodCode) {//获取已统计表格数据
         if (!periodCode) return
+        this.setState({
+            loadingStatis:true
+        })
         axios({
             url: `${this.url.precursorGoodIn.getStatisticPage}`,
             method: 'get',
@@ -137,7 +140,6 @@ class ProcessStatistics extends Component {
             }
         }).then((data) => {
             let res = data.data.data;
-            //console.log(res)
             if (res && res.list) {
                 for (let i = 0; i < res.list.length; i++) {
                     res.list[i]['index'] = (res.page - 1) * res.size + (i + 1)
@@ -224,14 +226,20 @@ class ProcessStatistics extends Component {
 
     }
     reset() {//重置清空搜索框的值,调用获取表格数据接口
-        let { staticPeriod } = this.state
+        let { staticPeriod ,tabKey} = this.state
         let periodCode=staticPeriod && staticPeriod[0]?staticPeriod[0].code:''
         this.setState({
             startDate: '',
             endDate: '',
             periodCode: staticPeriod && staticPeriod[0] ? staticPeriod[0].code : ''
         })
-        this.getPendSubmit({size:10,page:1}, periodCode)
+
+        if(tabKey==='1'){
+            this.getPendSubmit({size:10,page:1}, periodCode)
+        }
+        else{
+            this.getStatisticPage({size:10,page:1}, periodCode)
+        }
     }
 
     judgeOperation(operation, operationCode) {

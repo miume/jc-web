@@ -32,6 +32,7 @@ class AddModal extends React.Component{
             params:{id:this.props.code}
         }).then((data)=>{
             const res = data.data.data;
+            console.log(res)
             var metal = [];
             if(res["mn"]===1){
                 metal.push("Mn")
@@ -67,6 +68,8 @@ class AddModal extends React.Component{
         })
     };
     handleCancel = () =>{
+        let {types}=this.state
+
         this.setState({
             visible:false,
             name:null,
@@ -74,14 +77,16 @@ class AddModal extends React.Component{
             types:undefined,
             process:undefined,
             processData:[],
-            metal:["Mn","Co","Ni"]
+            metal:types===1?['氨','碱']:["Mn","Co","Ni"]
         })
     }
     handleCreate = () =>{
         let {dataTypes,name,process,types,valueType,metal}=this.state
         var data = {
             code:this.props.code,dataType:this.state.dataTypes,materialName:this.state.name,processCode:this.state.process,types:this.state.types,
-            mn:this.state.metal.includes("Mn")?1:0,co:this.state.metal.includes("Co")?1:0,ni:this.state.metal.includes("Ni")?1:0
+            mn:this.state.metal.includes("Mn")?1:0,co:this.state.metal.includes("Co")?1:0,ni:this.state.metal.includes("Ni")?1:0,
+            alkaliFlag:types===1&&metal.includes('碱')?1: 0,//碱
+            ammoniaFlag: types===1&&metal.includes('氨')?1: 0,//氨
         };
         if(!dataTypes||!name||!process||!types||!valueType||metal.length===0){
             message.error('信息填写不完整!')
@@ -121,6 +126,11 @@ class AddModal extends React.Component{
         })
     }
     typesChange = (value) =>{
+        if(value===1){
+            this.setState({
+                metal:['氨','碱']
+            })
+        }
         axios({
             url:`${this.url.precursorMaterialDetails.getProcess}`,
             method:"get",
@@ -156,7 +166,11 @@ class AddModal extends React.Component{
     }
     render(){
         this.url = JSON.parse(localStorage.getItem('url'));
-        const plainOptions = [{
+        const plainOptions =this.state.types===1? [{
+            label:"氨",value:"氨"
+        },{
+            label:"碱",value:"碱"
+        }]:[{
             label:"Ni",value:"Ni"
         },{
             label:"Co",value:"Co"

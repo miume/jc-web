@@ -7,9 +7,44 @@ const {RangePicker}=DatePicker;
  class Search extends Component{
     constructor(props){
         super(props);
-        
+        this.state={
+            startDate:'',
+            endDate:'',
+            startTime:'',
+            endTime:'',
+            periodCode:'',//记录下拉框周期类型的value值
+        }
+        this.startChange=this.startChange.bind(this);
+        this.endChange=this.endChange.bind(this);
+        this.selectChange=this.selectChange.bind(this);
+        this.confirm=this.confirm.bind(this);
     }
+    getPeriod(){
 
+    }
+     startChange(date,dateString){
+         this.setState({
+             startDate:dateString
+         })
+     }
+     endChange(date,dateString){
+         this.setState({
+             endDate:dateString
+         })
+     }
+     selectChange(value){
+         this.setState({
+             periodCode:value
+         })
+     }
+     confirm(){
+         let {startTime,endTime,periodCode}=this.state;//es6新语法，解构赋值
+         let params={//点击搜索传给后台的值
+             startTime:startTime,
+             endTime:endTime,
+             periodCode:periodCode
+         }
+     }
     render(){
         return(
             <span className={this.props.flag?'searchCell':'hide'} >
@@ -20,8 +55,7 @@ const {RangePicker}=DatePicker;
                     <Option key={2} value={2}>月</Option>
                     <Option key={3} value={3}>年</Option>
                 </Select>
-                <NewButton name='确定'  handleClick={this.props.search}/>
-                <Button type='primary'  onClick={this.props.reset}><i className="fa fa-repeat" aria-hidden="true"></i> 重置</Button>
+                <NewButton name='确定'  handleClick={this.confirm}/>
             </span>
         );
     }

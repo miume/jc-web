@@ -50,7 +50,7 @@ class SyntheticProcess extends Component{//合成工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.niPotency} </span>
+                    <Input value={record.niPotency} name={`${record.index}-${'niPotency'}`}  onChange={this.inputChange}/>
                 )
             }
         },{
@@ -60,7 +60,7 @@ class SyntheticProcess extends Component{//合成工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.coPotency}</span> 
+                    <Input value={record.coPotency}  name={`${record.index}-${'coPotency'}`}  onChange={this.inputChange}/>
                 )
             }
         },{
@@ -70,7 +70,7 @@ class SyntheticProcess extends Component{//合成工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <span>{record.mnPotency}</span> 
+                    <Input value={record.mnPotency} name={`${record.index}-${'mnPotency'}`}  onChange={this.inputChange}/>
                 )
             }
         }];
