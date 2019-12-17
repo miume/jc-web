@@ -1,10 +1,7 @@
 import React,{Component} from 'react'
 import Blockquote from '../../BlockQuote/blockquote'
-import { Tabs } from 'antd';
 import PositiveMainMaterial from './mainMaterial'
-import PositiveAuxiliaryMaterial from './auxiliaryMaterial'
 import axios from 'axios'
-const { TabPane } = Tabs;
 class PositiveCostAccount extends Component{
     constructor(props){
         super(props)
@@ -49,14 +46,7 @@ class PositiveCostAccount extends Component{
         return(
             <div>
                 <Blockquote name={current.menuName} menu={current.menuParent}/>
-                <Tabs defaultActiveKey="1" >
-                    <TabPane tab="主材" key="1">
-                        <PositiveMainMaterial url={this.url} period={this.state.period} periodCode={this.state.periodCode}/>
-                    </TabPane>
-                    <TabPane tab="辅材" key="2">
-                        <PositiveAuxiliaryMaterial url={this.url} period={this.state.period} periodCode={this.state.periodCode}/>
-                    </TabPane>
-                </Tabs>
+                <PositiveMainMaterial url={this.url} period={this.state.period} periodCode={this.state.periodCode}/>
             </div>
         );
     }

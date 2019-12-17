@@ -19,9 +19,9 @@ class Tr extends React.Component{
     render(){
         return(
             <tr>
-                <td className="productName">{this.props.value.name}</td>
-                <td className="productCheck"><input onChange={this.defaultChange} value={this.props.value.code} className="defaultRadio" type="checkbox" name="defaultCheck"/></td>
-                <td className="productValue"><Input style={{border:'none',textAlign:'left'}} name={this.props.value.code} onChange={this.valueChange}/></td>
+                <td >{this.props.value.name}</td>
+                <td ><input onChange={this.defaultChange} value={this.props.value.code}  type="checkbox" name="defaultCheck"/></td>
+                <td ><Input style={{border:'none',textAlign:'left',padding:0}} name={this.props.value.code} onChange={this.valueChange} placeholder={'请输入权重'}/></td>
             </tr>
         )
     }

@@ -29,6 +29,7 @@ class DetailItem extends React.Component {
         this.returnDataEntry = this.returnDataEntry.bind(this);
         this.handleTableChange = this.handleTableChange.bind(this);
         this.radioChange = this.radioChange.bind(this);
+        this.reset=this.reset.bind(this);
         this.pagination = {
             total: this.state.data.length,
             showTotal(total) {
@@ -47,7 +48,7 @@ class DetailItem extends React.Component {
             dataIndex: 'materialName',
             key: 'materialName',
             align: 'center',
-            width: '14.3%',
+            width: '18%',
         }, {
             title: '所属工序',
             dataIndex: 'processName',
@@ -59,13 +60,13 @@ class DetailItem extends React.Component {
             dataIndex: 'metal',
             key: 'metal',
             align: 'center',
-            width: '14.3%',
+            width: '20%',
         }, {
             title: '数据类别',
             dataIndex: 'valueType',
             key: 'valueType',
             align: 'center',
-            width: '14.3%',
+            width: '15%',
             render: (text, record) => {
                 if (record.valueType === 0) {
                     return "体积"
@@ -78,7 +79,7 @@ class DetailItem extends React.Component {
             dataIndex: 'operation',
             key: 'operation',
             align: 'center',
-            width: '14.3%',
+            width: '20%',
             render: (text, record) => {
                 return (
                     <span>
@@ -112,16 +113,15 @@ class DetailItem extends React.Component {
             return;
         }
     }
-
     componentDidMount() {
         this.fetch();
     }
 
-    fetch = (params = {}, type) => {
+    fetch = (params = {},type) => {
         type = type === undefined ? 0 : type
         params = {
             ...params,
-            type: type
+            type:type
         }
         this.setState({
             loading: true,
@@ -154,6 +154,12 @@ class DetailItem extends React.Component {
                     if (res.list[i]["ni"] == 1) {
                         res.list[i]["metal"] += "ni "
                     }
+                    if(res.list[i]['amm']===1){
+                        res.list[i]["metal"] += "氨 "
+                    }
+                    if(res.list[i]['alk']===1){
+                        res.list[i]["metal"] += "碱 "
+                    }
                 }
                 for (let i = 0; i < res.list.length; i++) {
                     if (res.list[i]["metal"] == "") {
@@ -169,6 +175,7 @@ class DetailItem extends React.Component {
             }
         })
     }
+    /**删除*/
     start = () => {
         const ids = this.state.selectedRowKeys;
         axios({
@@ -211,11 +218,11 @@ class DetailItem extends React.Component {
         this.props.history.push({ pathname: "/precursorCostBasisData" });
     }
     searchEvent(params = {}) {
-        const ope_name = this.state.searchContent;
+        let {searchContent,radioValue}=this.state
         this.fetch({
             ...params,
-            condition: ope_name
-        })
+            condition: searchContent,
+        },radioValue)
         this.setState({
             searchFlag: 1,
         })
@@ -244,7 +251,11 @@ class DetailItem extends React.Component {
         this.fetch({
             page: current,
             size: pageSize,
-        }, e.target.value)
+        },e.target.value)
+    }
+    reset(){
+        let {radioValue}=this.state
+        this.fetch({},radioValue)
     }
     render() {
         this.url = JSON.parse(localStorage.getItem('url'));
@@ -273,7 +284,7 @@ class DetailItem extends React.Component {
                         <Radio value={0}>主材</Radio>
                         <Radio value={1}>辅材</Radio>
                     </Radio.Group>
-                    <SearchCell name="请输入物料名称" flag={true} fetch={this.fetch} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
+                    <SearchCell name="请输入物料名称" flag={true} fetch={this.reset} searchEvent={this.searchEvent} searchContentChange={this.searchContentChange} />
                     <div className='clear' ></div>
                     <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} onChange={this.handleTableChange} size="small" bordered />
                 </Spin>

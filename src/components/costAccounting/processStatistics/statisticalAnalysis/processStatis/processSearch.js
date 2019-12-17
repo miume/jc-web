@@ -9,7 +9,6 @@ class Search extends Component{
     }
     
     render(){
-        console.log(this.props.periodCode)
         let time=this.props.time?[...new Set(JSON.parse(JSON.stringify(this.props.time)))]:null //es6数组去重
         return(
             <div className={this.props.flag?'searchCell':'hide'}>

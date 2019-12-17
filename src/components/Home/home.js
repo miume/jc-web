@@ -581,7 +581,7 @@ class Home extends Component {
                 getRecordsByTypes:`${server}/jc/common/precursorMaterialType/getRecordsByTypes`,
                 ids:`${server}/jc/common/precursorMaterialType/ids`,
                 page:`${server}/jc/common/precursorMaterialType/page`,
-                update:`${server}/jc/common/precursorMaterialType/update`
+                update:`${server}/jc/common/precursorMaterialType/update`,
             },
             /**生产线合成槽对照表 */
             techLineCellMap:{
@@ -801,7 +801,6 @@ class Home extends Component {
                 stasticByLine:`${server}/jc/common/productStorage/stasticByLine`,
                 getPeriodAndTime:`${server}/jc/common/productStorage/getPeriodAndTime`,
                 stasticByProcess:`${server}/jc/common/productStorage/stasticByProcess`,
-                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
             },
             /**质量基础受检物料*/
             testMaterial:{

@@ -49,8 +49,7 @@ class SingleCrystal extends Component {//单晶体配置
         this.props.weightAlterData(this.props.processId,'volume')
     }
     inputChange(e){//要定位到是第几条数据发生了变化，点击父组件保存时，要把填写的数据（没有改动的要传原来的数据）都保存起来并传给父组件
-        //获取到输入框变化的code值-字段名      
-       
+        //获取到输入框变化的code值-字段名
        this.props.getSingleCrystal(this.props.processId,e,'')
 
     }

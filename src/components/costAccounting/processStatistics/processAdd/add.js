@@ -16,33 +16,7 @@ import moment from 'moment'
 
 const { Option } = Select;
 const { TabPane } = Tabs;
-const otherData=[{
-    id:1,
-    alkPotency: 0,
-    alkValue: 0,
-    alkaliFlag: 0,
-    ammPotency: 0,
-    ammValue: 0,
-    ammoniaFlag: 0,
-    co: 1,
-    coPotency: 0,
-    code: 0,
-    dataType: 1,
-    index: 1,
-    materialName: '',
-    mn: 1,
-    mnPotency: 0,
-    monPotency: 0,
-    ni: 1,
-    niPotency: 0,
-    processCode: 6,
-    solidContent: 0,
-    types: 0,
-    valueType: 0,
-    volume: 0,
-    weiOrVol: 0,
-    weight: 0
-}]
+
 class CostProcessAdd extends Component {
     constructor(props) {
         super(props);
@@ -65,11 +39,13 @@ class CostProcessAdd extends Component {
             addData: {},
             statisticId: '',
             flagConfirm: false,
-            otherFlag:true,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上,因为默认是有一行的，所以flag为true
-            otherData:otherData,
+            otherFlag:false,//判断other页的新增有没有被点击，如果被点击了，表格的输入，下拉框内容必须填上,因为默认是有一行的，所以flag为true
+            otherData:undefined,
             giveEndDate:undefined,
             disabledDateFlag:false,
-            lengthSub:undefined
+            lengthSub:undefined,
+            dataOrigin:undefined, //记录最开始没变的数据，使得做了修改颜色会变
+            otherMaterial:undefined
         }
         this.returnProcess = this.returnProcess.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
@@ -140,7 +116,8 @@ class CostProcessAdd extends Component {
                     this.setState({
                         tagTableData: tagTable.goodInProcessDTOS,
                         addData: tagTable,
-                        editDataOrigin:[]
+                        otherMaterial:tagTable.otherMaterials,
+                        dataOrigin:JSON.parse(JSON.stringify(tagTable.goodInProcessDTOS))
                     })
                     if(tagTable.goodInProcessDTOS[5].materialDetails){
                         let re=tagTable.goodInProcessDTOS[5].materialDetails
@@ -148,7 +125,8 @@ class CostProcessAdd extends Component {
                             re[i]['id']=i+1
                         }
                         this.setState({
-                            otherData:re
+                            otherData:re,
+                            otherFlag:true   //传过来的其他不为空
                         })
                     }
                 }
@@ -204,14 +182,10 @@ class CostProcessAdd extends Component {
         })
     }
     disabledDate(current) {
-        let {giveEndDate}=this.state,
-            time = new Date(Date.parse(giveEndDate) + 3600 * 24 * 1000 ),//将日期转为毫秒
-            endDate = moment(time).format('YYYY-MM-DD')
+        let {giveEndDate}=this.state
         //小于给定时间不能选
-        return current&&current<=moment(endDate)
+        return  current && current < moment(giveEndDate).add(1,'d');
       }
-      
-      
     endChange(date, dateString) {
         let { startSecondTime } = this.state
         this.setState({
@@ -219,7 +193,6 @@ class CostProcessAdd extends Component {
             endDate: dateString
         })
     }
-
     selectChange(value, name) {
         name = name.props.name.split('-')
         let time = name[0],
@@ -264,10 +237,13 @@ class CostProcessAdd extends Component {
         }).then((data) => {
             let res = data.data.data;
             if (res === null || res === undefined) {
-                message.info('存在不一致的统计周期，需要进行修改！')
+                message.error('存在不一致的统计周期，需要进行修改！')
                 this.setState({
                     loading:false
                 })
+            }
+            else if(res===-1){
+                message.error(' 存在同一期数未提交的数据。!')
             }
             else {
                 this.setState({
@@ -290,6 +266,7 @@ class CostProcessAdd extends Component {
                         this.setState({
                             tagTableData: tagTable.goodInProcessDTOS,
                             addData: tagTable,
+                            otherMaterial:tagTable.otherMaterials,
                             loading:false
                         })
                     }
@@ -308,21 +285,34 @@ class CostProcessAdd extends Component {
             otherFlag:true,
             otherData:data
         })
+        console.log(data)
     }
  
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
         let {addData,otherData,otherFlag}=this.state
         if (inputData) {
             let value = inputData.target.value;
-            inputData = inputData.target.name.split('-');
-            let index = inputData[0],    //定位到是第几条数据
-                name = inputData[1]     //输入框内容变化的字段  
-            if(tabKey===6&&otherFlag){
+            let inputData1 = inputData.target.name.split('-');
+            let index = inputData1[0],    //定位到是第几条数据
+                name = inputData1[1]     //输入框内容变化的字段
+            if(name==='monPotency'||name==='niPotency'||name==='coPotency'||name==='mnPotency'){
+                if(value<0||value>1){
+                    message.error('浓度值必须为0到1之间的数!')
+                    return undefined
+                }
+            }
+            if(tabKey==='6'&&otherFlag){
+                if(value[value.length-1] !== '.'){
+                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                }
                 otherData[index - 1][name]=value
                 addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
             }
             else{
-                addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value===''?'':parseFloat(value)
+                if(value[value.length-1] !== '.'){
+                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                }
+                addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value
             }
         }
         if (selectData) {
@@ -333,10 +323,22 @@ class CostProcessAdd extends Component {
         }
         if (inputData && selectData) {
             let value = inputData.target.value;
-            inputData = inputData.target.name.split('-');
-            let index = inputData[0],    //定位到是第几条数据
-                name = inputData[1]    //输入框内容变化的字段
-            addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] =value===''?'':parseFloat(value)
+            let inputData1 = inputData.target.name.split('-');
+            let index = inputData1[0],    //定位到是第几条数据
+                name = inputData1[1]    //输入框内容变化的字段
+            if(tabKey==='6'&&otherFlag){
+                if(value[value.length-1] !== '.'){
+                    value=value===''?'':parseFloat(value)//将字符串转为浮点型，点不转
+                }
+                otherData[index - 1][name]=value
+                addData.goodInProcessDTOS[tabKey - 1].materialDetails=otherData
+            }
+            else {
+                if (value[value.length - 1] !== '.') {
+                    value = value === '' ? '' : parseFloat(value)//将字符串转为浮点型，点不转
+                }
+                addData.goodInProcessDTOS[tabKey - 1].materialDetails[index - 1][name] = value
+            }
             selectData=selectData.split('-')
             let codeSelect = selectData[0],  //第几个下拉框
                         id = selectData[1]    //下拉框的哪个option
@@ -552,7 +554,7 @@ class CostProcessAdd extends Component {
         }, {
             component: <DryProcess tagTableData={this.state.tagTableData} url={this.url} processId={this.state.tabKey} getDry={this.getChange} weightAlterData={this.weightAlterData} getLastPotency={this.getLastPotency}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }, {
-            component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
+            component: <Other tagTableData={this.state.tagTableData} otherData={this.state.otherData} otherMaterial={this.state.otherMaterial} url={this.url} getOther={this.getChange} otherSelectChange={this.otherSelectChange} processId={this.state.tabKey} handleOtherAdd={this.handleOtherAdd}  flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}/>
         }]
         return (
             <div >

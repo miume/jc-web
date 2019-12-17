@@ -30,7 +30,6 @@ class AddModal extends React.Component{
             },
         }).then((data)=>{
             const res = data.data.data;
-            // console.log(res);
             var detail = {}
             for(var i=0;i<res.length;i++){
                 detail[res[i].code] = {};
@@ -91,6 +90,7 @@ class AddModal extends React.Component{
         }).then((data)=>{
             if(data.data.code!=0){
                 message.error(data.data.message);
+                this.handleCancel()
                 return
             }
             message.info("新增成功!");
