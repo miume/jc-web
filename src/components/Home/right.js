@@ -124,7 +124,14 @@ import StorageStatistical from "../costAccounting/productStorage/statisticalAnal
 import ExcipientStatistics from "../costAccounting/excipientStatistics/excipientStatistics"
 import ExcipientStatisticsAnalysis from "../costAccounting/excipientStatistics/statisticalAnalysis/statisticalAnalysis"
 import ExcipientStatisticsAddModal from "../costAccounting/excipientStatistics/addModal/addModal"
+
 import Operation from '../fireQuality/operationManage/operationManage'
+
+import InspectionManagement from "../fireQuality/inspectionManagement/inspectionManagement";
+import CheckItem from "../powerCheck/checkItem/checkItem";
+import PowerCheck from "../powerCheck/powerCheck/powerCheck";
+import PowerCheckTemplate from "../powerCheck/checkTemplate/checkTemplate";
+
 class Right extends React.Component {
     render() {
         const data = [{
@@ -608,6 +615,19 @@ class Right extends React.Component {
         },{
             path:'/operationManual',
             component:Operation
+        },{
+            path: '/checkItem',
+            component: CheckItem
+        },{
+            path: '/powerCheck',
+            component: PowerCheck
+        },{
+            path: '/powerCheckTemplate',
+            component: PowerCheckTemplate
+        },{
+            path: '/inspectionManagement',
+            component: InspectionManagement
+
         }];
         return (
             <div className="rightDiv">

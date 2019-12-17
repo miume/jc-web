@@ -625,24 +625,6 @@ class Home extends Component {
                 getHC:`${server}/jc/common/precursorMaterialDetails/getHC`
             },
             /**前驱体在制品统计*/
-            // precursorGoodIn:{
-            //     getPendSubmit:`${server1}/goodIn/page`,
-            //     getStatisticPage:`${server1}/goodIn/statisticPage`,
-            //     getAnalysisProcess:`${server1}/goodIn/analysisProcess`,//获取统计分析的工序分析
-            //     getAnalysisLine:`${server1}/goodIn/analysisLine`,//获取统计分析的产线分析
-            //     getLineNameByPeriod:`${server1}/goodIn/getLineNameByPeriod`,//获取期数
-            //     addComfirm:`${server1}/goodIn/addComfirm`,//新增确认
-            //     afterComfirm:`${server}/goodIn/afterComfirm`,//新增确认后
-            //     getLastPotencyByProcessId:`${server1}/goodIn/getLastPotencyByProcessId`,//获取上期浓度
-            //     statisticDetail:`${server1}/goodIn/statisticDetail`,
-            //     saveOrCommit:`${server1}/goodIn/saveOrCommit`,//点击保存提交
-            //     commitDetail:`${server1}/goodIn/commitDetail`,//待提交编辑详情
-            //     delete:`${server1}/goodIn`,
-            //     getStartTime:`${server1}/goodIn/getStartTime`,
-            //     processCompare:`${server1}/goodIn/processCompare`,
-            //     lineCompare:`${server1}/goodIn/lineCompare`,
-            //     getVolume:`${server1}/goodIn/getVolumeWeight` //获取体积
-            // },
             precursorGoodIn:{
                 getPendSubmit:`${server}/jc/common/goodIn/page`,
                 getStatisticPage:`${server}/jc/common/goodIn/statisticPage`,
@@ -696,6 +678,7 @@ class Home extends Component {
                 lineCompare: `${server}/jc/common/materialDeliveryStatistic/lineCompare`,
                 supplementary: `${server}/jc/common/materialDeliveryStatistic/supplementary`,
                 getStockOutData: `${server}/jc/common/materialDeliveryStatistic/stockOutData`,
+                getPeriodAndTime: `${server}/jc/common/materialDeliveryStatistic/getPeriodAndTime`,
                 lastPeriodConcentrations: `${server}/jc/common/materialDeliveryStatistic/lastPeriodConcentrations`,
             },
             /**部门分配工序（工序名称）*/
@@ -803,13 +786,12 @@ class Home extends Component {
             productStorage: {
                 getDate:`${server}/jc/common/productStorage/getDate`,
                 delete: `${server}/jc/common/productStorage/delete`,
-                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
                 getAllBatch:`${server}/jc/common/productStorage/getAllBatch`,
                 detail:`${server}/jc/common/productStorage/detail`,
                 periodCur:`${server}/jc/common/productStorage/periodCur`,
                 editDetail:`${server}/jc/common/productStorage/editDetail`,
                 getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
-                getPageCommit:`${server}/jc/common/productStorage/PageCommit`,
+                getPageCommit:`${server}/jc/common/productStorage/pageCommit`,
                 nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
                 addConfirm:`${server}/jc/common/productStorage/addComfirm`,
                 afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,

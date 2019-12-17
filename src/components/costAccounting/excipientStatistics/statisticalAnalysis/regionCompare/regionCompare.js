@@ -2,6 +2,7 @@ import React,{Component} from 'react'
 import Search from '../productLineCompare/compareSearch'
 import ReactEcharts from 'echarts-for-react';
 import axios from 'axios';
+import {Spin} from "antd";
 
 class ProcessCompare extends Component{//工序对比分析
     constructor(props){
@@ -18,17 +19,17 @@ class ProcessCompare extends Component{//工序对比分析
     }
 
     render() {
-        let {staticPeriod} = this.props, {processData,xData,alkData,ammData} = this.state;
+        let {staticPeriod} = this.props, {processData,xData,alkData,ammData,loading} = this.state;
         return (
-            <div>
+            <Spin spinning={loading}>
                 <Search flag={true} staticPeriod={staticPeriod}
                         processData={processData} search={this.getTableData}/>
                 <div className='clear'></div>
                 <div className={'raw-material-canvas'}>
                     <ReactEcharts option={this.getOption(xData,alkData,ammData)}
-                                  style={{width: '100%',height:'80%'}}/>
+                                  style={{width: '100%'}}/>
                 </div>
-            </div>
+            </Spin>
         );
     }
 

@@ -88,7 +88,7 @@ class UnSubmitted extends React.Component {
 
     /**切换分页*/
     handleTableChange(pagination) {
-        this.props.getUnSubmittedData('',{},pagination)
+        this.props.getUnSubmittedData(false,{},pagination)
     }
 
     componentWillUnmount() {

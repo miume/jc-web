@@ -72,13 +72,13 @@ class ProductionLineComparison extends React.Component {
     render() {
         let {staticPeriod} = this.props, {productionLineData,xData,niData,coData,mnData,loading} = this.state;
         return (
-            <Spin spinning={loading} wrapperClassName='rightDiv-content'>
+            <Spin spinning={loading}>
                 <Search flag={true} staticPeriod={staticPeriod} url={this.props.url}
                         productionLineData={productionLineData} search={this.getTableData}/>
                 <div className='clear'></div>
                 <div className={'raw-material-canvas'}>
                     <ReactEcharts option={this.getOption(xData,niData,coData,mnData)}
-                                  style={{width: '100%',height:'80%'}}/>
+                                  style={{width: '100%'}}/>
                 </div>
             </Spin>
         )
@@ -108,29 +108,30 @@ class ProductionLineComparison extends React.Component {
         this.setState({
             loading: true
         });
-        params['periodNum'] = params['lineName'];
+        let {periodCode,lineName} = params;
         axios({
-            url: `${this.props.url.rawMaterial.lineCompare}`,
+            url: `${this.props.url.rawMaterial.lineCompare}?periodNum=${lineName}&periodCode=${periodCode}`,
             method: 'post',
             headers: {
                 'Authorization': this.props.url.Authorization
             },
-            data: lineId,
-            params
+            data: lineId
         }).then((data) => {
-            let res = data.data.data, xData = [], alkData = [], ammData = [];
+            let res = data.data.data, xData = [], niData = [], coData = [], mnData = [];
             if(res && res.length) {
                 for(let i = 0; i < res.length; i++) {
                     let e = res[i];
-                    xData.push(e['periodNum']);
-                    alkData.push(e['alk']);
-                    ammData.push(e['amm']);
+                    xData.push(e['lineName']);
+                    niData.push(e['niValue']);
+                    coData.push(e['coValue']);
+                    mnData.push(e['mnValue']);
                 }
             }
             this.setState({
                 xData,
-                alkData,
-                ammData,
+                niData,
+                coData,
+                mnData,
                 loading: false
             })
         });
@@ -178,7 +179,7 @@ class ProductionLineComparison extends React.Component {
                     xAxis: [
                         {
                             type: 'category',
-                            name: '周期数',
+                            name: '产线',
                             axisTick: {show: false},
                             data: xData
                         }

@@ -78,13 +78,13 @@ class Detail extends React.Component {
             width: '25%'
         }, {
             title: '浓度(%)',
-            key: 'niConcentration',
-            dataIndex: 'niConcentration',
+            key: 'concentration',
+            dataIndex: 'concentration',
             width: '25%'
         }, {
             title: '金属量(T)',
-            key: 'niMentallicity',
-            dataIndex: 'niMentallicity',
+            key: 'metalTotal',
+            dataIndex: 'metalTotal',
             width: '25%'
         }];
 
@@ -110,8 +110,8 @@ class Detail extends React.Component {
             width: '20%'
         }, {
             title: '金属量(T)',
-            key: 'metal',
-            dataIndex: 'metal',
+            key: 'metalTotal',
+            dataIndex: 'metalTotal',
             width: '20%'
         }];
 
@@ -127,8 +127,8 @@ class Detail extends React.Component {
             width: '8%'
         }, {
             title: '物料编码',
-            key: 'weights',
-            dataIndex: 'weights',
+            key: 'materialCode',
+            dataIndex: 'materialCode',
             width: '10%'
         },{
             title: '出库时间',
@@ -223,6 +223,8 @@ class Detail extends React.Component {
             if(data.data.code === 0) {
                 for(let i = 0; i < res.length; i++) {
                     res[i]['index'] = i + 1;
+                    res[i]['concentration'] = res[i]['niConcentration'] + res[i]['coConcentration'] + res[i]['mnConcentration'];
+                    res[i]['metalTotal'] = res[i]['niMetallicity'] + res[i]['coMetallicity'] + res[i]['mnMetallicity'];
                 }
                 this.setState({
                     visible: true,

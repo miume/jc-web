@@ -137,13 +137,14 @@ class processParameters extends React.Component {
             let res = data.data.data;
             if(res && res.list) {
                 let list = res.list, dataSource = [];
+                dataSource['total'] = res['total'];
                 for(let i = 0; i < list.length; i++) {
                     let head = list[i]['head'];
-                    head['index'] = i + 1;
+                    head['index'] = (res.page-1) * 10 + i + 1;
                     head['deptName'] = list[i]['deptName'];
                     head['processName'] = list[i]['processName'];
                     head['prepareName'] = list[i]['prepareName'];
-                    dataSource.push(head)
+                    dataSource.push(head);
                 }
                 this.setState({
                     data: dataSource

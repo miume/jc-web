@@ -192,14 +192,15 @@ class RawMaterial extends React.Component {
             },
             params
         }).then((data) => {
-            let res = data.data.data;
-            if(res) {
-                for(let i = 0; i < res.length; i++) {
-                    res[i]['index'] = (res.page-1) * 10 + i + 1;
+            let res = data.data.data ? data.data.data : [];
+            if(res && res.list) {
+                let list = res.list;
+                for(let i = 0; i < list.length; i++) {
+                    list[i]['index'] = (res.page-1) * 10 + i + 1;
                 }
-                res.list.total = res['total'];
+                list.total = res['total'];
                 this.setState({
-                    committedData: res
+                    committedData: list
                 })
             }
             this.setState({

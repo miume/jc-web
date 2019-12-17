@@ -49,16 +49,11 @@
 
 .raw-material-add-feed {
     margin-top: 15px;
-    height: 250px;
 }
 
 .raw-material-feed-data {
     font-weight: 700;
     font-size: 14px;
-}
-
-.raw-material-add-table {
-    height: 310px;
 }
 
 .raw-material-add-footer-bottom {
@@ -70,6 +65,6 @@
 .raw-material-canvas {
     display: flex;
     justify-content: center;
-    height: 63vh;
+    height: 60vh;
     align-items: center;
 }

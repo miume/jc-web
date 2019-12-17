@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Divider, Tabs} from "antd";
+import {Button, Divider, Spin, Tabs} from "antd";
 import FeedDataTable from "./feedDataTable";
 
 const {TabPane} = Tabs;
@@ -21,22 +21,24 @@ class FeedData extends React.Component {
     }
 
     render() {
-        const {saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.props;
+        const {saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS,feedDataChange,loading} = this.props;
         return (
             <div className={this.props.flag? 'raw-material-add-feed' : 'hide'}>
-                <div className='raw-material-feed-data'>补料数据</div>
-                <Divider type={"horizontal"}/>
-                <Tabs defaultActiveKey={'1'}>
-                    <TabPane tab={'混合盐溶液'} key={'1'}>
-                        <FeedDataTable data={saltMixtureLiquorDTOS} feedDataChange={this.props.feedDataChange}/>
-                    </TabPane>
-                    <TabPane tab={'晶体'} key={'2'}>
-                        <FeedDataTable data={crystalsDTOS} flag='crystal' feedDataChange={this.props.feedDataChange}/>
-                    </TabPane>
-                    <TabPane tab={'单晶体溶液'} key={'3'}>
-                        <FeedDataTable data={singleCrystalLiquorDTOS} flag='singleCrystal' feedDataChange={this.props.feedDataChange}/>
-                    </TabPane>
-                </Tabs>
+                <Spin spinning={loading}>
+                    <div className='raw-material-feed-data'>补料数据</div>
+                    <Divider type={"horizontal"}/>
+                    <Tabs defaultActiveKey={'1'}>
+                        <TabPane tab={'混合盐溶液'} key={'1'}>
+                            <FeedDataTable data={saltMixtureLiquorDTOS} feedDataChange={feedDataChange}/>
+                        </TabPane>
+                        <TabPane tab={'晶体'} key={'2'}>
+                            <FeedDataTable data={crystalsDTOS} flag='crystal' feedDataChange={feedDataChange}/>
+                        </TabPane>
+                        <TabPane tab={'单晶体溶液'} key={'3'}>
+                            <FeedDataTable data={singleCrystalLiquorDTOS} flag='singleCrystal' feedDataChange={feedDataChange}/>
+                        </TabPane>
+                    </Tabs>
+                </Spin>
             </div>
         )
     }
