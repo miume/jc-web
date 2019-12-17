@@ -10,7 +10,7 @@ class FeedDataTable extends React.Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.renderColumns = this.renderColumns.bind(this);
-        this.columns1 = [{
+        this.columns1 = [{  //混合盐
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
@@ -72,7 +72,7 @@ class FeedDataTable extends React.Component {
             }
         }];
 
-        this.columns2 = [{
+        this.columns2 = [{  //晶体
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
@@ -94,12 +94,12 @@ class FeedDataTable extends React.Component {
             width: '7%',
             render: (text,record) => {
                 return (
-                    <Input name={`crystal-${record.code}-concentration`} value={text} onChange={this.props.feedDataChange}/>
+                    <Input name={`crystal-${record.index}-concentration`} value={text} onChange={this.props.feedDataChange}/>
                 )
             }
         }]
 
-        this.columns3 = [{
+        this.columns3 = [{  //单晶体
             title: '物料名称',
             key: 'materialName',
             dataIndex: 'materialName',
@@ -111,7 +111,7 @@ class FeedDataTable extends React.Component {
             width: '7%',
             render: (text,record) => {
                 return (
-                    <Input name={`singleCrystal-${record.code}-weight`} value={text} onChange={this.props.feedDataChange}/>
+                    <Input name={`singleCrystal-${record.index}-weights`} value={text} onChange={this.props.feedDataChange}/>
                 )
             }
         },  {

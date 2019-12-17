@@ -20,7 +20,10 @@ class WorkShop extends React.Component{
         },{
             title:'密度(T/m3)',
             dataIndex:'monPotency',
-            key:'monPotency'
+            key:'monPotency',
+            render: (text,record) => {
+                return <Input name={`monPotency-${record['index']}-${this.props.status}`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/>
+            }
         },{
             title:'氨浓度(%)',
             dataIndex:'ammPotency',

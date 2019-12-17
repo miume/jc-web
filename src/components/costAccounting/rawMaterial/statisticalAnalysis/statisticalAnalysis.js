@@ -5,7 +5,6 @@ import LineStatistics from './lineStatistics';
 import CycleComparison from "./cycleComparison";
 import ProductionLineComparison from "./productionLineComparison";
 import BlockQuote from "../../../BlockQuote/blockquote";
-import ProductComparsion from "../../productStorage/statisticalAnalysis/statisticalAnalysis";
 
 const {TabPane} = Tabs;
 
@@ -44,10 +43,9 @@ class StatisticalAnalysis extends React.Component {
     }
 
     componentDidMount() {
-        let location = this.props.location;
-        if(location) {
-            let staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [],
-                periodsCode = staticPeriod ? staticPeriod[0]['code'] : undefined;
+        let location = this.props.location, staticPeriod = location.state.staticPeriod ? location.state.staticPeriod : [];
+        if(location && staticPeriod.length) {
+            let periodsCode = staticPeriod ? staticPeriod[0]['code'] : undefined;
             this.setState({
                 staticPeriod: staticPeriod,
                 periodsCode: periodsCode

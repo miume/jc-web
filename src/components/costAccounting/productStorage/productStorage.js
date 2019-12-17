@@ -38,6 +38,14 @@ class ProductStorage extends React.Component{
             endTime: '',
             currentStaticPeriod: {}
         };
+        this.pagination = {
+            pageSize: 10,
+            current: 1
+        };  //记录待提交的pagination
+        this.pagination1 = {
+            pageSize: 10,
+            current: 1
+        }; //记录已统计的pagination
         this.reset = this.reset.bind(this);
         this.search = this.search.bind(this);
         this.endDateChange =this.endDateChange.bind(this);
@@ -111,20 +119,23 @@ class ProductStorage extends React.Component{
     }
 
     /**界面加载获取未提交数据*/
-    getUnSubmittedData(flag = '',data = {},pagination) {
-        if(pagination) {
-            this.pagination = pagination;
+    getUnSubmittedData(flag,data = {},pagination) {
+        flag = flag === undefined ? this.state.flag : flag;
+        if(flag && pagination) {
+            this.pagination1 = pagination;
         }
-        this.setState({
-            loading: true
-        });
+        if(!flag && pagination) {
+            this.pagination = pagination
+        }
         let {currentStaticPeriod,startTime,endTime} = this.state,
+            temp = (flag ? this.pagination1 : this.pagination),
+            {pageSize, current} = temp,
             periodCode = currentStaticPeriod ? currentStaticPeriod.code : '',
             time = currentStaticPeriod ? currentStaticPeriod.startTime : '00:00:00',
             params = {
-                size: this.pagination ? this.pagination.pageSize : 10,
-                page: this.pagination ? this.pagination.current : 1,
-                flag: flag === '' ? this.state.flag : flag
+                size: pageSize,
+                page: current,
+                flag: flag
             };
         data['startTime'] = data['startTime'] === '' ? '' : (startTime ? startTime + ' ' + time : '');
         data['endTime'] = data['endTime'] === '' ? '' : (endTime ? endTime + ' ' + time : '');
@@ -134,6 +145,9 @@ class ProductStorage extends React.Component{
 
     /**获取待提交数据*/
     unSubmittedData(params,da) {
+        this.setState({
+            loading: true
+        });
         let url = params['flag'] ? `${this.url.productStorage.getPageCommit}` : `${this.url.productStorage.getPageUnCommit}`;
         axios({
             url: `${url}?page=${params.page}&size=${params.size}`,
@@ -147,7 +161,7 @@ class ProductStorage extends React.Component{
             if(res && res.list) {
                 res['list']['total'] = res.total;
                 for(let i = 0; i < res.list.length; i++) {
-                    res.list[i]['index'] = i + 1;
+                    res.list[i]['index'] = (res.page - 1) * 10 + i + 1;
                 }
                 if(params['flag']) {  //已统计数据
                     this.setState({
@@ -174,7 +188,6 @@ class ProductStorage extends React.Component{
         this.setState({
             flag: flag
         });
-        this.pagination = undefined;
         this.getUnSubmittedData(flag);
     }
 
@@ -250,7 +263,7 @@ class ProductStorage extends React.Component{
             endTime: '',
             currentStaticPeriod: currentStaticPeriod
         });
-        this.getUnSubmittedData({
+        this.getUnSubmittedData(undefined,{
             startTime: '',
             endTime: '',
             periodCode: code

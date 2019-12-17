@@ -25,32 +25,32 @@ class ProcessTable extends React.Component {
             key: 'index',
             dataIndex: 'index',
             sorter: (a,b) => a.code - b.code,
-            width: '7%'
+            width: '5%'
         }, {
             title: '编号',
             key: 'processNum',
             dataIndex: 'processNum',
-            width: '10%'
+            width: '9%'
         }, {
             title: '使用车间',
             key: 'deptName',
             dataIndex: 'deptName',
-            width: '10%'
+            width: '9%'
         }, {
             title: '工序',
             key: 'processName',
             dataIndex: 'processName',
-            width: '10%'
+            width: '9%'
         }, {
             title: '生效日期',
             key: 'effectiveDate',
             dataIndex: 'effectiveDate',
-            width: '12%'
+            width: '14%'
         }, {
             title: '失效日期',
             key: 'expiryDate',
             dataIndex: 'expiryDate',
-            width: '12%'
+            width: '14%'
         }, {
             title: '编制人',
             key: 'prepareName',
@@ -60,7 +60,7 @@ class ProcessTable extends React.Component {
             title: '编制时间',
             key: 'dateOfFiling',
             dataIndex: 'dateOfFiling',
-            width: '12%'
+            width: '14%'
         }, {
             title: '操作',
             key: 'code',

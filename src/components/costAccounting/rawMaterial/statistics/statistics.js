@@ -41,9 +41,12 @@ class Statistics extends React.Component {
             width: '10%'
         }, {
             title: '数据类别',
-            key: 'materialTypeName',
-            dataIndex: 'materialTypeName',
-            width: '9%'
+            key: 'data.dataType',
+            dataIndex: 'data.dataType',
+            width: '9%',
+            render: (text) => {
+                return text ? '补料' : '仓库领料';
+            }
         }, {
             title: '物料名称',
             key: 'data.materialTypeName',

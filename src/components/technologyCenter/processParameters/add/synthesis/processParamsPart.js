@@ -15,7 +15,7 @@ class ProcessParamsPart extends React.Component {
             title: '实际镍钴锰溶液流量(L/min)',
             dataIndex: 'flowStandard1',
             key: 'flowStandard1',
-            width: '19%',
+            width: '15%',
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
@@ -30,7 +30,7 @@ class ProcessParamsPart extends React.Component {
             title: '实际镍钴锰溶液流量(L/min)2',
             dataIndex: 'flowStandard2',
             key: 'flowStandard2',
-            width: '19%',
+            width: '15%',
             render: (text,record) => {
                 return (
                     <div style={{display:'flex'}}>
@@ -86,6 +86,20 @@ class ProcessParamsPart extends React.Component {
                 )
             },
             className: 'process-params-table-part-td'
+        }, {
+            title: '含固量(g/L)',
+            key: 'solidContainingContentStandard',
+            dataIndex: 'solidContainingContentStandard',
+            width: '8%',
+            render: (text,record) => {
+                return (
+                    <div style={{display:'flex'}}>
+                        <Input name={`solidContainingContentStandard-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
+                        <span className='process-params-table-part-symbol'>±</span>
+                        <Input name={`solidContainingContentBias-${record.index}-float`} value={record['solidContainingContentBias']} onChange={this.props.inputChange}/>
+                    </div>
+                )
+            }
         },{
             title: '氨气流量(L/N)',
             dataIndex: 'nitrogenFlowStandard',

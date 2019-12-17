@@ -30,6 +30,7 @@ class AddModal extends React.Component{
         this.handleCommit = this.handleCommit.bind(this);
         this.getDetailData = this.getDetailData.bind(this);
         this.getPreLineName = this.getPreLineName.bind(this);
+        this.inputNumberChange = this.inputNumberChange.bind(this);
     };
 
     render(){
@@ -43,8 +44,9 @@ class AddModal extends React.Component{
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
                 <div className={'rightDiv-add-content'}>
                     <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={periods} disabled={disabled} head={head}
-                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} endDate={endDate}/>
-                    <AddTable visible={visible} data={data} batchData={batchData} batchChange={this.batchChange} add={this.addItem} inputChange={this.inputChange}/>
+                            selectChange={this.selectChange} searchEvent={this.searchEvent} inputChange={this.inputChange} disabledDate={endDate}/>
+                    <AddTable visible={visible} data={data} batchData={batchData} batchChange={this.batchChange} add={this.addItem} i
+                              inputChange={this.inputChange} inputNumberChange={this.inputNumberChange}/>
                 </div>
                 <div className='raw-material-add-footer-bottom'>
                     <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
@@ -169,6 +171,25 @@ class AddModal extends React.Component{
         }
     }
 
+    /**监控镍钴锰浓度变化，只能输入0到1*/
+    inputNumberChange(e) {
+        let tar = e.target.name.split('-'), value = e.target.value,
+            name = tar[0], index = tar[1] ? tar[1] : '',
+            {data} = this.state;
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.')        //若输入最后一位为. 则不转换为浮点型
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value < 0 || value > 1) {
+            message.info('只能输入0到1之间的数字！');
+            return
+        }
+        data[index-1][name] = value;
+        this.setState({
+            data
+        })
+    }
+
     /**监控批号的变化*/
     batchChange(value,option) {
         let name = option.props.name.split('-'), index = name[0], {data} = this.state;
@@ -191,13 +212,16 @@ class AddModal extends React.Component{
             data: da
         }).then((data) => {
             let res = data.data.data;
-            if (res === null || res === undefined) {
+            if(res === -1) {
+                message.info('存在同一期数未提交的数据，不能新增！');
+                return
+            } else if (res === null || res === undefined) {
                 message.info('存在不一致的统计周期，需要进行修改！')
-            }
-            else {
+            } else {
                 this.setState({
                     id: res,
-                    visible: true
+                    visible: true,
+                    disabled: true
                 })
             }
         })
