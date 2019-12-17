@@ -53,7 +53,7 @@ class AddTable extends React.Component{
             key: 'niConcentration',
             width: '10%',
             render: (text,record) => {
-                return <Input name={`niConcentration-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
+                return <Input name={`niConcentration-${record.index}`} value={text} onChange={this.props.inputNumberChange}/>
             }
         },{
             title: 'Co(%)',
@@ -61,7 +61,7 @@ class AddTable extends React.Component{
             key: 'coConcentration',
             width: '10%',
             render: (text,record) => {
-                return <Input name={`coConcentration-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
+                return <Input name={`coConcentration-${record.index}`} value={text} onChange={this.props.inputNumberChange}/>
             }
         },{
             title: 'Mn(%)',
@@ -69,7 +69,7 @@ class AddTable extends React.Component{
             key: 'mnConcentration',
             width: '10%',
             render: (text,record) => {
-                return <Input name={`mnConcentration-${record.index}-float`} value={text} onChange={this.props.inputChange}/>
+                return <Input name={`mnConcentration-${record.index}`} value={text} onChange={this.props.inputNumberChange}/>
             }
         }]
     };

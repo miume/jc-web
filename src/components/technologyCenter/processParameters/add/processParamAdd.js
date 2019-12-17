@@ -509,7 +509,7 @@ class ProcessParamAddModal extends React.Component {
             if(type === 'int') {
                 value = this.intInputChange(value);
             } else if(type === 'float') {
-                value = this.floatInputChange(value,name)
+                value = this.floatInputChange(value)
             }
         }
         detail[index-1][name] = value;

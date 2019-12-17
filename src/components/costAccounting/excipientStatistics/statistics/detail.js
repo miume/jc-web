@@ -36,7 +36,7 @@ class Detail extends React.Component{
                     </div>
                     <Divider />
                     <Table rowKey={record => record.process.code} dataSource={processes} columns={this.columns}
-                           size={"small"} bordered pagination={false} footer={this.getFooter}/>
+                           size={"small"} bordered pagination={false} footer={this.getFooter} scroll={{y:300}}/>
                 </Modal>
             </span>
         )

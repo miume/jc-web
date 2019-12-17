@@ -36,7 +36,7 @@ class AddTable extends React.Component {
             dataIndex: 'materialBatch',
             width:'20%',
             render: (text,record) => {
-                return <Input value={text} placeholder={'物料编码'} name={`materialBatch-${record.index}`} onChange={this.props.inputChange} />
+                return <Input value={text} placeholder={'物料编码'} name={`materialBatch-${record.index}-str`} onChange={this.props.inputChange} />
             }
         }, {
             title: '出库时间',
@@ -60,7 +60,7 @@ class AddTable extends React.Component {
             dataIndex: 'callMaterialPoint',
             width:'15%',
             render: (text,record) => {
-                return <Input value={text} placeholder={'叫料点'} name={`callMaterialPoint-${record.index}`} onChange={this.props.inputChange} />
+                return <Input value={text} placeholder={'叫料点'} name={`callMaterialPoint-${record.index}-str`} onChange={this.props.inputChange} />
             }
         }]
 
@@ -80,10 +80,6 @@ class AddTable extends React.Component {
                        footer={this.getFooter} scroll={{y:150}}/>
             </div>
         )
-    }
-
-    onOk() {
-        console.log(arguments)
     }
 
     getFooter() {

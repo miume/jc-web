@@ -20,13 +20,13 @@ class ProductLineCompare extends Component{//工序对比分析
     render() {
         let {staticPeriod,productionLineData} = this.props, {xData,niData,coData,mnData,loading} = this.state;
         return(
-            <Spin spinning={loading} wrapperClassName='rightDiv-content'>
+            <Spin spinning={loading}>
                 <Search flag={true} staticPeriod={staticPeriod}
                         productionLineData={productionLineData} search={this.getTableData}/>
                 <div className='clear'></div>
                 <div className={'raw-material-canvas'}>
                     <ReactEcharts option={this.getOption(xData,niData,coData,mnData)}
-                                  style={{width: '100%',height:'80%'}}/>
+                                  style={{width: '100%'}}/>
                 </div>
             </Spin>
         );

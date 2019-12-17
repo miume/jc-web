@@ -6,7 +6,6 @@ import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import "./checkTemplate.css";
 import moment from "moment";
-import locale from 'antd/lib/date-picker/locale/zh_CN';
 import PictureUp from './upload';
 
 let id = 0;
@@ -176,7 +175,7 @@ class AddBut extends React.Component{
                         let file = `fileList${keys[i]}`
                         this.setState({
                             [file]:[],
-                            
+
                         })
                     };
                     this.props.form.resetFields();

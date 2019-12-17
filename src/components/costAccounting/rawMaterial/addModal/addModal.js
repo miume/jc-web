@@ -1,6 +1,6 @@
 import React from 'react';
 import NewButton from "../../../BlockQuote/newButton";
-import {message} from "antd";
+import {message, Spin} from "antd";
 import Search from "./search";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import AddTable from "./addTable";
@@ -13,8 +13,10 @@ class AddModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             visible: false,
             headVisible: false,
+            feedLoading: false,
             data: [],
             endDate: '',
             stockOutDTOS: [],           //出库数据
@@ -24,6 +26,7 @@ class AddModal extends React.Component {
             rawMaterialData: []
         };
         this.addItem = this.addItem.bind(this);
+        this.checkArr = this.checkArr.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.getFeedData = this.getFeedData.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -40,6 +43,7 @@ class AddModal extends React.Component {
         this.getPreLineName = this.getPreLineName.bind(this);
         this.addIndexToTable = this.addIndexToTable.bind(this);
         this.materialNameChange = this.materialNameChange.bind(this);
+        this.inputNumberChange = this.inputNumberChange.bind(this);
         this.getPrecursorRawMaterial = this.getPrecursorRawMaterial.bind(this);
         this.getPreviousConcentration = this.getPreviousConcentration.bind(this);
     }
@@ -49,26 +53,28 @@ class AddModal extends React.Component {
         this.current = JSON.parse(localStorage.getItem('current'));
         let name = this.state.code > -1 ? '编辑数据' : '新增数据',
             {staticPeriod,lineName,currentStaticPeriod,visible,headVisible,rawMaterialData,head,niConcentration,coConcentration,mnConcentration,
-                endDate, stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.state;
+                endDate, stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS,disabled,feedLoading,loading} = this.state;
         return (
             <div>
                 <BlockQuote name={name} menu={this.current.menuName}
                             menu2={this.current.menuParent} returnDataEntry={this.handleCancel}/>
-                <div className={'rightDiv-add-content'}>
-                    <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={lineName} disabledDate={endDate}
-                            selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent} head={head}z/>
-                    <AddTable visible={headVisible} data={stockOutDTOS} rawMaterialData={rawMaterialData} materialNameChange={this.materialNameChange} outStockTime={this.outStockTime}
-                              inputChange={this.inputChange} addItem={this.addItem} getFeedData={this.getFeedData} getPreviousConcentration={this.getPreviousConcentration}
-                              niConcentration={niConcentration} coConcentration={coConcentration} mnConcentration={mnConcentration}/>
-                    <FeedData flag={visible} saltMixtureLiquorDTOS={saltMixtureLiquorDTOS} crystalsDTOS={crystalsDTOS} singleCrystalLiquorDTOS={singleCrystalLiquorDTOS} feedDataChange={this.feedDataChange}/>
-                </div>
-                <div className='raw-material-add-footer-bottom'>
-                    <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
-                    <div>
-                        <SaveButton key='save' handleSave={this.handleSave}/>
-                        <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
+                <Spin spinning={loading}>
+                    <div className={'rightDiv-add-content'}>
+                        <Search flag={true} staticPeriod={staticPeriod} currentStaticPeriod={currentStaticPeriod} periods={lineName} disabledDate={endDate}
+                                selectChange={this.selectChange} inputChange={this.inputChange} searchEvent={this.searchEvent} head={head} disabled={disabled}/>
+                        <AddTable visible={headVisible} data={stockOutDTOS} rawMaterialData={rawMaterialData} materialNameChange={this.materialNameChange} outStockTime={this.outStockTime}
+                                  inputChange={this.inputChange} addItem={this.addItem} getFeedData={this.getFeedData} getPreviousConcentration={this.getPreviousConcentration}
+                                  niConcentration={niConcentration} coConcentration={coConcentration} mnConcentration={mnConcentration}/>
+                        <FeedData flag={visible} loading={feedLoading} saltMixtureLiquorDTOS={saltMixtureLiquorDTOS} crystalsDTOS={crystalsDTOS} singleCrystalLiquorDTOS={singleCrystalLiquorDTOS} feedDataChange={this.feedDataChange}/>
                     </div>
-                </div>
+                    <div className='raw-material-add-footer-bottom'>
+                        <CancleButton key='back' handleCancel={this.handleCancel} flag={1}/>
+                        <div>
+                            <SaveButton key='save' handleSave={this.handleSave}/>
+                            <NewButton name={'提交'} key='submit' className='fa fa-check' handleClick={this.handleCommit}/>
+                        </div>
+                    </div>
+                </Spin>
             </div>
         )
     }
@@ -131,7 +137,7 @@ class AddModal extends React.Component {
             if(res) {
                 let {crystalsDTOS,singleCrystalLiquorDTOS,head,periodName,
                     stockOutDTOS,mnConcentration,coConcentration,niConcentration,saltMixtureLiquorDTOS} = res;
-                head['periodCode'] = periodName;
+                head['periodName'] = periodName;
                 this.setState({
                     visible: true,
                     headVisible: true,
@@ -209,12 +215,16 @@ class AddModal extends React.Component {
             data: params
         }).then((data) => {
             let code = data.data.data;
-            if(code) {
+            if(code === '-1') {
+                message.info('存在同一期数未提交的数据，不能新增！');
+            } else if(code) {
                 this.setState({
                     code: code,   //表示返回的统计编码
-                    headVisible: true
+                    headVisible: true,
+                    disabled: true,
+                    periodCode: params['periodCode']
                 });
-                this.getStockOutData(params)
+                //this.getStockOutData(params)
             } else {
                 message.info('存在不一致的统计周期！')
             }
@@ -224,7 +234,8 @@ class AddModal extends React.Component {
     /**点击补料按钮*/
     getFeedData() {
         this.setState({
-            visible: true
+            visible: true,
+            feedLoading: true
         });
         let {currentStaticPeriod,head} = this.state, code =  currentStaticPeriod ? currentStaticPeriod['code'] : head['periodCode'];
         axios({
@@ -245,6 +256,9 @@ class AddModal extends React.Component {
                     singleCrystalLiquorDTOS,//单晶体
                 })
             }
+            this.setState({
+                feedLoading: false
+            })
         })
     }
 
@@ -277,21 +291,28 @@ class AddModal extends React.Component {
 
     /**监控NiSO4溶液、CoSO4溶液、MnSO4溶液量的变化*/
     inputChange(e) {
-        let val = e.target.name.split('-'), name = val[0], index = val[1] ? val[1] : -1,
+        let val = e.target.name.split('-'), name = val[0], index = val[1] ? val[1] : -1, type = val[2] ? val[2] : '',
             value = e.target.value, {stockOutDTOS} = this.state;
-        if(typeof value === 'number') value = value.toString();
-        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(!type) {
+            if(typeof value === 'number') value = value.toString();
+            value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+            if(value[value.length-1] !== '.')
+                value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        }
         if(index > -1) {
             stockOutDTOS[index-1][name] = value;
             this.setState({
                 stockOutDTOS
             });
+        } else {
+            value = this.inputNumberChange(value); //保证浓度在0～1之间
+            if(value === undefined) {
+                return
+            }
+            this.setState({
+                [name]: value
+            })
         }
-        this.setState({
-            [name]: value
-        })
     }
 
     /**补料数据变化*/
@@ -299,16 +320,24 @@ class AddModal extends React.Component {
         let target = e.target, val = target.name.split('-'),
             type = val[0], index = val[1], name = val[2],
             value= target.value, {saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS} = this.state;
+
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
         if(value[value.length-1] !== '.')
             value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+
         if(type === 'mixedSalt') {        //混合盐
             saltMixtureLiquorDTOS[index-1][name] = value;
             this.setState({
                 saltMixtureLiquorDTOS
             })
         } else if(type === 'crystal') {  //晶体
+            if(name === 'concentration') {
+                value = this.inputNumberChange(value); //保证浓度在0～1之间
+                if(value === undefined) {
+                    return
+                }
+            }
             crystalsDTOS[index-1][name] = value;
             this.setState({
                 crystalsDTOS
@@ -319,6 +348,19 @@ class AddModal extends React.Component {
                 singleCrystalLiquorDTOS
             })
         }
+    }
+
+    /**监控浓度变化，只能输入0到1*/
+    inputNumberChange(value) {
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value < 0 || value > 1) {
+            message.info('只能输入0到1之间的数字！');
+            return undefined
+        }
+        return value;
     }
 
     /**出库数据新增*/
@@ -340,8 +382,26 @@ class AddModal extends React.Component {
         })
     }
 
+    /**根据统计周期code获取上期浓度*/
     getPreviousConcentration() {
-
+        let {currentStaticPeriod,head} = this.state, code =  currentStaticPeriod ? currentStaticPeriod['code'] : head['periodCode'];
+        axios({
+            url: `${this.url.rawMaterial.lastPeriodConcentrations}?periodCode=${code}`,
+            methods: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data => {
+            let res = data.data.data;
+            if(res) {
+                let {niConcentration,coConcentration,mnConcentration} = res;
+                this.setState({
+                    niConcentration,
+                    coConcentration,
+                    mnConcentration
+                })
+            }
+        }))
     }
 
     /**点击保存新增*/
@@ -354,6 +414,7 @@ class AddModal extends React.Component {
         this.saveDataProcessing(1);
     };
 
+    /**保存或提交数据处理*/
     saveDataProcessing(flag) {
         let {stockOutDTOS,saltMixtureLiquorDTOS,crystalsDTOS,singleCrystalLiquorDTOS,coConcentration,mnConcentration,niConcentration,lineName,code,head} = this.state,
             data = {
@@ -366,9 +427,49 @@ class AddModal extends React.Component {
                 saltMixtureLiquorDTOS: saltMixtureLiquorDTOS,
                 singleCrystalLiquorDTOS: singleCrystalLiquorDTOS,
                 stockOutDTOS: stockOutDTOS,
-                statisticCode: code
+                statisticCode: parseInt(code)
             };
+        //验证数据非空
+        if(flag) {
+            if(!coConcentration || !mnConcentration || !niConcentration) {
+                message.info('请将NiSO4溶液、CoSO4溶液、MnSO4溶液浓度填写完整！');
+                return
+            }
+            if(!this.checkArr(stockOutDTOS)) {
+                return;
+            }
+            if(!this.checkArr(crystalsDTOS)) {
+                return;
+            }
+            if(!this.checkArr(saltMixtureLiquorDTOS)) {
+                return;
+            }
+            if(!this.checkArr(singleCrystalLiquorDTOS)) {
+                return;
+            }
+        }
         this.saveOrCommit(data);
+    }
+
+    /**检查数组字段是否为空*/
+    checkArr(data) {
+        if(!data.length) {
+            message.info('请确保出库和补料都至少有一条数据!')
+            return false;
+        }
+        for(let i = 0; i < data.length; i++) {
+            for(let j in data[i]) {
+                if(j === 'density' && data[i][j] === 0) {
+                    message.info('补料数据密度不能为0，请注意！');
+                    return false;
+                }
+                if( j !== 'callMaterialPoint' && (data[i][j] === '' || data[i][j] === undefined)) {
+                    message.info('提交时，请确定数据全部填写完整！');
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**保存或提交*
