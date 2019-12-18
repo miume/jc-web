@@ -260,8 +260,8 @@ class Detail extends Component{
             width:'10%'
         },{
             title:'重量',
-            dataIndex:'process.volumes',
-            key:'process.volumes',
+            dataIndex:'process.weight',
+            key:'process.weight',
             width:'10%'
         },{
             title:'Ni(g/L)',

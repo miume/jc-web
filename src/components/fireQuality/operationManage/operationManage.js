@@ -1,9 +1,9 @@
 import React,{Component} from 'react'
 import BlockQuote from "../../BlockQuote/blockquote"
 import {Table,Spin} from 'antd'
-import NewButton from "../../BlockQuote/newButton";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import SearchCell from "../../BlockQuote/search";
+import Add from './add'
 import axios from 'axios'
 
 class Operation extends Component{
@@ -18,26 +18,39 @@ class Operation extends Component{
             title:'标题',
             dataIndex:'title',
             key:'title',
-            width:'40%'
+            width:'20%'
         },{
             title:'内容',
             dataIndex:'content',
             key:'content',
-            width:'40%'
+            width:'20%'
+        },{
+            title:'操作',
+            dataIndex:'operation',
+            key:'operation',
+            width:'20%',
+            render:(text,record)=>{
+                return(
+                    <span>
+                        <Add editflag={true}/>
+                    </span>
+                )
+            }
         }]
         this.state={
             loading:false,
             selectedRowKeys:[]
         }
-        this.add=this.add.bind(this);
+        this.getTableData=this.getTableData.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
         this.cancel=this.cancel.bind(this);
     }
-    add(){
+    getTableData(){
 
     }
-    deleteByIds(){
 
+    deleteByIds(){
+        let {selectedRowKeys}=this.state
     }
     cancel(){
 
@@ -50,11 +63,11 @@ class Operation extends Component{
             <div>
                 <BlockQuote menu={current.menuParent} name={current.menuName}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <NewButton name={'新增'} className={'fa fa-plus'} handleClick={this.add}/>
+                    <Add url={this.url}/>
                     <DeleteByIds flag={true} selectedRowKeys={selectedRowKeys}
                                  deleteByIds={this.deleteByIds} cancel={this.cancel}/>
-                    <SearchCell flag={true} />
-                    <Table columns={this.columns} bordered size={'small'}/>
+                    <SearchCell flag={true} name={'请输入手册标题'}/>
+                    <Table columns={this.columns} bordered size={'small'} rowKey={record => record.index}/>
                 </Spin>
             </div>
         )

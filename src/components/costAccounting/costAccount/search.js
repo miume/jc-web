@@ -12,13 +12,8 @@ class Search extends Component{
         return(
             <div className={this.props.flag?'searchCell':'hide'}>
                 <Select  style={{width:'120px',marginRight:'10px'}} onChange={this.props.lineChange} placeholder='请选择产线'>
-                        {
-                            this.props.line?this.props.line.map(e=>{
-                                return(
-                                    <Option key={e.code}  value={e.code}>{e.name}</Option>
-                                )
-                            }):null
-                        }
+                    <Option value={0}>产线</Option>
+                    <Option value={1}>车间</Option>
                 </Select>
                 <Select value={this.props.periodCode} style={{width:'120px',marginRight:'10px'}} onChange={this.props.selectChange}>
                         {

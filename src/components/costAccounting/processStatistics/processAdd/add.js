@@ -243,7 +243,10 @@ class CostProcessAdd extends Component {
                 })
             }
             else if(res===-1){
-                message.error(' 存在同一期数未提交的数据。!')
+                message.error('存在同一期数未提交的数据!')
+                this.setState({
+                    loading:false
+                })
             }
             else {
                 this.setState({

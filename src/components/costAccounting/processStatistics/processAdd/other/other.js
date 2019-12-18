@@ -11,7 +11,7 @@ class Other extends Component{//其他工序
             selectName:1,
             materialData:[],
             materialCode:undefined,
-            data:this.props.otherData.length!==0?this.props.otherData:[]
+            data:this.props.otherData&&this.props.otherData.length!==0?this.props.otherData:[]
         }
         this.columns=[{
             title:'序号',

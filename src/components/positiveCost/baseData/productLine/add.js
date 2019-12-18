@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
 import {Modal,Row,Col,Input,message} from 'antd'
-import AddModal from './addModal'
+
 import axios from 'axios'
 class ProductLineAdd extends Component{
     constructor(props){
@@ -72,7 +72,7 @@ class ProductLineAdd extends Component{
     init(){
         if(this.props.editflag){
             this.setState({
-                productLineName:this.props.record.productLineName
+                productLineName:this.props.record.name
             })
         }
         else{
@@ -89,6 +89,7 @@ class ProductLineAdd extends Component{
     }
     render(){
         let {productLineName}=this.state;
+        // console.log(productLineName)
         return(
             <span>
                 {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>

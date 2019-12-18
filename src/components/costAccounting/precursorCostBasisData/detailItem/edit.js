@@ -43,6 +43,12 @@ class AddModal extends React.Component{
             if(res["ni"]===1){
                 metal.push("Ni")
             }
+            if(res['amm']===1){
+                metal.push("氨")
+            }
+            if(res['alk']===1){
+                metal.push("碱")
+            }
             this.setState({
                 visible:true,
                 name:res.materialName,
@@ -69,7 +75,6 @@ class AddModal extends React.Component{
     };
     handleCancel = () =>{
         let {types}=this.state
-
         this.setState({
             visible:false,
             name:null,

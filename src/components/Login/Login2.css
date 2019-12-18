@@ -40,9 +40,8 @@ body {
     border-style: solid;
     border-radius: 0px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.349019607843137);
-    padding-top: 1%;
+    padding-top: 10%;
     position: relative;
-    /* top: -4%; */
     text-align: center;
     /* 居中 */
     /* margin: 0 auto; */
@@ -76,7 +75,6 @@ body {
     cursor: pointer;
   }
 
-
   .login-box-content {
     padding: 10px;
   }
@@ -100,7 +98,6 @@ body {
     font-weight: 650;
     font-style: normal;
     color: #666666;
-    
     text-align: left;
     line-height: 24px;
   }
@@ -109,9 +106,18 @@ body {
   font-weight: 400;
   font-style: normal;
   font-size: 12px;
-  color: #666666;
+   color: #666666;
   text-align: left;
   line-height: 20px;
+ }
+ .login-font-question{
+   font-family: 'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC';
+   font-weight: 650;
+   font-style: normal;
+   font-size: 12px;
+   color: #666666;
+   text-align: left;
+   line-height: 20px;
  }
  .login-info-font-more{
   text-align: right !important;

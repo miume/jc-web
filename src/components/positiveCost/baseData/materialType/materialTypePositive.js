@@ -39,8 +39,11 @@ class MaterialTypePositive extends Component{
                 if(record.types===0){
                     return 'DCS读取数据'
                 }
-                else {
+                else if(record.types===1){
                     return '手工输入数据'
+                }
+                else{
+                    return '智能仓库'
                 }
             }
         },{
@@ -64,9 +67,13 @@ class MaterialTypePositive extends Component{
             key:'operation',
             width:'18%',
             render:(text,record)=>{
+                let data=record.weightDTOS,line=[]
+                for(let i=0;i<data.length;i++){
+                    line.push(`${data[i].lineCode}-${data[i].lineName}`)
+                }
                 return(
                     <span>
-                        <MaterialTypeAdd editflag={true} record={record} code={record.materialCode} getTableData={this.getTableData} url={this.url}/>
+                        <MaterialTypeAdd editflag={true} line={line} record={record}  getTableData={this.getTableData} url={this.url}/>
                         <Divider type='vertical'></Divider>
                         <Popconfirm title='确定删除?' onConfirm={()=>this.handleDelete(record.materialCode)} okText='确定' cancelText='取消'>
                         <span className='blue'>删除</span>
@@ -175,6 +182,9 @@ class MaterialTypePositive extends Component{
             if(data.data.code===0){
                 this.getTableData()
             }
+            else{
+                message.error('操作失败，请联系管理员!')
+            }
         }).catch(error=>{
             message.error('操作失败，请联系管理员!')
         })
@@ -213,10 +223,10 @@ class MaterialTypePositive extends Component{
                 <Blockquote menu={current.menuParent} name='物料种类' menu2='返回' returnDataEntry={this.returnBaseInfoPositive} flag={1}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <MaterialTypeAdd getTableData={this.getTableData} url={this.url}/>
-                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true} deleteByIds={this.start}
+                    <DeleteByIds selectedRowKeys={this.state.selectedRowKeys} flag={true} deleteByIds={this.deleteByIds}
                             cancel={this.cancel}/>
                     <SearchCell name='请输入物料种类' flag={true} searchEvent={this.searchEvent}
-                      searchContentChange={this.searchContentChange}/>
+                      searchContentChange={this.searchContentChange} fetch={this.getTableData}/>
                     <Table
                     rowKey={record=>record.materialCode}
                     dataSource={this.state.dataSource}

@@ -6,16 +6,19 @@ import 'antd/dist/antd.css';
 import './Login2.css';
 import LoginItem from "./loginItem";
 import MoreInfo from './moreInfo'
+import CommonProblem from "./commonProblem";
 class Login extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       loading : false,
-      infoFlag:true
+      infoFlag:false,
+      infoCode:1
     };
     this.loginIn = this.loginIn.bind(this);
     this.dataProcessing = this.dataProcessing.bind(this);
     this.handleInfo=this.handleInfo.bind(this);
+    this.infoShow=this.infoShow.bind(this)
   }
   componentWillMount() {
     localStorage.setItem("server", "http://47.107.237.60:3389");//外网
@@ -73,18 +76,30 @@ class Login extends React.Component {
     localStorage.setItem('menus',JSON.stringify(menus));
     localStorage.setItem('quickAccess',JSON.stringify(quickAccess));
   }
-  handleInfo(infoFlag){  
+  handleInfo(infoFlag,infoCode){
     this.setState({
-        infoFlag:infoFlag,  
+        infoFlag:infoFlag,
+        infoCode:infoCode
     })
-}
+ }
+ /**显示更多信息中的哪个界面*/
+ infoShow(){
+    let {infoFlag,infoCode}=this.state
+    if(infoFlag && infoCode===1){//展示更多信息主界面
+        return <MoreInfo infoFlag={infoFlag} handleInfo={this.handleInfo}/>
+    }
+    else if(infoFlag && infoCode===2){//展示常见问题界面
+        return <CommonProblem infoFlag={infoFlag} handleInfo={this.handleInfo}/>
+    }
+ }
   render() {
     let {loading,infoFlag} = this.state;
     return (
       <div className={`full-height`} id="wrapper" onKeyDown={this.keyPress}>
       <Spin spinning={loading} >
         <div className='gutter-box'>
-              <MoreInfo infoFlag={infoFlag}/>
+              {/*<MoreInfo infoFlag={infoFlag}/>*/}
+              {this.infoShow()}
               <div className='login-box'>
                 <img src={require(`./logo-lg.svg`)} style={{width:'25.5%'}} alt=''></img>
                 <div className='login-blockquote'></div>
