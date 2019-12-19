@@ -24,7 +24,7 @@ class Top extends React.Component{
                         <img src={require("../image/logo.png")} width={30} height={30} alt=""  />
                     </div>
                     <div className="top-left-text" >
-                        <span>新能源材料智能生产MES系统</span>
+                        <span>新能源材料智能生产管理系统</span>
                     </div>
                 </div>
                 <Exit name='退出' userId={this.props.userId} logout={this.logout}></Exit>

@@ -19,6 +19,8 @@ class AddModal extends React.Component{
             batchData: [], //存储所有批次信息
         };
         this.addItem = this.addItem.bind(this);
+        this.checkArr = this.checkArr.bind(this);
+        this.checkObj = this.checkObj.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.getAllBatch = this.getAllBatch.bind(this);
         this.batchChange = this.batchChange.bind(this);
@@ -212,17 +214,15 @@ class AddModal extends React.Component{
             data: da
         }).then((data) => {
             let res = data.data.data;
-            if(res === -1) {
-                message.info('存在同一期数未提交的数据，不能新增！');
-                return
-            } else if (res === null || res === undefined) {
-                message.info('存在不一致的统计周期，需要进行修改！')
-            } else {
+            if(res && res.code > 0) {
                 this.setState({
-                    id: res,
+                    id: res.code,
                     visible: true,
                     disabled: true
                 })
+            } else {
+                message.info(res.message);
+
             }
         })
     }
@@ -258,10 +258,8 @@ class AddModal extends React.Component{
                 "mnMetallicity": 0,
                 "niConcentration": 0,
                 "niMetallicity": 0,
-                "productionTypeCode": "",
                 "productionTypeName": "",
                 "statisticCode": 0,
-                "storageTime": "",
                 "weights": 0
             };
         data.push(item);
@@ -287,7 +285,34 @@ class AddModal extends React.Component{
 
     saveDataProcessing(flag) {
         let {data,id} = this.state;
+        if(!this.checkArr(data)) {
+            message.info('请将表格新增数据填写完整！');
+            return
+        }
         this.saveOrCommit(data,flag,id);
+    }
+
+    checkArr(arr) {
+        if(arr && arr.length) {
+            for(let i in arr) {
+                if(!this.checkObj(arr[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**检验对象中属性值是否有为空*/
+    checkObj(obj) {
+        if(obj === {}) return false;
+        for(let i in obj) {
+            if(obj[i] === '' || obj[i] === undefined) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**保存或提交*

@@ -67,6 +67,12 @@ class IntermediateStandards extends React.Component {
             </div>
         )
     }
+
+    componentWillUnmount() {
+        this.setState(() => {
+            return;
+        })
+    }
 }
 
 export default IntermediateStandards;

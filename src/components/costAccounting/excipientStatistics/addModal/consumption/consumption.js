@@ -23,7 +23,7 @@ class Consumption extends React.Component{
             dataIndex:'ammPotency',
             key:'ammPotency',
             render: (text,record) => {
-                return record['alkaliFlag'] ?
+                return record['ammoniaFlag'] ?
                     <Input name={`ammPotency-${record['index']}-4`} value={text} style={{width: '100%'}} onChange={this.props.inputChange}/> :
                     text
             }

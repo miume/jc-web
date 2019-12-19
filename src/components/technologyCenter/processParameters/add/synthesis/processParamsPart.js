@@ -170,12 +170,12 @@ class ProcessParamsPart extends React.Component {
                         proAndLines['productClass'] ?
                             <Select style={{width: 200}} placeholder={'请选择'} defaultValue={`${proAndLines['productClass']}-${proAndLines['productClassName']}`} onChange={productClassChange}>
                                 {
-                                    productionData ? productionData.map(e => <Option key={e.code} name={index} value={`${e.code}-${e.ruleDesc}`}>{e.ruleDesc}</Option>) : null
+                                    productionData ? productionData.map(e => <Option key={e.code} name={index} value={`${e.code}-${e.ruleValue}`}>{e.ruleValue}</Option>) : null
                                 }
                             </Select>:
                             <Select style={{width: 200}} placeholder={'请选择'} onChange={productClassChange}>
                                 {
-                                    productionData ? productionData.map(e => <Option key={e.code} name={index} value={`${e.code}-${e.ruleDesc}`}>{e.ruleDesc}</Option>) : null
+                                    productionData ? productionData.map(e => <Option key={e.code} name={index} value={`${e.code}-${e.ruleValue}`}>{e.ruleValue}</Option>) : null
                                 }
                             </Select>
                     }
@@ -207,8 +207,8 @@ class ProcessParamsPart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let lines = nextProps['proAndLines']['lines'];
-        if(lines.length) {
+        let lines = nextProps['proAndLines']['lines'], line = this.props.proAndLines['lines'];
+        if(lines.length !== line.length) {
             this.getSynthesisSlotNumber(lines);
         }
     }

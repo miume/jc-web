@@ -1,5 +1,5 @@
 import React from 'react';
-import {message, Select, Spin} from "antd";
+import {message, Spin} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
 import BlockQuote from '../../../BlockQuote/blockquote';
@@ -10,7 +10,6 @@ import Synthesis from "./synthesis/synthesis";
 import Liquid from "./liquid/liquid";
 import AgedWashing from "./agedWashing/agedWashing";
 import moment from "moment";
-const {Option} = Select;
 
 class ProcessParamAddModal extends React.Component {
     constructor(props) {
@@ -71,6 +70,10 @@ class ProcessParamAddModal extends React.Component {
         this.floatInputChange = this.floatInputChange.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
         this.getDeviceByDeptCode = this.getDeviceByDeptCode.bind(this);
+        this.hcDataProcessing = this.hcDataProcessing.bind(this);
+        this.zyDataProcessing = this.zyDataProcessing.bind(this);
+        this.chDataProcessing = this.chDataProcessing.bind(this);
+
     }
 
     render() {
@@ -201,10 +204,10 @@ class ProcessParamAddModal extends React.Component {
             }, proAndLines = [],
             detail = [],exceptionDisposes = [],mediate = [], components = [],devices = [];
         detail.push(item);                                              //合成-工艺参数表格数据
-        exceptionDisposes.push(JSON.parse(JSON.stringify(exceptionDisposesItems)));  //合成-异常处理表格数据
-        mediate.push(JSON.parse(JSON.stringify(mediateItem)));           //合成-中间品表格数据
+        // exceptionDisposes.push(JSON.parse(JSON.stringify(exceptionDisposesItems)));  //合成-异常处理表格数据
+        // mediate.push(JSON.parse(JSON.stringify(mediateItem)));           //合成-中间品表格数据
         components.push(JSON.parse(JSON.stringify(componentsItem)));     //制液主成分表格数据
-        devices.push(JSON.parse(JSON.stringify(devicesItem)));           //陈化表格数据
+        // devices.push(JSON.parse(JSON.stringify(devicesItem)));           //陈化表格数据
         proAndLines.push(JSON.parse(JSON.stringify(proAndLinesItems)));  //合成-工艺参数（生产品种和生产线）
         this.setState({
             item: item,
@@ -256,7 +259,7 @@ class ProcessParamAddModal extends React.Component {
                         devices: devices,
                         chMoment: detail ? detail['comment'] : '',
                         lines: lines,
-                        productClass: productClass,
+                        productClass: parseInt(productClass),
                         productClassName: productClassName
                     });
                     this.getDeviceByDeptCode(plantCode);
@@ -292,14 +295,8 @@ class ProcessParamAddModal extends React.Component {
                 'Authorization': this.url.Authorization
             }
         }).then((data) => {
-            const res = data.data.data ? data.data.data : [], productionData = [];
+            const res = data.data.data ? data.data.data : [];
             if (res) {
-                for(let i = 0; i < res.length; i++) {
-                    let e = res[i];
-                    productionData.push(
-                        <Option key={e.code}>{e.ruleDesc}</Option>
-                    )
-                }
                 this.setState({
                     productionData: res
                 })
@@ -529,6 +526,9 @@ class ProcessParamAddModal extends React.Component {
     floatInputChange(value) {
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.') {
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        }
         return value;
     }
 
@@ -655,80 +655,25 @@ class ProcessParamAddModal extends React.Component {
 
     /**处理新增和编辑数据*/
     saveDataProcessing(flag,process,urgent) {
-        let {processCode,head,components,zyDetail,lines,productClass,productClassName,proAndLines,
-            exceptionDisposes,detail,processParamsMemo,mediate,mediateMemo,
-            devices,chMoment} = this.state, data = {};
-        delete head['deptName']
-        if(!this.checkObj(head)) {
+        let {processCode,head} = this.state, data;
+        delete head['deptName'];
+        if(!this.checkObj(head)) {  //不管保存新增，表头必填
             message.info('请将新增数据填写完整！');
             return
         }
         if(processCode === 48) {       //制液新增(净后)
-            head['processName'] = '制液';
-            if(this.checkArr(components) && this.checkObj(zyDetail)
-                && productClass && productClassName && lines.length) {
-                data = {
-                    head: head,
-                    processName: '制液',
-                    zy: {
-                        components: components,
-                        detail: zyDetail
-                    },
-                    proAndLine: {
-                        lines: lines,
-                        productClass: productClass,
-                        productClassName: productClassName
-                    }
-                }
-            } else {
-                message.info('将新增数据填写完整！');
+            data = this.zyDataProcessing(head);
+            if(!data) {
                 return
             }
-
         } else if(processCode === 49) {//合成新增
-            head['processName'] = '合成';
-            if(this.checkArr(exceptionDisposes) && this.checkArr(detail) && this.checkArr(mediate) && this.checkArr(proAndLines)) {
-                data = {
-                    head: head,
-                    processName: '合成',
-                    hc: {
-                        exceptionDisposes: exceptionDisposes,
-                        gy: {
-                            details: detail,
-                            memo: processParamsMemo,
-                            proAndLines: proAndLines
-                        },
-                        zjp: {
-                            mediate: mediate,
-                            memo: mediateMemo
-                        }
-                    }
-                }
-            } else {
-                message.info('将新增数据填写完整！');
+            data = this.hcDataProcessing(head);
+            if(!data) {
                 return
             }
-
         } else if(processCode === 50) {//陈化洗涤新增
-            head['processName'] = '陈化洗涤';
-            if(this.checkArr(devices) && productClass && productClassName && lines.length) {
-                data = {
-                    head: head,
-                    processName: '陈化洗涤',
-                    ch: {
-                        devices: devices,
-                        detail: {
-                            comment: chMoment,
-                        }
-                    },
-                    proAndLine: {
-                        lines: lines,
-                        productClass: productClass,
-                        productClassName: productClassName
-                    }
-                }
-            } else {
-                message.info('将新增数据填写完整！');
+            data = this.chDataProcessing(head);
+            if(!data) {
                 return
             }
         }
@@ -738,6 +683,84 @@ class ProcessParamAddModal extends React.Component {
             data['isUrgent'] = urgent;  //审核是否紧急
         }
         this.saveData(data,flag);
+    }
+
+    /**合成数据处理*/
+    hcDataProcessing(head) {
+        let {proAndLines, exceptionDisposes,detail,processParamsMemo,mediate,mediateMemo} = this.state, data;
+        head['processName'] = '合成';
+        if(!this.checkArr(exceptionDisposes,1) || !this.checkArr(detail) || !this.checkArr(mediate,1) || !this.checkArr(proAndLines)) {
+            message.info('将新增数据填写完整！');
+            return false;
+        }
+        data = {
+            head: head,
+            processName: '合成',
+            hc: {
+                exceptionDisposes: exceptionDisposes,
+                gy: {
+                    details: detail,
+                    memo: processParamsMemo,
+                    proAndLines: proAndLines
+                },
+                zjp: {
+                    mediate: mediate,
+                    memo: mediateMemo
+                }
+            }
+        };
+        return data;
+    }
+
+    /**制液数据处理 - 数据都必填*/
+    zyDataProcessing() {
+        let {head,components,zyDetail,lines,productClass,productClassName} = this.state, data;
+        delete head['deptName'];
+        head['processName'] = '制液';
+        if(!this.checkArr(components) || !this.checkObj(zyDetail) ||
+            !productClass || !productClassName || !lines.length) {
+            message.info('将新增数据填写完整！');
+            return false;
+        }
+        data = {
+            head: head,
+            processName: '制液',
+            zy: {
+                components: components,
+                detail: zyDetail
+            },
+            proAndLine: {
+                lines: lines,
+                productClass: productClass,
+                productClassName: productClassName
+            }
+        };
+        return data;
+    }
+
+    /**陈化洗涤数据处理*/
+    chDataProcessing(head) {
+        let {lines,productClass,productClassName,devices,chMoment} = this.state, data;
+        if(!this.checkArr(devices,1) || !productClass || !productClassName || !lines.length) {
+            message.info('将新增数据填写完整！');
+            return
+        }
+        data = {
+            head: head,
+            processName: '陈化洗涤',
+            ch: {
+                devices: devices,
+                detail: {
+                    comment: chMoment ? chMoment : '',
+                }
+            },
+            proAndLine: {
+                lines: lines,
+                productClass: productClass,
+                productClassName: productClassName
+            }
+        };
+        return data;
     }
 
     /**保存或送审
@@ -760,8 +783,11 @@ class ProcessParamAddModal extends React.Component {
         })
     }
 
-    /**检验数组中属性是否有为空*/
-    checkArr(arr) {
+    /**检验数组中属性是否有为空
+     * flag === 1 表示数组可以为空
+     * */
+    checkArr(arr,flag) {
+        if(flag && !arr.length) return true; //表示数组可以为空
         if(arr && arr.length) {
             for(let i in arr) {
                 if(!this.checkObj(arr[i])) {

@@ -32,7 +32,9 @@ class Synthesis extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setState(() => null)
+        this.setState(() => {
+            return;
+        })
     }
 }
 
