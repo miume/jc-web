@@ -79,7 +79,8 @@ class ProcessCompare extends Component{//工序对比分析
             this.setState({
                 xData,
                 alkData,
-                ammData
+                ammData,
+                loading: false
             })
         });
     }

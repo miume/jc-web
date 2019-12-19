@@ -51,7 +51,7 @@ class equipmentRepair extends React.Component{
                         />
                     </Tabs.TabPane>
 
-                    <Tabs.TabPane key={3} tab="已完成">
+                    <Tabs.TabPane key={3} tab="待确认">
                         <HaveRepair
                             url={this.url}
                             getTableData={this.getTableData}
@@ -61,7 +61,7 @@ class equipmentRepair extends React.Component{
                         />
                     </Tabs.TabPane>
 
-                    <Tabs.TabPane key={4} tab="已评价">
+                    <Tabs.TabPane key={4} tab="已完成">
                          <HaveJudge
                              url={this.url}
                              getTableData={this.getTableData}

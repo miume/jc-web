@@ -1,0 +1,13 @@
+.check-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.check-item-div {
+    width: 135px;
+    text-align: right;
+    padding-right: 15px;
+}
+

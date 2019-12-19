@@ -18,8 +18,8 @@ class TheTable extends React.Component{
         width: '80px',
     },{
         title: '维修单号',
-        dataIndex: 'deviceCode',
-        key: 'deviceCode',
+        dataIndex: 'code',
+        key: 'code',
         align:'center',
         editable: 1,
         width: '100px',

@@ -49,7 +49,7 @@ class AddModal extends React.Component{
                             showSearch
                             name={'plantCode'}
                             style={{ width: 200 }}
-                            value={head['deptName']?`${head['deptName']}-${head['plantCode']}`:undefined}
+                            value={head['plantCode']?`${head['deptName']}-${head['plantCode']}`:undefined}
                             treeCheckStrictly={true}
                             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                             treeData={treeData}
@@ -86,7 +86,7 @@ class AddModal extends React.Component{
                             <span className='process-parameters-add-div-span'>生产品种：</span>
                             <Select style={{width: 200}} value={productClass?`${productClass}-${productClassName}`:undefined} placeholder={'请选择'} onChange={productClassChange}>
                                 {
-                                    productionData ? productionData.map(e => <Option key={e.code} value={`${e.code}-${e.ruleDesc}`}>{e.ruleDesc}</Option>) : null
+                                    productionData ? productionData.map(e => <Option key={e.code} value={`${e.code}-${e.ruleValue}`}>{e.ruleValue}</Option>) : null
                                 }
                             </Select>
                         </div>

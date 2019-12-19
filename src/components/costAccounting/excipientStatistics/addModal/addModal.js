@@ -126,6 +126,12 @@ class AddModal extends React.Component{
         let tar = e.target.name.split('-'), value = e.target.value,
             name = tar[0], index = tar[1] ? tar[1] : '', type = tar[2] ? parseInt(tar[2]) : '',
             {gqDetails2,cjDetails3,fcDetails4} = this.state;
+
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+
         if(type && name !== 'monPotency') {
             value = this.inputNumberChange(value);
             if(value === undefined) {
@@ -159,10 +165,6 @@ class AddModal extends React.Component{
 
     /**监控浓度变化，只能输入0到1*/
     inputNumberChange(value) {
-        if(typeof value === 'number') value = value.toString();
-        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
-        if(value[value.length-1] !== '.')
-            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
         if(value < 0 || value > 1) {
             message.info('只能输入0到1之间的数字！');
             return undefined
