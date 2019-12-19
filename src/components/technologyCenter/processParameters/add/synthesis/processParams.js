@@ -35,7 +35,9 @@ class ProcessParams extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setState(() => null)
+        this.setState(() => {
+            return;
+        })
     }
 }
 

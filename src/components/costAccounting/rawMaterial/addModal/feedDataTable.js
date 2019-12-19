@@ -143,7 +143,7 @@ class FeedDataTable extends React.Component {
         return (
             <div className={'raw-material-detail'}>
                 <Table rowKey={record => record.index} dataSource={data} columns={this.renderColumns(flag)}
-                       size={"small"} bordered pagination={false}/>
+                       size={"small"} bordered pagination={false} scroll={{y:150}}/>
             </div>
         )
     }

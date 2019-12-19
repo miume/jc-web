@@ -207,8 +207,8 @@ class ProcessParamsPart extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let lines = nextProps['proAndLines']['lines'];
-        if(lines.length) {
+        let lines = nextProps['proAndLines']['lines'], line = this.props.proAndLines['lines'];
+        if(lines.length !== line.length) {
             this.getSynthesisSlotNumber(lines);
         }
     }

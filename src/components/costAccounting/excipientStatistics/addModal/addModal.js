@@ -16,6 +16,8 @@ class AddModal extends React.Component{
             disabled: false,
             loading: false
         };
+        this.checkArr = this.checkArr.bind(this);
+        this.checkObj = this.checkObj.bind(this);
         this.getVolume = this.getVolume.bind(this);
         this.addConfirm = this.addConfirm.bind(this);
         this.afterConfirm = this.afterConfirm.bind(this);
@@ -183,17 +185,14 @@ class AddModal extends React.Component{
             data: da
         }).then((data) => {
             let res = data.data.data;
-            if(res === -1) {
-                message.info('存在同一期数未提交的数据，不能新增！');
-                return
-            } else if (res === null || res === undefined) {
-                message.info('存在不一致的统计周期，需要进行修改！')
-            } else {
-                da['code'] = res;
+            if(res.code > 0) {
+                da['code'] = res.code;
                 this.setState({
                     head: da
                 });
                 this.afterConfirm();
+            } else {
+                message.info(res.message);
             }
         })
     }
@@ -314,7 +313,38 @@ class AddModal extends React.Component{
         res['processDTOS'][2]['materialDetails'] = cjDetails3;          //车间
         res['processDTOS'][3]['materialDetails'] = fcDetails4;
         res['head'] = head;
+        if(ammValue === '' || alkValue === '') {
+            message.info('请填写氨入库量和碱入库量！');
+            return;
+        }
+        if(!this.checkArr(gqDetails2) || !this.checkArr(cjDetails3) || !this.checkArr(fcDetails4)) {
+            message.info('请确定表格数据都填写完整！');
+            return;
+        }
         this.saveOrCommit(res,flag);
+    }
+
+    checkArr(arr) {
+        if(arr && arr.length) {
+            for(let i in arr) {
+                if(!this.checkObj(arr[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**检验对象中属性值是否有为空*/
+    checkObj(obj) {
+        if(obj === {}) return false;
+        for(let i in obj) {
+            if(obj[i] === '' || obj[i] === undefined) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**保存或提交*

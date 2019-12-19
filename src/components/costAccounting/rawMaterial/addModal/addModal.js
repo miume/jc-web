@@ -214,19 +214,17 @@ class AddModal extends React.Component {
             },
             data: params
         }).then((data) => {
-            let code = data.data.data;
-            if(code === '-1') {
-                message.info('存在同一期数未提交的数据，不能新增！');
-            } else if(code) {
+            let res = data.data.data;
+            if(res && res.code > 0) {
                 this.setState({
-                    code: code,   //表示返回的统计编码
+                    code: res.code,   //表示返回的统计编码
                     headVisible: true,
                     disabled: true,
                     periodCode: params['periodCode']
                 });
                 //this.getStockOutData(params)
             } else {
-                message.info('存在不一致的统计周期！')
+                message.info(res.message)
             }
         })
     }
@@ -430,33 +428,27 @@ class AddModal extends React.Component {
                 statisticCode: parseInt(code)
             };
         //验证数据非空
-        if(flag) {
-            if(!coConcentration || !mnConcentration || !niConcentration) {
-                message.info('请将NiSO4溶液、CoSO4溶液、MnSO4溶液浓度填写完整！');
-                return
-            }
-            if(!this.checkArr(stockOutDTOS)) {
-                return;
-            }
-            if(!this.checkArr(crystalsDTOS)) {
-                return;
-            }
-            if(!this.checkArr(saltMixtureLiquorDTOS)) {
-                return;
-            }
-            if(!this.checkArr(singleCrystalLiquorDTOS)) {
-                return;
-            }
+        if(!coConcentration || !mnConcentration || !niConcentration) {
+            message.info('请将NiSO4溶液、CoSO4溶液、MnSO4溶液浓度填写完整！');
+            return
+        }
+        if(!this.checkArr(stockOutDTOS)) {
+            return;
+        }
+        if(!this.checkArr(crystalsDTOS)) {
+            return;
+        }
+        if(!this.checkArr(saltMixtureLiquorDTOS)) {
+            return;
+        }
+        if(!this.checkArr(singleCrystalLiquorDTOS)) {
+            return;
         }
         this.saveOrCommit(data);
     }
 
     /**检查数组字段是否为空*/
     checkArr(data) {
-        if(!data.length) {
-            message.info('请确保出库和补料都至少有一条数据!')
-            return false;
-        }
         for(let i = 0; i < data.length; i++) {
             for(let j in data[i]) {
                 if(j === 'density' && data[i][j] === 0) {
@@ -464,7 +456,7 @@ class AddModal extends React.Component {
                     return false;
                 }
                 if( j !== 'callMaterialPoint' && (data[i][j] === '' || data[i][j] === undefined)) {
-                    message.info('提交时，请确定数据全部填写完整！');
+                    message.info('请确定表格数据全部填写完整！');
                     return false;
                 }
             }

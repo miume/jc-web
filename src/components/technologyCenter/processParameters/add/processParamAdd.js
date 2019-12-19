@@ -526,6 +526,9 @@ class ProcessParamAddModal extends React.Component {
     floatInputChange(value) {
         if(typeof value === 'number') value = value.toString();
         value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.') {
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        }
         return value;
     }
 
@@ -669,7 +672,7 @@ class ProcessParamAddModal extends React.Component {
                 return
             }
         } else if(processCode === 50) {//陈化洗涤新增
-            data = this.zyDataProcessing(head);
+            data = this.chDataProcessing(head);
             if(!data) {
                 return
             }
@@ -748,7 +751,7 @@ class ProcessParamAddModal extends React.Component {
             ch: {
                 devices: devices,
                 detail: {
-                    comment: chMoment,
+                    comment: chMoment ? chMoment : '',
                 }
             },
             proAndLine: {
