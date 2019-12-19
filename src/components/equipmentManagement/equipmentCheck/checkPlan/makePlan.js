@@ -28,7 +28,7 @@ constructor(props){
             },
             params: {
                 deviceCode: this.props.record.code,
-                deviceName: this.props.record.deviceName,
+                deviceName: this.props.deviceName,
                 modelId:this.state.code===""?code:this.state.code
             },
             type: 'json'
@@ -57,7 +57,7 @@ constructor(props){
             headers:{
                 'Authorization': this.props.url.Authorization
             },
-            params: {deptCode:this.props.parentCode,deviceName:this.props.record.deviceName},
+            params: {deptCode:this.props.parentCode,deviceName:this.props.deviceName},
         }).then((data)=>{
             const res = data.data.data;
             // console.log(res);
