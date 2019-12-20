@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import {Modal,message,Input,Row,Col,Select} from 'antd'
-import AddModal from './addModal'
+import {Modal, message, Input, Row, Col, Select,Table,Popconfirm} from 'antd'
+import './type.css'
 import axios from 'axios'
 const {Option}=Select
 class MaterialTypeAdd extends Component{
@@ -18,9 +18,29 @@ class MaterialTypeAdd extends Component{
             line:[],
             lineName:undefined,
             processData:[],
-            lineData:[]
-            
+            lineData:[],
+            tableData:[]
         }
+        this.columns=[{
+            title:'序号',
+            dataIndex:'id',
+            key:'id'
+        },{
+            title:'属性名',
+            dataIndex:'name',
+            key:'name'
+        },{
+            title:'操作',
+            dataIndex:'operation',
+            key:'operation',
+            render:(text,record)=>{
+                return(
+                    <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.tableDelete(record.id)}>
+                        <span className={'blue'}>删除</span>
+                    </Popconfirm>
+                )
+            }
+        }]
         this.showModal=this.showModal.bind(this);
         this.handleAdd=this.handleAdd.bind(this);
         this.handleAddCancel=this.handleAddCancel.bind(this);
@@ -148,8 +168,8 @@ class MaterialTypeAdd extends Component{
             line:value
         })
     }
+
     render(){
-        
         return(
             <span>
                 {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
@@ -211,11 +231,12 @@ class MaterialTypeAdd extends Component{
                         <Col className='imgRequire fontAdd'>物料标记:</Col>
                         <Col span={18}>
                             <Select placeholder='请选择物料标记'  onChange={this.selectChange}   style={{width:307.5}}>
-                                <Option value={0} name='flag'>正常物料</Option>
-                                <Option value={1} name='flag'>手工物料</Option>
+                                <Option value={1} name='flag'>正常物料</Option>
+                                <Option value={0} name='flag'>手工物料</Option>
                             </Select>
                         </Col>
                     </Row>
+
                 </Modal>
             </span>
         );

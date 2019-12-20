@@ -236,21 +236,15 @@ class CostProcessAdd extends Component {
             }
         }).then((data) => {
             let res = data.data.data;
-            if (res === null || res === undefined) {
-                message.error('存在不一致的统计周期，需要进行修改！')
-                this.setState({
-                    loading:false
-                })
-            }
-            else if(res===-1){
-                message.error('存在同一期数未提交的数据!')
+             if(res.code<=0){
+                message.error(res.message)
                 this.setState({
                     loading:false
                 })
             }
             else {
                 this.setState({
-                    statisticId: res
+                    statisticId: res.code
                 })
                 if (startTime && endTime && periodCode && inputPeriod) {//点击确定后不可再修改
                     this.setState({

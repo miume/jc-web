@@ -1,40 +1,33 @@
 import React,{Component} from 'react'
-import BlockQuote from "../../BlockQuote/blockquote"
-import {Table,Spin,Divider,Popconfirm,message} from 'antd'
-import DeleteByIds from "../../BlockQuote/deleteByIds";
-import SearchCell from "../../BlockQuote/search";
+import BlockQuote from "../../../BlockQuote/blockquote";
+import {Spin, Table, Divider, message, Popconfirm} from "antd";
+import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import Add from './add'
-import axios from 'axios'
-
-class Operation extends Component{
+import axios from "axios";
+import dataSample from "echarts/src/processor/dataSample";
+class FireTestItem extends Component{
     constructor(props){
         super(props)
         this.columns=[{
             title:'序号',
             dataIndex:'index',
-            key:'index',
-            width:'15%'
+            key:'index'
         },{
-            title:'标题',
-            dataIndex:'title',
-            key:'title',
-            width:'25%'
+            title:'检测项目名称',
+            dataIndex:'name',
+            key:'name'
         },{
-            title:'内容',
-            dataIndex:'content',
-            key:'content',
-            width:'25%'
+            title:'单位',
+            dataIndex:'unit',
+            key:'unit'
         },{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
-            width:'30%',
             render:(text,record)=>{
                 return(
                     <span>
-                        <Add detailFlag={true} record={record} getTableData={this.getTableData} url={this.url}/>
-                        <Divider type={'vertical'}/>
-                        <Add editflag={true} record={record} getTableData={this.getTableData} url={this.url}/>
+                        <Add url={this.url} getTableData={this.getTableData} record={record} editflag={true}/>
                         <Divider type={'vertical'}/>
                         <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleDelete(record.code)}>
                             <span className={'blue'}>删除</span>
@@ -48,15 +41,12 @@ class Operation extends Component{
             selectedRowKeys:[],
             dataSource:[]
         }
-        this.pagination={
-            showSizeChanger: true,//是否可以改变 pageSize
-            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10","20","50","100"]
-        }
+        this.back=this.back.bind(this);
         this.getTableData=this.getTableData.bind(this);
         this.deleteByIds=this.deleteByIds.bind(this);
-        this.cancel=this.cancel.bind(this);
-        this.selectChange=this.selectChange.bind(this);
+        this.deleteCancel=this.deleteCancel.bind(this);
+        this.onSelectChange=this.onSelectChange.bind(this);
+        this.handleDelete=this.handleDelete.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -72,7 +62,7 @@ class Operation extends Component{
             loading:true
         })
         axios({
-            url:`${this.url.fireMageOperation}/page`,
+            url:`${this.url.fireMageTestItems}/page`,
             method:'get',
             headers:{
                 'Authorizaion':this.url.Authorizaion
@@ -90,11 +80,10 @@ class Operation extends Component{
             }
         })
     }
-
     deleteByIds(){
         let ids=this.state.selectedRowKeys
         axios({
-            url:`${this.url.fireMageOperation}/${ids}`,
+            url:`${this.url.fireMageTestItems}/${ids}`,
             method:'delete',
             headers:{
                 'Authorizaion':this.url.Authorizaion
@@ -109,15 +98,14 @@ class Operation extends Component{
             }
         })
     }
-    /**删除取消*/
-    cancel(){
+    deleteCancel(){
         this.setState({
             selectedRowKeys:[]
         });
     }
     handleDelete(id){
         axios({
-            url:`${this.url.fireMageOperation}/${id}`,
+            url:`${this.url.fireMageTestItems}/${id}`,
             method:'delete',
             headers:{
                 'Authorizaion':this.url.Authorizaion
@@ -132,35 +120,31 @@ class Operation extends Component{
             }
         })
     }
-    selectChange(selectedRowKeys){
+    onSelectChange(selectedRowKeys){
         this.setState({ selectedRowKeys: selectedRowKeys});
     }
+    back(){
+        this.props.history.push({pathname:"/fireBasicData"})
+    }
     render(){
-        const current=JSON.parse(localStorage.getItem(('current')))
+        const current=JSON.parse(localStorage.getItem('current'))
         this.url=JSON.parse(localStorage.getItem('url'))
-        let {loading,selectedRowKeys,dataSource}=this.state
-        const rowSelection={
+        let {loading,selectedRowKeys}=this.state
+        const rowSelection = {//checkbox
             selectedRowKeys,
-            onChange:this.selectChange
-        }
+            onChange:this.onSelectChange,
+        };
         return(
             <div>
-                <BlockQuote menu={current.menuParent} name={current.menuName}/>
+                <BlockQuote name={'检验项目'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <Add url={this.url} getTableData={this.getTableData}/>
-                    <DeleteByIds flag={true} selectedRowKeys={selectedRowKeys}
-                                 deleteByIds={this.deleteByIds} cancel={this.cancel}/>
-                    <SearchCell flag={true} name={'请输入手册标题'}/>
-                    <Table dataSource={dataSource}
-                           columns={this.columns} bordered size={'small'}
-                           rowKey={record => record.code}
-                           rowSelection={rowSelection}
-                           pagination={this.pagination}
-                    />
+                    <Add url={this.url} getTableData={this.getTableData} />
+                    <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.deleteCancel} flag={true}/>
+                    <Table rowSelection={rowSelection} pagination={false} columns={this.columns}
+                           dataSource={this.state.dataSource} rowKey={record => record.code} bordered size={'small'} />
                 </Spin>
             </div>
         )
     }
-
 }
-export default Operation
+export default FireTestItem

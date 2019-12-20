@@ -120,12 +120,12 @@ class MixSalt extends Component{//混合盐配置
             }
         }).then(data=>{
             let res=data.data.data
-            if(res&&res.list){
-                for(let i=0;i<res.list.length;i++){
-                    res.list[i]['id']=(res.page-1)*(res.size)+(i+1)
+            if(res){
+                for(let i=0;i<res.length;i++){
+                    res[i]['id']=(i+1)
                 }
                 this.setState({
-                    data:res.list
+                    data:res
                 })
             }
         })
@@ -148,6 +148,7 @@ class MixSalt extends Component{//混合盐配置
         const rowSelection = {//checkbox
             selectedRowKeys,
             onChange:this.onSelectChange,
+            type:'radio'
         };
         return(
             <div>

@@ -4,26 +4,31 @@ import BasePart from "../../qualityProcess/Base/basePart";
 
 const data=[{
     id:1,
-    name:'送检登记',
-    path:'/fireInsRegister',
+    name:'编号规则',
+    path:'/fireSeriRule',
     className:'fa fa-industry fa-5x'
 },{
     id:2,
-    name:'样品接收',
-    path:'/fireInsSamRec',
+    name:'检验项目',
+    path:'/fireTestItem',
     className:'fa fa-wrench fa-5x'
 },{
     id:3,
-    name:'数据采集',
-    path:'/fireInsDataAcq',
+    name:'送检部门',
+    path:'/fireInspecDep',
     className:'fa fa-tint fa-5x'
 },{
     id:4,
-    name:'数据整理',
-    path:'/fireInsDataCol',
+    name:'批号与检验项目',
+    path:'/fireSerialTest',
+    className:'fa fa-sitemap fa-5x'
+},{
+    id:5,
+    name:'标签与检验项目',
+    path: '/fireLabelTest',
     className:'fa fa-sitemap fa-5x'
 }]
-class InspectionManagement extends Component {
+class FireQuaBase extends Component {
     constructor(props){
         super(props)
         this.click=this.click.bind(this)
@@ -50,4 +55,4 @@ class InspectionManagement extends Component {
         )
     }
 }
-export default InspectionManagement
+export default FireQuaBase

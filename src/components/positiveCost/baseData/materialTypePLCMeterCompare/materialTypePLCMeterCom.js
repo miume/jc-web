@@ -25,7 +25,7 @@ class MaterialTypePLCMeterCom extends Component{
             title:'序号',
             dataIndex:'index',
             key:'index',
-            width:'10%',
+            width:'5%',
             align:'center'
         },{
             title:'工序',
@@ -35,6 +35,12 @@ class MaterialTypePLCMeterCom extends Component{
             align:'center'
         },{
             title:'物料种类名称',
+            dataIndex:'materialName',
+            key:'materialName',
+            width:'17%',
+            align:'center'
+        },{
+            title:'DCS属性',
             dataIndex:'materialName',
             key:'materialName',
             width:'17%',
