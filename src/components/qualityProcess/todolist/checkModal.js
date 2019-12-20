@@ -7,7 +7,7 @@ import Procedure from './checkModal/procedure';
 import CheckPurchase from './checkModal/checkPurchase';
 import AllTester from '../../BlockQuote/allTester';
 import NewButton from '../../BlockQuote/newButton';
-import StockTable from '../../smartWarehouse/stockOut/detailTable';
+import StockTable from '../../smartWarehouse/o_stockOut/detailTable';
 import CheckUnqualified from './checkModal/checkUnqualified';
 import CancleButton from '../../BlockQuote/cancleButton';
 import CheckProductStandard from './checkModal/checkProductStandard';
