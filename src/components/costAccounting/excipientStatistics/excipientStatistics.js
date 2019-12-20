@@ -223,7 +223,7 @@ class ExcipientStatistics extends React.Component{
             end = new Date(dateString).getTime() + length * 24 * 3600 * 1000;
         this.setState({
             startTime: dateString,
-            endTime: moment(end).format('YYYY-MM-DD')
+            endTime: dateString ? moment(end).format('YYYY-MM-DD') : ''
         })
     }
 

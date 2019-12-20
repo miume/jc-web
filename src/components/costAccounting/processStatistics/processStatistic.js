@@ -33,8 +33,8 @@ class ProcessStatistics extends Component {
             process: [],
             pagination: {},
             paginationStatis: {},
-            loadingSubmit: true,
-            loadingStatis: true
+            loadingSubmit: false,
+            loadingStatis: false
         }
         this.getStaPeriod = this.getStaPeriod.bind(this);
         this.judgeOperation = this.judgeOperation.bind(this);
@@ -183,13 +183,13 @@ class ProcessStatistics extends Component {
         //将给定日期转为毫秒，再与间隔天数（转为毫秒）相加
         let time = new Date(Date.parse(dateString) + 3600000 * 24 * length)
         let endDate = moment(time).format('YYYY-MM-DD')
+        console.log(dateString,endDate)
         this.setState({
             startDate: dateString,
             startTime: `${dateString} ${startSecondTime}`,
             endTime: `${endDate} ${startSecondTime}`,
-            endDate: endDate
+            endDate: dateString ? endDate : ''
         })
-
     }
     dateEndChange(date, dateString) {
         let { startSecondTime } = this.state
@@ -252,7 +252,7 @@ class ProcessStatistics extends Component {
         return flag.length ? true : false
     }
     handleAdd() {
-        let { process, staticPeriod, periodCode, startSecondTime, length } = this.state
+        let { process, staticPeriod} = this.state
         this.props.history.push({
             pathname: '/costProcessAdd',
             process: process,
@@ -260,7 +260,7 @@ class ProcessStatistics extends Component {
         })
     }
     statisticalAnalysis() {
-        let { periodCode, startSecondTime, staticPeriod, process, length } = this.state
+        let {staticPeriod, process } = this.state
         this.props.history.push({
             pathname: '/processStatisticalAnalysis',
             staticPeriod: staticPeriod,
