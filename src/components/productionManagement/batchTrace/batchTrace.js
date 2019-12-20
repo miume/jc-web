@@ -1,9 +1,7 @@
 import React from "react";
-// import Blockquote from "../../BlockQuote/blockquote";
-import DeleteByIds from "../../BlockQuote/deleteByIds";
 import SearchCell from '../../BlockQuote/search';
 import axios from "axios";
-import {Table, message, Spin, Divider} from "antd";
+import {Table, Spin} from "antd";
 import BlockQuote from '../../BlockQuote/blockquote';
 import Detail from "./detail";
 
@@ -145,9 +143,9 @@ class BatchTrace extends React.Component{
                     fetch={this.getTableData}
                 />
                 <div className='clear' ></div>
-                    <Table size="small" bordered  
-                    dataSource={this.state.dataSource} 
-                    columns={this.column} 
+                    <Table size="small" bordered
+                    dataSource={this.state.dataSource}
+                    columns={this.column}
                     pagination={this.pagination}
                     onChange={this.handleTableChange}
                     rowKey={record=>record.index}/>

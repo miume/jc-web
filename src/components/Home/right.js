@@ -55,12 +55,10 @@ import Equipment from "../equipmentManagement/equipmentGuidance/equipmentGuidanc
 import EquipmentRepair from "../equipmentManagement/equipmentRepair/equipmentRepair"
 import EquipmentArchive from '../equipmentManagement/equipmentArchive/equipmentArchive';
 import EquipmentMaintenance from '../equipmentManagement/equipmentMaintenance/equipmentMaintenance'
-import EqMaintenanceDataEntry
-    from '../equipmentManagement/equipmentMaintenance/eqMaintenanceDataEntry/eqMaintenanceDataEntry'
+import EqMaintenanceDataEntry from '../equipmentManagement/equipmentMaintenance/eqMaintenanceDataEntry/eqMaintenanceDataEntry'
 import EqMaintenancePlan from '../equipmentManagement/equipmentMaintenance/eqMaintenancePlan/eqMaintenancePlan'
 import EqMaintenanceQuery from '../equipmentManagement/equipmentMaintenance/eqMaintenanceQuery/eqMaintenanceQuery'
-import EqupimentAssignment
-    from '../equipmentManagement/equipmentBasicData/equpimentAssignment/equipmentProcessAssignment'
+import EqupimentAssignment from '../equipmentManagement/equipmentBasicData/equpimentAssignment/equipmentProcessAssignment'
 
 import EquipmentArchiveManager
     from '../equipmentManagement/equipmentArchive/equipmentArchiveManager/equipmentArchiveManager'
@@ -71,11 +69,9 @@ import InspectionPlan from '../equipmentManagement/equipmentInspection/inspectio
 import InspectionQuery from '../equipmentManagement/equipmentInspection/inspectionQuery/inspectionQuery'
 import LocationBasic from "../equipmentManagement/equipmentBasicData/locationBasic/locationBasic";
 import EquipmentProcessName from '../equipmentManagement/equipmentBasicData/processName/processName';
-import UserProcessAssignment
-    from '../equipmentManagement/equipmentBasicData/userProcessAssignment/userProcessAssignment';
+import UserProcessAssignment from '../equipmentManagement/equipmentBasicData/userProcessAssignment/userProcessAssignment';
 
 import BatchInfo from "../productionManagement/batchMessage/batchMessage"
-import BatchSearch from "../productionManagement/batchSearch/batchSearch"
 import BatchRule from "../productionManagement/batchRule/batchRule"
 import RawMaterialInput from '../technologyCenter/rawMaterialInput/rawMaterialInput'
 import EqUserDepAllocation from '../equipmentManagement/equipmentBasicData/eqUserDepAllocation/eqUserDepAllocation'
@@ -303,9 +299,6 @@ class Right extends React.Component {
                 path: "/batchInfo",
                 component: BatchInfo
             }, {
-                path: "/batchSearch",
-                component: BatchSearch
-            }, {
                 path: "/equpimentAssignment",
                 component: EqupimentAssignment
             }, {
@@ -447,7 +440,7 @@ class Right extends React.Component {
                 component: BatchInfo
             }, {
                 path: "/batchSearch",
-                component: BatchSearch
+                component: BatchTrace
             }, {
                 path: "/equpimentAssignment",
                 component: EqupimentAssignment
