@@ -20,12 +20,22 @@ class Edit extends Component{
             title:'规则代码',
             dataIndex:'value',
             key:'value',
-            width:'20%'
+            width:'20%',
+            render:(text,record)=>{
+                    return(
+                        <Input onChange={this.inputChange}/>
+                    )
+            }
         },{
             title:'说明',
             dataIndex:'description',
             key:'description',
-            width:'30%'
+            width:'30%',
+            render:(text,record)=>{
+                return(
+                    <Input onChange={this.inputChange}/>
+                )
+            }
         },{
             title:'是否启用',
             dataIndex:'enable',
@@ -57,6 +67,7 @@ class Edit extends Component{
         this.handleAdd=this.handleAdd.bind(this);
         this.handleDelete=this.handleDelete.bind(this);
         this.radioChange=this.radioChange.bind(this)
+        this.inputChange=this.inputChange.bind(this);
     }
     showModal(){
         this.setState({
@@ -110,7 +121,9 @@ class Edit extends Component{
        })
 
    }
+    inputChange(){
 
+    }
     radioChange(record){
         record.enable=true
          let {dataSource}=this.state

@@ -118,6 +118,9 @@ class ProcessStatistics extends Component {
                 this.setState({
                     dataSubmit: temp,
                     pagination: { current: res.page ? res.page : 0, total: res.total ? res.total : 0 },
+
+                })
+                this.setState({
                     loadingSubmit: false
                 })
             }
@@ -146,10 +149,12 @@ class ProcessStatistics extends Component {
                 }
                 this.setState({
                     dataStatistic: res.list,
-                    loadingStatis: false,
                     paginationStatis: { current: res.page, total: res.total ? res.total : 0 }
                 })
             }
+            this.setState({
+                loadingStatis: false
+            })
         })
     }
     tabsChange(key) {//标签页变化调用
