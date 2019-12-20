@@ -44,17 +44,7 @@ class BaseInfo extends React.Component{
        const path=e.target.id;
        this.props.history.push({pathname:path})
     }
-    // nextStep(){
 
-    //     this.setState({
-    //         flag:1
-    //     });
-    //     //console.log(this.state.path);
-    //     this.props.history.push({pathname:this.state.path});//react的路由跳转
-    // }
-    // lastStep(){
-    //     this.setState({flag:0});
-    // }
     render(){
         return(
             <div>

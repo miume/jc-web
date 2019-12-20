@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import NewButton from "../../../BlockQuote/newButton";
 import {Modal, Select, Table, message} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
@@ -14,6 +15,25 @@ const placeData = [{
     },{
         code: 3,
         place: '地点三'
+    }],
+    tableData = [{
+        code: 1,
+        modelName: '模版名称',
+        frequency: '1次/天',
+        batchNumber: 'DL-JL023',
+        effectiveDate: '2019-12-01'
+    },{
+        code: 2,
+        modelName: '模版名称2',
+        frequency: '1次/天',
+        batchNumber: 'DL-JL023',
+        effectiveDate: '2019-12-01'
+    },{
+        code: 3,
+        modelName: '模版名称2',
+        frequency: '1次/天',
+        batchNumber: 'DL-JL023',
+        effectiveDate: '2019-12-01'
     }];
 
 class AddModal extends React.Component {
@@ -30,36 +50,37 @@ class AddModal extends React.Component {
             width: '10%'
         },{
             title:'模版名称',
-            key:'content',
-            dataIndex:'content',
+            key:'modelName',
+            dataIndex:'modelName',
             width: '20%'
         },{
             title:'点检频率',
-            key:'type',
-            dataIndex:'type',
-            width: '20%'
-        },{
-            title:'编号',
             key:'frequency',
             dataIndex:'frequency',
             width: '20%'
         },{
+            title:'编号',
+            key:'batchNumber',
+            dataIndex:'batchNumber',
+            width: '20%'
+        },{
             title:'生效日期',
-            key:'date',
-            dataIndex:'date',
-            width: '30%'
+            key:'effectiveDate',
+            dataIndex:'effectiveDate',
+            width: '20%'
         }];
         this.handleSave = this.handleSave.bind(this);
         this.handleClick = this.handleClick.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.selectChange = this.selectChange.bind(this);
         this.renderButton = this.renderButton.bind(this);
+        this.getTableData = this.getTableData.bind(this);
         this.onSelectChange = this.onSelectChange.bind(this);
         this.saveDataProcessing = this.saveDataProcessing.bind(this);
     }
 
     render() {
-        let {visible,selectedRowKeys,place} = this.state, {title,data} = this.props, disabled = title !== '新增' ? true : false,
+        let {visible,selectedRowKeys,siteCode,data} = this.state, {title} = this.props, disabled = title !== '新增' ? true : false,
             rowSelection = {
                 type: 'radio',
                 selectedRowKeys,
@@ -76,7 +97,7 @@ class AddModal extends React.Component {
                        ]}>
                     <div className='check-template-add'>
                         <div>点检站点：</div>
-                        <Select disabled={disabled} value={place} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                        <Select disabled={disabled} value={siteCode} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
                             {
                                 placeData ? placeData.map(e => <Option key={e.code} name={'place'} value={e.code}>{e.place}</Option>) : null
                             }
@@ -103,9 +124,9 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {place,item,index} = record;
+            let {siteCode,item,index} = record;
             this.setState({
-                place,
+                siteCode,
                 item,
                 index
             })
@@ -123,10 +144,29 @@ class AddModal extends React.Component {
     }
 
     /**监控地点、设备名/点检项目下拉框变化*/
-    selectChange(value,option) {
-        let name = option.props.name;
+    selectChange(value) {
         this.setState({
-            [name]: value
+            siteCode: value
+        });
+        this.getTableData(value);
+    }
+
+    getTableData(code) {
+        // axios({
+        //     url: `url?siteCode=${code}`,
+        //     method: 'get',
+        //     headers: {
+        //         'Authorization': this.props.url.Authorization
+        //     }
+        // }).then(data => {
+        //     let res = data.data.data;
+        // })
+        let data = tableData.slice(0,code);
+        for(let i = 0; i < data.length; i++) {
+            data[i]['index'] = i + 1;
+        }
+        this.setState({
+            data
         })
     }
 
@@ -142,22 +182,18 @@ class AddModal extends React.Component {
     handleSave() {
         let params = this.saveDataProcessing(), {title} = this.props, type = title === '新增' ? 'add' : '';
         if(params) {
+            console.log(params)
             this.handleCancel();
-            this.props.addItem(params,type)
         }
     }
 
     /**处理保存数据*/
     saveDataProcessing() {
-        let {item,place,selectedRows,index} = this.state;
-        if(item && place && selectedRows.length) {
-            let {content,type,frequency} = selectedRows, params = {
-                index,
-                item,
-                place,
-                content,
-                type,
-                frequency
+        let {selectedRows,siteCode} = this.state;
+        if(siteCode && selectedRows.length) {
+            let params = {
+                    selectedRows,
+                    siteCode
             };
             return params;
         } else {

@@ -101,6 +101,7 @@ import StatisticalPeriodCost from '../positiveCost/baseData/statisticalPeriod/st
 import AddModal from '../costAccounting/rawMaterial/addModal/addModal';
 import StatisticalAnalysis from '../costAccounting/rawMaterial/statisticalAnalysis/statisticalAnalysis';
 
+
 // import processParameters from "../technologyCenter/processParameters/processParameters";
 
 import BatchTrace from "../productionManagement/batchTrace/batchTrace";
@@ -139,6 +140,17 @@ import PowerCheckTemplate from "../powerCheck/checkTemplate/checkTemplate";
 import RepoBaseData from "../smartWarehouse/repoBasic/basisData";
 import RepoBasicCategory from "../smartWarehouse/repoBasic/repoBasicCategory/repoBasicCategory";
 
+
+import FireLabelTest from "../fireQuality/baseData/labelTest/labelTest";
+import FireSerialRule from "../fireQuality/baseData/serialRule/serialRule";
+import FireSerialTest from "../fireQuality/baseData/serialTest/seriaTest";
+import FireInspecDep from "../fireQuality/baseData/inspectionDep/inspectionDep";
+import FireQuaBase from '../fireQuality/baseData/baseData'
+import FireTestItem from "../fireQuality/baseData/testItem/testItem";
+import FireInsRegister from "../fireQuality/inspectionManagement/fireInsRegister/fireInsRegister";
+import FireInsSamRec from '../fireQuality/inspectionManagement/fireInsSamRec/fireInsSamRec'
+import FireInsDataAcq from '../fireQuality/inspectionManagement/fireInsDataAcq/fireInsDataAcq'
+import FireInsDataCol from '../fireQuality/inspectionManagement/fireInsDataCol/fireInsDataCol'
 
 class Right extends React.Component {
     render() {
@@ -197,23 +209,6 @@ class Right extends React.Component {
             path: '/sampleInspection',
             component: SampleInspection
         }
-            // , {
-            //     path: '/stockOut',
-            //     component: StockOut
-            // }
-            // , {
-            //     path: '/enterStorage',
-            //     component: EnterStorage
-            // }, {
-            //     path: '/inventorManage',
-            //     component: InventorManage
-            // }, {
-            //     path: '/redListManage',
-            //     component: RedListManage
-            // }, {
-            //     path: '/libraryManage',
-            //     component: LibraryManage
-            // }
             , {
                 path: '/todoList',
                 component: TodoList
@@ -356,10 +351,6 @@ class Right extends React.Component {
                 path: "/processName",
                 component: ProcessName
             }
-            // ,{
-            //     path:"/baseData",
-            //     component:MaterialBasic
-            // }
             , {
                 path: '/productLine',
                 component: ProductLine
@@ -367,23 +358,6 @@ class Right extends React.Component {
                 path: '/sampleInspection',
                 component: SampleInspection
             }
-            // , {
-            //     path: '/stockOut',
-            //     component: StockOut
-            // }
-            // , {
-            //     path: '/enterStorage',
-            //     component: EnterStorage
-            // }, {
-            //     path: '/inventorManage',
-            //     component: InventorManage
-            // }, {
-            //     path: '/redListManage',
-            //     component: RedListManage
-            // }, {
-            //     path: '/libraryManage',
-            //     component: LibraryManage
-            // }
             , {
                 path: '/todoList',
                 component: TodoList
@@ -646,9 +620,40 @@ class Right extends React.Component {
             }, {
                 path: '/repoBasic',
                 component: RepoBaseData
-            },{
+            }, {
                 path: '/repoBasicCategory',
                 component: RepoBasicCategory
+            }, {
+                path: '/fireBasicData',
+                component: FireQuaBase
+            },
+            {
+                path: '/fireLabelTest',
+                component: FireLabelTest
+            }, {
+                path: '/fireSeriRule',
+                component: FireSerialRule
+            }, {
+                path: '/fireInspecDep',
+                component: FireInspecDep
+            }, {
+                path: '/fireSerialTest',
+                component: FireSerialTest
+            }, {
+                path: '/fireTestItem',
+                component: FireTestItem
+            }, {
+                path: '/fireInsRegister',
+                component: FireInsRegister
+            }, {
+                path: '/fireInsSamRec',
+                component: FireInsSamRec
+            }, {
+                path: '/fireInsDataAcq',
+                component: FireInsDataAcq
+            }, {
+                path: '/fireInsDataCol',
+                component: FireInsDataCol
             }
         ];
         return (

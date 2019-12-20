@@ -65,7 +65,7 @@ class ProductLineStatis extends Component{//产品线统计
             url:`${this.props.url.precursorGoodIn.getAnalysisLine}`,
             method:'get',
             headers:{
-                'Authorizaition':this.props.url.Authorization
+                'Authorization':this.props.url.Authorization
             },
             params:{
                 periodId:periodId,

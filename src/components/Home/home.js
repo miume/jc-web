@@ -700,8 +700,8 @@ class Home extends Component {
                 detailByBatch: `${server}/jc/common/processParam/detailByBatch`,
                 saveOrCommit: `${server}/jc/common/processParam/saveOrcommit`,
                 deleteByIds: `${server}/jc/common/processParam/deleteByIds`,
-                mixRecipe:`${server}/jc/common/processParam/mixRecipe`, //混合盐读取配方
-                compoundRecipe:`${server}/jc/common/processParam/compoundRecipe`
+                mixRecipe:`${server}/jc/common/processParam/mixRecipeList`, //混合盐读取配方
+                compoundRecipe:`${server}/jc/common/processParam/compoundRecipeList`,
             },
             /**正极基础统计周期*/
             positiveStatic:{
@@ -792,7 +792,7 @@ class Home extends Component {
                 editDetail:`${server}/jc/common/productStorage/editDetail`,
                 getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
                 getPageCommit:`${server}/jc/common/productStorage/pageCommit`,
-                nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
+                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
                 addConfirm:`${server}/jc/common/productStorage/addComfirm`,
                 afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
                 lineCur:`${server}/jc/common/productStorage/lineCur`,
@@ -814,8 +814,14 @@ class Home extends Component {
                 getDate:`${server}/jc/common/precursorCostAccount/getStartDate`,
                 mainMatConfirm:`${server}/jc/common/precursorCostAccount/mainMatConfirm`,
                 auxMatConfirm:`${server}/jc/common/precursorCostAccount/auxMatConfirm`
-            }
-        };
+            },
+            /**火法质量基础-编号规则*/
+                fireMageNumber:`${server}/jc/common/fireMageNumber`,
+            /**火法质量操作手册*/
+                fireMageOperation:`${server}/jc/common/fireMageOperation`,
+            /**火法质量检验项目*/
+                fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
+    }
 
         localStorage.setItem('status',JSON.stringify(status));
         localStorage.setItem('dataType',JSON.stringify(dataType));

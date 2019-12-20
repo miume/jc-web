@@ -71,11 +71,7 @@ class ReadRecipe extends Component{//读取配方
             dataIndex:'solidContent',
             key:'solidContent'
         }]
-        this.pagination = {
-            showSizeChanger: true,//是否可以改变 pageSize
-            showTotal:(total)=>`共${total}条记录`,//显示共几条记录
-            pageSizeOptions: ["10","20","50","100"]
-        }
+
         
     }
    
@@ -97,12 +93,12 @@ class ReadRecipe extends Component{//读取配方
                 ]}>
                 <Table
                 dataSource={this.props.data}
-                rowKey={record=>record.id}
-                pagination={this.pagination}
+                rowKey={record=>record.head.code}
+                pagination={false}
                 onChange={this.props.handleTableChange}
                 columns={this.columns}
                 rowSelection={this.props.rowSelection}
-                filterMultiple={false}
+                scroll={{y:'250px'}}
                 size='small'
                 bordered/>
                 </Modal>

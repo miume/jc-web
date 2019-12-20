@@ -20,29 +20,29 @@ class CheckTemplateTable extends React.Component {
             width: '10%'
         },{
             title:'点检站点',
-            key:'name',
-            dataIndex:'name',
+            key:'siteName',
+            dataIndex:'siteName',
             width: '10%'
         },{
             title:'模板名称',
-            key:'template',
-            dataIndex:'template',
-            width: '10%'
+            key:'modelName',
+            dataIndex:'modelName',
+            width: '15%'
         },{
             title:'点检频率',
             key:'frequency',
             dataIndex:'frequency',
-            width: '20%'
+            width: '15%'
         },{
             title:'编号',
-            key:'serialNumber',
-            dataIndex:'serialNumber',
+            key:'batchNumber',
+            dataIndex:'batchNumber',
             width: '15%'
         },{
             title:'生效日期',
-            key:'effectiveTime',
-            dataIndex:'effectiveTime',
-            width: '10%'
+            key:'effectiveDate',
+            dataIndex:'effectiveDate',
+            width: '20%'
         },{
             title:'操作',
             key:'code',
@@ -52,12 +52,12 @@ class CheckTemplateTable extends React.Component {
                 return (
                     <span>
                         <AddModal record={record} title={'编辑'}/>
+                        <Divider type={'vertical'}/>
+                        <AddTableModal record={record} title={'新建点检'}/>
                         <Divider type={"vertical"}/>
                         <Popconfirm title="确认删除?" onConfirm={()=> this.handleDelete(text)} okText="确定" cancelText="取消" >
                             <span className='blue'>删除</span>
                         </Popconfirm>
-                        <Divider type={'vertical'}/>
-                        <AddTableModal record={record}/>
                     </span>
                 )
             })

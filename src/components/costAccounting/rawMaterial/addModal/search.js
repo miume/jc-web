@@ -84,7 +84,7 @@ class Search extends React.Component {
     }
 
     disabledDate(current) {
-        return current && current < moment(this.props.disabledDate).add(1,'d');
+        return current && current < moment(this.props.disabledDate);
     }
 
     /**搜索时间*/
