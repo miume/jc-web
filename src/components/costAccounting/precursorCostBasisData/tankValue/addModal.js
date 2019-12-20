@@ -73,7 +73,6 @@ class AddModal extends React.Component{
             }
         }).then(data=>{
             let res=data.data.data
-            console.log(res)
             if(res){
                 this.setState({
                     productLine:res.lineCode,
@@ -111,7 +110,7 @@ class AddModal extends React.Component{
             materialName:materialName
         }
         axios({
-            url:this.props.url.precursorCompoundCellVolumes.add,
+            url:this.props.editFlag?this.props.url.precursorCompoundCellVolumes.update:this.props.url.precursorCompoundCellVolumes.add,
             method:this.props.editFlag?'put':'post',
             headers:{
                 'Authorization':this.props.url.Authorization,

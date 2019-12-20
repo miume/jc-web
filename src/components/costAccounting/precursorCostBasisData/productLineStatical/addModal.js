@@ -93,9 +93,11 @@ class AddModal extends React.Component{
                 this.handleCancel()
                 return
             }
-            message.info("新增成功!");
-            this.props.fetch();
-            this.handleCancel()
+           else{
+                message.info("新增成功!");
+                this.props.fetch();
+                this.handleCancel()
+            }
         }).catch((error)=>{
             message.error('新增失败，请联系管理员!')
         })

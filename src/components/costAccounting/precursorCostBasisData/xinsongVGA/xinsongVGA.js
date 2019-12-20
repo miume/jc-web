@@ -31,6 +31,7 @@ class PLCaddress extends React.Component{
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
         };
         this.columns=[{
             title: '序号',
