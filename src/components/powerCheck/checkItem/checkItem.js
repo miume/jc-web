@@ -11,11 +11,12 @@ import Home from "../../commom/fns";
 const data = [{
     index: 1,
     code: 1,
-    name: '点检站点',
-    place: '地点',
-    item: 'Fe',
-    content: '外壳是否完整',
-    type: 0,
+    siteName: '点检站点',
+    siteCode: 1,
+    place: '地点1',
+    checkItem: 'Fe',
+    checkContent: '外壳是否完整',
+    dataType: 0,
     frequency: '1次/天'
 }];
 

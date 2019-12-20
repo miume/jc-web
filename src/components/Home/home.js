@@ -792,7 +792,7 @@ class Home extends Component {
                 editDetail:`${server}/jc/common/productStorage/editDetail`,
                 getPageUnCommit:`${server}/jc/common/productStorage/pageUnCommit`,
                 getPageCommit:`${server}/jc/common/productStorage/pageCommit`,
-                nextPeroidNumber:`${server}/jc/common/productStorage/nextPeroidNumber`,
+                nextPeriod:`${server}/jc/common/productStorage/nextPeriod`,
                 addConfirm:`${server}/jc/common/productStorage/addComfirm`,
                 afterConfirm:`${server}/jc/common/productStorage/afterComfirm`,
                 lineCur:`${server}/jc/common/productStorage/lineCur`,
