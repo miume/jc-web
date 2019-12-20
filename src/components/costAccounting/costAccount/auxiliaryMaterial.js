@@ -14,29 +14,29 @@ class AuxiliaryMaterial extends Component{
         }
         this.columns=[{
             title:'核算对象',
-            key:'elementType',
-            dataIndex:'elementType',
-            render:(text,record)=>{
-                if(record.ElementCode===0){
-                    return 'Ni'
-                }
-                if(record.ElementCode===1){
-                    return 'Co'
-                }
-                if(record.ElementCode===2){
-                    return 'Mn'
-                }
-                if(record.ElementCode===3){
-                    return '氨'
-                }
-                if(record.ElementCode===4){
-                    return '碱'
-                }
-            }
+            key:'elementName',
+            dataIndex:'elementName',
         },{
             title:'名称',
             key:'name',
             dataIndex:'name',
+            render:(text,record)=>{
+                if(record.elementType===0){
+                    return 'Ni'
+                }
+                if(record.elementType===1){
+                    return 'Co'
+                }
+                if(record.elementType===2){
+                    return 'Mn'
+                }
+                if(record.elementType===3){
+                    return '氨'
+                }
+                if(record.elementType===4){
+                    return '碱'
+                }
+            }
         },{
             title:'周期类型',
             key:'period',
@@ -102,7 +102,7 @@ class AuxiliaryMaterial extends Component{
     }
     lineChange(value){
         this.setState({
-            lineCode:value
+            lineCode:value,
         })
     }
     confirm(){

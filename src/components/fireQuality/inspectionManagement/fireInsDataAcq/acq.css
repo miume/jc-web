@@ -1,0 +1,14 @@
+.fire-ins-data-acq div{
+    margin-bottom: 10px;
+}
+.fireIns-add-check-group{
+    height:250px;
+    border:1px solid #E4E4E4;
+    width:30%;
+    border-radius: 4px;
+}
+.fireIns-add-display{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row ;
+}

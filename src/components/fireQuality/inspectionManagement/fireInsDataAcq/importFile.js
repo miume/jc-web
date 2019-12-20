@@ -1,8 +1,9 @@
 import React ,{Component}from 'react'
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal,Input,message} from 'antd'
+import {Modal,message} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
+import ImportModal from "./importModal";
 class ImportFile extends Component{
     constructor(props){
         super(props)
@@ -90,9 +91,7 @@ class ImportFile extends Component{
                         (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>检验项目名称 : </span><Input name={'name'} style={{width:'250px'}} placeholder={'请输入检验项目名称'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.name:undefined}/></div>
-                        <br/>
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>单位 : </span><Input name={'unit'} style={{width:'250px'}} placeholder={'请输入单位'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.unit:undefined}/></div>
+                       <ImportModal/>
                     </Modal>
                 </span>
         )
