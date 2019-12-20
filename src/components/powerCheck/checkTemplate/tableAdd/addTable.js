@@ -17,17 +17,17 @@ class AddTable extends React.Component {
             width: '20%'
         },{
             title:'设备名/点检项目',
-            key:'item',
-            dataIndex:'item',
+            key:'checkItem',
+            dataIndex:'checkItem',
             width: '20%'
         },{
             title:'点检内容',
-            key:'content',
-            dataIndex:'content',
+            key:'checkContent',
+            dataIndex:'checkContent',
             width: '20%'
         },{
             title:'点检结果',
-            key:'result',
+            key:'checkValue',
             dataIndex:'result',
             width: '20%',
             render: (text,record) => {

@@ -19,8 +19,8 @@ class CheckItemTable extends React.Component {
             width: '10%'
         },{
             title:'点检站点',
-            key:'name',
-            dataIndex:'name',
+            key:'siteName',
+            dataIndex:'siteName',
             width: '10%'
         },{
             title:'地点',
@@ -29,18 +29,18 @@ class CheckItemTable extends React.Component {
             width: '10%'
         },{
             title:'设备名/点检项目',
-            key:'item',
-            dataIndex:'item',
+            key:'checkItem',
+            dataIndex:'checkItem',
             width: '20%'
         },{
             title:'点检内容',
-            key:'content',
-            dataIndex:'content',
+            key:'checkContent',
+            dataIndex:'checkContent',
             width: '15%'
         },{
             title:'输入类型',
-            key:'type',
-            dataIndex:'type',
+            key:'dateType',
+            dataIndex:'dateType',
             width: '10%',
             render: (text) => {
                 return text ? '输入' : '勾选';

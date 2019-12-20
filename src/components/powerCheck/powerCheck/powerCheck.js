@@ -10,12 +10,14 @@ import PowerCheckTable from "./powerCheckTable";
 const data = [{
     index: 1,
     code: 1,
-    name: '点检站点',
-    place: '地点',
-    people: '管理员',
-    content: '外壳是否完整',
-    effectiveTime: '2019-10-10',
-    frequency: '1次/天'
+    modelName: '点检名称',
+    siteName: '地点1',
+    siteCode: 1,
+    operator: '管理员',
+    class: '班次1',
+    checkDate: '2019-10-10',
+    note: '1次/天',
+    effectiveDate: '2019-11-11'
 }];
 
 class PowerCheck extends React.Component {

@@ -3,26 +3,26 @@ import NewButton from "../../../BlockQuote/newButton";
 import {DatePicker, Input, Modal, Select} from "antd";
 import CancleButton from "../../../BlockQuote/cancleButton";
 import SaveButton from "../../../BlockQuote/saveButton";
-import moment from "../../../technologyCenter/processParameters/add/addModal";
+import moment from "moment";
 import AddTable from "./addTable";
 const {Option} = Select;
 
 const data = [{
     index: 1,
     code: 1,
-    content: '外壳是否完整',
-    type: 0,
+    checkContent: '外壳是否完整',
+    dataType: 0,
     frequency: '1次/天'
 },{
     index: 2,
     code: 2,
-    content: '正常',
-    type: 0,
+    checkContent: '正常',
+    dataType: 1,
     frequency: '1次/天'
 },{
     index: 3,
     code: 3,
-    content: '未开机',
+    checkContent: '未开机',
     type: 1,
     frequency: '1次/天'
 }];
@@ -48,7 +48,7 @@ class AddModal extends React.Component {
     }
 
     render() {
-        let {visible,tableData} = this.state, {title,disabled} = this.props;
+        let {visible,tableData,modelName,frequency,siteName,batchNumber,effectiveDate} = this.state, {title,disabled} = this.props;
         return (
             <span>
                 { this.renderButton(title) }
@@ -62,18 +62,18 @@ class AddModal extends React.Component {
                     <div className='check-template-add'>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>模版名称：</div>
-                            <Input name={'processNum'} placeholder={'请输入模版名称'} onChange={this.headChange}
+                            <Input name={'modelName'} value={modelName} placeholder={'请输入模版名称'} onChange={this.inputChange}
                                    style={{width: 150}}/>
                         </div>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>点检站点：</div>
-                            <Select name={'processCode'} disabled={disabled} onChange={this.processChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                            <Select name={'siteName'} value={siteName} disabled={disabled} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
                                 <Option value={1}>点检站点</Option>
                             </Select>
                         </div>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>编号：</div>
-                            <Input name={'processNum'} placeholder={'请输入编号'} onChange={this.headChange}
+                            <Input name={'batchNumber'} value={batchNumber} placeholder={'请输入编号'} onChange={this.inputChange}
                                    style={{width: 150}}/>
                         </div>
                     </div>
@@ -81,12 +81,12 @@ class AddModal extends React.Component {
                     <div className='check-template-add'>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>点检频率：</div>
-                            <Input name={'processNum'} placeholder={'请输入点检频率'} onChange={this.headChange}
+                            <Input name={'frequency'} value={frequency} placeholder={'请输入点检频率'} onChange={this.inputChange}
                                    style={{width: 150}}/>
                         </div>
                         <div className='check-template-add'>
                             <div className='check-template-add-div'>生效日期：</div>
-                            <DatePicker name={'effectiveDate'} placeholder={'请选择生效日期'} onChange={this.dateChange}
+                            <DatePicker name={'effectiveDate'} value={effectiveDate ? moment(effectiveDate) : null} placeholder={'请选择生效日期'} onChange={this.dateChange}
                                         showTime format="YYYY-MM-DD HH:mm:ss" style={{width: 200}}/>
                         </div>
                         <div></div>
@@ -110,13 +110,12 @@ class AddModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {name,place,item,content,type,frequency,code} = record;
+            let {siteName,modelName,frequency,batchNumber,effectiveDate,code} = record;
             this.setState({
-                name,
-                place,
-                item,
-                content,
-                type,
+                siteName,
+                modelName,
+                batchNumber,
+                effectiveDate,
                 frequency,
                 code
             })
@@ -129,13 +128,13 @@ class AddModal extends React.Component {
     /**监控生效日期的变化*/
     dateChange(date,dateString) {
         this.setState({
-            date: dateString
+            effectiveDate: dateString
         })
     }
 
     selectChange(value) {
         this.setState({
-            type: value
+            siteName: value
         })
     }
 
@@ -151,14 +150,17 @@ class AddModal extends React.Component {
      * type不存在 表示 更新数据
      * */
     addItem(record,type) {
-        let {tableData} = this.state;
+        let {tableData} = this.state,index = record['index'];
+        console.log('type=',type)
         if(type) {
             record['index'] = tableData.length + 1;
             tableData.push(record);
-            this.setState({
-                tableData
-            })
+        } else {
+            tableData[index-1] = record;
         }
+        this.setState({
+            tableData
+        })
     }
 
     /**表格删除一条数据*/

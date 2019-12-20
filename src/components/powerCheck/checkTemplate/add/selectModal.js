@@ -40,13 +40,13 @@ class SelectModal extends React.Component {
             width: '10%'
         },{
             title:'点检内容',
-            key:'content',
-            dataIndex:'content',
+            key:'checkContent',
+            dataIndex:'checkContent',
             width: '30%'
         },{
             title:'输入类型',
-            key:'type',
-            dataIndex:'type',
+            key:'dataType',
+            dataIndex:'dataType',
             width: '30%',
             render: (text) => {
                 return text ? '输入' : '勾选';
@@ -66,7 +66,7 @@ class SelectModal extends React.Component {
     }
 
     render() {
-        let {visible,selectedRowKeys,place,item} = this.state, {title,data} = this.props, disabled = title !== '新增' ? true : false,
+        let {visible,selectedRowKeys,place,checkItem} = this.state, {title,data} = this.props, disabled = title !== '新增' ? true : false,
             rowSelection = {
                 type: 'radio',
                 selectedRowKeys,
@@ -89,9 +89,9 @@ class SelectModal extends React.Component {
                             }
                         </Select>
                         <div className={'check-template-add-item'}>设备名/点检项目：</div>
-                        <Select disabled={disabled} value={item} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
+                        <Select disabled={disabled} value={checkItem} onChange={this.selectChange} style={{width: 150}} placeholder={'请选择点检站点'}>
                             {
-                                itemData ? itemData.map(e => <Option key={e.code} name={'item'} value={e.code}>{e.item}</Option>) : null
+                                itemData ? itemData.map(e => <Option key={e.code} name={'checkItem'} value={e.code}>{e.item}</Option>) : null
                             }
                         </Select>
                     </div>
@@ -117,10 +117,10 @@ class SelectModal extends React.Component {
     handleClick() {
         let {record} = this.props;
         if(record) {
-            let {place,item,index} = record;
+            let {place,checkItem,index} = record;
             this.setState({
                 place,
-                item,
+                checkItem,
                 index
             })
         }
@@ -163,16 +163,17 @@ class SelectModal extends React.Component {
 
     /**处理保存数据*/
     saveDataProcessing() {
-        let {item,place,selectedRows,index} = this.state;
-        if(item && place && selectedRows.length) {
-            let {content,type,frequency} = selectedRows, params = {
-                index,
-                item,
-                place,
-                content,
-                type,
-                frequency
-            };
+        let {checkItem,place,selectedRows,index} = this.state;
+        if(checkItem && place && selectedRows.length) {
+            let {checkContent,dataType,frequency} = selectedRows[0],
+                params = {
+                    index,
+                    checkItem,
+                    place,
+                    checkContent,
+                    dataType,
+                    frequency
+                };
             return params;
         } else {
             message.info('信息不完整！');
