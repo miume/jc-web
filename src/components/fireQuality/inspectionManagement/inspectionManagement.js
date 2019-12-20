@@ -28,8 +28,8 @@ class InspectionManagement extends Component {
         super(props)
         this.click=this.click.bind(this)
     }
-    click(e){
-        let path=e.target.id
+    click(e) {
+        let path = e.currentTarget.id
         this.props.history.push({pathname:path})
     }
     render(){
