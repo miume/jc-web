@@ -1,8 +1,7 @@
 import React,{Component} from 'react'
 import NewButton from '../../../BlockQuote/newButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
-import {Modal,Select,Row,Col,message} from 'antd'
-import AddModal from './addModal'
+import {Modal,Select,Row,Col,message,Input} from 'antd'
 import axios from 'axios'
 const {Option}=Select
 class MaterialTypePLCMeterComAdd extends Component{
@@ -29,12 +28,7 @@ class MaterialTypePLCMeterComAdd extends Component{
         this.getPlc=this.getPlc.bind(this);
         this.getMaterial=this.getMaterial.bind(this);
     }
-    componentDidMount(){
-        this.getLine()
-        this.getMaterial()
-        this.getPlc()
-        this.getProcess()
-      }
+
       componentWillUnmount() {
         this.setState = () => {
           return ;
@@ -108,6 +102,10 @@ class MaterialTypePLCMeterComAdd extends Component{
         this.setState({
             visible:true
         })
+        this.getLine()
+        this.getMaterial()
+        this.getPlc()
+        this.getProcess()
     }
     handleAdd(){
         let {lineCode,plcCode,materialCode,processCode}=this.state
@@ -158,7 +156,6 @@ class MaterialTypePLCMeterComAdd extends Component{
          })
     }
     render(){
-        
         return(
             <span>
                 {this.props.editflag?<span className='blue' onClick={this.showModal}>编辑</span>
@@ -191,7 +188,7 @@ class MaterialTypePLCMeterComAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col className='imgRequire'>所属工序 : </Col>
                         <Col span={18}>
-                            <Select placeholder='请选择所属工序'  value={this.state.processCode} style={{width:307.5}} onChange={this.selectChange}>
+                            <Select placeholder='请选择所属工序'  defaultValue={this.props.editflag?this.props.record.processCode:undefined} style={{width:307.5}} onChange={this.selectChange}>
                                 {
                                     this.state.processData?this.state.processData.map(data=>{
                                         return(
@@ -205,7 +202,7 @@ class MaterialTypePLCMeterComAdd extends Component{
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
                         <Col  className='imgRequire'>物料种类 : </Col>
                         <Col span={18}>
-                            <Select placeholder='请选择物料种类' value={this.state.materialCode} style={{width:307.5}} onChange={this.selectChange}>
+                            <Select placeholder='请选择物料种类' defaultValue={this.props.editflag?this.props.record.materialCode:undefined}  style={{width:307.5}} onChange={this.selectChange}>
                                 {
                                     this.state.materialData?this.state.materialData.map(data=>{
                                         return(
@@ -214,6 +211,12 @@ class MaterialTypePLCMeterComAdd extends Component{
                                     }):null
                                 }
                             </Select>
+                        </Col>
+                    </Row>
+                    <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
+                        <Col className='imgRequire'>DCS属性 : </Col>
+                        <Col span={18}>
+                            <Input placeholder='请输入物料属性' defaultValue={this.props.editflag?this.props.record.lineCode:undefined}  style={{width:307.5}} onChange={this.inputChange}/>
                         </Col>
                     </Row>
                     <Row style={{margin:'10px 0'}} type="flex" justify="space-between" align="middle" >
