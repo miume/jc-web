@@ -460,7 +460,6 @@ class CostProcessAdd extends Component {
                        }
                     }
                 }
-               console.log(tagTableData)
                 this.setState({
                     tagTableData:tagTableData
                 })
