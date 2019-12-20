@@ -57,7 +57,7 @@ class AgingProcess extends Component{//陈化工序
             width:'15%',
             render:(text,record)=>{
                 return(
-                    <Input defaultValue={record.coPotency} name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
+                    <Input value={record.coPotency} name={`${record.index}-${'coPotency'}`} onChange={this.inputChange}/>
                 )
             }
         },{
