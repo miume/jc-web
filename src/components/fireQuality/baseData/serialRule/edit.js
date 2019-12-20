@@ -33,7 +33,7 @@ class Edit extends Component{
             width:'20%',
             render:(text,record)=>{
                 return (
-                    <Radio defaultChecked={record.enable} onChange={this.radioChange}/>
+                    <Radio checked={record.enable}  onChange={()=>this.radioChange(record)}/>
                 )
             }
         },{
@@ -102,7 +102,8 @@ class Edit extends Component{
        dataSource.push({
            index:dataSource.length+1,
            value:'',
-           description:''
+           description:'',
+           enable:false
        })
        this.setState({
            dataSource:dataSource
@@ -110,8 +111,20 @@ class Edit extends Component{
 
    }
 
-    radioChange(enable){
-        console.log(enable)
+    radioChange(record){
+        record.enable=true
+         let {dataSource}=this.state
+        for(let i=0;i<dataSource.length;i++){
+            if(dataSource[i].index===record.index){
+                dataSource[i]['enable']=true
+            }
+            else{
+                dataSource[i]['enable']=false
+            }
+        }
+        this.setState({
+            dataSource:dataSource
+        })
     }
     handleCreate(){
        let {dataSource}=this.state
@@ -161,7 +174,7 @@ class Edit extends Component{
                       <Table rowKey={record => record.index}  columns={this.columns} scroll={{y:'250px'}}
                                dataSource={this.state.dataSource}  pagination={false} size="small" bordered
                         />
-                      <div className={'blue'} onClick={this.handleAdd} style={{marginTop:'10px'}}><i className={'fa fa-plus'}></i>&nbsp;&nbsp;新增</div>
+                      <span className={'blue'} onClick={this.handleAdd} style={{marginTop:'10px'}}><i className={'fa fa-plus'}></i>&nbsp;&nbsp;新增</span>
                 </Modal>
             </span>
         )

@@ -5,6 +5,7 @@ import {Spin, Table, message} from "antd";
 import ExportFile from './exportFile'
 import ImportFile from './importFile'
 import axios from "axios";
+import NewSearchCell from "../../../BlockQuote/newSearchSell";
 
 class FireInsDataAcq extends Component{
     constructor(props){
@@ -28,12 +29,12 @@ class FireInsDataAcq extends Component{
         }]
         this.state={
             loading:false,
-
             dataSource:[]
         }
         this.back=this.back.bind(this);
         this.getTableData=this.getTableData.bind(this);
-
+        this.searchEvent=this.searchEvent.bind(this);
+        this.reset=this.reset.bind(this)
     }
     componentDidMount() {
         //this.getTableData()
@@ -49,7 +50,12 @@ class FireInsDataAcq extends Component{
             loading:true
         })
     }
+    searchEvent(searchContent){
 
+    }
+    reset(){
+
+    }
     back(){
         this.props.history.push({pathname:"/inspectionManagement"})
     }
@@ -62,8 +68,10 @@ class FireInsDataAcq extends Component{
             <div>
                 <BlockQuote name={'数据采集'} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
-                    <ImportFile url={this.url} getTableData={this.getTableData} />
                     <ExportFile url={this.url} getTableData={this.getTableData}/>
+                    <ImportFile url={this.url} getTableData={this.getTableData} />
+
+                    <NewSearchCell reset={this.reset} searchEvent={this.searchEvent}/>
                     <Table  pagination={false} columns={this.columns}
                            dataSource={this.state.dataSource} rowKey={record => record.index} bordered size={'small'} />
                 </Spin>

@@ -10,33 +10,34 @@ class MainMaterial extends Component{
             time:undefined,
             periodCode:undefined,
             flag:true,
-            lineCode:undefined
+            lineCode:undefined,
+            data:[]
         }
         this.columns=[{
             title:'核算对象',
-            key:'elementType',
-            dataIndex:'elementType',
-            render:(text,record)=>{
-                if(record.ElementCode===0){
-                    return 'Ni'
-                }
-                if(record.ElementCode===1){
-                    return 'Co'
-                }
-                if(record.ElementCode===2){
-                    return 'Mn'
-                }
-                if(record.ElementCode===3){
-                    return '氨'
-                }
-                if(record.ElementCode===4){
-                    return '碱'
-                }
-            }
+            key:'elementName',
+            dataIndex:'elementName',
         },{
             title:'名称',
             key:'name',
             dataIndex:'name',
+            render:(text,record)=>{
+                if(record.elementType===0){
+                    return 'Ni'
+                }
+                if(record.elementType===1){
+                    return 'Co'
+                }
+                if(record.elementType===2){
+                    return 'Mn'
+                }
+                if(record.elementType===3){
+                    return '氨'
+                }
+                if(record.elementType===4){
+                    return '碱'
+                }
+            }
         },{
             title:'周期类型',
             key:'period',
@@ -121,6 +122,12 @@ class MainMaterial extends Component{
                 startTime:time
             }
         }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    data:res
+                })
+            }
             this.setState({
                 loading:false
             })
@@ -141,7 +148,8 @@ class MainMaterial extends Component{
                     />
                     <div className='clear'></div> 
                     <Table
-                        rowKey={record=>record.id}
+                        dataSource={this.state.data}
+                        rowKey={record=>record.code}
                         columns={this.columns} 
                         size='small'
                         bordered/>
