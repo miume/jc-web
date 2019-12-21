@@ -15,7 +15,7 @@ class SelectLine extends Component{
                         return(
                             <span key={data.line.code}>
                                 <span >{data.line.name} : </span>
-                                <Select  onChange={this.props.handleSelect} defaultValue={this.props.headerData[index].product?this.props.headerData[index].product:undefined} placeholder='请选择产线' style={{width:'120px',marginRight:'10px',}}>
+                                <Select  onChange={this.props.handleSelect} defaultValue={this.props.headerData[index].product?this.props.headerData[index].product:undefined} placeholder='产品型号' style={{width:'120px',marginRight:'10px',}}>
                                     {
                                         data.products.map((pro)=>{
                                             return(

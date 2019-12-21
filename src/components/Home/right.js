@@ -147,7 +147,7 @@ import FireInsRegister from "../fireQuality/inspectionManagement/fireInsRegister
 import FireInsSamRec from '../fireQuality/inspectionManagement/fireInsSamRec/fireInsSamRec'
 import FireInsDataAcq from '../fireQuality/inspectionManagement/fireInsDataAcq/fireInsDataAcq'
 import FireInsDataCol from '../fireQuality/inspectionManagement/fireInsDataCol/fireInsDataCol'
-
+import BaseConfigure from '../costAccounting/precursorCostBasisData/other/other'
 class Right extends React.Component {
     render() {
         const data = [{
@@ -647,6 +647,9 @@ class Right extends React.Component {
             }, {
                 path: '/fireInsDataCol',
                 component: FireInsDataCol
+            },{
+                path:'/baseConfigure',
+                component:BaseConfigure
             }
         ];
         return (

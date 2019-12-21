@@ -99,7 +99,12 @@ class ShowInfo extends Component{
             },
             data:data
         }).then(data=>{
-
+            if(data.data.code===0){
+                message.info('新增成功!')
+            }
+            else{
+                message.error('操作失败，请联系管理员!')
+            }
         }).catch(()=>{
 
         })
@@ -112,7 +117,7 @@ class ShowInfo extends Component{
         })
     }
     handleCancel(){
-
+        this.getCurrent()
     }
     edit(){
         this.setState({

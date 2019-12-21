@@ -821,6 +821,10 @@ class Home extends Component {
                 fireMageOperation:`${server}/jc/common/fireMageOperation`,
             /**火法质量检验项目*/
                 fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
+            /**批次基础数据*/
+            batchConfig:`${server}/jc/common/batchConfig`,
+
+
     }
 
         localStorage.setItem('status',JSON.stringify(status));

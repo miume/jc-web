@@ -1,9 +1,7 @@
 import React,{Component} from 'react'
 import {Table,Input} from 'antd'
-import ReadRecipe from '../readRecipe'
 import SelectLine from '../selectProductline'
 import NewButton from '../../../../BlockQuote/newButton'
-import axios from 'axios'
 class DryProcess extends Component{//烘干工序
     constructor(props){
         super(props);
