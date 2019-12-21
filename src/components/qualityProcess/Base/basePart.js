@@ -7,7 +7,7 @@ class BasePart extends React.Component{
            <div className='nav-card dataPart' id={this.props.path} onClick={this.props.click}>
               <div className='nav-card-child' style={{border:'1px solid #1890ff'}} >
                  <div style={{width:'100%',height:'80%',backgroundColor:'#1890ff',textAlign:'center'}}>
-                       <p style={{padding:'40px'}} id={this.props.path}>
+                       <p style={{padding:'40px'}}>
                           <i className={this.props.className} style={{color:'white'}} id={this.props.path}></i>
                        </p>
                  </div>

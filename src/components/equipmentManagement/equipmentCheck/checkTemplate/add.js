@@ -27,24 +27,6 @@ class AddBut extends React.Component{
     remove = (k) =>{
         const {form} = this.props;
         const keys = form.getFieldValue('keys');
-        // const fileList = `fileList${k}`;
-        // if(this.state[fileList][0] !== undefined){
-        //     var list = []
-        //     list.push(this.state[fileList][0].response.data)
-        //     // if(this.state[fileList] != false){
-        //     //     axios({
-        //     //         url: `${this.url.instructor.deletePic}`,
-        //     //         method:'delete',
-        //     //         headers:{
-        //     //             'Authorization': this.url.Authorization
-        //     //         },
-        //     //         data:list,
-        //     //         type:'json'
-        //     //     }).then((data)=>{
-        //     //         message.info(data.data.message);
-        //     //     })
-        //     // }
-        // }
         if(keys.length === 1){
             return;
         }
@@ -68,19 +50,15 @@ class AddBut extends React.Component{
         })
     }
     onChangeTime = (date) =>{
-        // console.log(date.target.value)
-        // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
         this.setState({
             date:date.target.value
         })
-        // console.log(moment(date).format('YYYY-MM-DD HH:mm:ss'))
     }
     showModal = () => {
         this.setState({ visible: true });
     };
 
     handleChange = (fileList,k) =>{
-        // console.log(k.fileList)
         if(k.fileList.length === 0){
             this.setState({
                 [fileList]:k.fileList
@@ -101,7 +79,6 @@ class AddBut extends React.Component{
     }
 
     handleCancel = () => {
-    // const form = this.formRef.props.form;
     const keys = this.props.form.getFieldValue('keys');
     for(var i =0;i<keys.length;i++){
         let file = `fileList${keys[i]}`
@@ -111,8 +88,6 @@ class AddBut extends React.Component{
     };
     this.props.form.resetFields();
     this.setState({ visible: false,date:"", });
-    // this.props.form.resetFields();
-    // form.resetFields();
     };
     handleCreate = (e) => {
         e.preventDefault();
@@ -120,7 +95,6 @@ class AddBut extends React.Component{
             if(err){
                 return ;
             }
-            // console.log(values)
             let data = {};
             let deviceSpotcheckModelsDetails = [];
             let deviceSpotcheckModelsHead = {};
@@ -224,12 +198,6 @@ class AddBut extends React.Component{
                         <Input placeholder='请输入点检周期' style={{width:'150px'}}/>
                     )}
                 </Form.Item>
-
-                {/* <Form.Item style={{marginRight: 4 }}>
-                    {
-                        <Upload />
-                    }
-                </Form.Item> */}
 
                 <Form.Item style={{marginRight: 4 }}>
                     {

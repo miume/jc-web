@@ -1,6 +1,6 @@
 import React ,{Component}from 'react'
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal,Input,message} from 'antd'
+import {Modal, Input, message, Upload, Button, Icon} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
 class ExportFile extends Component{
@@ -87,12 +87,20 @@ class ExportFile extends Component{
                     width={'400px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
-                        (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
+                        (<NewButton key={'ok'} name={'导出'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>检验项目名称 : </span><Input name={'name'} style={{width:'250px'}} placeholder={'请输入检验项目名称'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.name:undefined}/></div>
-                        <br/>
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>单位 : </span><Input name={'unit'} style={{width:'250px'}} placeholder={'请输入单位'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.unit:undefined}/></div>
+                    <div style={{height: 50}}>
+                            <span>导出位置：</span>
+                            <Input style={{width: 150,marginRight: 10}}/>
+                            <Upload
+                                onChange={this.handleChange}
+                                onRemove={this.onRemove}
+                                beforeUpload={this.beforeUpload}
+                                directory>
+                                <Button>选择文件夹</Button>
+                            </Upload>
+                        </div>
                     </Modal>
                 </span>
         )
