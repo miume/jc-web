@@ -23,13 +23,11 @@ class PictureUp extends React.Component{
         })
     }
 
-    
+
 
     onRemove = (e) =>{
-        console.log(e.response.data)
         var list = []
         list.push(e.response.data)
-        // console.log(list)
         axios({
             url: `${this.url.deviceSpot.cancelLoad}`,
             method:'get',
@@ -49,7 +47,6 @@ class PictureUp extends React.Component{
             message.error("只能上传格式为jpg/jepg/png/bmp/gif的图片");
         }
         const isLt1M = file.size/1024/1024<10;
-        // console.log(isLt1M)
         if(!isLt1M){
             message.error("图片大小应小于10M");
         }
