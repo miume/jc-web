@@ -376,10 +376,13 @@ class CostProcessAdd extends Component {
             }
         }
         this.setState({
-            tagTableData:tagTableData
+            tagTableData:tagTableData,
         })
     }
     weightAlterData(tabKey,item){//获取体积，重量修改表格数据
+        this.setState({
+            loading:true
+        })
         let {tagTableData}=this.state
         axios({
             url:this.url.precursorGoodIn.getVolume,
@@ -418,9 +421,22 @@ class CostProcessAdd extends Component {
                     tagTableData:tagTableData
                 })
             }
-        })   
+            this.setState({
+                loading:false
+            })
+        }) .catch(
+            ()=>{
+                message.error('操作失败，请联系管理员！')
+                this.setState({
+                    loading:false
+                })
+            }
+        )
     }
-    getLastPotency(tabKey){//获取上期浓度修改表格数据
+    getLastPotency(tabKey){//获取上期浓度,修改表格数据
+        this.setState({
+            loading:true
+        })
         let {tagTableData}=this.state
         axios({
             url: `${this.url.precursorGoodIn.getLastPotencyByProcessId}`,
@@ -464,6 +480,9 @@ class CostProcessAdd extends Component {
                     tagTableData:tagTableData
                 })
             }
+            this.setState({
+                loading:false
+            })
         })
     }
     save(f) {
@@ -488,11 +507,11 @@ class CostProcessAdd extends Component {
         }).then(data => {
             message.info(data.data.data)
             if(data.data.code===0){
-                this.setState({
-                    loading:false
-                })
                 this.props.history.push({pathname:'/processStatistics'})
             }
+            this.setState({
+                loading:false
+            })
 
         }).catch(()=>{
             message.info('新增失败!')

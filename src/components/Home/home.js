@@ -465,7 +465,8 @@ class Home extends Component {
                 preview:`${server}/jc/common/productionBatchInfo/preview`,
                 getDetail:`${server}/jc/common/productionBatchInfo/getDetail`,
                 getInstrument:`${server}/jc/common/productionBatchInfo/getInstrument`,
-                getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`
+                getInstrumentChart:`${server}/jc/common/productionBatchInfo/getInstrumentChart`,
+                getBatchNumber:`${server}/jc/common/productionBatchInfo/getBatchNumber`
             },
 
             /**批次追溯*/

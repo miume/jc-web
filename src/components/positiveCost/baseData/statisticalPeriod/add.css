@@ -15,13 +15,13 @@
 
 .fontInfo{
     font-family: 'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC';
-    font-weight: 650;
+    font-weight: 800;
     font-style: normal;
-    margin-left:100px 
+    margin-left:50px
 }
 .fontAttribute{
-    margin:20px;
-    text-align:center
+    width:950px;
+    margin:3% auto;
 }
 .fontAttribute span{
     display: inline-block;

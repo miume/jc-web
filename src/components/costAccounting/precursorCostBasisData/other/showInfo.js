@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Button,Input,Popconfirm,message} from 'antd'
+import {Button,Input,Popconfirm,message,Spin} from 'antd'
 // import '../statisticalPeriod/add.css'
 import SaveButton from '../../../BlockQuote/saveButton'
 import CancleButton from '../../../BlockQuote/cancleButton'
@@ -10,7 +10,8 @@ class ShowInfo extends Component{
         this.state={
             flag:false,//用来判断是否为编辑界面
             addFlag:true ,//用来判断调新增还是编辑接口
-            code:undefined
+            code:undefined,
+            loading:false
         }
         this.inputChange=this.inputChange.bind(this);
         this.getCurrent=this.getCurrent.bind(this);
@@ -27,6 +28,9 @@ class ShowInfo extends Component{
         }
     }
     getCurrent(){
+        this.setState({
+            loading:true
+        })
         axios({
             url:`${this.url.batchConfig}/getCurrent`,
             method:'get',
@@ -52,6 +56,9 @@ class ShowInfo extends Component{
                     addFlag:true
                 })
             }
+            this.setState({
+                loading:false
+            })
         })
     }
     handleSave(){
@@ -72,7 +79,7 @@ class ShowInfo extends Component{
             }
             data['code']=addFlag?'':code
         this.setState({
-            flag:true
+            flag:false
         })
         axios({
             url:this.state.addFlag?`${this.url.batchConfig}/add`:`${this.url.batchConfig}/update`,
@@ -83,11 +90,13 @@ class ShowInfo extends Component{
             data:data
         }).then(data=>{
             if(data.data.code===0){
-                message.info('新增成功!')
+                message.info('操作成功!')
+                this.getCurrent()
             }
             else{
                 message.error('操作失败，请联系管理员!')
             }
+
         }).catch(()=>{
 
         })
@@ -101,47 +110,52 @@ class ShowInfo extends Component{
     }
     handleCancel(){
         this.getCurrent()
-    }
-    edit(){
         this.setState({
             flag:false
         })
     }
+    edit(){
+        this.setState({
+            flag:true
+        })
+    }
     render(){
         this.url=JSON.parse(localStorage.getItem('url'))
-        let {flag,batchNum,hcValue,xdValue,hgValue,bzValue}=this.state
+        let {flag,batchNum,hcValue,xdValue,hgValue,bzValue,loading}=this.state
         return(
-            <div style={{marginTop:'8%'}}>
+            <Spin spinning={loading} wrapperClassName={'rightDiv-Content'}>
                 <div className='fontAttribute'>
-                    <span>配液单槽批数 :</span>
-                    <Input placeholder='请输入' name='batchNum' value={batchNum}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
-                    <span >合成体积计算基数 :</span>
-                    <Input placeholder='请输入' name='hcValue' value={hcValue}  style={{width:'250px'}} onChange={this.inputChange} disabled={flag}/>
-                </div>      
-                <div className='fontAttribute'>
-                    <span >陈化洗涤计算基数 :</span>
-                    <Input placeholder='请输入' name='xdValue' value={xdValue}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={flag}/>
-                    <span >烘干计算基数 :</span>
-                    <Input placeholder='请输入' name='hgValue' value={hgValue}   style={{width:'250px'}} onChange={this.inputChange} disabled={flag}/>
-                </div>
-                <div style={{marginLeft:'18.4%'}}>
-                    <span style={{paddingRight:'10px',textAlign:'right'}}>包装计算基数 :</span>
-                    <Input placeholder='请输入' name='bzValue' value={bzValue} style={{width:'250px'}} onChange={this.inputChange} disabled={flag}/>
-                </div>
-               {!flag?<div style={{textAlign:'center',marginTop:'50px'}}>
-                    <SaveButton handleSave={this.handleSave}/>&nbsp;&nbsp;&nbsp;
-                    <Popconfirm okText='确定' cancelText='再想想' title='你确定取消这个任务吗？' onConfirm={this.handleCancel}>
-                        <Button className='white-button'>
-                            <i className="fa fa-times" style={{fontWeight:'bolder'}}></i>&nbsp;
-                            取消 
-                        </Button>
-                    </Popconfirm>
-                </div>
-                :<div style={{textAlign:'center',marginTop:'50px'}}>
-                    <Button type='primary' onClick={this.edit}>修改</Button>
-                </div>
-                }
-            </div>
+                    <div className='fontAttribute'>
+                        <span>配液单槽批数 :</span>
+                        <Input placeholder='请输入' name='batchNum' value={batchNum}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
+                        <span >合成体积计算基数 :</span>
+                        <Input placeholder='请输入' name='hcValue' value={hcValue}  style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
+                    </div>
+                    <div className='fontAttribute'>
+                        <span >陈化洗涤计算基数 :</span>
+                        <Input placeholder='请输入' name='xdValue' value={xdValue}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
+                        <span >烘干计算基数 :</span>
+                        <Input placeholder='请输入' name='hgValue' value={hgValue}   style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
+                    </div>
+                    <div className='fontAttribute'>
+                        <span >包装计算基数 :</span>
+                        <Input placeholder='请输入' name='bzValue' value={bzValue} style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
+                    </div>
+                    </div>
+                    {flag?<div style={{textAlign:'center',marginTop:'50px'}}>
+                            <SaveButton handleSave={this.handleSave}/>&nbsp;&nbsp;&nbsp;
+                            <Popconfirm okText='确定' cancelText='再想想' title='你确定取消这个任务吗？' onConfirm={this.handleCancel}>
+                                <Button className='white-button'>
+                                    <i className="fa fa-times" style={{fontWeight:'bolder'}}></i>&nbsp;
+                                    取消
+                                </Button>
+                            </Popconfirm>
+                        </div>
+                        :<div style={{textAlign:'center',marginTop:'50px'}}>
+                            <Button type='primary' onClick={this.edit}>修改</Button>
+                        </div>
+                    }
+            </Spin>
         );
     }
 }

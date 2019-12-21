@@ -94,6 +94,23 @@ class Edit extends React.Component{
                     modifyTime:res.productionBatchInfo.modifyTime,
                     endTime:res.productionBatchInfo.endTime
                 })
+                axios({
+                    url:this.props.url.productionBatchInfo.getBatchNumber,
+                    method:'get',
+                    headers:{
+                        'Authorization':this.props.url.Authorization
+                    },
+                    params:{
+                        process:res.productionBatchInfo.process
+                    }
+                }).then(data=>{
+                    let res=data.data.data
+                    if(res){
+                        this.setState({
+                            jumpBatch:res
+                        })
+                    }
+                })
             }
         })
     }
@@ -180,7 +197,7 @@ class Edit extends React.Component{
     render(){
         let {serialNum,year,month,yearVal,monthVal,startTime,serialNumVal,processVal,productLineVal,
             materialTypeVal,slotNumVal,slotVal,timePointVal,productTypeVal,productNumVal,
-            setPeople,setTime,modifyPeople,modifyTime,endTime}=this.state
+            setPeople,setTime,modifyPeople,modifyTime,endTime,jumpBatch}=this.state
         return(
             <span>
                 <span className="blue" onClick={this.showModal}>编辑</span>
@@ -273,11 +290,15 @@ class Edit extends React.Component{
                         <span className='batchInfo-edit-span'>槽号 : </span>
                         <Select placeholder='槽号' style={{width:'170px'}} value={slotNumVal} disabled></Select>
                         <span className='batchInfo-edit-span'>时间点 : </span>
-                        <TimePicker placeholder='时间点' style={{width:'170px'}} value={moment(timePointVal)} disabled/>
+                        <TimePicker placeholder='时间点'  style={{width:'170px'}} value={moment(timePointVal,"HH:mm:ss")} disabled/>
                     </div>
                     <div className="batchAll ">
-                    <span className='batchInfo-edit-span'>槽次 : </span>
+                        <span className='batchInfo-edit-span'>槽次 : </span>
                         <Select placeholder='槽次' style={{width:'170px'}} value={slotVal} disabled></Select>
+                        <span className={processVal==='JH'||processVal==='JQ'?'hide':''}>
+                            <span className='batchInfo-edit-span'>跳批数 : </span>
+                            <Input placeholder='跳批数' style={{width:'170px'}} value={jumpBatch} disabled></Input>
+                        </span>
                     </div>
                 </Modal>
             </span>

@@ -35,7 +35,6 @@ class BaseData extends React.Component{
    }
    getData(){
         const menus = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path=== this.current.path)[0]:[];
-        console.log(menus,JSON.parse(localStorage.getItem('menus')),localStorage.getItem('current'))
         var data = menus&&menus.menuList?
             menus.menuList.sort((a,b)=>a.menuId-b.menuId).map((m,index)=>{
                 return ({
