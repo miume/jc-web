@@ -1,7 +1,6 @@
 import React from "react";
 import Blockquote from "../../BlockQuote/blockquote";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
-import NewButton from '../../BlockQuote/newButton'
 import axios from "axios";
 import { Table, message, Spin, Divider ,Popconfirm} from "antd";
 import SearchCell from '../../BlockQuote/search';
@@ -34,6 +33,7 @@ class BatchMessage extends React.Component {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
         };
         this.columns = [{
             title: '序号',
@@ -100,11 +100,14 @@ class BatchMessage extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Edit fetch={this.fetch}  code={record.code} url={this.url}/>
+                        <Edit fetch={this.fetch} statusFlag={record.statusFlag} code={record.code} url={this.url}/>
                         <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
-                        <span className='blue'>删除</span>
-                     </Popconfirm>
+                        {!record.statusFlag?
+                            <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                            :<span className='notClick' >删除</span>
+                        }
                     </span>
                 )
             }

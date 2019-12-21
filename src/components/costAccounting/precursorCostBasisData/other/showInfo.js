@@ -70,6 +70,10 @@ class ShowInfo extends Component{
                 hgValue:hgValue,
                 bzValue:bzValue,
             }
+            if(batchNum<=0||hcValue<=0||xdValue<=0||hgValue<=0||bzValue<=0){
+                message.error('值必须大于0!')
+                return
+            }
             for(let key in data){
                 if(data[key]===undefined){
                     console.log(key,data[key])
@@ -103,7 +107,15 @@ class ShowInfo extends Component{
     }
     inputChange(e){
         let value=e.target.value,
-            name=e.target.name
+            name=e.target.name;
+        if(typeof value === 'number') value = value.toString();
+        value =  value.replace(/[^\d\.]/g, "");  //只准输入数字和小数点
+        if(value[value.length-1] !== '.')
+            value = value === '' ? '' : parseFloat(value);  //将字符串转为浮点型
+        if(value !== '' && value < 1){
+            message.error('值必须大于1!')
+            return
+        }
         this.setState({
             [name]:value
         })
