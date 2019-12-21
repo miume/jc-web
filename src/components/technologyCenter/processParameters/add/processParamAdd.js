@@ -353,7 +353,7 @@ class ProcessParamAddModal extends React.Component {
     /**监控表头生效日期变化*/
     effectiveDateChange(date,dateString) {
         let {head} = this.state;
-        head['effectiveDate'] = dateString;
+        head['effectiveDate'] = dateString.length > 9 ? dateString + ' 00:00:00' : dateString;
         this.setState({
             head: head
         })
@@ -362,7 +362,7 @@ class ProcessParamAddModal extends React.Component {
     /**监控表头失效日期变化*/
     expiryDateChange(date,dateString) {
         let {head} = this.state;
-        head['expiryDate'] = dateString;
+        head['expiryDate'] = dateString.length > 9 ? dateString + ' 00:00:00' : dateString;;
         this.setState({
             head: head
         })
