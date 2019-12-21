@@ -183,7 +183,6 @@ class ProcessStatistics extends Component {
         //将给定日期转为毫秒，再与间隔天数（转为毫秒）相加
         let time = new Date(Date.parse(dateString) + 3600000 * 24 * length)
         let endDate = moment(time).format('YYYY-MM-DD')
-        console.log(dateString,endDate)
         this.setState({
             startDate: dateString,
             startTime: `${dateString} ${startSecondTime}`,

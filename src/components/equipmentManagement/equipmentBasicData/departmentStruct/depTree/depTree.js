@@ -101,7 +101,6 @@ class DepTree extends Component {
             if(saveData.parentCode < 1){
                 saveData.parentCode = null
             }
-            console.log(saveData)
             axios({
                 url: `${this.props.url.equipmentDept.dept}`,
                 method: 'post',

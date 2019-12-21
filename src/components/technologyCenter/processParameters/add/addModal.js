@@ -64,12 +64,12 @@ class AddModal extends React.Component{
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span'>生效日期：</span>
                         <DatePicker name={'effectiveDate'} value={head['effectiveDate'] ? moment(head['effectiveDate']) : null} placeholder={'请选择生效日期'} onChange={effectiveDateChange}
-                                    showTime format="YYYY-MM-DD HH:mm:ss" disabledDate={this.disabledEffectiveDate} style={{width: 200}}/>
+                                    format="YYYY-MM-DD" disabledDate={this.disabledEffectiveDate} style={{width: 200}}/>
                     </div>
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span'>失效日期：</span>
                         <DatePicker name={'expiryDate'} value={head['expiryDate'] ? moment(head['expiryDate']) : null} placeholder={'请选择失效日期'} onChange={expiryDateChange}
-                                    showTime format="YYYY-MM-DD HH:mm:ss" disabledDate={this.disabledExpiryDate} style={{width: 200}}/>
+                                    format="YYYY-MM-DD" disabledDate={this.disabledExpiryDate} style={{width: 200}}/>
                     </div>
                     <div className='process-parameters-add-div'>
                         <span className='process-parameters-add-div-span'>工序：</span>
