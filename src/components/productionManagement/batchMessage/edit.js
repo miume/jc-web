@@ -43,12 +43,15 @@ class Edit extends React.Component{
             modifyPeople:undefined,
             modifyTime:undefined,
             data:undefined,
-            endTime:null
+            endTime:null,
+            jumpBatch:undefined
         }
         this.getEditData=this.getEditData.bind(this);
         this.getData=this.getData.bind(this);
         this.selectChange=this.selectChange.bind(this);
         this.endDateChange=this.endDateChange.bind(this)
+        this.inputChange=this.inputChange.bind(this);
+        this.disabledDate=this.disabledDate.bind(this);
     }
     showModal = () =>{
         this.getEditData()
@@ -155,18 +158,21 @@ class Edit extends React.Component{
         })
     }
     handleCreate = ()=>{
-        let {data,yearVal,monthVal,serialNumVal,endTime}=this.state
+        let {data,yearVal,monthVal,serialNumVal,endTime,jumpBatch}=this.state
         data['year']=yearVal
         data['month']=monthVal
         data['serialNumVal']=serialNumVal
         data['endTime']=endTime
+        console.log(data)
+        let number=jumpBatch?jumpBatch:0,info=data,data1={info,number}
+        console.log(JSON.stringify(data1))
         axios({
             url:this.url.productionBatchInfo.updateOne,
             method:'post',
             headers:{
                 'Authorization':this.url.Authorization
             },
-            data:data
+            data:data1
         }).then(data=>{
             if(data.data.code===0){
                 message.info('操作成功!')
@@ -194,13 +200,26 @@ class Edit extends React.Component{
         endTime:timeString
     })
    }
+   inputChange(e){
+        let value=e.target.value
+        this.setState({
+            jumpBatch:value
+        })
+   }
+   /**结束时间在开始时间之后*/
+    disabledDate(current) {
+        let {startTime}=this.state
+        //小于给定时间不能选
+        return  current && current < moment(startTime).add(1,'d');
+    }
     render(){
         let {serialNum,year,month,yearVal,monthVal,startTime,serialNumVal,processVal,productLineVal,
             materialTypeVal,slotNumVal,slotVal,timePointVal,productTypeVal,productNumVal,
             setPeople,setTime,modifyPeople,modifyTime,endTime,jumpBatch}=this.state
         return(
             <span>
-                <span className="blue" onClick={this.showModal}>编辑</span>
+                {!this.props.statusFlag?<span className="blue" onClick={this.showModal}>编辑</span>
+                :<span className='notClick' >编辑</span>}
                 <Modal
                     visible={this.state.visible}
                     closable={false}
@@ -220,7 +239,7 @@ class Edit extends React.Component{
                                     style={{width:'170px'}} value={moment(startTime)} disabled/>
                         <span className='batchInfo-edit-span'>结束时间 :</span>
                         <DatePicker locale={locale} placeholder='结束时间' showTime={{ format: 'HH:mm:ss' }} format="YYYY-MM-DD HH:mm:ss"
-                                    style={{width:'170px'}}  value={endTime?moment(endTime):undefined} onChange={this.endDateChange}/>
+                                    style={{width:'170px'}} disabledDate={this.disabledDate} value={endTime?moment(endTime):undefined} onChange={this.endDateChange}/>
                     </div>
                     <div className="batchAll ">
                         <span className='batchInfo-edit-span'>批次生成时间 : </span>
@@ -297,7 +316,7 @@ class Edit extends React.Component{
                         <Select placeholder='槽次' style={{width:'170px'}} value={slotVal} disabled></Select>
                         <span className={processVal==='JH'||processVal==='JQ'?'hide':''}>
                             <span className='batchInfo-edit-span'>跳批数 : </span>
-                            <Input placeholder='跳批数' style={{width:'170px'}} value={jumpBatch} disabled></Input>
+                            <Input placeholder='跳批数' style={{width:'170px'}} value={jumpBatch} onChange={this.inputChange} />
                         </span>
                     </div>
                 </Modal>
