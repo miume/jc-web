@@ -156,13 +156,13 @@ class ShowInfo extends Component{
                     </div>
                     <div className='fontAttribute'>
                         <span >每排钵数 :</span>
-                        <Input placeholder='请输入' name='bowlNum' value={bowlNum}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
+                        <Input placeholder='请输入' name='bowlNum' value={bowlNum}  style={{width:'240px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
                         <span >二烧正压输送每罐重量 :</span>
                         <Input placeholder='请输入' name='secondSinteringWeight' value={secondSinteringWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
                     <div className='fontAttribute'>
                         <span >烧损系数 :</span>
-                        <Input placeholder='请输入' name='burningLossRate' value={burningLossRate}  style={{width:'250px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
+                        <Input placeholder='请输入' name='burningLossRate' value={burningLossRate}  style={{width:'240px',marginRight:'80px'}} onChange={this.inputChange} disabled={!flag}/>
                         <span >高混机每批进料量 :</span>
                         <Input placeholder='请输入' name='highMixingMachineWeight' value={highMixingMachineWeight} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
@@ -175,7 +175,7 @@ class ShowInfo extends Component{
                     </div>
                     <div className='fontAttribute'>
                         <span >布袋料 :</span>
-                        <Input placeholder='请输入' name='matchingCoefficientHopPocket' value={matchingCoefficientHopPocket} suffix="kg" style={{width:'240px'}} onChange={this.inputChange} disabled={!flag}/>
+                        <Input placeholder='请输入' name='matchingCoefficientHopPocket' value={matchingCoefficientHopPocket} suffix="kg" style={{width:'250px'}} onChange={this.inputChange} disabled={!flag}/>
                     </div>
                 </div>
                 {flag?<div style={{textAlign:'center',marginTop:'50px'}}>
