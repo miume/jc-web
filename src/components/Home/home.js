@@ -824,7 +824,12 @@ class Home extends Component {
                 fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
             /**批次基础数据*/
             batchConfig:`${server}/jc/common/batchConfig`,
-
+            /**火法质量基础数据送检部门*/
+            fireMageDept:{
+                page:`${server}/jc/common/fireMageDept/page`,
+                add:`${server}/jc/common/fireMageDept`,
+                ids:`${server}/jc/common/fireMageDept/ids`
+        }
 
     }
 

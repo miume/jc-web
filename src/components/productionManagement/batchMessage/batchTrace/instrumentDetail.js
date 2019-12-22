@@ -277,18 +277,6 @@ class InstrumentDetail extends React.Component{
 
     getOption = () =>{
         let {xData,seriesData,selectValue,selectName}=this.state
-        var labelOption = {
-            normal: {
-                show: true,
-                formatter: '{c}  {name|{a}}',
-                fontSize: 16,
-                rich: {
-                    name: {
-                        textBorderColor: '#fff'
-                    }
-                }
-            }
-        };
         return (
             {
                 color: [ '#dc150c'],

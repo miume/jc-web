@@ -168,8 +168,9 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = ()=>{
-        if(this.state.serialNumVal!=='001'){
-            message.error('流水号选择001时才可新增!')
+
+        if(this.state.processVal!=='JH'){
+            message.error('JH工序不可新增,JQ工序才可新增!')
             return
         }
         let setPeople=JSON.parse(localStorage.getItem('menuList')).name
@@ -318,7 +319,7 @@ class AddModal extends React.Component{
                                         }
                                 </Select>
                                 <span className="batchSelect">开始时间：<DatePicker locale={locale} format="YYYY-MM-DD HH:mm:ss" showTime={true}
-                                                                        disabled={this.state.serialNumVal=="001"?false:true} value={this.state.nowDate?moment(this.state.nowDate) : null}
+                                                                        value={this.state.nowDate?moment(this.state.nowDate) : null}
                                                                         onChange={this.startChange} style={{width:"180px"}} placeholder="请选择开始时间"/></span>
                             </div>
                             <div className="batchAll">

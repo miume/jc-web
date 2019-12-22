@@ -78,9 +78,7 @@ class DeviceService extends React.Component{
         }]
         this.getTableData=this.getTableData.bind(this);
     }
-    componentDidMount(){
-        this.getTableData()
-    }
+
     componentWillUnmount(){
         this.setState=()=>{
             return
@@ -118,6 +116,7 @@ class DeviceService extends React.Component{
         this.setState({
             visible:true
         })
+        this.getTableData()
     }
     handleCancel=()=>{
         this.setState({

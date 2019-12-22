@@ -7,7 +7,8 @@ class FireSerialRule extends Component{
     constructor(props){
         super(props)
         this.state={
-            loading:false
+            loading:false,
+            searchContent:''
         }
         this.columns=[{
             title:'序号',
@@ -42,6 +43,7 @@ class FireSerialRule extends Component{
                 )
             }
         }]
+
         this.back=this.back.bind(this);
         this.switchChange=this.switchChange.bind(this);
         this.getTableData=this.getTableData.bind(this);
@@ -54,7 +56,6 @@ class FireSerialRule extends Component{
             return
         }
     }
-
     getTableData(){
         this.setState({
             loading:true
@@ -78,6 +79,7 @@ class FireSerialRule extends Component{
             }
         })
     }
+
     switchChange(position){
         axios({
             url:`${this.url.fireMageNumber}/isEnable`,

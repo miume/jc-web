@@ -30,9 +30,7 @@ class ServiceDetail extends React.Component{
         this.getData=this.getData.bind(this);
         this.transformRepairStatus=this.transformRepairStatus.bind(this);
     }
-    componentDidMount(){
-        this.getData()
-    }
+
     componentWillUnmount(){
        this.setState=()=>{
            return
@@ -101,6 +99,7 @@ class ServiceDetail extends React.Component{
         this.setState({
             visible:true
         })
+        this.getData()
     }
     handleCancel = () =>{
         this.setState({
@@ -161,12 +160,12 @@ class ServiceDetail extends React.Component{
                         <div className="interDrSpanModalTop">
                             <table>
                                 <thead>
-                                <tr>
-                                    <th>序号</th>
-                                    <th>配件名称</th>
-                                    <th>配件规格</th>
-                                    <th>配件数量</th>
-                                </tr>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>配件名称</th>
+                                        <th>配件规格</th>
+                                        <th>配件数量</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 {
