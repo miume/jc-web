@@ -1,15 +1,11 @@
 import React from "react";
-import axios from "axios";
-import {Table, message, Spin, Divider} from "antd";
+import {Table,  Divider} from "antd";
 import DeviceService from "./deviceService";
 import DeviceMaintenance from "./deviceMaintenance"
 
 class Device extends React.Component{
     constructor(props){
         super(props);
-        this.state={
-        
-        }
         this.column = [{
             title: '序号',
             dataIndex: 'index',

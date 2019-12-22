@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {Table, message, Spin, Divider, Modal} from "antd";
+import {Table, message, Modal} from "antd";
 import CancleButton from "../../BlockQuote/cancleButton";
 import ServiceDetail from "./serviceDetail"
 
@@ -77,9 +77,7 @@ class DeviceService extends React.Component{
         }]
         this.getTableData=this.getTableData.bind(this);
     }
-    componentDidMount(){
-        this.getTableData()
-    }
+
     componentWillUnmount(){
         this.setState=()=>{
             return
@@ -101,7 +99,6 @@ class DeviceService extends React.Component{
         }).then(data=>{
             let res=data.data.data
             if(res&&res.dtoList){
-
                 for(let i=0;i<res.dtoList.length;i++){
                     res.dtoList[i]['index']=i+1
                 }
@@ -119,7 +116,7 @@ class DeviceService extends React.Component{
         this.setState({
             visible:true
         })
-       
+        this.getTableData()
     }
     handleCancel=()=>{
         this.setState({

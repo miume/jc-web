@@ -163,9 +163,7 @@ class Edit extends React.Component{
         data['month']=monthVal
         data['serialNumVal']=serialNumVal
         data['endTime']=endTime
-        console.log(data)
         let number=jumpBatch?jumpBatch:0,info=data,data1={info,number}
-        console.log(JSON.stringify(data1))
         axios({
             url:this.url.productionBatchInfo.updateOne,
             method:'post',
@@ -202,6 +200,9 @@ class Edit extends React.Component{
    }
    inputChange(e){
         let value=e.target.value
+       if(typeof value === 'number') value = value.toString();
+       value =  value.replace(/[^\d]/g, "");  //只准输入数字
+           value = value === '' ? '' : parseInt(value);  //将字符串转为整型
         this.setState({
             jumpBatch:value
         })

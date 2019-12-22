@@ -128,7 +128,7 @@ class BatchInfoTrace extends React.Component{
         return(
             <span>
                 <Button type='primary' onClick={this.props.showModal} disabled={!this.props.selectedRowKeys.length>0}>批次追溯预览</Button>
-                <Spin spinning={this.state.loading}>
+                {/*<Spin spinning={this.state.loading}>*/}
                     <Modal
                     title='批次追溯预览'
                     visible={this.props.visiable}
@@ -148,7 +148,7 @@ class BatchInfoTrace extends React.Component{
                             size="small" bordered
                         />
                     </Modal>
-                </Spin>
+                {/*</Spin>*/}
             </span>
         )
     }

@@ -29,17 +29,17 @@ class Add extends Component{
         })
     }
     handleCreate(){
-        let {editflag,record}=this.props,{name,unit,changeFlag}=this.state
+        let {editflag,record}=this.props,{deptName,descr,changeFlag}=this.state
         this.setState({
             visible:false
         })
         let data={
             code: editflag?record.code:'',
-            name: editflag&&!changeFlag?record.name:name,
-            unit:  editflag&&!changeFlag?record.unit:unit
+            deptName: editflag&&!changeFlag?record.deptName:deptName,
+            descr:  editflag&&!changeFlag?record.descr:descr
         }
         axios({
-            url:`${this.props.url.fireMageTestItems}`,
+            url:`${this.props.url.fireMageDept}`,
             method:editflag?'put':'post',
             headers:{
                 'Authorizaion':this.props.url.Authorizaion
@@ -62,19 +62,19 @@ class Add extends Component{
         })
         if(editflag){
             this.setState({
-                name:record.name,
-                unit:record.unit
+                deptName:record.deptName,
+                descr:record.descr
             })
         }
         else{
             this.setState({
-                name:undefined,
-                unit:undefined
+                deptName:undefined,
+                descr:undefined
             })
         }
     }
     render(){
-        let {visible,changeFlag}=this.state,{editflag,record}=this.props
+        let {visible,changeFlag,deptName,descr}=this.state,{editflag,record}=this.props
         return(
             <span>
                 {editflag?<span className={'blue'} onClick={this.showModal}>编辑</span>
@@ -85,15 +85,15 @@ class Add extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'400px'}
+                    width={'360px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} />,
                         (<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)
                     ]}
                 >
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>部门名称 : </span><Input name={'name'} style={{width:'250px'}} placeholder={'请输入检验项目名称'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.name:undefined}/></div>
+                        <div><span >部门名称 : </span><Input name={'deptName'} style={{width:'250px'}} placeholder={'请输入部门名称'} onChange={this.inputChange} value={(editflag && !changeFlag)?record.deptName:deptName}/></div>
                         <br/>
-                        <div><span className='fireQua-add-span fireQua-add-span-width1'>部门描述 : </span><Input name={'unit'} style={{width:'250px'}} placeholder={'请输入单位'} onChange={this.inputChange} defaultValue={(editflag && !changeFlag)?record.unit:undefined}/></div>
+                        <div><span >部门描述 : </span><Input name={'descr'} style={{width:'250px'}} placeholder={'请输入部门描述'} onChange={this.inputChange} value={(editflag && !changeFlag)?record.descr:descr}/></div>
                         <div>
 
                         </div>

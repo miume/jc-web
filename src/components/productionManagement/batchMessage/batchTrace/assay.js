@@ -1,6 +1,5 @@
 import React from "react";
-import axios from "axios";
-import {Table, message, Spin, Divider} from "antd";
+import {Table} from "antd";
 import AssayDetail from "./assayDetail"
 
 class Assay extends React.Component{
