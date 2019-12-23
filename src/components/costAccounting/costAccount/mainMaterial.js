@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Table,Button,Spin,message} from 'antd'
+import {Table,Spin,message} from 'antd'
 import Search from './search'
 import axios from 'axios'
 class MainMaterial extends Component{
@@ -19,25 +19,8 @@ class MainMaterial extends Component{
             dataIndex:'elementName',
         },{
             title:'名称',
-            key:'name',
-            dataIndex:'name',
-            render:(text,record)=>{
-                if(record.elementType===0){
-                    return 'Ni'
-                }
-                if(record.elementType===1){
-                    return 'Co'
-                }
-                if(record.elementType===2){
-                    return 'Mn'
-                }
-                if(record.elementType===3){
-                    return '氨'
-                }
-                if(record.elementType===4){
-                    return '碱'
-                }
-            }
+            key:'materialType',
+            dataIndex:'materialType',
         },{
             title:'周期类型',
             key:'period',
@@ -86,7 +69,7 @@ class MainMaterial extends Component{
         var flag=operation?operation.filter(e=>e.operationCode===operationCode):[]
         return flag.length?true:false
     }
-  
+
     timeChange(value){
         this.setState({
             time:value
@@ -109,7 +92,7 @@ class MainMaterial extends Component{
             loading:true
         })
         let {lineCode,periodCode,time,flag}=this.state
-        
+
         axios({
             url:this.props.url.costAccount.mainMatConfirm,
             method:'get',
@@ -122,7 +105,8 @@ class MainMaterial extends Component{
                 startTime:time
             }
         }).then(data=>{
-            let res=data.data.data
+            let res=data.data.data;
+            message.info(data.data.message);
             if(res){
                 this.setState({
                     data:res
@@ -140,18 +124,19 @@ class MainMaterial extends Component{
         this.operation=JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return(
             <div >
-                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'> 
+                <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <Search flag={true} timeChange={this.timeChange} confirm={this.confirm} date={this.props.date}
                     selectChange={this.selectChange} staticPeriod={this.props.staticPeriod}  lineChange={this.lineChange}
                     periodCode={this.props.periodCode&&this.state.flag?this.props.periodCode:this.state.periodCode}
                     line={this.props.line}
                     />
-                    <div className='clear'></div> 
+                    <div className='clear'></div>
                     <Table
                         dataSource={this.state.data}
-                        rowKey={record=>record.code}
-                        columns={this.columns} 
+                        rowKey={record=>record.materialType}
+                        columns={this.columns}
                         size='small'
+                        pagination={false}
                         bordered/>
                  </Spin>
             </div>
