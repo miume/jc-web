@@ -63,7 +63,7 @@ class FireInsSamRec extends Component {
         let {loading, selectedRowKeys} = this.state
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name="样品接收" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={loading} wrapperClassName={'rightDiv-content'}>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds}
                                  cancel={this.deleteCancel} flag={true}/>
