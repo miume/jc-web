@@ -42,7 +42,8 @@ class FireInsRegister extends Component {
         this.state = {
             loading: false,
             selectedRowKeys: [],
-            dataSource: []
+            dataSource: [],
+            searchContent:""
         }
         this.pagination = {
             pageSize: 10,
@@ -62,6 +63,7 @@ class FireInsRegister extends Component {
         const current = JSON.parse(localStorage.getItem('current'))
         const {selectedRowKeys, dataSource} = this.state;
         this.operation = JSON.parse(localStorage.getItem('menus')) ? JSON.parse(localStorage.getItem('menus')).filter(e => e.path === current.path)[0].operations : null;
+        this.url = JSON.parse(localStorage.getItem('url'))
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
@@ -140,7 +142,7 @@ class FireInsRegister extends Component {
         // });
     }
 
-    handleTableChange(pagination) {
+    handleTableChange = (pagination) => {
         this.pagination = pagination;
         this.getTableParams();
     }
