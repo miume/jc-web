@@ -13,7 +13,11 @@ import Crush from './crush/crush'
 import SecondMix from './secondMix/secondMix'
 import SecondBuring from './secondBurning/secondBuring'
 import Package from './package/package'
+import WorkShopMaterial from './workShopMaterials/workShopMaterials'
+import WareHouseMaterial from './wareHouseMaterial/wareHouseMaterial'
+import axios from 'axios'
 const {TabPane}=Tabs;
+
 class PositiveAdd extends Component{
     constructor(props){
         super(props)
@@ -21,28 +25,64 @@ class PositiveAdd extends Component{
             
         }
         this.back=this.back.bind(this);
+        this.getAllProcess=this.getAllProcess.bind(this);
+    }
+    componentDidMount(){
+        // this.getAllProcess()
+    }
+    componentWillUnmount(){
+        this.setState=()=>{
+            return
+        }
+    }
+    getAllProcess() {//获取新增标签页的所有工序标签
+        axios({
+            url: `${this.url.positiveProcess.all}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            }
+        }).then((data) => {
+            let res = data.data.data;
+            if (res) {
+                this.setState({
+                    processData: res
+                })
+            }
+        })
     }
     back(){
         this.props.history.push({pathname:'/positiveProcess'})
     }
     render(){
+        let {processData}=this.state
         this.url=JSON.parse(localStorage.getItem('url'))
+        this.tabData=[{component:< OnlineIngredients/>},
+            {component:<PremixedCoulterMixed/>},
+            {component:<PremixedStorageBin/>},
+            {component:<PreBuring/>},
+            {component:<Crush/>},
+            {component:<SecondMix/>},
+            {component:<SecondBuring/>},
+            {component: <Package/> },
+            {component:<WorkShopMaterial/>},
+            {component:<WareHouseMaterial/>},
+
+        ]
         return(
             <div>
                 <Blockquote name={this.props.location.editFlag?'编辑数据':'新增数据'}  menu='正极成本' menu2='在制品管理' returnDataEntry={this.back}/>
                 <div className='rightDiv-content'>
                     <Search url={this.url}/>
                     <Tabs defaultActiveKey='1'>
-                        <TabPane key='1' tab='在线原料'>< OnlineIngredients/></TabPane>
-                        <TabPane key='2' tab='预混(犁刀混)'><PremixedCoulterMixed/></TabPane>
-                        <TabPane key='3' tab='预混(暂存仓)'><PremixedStorageBin/></TabPane>
-                        <TabPane key='4' tab='预烧(窑炉)'><PreBuring/></TabPane>
-                        <TabPane key='5' tab='粉碎(气流粉碎机)'><Crush/></TabPane>
-                        <TabPane key='6' tab='二混'><SecondMix/></TabPane>
-                        <TabPane key='7' tab='二烧(窑炉)'> <SecondBuring/> </TabPane>
-                        <TabPane key='8' tab='包装'> <Package/>  </TabPane>
-                        <TabPane key='9' tab='车间待处理物料'></TabPane>
-                        <TabPane key='10' tab='仓库待处理物料'></TabPane>
+                        {
+                            processData?processData.map((item,index)=>{
+                                return(
+                                    <TabPane key={item.code} value={item.code}>{this.tabData[index]&&this.tabData[index].component?this.tabData[index].component:null}</TabPane>
+                                )
+                            }):null
+                        }
+                        
                     </Tabs>
                         <span style={{bottom:'10px',position:'absolute',left:'15px'}}><CancleButton/></span>
                         <span style={{bottom:'0',position:'absolute',right:'15px'}}>

@@ -145,15 +145,18 @@ class Edit extends Component{
         })
     }
     handleCreate(){
-       let {dataSource}=this.state
+       let {dataSource}=this.state,{position}=this.props.record
         this.setState({
             visible:false
         })
         axios({
-            url:`${this.url.fireMageNumber}/save`,
+            url:`${this.props.url.fireMageNumber}/save`,
             method:"put",
             headers:{
-                'Authorization': this.url.Authorization
+                'Authorization': this.props.url.Authorization
+            },
+            params:{
+                position:position
             },
             data:dataSource
         }).then((data)=>{

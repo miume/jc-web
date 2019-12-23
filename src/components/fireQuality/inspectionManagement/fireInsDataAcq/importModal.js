@@ -1,10 +1,10 @@
 import React,{Component} from 'react'
-import {Select,Table,Row,Col,Input} from "antd";
+import {Select, Table, Row, Col, Input, Checkbox} from "antd";
 import './acq.css'
+const {Group}=Checkbox
 class ImportModal extends Component{
     constructor(props){
         super(props)
-
     }
 
     render(){
@@ -21,7 +21,9 @@ class ImportModal extends Component{
                 <div>检验项目：</div>
 
                     <div className={'fireIns-add-check-group'}>
-
+                        <Group>
+                            <Checkbox></Checkbox>
+                        </Group>
                     </div>
 
 

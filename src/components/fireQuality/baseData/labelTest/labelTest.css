@@ -1,0 +1,19 @@
+.fire-qua-labelTest{
+    font-family: 'Arial Normal', 'Arial';
+    font-style: normal;
+    color: #333333;
+    line-height: normal;
+}
+.fire-qua-labelTest1{
+    border:1px solid #e4e4e4;
+    border-radius: 4px;
+    padding:10px;
+}
+.fire-qua-labelTest-font-big{
+    font-size: 30px;
+    font-weight: 400;
+}
+.fire-qua-labelTest-font-small{
+    font-size: 10px;
+    font-weight: 450;
+}

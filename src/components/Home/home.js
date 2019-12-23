@@ -841,8 +841,16 @@ class Home extends Component {
             /** 样品接收 */
             fireInsSamRec: {
 
+            },
+        /**批号与检测项目*/
+            fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
+            /**标签与检测项目*/
+            fireMageLabel:`${server}/jc/common/fireMageLabel`,
+        /**正极前驱体在制品*/
+            positiveProcess:{
+                addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
+                afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
             }
-
     }
 
         localStorage.setItem('status', JSON.stringify(status));

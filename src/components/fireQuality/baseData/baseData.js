@@ -42,7 +42,7 @@ class FireQuaBase extends Component {
         return(
             <div>
                 <BlockQuote menu={current.menuParent} name={current.menuName}/>
-                <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
+                <div className='dataEntry'>
                     <div className='card-parent'>
                         {
                             data.map(d=>

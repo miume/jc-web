@@ -39,7 +39,7 @@ class Add extends Component{
             descr:  editflag&&!changeFlag?record.descr:descr
         }
         axios({
-            url:`${this.props.url.fireMageDept}`,
+            url:`${this.props.url.fireMageDept.add}`,
             method:editflag?'put':'post',
             headers:{
                 'Authorizaion':this.props.url.Authorizaion
