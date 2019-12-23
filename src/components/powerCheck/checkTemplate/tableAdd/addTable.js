@@ -27,16 +27,18 @@ class AddTable extends React.Component {
             width: '20%'
         },{
             title:'点检结果',
-            key:'checkValue',
-            dataIndex:'result',
+            key:'checkResult',
+            dataIndex:'checkResult',
             width: '20%',
             render: (text,record) => {
-                return (
-                    <Select placeholder='请选择' onChange={this.props.selectChange} style={{width: '100%'}}>
-                        <Option name={record['index']} value={1}>正常</Option>
-                        <Option name={record['index']} value={2}>异常</Option>
-                        <Option name={record['index']} value={3}>未开机</Option>
-                    </Select>
+                let {disabled} = this.props;
+                    return (
+                        !disabled ?
+                            <Select placeholder='请选择' value={text ? text : undefined} onChange={this.props.selectChange} style={{width: '100%'}}>
+                            <Option name={record['index']} value={1}>正常</Option>
+                            <Option name={record['index']} value={2}>异常</Option>
+                            <Option name={record['index']} value={3}>未开机</Option>
+                        </Select> : text
                 )
             },
             className: 'check-template-table'

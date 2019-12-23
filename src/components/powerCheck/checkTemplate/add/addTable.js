@@ -46,8 +46,8 @@ class AddTable extends React.Component {
             render: ((text,record) => {
                 return (
                     <span>
-                        <SelectModal title={'编辑'} record={record} data={this.props.data} addItem={this.props.addItem}/>
-                        <Divider type={"vertical"}/>
+                        <SelectModal title={'选择'} record={record} siteCode={this.props.siteCode} addItem={this.props.addItem} url={this.props.url} disabledCode={this.props.disabledCode}/>
+                        <Divider type={'vertical'}/>
                         <span className='blue' onClick={()=> this.props.handleDelete(record.index)}>删除</span>
                     </span>
                 )
@@ -56,14 +56,11 @@ class AddTable extends React.Component {
     }
 
     render() {
-        let {data,dataSource} = this.props;
+        let {dataSource} = this.props;
         return (
-            <div>
-                <SelectModal title={'新增'} data={data} addItem={this.props.addItem}/>
-                <Table rowKey={record => record.index} columns={this.columns}
-                       dataSource={dataSource} pagination={false} scroll={{y:250}}
-                       bordered size={'small'}/>
-            </div>
+            <Table rowKey={record => record.index} columns={this.columns}
+                   dataSource={dataSource} pagination={false} scroll={{y:250}}
+                   bordered size={'small'}/>
         );
     }
 }

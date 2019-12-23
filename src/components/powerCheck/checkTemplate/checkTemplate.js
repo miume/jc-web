@@ -3,10 +3,11 @@ import './checkTemplate.css';
 import BlockQuote from "../../BlockQuote/blockquote";
 import AddModal from "./add/addModal";
 import Home from "../../commom/fns";
-import {Spin} from "antd";
+import {Spin, message} from "antd";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
 import SearchCell from "../../BlockQuote/newSearchSell";
 import CheckTemplateTable from "./checkTemplateTable";
+import axios from "axios";
 
 const data = [{
     index: 1,
@@ -42,17 +43,19 @@ class PowerCheckTemplate extends React.Component {
 
     render() {
         const current = JSON.parse(localStorage.getItem('current')), {selectedRowKeys,data} = this.state;
+        this.url = JSON.parse(localStorage.getItem('url'));
         this.operation = JSON.parse(localStorage.getItem('menus'))?JSON.parse(localStorage.getItem('menus')).filter(e=>e.path===current.path)[0].operations:null;
         return (
             <div>
                 <BlockQuote name={current.menuName} menu={current.menuParent}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddModal title={'新增'}/>
+                    <AddModal title={'新增'} url={this.url} getTableParams={this.getTableParams}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
                                  cancel={this.cancel} flag={Home.judgeOperation(this.operation,'DELETE')}/>
-                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'设备名/点检项目'}/>
+                    <SearchCell flag={true} searchEvent={this.searchEvent} reset={this.reset} placeholder={'模板名称'}/>
                     <div className='clear'></div>
-                    <CheckTemplateTable data={data} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange} handleTableChange={this.handleTableChange}/>
+                    <CheckTemplateTable data={data} url={this.url} selectedRowKeys={selectedRowKeys} onSelectChange={this.onSelectChange}
+                                        handleTableChange={this.handleTableChange} getTableParams={this.getTableParams}/>
                 </Spin>
             </div>
         );
@@ -66,9 +69,9 @@ class PowerCheckTemplate extends React.Component {
     getTableParams(value) {
         let {searchContent} = this.state, {pageSize,current} = this.pagination,
             params = {
-                searchContent: value === undefined ? searchContent : value,
-                pageSize: pageSize,
-                current: current
+                condition: value === undefined ? searchContent : value,
+                size: pageSize,
+                page: current
             };
         this.getTableData(params);
     }
@@ -77,7 +80,33 @@ class PowerCheckTemplate extends React.Component {
     getTableData(params) {
         console.log(params)
         this.setState({
-            data: data
+            loading: true
+        });
+        axios({
+            url: `${this.url.checkModel.page}`,
+            method: 'get',
+            headers: {
+                'Authorization': this.url.Authorization
+            },
+            params
+        }).then(data => {
+            let res = data.data.data;
+            if(res && res.list) {
+                let result = [];
+                result['total'] = res.total ? res.total : 0;
+                for(let i = 0; i < res.list.length; i++) {
+                    let {model,siteName} = res['list'][i];
+                    model['index'] = (res['page'] - 1) * 10 + i + 1;
+                    model['siteName'] = siteName;
+                    result.push(model)
+                }
+                this.setState({
+                    data: result
+                })
+            }
+            this.setState({
+                loading: false
+            })
         })
     }
 
@@ -90,18 +119,19 @@ class PowerCheckTemplate extends React.Component {
     /**批量删除*/
     deleteByIds() {
         let {selectedRowKeys} = this.state;
-        // axios({
-        //     url:`${this.props.url.eqMaintenanceQuery.recordDelete}/${id}`,
-        //     method:'Delete',
-        //     headers:{
-        //         'Authorization':this.props.url.Authorization
-        //     }
-        // }).then((data)=>{
-        //     message.info(data.data.message);
-        //     this.props.getTableData(); //删除后重置信息
-        // }).catch(()=>{
-        //     message.info('删除失败，请联系管理员！');
-        // });
+        axios({
+            url:`${this.props.url.checkModel.deletes}`,
+            method:'Delete',
+            headers:{
+                'Authorization':this.props.url.Authorization
+            },
+            data: selectedRowKeys
+        }).then((data)=>{
+            message.info(data.data.message);
+            this.getTableParams(); //删除后重置信息
+        }).catch(()=>{
+            message.info('删除失败，请联系管理员！');
+        });
     }
 
     handleTableChange(pagination) {
