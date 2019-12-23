@@ -66,7 +66,7 @@ class FireInsRegister extends Component {
         this.url = JSON.parse(localStorage.getItem('url'))
         return (
             <div>
-                <BlockQuote name={current.menuName} menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
+                <BlockQuote name="送检登记" menu={current.menuParent} menu2={'返回'} returnDataEntry={this.back}/>
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
                     <AddModal title={'新增'}/>
                     <DeleteByIds selectedRowKeys={selectedRowKeys} deleteByIds={this.deleteByIds} cancel={this.cancel}
@@ -80,7 +80,7 @@ class FireInsRegister extends Component {
         )
     }
 
-    back() {
+    back = () => {
         this.props.history.push({pathname: "/inspectionManagement"})
     }
 
