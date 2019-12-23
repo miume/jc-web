@@ -73,6 +73,7 @@ class ProcessParamAddModal extends React.Component {
         this.hcDataProcessing = this.hcDataProcessing.bind(this);
         this.zyDataProcessing = this.zyDataProcessing.bind(this);
         this.chDataProcessing = this.chDataProcessing.bind(this);
+        this.initialAddItem = this.initialAddItem.bind(this);
 
     }
 
@@ -116,7 +117,8 @@ class ProcessParamAddModal extends React.Component {
     componentDidMount() {
         let location = this.props.location, pathname = location.pathname.split('/'), id = pathname.length > 2 ? pathname[2] : '';
         if(id) {
-            this.getDetailById(id)
+            this.initialAddItem();
+            this.getDetailById(id);
         } else {
             this.initialAddData();
         }
@@ -225,6 +227,62 @@ class ProcessParamAddModal extends React.Component {
             proAndLines: proAndLines,
             proAndLinesItems: proAndLinesItems,
         });
+    }
+
+    initialAddItem() {
+        let item = {
+            "basicityBias": 0,
+            "basicityStandard": 0,
+            "comment": "",
+            "flowBias1": 0,
+            "flowBias2": 0,
+            "flowStandard1": 0,
+            "flowStandard2": 0,
+            "nitrogenFlowBias": 0,
+            "nitrogenFlowStandard": 0,
+            "rotateSpeedBias": 0,
+            "rotateSpeedStandard": 0,
+            "sizeD30Bias": 0,
+            "sizeD30Standard": 0,
+            "sizeD70": "0",
+            "sizeD90": "0",
+            "solidContainingContentBias": 0,
+            "solidContainingContentStandard": 0,
+            "temperatureBias": 0,
+            "temperatureStandard": 0
+        }, exceptionDisposesItems = {
+            "phenomenon": "",
+            "reason": "",
+            "processMode": "",
+            "relatedProductionProcess": ""
+        }, mediateItem = {
+            "frequency": "",
+            "item": "",
+            "samplePlace": "",
+            "standards": ""
+        }, componentsItem = {
+            "coMax": 0,
+            "coMin": 0,
+            "mnMax": 0,
+            "mnMin": 0,
+            "niMax": 0,
+            "niMin": 0,
+        }, devicesItem = {
+            "deviceCode": "",
+            "techParameters": ""
+        },proAndLinesItems = {  //工艺参数（生产品种和生产线）
+            lines: [],
+            productClass: '',
+            productClassName: ''
+        };
+        this.setState({
+            item,
+            exceptionDisposesItems,
+            mediateItem,
+            componentsItem,
+            devicesItem,
+            proAndLinesItems
+        })
     }
 
     /**编辑*/

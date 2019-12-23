@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Input, DatePicker, Tabs, message,Spin } from 'antd'
+import { Select, Tabs, message,Spin } from 'antd'
 import Blockquote from '../../../BlockQuote/blockquote'
 import CancleButton from '../../../BlockQuote/cancleButton'
 import SaveButton from '../../../BlockQuote/saveButton'
@@ -174,7 +174,7 @@ class CostProcessAdd extends Component {
                 lengthSub:lengthSub
             })
         }
-        this.setState({ 
+        this.setState({
             startDate: dateString,
             endDate: endDate,
             startTime: `${dateString} ${startSecondTime}`,
@@ -184,7 +184,7 @@ class CostProcessAdd extends Component {
     disabledDate(current) {
         let {giveEndDate}=this.state
         //小于给定时间不能选
-        return  current && current < moment(giveEndDate).add(1,'d');
+        return  current && current < moment(giveEndDate);
       }
     endChange(date, dateString) {
         let { startSecondTime } = this.state
@@ -277,14 +277,14 @@ class CostProcessAdd extends Component {
             tabKey: key
         })
     }
-    handleOtherAdd(data){//其他标签页的新增放到父组件来处理 
+    handleOtherAdd(data){//其他标签页的新增放到父组件来处理
         this.setState({
             otherFlag:true,
             otherData:data
         })
         console.log(data)
     }
- 
+
     getChange(tabKey, inputData, selectData) {  //获取到下拉框，输入框填的值
         let {addData,otherData,otherFlag}=this.state
         if (inputData) {
@@ -540,7 +540,7 @@ class CostProcessAdd extends Component {
                         }
                     }
                 }
-                
+
                  if(i===5&&otherFlag){
                     for(let j=0;j<otherData.length;j++){
                         for(let key in otherData.length){
@@ -576,9 +576,9 @@ class CostProcessAdd extends Component {
             <div >
                 <Blockquote name={this.props.location.editFlag ? '编辑数据' : '新增数据'} menu='前驱体成本核算管理' menu2='在制品统计' returnDataEntry={this.returnProcess} />
                 <Spin spinning={this.state.loading} wrapperClassName='rightDiv-content'>
-                    <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm} 
-                        staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange} 
-                        search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod} 
+                    <AddSearch flag={true} editFlag={this.props.location.editFlag} flagConfirm={this.props.location.editFlag?true:this.state.flagConfirm}
+                        staticPeriod={this.state.staticPeriod} periodCode={this.state.periodCode} period={this.state.period} selectChange={this.selectChange}
+                        search={this.addConfirm} startChange={this.startChange} endChange={this.endChange} inputChange={this.inputChange} inputPeriod={this.state.inputPeriod}
                         endDate={this.state.endDate} startDate={this.state.startDate} disabledDate={this.disabledDate} subLength={this.state.lengthSub} disabledDateFlag={this.state.disabledDateFlag}
                     />
                     <Tabs defaultActiveKey='1' onChange={this.tabChange}>
