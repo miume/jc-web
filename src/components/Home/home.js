@@ -828,9 +828,16 @@ class Home extends Component {
             fireMageDept:{
                 page:`${server}/jc/common/fireMageDept/page`,
                 add:`${server}/jc/common/fireMageDept`,
-                ids:`${server}/jc/common/fireMageDept/ids`
-        }
-
+        },
+        /**批号与检测项目*/
+            fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
+            /**标签与检测项目*/
+            fireMageLabel:`${server}/jc/common/fireMageLabel`,
+        /**正极前驱体在制品*/
+            positiveProcess:{
+                addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
+                afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
+            }
     }
 
         localStorage.setItem('status',JSON.stringify(status));

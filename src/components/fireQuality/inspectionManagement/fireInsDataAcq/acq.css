@@ -4,11 +4,21 @@
 .fireIns-add-check-group{
     height:250px;
     border:1px solid #E4E4E4;
-    width:30%;
+    width:100%;
     border-radius: 4px;
+    padding:10px;
+    overflow-y: auto;
+}
+.fireIns-add-check-group-span{
+    display:inline-block;
+    width:33.3%;
+    box-sizing:border-box;
 }
 .fireIns-add-display{
     display: flex;
     justify-content: space-between;
     flex-direction: row ;
+}
+.fire-ins-data-acq1{
+    margin-bottom: 10px;
 }
