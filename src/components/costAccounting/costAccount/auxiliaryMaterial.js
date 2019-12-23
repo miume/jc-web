@@ -117,8 +117,9 @@ class AuxiliaryMaterial extends Component{
             })
         }).catch(()=>{
             this.setState({
-                loading:false
-            })
+                loading:false,
+                data: []
+            });
             message.error('操作失败，请联系管理员!')
         })
     }

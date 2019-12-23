@@ -116,6 +116,10 @@ class MainMaterial extends Component{
                 loading:false
             })
         }).catch(()=>{
+            this.setState({
+                loading:false,
+                data: []
+            })
             message.error('操作失败，请联系管理员!')
         })
     }
