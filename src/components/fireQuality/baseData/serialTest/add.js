@@ -1,50 +1,190 @@
 import React ,{Component}from 'react'
 import NewButton from "../../../BlockQuote/newButton";
-import {Modal,Select,message} from 'antd'
+import {Modal,Select,message,Checkbox} from 'antd'
 import CancleButton from "../../../BlockQuote/cancleButton";
 import axios from "axios";
 const {Option}=Select
+const {Group}=Checkbox
 class Add extends Component{
     constructor(props){
         super(props)
         this.state={
             visible:false,
             changeFlag:false,//监听渲染初始值还是已改变的值
+            processData:[],
+            lineData:[],
+            testItemData:[],
+            testItem:[],
         }
         this.showModal=this.showModal.bind(this);
         this.handleCreate=this.handleCreate.bind(this);
         this.cancel=this.cancel.bind(this);
         this.selectChange=this.selectChange.bind(this);
+        this.getProcess=this.getProcess.bind(this);
+        this.getProductLine=this.getProductLine.bind(this);
+        this.getItems=this.getItems.bind(this);
+        this.getEditData=this.getEditData.bind(this);
+        this.checkChange=this.checkChange.bind(this)
+    }
+    /**获取工序*/
+    getProcess(){
+        axios({
+            url:`${this.props.url.fireMageNumber}/detail`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.props.url.Authorizaion
+            },
+            params: {
+                position:1
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    processData:res
+                })
+            }
+        })
+    }
+    /**获取厂家型号*/
+    getProductLine(){
+        axios({
+            url:`${this.props.url.fireMageNumber}/detail`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.props.url.Authorizaion
+            },
+            params:{
+                position:4
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    lineData:res
+                })
+            }
+        })
+    }
+    /**获取检测项目*/
+    getItems(){
+        axios({
+            url:`${this.props.url.fireMageTestItems}/getAll`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.props.url.Authorizaion
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res){
+                this.setState({
+                    testItemData:res
+                })
+            }
+        })
+    }
+    /**根据id获取一条记录数据*/
+    getEditData(){
+        let id=this.props.record.code,{showFlag}=this.props
+        axios({
+            url:showFlag?`${this.props.url.fireMageLabel}/${id}`:`${this.props.url.fireMageBatchItems}/${id}`,
+            method:'get',
+            headers:{
+                'Authorizaion':this.props.url.Authorizaion
+            }
+        }).then(data=>{
+            let res=data.data.data
+            if(res&&!showFlag){//批号的编辑
+               let item= res.items?res.items.filter(item=>item.flag===true):undefined,da=[]
+               for(let i=0;i<item.length;i++){
+                da.push(item[i].code)
+               }
+                this.setState({
+                    testItem:da,
+                    processCode:res.head&&res.head.processCode?res.head.processCode:undefined,
+                    productCode:res.head&&res.head.productCode?res.head.productCode:undefined,
+                    testItemData:res.items?res.items:undefined
+                })
+            }
+          else if(res&&showFlag){//标签的编辑
+                let item= res.filter(item=>item.flag===true),daLabel=[]
+                for(let i=0;i<item.length;i++){
+                    daLabel.push(item[i].code)
+                }
+                this.setState({
+                    testItem:daLabel,
+                    testItemData:res?res:undefined
+                })
+            }
+        })
     }
     showModal(){
+        let {editflag,showFlag}=this.props
+        if(editflag){
+            this.getEditData()
+        }
         this.setState({
             visible:true
         })
+        if(!editflag){//新增调用所有受检物料，编辑会返回所有item，所以不用调用此接口
+            this.getItems()
+        }
+     if(!showFlag){//标签的新增不需要这两个下拉框
+        this.getProductLine()
+        this.getProcess()
+     }
     }
 
     selectChange(value,option){
+         let name=option.props.name
         this.setState({
-            changeFlag:true,
-            // [name]:value
+             [name]:value
         })
     }
+    checkChange(value){
+        this.setState({
+            testItem:value
+        })
+    }
+    transformParams(){//新增编辑传的参数不一样，标签与批号也不一样，所以整理下
+        let {editflag,showFlag,record}=this.props
+        if(!showFlag&&!editflag){//批号的新增
+            let params={
+                processId:this.state.processCode,
+                productId:this.state.productCode
+            }
+            return params
+        }
+        else if(editflag&&!showFlag){//批号的编辑
+            let params={
+                id:record.code
+            }
+            return params
+        }
+        else if(showFlag&&!editflag){//标签的新增
+
+        }
+        else if(editflag&&showFlag){//标签的编辑
+            let params={
+                id:record.code
+            }
+            return params
+        }
+    }
     handleCreate(){
-        let {editflag,record}=this.props,{name,unit,changeFlag}=this.state
+        let {editflag,record,showFlag}=this.props,ids=this.state.testItem,items=this.state.testItem
         this.setState({
             visible:false
-        })
-        let data={
-            code: editflag?record.code:'',
-            name: editflag&&!changeFlag?record.name:name,
-            unit:  editflag&&!changeFlag?record.unit:unit
-        }
+        })  
+        let params=this.transformParams()
         axios({
-            url:`${this.props.url.fireMageTestItems}`,
+            url:showFlag?this.props.url.fireMageLabel:this.props.url.fireMageBatchItems,
             method:editflag?'put':'post',
             headers:{
                 'Authorizaion':this.props.url.Authorizaion
             },
-            data
+            data:showFlag?items:ids,
+            params
         }).then(data=>{
             if(data.data.code===0){
                 message.info('操作成功！')
@@ -56,20 +196,18 @@ class Add extends Component{
         })
     }
     cancel(){
-        let {record,editflag}=this.props
+        let {editflag}=this.props
         this.setState({
             visible:false
         })
         if(editflag){
-            this.setState({
-                name:record.name,
-                unit:record.unit
-            })
+            this.getEditData()
         }
         else{
             this.setState({
-                name:undefined,
-                unit:undefined
+                processCode:undefined,
+                productCode:undefined,
+                testItem:[]
             })
         }
     }
@@ -94,16 +232,42 @@ class Add extends Component{
                     {
                         showFlag ? null:(
                          <div>
-                             <div><span className='fireQua-add-span fireQua-add-span-width2'>请选择工序 : </span><Select name={'name'} style={{width:'310px'}} placeholder={'请选择工序'} onChange={this.selectChange} defaultValue={(editflag && !changeFlag)?record.name:undefined}/></div>
-                             <br/>
-                             <div> <span className='fireQua-add-span fireQua-add-span-width2' >请选择产品型号/厂家 : </span><Select name={'unit'} style={{width:'310px'}} placeholder={'请选择产品型号/厂家'} onChange={this.selectChange} defaultValue={(editflag && !changeFlag)?record.unit:undefined}/></div>
-                             <br/>
+                             <div className={'fire-ins-data-acq1'}><span className='fireQua-add-span fireQua-add-span-width2'>请选择工序 : </span>
+                                 <Select name={'name'} style={{width:'310px'}} placeholder={'请选择工序'} onChange={this.selectChange} value={this.state.processCode}>
+                                     {
+                                         this.state.processData?this.state.processData.map(item=>{
+                                             return(
+                                                 <Option key={item.code} value={item.code} name='processCode'>{item.value}</Option>
+                                             )
+                                         }):null
+                                     }
+                                 </Select>
+                             </div>
+                             <div className={'fire-ins-data-acq1'}> <span className='fireQua-add-span fireQua-add-span-width2' >请选择产品型号/厂家 : </span>
+                                 <Select name={'unit'} style={{width:'310px'}} placeholder={'请选择产品型号/厂家'} onChange={this.selectChange} value={this.state.productCode}>
+                                     {
+                                         this.state.lineData?this.state.lineData.map(item=>{
+                                             return(
+                                                 <Option key={item.code} value={item.code} name='productCode'>{item.value}</Option>
+                                             )
+                                         }):null
+                                     }
+                                </Select>
+                             </div>
                          </div>
                         )
                     }
-                    <div> <span className='fireQua-add-span fireQua-add-span-width2' >请选择绑定检验项目 : </span></div>
-                    <div className={'fireQua-add-check-group'}>
-
+                    <div className={'fire-ins-data-acq1'}> <span className='fireQua-add-span fireQua-add-span-width2' >请选择绑定检验项目 : </span></div>
+                    <div className={'fireQua-add-check-group'} style={{padding:'10px'}}>
+                        <Group onChange={this.checkChange}  value={this.state.testItem}>
+                            {
+                                this.state.testItemData?this.state.testItemData.map((item,index)=>{
+                                    return(
+                                      <span className='fireIns-add-check-group-span' key={index}> <Checkbox value={item.code}>{item.name}</Checkbox></span>
+                                    )
+                                }):null
+                            }
+                        </Group>
                     </div>
                 </Modal>
             </span>

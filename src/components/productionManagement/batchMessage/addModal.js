@@ -168,8 +168,7 @@ class AddModal extends React.Component{
         })
     }
     handleCreate = ()=>{
-
-        if(this.state.processVal!=='JH'){
+        if(this.state.processVal==='JH'){
             message.error('JH工序不可新增,JQ工序才可新增!')
             return
         }
@@ -192,18 +191,18 @@ class AddModal extends React.Component{
             },
             data:data
         }).then((data)=>{
-           if(data.data.code===0){
+           if(data.data.data===0){
             message.info("新增成功");
             this.props.fetch();
-           }
             this.setState({
                 visible:false,
                 nowDate:null
-                // materialPonit:[],
-                // plcAddress:[],
-                // materialCode:undefined,
-                // plcCode:undefined
             })
+           }
+           else if(data.data.data===-1){
+            message.error("已存在该记录!");
+           }
+            
         })
     }
     processChange=(e)=>{//工序

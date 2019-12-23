@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import BlockQuote from "../../../BlockQuote/blockquote";
-import {Divider, Popconfirm, Spin, Table} from "antd";
+import {Divider, Popconfirm, Spin, Table,message} from "antd";
 import DeleteByIds from "../../../BlockQuote/deleteByIds";
 import NewSearchCell from "../../../BlockQuote/newSearchSell";
 import Add from './add'
@@ -34,7 +34,7 @@ class FireInspecDep extends Component{
                     <span>
                         <Add url={this.url} record={record} getTableData={this.getTableData} editflag={true}/>
                         <Divider type={'vertical'}/>
-                        <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleDelete(record.index)}>
+                        <Popconfirm title={'确定删除吗？'} okText={'确定'} cancelText={'再想想'} onConfirm={()=>this.handleDelete(record.code)}>
                             <span className={'blue'}>删除</span>
                         </Popconfirm>
                     </span>
@@ -54,6 +54,7 @@ class FireInspecDep extends Component{
         this.onSelectChange=this.onSelectChange.bind(this);
         this.searchEvent=this.searchEvent.bind(this);
         this.reset=this.reset.bind(this);
+        this.handleDelete=this.handleDelete.bind(this);
     }
     componentDidMount() {
         this.getTableData()
@@ -96,15 +97,55 @@ class FireInspecDep extends Component{
             }
         })
     }
+    handleDelete(id){
+             axios({
+                 url:`${this.url.fireMageDept.add}/${id}`,
+                 method:'delete',
+                 headers: {
+                     'Authorizaion':this.url.Authorizaion
+                 }
+             }).then(data=>{
+                    if(data.data.code===0){
+                        message.info('删除成功!')
+                        this.getTableData()
+                    }
+                    else{
+                        message.error('操作失败，请联系管理员!')
+                    }
+             }).catch(()=>{
+                 message.error('操作失败，请联系管理员!')
+             })
+    }
     deleteByIds(){
-
+        let {selectedRowKeys}=this.state,ids=selectedRowKeys
+        axios({
+            url:`${this.url.fireMageDept.add}/${ids}`,
+            method:'delete',
+            headers: {
+                'Authorizaion':this.url.Authorizaion
+            }
+        }).then(data=>{
+            if(data.data.code===0){
+                message.info('删除成功!')
+                this.getTableData()
+            }
+            else{
+                message.error('操作失败，请联系管理员!')
+            }
+        }).catch(()=>{
+            message.error('操作失败，请联系管理员!')
+        })
     }
     deleteCancel(){
-
+        this.setState({
+            selectedRowKeys:[]
+        })
     }
     /**复选框变化*/
-    onSelectChange(){
-
+    onSelectChange(selectedRowKeys){
+        this.setState({
+            selectedRowKeys:selectedRowKeys
+        })
     }
     searchEvent(searchContent){//搜索内容通过子组件传过来,以修改父组件值
         this.setState({

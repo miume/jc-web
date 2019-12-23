@@ -49,7 +49,7 @@ class BaseInfo extends React.Component{
         return(
             <div>
                 <Blockquote menu='质量与流程' name='基础数据'/>
-                <div style={{marginTop:'20px',width:'100%',height:'100%'}}>
+                <div className='dataEntry'>
                     <div className='card-parent'>
                     {
                         data.map(d=>
