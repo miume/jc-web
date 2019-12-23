@@ -1,7 +1,6 @@
 import React from "react";
 import Blockquote from "../../BlockQuote/blockquote";
 import DeleteByIds from "../../BlockQuote/deleteByIds";
-import NewButton from '../../BlockQuote/newButton'
 import axios from "axios";
 import { Table, message, Spin, Divider ,Popconfirm} from "antd";
 import SearchCell from '../../BlockQuote/search';
@@ -21,7 +20,7 @@ class BatchMessage extends React.Component {
             visiable: false,
             data: [],
             selectedRowKeys: [],
-            loading: true,
+            loading: false,
             searchContent: '',
             searchFlag: 1,//判断是搜索分页还是获取表格数据分页
             batch:'',
@@ -34,6 +33,7 @@ class BatchMessage extends React.Component {
                 return `共${total}条记录`
             },
             showSizeChanger: true,
+            pageSizeOptions: ["10","20","50","100"]
         };
         this.columns = [{
             title: '序号',
@@ -100,11 +100,14 @@ class BatchMessage extends React.Component {
             render: (text, record) => {
                 return (
                     <span>
-                        <Edit fetch={this.fetch}  code={record.code} url={this.url}/>
+                        <Edit fetch={this.fetch} statusFlag={record.statusFlag} code={record.code} url={this.url}/>
                         <Divider type="vertical" />
-                        <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
-                        <span className='blue'>删除</span>
-                     </Popconfirm>
+                        {!record.statusFlag?
+                            <Popconfirm title="确定删除?" onConfirm={() => this.handleDelete(record.code)} okText="确定" cancelText="再想想" >
+                                <span className='blue'>删除</span>
+                            </Popconfirm>
+                            :<span className='notClick' >删除</span>
+                        }
                     </span>
                 )
             }
@@ -129,6 +132,9 @@ class BatchMessage extends React.Component {
         }
     }
     fetch = (params = {}) => {
+        this.setState({
+            loading:true
+        })
         let { pageSize, current } = this.pagination
         axios({
             url: `${this.url.productionBatchInfo.getAll}`,
@@ -143,16 +149,16 @@ class BatchMessage extends React.Component {
             }
         }).then((data) => {
             const res = data.data.data;
-            //console.log(res)
             if (res && res.list) {
-                var data = [];
-                for (var i = 0; i < res.list.length; i++) {
+                this.pagination.total = res.total ? res.total : 0;
+                let data = [];
+                for (let i = 0; i < res.list.length; i++) {
                     data.push(res.list[i].productionBatchInfo);
-                };
-                for (var i = 1; i <= data.length; i++) {
-                    data[i - 1]['index']=(res.page-1)*res.size+i
                 }
 
+                for (let i = 1; i <= data.length; i++) {
+                    data[i - 1]['index']=(res.page-1)*res.size+i
+                }
                 this.setState({
                     data: data,
                 })
@@ -168,13 +174,10 @@ class BatchMessage extends React.Component {
     }
 
     onSelectChange = (selectedRowKeys,data) => {
-         //console.log(selectedRowKeys,data)
-         
         this.setState({ 
             selectedRowKeys: selectedRowKeys ,
             batchData:data
         });
-       
     }
     //根据id处理单条记录删除
     handleDelete(id){
@@ -189,13 +192,16 @@ class BatchMessage extends React.Component {
           }
         })
         .then((data)=>{
-          message.info(data.data.message);
           if(data.data.code===0){
-            this.fetch();
+              this.fetch();
+              message.info('操作成功!')
+          }
+          else{
+              message.error('删除失败，请联系管理员！');
           }
         })
         .catch(()=>{
-         message.info('删除失败，请联系管理员！');
+            message.error('删除失败，请联系管理员！');
         });
       }
     /**批量删除弹出框确认函数 */
@@ -211,18 +217,18 @@ class BatchMessage extends React.Component {
             type:'json'
         })
         .then((data)=>{
-        message.info(data.data.message);
-        if(data.data.code===0){//即操作成功
-            this.fetch();
-        }
-        else{
+            if(data.data.code===0){//即操作成功
+                this.fetch();
+            }
+            else{
+                message.error('删除失败，请联系管理员！');
+            }
             this.setState({
                 selectedRowKeys:[]
             });
-        }
         })//处理成功
         .catch(()=>{
-        message.info('删除失败，请联系管理员！');
+            message.error('删除失败，请联系管理员！');
         });//处理异常
     }
     cancel = () => {
@@ -254,10 +260,12 @@ class BatchMessage extends React.Component {
         }).then(data => {
             let res=data.data.data
             if(res&&res.list){
+                this.pagination.total = res.total ? res.total : 0;
                 let data = [];
                 for (let i = 0; i < res.list.length; i++) {
                     data.push(res.list[i].productionBatchInfo);
-                };
+                }
+
                 for (let i = 1; i <= data.length; i++) {
                     data[i - 1]['index']=(res.page-1)*res.size+i
                 }
@@ -306,7 +314,7 @@ class BatchMessage extends React.Component {
                                     selectedRowKeys={this.state.selectedRowKeys}/>
                     <SearchCell name='请输入批次信息' flag={true} fetch={this.fetch} searchContentChange={this.searchContentChange} searchEvent={this.searchEvent}/>
                     <div className='clear' ></div>
-                    <Table pagination={this.pagination} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered />
+                    <Table pagination={this.pagination} onChange={this.handleTableChange} rowSelection={rowSelection} columns={this.columns} rowKey={record => record.code} dataSource={this.state.data} size="small" bordered />
                 </Spin>
             </div>
         )

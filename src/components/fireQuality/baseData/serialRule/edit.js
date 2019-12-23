@@ -15,15 +15,15 @@ class Edit extends Component{
             title:'序号',
             dataIndex:'index',
             key:'index',
-            width:'10%'
+            width:'8%'
         },{
             title:'规则代码',
             dataIndex:'value',
             key:'value',
-            width:'20%',
+            width:'30%',
             render:(text,record)=>{
                     return(
-                        <Input onChange={this.inputChange}/>
+                        <Input onChange={this.inputChange} value={record.value} name={`${record.index}-${'value'}`} style={{border:'none',textAlign:'left'}} placeholder={'请输入规则代码'}/>
                     )
             }
         },{
@@ -33,7 +33,7 @@ class Edit extends Component{
             width:'30%',
             render:(text,record)=>{
                 return(
-                    <Input onChange={this.inputChange}/>
+                    <Input onChange={this.inputChange} value={record.description} name={`${record.index}-${'description'}`} style={{border:'none',textAlign:'left'}}  placeholder={'请输入说明'}/>
                 )
             }
         },{
@@ -50,7 +50,7 @@ class Edit extends Component{
             title:'操作',
             dataIndex:'operation',
             key:'operation',
-            width:'20%',
+            width:'10%',
             render:(text,record)=>{
                 return(
                       <Popconfirm title="确定删除吗?" onConfirm={() => this.handleDelete(record.index)} okText="确定" cancelText="再想想" >
@@ -119,10 +119,15 @@ class Edit extends Component{
        this.setState({
            dataSource:dataSource
        })
-
    }
-    inputChange(){
-
+    inputChange(e){
+        let value=e.target.value,name=e.target.name.split('-'),
+            {dataSource}=this.state,index=name[0]
+        name=name[1]
+        dataSource[index-1][name]=value
+        this.setState({
+            dataSource:dataSource
+        })
     }
     radioChange(record){
         record.enable=true
@@ -140,15 +145,18 @@ class Edit extends Component{
         })
     }
     handleCreate(){
-       let {dataSource}=this.state
+       let {dataSource}=this.state,{position}=this.props.record
         this.setState({
             visible:false
         })
         axios({
-            url:`${this.url.fireMageNumber}/save`,
+            url:`${this.props.url.fireMageNumber}/save`,
             method:"put",
             headers:{
-                'Authorization': this.url.Authorization
+                'Authorization': this.props.url.Authorization
+            },
+            params:{
+                position:position
             },
             data:dataSource
         }).then((data)=>{
@@ -160,7 +168,6 @@ class Edit extends Component{
                 message.error('操作失败，请联系管理员!')
             }
         })
-
     }
     cancel(){
         this.setState({
@@ -178,7 +185,7 @@ class Edit extends Component{
                     maskClosable={false}
                     closable={false}
                     centered={true}
-                    width={'500px'}
+                    width={'700px'}
                     footer={[
                         <CancleButton key={'cancel'} handleCancel={this.cancel} flag={detailFlag?true:false}/>,
                         detailFlag?null:(<NewButton key={'ok'} name={'确定'} className={'fa fa-check'} handleClick={this.handleCreate}/>)

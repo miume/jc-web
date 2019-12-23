@@ -61,9 +61,6 @@ class AssayDetail extends React.Component{
         this.getData=this.getData.bind(this);
         this.handleData=this.handleData.bind(this);
     }
-    componentDidMount(){
-        this.getData()
-    }
     componentWillUnmount() {
         this.setState = () => {
           return ;
@@ -175,6 +172,7 @@ class AssayDetail extends React.Component{
         this.setState({
             visible:true
         })
+        this.getData()
     }
     handleCancel = ()=>{
         this.setState({

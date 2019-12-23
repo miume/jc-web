@@ -9,67 +9,83 @@ class ReadRecipe extends Component{//读取配方
         this.columns=!this.props.flag?[{
             title:'序号',
             dataIndex:'id',
-            key:'id'
+            key:'id',
+            width:'7%'
         },{
             title:'工艺参数名称',
             dataIndex:'head.processName',
-            key:'head.processName'
+            key:'head.processName',
+            width:'12%'
         },{
             title:'使用车间',
             dataIndex:'deptName',
-            key:'deptName'
+            key:'deptName',
+            width:'12%'
         },{
             title:'工序',
             dataIndex:'processName',
-            key:'processName'
+            key:'processName',
+            width:'12%'
         },{
             title:'生效日期',
             dataIndex:'head.effectiveDate',
-            key:'head.effectiveDate'
+            key:'head.effectiveDate',
+            width:'18%'
         },{
             title:'生产品种',
             dataIndex:'product',
-            key:'product'
+            key:'product',
+            width:'12%'
         },{
             title:'Ni(g/L)',
             dataIndex:'ni',
-            key:'ni'
+            key:'ni',
+            width:'7%'
         },{
             title:'Co(g/L)',
             dataIndex:'co',
-            key:'co'
+            key:'co',
+            width:'7%'
         },{
             title:'Mn(g/L)',
             dataIndex:'mn',
-            key:'mn'
+            key:'mn',
+            width:'8%'
         }]:[{
             title:'序号',
             dataIndex:'id',
-            key:'id'
+            key:'id',
+            width:'8%'
         },{
             title:'工艺参数名称',
             dataIndex:'head.processName',
-            key:'head.processName'
+            key:'head.processName',
+            width:'13%'
         },{
             title:'使用车间',
             dataIndex:'deptName',
-            key:'deptName'
+            key:'deptName',
+            width:'12%'
         },{
             title:'工序',
             dataIndex:'processName',
-            key:'processName'
+            key:'processName',
+            width:'12%'
         },{
             title:'生效日期',
             dataIndex:'head.effectiveDate',
-            key:'head.effectiveDate'
+            key:'head.effectiveDate',
+            width:'20%'
         },{
             title:'生产品种',
             dataIndex:'product',
-            key:'product'
+            key:'product',
+            width:'12%'
         },{
             title:'含固量(g/L)',
             dataIndex:'solidContent',
-            key:'solidContent'
+            key:'solidContent',
+            width:'15%'
         }]
 
         
