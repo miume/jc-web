@@ -56,7 +56,6 @@ class Edit extends React.Component {
         var data = {};
         data.productionBatchRuleDetails = dataSource;
         data.ruleCode = this.props.code;
-       // console.log(JSON.stringify(data))
         axios({
             url: `${this.url.productionBatchRule.updateAll}`,
             method: "put",
@@ -65,8 +64,9 @@ class Edit extends React.Component {
                 'Authorization': this.url.Authorization
             },
         }).then((data) => {
-            if (data.data.code !== 0) {
-                message.info(data.data.message);
+            let res=data.data.data
+            if (res&&res.code === -1) {//-1为不可删除数据
+                message.info(res.message);
             } else {
                 message.info(data.data.message);
                 this.props.getTableData()
