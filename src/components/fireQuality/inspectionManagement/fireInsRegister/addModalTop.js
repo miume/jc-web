@@ -35,6 +35,7 @@ class AddModalTop extends React.Component {
 
     getRule = () => {
 
+
         const data = [
             {
                 "rule": "工序",

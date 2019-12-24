@@ -827,13 +827,24 @@ class Home extends Component {
             fireMageTestItems:`${server}/jc/common/fireMageTestItems`,
 
             /**批次基础数据*/
-            batchConfig:`${server}/jc/common/batchConfig`,
 
+            batchConfig: `${server}/jc/common/batchConfig`,
             /**火法质量基础数据送检部门*/
-            fireMageDept:{
-                page:`${server}/jc/common/fireMageDept/page`,
-                add:`${server}/jc/common/fireMageDept`,
-        },
+            fireMageDept: {
+                page: `${server}/jc/common/fireMageDept/page`,
+                add: `${server}/jc/common/fireMageDept`,
+                ids: `${server}/jc/common/fireMageDept/ids`
+            },
+            /** 送检登记 */
+            fireInsRegister: {
+                fireMageCheck: `${server}/jc/common/fireMageCheck`,
+                check: `${server}/jc/common/fireMageCheck/check`,
+                detail: `${server}/jc/common/fireMageCheck/detail`,
+                page: `${server}/jc/common/fireMageCheck/page`,
+                getAllInfos: `${server}/jc/common/fireMageNumber/getAllInfos`,
+            },
+            /** 样品接收 */
+            fireInsSamRec: {},
         /**批号与检测项目*/
             fireMageBatchItems:`${server}/jc/common/fireMageBatchItems`,
             /**标签与检测项目*/
@@ -843,6 +854,7 @@ class Home extends Component {
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
             },
+
             /**动力点检-点检项目*/
             checkItem: {
                 add: `${server}/jc/common/checkItem/add`,
