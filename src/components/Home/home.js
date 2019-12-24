@@ -834,7 +834,7 @@ class Home extends Component {
             /**标签与检测项目*/
             fireMageLabel:`${server}/jc/common/fireMageLabel`,
         /**正极前驱体在制品*/
-            positiveProcess:{
+            positiveProcessStatis:{
                 addComfirm:`${server}/jc/common/anodeGoodin/addComfirm`,
                 afterComfirm:`${server}/jc/common/anodeGoodin/afterComfirm`
             }

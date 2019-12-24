@@ -9,13 +9,18 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      periodFlag: true //为真意味着是用的父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
+      periodFlag: true //为真意味着使用的父组件传过来的默认code，为了一开始的渲染，一旦select了，此标志为false
     };
     this.startChange = this.startChange.bind(this);
     this.endChange = this.endChange.bind(this);
     this.selectChange = this.selectChange.bind(this);
     this.confirm = this.confirm.bind(this);
     this.reset=this.reset.bind(this);
+  }
+  componentWillUnmount(){
+      this.setState=()=>{
+          return
+      }
   }
 /**开始日期变化*/
   startChange(date, dateString) {
@@ -37,7 +42,6 @@ class Search extends Component {
   }
   /**监控下拉框变化*/
   selectChange(value,option) {
-      console.log(value,option)
      if(option.props.name==='lineCode'){
          this.setState({
              lineCode:value
@@ -66,10 +70,15 @@ class Search extends Component {
               periodCode: periodCode1,
               lineCode:lineCode
             };
-
       this.props.addConfirm(params)
   }
   reset(){
+      this.setState({
+        startTime: undefined,
+        endTime: undefined,
+        periodCode: undefined,
+        lineCode:undefined
+      })
   }
 
   render(){
