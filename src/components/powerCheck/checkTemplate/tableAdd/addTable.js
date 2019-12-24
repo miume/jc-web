@@ -34,12 +34,13 @@ class AddTable extends React.Component {
                 let {disabled} = this.props;
                     return (
                         record.dataType ?
+                            <Input value={text} name={`${record.index}-checkResult`} onChange={this.props.checkValueChange} disabled={disabled} style={{width: '100%'}}/>
+                            :
                             <Select placeholder='请选择' value={record['checkValue'] ? record['checkValue'] : undefined} onChange={this.props.selectChange} style={{width: '100%'}} disabled={disabled}>
                                 <Option name={record['index']} value={1}>正常</Option>
                                 <Option name={record['index']} value={2}>异常</Option>
                                 <Option name={record['index']} value={3}>未开机</Option>
-                            </Select> :
-                            <Input value={text} name={`${record.index}-checkResult`} onChange={this.props.checkValueChange} disabled={disabled} style={{width: '100%'}}/>
+                            </Select>
                 )
             },
             className: 'check-template-table'
