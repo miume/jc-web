@@ -87,15 +87,15 @@ class AddTable extends React.Component {
         return (
             <div className={'raw-material-add-footer'}>
                 <div>
-                    <label>NiSO4溶液：</label>
+                    <label>Ni(%)：</label>
                     <Input placeholder='请输入' value={niConcentration} name='niConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
                 </div>
                 <div>
-                    <label>CoSO4溶液：</label>
+                    <label>Co(%)：</label>
                     <Input placeholder='请输入' value={coConcentration} name='coConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
                 </div>
                 <div>
-                    <label>MnSO4溶液：</label>
+                    <label>Mn(%)：</label>
                     <Input placeholder='请输入' value={mnConcentration} name='mnConcentration' style={{width: 200}} onChange={this.props.inputChange}/>
                 </div>
             </div>
