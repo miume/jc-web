@@ -71,6 +71,7 @@ class Edit extends React.Component{
         var data = {};
         data.productionBatchRuleDetails = batchDetail;
         data.ruleCode = this.props.code;
+       // console.log(JSON.stringify(data))
         axios({
             url:`${this.url.productionBatchRule.updateAll}`,
             method:"put",
